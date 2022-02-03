@@ -54,7 +54,7 @@ the following SPVM Types are exactly same as the following C99 Types:
   </tr>
   <tr>
     <td>
-      <b>short</b>
+      <b>short>
     </td>
     <td>
       int16_t
@@ -195,7 +195,7 @@ Class Name must be corresponding to the relative name of module file. If Class N
 
 If Class Name is invalid, Compile Error occurs.
 
-<b>Valid Class Name Examples</b>
+B<Valid Class Name Examples>
 
 
   Foo
@@ -205,7 +205,7 @@ If Class Name is invalid, Compile Error occurs.
   Foo_Bar::Baz_Baz
 
 
-<b>Invalid Class Name Examples</b>
+B<Invalid Class Name Examples>
 
 
   Foo
@@ -332,13 +332,13 @@ Separators in SPVM are the followings.
 =head2 Fat Comma
 
 
-Fat Comma is a <a href="#language-token-separator">Separator</a> represented by "<b>=></b>".
+Fat Comma is a <a href="#language-token-separator">Separator</a> represented by "B<=>>".
 
 
   =>
 
 
-Fat Comma is an alias for Comma "<b>,</b>". Wherever you can use "<b>,</b>" you can use Fat Comma instead.
+Fat Comma is an alias for Comma "B<,>". Wherever you can use "B<,>" you can use Fat Comma instead.
 
 
   # Comma
@@ -1139,7 +1139,7 @@ POD starts from the line beginning with "=", followed by any character string of
 
 POD ends from the line beginning with "=cut", and ending with <a href="#language-token-line-terminator">Line Terminator</a>.
 
-<b>POD Example:</b>
+B<POD Example:>
 
 =end html
 
@@ -1167,7 +1167,7 @@ POD has no meaning in the program execution.
 =head2 Class Definition
 
 
-<b>Class Definition</b> is the following syntax.
+B<Class Definition> is the following syntax.
 
 
   class PACAKGE_NAME {
@@ -1189,7 +1189,7 @@ PACAKGE_NAME must follow the rule for <a href="#language-token-identifier-class-
   }
 
 
-<b>Class Definition Example:</b>
+B<Class Definition Example:>
 
 
   # Class Name
@@ -1328,7 +1328,7 @@ Destructor arguments must be one and the type must be <a href="#language-type-se
 
 If a <a href="#language-exception-occur">Exception</a> occurs in Destructor, the program don't exit, print the message of the exception to STDERR.
 
-<b>Destructor Example:</b>
+B<Destructor Example:>
 
 
   class Foo {
@@ -1366,7 +1366,7 @@ allow must be defined directory under <a href="#language-class-definition">Class
 
 In this example, Bar can access the private Method, Field, and Class Variable of Foo can be accessed and can Create Object of Foo.
 
-Specifying the module of <b>allow</b> also loads the module by <a href="#language-module-use">use</a> at the same time.
+Specifying the module of B<allow> also loads the module by <a href="#language-module-use">use</a> at the same time.
 
 
 
@@ -1416,7 +1416,7 @@ Change "::" to "/". Add ".spvm" at the end.
 =head2 Load Module
 
 
-Use <b>use</b> keyword to load a Module.
+Use B<use> keyword to load a Module.
 
 
   use Foo;
@@ -1439,7 +1439,7 @@ use Keyword must be defined directly under <a href="#language-class-definition">
 =head2 Class Alias
 
 
-Define class aliases using <b>as</b> syntax with <b>use</b>
+Define class aliases using B<as> syntax with B<use>
 
 
   use Foo::Bar as FB;
@@ -1520,7 +1520,7 @@ In the other hand, the else block exists, so a warning is issued.
 =head2 Class Variable Definition
 
 
-<b>Class Variable</b> is a global variable that belongs to <a href="#language-class">Class</a> and exists from the start to the end of the program execution.
+B<Class Variable> is a global variable that belongs to <a href="#language-class">Class</a> and exists from the start to the end of the program execution.
 
 "our" Keyword defines a Class Variable.
 
@@ -1614,7 +1614,7 @@ Write Acessor of Class Variable has one argument and the type is same as the typ
 
 Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Class Variable Accessors.
 
-<b>Class Variable Definition Example:</b>
+B<Class Variable Definition Example:>
 
 
   class Foo {
@@ -1764,7 +1764,7 @@ Write Acessor of Class Variable has two arguments. First argument is <a href="#l
 
 Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Field Accessors.
 
-<b>Field Definition Example:</b>
+B<Field Definition Example:>
 
 
   class Foo {
@@ -1794,7 +1794,7 @@ Field Access is an operation to access Field to get or set a value.
 
 Field Access has three different meanings.
 
-<b>1. Class Based Object Field Access</b>
+B<1. Class Based Object Field Access>
 
 Class Based Object Field Access is Field Access from object which is create by <a href="#language-expression-new">new</a> keyword.
 
@@ -1807,7 +1807,7 @@ See <a href="#language-expression-get-field">Get Field Value</a> to get field of
 
 See <a href="#language-expression-set-field">Set Field Value</a> to set field of Class Based Object.
 
-<b>2. Multi Numeric Field Access</b>
+B<2. Multi Numeric Field Access>
 
 Multi Numeric Field Access is Field Access from the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a>. The value of <a href="#language-type-multi-numeric">Multi Numeric Type</a> is allocated Callstack of Method.
 
@@ -1821,7 +1821,7 @@ See <a href="#language-expression-get-field-multi-numeric">Get Multi Numeric Fie
 
 See <a href="#language-expression-set-field-multi-numeric">Set Multi Numeric Field Value</a> to set field of the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a>.
 
-<b>3. Dereference Multi Numeric Field</b>
+B<3. Dereference Multi Numeric Field>
 
 Dereference Multi Numeric Field is Field access from Reference of the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a>.
 
@@ -2023,7 +2023,7 @@ Signature is a string that follow the following rule sequence of Method Retrun V
 
 It the method is a instance method, the part of signature of the first argument is "self".
 
-<b>Signature Example:</b>
+B<Signature Example:>
 
 
   # Method Definition
@@ -2214,7 +2214,7 @@ In special case, Enumeration Call can be used in <a href="#language-statement-ca
 =head1 INIT Block
 
 
-<b>INIT Block</b> is a block that is executed immediately after the compilation of program.
+B<INIT Block> is a block that is executed immediately after the compilation of program.
 
 INIT Keyword defines INIT Block.
 
@@ -2272,9 +2272,9 @@ A common use of INIT Block is to initialize <a href="#language-class-var">Class 
 =head2 Local Variable Declaration
 
 
-<b>Local Variable</b> is a variable that is declared in <a href="#language-scope-scope-block">Scope Block</a>.  Local Variable has <a href="#language-scope">Scope</a>. This is same as Local Variable in C Language.
+B<Local Variable> is a variable that is declared in <a href="#language-scope-scope-block">Scope Block</a>.  Local Variable has <a href="#language-scope">Scope</a>. This is same as Local Variable in C Language.
 
-Local Variable is declared using <b>my</b> <a href="#language-token-keyword">Keyword</a>.
+Local Variable is declared using B<my> <a href="#language-token-keyword">Keyword</a>.
 
 
   my LOCAL_VARIABLE_NAME : TYPE;
@@ -2372,7 +2372,7 @@ If <a href="#language-class-var">Class Variable</a> with the same name as the Lo
 =head2 Scope Summary
 
 
-<b>Scope</b> is a range surrounded by <a href="#language-scope-scope-block">Scope Block</a>.
+B<Scope> is a range surrounded by <a href="#language-scope-scope-block">Scope Block</a>.
 
 
   # Scope Block 
@@ -2404,7 +2404,7 @@ If the Reference Count become 0, the object released.
 =head2 Block
 
 
-The part enclosed by "{" and "}" is called <b>Block</b>.
+The part enclosed by "{" and "}" is called B<Block>.
 
 
   # Block 
@@ -2419,9 +2419,9 @@ There are <a href="#language-scope-scope-block">Scope Block</a> that creates a s
 =head2 Scope Block
 
 
-<b>Scope Block</b> is a block that creates a Scope. Zero or more <a href="#language-statement">Statement</a> can be written in Scope Block.
+B<Scope Block> is a block that creates a Scope. Zero or more <a href="#language-statement">Statement</a> can be written in Scope Block.
 
-<b>List of Scope Blocks</b>
+B<List of Scope Blocks>
 
 =head2 Simple Block
 
@@ -2544,7 +2544,7 @@ switch Block is a scope block.
 =head2 Literal Summary
 
 
-<b>Literal</b> is a <a href="#language-expression">Expression</a> that represents Constant Value.
+B<Literal> is a <a href="#language-expression">Expression</a> that represents Constant Value.
 
 
 =head2 Integer Literal
@@ -2572,7 +2572,7 @@ If Integer Literal is assigned to a <a href="#language-type-byte">byte Type</a> 
 
 If Integer Literal is assigned to a <a href="#language-type-short">short Type</a> variable or passed to <a href="#language-type-short">short Type</a> Method Argument, and does not exceed the range of numbers that can be represented by <a href="#language-type-short">short Type</a>, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is applied and the value converted to <a href="#language-type-short">short Type</a> value. If it exceeds the range, Compile Error will occur.
 
-<b>Integer Literal Example:</b>
+B<Integer Literal Example:>
 
 
   123
@@ -2596,7 +2596,7 @@ It is followed by one or more consecutive characters "0" to "9", "a" to "f", or 
 
 Other rules are same as Decimal Representation of Integer Literal
 
-<b>Hexadecimal Representation of Integer Literal Example:</b>
+B<Hexadecimal Representation of Integer Literal Example:>
 
 
   0x3b4f
@@ -2617,7 +2617,7 @@ It is followed by one or more consecutive characters "0" to "7".
 
 Other rules are same as Decimal Representation of Integer Literal
 
-<b>Octal Representation of Integer Literal Example:</b>
+B<Octal Representation of Integer Literal Example:>
 
 
   0755
@@ -2636,7 +2636,7 @@ Binary Representation of Integer Literal starts with "0b" or "0B".
 
 It is followed by one or more consecutive characters "0" or "1".
 
-<b>Binary Representation of Integer Literal Example:</b>
+B<Binary Representation of Integer Literal Example:>
 
 
   0b0101
@@ -2649,16 +2649,16 @@ It is followed by one or more consecutive characters "0" or "1".
 =head2 Floating Point Literal
 
 
-Floating Point Literal consists of <b>Sign Part</b>, <b>Numeric Part</b>, <b>Exponent Part</b> and <b>Suffix</b>.
+Floating Point Literal consists of B<Sign Part>, B<Numeric Part>, B<Exponent Part> and B<Suffix>.
 
 
   # Floating Point Literal
   [Sign Part][Numeric Part][Exponent Part][Suffix Part]
 
 
-Floating Point Literal is <b>Decimal Floating Point Literal</b> or <b>Hexadecimal Floating Point Literal</b>.
+Floating Point Literal is B<Decimal Floating Point Literal> or B<Hexadecimal Floating Point Literal>.
 
-<b>Sign Part</b> is represented by "+" or "-". Sign Part is optional.
+B<Sign Part> is represented by "+" or "-". Sign Part is optional.
 
 Numeric Part of Decimal Floating Point Literal starts one or more "0" to "9".
 
@@ -2671,7 +2671,7 @@ Numeric part can contain "_". This is just a Numeric Separator and is ignored.
 
 Hexadecimal Floating Point Literal needs Exponent Part.
 
-<b>Exponent Part</b> is consist of <b>Exponential Notation</b> and <b>Signed Decimal Integer</b>.
+B<Exponent Part> is consist of B<Exponential Notation> and B<Signed Decimal Integer>.
 
 
   # Exponent Part
@@ -2692,7 +2692,7 @@ If Floating Point Literal is <a href="#language-type-float">float Type</a>, the 
 
 If Floating Point Literal is <a href="#language-type-double">double Type</a>, the Floating Point Literal is converted to double value using C standard "strtod" function. If the conversion fails, Compile Error occurs.
 
-<b>Floating Point Literal Example:</b>
+B<Floating Point Literal Example:>
 
 
   1.32
@@ -2713,7 +2713,7 @@ If Floating Point Literal is <a href="#language-type-double">double Type</a>, th
 =head2 Charater Literal
 
 
-<b>Charater Literal</b> represents one character of ASCII code.
+B<Charater Literal> represents one character of ASCII code.
 
 Character Literal is enclosed in single quotes "'".
 
@@ -2723,7 +2723,9 @@ Charater Literal Type is "<a href="#language-type-byte">byte Type</a>"
 
 <a href="#language-type">Type</a> of Charater Literal is <a href="#language-type-byte">byte Type</a>.
 
-<table class="toc">
+=begin html
+
+<table>
   <tr>
     <th>
       Escape Characters of Character Literal
@@ -2816,9 +2818,9 @@ Charater Literal Type is "<a href="#language-type-byte">byte Type</a>"
 
 =end html
 
-<b>Charater Literal Example:</b>
+B<Charater Literal Example:>
 
-<b>Charater Literal</b> represents one character of ASCII code.
+B<Charater Literal> represents one character of ASCII code.
 
 
   # Charater Literal 
@@ -2842,7 +2844,7 @@ Charater Literal Type is "<a href="#language-type-byte">byte Type</a>"
 =head2 String Literal
 
 
-<b>String Literal</b> represents String.
+B<String Literal> represents String.
 
 String Literal is enclosed in double quotes '"'. String Literal return the value of string type.
 
@@ -2851,8 +2853,9 @@ The content of String Literal is zero or more ASCII printable Characters or Esca
 
 =head3 Escape charaters of String Literal
 
+=begin html
 
-<table class="toc">
+<table>
   <tr>
     <th>
       Escape Character of String Literal
@@ -2951,7 +2954,7 @@ The content of String Literal is zero or more ASCII printable Characters or Esca
   </tr>
   <tr>
     <td>
-      <b>Raw escape character</b><br>(For example, \s is become \s. This represents a sequence of two characters in a character literal '\\' 's')</b>
+      <b>Raw escape character<br>(For example, \s is become \s. This represents a sequence of two characters in a character literal '\\' 's')</b>
     </td>
     <td>
       \s \S \d \D \w \W \p \P \X \g \k \K \v \V \h \H \R \b \B \A \Z \z \G \N<br>
@@ -2965,7 +2968,7 @@ The content of String Literal is zero or more ASCII printable Characters or Esca
 
 If the espape characters which is not included avobe is used, a compiler error occurs.<br>
 
-<b>String Literal Example:</b>
+B<String Literal Example:>
 
 
   # String Literal 
@@ -2982,7 +2985,7 @@ If the espape characters which is not included avobe is used, a compiler error o
 =head2 Variable Expansion
 
 
-<b>Variable Expansion</b> applys <a href="#language-local-var">Local Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href="#language-ref-deref">Dereference</a>, <a href="#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-exception-var">Exception Variable</a> in String Literal.
+B<Variable Expansion> applys <a href="#language-local-var">Local Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href="#language-ref-deref">Dereference</a>, <a href="#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-exception-var">Exception Variable</a> in String Literal.
 
 
   "AAA $foo BBB"
@@ -3036,7 +3039,7 @@ The trailing $is not treated as the start of Variable Expansion. It is treated a
 =head1 String
 
 
-SPVM has <b>String Type</b>. String is created by <a href="#language-literal-string">String Literal</a> or Type Convertion from <a href="#language-type-array-byte">byte[] Type</a>.
+SPVM has B<String Type>. String is created by <a href="#language-literal-string">String Literal</a> or Type Convertion from <a href="#language-type-array-byte">byte[] Type</a>.
 
 String is immutable and you can't change the each character. You can only get the each character. 
 
@@ -3275,7 +3278,7 @@ Note that Multi Numeric Type value are not object, so cannot create a Object by 
 
 <h3 id="language-mulnum-access">Multi Numeric Type Field Access</h2>
 
-<b>Multi Numeric Type Field Access</b> is an operation to access Multi Numeric Type Field to get or set a value.
+B<Multi Numeric Type Field Access> is an operation to access Multi Numeric Type Field to get or set a value.
 
 
   MULTI_NUMERIC_TYPE_VALUE->{FIELD_NAME}
@@ -3422,7 +3425,7 @@ Expression is a syntax component that can be evaluated as a value.
 =head2 Get Local Variable Value
 
 
-<b>Get Local Variable Value</b> is a Expression to get <a href="#language-local-var">Local Variable</a> Value.
+B<Get Local Variable Value> is a Expression to get <a href="#language-local-var">Local Variable</a> Value.
 
 
   $var
@@ -3432,7 +3435,7 @@ Expression is a syntax component that can be evaluated as a value.
 =head2 Set Local Variable Value
 
 
-<b>Set Local Variable Value Expression</b> is a Expression to set <a href="#language-local-var">Local Variable</a> Value using <a href="#language-operator-assign">Assignment Operator</a>.
+B<Set Local Variable Value Expression> is a Expression to set <a href="#language-local-var">Local Variable</a> Value using <a href="#language-operator-assign">Assignment Operator</a>.
 
 
   $var = RIGHT_EXPRESSION
@@ -3452,7 +3455,7 @@ See <a href="#language-scope">Scope</a> to know Garbage Collection of Local Vari
 =head2 Get Class Variable Value
 
 
-<b>Get Class Variable Value Expression</b> is a Expression to get <a href="#language-class-var">Class Variable</a> Value.
+B<Get Class Variable Value Expression> is a Expression to get <a href="#language-class-var">Class Variable</a> Value.
 
 
   $CLASS_NAME::CLASS_VARIABLE_NAME
@@ -3468,7 +3471,7 @@ If you try to get the value of a Class Variable that is not defined, Compile Err
 
 If you try to access a private Class Variable from outside the Class, Compile Error occurs.
 
-<b>Get Class Variable Value Example:</b>
+B<Get Class Variable Value Example:>
 
 
   class Foo {
@@ -3485,7 +3488,7 @@ If you try to access a private Class Variable from outside the Class, Compile Er
 =head2 Set Class Variable Value
 
 
-<b>Set Class Variable Value Expression</b> is a Expression to set <a href="#language-class-var">Class Variable</a> Value using <a href="#language-operator-assign">Assignment Operator</a>.
+B<Set Class Variable Value Expression> is a Expression to set <a href="#language-class-var">Class Variable</a> Value using <a href="#language-operator-assign">Assignment Operator</a>.
 .
 
 
@@ -3510,7 +3513,7 @@ If Right Expression is <a href="#language-type-object">Object Type</a>, Referenc
 
 If an object has already been assigned to Class Variable before the assignment, the Reference Count of that object is decremented by 1.
 
-<b>Set Class Variable Value Example:</b>
+B<Set Class Variable Value Example:>
 
 
   class Foo {
@@ -3527,7 +3530,7 @@ If an object has already been assigned to Class Variable before the assignment, 
 =head2 Get Exception Variable Value
 
 
-<b>Get Exception Variable Value Expression</b> is a Expression to get the value of <a href="#language-exception-var">Exception Variable</a>.
+B<Get Exception Variable Value Expression> is a Expression to get the value of <a href="#language-exception-var">Exception Variable</a>.
 
 
   $@
@@ -3535,7 +3538,7 @@ If an object has already been assigned to Class Variable before the assignment, 
 
 Get Exception Variable Value Expression returns the value of <a href="#language-type-string">String Type</a>.
 
-<b>Get Exception Variable Value Example:</b>
+B<Get Exception Variable Value Example:>
 
 
   eval {
@@ -3551,7 +3554,7 @@ Get Exception Variable Value Expression returns the value of <a href="#language-
 =head2 Set Exception Variable Value
 
 
-<b>Set Exception Variable Value Expression</b> is a Expression to set the value of <a href="#language-exception-var">Exception Variable</a> using <a href="#language-operator-assign">Assignment Operator</a>.
+B<Set Exception Variable Value Expression> is a Expression to set the value of <a href="#language-exception-var">Exception Variable</a> using <a href="#language-operator-assign">Assignment Operator</a>.
 
 
   $@ = RIGHT_EXPRESSION
@@ -3565,7 +3568,7 @@ The Reference Count of Right Expression is incremented by 1.
 
 If an object has already been assigned to Exception Variable before the assignment, the Reference Count of that object is decremented by 1.
 
-<b>Set Exception Variable Value Example:</b>
+B<Set Exception Variable Value Example:>
 
 
   $@ = "Error";
@@ -3575,7 +3578,7 @@ If an object has already been assigned to Exception Variable before the assignme
 =head2 Get Field Value
 
 
-<b>Get Field Value Expression</b> is a Expression to get <a href="#language-field">Field</a> Value.
+B<Get Field Value Expression> is a Expression to get <a href="#language-field">Field</a> Value.
 
 
   INVOCANT_EXPRESSION->{FIELD_NAME}
@@ -3589,7 +3592,7 @@ Get Field Value Expression returns the value of the Field stored in the object.
 
 Retrun Type is The <a href="#language-type">Type</a> of the Field.
 
-<b>Get Field Value Example:</b>
+B<Get Field Value Example:>
 
 
   my $point = Point->new;
@@ -3600,7 +3603,7 @@ Retrun Type is The <a href="#language-type">Type</a> of the Field.
 =head2 Set Field Value
 
 
-<b>Set Field Value Expression</b> is a Expression to set <a href="#language-field">Field</a> Value.
+B<Set Field Value Expression> is a Expression to set <a href="#language-field">Field</a> Value.
 
 
   INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
@@ -3620,7 +3623,7 @@ If Right Expression is <a href="#language-type-object">Object Type</a>, Referenc
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
-<b>Set Field Value Example:</b>
+B<Set Field Value Example:>
 
 
   my $point = Point->new;
@@ -3631,7 +3634,7 @@ If an object has already been assigned to Field before the assignment, the Refer
 =head2 Get Multi Numeric Field Value
 
 
-<b>Get Multi Numeric Field Value Expression</b> is a Expression to get Field Value of <a href="#language-mulnum">Multi Numeric Value</a>.
+B<Get Multi Numeric Field Value Expression> is a Expression to get Field Value of <a href="#language-mulnum">Multi Numeric Value</a>.
 
 
   INVOCANT_EXPRESSION->{FIELD_NAME}
@@ -3644,7 +3647,7 @@ Get Multi Numeric Field Value Expression returns the field value in the Multi Nu
 
 Retrun Type is The <a href="#language-type">Type</a> of the Field.
 
-<b>Get Multi Numeric Field Value Example:</b>
+B<Get Multi Numeric Field Value Example:>
 
 
   my $z : Complex_2d;
@@ -3672,7 +3675,7 @@ The Assignment must satisfy <a href="#language-type-compatible">Type Compatibili
 
 Return Value Type is the Type of Field.
 
-<b>Set Multi Numeric Field Value Example:</b>
+B<Set Multi Numeric Field Value Example:>
 
 
   my $z : Complex_2d;
@@ -3683,7 +3686,7 @@ Return Value Type is the Type of Field.
 =head2 Get Multi Numeric Field Value via Dereference
 
 
-<b>Get Multi Numeric Field Value via Dereference Expression</b> is a Expression to get Field Value of <a href="#language-mulnum">Multi Numeric Value</a> via <a href="#language-deref">Dereference</a>.
+B<Get Multi Numeric Field Value via Dereference Expression> is a Expression to get Field Value of <a href="#language-mulnum">Multi Numeric Value</a> via <a href="#language-deref">Dereference</a>.
 
 
   INVOCANT_EXPRESSION->{FIELD_NAME}
@@ -3697,7 +3700,7 @@ Get Multi Numeric Field Value via Dereference Expression returns the field value
 
 Retrun Type is The <a href="#language-type">Type</a> of the Field.
 
-<b>Get Multi Numeric Field Value via Dereference Example:</b>
+B<Get Multi Numeric Field Value via Dereference Example:>
 
 
   my $z : Complex_2d;
@@ -3725,7 +3728,7 @@ The Assignment must satisfy <a href="#language-type-compatible">Type Compatibili
 
 Return Value Type is the Type of Field.
 
-<b>Set Multi Numeric Field Value via Dereference Example:</b>
+B<Set Multi Numeric Field Value via Dereference Example:>
 
 
   my $z : Complex_2d;
@@ -3737,7 +3740,7 @@ Return Value Type is the Type of Field.
 =head2 Get Array Element Value
 
 
-<b>Get Array Element Value Expression</b> is a Expression to get a Element Value of <a href="#language-array">Array</a>.
+B<Get Array Element Value Expression> is a Expression to get a Element Value of <a href="#language-array">Array</a>.
 
 
   ARRAY_EXPRESSION->[INDEX_EXPRESSION]
@@ -3753,7 +3756,7 @@ If Array Expression is <a href="#language-undef">Undefined Value</a>, a Runtime 
 
 If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
-<b>Get Array Element Value Example:</b>
+B<Get Array Element Value Example:>
 
 
   my $nums = new int[3];
@@ -3792,7 +3795,7 @@ If Right Expression is <a href="#language-type-object">Object Type</a>, Referenc
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
-<b>Set Array Element Value Example:</b>
+B<Set Array Element Value Example:>
 
 
   my $nums = new int[3];
@@ -3809,7 +3812,7 @@ If an object has already been assigned to Field before the assignment, the Refer
 =head2 Create Object
 
 
-<b>Create Object Expression</b> is a Expression to create Object using <b>new</b> keyword.
+B<Create Object Expression> is a Expression to create Object using B<new> keyword.
 
 
   my $object = new CLASS_NAME;
@@ -3821,7 +3824,7 @@ Fields of the Object are initialized by <a href="#language-type-initial-value">T
 
 Created Object Reference count is 0 at first. If the Object is assigned to some Variable by <a href="#language-operator-assign">Assignment Operator</a>, The Reference Count is incremented by 1. If implicite assignment is not done, Temporary Variable is created, the object is assigned to the Temporary Variable.
 
-<b>Create Object Example:</b>
+B<Create Object Example:>
 
 
   my $object = new Foo;
@@ -3844,7 +3847,7 @@ Create Object has the following information.
 =head2 Create Array
 
 
-<b>Create Array Expression</b> is a Expression to create Array with <b>new</b> Keyword.
+B<Create Array Expression> is a Expression to create Array with B<new> Keyword.
 
 
   new Type[ELEMENTS_COUNT_EXPRESSION]
@@ -3864,7 +3867,7 @@ All Element is gurantied to be continued on Memory.
 
 Array is <a href="#language-type-array">Array Type</a>. This is also <a href="#language-type-object">Object Type</a>.
 
-<b>Create Array Example:</b>
+B<Create Array Example:>
 
 
   my $nums = new int[3];
@@ -3915,7 +3918,7 @@ The type of Array is the type of Expression1 converted to Array Type. If no elem
 If Expression2 or later does not satisfy <a href="#language-type-compatible">Type Compatibility</a>, a Compile Error will occur.
 
 
-<b>Examples:</b>
+B<Examples:>
 
 
   # int array
@@ -3935,7 +3938,7 @@ Array Initialization has another syntax. This is same as above array init syntax
   {Expression1, Expression2, Expression3, Expression4}
 
 
-<b>Examples:</b>
+B<Examples:>
 
 
   # Key values empty
@@ -3949,7 +3952,7 @@ Array Initialization has another syntax. This is same as above array init syntax
 =head2 Method Call
 
 
-Methods defined by <a href="#language-method-definition">Method Definition</a> can be called from program. There are three types of method calls. <b>Class Method Call</b> and <b>Instance Method Call</b>.
+Methods defined by <a href="#language-method-definition">Method Definition</a> can be called from program. There are three types of method calls. B<Class Method Call> and B<Instance Method Call>.
 
 Defined method can be called by Class Method Call except a case that the first argument is <a href="#language-type-self">self Type</a>.
 
@@ -3961,7 +3964,7 @@ The arguments max count is 255.
 
 If the number of arguments does not match the number of arguments defined in the Method Definition, Compile Error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, Compile Error occurs.
 
-<b>Class Method Call Example</b>
+B<Class Method Call Example>
 
 
   my $ret = Foo->bar(1, 2, 3);
@@ -3971,9 +3974,9 @@ If the number of arguments does not match the number of arguments defined in the
 =head2 Current Class
 
 
-<b>&</b> before method name means the current class. You can call method using "&" keyword instead of the current class name.
+B<&> before method name means the current class. You can call method using "&" keyword instead of the current class name.
 
-<b>Current Class Example</b>
+B<Current Class Example>
 
 
   class Foo {
@@ -4007,7 +4010,7 @@ Instance Method Call returns Return Value if Return Value is other than <a href=
 Instance Method Call is <a href="#language-expression">Expression</a>.
 <p>
 <p>
-  <b>Instance Method Call Example</b>
+  B<Instance Method Call Example>
 
 
   my $point = new Point;
@@ -4019,7 +4022,7 @@ Since the object created by <a href="#language-method-new-callback-object">Creat
   OBJECT_EXPRESSION->(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
 
-<b>Example that calls Method from the object created with Create Callback Object</b>
+B<Example that calls Method from the object created with Create Callback Object>
 
 An Example that calls a Method from the object created by Create Callback Object.
 
@@ -4044,7 +4047,7 @@ The variable Type must be Reference Type, otherwise Compile Error occurs.
 The value obtained by Dereference returns <a href="#language-expression">Expression</a>.
 
 
-    <b>Example of getting value by Dereference</b>
+    B<Example of getting value by Dereference>
 
 
   my $num : int;
@@ -4071,7 +4074,7 @@ The Type of Expression must match the Type of the variable when dereferenced, ot
 Setting a value with Dereference returns the set value. This is <a href="#language-expression">Expression</a>.
 
 
-    <b>Example of setting values ​​with Dereference</b>
+    B<Example of setting values ​​with Dereference>
 
 
   my $num : int;
@@ -4090,13 +4093,13 @@ Setting a value with Dereference returns the set value. This is <a href="#langua
 =head2 Get Current Class Name
 
 
-<b>Get Current Class Name</b> is a Expression to get the current class name by __CLASS__ <a href="#language-token-keyword">Keyword</a>.
+B<Get Current Class Name> is a Expression to get the current class name by __CLASS__ <a href="#language-token-keyword">Keyword</a>.
 
 
   __CLASS__
 
 
-<b>Get Current Class Name Example:</b>
+B<Get Current Class Name Example:>
 
 
   class Foo::Bar {
@@ -4111,7 +4114,7 @@ Setting a value with Dereference returns the set value. This is <a href="#langua
 =head2 Get Current File Name
 
 
-<b>Get Current File Name</b> is a Expression to get the current file name by __LINE__ <a href="#language-token-keyword">Keyword</a>.
+B<Get Current File Name> is a Expression to get the current file name by __LINE__ <a href="#language-token-keyword">Keyword</a>.
 
 
   __FILE__
@@ -4119,7 +4122,7 @@ Setting a value with Dereference returns the set value. This is <a href="#langua
 
 Current File Name means the relative path from the base path of the module file. For example, if the Module Loaded Path is "/mypath" and the Module name is "Foo::Bar", the absolute path is "/mypath/SPVM/Foo/Bar.spvm" and the relative path is "SPVM/Foo/Bar.spvm". "SPVM/Foo/Bar.spvm" is Current File Name.
 
-<b>Get Current File Name Example:</b>
+B<Get Current File Name Example:>
 
 
   # SPVM/Foo/Bar.spvm
@@ -4141,13 +4144,13 @@ Current File Name means the relative path from the base path of the module file.
 =head2 Get Current Line Number
 
 
-<b>Get Current Line Number</b> is a Expression to get the current line number of the current file by __LINE__ <a href="#language-token-keyword">Keyword</a>.
+B<Get Current Line Number> is a Expression to get the current line number of the current file by __LINE__ <a href="#language-token-keyword">Keyword</a>.
 
 
   __LINE__
 
 
-<b>Get Current Line Number Example:</b>
+B<Get Current Line Number Example:>
 
 
   class Foo::Bar {
@@ -4164,9 +4167,9 @@ Current File Name means the relative path from the base path of the module file.
 =head2 Operator
 
 
-<b>Operator</b> is a <a href="#language-expression">Expression</a> to culcurate number mainly.
+B<Operator> is a <a href="#language-expression">Expression</a> to culcurate number mainly.
 
-<b>Operators</b> are <a href="#language-operator-unary">Unary Operator</a>, <a href="#language-operator-binary">Binary Operator</a>, <a href="#language-operator-inc">Increment Operator</a>, <a href="#language-operator-dec">Decrement Operator</a>, <a href="#language-operator-comparison">Comparison Operator</a>, <a href="#language-operator-logical">Logical Operator</a>, and <a href="#language-operator-assign">Assignment Operator</a>.
+B<Operators> are <a href="#language-operator-unary">Unary Operator</a>, <a href="#language-operator-binary">Binary Operator</a>, <a href="#language-operator-inc">Increment Operator</a>, <a href="#language-operator-dec">Decrement Operator</a>, <a href="#language-operator-comparison">Comparison Operator</a>, <a href="#language-operator-logical">Logical Operator</a>, and <a href="#language-operator-assign">Assignment Operator</a>.
 
 
 =head2 Unary Operator
@@ -4206,7 +4209,7 @@ Sequential Operator is an Operator that join "," with multiple <a href="#languag
 
 Expression is executed from Left to Right and the last Expression is return.
 
-<b>Sequential Operator Example:</b>
+B<Sequential Operator Example:>
 
 
   # 3 is assigned to $foo
@@ -4222,9 +4225,9 @@ Expression is executed from Left to Right and the last Expression is return.
 =head2 Arithmetic Operator
 
 
-<b>Arithmetic Operator</b> is an <a href="#language-operator-summary">Operator</a> that performs arithmetic.
+B<Arithmetic Operator> is an <a href="#language-operator-summary">Operator</a> that performs arithmetic.
 
-<b>Arithmetic Operators</b> are <a href="#language-operator-add">Addition Operator</a>, <a href="#language-operator-subtract">Subtraction Operator</a>, <a href="#language-operator-multiply">Multiplication Operator</a>, <a href="#language-operator-divide">Division Operator</a>, <a href="#language-operator-remainder">Remainder Operator</a>, <a href="#language-operator-unary-plus">Unary Plus Operator</a>, <a href="#language-operator-unary-minus">Unary Minus Operator</a>, <a href="#language-operator-inc">Increment Operator</a>, and <a href="#language-operator-dec">Decrement Operator</a>.
+B<Arithmetic Operators> are <a href="#language-operator-add">Addition Operator</a>, <a href="#language-operator-subtract">Subtraction Operator</a>, <a href="#language-operator-multiply">Multiplication Operator</a>, <a href="#language-operator-divide">Division Operator</a>, <a href="#language-operator-remainder">Remainder Operator</a>, <a href="#language-operator-unary-plus">Unary Plus Operator</a>, <a href="#language-operator-unary-minus">Unary Minus Operator</a>, <a href="#language-operator-inc">Increment Operator</a>, and <a href="#language-operator-dec">Decrement Operator</a>.
 
 
 =head2 Unary Plus Operator
@@ -4246,7 +4249,7 @@ Return Type of Unary Plus Operator is the Type after <a href="#language-type-con
 
 Unary Plus Operator does not throw <a href="#language-exception">Exception</a>.
 
-<b>Unary Plus Operator Example:</b>
+B<Unary Plus Operator Example:>
 
 
   my $num = +10;
@@ -4278,7 +4281,7 @@ Return Type of Unary Minus Operator is the Type after <a href="#language-type-co
 
 Unary Minus Operator does not throw <a href="#language-exception">Exception</a>.
 
-<b>Unary Minus Operator Example:</b>
+B<Unary Minus Operator Example:>
 
 
   my $num = -10;
@@ -4288,7 +4291,7 @@ Unary Minus Operator does not throw <a href="#language-exception">Exception</a>.
 =head2 Addition Operator
 
 
-<b>Addition Operator</b> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "+" to perform addition.
+B<Addition Operator> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "+" to perform addition.
 
 
   LEFT_EXPRESSION + RIGHT_EXPRESSION
@@ -4314,7 +4317,7 @@ Addition Operator does not throw <a href="#language-exception">Exception</a>.
 =head2 Subtraction Operator
 
 
-<b>Subtraction Operator</b> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "-" to perform Subtraction.
+B<Subtraction Operator> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "-" to perform Subtraction.
 
 
   LEFT_EXPRESSION - RIGHT_EXPRESSION
@@ -4338,7 +4341,7 @@ Subtraction Operator does not throw <a href="#language-exception">Exception</a>.
 =head2 Multiplication Operator
 
 
-<b>Multiplication Operator</b> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "*" to perform Multiplication.
+B<Multiplication Operator> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "*" to perform Multiplication.
 
 
   LEFT_EXPRESSION * RIGHT_EXPRESSION
@@ -4364,7 +4367,7 @@ Multiplication Operator does not throw <a href="#language-exception">Exception</
 =head2 Division Operator
 
 
-<b>Division Operator</b> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "/" to perform Division.
+B<Division Operator> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "/" to perform Division.
 
 
   LEFT_EXPRESSION / RIGHT_EXPRESSION
@@ -4392,7 +4395,7 @@ In the operation to <a href="#language-type-floating-point">Floating Point Type<
 =head2 Remainder Operator
 
 
-<b>Remainder Operator</b> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "%" to perform Division.
+B<Remainder Operator> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "%" to perform Division.
 
 
   LEFT_EXPRESSION % RIGHT_EXPRESSION
@@ -4418,7 +4421,7 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
 =head2 Increment Operator
 
 
-<b>Increment Operator</b> is an Operator that adds 1 to the value. the meaning of Increment Operator is different depending on whether the Increment Operator is placed Pre or Post.
+B<Increment Operator> is an Operator that adds 1 to the value. the meaning of Increment Operator is different depending on whether the Increment Operator is placed Pre or Post.
 
 
   # Pre Increment Operator
@@ -4482,7 +4485,7 @@ For example, Post Increment of <a href="#language-type-byte">byte Type</a> value
 =head2 Decrement Operator
 
 
-<b>Decrement Operator</b> is an Operator that subtracts 1 to the value. the meaning of Decrement Operator is different depending on whether the Decrement Operator is placed Pre or Post.
+B<Decrement Operator> is an Operator that subtracts 1 to the value. the meaning of Decrement Operator is different depending on whether the Decrement Operator is placed Pre or Post.
 
 
   # Pre Decrement Operator
@@ -4626,7 +4629,7 @@ The Type of Return Value of Bit NOT Operator is the type after <a href="#languag
 
 Bit NOT Operator does not throw <a href="#language-exception">Exception</a>.
 
-<b>Bit NOT Operator Example</b>
+B<Bit NOT Operator Example>
 
 
   my $num = ~0xFF0A;
@@ -4727,7 +4730,7 @@ Comparison Operators are <a href="#language-operator-comparison-numeric">Numeric
 
 =head2 Numeric Comparison Operator
 
-<b>Numeric Comparison Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> that is placed between Left Expression and Right Expression to compare the size of number or check the equqlity of objects.
+B<Numeric Comparison Operator> is a <a href="#language-operator-comparison">Comparison Operator</a> that is placed between Left Expression and Right Expression to compare the size of number or check the equqlity of objects.
 
 
   LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_EXPRESSION
@@ -4856,7 +4859,7 @@ Numeric Comparison Operator does not throw <a href="#language-exception">Excepti
 
 =head2 String Comparison Operator
 
-<b>String Comparison Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> that compares the bytes in the tow string.
+B<String Comparison Operator> is a <a href="#language-operator-comparison">Comparison Operator</a> that compares the bytes in the tow string.
 
 
   LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
@@ -4939,7 +4942,7 @@ The Type of Return Value of the String Comparison Operator is <a href="#language
 
 =head2 isa Operator
 
-<b>isa Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> to check whether Left Expression satisfies Right Type.
+B<isa Operator> is a <a href="#language-operator-comparison">Comparison Operator</a> to check whether Left Expression satisfies Right Type.
 
 
 
@@ -4958,7 +4961,7 @@ isa Operator has three behaviors, depending on Right Type.
 =head2 ref Operator
 
 
-<b>ref Operator</b> is a Operator to get type name of the object.
+B<ref Operator> is a Operator to get type name of the object.
 
 
   ref EXPRESSION
@@ -4972,7 +4975,7 @@ If EXPRESSION is not a object type, a compile error occurs.
 =head2 dump Operator
 
 
-<b>dump Operator</b> is a Operator to dump object value.
+B<dump Operator> is a Operator to dump object value.
 
 
   dump EXPRESSION
@@ -5076,7 +5079,7 @@ If both Left Expression and Right Expression were <a href="#language-literal-str
 
 If Left expression or Right Expression is <a href="#language-undef">Undefined Value</a> <a href="#language-exception">Exception</a> occurs at Run Time.
 
-<b>String Concatenation Operator Example</b>
+B<String Concatenation Operator Example>
 
 
   my $str = "abc" . "def";
@@ -5106,7 +5109,7 @@ Special Assignment Operator is a <a href="#language-operator-binary"_binary oper
 
 Left ExpressionとRight Expressionが<a href="#language-type-compatible">Type Compatibility</a>を満たさない場合は,Compile Error occurs
 
-<b>List of Special Assignment Operators</b>
+B<List of Special Assignment Operators>
 
 List of Special Assignment Operators
 
@@ -5180,7 +5183,7 @@ For example, for add assignment Operator, it is expanded as follows:
   # After unwinding
   $x = (byte)($x + 1)
 
-<b>Special Assignment Operator Example</b>
+B<Special Assignment Operator Example>
 
 Special Assignment Operator Example
 
@@ -5212,7 +5215,7 @@ If the variable is not numeric type or Multi Numeric Type, Compile Error occurs
 Reference Operator returns expression. The type returned is <a href="#language-type-ref">Reference Type</a>.
 
 
-    <b>Reference Operator Example</b>
+    B<Reference Operator Example>
 
 
   my $num : int;
@@ -5238,7 +5241,7 @@ Array Length Operator returns array length for <a href="#language-type-int">int 
 
 Array Length Operator returns <a href="#language-expression">Expression</a>
 
-<b>Array Length Operator Example</b>
+B<Array Length Operator Example>
 
 Array Length Operator Example
 
@@ -5263,7 +5266,7 @@ The String Length Operator returns the length of the String as a <a href="#langu
 
 String Length Operator returns the <a href="#language-expression">Expression</a>
 
-<b>String Length Operator Example</b>
+B<String Length Operator Example>
 
 String Length Operator Exampleです。
 
@@ -5284,7 +5287,7 @@ Right Expressionは<a href="#language-operator-array-length">Array Length Operat
 
 Scalar Operator returns Expression.
 
-<b>Scalar Operator Example</b>
+B<Scalar Operator Example>
 
 Scalar Operator Example
 
@@ -5490,7 +5493,7 @@ Operator Precidence can be a top priority by using "()".
 
 Statement can be written more than one in <a href="#language-scope-scope-block">Scope Block</a> for a single process. <a href="#language-expression">Expression</a> is not evaluated as a value.
 
-<b>List of Statements</b>
+B<List of Statements>
 
 List of Statements
 
@@ -5531,7 +5534,7 @@ You can use "elseStatement" to describe what happens if or if the elsif Statemen
   
   }
 
-<b>if Statement Example</b>
+B<if Statement Example>
 
 An example of if Statement.
 
@@ -5690,7 +5693,7 @@ If you use break Statement, you can exit from the switch block.
 If a case Block exists, the last Statement must be a break Statement or a returnl Statement, otherwise Compile Error will occur.
 
 
-<b>Switch Statement Example</b>
+B<Switch Statement Example>
 
 An example of a switch statement.
 
@@ -5745,7 +5748,7 @@ while Statement is a Statement for repeating.
 
 <a href="#language-expresssion">Expression</a> can be described in the condition Expression. <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
 
-<b>While Statement Example</b>
+B<While Statement Example>
 
 An example of a while Statement.
 
@@ -5828,7 +5831,7 @@ for Statement has the same meaning as the following while Statement. INCREMENT_E
     }
   }
 
-<b>for Statement Example</b>
+B<for Statement Example>
 
 An example of for Statement.
 
@@ -6063,7 +6066,7 @@ An empty statement is a statement that ends with just ";".
 
 SPVM is a static type language. All data has a static type.
 
-<a href="#language-local-var-declaration">Local Variable Declaration</a>, <a href="#language-field-definition">Field Definition</a>, <a href="#language-class-var-definition">Class Variable Definition</a>, and <b>Arguments</b> and <b>Return Value</b> of <a href="#language-method-definition">Method Definition</a> must specify <b>Type</b>.
+<a href="#language-local-var-declaration">Local Variable Declaration</a>, <a href="#language-field-definition">Field Definition</a>, <a href="#language-class-var-definition">Class Variable Definition</a>, and B<Arguments> and B<Return Value> of <a href="#language-method-definition">Method Definition</a> must specify B<Type>.
 
 
 In <a href="#language-local-var-declaration">Local Variable Declaration</a>, <a href="#language-type-inference">Type Inference</a> can be used.
@@ -6232,7 +6235,7 @@ Integral Type are the following four types.
 
 See <a href="#language-operator-arithmetic">Arithmetic Operator</a> for integer calculation rules.
 
-Note that SPVM has only <b>singed</b> Integral Type, and don't has <b>unsigned</b> Integral Type.
+Note that SPVM has only B<singed> Integral Type, and don't has B<unsigned> Integral Type.
 
 
 =head2 byte Type
@@ -6251,9 +6254,9 @@ Note that SPVM has only <b>singed</b> Integral Type, and don't has <b>unsigned</
 
 =head2 int Type
 
-<b>int Type</b> is a type that represents signed 32-bit integer.
+B<int Type> is a type that represents signed 32-bit integer.
 
-This is same as <b>C99 int32_t Type</b>.
+This is same as B<C99 int32_t Type>.
 
 This is a <a href="#language-type-integral">Integral Type</a>.
 
@@ -6267,7 +6270,7 @@ This is a <a href="#language-type-integral">Integral Type</a>.
 =head2 Floating Point Type
 
 
-<b>Floating Point Type</b> are the following two.
+B<Floating Point Type> are the following two.
 
 =begin html
 
@@ -6320,7 +6323,7 @@ See <a href="#language-operator-arithmetic">Arithmetic Operator</a> for floating
 
 =head2 double Type
 
-<b>double Type</b> represents a double precision floating point (64bit) <a href="#language-type-floating-point">Floating Point Type</a> It is the same Type as <a href="#language-type-double">double Type</a> of C99.
+B<double Type> represents a double precision floating point (64bit) <a href="#language-type-floating-point">Floating Point Type</a> It is the same Type as <a href="#language-type-double">double Type</a> of C99.
 
 
 
@@ -6377,7 +6380,7 @@ The size of Object Type must match the value of "sizeof (void *)" in C99.
 
 =head2 Numeric Object Type
 
-<b>Numeric Object Type</b> are the following six.
+B<Numeric Object Type> are the following six.
 
 
 =begin html
@@ -6443,7 +6446,7 @@ The size of Object Type must match the value of "sizeof (void *)" in C99.
 
 =end html
 
-For the conversion between <a href="#language-type-numeric">Numeric Type</a> and <b>Numeric Object Type</b>, see <a href="#language-type-convertion">Type Conversion</a>.
+For the conversion between <a href="#language-type-numeric">Numeric Type</a> and B<Numeric Object Type>, see <a href="#language-type-convertion">Type Conversion</a>.
 
 
 =head2 Undefined Type
@@ -6589,7 +6592,7 @@ It can only be used as the Type of the first argument in <a href="#language-meth
 =head2 void Type
 
 
-<b>void Type</b> is a special Type that can only be used in Return Type of <a href="#language-method-definition">Method Definition</a> and indicates the Method has no Return Value.
+B<void Type> is a special Type that can only be used in Return Type of <a href="#language-method-definition">Method Definition</a> and indicates the Method has no Return Value.
 
 
   void
@@ -6637,7 +6640,7 @@ my $nums = new int[] [3];
 
 Numeric Array Type means <a href="#language-type-numeric">Numeric Type</a> with the element <a href="#language-type-array">Array Type</a> It is.
 
-<b>Numeric Array Type list</b>
+B<Numeric Array Type list>
 
 
 =begin html
@@ -6685,7 +6688,7 @@ In SPVM, the <a href="#language-type-array-byte">byte[] Type</a> is a special Ty
 
 Object Array Type is <a href="#language-type-array">Array Type</a> that has the value of <a href="#language-type-object">Object Type</a> as an element. It is.
 
-<b>Object Array TypeのExample</b>
+B<Object Array TypeのExample>
 
 
 =begin html
@@ -6717,7 +6720,7 @@ All elements of Object Array Type are initialized by <a href="#language-type-ini
 
 Multi Numeric Array Type means <a href="#language-type-array">Array Type that has the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a> as an element.</a>.
 
-<b>Multi Numeric Array Type Example</b>
+B<Multi Numeric Array Type Example>
 
 
 =begin html
@@ -6909,7 +6912,7 @@ Type compatibility means that the value can be moved without performing <a href=
 
 Types are compatible in the following cases.
 
-<b>When the source and destination types are the same</b>
+B<When the source and destination types are the same>
 
 If the source and destination types are the same, there is Type Compatibility.
 
@@ -6918,7 +6921,7 @@ If the source and destination types are the same, there is Type Compatibility.
   my $num2 : int;
   $num1 = $num2;
 
-<b>When the source Type is <a href="#language-type-array-byte">byte[] Type</a> and the destination Type is <a href="#language-type-string">String Type</a></b>
+B<When the source Type is <a href="#language-type-array-byte">byte[] Type</a> and the destination Type is <a href="#language-type-string">String Type</a>>
 
 If the source Type is <a href="#language-type-array-byte">byte[] Type</a> and the destination Type is <a href="#language-type-string">String Type</a>, there is Type Compatibility.
 
@@ -6927,14 +6930,14 @@ If the source Type is <a href="#language-type-array-byte">byte[] Type</a> and th
   my $str : string;
   $str = $bytes;
 
-<b>When the source Type is Object Type and the destination Type is Any Object Type</b>
+B<When the source Type is Object Type and the destination Type is Any Object Type>
 
 
   my $foo : Foo = new Foo;
   my $object : object;
   $object = $foo;
 
-<b>When the source Type and destination Type are Any Object Type or Any Object Type Array and the source Type Dimension count is greater than or equal to the destination Type Dimension count</b>
+B<When the source Type and destination Type are Any Object Type or Any Object Type Array and the source Type Dimension count is greater than or equal to the destination Type Dimension count>
 
 
   my $objects_dim2_src : object[];
@@ -6973,7 +6976,7 @@ If the source Type and the specified Type are the same, the value is simply copi
 
   my $num : int = (int)4;
 
-<b>List of Type Conversion in Type Cast</b>
+B<List of Type Conversion in Type Cast>
 
 It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this table is performed, Compile Error occurs.
 
@@ -7262,7 +7265,7 @@ Numeric Widening Type Conversion is a conversion rule applied when converting fr
 =head2 String-to-byte[] Type Conversion
 
 
-<b>String-to-byte[] Type Conversion</b> is the Type Conversion from <a href="#language-type-string">String Type</a> to <a href="#language-type-array-byte">byte[] Type</a>.
+B<String-to-byte[] Type Conversion> is the Type Conversion from <a href="#language-type-string">String Type</a> to <a href="#language-type-array-byte">byte[] Type</a>.
 
 
   # String-to-byte[] Type Conversion
@@ -7276,7 +7279,7 @@ A new byte[] Type object is created and all characters in string are copied to t
 =head2 byte[]-to-String Type Conversion
 
 
-<b>byte[]-to-String Type Conversion</b> is the Type Conversion from <a href="#language-type-array-byte">byte[] Type</a> to <a href="#language-type-string">String Type</a>.
+B<byte[]-to-String Type Conversion> is the Type Conversion from <a href="#language-type-array-byte">byte[] Type</a> to <a href="#language-type-string">String Type</a>.
 
 
   # byte[]-to-String Type Conversion
@@ -7308,47 +7311,47 @@ Unboxing Type Conversion is an operation to convert the value of Numeric Object 
 
 Bool Type Conversion is a conversion applied in the conditional part of if Statement, etc. for True/False Value judgment.
 
-<b>Where Bool Type Conversion takes place</b>
+B<Where Bool Type Conversion takes place>
 
-<b>Inside the if statement braces</b>
+B<Inside the if statement braces>
 
 
   if (CONDITION) {
   
   }
 
-<b>In unless statement brackets</b>
+B<In unless statement brackets>
 
 
   unless (CONDITION) {
   
   }
 
-<b>The second in the parentheses for</b>
+B<The second in the parentheses for>
 
 
   for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
   
   }
 
-<b>in parentheses while</b>
+B<in parentheses while>
 
 
   while (CONDITION) {
   
   }
 
-<b>Left and Right of Logical AND Operator</b>
+B<Left and Right of Logical AND Operator>
 
 
   CONDITION && CONDITION
 
-<b>Left and Right of Logical OR Operator</b>
+B<Left and Right of Logical OR Operator>
 
 
   CONDITION || CONDITION
 
-<b>Right side of Logical NOT Operator</b>
+B<Right side of Logical NOT Operator>
 
 
   !CONDITION
@@ -7375,7 +7378,7 @@ Expression is <a href="#language-type-long">long Type</a>, <a href="#language-ty
 If Expression is Object Type, 0 is returned if it is Undefined Value, 1 otherwise.
 
 
-<b>Bool Type Conversion Examples</b>
+B<Bool Type Conversion Examples>
 
 
   if (1) {
@@ -7466,7 +7469,7 @@ When <a href="#language-exception">Exception</a> is caught by the eval Block, th
 =head2 Exception Variable
 
 
-<b>Exception Variable</b> is a global variable that is represented by "<b>$@</b>"
+B<Exception Variable> is a global variable that is represented by "B<$@>"
 
 
   $@
@@ -7571,7 +7574,7 @@ When Create Callback Object is performed, <a href="#language-class-definition">C
 Method defined by Create Callback Object must be <a href="#language-method-method">Method</a>. It must also be a Method with no name.
 
 
-<b>Create Callback Object Example</b>
+B<Create Callback Object Example>
 
 
 
