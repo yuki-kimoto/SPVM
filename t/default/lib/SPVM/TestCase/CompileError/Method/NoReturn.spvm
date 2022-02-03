@@ -1,8 +1,0 @@
-class TestCase::CompileError::Method::NoReturn {
-  static method main : int () {
-    my $num = 1;
-    if ($num) {
-      return 0;
-    }
-  }
-}

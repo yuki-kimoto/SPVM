@@ -728,7 +728,9 @@ t/default/lib/SPVM/TestCase/CompileError/LogicalOperator/OrNotExpression.spvm
 t/default/lib/SPVM/TestCase/CompileError/Method/Begin.spvm
 t/default/lib/SPVM/TestCase/CompileError/Method/MethodNameContainsUnderScoreTwice.spvm
 t/default/lib/SPVM/TestCase/CompileError/Method/MethodNameStartDigit.spvm
-t/default/lib/SPVM/TestCase/CompileError/Method/NoReturn.spvm
+t/default/lib/SPVM/TestCase/CompileError/Method/Sub/Begin.spvm
+t/default/lib/SPVM/TestCase/CompileError/Method/Sub/SubNameContainsUnderScoreTwice.spvm
+t/default/lib/SPVM/TestCase/CompileError/Method/Sub/SubNameStartDigit.spvm
 t/default/lib/SPVM/TestCase/CompileError/Multiply/LeftIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/Multiply/RightIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/New/Private.spvm

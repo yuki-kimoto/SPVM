@@ -1,5 +1,0 @@
-class TestCase::CompileError::Method::InvalidReturnType {
-  static method main : int () {
-    return undef;
-  }
-}
