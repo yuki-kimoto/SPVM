@@ -13,6 +13,10 @@ Revision history for SPVM
           Sorry. This is big change. If necessary, a defensive copy is needed.
           The reason of this change is that I wanted to avoid slowing the performance of string processing.
           I found this performance problem when I do tests of socket read/write using StringBuffer module.
+        * Remove srand initialization because Fn module depend on Time module.
+          Fn module should be caintan only number, string, and array utilities.
+          Plese call srand manually
+            Fn->srand(Time->time());
 
 0.9500  2021-02-01
         [CHANGE]

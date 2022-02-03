@@ -1,5 +1,4 @@
 class Fn : precompile {
-  use Time;
   use Cloner;
   use EqualityChecker;
   use Comparator::Byte;
@@ -17,10 +16,6 @@ class Fn : precompile {
   use StringList;
   use Unicode;
   use Regex;
-  
-  INIT {
-    &srand(Time->time());
-  }
   
   native static method DBL_MAX : double ();
   native static method DBL_MIN : double ();

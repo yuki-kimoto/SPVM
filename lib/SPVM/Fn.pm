@@ -17,6 +17,7 @@ SPVM::Fn - SPVM Starndard Functions
   my $int32_max = Fn->INT32_MAX();
   my $int64_max = Fn->INT64_MAX();
   
+  Fn->srand(Time->time());
   my $rand = Fn->rand();
 
   # Cut a newline LF
@@ -207,7 +208,13 @@ SPVM::Fn - SPVM Starndard Functions
   my $int32_max = SPVM::Fn->INT32_MAX();
   my $int64_max = SPVM::Fn->INT64_MAX();
 
+=head1 DESCRIPTION
+
+B<Fn> module provides SPVM Starndard Functions. B<Fn> contains number, string and array utilities.
+
 =head1 CLASS METHODS
+
+Class method of B<Fn> module.
 
 =head2 DBL_MAX
 
