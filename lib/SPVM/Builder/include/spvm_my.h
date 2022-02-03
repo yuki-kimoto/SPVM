@@ -12,7 +12,6 @@ struct spvm_my {
   int32_t type_category;
   int32_t type_width;
   int8_t is_tmp;
-  int8_t is_mutable;
 };
 
 SPVM_MY* SPVM_MY_new();

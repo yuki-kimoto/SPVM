@@ -1124,6 +1124,7 @@ qualified_type
   : type
   | MUTABLE type {
     $2->uv.type->is_mutable = 1;
+    $$ = $2;
   }
 
 type

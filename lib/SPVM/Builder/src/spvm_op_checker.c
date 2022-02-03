@@ -1732,12 +1732,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // If dist is string access and const, it is invalid
               if (op_term_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS && op_term_dist->flag & SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING) {
-                int32_t is_string_mutable = 0;
-                SPVM_OP* op_var_invocant = op_term_dist->first;
-                if (op_var_invocant->id == SPVM_OP_C_ID_VAR) {
-                  is_string_mutable = op_var_invocant->uv.var->my->is_mutable;
-                }
-                if(!is_string_mutable) {
+                SPVM_OP* op_array = op_term_dist->first;
+                SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_array);
+                int32_t is_mutable = array_type->is_mutable;
+
+                if(!is_mutable) {
                   SPVM_COMPILER_error(compiler, "Can't set the character of non-mutable string at %s line %d", op_term_dist->file, op_term_dist->line);
                   return;
                 }
@@ -4591,7 +4590,7 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     SPVM_OP* op_type = SPVM_LIST_fetch(op_types, i);
     
     SPVM_TYPE* type = op_type->uv.type;
-    
+
     if (type->is_self) {
       continue;
     }
