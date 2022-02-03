@@ -962,6 +962,7 @@ class TestCase::NativeAPI {
         }
       }
     }
+    return 0;
   }
 
   native static method sum : int ($num1 : int, $num2 : int);

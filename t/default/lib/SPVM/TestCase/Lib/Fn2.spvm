@@ -659,6 +659,7 @@ class TestCase::Lib::Fn2 {
       else {
         return 0;
       }
+      return 0;
     };
 
     {

@@ -182,6 +182,7 @@ class TestCase::Lib::List {
     else {
       return 0;
     }
+    return 0;
   }
 
   static method equals_array : int ($got : oarray, $expected : oarray) {

@@ -36,6 +36,7 @@ class TestCase::BitOperator {
     else {
       return 0;
     }
+    return 0;
   }
   
   static method bit_shift_left_int_overflow : int () {
@@ -50,6 +51,8 @@ class TestCase::BitOperator {
     else {
       return 0;
     }
+    
+    return 0;
   }
 
   static method bit_shift_left_long : int () {
@@ -64,6 +67,7 @@ class TestCase::BitOperator {
     else {
       return 0;
     }
+    return 0;
   }
   
   static method bit_shift_left_long_max : int () {
@@ -78,6 +82,7 @@ class TestCase::BitOperator {
     else {
       return 0;
     }
+    return 0;
   }
   
   static method bit_shift_left_long_overflow : int () {
@@ -92,6 +97,7 @@ class TestCase::BitOperator {
     else {
       return 0;
     }
+    return 0;
   }
   static method bit_and : int () {
     # byte
@@ -244,6 +250,7 @@ class TestCase::BitOperator {
     else {
       return 0;
     }
+    return 0;
   }
   
   static method bit_shift_right_logical_long : int () {
@@ -257,6 +264,7 @@ class TestCase::BitOperator {
     else {
       return 0;
     }
+    return 0;
   }
 
   static method bit_shift_right_int : int () {
@@ -270,6 +278,7 @@ class TestCase::BitOperator {
     else {
       return 0;
     }
+    return 0;
   }
   
   static method bit_shift_right_long : int () {
@@ -283,6 +292,7 @@ class TestCase::BitOperator {
     else {
       return 0;
     }
+    return 0;
   }
   
   # Bit shift left
@@ -298,5 +308,6 @@ class TestCase::BitOperator {
     else {
       return 0;
     }
+    return 0;
   }
 }

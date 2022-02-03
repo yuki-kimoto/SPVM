@@ -2,5 +2,6 @@ class MyExe::Foo::Bar {
   
   static method main : int ($args : string[]) {
     print "MyExe::Foo::Bar\n";
+    return 0;
   }
 }

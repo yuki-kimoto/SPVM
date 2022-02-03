@@ -107,6 +107,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_dec_class_var_access : int () {
@@ -149,6 +150,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_dec_deref : int () {
@@ -198,6 +200,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_dec_field_access : int () {
@@ -242,6 +245,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_dec_array_access_var_index : int () {
@@ -292,6 +296,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_dec_array_access_constant_index : int () {
@@ -341,6 +346,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_dec_var : int () {
@@ -383,6 +389,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_inc_field_access_invocant_not_var : int () {
@@ -477,6 +484,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_inc_class_var_access : int () {
@@ -519,6 +527,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_inc_deref : int () {
@@ -568,6 +577,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_inc_field_access : int () {
@@ -612,6 +622,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_inc_array_access_var_index : int () {
@@ -662,6 +673,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_inc_array_access_constant_index : int () {
@@ -711,6 +723,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_inc_var : int () {
@@ -753,6 +766,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_dec_field_access_invocant_not_var : int () {
@@ -847,6 +861,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_dec_class_var_access : int () {
@@ -889,6 +904,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_dec_deref : int () {
@@ -938,6 +954,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_dec_field_access : int () {
@@ -982,6 +999,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_dec_array_access_var_index : int () {
@@ -1032,6 +1050,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_dec_array_access_constant_index : int () {
@@ -1081,6 +1100,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_dec_var : int () {
@@ -1124,6 +1144,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_inc_field_access_invocant_not_var : int () {
@@ -1218,6 +1239,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_inc_class_var_access : int () {
@@ -1260,6 +1282,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_inc_deref : int () {
@@ -1309,6 +1332,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_inc_field_access : int () {
@@ -1353,6 +1377,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_inc_array_access_var_index : int () {
@@ -1403,6 +1428,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_inc_array_access_constant_index : int () {
@@ -1452,6 +1478,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method pre_inc_var : int () {
@@ -1495,6 +1522,7 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 
   static method post_dec : int () {
@@ -1537,5 +1565,6 @@ class TestCase::Increment {
         }
       }
     }
+    return 0;
   }
 }

@@ -128,34 +128,42 @@ class TestCase::Exception {
   
   static method exception_call_stack : int () {
     TestCase::Exception->exception_die_return_int();
+    return 0;
   }
   
   static method exception_die_return_byte : byte () {
     die "Error";
+    return 0;
   }
   
   static method exception_die_return_short : short () {
     die "Error";
+    return 0;
   }
   
   static method exception_die_return_int : int () {
     die "Error";
+    return 0;
   }
   
   static method exception_die_return_long : long () {
     die "Error";
+    return 0;
   }
   
   static method exception_die_return_float : float () {
     die "Error";
+    return 0;
   }
   
   static method exception_die_return_double : double () {
     die "Error";
+    return 0;
   }
   
   static method exception_die_return_object : TestCase::Minimal () {
     die "Error";
+    return undef;
   }
   
   static method exception_die_return_void : void () {
@@ -177,5 +185,6 @@ class TestCase::Exception {
   # Exception
   static method exception_zero_divide_int : int () {
     1 / 0;
+    return 0;
   }
 }

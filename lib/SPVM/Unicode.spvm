@@ -130,6 +130,8 @@ class Unicode : precompile {
     else {
       return 0;
     }
+    
+    return 0;
   }
 
   private static method _is_utf16_low_surrogate : int ($ch : int) {
@@ -139,5 +141,7 @@ class Unicode : precompile {
     else {
       return 0;
     }
+    
+    return 0;
   }
 }

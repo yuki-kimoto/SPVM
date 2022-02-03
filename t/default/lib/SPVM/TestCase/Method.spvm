@@ -470,9 +470,11 @@ class TestCase::Method {
   }
   static method default_return_value_byte_method : byte () {
     1;
+    return 0;
   }
   static method default_return_value_byte_method_empty : byte () {
     
+    return 0;
   }
   static method default_return_value_short : int () {
     
@@ -486,9 +488,11 @@ class TestCase::Method {
   }
   static method default_return_value_short_method : short () {
     1;
+    return 0;
   }
   static method default_return_value_short_method_empty : short () {
     
+    return 0;
   }
   static method default_return_value_int : int () {
     
@@ -502,9 +506,11 @@ class TestCase::Method {
   }
   static method default_return_value_int_method : int () {
     1;
+    return 0;
   }
   static method default_return_value_int_method_empty : int () {
     
+    return 0;
   }
   static method default_return_value_long : int () {
     
@@ -518,9 +524,11 @@ class TestCase::Method {
   }
   static method default_return_value_long_method : long () {
     1;
+    return 0;
   }
   static method default_return_value_long_method_empty : long () {
     
+    return 0;
   }
   static method default_return_value_float : int () {
     
@@ -534,9 +542,11 @@ class TestCase::Method {
   }
   static method default_return_value_float_method : float () {
     1;
+    return 0;
   }
   static method default_return_value_float_method_empty : float () {
     
+    return 0;
   }
   static method default_return_value_double : int () {
     
@@ -550,9 +560,11 @@ class TestCase::Method {
   }
   static method default_return_value_double_method : double () {
     1;
+    return 0;
   }
   static method default_return_value_double_method_empty : double () {
     
+    return 0;
   }
   static method default_return_value_object : int () {
     
@@ -566,9 +578,11 @@ class TestCase::Method {
   }
   static method default_return_value_object_method : TestCase::Minimal () {
     1;
+    return undef;
   }
   static method default_return_value_object_method_empty : TestCase::Minimal () {
     
+    return undef;
   }
   
   # Call void function
@@ -887,6 +901,7 @@ class TestCase::Method {
   static method call_spvm_method_assign : int () {
     my $m = TestCase::Minimal->new();
     $m = TestCase::Minimal->new();
+    return 0;
   }
   
   static method call_spvm_method_undef : int ($value : TestCase::Minimal) {

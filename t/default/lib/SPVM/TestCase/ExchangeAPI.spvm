@@ -328,60 +328,72 @@ class TestCase::ExchangeAPI {
     $point->{x} = (byte)($point->{x} + 1);
     $point->{y} = (byte)($point->{y} + 1);
     $point->{z} = (byte)($point->{z} + 1);
+    return 0;
   }
 
   static method call_spvm_method_multi_numeric_ref_arg_short : int ($point : TestCase::Point_3s*) {
     $point->{x} = (short)($point->{x} + 1);
     $point->{y} = (short)($point->{y} + 1);
     $point->{z} = (short)($point->{z} + 1);
+    return 0;
   }
 
   static method call_spvm_method_multi_numeric_ref_arg_int : int ($point : TestCase::Point_3i*) {
     $point->{x} = (int)($point->{x} + 1);
     $point->{y} = (int)($point->{y} + 1);
     $point->{z} = (int)($point->{z} + 1);
+    return 0;
   }
 
   static method call_spvm_method_multi_numeric_ref_arg_long : int ($point : TestCase::Point_3l*) {
     $point->{x} = (long)($point->{x} + 1);
     $point->{y} = (long)($point->{y} + 1);
     $point->{z} = (long)($point->{z} + 1);
+    return 0;
   }
 
   static method call_spvm_method_multi_numeric_ref_arg_float : int ($point : TestCase::Point_3f*) {
     $point->{x} = (float)($point->{x} + 1);
     $point->{y} = (float)($point->{y} + 1);
     $point->{z} = (float)($point->{z} + 1);
+    return 0;
   }
 
   static method call_spvm_method_multi_numeric_ref_arg_double : int ($point : TestCase::Point_3d*) {
     $point->{x} = (double)($point->{x} + 1);
     $point->{y} = (double)($point->{y} + 1);
     $point->{z} = (double)($point->{z} + 1);
+    return 0;
   }
   
   static method call_spvm_method_numeric_ref_arg_byte : int ($byte_val : byte*) {
     $$byte_val = (byte)($$byte_val + 1);
+    return 0;
   }
   
   static method call_spvm_method_numeric_ref_arg_short : int ($short_val : short*) {
     $$short_val = (short)($$short_val + 1);
+    return 0;
   }
   
   static method call_spvm_method_numeric_ref_arg_int : int ($int_val : int*) {
     $$int_val = $$int_val + 1;
+    return 0;
   }
 
   static method call_spvm_method_numeric_ref_arg_long : int ($long_val : long*) {
     $$long_val = $$long_val + 1;
+    return 0;
   }
 
   static method call_spvm_method_numeric_ref_arg_float : int ($float_val : float*) {
     $$float_val = $$float_val + 1;
+    return 0;
   }
 
   static method call_spvm_method_numeric_ref_arg_double : int ($double_val : double*) {
     $$double_val = $$double_val + 1;
+    return 0;
   }
   
   static method spvm_object_set_object : int ($obj : TestCase) {

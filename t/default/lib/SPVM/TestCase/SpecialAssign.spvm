@@ -44,6 +44,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_right_shift_var : int () {
@@ -74,6 +75,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_left_shift_var : int () {
@@ -104,6 +106,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_bit_xor_var : int () {
@@ -134,6 +137,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_bit_or_var : int () {
@@ -164,6 +168,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_bit_and_var : int () {
@@ -192,6 +197,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_remainder_var : int () {
@@ -224,6 +230,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_divide_var : int () {
@@ -266,6 +273,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_multiply_var : int () {
@@ -308,6 +316,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_subtract_var : int () {
@@ -350,6 +359,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_add_field_access_invocant_not_var : int () {
@@ -444,6 +454,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_add_class_var_access : int () {
@@ -486,6 +497,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_add_deref : int () {
@@ -535,6 +547,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_add_field_access : int () {
@@ -579,6 +592,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_add_array_access_var_index : int () {
@@ -629,6 +643,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_add_array_access_constant_index : int () {
@@ -678,6 +693,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
 
   static method special_assign_add_var : int () {
@@ -720,6 +736,7 @@ class TestCase::SpecialAssign {
         }
       }
     }
+    return 0;
   }
   
   # Concat

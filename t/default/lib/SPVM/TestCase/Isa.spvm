@@ -91,6 +91,7 @@ class TestCase::Isa {
     
     my $comparator = method : int ($object1 : object, $object2 : object) {
       
+      return 0;
     };
     if ($comparator isa Comparator::Object) {
       my $object : object = $comparator;

@@ -220,6 +220,8 @@ class TestCase::Array {
     if ($nums->[(byte)2] == 4) {
       return 1;
     }
+    
+    return 0;
   }
   static method array_set_and_get_array_element_first : int () {
     

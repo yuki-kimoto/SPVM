@@ -1395,6 +1395,7 @@ class TestCase::Lib::Fn1 {
         else {
           return 0;
         }
+        return 0;
       });
       
       unless ($is_equals) {

@@ -71,6 +71,7 @@ class TestCase::Object {
   static method destructor_call : int ($minimal: TestCase::Minimal) {
     my $dest = TestCase::Destructor->new();
     $dest->{minimal} = $minimal;
+    return 0;
   }
   
   # object field is initialized zero
