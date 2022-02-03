@@ -7,6 +7,7 @@ Revision history for SPVM
         * Improve a assignment compilation error messege. "argument 2" -> "2th argument".
         * Use native api "get_chars" more instead of "get_elems_byte" in the right places.
         * Add mutable descriptor to local variable. The charater of the string can be changed.
+        * Add mutable descriptor to convert operator.
 
 0.9500  2021-02-01
         [CHANGE]

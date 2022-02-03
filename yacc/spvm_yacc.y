@@ -998,7 +998,12 @@ convert
   : '(' type ')' expression %prec CONVERT
     {
       SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, $2->file, $2->line);
-      $$ = SPVM_OP_build_convert(compiler, op_convert, $2, $4);
+      $$ = SPVM_OP_build_convert(compiler, op_convert, $2, $4, NULL);
+    }
+  | '(' descriptors type ')' expression %prec CONVERT
+    {
+      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, $3->file, $3->line);
+      $$ = SPVM_OP_build_convert(compiler, op_convert, $3, $5, $2);
     }
 
 array_access

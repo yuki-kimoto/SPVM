@@ -1171,7 +1171,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
           SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
           SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_term_element->file, op_term_element->line);
           SPVM_OP* op_dist_type = SPVM_OP_new_op_any_object_type(compiler, op_term_element->file, op_term_element->line);
-          SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_term_element);
+          SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_term_element, NULL);
           SPVM_OP_replace_op(compiler, op_stab, op_convert);
         }
         element_index++;
@@ -1618,14 +1618,38 @@ SPVM_OP* SPVM_OP_build_isweak_field(SPVM_COMPILER* compiler, SPVM_OP* op_isweak,
   return op_assign;
 }
 
-SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPVM_OP* op_type, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPVM_OP* op_type, SPVM_OP* op_term, SPVM_OP* op_descriptors) {
   
   SPVM_OP_insert_child(compiler, op_convert, op_convert->last, op_term);
   SPVM_OP_insert_child(compiler, op_convert, op_convert->last, op_type);
   
   op_convert->file = op_type->file;
   op_convert->line = op_type->line;
-  
+
+  // Descriptors
+  int32_t access_control_descriptors_count = 0;
+  if (op_descriptors) {
+    if (op_descriptors->id != SPVM_OP_C_ID_LIST) {
+      SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_descriptors->file, op_descriptors->line);
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, op_descriptors);
+      op_descriptors = op_list;
+    }
+    SPVM_OP* op_descriptor = op_descriptors->first;
+    while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
+      SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
+      
+      switch (descriptor->id) {
+        case SPVM_DESCRIPTOR_C_ID_MUTABLE: {
+          op_convert->flag |= SPVM_OP_C_FLAG_CONVERT_IS_MUTABLE;
+          break;
+        }
+        default: {
+          SPVM_COMPILER_error(compiler, "Invalid convert descriptor \"%s\" at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+        }
+      }
+    }
+  }
+
   return op_convert;
 }
 
