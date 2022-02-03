@@ -1141,8 +1141,6 @@ POD ends from the line beginning with "=cut", and ending with L<"Line Terminator
 
 B<POD Example:>
 
-=end html
-
   =pod
 
   Multi-Line
@@ -1156,8 +1154,6 @@ B<POD Example:>
   Comment
 
   =cut
-
-=begin html
 
 POD has no meaning in the program execution.
 
@@ -3584,7 +3580,7 @@ B<Get Field Value Expression> is a Expression to get L<"Field"> Value.
   INVOCANT_EXPRESSION->{FIELD_NAME}
 
 
-Invocant Expression is L<"Class Type">. If Expression is L<"Multi Numeric Type"> Value, The Field Access is L<"Get Multi Numeric Field Value">. If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is ,L<", otherwise Compile Error occurs.
+Invocant Expression is L<"Class Type">. If Expression is L<"Multi Numeric Type"> Value, The Field Access is L<"Get Multi Numeric Field Value">. If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise Compile Error occurs.
 
 If the Field Name does not found in the <a href="#language-class">Class">, Compile Error occurs
 
@@ -5289,7 +5285,7 @@ isweak Operator is an Operator that checks whether Field is</a>L<"Weaken Referen
 
   isweak VARIABLE->{FIELD_NAME};
 
-The Type of object Expression must be</a>L<"Class Type.< otherwise Compile Error occurs.
+The Type of object Expression must be L<"Class Type">. otherwise Compile Error occurs.
 
 Field Name must be a existed Field Name, otherwise Compile Error occurs.
 
@@ -5371,10 +5367,10 @@ Operator Precidence is the following street. The lower you go, the higher your p
       Non Associative
     </td>
     <td>
-      Numerical Equivalence Operator"==" <br>
+      Numerical Equivalence Operator "==" <br>
       Numeric inequality Operator "!=" <br>
       String Equivalent Operator "eq"<br>
-      String Inequality Operator"ne"<br>
+      String Inequality Operator "ne"<br>
     </td>
   </tr>
   <tr>
@@ -5382,10 +5378,10 @@ Operator Precidence is the following street. The lower you go, the higher your p
       Non Associative
     </td>
     <td>
-      Numerical value operator ">" <br>
-      Number less Operator"""<br>
-      Numerical equivalent Operator ">=" <br>
-      Numerical or equivalent Operator "<="<br>
+      Numerical value operator "&gt;" <br>
+      Number less Operator "&lt;"<br>
+      Numerical equivalent Operator "&gt;=" <br>
+      Numerical or equivalent Operator "&lt;="<br>
       String Large Operator"gt"<br>
       String-large or equivalent Operator"ge"<br>
       String less Operator"lt"<br>
@@ -5398,9 +5394,9 @@ Operator Precidence is the following street. The lower you go, the higher your p
       Left Join 
     </td>
     <td>
-      Left Shift Operator"<<br>
-      Signed Right Shift Operator ">>" <br>
-      Unsigned Right Shift Operator ">>>"
+      Left Shift Operator "&lt;"<br>
+      Signed Right Shift Operator "&gt;&gt;" <br>
+      Unsigned Right Shift Operator "&gt;&gt;&gt;"
     </td>
   </tr>
   <tr>
