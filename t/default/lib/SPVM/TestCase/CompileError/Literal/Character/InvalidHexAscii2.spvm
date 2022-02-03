@@ -1,5 +1,5 @@
 class TestCase::CompileError::Literal::Character::InvalidHexAscii2 {
-  static method main : void () {
+  static method main : int () {
     '\x3g';
   }
 }

@@ -1,7 +1,7 @@
 class TestCase::CompileError::Convert::ConvertToRef {
   use TestCase::Minimal;
 
-  static method main : void () {
+  static method main : int () {
     (&int)new TestCase::Minimal;
   }
 }

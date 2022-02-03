@@ -1,6 +1,6 @@
 class TestCase::CompileError::Divide::LeftIsNotNumeric {
   use TestCase::Minimal;
-  static method main : void () {
+  static method main : int () {
     my $minimal = TestCase::Minimal->new;
     $minimal / 1;
   }

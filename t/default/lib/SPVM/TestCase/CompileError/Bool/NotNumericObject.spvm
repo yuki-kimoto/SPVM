@@ -1,6 +1,6 @@
 class TestCase::CompileError::Bool::NotNumericObject {
 
-  static method main : void () {
+  static method main : int () {
     my $num = 1;
     my $num_ref = \$num;
     

@@ -1,6 +1,6 @@
 class TestCase::CompileError::Assign::StringToBytArray {
 
-  static method main : void () {
+  static method main : int () {
     my $str : byte[] = "abc";
   }
 }

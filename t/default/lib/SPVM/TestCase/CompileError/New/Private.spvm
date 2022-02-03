@@ -1,7 +1,7 @@
 class TestCase::CompileError::New::Private {
   use TestCase::Private;
 
-  static method main : void () {
+  static method main : int () {
     new TestCase::Private;
   }
 }

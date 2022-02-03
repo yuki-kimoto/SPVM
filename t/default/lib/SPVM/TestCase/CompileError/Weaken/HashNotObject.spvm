@@ -1,7 +1,7 @@
 class TestCase::CompileError::Weaken::HashNotObject {
   use TestCase::Minimal;
   
-  static method main : void () {
+  static method main : int () {
     my $num = new TestCase::Minimal;
     weaken $num->{x};
   }
