@@ -1,5 +1,7 @@
 class TestCase::Private : private {
   static method new : TestCase::Private () {
     new TestCase::Private;
+    
+    return undef;
   }
 }

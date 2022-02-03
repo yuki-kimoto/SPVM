@@ -1,7 +1,7 @@
 class TestCase::CompileError::Field::Private {
   use TestCase;
   
-  static method main : int () {
+  static method main : void () {
     my $test_case = new TestCase;
     $test_case->{private_field};
   }

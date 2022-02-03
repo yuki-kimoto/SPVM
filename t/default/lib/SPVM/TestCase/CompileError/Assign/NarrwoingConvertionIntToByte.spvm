@@ -1,5 +1,5 @@
 class TestCase::CompileError::Assign::NarrwoingConvertionIntToByte {
-  static method main : int () {
+  static method main : void () {
     my $num : byte = 128;
   }
 }

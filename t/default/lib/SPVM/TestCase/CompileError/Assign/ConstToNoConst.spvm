@@ -1,6 +1,6 @@
 class TestCase::CompileError::Assign::ConstToNoConst {
 
-  static method main : int () {
+  static method main : void () {
     {
       my $str1_const : const byte[] = new byte[3];
       my $str2 : byte[] = $str1_const;

@@ -1,5 +1,5 @@
 class TestCase::CompileError::TypeCantBeDetectedUndef {
-  static method main : int () {
+  static method main : void () {
     my $value = undef;
   }
 }

@@ -1,7 +1,7 @@
 class TestCase::CompileError::Weaken::ArrayNotObject {
   use TestCase::Minimal;
   
-  static method main : int () {
+  static method main : void () {
     my $nums = new int[1];
     weaken $nums->[0];
   }

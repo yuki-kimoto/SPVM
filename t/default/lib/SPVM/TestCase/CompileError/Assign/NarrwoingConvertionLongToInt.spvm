@@ -1,5 +1,5 @@
 class TestCase::CompileError::Assign::NarrwoingConvertionLongToInt {
-  static method main : int () {
+  static method main : void () {
     my $num : int = 2147483648L;
   }
 }

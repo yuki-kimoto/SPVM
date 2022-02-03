@@ -2,7 +2,7 @@ class TestCase::CompileError::Convert::ConvertFromValueType {
   use TestCase::Minimal;
   use Complex_2d;
 
-  static method main : int () {
+  static method main : void () {
     my $z : Complex_2d;
     (TestCase::Minimal)$z;
   }

@@ -1,6 +1,6 @@
 class TestCase::CompileError::UnaryPlus::NotNumeric {
   use TestCase::Minimal;
-  static method main : int () {
+  static method main : void () {
     +TestCase::Minimal->new;
   }
 }

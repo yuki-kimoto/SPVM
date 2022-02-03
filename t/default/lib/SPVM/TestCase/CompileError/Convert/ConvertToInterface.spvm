@@ -3,7 +3,7 @@ class TestCase::CompileError::Convert::ConvertToCallback {
   use TestCase::Callback::Callback;
   use TestCase::Callback::ImplementCallback1;
 
-  static method main : int () {
+  static method main : void () {
     (TestCase::Callback::Callback)new TestCase::Callback::ImplementCallback1;
   }
 }

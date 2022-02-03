@@ -1,6 +1,6 @@
 class TestCase::CompileError::Subtract::LeftIsNotNumeric {
   use TestCase::Minimal;
-  static method main : int () {
+  static method main : void () {
     my $minimal = TestCase::Minimal->new;
     $minimal - 1;
   }

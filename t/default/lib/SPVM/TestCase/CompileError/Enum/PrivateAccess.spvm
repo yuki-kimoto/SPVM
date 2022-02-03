@@ -1,6 +1,6 @@
 class TestCase::CompileError::Enum::PrivateAccess {
   use TestCase::Enum;
-  static method main : int () {
+  static method main : void () {
     TestCase::Enum->PRIVATE_VALUE;
   }
 }

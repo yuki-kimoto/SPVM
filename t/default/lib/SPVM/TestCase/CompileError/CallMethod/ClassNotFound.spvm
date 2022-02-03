@@ -1,5 +1,5 @@
 class TestCase::CompileError::CallMethod::ClassNotFound {
-  static method main : int () {
+  static method main : void () {
     NotFoundClass->foo();
   }
 }
