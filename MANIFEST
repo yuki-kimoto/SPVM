@@ -507,6 +507,10 @@ lib/SPVM/List.spvm
 lib/SPVM/Long.pm
 lib/SPVM/LongList.pm
 lib/SPVM/LongList.spvm
+lib/SPVM/Native/Fn.c
+lib/SPVM/Native/Fn.config
+lib/SPVM/Native/Fn.pm
+lib/SPVM/Native/Fn.spvm
 lib/SPVM/Regex.pm
 lib/SPVM/Regex.spvm
 lib/SPVM/Regex/Pattern.pm
@@ -735,6 +739,7 @@ t/default/lib/SPVM/TestCase/CompileError/OArray/AssignNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/OArray/AssignNumericArray.spvm
 t/default/lib/SPVM/TestCase/CompileError/Remainder/LeftIsNotIntegral.spvm
 t/default/lib/SPVM/TestCase/CompileError/Remainder/RightIsNotIntegral.spvm
+t/default/lib/SPVM/TestCase/CompileError/String/AssignNonMutableToMutable.spvm
 t/default/lib/SPVM/TestCase/CompileError/String/CharacterAssign.spvm
 t/default/lib/SPVM/TestCase/CompileError/Sub/Begin.spvm
 t/default/lib/SPVM/TestCase/CompileError/Sub/SubNameContainsUnderScoreTwice.spvm

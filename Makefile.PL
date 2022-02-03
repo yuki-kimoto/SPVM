@@ -175,7 +175,7 @@ sub MY::postamble {
   my $make_rule = '';
   
   # Compile native and precompile codes of standard modules
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn');
+  $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Fn');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Hash');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Time');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Unicode');

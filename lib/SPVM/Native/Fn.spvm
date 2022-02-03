@@ -1,0 +1,28 @@
+class Native::Fn {
+  native static method DBL_MAX : double ();
+  native static method DBL_MIN : double ();
+  native static method FLT_MAX : float ();
+  native static method FLT_MIN : float();
+  native static method RAND_MAX : int ();
+  native static method crand : int ();
+  native static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
+  native static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
+  native static method memcpy_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
+  native static method memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
+  native static method memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
+  native static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
+  native static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
+  native static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
+  native static method memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
+  native static method memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
+  native static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
+  native static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
+  native static method new_array_proto : oarray ($proto_array : oarray, $length : int);
+  native static method srand : void ($seed : long);
+  native static method to_double : double ($string : string);
+  native static method to_float : float ($string : string);
+  native static method to_int_with_base : int ($string : string, $digit : int);
+  native static method to_long_with_base : long ($string : string, $digit : int);
+  native static method _snsprintf_double : string ($format : string, $value : double);
+  native static method _long_to_unsigned_digits : void ($value : long, $out_digits : byte[], $out_digit_count : int*);
+}

@@ -17,15 +17,16 @@ class Fn : precompile {
   use StringList;
   use Unicode;
   use Regex;
+  use Native::Fn;
   
   INIT {
     &srand(Time->time());
   }
   
-  native static method DBL_MAX : double ();
-  native static method DBL_MIN : double ();
-  native static method FLT_MAX : float ();
-  native static method FLT_MIN : float();
+  static method DBL_MAX : double () { return Native::Fn->DBL_MAX; }
+  static method DBL_MIN : double () { return Native::Fn->DBL_MIN; }
+  static method FLT_MAX : float () { return Native::Fn->FLT_MAX; }
+  static method FLT_MIN : float() { return Native::Fn->FLT_MIN; }
   static method INT16_MAX : short () { return 32767; }
   static method INT16_MIN : short () { return -32768; }
   static method INT32_MAX : int () { return 2147483647; }
@@ -34,7 +35,7 @@ class Fn : precompile {
   static method INT64_MIN : long () { return -9223372036854775808L; }
   static method INT8_MAX : byte () { return 127; }
   static method INT8_MIN : byte () { return -128; }
-  native static method RAND_MAX : int ();
+  static method RAND_MAX : int () { return Native::Fn->RAND_MAX; }
   static method UINT16_MAX : short () { return (short)0xFFFF; }
   static method UINT32_MAX : int () { return 0xFFFFFFFF; }
   static method UINT64_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
@@ -463,7 +464,7 @@ class Fn : precompile {
     return (string)$bytes;
   }
 
-  native static method crand : int ();
+  static method crand : int () { return Native::Fn->crand; }
 
   static method dump_array_byte : string ($nums : byte[]) {
     
@@ -1274,21 +1275,46 @@ class Fn : precompile {
     return (string)$new_string;
   }
 
-  native static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
-  native static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
-  native static method memcpy_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
-  native static method memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
-  native static method memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
-  native static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
+  static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int) {
+    Native::Fn->memcpy_byte($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int) {
+    Native::Fn->memcpy_double($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memcpy_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int) {
+    Native::Fn->memcpy_float($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int) {
+    Native::Fn->memcpy_int($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int) {
+    Native::Fn->memcpy_long($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int) {
+    Native::Fn->memcpy_short($dest, $dest_offset, $source, $source_offset, $length);
+  }
 
-  native static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
-  native static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
-  native static method memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
-  native static method memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
-  native static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
-  native static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
-
-  native static method new_array_proto : oarray ($proto_array : oarray, $length : int);
+  static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int) {
+    Native::Fn->memmove_byte($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int) {
+    Native::Fn->memmove_double($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int) {
+    Native::Fn->memmove_float($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int) {
+    Native::Fn->memmove_int($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int) {
+    Native::Fn->memmove_long($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int) {
+    Native::Fn->memmove_short($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method new_array_proto : oarray ($proto_array : oarray, $length : int) {
+    return Native::Fn->new_array_proto($proto_array, $length);
+  }
 
   static method powi : int ($x : int, $y : int) {
     my $p = 1;
@@ -1983,7 +2009,7 @@ class Fn : precompile {
     return $result;
   }
 
-  native static method srand : void ($seed : long);
+  static method srand : void ($seed : long) { Native::Fn->srand($seed); }
 
   static method substr : string ($string : string, $offset : int, $length : int) {
 
@@ -2016,20 +2042,20 @@ class Fn : precompile {
     return (string)$slice;
   }
 
-  native static method to_double : double ($string : string);
+  static method to_double : double ($string : string) { return Native::Fn->to_double($string); }
 
-  native static method to_float : float ($string : string);
+  static method to_float : float ($string : string) { return Native::Fn->to_float($string); }
 
   static method to_int : int ($string : string) {
     return Fn->to_int_with_base($string, 10);
   }
   
-  native static method to_int_with_base : int ($string : string, $digit : int);
+  static method to_int_with_base : int ($string : string, $digit : int) { return Native::Fn->to_int_with_base($string, $digit); }
   
   static method to_long : long ($string : string) {
     return Fn->to_long_with_base($string, 10);
   }
-  native static method to_long_with_base : long ($string : string, $digit : int);
+  static method to_long_with_base : long ($string : string, $digit : int) { return Native::Fn->to_long_with_base($string, $digit); }
 
   static method to_lower : int ($code_point : int) {
 
@@ -2139,9 +2165,9 @@ class Fn : precompile {
   }
 
 
-  native static method _snsprintf_double : string ($format : string, $value : double);
+  static method _snsprintf_double : string ($format : string, $value : double) { return Native::Fn->_snsprintf_double($format, $value); }
 
-  native static method _long_to_unsigned_digits : void ($value : long, $out_digits : byte[], $out_digit_count : int*);
+  static method _long_to_unsigned_digits : void ($value : long, $out_digits : byte[], $out_digit_count : int*) { Native::Fn->_long_to_unsigned_digits($value, $out_digits, $out_digit_count); }
 
   private static method _sort_byte_merge : void($a : byte[], $b : byte[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Byte) {
     my $i = $left;
