@@ -1114,10 +1114,6 @@ my_var
     {
       $$ = SPVM_OP_build_my(compiler, $1, $2, NULL, NULL);
     }
-  | MY var ':' descriptors
-    {
-      $$ = SPVM_OP_build_my(compiler, $1, $2, NULL, $4);
-    }
 
 var
   : VAR_NAME
