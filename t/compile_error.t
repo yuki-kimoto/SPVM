@@ -449,6 +449,13 @@ sub print_error_messages {
     ok($success == 0);
     print_error_messages($builder);
   }
+
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::String::AssignNonMutableToMutable', __FILE__, __LINE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
 }
 # Weaken
 {

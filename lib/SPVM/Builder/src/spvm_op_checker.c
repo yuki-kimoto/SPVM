@@ -4553,6 +4553,11 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     SPVM_COMPILER_error(compiler, "Can't assign to empty type in %s, at %s line %d", place, file, line);
     return NULL;
   }
+  
+  // Mutable check
+  if(dist_type->is_mutable && !src_type->is_mutable) {
+    SPVM_COMPILER_error(compiler, "Can't assign a non-mutable to a mutable type in %s, at %s line %d", place, file, line);
+  }
     
   if (!can_assign) {
     if (narrowing_convertion_error) {

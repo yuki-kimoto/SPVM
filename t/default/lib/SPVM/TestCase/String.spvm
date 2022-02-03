@@ -19,7 +19,7 @@ class TestCase::String {
     
     # Set the character
     {
-      my $string : mutable string = "abc";
+      my $string : mutable string = (mutable string)"abc";
       $string->[0] = 'd';
       $string->[1] = 'e';
       $string->[2] = 'f';
