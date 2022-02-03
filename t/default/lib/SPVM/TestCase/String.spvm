@@ -16,7 +16,8 @@ class TestCase::String {
         return 0;
       }
     }
-    
+
+=pod
     # Set the character
     {
       my $string : mutable string = "abc";
@@ -36,7 +37,8 @@ class TestCase::String {
         return 0;
       }
     }
-    
+=cut
+
     return 1;
   }
   

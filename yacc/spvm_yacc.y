@@ -43,7 +43,7 @@
 %type <opval> my_var var
 %type <opval> expression opt_expressions expressions opt_expression case_statements
 %type <opval> field_name method_name
-%type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
+%type <opval> type qualified_type basic_type array_type array_type_with_length ref_type  qualified_type_or_void
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
 %left <opval> LOGICAL_OR
@@ -274,41 +274,41 @@ enumeration_value
     }
 
 our
-  : OUR VAR_NAME ':' opt_descriptors type
+  : OUR VAR_NAME ':' opt_descriptors qualified_type
     {
       $$ = SPVM_OP_build_our(compiler, $1, $2, $4, $5);
     }
 
 has
-  : HAS field_name ':' opt_descriptors type ';'
+  : HAS field_name ':' opt_descriptors qualified_type ';'
     {
       $$ = SPVM_OP_build_has(compiler, $1, $2, $4, $5);
     }
 
 method
-  : opt_descriptors METHOD method_name ':' type_or_void '(' opt_args opt_vaarg')' block
+  : opt_descriptors METHOD method_name ':' qualified_type_or_void '(' opt_args opt_vaarg')' block
      {
        int32_t can_precompile = 1;
        $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, $10, NULL, $8, 0, 0, can_precompile);
      }
-  | opt_descriptors METHOD method_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
+  | opt_descriptors METHOD method_name ':' qualified_type_or_void '(' opt_args opt_vaarg')' ';'
      {
        int32_t can_precompile = 0;
        $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8, 0, 0, can_precompile);
      }
-  | opt_descriptors METHOD ':' type_or_void '(' opt_args opt_vaarg')' block
+  | opt_descriptors METHOD ':' qualified_type_or_void '(' opt_args opt_vaarg')' block
      {
        int32_t can_precompile = 1;
        $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0, 0, can_precompile);
      }
-  | opt_descriptors METHOD ':' type_or_void '(' opt_args opt_vaarg ')' ';'
+  | opt_descriptors METHOD ':' qualified_type_or_void '(' opt_args opt_vaarg ')' ';'
      {
        int32_t can_precompile = 0;
        $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, NULL, NULL, $7, 0, 0, can_precompile);
      }
 
 anon_method
-  : opt_descriptors METHOD ':' type_or_void '(' opt_args opt_vaarg')' block
+  : opt_descriptors METHOD ':' qualified_type_or_void '(' opt_args opt_vaarg')' block
      {
        int32_t is_init = 0;
        int32_t is_anon = 1;
@@ -316,7 +316,7 @@ anon_method
        
        $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, is_init, is_anon, can_precompile);
      }
-  | '[' args ']' opt_descriptors METHOD ':' type_or_void '(' opt_args opt_vaarg')' block
+  | '[' args ']' opt_descriptors METHOD ':' qualified_type_or_void '(' opt_args opt_vaarg')' block
      {
        SPVM_OP* op_list_args;
        if ($2->id == SPVM_OP_C_ID_LIST) {
@@ -369,9 +369,9 @@ args
   | arg
 
 arg
-  : var ':' opt_descriptors type
+  : var ':' qualified_type
     {
-      $$ = SPVM_OP_build_arg(compiler, $1, $4, $3);
+      $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL);
     }
 
 opt_vaarg
@@ -909,7 +909,6 @@ isa
     {
       $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
     }
-
     
 logical_op
   : expression_or_logical_op LOGICAL_OR expression_or_logical_op
@@ -995,15 +994,10 @@ array_init
     }
 
 convert
-  : '(' type ')' expression %prec CONVERT
+  : '(' qualified_type ')' expression %prec CONVERT
     {
       SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, $2->file, $2->line);
       $$ = SPVM_OP_build_convert(compiler, op_convert, $2, $4, NULL);
-    }
-  | '(' descriptors type ')' expression %prec CONVERT
-    {
-      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, $3->file, $3->line);
-      $$ = SPVM_OP_build_convert(compiler, op_convert, $3, $5, $2);
     }
 
 array_access
@@ -1111,9 +1105,9 @@ array_length
     }
 
 my_var
-  : MY var ':' opt_descriptors type
+  : MY var ':' qualified_type
     {
-      $$ = SPVM_OP_build_my(compiler, $1, $2, $5, $4);
+      $$ = SPVM_OP_build_my(compiler, $1, $2, $4, NULL);
     }
   | MY var
     {
@@ -1125,6 +1119,9 @@ var
     {
       $$ = SPVM_OP_build_var(compiler, $1);
     }
+
+qualified_type
+  : type
 
 type
   : basic_type
@@ -1211,8 +1208,8 @@ array_type_with_length
       $$ = SPVM_OP_build_array_type(compiler, $1, $3);
     }
 
-type_or_void
-  : type
+qualified_type_or_void
+  : qualified_type
   | VOID
     {
       $$ = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
