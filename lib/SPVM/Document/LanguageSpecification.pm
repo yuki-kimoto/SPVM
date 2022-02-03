@@ -27,6 +27,8 @@ This means that SPVM compiler and runtime must be C99 compliant.
 
 the following SPVM Types are exactly same as the following C99 Types:
 
+=begin html
+
 <table>
   <tr>
     <th>
@@ -139,6 +141,8 @@ the following SPVM Types are exactly same as the following C99 Types:
     </td>
   </tr>
 </table>
+
+=end html
 
 
 =head1 Tokenizing
@@ -820,6 +824,8 @@ method_names
 
 The following is a correspondence table between tokens in yacc/bison and keywords and operators in SPVM.
 
+=begin html
+
 <table>
   <tr>
     <th>Tokens in yacc/bison</th><th>Keywords and Operators in SPVM</th>
@@ -1111,6 +1117,8 @@ The following is a correspondence table between tokens in yacc/bison and keyword
   </tr>
 </table>
 
+=end html
+
 
 =head1 Comment
 
@@ -1235,6 +1243,8 @@ If more than one class with the same name is defined, Compile Error occurs.
 
 The descriptions of Class Descriptors.
 
+=begin html
+
 <table>
   <tr>
     <th>
@@ -1293,6 +1303,8 @@ The descriptions of Class Descriptors.
     </td>
   </tr>
 </table>
+
+=end html
 
 If both "public" and "private" are specifed, Compile Error occurs.
 
@@ -1537,6 +1549,8 @@ our CLASS_VARIABLE_NAME : DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN TYPE;
 
 List of Class Variable Descriptors.
 
+=begin html
+
 <table>
   <tr>
     <th>
@@ -1587,6 +1601,8 @@ List of Class Variable Descriptors.
     </td>
   </tr>
 </table>
+
+=end html
 
 If both "public" and "private" Descriptors are specified, Compile Error occurs.
 
@@ -1683,6 +1699,8 @@ has FIELD_NAME : DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN TYPE_NAME;
 
 List of Field Descriptors.
 
+=begin html
+
 <table>
   <tr>
     <th>
@@ -1733,6 +1751,8 @@ List of Field Descriptors.
     </td>
   </tr>
 </table>
+
+=end html
 
 If both "public" and "private" Descriptors are specified, Compile Error occurs.
 
@@ -1904,6 +1924,8 @@ sprintf("aaa %p", (object)[(object)1, 2.0]);
 
 List of Method Descriptor.
 
+=begin html
+
 <table>
   <tr>
     <th>
@@ -1922,6 +1944,8 @@ List of Method Descriptor.
     </td>
   </tr>
 </table>
+
+=end html
 
 
 =head2 Native Method
@@ -2121,6 +2145,8 @@ private enum {
 
 List of Enumeration Descriptor
 
+=begin html
+
 <table>
   <tr>
     <th>
@@ -2147,6 +2173,8 @@ List of Enumeration Descriptor
     </td>
   </tr>
 </table>
+
+=end html
 
 If both "public" and "private" Descriptors are specified, Compile Error occurs.
 
@@ -2790,6 +2818,8 @@ Charater Literal Type is "<a href="#language-type-byte">byte Type</a>"
   </tr>
 </table>
 
+=end html
+
 <b>Charater Literal Example:</b>
 
 <b>Charater Literal</b> represents one character of ASCII code.
@@ -2934,6 +2964,8 @@ The content of String Literal is zero or more ASCII printable Characters or Esca
     </td>
   </tr>
 </table>
+
+=end html
 
 If the espape characters which is not included avobe is used, a compiler error occurs.<br>
 
@@ -3159,6 +3191,8 @@ See <a href="#language-mulnum-access">Multi Numeric Type Field Access</a> to get
 
 List of Multi Numeric Type Suffix.
 
+=begin html
+
 <table>
   <tr>
     <th>
@@ -3217,6 +3251,8 @@ List of Multi Numeric Type Suffix.
     </td>
   </tr>
 </table>
+
+=end html
 
 
 =head2 Multi Numeric Type Usage
@@ -4765,6 +4801,8 @@ LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_EXPRESSION
 <p>
   A list of Numeric Comparison Operators.
 </p>
+=begin html
+
 <table>
   <tr>
     <th>Operator</th>
@@ -4849,6 +4887,8 @@ LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_EXPRESSION
     </td>
   </tr>
 </table>
+
+=end html
 <p>
   The Types of Left Expression and Right Expression Comparable Types, otherwise Compile Error occurs.
 </p>
@@ -4898,6 +4938,8 @@ LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
 <p>
   A list of String Comparison Operators.
 </p>
+=begin html
+
 <table>
   <tr>
     <th>Operator</th>
@@ -4960,6 +5002,8 @@ LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
     </td>
   </tr>
 </table>
+
+=end html
 <p>
   The Type of Return Value of the String Comparison Operator is <a href="#language-type-int">int Type</a>. If the condition is met, returns 1, otherwise 0.
 </p>
@@ -5178,6 +5222,8 @@ LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR  RIGHT_EXPRESSION
 <p>
   List of Special Assignment Operators
 </p>
+=begin html
+
 <table>
   <tr>
     <td>Addition Assignment Operator </td>
@@ -5224,6 +5270,8 @@ LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR  RIGHT_EXPRESSION
     <td>.=</td>
   </tr>
 </table>
+
+=end html
 <p>
   The Special Assignment Operator is deployed as follows:
 </p>
@@ -5412,6 +5460,8 @@ isweak VARIABLE->{FIELD_NAME};
 <p>
   Operator Precidence is the following street. The lower you go, the higher your priority.
 </p>
+=begin html
+
 <table>
   <tr>
     <th> join direction</th>
@@ -5566,6 +5616,8 @@ isweak VARIABLE->{FIELD_NAME};
     </td>
   </tr>
 </table>
+
+=end html
 <p>
   Operator Precidence can be a top priority by using "()".
 </p>
@@ -6297,6 +6349,8 @@ In <a href="#language-local-var-declaration">Local Variable Declaration</a>, <a 
   A list of Type Initial Value. All Bit columns in the data are set to 0.
 </p>
 </p>
+=begin html
+
 <table>
   <tr>
     <th>
@@ -6372,6 +6426,8 @@ In <a href="#language-local-var-declaration">Local Variable Declaration</a>, <a 
   </tr>
 </table>
 
+=end html
+
 
 =head2 Numeric Type
 
@@ -6383,6 +6439,8 @@ Numeric Type is <a href="#language-type-integral">Integral Type</a> or <a href="
 
 
 Integral Type are the following four types.
+
+=begin html
 
 <table>
   <tr>
@@ -6442,6 +6500,8 @@ Integral Type are the following four types.
   </tr>
 </table>
 
+=end html
+
 See <a href="#language-operator-arithmetic">Arithmetic Operator</a> for integer calculation rules.
 
 Note that SPVM has only <b>singed</b> Integral Type, and don't has <b>unsigned</b> Integral Type.
@@ -6484,6 +6544,8 @@ This is a <a href="#language-type-integral">Integral Type</a>.
 
 <b>Floating Point Type</b> are the following two.
 
+=begin html
+
 <table>
   <tr>
     <th>
@@ -6519,6 +6581,8 @@ This is a <a href="#language-type-integral">Integral Type</a>.
     </td>
   </tr>
 </table>
+
+=end html
 
 See <a href="#language-operator-arithmetic">Arithmetic Operator</a> for floating-point calculation rules.
 
@@ -6599,6 +6663,8 @@ The size of Object Type must match the value of "sizeof (void *)" in C99.
 <p>
 <b>Numeric Object Type</b> are the following six.
 </p>
+=begin html
+
 <table>
   <tr>
     <th>
@@ -6657,6 +6723,8 @@ The size of Object Type must match the value of "sizeof (void *)" in C99.
     </td>
   </tr>
 </table>
+
+=end html
 
 For the conversion between <a href="#language-type-numeric">Numeric Type</a> and <b>Numeric Object Type</b>, see <a href="#language-type-convertion">Type Conversion</a>.
 
@@ -7259,6 +7327,8 @@ my $num : int = (int)4;
 <p>
   It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this table is performed, Compile Error occurs.
 </p>
+=begin html
+
 <table>
   <tr>
     <th>
@@ -7360,6 +7430,8 @@ my $num : int = (int)4;
     </td>
   </tr>
 </table>
+
+=end html
 
 
 =head2 Implicit Type Conversion
