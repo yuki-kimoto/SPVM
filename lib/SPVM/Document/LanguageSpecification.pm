@@ -202,21 +202,21 @@ If Class Name is invalid, Compile Error occurs.
 <b>Valid Class Name Examples</b>
 
 <pre>
-Foo
-Foo::Bar
-Foo::Bar::Baz3
-Foo::bar
-Foo_Bar::Baz_Baz
+  Foo
+  Foo::Bar
+  Foo::Bar::Baz3
+  Foo::bar
+  Foo_Bar::Baz_Baz
 </pre>
 
 <b>Invalid Class Name Examples</b>
 
 <pre>
-Foo
-Foo::::Bar
-Foo::Bar::
-Foo__Bar
-Foo::bar
+  Foo
+  Foo::::Bar
+  Foo::Bar::
+  Foo__Bar
+  Foo::bar
 </pre>
 
 
@@ -229,16 +229,16 @@ First character must not number character.
 Underscore cannot be continued twice.
 
 <pre>
-# Valid Method Name
-FOO
-FOO_BAR3
-foo
-foo_bar
-_foo
-_foo_bar_
-
-# Invalid Method Name
-foo__bar
+  # Valid Method Name
+  FOO
+  FOO_BAR3
+  foo
+  foo_bar
+  _foo
+  _foo_bar_
+  
+  # Invalid Method Name
+  foo__bar
 </pre>
 
 
@@ -251,17 +251,17 @@ First character must not number character.
 Underscore cannot be continued twice.
 
 <pre>
-# Valid Field Name
-FOO
-FOO_BAR3
-foo
-foo_bar
-_foo
-_foo_bar_
-
-# Invalid Field Name
-3foo
-foo__bar
+  # Valid Field Name
+  FOO
+  FOO_BAR3
+  foo
+  foo_bar
+  _foo
+  _foo_bar_
+  
+  # Invalid Field Name
+  3foo
+  foo__bar
 </pre>
 
 
@@ -276,16 +276,16 @@ Followed character must not start with number.
 Underscore cannot be continued twice.
 
 <pre>
-# Valid Class Variable Name
-$FOO::BAR
-$Foo::Bar3
-$FOO
-$FOO_BAR
-$foo
-
-# Invalid Class Variable Name
-$FOO__BAR
-$3FOO
+  # Valid Class Variable Name
+  $FOO::BAR
+  $Foo::Bar3
+  $FOO
+  $FOO_BAR
+  $foo
+  
+  # Invalid Class Variable Name
+  $FOO__BAR
+  $3FOO
 </pre>
 
 
@@ -298,15 +298,15 @@ Followed character must not start with number.
 Underscore cannot be continued twice.
 
 <pre>
-# Valid Local Variable Name
-$foo
-$foo_bar3
-$_foo
-$FOO
-
-# Invalid Local Variable Name
-$foo__bar
-$3foo
+  # Valid Local Variable Name
+  $foo
+  $foo_bar3
+  $_foo
+  $FOO
+  
+  # Invalid Local Variable Name
+  $foo__bar
+  $3foo
 </pre>
 
 
@@ -315,12 +315,12 @@ $3foo
 Keywords in SPVM are the followings.
 
 <pre>
-allow byte INIT case die warn print default double elsif else enum eq
-eval for float gt ge has if callback_t isa int last break length
-lt le long my native ne next new our object class private
-public precompile pointer_t return require rw ro switch
-sub string short scalar undef unless use void mulnum_t while
-weaken wo __END__ __CLASS__ __FILE__ __LINE__
+  allow byte INIT case die warn print default double elsif else enum eq
+  eval for float gt ge has if callback_t isa int last break length
+  lt le long my native ne next new our object class private
+  public precompile pointer_t return require rw ro switch
+  sub string short scalar undef unless use void mulnum_t while
+  weaken wo __END__ __CLASS__ __FILE__ __LINE__
 </pre>
 
 
@@ -329,7 +329,7 @@ weaken wo __END__ __CLASS__ __FILE__ __LINE__
 Separators in SPVM are the followings.
 
 <pre>
-( ) { } [ ] ; , ->=>
+  ( ) { } [ ] ; , ->=>
 </pre>
 
 
@@ -339,26 +339,26 @@ Separators in SPVM are the followings.
 Fat Comma is a <a href="#language-token-separator">Separator</a> represented by "<b>=></b>".
 
 <pre>
-=>
+  =>
 </pre>
 
 Fat Comma is an alias for Comma "<b>,</b>". Wherever you can use "<b>,</b>" you can use Fat Comma instead.
 
 <pre>
-# Comma
-["a", "b", "c", "d"]
-
-# Use Fat Comma instead of Comma
-["a" => "b", "c" => "d"]
+  # Comma
+  ["a", "b", "c", "d"]
+  
+  # Use Fat Comma instead of Comma
+  ["a" => "b", "c" => "d"]
 </pre>
 
 
 Identifiers other than <a href="#language-token-identifier-class-var-name">Class Variable Name</a> and <a href="#language-token-identifier-local-var-name">Local Variable Name</a> placed on the Left of Fat Comma are treated as <a href="#language-literal-string">String Literal</a>.
 
 <pre>
-# Identifiers placed on the Left of Fat Comma are treated as String Literal
-# a is "a", c is "c"
-[a => "b", c => "d"]
+  # Identifiers placed on the Left of Fat Comma are treated as String Literal
+  # a is "a", c is "c"
+  [a => "b", c => "d"]
 </pre>
 
 
@@ -368,12 +368,12 @@ Identifiers other than <a href="#language-token-identifier-class-var-name">Class
 Operators in SPVM are the followings.
 
 <pre>
-=   >   <   !   ~
-==  <=  >=  !=  <=> &&  || ++ --
-+   -   *   /   &   |   ^   %   <<   >>   >>>
-+=  -=  *=  /=  &=  |=  ^=  %=  <<=  >>=  >>>=
-\   $  @   .   .=
-cmp length isa ref
+  =   >   <   !   ~
+  ==  <=  >=  !=  <=> &&  || ++ --
+  +   -   *   /   &   |   ^   %   <<   >>   >>>
+  +=  -=  *=  /=  &=  |=  ^=  %=  <<=  >>=  >>>=
+  \   $  @   .   .=
+  cmp length isa ref
 </pre>
 
 
@@ -386,440 +386,440 @@ cmp length isa ref
 The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bison. 
 
 <pre>
-%token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS
-%token <opval> DESCRIPTOR
-%token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
-%token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
-%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE
-%token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
-%token <opval> RETURN WEAKEN DIE WARN CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
-
-%type <opval> grammar
-%type <opval> opt_classes classes class class_block
-%type <opval> opt_declarations declarations declaration
-%type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub cb_obj opt_args args arg has use require our
-%type <opval> opt_descriptors descriptors method_names opt_method_names
-%type <opval> opt_statements statements statement if_statement else_statement 
-%type <opval> for_statement while_statement switch_statement case_statement default_statement
-%type <opval> block eval_block begin_block switch_block if_require_statement
-%type <opval> unary_op binary_op comparison_op isa logical_op  expression_or_logical_op
-%type <opval> call_method opt_vaarg
-%type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
-%type <opval> assign inc dec allow
-%type <opval> new array_init
-%type <opval> my_var var
-%type <opval> expression opt_expressions expressions opt_expression case_statements
-%type <opval> field_name method_name
-%type <opval> type basic_type array_type array_type_with_length ref_type type_or_void
-
-%right <opval> ASSIGN SPECIAL_ASSIGN
-%left <opval> LOGICAL_OR
-%left <opval> LOGICAL_AND
-%left <opval> BIT_OR BIT_XOR
-%left <opval> BIT_AND
-%nonassoc <opval> NUMEQ NUMNE STREQ STRNE
-%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA NUMERIC_CMP STRING_CMP
-%left <opval> SHIFT
-%left <opval> '+' '-' '.'
-%left <opval> '*' DIVIDE REMAINDER
-%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP
-%nonassoc <opval> INC DEC
-%left <opval> ARROW
-
-%%
-
-grammar
-  : opt_classes
-
-opt_classes
-  : /* Empty */
-  | classes
-
-classes
-  : classes class
-  | class
-
-class
-  : CLASS basic_type class_block
-  | CLASS basic_type ':' opt_descriptors class_block
-  | CLASS basic_type ';'
-  | CLASS basic_type ':' opt_descriptors ';'
-
-class_block
-  : '{' opt_declarations '}'
-
-opt_declarations
-  : /* Empty */
-  | declarations
-
-declarations
-  : declarations declaration
-  | declaration
-
-declaration
-  : has
-  | sub
-  | enumeration
-  | our ';'
-  | use
-  | allow
-  | begin_block
-
-begin_block
-  : INIT block
-
-use
-  : USE basic_type ';'
-  | USE basic_type AS basic_type';'
-
-require
-  : REQUIRE basic_type
-  | REQUIRE basic_type AS basic_type';'
-
-allow
-  : ALLOW basic_type ';'
-
-enumeration
-  : opt_descriptors ENUM enumeration_block
-
-enumeration_block 
-  : '{' opt_enumeration_values '}'
-
-opt_enumeration_values
-  : /* Empty */
-  | enumeration_values
-
-enumeration_values
-  : enumeration_values ',' enumeration_value 
-  | enumeration_values ','
-  | enumeration_value
-
-enumeration_value
-  : method_name
-  | method_name ASSIGN CONSTANT
-
-our
-  : OUR CLASS_VAR_NAME ':' opt_descriptors type
-
-has
-  : HAS field_name ':' opt_descriptors type ';'
-
-sub
-  : opt_descriptors METHOD method_name ':' type_or_void '(' opt_args opt_vaarg')' block
-  | opt_descriptors METHOD method_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
-
-cb_obj
-  : opt_descriptors METHOD ':' type_or_void '(' opt_args opt_vaarg')' block
-  | '[' args ']' opt_descriptors METHOD ':' type_or_void '(' opt_args opt_vaarg')' block
-
-opt_args
-  : /* Empty */
-  | args
-
-args
-  : args ',' arg
-  | args ','
-  | arg
-
-arg
-  : var ':' type
-
-opt_vaarg
-  : /* Empty */
-  | DOT3
-
-opt_descriptors
-  : /* Empty */
-  | descriptors
-
-descriptors
-  : descriptors DESCRIPTOR
-  | DESCRIPTOR
-
-opt_statements
-  : /* Empty */
-  | statements
-
-statements
-  : statements statement 
-  | statement
-
-statement
-  : if_statement
-  | for_statement
-  | while_statement
-  | block
-  | switch_statement
-  | case_statement
-  | default_statement
-  | eval_block
-  | if_require_statement
-  | expression ';'
-  | LAST ';'
-  | NEXT ';'
-  | RETURN ';'
-  | RETURN expression ';'
-  | DIE ';'
-  | DIE expression ';'
-  | WARN ';'
-  | WARN expression ';'
-  | PRINT expression ';'
-  | weaken_field ';'
-  | unweaken_field ';'
-  | ';'
-
-for_statement
-  : FOR '(' opt_expression ';' expression_or_logical_op ';' opt_expression ')' block
-
-while_statement
-  : WHILE '(' expression_or_logical_op ')' block
-
-switch_statement
-  : SWITCH '(' expression ')' switch_block
-
-switch_block
-  : '{' case_statements '}'
-  | '{' case_statements default_statement '}'
-
-case_statements
-  : case_statements case_statement
-  | case_statement
-
-case_statement
-  : CASE expression ':' block
-  | CASE expression ':'
-
-default_statement
-  : DEFAULT ':' block
-  | DEFAULT ':'
-
-if_require_statement
-  : IF '(' require ')' block
-  | IF '(' require ')' block ELSE block
-
-if_statement
-  : IF '(' expression_or_logical_op ')' block else_statement
-  | UNLESS '(' expression_or_logical_op ')' block else_statement
-
-else_statement
-  : /* NULL */
-  | ELSE block
-  | ELSIF '(' expression_or_logical_op ')' block else_statement
-
-block 
-  : '{' opt_statements '}'
-
-eval_block
-  : EVAL block ';'
-
-opt_expressions
-  : /* Empty */
-  | expressions
-
-opt_expression
-  : /* Empty */
-  | expression
-
-expression_or_logical_op
-  : expression
-  | logical_op
-
-expression
-  : var
-  | EXCEPTION_VAR
-  | class_var_access
-  | CONSTANT
-  | UNDEF
-  | call_method
-  | field_access
-  | array_access
-  | convert
-  | new
-  | array_init
-  | array_length
-  | my_var
-  | binary_op
-  | unary_op
-  | assign
-  | inc
-  | dec
-  | '(' expressions ')'
-  | CURRENT_CLASS_NAME
-  | isweak_field
-  | comparison_op
-  | isa
-  | TRUE
-  | FALSE
-
-expressions
-  : expressions ',' expression
-  | expressions ','
-  | expression
-
-unary_op
-  : '+' expression %prec PLUS
-  | '-' expression %prec MINUS
-  | BIT_NOT expression
-  | REFCNT var
-  | REFOP expression
-  | STRING_LENGTH expression
-  | DUMP expression
-  | DEREF var
-  | REF var
-
-inc
-  : INC expression
-  | expression INC
-
-dec
-  : DEC expression
-  | expression DEC
-
-binary_op
-  : expression '+' expression
-  | expression '-' expression
-  | expression '*' expression
-  | expression DIVIDE expression
-  | expression REMAINDER expression
-  | expression BIT_XOR expression
-  | expression BIT_AND expression
-  | expression BIT_OR expression
-  | expression SHIFT expression
-  | expression '.' expression
-
-comparison_op
-  : expression NUMEQ expression
-  | expression NUMNE expression
-  | expression NUMGT expression
-  | expression NUMGE expression
-  | expression NUMLT expression
-  | expression NUMLE expression
-  | expression NUMERIC_CMP expression
-  | expression STREQ expression
-  | expression STRNE expression
-  | expression STRGT expression
-  | expression STRGE expression
-  | expression STRLT expression
-  | expression STRLE expression
-  | expression STRING_CMP expression
-
-isa
-  : expression ISA type
-
-logical_op
-  : expression_or_logical_op LOGICAL_OR expression_or_logical_op
-  | expression_or_logical_op LOGICAL_AND expression_or_logical_op
-  | LOGICAL_NOT expression_or_logical_op
-  | '(' logical_op ')'
-
-assign
-  : expression ASSIGN expression
-  | expression SPECIAL_ASSIGN expression
-
-new
-  : NEW basic_type
-  | NEW array_type_with_length
-  | cb_obj
-
-array_init
-  : '[' opt_expressions ']'
-  | '{' expressions '}'
-  | '{' '}'
-
-convert
-  : '(' type ')' expression %prec CONVERT
-
-array_access
-  : expression ARROW '[' expression ']'
-  | array_access '[' expression ']'
-  | field_access '[' expression ']'
-
-call_method
-  : CURRENT_CLASS NAME '(' opt_expressions  ')'
-  | CURRENT_CLASS NAME
-  | basic_type ARROW method_name '(' opt_expressions  ')'
-  | basic_type ARROW method_name
-  | expression ARROW method_name '(' opt_expressions ')'
-  | expression ARROW method_name
-  | expression ARROW '(' opt_expressions ')'
-
-field_access
-: expression ARROW '{' field_name '}'
-| field_access '{' field_name '}'
-| array_access '{' field_name '}'
-
-weaken_field
-  : WEAKEN var ARROW '{' field_name '}'
-
-unweaken_field
-  : UNWEAKEN var ARROW '{' field_name '}'
-
-isweak_field
-  : ISWEAK var ARROW '{' field_name '}'
-
-array_length
-  : '@' expression
-  | '@' '{' expression '}'
-  | SCALAR '@' expression
-  | SCALAR '@' '{' expression '}'
-
-my_var
-  : MY var ':' type
-  | MY var
-
-var
-  : VAR_NAME
-
-class_var_access
-  : CLASS_VAR_NAME
-
-type
-  : basic_type
-  | array_type
-  | ref_type
-
-basic_type
-  : NAME
-  | BYTE
-  | SHORT
-  | INT
-  | LONG
-  | FLOAT
-  | DOUBLE
-  | OBJECT
-  | STRING
-
-ref_type
-  : basic_type '*'
-
-array_type
-  : basic_type '[' ']'
-  | array_type '[' ']'
-
-array_type_with_length
-  : basic_type '[' expression ']'
-  | array_type '[' expression ']'
-
-type_or_void
-  : type
-  | VOID
-
-field_name
-  : NAME
-
-method_name
-  : NAME
-
-opt_method_names
-  : /* Empty */
-  | method_names
-
-method_names
-  : method_names ',' method_name
-  | method_names ','
-  | method_name
-%%
+  %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS
+  %token <opval> DESCRIPTOR
+  %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
+  %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
+  %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE
+  %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
+  %token <opval> RETURN WEAKEN DIE WARN CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
+  
+  %type <opval> grammar
+  %type <opval> opt_classes classes class class_block
+  %type <opval> opt_declarations declarations declaration
+  %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
+  %type <opval> sub cb_obj opt_args args arg has use require our
+  %type <opval> opt_descriptors descriptors method_names opt_method_names
+  %type <opval> opt_statements statements statement if_statement else_statement 
+  %type <opval> for_statement while_statement switch_statement case_statement default_statement
+  %type <opval> block eval_block begin_block switch_block if_require_statement
+  %type <opval> unary_op binary_op comparison_op isa logical_op  expression_or_logical_op
+  %type <opval> call_method opt_vaarg
+  %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
+  %type <opval> assign inc dec allow
+  %type <opval> new array_init
+  %type <opval> my_var var
+  %type <opval> expression opt_expressions expressions opt_expression case_statements
+  %type <opval> field_name method_name
+  %type <opval> type basic_type array_type array_type_with_length ref_type type_or_void
+  
+  %right <opval> ASSIGN SPECIAL_ASSIGN
+  %left <opval> LOGICAL_OR
+  %left <opval> LOGICAL_AND
+  %left <opval> BIT_OR BIT_XOR
+  %left <opval> BIT_AND
+  %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
+  %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA NUMERIC_CMP STRING_CMP
+  %left <opval> SHIFT
+  %left <opval> '+' '-' '.'
+  %left <opval> '*' DIVIDE REMAINDER
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP
+  %nonassoc <opval> INC DEC
+  %left <opval> ARROW
+  
+  %%
+  
+  grammar
+    : opt_classes
+  
+  opt_classes
+    : /* Empty */
+    | classes
+  
+  classes
+    : classes class
+    | class
+  
+  class
+    : CLASS basic_type class_block
+    | CLASS basic_type ':' opt_descriptors class_block
+    | CLASS basic_type ';'
+    | CLASS basic_type ':' opt_descriptors ';'
+  
+  class_block
+    : '{' opt_declarations '}'
+  
+  opt_declarations
+    : /* Empty */
+    | declarations
+  
+  declarations
+    : declarations declaration
+    | declaration
+  
+  declaration
+    : has
+    | sub
+    | enumeration
+    | our ';'
+    | use
+    | allow
+    | begin_block
+  
+  begin_block
+    : INIT block
+  
+  use
+    : USE basic_type ';'
+    | USE basic_type AS basic_type';'
+  
+  require
+    : REQUIRE basic_type
+    | REQUIRE basic_type AS basic_type';'
+  
+  allow
+    : ALLOW basic_type ';'
+  
+  enumeration
+    : opt_descriptors ENUM enumeration_block
+  
+  enumeration_block 
+    : '{' opt_enumeration_values '}'
+  
+  opt_enumeration_values
+    : /* Empty */
+    | enumeration_values
+  
+  enumeration_values
+    : enumeration_values ',' enumeration_value 
+    | enumeration_values ','
+    | enumeration_value
+  
+  enumeration_value
+    : method_name
+    | method_name ASSIGN CONSTANT
+  
+  our
+    : OUR CLASS_VAR_NAME ':' opt_descriptors type
+  
+  has
+    : HAS field_name ':' opt_descriptors type ';'
+  
+  sub
+    : opt_descriptors METHOD method_name ':' type_or_void '(' opt_args opt_vaarg')' block
+    | opt_descriptors METHOD method_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
+  
+  cb_obj
+    : opt_descriptors METHOD ':' type_or_void '(' opt_args opt_vaarg')' block
+    | '[' args ']' opt_descriptors METHOD ':' type_or_void '(' opt_args opt_vaarg')' block
+  
+  opt_args
+    : /* Empty */
+    | args
+  
+  args
+    : args ',' arg
+    | args ','
+    | arg
+  
+  arg
+    : var ':' type
+  
+  opt_vaarg
+    : /* Empty */
+    | DOT3
+  
+  opt_descriptors
+    : /* Empty */
+    | descriptors
+  
+  descriptors
+    : descriptors DESCRIPTOR
+    | DESCRIPTOR
+  
+  opt_statements
+    : /* Empty */
+    | statements
+  
+  statements
+    : statements statement 
+    | statement
+  
+  statement
+    : if_statement
+    | for_statement
+    | while_statement
+    | block
+    | switch_statement
+    | case_statement
+    | default_statement
+    | eval_block
+    | if_require_statement
+    | expression ';'
+    | LAST ';'
+    | NEXT ';'
+    | RETURN ';'
+    | RETURN expression ';'
+    | DIE ';'
+    | DIE expression ';'
+    | WARN ';'
+    | WARN expression ';'
+    | PRINT expression ';'
+    | weaken_field ';'
+    | unweaken_field ';'
+    | ';'
+  
+  for_statement
+    : FOR '(' opt_expression ';' expression_or_logical_op ';' opt_expression ')' block
+  
+  while_statement
+    : WHILE '(' expression_or_logical_op ')' block
+  
+  switch_statement
+    : SWITCH '(' expression ')' switch_block
+  
+  switch_block
+    : '{' case_statements '}'
+    | '{' case_statements default_statement '}'
+  
+  case_statements
+    : case_statements case_statement
+    | case_statement
+  
+  case_statement
+    : CASE expression ':' block
+    | CASE expression ':'
+  
+  default_statement
+    : DEFAULT ':' block
+    | DEFAULT ':'
+  
+  if_require_statement
+    : IF '(' require ')' block
+    | IF '(' require ')' block ELSE block
+  
+  if_statement
+    : IF '(' expression_or_logical_op ')' block else_statement
+    | UNLESS '(' expression_or_logical_op ')' block else_statement
+  
+  else_statement
+    : /* NULL */
+    | ELSE block
+    | ELSIF '(' expression_or_logical_op ')' block else_statement
+  
+  block 
+    : '{' opt_statements '}'
+  
+  eval_block
+    : EVAL block ';'
+  
+  opt_expressions
+    : /* Empty */
+    | expressions
+  
+  opt_expression
+    : /* Empty */
+    | expression
+  
+  expression_or_logical_op
+    : expression
+    | logical_op
+  
+  expression
+    : var
+    | EXCEPTION_VAR
+    | class_var_access
+    | CONSTANT
+    | UNDEF
+    | call_method
+    | field_access
+    | array_access
+    | convert
+    | new
+    | array_init
+    | array_length
+    | my_var
+    | binary_op
+    | unary_op
+    | assign
+    | inc
+    | dec
+    | '(' expressions ')'
+    | CURRENT_CLASS_NAME
+    | isweak_field
+    | comparison_op
+    | isa
+    | TRUE
+    | FALSE
+  
+  expressions
+    : expressions ',' expression
+    | expressions ','
+    | expression
+  
+  unary_op
+    : '+' expression %prec PLUS
+    | '-' expression %prec MINUS
+    | BIT_NOT expression
+    | REFCNT var
+    | REFOP expression
+    | STRING_LENGTH expression
+    | DUMP expression
+    | DEREF var
+    | REF var
+  
+  inc
+    : INC expression
+    | expression INC
+  
+  dec
+    : DEC expression
+    | expression DEC
+  
+  binary_op
+    : expression '+' expression
+    | expression '-' expression
+    | expression '*' expression
+    | expression DIVIDE expression
+    | expression REMAINDER expression
+    | expression BIT_XOR expression
+    | expression BIT_AND expression
+    | expression BIT_OR expression
+    | expression SHIFT expression
+    | expression '.' expression
+  
+  comparison_op
+    : expression NUMEQ expression
+    | expression NUMNE expression
+    | expression NUMGT expression
+    | expression NUMGE expression
+    | expression NUMLT expression
+    | expression NUMLE expression
+    | expression NUMERIC_CMP expression
+    | expression STREQ expression
+    | expression STRNE expression
+    | expression STRGT expression
+    | expression STRGE expression
+    | expression STRLT expression
+    | expression STRLE expression
+    | expression STRING_CMP expression
+  
+  isa
+    : expression ISA type
+  
+  logical_op
+    : expression_or_logical_op LOGICAL_OR expression_or_logical_op
+    | expression_or_logical_op LOGICAL_AND expression_or_logical_op
+    | LOGICAL_NOT expression_or_logical_op
+    | '(' logical_op ')'
+  
+  assign
+    : expression ASSIGN expression
+    | expression SPECIAL_ASSIGN expression
+  
+  new
+    : NEW basic_type
+    | NEW array_type_with_length
+    | cb_obj
+  
+  array_init
+    : '[' opt_expressions ']'
+    | '{' expressions '}'
+    | '{' '}'
+  
+  convert
+    : '(' type ')' expression %prec CONVERT
+  
+  array_access
+    : expression ARROW '[' expression ']'
+    | array_access '[' expression ']'
+    | field_access '[' expression ']'
+  
+  call_method
+    : CURRENT_CLASS NAME '(' opt_expressions  ')'
+    | CURRENT_CLASS NAME
+    | basic_type ARROW method_name '(' opt_expressions  ')'
+    | basic_type ARROW method_name
+    | expression ARROW method_name '(' opt_expressions ')'
+    | expression ARROW method_name
+    | expression ARROW '(' opt_expressions ')'
+  
+  field_access
+  : expression ARROW '{' field_name '}'
+  | field_access '{' field_name '}'
+  | array_access '{' field_name '}'
+  
+  weaken_field
+    : WEAKEN var ARROW '{' field_name '}'
+  
+  unweaken_field
+    : UNWEAKEN var ARROW '{' field_name '}'
+  
+  isweak_field
+    : ISWEAK var ARROW '{' field_name '}'
+  
+  array_length
+    : '@' expression
+    | '@' '{' expression '}'
+    | SCALAR '@' expression
+    | SCALAR '@' '{' expression '}'
+  
+  my_var
+    : MY var ':' type
+    | MY var
+  
+  var
+    : VAR_NAME
+  
+  class_var_access
+    : CLASS_VAR_NAME
+  
+  type
+    : basic_type
+    | array_type
+    | ref_type
+  
+  basic_type
+    : NAME
+    | BYTE
+    | SHORT
+    | INT
+    | LONG
+    | FLOAT
+    | DOUBLE
+    | OBJECT
+    | STRING
+  
+  ref_type
+    : basic_type '*'
+  
+  array_type
+    : basic_type '[' ']'
+    | array_type '[' ']'
+  
+  array_type_with_length
+    : basic_type '[' expression ']'
+    | array_type '[' expression ']'
+  
+  type_or_void
+    : type
+    | VOID
+  
+  field_name
+    : NAME
+  
+  method_name
+    : NAME
+  
+  opt_method_names
+    : /* Empty */
+    | method_names
+  
+  method_names
+    : method_names ',' method_name
+    | method_names ','
+    | method_name
+  %%
 </pre>
 
 The following is a correspondence table between tokens in yacc/bison and keywords and operators in SPVM.
@@ -1126,7 +1126,7 @@ The following is a correspondence table between tokens in yacc/bison and keyword
 Comment begins with "#" and ends with <a href="#language-token-line-terminator">Line Terminator</a>.
 
 <pre>
-# Comment
+  # Comment
 </pre>
 
 Comment has no meaning in the program execution.
@@ -1174,9 +1174,9 @@ POD has no meaning in the program execution.
 <b>Class Definition</b> is the following syntax.
 
 <pre>
-class PACAKGE_NAME {
-
-}
+  class PACAKGE_NAME {
+  
+  }
 </pre>
 
 PACAKGE_NAME must follow the rule for <a href="#language-token-identifier-class-name">Class Name</a>.
@@ -1184,55 +1184,55 @@ PACAKGE_NAME must follow the rule for <a href="#language-token-identifier-class-
 <a href="#language-class-descriptor">Class Descriptor</a> can be specified by the following syntax.
 
 <pre>
-class PACAKGE_NAME : PACAKGE_DESCRIPTOR {
-
-}
-
-class PACAKGE_NAME : PACAKGE_DESCRIPTOR1 PACAKGE_DESCRIPTOR2 PACAKGE_DESCRIPTORN {
-
-}
+  class PACAKGE_NAME : PACAKGE_DESCRIPTOR {
+  
+  }
+  
+  class PACAKGE_NAME : PACAKGE_DESCRIPTOR1 PACAKGE_DESCRIPTOR2 PACAKGE_DESCRIPTORN {
+  
+  }
 </pre>
 
 <b>Class Definition Example:</b>
 
 <pre>
-# Class Name
-class Point {
-
-}
+  # Class Name
+  class Point {
+  
+  }
 </pre>
 
 <pre>
-# Class Name and Class Descriptor
-class Point : public {
-
-}
+  # Class Name and Class Descriptor
+  class Point : public {
+  
+  }
 </pre>
 
 In direct children of the class block, <a href="#language-module-use">use</a>, <a href="#language-class-var-definition">our</a>, <a href="#language-field-definition">has</a>, <a href="#language-enum-definition">enum</a>, <a href="#language-method-definition">sub</a> can be defined.
 
 <pre>
-class Foo {
-  # use
-  use Point;
-
-  # Class Variable Definition
-  our $VAR int;
-
-  # Field Defintion
-  has var : int;
-
-  # Enumeration Definition
-  enum {
-    CONST_VAL1,
-    CONST_VAL2,
+  class Foo {
+    # use
+    use Point;
+  
+    # Class Variable Definition
+    our $VAR int;
+  
+    # Field Defintion
+    has var : int;
+  
+    # Enumeration Definition
+    enum {
+      CONST_VAL1,
+      CONST_VAL2,
+    }
+  
+    # Method Definition
+    static method foo : int ($num : int) {
+  
+    }
   }
-
-  # Method Definition
-  static method foo : int ($num : int) {
-
-  }
-}
 </pre>
 
 If more than one class with the same name is defined, Compile Error occurs.
@@ -1325,9 +1325,9 @@ Destructor Retrun Value must be <a href="#language-type-void">void Type</a>, oth
 Destructor arguments must be one and the type must be <a href="#language-type-self">self Type</a>, otherwise Compile Error occurs.
 
 <pre>
-method DESTROY : void () {
-
-}
+  method DESTROY : void () {
+  
+  }
 </pre>
 
 If a <a href="#language-exception-occur">Exception</a> occurs in Destructor, the program don't exit, print the message of the exception to STDERR.
@@ -1335,15 +1335,15 @@ If a <a href="#language-exception-occur">Exception</a> occurs in Destructor, the
 <b>Destructor Example:</b>
 
 <pre>
-class Foo {
-  static method new : Foo {
-    return new Foo;
+  class Foo {
+    static method new : Foo {
+      return new Foo;
+    }
+  
+    method DESTROY : void () {
+      print "DESTROY";
+    }
   }
-
-  method DESTROY : void () {
-    print "DESTROY";
-  }
-}
 </pre>
 
 
@@ -1357,15 +1357,15 @@ Also, Private Class cannot <a href="#language-expression-new">Create Object</a> 
 If the class allow other class, the other class can access private Methods, Fields, and Class Variables, and can <a href="#language-expression-new">Create Object</a> of the class.
 
 <pre>
-allow CLASS_NAME;
+  allow CLASS_NAME;
 </pre>
 
 allow must be defined directory under <a href="#language-class-definition">Class Definition</a>.
 
 <pre>
-class Foo {
-  allow Bar;
-}
+  class Foo {
+    allow Bar;
+  }
 </pre>
 
 In this example, Bar can access the private Method, Field, and Class Variable of Foo can be accessed and can Create Object of Foo.
@@ -1382,24 +1382,24 @@ Specifying the module of <b>allow</b> also loads the module by <a href="#languag
 Module is a single file that can be read as SPVM source code.
 
 <pre>
-# lib/path/SPVM/Foo/Bar.spvm
-class Foo::Bar {
-
-}
+  # lib/path/SPVM/Foo/Bar.spvm
+  class Foo::Bar {
+  
+  }
 </pre>
 
 
 Module can contain multiple Classes.
 
 <pre>
-# lib/path/SPVM/Foo/Bar.spvm
-class Foo::Bar {
-
-}
-
-class Foo::Bar::Baz {
-
-}
+  # lib/path/SPVM/Foo/Bar.spvm
+  class Foo::Bar {
+  
+  }
+  
+  class Foo::Bar::Baz {
+  
+  }
 </pre>
 
 
@@ -1411,9 +1411,9 @@ Modules must be placed in the module loading path with the following File Name.
 Change "::" to "/". Add ".spvm" at the end.
 
 <pre>
-SPVM/Foo.spvm
-SPVM/Foo/Bar.spvm
-SPVM/Foo/Bar/Baz.spvm
+  SPVM/Foo.spvm
+  SPVM/Foo/Bar.spvm
+  SPVM/Foo/Bar/Baz.spvm
 </pre>
 
 
@@ -1423,8 +1423,8 @@ SPVM/Foo/Bar/Baz.spvm
 Use <b>use</b> keyword to load a Module.
 
 <pre>
-use Foo;
-use Foo::Bar;
+  use Foo;
+  use Foo::Bar;
 </pre>
 
 Modules are loaded at compile-time.
@@ -1434,9 +1434,9 @@ If the Module does not exist, Compile Error will occur.
 use Keyword must be defined directly under <a href="#language-class-definition">Class Definition</a>.
 
 <pre>
-class Foo {
-  use Foo;
-}
+  class Foo {
+    use Foo;
+  }
 </pre>
 
 
@@ -1446,14 +1446,14 @@ class Foo {
 Define class aliases using <b>as</b> syntax with <b>use</b>
 
 <pre>
-use Foo::Bar as FB;
+  use Foo::Bar as FB;
 </pre>
 
 FB is used as Foo::Bar alias in class method calls.
 
 <pre>
-# This means Foo::Bar->sum(1, 2);
-FB->sum(1, 2);
+  # This means Foo::Bar->sum(1, 2);
+  FB->sum(1, 2);
 </pre>
 
 
@@ -1484,20 +1484,20 @@ In SPVM, there is an if require Statement that loads a Module only if it exists 
 It was designed to implement a part of features of "#ifdef" in C language.
 
 <pre>
-if (require Foo) {
-
-}
+  if (require Foo) {
+  
+  }
 </pre>
 
 if require Statement can be followed by else Statement. 
 
 <pre>
-if (require Foo) {
-
-}
-else {
-
-}
+  if (require Foo) {
+  
+  }
+  else {
+  
+  }
 </pre>
 
 Note that elsif Statement cannot be followed.
@@ -1509,13 +1509,13 @@ Therefore, "$foo = new Foo;" does not result in Compile Error because it is assu
 In the other hand, the else block exists, so a warning is issued.
 
 <pre>
-my $foo : object;
-if (require Foo) {
-  $foo = new Foo;
-}
-else {
-  warn "Warning: Can't load Foo";
-}
+  my $foo : object;
+  if (require Foo) {
+    $foo = new Foo;
+  }
+  else {
+    warn "Warning: Can't load Foo";
+  }
 </pre>
 
 
@@ -1529,7 +1529,7 @@ else {
 "our" Keyword defines a Class Variable.
 
 <pre>
-our CLASS_VARIABLE_NAME : TYPE;
+  our CLASS_VARIABLE_NAME : TYPE;
 </pre>
 
 Class Variable must be defined directly under <a href="#language-class-definition">Class Definition</a>.
@@ -1543,8 +1543,8 @@ If more than one Class Variable with the same name is defined, Compile Error occ
 Class Variable Descriptor can be specified together in Class Variable definition.
 
 <pre>
-our CLASS_VARIABLE_NAME : DESCRIPTOR TYPE;
-our CLASS_VARIABLE_NAME : DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN TYPE;
+  our CLASS_VARIABLE_NAME : DESCRIPTOR TYPE;
+  our CLASS_VARIABLE_NAME : DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN TYPE;
 </pre>
 
 
@@ -1621,19 +1621,19 @@ Inline Expansion optimization is performed to Read Accessor and Write Accessor. 
 <b>Class Variable Definition Example:</b>
 
 <pre>
-class Foo {
-  our $NUM1 : byte;
-  our $NUM2 : short;
-  our $NUM3 : int;
-  our $NUM4 : long;
-  our $NUM5 : float;
-  our $NUM6 : double;
-
-  our $NUM_PUBLIC : public int;
-  our $NUM_RO : ro int;
-  our $NUM_WO : wo int;
-  our $NUM_RW : rw int;
-}
+  class Foo {
+    our $NUM1 : byte;
+    our $NUM2 : short;
+    our $NUM3 : int;
+    our $NUM4 : long;
+    our $NUM5 : float;
+    our $NUM6 : double;
+  
+    our $NUM_PUBLIC : public int;
+    our $NUM_RO : ro int;
+    our $NUM_WO : wo int;
+    our $NUM_RW : rw int;
+  }
 </pre>
 
 
@@ -1645,13 +1645,13 @@ Class Variable is initialized with <a href="#language-type-initial-value">Type I
 This initial value can be changed by using <a href="#language-begin-block">INIT Block</a>.
 
 <pre>
-class Foo {
-  our $VAR : int;
-
-  INIT {
-    $VAR = 3;
+  class Foo {
+    our $VAR : int;
+  
+    INIT {
+      $VAR = 3;
+    }
   }
-}
 </pre>
 
 
@@ -1675,7 +1675,7 @@ Field is a data area in a <a href="#language-expression-new">object created usin
 "has" Keyword defines a Field.
 
 <pre>
-has FIELD_NAME : TYPE;
+  has FIELD_NAME : TYPE;
 </pre>
 
 Field must be defined directly under <a href="#language-class-definition">Class Definition</a>.
@@ -1693,8 +1693,8 @@ If more than one Field Name Variable with the same name is defined, Compile Erro
 Field Descriptor can be specified together in Field Definition.
 
 <pre>
-has FIELD_NAME : DESCRIPTOR TYPE_NAME;
-has FIELD_NAME : DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN TYPE_NAME;
+  has FIELD_NAME : DESCRIPTOR TYPE_NAME;
+  has FIELD_NAME : DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN TYPE_NAME;
 </pre>
 
 
@@ -1771,19 +1771,19 @@ Inline Expansion optimization is performed to Read Accessor and Write Accessor. 
 <b>Field Definition Example:</b>
 
 <pre>
-class Foo {
-  has num1 : byte;
-  has num2 : short;
-  has num3 : int;
-  has num4 : long;
-  has num5 : float;
-  has num6 : double;
-
-  has num_public : public int;
-  has num_ro : ro int;
-  has num_wo : wo int;
-  has num_rw : rw int;
-}
+  class Foo {
+    has num1 : byte;
+    has num2 : short;
+    has num3 : int;
+    has num4 : long;
+    has num5 : float;
+    has num6 : double;
+  
+    has num_public : public int;
+    has num_ro : ro int;
+    has num_wo : wo int;
+    has num_rw : rw int;
+  }
 </pre>
 
 
@@ -1793,7 +1793,7 @@ class Foo {
 Field Access is an operation to access Field to get or set a value.
 
 <pre>
-EXPRESSION->{FIELD_NAME}
+  EXPRESSION->{FIELD_NAME}
 </pre>
 
 Field Access has three different meanings.
@@ -1803,8 +1803,8 @@ Field Access has three different meanings.
 Class Based Object Field Access is Field Access from object which is create by <a href="#language-expression-new">new</a> keyword.
 
 <pre>
-my $point = new Point;
-$point->{x} = 1;
+  my $point = new Point;
+  $point->{x} = 1;
 </pre>
 
 See <a href="#language-expression-get-field">Get Field Value</a> to get field of Class Based Object.
@@ -1816,9 +1816,9 @@ See <a href="#language-expression-set-field">Set Field Value</a> to set field of
 Multi Numeric Field Access is Field Access from the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a>. The value of <a href="#language-type-multi-numeric">Multi Numeric Type</a> is allocated Callstack of Method.
 
 <pre>
-my $z : Complex_2d;
-$z->{x} = 1;
-$z->{y} = 3;
+  my $z : Complex_2d;
+  $z->{x} = 1;
+  $z->{y} = 3;
 </pre>
 
 See <a href="#language-expression-get-field-multi-numeric">Get Multi Numeric Field Value</a> to get field of the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a>.
@@ -1830,10 +1830,10 @@ See <a href="#language-expression-set-field-multi-numeric">Set Multi Numeric Fie
 Dereference Multi Numeric Field is Field access from Reference of the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a>.
 
 <pre>
-my $z : Complex_2d;
-my $z_ref = \$z;
-$z_ref->{x} = 1;
-$z_ref->{y} = 3;
+  my $z : Complex_2d;
+  my $z_ref = \$z;
+  $z_ref->{x} = 1;
+  $z_ref->{y} = 3;
 </pre>
 
 See <a href="#language-expression-get-field-multi-numeric-deref">Get Multi Numeric Field Value via Dereference</a> to get Multi Numeric Field via Dereference.
@@ -1849,12 +1849,12 @@ See <a href="#language-expression-set-field-multi-numeric-deref">Set Multi Numer
 "sub" Keyword defines Method.
 
 <pre>
-static method METHOD_NAME : RETURN_VALUE_TYPE_NAME () {
-
-}
-static method METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
-
-}
+  static method METHOD_NAME : RETURN_VALUE_TYPE_NAME () {
+  
+  }
+  static method METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
+  
+  }
 </pre>
 
 Method must be defined directly under <a href="#language-class-definition">Class Definition</a>.
@@ -1878,12 +1878,12 @@ The defined Method can be called. See <a href="#language-expression-callmethod">
 Method Definition can have <a href="#language-method-descriptor">Method Descriptor</a>.
 
 <pre>
-DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN static method METHOD_NAME : RETURN_VALUE_TYPE_NAME () {
-
-}
-DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN static method METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
-
-}
+  DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN static method METHOD_NAME : RETURN_VALUE_TYPE_NAME () {
+  
+  }
+  DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN static method METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
+  
+  }
 </pre>
 
 
@@ -1892,34 +1892,34 @@ If "..." follows Type of Argument, the Argument becomes Variable Length Argument
 The Type must be <a href="#language-type-array">Array Type</a>.
 
 <pre>
-static method METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2...) {
-
-}
+  static method METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2...) {
+  
+  }
 </pre>
 
 Variable Length Argument can recieve multi values.
 
 <pre>
-# Variable Length Argument Definition
-static method sprintf : string ($format : string, $values : object[]...) {
-
-}
-
-# Call Variable Length Argument Method with multi values.
-sprintf("Value %d %f", 1, 2.0);
+  # Variable Length Argument Definition
+  static method sprintf : string ($format : string, $values : object[]...) {
+  
+  }
+  
+  # Call Variable Length Argument Method with multi values.
+  sprintf("Value %d %f", 1, 2.0);
 </pre>
 
 Variable Length Argument can recieve Array.
 
 <pre>
-# Call Variable Length Argument Method with Array.
-sprintf("Value  %d %f", [(object)1, 2.0]);
+  # Call Variable Length Argument Method with Array.
+  sprintf("Value  %d %f", [(object)1, 2.0]);
 </pre>
 
 If you want to treat the value of Array as an individual element of the variable length argument, cast it to Type other than Array Type.
 
 <pre>
-sprintf("aaa %p", (object)[(object)1, 2.0]);
+  sprintf("aaa %p", (object)[(object)1, 2.0]);
 </pre>
 
 
@@ -1978,10 +1978,10 @@ Precompiled Method needs Build Directory described in <a href="/native-api.html"
 Constant Method is a Method that Return Type is <a href="#language-type-numeric">Numeric Type</a> and returns Constant Value.
 
 <pre>
-static method foo : int () { return 5; }
-static method foo : long () { return 5L; }
-static method foo : float () { return 5.0f; }
-static method foo : double () { return 5.0; }
+  static method foo : int () { return 5; }
+  static method foo : long () { return 5L; }
+  static method foo : float () { return 5.0f; }
+  static method foo : double () { return 5.0; }
 </pre>
 
 Inline Expansion optimization is performed to Constant Method.
@@ -1989,8 +1989,8 @@ Inline Expansion optimization is performed to Constant Method.
 Note that SPVM does not perform constant convolution optimization, so if a constant is calculated, it will not performe Inline Expansion.
 
 <pre>
-# This is not Constant Method.  Inline Expansion is not performed
-static method foo : int () { return 5 + 3; }
+  # This is not Constant Method.  Inline Expansion is not performed
+  static method foo : int () { return 5 + 3; }
 </pre>
 
 
@@ -2000,9 +2000,9 @@ static method foo : int () { return 5 + 3; }
 Method is Method that has <a href="#language-type-self">self Type</a> as its first argument.
 
 <pre>
-method METHOD_NAME : TYPE  (ARGUMENT2 : TYPE2, ARGUMENT3 : TYPE3, ARGUMENTN : TYPEn) {
-
-}
+  method METHOD_NAME : TYPE  (ARGUMENT2 : TYPE2, ARGUMENT3 : TYPE3, ARGUMENTN : TYPEn) {
+  
+  }
 </pre>
 
 <a href="#language-type-self">self Type</a> must be first argument.
@@ -2030,24 +2030,24 @@ It the method is a instance method, the part of signature of the first argument 
 <b>Signature Example:</b>
 
 <pre>
-# Method Definition
-static method foo : int ($num1 : double, $num2 : long[])
-
-# Signature
-int(double,long[])
-
-# Method Definition
-static method foo : void ()
-
-# Signature
-void()
-
-<pre>
-# Method Definition
-method foo : int ($num1 : double, $num2 : long[])
-
-# Signature
-int(self,double,long[])
+  # Method Definition
+  static method foo : int ($num1 : double, $num2 : long[])
+  
+  # Signature
+  int(double,long[])
+  
+  # Method Definition
+  static method foo : void ()
+  
+  # Signature
+  void()
+  
+  <pre>
+  # Method Definition
+  method foo : int ($num1 : double, $num2 : long[])
+  
+  # Signature
+  int(self,double,long[])
 </pre>
 
 Signature is not used in SPVM programs. Signature is used when calling the SPVM Method from <a href="/native-api.html">SPVM Native API</a>.
@@ -2078,24 +2078,24 @@ Method Callstack is memory area allocated in each method call.
 Enumeration Definition is a syntax to define multiple <a href="#language-method-constant">Constant Methods</a> easily.
 
 <pre>
-# Enumeration Definition
-enum {
-  FLAG1,
-  FLAG2,
-  FLAG3
-}
-</pre>
-
-Enumeration must be defined directly under <a href="#language-class-definition">Class Definition</a>.
-
-<pre>
-class Foo {
+  # Enumeration Definition
   enum {
     FLAG1,
     FLAG2,
     FLAG3
   }
-}
+</pre>
+
+Enumeration must be defined directly under <a href="#language-class-definition">Class Definition</a>.
+
+<pre>
+  class Foo {
+    enum {
+      FLAG1,
+      FLAG2,
+      FLAG3
+    }
+  }
 </pre>
 
 The first value starts with "0". The value is incremented by "1". In this example, "FLAG1" is "0", "FALG2" is "1", and "FLAG3" is "2".
@@ -2103,29 +2103,29 @@ The first value starts with "0". The value is incremented by "1". In this exampl
 "," can be added after the last element of Enumeration.
 
 <pre>
-enum {
-  FLAG1,
-  FLAG2,
-  FLAG3,
-}
+  enum {
+    FLAG1,
+    FLAG2,
+    FLAG3,
+  }
 </pre>
 
 Enumeration is an alias for <a href="#language-method-constant">Constant Method</a> that Return Type is <a href="#language-type-int">int Type</a>. It is equivalent to the following Method Definition:
 
 <pre>
-static method FLAG1 : int () { return 0; }
-static method FLAG2 : int () { return 1; }
-static method FLAG3 : int () { return 2; }
+  static method FLAG1 : int () { return 0; }
+  static method FLAG2 : int () { return 1; }
+  static method FLAG3 : int () { return 2; }
 </pre>
 
 The value of <a href="#language-type-int">int Type</a> can be set in the enum element.
 
 <pre>
-enum {
-  FLAG1,
-  FLAG2 = 4,
-  FLAG3,
-}
+  enum {
+    FLAG1,
+    FLAG2 = 4,
+    FLAG3,
+  }
 </pre>
 
 
@@ -2140,11 +2140,11 @@ If Enum Definition is invalid, Compile Error occurs.
 Descriptor can be specified for Enumeration.
 
 <pre>
-private enum {
-  FLAG1,
-  FLAG2 = 4,
-  FLAG3,
-}
+  private enum {
+    FLAG1,
+    FLAG2 = 4,
+    FLAG3,
+  }
 </pre>
 
 List of Enumeration Descriptor
@@ -2189,9 +2189,9 @@ If both "public" and "private" Descriptors are specified, Compile Error occurs.
 Enumeration is an alias for <a href="#language-method-constant">Constant Method</a>, so it can be called in exactly the same way as Method call.
 
 <pre>
-my $flag1 = Foo->FLAG1;
-my $flag2 = Foo->FLAG2;
-my $flag3 = Foo->FLAG3;
+  my $flag1 = Foo->FLAG1;
+  my $flag2 = Foo->FLAG2;
+  my $flag3 = Foo->FLAG3;
 </pre>
 
 <p>
@@ -2199,23 +2199,23 @@ my $flag3 = Foo->FLAG3;
 </p>
 
 <pre>
-switch ($num) {
-  case Foo->FLAG1: {
-
-    break;
+  switch ($num) {
+    case Foo->FLAG1: {
+  
+      break;
+    }
+    case Foo->FLAG2: {
+  
+      break:
+    }
+    case Foo->FLAG3: {
+  
+      break:
+    }
+    default: {
+  
+    }
   }
-  case Foo->FLAG2: {
-
-    break:
-  }
-  case Foo->FLAG3: {
-
-    break:
-  }
-  default: {
-
-  }
-}
 </pre>
 
 
@@ -2227,28 +2227,28 @@ switch ($num) {
 INIT Keyword defines INIT Block.
 
 <pre>
-INIT {
-
-}
+  INIT {
+  
+  }
 </pre>
 
 INIT Block must be defined directly under <a href="#language-class-definition">Class Definition</a>.
 
 <pre>
-class Foo {
-  INIT {
-
+  class Foo {
+    INIT {
+  
+    }
   }
-}
 </pre>
 
 Zero or more <a href="#language-statement">Statements</a> can be written in INIT Block.
 
 <pre>
-INIT {
-  my $foo = 1 + 1;
-  my $bar;
-}
+  INIT {
+    my $foo = 1 + 1;
+    my $bar;
+  }
 </pre>
 
 <a href="#language-statement-return">return Statement</a> cannot be written in INIT Block.
@@ -2262,16 +2262,16 @@ The execution order of INIT Block is not guaranteed. If ohter INIT Block is defi
 A common use of INIT Block is to initialize <a href="#language-class-var">Class Variable</a>.
 
 <pre>
-class Foo {
-  use Point;
-  
-  our $NUM : int;
-  our $POINT : Point;
-  INIT {
-    $NUM = 3;
-    $POINT = Point->new;
+  class Foo {
+    use Point;
+    
+    our $NUM : int;
+    our $POINT : Point;
+    INIT {
+      $NUM = 3;
+      $POINT = Point->new;
+    }
   }
-}
 </pre>
 
 
@@ -2285,7 +2285,7 @@ class Foo {
 Local Variable is declared using <b>my</b> <a href="#language-token-keyword">Keyword</a>.
 
 <pre>
-my LOCAL_VARIABLE_NAME : TYPE;
+  my LOCAL_VARIABLE_NAME : TYPE;
 </pre>
 
 The local variable name must be follow the rule of <a href="#language-token-identifier-local-var-name">Local Variable Name</a>.
@@ -2293,65 +2293,65 @@ The local variable name must be follow the rule of <a href="#language-token-iden
 <a href="#language-type">Type</a> must be specified. Type must be <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-object">Object Type</a>, <a href="#language-type-multi-numeric">Multi Numeric Type</a>, or <a href="#language-type-ref">Reference Type</a>.
 
 <pre>
-# Local Variable Declaration Examples
-my $var : int;
-my $var : Point;
-my $var : Complex_2d;
-my $var : int*;
+  # Local Variable Declaration Examples
+  my $var : int;
+  my $var : Point;
+  my $var : Complex_2d;
+  my $var : int*;
 </pre>
 
 Local Variable is initialized by <a href="#language-local-var-initial-value">Local Variable Initial Value</a>.
 
 <pre>
-# Initialized by 0
-my $num : int;
-
-# Initialized by 0
-my $num : double;
-
-# Initialized by undef
-my $point : Point;
-
-# x is initialized by 0. y is initialized by 0.
-my $z : Complex_2d;
+  # Initialized by 0
+  my $num : int;
+  
+  # Initialized by 0
+  my $num : double;
+  
+  # Initialized by undef
+  my $point : Point;
+  
+  # x is initialized by 0. y is initialized by 0.
+  my $z : Complex_2d;
 </pre>
 
 
 Initialization can be done at the same time as Local Variable Declaration.
 
 <pre>
-# Initialized by 1
-my $num : int = 1;
-
-# Initialized by 2.5
-my $num : double = 2.5;
-
-# Initialized by Point object
-my $point : Point = new Point;
+  # Initialized by 1
+  my $num : int = 1;
+  
+  # Initialized by 2.5
+  my $num : double = 2.5;
+  
+  # Initialized by Point object
+  my $point : Point = new Point;
 </pre>
 
 Using <a href="#language-type-inference">Type Inference</a>, you omit <a href="#language-type">Type</a> in Local Variable Declaration.
 
 <pre>
-# int
-my $num = 1;
-
-# double
-my $num = 1.0;
+  # int
+  my $num = 1;
+  
+  # double
+  my $num = 1.0;
 </pre>
 
 Local Variable Declaration returns the value of Local Variable. This is a <a href="#language-expression">Expression</a>.
 
 <pre>
-my $ppp = my $bar = 4;
-
-if (my $bar = 1) {
-
-}
-
-while (my $bar = 1) {
-
-}
+  my $ppp = my $bar = 4;
+  
+  if (my $bar = 1) {
+  
+  }
+  
+  while (my $bar = 1) {
+  
+  }
 </pre>
 
 See <a href="#language-scope">Scope</a> about Local Variable Scope.
@@ -2383,14 +2383,14 @@ If <a href="#language-class-var">Class Variable</a> with the same name as the Lo
 <b>Scope</b> is a range surrounded by <a href="#language-scope-scope-block">Scope Block</a>.
 
 <pre>
-# Scope Block 
-{
-  # Start of Scope
-  
-  # ...
-  
-  # End of Scope
-}
+  # Scope Block 
+  {
+    # Start of Scope
+    
+    # ...
+    
+    # End of Scope
+  }
 </pre>
 
 Local Variable Declaration registers the Local Variable that is <a href="#language-type-object">Object Type</a> with Mortal Variable in run-time. 
@@ -2398,10 +2398,10 @@ Local Variable Declaration registers the Local Variable that is <a href="#langua
 If the object is not <a href="#language-undef">undef</a>, The Reference Count is added by 1.
 
 <pre>
-{
-  # $num become Mortal Variable in run-time
-  my $num = new Foo;
-}
+  {
+    # $num become Mortal Variable in run-time
+    my $num = new Foo;
+  }
 </pre>
 
 At the end of Scope, the object that is registered as Mortal Variable, Reference Count is reduced by 1 except the object is not <a href="#language-undef">undef</a>.
@@ -2415,10 +2415,10 @@ If the Reference Count become 0, the object released.
 The part enclosed by "{" and "}" is called <b>Block</b>.
 
 <pre>
-# Block 
-{
-
-}
+  # Block 
+  {
+  
+  }
 </pre>
 
 There are <a href="#language-scope-scope-block">Scope Block</a> that creates a scope and Non Scope Block that does not create a scope.
@@ -2437,10 +2437,10 @@ There are <a href="#language-scope-scope-block">Scope Block</a> that creates a s
 Simple Block is a scope block.
 
 <pre>
-# Simple Block
-{
-
-}
+  # Simple Block
+  {
+  
+  }
 </pre>
 
 
@@ -2450,10 +2450,10 @@ Simple Block is a scope block.
 Method Block is a scope block.
 
 <pre>
-# Method Block
-static method foo : int () {
-
-}
+  # Method Block
+  static method foo : int () {
+  
+  }
 </pre>
 
 
@@ -2463,10 +2463,10 @@ static method foo : int () {
 eval Block is a scope block.
 
 <pre>
-# eval Block
-eval {
-
-}
+  # eval Block
+  eval {
+  
+  }
 </pre>
 
 
@@ -2476,10 +2476,10 @@ eval {
 if Block is a scope block.
 
 <pre>
-# if Block
-if (EXPRESSION) {
-
-}
+  # if Block
+  if (EXPRESSION) {
+  
+  }
 </pre>
 
 
@@ -2489,10 +2489,10 @@ if (EXPRESSION) {
 elsif Block is a scope block.
 
 <pre>
-#elsif Block
-elsif (EXPRESSION) {
-
-}
+  #elsif Block
+  elsif (EXPRESSION) {
+  
+  }
 </pre>
 
 
@@ -2502,10 +2502,10 @@ elsif (EXPRESSION) {
 else Block is a scope block.
 
 <pre>
-# else Block
-else {
-
-}
+  # else Block
+  else {
+  
+  }
 </pre>
 
 
@@ -2515,10 +2515,10 @@ else {
 for Block is a scope block.
 
 <pre>
-# for Block 
-for (my $i = 0; $i < 3; $i++) {
-
-}
+  # for Block 
+  for (my $i = 0; $i < 3; $i++) {
+  
+  }
 </pre>
 
 
@@ -2528,10 +2528,10 @@ for (my $i = 0; $i < 3; $i++) {
 while Block is a scope block.
 
 <pre>
-# while Block
-while (EXPRESSION) {
-
-}
+  # while Block
+  while (EXPRESSION) {
+  
+  }
 </pre>
 
 
@@ -2541,9 +2541,9 @@ while (EXPRESSION) {
 switch Block is a scope block.
 
 <pre>
-switch (EXPRESSION) {
-
-}
+  switch (EXPRESSION) {
+  
+  }
 </pre>
 
 
@@ -2583,13 +2583,13 @@ If Integer Literal is assigned to a <a href="#language-type-short">short Type</a
 <b>Integer Literal Example:</b>
 
 <pre>
-123
-+123
--123
-123L
-123l
-123_456_789
--123_456_789L
+  123
+  +123
+  -123
+  123L
+  123l
+  123_456_789
+  -123_456_789L
 </pre>
 
 
@@ -2607,10 +2607,10 @@ Other rules are same as Decimal Representation of Integer Literal
 <b>Hexadecimal Representation of Integer Literal Example:</b>
 
 <pre>
-0x3b4f
--0x3F1A
-0xDeL
-0xFFFFFFFF_FFFFFFFF
+  0x3b4f
+  -0x3F1A
+  0xDeL
+  0xFFFFFFFF_FFFFFFFF
 </pre>
 
 
@@ -2628,10 +2628,10 @@ Other rules are same as Decimal Representation of Integer Literal
 <b>Octal Representation of Integer Literal Example:</b>
 
 <pre>
-0755
--0644
-0666L
-0655_755
+  0755
+  -0644
+  0666L
+  0655_755
 </pre>
 
 
@@ -2647,10 +2647,10 @@ It is followed by one or more consecutive characters "0" or "1".
 <b>Binary Representation of Integer Literal Example:</b>
 
 <pre>
-0b0101
--0b1010
-0b110000L
-0b10101010_10101010
+  0b0101
+  -0b1010
+  0b110000L
+  0b10101010_10101010
 </pre>
 
 
@@ -2660,8 +2660,8 @@ It is followed by one or more consecutive characters "0" or "1".
 Floating Point Literal consists of <b>Sign Part</b>, <b>Numeric Part</b>, <b>Exponent Part</b> and <b>Suffix</b>.
 
 <pre>
-# Floating Point Literal
-[Sign Part][Numeric Part][Exponent Part][Suffix Part]
+  # Floating Point Literal
+  [Sign Part][Numeric Part][Exponent Part][Suffix Part]
 </pre>
 
 Floating Point Literal is <b>Decimal Floating Point Literal</b> or <b>Hexadecimal Floating Point Literal</b>.
@@ -2682,8 +2682,8 @@ Hexadecimal Floating Point Literal needs Exponent Part.
 <b>Exponent Part</b> is consist of <b>Exponential Notation</b> and <b>Signed Decimal Integer</b>.
 
 <pre>
-# Exponent Part
-[Exponential Notation][Signed Decimal Integer]
+  # Exponent Part
+  [Exponential Notation][Signed Decimal Integer]
 </pre>
 
 Exponential Notation is "e" or "E" for Decimal Floating Point Literal, and "p" or "P" for Hexadecimal Floating Point Literal.
@@ -2703,18 +2703,18 @@ If Floating Point Literal is <a href="#language-type-double">double Type</a>, th
 <b>Floating Point Literal Example:</b>
 
 <pre>
-1.32
--1.32
-1.32f
-1.32F
-1.32e3
-1.32e-3
-1.32E+3
-1.32E-3
-0x3d3d.edp0
-0x3d3d.edp3
-0x3d3d.edP3
-0x3d3d.edP-3f
+  1.32
+  -1.32
+  1.32f
+  1.32F
+  1.32e3
+  1.32e-3
+  1.32E+3
+  1.32E-3
+  0x3d3d.edp0
+  0x3d3d.edp3
+  0x3d3d.edP3
+  0x3d3d.edP-3f
 </pre>
 
 
@@ -2829,21 +2829,21 @@ Charater Literal Type is "<a href="#language-type-byte">byte Type</a>"
 <b>Charater Literal</b> represents one character of ASCII code.
 
 <pre>
-# Charater Literal 
-'a'
-'x'
-
-# Charater Literal using Escape Character
-'\a'
-'\t'
-'\n'
-'\f'
-'\r'
-'\"'
-'\''
-'\\'
-'\x0D'
-'\x0A'
+  # Charater Literal 
+  'a'
+  'x'
+  
+  # Charater Literal using Escape Character
+  '\a'
+  '\t'
+  '\n'
+  '\f'
+  '\r'
+  '\"'
+  '\''
+  '\\'
+  '\x0D'
+  '\x0A'
 </pre>
 
 
@@ -2976,14 +2976,14 @@ If the espape characters which is not included avobe is used, a compiler error o
 <b>String Literal Example:</b>
 
 <pre>
-# String Literal 
-"abc"
-"あいう"
-
-# Escape Character of String Literal 
-"abc\tdef\n"
-"\x0D\x0A"
-"\N{U+3042}\N{U+3044}\N{U+3046}"
+  # String Literal 
+  "abc"
+  "あいう"
+  
+  # Escape Character of String Literal 
+  "abc\tdef\n"
+  "\x0D\x0A"
+  "\N{U+3042}\N{U+3044}\N{U+3046}"
 </pre>
 
 
@@ -2993,31 +2993,31 @@ If the espape characters which is not included avobe is used, a compiler error o
 <b>Variable Expansion</b> applys <a href="#language-local-var">Local Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href="#language-ref-deref">Dereference</a>, <a href="#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-exception-var">Exception Variable</a> in String Literal.
 
 <pre>
-"AAA $foo BBB"
-"AAA $FOO BBB"
-"AAA $$foo BBB"
-"AAA $foo->{x} BBB"
-"AAA $foo->[3] BBB"
-"AAA $foo->{x}[3] BBB"
-"AAA $@ BBB"
+  "AAA $foo BBB"
+  "AAA $FOO BBB"
+  "AAA $$foo BBB"
+  "AAA $foo->{x} BBB"
+  "AAA $foo->[3] BBB"
+  "AAA $foo->{x}[3] BBB"
+  "AAA $@ BBB"
 </pre>
 
 The above is expanded as the following.
 
 <pre>
-"AAA" . $foo . "BBB"
-"AAA" . $FOO . "BBB"
-"AAA" . $$foo . "BBB"
-"AAA" . $foo->{x} . "BBB"
-"AAA" . $foo->[3] . "BBB"
-"AAA" . $foo->{x}[3] . "BBB"
-"AAA" . $@ . "BBB"
+  "AAA" . $foo . "BBB"
+  "AAA" . $FOO . "BBB"
+  "AAA" . $$foo . "BBB"
+  "AAA" . $foo->{x} . "BBB"
+  "AAA" . $foo->[3] . "BBB"
+  "AAA" . $foo->{x}[3] . "BBB"
+  "AAA" . $@ . "BBB"
 </pre>
 
 The variable name can besurround with "{" and "}" to indicate the end of the variable name.
 
 <pre>
-"AAA ${foo}_ccc BBB"
+  "AAA ${foo}_ccc BBB"
 </pre>
 <p>
 
@@ -3025,7 +3025,7 @@ The above is expanded as the following.
 
 </p>
 <pre>
-"AAA " . ${foo} . "_ccc BBB"
+  "AAA " . ${foo} . "_ccc BBB"
 </pre>
 
 If there is no enclosing "{" and "}", up to the valid part as a variable name is interpreted as a Variable. Dereference interpreting is same as this.
@@ -3039,7 +3039,7 @@ If "->" follows the variable name, it is interpreted as <a href="#language-field
 The trailing $is not treated as the start of Variable Expansion. It is treated as "$".
 
 <pre>
-"AAA$"
+  "AAA$"
 </pre>
 
 
@@ -3051,21 +3051,21 @@ SPVM has <b>String Type</b>. String is created by <a href="#language-literal-str
 String is immutable and you can't change the each character. You can only get the each character. 
 
 <pre>
-# String is Array of byte Type
-my $string : string = "Hello";
-my $char0 = $string->[0];
-my $char1 = $string->[1];
-my $char2 = $string->[2];
-
-# Compile Error because String Type is immutable.
-$string_const->[0] = 'd';
-
-# Create new String using Type Convertion;
-my $bytes = new byte[3];
-$bytes->[0] = 'a';
-$bytes->[1] = 'b';
-$bytes->[2] = 'c';
-my $string = (string)$bytes;
+  # String is Array of byte Type
+  my $string : string = "Hello";
+  my $char0 = $string->[0];
+  my $char1 = $string->[1];
+  my $char2 = $string->[2];
+  
+  # Compile Error because String Type is immutable.
+  $string_const->[0] = 'd';
+  
+  # Create new String using Type Convertion;
+  my $bytes = new byte[3];
+  $bytes->[0] = 'a';
+  $bytes->[1] = 'b';
+  $bytes->[2] = 'c';
+  my $string = (string)$bytes;
 </pre>
 
 
@@ -3075,7 +3075,7 @@ my $string = (string)$bytes;
 Undefined Value is "undef"
 
 <pre>
-undef
+  undef
 </pre>
 
 Undefined Value can be assigned to all <a href="#language-type-object">Object Type</a> variable.
@@ -3130,7 +3130,7 @@ See <a href="#language-expression-new-array">Create Array</a> to create Array.
 Array Access is an operation to access the element of Array to get or set the value.
 
 <pre>
-ARRAY->[INDEX]
+  ARRAY->[INDEX]
 </pre>
 
 See <a href="#language-expression-get-array-element">Get Array Element Value</a> to get the element value of Array.
@@ -3148,18 +3148,18 @@ Multi Numeric type represents continuous numeric values. For example, there are 
 Multi Numeric Type is defined by specifying mulnum_t <a href="#language-class-descriptor">Class Descriptor</a> in <a href="#language-class-definition">Class Definition</a>.
 
 <pre>
-# Three consecutive 32bit signed integers
-class Point_3i : mulnum_t {
-  has x : int;
-  has y : int;
-  has z : int;
-}
-
-# Tow consecutive 64bit floating point numbers
-class Complex_2d : mulnum_t {
-  x : double;
-  y : double;
-}
+  # Three consecutive 32bit signed integers
+  class Point_3i : mulnum_t {
+    has x : int;
+    has y : int;
+    has z : int;
+  }
+  
+  # Tow consecutive 64bit floating point numbers
+  class Complex_2d : mulnum_t {
+    x : double;
+    y : double;
+  }
 </pre>
 
 Multi Numeric Type must end with "_", Number of Fields, <a href="#language-mulnum-definition">Multi Numeric Type Suffix</a>.
@@ -3179,14 +3179,14 @@ Multi Numeric Type can be used as <a href="#language-type">Type</a> of Return Va
 Multi Numeric Type can be used as <a href="#language-type-basic">Basic Type</a> of <a href="#language-type-array">Array Type</a> .
 
 <pre>
-my $points = new Point_3i[5];
+  my $points = new Point_3i[5];
 </pre>
 
 Reference can be created for Multi Numeric Type value.
 
 <pre>
-my $point : Point_3i;
-my $point_ref = \$point;
+  my $point : Point_3i;
+  my $point_ref = \$point;
 </pre>
 
 <a href="#language-undef">Undefined Value</a> cannot be assigned to Multi Numeric Type value.
@@ -3269,16 +3269,16 @@ List of Multi Numeric Type Suffix.
 To use Multi Numeric Type, load a Module using <a href="#language-module-use">use Statement</a>.
 
 <pre>
-use Point_3i;
-use Complex_2d;
+  use Point_3i;
+  use Complex_2d;
 </pre>
 
 
 Next is <a href="#language-local-var-declaration">Local Variable Declaration</a>. Local Variable Declaration create continuous area for fields of Multi Numeric Type Value on <a href="#language-method-stack">Method Callstack</a>. All fields of of Multi Numeric Type Value are initialized by <a href="#language-type-initial-value">Type Initial Value</a>.
 
 <pre>
-my $point : Point_3i;
-my $z : Complex_2d;
+  my $point : Point_3i;
+  my $z : Complex_2d;
 </pre>
 
 Note that Multi Numeric Type value are not object, so cannot create a Object by <a href="#language-expression-new">new</a> syntax.
@@ -3288,7 +3288,7 @@ Note that Multi Numeric Type value are not object, so cannot create a Object by 
 <b>Multi Numeric Type Field Access</b> is an operation to access Multi Numeric Type Field to get or set a value.
 
 <pre>
-MULTI_NUMERIC_TYPE_VALUE->{FIELD_NAME}
+  MULTI_NUMERIC_TYPE_VALUE->{FIELD_NAME}
 </pre>
 
 See <a href="#language-expression-get-field-multi-numeric">Get Multi Numeric Field Value</a> to get Multi Numeric Type Field Value.
@@ -3304,9 +3304,9 @@ See <a href="#language-expression-set-field-multi-numeric">Set Multi Numeric Fie
 <a href="#language-mulnum">Multi Numeric Value</a> can be an element of <a href="#language-array">Array</a>.
 
 <pre>
-my $points = new Point_3i[5];
-
-my $zs = new Complex_2d[5];
+  my $points = new Point_3i[5];
+  
+  my $zs = new Complex_2d[5];
 </pre>
 
 Multi Numeric Array has continuous Multi Numeric Values.
@@ -3324,7 +3324,7 @@ For example, Point_3i[5] is continuous 15 (= 3 * 5) count <a href="#language-typ
 Multi Numeric Array Access is an operation to access Multi Numeric Array to get and set the element value.
 
 <pre>
-Array->[INDEX]
+  Array->[INDEX]
 </pre>
 
 See <a href="#language-expression-get-array-element">Get Array Element Value</a> to get Array Element Value.
@@ -3345,13 +3345,13 @@ You can get Reference of Local Variable using <a href="#language-operator-ref">R
 Reference types are represented by appending an * after <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric ">Multi Numeric Type</a>.
 
 <pre>
-# Numeric Type Reference
-my $num : int;
-my $num_ref : int* = \$num;
-
-# Multi Numeric Type Reference
-my $point : Point_3d;
-my $point_ref : Point_3d* = \$point;
+  # Numeric Type Reference
+  my $num : int;
+  my $num_ref : int* = \$num;
+  
+  # Multi Numeric Type Reference
+  my $point : Point_3d;
+  my $point_ref : Point_3d* = \$point;
 </pre>
 
 Target of Reference Operator is Variable of <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a>. <a href="#language-type-object">Object Type</a> Variable or <a href="#language-literal">Literal</a> can't be target of Reference Operator.
@@ -3359,17 +3359,17 @@ Target of Reference Operator is Variable of <a href="#language-type-numeric">Num
 <a href="#language-type-ref">Reference Type</a> can be used in Method Argument.
 
 <pre>
-# Method Definition
-static method sum : void ($out_ref : int*, $in1 : int, $in2 : int) {
-  $$out_ref = $in1 + $in2;
-}
-
-# Method Call
-my $num1 = 1;
-my $num2 = 2;
-my $out : int;
-my $out_ref = \$out;
-sum($out_ref, $num1, $num2);
+  # Method Definition
+  static method sum : void ($out_ref : int*, $in1 : int, $in2 : int) {
+    $$out_ref = $in1 + $in2;
+  }
+  
+  # Method Call
+  my $num1 = 1;
+  my $num2 = 2;
+  my $out : int;
+  my $out_ref = \$out;
+  sum($out_ref, $num1, $num2);
 </pre>
 
 
@@ -3379,27 +3379,27 @@ sum($out_ref, $num1, $num2);
 Dereference is an operation to get and set the value pointed by Reference.
 
 <pre>
-# Dereference Numeric Type Reference to get the pointed value
-my $num2 = $$num_ref;
-
-# Dereference Numeric Type Reference to set the pointed value
-$$num_ref = 3;
-
-# Dereference Mutil Numeric Type Reference to get the pointed value
-my $point2 = $$point_ref;
-
-# Dereference Mutil Numeric Type Reference to set the pointed value
-$$point_ref = $point2;
+  # Dereference Numeric Type Reference to get the pointed value
+  my $num2 = $$num_ref;
+  
+  # Dereference Numeric Type Reference to set the pointed value
+  $$num_ref = 3;
+  
+  # Dereference Mutil Numeric Type Reference to get the pointed value
+  my $point2 = $$point_ref;
+  
+  # Dereference Mutil Numeric Type Reference to set the pointed value
+  $$point_ref = $point2;
 </pre>
 
 If the target of Reference Type is <a href="#language-type-multi-numeric">Multi Numeric Type</a>, the setting and getting of Multi Numeric Type Field Value can be done by Arrow Operator.
 
 <pre>
-# If the target of Reference Type is Multi Numeric Type, get Multi Numeric Type Field Value
-my $x = $point_ref->{x};
-
-# If the Target of Reference Type is Multi Numeric Type, set Multi Numeric Type Field Value
-$point_ref->{x} = 1;
+  # If the target of Reference Type is Multi Numeric Type, get Multi Numeric Type Field Value
+  my $x = $point_ref->{x};
+  
+  # If the Target of Reference Type is Multi Numeric Type, set Multi Numeric Type Field Value
+  $point_ref->{x} = 1;
 </pre>
 
 
@@ -3435,7 +3435,7 @@ Expression is a syntax component that can be evaluated as a value.
 <b>Get Local Variable Value</b> is a Expression to get <a href="#language-local-var">Local Variable</a> Value.
 
 <pre>
-$var
+  $var
 </pre>
 
 
@@ -3445,7 +3445,7 @@ $var
 <b>Set Local Variable Value Expression</b> is a Expression to set <a href="#language-local-var">Local Variable</a> Value using <a href="#language-operator-assign">Assignment Operator</a>.
 
 <pre>
-$var = RIGHT_EXPRESSION
+  $var = RIGHT_EXPRESSION
 </pre>
 
 The Assignment must satisfy <a href="#language-type-compatible">Type Compatibility</a>.
@@ -3465,13 +3465,13 @@ See <a href="#language-scope">Scope</a> to know Garbage Collection of Local Vari
 <b>Get Class Variable Value Expression</b> is a Expression to get <a href="#language-class-var">Class Variable</a> Value.
 
 <pre>
-$CLASS_NAME::CLASS_VARIABLE_NAME
+  $CLASS_NAME::CLASS_VARIABLE_NAME
 </pre>
 
 "CLASS_NAME::" can be omitted when the Class Variable belongs to own <a href="#language-class">Class</a>.
 
 <pre>
-$CLASS_VARIABLE_NAME
+  $CLASS_VARIABLE_NAME
 </pre>
 
 If you try to get the value of a Class Variable that is not defined, Compile Error occurs.
@@ -3481,14 +3481,14 @@ If you try to access a private Class Variable from outside the Class, Compile Er
 <b>Get Class Variable Value Example:</b>
 
 <pre>
-class Foo {
-  our $VAR : int;
-
-  static method bar : int () {
-    my $var1 = $Foo::VAR;
-    my $var2 = $VAR;
+  class Foo {
+    our $VAR : int;
+  
+    static method bar : int () {
+      my $var1 = $Foo::VAR;
+      my $var2 = $VAR;
+    }
   }
-}
 </pre>
 
 
@@ -3499,13 +3499,13 @@ class Foo {
 .
 
 <pre>
-$CLASS_NAME::CLASS_VARIABLE_NAME = RIGHT_EXPRESSION
+  $CLASS_NAME::CLASS_VARIABLE_NAME = RIGHT_EXPRESSION
 </pre>
 
 "CLASS_NAME::" can be omitted when the Class Variable belongs to own <a href="#language-class">Class</a>.
 
 <pre>
-$CLASS_VARIABLE_NAME = RIGHT_EXPRESSION
+  $CLASS_VARIABLE_NAME = RIGHT_EXPRESSION
 </pre>
 
 If the assignment does not satisfy <a href="#language-type-compatible">Type Compatibility</a>, Compile Error occurs.
@@ -3523,14 +3523,14 @@ If an object has already been assigned to Class Variable before the assignment, 
 <b>Set Class Variable Value Example:</b>
 
 <pre>
-class Foo {
-  our $VAR : int;
-
-  static method bar : int () {
-    $Foo::VAR = 1;
-    $VAR = 3;
+  class Foo {
+    our $VAR : int;
+  
+    static method bar : int () {
+      $Foo::VAR = 1;
+      $VAR = 3;
+    }
   }
-}
 </pre>
 
 
@@ -3540,7 +3540,7 @@ class Foo {
 <b>Get Exception Variable Value Expression</b> is a Expression to get the value of <a href="#language-exception-var">Exception Variable</a>.
 
 <pre>
-$@
+  $@
 </pre>
 
 Get Exception Variable Value Expression returns the value of <a href="#language-type-string">String Type</a>.
@@ -3548,13 +3548,13 @@ Get Exception Variable Value Expression returns the value of <a href="#language-
 <b>Get Exception Variable Value Example:</b>
 
 <pre>
-eval {
-  foo();
-};
-
-if (my $message = $@) {
-
-}
+  eval {
+    foo();
+  };
+  
+  if (my $message = $@) {
+  
+  }
 </pre>
 
 
@@ -3564,7 +3564,7 @@ if (my $message = $@) {
 <b>Set Exception Variable Value Expression</b> is a Expression to set the value of <a href="#language-exception-var">Exception Variable</a> using <a href="#language-operator-assign">Assignment Operator</a>.
 
 <pre>
-$@ = RIGHT_EXPRESSION
+  $@ = RIGHT_EXPRESSION
 </pre>
 
 Right Expression must be <a href="#language-type-string">String Type</a>.
@@ -3578,7 +3578,7 @@ If an object has already been assigned to Exception Variable before the assignme
 <b>Set Exception Variable Value Example:</b>
 
 <pre>
-$@ = "Error";
+  $@ = "Error";
 </pre>
 
 
@@ -3588,7 +3588,7 @@ $@ = "Error";
 <b>Get Field Value Expression</b> is a Expression to get <a href="#language-field">Field</a> Value.
 
 <pre>
-INVOCANT_EXPRESSION->{FIELD_NAME}
+  INVOCANT_EXPRESSION->{FIELD_NAME}
 </pre>
 
 Invocant Expression is <a href="#language-type-class">Class Type</a>. If Expression is <a href="#language-type-multi-numeric">Multi Numeric Type</a> Value, The Field Access is <a href="#language-expression-get-field-multi-numeric">Get Multi Numeric Field Value</a>. If Expression is <a href="#language-type-ref-multi-numeric">Multi Numeric Reference Type</a> Value, The Field Access is ,<a href="#language-expression-get-field-multi-numeric-deref">, otherwise Compile Error occurs.
@@ -3602,8 +3602,8 @@ Retrun Type is The <a href="#language-type">Type</a> of the Field.
 <b>Get Field Value Example:</b>
 
 <pre>
-my $point = Point->new;
-my $x = $point->{x};
+  my $point = Point->new;
+  my $x = $point->{x};
 </pre>
 
 
@@ -3613,7 +3613,7 @@ my $x = $point->{x};
 <b>Set Field Value Expression</b> is a Expression to set <a href="#language-field">Field</a> Value.
 
 <pre>
-INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
+  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
 </pre>
 
 Invocant Expression is <a href="#language-type-class">Class Type</a>. If Invocant Expression is <a href="#language-type-multi-numeric">Multi Numeric Type</a>, the Field Access is ,<a href="#language-expression-get-field-multi-numeric">Set Multi Numeric Field Value</a>. If Invocant Expression is <a href="#language-type-ref-multi-numeric">Multi Numeric Reference Type</a>, the Field Access is <a href="#language-expression-get-field-multi-numeric-deref">Set Multi Numeric Field Value via Dereference</a>, otherwise Compile Error occurs.
@@ -3633,8 +3633,8 @@ If an object has already been assigned to Field before the assignment, the Refer
 <b>Set Field Value Example:</b>
 
 <pre>
-my $point = Point->new;
-$point->{x} = 1;
+  my $point = Point->new;
+  $point->{x} = 1;
 </pre>
 
 
@@ -3644,7 +3644,7 @@ $point->{x} = 1;
 <b>Get Multi Numeric Field Value Expression</b> is a Expression to get Field Value of <a href="#language-mulnum">Multi Numeric Value</a>.
 
 <pre>
-INVOCANT_EXPRESSION->{FIELD_NAME}
+  INVOCANT_EXPRESSION->{FIELD_NAME}
 </pre>
 <p>
   Invocant Expression is <a href="#language-type-class">Multi Numeric Type</a>. If Invocant Expression is <a href="#language-type-class">Class Type</a>, the Field Access is <a href="#language-expression-get-field">. If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type</a>, the Field Access is <a href="#language-expression-get-field-multi-numeric-deref">Get Multi Numeric Field Value via Dereference</a>, otherwise Compile Error occurs.
@@ -3658,8 +3658,8 @@ Retrun Type is The <a href="#language-type">Type</a> of the Field.
 <b>Get Multi Numeric Field Value Example:</b>
 
 <pre>
-my $z : Complex_2d;
-my $re = $z->{x};
+  my $z : Complex_2d;
+  my $re = $z->{x};
 </pre>
 
 
@@ -3669,7 +3669,7 @@ my $re = $z->{x};
 Set Multi Numeric Field Value Expression is a Expression to set Field Value of <a href="#language-mulnum">Multi Numeric Value</a> using <a href="#language-operator-assign">Assignment Operator</a>.
 
 <pre>
-INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
+  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
 </pre>
 <
 
@@ -3686,8 +3686,8 @@ Return Value Type is the Type of Field.
 <b>Set Multi Numeric Field Value Example:</b>
 
 <pre>
-my $z : Complex_2d;
-$z->{x} = 2.5;
+  my $z : Complex_2d;
+  $z->{x} = 2.5;
 </pre>
 
 
@@ -3697,7 +3697,7 @@ $z->{x} = 2.5;
 <b>Get Multi Numeric Field Value via Dereference Expression</b> is a Expression to get Field Value of <a href="#language-mulnum">Multi Numeric Value</a> via <a href="#language-deref">Dereference</a>.
 
 <pre>
-INVOCANT_EXPRESSION->{FIELD_NAME}
+  INVOCANT_EXPRESSION->{FIELD_NAME}
 </pre>
 
 Invocant Expression is <a href="#language-type-ref-multi-numeric">Multi Numeric Reference Type</a>. If Invocant Expression is <a href="#language-type-class">Class Type</a>, the Field Access is , <a href="#language-expression-get-field">Get Field Value</a>. If Invocant Expression is <a href="#language-type-multi-numeric">Multi Numeric Type</a>, the Field Access is <a href="#language-expression-get-field-multi-numeric">Get Multi Numeric Field Value</a>, otherwise Compile Error occurs.
@@ -3711,9 +3711,9 @@ Retrun Type is The <a href="#language-type">Type</a> of the Field.
 <b>Get Multi Numeric Field Value via Dereference Example:</b>
 
 <pre>
-my $z : Complex_2d;
-my $z_ref = \$z;
-my $re = $z_ref->{x};
+  my $z : Complex_2d;
+  my $z_ref = \$z;
+  my $re = $z_ref->{x};
 </pre>
 
 
@@ -3723,7 +3723,7 @@ my $re = $z_ref->{x};
 Set Multi Numeric Field Value Expression via Dereference is a Expression to set Field Value of <a href="#language-mulnum">Multi Numeric Value</a> via <a href="#language-deref">Dereference</a> using <a href="#language-operator-assign">Assignment Operator</a>.
 
 <pre>
-INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
+  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
 </pre>
 
 Invocant Expression is <a href="#language-type-ref-multi-numeric">Multi Numeric Reference Type</a>. If Invocant Expression is <a href="#language-type-class">Class Type</a>, <a href="#language-expression-set-field">Set Field Value</a>. If Invocant Expression is <a href="#language-type-multi-numeric">Multi Numeric Type</a>, <a href="#language-expression-set-field-multi-numeric">Set Multi Numeric Field Value</a>, otherwise Compile Error occurs.
@@ -3739,9 +3739,9 @@ Return Value Type is the Type of Field.
 <b>Set Multi Numeric Field Value via Dereference Example:</b>
 
 <pre>
-my $z : Complex_2d;
-my $z_ref = \$z;
-$z_ref->{x} = 2.5;
+  my $z : Complex_2d;
+  my $z_ref = \$z;
+  $z_ref->{x} = 2.5;
 </pre>
 
 
@@ -3751,7 +3751,7 @@ $z_ref->{x} = 2.5;
 <b>Get Array Element Value Expression</b> is a Expression to get a Element Value of <a href="#language-array">Array</a>.
 
 <pre>
-ARRAY_EXPRESSION->[INDEX_EXPRESSION]
+  ARRAY_EXPRESSION->[INDEX_EXPRESSION]
 </pre>
 
 Array Expression must be <a href="#language-type-array">Array Type</a>.
@@ -3767,14 +3767,14 @@ If Index Expression is lower than 0 or more than the max index of the Array, a R
 <b>Get Array Element Value Example:</b>
 
 <pre>
-my $nums = new int[3];
-my $num = $nums->[1];
-
-my $points = new Point[3];
-my $point = $points->[1];
-
-my $objects : oarray = $points;
-my $object = (Point)$objects->[1];
+  my $nums = new int[3];
+  my $num = $nums->[1];
+  
+  my $points = new Point[3];
+  my $point = $points->[1];
+  
+  my $objects : oarray = $points;
+  my $object = (Point)$objects->[1];
 </pre>
 
 
@@ -3784,7 +3784,7 @@ my $object = (Point)$objects->[1];
 Set Array Element Value Expression is a Expression to set a Element Value of a Array using <a href="#language-operator-assign">Assignment Operator</a>.
 
 <pre>
-ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_EXPRESSION
+  ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_EXPRESSION
 </pre>
 
 Array Expression must be <a href="#language-type-array">Array Type</a>.
@@ -3806,14 +3806,14 @@ If an object has already been assigned to Field before the assignment, the Refer
 <b>Set Array Element Value Example:</b>
 
 <pre>
-my $nums = new int[3];
-$nums->[1] = 3;
-
-my $points = new Point[3];
-$points->[1] = Point->new(1, 2);
-
-my $objects : oarray = $points;
-$objects->[2] = Point->new(3, 5);
+  my $nums = new int[3];
+  $nums->[1] = 3;
+  
+  my $points = new Point[3];
+  $points->[1] = Point->new(1, 2);
+  
+  my $objects : oarray = $points;
+  $objects->[2] = Point->new(3, 5);
 </pre>
 
 
@@ -3823,7 +3823,7 @@ $objects->[2] = Point->new(3, 5);
 <b>Create Object Expression</b> is a Expression to create Object using <b>new</b> keyword.
 
 <pre>
-my $object = new CLASS_NAME;
+  my $object = new CLASS_NAME;
 </pre>
 
 <a href="#language-class">Class</a> that is specified by <a href="#language-token-identifier-class-name">Class Name</a> must be <a href="#language-type-class">Class Type</a>.
@@ -3835,7 +3835,7 @@ Created Object Reference count is 0 at first. If the Object is assigned to some 
 <b>Create Object Example:</b>
 
 <pre>
-my $object = new Foo;
+  my $object = new Foo;
 </pre>
 
 Create Object has the following information.
@@ -3858,7 +3858,7 @@ Create Object has the following information.
 <b>Create Array Expression</b> is a Expression to create Array with <b>new</b> Keyword.
 
 <pre>
-new Type[ELEMENTS_COUNT_EXPRESSION]
+  new Type[ELEMENTS_COUNT_EXPRESSION]
 </pre>
 
 Type must be <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-object">Object Type</a>, <a href="#language-type-multi-numeric">Multi Numeric Type</a>.
@@ -3878,10 +3878,10 @@ Array is <a href="#language-type-array">Array Type</a>. This is also <a href="#l
 <b>Create Array Example:</b>
 
 <pre>
-my $nums = new int[3];
-my $objects = new Foo[3];
-my $objects = new object[3];
-my $values = new Complex_2d[3]
+  my $nums = new int[3];
+  my $objects = new Foo[3];
+  my $objects = new object[3];
+  my $values = new Complex_2d[3]
 </pre>
 
 Created Array has the following information.
@@ -3900,11 +3900,11 @@ Created Array has the following information.
 Multi-Dimention Array is created by the following syntax.
 
 <pre>
-# 2 Dimention Array (3 elements of int[] Type)
-my $nums = new int[][3];
-
-# 3 Dimention Array (3 elements of int[][] Type)
-my $nums = new int[][][3];
+  # 2 Dimention Array (3 elements of int[] Type)
+  my $nums = new int[][3];
+  
+  # 3 Dimention Array (3 elements of int[][] Type)
+  my $nums = new int[][][3];
 </pre>
 
 The max of Dimention of Multi-Dimention Array is 255.
@@ -3916,8 +3916,8 @@ The max of Dimention of Multi-Dimention Array is 255.
   SPVM has a syntax for Array Initialization to simplify Create Array. Expression is not required.
 </p>
 <pre>
-[]
-[Expression1, Expression2, Expression3]
+  []
+  [Expression1, Expression2, Expression3]
 </pre>
 <p>
   Array Initialization returns an Array that has the length of the number of elements of Expression.
@@ -3932,31 +3932,31 @@ The max of Dimention of Multi-Dimention Array is 255.
 <b>Examples:</b>
 
 <pre>
-# int array
-my $nums = [1, 2, 3];
-
-# double array
-my $nums = [1.5, 2.6, 3.7];
-
-# string array
-my $strings = ["foo", "bar", "baz"];
+  # int array
+  my $nums = [1, 2, 3];
+  
+  # double array
+  my $nums = [1.5, 2.6, 3.7];
+  
+  # string array
+  my $strings = ["foo", "bar", "baz"];
 </pre>
 
 Array Initialization has another syntax. This is same as above array init syntax, but always the generated object type is Array Type of <a href="#language-type-any-object">Any Object Type</a>. And if count of expression is odd number, a compile error occurs.
 
 <pre>
-{}
-{Expression1, Expression2, Expression3, Expression4}
+  {}
+  {Expression1, Expression2, Expression3, Expression4}
 </pre>
 
 <b>Examples:</b>
 
 <pre>
-# Key values empty
-my $key_values = {};
-
-# Key values
-my $key_values = {foo => 1, bar => "Hello"};
+  # Key values empty
+  my $key_values = {};
+  
+  # Key values
+  my $key_values = {foo => 1, bar => "Hello"};
 </pre>
 
 
@@ -3968,7 +3968,7 @@ Methods defined by <a href="#language-method-definition">Method Definition</a> c
 Defined method can be called by Class Method Call except a case that the first argument is <a href="#language-type-self">self Type</a>.
 
 <pre>
-ClassName->MethodName(ARGS1, ARGS2, ARGS3, ..., ARGSn);
+  ClassName->MethodName(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 </pre>
 
 The arguments max count is 255.
@@ -3978,7 +3978,7 @@ If the number of arguments does not match the number of arguments defined in the
 <b>Class Method Call Example</b>
 
 <pre>
-my $ret = Foo->bar(1, 2, 3);
+  my $ret = Foo->bar(1, 2, 3);
 </pre>
 
 
@@ -3990,18 +3990,18 @@ my $ret = Foo->bar(1, 2, 3);
 <b>Current Class Example</b>
 
 <pre>
-class Foo {
+  class Foo {
+    
+    static method test : void () {
+      # This means Foo->sum(1, 2)
+      my $ret = &sum(1, 2);
+    }
   
-  static method test : void () {
-    # This means Foo->sum(1, 2)
-    my $ret = &sum(1, 2);
+    static method sum : int ($num1 : int, $num2 : int) {
+      return $num1 + $num2;
+    }
+    
   }
-
-  static method sum : int ($num1 : int, $num2 : int) {
-    return $num1 + $num2;
-  }
-  
-}
 </pre>
 
 
@@ -4014,7 +4014,7 @@ class Foo {
   Instance Method Call can be done with the following syntax using the object created by <a href="#language-expression-new">Create Object</a>.
 </p>
 <pre>
-OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
+  OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 </pre>
 <p>
   Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the Method Definition, Compile Error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, Compile Error occurs
@@ -4029,14 +4029,14 @@ OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
   <b>Instance Method Call Example</b>
 </p>
 <pre>
-my $point = new Point;
-$point->set_x(3);
+  my $point = new Point;
+  $point->set_x(3);
 </pre>
 <p>
   Since the object created by <a href="#language-method-new-callback-object">Create Callback Object</a> is a normal object, you can call Method.
 </p>
 <pre>
-OBJECT_EXPRESSION->(ARGS1, ARGS2, ARGS3, ..., ARGSn);
+  OBJECT_EXPRESSION->(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 </pre>
 
 <p>
@@ -4046,11 +4046,11 @@ OBJECT_EXPRESSION->(ARGS1, ARGS2, ARGS3, ..., ARGSn);
   An Example that calls a Method from the object created by Create Callback Object.
 </p>
 <pre>
-my $cb_obj = method : int ($num1 : int, $num2 : int) {
-  return $num1 + $num2;
-};
-
-my $ret = $cb_obj->(1, 2);
+  my $cb_obj = method : int ($num1 : int, $num2 : int) {
+    return $num1 + $num2;
+  };
+  
+  my $ret = $cb_obj->(1, 2);
 </pre>
 
 
@@ -4060,7 +4060,7 @@ my $ret = $cb_obj->(1, 2);
   Obtaining a value by Dereference is an operation to obtain the actual value from Reference. It was designed to realize the C joint operator "*".
 </p>
 <pre>
-$VARIABLE
+  $VARIABLE
 </pre>
 <p>
   The variable Type must be Reference Type, otherwise Compile Error occurs.
@@ -4069,16 +4069,16 @@ $VARIABLE
   The value obtained by Dereference returns <a href="#language-expression">Expression</a>.
 </p>
 <pre>
-  <b>Example of getting value by Dereference</b>
+    <b>Example of getting value by Dereference</b>
 </pre>
 <pre>
-my $num : int;
-my $num_ref : int* = \$num;
-my $num_deref : int = $$num_ref;
-
-my $z : Complex_2d;
-my $z_ref : Complex_2d* = \$z;
-my $z_deref : Complex_2d = $$z_ref;
+  my $num : int;
+  my $num_ref : int* = \$num;
+  my $num_deref : int = $$num_ref;
+  
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
+  my $z_deref : Complex_2d = $$z_ref;
 </pre>
 
 
@@ -4088,7 +4088,7 @@ my $z_deref : Complex_2d = $$z_ref;
   Setting a value with Dereference is an operation to set the actual value from Reference. It was designed to realize the C joint operator "*".
 </p>
 <pre>
-$VARIABLE = Expression
+  $VARIABLE = Expression
 </pre>
 <p>
   The variable Type must be Reference Type, otherwise Compile Error occurs.
@@ -4100,19 +4100,19 @@ $VARIABLE = Expression
   Setting a value with Dereference returns the set value. This is <a href="#language-expression">Expression</a>.
 </p>
 <pre>
-  <b>Example of setting values ​​with Dereference</b>
+    <b>Example of setting values ​​with Dereference</b>
 </pre>
 <pre>
-my $num : int;
-my $num_ref : int* = \$num;
-$$num_ref = 1;
-
-my $z : Complex_2d;
-my $z_ref : Complex_2d* = \$z;
-
-my $z2 : Complex_2d;
-
-$$z_ref = $z2;
+  my $num : int;
+  my $num_ref : int* = \$num;
+  $$num_ref = 1;
+  
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
+  
+  my $z2 : Complex_2d;
+  
+  $$z_ref = $z2;
 </pre>
 
 
@@ -4122,19 +4122,19 @@ $$z_ref = $z2;
 <b>Get Current Class Name</b> is a Expression to get the current class name by __CLASS__ <a href="#language-token-keyword">Keyword</a>.
 
 <pre>
-__CLASS__
+  __CLASS__
 </pre>
 
 <p>
   <b>Get Current Class Name Example:</b>
 </p>
 <pre>
-class Foo::Bar {
-  static method baz : void () {
-    # Foo::Bar
-    my $class_name == __CLASS__;
+  class Foo::Bar {
+    static method baz : void () {
+      # Foo::Bar
+      my $class_name == __CLASS__;
+    }
   }
-}
 </pre>
 
 
@@ -4144,7 +4144,7 @@ class Foo::Bar {
 <b>Get Current File Name</b> is a Expression to get the current file name by __LINE__ <a href="#language-token-keyword">Keyword</a>.
 
 <pre>
-__FILE__
+  __FILE__
 </pre>
 
 Current File Name means the relative path from the base path of the module file. For example, if the Module Loaded Path is "/mypath" and the Module name is "Foo::Bar", the absolute path is "/mypath/SPVM/Foo/Bar.spvm" and the relative path is "SPVM/Foo/Bar.spvm". "SPVM/Foo/Bar.spvm" is Current File Name.
@@ -4152,19 +4152,19 @@ Current File Name means the relative path from the base path of the module file.
 <b>Get Current File Name Example:</b>
 
 <pre>
-# SPVM/Foo/Bar.spvm
-class Foo::Bar {
-  static method baz : void () {
-    # SPVM/Foo/Bar.spvm
-    my $file_name == __FILE__;
+  # SPVM/Foo/Bar.spvm
+  class Foo::Bar {
+    static method baz : void () {
+      # SPVM/Foo/Bar.spvm
+      my $file_name == __FILE__;
+    }
   }
-}
-class Foo::Bar2 {
-  static method baz : void () {
-    # SPVM/Foo/Bar.spvm
-    my $file_name == __FILE__;
+  class Foo::Bar2 {
+    static method baz : void () {
+      # SPVM/Foo/Bar.spvm
+      my $file_name == __FILE__;
+    }
   }
-}
 </pre>
 
 
@@ -4174,19 +4174,19 @@ class Foo::Bar2 {
 <b>Get Current Line Number</b> is a Expression to get the current line number of the current file by __LINE__ <a href="#language-token-keyword">Keyword</a>.
 
 <pre>
-__LINE__
+  __LINE__
 </pre>
 
 <p>
   <b>Get Current Line Number Example:</b>
 </p>
 <pre>
-class Foo::Bar {
-  static method baz : void () {
-    # 4
-    my $line = __LINE__;
+  class Foo::Bar {
+    static method baz : void () {
+      # 4
+      my $line = __LINE__;
+    }
   }
-}
 </pre>
 
 
@@ -4206,7 +4206,7 @@ class Foo::Bar {
 Unary Operator is an Operator placed before <a href="#language-expression">Expression</a>.
 
 <pre>
-UNARY_OPERATOR EXPRESSION
+  UNARY_OPERATOR EXPRESSION
 </pre>
 
 Unary Operators are <a href="#language-operator-unary-plus">Unary Plus Operator</a>, <a href="#language-operator-unary-minus">Unary Minus Operator</a>, <a href="#language-operator-bit-not">Bit NOT Operator</a>, <a href="#language-operator-logical-not">Logical NOT Operator</a>, <a href="#language-operator-array-length">Array Length Operator</a>, and <a href="#language-operator-string-length">String Length Operator</a>.
@@ -4220,7 +4220,7 @@ Note that <a href="#language-operator-inc">Increment Operator</a> and <a href="#
 Binary Operator is a Operator placed between Left <a href="#language-expresssion">Expression</a> and Right <a href="#language-expresssion">Expression</a>.
 
 <pre>
-LEFT_EXPRESSION BINARY_OPERATOR RIGHT_EXPRESSION
+  LEFT_EXPRESSION BINARY_OPERATOR RIGHT_EXPRESSION
 </pre>
 
 Binary Operators are <a href="#language-operator-add">Addition Operator</a>, <a href="#language-operator-subtract">Subtraction Operator</a>, <a href="#language-operator-multiply">Multiplication Operator</a>, <a href="#language-operator-divide">Division Operator</a>, <a href="#language-operator-remainder">Remainder Operator</a>, <a href="#language-operator-bit-and">Bit AND Operator</a>, <a href="#language-operator-bit-or">Bit OR Operator</a>, <a href="#language-operator-logical-and">Logical AND Operator</a>, <a href="#language-operator-logical-or">Logical OR Operator</a>, <a href="#language-operator-shift">Shift Operator</a>, and <a href="#language-operator-concat">String Concatenation Operator</a>.
@@ -4232,7 +4232,7 @@ Binary Operators are <a href="#language-operator-add">Addition Operator</a>, <a 
 Sequential Operator is an Operator that join "," with multiple <a href="#language-expression">Expressions</a> and return the last Expression.
 
 <pre>
-(EXPRESSION1, EXPRESSION2, EXPRESSION3)
+  (EXPRESSION1, EXPRESSION2, EXPRESSION3)
 </pre>
 
 Expression is executed from Left to Right and the last Expression is return.
@@ -4240,13 +4240,13 @@ Expression is executed from Left to Right and the last Expression is return.
 <b>Sequential Operator Example:</b>
 
 <pre>
-# 3 is assigned to $foo
-my $foo = (1, 2, 3);
-
-# $x is 3, $ret is 5
-my $x = 1;
-my $y = 2;
-my $ret = ($x += 2, $x + $y);
+  # 3 is assigned to $foo
+  my $foo = (1, 2, 3);
+  
+  # $x is 3, $ret is 5
+  my $x = 1;
+  my $y = 2;
+  my $ret = ($x += 2, $x + $y);
 </pre>
 
 
@@ -4264,7 +4264,7 @@ my $ret = ($x += 2, $x + $y);
 Unary Plus Operator is a <a href="#language-operator-unary">Unary Operator</a> represented by "+".
 
 <pre>
-+Expression
+  +Expression
 </pre>
 
 Expression must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error occurs.
@@ -4280,7 +4280,7 @@ Unary Plus Operator does not throw <a href="#language-exception">Exception</a>.
 <b>Unary Plus Operator Example:</b>
 
 <pre>
-my $num = +10;
+  my $num = +10;
 </pre>
 
 
@@ -4290,7 +4290,7 @@ my $num = +10;
 Unary Minus Operator is a <a href="#language-operator-unary">Unary Operator</a> represented by "-".
 
 <pre>
--Expression
+  -Expression
 </pre>
 
 Expression must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error occurs.
@@ -4300,7 +4300,7 @@ Expression must be <a href="#language-type-numeric">Numeric Type</a>, otherwise 
 After that, Unary Minus Operator performs an operation that exactly matches the following operation in C99.
 
 <pre>
--x
+  -x
 </pre>
 
 <a href="#language-type-int">int Type</a> Operation, <a href="#language-type-long">long Type</a> Operation, <a href="#language-type-float">float Type</a> Operation, and <a href="#language-type-double">double Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
@@ -4312,7 +4312,7 @@ Unary Minus Operator does not throw <a href="#language-exception">Exception</a>.
 <b>Unary Minus Operator Example:</b>
 
 <pre>
-my $num = -10;
+  my $num = -10;
 </pre>
 
 
@@ -4322,7 +4322,7 @@ my $num = -10;
 <b>Addition Operator</b> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "+" to perform addition.
 
 <pre>
-LEFT_EXPRESSION + RIGHT_EXPRESSION
+  LEFT_EXPRESSION + RIGHT_EXPRESSION
 </pre>
 
 Left Expression and Right Expression must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error occurs.
@@ -4332,7 +4332,7 @@ Left Expression and Right Expression must be <a href="#language-type-numeric">Nu
 After that, Addition Operator performs an operation that exactly matches the following operation in C99.
 
 <pre>
-x + y;
+  x + y;
 </pre>
 
 <a href="#language-type-int">int Type</a> Operation, <a href="#language-type-long">long Type</a> Operation, <a href="#language-type-float">float Type</a> Operation, and <a href="#language-type-double">double Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
@@ -4348,7 +4348,7 @@ Addition Operator does not throw <a href="#language-exception">Exception</a>.
 <b>Subtraction Operator</b> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "-" to perform Subtraction.
 
 <pre>
-LEFT_EXPRESSION - RIGHT_EXPRESSION
+  LEFT_EXPRESSION - RIGHT_EXPRESSION
 </pre>
 
 Left Expression and Right Expression must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error occurs.
@@ -4358,7 +4358,7 @@ Left Expression and Right Expression must be <a href="#language-type-numeric">Nu
 After that, Subtraction Operator performs an operation that exactly matches the following operation in C99.
 
 <pre>
-x - y;
+  x - y;
 </pre>
 
 Return Type of Subtraction Operator is the Type after <a href="#language-type-convertion-binary-numeric-widening">Binary Numeric Widening Type Conversion</a> is applied.
@@ -4372,7 +4372,7 @@ Subtraction Operator does not throw <a href="#language-exception">Exception</a>.
 <b>Multiplication Operator</b> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "*" to perform Multiplication.
 
 <pre>
-LEFT_EXPRESSION * RIGHT_EXPRESSION
+  LEFT_EXPRESSION * RIGHT_EXPRESSION
 </pre>
 
 Left Expression and Right Expression must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error occurs.
@@ -4382,7 +4382,7 @@ Left Expression and Right Expression must be <a href="#language-type-numeric">Nu
 After that, Multiplication Operator performs an operation that exactly matches the following operation in C99.
 
 <pre>
-x * y;
+  x * y;
 </pre>
 
 <a href="#language-type-int">int Type</a> Operation, <a href="#language-type-long">long Type</a> Operation, <a href="#language-type-float">float Type</a> Operation, and <a href="#language-type-double">double Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
@@ -4398,7 +4398,7 @@ Multiplication Operator does not throw <a href="#language-exception">Exception</
 <b>Division Operator</b> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "/" to perform Division.
 
 <pre>
-LEFT_EXPRESSION / RIGHT_EXPRESSION
+  LEFT_EXPRESSION / RIGHT_EXPRESSION
 </pre>
 
 Left Expression and Right Expression must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error occurs.
@@ -4408,7 +4408,7 @@ Left Expression and Right Expression must be <a href="#language-type-numeric">Nu
 After that, Division Operator performs an operation that exactly matches the following operation in C99.
 
 <pre>
-x / y;
+  x / y;
 </pre>
 
 <a href="#language-type-int">int Type</a> Operation, <a href="#language-type-long">long Type</a> Operation, <a href="#language-type-float">float Type</a> Operation, and <a href="#language-type-double">double Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
@@ -4426,7 +4426,7 @@ In the operation to <a href="#language-type-floating-point">Floating Point Type<
 <b>Remainder Operator</b> is a <a href="#language-operator-binary">Binary Operator</a> represtented by "%" to perform Division.
 
 <pre>
-LEFT_EXPRESSION % RIGHT_EXPRESSION
+  LEFT_EXPRESSION % RIGHT_EXPRESSION
 </pre>
 
 Left Expression and Right Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
@@ -4436,7 +4436,7 @@ Left Expression and Right Expression must be <a href="#language-type-integral">I
 After that, Remainder Operator performs an operation that exactly matches the following operation in C99.
 
 <pre>
-x % y;
+  x % y;
 </pre>
 
 <a href="#language-type-int">int Type</a> Operation, and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
@@ -4453,19 +4453,19 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
   <b>Increment Operator</b> is an Operator that adds 1 to the value. the meaning of Increment Operator is different depending on whether the Increment Operator is placed Pre or Post.
 </p>
 <pre>
-# Pre Increment Operator
-++LEXICAL_VARIABLE
-++CLASS_VARIABLE
-++FIELD_ACCESS
-++ARRAY_ACCESS
-++DEREFERENCE
-
-# Post Increment Operator
-LEXICAL_VARIABLE++
-CLASS_VARIABLE++
-FIELD_ACCESS++
-ARRAY_ACCESS++
-DEREFERENCE++
+  # Pre Increment Operator
+  ++LEXICAL_VARIABLE
+  ++CLASS_VARIABLE
+  ++FIELD_ACCESS
+  ++ARRAY_ACCESS
+  ++DEREFERENCE
+  
+  # Post Increment Operator
+  LEXICAL_VARIABLE++
+  CLASS_VARIABLE++
+  FIELD_ACCESS++
+  ARRAY_ACCESS++
+  DEREFERENCE++
 </pre>
 <p>
   The operand of Increment Operator must <a href="#language-local-var">Local Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
@@ -4486,14 +4486,14 @@ DEREFERENCE++
 </p>
 
 <pre>
-(OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION + 1))
+  (OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION + 1))
 </pre>
 <p>
   For example, Pre Increment of <a href="#language-type-byte">byte Type</a> value is equivalent to the following Expression:
 </p>
 
 <pre>
-($num = (byte)($num + 1))
+  ($num = (byte)($num + 1))
 </pre>
 
 
@@ -4507,7 +4507,7 @@ DEREFERENCE++
   Post Increment Operator is equivalent to the following Expression using <a href="#language-operator-sequential">Sequential Operator</a>. The value of operand is saved in a temporary variable, 1 is added to the operand, <a href="#language-type-convertion-typecast">Type Cast</a> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
 </p>
 <pre>
-(my TMP_VARIABLE = OPERAND_EXPRESSION, OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION + 1), TMP_VARIABLE)
+  (my TMP_VARIABLE = OPERAND_EXPRESSION, OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION + 1), TMP_VARIABLE)
 </pre>
 
 <p>
@@ -4515,7 +4515,7 @@ DEREFERENCE++
 </p>
 
 <pre>
-(my $tmp = $num, $num = (byte)($num + 1), $tmp)
+  (my $tmp = $num, $num = (byte)($num + 1), $tmp)
 </pre>
 
 
@@ -4526,19 +4526,19 @@ DEREFERENCE++
   <b>Decrement Operator</b> is an Operator that subtracts 1 to the value. the meaning of Decrement Operator is different depending on whether the Decrement Operator is placed Pre or Post.
 </p>
 <pre>
-# Pre Decrement Operator
---LEXICAL_VARIABLE
---CLASS_VARIABLE
---FIELD_ACCESS
---ARRAY_ACCESS
---DEREFERENCE
-
-# Post Decrement Operator
-LEXICAL_VARIABLE--
-CLASS_VARIABLE--
-FIELD_ACCESS--
-ARRAY_ACCESS--
-DEREFERENCE--
+  # Pre Decrement Operator
+  --LEXICAL_VARIABLE
+  --CLASS_VARIABLE
+  --FIELD_ACCESS
+  --ARRAY_ACCESS
+  --DEREFERENCE
+  
+  # Post Decrement Operator
+  LEXICAL_VARIABLE--
+  CLASS_VARIABLE--
+  FIELD_ACCESS--
+  ARRAY_ACCESS--
+  DEREFERENCE--
 </pre>
 <p>
   The operand of Decrement Operator must <a href="#language-local-var">Local Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
@@ -4559,14 +4559,14 @@ DEREFERENCE--
 </p>
 
 <pre>
-(OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION - 1))
+  (OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION - 1))
 </pre>
 <p>
   For example, Pre Decrement of <a href="#language-type-byte">byte Type</a> value is equivalent to the following Expression:
 </p>
 
 <pre>
-($num = (byte)($num - 1))
+  ($num = (byte)($num - 1))
 </pre>
 
 
@@ -4580,7 +4580,7 @@ DEREFERENCE--
   Post Decrement Operator is equivalent to the following Expression using <a href="#language-operator-sequential">Sequential Operator</a>. The value of operand is saved in a temporary variable, 1 is subtracted to the operand, <a href="#language-type-convertion-typecast">Type Cast</a> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
 </p>
 <pre>
-(my TMP_VARIABLE = OPERAND_EXPRESSION, OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION - 1), TMP_VARIABLE)
+  (my TMP_VARIABLE = OPERAND_EXPRESSION, OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION - 1), TMP_VARIABLE)
 </pre>
 
 <p>
@@ -4588,7 +4588,7 @@ DEREFERENCE--
 </p>
 
 <pre>
-(my $tmp = $num, $num = (byte)($num - 1), $tmp)
+  (my $tmp = $num, $num = (byte)($num - 1), $tmp)
 </pre>
 
 
@@ -4605,7 +4605,7 @@ DEREFERENCE--
   Bit AND is <a href="#language-operator-binary">Binary Operator</a> represented by "&".
 </p>
 <pre>
-LEFT_EXPRESSION & RIGHT_EXPRESSION
+  LEFT_EXPRESSION & RIGHT_EXPRESSION
 </pre>
 <p>
   Left Expression and Right Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
@@ -4618,7 +4618,7 @@ LEFT_EXPRESSION & RIGHT_EXPRESSION
 
 </p>
 <pre>
-x & y;
+  x & y;
 </pre>
 
 <a href="#language-type-int">int Type</a> Operation and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
@@ -4637,7 +4637,7 @@ x & y;
   Bit OR is <a href="#language-operator-binary">Binary Operator</a> represented by "|".
 </p>
 <pre>
-LEFT_EXPRESSION | RIGHT_EXPRESSION
+  LEFT_EXPRESSION | RIGHT_EXPRESSION
 </pre>
 <p>
   Left Expression and Right Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
@@ -4650,7 +4650,7 @@ LEFT_EXPRESSION | RIGHT_EXPRESSION
 </p>
 
 <pre>
-x | y;
+  x | y;
 </pre>
 
 <a href="#language-type-int">int Type</a> Operation and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
@@ -4669,7 +4669,7 @@ x | y;
   Bit NOT Operator is <a href="#language-operator-unary">Unary Operator</a> represented by "~".
 </p>
 <pre>
-~EXPRESSION
+  ~EXPRESSION
 </pre>
 <p>
   Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
@@ -4681,7 +4681,7 @@ x | y;
   After that, the operation result of Bit NOT Operator performs the operation that exactly matches the following operation in C99.
 </p>
 <pre>
-~x
+  ~x
 </pre>
 
 <a href="#language-type-int">int Type</a> Operation and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
@@ -4696,7 +4696,7 @@ x | y;
   <b>Bit NOT Operator Example</b>
 </p>
 <pre>
-my $num = ~0xFF0A;
+  my $num = ~0xFF0A;
 </pre>
 
 
@@ -4712,7 +4712,7 @@ my $num = ~0xFF0A;
   The Left shift is <a href="#language-operator-binary">Binary Operator</a> represented by "<<".
 </p>
 <pre>
-LEFT_EXPRESSION << RIGHT_EXPRESSION
+  LEFT_EXPRESSION << RIGHT_EXPRESSION
 </pre>
 <p>
   Left Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
@@ -4724,7 +4724,7 @@ LEFT_EXPRESSION << RIGHT_EXPRESSION
   The calculation result of Left Shift Operator is the same as the following calculation in C99.
 </p>
 <pre>
-x << y;
+  x << y;
 </pre>
 
 <a href="#language-type-int">int Type</a> Operation and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
@@ -4740,7 +4740,7 @@ x << y;
   Arithmetic Right Shift Operator is <a href="#language-operator-binary">Binary Operator</a> represented by ">>".
 </p>
 <pre>
-LEFT_EXPRESSION >> RIGHT_EXPRESSION
+  LEFT_EXPRESSION >> RIGHT_EXPRESSION
 </pre>
 <p>
   Left Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
@@ -4755,7 +4755,7 @@ LEFT_EXPRESSION >> RIGHT_EXPRESSION
   The operation result of Arithmetic Right Shift Operator is the operation that exactly matches the following operation in C99.
 </p>
 <pre>
-x >> y;
+  x >> y;
 </pre>
 
 <a href="#language-type-int">int Type</a> Operation and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
@@ -4771,7 +4771,7 @@ x >> y;
   Logical Right Shift Operator is <a href="#language-operator-binary">Binary Operator</a> represented by ">>>".
 </p>
 <pre>
-LEFT_EXPRESSION >>> RIGHT_EXPRESSION
+  LEFT_EXPRESSION >>> RIGHT_EXPRESSION
 </pre>
 <p>
   Left Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
@@ -4783,7 +4783,7 @@ LEFT_EXPRESSION >>> RIGHT_EXPRESSION
   The calculation result of Logical Right Shift Operator is the same as the following calculation in C99.
 </p>
 <pre>
-(SIGNED_INTEGRAL_TYPE_CAST)((UNSINGED_INTEGRAL_TYPE_CAST)x >> y);
+  (SIGNED_INTEGRAL_TYPE_CAST)((UNSINGED_INTEGRAL_TYPE_CAST)x >> y);
 </pre>
 
 <a href="#language-type-int">int Type</a> Operation and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
@@ -4799,7 +4799,7 @@ LEFT_EXPRESSION >>> RIGHT_EXPRESSION
   Comparison Operator is an Operator that is placed between Left Expression and Right Expression to compare the size, and return True/False Value.
 </p>
 <pre>
-LEFT_EXPRESSION COMPARISON_OPERATOR RIGHT_EXPRESSION
+  LEFT_EXPRESSION COMPARISON_OPERATOR RIGHT_EXPRESSION
 </pre>
 <p>
   Comparison Operators are <a href="#language-operator-comparison-numeric">Numeric Comparison Operator</a>, <a href="#language-operator-comparison-string">String Comparison Operator</a>, and <a href="#language-operator-isa">isa Operator</a>.
@@ -4812,7 +4812,7 @@ LEFT_EXPRESSION COMPARISON_OPERATOR RIGHT_EXPRESSION
   <b>Numeric Comparison Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> that is placed between Left Expression and Right Expression to compare the size of number or check the equqlity of objects.
 </p>
 <pre>
-LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_EXPRESSION
+  LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_EXPRESSION
 </pre>
 <p>
   A list of Numeric Comparison Operators.
@@ -4917,16 +4917,16 @@ LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_EXPRESSION
   After that, the Numeric Comparison Operation is performed that exactly matches the following operation in C99.
 </p>
 <pre>
-# Numeric Type Comparison, Object Type Comparison
-(int32_t)(x == y);
-(int32_t)(x != y);
-
-# Numeric Type Comparison
-(int32_t)(x > y);
-(int32_t)(x >= y);
-(int32_t)(x < y);
-(int32_t)(x <= y);
-(int32_t)(x > y ? 1 : x < y ? -1 : 0);
+  # Numeric Type Comparison, Object Type Comparison
+  (int32_t)(x == y);
+  (int32_t)(x != y);
+  
+  # Numeric Type Comparison
+  (int32_t)(x > y);
+  (int32_t)(x >= y);
+  (int32_t)(x < y);
+  (int32_t)(x <= y);
+  (int32_t)(x > y ? 1 : x < y ? -1 : 0);
 </pre>
 
 For Numeric Type Operation(==, !=, >, >=, <, <=), <a href="#language-type-int">int Type</a> Operation, <a href="#language-type-long">long Type</a> Operation, <a href="#language-type-float">float Type</a> Operation, <a href="#language-type-double">double Type</a> Operation is defined.
@@ -4948,7 +4948,7 @@ And Object Type Operation(==, !=) is defined.
   <b>String Comparison Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> that compares the bytes in the tow string.
 </p>
 <pre>
-LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
+  LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
 </pre>
 <p>
   Left Expression and Right Expression must be <a href="#language-type-string">String Type</a> or byte[] type.
@@ -5036,7 +5036,7 @@ LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
 </p>
 
 <pre>
-LEFT_EXPRESSION isa RIGHT_TYPE
+  LEFT_EXPRESSION isa RIGHT_TYPE
 </pre>
 <p>
   isa Operator has three behaviors, depending on Right Type.
@@ -5058,7 +5058,7 @@ LEFT_EXPRESSION isa RIGHT_TYPE
 <b>ref Operator</b> is a Operator to get type name of the object.
 
 <pre>
-ref EXPRESSION
+  ref EXPRESSION
 </pre>
 
 ref Operator return type name if the object defined. Otherwise return undef.
@@ -5072,7 +5072,7 @@ If EXPRESSION is not a object type, a compile error occurs.
 <b>dump Operator</b> is a Operator to dump object value.
 
 <pre>
-dump EXPRESSION
+  dump EXPRESSION
 </pre>
 
 dump Operator return the dump string.
@@ -5098,7 +5098,7 @@ The contents of the dumped string may vary from SPVM version to version. Please 
   Logical AND Operator is a <a href="#language-expresssion"=Expression</a><a href="#language-operator-binary">Binary Operator</a>
 </p>
 <pre>
-LEFT_EXPRESSION && RIGHT_EXPRESSION
+  LEFT_EXPRESSION && RIGHT_EXPRESSION
 </pre>
 <p>
   Logical AND Operator のReturn ValueのTypeは,<a href="#language-type-int">int Type</a>.
@@ -5129,7 +5129,7 @@ LEFT_EXPRESSION && RIGHT_EXPRESSION
   Logical OR Operator is a logical OR operation that is "<a href="#language-expresssion">Expression</a> is an operand of <a href="#language-operator-binary">Binary Operator</a>
 </p>
 <pre>
-LEFT_EXPRESSION || RIGHT_EXPRESSION
+  LEFT_EXPRESSION || RIGHT_EXPRESSION
 </pre>
 <p>
   Logical OR Operator behaves as follows:
@@ -5160,7 +5160,7 @@ LEFT_EXPRESSION || RIGHT_EXPRESSION
   Logical NOT Operator is an operator to the Left of expression to perform logical NOT operations,<a href="#language-expression"_Expression</a> returning <a href="#language-operator-binary">Unary Operator</a> For more information about Expression, see <a href="#language-expresssion">Expression</a>.
 </p>
 <pre>
-!EXPRESSION
+  !EXPRESSION
 </pre>
 <p>
   Logical NOT Operator のReturn ValueのTypeは,<a href="#language-type-int">int Type</a>.
@@ -5182,7 +5182,7 @@ LEFT_EXPRESSION || RIGHT_EXPRESSION
   String Concatenation Operator is a <a href="#language-operator-binary">Binary Operator</a>.
 </p>
 <pre>
-LEFT_EXPRESSION . RIGHT_EXPRESSION
+  LEFT_EXPRESSION . RIGHT_EXPRESSION
 </pre>
 
 The left expression and the right expression are concatenated.
@@ -5204,9 +5204,9 @@ String Concatenation Operator returns the concatenated <a href="#language-string
   <b>String Concatenation Operator Example</b>
 </p>
 <pre>
-my $str = "abc" . "def";
-my $str = "def" . 34;
-my $str = 123 . 456;
+  my $str = "abc" . "def";
+  my $str = "def" . 34;
+  my $str = 123 . 456;
 </pre>
 
 
@@ -5216,7 +5216,7 @@ my $str = 123 . 456;
   Assignment Operator is a <a href="#language-operator-binary">Binary Operator</a> for assignment, expressed in "=".
 </p>
 <pre>
-LEFT_EXPRESSION = RIGHTH_EXPRESSION
+  LEFT_EXPRESSION = RIGHTH_EXPRESSION
 </pre>
 <p>
   Assignment Operator has multiple meanings depending on the Right and Left sides. Please refer to each item.
@@ -5231,7 +5231,7 @@ LEFT_EXPRESSION = RIGHTH_EXPRESSION
   Special Assignment Operator is a <a href="#language-operator-binary"_binary operator</a> and <a href="#language-operator-assign">Assignment Operator</a><a href="#language-operator-binary</a></a>.
 </p>
 <pre>
-LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR  RIGHT_EXPRESSION
+  LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR  RIGHT_EXPRESSION
 </pre>
 <p>
   Left ExpressionとRight Expressionが<a href="#language-type-compatible">Type Compatibility</a>を満たさない場合は,Compile Error occurs
@@ -5298,21 +5298,21 @@ LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR  RIGHT_EXPRESSION
   The Special Assignment Operator is deployed as follows:
 </p>
 <pre>
-# Before unexpanding
-LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR RIGHT_EXPRESSION
-
-# After unwinding
-LEFT_EXPRESSION ASSIGNMENT_OPERATOR (LEFT EXPRESSION TYPE CAST)(LEFT_EXPRESSION SPECIFIC_OPERATOR RIGHT_EXPRESSION)
+  # Before unexpanding
+  LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR RIGHT_EXPRESSION
+  
+  # After unwinding
+  LEFT_EXPRESSION ASSIGNMENT_OPERATOR (LEFT EXPRESSION TYPE CAST)(LEFT_EXPRESSION SPECIFIC_OPERATOR RIGHT_EXPRESSION)
 </pre>
 <p>
   For example, for add assignment Operator, it is expanded as follows:
 </p>
 <pre>
-# Before unexpanding x is <a href="#language-type-byte">byte Type</a>
-$x += 1;
-
-# After unwinding
-$x = (byte)($x + 1)
+  # Before unexpanding x is <a href="#language-type-byte">byte Type</a>
+  $x += 1;
+  
+  # After unwinding
+  $x = (byte)($x + 1)
 </pre>
 <p>
   <b>Special Assignment Operator Example</b>
@@ -5321,18 +5321,18 @@ $x = (byte)($x + 1)
   Special Assignment Operator Example
 </p>
 <pre>
-$x += 1;
-$x -= 1;
-$x *= 1;
-$x /= 1;
-$x &= 1;
-$x |= 1;
-$x ^= 1;
-$x %= 1;
-$x <<= 1;
-$x >>= 1;
-$x >>>= 1;
-$x .= "abc";
+  $x += 1;
+  $x -= 1;
+  $x *= 1;
+  $x /= 1;
+  $x &= 1;
+  $x |= 1;
+  $x ^= 1;
+  $x %= 1;
+  $x <<= 1;
+  $x >>= 1;
+  $x >>>= 1;
+  $x .= "abc";
 </pre>
 
 
@@ -5342,7 +5342,7 @@ $x .= "abc";
   The Reference Operator is an Operator that retrieves the address of a variable for <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a>. Designed to achieve c address Operator "*".
 </p>
 <pre>
-\VARIABLE
+  \VARIABLE
 </pre>
 <p>
   If the variable is not numeric type or Multi Numeric Type, Compile Error occurs
@@ -5351,14 +5351,14 @@ $x .= "abc";
   Reference Operator returns expression. The type returned is <a href="#language-type-ref">Reference Type</a>.
 </p>
 <pre>
-  <b>Reference Operator Example</b>
+    <b>Reference Operator Example</b>
 </pre>
 <pre>
-my $num : int;
-my $num_ref : int* = \$num;
-
-my $z : Complex_2d;
-my $z_ref : Complex_2d* = \$z;
+  my $num : int;
+  my $num_ref : int* = \$num;
+  
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
 </pre>
 <p>
   For a detailed description of Reference, see <a href="#language-ref">Reference</a>.
@@ -5371,7 +5371,7 @@ my $z_ref : Complex_2d* = \$z;
   Array Length Operator is a <a href="#language-array">Array</a></a><a href="#language-operator-binary">Unary Operator</a>
 </p>
 <pre>
-@RIGHT EXPRESSION
+  @RIGHT EXPRESSION
 </pre>
 <p>
   Right Expression must be an Array Type, otherwise Compile Error occurs.
@@ -5389,8 +5389,8 @@ my $z_ref : Complex_2d* = \$z;
   Array Length Operator Example
 </p>
 <pre>
-my $nums = new byte[10];
-my $length = @$nums;
+  my $nums = new byte[10];
+  my $length = @$nums;
 </pre>
 <p>
   Note that SPVM does not have the idea of a context in Perl, and array length operators always return Array Length.
@@ -5403,7 +5403,7 @@ my $length = @$nums;
   String Length Operator is a <a href="#language-string">String</a></a> <a href="#language-operator-binary">Unary Operator</a>
 </p>
 <pre>
-length RIGHT_EXPRESSION
+  length RIGHT_EXPRESSION
 </pre>
 <p>
   Right Expression must be <a href="#language-type-string">String Type</a>, otherwise Compile Error occurs.
@@ -5421,8 +5421,8 @@ length RIGHT_EXPRESSION
   String Length Operator Exampleです。
 </p>
 <pre>
-my $nums = "abcde";
-my $length = length $nums;
+  my $nums = "abcde";
+  my $length = length $nums;
 </pre>
 
 
@@ -5432,7 +5432,7 @@ my $length = length $nums;
   Scalar Operator is an Operator that returns the given value itself without doing anything. It is provided only to clarify the meaning of <a href="#language-operator-array-length">Array Length Operator operator</a>
 </p>
 <pre>
-scalar RIGHT_EXPRESSION
+  scalar RIGHT_EXPRESSION
 </pre>
 <p>
   Right Expressionは<a href="#language-operator-array-length">Array Length Operator</a>でなければなりません。 otherwise Compile Error occurs.
@@ -5447,8 +5447,8 @@ scalar RIGHT_EXPRESSION
   Scalar Operator Example
 </p>
 <pre>
-my $nums = new int[3];
-foo(scalar @$nums);
+  my $nums = new int[3];
+  foo(scalar @$nums);
 </pre>
 
 
@@ -5458,7 +5458,7 @@ foo(scalar @$nums);
   isweak Operator is an Operator that checks whether Field is</a><a href="#language-weak-ref">Weaken Reference.</a>
 </p>
 <pre>
-isweak VARIABLE->{FIELD_NAME};
+  isweak VARIABLE->{FIELD_NAME};
 </pre>
 <p>
   The Type of object Expression must be</a><a href="#language-type-class">Class Type.< otherwise Compile Error occurs.
@@ -5645,11 +5645,11 @@ isweak VARIABLE->{FIELD_NAME};
   Operator Precidence can be a top priority by using "()".
 </p>
 <pre>
-#  a * b is the first
-a * b + c
-
-# b + c is the first
-a * (b + c)
+  #  a * b is the first
+  a * b + c
+  
+  # b + c is the first
+  a * (b + c)
 </pre>
 
 =head1 Statement
@@ -5670,9 +5670,9 @@ a * (b + c)
   If Statement is a statement for conditional branching.
 </p>
 <pre>
-if (EXPRESSION) {
-
-}
+  if (EXPRESSION) {
+  
+  }
 </pre>
 <p>
   Expression <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed and Block is executed if the value is non-zero.
@@ -5681,12 +5681,12 @@ if (EXPRESSION) {
   If you want to write more than one condition, you can continue with "elsif Statement". The condition determination is performed from above, and each Expression is <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed, and a corresponding Block is executed if the value is non-zero.
 </p>
 <pre>
-if (EXPRESSION) {
-
-}
-elsif(EXPRESSION) {
-
-}
+  if (EXPRESSION) {
+  
+  }
+  elsif(EXPRESSION) {
+  
+  }
 </pre>
 
 <p>
@@ -5694,15 +5694,15 @@ elsif(EXPRESSION) {
 </p>
 
 <pre>
-if (EXPRESSION) {
-
-}
-elsif (EXPRESSION) {
-
-}
-else {
-
-}
+  if (EXPRESSION) {
+  
+  }
+  elsif (EXPRESSION) {
+  
+  }
+  else {
+  
+  }
 </pre>
 <p>
   <b>if Statement Example</b>
@@ -5711,88 +5711,88 @@ else {
   An example of if Statement.
 </p>
 <pre>
-my $flag = 1;
-
-if ($flag == 1) {
-  print "One \ n";
-}
-elsif ($flag == 2) {
-  print "Tow \ n";
-}
-else {
-  print "Other";
-}
+  my $flag = 1;
+  
+  if ($flag == 1) {
+    print "One \ n";
+  }
+  elsif ($flag == 2) {
+    print "Tow \ n";
+  }
+  else {
+    print "Other";
+  }
 </pre>
 <p>
   The if Statement is internally surrounded by an invisible Simple Block.
 </p>
 <pre>
-{
-  if (EXPRESSION) {
-
+  {
+    if (EXPRESSION) {
+  
+    }
   }
-}
 </pre>
 <p>
   elsif is internally expanded into if Statement and else Statement.
 </p>
 <pre>
-#Before deployment
-if (EXPRESSION1) {
-
-}
-elsif (EXPRESSION2) {
-
-}
-else {
-
-}
-
-#After deployment
-if (EXPRESSION1) {
-}
-else {
-  if (EXPRESSION2) {
-
+  #Before deployment
+  if (EXPRESSION1) {
+  
+  }
+  elsif (EXPRESSION2) {
+  
   }
   else {
-
+  
   }
-}
+  
+  #After deployment
+  if (EXPRESSION1) {
+  }
+  else {
+    if (EXPRESSION2) {
+  
+    }
+    else {
+  
+    }
+  }
 </pre>
 <p>
   When a variable is declared in the conditional part of if Statement, it must be surrounded by invisible <a href="#language-scope-block-statement-simple">Simple Block</a>. Be aware that elsif is internally expanded into if Statement and else Statement.
 </p>
 <pre>
-#Before deployment
-my $num = 1;
-if (my $num = 2) {
-
-}
-elsif (my $num = 3) {
-
-}
-else {
-
-}
-
-#After deployment
-my $num = 1;
-{
+  #Before deployment
+  my $num = 1;
   if (my $num = 2) {
-
+  
+  }
+  elsif (my $num = 3) {
+  
   }
   else {
-    {
-      if (my $num = 3) {
-        
-      }
-      else {
-        
+  
+  }
+  
+  #After deployment
+  my $num = 1;
+  {
+    if (my $num = 2) {
+  
+    }
+    else {
+      {
+        if (my $num = 3) {
+          
+        }
+        else {
+          
+        }
       }
     }
   }
-}
 </pre>
 
 
@@ -5802,22 +5802,22 @@ my $num = 1;
   The switch statement is a statement for conditional branching with an integer of <a href="#language-type-int">int Type</a> as a condition. Faster than if Statement if the condition is an integer of <a href="#language-type-int">int Type</a> and there are many branches.
 </p>
 <pre>
-switch (CONDITION_EXPRESSION) {
-  case constant 1: (
-
-    break;
+  switch (CONDITION_EXPRESSION) {
+    case constant 1: (
+  
+      break;
+    }
+    case constant 2: {
+  
+      break;
+    }
+    case constant n: {
+      break;
+    }
+    default: {
+  
+    }
   }
-  case constant 2: {
-
-    break;
-  }
-  case constant n: {
-    break;
-  }
-  default: {
-
-  }
-}
 </pre>
 <p>
   As the condition Expression, <a href="#language-expression">Expression</a> can be specified. <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed for the condition Expression.
@@ -5847,34 +5847,34 @@ switch (CONDITION_EXPRESSION) {
   The case and default Blocks can be omitted.
 </p>
 <pre>
-switch (CONDITION_EXPRESSION) {
-  case constant 1:
-  case constant 2:
-  {
-    break;
+  switch (CONDITION_EXPRESSION) {
+    case constant 1:
+    case constant 2:
+    {
+      break;
+    }
+    default:
   }
-  default:
-}
 </pre>
 <p>
   If you use break Statement, you can exit from the switch block.
 </p>
 
 <pre>
-switch (CONDITION_EXPRESSION) {
-  case constant 1: (
-    break;
+  switch (CONDITION_EXPRESSION) {
+    case constant 1: (
+      break;
+    }
+    case constant 2: {
+      break;
+    }
+    case constant n: {
+      break;
+    }
+    default: {
+  
+    }
   }
-  case constant 2: {
-    break;
-  }
-  case constant n: {
-    break;
-  }
-  default: {
-
-  }
-}
 </pre>
 <p>
   If a case Block exists, the last Statement must be a break Statement or a returnl Statement, otherwise Compile Error will occur.
@@ -5887,30 +5887,30 @@ switch (CONDITION_EXPRESSION) {
   An example of a switch statement.
 </p>
 <pre>
-my $code = 2;
-switch ($code) {
-  case 1: {
-    print "1 \ n";
-    break;
+  my $code = 2;
+  switch ($code) {
+    case 1: {
+      print "1 \ n";
+      break;
+    }
+    case 2: {
+      print "2 \ n";
+      break;
+    }
+    case 3: {
+      print "3 \ n";
+      break;
+    }
+    case 4:
+    case 5:
+    {
+      print "4 or 5 \ n"; {
+      break;
+    }
+    default: {
+      print "Other \ n";
+    }
   }
-  case 2: {
-    print "2 \ n";
-    break;
-  }
-  case 3: {
-    print "3 \ n";
-    break;
-  }
-  case 4:
-  case 5:
-  {
-    print "4 or 5 \ n"; {
-    break;
-  }
-  default: {
-    print "Other \ n";
-  }
-}
 </pre>
 
 
@@ -5934,9 +5934,9 @@ switch ($code) {
   while Statement is a Statement for repeating.
 </p>
 <pre>
-while (CONDITION_EXPRESSION) {
-
-}
+  while (CONDITION_EXPRESSION) {
+  
+  }
 </pre>
 <p>
   <a href="#language-expresssion">Expression</a> can be described in the condition Expression. <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
@@ -5948,57 +5948,57 @@ while (CONDITION_EXPRESSION) {
   An example of a while Statement.
 </p>
 <pre>
-my $i = 0;
-while ($i <5) {
-
-  print "$i \ n";
-
-  $i++;
-}
+  my $i = 0;
+  while ($i <5) {
+  
+    print "$i \ n";
+  
+    $i++;
+  }
 </pre>
 <p>
   Inside the while block, you can leave the while block by using <a href="#language-statement-last">last Statement</a>.
 </p>
 <pre>
-while (1) {
-  last;
-}
+  while (1) {
+    last;
+  }
 </pre>
 
 <p>
   Inside a while block, you can use <a href="#language-statement-next">next Statement</a> to move to the condition immediately before the next condition Expression.
 </p>
 <pre>
-my $i = 0;
-while ($i <5) {
-
-  if ($i == 3) {
+  my $i = 0;
+  while ($i <5) {
+  
+    if ($i == 3) {
+      $i++;
+      next;
+    }
+  
+    print "$i \ n";
     $i++;
-    next;
   }
-
-  print "$i \ n";
-  $i++;
-}
 </pre>
 
 <p>
   The while Statement is internally enclosed by an invisible <a href="#language-scope-block-statement-simple">Simple Block</a>.
 </p>
 <pre>
-{
-  while (CONDITION_EXPRESSION) {
-  $i++;
-}
-
-# 展開後
-my $num = 5;
-{
-  while (my $num = 3) {
-
+  {
+    while (CONDITION_EXPRESSION) {
     $i++;
   }
-}
+  
+  # 展開後
+  my $num = 5;
+  {
+    while (my $num = 3) {
+  
+      $i++;
+    }
+  }
 </pre>
 
 
@@ -6008,9 +6008,9 @@ my $num = 5;
   for Statement is a Statement for repeating.
 </p>
 <pre>
-for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
-
-}
+  for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
+  
+  }
 </pre>
 <p>
   <a href="#language-expression">Expression</a> can be described in the initialization Expression. Generally, write Expression such as initialization of loop variable. Initialization Expression can be omitted.
@@ -6025,14 +6025,14 @@ for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
   for Statement has the same meaning as the following while Statement. INCREMENT_EXPRESSION is executed at the end of Block. Initialization Expression is enclosed in <a href="#language-scope-block-statement-simple">Simple Block</a>.
 </p>
 <pre>
-{
-  INITIALIZATION_EXPRESSION;
-  while (CONDITION_EXPRESSION) {
-
-
-    INCREMENT_EXPRESSION;
+  {
+    INITIALIZATION_EXPRESSION;
+    while (CONDITION_EXPRESSION) {
+  
+  
+      INCREMENT_EXPRESSION;
+    }
   }
-}
 </pre>
 <p>
   <b>for Statement Example</b>
@@ -6041,31 +6041,31 @@ for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
   An example of for Statement.
 </p>
 <pre>
-for (my $i = 0; $i <5; $i++) {
-
-  print "$i \ n";
-}
+  for (my $i = 0; $i <5; $i++) {
+  
+    print "$i \ n";
+  }
 </pre>
 <p>
   Inside the for Block, you can exit the for Block using <a href="#language-statement-last">last Statement</a>.
 </p>
 
 <pre>
-for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
-
-}
+  for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
+  
+  }
 </pre>
 
 <p>
   Inside the for Block, you can use <a href="#language-statement-next">next Statement</a> to move immediately before the next INCREMENT_EXPRESSION to be executed.
 </p>
 <pre>
-for (my $i = 0; $i <5; $i++) {
-
-  if ($i == 3) {
-    next;
+  for (my $i = 0; $i <5; $i++) {
+  
+    if ($i == 3) {
+      next;
+    }
   }
-}
 </pre>
 
 
@@ -6075,13 +6075,13 @@ for (my $i = 0; $i <5; $i++) {
   Use the returnl Statement to get out of the Method. The object assigned to the mortal variable is automatically released.
 </p>
 <pre>
-return;
+  return;
 </pre>
 <p>
   If there is a Return Value, <a href="#language-expression">Expression</a> can be specified.
 </p>
 <pre>
-return EXPRESSION;
+  return EXPRESSION;
 </pre>
 <p>
   If the Return Value Type in <a href="#language-method-definition">Method Definition</a> is <a href="#language-type-void">void Type</a>, Expression Must not exist, otherwise Compile Error occurs.
@@ -6097,7 +6097,7 @@ return EXPRESSION;
   die Statement is a Statement for raising <a href="#language-exception">Exception</a>.
 </p>
 <pre>
-die EXPRESSION;
+  die EXPRESSION;
 </pre>
 <p>
   Expression must be a String Type.
@@ -6111,7 +6111,7 @@ die EXPRESSION;
   A weaken Statement is a Statement that sets <a href="#language-weak-ref">Weaken Reference</a> for the Field.
 </p>
 <pre>
-weaken VARIABLE->{FIELD_NAME};
+  weaken VARIABLE->{FIELD_NAME};
 </pre>
 <p>
   The Type of the object Expression must be <a href="#language-type-class">Class Type</a>, otherwise Compile Error occurs.
@@ -6147,19 +6147,19 @@ weaken VARIABLE->{FIELD_NAME};
   Back Reference is the data of the object saved in Field, and is added to know the Field with the Weaken Reference flag set. There may be more than one.
 </p>
 <pre>
-# There are multiple back references
-my $foo = new Foo;
-my $bar = new Bar;
-my $baz = new Baz;
-
-$foo->{bar} = $bar;
-$foo->{baz} = $baz;
-
-$bar->{foo} = $foo;
-$baz->{foo} = $foo;
-
-weaken $bar->{foo};
-weaken $baz->{foo};
+  # There are multiple back references
+  my $foo = new Foo;
+  my $bar = new Bar;
+  my $baz = new Baz;
+  
+  $foo->{bar} = $bar;
+  $foo->{baz} = $baz;
+  
+  $bar->{foo} = $foo;
+  $baz->{foo} = $foo;
+  
+  weaken $bar->{foo};
+  weaken $baz->{foo};
 </pre>
 <p>
   In the above example, "$bar->{foo}" and "$baz->{foo}" have the Weaken Reference flag set. The object represented by $foo has the back References "$bar->{foo}" and "$baz->{foo}".
@@ -6175,7 +6175,7 @@ weaken $baz->{foo};
   unweaken Statement is a Statement that cancels <a href="#language-weak-ref">Weaken Reference</a> for Field.
 </p>
 <pre>
-unweaken VARIABLE->{FIELD_NAME};
+  unweaken VARIABLE->{FIELD_NAME};
 </pre>
 <p>
   The Type of the object Expression must be <a href="#language-type-class">Class Type</a>, otherwise Compile Error occurs.
@@ -6209,7 +6209,7 @@ unweaken VARIABLE->{FIELD_NAME};
   "next Statement" is a Statement to move to the beginning of the next loop. in <a href="#language-scope-block-statement-while">while Block</a>, <a href="#language-scope-block-statement-for">for Block</a> You can use it.
 </p>
 <pre>
-next;
+  next;
 </pre>
 <p>
   Please see the explanation of <a href="#language-statement-while">while Statement</a>, <a href="#language-statement-for">for Statement</a> for the actual operation. ..
@@ -6225,7 +6225,7 @@ next;
   Please see the explanation of <a href="#language-statement-while">while Statement</a>, <a href="#language-statement-for">for Statement</a> for the actual operation. ..
 </p>
 <pre>
-last;
+  last;
 </pre>
 
 
@@ -6238,7 +6238,7 @@ last;
   See <a href="#language-statement-switch">switch Statement</a> for the actual operation.
 </p>
 <pre>
-break;
+  break;
 </pre>
 
 
@@ -6249,7 +6249,7 @@ break;
   Use warnStatement to throw a warning.
 </p>
 <pre>
-warn Expression;
+  warn Expression;
 </pre>
 <p>
   Expression must be <a href="#language-type-string">String Type</a>.
@@ -6274,7 +6274,7 @@ warn Expression;
   Use print Statement to print a String to standard output.
 </p>
 <pre>
-print Expression;
+  print Expression;
 </pre>
 <p>
   Expression must be <a href="#language-type-string">String Type</a>.
@@ -6290,18 +6290,18 @@ print Expression;
   The expression Statement is a Statement consisting of <a href="#language-expression">Expression</a> and ";".
 </p>
 <pre>
-Expression;
+  Expression;
 </pre>
 
 <p>
   An example of an expression statement.
 </p>
 <pre>
-1;
-$var;
-1 + 2;
-foo ();
-my $num = 1 + 2;
+  1;
+  $var;
+  1 + 2;
+  foo ();
+  my $num = 1 + 2;
 </pre>
 
 
@@ -6311,7 +6311,7 @@ my $num = 1 + 2;
   An empty statement is a statement that ends with just ";".
 </p>
 <pre>
-;
+  ;
 </pre>
 
 
@@ -6596,37 +6596,37 @@ See <a href="#language-operator-arithmetic">Arithmetic Operator</a> for floating
   Class Type is the Type defined by <a href="#language-class-definition">Class Definition</a>.
 </p>
 <pre>
-class Foo {
-
-}
+  class Foo {
+  
+  }
 </pre>
 <p>
   Class Type is <a href="#language-type-class">Class Type</a> <a href="#language-type-callback">Callback Type</a> <a href = "#language-type It consists of -multi-numeric ">Multi Numeric Type</a>.
 </p>
 <pre>
-# Class Type
-class Foo {
-
-}
-
-# Callback Type
-class Foo: callback_t {
-
-}
-
-# Multi Numeric Type
-class Foo: mulnum_t {
-
-}
+  # Class Type
+  class Foo {
+  
+  }
+  
+  # Callback Type
+  class Foo: callback_t {
+  
+  }
+  
+  # Multi Numeric Type
+  class Foo: mulnum_t {
+  
+  }
 </pre>
 <p>
   <a href="#language-type-pointer">Pointer Type</a> is also Class Type, so Pointer Type will also be Class Type.
 </p>
 <pre>
-# Pointer Type
-class Foo: pointer_t {
-
-}
+  # Pointer Type
+  class Foo: pointer_t {
+  
+  }
 </pre>
 
 =head2 Object Type
@@ -6638,9 +6638,9 @@ What is Object Type <a href="#language-type-class">Class Type</a> <a href="#lang
 The Object Type value can be assigned to "Any Object Type".
 </p>
 <pre>
-my $object: object = new Foo;
-my $object: object = new Foo [];
-my $object: object = "abc";
+  my $object: object = new Foo;
+  my $object: object = new Foo [];
+  my $object: object = "abc";
 </pre>
 <p>
 The size of Object Type must match the value of "sizeof (void *)" in C99.
@@ -6738,15 +6738,15 @@ The value of Undefined Type can be assigned to Object Type.If you assign to anot
 Class Type is the Type defined by <a href="#language-class-definition">Class Definition</a> and is not "Multi Numeric Type" "Callback Type".
 </p>
 <pre>
-packag Foo {
-
-}
+  packag Foo {
+  
+  }
 </pre>
 <p>
   Class Type can create objects by new Operator.
 </p>
 <pre>
-my $foo = new Foo;
+  my $foo = new Foo;
 </pre>
 <p>
   Class Type is a <a href="#language-type-object">Object Type</a>.
@@ -6765,9 +6765,9 @@ my $foo = new Foo;
   Pointer Type is the one that "pointer_t Descriptor" is specified in <a href="#language-class-definition">Class Definition</a>.
 </p>
 <pre>
-class Foo: pointer_t {
-
-}
+  class Foo: pointer_t {
+  
+  }
 </pre>
 <p>
   Pointer Type is a type of Class Type.
@@ -6786,9 +6786,9 @@ class Foo: pointer_t {
 Callback Type is a <a href="#language-type-class">Class Type</a> with <a href="#language-class-descriptor">Class Descriptor</a> "callback_t".
 
 <pre>
-class Comparator: callback_t {
-  method: int ($x1: object, $x2: object);
-}
+  class Comparator: callback_t {
+    method: int ($x1: object, $x2: object);
+  }
 </pre>
 
 Callback Type is designed to provide a feature corresponding to Function Pointer in C language.
@@ -6808,38 +6808,38 @@ The variable of Callback Type can be assigned a <a href="#language-type-class">C
 1. Class Type object with anonimouse name and the <a href="#language-method-signature">Signature</a> is same as Callback Type
 
 <pre>
-# Callback Type Definition
-class Comparator: callback_t {
-  method: int ($x1: object, $x2: object);
-}
-
-# Class Definition
-class SomeComparator {
-  static method new: int () {
-    return new SomeComparator;
+  # Callback Type Definition
+  class Comparator: callback_t {
+    method: int ($x1: object, $x2: object);
   }
-
-  method: int ($x1: object, $x2: object) {
-
+  
+  # Class Definition
+  class SomeComparator {
+    static method new: int () {
+      return new SomeComparator;
+    }
+  
+    method: int ($x1: object, $x2: object) {
+  
+    }
   }
-}
-
-# The object can be assign to the variable of Callback Type
-my $comparator: Comparator = SomeComparator->new;
+  
+  # The object can be assign to the variable of Callback Type
+  my $comparator: Comparator = SomeComparator->new;
 </pre>
 
 2. Class Type object which is created by <a href="#language-method-new-callback-object">Create Callback Object</a> and the <a href="#language-method-signature">Signature</a> is same as Callback Type.
 
 <pre>
-Definition of #Callback Type
-class Comparator: callback_t {
-  method: int ($x1: object, $x2: object);
-}
-
-# The object which is created by Create Callback Object can be assign to the variable of Callback Type
-my $comparator : Comparator = method: int ($x1: object, $x2: object) {
-
-}
+  Definition of #Callback Type
+  class Comparator: callback_t {
+    method: int ($x1: object, $x2: object);
+  }
+  
+  # The object which is created by Create Callback Object can be assign to the variable of Callback Type
+  my $comparator : Comparator = method: int ($x1: object, $x2: object) {
+  
+  }
 </pre>
 
 
@@ -6848,15 +6848,15 @@ my $comparator : Comparator = method: int ($x1: object, $x2: object) {
 <p>
   Any Object Type is represented by "object". Designed to represent the "void *" Type in C.
 </p><pre>
-my $object: object;
+  my $object: object;
 </pre>
 <p>
   You can methodstitute the value of "Object Type" for Any Object Type.
 </p>
 <pre>
-my $object: object = new Foo;
-my $object: object = "abc";
-my $object: object = new Foo [3];
+  my $object: object = new Foo;
+  my $object: object = "abc";
+  my $object: object = new Foo [3];
 </pre>
 
 
@@ -6867,7 +6867,7 @@ my $object: object = new Foo [3];
 </p>
 
 <pre>
-self
+  self
 </pre>
 
 <p>
@@ -6881,7 +6881,7 @@ self
 <b>void Type</b> is a special Type that can only be used in Return Type of <a href="#language-method-definition">Method Definition</a> and indicates the Method has no Return Value.
 
 <pre>
-void
+  void
 </pre>
 
 
@@ -6898,21 +6898,21 @@ void
   Array Type represents multiple continuous data areas. <a href="#language-type-basic">Basic Type</a> can be an Array.
 </p>
 <pre>
-int[]
-double[]
-Point[]
-object[]
-string []
+  int[]
+  double[]
+  Point[]
+  object[]
+  string []
 </pre>
 <p>
   Array has dimensions and can express up to 255 dimensions.
 </p>
 <pre>
-# Two dimensions
-int[] []
-
-# Three-dimensional
-int[] [] []
+  # Two dimensions
+  int[] []
+  
+  # Three-dimensional
+  int[] [] []
 </pre>
 <p>
   Array Type is <a href="#language-type-object">Object Type</a>.
@@ -6977,7 +6977,7 @@ my $nums = new int[] [3];
   In SPVM, the <a href="#language-type-array-byte">byte[] Type</a> is a special Type in that it is <a href="#language-type-string">String Type</a>.
 </p>
 <pre>
-byte[]
+  byte[]
 </pre>
 <p>
   <a href="#language-type-string">String Type</a> is treated as <a href="#language-type-string">String Type</a> at compile time, but at runtime It will be <a href="#language-type-array-byte">byte[] Type</a>.
@@ -7056,8 +7056,8 @@ byte[]
   Any Object Array Type is an arbitrary <a href="#language-type- that has the value of <a href="#language-type-object">Object Type</a> expressed as an oarray as an element. A Type that can be assigned the value of array ">Array Type</a>. Any Array Type can be cast to void * Type and passed to the first argument of the C language qsort function, but Any Object Array Type is not designed to realize the function corresponding to this. It was
 </p>
 <pre>
-my $array : oarray = new Point[3];
-my $array : oarray = new object[3];
+  my $array : oarray = new Point[3];
+  my $array : oarray = new object[3];
 </pre>
 <p>
   If a value with a Type other than Object Type is assigned, Compile Error occurs
@@ -7069,16 +7069,16 @@ my $array : oarray = new object[3];
   Any Object Array Type is <a href="#language-type-array">Array Type</a>. <a href="#language-operator-array-length">Array Length Operator</a> to get length, <a href="#language-expression-set-array-element">Set Array Element You can use Value</a>, <a href="#language-expression-get-array-element">Get Array Element Value</a>.
 </p>
 <pre>
-my $array : oarray = new Int[3];
-
-# Get the length of the element of Any Object Array Type
-my $length = @$array;
-
-# Get the value of any object array type element
-my $num = (Int)$array->[0];
-
-# Setting the value of the element of Any Object Array Type
-$array->[0] = Int->new(5);
+  my $array : oarray = new Int[3];
+  
+  # Get the length of the element of Any Object Array Type
+  my $length = @$array;
+  
+  # Get the value of any object array type element
+  my $num = (Int)$array->[0];
+  
+  # Setting the value of the element of Any Object Array Type
+  $array->[0] = Int->new(5);
 </pre>
 <p>
   When setting the value of the element of Any Object Array Type, a check is made at runtime whether the Type of the element is smaller than the Type Dimension of Array by 1. If the check fails, <a href="#language-exception">Exception</a> will occur. Any Object Array Type guarantees runtime Type safety.
@@ -7091,41 +7091,41 @@ $array->[0] = Int->new(5);
   <a href="#language-type-string">String Type</a> is a Type that represents a String. Expressed by string. Designed to represent C "const char *".
 </p>
 <pre>
-my $str : string;
+  my $str : string;
 </pre>
 <p>
   String Literal allows you to assign the generated String object.
 </p>
 <pre>
-my $str : string = "abc";
+  my $str : string = "abc";
 </pre>
 <p>
   SPVM String is an Array of bytes whose elements cannot be changed. You can get the Character by accessing the Array.
 </p>
 <pre>
-# Acquisition of Character
-my $ch = $str->[1];
+  # Acquisition of Character
+  my $ch = $str->[1];
 </pre>
 <p>
   If you try to change the element, Compile Error occurs
 </p>
 <pre>
-# Compile Error when changing element
-$str->[1] = 'd';
+  # Compile Error when changing element
+  $str->[1] = 'd';
 </pre>
 <p>
   <a href="#language-type-string">String Type</a> will be exactly the same as the Array of bytes Type after compilation. For example, the first expression is treated as the second expression.
 </p>
 <pre>
-# isa String Type
-if ($str isa string) {
-
-}
-
-# isa <a href="#language-type-array-byte">byte[] Type</a>
-if ($str isa byte[]) {
-
-}
+  # isa String Type
+  if ($str isa string) {
+  
+  }
+  
+  # isa <a href="#language-type-array-byte">byte[] Type</a>
+  if ($str isa byte[]) {
+  
+  }
 </pre>
 <p>
   Note that SPVM Strings are immutable, but this is a compile-time check.
@@ -7134,8 +7134,8 @@ if ($str isa byte[]) {
   <a href="#language-type-string">String Type</a> can be cast to <a href="#language-type-array-byte">byte[] Type</a>, and the String can be changed at runtime.
 </p>
 <pre>
-my $bytes = (byte[])$str;
-$bytes->[1] = 'd';
+  my $bytes = (byte[])$str;
+  $bytes->[1] = 'd';
 </pre>
 <p>
   Treat String as if you can always change it.
@@ -7161,11 +7161,11 @@ $bytes->[1] = 'd';
   Multi Numeric Type can be defined by specifying "mulnum_t" Descriptor in <a href="#language-class-definition">Class Definition</a>.
 </p>
 <pre>
-class Point_3i : mulnum_t {
-  has x : int;
-  has y : int;
-  has z : int;
-}
+  class Point_3i : mulnum_t {
+    has x : int;
+    has y : int;
+    has z : int;
+  }
 </pre>
 <p>
   See <a href="#language-mulnum">Values ​​</a> for a detailed explanation of Multi Numeric Type.
@@ -7178,11 +7178,11 @@ class Point_3i : mulnum_t {
   Reference Type is a Type that can store the address of a variable. Add "*" after <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a> You can define it.
 </p>
 <pre>
-my $num : int;
-my $num_ref : int* = \$num;
-
-my $point : Point_3i;
-my $point_ref : Point_3i* = \$point;
+  my $num : int;
+  my $num_ref : int* = \$num;
+  
+  my $point : Point_3i;
+  my $point_ref : Point_3i* = \$point;
 </pre>
 <p>
   Only the address of the Local Variable acquired by <a href="#language-operator-ref">Reference Operator</a> can be assigned to the value of Reference Type.
@@ -7235,14 +7235,14 @@ my $point_ref : Point_3i* = \$point;
   Omitting <a href="#language-type">Type</a> when <a href="#language-local-var-declaration">Local Variable Declaration</a> by Type Inference can. Type Inference is always performed by the Type on the Right side of Assignment Operator.
 </p>
 <pre>
-# int
-my $num = 1;
-
-# double
-my $num = 1.0;
-
-# Foo
-my $foo = new Foo;
+  # int
+  my $num = 1;
+  
+  # double
+  my $num = 1.0;
+  
+  # Foo
+  my $foo = new Foo;
 </pre>
 
 =head1 Type Compatibility
@@ -7260,9 +7260,9 @@ my $foo = new Foo;
   If the source and destination types are the same, there is Type Compatibility.
 </p>
 <pre>
-my $num1 : int;
-my $num2 : int;
-$num1 = $num2;
+  my $num1 : int;
+  my $num2 : int;
+  $num1 = $num2;
 </pre>
 <p>
   <b>When the source Type is <a href="#language-type-array-byte">byte[] Type</a> and the destination Type is <a href="#language-type-string">String Type</a></b>
@@ -7271,32 +7271,32 @@ $num1 = $num2;
   If the source Type is <a href="#language-type-array-byte">byte[] Type</a> and the destination Type is <a href="#language-type-string">String Type</a>, there is Type Compatibility.
 </p>
 <pre>
-my $bytes = new byte[3];
-my $str : string;
-$str = $bytes;
+  my $bytes = new byte[3];
+  my $str : string;
+  $str = $bytes;
 </pre>
 <p>
   <b>When the source Type is Object Type and the destination Type is Any Object Type</b>
 </p>
 <pre>
-my $foo : Foo = new Foo;
-my $object : object;
-$object = $foo;
+  my $foo : Foo = new Foo;
+  my $object : object;
+  $object = $foo;
 </pre>
 <p>
   <b>When the source Type and destination Type are Any Object Type or Any Object Type Array and the source Type Dimension count is greater than or equal to the destination Type Dimension count</b>
 </p>
 <pre>
-my $objects_dim2_src : object[];
-my $objects_dim1_dist : object;
-$objects_dim1_dist = $objects_dim2_src;
+  my $objects_dim2_src : object[];
+  my $objects_dim1_dist : object;
+  $objects_dim1_dist = $objects_dim2_src;
 </pre>
 <p>
   Note that the general object Array and the Basic Type Array are not compatible.
 </p>
 <pre>
-# Compilation error
-my $objets : object[] = new int[3];
+  # Compilation error
+  my $objets : object[] = new int[3];
 </pre>
 <p>
   If the types are not compatible, <a href="#language-type-convertion-implicite">implicit Type Conversion</a> is tried. If the implicit Type Conversion fails, Compile Error occurs
@@ -7311,14 +7311,14 @@ my $objets : object[] = new int[3];
   Type Cast is Type Conversion that is explicitly described.
 </p>
 <pre>
-# Type Cast
-(TYPE)EXPRESSION
+  # Type Cast
+  (TYPE)EXPRESSION
 </pre>
 <p>
   <a href="#language-type-int">int Type</a> value is converted to <a href="#language-type-long">long Type</a> Become.
 </p>
 <pre>
-my $num = (long)3;
+  my $num = (long)3;
 </pre>
 <p>
   ype Cast returns <a href="#language-expression">Expression</a>.
@@ -7327,7 +7327,7 @@ my $num = (long)3;
   If the source Type and the specified Type are the same, the value is simply copied.
 </p>
 <pre>
-my $num : int = (int)4;
+  my $num : int = (int)4;
 </pre>
 <p>
   <b>List of Type Conversion in Type Cast</b>
@@ -7466,9 +7466,9 @@ my $num : int = (int)4;
   If both the source and destination Type are Numeric Type and the destination Type is greater than the source Type, <a href="#language-type-convertion-numeric-widening">Numeric Widening Type Conversion</a> is done.
 </p>
 <pre>
-# Implicit Widening Type Conversion
-my $num : long = 123;
-my $num : double = 12.5f;
+  # Implicit Widening Type Conversion
+  my $num : long = 123;
+  my $num : double = 12.5f;
 </pre>
 
 <p>
@@ -7476,9 +7476,9 @@ my $num : double = 12.5f;
 </p>
 
 <pre>
-# Implicit Narrowing Type Conversion
-my $num : byte = 123;
-my $num : short = 134;
+  # Implicit Narrowing Type Conversion
+  my $num : byte = 123;
+  my $num : short = 134;
 </pre>
 
 <p>
@@ -7486,17 +7486,17 @@ my $num : short = 134;
 </p>
 
 <pre>
-# Implicit Boxing Type Conversion to objectType
-my $num = 123;
-my $object : object = $num;
+  # Implicit Boxing Type Conversion to objectType
+  my $num = 123;
+  my $object : object = $num;
 </pre>
 <p>
   When the source Type is Numeric Type and the destination Type is the corresponding Numeric Object Type, <a href="#language-type-convertion-boxing">Boxing Type Conversion</a> to the corresponding Numeric Object Type a> is done.
 </p>
 <pre>
-# Implicit Boxing Type Conversion to object Type
-my $num = 123;
-my $object : Int = $num;
+  # Implicit Boxing Type Conversion to object Type
+  my $num = 123;
+  my $object : Int = $num;
 </pre>
 
 <p>
@@ -7504,9 +7504,9 @@ my $object : Int = $num;
 </p>
 
 <pre>
-# Implicit Unboxing Type Conversion from objectType-
-my $object : object;
-my $num : int = $object;
+  # Implicit Unboxing Type Conversion from objectType-
+  my $object : object;
+  my $num : int = $object;
 </pre>
 <p>
   
@@ -7514,9 +7514,9 @@ If the source Type is Numeric Object Type and the destination Type is the corres
 </p>
 
 <pre>
-# Implicit Unboxing Type Conversion from Numeric Object Type
-my $num_obj = Int->new(3);
-my $num : int = $num_obj;
+  # Implicit Unboxing Type Conversion from Numeric Object Type
+  my $num_obj = Int->new(3);
+  my $num : int = $num_obj;
 </pre>
 
 <p>
@@ -7524,9 +7524,9 @@ my $num : int = $num_obj;
 </p>
 
 <pre>
-# mplicit Boxing Type Conversion to String Type
-my $num = 123;
-my $str : string = $num;
+  # mplicit Boxing Type Conversion to String Type
+  my $num = 123;
+  my $str : string = $num;
 </pre>
 
 
@@ -7538,13 +7538,13 @@ Numeric Type Conversion is the conversion from <a href="#language-type-numeric">
 Numeric Type Conversion performs exactly the same processing as Numeric Type Conversion in the corresponding C language. For example, Type Conversion from int to long in SPVM is the same as the type conversion from int32_t Type to int64_t Type in C language.
 
 <pre>
-# SPVM conversion
-my $src : int = 5;
-my $dist = (long)$src;
-
-# Correspondence in C language
-int32_t src = 5;
-int64_t dist = (int64_t)src;
+  # SPVM conversion
+  my $src : int = 5;
+  my $dist = (long)$src;
+  
+  # Correspondence in C language
+  int32_t src = 5;
+  int64_t dist = (int64_t)src;
 </pre>
 
 See also <a href="#language-c99-type">Corresponding Type with C99</a>.
@@ -7645,9 +7645,9 @@ Numeric types have an order.
 <b>String-to-byte[] Type Conversion</b> is the Type Conversion from <a href="#language-type-string">String Type</a> to <a href="#language-type-array-byte">byte[] Type</a>.
 
 <pre>
-# String-to-byte[] Type Conversion
-my $string : string = "Hello";
-my $bytes : byte[] = (byte[])$string;
+  # String-to-byte[] Type Conversion
+  my $string : string = "Hello";
+  my $bytes : byte[] = (byte[])$string;
 </pre>
 
 A new byte[] Type object is created and all characters in string are copied to the elements of byte[] Type.
@@ -7659,12 +7659,12 @@ A new byte[] Type object is created and all characters in string are copied to t
 <b>byte[]-to-String Type Conversion</b> is the Type Conversion from <a href="#language-type-array-byte">byte[] Type</a> to <a href="#language-type-string">String Type</a>.
 
 <pre>
-# byte[]-to-String Type Conversion
-my $bytes : byte[] = new byte[3];
-$bytes->[0] = 'a';
-$bytes->[1] = 'b';
-$bytes->[2] = 'c';
-my $string : string = (string)$bytes;
+  # byte[]-to-String Type Conversion
+  my $bytes : byte[] = new byte[3];
+  $bytes->[0] = 'a';
+  $bytes->[1] = 'b';
+  $bytes->[2] = 'c';
+  my $string : string = (string)$bytes;
 </pre>
 
 A new String Type object is created and all elements in byte[] are copied to the characters of String Type.
@@ -7698,51 +7698,51 @@ A new String Type object is created and all elements in byte[] are copied to the
   <b>Inside the if statement braces</b>
 </p>
 <pre>
-if (CONDITION) {
-
-}
+  if (CONDITION) {
+  
+  }
 </pre>
 <p>
   <b>In unless statement brackets</b>
 </p>
 <pre>
-unless (CONDITION) {
-
-}
+  unless (CONDITION) {
+  
+  }
 </pre>
 <p>
   <b>The second in the parentheses for</b>
 </p>
 <pre>
-for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
-
-}
+  for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
+  
+  }
 </pre>
 <p>
   <b>in parentheses while</b>
 </p>
 <pre>
-while (CONDITION) {
-
-}
+  while (CONDITION) {
+  
+  }
 </pre>
 <p>
   <b>Left and Right of Logical AND Operator</b>
 </p>
 <pre>
-CONDITION && CONDITION
+  CONDITION && CONDITION
 </pre>
 <p>
   <b>Left and Right of Logical OR Operator</b>
 </p>
 <pre>
-CONDITION || CONDITION
+  CONDITION || CONDITION
 </pre>
 <p>
   <b>Right side of Logical NOT Operator</b>
 </p>
 <pre>
-!CONDITION
+  !CONDITION
 </pre>
 <p>
   Expression specified by Bool Type Conversion is <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-object">Object Type</a> or It must be <a href="#language-type-undef">Undefined Type</a>, otherwise Compile Error occurs.
@@ -7769,7 +7769,7 @@ CONDITION || CONDITION
   Expression is <a href="#language-type-long">long Type</a>, <a href="#language-type-float">float Type</a>, <a href = "#language- If it is type-double ">double Type</a>, Object Type, the operation that exactly matches the following operation in C99 is performed and the result is returned.
 </p>
 <pre>
-!!x
+  !!x
 </pre>
 <p>
   If Expression is Object Type, 0 is returned if it is Undefined Value, 1 otherwise.
@@ -7778,47 +7778,47 @@ CONDITION || CONDITION
 <b>Bool Type Conversion Examples</b>
 
 <pre>
-if (1) {
-  # run
-}
-
-if (0) {
-  # not run
-}
-
-if (1.5) {
-  # run
-}
-
-if (0.0) {
-  # not run
-}
-
-if (true) {
-  # run
-}
-
-if (Bool->TRUE) {
-  # run
-}
-
-if (false) {
-  # not run
-}
-
-if (Bool->FALSE) {
-  # not run
-}
-
-my $object = SPVM::Int->new(1);
-
-if ($object) {
-  # run
-}
-
-if (undef) {
-  # not run
-}
+  if (1) {
+    # run
+  }
+  
+  if (0) {
+    # not run
+  }
+  
+  if (1.5) {
+    # run
+  }
+  
+  if (0.0) {
+    # not run
+  }
+  
+  if (true) {
+    # run
+  }
+  
+  if (Bool->TRUE) {
+    # run
+  }
+  
+  if (false) {
+    # not run
+  }
+  
+  if (Bool->FALSE) {
+    # not run
+  }
+  
+  my $object = SPVM::Int->new(1);
+  
+  if ($object) {
+    # run
+  }
+  
+  if (undef) {
+    # not run
+  }
 </pre>
 
 
@@ -7837,7 +7837,7 @@ if (undef) {
   Use die Statement to throw <a href="#language-exception">Exception</a>.
 </p>
 <pre>
-die EXPRESSION;
+  die EXPRESSION;
 </pre>
 <p>
   Expression must be <a href="#language-type-string">String Type</a>.
@@ -7846,9 +7846,9 @@ die EXPRESSION;
   When the die statement is executed, the stack trace and the String specified by Expression are displayed, and the program ends. The stack trace includes Class Name, Method Name, File Name and line number. File Name is a relative File Name from the path where Module is loaded.
 </p>
 <pre>
-Error
-from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
-from TestCase->main at SPVM/TestCase.spvm line 1198
+  Error
+  from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
+  from TestCase->main at SPVM/TestCase.spvm line 1198
 </pre>
 
 
@@ -7861,9 +7861,9 @@ from TestCase->main at SPVM/TestCase.spvm line 1198
   Exceptions are caught using eval Block Statement. Please note that the eval Block Statement requires a semicolon at the end.
 </p>
 <pre>
-eval {
-  # Processing that may throw <a href="#language-exception">Exception</a>
-};
+  eval {
+    # Processing that may throw <a href="#language-exception">Exception</a>
+  };
 </pre>
 <p>
   When <a href="#language-exception">Exception</a> is caught by the eval Block, the program termination is stopped and <a href="#language-exception-occur">is added to <a href="#language-exception-var">Exception Variable</a>. The message specified in Exception is thrown</a> is methodstituted.
@@ -7876,7 +7876,7 @@ eval {
 <b>Exception Variable</b> is a global variable that is represented by "<b>$@</b>"
 
 <pre>
-$@
+  $@
 </pre>
 
 See <a href="#language-expression-get-exception-var">Get Exception Variable Value</a> to get Exception Variable Value.
@@ -7912,27 +7912,27 @@ See <a href="#language-expression-set-exception-var">Set Exception Variable Valu
   The purpose of Callback Type is to provide a Type that can be assigned to different objects when they have the same MethodDefinition. Consider that the function corresponding to the C function pointer is realized in SPVM.
 </p>
 <pre>
-class Foo1 {
-  static method new : Foo1 () {
-    new Foo1;
+  class Foo1 {
+    static method new : Foo1 () {
+      new Foo1;
+    }
+    method : int ($num : int) {
+      return 1 + $num;
+    }
   }
-  method : int ($num : int) {
-    return 1 + $num;
+  
+  class Foo2 {
+    static method new : Foo2 () {
+      new Foo2;
+    }
+    method : int ($num : int) {
+      return 2 + $num;
+    }
   }
-}
-
-class Foo2 {
-  static method new : Foo2 () {
-    new Foo2;
+  
+  class FooCallback : callback_t {
+  method : int ($num : int);
   }
-  method : int ($num : int) {
-    return 2 + $num;
-  }
-}
-
-class FooCallback : callback_t {
-method : int ($num : int);
-}
 </pre>
 
 <p>
@@ -7942,20 +7942,20 @@ method : int ($num : int);
   In this case, if you define a Callback Type FooCallback with the same MethodDefinition, you can assign either object to this Type. Then you can call Method from this object.
 </p>
 <pre>
-my $foo1 = Foo1->new;
-my $foo2 = Foo2->new;
-
-my $foo : FooCallback;
-
-my $flag = 1;
-if ($flag) {
-  $foo = $foo1;
-}
-else {
-  $foo = $foo2;
-}
-
-my $ret = $foo->(5);
+  my $foo1 = Foo1->new;
+  my $foo2 = Foo2->new;
+  
+  my $foo : FooCallback;
+  
+  my $flag = 1;
+  if ($flag) {
+    $foo = $foo1;
+  }
+  else {
+    $foo = $foo2;
+  }
+  
+  my $ret = $foo->(5);
 </pre>
 <p>
   If $flag is 1, the anonymous Method of Foo1 is called, otherwise the anonymous Method of Foo2 is called.
@@ -7973,9 +7973,9 @@ my $ret = $foo->(5);
 </p>
 
 <pre>
-method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ARGSN : TYPEn) {
-
-}
+  method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ARGSN : TYPEn) {
+  
+  }
 </pre>
 
 <p>
@@ -7983,9 +7983,9 @@ method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ARGSN : TYPEn) {
 </p>
 
 <pre>
-my $cb_obj = method : TYPE (ARGS1 : TYPE1, ARGS2 : TYPE2, ..., ARGSn : TYPEn) {
-
-};
+  my $cb_obj = method : TYPE (ARGS1 : TYPE1, ARGS2 : TYPE2, ..., ARGSn : TYPEn) {
+  
+  };
 </pre>
 
 <p>
@@ -7997,9 +7997,9 @@ my $cb_obj = method : TYPE (ARGS1 : TYPE1, ARGS2 : TYPE2, ..., ARGSn : TYPEn) {
 </p>
 
 <pre>
-my $comparator = method : int ($x1 : object, $x2 : object) {
-
-}
+  my $comparator = method : int ($x1 : object, $x2 : object) {
+  
+  }
 </pre>
 
 <p>
@@ -8013,23 +8013,23 @@ my $comparator = method : int ($x1 : object, $x2 : object) {
   In Create Callback Object, you can use the syntax called Capture to use the variables defined outside the Method defined by Create Callback Object inside the Method defined by Create Callback Object.
 </p>
 <pre>
-# Capture
-[VariableName1 : Type1, VariableName2 : Type2] method Method Name : int ($x1 : object, $x2 : object) {
-
-};
+  # Capture
+  [VariableName1 : Type1, VariableName2 : Type2] method Method Name : int ($x1 : object, $x2 : object) {
+  
+  };
 </pre>
 
 Capture Example.
 
 <pre>
-my $foo = 1;
-my $bar = 5L;
-
-my $comparator = [$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
-
-  print "$foo\n";
-  print "$bar\n";
-}
+  my $foo = 1;
+  my $bar = 5L;
+  
+  my $comparator = [$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
+  
+    print "$foo\n";
+    print "$bar\n";
+  }
 </pre>
 <p>
   The variable name used in Capture must be the one with "$" added at the beginning of <a href="#language-token-identifier-field-name">Field Name</a>.
@@ -8048,25 +8048,25 @@ my $comparator = [$foo : int, $bar : long] method : int ($x1 : object, $x2 : obj
 </p>
 
 <pre>
-class ComapartorImpl {
-  has foo : int;
-  has bar : long;
-
-  method : int ($x1 : object, $x2 : object) {
-    print $self->{foo} . "\n";
-    print $self->{bar} . "\n";
+  class ComapartorImpl {
+    has foo : int;
+    has bar : long;
+  
+    method : int ($x1 : object, $x2 : object) {
+      print $self->{foo} . "\n";
+      print $self->{bar} . "\n";
+    }
   }
-}
 </pre>
 
 <pre>
-my $foo = 1;
-my $bar = 5L;
-
-my $comparator = new ComparatorImpl;
-
-$comparator->{foo} = $foo;
-$comparator->{bar} = $bar;
+  my $foo = 1;
+  my $bar = 5L;
+  
+  my $comparator = new ComparatorImpl;
+  
+  $comparator->{foo} = $foo;
+  $comparator->{bar} = $bar;
 </pre>
 
 Capture is a syntax for writing such a long description short.
@@ -8084,13 +8084,13 @@ Capture is a syntax for writing such a long description short.
   This is an Example when the Field of the object is circularly referenced.
 </p>
 <pre>
-{
-  my $foo = new Foo;
-  my $bar = new Bar;
-
-  $foo->{bar} = $bar;
-  $bar->{foo} = $foo;
-}
+  {
+    my $foo = new Foo;
+    my $bar = new Bar;
+  
+    $foo->{bar} = $bar;
+    $bar->{foo} = $foo;
+  }
 </pre>
 <p>
   In this case, both objects are not released when the Scope ends. This is because a circular reference has occurred and the Reference Count does not become 0.
@@ -8102,15 +8102,15 @@ Capture is a syntax for writing such a long description short.
   In such a case, it is possible to release correctly by setting one Field to Weaken Reference using <a href="#language-statement-weaken">weaken Statement</a>.
 </p>
 <pre>
-{
-  my $foo = new Foo;
-  my $bar = new Bar;
-
-  $foo->{bar} = $bar;
-  $bar->{foo} = $foo;
-
-  weaken $foo->{bar};
-}
+  {
+    my $foo = new Foo;
+    my $bar = new Bar;
+  
+    $foo->{bar} = $bar;
+    $bar->{foo} = $foo;
+  
+    weaken $foo->{bar};
+  }
 </pre>
 <p>
   Before the weaken statement is executed, $foo has a Reference Count of 2 and $bar has a Reference Count of 2.
@@ -8128,17 +8128,17 @@ Capture is a syntax for writing such a long description short.
   Even if there are 3 circular references, you can release them correctly by setting Weaken Reference in 1 Field.
 </p>
 <pre>
-{
-  my $foo = new Foo;
-  my $bar = new Bar;
-  my $baz = new Baz;
-
-  $foo->{bar} = $bar;
-  $bar->{baz} = $baz;
-  $baz->{foo} = $foo;
-
-  weaken $foo->{bar};
-}
+  {
+    my $foo = new Foo;
+    my $bar = new Bar;
+    my $baz = new Baz;
+  
+    $foo->{bar} = $bar;
+    $bar->{baz} = $baz;
+    $baz->{foo} = $foo;
+  
+    weaken $foo->{bar};
+  }
 </pre>
 <p>
 
