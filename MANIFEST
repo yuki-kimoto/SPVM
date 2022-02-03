@@ -489,6 +489,7 @@ lib/SPVM/ExchangeAPI.pm
 lib/SPVM/Float.pm
 lib/SPVM/FloatList.pm
 lib/SPVM/FloatList.spvm
+lib/SPVM/Fn.c
 lib/SPVM/Fn.config
 lib/SPVM/Fn.pm
 lib/SPVM/Fn.spvm
@@ -724,9 +725,6 @@ t/default/lib/SPVM/TestCase/CompileError/LogicalOperator/OrNotExpression.spvm
 t/default/lib/SPVM/TestCase/CompileError/Method/Begin.spvm
 t/default/lib/SPVM/TestCase/CompileError/Method/MethodNameContainsUnderScoreTwice.spvm
 t/default/lib/SPVM/TestCase/CompileError/Method/MethodNameStartDigit.spvm
-t/default/lib/SPVM/TestCase/CompileError/Method/Sub/Begin.spvm
-t/default/lib/SPVM/TestCase/CompileError/Method/Sub/SubNameContainsUnderScoreTwice.spvm
-t/default/lib/SPVM/TestCase/CompileError/Method/Sub/SubNameStartDigit.spvm
 t/default/lib/SPVM/TestCase/CompileError/Multiply/LeftIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/Multiply/RightIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/New/Private.spvm
@@ -734,6 +732,7 @@ t/default/lib/SPVM/TestCase/CompileError/OArray/AssignNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/OArray/AssignNumericArray.spvm
 t/default/lib/SPVM/TestCase/CompileError/Remainder/LeftIsNotIntegral.spvm
 t/default/lib/SPVM/TestCase/CompileError/Remainder/RightIsNotIntegral.spvm
+t/default/lib/SPVM/TestCase/CompileError/String/AssignNonMutableToMutable.spvm
 t/default/lib/SPVM/TestCase/CompileError/String/CharacterAssign.spvm
 t/default/lib/SPVM/TestCase/CompileError/Sub/Begin.spvm
 t/default/lib/SPVM/TestCase/CompileError/Sub/SubNameContainsUnderScoreTwice.spvm
