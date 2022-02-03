@@ -126,18 +126,14 @@ the following SPVM Types are exactly same as the following C99 Types:
       Numeric Array Type that is same as the Type and length in SPVM multiple Numeric Type fields
     </td>
     <td>
-      <p>
-        For example, if SPVM <a href="#language-Type-multi-numeric">multiple Numeric Type</a>
-      </p>
-      <p>
-        <b>class Point_2i: mulnum_t {has x: int; has y: int;}</b>
-      </p>
-      <p>
-        matches the Type declared in C99
-      </p>
-      <p>
-        <b>int32_t var[2];</b>
-      </p>
+      For example, if SPVM <a href="#language-Type-multi-numeric">multiple Numeric Type</a>
+      
+      <b>class Point_2i: mulnum_t {has x: int; has y: int;}</b>
+      
+      matches the Type declared in C99
+      
+      <b>int32_t var[2];</b>
+      
     </td>
   </tr>
 </table>
@@ -2059,15 +2055,12 @@ Signature is not used in SPVM programs. Signature is used when calling the SPVM 
 Method Callstack is memory area allocated in each method call.
 
 
-<p>
-  Method Callstack save the folloing information.
-</p>
-<p>
-  1. Memroy area for <a href="#language-local-var">Local Variable</a>
-</p>
-<p>
-  2. The places of Mortal Local Variable
-</p>
+Method Callstack save the folloing information.
+
+1. Memroy area for <a href="#language-local-var">Local Variable</a>
+
+2. The places of Mortal Local Variable
+
 
 
 =head1 Enumeration
@@ -2194,9 +2187,8 @@ Enumeration is an alias for <a href="#language-method-constant">Constant Method<
   my $flag3 = Foo->FLAG3;
 
 
-<p>
-  In special case, Enumeration Call can be used in <a href="#language-statement-case">case Statement</a> of <a href="#language-statement-switch">switch Statement</a>.
-</p>
+In special case, Enumeration Call can be used in <a href="#language-statement-case">case Statement</a> of <a href="#language-statement-switch">switch Statement</a>.
+
 
 
   switch ($num) {
@@ -3019,11 +3011,9 @@ The variable name can besurround with "{" and "}" to indicate the end of the var
 
   "AAA ${foo}_ccc BBB"
 
-<p>
-
 The above is expanded as the following.
 
-</p>
+
 
   "AAA " . ${foo} . "_ccc BBB"
 
@@ -3646,8 +3636,7 @@ If an object has already been assigned to Field before the assignment, the Refer
 
   INVOCANT_EXPRESSION->{FIELD_NAME}
 
-<p>
-  Invocant Expression is <a href="#language-type-class">Multi Numeric Type</a>. If Invocant Expression is <a href="#language-type-class">Class Type</a>, the Field Access is <a href="#language-expression-get-field">. If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type</a>, the Field Access is <a href="#language-expression-get-field-multi-numeric-deref">Get Multi Numeric Field Value via Dereference</a>, otherwise Compile Error occurs.
+Invocant Expression is <a href="#language-type-class">Multi Numeric Type</a>. If Invocant Expression is <a href="#language-type-class">Class Type</a>, the Field Access is <a href="#language-expression-get-field">. If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type</a>, the Field Access is <a href="#language-expression-get-field-multi-numeric-deref">Get Multi Numeric Field Value via Dereference</a>, otherwise Compile Error occurs.
   
 If the Field Name does not found in the <a href="#language-class">Class</a>, Compile Error occurs
 
@@ -3914,20 +3903,17 @@ The max of Dimention of Multi-Dimention Array is 255.
 
 <p>
   SPVM has a syntax for Array Initialization to simplify Create Array. Expression is not required.
-</p>
+
 
   []
   [Expression1, Expression2, Expression3]
 
-<p>
-  Array Initialization returns an Array that has the length of the number of elements of Expression.
-</p>
-<p>
-  The type of Array is the type of Expression1 converted to Array Type. If no element is specified, it will be an Array Type of <a href="#language-type-any-object">Any Object Type</a>.
-</p>
-<p>
-  If Expression2 or later does not satisfy <a href="#language-type-compatible">Type Compatibility</a>, a Compile Error will occur.
-</p>
+Array Initialization returns an Array that has the length of the number of elements of Expression.
+
+The type of Array is the type of Expression1 converted to Array Type. If no element is specified, it will be an Array Type of <a href="#language-type-any-object">Any Object Type</a>.
+
+If Expression2 or later does not satisfy <a href="#language-type-compatible">Type Compatibility</a>, a Compile Error will occur.
+
 
 <b>Examples:</b>
 
@@ -4007,44 +3993,36 @@ If the number of arguments does not match the number of arguments defined in the
 
 =head2 Instance Method Call
 
-<p>
-  Instance Method Call is a method to call Method which is <a href="#language-method-method">Method</a>. In <a href="#language-method-definition">Method Definition</a>, the first argument is <a href="#language-type-self">self Type</a> If the argument of> is specified, it becomes Method.
-</p>
-<p>
-  Instance Method Call can be done with the following syntax using the object created by <a href="#language-expression-new">Create Object</a>.
-</p>
+Instance Method Call is a method to call Method which is <a href="#language-method-method">Method</a>. In <a href="#language-method-definition">Method Definition</a>, the first argument is <a href="#language-type-self">self Type</a> If the argument of> is specified, it becomes Method.
+
+Instance Method Call can be done with the following syntax using the object created by <a href="#language-expression-new">Create Object</a>.
+
 
   OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
-<p>
-  Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the Method Definition, Compile Error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, Compile Error occurs
-</p>
-<p>
-  Instance Method Call returns Return Value if Return Value is other than <a href="#language-type-void">void Type</a>.
-</p>
-<p>
-  Instance Method Call is <a href="#language-expression">Expression</a>.
+Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the Method Definition, Compile Error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, Compile Error occurs
+
+Instance Method Call returns Return Value if Return Value is other than <a href="#language-type-void">void Type</a>.
+
+Instance Method Call is <a href="#language-expression">Expression</a>.
 <p>
 <p>
   <b>Instance Method Call Example</b>
-</p>
+
 
   my $point = new Point;
   $point->set_x(3);
 
-<p>
-  Since the object created by <a href="#language-method-new-callback-object">Create Callback Object</a> is a normal object, you can call Method.
-</p>
+Since the object created by <a href="#language-method-new-callback-object">Create Callback Object</a> is a normal object, you can call Method.
+
 
   OBJECT_EXPRESSION->(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
 
-<p>
-  <b>Example that calls Method from the object created with Create Callback Object</b>
-</p>
-<p>
-  An Example that calls a Method from the object created by Create Callback Object.
-</p>
+<b>Example that calls Method from the object created with Create Callback Object</b>
+
+An Example that calls a Method from the object created by Create Callback Object.
+
 
   my $cb_obj = method : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
@@ -4056,18 +4034,15 @@ If the number of arguments does not match the number of arguments defined in the
 
 =head2 Get value by Dereference
 
-<p>
-  Obtaining a value by Dereference is an operation to obtain the actual value from Reference. It was designed to realize the C joint operator "*".
-</p>
+Obtaining a value by Dereference is an operation to obtain the actual value from Reference. It was designed to realize the C joint operator "*".
+
 
   $VARIABLE
 
-<p>
-  The variable Type must be Reference Type, otherwise Compile Error occurs.
-</p>
-<p>
-  The value obtained by Dereference returns <a href="#language-expression">Expression</a>.
-</p>
+The variable Type must be Reference Type, otherwise Compile Error occurs.
+
+The value obtained by Dereference returns <a href="#language-expression">Expression</a>.
+
 
     <b>Example of getting value by Dereference</b>
 
@@ -4084,21 +4059,17 @@ If the number of arguments does not match the number of arguments defined in the
 
 =head2 Setting the value with Dereference
 
-<p>
-  Setting a value with Dereference is an operation to set the actual value from Reference. It was designed to realize the C joint operator "*".
-</p>
+Setting a value with Dereference is an operation to set the actual value from Reference. It was designed to realize the C joint operator "*".
+
 
   $VARIABLE = Expression
 
-<p>
-  The variable Type must be Reference Type, otherwise Compile Error occurs.
-</p>
-<p>
-  The Type of Expression must match the Type of the variable when dereferenced, otherwise Compile Error occurs.
-</p>
-<p>
-  Setting a value with Dereference returns the set value. This is <a href="#language-expression">Expression</a>.
-</p>
+The variable Type must be Reference Type, otherwise Compile Error occurs.
+
+The Type of Expression must match the Type of the variable when dereferenced, otherwise Compile Error occurs.
+
+Setting a value with Dereference returns the set value. This is <a href="#language-expression">Expression</a>.
+
 
     <b>Example of setting values ​​with Dereference</b>
 
@@ -4125,9 +4096,8 @@ If the number of arguments does not match the number of arguments defined in the
   __CLASS__
 
 
-<p>
-  <b>Get Current Class Name Example:</b>
-</p>
+<b>Get Current Class Name Example:</b>
+
 
   class Foo::Bar {
     static method baz : void () {
@@ -4177,9 +4147,8 @@ Current File Name means the relative path from the base path of the module file.
   __LINE__
 
 
-<p>
-  <b>Get Current Line Number Example:</b>
-</p>
+<b>Get Current Line Number Example:</b>
+
 
   class Foo::Bar {
     static method baz : void () {
@@ -4449,9 +4418,8 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
 =head2 Increment Operator
 
 
-<p>
-  <b>Increment Operator</b> is an Operator that adds 1 to the value. the meaning of Increment Operator is different depending on whether the Increment Operator is placed Pre or Post.
-</p>
+<b>Increment Operator</b> is an Operator that adds 1 to the value. the meaning of Increment Operator is different depending on whether the Increment Operator is placed Pre or Post.
+
 
   # Pre Increment Operator
   ++LEXICAL_VARIABLE
@@ -4467,30 +4435,25 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
   ARRAY_ACCESS++
   DEREFERENCE++
 
-<p>
-  The operand of Increment Operator must <a href="#language-local-var">Local Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
-</p>
-<p>
-  The Type of operand of Increment Operator must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error will occur.
-</p>
+The operand of Increment Operator must <a href="#language-local-var">Local Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
+
+The Type of operand of Increment Operator must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error will occur.
+
 
 
 =head3 Pre Increment Operator
 
 
-<p>
-  Pre Increment Operator adds 1 to the operand and returns the value after increment.
-</p>
-<p>
-  Pre Increment Operator is equivalent to the following Expression. After 1 is added to the operand, <a href="#language-type-convertion-typecast">Type Cast</a> is performed with the operand Type and the value is assinged to original operand.
-</p>
+Pre Increment Operator adds 1 to the operand and returns the value after increment.
+
+Pre Increment Operator is equivalent to the following Expression. After 1 is added to the operand, <a href="#language-type-convertion-typecast">Type Cast</a> is performed with the operand Type and the value is assinged to original operand.
+
 
 
   (OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION + 1))
 
-<p>
-  For example, Pre Increment of <a href="#language-type-byte">byte Type</a> value is equivalent to the following Expression:
-</p>
+For example, Pre Increment of <a href="#language-type-byte">byte Type</a> value is equivalent to the following Expression:
+
 
 
   ($num = (byte)($num + 1))
@@ -4500,19 +4463,16 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
 =head3 Post Increment Operator
 
 
-<p>
-  Post Increment Operator add 1 to the operand and returns the value before Increment.
-</p>
-<p>
-  Post Increment Operator is equivalent to the following Expression using <a href="#language-operator-sequential">Sequential Operator</a>. The value of operand is saved in a temporary variable, 1 is added to the operand, <a href="#language-type-convertion-typecast">Type Cast</a> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
-</p>
+Post Increment Operator add 1 to the operand and returns the value before Increment.
+
+Post Increment Operator is equivalent to the following Expression using <a href="#language-operator-sequential">Sequential Operator</a>. The value of operand is saved in a temporary variable, 1 is added to the operand, <a href="#language-type-convertion-typecast">Type Cast</a> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
+
 
   (my TMP_VARIABLE = OPERAND_EXPRESSION, OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION + 1), TMP_VARIABLE)
 
 
-<p>
-  For example, Post Increment of <a href="#language-type-byte">byte Type</a> value is equivalent to the following Expression.
-</p>
+For example, Post Increment of <a href="#language-type-byte">byte Type</a> value is equivalent to the following Expression.
+
 
 
   (my $tmp = $num, $num = (byte)($num + 1), $tmp)
@@ -4522,9 +4482,8 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
 =head2 Decrement Operator
 
 
-<p>
-  <b>Decrement Operator</b> is an Operator that subtracts 1 to the value. the meaning of Decrement Operator is different depending on whether the Decrement Operator is placed Pre or Post.
-</p>
+<b>Decrement Operator</b> is an Operator that subtracts 1 to the value. the meaning of Decrement Operator is different depending on whether the Decrement Operator is placed Pre or Post.
+
 
   # Pre Decrement Operator
   --LEXICAL_VARIABLE
@@ -4540,30 +4499,25 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
   ARRAY_ACCESS--
   DEREFERENCE--
 
-<p>
-  The operand of Decrement Operator must <a href="#language-local-var">Local Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
-</p>
-<p>
-  The Type of operand of Decrement Operator must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error will occur.
-</p>
+The operand of Decrement Operator must <a href="#language-local-var">Local Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
+
+The Type of operand of Decrement Operator must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error will occur.
+
 
 
 =head3 Pre Decrement Operator
 
 
-<p>
-  Pre Decrement Operator subtracts 1 to the operand and returns the value after decrement.
-</p>
-<p>
-  Pre Decrement Operator is equivalent to the following Expression. After 1 is subtracted to the operand, <a href="#language-type-convertion-typecast">Type Cast</a> is performed with the operand Type and the value is assinged to original operand.
-</p>
+Pre Decrement Operator subtracts 1 to the operand and returns the value after decrement.
+
+Pre Decrement Operator is equivalent to the following Expression. After 1 is subtracted to the operand, <a href="#language-type-convertion-typecast">Type Cast</a> is performed with the operand Type and the value is assinged to original operand.
+
 
 
   (OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION - 1))
 
-<p>
-  For example, Pre Decrement of <a href="#language-type-byte">byte Type</a> value is equivalent to the following Expression:
-</p>
+For example, Pre Decrement of <a href="#language-type-byte">byte Type</a> value is equivalent to the following Expression:
+
 
 
   ($num = (byte)($num - 1))
@@ -4573,19 +4527,16 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
 =head3 Post Decrement Operator
 
 
-<p>
-  Post Decrement Operator subtract 1 to the operand and returns the value before Decrement.
-</p>
-<p>
-  Post Decrement Operator is equivalent to the following Expression using <a href="#language-operator-sequential">Sequential Operator</a>. The value of operand is saved in a temporary variable, 1 is subtracted to the operand, <a href="#language-type-convertion-typecast">Type Cast</a> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
-</p>
+Post Decrement Operator subtract 1 to the operand and returns the value before Decrement.
+
+Post Decrement Operator is equivalent to the following Expression using <a href="#language-operator-sequential">Sequential Operator</a>. The value of operand is saved in a temporary variable, 1 is subtracted to the operand, <a href="#language-type-convertion-typecast">Type Cast</a> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
+
 
   (my TMP_VARIABLE = OPERAND_EXPRESSION, OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION - 1), TMP_VARIABLE)
 
 
-<p>
-  For example, Post Decrement of <a href="#language-type-byte">byte Type</a> value is equivalent to the following Expression.
-</p>
+For example, Post Decrement of <a href="#language-type-byte">byte Type</a> value is equivalent to the following Expression.
+
 
 
   (my $tmp = $num, $num = (byte)($num - 1), $tmp)
@@ -4594,60 +4545,51 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
 
 =head2 Bit Operator
 
-<p>
-  Bit Operator is an Operator that performs Bit operation. <a href="#language-operator-bit-and">Bit AND Operator</a>, <a href = "#language-operator-bit-or">Bit OR Operator</a>, <a href="#language-operator-bit-not">Bit NOT Operator</a>.
-</p>
+Bit Operator is an Operator that performs Bit operation. <a href="#language-operator-bit-and">Bit AND Operator</a>, <a href = "#language-operator-bit-or">Bit OR Operator</a>, <a href="#language-operator-bit-not">Bit NOT Operator</a>.
+
 
 
 =head2 Bit AND Operator
 
-<p>
-  Bit AND is <a href="#language-operator-binary">Binary Operator</a> represented by "&".
-</p>
+Bit AND is <a href="#language-operator-binary">Binary Operator</a> represented by "&".
+
 
   LEFT_EXPRESSION & RIGHT_EXPRESSION
 
-<p>
-  Left Expression and Right Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
+Left Expression and Right Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
 <p>
 <p>
   <a href="#language-type-convertion-binary-numeric-widening">Binary Numeric Widening Type Conversion</a> is performed on Left Expression and Right Expression.
-</p>
-<p>
-  After that, the operation result of Bit AND Operator performs the operation that exactly matches the following operation in C99
 
-</p>
+After that, the operation result of Bit AND Operator performs the operation that exactly matches the following operation in C99
+
+
 
   x & y;
 
 
 <a href="#language-type-int">int Type</a> Operation and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
 
-<p>
-  The Type of Return Value of Bit AND Operator is the type after <a href="#language-type-convertion-binary-numeric-widening">Binary Numeric Widening Type</a> is performed.
-</p>
-<p>
-  Bit AND Operator does not throw <a href="#language-exception">Exception</a>.
-</p>
+The Type of Return Value of Bit AND Operator is the type after <a href="#language-type-convertion-binary-numeric-widening">Binary Numeric Widening Type</a> is performed.
+
+Bit AND Operator does not throw <a href="#language-exception">Exception</a>.
+
 
 
 =head2 Bit OR Operator
 
-<p>
-  Bit OR is <a href="#language-operator-binary">Binary Operator</a> represented by "|".
-</p>
+Bit OR is <a href="#language-operator-binary">Binary Operator</a> represented by "|".
+
 
   LEFT_EXPRESSION | RIGHT_EXPRESSION
 
-<p>
-  Left Expression and Right Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
+Left Expression and Right Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
 <p>
 <p>
   <a href="#language-type-convertion-binary-numeric-widening">Binary Numeric Widening Type Conversion</a> is performed on Left Expression and Right Expression.
-</p>
-<p>
-  After that, the operation result of Bit OR Operator performs the operation that exactly matches the following operation in C99.
-</p>
+
+After that, the operation result of Bit OR Operator performs the operation that exactly matches the following operation in C99.
+
 
 
   x | y;
@@ -4655,46 +4597,37 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
 
 <a href="#language-type-int">int Type</a> Operation and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
 
-<p>
-  The Type of Return Value of Bit OR Operator is the type that is <a href="#language-type-convertion-binary-numeric-widening">Binary Numeric Widening Type Converted</a>.
-</p>
-<p>
-  Bit OR Operator does not throw <a href="#language-exception">Exception</a>.
-</p>
+The Type of Return Value of Bit OR Operator is the type that is <a href="#language-type-convertion-binary-numeric-widening">Binary Numeric Widening Type Converted</a>.
+
+Bit OR Operator does not throw <a href="#language-exception">Exception</a>.
+
 
 
 =head2 Bit NOT Operator
 
-<p>
-  Bit NOT Operator is <a href="#language-operator-unary">Unary Operator</a> represented by "~".
-</p>
+Bit NOT Operator is <a href="#language-operator-unary">Unary Operator</a> represented by "~".
+
 
   ~EXPRESSION
 
-<p>
-  Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
-</p>
-<p>
-  <a href="#language-type-convertion-unary-numeric-widening">Unary Numeric Widening Type Conversion</a> is performed to Expression before Operation.
-</p>
-<p>
-  After that, the operation result of Bit NOT Operator performs the operation that exactly matches the following operation in C99.
-</p>
+Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
+
+<a href="#language-type-convertion-unary-numeric-widening">Unary Numeric Widening Type Conversion</a> is performed to Expression before Operation.
+
+After that, the operation result of Bit NOT Operator performs the operation that exactly matches the following operation in C99.
+
 
   ~x
 
 
 <a href="#language-type-int">int Type</a> Operation and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
 
-<p>
-  The Type of Return Value of Bit NOT Operator is the type after <a href="#language-type-convertion-unary-numeric-widening">Unary Numeric Widening Type Conversion</a>
-</p>
-<p>
-  Bit NOT Operator does not throw <a href="#language-exception">Exception</a>.
-</p>
-<p>
-  <b>Bit NOT Operator Example</b>
-</p>
+The Type of Return Value of Bit NOT Operator is the type after <a href="#language-type-convertion-unary-numeric-widening">Unary Numeric Widening Type Conversion</a>
+
+Bit NOT Operator does not throw <a href="#language-exception">Exception</a>.
+
+<b>Bit NOT Operator Example</b>
+
 
   my $num = ~0xFF0A;
 
@@ -4702,121 +4635,105 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
 
 =head2 Shift Operator
 
-<p>
-  Shift Operator is an operator that performs Bit shift. <a href="#language-operator-left-shift">Left Shift Operator</a>, <a href = "#language-operator-arithmetic-right-shift" > Arithmetic Right Shift Operator</a>, <a href="#language-operator-logical-right-shift">Logical Right Shift Operator</a>.
-</p>
+Shift Operator is an operator that performs Bit shift. <a href="#language-operator-left-shift">Left Shift Operator</a>, <a href = "#language-operator-arithmetic-right-shift" > Arithmetic Right Shift Operator</a>, <a href="#language-operator-logical-right-shift">Logical Right Shift Operator</a>.
+
 
 =head2 Left Shift Operator
 
-<p>
-  The Left shift is <a href="#language-operator-binary">Binary Operator</a> represented by "<<".
-</p>
+The Left shift is <a href="#language-operator-binary">Binary Operator</a> represented by "<<".
+
 
   LEFT_EXPRESSION << RIGHT_EXPRESSION
 
-<p>
-  Left Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
+Left Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
 <p>
 <p>
   Right Expression must be <a href="#language-type-int">int Type</a>, otherwise Compile Error occurs.
 <p>
 <p>
   The calculation result of Left Shift Operator is the same as the following calculation in C99.
-</p>
+
 
   x << y;
 
 
 <a href="#language-type-int">int Type</a> Operation and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
 
-<p>
-  Left Shift Operator does not throw <a href="#language-exception">Exception</a>.
-</p>
+Left Shift Operator does not throw <a href="#language-exception">Exception</a>.
+
 
 
 =head2 Arithmetic Right Shift Operator
 
-<p>
-  Arithmetic Right Shift Operator is <a href="#language-operator-binary">Binary Operator</a> represented by ">>".
-</p>
+Arithmetic Right Shift Operator is <a href="#language-operator-binary">Binary Operator</a> represented by ">>".
+
 
   LEFT_EXPRESSION >> RIGHT_EXPRESSION
 
-<p>
-  Left Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
+Left Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
 <p>
 <p>
   First, for <a href="#language-expression">Left Expression</a>, <a href="#language-type-convertion-unary-numeric-widening">Unary Numeric Widening Type Conversion</a> is performed.
-</p>
-<p>
-  Right Expression must be <a href="#language-type-int">int Type</a>, otherwise Compile Error occurs.
+
+Right Expression must be <a href="#language-type-int">int Type</a>, otherwise Compile Error occurs.
 <p>
 <p>
   The operation result of Arithmetic Right Shift Operator is the operation that exactly matches the following operation in C99.
-</p>
+
 
   x >> y;
 
 
 <a href="#language-type-int">int Type</a> Operation and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
  
-<p>
-  Arithmetic Right Shift Operator does not throw <a href="#language-exception">Exception</a>.
-</p>
+Arithmetic Right Shift Operator does not throw <a href="#language-exception">Exception</a>.
+
 
 
 =head2 Logical Right Shift Operator
 
-<p>
-  Logical Right Shift Operator is <a href="#language-operator-binary">Binary Operator</a> represented by ">>>".
-</p>
+Logical Right Shift Operator is <a href="#language-operator-binary">Binary Operator</a> represented by ">>>".
+
 
   LEFT_EXPRESSION >>> RIGHT_EXPRESSION
 
-<p>
-  Left Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
-</p>
-<p>
-  Right Expression must be <a href="#language-type-int">int Type</a>, otherwise Compile Error occurs.
+Left Expression must be <a href="#language-type-integral">Integral Type</a>, otherwise Compile Error occurs.
+
+Right Expression must be <a href="#language-type-int">int Type</a>, otherwise Compile Error occurs.
 <p>
 <p>
   The calculation result of Logical Right Shift Operator is the same as the following calculation in C99.
-</p>
+
 
   (SIGNED_INTEGRAL_TYPE_CAST)((UNSINGED_INTEGRAL_TYPE_CAST)x >> y);
 
 
 <a href="#language-type-int">int Type</a> Operation and <a href="#language-type-long">long Type</a> Operation are defined corresponding to <a href="#language-c99-type">C99 Type</a>
  
-<p>
-  Logical Right Shift Operator does not throw <a href="#language-exception">Exception</a>.
-</p>
+Logical Right Shift Operator does not throw <a href="#language-exception">Exception</a>.
+
 
 
 =head2 Comparison Operator
 
-<p>
-  Comparison Operator is an Operator that is placed between Left Expression and Right Expression to compare the size, and return True/False Value.
-</p>
+Comparison Operator is an Operator that is placed between Left Expression and Right Expression to compare the size, and return True/False Value.
+
 
   LEFT_EXPRESSION COMPARISON_OPERATOR RIGHT_EXPRESSION
 
-<p>
-  Comparison Operators are <a href="#language-operator-comparison-numeric">Numeric Comparison Operator</a>, <a href="#language-operator-comparison-string">String Comparison Operator</a>, and <a href="#language-operator-isa">isa Operator</a>.
-</p>
+Comparison Operators are <a href="#language-operator-comparison-numeric">Numeric Comparison Operator</a>, <a href="#language-operator-comparison-string">String Comparison Operator</a>, and <a href="#language-operator-isa">isa Operator</a>.
+
 
 
 =head2 Numeric Comparison Operator
 
-<p>
-  <b>Numeric Comparison Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> that is placed between Left Expression and Right Expression to compare the size of number or check the equqlity of objects.
-</p>
+<b>Numeric Comparison Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> that is placed between Left Expression and Right Expression to compare the size of number or check the equqlity of objects.
+
 
   LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_EXPRESSION
 
-<p>
-  A list of Numeric Comparison Operators.
-</p>
+A list of Numeric Comparison Operators.
+
 
 =begin html
 
@@ -4907,15 +4824,12 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
 
 =end html
 
-<p>
-  The Types of Left Expression and Right Expression Comparable Types, otherwise Compile Error occurs.
-</p>
-<p>
-  In Numeric Type Comparison, <a href="#language-type-convertion-binary-numeric-widening">Binary Numeric Widening Type Conversion</a> is performed for Left Expression and Right Expression.
-</p>
-<p>
-  After that, the Numeric Comparison Operation is performed that exactly matches the following operation in C99.
-</p>
+The Types of Left Expression and Right Expression Comparable Types, otherwise Compile Error occurs.
+
+In Numeric Type Comparison, <a href="#language-type-convertion-binary-numeric-widening">Binary Numeric Widening Type Conversion</a> is performed for Left Expression and Right Expression.
+
+After that, the Numeric Comparison Operation is performed that exactly matches the following operation in C99.
+
 
   # Numeric Type Comparison, Object Type Comparison
   (int32_t)(x == y);
@@ -4933,29 +4847,24 @@ For Numeric Type Operation(==, !=, >, >=, <, <=), <a href="#language-type-int">i
 
 And Object Type Operation(==, !=) is defined.
 
-<p>
-  The Type of Return Value of the Numeric Comparison Operator is <a href="#language-type-int">int Type</a>.
-</p>
+The Type of Return Value of the Numeric Comparison Operator is <a href="#language-type-int">int Type</a>.
 
-<p>
-  Numeric Comparison Operator does not throw <a href="#language-exception">Exception</a>.
-</p>
+
+Numeric Comparison Operator does not throw <a href="#language-exception">Exception</a>.
+
 
 
 =head2 String Comparison Operator
 
-<p>
-  <b>String Comparison Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> that compares the bytes in the tow string.
-</p>
+<b>String Comparison Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> that compares the bytes in the tow string.
+
 
   LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
 
-<p>
-  Left Expression and Right Expression must be <a href="#language-type-string">String Type</a> or byte[] type.
-</p>
-<p>
-  A list of String Comparison Operators.
-</p>
+Left Expression and Right Expression must be <a href="#language-type-string">String Type</a> or byte[] type.
+
+A list of String Comparison Operators.
+
 
 =begin html
 
@@ -5024,32 +4933,26 @@ And Object Type Operation(==, !=) is defined.
 
 =end html
 
-<p>
-  The Type of Return Value of the String Comparison Operator is <a href="#language-type-int">int Type</a>. If the condition is met, returns 1, otherwise 0.
-</p>
+The Type of Return Value of the String Comparison Operator is <a href="#language-type-int">int Type</a>. If the condition is met, returns 1, otherwise 0.
+
 
 
 =head2 isa Operator
 
-<p>
-  <b>isa Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> to check whether Left Expression satisfies Right Type.
-</p>
+<b>isa Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> to check whether Left Expression satisfies Right Type.
+
 
 
   LEFT_EXPRESSION isa RIGHT_TYPE
 
-<p>
-  isa Operator has three behaviors, depending on Right Type.
-</p>
-<p>
-  1. If Right Type is <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-multi-numeric">Multi Numeric Type</a>, <a href="#language-type-any-object">Any Object Type</a>, <a href="#language-type-ref">Reference Type</a>, isa operator checks whether the Type of Left Expression is same as Right Type. This check is done at compile time and isa operator is replaced by <a href="#language-type-int">int Type</a> value. If their types is same, replaced by 1, otherwise by 0.
-</p>
-<p>
-  2. If the Right Type is <a href="#language-type-class">Class Type</a>, isa operator checks whether the Type of Left Expression is same as Right Type at Run Time. If their types are same, <a href="#language-type-int">int Type</a> 1 is return, otherwise 0. The Type of Left Expression must be <a href="#language-type-object">Object Type</a>, otherwise Compile Error occurs.
-</p>
-<p>
-  3. If the Right Type is <a href="#language-type-callback">Callback Type</a>, isa Operator checks whether the Type of Left Expression satisfy the Callback Type at Run Time. If Left Expression satisfies the Callback Type, returns <a href="#language-type-int">int Type</a> 1, otherwise 0. The Type of Left Expression must be <a href="#language-type-object">Object Type</a>, otherwise Compile Error occurs.
-</p>
+isa Operator has three behaviors, depending on Right Type.
+
+1. If Right Type is <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-multi-numeric">Multi Numeric Type</a>, <a href="#language-type-any-object">Any Object Type</a>, <a href="#language-type-ref">Reference Type</a>, isa operator checks whether the Type of Left Expression is same as Right Type. This check is done at compile time and isa operator is replaced by <a href="#language-type-int">int Type</a> value. If their types is same, replaced by 1, otherwise by 0.
+
+2. If the Right Type is <a href="#language-type-class">Class Type</a>, isa operator checks whether the Type of Left Expression is same as Right Type at Run Time. If their types are same, <a href="#language-type-int">int Type</a> 1 is return, otherwise 0. The Type of Left Expression must be <a href="#language-type-object">Object Type</a>, otherwise Compile Error occurs.
+
+3. If the Right Type is <a href="#language-type-callback">Callback Type</a>, isa Operator checks whether the Type of Left Expression satisfy the Callback Type at Run Time. If Left Expression satisfies the Callback Type, returns <a href="#language-type-int">int Type</a> 1, otherwise 0. The Type of Left Expression must be <a href="#language-type-object">Object Type</a>, otherwise Compile Error occurs.
+
 
 
 =head2 ref Operator
@@ -5084,103 +4987,79 @@ The contents of the dumped string may vary from SPVM version to version. Please 
 
 =head2 Logical Operator
 
-<p>
-  Logical Operator is an Operator that performs logical operations,<a href="#language-operator-logical-and">Logical AND Operator</a><a href="#language-operator-logical-or"_or Logical Operator</a><a href="#language-operator-logical-not">Logical NOT Operator</a>
-</p>
-<p>
-  Logical Operator returns <a href="#language-expression">Expression</a>
-</p>
+Logical Operator is an Operator that performs logical operations,<a href="#language-operator-logical-and">Logical AND Operator</a><a href="#language-operator-logical-or"_or Logical Operator</a><a href="#language-operator-logical-not">Logical NOT Operator</a>
+
+Logical Operator returns <a href="#language-expression">Expression</a>
+
 
 
 =head2 Logical AND Operator
 
-<p>
-  Logical AND Operator is a <a href="#language-expresssion"=Expression</a><a href="#language-operator-binary">Binary Operator</a>
-</p>
+Logical AND Operator is a <a href="#language-expresssion"=Expression</a><a href="#language-operator-binary">Binary Operator</a>
+
 
   LEFT_EXPRESSION && RIGHT_EXPRESSION
 
-<p>
-  Logical AND Operator のReturn ValueのTypeは,<a href="#language-type-int">int Type</a>.
-</p>
-<p>
-  Logical AND Operator behaves as follows:
-</p>
-<p>
-  1. Run the <a href="#language-type-convertion-bool">Bool Type Conversion</a> to Left Expression.
-</p>
-<p>
-  2. If the value of Left Expression is non-zero, execute the <a href="#language-type-convertion-bool" <#language-type-convertion-bool" for the Right Expression, execute the</a> and return that value.
-</p>
-<p>
-  3. If the value of Left Expression is 0, it returns that value.
-</p>
-<p>
-  Logical AND Operator returns <a href="#language-expression">Expression</a>
-</p>
-<p>
-  Logical AND Operator does not throw <a href="#language-exception">Exception</a>.
-</p>
+Logical AND Operator のReturn ValueのTypeは,<a href="#language-type-int">int Type</a>.
+
+Logical AND Operator behaves as follows:
+
+1. Run the <a href="#language-type-convertion-bool">Bool Type Conversion</a> to Left Expression.
+
+2. If the value of Left Expression is non-zero, execute the <a href="#language-type-convertion-bool" <#language-type-convertion-bool" for the Right Expression, execute the</a> and return that value.
+
+3. If the value of Left Expression is 0, it returns that value.
+
+Logical AND Operator returns <a href="#language-expression">Expression</a>
+
+Logical AND Operator does not throw <a href="#language-exception">Exception</a>.
+
 
 
 =head2 Logical OR Operator
 
-<p>
-  Logical OR Operator is a logical OR operation that is "<a href="#language-expresssion">Expression</a> is an operand of <a href="#language-operator-binary">Binary Operator</a>
-</p>
+Logical OR Operator is a logical OR operation that is "<a href="#language-expresssion">Expression</a> is an operand of <a href="#language-operator-binary">Binary Operator</a>
+
 
   LEFT_EXPRESSION || RIGHT_EXPRESSION
 
-<p>
-  Logical OR Operator behaves as follows:
-</p>
-<p>
-  Logical OR Operator のReturn ValueのTypeは,<a href="#language-type-int">int Type</a>.
-</p>
-<p>
-  1. Run the <a href="#language-type-convertion-bool">Bool Type Conversion</a> to Left Expression.
-</p>
-<p>
-  2. If the value of Left Expression is 0, the <a href="#language-type-convertion-bool"</a> and returns that value for Right Expression.
-</p>
-<p>
-  3. If the value of Left Expression is non-zero, it returns that value.
-</p>
-<p>
-  Logical OR Operator は<a href="#language-expression">Expression</a>を返します。
-</p>
-<p>
-  Logical OR Operator returns <a href="#language-expression">Expression</a>
-</p>
+Logical OR Operator behaves as follows:
+
+Logical OR Operator のReturn ValueのTypeは,<a href="#language-type-int">int Type</a>.
+
+1. Run the <a href="#language-type-convertion-bool">Bool Type Conversion</a> to Left Expression.
+
+2. If the value of Left Expression is 0, the <a href="#language-type-convertion-bool"</a> and returns that value for Right Expression.
+
+3. If the value of Left Expression is non-zero, it returns that value.
+
+Logical OR Operator は<a href="#language-expression">Expression</a>を返します。
+
+Logical OR Operator returns <a href="#language-expression">Expression</a>
+
 
 
 =head2 Logical NOT Operator
 
-<p>
-  Logical NOT Operator is an operator to the Left of expression to perform logical NOT operations,<a href="#language-expression"_Expression</a> returning <a href="#language-operator-binary">Unary Operator</a> For more information about Expression, see <a href="#language-expresssion">Expression</a>.
-</p>
+Logical NOT Operator is an operator to the Left of expression to perform logical NOT operations,<a href="#language-expression"_Expression</a> returning <a href="#language-operator-binary">Unary Operator</a> For more information about Expression, see <a href="#language-expresssion">Expression</a>.
+
 
   !EXPRESSION
 
-<p>
-  Logical NOT Operator のReturn ValueのTypeは,<a href="#language-type-int">int Type</a>.
-</p>
-<p>
-  Logical NOT Operator executes <a href="#language-type-convertion-bool"</a>=$Bool Type Conversion for Expression, returns 1 if its value is 0, and 0 if it is not 0.
-</p>
-<p>
-  Logical NOT Operator returns <a href="#language-expression">Expression</a>
-</p>
-<p>
-  Logical NOT Operator does not throw <a href="#language-exception">Exception</a>.
-</p>
+Logical NOT Operator のReturn ValueのTypeは,<a href="#language-type-int">int Type</a>.
+
+Logical NOT Operator executes <a href="#language-type-convertion-bool"</a>=$Bool Type Conversion for Expression, returns 1 if its value is 0, and 0 if it is not 0.
+
+Logical NOT Operator returns <a href="#language-expression">Expression</a>
+
+Logical NOT Operator does not throw <a href="#language-exception">Exception</a>.
+
 
 
 =head2 String Concatenation Operator
 
-<p>
-  String Concatenation Operator is a <a href="#language-operator-binary">Binary Operator</a>.
-</p>
+String Concatenation Operator is a <a href="#language-operator-binary">Binary Operator</a>.
+
 
   LEFT_EXPRESSION . RIGHT_EXPRESSION
 
@@ -5191,18 +5070,14 @@ The left expression and the right expression must be a string type or byte[] typ
 
 String Concatenation Operator returns the concatenated <a href="#language-string">string</a>.
 
-<p>
-  String Concatenation Operator retruns <a href="#language-expression">Expression</a>, The Type is <a href="#language-type-string">String Type</a>.
-</p>
-<p>
-  If both Left Expression and Right Expression were <a href="#language-literal-string">String Literal</a>, a string Literal concatenated at compile time is generated. You can concatenate String Literal with string Concatenation Operator without being aware of the cost of performance.
-</p>
-<p>
-  If Left expression or Right Expression is <a href="#language-undef">Undefined Value</a> <a href="#language-exception">Exception</a> occurs at Run Time.
-</p>
-<p>
-  <b>String Concatenation Operator Example</b>
-</p>
+String Concatenation Operator retruns <a href="#language-expression">Expression</a>, The Type is <a href="#language-type-string">String Type</a>.
+
+If both Left Expression and Right Expression were <a href="#language-literal-string">String Literal</a>, a string Literal concatenated at compile time is generated. You can concatenate String Literal with string Concatenation Operator without being aware of the cost of performance.
+
+If Left expression or Right Expression is <a href="#language-undef">Undefined Value</a> <a href="#language-exception">Exception</a> occurs at Run Time.
+
+<b>String Concatenation Operator Example</b>
+
 
   my $str = "abc" . "def";
   my $str = "def" . 34;
@@ -5212,36 +5087,29 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =head2 Assignment Operator
 
-<p>
-  Assignment Operator is a <a href="#language-operator-binary">Binary Operator</a> for assignment, expressed in "=".
-</p>
+Assignment Operator is a <a href="#language-operator-binary">Binary Operator</a> for assignment, expressed in "=".
+
 
   LEFT_EXPRESSION = RIGHTH_EXPRESSION
 
-<p>
-  Assignment Operator has multiple meanings depending on the Right and Left sides. Please refer to each item.
-</p>
-<p>
-  In Assignment Operator, the Left Expression is evaluated after the Right Expression is evaluated. This is with the exception of expression being executed from Left to Right as a rule.
-</p>
+Assignment Operator has multiple meanings depending on the Right and Left sides. Please refer to each item.
+
+In Assignment Operator, the Left Expression is evaluated after the Right Expression is evaluated. This is with the exception of expression being executed from Left to Right as a rule.
+
 
 =head2 Special Assignment Operator
 
-<p>
-  Special Assignment Operator is a <a href="#language-operator-binary"_binary operator</a> and <a href="#language-operator-assign">Assignment Operator</a><a href="#language-operator-binary</a></a>.
-</p>
+Special Assignment Operator is a <a href="#language-operator-binary"_binary operator</a> and <a href="#language-operator-assign">Assignment Operator</a><a href="#language-operator-binary</a></a>.
+
 
   LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR  RIGHT_EXPRESSION
 
-<p>
-  Left ExpressionとRight Expressionが<a href="#language-type-compatible">Type Compatibility</a>を満たさない場合は,Compile Error occurs
-</p>
-<p>
-  <b>List of Special Assignment Operators</b>
-</p>
-<p>
-  List of Special Assignment Operators
-</p>
+Left ExpressionとRight Expressionが<a href="#language-type-compatible">Type Compatibility</a>を満たさない場合は,Compile Error occurs
+
+<b>List of Special Assignment Operators</b>
+
+List of Special Assignment Operators
+
 
 =begin html
 
@@ -5294,9 +5162,8 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =end html
 
-<p>
-  The Special Assignment Operator is deployed as follows:
-</p>
+The Special Assignment Operator is deployed as follows:
+
 
   # Before unexpanding
   LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR RIGHT_EXPRESSION
@@ -5304,9 +5171,8 @@ String Concatenation Operator returns the concatenated <a href="#language-string
   # After unwinding
   LEFT_EXPRESSION ASSIGNMENT_OPERATOR (LEFT EXPRESSION TYPE CAST)(LEFT_EXPRESSION SPECIFIC_OPERATOR RIGHT_EXPRESSION)
 
-<p>
-  For example, for add assignment Operator, it is expanded as follows:
-</p>
+For example, for add assignment Operator, it is expanded as follows:
+
 
   # Before unexpanding x is <a href="#language-type-byte">byte Type</a>
   $x += 1;
@@ -5314,12 +5180,10 @@ String Concatenation Operator returns the concatenated <a href="#language-string
   # After unwinding
   $x = (byte)($x + 1)
 
-<p>
-  <b>Special Assignment Operator Example</b>
-</p>
-<p>
-  Special Assignment Operator Example
-</p>
+<b>Special Assignment Operator Example</b>
+
+Special Assignment Operator Example
+
 
   $x += 1;
   $x -= 1;
@@ -5338,18 +5202,15 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =head2 Reference Operator
 
-<p>
-  The Reference Operator is an Operator that retrieves the address of a variable for <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a>. Designed to achieve c address Operator "*".
-</p>
+The Reference Operator is an Operator that retrieves the address of a variable for <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a>. Designed to achieve c address Operator "*".
+
 
   \VARIABLE
 
-<p>
-  If the variable is not numeric type or Multi Numeric Type, Compile Error occurs
-</p>
-<p>
-  Reference Operator returns expression. The type returned is <a href="#language-type-ref">Reference Type</a>.
-</p>
+If the variable is not numeric type or Multi Numeric Type, Compile Error occurs
+
+Reference Operator returns expression. The type returned is <a href="#language-type-ref">Reference Type</a>.
+
 
     <b>Reference Operator Example</b>
 
@@ -5360,66 +5221,52 @@ String Concatenation Operator returns the concatenated <a href="#language-string
   my $z : Complex_2d;
   my $z_ref : Complex_2d* = \$z;
 
-<p>
-  For a detailed description of Reference, see <a href="#language-ref">Reference</a>.
-</p>
+For a detailed description of Reference, see <a href="#language-ref">Reference</a>.
+
 
 
 =head2 Array Length Operator
 
-<p>
-  Array Length Operator is a <a href="#language-array">Array</a></a><a href="#language-operator-binary">Unary Operator</a>
-</p>
+Array Length Operator is a <a href="#language-array">Array</a></a><a href="#language-operator-binary">Unary Operator</a>
+
 
   @RIGHT EXPRESSION
 
-<p>
-  Right Expression must be an Array Type, otherwise Compile Error occurs.
-</p>
-<p>
-  Array Length Operator returns array length for <a href="#language-type-int">int Type</a> value.
-</p>
-<p>
-  Array Length Operator returns <a href="#language-expression">Expression</a>
-</p>
-<p>
-  <b>Array Length Operator Example</b>
-</p>
-<p>
-  Array Length Operator Example
-</p>
+Right Expression must be an Array Type, otherwise Compile Error occurs.
+
+Array Length Operator returns array length for <a href="#language-type-int">int Type</a> value.
+
+Array Length Operator returns <a href="#language-expression">Expression</a>
+
+<b>Array Length Operator Example</b>
+
+Array Length Operator Example
+
 
   my $nums = new byte[10];
   my $length = @$nums;
 
-<p>
-  Note that SPVM does not have the idea of a context in Perl, and array length operators always return Array Length.
-</p>
+Note that SPVM does not have the idea of a context in Perl, and array length operators always return Array Length.
+
 
 
 =head2 String Length Operator
 
-<p>
-  String Length Operator is a <a href="#language-string">String</a></a> <a href="#language-operator-binary">Unary Operator</a>
-</p>
+String Length Operator is a <a href="#language-string">String</a></a> <a href="#language-operator-binary">Unary Operator</a>
+
 
   length RIGHT_EXPRESSION
 
-<p>
-  Right Expression must be <a href="#language-type-string">String Type</a>, otherwise Compile Error occurs.
-</p>
-<p>
-  The String Length Operator returns the length of the String as a <a href="#language-type-int">int Type</a> value. String Length The length of the String returned by the Operator is the length when viewed as a byte string.
-</p>
-<p>
-  String Length Operator returns the <a href="#language-expression">Expression</a>
-</p>
-<p>
-  <b>String Length Operator Example</b>
-</p>
-<p>
-  String Length Operator Exampleです。
-</p>
+Right Expression must be <a href="#language-type-string">String Type</a>, otherwise Compile Error occurs.
+
+The String Length Operator returns the length of the String as a <a href="#language-type-int">int Type</a> value. String Length The length of the String returned by the Operator is the length when viewed as a byte string.
+
+String Length Operator returns the <a href="#language-expression">Expression</a>
+
+<b>String Length Operator Example</b>
+
+String Length Operator Exampleです。
+
 
   my $nums = "abcde";
   my $length = length $nums;
@@ -5428,24 +5275,19 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =head2 Scalar Operator
 
-<p>
-  Scalar Operator is an Operator that returns the given value itself without doing anything. It is provided only to clarify the meaning of <a href="#language-operator-array-length">Array Length Operator operator</a>
-</p>
+Scalar Operator is an Operator that returns the given value itself without doing anything. It is provided only to clarify the meaning of <a href="#language-operator-array-length">Array Length Operator operator</a>
+
 
   scalar RIGHT_EXPRESSION
 
-<p>
-  Right Expressionは<a href="#language-operator-array-length">Array Length Operator</a>でなければなりません。 otherwise Compile Error occurs.
-</p>
-<p>
-  Scalar Operator returns Expression.
-</p>
-<p>
-  <b>Scalar Operator Example</b>
-</p>
-<p>
-  Scalar Operator Example
-</p>
+Right Expressionは<a href="#language-operator-array-length">Array Length Operator</a>でなければなりません。 otherwise Compile Error occurs.
+
+Scalar Operator returns Expression.
+
+<b>Scalar Operator Example</b>
+
+Scalar Operator Example
+
 
   my $nums = new int[3];
   foo(scalar @$nums);
@@ -5454,34 +5296,27 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =head2 isweak Operator
 
-<p>
-  isweak Operator is an Operator that checks whether Field is</a><a href="#language-weak-ref">Weaken Reference.</a>
-</p>
+isweak Operator is an Operator that checks whether Field is</a><a href="#language-weak-ref">Weaken Reference.</a>
+
 
   isweak VARIABLE->{FIELD_NAME};
 
-<p>
-  The Type of object Expression must be</a><a href="#language-type-class">Class Type.< otherwise Compile Error occurs.
-</p>
-<p>
-  Field Name must be a existed Field Name, otherwise Compile Error occurs.
-</p>
-<p>
-  The Type of the value stored in field must be <a href="#language-type-object">Object Type</a>, otherwise Compile Error occurs.
-</p>
-<p>
-  If the value stored in field at Run Time is</a> <a href="#language-undef">Undefined Value, it returns false. This is <a href="#language-expression">Expression</a>
-</p>
-<p>
-  isweak Operator returns <a href="#language-type-int" <</a></a> if Field is weaken reference, or 0. This is <a href="#language-expression">Expression</a>
-</p>
+The Type of object Expression must be</a><a href="#language-type-class">Class Type.< otherwise Compile Error occurs.
+
+Field Name must be a existed Field Name, otherwise Compile Error occurs.
+
+The Type of the value stored in field must be <a href="#language-type-object">Object Type</a>, otherwise Compile Error occurs.
+
+If the value stored in field at Run Time is</a> <a href="#language-undef">Undefined Value, it returns false. This is <a href="#language-expression">Expression</a>
+
+isweak Operator returns <a href="#language-type-int" <</a></a> if Field is weaken reference, or 0. This is <a href="#language-expression">Expression</a>
+
 
 
 =head2 Precidence
 
-<p>
-  Operator Precidence is the following street. The lower you go, the higher your priority.
-</p>
+Operator Precidence is the following street. The lower you go, the higher your priority.
+
 
 =begin html
 
@@ -5641,9 +5476,8 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =end html
 
-<p>
-  Operator Precidence can be a top priority by using "()".
-</p>
+Operator Precidence can be a top priority by using "()".
+
 
   #  a * b is the first
   a * b + c
@@ -5654,32 +5488,26 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =head1 Statement
 
-<p>
-  Statement can be written more than one in <a href="#language-scope-scope-block">Scope Block</a> for a single process. <a href="#language-expression">Expression</a> is not evaluated as a value.
-</p>
-<p>
-  <b>List of Statements</b>
-</p>
-<p>
-  List of Statements
-</p>
+Statement can be written more than one in <a href="#language-scope-scope-block">Scope Block</a> for a single process. <a href="#language-expression">Expression</a> is not evaluated as a value.
+
+<b>List of Statements</b>
+
+List of Statements
+
 
 =head2 if Statement
 
-<p>
-  If Statement is a statement for conditional branching.
-</p>
+If Statement is a statement for conditional branching.
+
 
   if (EXPRESSION) {
   
   }
 
-<p>
-  Expression <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed and Block is executed if the value is non-zero.
-</p>
-<p>
-  If you want to write more than one condition, you can continue with "elsif Statement". The condition determination is performed from above, and each Expression is <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed, and a corresponding Block is executed if the value is non-zero.
-</p>
+Expression <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed and Block is executed if the value is non-zero.
+
+If you want to write more than one condition, you can continue with "elsif Statement". The condition determination is performed from above, and each Expression is <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed, and a corresponding Block is executed if the value is non-zero.
+
 
   if (EXPRESSION) {
   
@@ -5689,9 +5517,8 @@ String Concatenation Operator returns the concatenated <a href="#language-string
   }
 
 
-<p>
-  You can use "elseStatement" to describe what happens if or if the elsif Statement does not meet the criteria. If the if statement and elsif statement condition determination are all false, the statement inside the elseBlock is executed. Elsif Statement does not have to be.
-</p>
+You can use "elseStatement" to describe what happens if or if the elsif Statement does not meet the criteria. If the if statement and elsif statement condition determination are all false, the statement inside the elseBlock is executed. Elsif Statement does not have to be.
+
 
 
   if (EXPRESSION) {
@@ -5704,12 +5531,10 @@ String Concatenation Operator returns the concatenated <a href="#language-string
   
   }
 
-<p>
-  <b>if Statement Example</b>
-</p>
-<p>
-  An example of if Statement.
-</p>
+<b>if Statement Example</b>
+
+An example of if Statement.
+
 
   my $flag = 1;
   
@@ -5723,9 +5548,8 @@ String Concatenation Operator returns the concatenated <a href="#language-string
     print "Other";
   }
 
-<p>
-  The if Statement is internally surrounded by an invisible Simple Block.
-</p>
+The if Statement is internally surrounded by an invisible Simple Block.
+
 
   {
     if (EXPRESSION) {
@@ -5733,9 +5557,8 @@ String Concatenation Operator returns the concatenated <a href="#language-string
     }
   }
 
-<p>
-  elsif is internally expanded into if Statement and else Statement.
-</p>
+elsif is internally expanded into if Statement and else Statement.
+
 
   #Before deployment
   if (EXPRESSION1) {
@@ -5760,9 +5583,8 @@ String Concatenation Operator returns the concatenated <a href="#language-string
     }
   }
 
-<p>
-  When a variable is declared in the conditional part of if Statement, it must be surrounded by invisible <a href="#language-scope-block-statement-simple">Simple Block</a>. Be aware that elsif is internally expanded into if Statement and else Statement.
-</p>
+When a variable is declared in the conditional part of if Statement, it must be surrounded by invisible <a href="#language-scope-block-statement-simple">Simple Block</a>. Be aware that elsif is internally expanded into if Statement and else Statement.
+
 
   #Before deployment
   my $num = 1;
@@ -5798,9 +5620,8 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =head2 switch Statement
 
-<p>
-  The switch statement is a statement for conditional branching with an integer of <a href="#language-type-int">int Type</a> as a condition. Faster than if Statement if the condition is an integer of <a href="#language-type-int">int Type</a> and there are many branches.
-</p>
+The switch statement is a statement for conditional branching with an integer of <a href="#language-type-int">int Type</a> as a condition. Faster than if Statement if the condition is an integer of <a href="#language-type-int">int Type</a> and there are many branches.
+
 
   switch (CONDITION_EXPRESSION) {
     case constant 1: (
@@ -5819,33 +5640,24 @@ String Concatenation Operator returns the concatenated <a href="#language-string
     }
   }
 
-<p>
-  As the condition Expression, <a href="#language-expression">Expression</a> can be specified. <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed for the condition Expression.
-</p>
-<p>
-  The constants specified in case Statement are <a href="#language-type-byte">byte Type</a> or <a href="#language-type-int">int Type</a> constants. must be. For a constant of <a href="#language-type-byte">byte Type</a>, type conversion to <a href="#language-type-int">int Type</a> at compile time. Will be done. The value of enumType and Constant Method of <a href="#language-type-int">int Type</a> are constants of <a href="#language-type-int">int Type</a>. As it is expanded at the time of syntax analysis, it can be used.
-</p>
-<p>
-  The constants specified in the case statement must not overlap. If there are duplicates, Compile Error occurs
-</p>
-<p>
-  If the value specified in the condition Expression matches the value specified in the case statement, jump to the position of that case statement.
-</p>
-<p>
-  If there is no match and a default statement is specified, jump to the default statement position. If no default statement is specified, switch block will not be executed.
-</p>
-<p>
-  A switch statement requires at least one case statement, otherwise Compile Error will occur.
-</p>
-<p>
-  The default Statement is optional.
-</p>
-<p>
-  Only case statement and default statement can be described directly under switch block.
-</p>
-<p>
-  The case and default Blocks can be omitted.
-</p>
+As the condition Expression, <a href="#language-expression">Expression</a> can be specified. <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed for the condition Expression.
+
+The constants specified in case Statement are <a href="#language-type-byte">byte Type</a> or <a href="#language-type-int">int Type</a> constants. must be. For a constant of <a href="#language-type-byte">byte Type</a>, type conversion to <a href="#language-type-int">int Type</a> at compile time. Will be done. The value of enumType and Constant Method of <a href="#language-type-int">int Type</a> are constants of <a href="#language-type-int">int Type</a>. As it is expanded at the time of syntax analysis, it can be used.
+
+The constants specified in the case statement must not overlap. If there are duplicates, Compile Error occurs
+
+If the value specified in the condition Expression matches the value specified in the case statement, jump to the position of that case statement.
+
+If there is no match and a default statement is specified, jump to the default statement position. If no default statement is specified, switch block will not be executed.
+
+A switch statement requires at least one case statement, otherwise Compile Error will occur.
+
+The default Statement is optional.
+
+Only case statement and default statement can be described directly under switch block.
+
+The case and default Blocks can be omitted.
+
 
   switch (CONDITION_EXPRESSION) {
     case constant 1:
@@ -5856,9 +5668,8 @@ String Concatenation Operator returns the concatenated <a href="#language-string
     default:
   }
 
-<p>
-  If you use break Statement, you can exit from the switch block.
-</p>
+If you use break Statement, you can exit from the switch block.
+
 
 
   switch (CONDITION_EXPRESSION) {
@@ -5876,16 +5687,13 @@ String Concatenation Operator returns the concatenated <a href="#language-string
     }
   }
 
-<p>
-  If a case Block exists, the last Statement must be a break Statement or a returnl Statement, otherwise Compile Error will occur.
-</p>
+If a case Block exists, the last Statement must be a break Statement or a returnl Statement, otherwise Compile Error will occur.
 
-<p>
-  <b>Switch Statement Example</b>
-</p>
-<p>
-  An example of a switch statement.
-</p>
+
+<b>Switch Statement Example</b>
+
+An example of a switch statement.
+
 
   my $code = 2;
   switch ($code) {
@@ -5916,37 +5724,31 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =head2 case Statement
 
-<p>
-  A case statement is a Statement that can be used in a switch block to specify conditions. For more information on case statements, see the <a href="#language-statement-switch">switch Statement</a> description.
-</p>
+A case statement is a Statement that can be used in a switch block to specify conditions. For more information on case statements, see the <a href="#language-statement-switch">switch Statement</a> description.
+
 
 
 =head2 default Statement
 
-<p>
-  The default Statement is a Statement that can be used in the switch block to specify the default condition. For more information on the default Statement, see the <a href="#language-statement-switch">switch Statement</a> description.
-</p>
+The default Statement is a Statement that can be used in the switch block to specify the default condition. For more information on the default Statement, see the <a href="#language-statement-switch">switch Statement</a> description.
+
 
 
 =head2 while Statement
 
-<p>
-  while Statement is a Statement for repeating.
-</p>
+while Statement is a Statement for repeating.
+
 
   while (CONDITION_EXPRESSION) {
   
   }
 
-<p>
-  <a href="#language-expresssion">Expression</a> can be described in the condition Expression. <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
-</p>
-<p>
-  <b>While Statement Example</b>
-</p>
-<p>
-  An example of a while Statement.
-</p>
+<a href="#language-expresssion">Expression</a> can be described in the condition Expression. <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
+
+<b>While Statement Example</b>
+
+An example of a while Statement.
+
 
   my $i = 0;
   while ($i <5) {
@@ -5956,18 +5758,16 @@ String Concatenation Operator returns the concatenated <a href="#language-string
     $i++;
   }
 
-<p>
-  Inside the while block, you can leave the while block by using <a href="#language-statement-last">last Statement</a>.
-</p>
+Inside the while block, you can leave the while block by using <a href="#language-statement-last">last Statement</a>.
+
 
   while (1) {
     last;
   }
 
 
-<p>
-  Inside a while block, you can use <a href="#language-statement-next">next Statement</a> to move to the condition immediately before the next condition Expression.
-</p>
+Inside a while block, you can use <a href="#language-statement-next">next Statement</a> to move to the condition immediately before the next condition Expression.
+
 
   my $i = 0;
   while ($i <5) {
@@ -5982,9 +5782,8 @@ String Concatenation Operator returns the concatenated <a href="#language-string
   }
 
 
-<p>
-  The while Statement is internally enclosed by an invisible <a href="#language-scope-block-statement-simple">Simple Block</a>.
-</p>
+The while Statement is internally enclosed by an invisible <a href="#language-scope-block-statement-simple">Simple Block</a>.
+
 
   {
     while (CONDITION_EXPRESSION) {
@@ -6004,26 +5803,21 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =head2 for Statement
 
-<p>
-  for Statement is a Statement for repeating.
-</p>
+for Statement is a Statement for repeating.
+
 
   for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
   
   }
 
-<p>
-  <a href="#language-expression">Expression</a> can be described in the initialization Expression. Generally, write Expression such as initialization of loop variable. Initialization Expression can be omitted.
-</p>
-<p>
-  Condition Expression, <a href="#language-expresssion">Expression</a> can be described. <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise block.
-</p>
-<p>
-  <a href="#language-expression">Expression</a> can be described in INCREMENT_EXPRESSION. Generally, Expression of Increment of loop variable is described. INCREMENT_EXPRESSION can be omitted.
-</p>
-<p>
-  for Statement has the same meaning as the following while Statement. INCREMENT_EXPRESSION is executed at the end of Block. Initialization Expression is enclosed in <a href="#language-scope-block-statement-simple">Simple Block</a>.
-</p>
+<a href="#language-expression">Expression</a> can be described in the initialization Expression. Generally, write Expression such as initialization of loop variable. Initialization Expression can be omitted.
+
+Condition Expression, <a href="#language-expresssion">Expression</a> can be described. <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise block.
+
+<a href="#language-expression">Expression</a> can be described in INCREMENT_EXPRESSION. Generally, Expression of Increment of loop variable is described. INCREMENT_EXPRESSION can be omitted.
+
+for Statement has the same meaning as the following while Statement. INCREMENT_EXPRESSION is executed at the end of Block. Initialization Expression is enclosed in <a href="#language-scope-block-statement-simple">Simple Block</a>.
+
 
   {
     INITIALIZATION_EXPRESSION;
@@ -6034,21 +5828,18 @@ String Concatenation Operator returns the concatenated <a href="#language-string
     }
   }
 
-<p>
-  <b>for Statement Example</b>
-</p>
-<p>
-  An example of for Statement.
-</p>
+<b>for Statement Example</b>
+
+An example of for Statement.
+
 
   for (my $i = 0; $i <5; $i++) {
   
     print "$i \ n";
   }
 
-<p>
-  Inside the for Block, you can exit the for Block using <a href="#language-statement-last">last Statement</a>.
-</p>
+Inside the for Block, you can exit the for Block using <a href="#language-statement-last">last Statement</a>.
+
 
 
   for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
@@ -6056,9 +5847,8 @@ String Concatenation Operator returns the concatenated <a href="#language-string
   }
 
 
-<p>
-  Inside the for Block, you can use <a href="#language-statement-next">next Statement</a> to move immediately before the next INCREMENT_EXPRESSION to be executed.
-</p>
+Inside the for Block, you can use <a href="#language-statement-next">next Statement</a> to move immediately before the next INCREMENT_EXPRESSION to be executed.
+
 
   for (my $i = 0; $i <5; $i++) {
   
@@ -6071,81 +5861,62 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =head2 returnl Statement
 
-<p>
-  Use the returnl Statement to get out of the Method. The object assigned to the mortal variable is automatically released.
-</p>
+Use the returnl Statement to get out of the Method. The object assigned to the mortal variable is automatically released.
+
 
   return;
 
-<p>
-  If there is a Return Value, <a href="#language-expression">Expression</a> can be specified.
-</p>
+If there is a Return Value, <a href="#language-expression">Expression</a> can be specified.
+
 
   return EXPRESSION;
 
-<p>
-  If the Return Value Type in <a href="#language-method-definition">Method Definition</a> is <a href="#language-type-void">void Type</a>, Expression Must not exist, otherwise Compile Error occurs.
-</p>
-<p>
-  <a href="#language-method-definition">Method Definition</a>, if the Return Value Type is other than <a href="#language-type-void">void Type</a>, Expression Must match the Type of, otherwise Compile Error occurs.
-</p>
+If the Return Value Type in <a href="#language-method-definition">Method Definition</a> is <a href="#language-type-void">void Type</a>, Expression Must not exist, otherwise Compile Error occurs.
+
+<a href="#language-method-definition">Method Definition</a>, if the Return Value Type is other than <a href="#language-type-void">void Type</a>, Expression Must match the Type of, otherwise Compile Error occurs.
+
 
 
 =head2 die Statement
 
-<p>
-  die Statement is a Statement for raising <a href="#language-exception">Exception</a>.
-</p>
+die Statement is a Statement for raising <a href="#language-exception">Exception</a>.
+
 
   die EXPRESSION;
 
-<p>
-  Expression must be a String Type.
-</p>
-<p>
-  See <a href="#language-exception">Exception</a> for a detailed explanation of the die statement.</p>
+Expression must be a String Type.
+
+See <a href="#language-exception">Exception</a> for a detailed explanation of the die statement.
 
 =head2 weaken Statement
 
-<p>
-  A weaken Statement is a Statement that sets <a href="#language-weak-ref">Weaken Reference</a> for the Field.
-</p>
+A weaken Statement is a Statement that sets <a href="#language-weak-ref">Weaken Reference</a> for the Field.
+
 
   weaken VARIABLE->{FIELD_NAME};
 
-<p>
-  The Type of the object Expression must be <a href="#language-type-class">Class Type</a>, otherwise Compile Error occurs.
-</p>
-<p>
-  Field Name must be an existing Field Name, otherwise Compile Error occurs.
-</p>
-<p>
-  The Type of the value saved in Field must be <a href="#language-type-object">Object Type</a>, otherwise Compile Error occurs.
-</p>
-<p>
-  If the value stored in the Field at execution time is <a href="#language-undef">Undefined Value</a>, the weak Statement does nothing.
-</p>
-<p>
-  If the value stored in the Field at runtime is not <a href="#language-undef">Undefined Value</a>, then the following is done:
-</p>
-<p>
-  1. Decrement the Reference Count of the object stored in Field by 1.
-</p>
-<p>
-  2. Set the Weaken Reference flag in Field.
-</p>
-<p>
-  3. Add Field to the back reference of the object saved in Field.
-</p>
-<p>
-  Note that the Weaken Reference flag is set on the Field itself, not on the object stored in the Field.
-</p>
-<p>
-  If the Reference Count of the object saved in Field becomes 0, the Weaken Reference is not created and the object saved in Field is released.
-</p>
-<p>
-  Back Reference is the data of the object saved in Field, and is added to know the Field with the Weaken Reference flag set. There may be more than one.
-</p>
+The Type of the object Expression must be <a href="#language-type-class">Class Type</a>, otherwise Compile Error occurs.
+
+Field Name must be an existing Field Name, otherwise Compile Error occurs.
+
+The Type of the value saved in Field must be <a href="#language-type-object">Object Type</a>, otherwise Compile Error occurs.
+
+If the value stored in the Field at execution time is <a href="#language-undef">Undefined Value</a>, the weak Statement does nothing.
+
+If the value stored in the Field at runtime is not <a href="#language-undef">Undefined Value</a>, then the following is done:
+
+1. Decrement the Reference Count of the object stored in Field by 1.
+
+2. Set the Weaken Reference flag in Field.
+
+3. Add Field to the back reference of the object saved in Field.
+
+Note that the Weaken Reference flag is set on the Field itself, not on the object stored in the Field.
+
+If the Reference Count of the object saved in Field becomes 0, the Weaken Reference is not created and the object saved in Field is released.
+
+Back Reference is the data of the object saved in Field, and is added to know the Field with the Weaken Reference flag set. There may be more than one.
+
 
   # There are multiple back references
   my $foo = new Foo;
@@ -6161,69 +5932,54 @@ String Concatenation Operator returns the concatenated <a href="#language-string
   weaken $bar->{foo};
   weaken $baz->{foo};
 
-<p>
-  In the above example, "$bar->{foo}" and "$baz->{foo}" have the Weaken Reference flag set. The object represented by $foo has the back References "$bar->{foo}" and "$baz->{foo}".
-</p>
-<p>
-  The information of the back Reference is necessary because when the <a href="#language-garbage-collection">Garbage Collection</a> is performed, it is necessary to assign the Undefined Value to the Field pointed to by the back Reference.
-</p>
+In the above example, "$bar->{foo}" and "$baz->{foo}" have the Weaken Reference flag set. The object represented by $foo has the back References "$bar->{foo}" and "$baz->{foo}".
+
+The information of the back Reference is necessary because when the <a href="#language-garbage-collection">Garbage Collection</a> is performed, it is necessary to assign the Undefined Value to the Field pointed to by the back Reference.
+
 
 
 =head2 unweaken Statement
 
-<p>
-  unweaken Statement is a Statement that cancels <a href="#language-weak-ref">Weaken Reference</a> for Field.
-</p>
+unweaken Statement is a Statement that cancels <a href="#language-weak-ref">Weaken Reference</a> for Field.
+
 
   unweaken VARIABLE->{FIELD_NAME};
 
-<p>
-  The Type of the object Expression must be <a href="#language-type-class">Class Type</a>, otherwise Compile Error occurs.
-</p>
-<p>
-  Field Name must be an existing Field Name, otherwise Compile Error occurs.
-</p>
-<p>
-  The Type of the value saved in Field must be <a href="#language-type-object">Object Type</a>, otherwise Compile Error occurs.
-</p>
-<p>
-  If the value stored in the Field at execution time is <a href="#language-undef">Undefined Value</a>, the unweaken Statement does nothing.
-</p>
-<p>
-  If the value stored in the Field at runtime is not <a href="#language-undef">Undefined Value</a>, then the following is done:
-</p>
-<p>
-  1. Increase the Reference Count of the object stored in the Field by 1.
-</p>
-<p>
-  2. Clear the Weaken Reference flag of Field.
-</p>
-<p>
-  3. Delete the Field from the back reference of the object stored in the Field.
-</p>
+The Type of the object Expression must be <a href="#language-type-class">Class Type</a>, otherwise Compile Error occurs.
+
+Field Name must be an existing Field Name, otherwise Compile Error occurs.
+
+The Type of the value saved in Field must be <a href="#language-type-object">Object Type</a>, otherwise Compile Error occurs.
+
+If the value stored in the Field at execution time is <a href="#language-undef">Undefined Value</a>, the unweaken Statement does nothing.
+
+If the value stored in the Field at runtime is not <a href="#language-undef">Undefined Value</a>, then the following is done:
+
+1. Increase the Reference Count of the object stored in the Field by 1.
+
+2. Clear the Weaken Reference flag of Field.
+
+3. Delete the Field from the back reference of the object stored in the Field.
+
 
 
 =head2 next Statement
 
-<p>
-  "next Statement" is a Statement to move to the beginning of the next loop. in <a href="#language-scope-block-statement-while">while Block</a>, <a href="#language-scope-block-statement-for">for Block</a> You can use it.
-</p>
+"next Statement" is a Statement to move to the beginning of the next loop. in <a href="#language-scope-block-statement-while">while Block</a>, <a href="#language-scope-block-statement-for">for Block</a> You can use it.
+
 
   next;
 
-<p>
-  Please see the explanation of <a href="#language-statement-while">while Statement</a>, <a href="#language-statement-for">for Statement</a> for the actual operation. ..
-</p>
+Please see the explanation of <a href="#language-statement-while">while Statement</a>, <a href="#language-statement-for">for Statement</a> for the actual operation. ..
+
 
 
 =head2 last Statement
 
-<p>
-  "last Statement" is a Statement to break the loop. in <a href="#language-scope-block-statement-while">while Block</a>, <a href="#language-scope-block-statement-for">for Block</a> You can use it.
-</p>
-<p>
-  Please see the explanation of <a href="#language-statement-while">while Statement</a>, <a href="#language-statement-for">for Statement</a> for the actual operation. ..
-</p>
+"last Statement" is a Statement to break the loop. in <a href="#language-scope-block-statement-while">while Block</a>, <a href="#language-scope-block-statement-for">for Block</a> You can use it.
+
+Please see the explanation of <a href="#language-statement-while">while Statement</a>, <a href="#language-statement-for">for Statement</a> for the actual operation. ..
+
 
   last;
 
@@ -6231,12 +5987,10 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =head2 break Statement
 
-<p>
-  "break Statement" is a Statement to escape the switch block. It can be used in <a href="#language-scope-block-statement-switch">switch Block</a>.
-</p>
-<p>
-  See <a href="#language-statement-switch">switch Statement</a> for the actual operation.
-</p>
+"break Statement" is a Statement to escape the switch block. It can be used in <a href="#language-scope-block-statement-switch">switch Block</a>.
+
+See <a href="#language-statement-switch">switch Statement</a> for the actual operation.
+
 
   break;
 
@@ -6245,57 +5999,46 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 =head2 warn Statement
 
 
-<p>
-  Use warnStatement to throw a warning.
-</p>
+Use warnStatement to throw a warning.
+
 
   warn Expression;
 
-<p>
-  Expression must be <a href="#language-type-string">String Type</a>.
-</p>
-<p>
-  If the end is a line feed Character "\ n", the String specified in Expression is output to the standard error output.
-</p>
-<p>
-  If the end is not a line feed character, File Name and line number are added to the end, and standard error is output.
-</p>
-<p>
-  If the length of String specified in Expression is 0 or Undefined Value, the specified message behaves as "Warning: something's wrong".
-</p>
-<p>
-  The standard error output buffer is flushed.
-</p>
+Expression must be <a href="#language-type-string">String Type</a>.
+
+If the end is a line feed Character "\ n", the String specified in Expression is output to the standard error output.
+
+If the end is not a line feed character, File Name and line number are added to the end, and standard error is output.
+
+If the length of String specified in Expression is 0 or Undefined Value, the specified message behaves as "Warning: something's wrong".
+
+The standard error output buffer is flushed.
+
 
 
 =head2 print Statement
 
-<p>
-  Use print Statement to print a String to standard output.
-</p>
+Use print Statement to print a String to standard output.
+
 
   print Expression;
 
-<p>
-  Expression must be <a href="#language-type-string">String Type</a>.
-</p>
-<p>
-  If Expression is Undefined Value, do nothing.
-</p>
+Expression must be <a href="#language-type-string">String Type</a>.
+
+If Expression is Undefined Value, do nothing.
+
 
 
 =head2 expression Statement
 
-<p>
-  The expression Statement is a Statement consisting of <a href="#language-expression">Expression</a> and ";".
-</p>
+The expression Statement is a Statement consisting of <a href="#language-expression">Expression</a> and ";".
+
 
   Expression;
 
 
-<p>
-  An example of an expression statement.
-</p>
+An example of an expression statement.
+
 
   1;
   $var;
@@ -6307,9 +6050,8 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 =head2 empty Statement
 
-<p>
-  An empty statement is a statement that ends with just ";".
-</p>
+An empty statement is a statement that ends with just ";".
+
 
   ;
 
@@ -6321,21 +6063,18 @@ String Concatenation Operator returns the concatenated <a href="#language-string
 
 SPVM is a static type language. All data has a static type.
 
-<p>
-  <a href="#language-local-var-declaration">Local Variable Declaration</a>, <a href="#language-field-definition">Field Definition</a>, <a href="#language-class-var-definition">Class Variable Definition</a>, and <b>Arguments</b> and <b>Return Value</b> of <a href="#language-method-definition">Method Definition</a> must specify <b>Type</b>.
-</p>
+<a href="#language-local-var-declaration">Local Variable Declaration</a>, <a href="#language-field-definition">Field Definition</a>, <a href="#language-class-var-definition">Class Variable Definition</a>, and <b>Arguments</b> and <b>Return Value</b> of <a href="#language-method-definition">Method Definition</a> must specify <b>Type</b>.
+
 
 In <a href="#language-local-var-declaration">Local Variable Declaration</a>, <a href="#language-type-inference">Type Inference</a> can be used.
 
 
 =head2 Type Initial Value
 
-<p>
-  Local Variable Initial Value,<a href="#language-class-var-initial-value">Class Variable Initial Value</a>,Create ObjectにおけるFieldの初期値は,Type Initial Valueによって決まります。
-</p>
-<p>
-  A list of Type Initial Value. All Bit columns in the data are set to 0.
-</p>
+Local Variable Initial Value,<a href="#language-class-var-initial-value">Class Variable Initial Value</a>,Create ObjectにおけるFieldの初期値は,Type Initial Valueによって決まります。
+
+A list of Type Initial Value. All Bit columns in the data are set to 0.
+
 </p>
 
 =begin html
@@ -6498,15 +6237,13 @@ Note that SPVM has only <b>singed</b> Integral Type, and don't has <b>unsigned</
 
 =head2 byte Type
 
-<p>
-   <a href="#language-type-byte">byte Type</a> is <a href="#language-type-integral">Integral Type</a> that represents a signed 8-bit integer. It is the same Type as int8_tType of C99.
-</p>
+<a href="#language-type-byte">byte Type</a> is <a href="#language-type-integral">Integral Type</a> that represents a signed 8-bit integer. It is the same Type as int8_tType of C99.
+
 
 =head2 short Type
 
-<p>
-   <a href="#language-type-byte">byte Type</a> is <a href="#language-type-integral">Integral Type</a> that represents a signed 16-bit integer. It is the same Type as int16_tType of C99.
-</p>
+<a href="#language-type-byte">byte Type</a> is <a href="#language-type-integral">Integral Type</a> that represents a signed 16-bit integer. It is the same Type as int16_tType of C99.
+
 
 
 =head2 int Type
@@ -6523,9 +6260,8 @@ This is a <a href="#language-type-integral">Integral Type</a>.
 
 =head2 long Type
 
-<p>
-  <a href="#language-type-long">long Type</a> is <a href="#language-type-integral">Integral Type</a> that represents a signed 64-bit integer. It is the same Type as int64_tType of C99.
-</p>
+<a href="#language-type-long">long Type</a> is <a href="#language-type-integral">Integral Type</a> that represents a signed 64-bit integer. It is the same Type as int64_tType of C99.
+
 
 
 =head2 Floating Point Type
@@ -6578,31 +6314,27 @@ See <a href="#language-operator-arithmetic">Arithmetic Operator</a> for floating
 
 =head2 float Type
 
-<p>
-  <a href="#language-type-floating-point">Floating Point Type <a represents a single precision floating point (32bit). / a> It is the same Type as <a href="#language-type-float">float Type</a> of C99.
-</p>
+<a href="#language-type-floating-point">Floating Point Type <a represents a single precision floating point (32bit). / a> It is the same Type as <a href="#language-type-float">float Type</a> of C99.
+
 
 
 =head2 double Type
 
-<p>
-  <b>double Type</b> represents a double precision floating point (64bit) <a href="#language-type-floating-point">Floating Point Type</a> It is the same Type as <a href="#language-type-double">double Type</a> of C99.
-</p>
+<b>double Type</b> represents a double precision floating point (64bit) <a href="#language-type-floating-point">Floating Point Type</a> It is the same Type as <a href="#language-type-double">double Type</a> of C99.
+
 
 
 =head2 Class Type
 
-<p>
-  Class Type is the Type defined by <a href="#language-class-definition">Class Definition</a>.
-</p>
+Class Type is the Type defined by <a href="#language-class-definition">Class Definition</a>.
+
 
   class Foo {
   
   }
 
-<p>
-  Class Type is <a href="#language-type-class">Class Type</a> <a href="#language-type-callback">Callback Type</a> <a href = "#language-type It consists of -multi-numeric ">Multi Numeric Type</a>.
-</p>
+Class Type is <a href="#language-type-class">Class Type</a> <a href="#language-type-callback">Callback Type</a> <a href = "#language-type It consists of -multi-numeric ">Multi Numeric Type</a>.
+
 
   # Class Type
   class Foo {
@@ -6619,9 +6351,8 @@ See <a href="#language-operator-arithmetic">Arithmetic Operator</a> for floating
   
   }
 
-<p>
-  <a href="#language-type-pointer">Pointer Type</a> is also Class Type, so Pointer Type will also be Class Type.
-</p>
+<a href="#language-type-pointer">Pointer Type</a> is also Class Type, so Pointer Type will also be Class Type.
+
 
   # Pointer Type
   class Foo: pointer_t {
@@ -6631,27 +6362,23 @@ See <a href="#language-operator-arithmetic">Arithmetic Operator</a> for floating
 
 =head2 Object Type
 
-<p>
 What is Object Type <a href="#language-type-class">Class Type</a> <a href="#language-type-callback">Callback Type</a> <a href = "#language- type-array ">Array Type</a> <a href="#language-type-string">String Type</a> <a href="#language-type-any-object">Any Object Type</a> It is a combination of a>. "Multi Numeric Type" and "Reference Type" are not included.
-</p>
-<p>
+
 The Object Type value can be assigned to "Any Object Type".
-</p>
+
 
   my $object: object = new Foo;
   my $object: object = new Foo [];
   my $object: object = "abc";
 
-<p>
 The size of Object Type must match the value of "sizeof (void *)" in C99.
-</p>
+
 
 
 =head2 Numeric Object Type
 
-<p>
 <b>Numeric Object Type</b> are the following six.
-</p>
+
 
 =begin html
 
@@ -6721,63 +6448,51 @@ For the conversion between <a href="#language-type-numeric">Numeric Type</a> and
 
 =head2 Undefined Type
 
-<p>
 Undefined Type is the Type that <a href="#language-undef">Undefined Value</a> has. It cannot be used explicitly.
-</p>
-<p>
+
 The only Undefined Type value is <a href="#language-undef">Undefined Value</a>.
-</p>
-<p>
+
 The value of Undefined Type can be assigned to Object Type.If you assign to another Type, Compile Error occurs
-</p>
+
 
 
 =head2 Class Type
 
-<p>
 Class Type is the Type defined by <a href="#language-class-definition">Class Definition</a> and is not "Multi Numeric Type" "Callback Type".
-</p>
+
 
   packag Foo {
   
   }
 
-<p>
-  Class Type can create objects by new Operator.
-</p>
+Class Type can create objects by new Operator.
+
 
   my $foo = new Foo;
 
-<p>
-  Class Type is a <a href="#language-type-object">Object Type</a>.
-</p>
-<p>
-  Class Type is a <a href="#language-type-class">Class Type</a>.
-</p>
-<p>
-  <a href="#language-type-pointer">Pointer Type</a> is the Class Type.
-</p>
+Class Type is a <a href="#language-type-object">Object Type</a>.
+
+Class Type is a <a href="#language-type-class">Class Type</a>.
+
+<a href="#language-type-pointer">Pointer Type</a> is the Class Type.
+
 
 
 =head2 Pointer Type
 
-<p>
-  Pointer Type is the one that "pointer_t Descriptor" is specified in <a href="#language-class-definition">Class Definition</a>.
-</p>
+Pointer Type is the one that "pointer_t Descriptor" is specified in <a href="#language-class-definition">Class Definition</a>.
+
 
   class Foo: pointer_t {
   
   }
 
-<p>
-  Pointer Type is a type of Class Type.
-</p>
-<p>
-  Pointer type data can store C language pointers.
-</p>
-<p>
-  Field cannot be defined for Pointer Type. If it is defined, Compile Error occurs
-</p>
+Pointer Type is a type of Class Type.
+
+Pointer type data can store C language pointers.
+
+Field cannot be defined for Pointer Type. If it is defined, Compile Error occurs
+
 
 
 =head2 Callback Type
@@ -6845,14 +6560,12 @@ The variable of Callback Type can be assigned a <a href="#language-type-class">C
 
 =head2 Any Object Type
 
-<p>
-  Any Object Type is represented by "object". Designed to represent the "void *" Type in C.
-</p>
+Any Object Type is represented by "object". Designed to represent the "void *" Type in C.
+
   my $object: object;
 
-<p>
-  You can methodstitute the value of "Object Type" for Any Object Type.
-</p>
+You can methodstitute the value of "Object Type" for Any Object Type.
+
 
   my $object: object = new Foo;
   my $object: object = "abc";
@@ -6862,17 +6575,15 @@ The variable of Callback Type can be assigned a <a href="#language-type-class">C
 
 =head2 self Type
 
-<p>
-  self Type represents the Class Type to which it belongs, and indicates that the argument is Invocant.
-</p>
+self Type represents the Class Type to which it belongs, and indicates that the argument is Invocant.
+
 
 
   self
 
 
-<p>
-  It can only be used as the Type of the first argument in <a href="#language-method-definition">Method Definition</a>.
-</p>
+It can only be used as the Type of the first argument in <a href="#language-method-definition">Method Definition</a>.
+
 
 
 =head2 void Type
@@ -6887,16 +6598,14 @@ The variable of Callback Type can be assigned a <a href="#language-type-class">C
 
 =head2 Basic Type
 
-<p>
-  A Type that does not have dimensions is called a Basic Type. <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-class">Class Type </ a>, <a href = "#language-type- any-object ">Any Object Type</a>, <a href="#language-type-string">String Type</a> is a Basic Type.
-</p>
+A Type that does not have dimensions is called a Basic Type. <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-class">Class Type </ a>, <a href = "#language-type- any-object ">Any Object Type</a>, <a href="#language-type-string">String Type</a> is a Basic Type.
+
 
 
 =head2 Array Type
 
-<p>
-  Array Type represents multiple continuous data areas. <a href="#language-type-basic">Basic Type</a> can be an Array.
-</p>
+Array Type represents multiple continuous data areas. <a href="#language-type-basic">Basic Type</a> can be an Array.
+
 
   int[]
   double[]
@@ -6904,9 +6613,8 @@ The variable of Callback Type can be assigned a <a href="#language-type-class">C
   object[]
   string []
 
-<p>
-  Array has dimensions and can express up to 255 dimensions.
-</p>
+Array has dimensions and can express up to 255 dimensions.
+
 
   # Two dimensions
   int[] []
@@ -6914,30 +6622,23 @@ The variable of Callback Type can be assigned a <a href="#language-type-class">C
   # Three-dimensional
   int[] [] []
 
-<p>
-  Array Type is <a href="#language-type-object">Object Type</a>.
-</p>
-<p>
-  Use new Operator to create an Array. In the following example, <a href="#language-type-int">int Type</a> Array with 3 elements is created.
-</p>
-<p>
+Array Type is <a href="#language-type-object">Object Type</a>.
+
+Use new Operator to create an Array. In the following example, <a href="#language-type-int">int Type</a> Array with 3 elements is created.
+
 my $nums = new int [3];
-</p>
-<p>
-  You also use new Operator when creating a multidimensional Array.The following example creates an Array of int[] Type with 3 elements.
-</p>
-<p>
+
+You also use new Operator when creating a multidimensional Array.The following example creates an Array of int[] Type with 3 elements.
+
 my $nums = new int[] [3];
-</p>
+
 
 =head2 Numeric Array Type
 
-<p>
-  Numeric Array Type means <a href="#language-type-numeric">Numeric Type</a> with the element <a href="#language-type-array">Array Type</a> It is.
-</p>
-<p>
-  <b>Numeric Array Type list</b>
-</p>
+Numeric Array Type means <a href="#language-type-numeric">Numeric Type</a> with the element <a href="#language-type-array">Array Type</a> It is.
+
+<b>Numeric Array Type list</b>
+
 
 =begin html
 
@@ -6964,34 +6665,28 @@ my $nums = new int[] [3];
 
 =end html
 
-<p>
-  Data represented by Numeric Array Type must have elements whose size is <a href="#language-type-numeric">Numeric Type</a>, and must be consecutive by the number of Array Length.
-</p>
-<p>
-  All elements of Numeric Array Type are initialized by <a href="#language-type-initial-value">Type Initial Value</a> when Create Array is performed.
-</p>
+Data represented by Numeric Array Type must have elements whose size is <a href="#language-type-numeric">Numeric Type</a>, and must be consecutive by the number of Array Length.
+
+All elements of Numeric Array Type are initialized by <a href="#language-type-initial-value">Type Initial Value</a> when Create Array is performed.
+
 
 =head2 byte[] Type
 
-<p>
-  In SPVM, the <a href="#language-type-array-byte">byte[] Type</a> is a special Type in that it is <a href="#language-type-string">String Type</a>.
-</p>
+In SPVM, the <a href="#language-type-array-byte">byte[] Type</a> is a special Type in that it is <a href="#language-type-string">String Type</a>.
+
 
   byte[]
 
-<p>
-  <a href="#language-type-string">String Type</a> is treated as <a href="#language-type-string">String Type</a> at compile time, but at runtime It will be <a href="#language-type-array-byte">byte[] Type</a>.
-</p>
+<a href="#language-type-string">String Type</a> is treated as <a href="#language-type-string">String Type</a> at compile time, but at runtime It will be <a href="#language-type-array-byte">byte[] Type</a>.
+
 
 
 =head2 Object Array Type
 
-<p>
-  Object Array Type is <a href="#language-type-array">Array Type</a> that has the value of <a href="#language-type-object">Object Type</a> as an element. It is.
-</p>
-<p>
-  <b>Object Array TypeのExample</b>
-</p>
+Object Array Type is <a href="#language-type-array">Array Type</a> that has the value of <a href="#language-type-object">Object Type</a> as an element. It is.
+
+<b>Object Array TypeのExample</b>
+
 
 =begin html
 
@@ -7012,22 +6707,18 @@ my $nums = new int[] [3];
 
 =end html
 
-<p>
-  The data represented by Object Array Type must have elements of size of <a href="#language-type-object">Object Type</a> and consecutive by the number of Array Length.
-</p>
-<p>
-  All elements of Object Array Type are initialized by <a href="#language-type-initial-value">Type Initial Value</a> when Create Array is performed.
-</p>
+The data represented by Object Array Type must have elements of size of <a href="#language-type-object">Object Type</a> and consecutive by the number of Array Length.
+
+All elements of Object Array Type are initialized by <a href="#language-type-initial-value">Type Initial Value</a> when Create Array is performed.
+
 
 
 =head2 Multi Numeric Array Type
 
-<p>
-  Multi Numeric Array Type means <a href="#language-type-array">Array Type that has the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a> as an element.</a>.
-</p>
-<p>
-  <b>Multi Numeric Array Type Example</b>
-</p>
+Multi Numeric Array Type means <a href="#language-type-array">Array Type that has the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a> as an element.</a>.
+
+<b>Multi Numeric Array Type Example</b>
+
 
 =begin html
 
@@ -7042,32 +6733,26 @@ my $nums = new int[] [3];
 
 =end html
 
-<p>
-  Data represented by Multi Numeric Array Type must have elements whose size is <a href="#language-type-numeric">Multi Numeric Type</a> and must be contiguous with the number of Array Length ..
-</p>
-<p>
-  All elements of Multi Numeric Array Type are initialized by <a href="#language-type-initial-value">Type Initial Value</a> when Create Array is performed.
-</p>
+Data represented by Multi Numeric Array Type must have elements whose size is <a href="#language-type-numeric">Multi Numeric Type</a> and must be contiguous with the number of Array Length ..
+
+All elements of Multi Numeric Array Type are initialized by <a href="#language-type-initial-value">Type Initial Value</a> when Create Array is performed.
+
 
 
 =head2 Any Object Array Type
 
-<p>
-  Any Object Array Type is an arbitrary <a href="#language-type- that has the value of <a href="#language-type-object">Object Type</a> expressed as an oarray as an element. A Type that can be assigned the value of array ">Array Type</a>. Any Array Type can be cast to void * Type and passed to the first argument of the C language qsort function, but Any Object Array Type is not designed to realize the function corresponding to this. It was
-</p>
+Any Object Array Type is an arbitrary <a href="#language-type- that has the value of <a href="#language-type-object">Object Type</a> expressed as an oarray as an element. A Type that can be assigned the value of array ">Array Type</a>. Any Array Type can be cast to void * Type and passed to the first argument of the C language qsort function, but Any Object Array Type is not designed to realize the function corresponding to this. It was
+
 
   my $array : oarray = new Point[3];
   my $array : oarray = new object[3];
 
-<p>
-  If a value with a Type other than Object Type is assigned, Compile Error occurs
-</p>
-<p>
-  Note that "oarrayType" is a different Type than "object[] Type". While oarrayType is a Type that can be methodstituted with an arbitrary Array Type value that has an Object Type value as an element, "object[] Type" is a Type that represents an "Array that has an objectType value as an element". Therefore, the value of arbitrary Array Type cannot be assigned.
-</p>
-<p>
-  Any Object Array Type is <a href="#language-type-array">Array Type</a>. <a href="#language-operator-array-length">Array Length Operator</a> to get length, <a href="#language-expression-set-array-element">Set Array Element You can use Value</a>, <a href="#language-expression-get-array-element">Get Array Element Value</a>.
-</p>
+If a value with a Type other than Object Type is assigned, Compile Error occurs
+
+Note that "oarrayType" is a different Type than "object[] Type". While oarrayType is a Type that can be methodstituted with an arbitrary Array Type value that has an Object Type value as an element, "object[] Type" is a Type that represents an "Array that has an objectType value as an element". Therefore, the value of arbitrary Array Type cannot be assigned.
+
+Any Object Array Type is <a href="#language-type-array">Array Type</a>. <a href="#language-operator-array-length">Array Length Operator</a> to get length, <a href="#language-expression-set-array-element">Set Array Element You can use Value</a>, <a href="#language-expression-get-array-element">Get Array Element Value</a>.
+
 
   my $array : oarray = new Int[3];
   
@@ -7080,42 +6765,36 @@ my $nums = new int[] [3];
   # Setting the value of the element of Any Object Array Type
   $array->[0] = Int->new(5);
 
-<p>
-  When setting the value of the element of Any Object Array Type, a check is made at runtime whether the Type of the element is smaller than the Type Dimension of Array by 1. If the check fails, <a href="#language-exception">Exception</a> will occur. Any Object Array Type guarantees runtime Type safety.
-</p>
+When setting the value of the element of Any Object Array Type, a check is made at runtime whether the Type of the element is smaller than the Type Dimension of Array by 1. If the check fails, <a href="#language-exception">Exception</a> will occur. Any Object Array Type guarantees runtime Type safety.
+
 
 
 =head2 String Type
 
-<p>
-  <a href="#language-type-string">String Type</a> is a Type that represents a String. Expressed by string. Designed to represent C "const char *".
-</p>
+<a href="#language-type-string">String Type</a> is a Type that represents a String. Expressed by string. Designed to represent C "const char *".
+
 
   my $str : string;
 
-<p>
-  String Literal allows you to assign the generated String object.
-</p>
+String Literal allows you to assign the generated String object.
+
 
   my $str : string = "abc";
 
-<p>
-  SPVM String is an Array of bytes whose elements cannot be changed. You can get the Character by accessing the Array.
-</p>
+SPVM String is an Array of bytes whose elements cannot be changed. You can get the Character by accessing the Array.
+
 
   # Acquisition of Character
   my $ch = $str->[1];
 
-<p>
-  If you try to change the element, Compile Error occurs
-</p>
+If you try to change the element, Compile Error occurs
+
 
   # Compile Error when changing element
   $str->[1] = 'd';
 
-<p>
-  <a href="#language-type-string">String Type</a> will be exactly the same as the Array of bytes Type after compilation. For example, the first expression is treated as the second expression.
-</p>
+<a href="#language-type-string">String Type</a> will be exactly the same as the Array of bytes Type after compilation. For example, the first expression is treated as the second expression.
+
 
   # isa String Type
   if ($str isa string) {
@@ -7127,39 +6806,32 @@ my $nums = new int[] [3];
   
   }
 
-<p>
-  Note that SPVM Strings are immutable, but this is a compile-time check.
-</p>
-<p>
-  <a href="#language-type-string">String Type</a> can be cast to <a href="#language-type-array-byte">byte[] Type</a>, and the String can be changed at runtime.
-</p>
+Note that SPVM Strings are immutable, but this is a compile-time check.
+
+<a href="#language-type-string">String Type</a> can be cast to <a href="#language-type-array-byte">byte[] Type</a>, and the String can be changed at runtime.
+
 
   my $bytes = (byte[])$str;
   $bytes->[1] = 'd';
 
-<p>
-  Treat String as if you can always change it.
-</p>
+Treat String as if you can always change it.
+
 
 
 =head2 String Type
 
-<p>
-  String Type is a combination of <a href="#language-type-string">String Type</a> and <a href="#language-type-array-byte">byte[] Type</a>. Say that.
-</p>
-<p>
-  When a String Type value is generated, it is guaranteed that the last one after the last memory area reserved for the value will be "\ 0". (For example, if it is "abc", "c" is followed by "\ 0".) From the SPVM language, this "\ 0" has no meaning, but when using the native API, String Type is It can be handled as a C language String.
-</p>
+String Type is a combination of <a href="#language-type-string">String Type</a> and <a href="#language-type-array-byte">byte[] Type</a>. Say that.
+
+When a String Type value is generated, it is guaranteed that the last one after the last memory area reserved for the value will be "\ 0". (For example, if it is "abc", "c" is followed by "\ 0".) From the SPVM language, this "\ 0" has no meaning, but when using the native API, String Type is It can be handled as a C language String.
+
 
 
 =head2 Multi Numeric Type
 
-<p>
-  Multi Numeric Type is a type that can represent continuous numerical values.
-</p>
-<p>
-  Multi Numeric Type can be defined by specifying "mulnum_t" Descriptor in <a href="#language-class-definition">Class Definition</a>.
-</p>
+Multi Numeric Type is a type that can represent continuous numerical values.
+
+Multi Numeric Type can be defined by specifying "mulnum_t" Descriptor in <a href="#language-class-definition">Class Definition</a>.
+
 
   class Point_3i : mulnum_t {
     has x : int;
@@ -7167,16 +6839,14 @@ my $nums = new int[] [3];
     has z : int;
   }
 
-<p>
-  See <a href="#language-mulnum">Values ​​</a> for a detailed explanation of Multi Numeric Type.
-</p>
+See <a href="#language-mulnum">Values ​​</a> for a detailed explanation of Multi Numeric Type.
+
 
 
 =head2 Reference Type
 
-<p>
-  Reference Type is a Type that can store the address of a variable. Add "*" after <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a> You can define it.
-</p>
+Reference Type is a Type that can store the address of a variable. Add "*" after <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a> You can define it.
+
 
   my $num : int;
   my $num_ref : int* = \$num;
@@ -7184,56 +6854,44 @@ my $nums = new int[] [3];
   my $point : Point_3i;
   my $point_ref : Point_3i* = \$point;
 
-<p>
-  Only the address of the Local Variable acquired by <a href="#language-operator-ref">Reference Operator</a> can be assigned to the value of Reference Type.
-</p>
-<p>
-  If only Local Variable Declaration of Reference Type is performed, Compile Error occurs
-</p>
-<p>
-  Reference Type can be used as Type of <a href="#language-local-var-declaration">Local Variable Declaration</a>. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, Compile Error occurs
-</p>
-<p>
-  Reference Type can be used as Type of argument in <a href="#language-method-definition">Method Definition</a>.
-</p>
-<p>
-  Reference Type cannot be used as Return Value Type in <a href="#language-method-definition">Method Definition</a>.
-</p>
-<p>
-  Reference Type cannot be used as the Type of Field in <a href="#language-class-definition">Class Definition</a>.
-</p>
-<p>
-  Reference Type cannot be used as the Type of Class Variable in <a href="#language-class-definition">Class Definition</a>.
-</p>
-<p>
-  If the Reference Type is used at an Invalid location, Compile Error occurs
-</p>
-<p>
-  See <a href="#language-ref">Reference</a> for a detailed explanation of Reference.
-</p>
+Only the address of the Local Variable acquired by <a href="#language-operator-ref">Reference Operator</a> can be assigned to the value of Reference Type.
+
+If only Local Variable Declaration of Reference Type is performed, Compile Error occurs
+
+Reference Type can be used as Type of <a href="#language-local-var-declaration">Local Variable Declaration</a>. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, Compile Error occurs
+
+Reference Type can be used as Type of argument in <a href="#language-method-definition">Method Definition</a>.
+
+Reference Type cannot be used as Return Value Type in <a href="#language-method-definition">Method Definition</a>.
+
+Reference Type cannot be used as the Type of Field in <a href="#language-class-definition">Class Definition</a>.
+
+Reference Type cannot be used as the Type of Class Variable in <a href="#language-class-definition">Class Definition</a>.
+
+If the Reference Type is used at an Invalid location, Compile Error occurs
+
+See <a href="#language-ref">Reference</a> for a detailed explanation of Reference.
+
 
 
 =head2 Numeric Reference Type
 
 
-<p>
-  Numeric Reference Type means <a href="#language-type-numeric">Numeric Type</a> for <a href="#language-type-ref">Reference Type</a>. Says.
-</p>
+Numeric Reference Type means <a href="#language-type-numeric">Numeric Type</a> for <a href="#language-type-ref">Reference Type</a>. Says.
+
 
 
 =head2 Multi Numeric Reference Type
 
 
-<p>
-  Multi Numeric Reference Type means <a href="#language-type-ref">Reference Type</a> for <a href="#language-type-multi-numeric">Multi Numeric Type</a> variables. > Means.
-</p>
+Multi Numeric Reference Type means <a href="#language-type-ref">Reference Type</a> for <a href="#language-type-multi-numeric">Multi Numeric Type</a> variables. > Means.
+
 
 
 =head1 Type Inference
 
-<p>
-  Omitting <a href="#language-type">Type</a> when <a href="#language-local-var-declaration">Local Variable Declaration</a> by Type Inference can. Type Inference is always performed by the Type on the Right side of Assignment Operator.
-</p>
+Omitting <a href="#language-type">Type</a> when <a href="#language-local-var-declaration">Local Variable Declaration</a> by Type Inference can. Type Inference is always performed by the Type on the Right side of Assignment Operator.
+
 
   # int
   my $num = 1;
@@ -7247,94 +6905,78 @@ my $nums = new int[] [3];
 
 =head1 Type Compatibility
 
-<p>
-  Type compatibility means that the value can be moved without performing <a href="#language-expression-typecast">Type Cast</a>.
-</p>
-<p>
-  Types are compatible in the following cases.
-</p>
-<p>
-  <b>When the source and destination types are the same</b>
-</p>
-<p>
-  If the source and destination types are the same, there is Type Compatibility.
-</p>
+Type compatibility means that the value can be moved without performing <a href="#language-expression-typecast">Type Cast</a>.
+
+Types are compatible in the following cases.
+
+<b>When the source and destination types are the same</b>
+
+If the source and destination types are the same, there is Type Compatibility.
+
 
   my $num1 : int;
   my $num2 : int;
   $num1 = $num2;
 
-<p>
-  <b>When the source Type is <a href="#language-type-array-byte">byte[] Type</a> and the destination Type is <a href="#language-type-string">String Type</a></b>
-</p>
-<p>
-  If the source Type is <a href="#language-type-array-byte">byte[] Type</a> and the destination Type is <a href="#language-type-string">String Type</a>, there is Type Compatibility.
-</p>
+<b>When the source Type is <a href="#language-type-array-byte">byte[] Type</a> and the destination Type is <a href="#language-type-string">String Type</a></b>
+
+If the source Type is <a href="#language-type-array-byte">byte[] Type</a> and the destination Type is <a href="#language-type-string">String Type</a>, there is Type Compatibility.
+
 
   my $bytes = new byte[3];
   my $str : string;
   $str = $bytes;
 
-<p>
-  <b>When the source Type is Object Type and the destination Type is Any Object Type</b>
-</p>
+<b>When the source Type is Object Type and the destination Type is Any Object Type</b>
+
 
   my $foo : Foo = new Foo;
   my $object : object;
   $object = $foo;
 
-<p>
-  <b>When the source Type and destination Type are Any Object Type or Any Object Type Array and the source Type Dimension count is greater than or equal to the destination Type Dimension count</b>
-</p>
+<b>When the source Type and destination Type are Any Object Type or Any Object Type Array and the source Type Dimension count is greater than or equal to the destination Type Dimension count</b>
+
 
   my $objects_dim2_src : object[];
   my $objects_dim1_dist : object;
   $objects_dim1_dist = $objects_dim2_src;
 
-<p>
-  Note that the general object Array and the Basic Type Array are not compatible.
-</p>
+Note that the general object Array and the Basic Type Array are not compatible.
+
 
   # Compilation error
   my $objets : object[] = new int[3];
 
-<p>
-  If the types are not compatible, <a href="#language-type-convertion-implicite">implicit Type Conversion</a> is tried. If the implicit Type Conversion fails, Compile Error occurs
-</p>
+If the types are not compatible, <a href="#language-type-convertion-implicite">implicit Type Conversion</a> is tried. If the implicit Type Conversion fails, Compile Error occurs
+
 
 
 =head1 Type Conversion
 
 =head2 Type Cast
 
-<p>
-  Type Cast is Type Conversion that is explicitly described.
-</p>
+Type Cast is Type Conversion that is explicitly described.
+
 
   # Type Cast
   (TYPE)EXPRESSION
 
-<p>
-  <a href="#language-type-int">int Type</a> value is converted to <a href="#language-type-long">long Type</a> Become.
-</p>
+<a href="#language-type-int">int Type</a> value is converted to <a href="#language-type-long">long Type</a> Become.
+
 
   my $num = (long)3;
 
-<p>
-  ype Cast returns <a href="#language-expression">Expression</a>.
-</p>
-<p>
-  If the source Type and the specified Type are the same, the value is simply copied.
-</p>
+ype Cast returns <a href="#language-expression">Expression</a>.
+
+If the source Type and the specified Type are the same, the value is simply copied.
+
 
   my $num : int = (int)4;
 
-<p>
-  <b>List of Type Conversion in Type Cast</b>
-</p>
-<p>
-  It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this table is performed, Compile Error occurs.
-</p>
+<b>List of Type Conversion in Type Cast</b>
+
+It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this table is performed, Compile Error occurs.
+
 
 =begin html
 
@@ -7445,9 +7087,8 @@ my $nums = new int[] [3];
 
 =head2 Implicit Type Conversion
 
-<p>
-  Implicit type conversion is automatic type conversion performed by SPVM. The following are the places where implicit Type Conversion may occur.
-</p>
+Implicit type conversion is automatic type conversion performed by SPVM. The following are the places where implicit Type Conversion may occur.
+
 
 =begin html
 
@@ -7459,21 +7100,18 @@ my $nums = new int[] [3];
 
 =end html
 
-<p>
-  Implicit Type Conversion occurs when:
-</p>
-<p>
-  If both the source and destination Type are Numeric Type and the destination Type is greater than the source Type, <a href="#language-type-convertion-numeric-widening">Numeric Widening Type Conversion</a> is done.
-</p>
+Implicit Type Conversion occurs when:
+
+If both the source and destination Type are Numeric Type and the destination Type is greater than the source Type, <a href="#language-type-convertion-numeric-widening">Numeric Widening Type Conversion</a> is done.
+
 
   # Implicit Widening Type Conversion
   my $num : long = 123;
   my $num : double = 12.5f;
 
 
-<p>
-  Both the source and destination Type are Numeric Type, and the destination Type is smaller than the source Type, and the source value can be expressed in the range of Integer Literal and destination Type value. <a href="#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is performed.
-</p>
+Both the source and destination Type are Numeric Type, and the destination Type is smaller than the source Type, and the source value can be expressed in the range of Integer Literal and destination Type value. <a href="#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is performed.
+
 
 
   # Implicit Narrowing Type Conversion
@@ -7481,37 +7119,32 @@ my $nums = new int[] [3];
   my $num : short = 134;
 
 
-<p>
-  If the source Type is Numeric Type and the destination Type is Any Object Type, <a href="#language-type-convertion-boxing">Boxing Type Conversion</a> to the corresponding Numeric Object Type Is done. In the following case, the converted Int Type object is assigned to the generic object.
-</p>
+If the source Type is Numeric Type and the destination Type is Any Object Type, <a href="#language-type-convertion-boxing">Boxing Type Conversion</a> to the corresponding Numeric Object Type Is done. In the following case, the converted Int Type object is assigned to the generic object.
+
 
 
   # Implicit Boxing Type Conversion to objectType
   my $num = 123;
   my $object : object = $num;
 
-<p>
-  When the source Type is Numeric Type and the destination Type is the corresponding Numeric Object Type, <a href="#language-type-convertion-boxing">Boxing Type Conversion</a> to the corresponding Numeric Object Type a> is done.
-</p>
+When the source Type is Numeric Type and the destination Type is the corresponding Numeric Object Type, <a href="#language-type-convertion-boxing">Boxing Type Conversion</a> to the corresponding Numeric Object Type a> is done.
+
 
   # Implicit Boxing Type Conversion to object Type
   my $num = 123;
   my $object : Int = $num;
 
 
-<p>
-  When the source Type is Any Object Type and the destination Type is Numeric Type, <a href="#language-type-convertion-unboxing">Unboxing Type Conversion</a> in the corresponding Numeric Type is displayed. Will be opened. In the following case, an attempt is made to convert the Int Type object to <a href="#language-type-int">int Type</a>.
-</p>
+When the source Type is Any Object Type and the destination Type is Numeric Type, <a href="#language-type-convertion-unboxing">Unboxing Type Conversion</a> in the corresponding Numeric Type is displayed. Will be opened. In the following case, an attempt is made to convert the Int Type object to <a href="#language-type-int">int Type</a>.
+
 
 
   # Implicit Unboxing Type Conversion from objectType-
   my $object : object;
   my $num : int = $object;
 
-<p>
-  
 If the source Type is Numeric Object Type and the destination Type is the corresponding Numeric Type, <a href="#language-type-convertion-unboxing">Unboxing Type Conversion</a> in the corresponding Numeric Type Is done.
-</p>
+
 
 
   # Implicit Unboxing Type Conversion from Numeric Object Type
@@ -7519,9 +7152,8 @@ If the source Type is Numeric Object Type and the destination Type is the corres
   my $num : int = $num_obj;
 
 
-<p>
-  If the source Type is Numeric Type and the destination Type is <a href="#language-type-string">String Type</a>, <a href = "#language-type-convertion-numeric-to-string ">Numeric-to-String Type Conversion</a> is performed. In the following case, the numerical value "123" is converted to String "" 123 "" and assigned.
-</p>
+If the source Type is Numeric Type and the destination Type is <a href="#language-type-string">String Type</a>, <a href = "#language-type-convertion-numeric-to-string ">Numeric-to-String Type Conversion</a> is performed. In the following case, the numerical value "123" is converted to String "" 123 "" and assigned.
+
 
 
   # mplicit Boxing Type Conversion to String Type
@@ -7575,18 +7207,15 @@ Numeric types have an order.
 
 =head2 Numeric Type Order
 
-<p>
-  <a href="#language-type-numeric">Numeric Type</a> has the order of Type. The order of Type is "byte", "short", "int", "long", "float", "double" from the smallest.
-</p>
+<a href="#language-type-numeric">Numeric Type</a> has the order of Type. The order of Type is "byte", "short", "int", "long", "float", "double" from the smallest.
+
 
 =head2 Unary Numeric Widening Type Conversion
 
-<p>
-  Unary Numeric Widening Type Conversion means that <a href="#language-expression">Expression</a> is <a href="#language-type-byte">byte Type</a> or short Type. In this case, perform <a href="#language-type-convertion-numeric-widening">Numeric Widening Type Conversion</a> to <a href="#language-type-int">int Type</a> I say that.
-</p>
-<p>
-  Unary Numeric Widening Type Conversion is performed in the following cases.
-</p>
+Unary Numeric Widening Type Conversion means that <a href="#language-expression">Expression</a> is <a href="#language-type-byte">byte Type</a> or short Type. In this case, perform <a href="#language-type-convertion-numeric-widening">Numeric Widening Type Conversion</a> to <a href="#language-type-int">int Type</a> I say that.
+
+Unary Numeric Widening Type Conversion is performed in the following cases.
+
 
 =begin html
 
@@ -7602,41 +7231,32 @@ Numeric types have an order.
 
 =head2 Binary Numeric Widening Type Conversion
 
-<p>
-  Binary Numeric Widening Type Conversion is applied to Left Expression and Right Expression in Binary Operator that takes Numeric Type on the Left and Right sides. <a href="#language-type-convertion-numeric-widening">Numeric Widening Type Conversion</a>.
-</p>
-<p>
-  The following rules apply.
-</p>
-<p>
-  1. When one Expression is <a href="#language-type-double">double Type</a>, the other Type is <a href="#language-type-double">double Type</a> Is converted to>.
-</p>
-<p>
-  2. If one Expression is <a href="#language-type-float">float Type</a>, the other Type is <a href="#language-type-float">float Type</a> Is converted to>.
-</p>
-<p>
-  3. When one Expression is <a href="#language-type-long">long Type</a>, the other Type is <a href="#language-type-long">long Type</a> Is converted to>.
-</p>
-<p>
-  4, otherwise, it will be converted to <a href="#language-type-int">int Type</a>.
-</p>
-<p>
-  Binary Numeric Widening Type Conversion is performed in the following cases.
-</p>
+Binary Numeric Widening Type Conversion is applied to Left Expression and Right Expression in Binary Operator that takes Numeric Type on the Left and Right sides. <a href="#language-type-convertion-numeric-widening">Numeric Widening Type Conversion</a>.
+
+The following rules apply.
+
+1. When one Expression is <a href="#language-type-double">double Type</a>, the other Type is <a href="#language-type-double">double Type</a> Is converted to>.
+
+2. If one Expression is <a href="#language-type-float">float Type</a>, the other Type is <a href="#language-type-float">float Type</a> Is converted to>.
+
+3. When one Expression is <a href="#language-type-long">long Type</a>, the other Type is <a href="#language-type-long">long Type</a> Is converted to>.
+
+4, otherwise, it will be converted to <a href="#language-type-int">int Type</a>.
+
+Binary Numeric Widening Type Conversion is performed in the following cases.
+
 
 =head2 Numeric Narrowing Type Conversion
 
-<p>
-  Numeric Narrowing Type Conversion is a conversion rule applied when converting from a large type to a small type in <a href="#language-type-numeric">Numeric Type</a>.
-</p>
+Numeric Narrowing Type Conversion is a conversion rule applied when converting from a large type to a small type in <a href="#language-type-numeric">Numeric Type</a>.
+
 
 
 =head2 Numeric Widening Type Conversion
 
 
-<p>
-  Numeric Widening Type Conversion is a conversion rule applied when converting from a small type to a large type in <a href="#language-type-numeric">Numeric Type</a>.
-</p>
+Numeric Widening Type Conversion is a conversion rule applied when converting from a small type to a large type in <a href="#language-type-numeric">Numeric Type</a>.
+
 
 
 =head2 String-to-byte[] Type Conversion
@@ -7672,108 +7292,88 @@ A new String Type object is created and all elements in byte[] are copied to the
 
 =head2 Boxing Type Conversion
 
-<p>
-  Boxing Type Conversion is the operation to convert the value of Numeric Type to Numeric Object Type.
-</p>
+Boxing Type Conversion is the operation to convert the value of Numeric Type to Numeric Object Type.
+
 
 
 =head2 Unboxing Type Conversion
 
 
-<p>
-  Unboxing Type Conversion is an operation to convert the value of Numeric Object Type to the corresponding value of Numeric Type.
-</p>
+Unboxing Type Conversion is an operation to convert the value of Numeric Object Type to the corresponding value of Numeric Type.
+
 
 
 =head2 Bool Type Conversion
 
 
-<p>
-  Bool Type Conversion is a conversion applied in the conditional part of if Statement, etc. for True/False Value judgment.
-</p>
-<p>
-  <b>Where Bool Type Conversion takes place</b>
-</p>
-<p>
-  <b>Inside the if statement braces</b>
-</p>
+Bool Type Conversion is a conversion applied in the conditional part of if Statement, etc. for True/False Value judgment.
+
+<b>Where Bool Type Conversion takes place</b>
+
+<b>Inside the if statement braces</b>
+
 
   if (CONDITION) {
   
   }
 
-<p>
-  <b>In unless statement brackets</b>
-</p>
+<b>In unless statement brackets</b>
+
 
   unless (CONDITION) {
   
   }
 
-<p>
-  <b>The second in the parentheses for</b>
-</p>
+<b>The second in the parentheses for</b>
+
 
   for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
   
   }
 
-<p>
-  <b>in parentheses while</b>
-</p>
+<b>in parentheses while</b>
+
 
   while (CONDITION) {
   
   }
 
-<p>
-  <b>Left and Right of Logical AND Operator</b>
-</p>
+<b>Left and Right of Logical AND Operator</b>
+
 
   CONDITION && CONDITION
 
-<p>
-  <b>Left and Right of Logical OR Operator</b>
-</p>
+<b>Left and Right of Logical OR Operator</b>
+
 
   CONDITION || CONDITION
 
-<p>
-  <b>Right side of Logical NOT Operator</b>
-</p>
+<b>Right side of Logical NOT Operator</b>
+
 
   !CONDITION
 
-<p>
-  Expression specified by Bool Type Conversion is <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-object">Object Type</a> or It must be <a href="#language-type-undef">Undefined Type</a>, otherwise Compile Error occurs.
-</p>
-<p>
-  Return Value of Bool Type Conversion is Expression of <a href="#language-type-int">int Type</a>.
-</p>
-<p>
-  If Expression is <a href="#language-undef">Undefined Value</a>, 0 is returned.
-</p>
-<p>
-  If Expression is Bool->FALSE, 0 is returned. This is special case of the object of Bool class. false keywords means Bool->FALSE.
-</p>
-<p>
-  If Expression is Bool->TRUE, 1 is returned.  This is special case of the object of Bool class. true keywords means Bool->TRUE.
-</p>
-<p>
-  When Expression is <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-convertion-unary-numeric-widening">Unary Numeric Widening Type Conversion</a> is done.
-</p>
-<p>
-  If Expression is <a href="#language-type-int">int Type</a>, that value is returned.
-</p>
-<p>
-  Expression is <a href="#language-type-long">long Type</a>, <a href="#language-type-float">float Type</a>, <a href = "#language- If it is type-double ">double Type</a>, Object Type, the operation that exactly matches the following operation in C99 is performed and the result is returned.
-</p>
+Expression specified by Bool Type Conversion is <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-object">Object Type</a> or It must be <a href="#language-type-undef">Undefined Type</a>, otherwise Compile Error occurs.
+
+Return Value of Bool Type Conversion is Expression of <a href="#language-type-int">int Type</a>.
+
+If Expression is <a href="#language-undef">Undefined Value</a>, 0 is returned.
+
+If Expression is Bool->FALSE, 0 is returned. This is special case of the object of Bool class. false keywords means Bool->FALSE.
+
+If Expression is Bool->TRUE, 1 is returned.  This is special case of the object of Bool class. true keywords means Bool->TRUE.
+
+When Expression is <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-convertion-unary-numeric-widening">Unary Numeric Widening Type Conversion</a> is done.
+
+If Expression is <a href="#language-type-int">int Type</a>, that value is returned.
+
+Expression is <a href="#language-type-long">long Type</a>, <a href="#language-type-float">float Type</a>, <a href = "#language- If it is type-double ">double Type</a>, Object Type, the operation that exactly matches the following operation in C99 is performed and the result is returned.
+
 
   !!x
 
-<p>
-  If Expression is Object Type, 0 is returned if it is Undefined Value, 1 otherwise.
-</p>
+If Expression is Object Type, 0 is returned if it is Undefined Value, 1 otherwise.
+
 
 <b>Bool Type Conversion Examples</b>
 
@@ -7826,25 +7426,21 @@ A new String Type object is created and all elements in byte[] are copied to the
 
 =head2 Exception overview
 
-<p>
-  SPVM has a mechanism of Exception. Exception consists of raising <a href="#language-exception">Exception</a> and catching the exception.
-</p>
+SPVM has a mechanism of Exception. Exception consists of raising <a href="#language-exception">Exception</a> and catching the exception.
+
 
 
 =head2 Throw Exception
 
-<p>
-  Use die Statement to throw <a href="#language-exception">Exception</a>.
-</p>
+Use die Statement to throw <a href="#language-exception">Exception</a>.
+
 
   die EXPRESSION;
 
-<p>
-  Expression must be <a href="#language-type-string">String Type</a>.
-</p>
-<p>
-  When the die statement is executed, the stack trace and the String specified by Expression are displayed, and the program ends. The stack trace includes Class Name, Method Name, File Name and line number. File Name is a relative File Name from the path where Module is loaded.
-</p>
+Expression must be <a href="#language-type-string">String Type</a>.
+
+When the die statement is executed, the stack trace and the String specified by Expression are displayed, and the program ends. The stack trace includes Class Name, Method Name, File Name and line number. File Name is a relative File Name from the path where Module is loaded.
+
 
   Error
   from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
@@ -7854,20 +7450,17 @@ A new String Type object is created and all elements in byte[] are copied to the
 
 =head2 Catch Exception
 
-<p>
-  Exception catching is a function that can stop the program from ending and get an error message when <a href="#language-exception">Exception</a> is thrown.
-</p>
-<p>
-  Exceptions are caught using eval Block Statement. Please note that the eval Block Statement requires a semicolon at the end.
-</p>
+Exception catching is a function that can stop the program from ending and get an error message when <a href="#language-exception">Exception</a> is thrown.
+
+Exceptions are caught using eval Block Statement. Please note that the eval Block Statement requires a semicolon at the end.
+
 
   eval {
     # Processing that may throw <a href="#language-exception">Exception</a>
   };
 
-<p>
-  When <a href="#language-exception">Exception</a> is caught by the eval Block, the program termination is stopped and <a href="#language-exception-occur">is added to <a href="#language-exception-var">Exception Variable</a>. The message specified in Exception is thrown</a> is methodstituted.
-</p>
+When <a href="#language-exception">Exception</a> is caught by the eval Block, the program termination is stopped and <a href="#language-exception-occur">is added to <a href="#language-exception-var">Exception Variable</a>. The message specified in Exception is thrown</a> is methodstituted.
+
 
 
 =head2 Exception Variable
@@ -7886,31 +7479,24 @@ See <a href="#language-expression-set-exception-var">Set Exception Variable Valu
 
 =head1 Garbage Collection
 
-<p>
-  The object is released from memory when the Reference Count reaches 0.
-</p>
-<p>
-  If the object is an Array that has Object Type values ​​as elements, the Reference Count of all Array elements that are not Undefined Value is decremented by 1 before Garbage Collection
-</p>
-<p>
-  When an object is a Class Type and has a Field of Object Type, the Reference Count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by 1 before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by 1.
-</p>
-<p>
-  When the object has Back references of Weaken Reference, Undefined Value is assigned to all Fields registered as back References and all back References are deleted.
-</p>
-<p>
-  The above process is done recursively.
-</p>
+The object is released from memory when the Reference Count reaches 0.
+
+If the object is an Array that has Object Type values ​​as elements, the Reference Count of all Array elements that are not Undefined Value is decremented by 1 before Garbage Collection
+
+When an object is a Class Type and has a Field of Object Type, the Reference Count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by 1 before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by 1.
+
+When the object has Back references of Weaken Reference, Undefined Value is assigned to all Fields registered as back References and all back References are deleted.
+
+The above process is done recursively.
+
 
 
 =head1 Callback
 
-<p>
-  Callback Type in SPVM is a Class Type in which only one unnamed Method with no implementation is defined. If callback_tDescriptor is specified in <a href="#language-class-definition">Class Definition</a>, it becomes Callback Type.
-</p>
-<p>
-  The purpose of Callback Type is to provide a Type that can be assigned to different objects when they have the same MethodDefinition. Consider that the function corresponding to the C function pointer is realized in SPVM.
-</p>
+Callback Type in SPVM is a Class Type in which only one unnamed Method with no implementation is defined. If callback_tDescriptor is specified in <a href="#language-class-definition">Class Definition</a>, it becomes Callback Type.
+
+The purpose of Callback Type is to provide a Type that can be assigned to different objects when they have the same MethodDefinition. Consider that the function corresponding to the C function pointer is realized in SPVM.
+
 
   class Foo1 {
     static method new : Foo1 () {
@@ -7935,12 +7521,10 @@ See <a href="#language-expression-set-exception-var">Set Exception Variable Valu
   }
 
 
-<p>
-  Foo1 and Foo2 have the same MethodDefinition "method: int ($num: int)". Now suppose you want to selectively call the Foo1 or :Foo2 Method.
-</p>
-<p>
-  In this case, if you define a Callback Type FooCallback with the same MethodDefinition, you can assign either object to this Type. Then you can call Method from this object.
-</p>
+Foo1 and Foo2 have the same MethodDefinition "method: int ($num: int)". Now suppose you want to selectively call the Foo1 or :Foo2 Method.
+
+In this case, if you define a Callback Type FooCallback with the same MethodDefinition, you can assign either object to this Type. Then you can call Method from this object.
+
 
   my $foo1 = Foo1->new;
   my $foo2 = Foo2->new;
@@ -7957,20 +7541,17 @@ See <a href="#language-expression-set-exception-var">Set Exception Variable Valu
   
   my $ret = $foo->(5);
 
-<p>
-  If $flag is 1, the anonymous Method of Foo1 is called, otherwise the anonymous Method of Foo2 is called.
-</p>
-<p>
-  For more information on Callback Type, see <a href="#language-type-callback">Callback Type</a>.
-</p>
+If $flag is 1, the anonymous Method of Foo1 is called, otherwise the anonymous Method of Foo2 is called.
+
+For more information on Callback Type, see <a href="#language-type-callback">Callback Type</a>.
+
 
 
 =head2 Create Callback Object
 
 
-<p>
-  Create Callback Object is a Syntax that creates an object that conforms to Callback Type by using a special syntax for the purpose of Callback.
-</p>
+Create Callback Object is a Syntax that creates an object that conforms to Callback Type by using a special syntax for the purpose of Callback.
+
 
 
   method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ARGSN : TYPEn) {
@@ -7978,9 +7559,8 @@ See <a href="#language-expression-set-exception-var">Set Exception Variable Valu
   }
 
 
-<p>
-  When Create Callback Object is performed, <a href="#language-class-definition">Class Definition</a> is performed internally, an object based on that Class is generated, and <a href = " Returned as # language-expression ">Expression</a>. It is possible to assign to a variable like the following.
-</p>
+When Create Callback Object is performed, <a href="#language-class-definition">Class Definition</a> is performed internally, an object based on that Class is generated, and <a href = " Returned as # language-expression ">Expression</a>. It is possible to assign to a variable like the following.
+
 
 
   my $cb_obj = method : TYPE (ARGS1 : TYPE1, ARGS2 : TYPE2, ..., ARGSn : TYPEn) {
@@ -7988,13 +7568,11 @@ See <a href="#language-expression-set-exception-var">Set Exception Variable Valu
   };
 
 
-<p>
-  Method defined by Create Callback Object must be <a href="#language-method-method">Method</a>. It must also be a Method with no name.
-</p>
+Method defined by Create Callback Object must be <a href="#language-method-method">Method</a>. It must also be a Method with no name.
 
-<p>
-  <b>Create Callback Object Example</b>
-</p>
+
+<b>Create Callback Object Example</b>
+
 
 
   my $comparator = method : int ($x1 : object, $x2 : object) {
@@ -8002,8 +7580,7 @@ See <a href="#language-expression-set-exception-var">Set Exception Variable Valu
   }
 
 
-<p>
-  You can call Method because the object created by Create Callback Object is a normal object. For the call to Create Callback Object, see <a href="#language-expression-callmethod">Method Call</a>.
+You can call Method because the object created by Create Callback Object is a normal object. For the call to Create Callback Object, see <a href="#language-expression-callmethod">Method Call</a>.
 <p>
 
 
@@ -8011,7 +7588,7 @@ See <a href="#language-expression-set-exception-var">Set Exception Variable Valu
 
 <p>
   In Create Callback Object, you can use the syntax called Capture to use the variables defined outside the Method defined by Create Callback Object inside the Method defined by Create Callback Object.
-</p>
+
 
   # Capture
   [VariableName1 : Type1, VariableName2 : Type2] method Method Name : int ($x1 : object, $x2 : object) {
@@ -8031,21 +7608,16 @@ Capture Example.
     print "$bar\n";
   }
 
-<p>
-  The variable name used in Capture must be the one with "$" added at the beginning of <a href="#language-token-identifier-field-name">Field Name</a>.
-</p>
-<p>
-  The Capture is actually defined as a Field of Class. Capture is a field definition and value setting syntax sugar.
-</p>
-<p>
-  If <a href="#language-local-var">Local Variable</a> with the same name as the Capture variable exists in the Scope, access the Local Variable.
-</p>
-<p>
-  If there is a <a href="#language-class-var">Class Variable</a> with the same name as the Capture variable, access the Capture variable.
-</p>
-<p>
-  If you write Create Callback Object and Capture without using syntax sugar, it will be as follows.
-</p>
+The variable name used in Capture must be the one with "$" added at the beginning of <a href="#language-token-identifier-field-name">Field Name</a>.
+
+The Capture is actually defined as a Field of Class. Capture is a field definition and value setting syntax sugar.
+
+If <a href="#language-local-var">Local Variable</a> with the same name as the Capture variable exists in the Scope, access the Local Variable.
+
+If there is a <a href="#language-class-var">Class Variable</a> with the same name as the Capture variable, access the Capture variable.
+
+If you write Create Callback Object and Capture without using syntax sugar, it will be as follows.
+
 
 
   class ComapartorImpl {
@@ -8074,15 +7646,12 @@ Capture is a syntax for writing such a long description short.
 
 =head1 Weaken Reference
 
-<p>
-  Weaken Reference is a reference that does not increase the Reference Count. Weaken Reference can be used to solve the problem of circular references.
-</p>
-<p>
-  SPVM has GC of Reference Count Type. In the GC of Reference Count Type, the object is automatically released when the Reference Count becomes 0, but when the circular reference occurs, the Reference Count does not become 0 and the object is automatically released. not.
-</p>
-<p>
-  This is an Example when the Field of the object is circularly referenced.
-</p>
+Weaken Reference is a reference that does not increase the Reference Count. Weaken Reference can be used to solve the problem of circular references.
+
+SPVM has GC of Reference Count Type. In the GC of Reference Count Type, the object is automatically released when the Reference Count becomes 0, but when the circular reference occurs, the Reference Count does not become 0 and the object is automatically released. not.
+
+This is an Example when the Field of the object is circularly referenced.
+
 
   {
     my $foo = new Foo;
@@ -8092,15 +7661,12 @@ Capture is a syntax for writing such a long description short.
     $bar->{foo} = $foo;
   }
 
-<p>
-  In this case, both objects are not released when the Scope ends. This is because a circular reference has occurred and the Reference Count does not become 0.
-</p>
-<p>
-  Weaken Reference is a function to correctly destroy objects when a circular reference occurs in a programming language that has a Reference Count GC.
-</p>
-<p>
-  In such a case, it is possible to release correctly by setting one Field to Weaken Reference using <a href="#language-statement-weaken">weaken Statement</a>.
-</p>
+In this case, both objects are not released when the Scope ends. This is because a circular reference has occurred and the Reference Count does not become 0.
+
+Weaken Reference is a function to correctly destroy objects when a circular reference occurs in a programming language that has a Reference Count GC.
+
+In such a case, it is possible to release correctly by setting one Field to Weaken Reference using <a href="#language-statement-weaken">weaken Statement</a>.
+
 
   {
     my $foo = new Foo;
@@ -8112,21 +7678,16 @@ Capture is a syntax for writing such a long description short.
     weaken $foo->{bar};
   }
 
-<p>
-  Before the weaken statement is executed, $foo has a Reference Count of 2 and $bar has a Reference Count of 2.
-</p>
-<p>
-  If there is no weaken statement, the reference count of $foo and the reference count of $bar will not be 0 and will not be released even if the scope ends.
-</p>
-<p>
-  When a weaken statement is executed, $foo has a Reference Count of 2 and $bar has a Reference Count of 1.
-</p>
-<p>
-  When the Scope ends, the Reference Count of $bar is decremented by 1 and becomes 0, so it is released correctly.
-</p>
-<p>
-  Even if there are 3 circular references, you can release them correctly by setting Weaken Reference in 1 Field.
-</p>
+Before the weaken statement is executed, $foo has a Reference Count of 2 and $bar has a Reference Count of 2.
+
+If there is no weaken statement, the reference count of $foo and the reference count of $bar will not be 0 and will not be released even if the scope ends.
+
+When a weaken statement is executed, $foo has a Reference Count of 2 and $bar has a Reference Count of 1.
+
+When the Scope ends, the Reference Count of $bar is decremented by 1 and becomes 0, so it is released correctly.
+
+Even if there are 3 circular references, you can release them correctly by setting Weaken Reference in 1 Field.
+
 
   {
     my $foo = new Foo;
@@ -8140,10 +7701,8 @@ Capture is a syntax for writing such a long description short.
     weaken $foo->{bar};
   }
 
-<p>
-
 As a syntax related to Weaken Reference, Weaken Reference can be released <a href="#language-statement-weaken">weaken Statement</a>, and it can be confirmed whether Field is Weaken Reference <a href = "#language- There is an operator-isweak ">isweak Operator</a>.
-</p>
+
 
 
 =head1 Default loaded modules
