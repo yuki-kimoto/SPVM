@@ -7,6 +7,12 @@ Revision history for SPVM
         * Improve a assignment compilation error messege. "argument 2" -> "2th argument".
         * Use native api "get_chars" more instead of "get_elems_byte" in the right places.
         * Add mutable type qualifier.
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * string type become mutable using mutable type qualifir.
+          This means string is no more immutable.
+          Sorry. This is big change. If necessary, a defensive copy is needed.
+          The reason of this change is that I wanted to avoid slowing the performance of string processing.
+          I found this performance problem when I do tests of socket read/write using StringBuffer module.
 
 0.9500  2021-02-01
         [CHANGE]
