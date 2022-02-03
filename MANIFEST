@@ -489,7 +489,6 @@ lib/SPVM/ExchangeAPI.pm
 lib/SPVM/Float.pm
 lib/SPVM/FloatList.pm
 lib/SPVM/FloatList.spvm
-lib/SPVM/Fn.c
 lib/SPVM/Fn.config
 lib/SPVM/Fn.pm
 lib/SPVM/Fn.spvm
