@@ -36,6 +36,26 @@ class TestCase::String {
         return 0;
       }
     }
+
+    # Set the character - type inference
+    {
+      my $string = (mutable string)"abc";
+      $string->[0] = 'd';
+      $string->[1] = 'e';
+      $string->[2] = 'f';
+      
+      unless ($string->[0] == 'd') {
+        return 0;
+      }
+      
+      unless ($string->[1] == 'e') {
+        return 0;
+      }
+      
+      unless ($string->[2] == 'f') {
+        return 0;
+      }
+    }
     
     return 1;
   }
