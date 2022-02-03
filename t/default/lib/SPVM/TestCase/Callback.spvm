@@ -78,7 +78,6 @@ class TestCase::Callback {
         else {
           return 0;
         }
-        return 0;
       };
       
       my $minimals = new TestCase::Minimal[3];
@@ -116,6 +115,5 @@ class TestCase::Callback {
         }
       }
     }
-    return 0;
   }
 }

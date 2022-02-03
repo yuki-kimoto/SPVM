@@ -282,8 +282,6 @@ class TestCase::Add {
     if ($int_success) {
       return 1;
     }
-    
-    return 0;
   }
 
 }

@@ -74,8 +74,6 @@ class Hash : precompile {
       }
       $ref = $ref->{next_entry};
     }
-    
-    return undef;
   }
 
   method exists : int ($key : string) {
@@ -94,8 +92,6 @@ class Hash : precompile {
       }
       $ref = $ref->{next_entry};
     }
-    
-    return 0;
   }
 
   method delete : object ($key : string) {
@@ -123,8 +119,6 @@ class Hash : precompile {
       $prev = $ref;
       $ref = $ref->{next_entry};
     }
-    
-    return undef;
   }
 
   method keys : string[] () {

@@ -25,7 +25,6 @@ class TestCase {
   
   static method main : int ($cur_file : string, $args : string[]) {
     warn("GGGGGGG $cur_file $args->[0] $args->[1]");
-    return 0;
   }
   
   static method INT : int () { return 127; }
@@ -87,7 +86,6 @@ class TestCase {
     for (my $i = 0; $i < 5; $i++) {
       my $minimal = TestCase::Minimal->new;
     }
-    return 0;
   }
   
   static method class_var : int () {

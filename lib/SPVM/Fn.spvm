@@ -1063,8 +1063,6 @@ class Fn : precompile {
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   static method is_alpha : int ($code_point : int) {
@@ -1075,8 +1073,6 @@ class Fn : precompile {
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   static method is_blank : int ($code_point : int) {
@@ -1087,8 +1083,6 @@ class Fn : precompile {
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   static method is_cntrl : int ($code_point : int) {
@@ -1099,8 +1093,6 @@ class Fn : precompile {
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   static method is_digit : int ($code_point : int) {
@@ -1111,8 +1103,6 @@ class Fn : precompile {
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   static method is_graph : int ($code_point : int) {
@@ -1123,8 +1113,6 @@ class Fn : precompile {
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   static method is_lower : int ($code_point : int) {
@@ -1135,8 +1123,6 @@ class Fn : precompile {
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   # This is same as Perl \s
@@ -1182,8 +1168,6 @@ class Fn : precompile {
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   static method is_punct : int ($code_point : int) {
@@ -1194,8 +1178,6 @@ class Fn : precompile {
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   static method is_space : int ($code_point : int) {
@@ -1206,8 +1188,6 @@ class Fn : precompile {
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   static method is_upper : int ($code_point : int) {
@@ -1218,8 +1198,6 @@ class Fn : precompile {
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   static method is_xdigit : int ($code_point : int) {
@@ -1230,8 +1208,6 @@ class Fn : precompile {
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   static method join : string ($sep : string, $strings : string[]) {

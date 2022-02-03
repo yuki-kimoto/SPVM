@@ -20,7 +20,6 @@ class TestCase::Switch {
         return 5;
       }
     }
-    return 0;
   }
   
   static method switch_no_default : int () {

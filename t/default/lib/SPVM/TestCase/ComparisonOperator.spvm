@@ -620,7 +620,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   # eq 
@@ -646,7 +645,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_eq_byte_different  : int () {
@@ -657,7 +655,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_eq_short_same  : int () {
@@ -668,7 +665,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_eq_short_different  : int () {
@@ -679,7 +675,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_eq_int_same  : int () {
@@ -713,7 +708,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_eq_long_different  : int () {
@@ -724,7 +718,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_eq_float_same  : int () {
@@ -735,7 +728,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_eq_float_different  : int () {
@@ -746,7 +738,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_eq_double_same  : int () {
@@ -757,7 +748,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_eq_double_different  : int () {
@@ -768,7 +758,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_eq_object_same  : int () {
@@ -781,7 +770,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_eq_object_different  : int () {
@@ -794,7 +782,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   # If a != b
@@ -822,7 +809,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_ne_byte_different  : int () {
@@ -833,7 +819,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_ne_short_same  : int () {
@@ -844,7 +829,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_ne_short_different  : int () {
@@ -855,7 +839,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_ne_int_same  : int () {
@@ -866,7 +849,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_ne_int_different  : int () {
@@ -877,7 +859,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_ne_long_same  : int () {
@@ -888,7 +869,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_ne_long_different  : int () {
@@ -899,7 +879,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_ne_float_same  : int () {
@@ -910,7 +889,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_ne_float_different  : int () {
@@ -921,7 +899,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_ne_double_same  : int () {
@@ -932,7 +909,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_ne_double_different  : int () {
@@ -943,7 +919,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_ne_object_same  : int () {
@@ -956,7 +931,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_ne_object_different  : int () {
@@ -969,7 +943,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   # If a > b
@@ -981,7 +954,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_gt_byte_same  : int () {
@@ -992,7 +964,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_gt_byte_right_big  : int () {
@@ -1003,7 +974,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_gt_short_left_big  : int () {
@@ -1014,7 +984,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_gt_short_same  : int () {
@@ -1025,7 +994,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_gt_short_right_big  : int () {
@@ -1036,7 +1004,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_gt_int_left_big  : int () {
@@ -1047,7 +1014,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_gt_int_same  : int () {
@@ -1058,7 +1024,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_gt_int_right_big  : int () {
@@ -1069,7 +1034,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_gt_long_left_big  : int () {
@@ -1080,7 +1044,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_gt_long_same  : int () {
@@ -1091,7 +1054,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_gt_long_right_big  : int () {
@@ -1102,7 +1064,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_gt_float_left_big  : int () {
@@ -1113,7 +1074,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_gt_float_same  : int () {
@@ -1124,7 +1084,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_gt_float_right_big  : int () {
@@ -1135,7 +1094,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_gt_double_left_big  : int () {
@@ -1146,7 +1104,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_gt_double_same  : int () {
@@ -1157,7 +1114,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_gt_double_right_big  : int () {
@@ -1168,7 +1124,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   # If a >= b
@@ -1180,7 +1135,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_ge_byte_same  : int () {
@@ -1191,7 +1145,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_ge_byte_right_big  : int () {
@@ -1202,7 +1155,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_ge_short_left_big  : int () {
@@ -1213,7 +1165,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_ge_short_same  : int () {
@@ -1224,7 +1175,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_ge_short_right_big  : int () {
@@ -1235,7 +1185,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
   
   static method numeric_ge_int_left_big  : int () {
@@ -1246,7 +1195,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_ge_int_same  : int () {
@@ -1257,7 +1205,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_ge_int_right_big  : int () {
@@ -1268,7 +1215,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_ge_long_left_big  : int () {
@@ -1279,7 +1225,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_ge_long_same  : int () {
@@ -1290,7 +1235,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_ge_long_right_big  : int () {
@@ -1301,7 +1245,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_ge_float_left_big  : int () {
@@ -1312,7 +1255,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_ge_float_same  : int () {
@@ -1323,7 +1265,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_ge_float_right_big  : int () {
@@ -1334,7 +1275,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_ge_double_left_big  : int () {
@@ -1345,7 +1285,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_ge_double_same  : int () {
@@ -1356,7 +1295,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_ge_double_right_big  : int () {
@@ -1367,7 +1305,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   # If a < b
@@ -1379,7 +1316,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_lt_byte_same  : int () {
@@ -1390,7 +1326,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_lt_byte_right_big  : int () {
@@ -1401,7 +1336,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_lt_short_left_big  : int () {
@@ -1412,7 +1346,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_lt_short_same  : int () {
@@ -1423,7 +1356,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_lt_short_right_big  : int () {
@@ -1434,7 +1366,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_lt_int_left_big  : int () {
@@ -1445,7 +1376,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_lt_int_same  : int () {
@@ -1456,7 +1386,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_lt_int_right_big  : int () {
@@ -1467,7 +1396,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_lt_long_left_big  : int () {
@@ -1478,7 +1406,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_lt_long_same  : int () {
@@ -1489,7 +1416,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_lt_long_right_big  : int () {
@@ -1500,7 +1426,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_lt_float_left_big  : int () {
@@ -1511,7 +1436,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_lt_float_same  : int () {
@@ -1522,7 +1446,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_lt_float_right_big  : int () {
@@ -1533,7 +1456,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_lt_double_left_big  : int () {
@@ -1544,7 +1466,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_lt_double_same  : int () {
@@ -1555,7 +1476,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_lt_double_right_big  : int () {
@@ -1566,7 +1486,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   # If a <= b
@@ -1578,7 +1497,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_le_byte_same  : int () {
@@ -1589,7 +1507,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_le_byte_right_big  : int () {
@@ -1600,7 +1517,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_le_short_left_big  : int () {
@@ -1611,7 +1527,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_le_short_same  : int () {
@@ -1622,7 +1537,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_le_short_right_big  : int () {
@@ -1633,7 +1547,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
   
   static method numeric_le_int_left_big  : int () {
@@ -1644,7 +1557,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_le_int_same  : int () {
@@ -1655,7 +1567,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_le_int_right_big  : int () {
@@ -1666,7 +1577,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_le_long_left_big  : int () {
@@ -1677,7 +1587,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_le_long_same  : int () {
@@ -1688,7 +1597,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_le_long_right_big  : int () {
@@ -1699,7 +1607,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_le_float_left_big  : int () {
@@ -1710,7 +1617,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_le_float_same  : int () {
@@ -1721,7 +1627,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_le_float_right_big  : int () {
@@ -1732,7 +1637,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_le_double_left_big  : int () {
@@ -1743,7 +1647,6 @@ class TestCase::ComparisonOperator {
     else {
       return 1;
     }
-    return 0;
   }
 
   static method numeric_le_double_same  : int () {
@@ -1754,7 +1657,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_le_double_right_big  : int () {
@@ -1765,7 +1667,6 @@ class TestCase::ComparisonOperator {
     else {
       return 0;
     }
-    return 0;
   }
 
   static method numeric_cmp_byte  : int () {

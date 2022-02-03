@@ -71,7 +71,6 @@ class TestCase::String {
       
       return 1;
     }
-    return 0;
   }
   static method basic : int () {
     

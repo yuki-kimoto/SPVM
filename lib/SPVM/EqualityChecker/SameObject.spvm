@@ -10,6 +10,5 @@ class EqualityChecker::SameObject {
     else {
       return 0;
     }
-    return 0;
   }
 }

@@ -831,8 +831,6 @@ SPVM::Test - SPVM test module
         else {
           return 0;
         }
-        
-        return 0;
       });
       
       print($minimals->[0]{x} . " " . $minimals->[1]{x} . " " . $minimals->[2]{x} . "\n");
@@ -1913,8 +1911,6 @@ SPVM::Test - SPVM test module
   static method increfcount : int ($test : TestCase::Minimal, $num : int) {
     
     my $aaa = TestCase::Minimal->new();
-    
-    return 0;
   }
 
   static method decinctest : int ($num1 : TestCase::Minimal, $num2 : int, $num3 : TestCase::Minimal) {
@@ -1936,8 +1932,6 @@ SPVM::Test - SPVM test module
 
       return $object2;
     }
-    
-    return undef;
   }
 
   static method eval_block : void () {
@@ -1980,10 +1974,9 @@ SPVM::Test - SPVM test module
   }
   static method default_return_value_object_method : TestCase () {
     1;
-    return undef;
   }
   static method default_return_value_object_method_empty : TestCase () {
-    return undef;
+    
   }
   static method weaken_reference_count1_object : int (){
     my $minimal = TestCase::Minimal->new();
@@ -2002,14 +1995,10 @@ SPVM::Test - SPVM test module
   
   static method error : int () {
     die "ERROR";
-    
-    return 0;
   }
   
   static method error_call_stack : int () {
     TestCase->error();
-    
-    return 0;
   }
 
   static method error_eval : int () {
@@ -2023,8 +2012,6 @@ SPVM::Test - SPVM test module
     else {
       return 0;
     }
-    
-    return 0;
   }
 
   static method error_eval_call : int () {
@@ -2038,13 +2025,9 @@ SPVM::Test - SPVM test module
     else {
       return 0;
     }
-    
-    return 0;
   }
   static method exception_die_return_object : TestCase::Minimal () {
     die "Error";
-    
-    return undef;
   }
   static method new : TestCase () {
     return new TestCase;
@@ -2079,11 +2062,11 @@ SPVM::Test - SPVM test module
   static method receive_undef : void ($test_case : TestCase) {
     
   }
-  static method ref_sum : void ($x_in1 : double, $x_in2 : double, $x_out : double*) {
+  static method ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : double*) {
     $$x_out = $x_in1 + $x_in2;
   }
   
-  static method ref_sum_complex : void ($x_in1 : TestCase::Complex_2d, $x_in2 : TestCase::Complex_2d, $x_out : TestCase::Complex_2d*) {
+  static method ref_sum_complex : double ($x_in1 : TestCase::Complex_2d, $x_in2 : TestCase::Complex_2d, $x_out : TestCase::Complex_2d*) {
     $x_out->{re} = $x_in1->{re} + $x_in2->{re};
     $x_out->{im} = $x_in1->{im} + $x_in2->{im};
   }
