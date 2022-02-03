@@ -75,7 +75,7 @@ SPVM::Test - SPVM test module
   static method main : int ($start_file : string, $args : string[]) {
     
     {
-      my $string : mutable string = "abc";
+      my $string : mutable string = (mutable string)"abc";
       $string->[0] = 'd';
       
       warn $string;
