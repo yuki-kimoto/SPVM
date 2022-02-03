@@ -73,6 +73,14 @@ SPVM::Test - SPVM test module
   static method DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   static method main : int ($start_file : string, $args : string[]) {
+    
+    {
+      my $string : mutable string = "abc";
+      $string->[0] = 'd';
+      
+      warn $string;
+    }
+    
     # Starting file
     warn $start_file;
     
