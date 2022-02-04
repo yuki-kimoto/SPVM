@@ -668,7 +668,7 @@ class Regex : precompile {
       return $target;
     }
     
-    my $result : byte[];
+    my $result : string;
     my $replace_count = 0;
     my $result_buffer = StringBuffer->new;
     my $tarlength = length $target;
@@ -724,11 +724,11 @@ class Regex : precompile {
       
       my $result_length = $tarlength + $replace_length - $match_length;
       
-      $result = new byte[$result_length];
+      $result = (string)new byte[$result_length];
       
       my $rest_length = $tarlength - $match_end;
       
-      my $before_result = (string)Fn->copy_array_range_byte((byte[])$target, $target_base_index, $match_start - $target_base_index);
+      my $before_result = (mutable string)Fn->substr($target, $target_base_index, $match_start - $target_base_index);
       $result_buffer->push($before_result);
       $result_buffer->push($replace);
       
@@ -742,7 +742,7 @@ class Regex : precompile {
     
     
     if ($replace_count == 0) {
-      $result = (byte[])Fn->copy_string($target);
+      $result = Fn->copy_string($target);
     }
     else {
       my $match_end = $self->match_start + $self->match_length;
@@ -750,12 +750,12 @@ class Regex : precompile {
       my $rest_string = Fn->substr($target, $match_end, $rest_length);
       $result_buffer->push($rest_string);
       
-      $result = (byte[])$result_buffer->to_string;
+      $result = $result_buffer->to_string;
     }
     
     $self->{replace_count} = $replace_count;
     
-    return (string)$result;
+    return $result;
   }
 
   private method duplicate : int ($pattern1 : Regex::Pattern, $pattern2 : Regex::Pattern) {
