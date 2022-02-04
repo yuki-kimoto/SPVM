@@ -38,7 +38,7 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message_not_used) {
   token[length] = '\0';
   
   int32_t char_pos = (int32_t)(compiler->befbufptr + empty_count + 1 - compiler->line_start_ptr);
-
+  
   SPVM_COMPILER_error(compiler, "Unexpected token \"%s\" at %s line %d:%d", token, compiler->cur_file, compiler->cur_line, char_pos);
 
   SPVM_ALLOCATOR_free_block_compile_tmp(compiler, token);

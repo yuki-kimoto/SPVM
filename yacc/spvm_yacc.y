@@ -22,7 +22,7 @@
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
-%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE
+%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_CLASS
 %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
 %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
@@ -103,19 +103,19 @@ classes
   | class
 
 class
-  : CLASS basic_type class_block
+  : CLASS basic_type class_block END_OF_CLASS
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, $3, NULL);
     }
-  | CLASS basic_type ':' opt_descriptors class_block
+  | CLASS basic_type ':' opt_descriptors class_block END_OF_CLASS
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, $5, $4);
     }
-  | CLASS basic_type ';'
+  | CLASS basic_type ';' END_OF_CLASS
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, NULL);
     }
-  | CLASS basic_type ':' opt_descriptors ';'
+  | CLASS basic_type ':' opt_descriptors ';' END_OF_CLASS
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, $4);
     }

@@ -35,7 +35,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
   compiler->allocator = allocator;
   SPVM_ALLOCATOR_init(compiler);
-
+  
   compiler->bufptr = "";
 
   compiler->const_string_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
@@ -349,7 +349,9 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   // Turn on yacc/bison debug mode
   SPVM_yydebug = 1;
 #endif
-  
+
+  compiler->parse_start = 1;
+
   // Initialize added class names
   compiler->added_class_names = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
 

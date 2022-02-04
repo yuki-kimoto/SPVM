@@ -7,6 +7,7 @@ Revision history for SPVM
         * Improve a assignment compilation error messege. "argument 2" -> "2th argument".
         * Use native api "get_chars" more instead of "get_elems_byte" in the right places.
         * Add mutable type qualifier.
+        * Improve a compilation error messege when the class is not finished at the end of the file.
         [NON BACKWORD COMPATIBLE CHANGES]
         * string type become mutable using mutable type qualifir.
           This means string is no more immutable.
