@@ -7320,7 +7320,7 @@ B<Bool Type Conversion Examples>
 
 Type qualifiers qualify the type.
 
-  Qualifier Type
+  QUALIFIER TYPE
 
 =head2 mutable Type Qualifier
 
