@@ -44,7 +44,7 @@ Underscore C<_> cannot be continued twice.
 
 A class name must be corresponding to the relative name of the module file. If the class name is "Foo::Bar::Baz", the relative name of the module file must be "Foo/Bar/Baz.spvm".
 
-If the class name is invalid, a compilation error occurs.
+If class names are invalid, a compilation error occurs.
 
 B<Examples of valid class names:>
 
@@ -64,25 +64,36 @@ B<Examples of invalid class names:>
 
 =head2 Method Names
 
-Method Names is one or more alphabet(a-zA-Z), number(0-9), or underscore(_) of ASCII.
+A method name is one or more alphabet(C<a-zA-Z>), number(C<0-9>), or underscore(C<_>) of ASCII.
 
-First character must not number character.
+The first character must not a number.
 
-Underscore cannot be continued twice.
+Underscore(C<_>) cannot be continued twice.
 
+If method names are invalid, a compilation error occurs.
 
-  # Valid Method Names
+B<Examples of valid method names:>
+
+  # Valid method names
   FOO
   FOO_BAR3
   foo
   foo_bar
   _foo
   _foo_bar_
+
+B<Examples of invalid method names:>
   
-  # Invalid Method Names
+  # Invalid method names
   foo__bar
+  3foo
 
-
+A method name can be the same as L<Keywords>.
+  
+  # "if" is a valid method name although this name is the same as the "if" keyword.
+  static method if : void () {
+    
+  }
 
 =head2 Field Names
 
@@ -1700,7 +1711,7 @@ Method must be defined directly under L<"Class Definition">.
 
 Method name must be follow the rule of L<"Method Names">.
 
-Method Names is allowed as same as L<"Keyword">. 
+Method names are allowed as same as L<"Keyword">. 
 
 Type of Return Value must be L<"void Type">, L<"Numeric Types">, or L<"Object Type">, otherwise a compilation error occurs.
 
@@ -6318,7 +6329,7 @@ Callback Type is designed to provide a feature corresponding to Function Pointer
 
 Callback Type must have only one L<"Method Definition">. Method must be L<"Method">.
 
-Method Names of Callback Type must be anonymouse.
+Method names of Callback Type must be anonymouse.
 
 Callback Type must not have any L<"Field Definition"> and L<"Class Variable Definition">.
 
@@ -7247,7 +7258,7 @@ Use die Statement to throw L<"Exception">.
 
 Expression must be L<"String Type">.
 
-When the die statement is executed, the stack trace and the String specified by Expression are displayed, and the program ends. The stack trace includes class names, Method Names, File Name and line number. File Name is a relative File Name from the path where Module is loaded.
+When the die statement is executed, the stack trace and the String specified by Expression are displayed, and the program ends. The stack trace includes class names, Method names, File Name and line number. File Name is a relative File Name from the path where Module is loaded.
 
 
   Error
