@@ -255,25 +255,9 @@ The list of keywords.
   __FILE__
   __LINE__
 
-=head2 Separators
+=head2 Operators for Tokenizing
 
-The list of separators. Separators means the parts of syntax that are none of L<"Keywords">, L<"Operators"> and L<"Identifiers">.
-
-  (
-  )
-  {
-  }
-  [
-  ]
-  ;
-  :
-  ,
-  ->
-  =>
-
-=head2 Operators
-
-The list of operators.
+The list of operators for tokenizing.
 
   !
   !=
@@ -317,6 +301,17 @@ The list of operators.
   /
   /=
   \
+  (
+  )
+  {
+  }
+  [
+  ]
+  ;
+  :
+  ,
+  ->
+  =>
 
 =head1 Syntax Parsing
 
