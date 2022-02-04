@@ -145,9 +145,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       
       if (!parse_start) {
         compiler->parse_start = 1;
-        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_END_OF_CLASS);
+        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_END_OF_FILE);
         yylvalp->opval = op;
-        return END_OF_CLASS;
+        return END_OF_FILE;
       }
       
       compiler->cur_file = NULL;

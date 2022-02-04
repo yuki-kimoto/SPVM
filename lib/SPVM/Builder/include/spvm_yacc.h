@@ -87,7 +87,7 @@ extern int SPVM_yydebug;
     OBJECT = 297,
     TRUE = 298,
     FALSE = 299,
-    END_OF_CLASS = 300,
+    END_OF_FILE = 300,
     DOT3 = 301,
     FATCAMMA = 302,
     RW = 303,

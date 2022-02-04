@@ -187,7 +187,7 @@ enum {
   SPVM_OP_C_ID_CURRENT_CLASS,
   SPVM_OP_C_ID_AS,
   SPVM_OP_C_ID_MUTABLE,
-  SPVM_OP_C_ID_END_OF_CLASS,
+  SPVM_OP_C_ID_END_OF_FILE,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
