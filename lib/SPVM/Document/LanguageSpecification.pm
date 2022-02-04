@@ -1591,7 +1591,7 @@ B<Class Definition> is the following syntax.
 
 PACAKGE_NAME must follow the rule for L<"Class Names">.
 
-L<"Class Descriptor"> can be specified by the following syntax.
+L<"Class Descriptors"> can be specified by the following syntax.
 
 
   class PACAKGE_NAME : PACAKGE_DESCRIPTOR {
@@ -1613,7 +1613,7 @@ B<Class Definition Example:>
 
 
 
-  # Class names and Class Descriptor
+  # Class names and class descriptors
   class Point : public {
   
   }
@@ -1648,10 +1648,10 @@ In direct children of the class block, L<"use">, L<"our">, L<"has">, L<"enum">, 
 If more than one class with the same name is defined, compilation errors occur.
 
 
-=head2 Class Descriptor
+=head2 Class Descriptors
 
 
-The descriptions of Class Descriptors.
+The list of class descriptors.
 
 =begin html
 
@@ -3071,7 +3071,7 @@ See L<"Set Array Element Value"> to set the element value of Array.
 
 Multi Numeric type represents continuous numeric values. For example, there are three consecutive 32-bit signed integers, two consecutive double-precision floating point numbers. It isplaned to use 3D points, complex numbers, quaternions, etc.
 
-Multi Numeric Types are defined by specifying mulnum_t L<"Class Descriptor"> in L<"Class Definition">.
+Multi Numeric Types are defined by specifying mulnum_t L<"Class Descriptors"> in L<"Class Definition">.
 
 
   # Three consecutive 32bit signed integers
@@ -6396,7 +6396,7 @@ Field cannot be defined for Pointer Type. If it is defined, compilation errors o
 =head2 Callback Type
 
 
-Callback Type is a L<"Class Type"> with L<"Class Descriptor"> "callback_t".
+Callback Type is a L<"Class Type"> with L<"Class Descriptors"> "callback_t".
 
 
   class Comparator: callback_t {
