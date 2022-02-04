@@ -88,7 +88,7 @@ B<Examples of invalid method names:>
   foo__bar
   3foo
 
-A method name can be the same as L<Keywords>.
+A method name can be the same as L<"Keywords">.
   
   # "if" is a valid method name although this name is the same as the "if" keyword.
   static method if : void () {
@@ -121,7 +121,7 @@ B<Examples of invalid field names:>
   foo__bar
   3foo
 
-A field name can be the same as L<Keywords>.
+A field name can be the same as L<"Keywords">.
   
   # "if" is a valid field name although this name is the same as the "if" keyword.
   has if : int;
@@ -257,56 +257,66 @@ The list of keywords.
 
 =head2 Separators
 
-Separators in SPVM are the followings.
+The list of separators. Separators means the parts of syntax that are none of L<"Keywords">, L<"Operators"> and L<"Identifiers">.
 
-
-  ( ) { } [ ] ; , ->=>
-
-
-
-=head2 Fat Comma
-
-
-Fat Comma is a L<"Separator"> represented by "B<=>>".
-
-
+  (
+  )
+  {
+  }
+  [
+  ]
+  ;
+  :
+  ,
+  ->
   =>
-
-
-Fat Comma is an alias for Comma "B<,>". Wherever you can use "B<,>" you can use Fat Comma instead.
-
-
-  # Comma
-  ["a", "b", "c", "d"]
-  
-  # Use Fat Comma instead of Comma
-  ["a" => "b", "c" => "d"]
-
-
-
-Identifiers other than L<"Class Variable Names"> and L<"Local Variable Names"> placed on the Left of Fat Comma are treated as L<"String Literal">.
-
-
-  # Identifiers placed on the Left of Fat Comma are treated as String Literal
-  # a is "a", c is "c"
-  [a => "b", c => "d"]
-
-
 
 =head2 Operators
 
+The list of operators.
 
-Operators in SPVM are the followings.
-
-
-  =   >   <   !   ~
-  ==  <=  >=  !=  <=> &&  || ++ --
-  +   -   *   /   &   |   ^   %   <<   >>   >>>
-  +=  -=  *=  /=  &=  |=  ^=  %=  <<=  >>=  >>>=
-  \   $  @   .   .=
-  cmp length isa ref
-
-
+  !
+  !=
+  $
+  %
+  &
+  &&
+  &=
+  =
+  ==
+  ^
+  ^=
+  |
+  ||
+  |=
+  -
+  --
+  -=
+  ~
+  @
+  +
+  ++
+  +=
+  *
+  *=
+  <
+  <=
+  >
+  >=
+  <=>
+  %
+  %=
+  <<
+  <<=
+  >>=
+  >>
+  >>>
+  >>>=
+  .
+  .=
+  /
+  /=
+  \
 
 =head1 Syntax Parsing
 
@@ -760,7 +770,7 @@ The following is a correspondence table between tokens in yacc/bison and keyword
 
 <table>
   <tr>
-    <th>Tokens in yacc/bison</th><th>Keywords and Operators in SPVM</th>
+    <th>Tokens in yacc/bison</th><th>keywords and operators</th>
   </tr>
   <tr>
     <td>CLASS</td><td>class</td>
@@ -1062,7 +1072,6 @@ Comment begins with "#" and ends with L<"Line Terminators">.
 
 
 Comment has no meaning in the program execution.
-
 
 =head1 POD
 
@@ -2496,7 +2505,7 @@ By suffixing "L" or "l" at the end, that represents L<"long Type"> Integer Liter
 
 If L<"long Type"> Integer Literal  exceeds the range of numbers that can be represented by L<"long Type">,  If it exceeds the range, compilation errors occur.
 
-"_" can be used as a Separator. Separator has no meaning.
+"_" can be used as a separator. Separator has no meaning.
 
 If Integer Literal is assigned to a L<"byte Type"> variable or passed to L<"byte Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"byte Type">, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is applied and the value converted to L<"byte Type"> value. If it exceeds the range, a compilation error will occur.
 
@@ -3007,6 +3016,27 @@ Undefined Value can be compared with the value of Object Type using "==" Operato
 
 If Undefined Value is used in the Condition Part, it will be false.
 
+=head1 Fat Comma
+
+Fat Comma is a L<"Separators"> represented by "B<=>>".
+
+  =>
+
+Fat Comma is an alias for Comma "B<,>". Wherever you can use "B<,>" you can use Fat Comma instead.
+
+
+  # Comma
+  ["a", "b", "c", "d"]
+  
+  # Use Fat Comma instead of Comma
+  ["a" => "b", "c" => "d"]
+
+Identifiers other than L<"Class Variable Names"> and L<"Local Variable Names"> placed on the Left of Fat Comma are treated as L<"String Literal">.
+
+
+  # Identifiers placed on the Left of Fat Comma are treated as String Literal
+  # a is "a", c is "c"
+  [a => "b", c => "d"]
 
 =head1 Array
 
