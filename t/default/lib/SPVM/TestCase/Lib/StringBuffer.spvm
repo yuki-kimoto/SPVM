@@ -1,5 +1,26 @@
 class TestCase::Lib::StringBuffer {
   use StringBuffer;
+  use Fn;
+
+  static method read_write_value : int () {
+    
+    my $buffer = StringBuffer->new;
+    $buffer->push("abc");
+    
+    my $value = $buffer->value;
+    
+    my $length = $buffer->length;
+    
+    $value->[0] = 'f';
+    
+    my $substr = Fn->substr($value, 0, $length);
+    
+    unless ($substr eq "fbc") {
+      return 0;
+    }
+    
+    return 1;
+  }
 
   static method test_new : int () {
     

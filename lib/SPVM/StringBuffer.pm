@@ -34,6 +34,12 @@ Create new L<StringBuffer|SPVM::StringBuffer> object.
 
 =head1 INSTANCE METHODS
 
+=head2 value
+
+  method value : mutable string; ()
+
+Get the value of the string buffer.
+
 =head2 length
 
   method length : int ()

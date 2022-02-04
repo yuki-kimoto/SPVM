@@ -1,20 +1,20 @@
 class StringBuffer : precompile {
   use Fn;
 
-  has value : byte[];
+  has value : ro mutable string;
   has length : ro int;
   
   static method new : StringBuffer () {
     my $self = new StringBuffer;
     my $default_capacity = StringBuffer->DEFAULT_CAPACITY();
-    $self->{value} = new byte [$default_capacity];
+    $self->{value} = (mutable string)new byte [$default_capacity];
     $self->{length} = 0;
     return $self;
   }
   
   method push : void ($string : string) {
     my $length = length($string);
-    my $capacity = @$self->{value};
+    my $capacity = length $self->{value};
     if ($self->{length} + $length > $capacity) {
       my $new_capacity : int;
       if ($self->{length} + $length > $capacity * 2) {
@@ -31,7 +31,7 @@ class StringBuffer : precompile {
   }
 
   method push_char : void ($char : byte) {
-    my $capacity = @$self->{value};
+    my $capacity = length $self->{value};
     if ($self->{length} + 1 > $capacity) {
       my $new_capacity = $capacity * 2;
       $self->_reallocate($new_capacity);
@@ -40,7 +40,7 @@ class StringBuffer : precompile {
   }
 
   method to_string : string () {
-    return (string)(Fn->copy_array_range_byte($self->{value}, 0, $self->{length}));
+    return (Fn->substr($self->{value}, 0, $self->{length}));
   }
 
   private enum {
@@ -49,7 +49,7 @@ class StringBuffer : precompile {
   
   # O($new_capacity)
   private method _reallocate : void ($new_capacity : int) {
-    my $new_string = new byte [$new_capacity];
+    my $new_string = (mutable string)new byte [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
       $new_string->[$i] = $self->{value}[$i];
     }
