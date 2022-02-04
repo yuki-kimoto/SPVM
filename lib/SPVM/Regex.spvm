@@ -724,7 +724,7 @@ class Regex : precompile {
       
       my $result_length = $tarlength + $replace_length - $match_length;
       
-      $result = (string)new byte[$result_length];
+      $result = Fn->new_string_len($result_length);
       
       my $rest_length = $tarlength - $match_end;
       
