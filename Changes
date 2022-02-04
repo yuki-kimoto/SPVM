@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9501  2021-02-03
+0.9501  2021-02-04
         [CHANGE]
         * Improve compilation error messages. All method expressions is Foo->bar.
         * Improve compilation error messages. All field expressions is Foo->{bar}.
