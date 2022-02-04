@@ -349,6 +349,496 @@ B<POD Examples:>
 
 POD has no meaning in tokenization.
 
+=head1 Literals
+
+=head2 Literal Summary
+
+A literalsis a L<"Expression"> that represents Constant Value.
+
+=head2 Integer Literal
+
+=head3 Decimal Representation of Integer Literal
+
+Decimal Representation of Integer Literal is represented by one or more consecutive characters from "0" to "9".
+
+Can be prefixed with "+" or "-".
+
+L<"Type"> of Integer Literal is L<"int Type"> by default.
+
+If Integer Literal exceeds the range of numbers that can be represented by L<"int Type">, compilation errors occur.
+
+By suffixing "L" or "l" at the end, that represents L<"long Type"> Integer Literal.
+
+If L<"long Type"> Integer Literal  exceeds the range of numbers that can be represented by L<"long Type">,  If it exceeds the range, compilation errors occur.
+
+"_" can be used as a separator. Separator has no meaning.
+
+If Integer Literal is assigned to a L<"byte Type"> variable or passed to L<"byte Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"byte Type">, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is applied and the value converted to L<"byte Type"> value. If it exceeds the range, a compilation error will occur.
+
+If Integer Literal is assigned to a L<"short Type"> variable or passed to L<"short Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"short Type">, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is applied and the value converted to L<"short Type"> value. If it exceeds the range, a compilation error will occur.
+
+B<Integer Literal Example:>
+
+
+  123
+  +123
+  -123
+  123L
+  123l
+  123_456_789
+  -123_456_789L
+
+
+
+=head3 Hexadecimal Representation of Integer Literal
+
+
+Hexadecimal Representation of Integer Literal is represented by the following rule.
+
+Hexadecimal Representation of Integer Literal starts with "0x" or "0X".
+
+It is followed by one or more consecutive characters "0" to "9", "a" to "f", or "A" to "F"..
+
+Other rules are same as Decimal Representation of Integer Literal
+
+B<Hexadecimal Representation of Integer Literal Example:>
+
+
+  0x3b4f
+  -0x3F1A
+  0xDeL
+  0xFFFFFFFF_FFFFFFFF
+
+
+
+=head3 Octal Representation of Integer Literal
+
+
+Octal Representation of Integer Literal is represented by the following rule.
+
+Octal Representation of Integer Literal starts with "0".
+
+It is followed by one or more consecutive characters "0" to "7".
+
+Other rules are same as Decimal Representation of Integer Literal
+
+B<Octal Representation of Integer Literal Example:>
+
+
+  0755
+  -0644
+  0666L
+  0655_755
+
+
+
+=head3 Binary Representation of Integer Literal
+
+
+Binary Representation of Integer Literal is represented by the following rule.
+
+Binary Representation of Integer Literal starts with "0b" or "0B".
+
+It is followed by one or more consecutive characters "0" or "1".
+
+B<Binary Representation of Integer Literal Example:>
+
+
+  0b0101
+  -0b1010
+  0b110000L
+  0b10101010_10101010
+
+
+
+=head2 Floating Point Literal
+
+
+Floating Point Literal consists of B<Sign Part>, B<Numeric Part>, B<Exponent Part> and B<Suffix>.
+
+
+  # Floating Point Literal
+  [Sign Part][Numeric Part][Exponent Part][Suffix Part]
+
+
+Floating Point Literal is B<Decimal Floating Point Literal> or B<Hexadecimal Floating Point Literal>.
+
+B<Sign Part> is represented by "+" or "-". Sign Part is optional.
+
+Numeric Part of Decimal Floating Point Literal starts one or more "0" to "9".
+
+Numeric Part of Hexadecimal Floating Point Literal starts "0x" or "0X", and is followed by "0" to "9", "a" to "f", or "A" to "F".
+
+For that the Literal is Floating Point Literal, Numeric Part contains "." or, The Literal have Exponent Part, or have Suffix Part.
+
+
+Numeric part can contain "_". This is just a Numeric Separator and is ignored.
+
+Hexadecimal Floating Point Literal needs Exponent Part.
+
+B<Exponent Part> is consist of B<Exponential Notation> and B<Signed Decimal Integer>.
+
+
+  # Exponent Part
+  [Exponential Notation][Signed Decimal Integer]
+
+
+Exponential Notation is "e" or "E" for Decimal Floating Point Literal, and "p" or "P" for Hexadecimal Floating Point Literal.
+
+The meaning of Exponent Part is decimal shift for Decimal Floating Point Literal, or binary shift for Hexadecimal Floating Point Literal.
+
+If Suffix Part is "f" or "F", the L<"Type"> of Floating Point Literal is L<"float Type">.
+
+If Suffix Part is "d" or "D", the L<"Type"> of Floating Point Literal is L<"double Type">.
+
+If Suffix Part is omitted, the L<"Type"> of Floating Point Literal is L<"double Type">.
+
+If Floating Point Literal is L<"float Type">, the Floating Point Literal is converted to float value using C standard "strtof" function. If the conversion fails, compilation errors occur.
+
+If Floating Point Literal is L<"double Type">, the Floating Point Literal is converted to double value using C standard "strtod" function. If the conversion fails, compilation errors occur.
+
+B<Floating Point Literal Example:>
+
+
+  1.32
+  -1.32
+  1.32f
+  1.32F
+  1.32e3
+  1.32e-3
+  1.32E+3
+  1.32E-3
+  0x3d3d.edp0
+  0x3d3d.edp3
+  0x3d3d.edP3
+  0x3d3d.edP-3f
+
+
+
+=head2 Charater Literal
+
+
+B<Charater Literal> represents one character of ASCII.
+
+Character Literal is enclosed in single quotes "'".
+
+Content of Character Literal is one printable ASCII character or one Escape Character of Character Literal.
+
+Charater Literal Type is "L<"byte Type">"
+
+L<"Type"> of Charater Literal is L<"byte Type">.
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      Escape Characters of Character Literal
+   </th>
+    <th>
+      Description
+   </th>
+  </tr>
+  <tr>
+    <td>
+      <b>\0</b>
+    </td>
+    <td>
+      ASCII 0 NUL
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\a</b>
+    </td>
+    <td>
+      ASCII 7 BEL
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\t</b>
+    </td>
+    <td>
+      ASCII 9 HT
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\n</b>
+    </td>
+    <td>
+      ASCII 10 LF
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\f</b>
+    </td>
+    <td>
+      ASCII 12 "FF"
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\r</b>
+    </td>
+    <td>
+      ASCII 13 CR
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\"</b>
+    </td>
+    <td>
+      ASCII 34 "
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\'</b>
+    </td>
+    <td>
+      ASCII 39 '
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\\</b>
+    </td>
+    <td>
+      ASCII 92 \
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\x + tow hexadecimal numbers</b>
+    </td>
+    <td>
+      Specify ASCII by hexadecimal. Hexadecimal numbers are "0" to "9", "a" to "z", "A" to "Z".
+    </td>
+  </tr>
+</table>
+
+=end html
+
+B<Charater Literal Example:>
+
+B<Charater Literal> represents one character of ASCII.
+
+
+  # Charater Literal 
+  'a'
+  'x'
+  
+  # Charater Literal using Escape Character
+  '\a'
+  '\t'
+  '\n'
+  '\f'
+  '\r'
+  '\"'
+  '\''
+  '\\'
+  '\x0D'
+  '\x0A'
+
+
+
+=head2 String Literal
+
+
+B<String Literal> represents String.
+
+String Literal is enclosed in double quotes '"'. String Literal return the value of string type.
+
+The content of String Literal is zero or more ASCII printable Characters or Escape Characters of String Literal".
+
+
+=head3 Escape charaters of String Literal
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      Escape Character of String Literal
+   </th>
+    <th>
+      Description
+   </th>
+  </tr>
+  <tr>
+    <td>
+      <b>\0</b>
+    </td>
+    <td>
+      ASCII 0 NUL
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\a</b>
+    </td>
+    <td>
+      ASCII 7 BEL
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\t</b>
+    </td>
+    <td>
+      ASCII 9 HT
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\n</b>
+    </td>
+    <td>
+      ASCII 10 LF
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\f</b>
+    </td>
+    <td>
+      ASCII 12 FF
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\r</b>
+    </td>
+    <td>
+      ASCII 13 CR
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\"</b>
+    </td>
+    <td>
+      ASCII 34 "
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\'</b>
+    </td>
+    <td>
+      ASCII 39 '
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\\</b>
+    </td>
+    <td>
+      ASCII 92 \
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\x + two hexadecimal numbers</b>
+    </td>
+    <td>
+      Specify ASCII by hexadecimal. Hexadecimal numbers are "0" to "9", "a" to "z", "A" to "Z". <br>For example, \x0D.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\N{U+} + hexadecimal numbers after U+</b>
+    </td>
+    <td>
+      Specify the Unicode code point in hexadecimal. Hexadecimal numbers are expressed as "0" to "9", "a" to "f", "A" to "F".<br>For example, \N{U+3046}.<br>The code point is converted to UTF-8. 
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>Raw escape character<br>(For example, \s is become \s. This represents a sequence of two characters in a character literal '\\' 's')</b>
+    </td>
+    <td>
+      \s \S \d \D \w \W \p \P \X \g \k \K \v \V \h \H \R \b \B \A \Z \z \G \N<br>
+      \1 \2 \3 \4 \5 \6 \7 \8 \9 <br>
+      \! \# \@ \% \& \( \) \* \+ \- \. \/ \: \; \< \= \> \? \[ \] \^ \_ \` \{ \| \} \~ \,
+    </td>
+  </tr>
+</table>
+
+=end html
+
+If the espape characters which is not included avobe is used, a compiler error occurs.<br>
+
+B<String Literal Example:>
+
+
+  # String Literal 
+  "abc"
+  "あいう"
+  
+  # Escape Character of String Literal 
+  "abc\tdef\n"
+  "\x0D\x0A"
+  "\N{U+3042}\N{U+3044}\N{U+3046}"
+
+
+
+=head2 Variable Expansion
+
+
+B<Variable Expansion> applys L<"Local Variable">, L<"Class Variable">, L<"Dereference">, L<"Field Access">, L<"Array Access">, L<"Exception Variable"> in String Literal.
+
+
+  "AAA $foo BBB"
+  "AAA $FOO BBB"
+  "AAA $$foo BBB"
+  "AAA $foo->{x} BBB"
+  "AAA $foo->[3] BBB"
+  "AAA $foo->{x}[3] BBB"
+  "AAA $@ BBB"
+
+
+The above is expanded as the following.
+
+
+  "AAA" . $foo . "BBB"
+  "AAA" . $FOO . "BBB"
+  "AAA" . $$foo . "BBB"
+  "AAA" . $foo->{x} . "BBB"
+  "AAA" . $foo->[3] . "BBB"
+  "AAA" . $foo->{x}[3] . "BBB"
+  "AAA" . $@ . "BBB"
+
+
+The variable name can besurround with "{" and "}" to indicate the end of the variable name.
+
+
+  "AAA ${foo}_ccc BBB"
+
+The above is expanded as the following.
+
+
+
+  "AAA " . ${foo} . "_ccc BBB"
+
+
+If there is no enclosing "{" and "}", up to the valid part as a variable name is interpreted as a Variable. Dereference interpreting is same as this.
+
+If "->" follows the variable name, it is interpreted as L<"Field Access"> or L<"Array Access">.
+
+[1] If the following Characters are "a-z" "A-Z" "0-9" "_" "{" "[", proceed with the interpretation.
+
+[2] If the Character following [1] is "}", or "]", then if the next Character is "->", "{", or "[", proceed with the interpretation and return back to [1], otherwise stop interpreting.
+
+The trailing $is not treated as the start of Variable Expansion. It is treated as "$".
+
+
+  "AAA$"
+
 =head1 Syntax Parsing
 
 =head2 LALR(1)
@@ -359,33 +849,33 @@ SPVM language can be parsed by the LALR(1). It can be parsed by the parser gener
 
 The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bison. 
 
-  %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS
+  %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS MUTABLE
   %token <opval> DESCRIPTOR
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
-  %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE
+  %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_CLASS
   %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
-  %token <opval> RETURN WEAKEN DIE WARN CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
-  
+  %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
+
   %type <opval> grammar
   %type <opval> opt_classes classes class class_block
   %type <opval> opt_declarations declarations declaration
   %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-  %type <opval> sub cb_obj opt_args args arg has use require our
-  %type <opval> opt_descriptors descriptors method_names opt_method_names
+  %type <opval> method anon_method opt_args args arg has use require our
+  %type <opval> opt_descriptors descriptors
   %type <opval> opt_statements statements statement if_statement else_statement 
   %type <opval> for_statement while_statement switch_statement case_statement default_statement
-  %type <opval> block eval_block begin_block switch_block if_require_statement
-  %type <opval> unary_op binary_op comparison_op isa logical_op  expression_or_logical_op
-  %type <opval> call_method opt_vaarg
+  %type <opval> block eval_block init_block switch_block if_require_statement
+  %type <opval> unary_op binary_op comparison_op isa logical_op expression_or_logical_op
+  %type <opval> call_spvm_method opt_vaarg
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow
   %type <opval> new array_init
   %type <opval> my_var var
   %type <opval> expression opt_expressions expressions opt_expression case_statements
   %type <opval> field_name method_name
-  %type <opval> type basic_type array_type array_type_with_length ref_type type_or_void
-  
+  %type <opval> type qualified_type basic_type array_type array_type_with_length ref_type  qualified_type_or_void
+
   %right <opval> ASSIGN SPECIAL_ASSIGN
   %left <opval> LOGICAL_OR
   %left <opval> LOGICAL_AND
@@ -2466,507 +2956,7 @@ switch Block is a scope block.
   
   }
 
-
-
-=head1 Literal
-
-=head2 Literal Summary
-
-
-B<Literal> is a L<"Expression"> that represents Constant Value.
-
-
-=head2 Integer Literal
-
-
-
-=head3 Decimal Representation of Integer Literal
-
-
-Decimal Representation of Integer Literal is represented by one or more consecutive characters from "0" to "9".
-
-Can be prefixed with "+" or "-".
-
-L<"Type"> of Integer Literal is L<"int Type"> by default.
-
-If Integer Literal exceeds the range of numbers that can be represented by L<"int Type">, compilation errors occur.
-
-By suffixing "L" or "l" at the end, that represents L<"long Type"> Integer Literal.
-
-If L<"long Type"> Integer Literal  exceeds the range of numbers that can be represented by L<"long Type">,  If it exceeds the range, compilation errors occur.
-
-"_" can be used as a separator. Separator has no meaning.
-
-If Integer Literal is assigned to a L<"byte Type"> variable or passed to L<"byte Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"byte Type">, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is applied and the value converted to L<"byte Type"> value. If it exceeds the range, a compilation error will occur.
-
-If Integer Literal is assigned to a L<"short Type"> variable or passed to L<"short Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"short Type">, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is applied and the value converted to L<"short Type"> value. If it exceeds the range, a compilation error will occur.
-
-B<Integer Literal Example:>
-
-
-  123
-  +123
-  -123
-  123L
-  123l
-  123_456_789
-  -123_456_789L
-
-
-
-=head3 Hexadecimal Representation of Integer Literal
-
-
-Hexadecimal Representation of Integer Literal is represented by the following rule.
-
-Hexadecimal Representation of Integer Literal starts with "0x" or "0X".
-
-It is followed by one or more consecutive characters "0" to "9", "a" to "f", or "A" to "F"..
-
-Other rules are same as Decimal Representation of Integer Literal
-
-B<Hexadecimal Representation of Integer Literal Example:>
-
-
-  0x3b4f
-  -0x3F1A
-  0xDeL
-  0xFFFFFFFF_FFFFFFFF
-
-
-
-=head3 Octal Representation of Integer Literal
-
-
-Octal Representation of Integer Literal is represented by the following rule.
-
-Octal Representation of Integer Literal starts with "0".
-
-It is followed by one or more consecutive characters "0" to "7".
-
-Other rules are same as Decimal Representation of Integer Literal
-
-B<Octal Representation of Integer Literal Example:>
-
-
-  0755
-  -0644
-  0666L
-  0655_755
-
-
-
-=head3 Binary Representation of Integer Literal
-
-
-Binary Representation of Integer Literal is represented by the following rule.
-
-Binary Representation of Integer Literal starts with "0b" or "0B".
-
-It is followed by one or more consecutive characters "0" or "1".
-
-B<Binary Representation of Integer Literal Example:>
-
-
-  0b0101
-  -0b1010
-  0b110000L
-  0b10101010_10101010
-
-
-
-=head2 Floating Point Literal
-
-
-Floating Point Literal consists of B<Sign Part>, B<Numeric Part>, B<Exponent Part> and B<Suffix>.
-
-
-  # Floating Point Literal
-  [Sign Part][Numeric Part][Exponent Part][Suffix Part]
-
-
-Floating Point Literal is B<Decimal Floating Point Literal> or B<Hexadecimal Floating Point Literal>.
-
-B<Sign Part> is represented by "+" or "-". Sign Part is optional.
-
-Numeric Part of Decimal Floating Point Literal starts one or more "0" to "9".
-
-Numeric Part of Hexadecimal Floating Point Literal starts "0x" or "0X", and is followed by "0" to "9", "a" to "f", or "A" to "F".
-
-For that the Literal is Floating Point Literal, Numeric Part contains "." or, The Literal have Exponent Part, or have Suffix Part.
-
-
-Numeric part can contain "_". This is just a Numeric Separator and is ignored.
-
-Hexadecimal Floating Point Literal needs Exponent Part.
-
-B<Exponent Part> is consist of B<Exponential Notation> and B<Signed Decimal Integer>.
-
-
-  # Exponent Part
-  [Exponential Notation][Signed Decimal Integer]
-
-
-Exponential Notation is "e" or "E" for Decimal Floating Point Literal, and "p" or "P" for Hexadecimal Floating Point Literal.
-
-The meaning of Exponent Part is decimal shift for Decimal Floating Point Literal, or binary shift for Hexadecimal Floating Point Literal.
-
-If Suffix Part is "f" or "F", the L<"Type"> of Floating Point Literal is L<"float Type">.
-
-If Suffix Part is "d" or "D", the L<"Type"> of Floating Point Literal is L<"double Type">.
-
-If Suffix Part is omitted, the L<"Type"> of Floating Point Literal is L<"double Type">.
-
-If Floating Point Literal is L<"float Type">, the Floating Point Literal is converted to float value using C standard "strtof" function. If the conversion fails, compilation errors occur.
-
-If Floating Point Literal is L<"double Type">, the Floating Point Literal is converted to double value using C standard "strtod" function. If the conversion fails, compilation errors occur.
-
-B<Floating Point Literal Example:>
-
-
-  1.32
-  -1.32
-  1.32f
-  1.32F
-  1.32e3
-  1.32e-3
-  1.32E+3
-  1.32E-3
-  0x3d3d.edp0
-  0x3d3d.edp3
-  0x3d3d.edP3
-  0x3d3d.edP-3f
-
-
-
-=head2 Charater Literal
-
-
-B<Charater Literal> represents one character of ASCII.
-
-Character Literal is enclosed in single quotes "'".
-
-Content of Character Literal is one printable ASCII character or one Escape Character of Character Literal.
-
-Charater Literal Type is "L<"byte Type">"
-
-L<"Type"> of Charater Literal is L<"byte Type">.
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      Escape Characters of Character Literal
-   </th>
-    <th>
-      Description
-   </th>
-  </tr>
-  <tr>
-    <td>
-      <b>\0</b>
-    </td>
-    <td>
-      ASCII 0 NUL
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\a</b>
-    </td>
-    <td>
-      ASCII 7 BEL
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\t</b>
-    </td>
-    <td>
-      ASCII 9 HT
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\n</b>
-    </td>
-    <td>
-      ASCII 10 LF
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\f</b>
-    </td>
-    <td>
-      ASCII 12 "FF"
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\r</b>
-    </td>
-    <td>
-      ASCII 13 CR
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\"</b>
-    </td>
-    <td>
-      ASCII 34 "
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\'</b>
-    </td>
-    <td>
-      ASCII 39 '
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\\</b>
-    </td>
-    <td>
-      ASCII 92 \
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\x + tow hexadecimal numbers</b>
-    </td>
-    <td>
-      Specify ASCII by hexadecimal. Hexadecimal numbers are "0" to "9", "a" to "z", "A" to "Z".
-    </td>
-  </tr>
-</table>
-
-=end html
-
-B<Charater Literal Example:>
-
-B<Charater Literal> represents one character of ASCII.
-
-
-  # Charater Literal 
-  'a'
-  'x'
-  
-  # Charater Literal using Escape Character
-  '\a'
-  '\t'
-  '\n'
-  '\f'
-  '\r'
-  '\"'
-  '\''
-  '\\'
-  '\x0D'
-  '\x0A'
-
-
-
-=head2 String Literal
-
-
-B<String Literal> represents String.
-
-String Literal is enclosed in double quotes '"'. String Literal return the value of string type.
-
-The content of String Literal is zero or more ASCII printable Characters or Escape Characters of String Literal".
-
-
-=head3 Escape charaters of String Literal
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      Escape Character of String Literal
-   </th>
-    <th>
-      Description
-   </th>
-  </tr>
-  <tr>
-    <td>
-      <b>\0</b>
-    </td>
-    <td>
-      ASCII 0 NUL
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\a</b>
-    </td>
-    <td>
-      ASCII 7 BEL
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\t</b>
-    </td>
-    <td>
-      ASCII 9 HT
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\n</b>
-    </td>
-    <td>
-      ASCII 10 LF
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\f</b>
-    </td>
-    <td>
-      ASCII 12 FF
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\r</b>
-    </td>
-    <td>
-      ASCII 13 CR
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\"</b>
-    </td>
-    <td>
-      ASCII 34 "
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\'</b>
-    </td>
-    <td>
-      ASCII 39 '
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\\</b>
-    </td>
-    <td>
-      ASCII 92 \
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\x + two hexadecimal numbers</b>
-    </td>
-    <td>
-      Specify ASCII by hexadecimal. Hexadecimal numbers are "0" to "9", "a" to "z", "A" to "Z". <br>For example, \x0D.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\N{U+} + hexadecimal numbers after U+</b>
-    </td>
-    <td>
-      Specify the Unicode code point in hexadecimal. Hexadecimal numbers are expressed as "0" to "9", "a" to "f", "A" to "F".<br>For example, \N{U+3046}.<br>The code point is converted to UTF-8. 
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>Raw escape character<br>(For example, \s is become \s. This represents a sequence of two characters in a character literal '\\' 's')</b>
-    </td>
-    <td>
-      \s \S \d \D \w \W \p \P \X \g \k \K \v \V \h \H \R \b \B \A \Z \z \G \N<br>
-      \1 \2 \3 \4 \5 \6 \7 \8 \9 <br>
-      \! \# \@ \% \& \( \) \* \+ \- \. \/ \: \; \< \= \> \? \[ \] \^ \_ \` \{ \| \} \~ \,
-    </td>
-  </tr>
-</table>
-
-=end html
-
-If the espape characters which is not included avobe is used, a compiler error occurs.<br>
-
-B<String Literal Example:>
-
-
-  # String Literal 
-  "abc"
-  "あいう"
-  
-  # Escape Character of String Literal 
-  "abc\tdef\n"
-  "\x0D\x0A"
-  "\N{U+3042}\N{U+3044}\N{U+3046}"
-
-
-
-=head2 Variable Expansion
-
-
-B<Variable Expansion> applys L<"Local Variable">, L<"Class Variable">, L<"Dereference">, L<"Field Access">, L<"Array Access">, L<"Exception Variable"> in String Literal.
-
-
-  "AAA $foo BBB"
-  "AAA $FOO BBB"
-  "AAA $$foo BBB"
-  "AAA $foo->{x} BBB"
-  "AAA $foo->[3] BBB"
-  "AAA $foo->{x}[3] BBB"
-  "AAA $@ BBB"
-
-
-The above is expanded as the following.
-
-
-  "AAA" . $foo . "BBB"
-  "AAA" . $FOO . "BBB"
-  "AAA" . $$foo . "BBB"
-  "AAA" . $foo->{x} . "BBB"
-  "AAA" . $foo->[3] . "BBB"
-  "AAA" . $foo->{x}[3] . "BBB"
-  "AAA" . $@ . "BBB"
-
-
-The variable name can besurround with "{" and "}" to indicate the end of the variable name.
-
-
-  "AAA ${foo}_ccc BBB"
-
-The above is expanded as the following.
-
-
-
-  "AAA " . ${foo} . "_ccc BBB"
-
-
-If there is no enclosing "{" and "}", up to the valid part as a variable name is interpreted as a Variable. Dereference interpreting is same as this.
-
-If "->" follows the variable name, it is interpreted as L<"Field Access"> or L<"Array Access">.
-
-[1] If the following Characters are "a-z" "A-Z" "0-9" "_" "{" "[", proceed with the interpretation.
-
-[2] If the Character following [1] is "}", or "]", then if the next Character is "->", "{", or "[", proceed with the interpretation and return back to [1], otherwise stop interpreting.
-
-The trailing $is not treated as the start of Variable Expansion. It is treated as "$".
-
-
-  "AAA$"
-
-
-
 =head1 String
-
 
 SPVM has B<String Type>. String is created by L<"String Literal"> or Type Convertion from L<"byte[] Type">.
 
