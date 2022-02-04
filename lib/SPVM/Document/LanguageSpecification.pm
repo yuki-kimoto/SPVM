@@ -10,139 +10,7 @@ SPVM Language Specification.
 
 =head1 SPVM LANGUAGE SPECIFICATION
 
-=head1 C99 Compliant
-
-=head2 C99 Compliant compiler and runtime
-
-The source code of the SPVM compiler and SPVM runtime is written in C99.
-
-Note that this does not mean that SPVM cannot bind the functions of C specific versions(C11, GUN99, GNU11, etc.) or bind the functions of specific C++ versions.
-
-SPVM can bind any functions of C specific versions or C++ specific versions, and even can bind the functions of CUDA/GPGPU nvcc.
-
-This means that SPVM compiler and runtime must be C99 compliant.
-
-
-=head2 SPVM Types correspondence with C99 Types
-
-the following SPVM Types are exactly same as the following C99 Types:
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      <b>SPVM Type</b>
-    </ th>
-    <th>
-      <b>C99 Type</b>
-    </ th>
-    <th>
-      <b>Description</b>
-    </ th>
-  </tr>
-  <tr>
-    <td>
-      <b>byte</b>
-    </td>
-    <td>
-      int8_t
-    </td>
-    <td>
-      SPVM L<"byte Type"> is same as C99 int8_t Type.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>short>
-    </td>
-    <td>
-      int16_t
-    </td>
-    <td>
-      SPVM L<"short Type"> is same as the C99 int16_t Type.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>int</b>
-    </td>
-    <td>
-      int32_t
-    </td>
-    <td>
-      SPVM L<"int Type"> is same as the C99 int32_t Type.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>long</b>
-    </td>
-    <td>
-      int64_t
-    </td>
-    <td>
-      SPVM L<"long Type"> is same as C99 int64_t Type.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>float</b>
-    </td>
-    <td>
-      float
-    </td>
-    <td>
-      SPVM L<"float Type"> is same as the C99 float Type.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>double</b>
-    </td>
-    <td>
-      double
-    </td>
-    <td>
-      SPVM L<"double Type"> is same as C99 double Type.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>Object Type</b>
-    </td>
-    <td>
-      void*
-    </td>
-    <td>
-      SPVM L<"Object Type"> is same as the C99 void* Type.
-    </td>
-  </tr>        
-  <tr>
-    <td>
-      <b>Multiple Numeric Type</b>
-    </td>
-    <td>
-      Numeric Array Type that is same as the Type and length in SPVM multiple Numeric Type fields
-    </td>
-    <td>
-      For example, if SPVM L<"multiple Numeric Type">
-      
-      <b>class Point_2i: mulnum_t {has x: int; has y: int;}</b>
-      
-      matches the Type declared in C99
-      
-      <b>int32_t var[2];</b>
-      
-    </td>
-  </tr>
-</table>
-
-=end html
-
-
 =head1 Tokenizing
-
 
 This topic specifies the Tokenizing of the SPVM language.
 
@@ -1275,7 +1143,7 @@ The descriptions of Class Descriptors.
       <b>mulnum_t</b>
     </td>
     <td>
-      This class is L<"Multi Numeric Type">.
+      This class is L<"Multi Numeric Types">.
     </td>
   </tr>
   <tr>
@@ -1526,7 +1394,7 @@ B<Class Variable> is a global variable that belongs to L<"Class"> and exists fro
 
 Class Variable must be defined directly under L<"Class Definition">.
 
-Class Variable Definition must specify L<"Type">. The Type must be L<"Numeric Type"> or L<"Object Type">.
+Class Variable Definition must specify L<"Type">. The Type must be L<"Numeric Types"> or L<"Object Type">.
 
 Class Variable Name must follows the rule specified in L<"Class Variable Name">, and must not contain "::", otherwise Compile Error occurs.
 
@@ -1672,13 +1540,13 @@ Field is a data area in a L<"object created using new keyword">
 
 Field must be defined directly under L<"Class Definition">.
 
-Field Definition must be specify L<"Type">. The Type must be L<"Numeric Type"> or L<"Object Type">.
+Field Definition must be specify L<"Type">. The Type must be L<"Numeric Types"> or L<"Object Type">.
 
 Field Name must follows the rule specified in L<"Field Name">.
 
 Field Name is allowed as same as L<"Keyword">.
 
-Field Type must be L<"Numeric Type"> or L<"Object Type">, otherwise Compile Error occurs.
+Field Type must be L<"Numeric Types"> or L<"Object Type">, otherwise Compile Error occurs.
 
 If more than one Field Name Variable with the same name is defined, Compile Error occurs.
 
@@ -1805,7 +1673,7 @@ See L<"Set Field Value"> to set field of Class Based Object.
 
 B<2. Multi Numeric Field Access>
 
-Multi Numeric Field Access is Field Access from the value of L<"Multi Numeric Type">. The value of L<"Multi Numeric Type"> is allocated Callstack of Method.
+Multi Numeric Field Access is Field Access from the value of L<"Multi Numeric Types">. The value of L<"Multi Numeric Types"> is allocated Callstack of Method.
 
 
   my $z : Complex_2d;
@@ -1813,13 +1681,13 @@ Multi Numeric Field Access is Field Access from the value of L<"Multi Numeric Ty
   $z->{y} = 3;
 
 
-See L<"Get Multi Numeric Field Value"> to get field of the value of L<"Multi Numeric Type">.
+See L<"Get Multi Numeric Field Value"> to get field of the value of L<"Multi Numeric Types">.
 
-See L<"Set Multi Numeric Field Value"> to set field of the value of L<"Multi Numeric Type">.
+See L<"Set Multi Numeric Field Value"> to set field of the value of L<"Multi Numeric Types">.
 
 B<3. Dereference Multi Numeric Field>
 
-Dereference Multi Numeric Field is Field access from Reference of the value of L<"Multi Numeric Type">.
+Dereference Multi Numeric Field is Field access from Reference of the value of L<"Multi Numeric Types">.
 
 
   my $z : Complex_2d;
@@ -1855,13 +1723,13 @@ Method name must be follow the rule of L<"Method Name">.
 
 Method Name is allowed as same as L<"Keyword">. 
 
-Type of Return Value must be L<"void Type">, L<"Numeric Type">, or L<"Object Type">, otherwise Compile Error occurs.
+Type of Return Value must be L<"void Type">, L<"Numeric Types">, or L<"Object Type">, otherwise Compile Error occurs.
 
 Argument name must be follow the rule of L<"Local Variable Name">.
 
 Minimal Argument Count is 0. Max Argument Count is 255.
 
-Type of Argument must be L<"Numeric Type">, L<"Object Type">, or L<"Reference Type">, otherwise Compile Error occurs.
+Type of Argument must be L<"Numeric Types">, L<"Object Type">, or L<"Reference Type">, otherwise Compile Error occurs.
 
 The defined Method can be called. See L<"Method Call"> about calling Method, .
 
@@ -1967,7 +1835,7 @@ Precompiled Method needs Build Directory described in <a href="/native-api.html"
 =head2 Constant Method
 
 
-Constant Method is a Method that Return Type is L<"Numeric Type"> and returns Constant Value.
+Constant Method is a Method that Return Type is L<"Numeric Types"> and returns Constant Value.
 
 
   static method foo : int () { return 5; }
@@ -2278,7 +2146,7 @@ Local Variable is declared using B<my> L<"Keyword">.
 
 The local variable name must be follow the rule of L<"Local Variable Name">.
 
-L<"Type"> must be specified. Type must be L<"Numeric Type">, L<"Object Type">, L<"Multi Numeric Type">, or L<"Reference Type">.
+L<"Type"> must be specified. Type must be L<"Numeric Types">, L<"Object Type">, L<"Multi Numeric Types">, or L<"Reference Type">.
 
 
   # Local Variable Declaration Examples
@@ -3088,23 +2956,23 @@ There are the following types of Array.
 
 <ul>
   <li>
-    Numeric Type Array
+    Numeric Types Array
  </li>
   <li>
     Object Type Array
  </li>
   <li>
-    Multi Numeric Type Array
+    Multi Numeric Types Array
  </li>
 </ul>
 
 =end html
 
-Numeric Type Array is Array that element type is L<"Numeric Type">.
+Numeric Types Array is Array that element type is L<"Numeric Types">.
 
-Numeric Type Array is Array that element type is L<"Object Type">.
+Numeric Types Array is Array that element type is L<"Object Type">.
 
-Numeric Type Array is Array that element type is L<"Multi Numeric Type">.
+Numeric Types Array is Array that element type is L<"Multi Numeric Types">.
 
 
 =head2 Create Array
@@ -3129,12 +2997,12 @@ See L<"Set Array Element Value"> to set the element value of Array.
 
 =head1 Multi Numeric Value
 
-=head2 Multi Numeric Type Definition
+=head2 Multi Numeric Types Definition
 
 
 Multi Numeric type represents continuous numeric values. For example, there are three consecutive 32-bit signed integers, two consecutive double-precision floating point numbers. It isplaned to use 3D points, complex numbers, quaternions, etc.
 
-Multi Numeric Type is defined by specifying mulnum_t L<"Class Descriptor"> in L<"Class Definition">.
+Multi Numeric Types are defined by specifying mulnum_t L<"Class Descriptor"> in L<"Class Definition">.
 
 
   # Three consecutive 32bit signed integers
@@ -3151,52 +3019,52 @@ Multi Numeric Type is defined by specifying mulnum_t L<"Class Descriptor"> in L<
   }
 
 
-Multi Numeric Type must end with "_", Number of Fields, L<"Multi Numeric Type Suffix">.
+Multi Numeric Types must end with "_", Number of Fields, L<"Multi Numeric Types Suffix">.
 
-The suffix must correspond to L<"Numeric Type">.
+The suffix must correspond to L<"Numeric Types">.
 
-All Fields must be the same L<"Numeric Type">.
+All Fields must be the same L<"Numeric Types">.
 
 The maximum number of Fields is 255.
 
-Multi Numeric Type can be used as L<"Type"> of L<"Local Variable Declaration">.
+Multi Numeric Types can be used as L<"Type"> of L<"Local Variable Declaration">.
 
-Multi Numeric Type can be used as an argument L<"Type"> in L<"Method Definition"> .
+Multi Numeric Types can be used as an argument L<"Type"> in L<"Method Definition"> .
 
-Multi Numeric Type can be used as L<"Type"> of Return Value in L<"Method Definition">.
+Multi Numeric Types can be used as L<"Type"> of Return Value in L<"Method Definition">.
 
-Multi Numeric Type can be used as L<"Basic Type"> of L<"Array Type"> .
+Multi Numeric Types can be used as L<"Basic Type"> of L<"Array Type"> .
 
 
   my $points = new Point_3i[5];
 
 
-Reference can be created for Multi Numeric Type value.
+Reference can be created for Multi Numeric Types value.
 
 
   my $point : Point_3i;
   my $point_ref = \$point;
 
 
-L<"Undefined Value"> cannot be assigned to Multi Numeric Type value.
+L<"Undefined Value"> cannot be assigned to Multi Numeric Types value.
 
-See L<"Multi Numeric Type Field Access"> to get and set the value of field of Multi Numeric Type Value.
-
-
-=head2 Multi Numeric Type Suffix
+See L<"Multi Numeric Types Field Access"> to get and set the value of field of Multi Numeric Types Value.
 
 
-List of Multi Numeric Type Suffix.
+=head2 Multi Numeric Types Suffix
+
+
+List of Multi Numeric Types Suffix.
 
 =begin html
 
 <table>
   <tr>
     <th>
-      <b>Numeric Type</b>
+      <b>Numeric Types</b>
    </th>
     <th>
-      Multi Numeric Type Suffix
+      Multi Numeric Types Suffix
    </th>
   </tr>
   <tr>
@@ -3252,10 +3120,10 @@ List of Multi Numeric Type Suffix.
 =end html
 
 
-=head2 Multi Numeric Type Usage
+=head2 Multi Numeric Types Usage
 
 
-To use Multi Numeric Type, load a Module using L<"use Statement">.
+To use Multi Numeric Types, load a Module using L<"use Statement">.
 
 
   use Point_3i;
@@ -3263,26 +3131,26 @@ To use Multi Numeric Type, load a Module using L<"use Statement">.
 
 
 
-Next is L<"Local Variable Declaration">. Local Variable Declaration create continuous area for fields of Multi Numeric Type Value on L<"Method Callstack">. All fields of of Multi Numeric Type Value are initialized by L<"Type Initial Value">.
+Next is L<"Local Variable Declaration">. Local Variable Declaration create continuous area for fields of Multi Numeric Types Value on L<"Method Callstack">. All fields of of Multi Numeric Types Value are initialized by L<"Type Initial Value">.
 
 
   my $point : Point_3i;
   my $z : Complex_2d;
 
 
-Note that Multi Numeric Type value are not object, so cannot create a Object by L<"new"> syntax.
+Note that Multi Numeric Types value are not object, so cannot create a Object by L<"new"> syntax.
 
-<h3 id="language-mulnum-access">Multi Numeric Type Field Access</h2>
+<h3 id="language-mulnum-access">Multi Numeric Types Field Access</h2>
 
-B<Multi Numeric Type Field Access> is an operation to access Multi Numeric Type Field to get or set a value.
+B<Multi Numeric Types Field Access> is an operation to access Multi Numeric Types Field to get or set a value.
 
 
   MULTI_NUMERIC_TYPE_VALUE->{FIELD_NAME}
 
 
-See L<"Get Multi Numeric Field Value"> to get Multi Numeric Type Field Value.
+See L<"Get Multi Numeric Field Value"> to get Multi Numeric Types Field Value.
 
-See L<"Set Multi Numeric Field Value"> to set Multi Numeric Type Field Value.
+See L<"Set Multi Numeric Field Value"> to set Multi Numeric Types Field Value.
 
 
 =head1 Multi Numeric Array
@@ -3300,7 +3168,7 @@ L<"Multi Numeric Value"> can be an element of L<"Array">.
 
 Multi Numeric Array has continuous Multi Numeric Values.
 
-The Element Type is L<"Multi Numeric Type">, not L<"Object Type">.
+The Element Type is L<"Multi Numeric Types">, not L<"Object Type">.
 
 For example, Point_3i[5] is continuous 15 (= 3 * 5) count L<"int Type"> Value.
 
@@ -3330,20 +3198,20 @@ Reference is data that indicates the location of L<"Local Variable"> in the memo
 
 You can get Reference of Local Variable using L<"Reference Operator">.
 
-L<"Reference Type"> is represented by L<"Numeric Type"> "*" or L<"Multi Numeric Type"> followed by "*".
-Reference types are represented by appending an * after L<"Numeric Type"> or L<"Multi Numeric Type">.
+L<"Reference Type"> is represented by L<"Numeric Types"> "*" or L<"Multi Numeric Types"> followed by "*".
+Reference types are represented by appending an * after L<"Numeric Types"> or L<"Multi Numeric Types">.
 
 
-  # Numeric Type Reference
+  # Numeric Types Reference
   my $num : int;
   my $num_ref : int* = \$num;
   
-  # Multi Numeric Type Reference
+  # Multi Numeric Types Reference
   my $point : Point_3d;
   my $point_ref : Point_3d* = \$point;
 
 
-Target of Reference Operator is Variable of L<"Numeric Type"> or L<"Multi Numeric Type">. L<"Object Type"> Variable or L<"Literal"> can't be target of Reference Operator.
+Target of Reference Operator is Variable of L<"Numeric Types"> or L<"Multi Numeric Types">. L<"Object Type"> Variable or L<"Literal"> can't be target of Reference Operator.
 
 L<"Reference Type"> can be used in Method Argument.
 
@@ -3368,26 +3236,26 @@ L<"Reference Type"> can be used in Method Argument.
 Dereference is an operation to get and set the value pointed by Reference.
 
 
-  # Dereference Numeric Type Reference to get the pointed value
+  # Dereference Numeric Types Reference to get the pointed value
   my $num2 = $$num_ref;
   
-  # Dereference Numeric Type Reference to set the pointed value
+  # Dereference Numeric Types Reference to set the pointed value
   $$num_ref = 3;
   
-  # Dereference Mutil Numeric Type Reference to get the pointed value
+  # Dereference Mutil Numeric Types Reference to get the pointed value
   my $point2 = $$point_ref;
   
-  # Dereference Mutil Numeric Type Reference to set the pointed value
+  # Dereference Mutil Numeric Types Reference to set the pointed value
   $$point_ref = $point2;
 
 
-If the target of Reference Type is L<"Multi Numeric Type">, the setting and getting of Multi Numeric Type Field Value can be done by Arrow Operator.
+If the target of Reference Type is L<"Multi Numeric Types">, the setting and getting of Multi Numeric Types Field Value can be done by Arrow Operator.
 
 
-  # If the target of Reference Type is Multi Numeric Type, get Multi Numeric Type Field Value
+  # If the target of Reference Type is Multi Numeric Types, get Multi Numeric Types Field Value
   my $x = $point_ref->{x};
   
-  # If the Target of Reference Type is Multi Numeric Type, set Multi Numeric Type Field Value
+  # If the Target of Reference Type is Multi Numeric Types, set Multi Numeric Types Field Value
   $point_ref->{x} = 1;
 
 
@@ -3580,7 +3448,7 @@ B<Get Field Value Expression> is a Expression to get L<"Field"> Value.
   INVOCANT_EXPRESSION->{FIELD_NAME}
 
 
-Invocant Expression is L<"Class Type">. If Expression is L<"Multi Numeric Type"> Value, The Field Access is L<"Get Multi Numeric Field Value">. If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise Compile Error occurs.
+Invocant Expression is L<"Class Type">. If Expression is L<"Multi Numeric Types"> Value, The Field Access is L<"Get Multi Numeric Field Value">. If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise Compile Error occurs.
 
 If the Field Name does not found in the <a href="#language-class">Class">, Compile Error occurs
 
@@ -3605,7 +3473,7 @@ B<Set Field Value Expression> is a Expression to set L<"Field"> Value.
   INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
 
 
-Invocant Expression is L<"Class Type">. If Invocant Expression is L<"Multi Numeric Type">, the Field Access is ,L<"Set Multi Numeric Field Value">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Set Multi Numeric Field Value via Dereference">, otherwise Compile Error occurs.
+Invocant Expression is L<"Class Type">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Set Multi Numeric Field Value">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Set Multi Numeric Field Value via Dereference">, otherwise Compile Error occurs.
 
 If the assignment does not satisfy L<"Type Compatibility"> of the Type of Field, Compile Error occurs.
 
@@ -3635,7 +3503,7 @@ B<Get Multi Numeric Field Value Expression> is a Expression to get Field Value o
 
   INVOCANT_EXPRESSION->{FIELD_NAME}
 
-Invocant Expression is L<"Multi Numeric Type">. If Invocant Expression is L<"Class Type">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Get Multi Numeric Field Value via Dereference">, otherwise Compile Error occurs.
+Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Get Multi Numeric Field Value via Dereference">, otherwise Compile Error occurs.
   
 If the Field Name does not found in the L<"Class">, Compile Error occurs
 
@@ -3661,7 +3529,7 @@ Set Multi Numeric Field Value Expression is a Expression to set Field Value of L
 
 <
 
-Invocant Expression is L<"Multi Numeric Type">. If Invocant Expression is L<"Class Type">, the Field Access is L<"Set Field Value">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Set Multi Numeric Field Value via Dereference">, otherwise Compile Error occurs.
+Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<"Set Field Value">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Set Multi Numeric Field Value via Dereference">, otherwise Compile Error occurs.
 
 If the Field Name does not found in the L<"Class">, Compile Error occurs.
 
@@ -3688,7 +3556,7 @@ B<Get Multi Numeric Field Value via Dereference Expression> is a Expression to g
   INVOCANT_EXPRESSION->{FIELD_NAME}
 
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, the Field Access is , L<"Get Field Value">. If Invocant Expression is L<"Multi Numeric Type">, the Field Access is L<"Get Multi Numeric Field Value">, otherwise Compile Error occurs.
+Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, the Field Access is , L<"Get Field Value">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Get Multi Numeric Field Value">, otherwise Compile Error occurs.
 
 If the Field Name does not found in the L<"Class">, Compile Error occurs
 
@@ -3714,7 +3582,7 @@ Set Multi Numeric Field Value Expression via Dereference is a Expression to set 
   INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
 
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, L<"Set Field Value">. If Invocant Expression is L<"Multi Numeric Type">, L<"Set Multi Numeric Field Value">, otherwise Compile Error occurs.
+Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, L<"Set Field Value">. If Invocant Expression is L<"Multi Numeric Types">, L<"Set Multi Numeric Field Value">, otherwise Compile Error occurs.
 
 If the Field Name does not found in the L<"Class">, Compile Error occurs
 
@@ -3849,7 +3717,7 @@ B<Create Array Expression> is a Expression to create Array with B<new> Keyword.
   new Type[ELEMENTS_COUNT_EXPRESSION]
 
 
-Type must be L<"Numeric Type">, L<"Object Type">, L<"Multi Numeric Type">.
+Type must be L<"Numeric Types">, L<"Object Type">, L<"Multi Numeric Types">.
 
 Elements Count Expression must be L<"int Type"> or the Type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
 
@@ -4218,12 +4086,12 @@ B<Sequential Operator Example:>
 
 
 
-=head2 Arithmetic Operator
+=head2 Arithmetic Operators
 
 
-B<Arithmetic Operator> is an L<"Operator"> that performs arithmetic.
+B<Arithmetic Operators> is an L<"Operator"> that performs arithmetic.
 
-B<Arithmetic Operators> are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multiplication Operator">, L<"Division Operator">, L<"Remainder Operator">, L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Increment Operator">, and L<"Decrement Operator">.
+B<Arithmetic Operatorss> are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multiplication Operator">, L<"Division Operator">, L<"Remainder Operator">, L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Increment Operator">, and L<"Decrement Operator">.
 
 
 =head2 Unary Plus Operator
@@ -4235,7 +4103,7 @@ Unary Plus Operator is a L<"Unary Operator"> represented by "+".
   +Expression
 
 
-Expression must be L<"Numeric Type">, otherwise Compile Error occurs.
+Expression must be L<"Numeric Types">, otherwise Compile Error occurs.
 
 L<"Unary Numeric Widening Type Conversion"> applys to Expression.
 
@@ -4261,7 +4129,7 @@ Unary Minus Operator is a L<"Unary Operator"> represented by "-".
   -Expression
 
 
-Expression must be L<"Numeric Type">, otherwise Compile Error occurs.
+Expression must be L<"Numeric Types">, otherwise Compile Error occurs.
 
 L<"Unary Numeric Widening Type Conversion"> applys to Expression.
 
@@ -4293,7 +4161,7 @@ B<Addition Operator> is a L<"Binary Operator"> represtented by "+" to perform ad
   LEFT_EXPRESSION + RIGHT_EXPRESSION
 
 
-Left Expression and Right Expression must be L<"Numeric Type">, otherwise Compile Error occurs.
+Left Expression and Right Expression must be L<"Numeric Types">, otherwise Compile Error occurs.
 
 L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
 
@@ -4319,7 +4187,7 @@ B<Subtraction Operator> is a L<"Binary Operator"> represtented by "-" to perform
   LEFT_EXPRESSION - RIGHT_EXPRESSION
 
 
-Left Expression and Right Expression must be L<"Numeric Type">, otherwise Compile Error occurs.
+Left Expression and Right Expression must be L<"Numeric Types">, otherwise Compile Error occurs.
 
 L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
 
@@ -4343,7 +4211,7 @@ B<Multiplication Operator> is a L<"Binary Operator"> represtented by "*" to perf
   LEFT_EXPRESSION * RIGHT_EXPRESSION
 
 
-Left Expression and Right Expression must be L<"Numeric Type">, otherwise Compile Error occurs.
+Left Expression and Right Expression must be L<"Numeric Types">, otherwise Compile Error occurs.
 
 L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
 
@@ -4369,7 +4237,7 @@ B<Division Operator> is a L<"Binary Operator"> represtented by "/" to perform Di
   LEFT_EXPRESSION / RIGHT_EXPRESSION
 
 
-Left Expression and Right Expression must be L<"Numeric Type">, otherwise Compile Error occurs.
+Left Expression and Right Expression must be L<"Numeric Types">, otherwise Compile Error occurs.
 
 L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
 
@@ -4385,7 +4253,7 @@ Return Type of Division Operator is the Type after L<"Binary Numeric Widening Ty
 
 In the operation to L<"Integral Types">, Division Operator throw L<"Exception"> if Right Expression is 0.
 
-In the operation to L<"Floating Point Type">, Division Operator dose not throw L<"Exception">.
+In the operation to L<"Floating Point Types">, Division Operator dose not throw L<"Exception">.
 
 
 =head2 Remainder Operator
@@ -4436,7 +4304,7 @@ B<Increment Operator> is an Operator that adds 1 to the value. the meaning of In
 
 The operand of Increment Operator must L<"Local Variable">, L<"Class Variable">, <a href = "#language-field-access">Field Access</a>, L<"Array Access">, L<"Dereference">, otherwise Compile Error occurs.
 
-The Type of operand of Increment Operator must be L<"Numeric Type">, otherwise Compile Error will occur.
+The Type of operand of Increment Operator must be L<"Numeric Types">, otherwise Compile Error will occur.
 
 
 
@@ -4500,7 +4368,7 @@ B<Decrement Operator> is an Operator that subtracts 1 to the value. the meaning 
 
 The operand of Decrement Operator must L<"Local Variable">, L<"Class Variable">, <a href = "#language-field-access">Field Access</a>, L<"Array Access">, L<"Dereference">, otherwise Compile Error occurs.
 
-The Type of operand of Decrement Operator must be L<"Numeric Type">, otherwise Compile Error will occur.
+The Type of operand of Decrement Operator must be L<"Numeric Types">, otherwise Compile Error will occur.
 
 
 
@@ -4747,7 +4615,7 @@ A list of Numeric Comparison Operators.
       LEFT_EXPRESSION == RIGHT_EXPRESSION
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Type, Left Expression and Right Expression are Object Type (including Undefined Value)
+      Left Expression and Right Expression are Numeric Types, Left Expression and Right Expression are Object Type (including Undefined Value)
     </td>
     <td>
       Left Expression and Right Expression are equal
@@ -4758,7 +4626,7 @@ A list of Numeric Comparison Operators.
       LEFT_EXPRESSION != RIGHT_EXPRESSION
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Type, Left Expression and Right Expression are Object Type (including Undefined Value)
+      Left Expression and Right Expression are Numeric Types, Left Expression and Right Expression are Object Type (including Undefined Value)
     </td>
     <td>
       Left Expression and Right Expression are not equal
@@ -4769,7 +4637,7 @@ A list of Numeric Comparison Operators.
       LEFT_EXPRESSION > RIGHT_EXPRESSION
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Type
+      Left Expression and Right Expression are Numeric Types
     </td>
     <td>
       Left Expression is greater than Right Expression
@@ -4780,7 +4648,7 @@ A list of Numeric Comparison Operators.
       LEFT_EXPRESSION >= RIGHT_EXPRESSION
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Type
+      Left Expression and Right Expression are Numeric Types
     </td>
     <td>
       Left Expression is greater than or equal to Right Expression
@@ -4791,7 +4659,7 @@ A list of Numeric Comparison Operators.
       LEFT_EXPRESSION < RIGHT_EXPRESSION
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Type
+      Left Expression and Right Expression are Numeric Types
     </td>
     <td>
       Left Expression is less than Right Expression
@@ -4802,7 +4670,7 @@ A list of Numeric Comparison Operators.
       LEFT_EXPRESSION <= RIGHT_EXPRESSION
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Type
+      Left Expression and Right Expression are Numeric Types
     </td>
     <td>
       Left Expression is less than or equal to Right Expression
@@ -4813,7 +4681,7 @@ A list of Numeric Comparison Operators.
       LEFT_EXPRESSION <=> RIGHT_EXPRESSION
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Type
+      Left Expression and Right Expression are Numeric Types
     </td>
     <td>
       If Left Expression is greater than Right expression, return 1. If Left Expression is lower than Right expression, return -1. If Left Expression is equals to Right expression, return 0.
@@ -4825,16 +4693,16 @@ A list of Numeric Comparison Operators.
 
 The Types of Left Expression and Right Expression Comparable Types, otherwise Compile Error occurs.
 
-In Numeric Type Comparison, L<"Binary Numeric Widening Type Conversion"> is performed for Left Expression and Right Expression.
+In Numeric Types Comparison, L<"Binary Numeric Widening Type Conversion"> is performed for Left Expression and Right Expression.
 
 After that, the Numeric Comparison Operation is performed that exactly matches the following operation in C99.
 
 
-  # Numeric Type Comparison, Object Type Comparison
+  # Numeric Types Comparison, Object Type Comparison
   (int32_t)(x == y);
   (int32_t)(x != y);
   
-  # Numeric Type Comparison
+  # Numeric Types Comparison
   (int32_t)(x > y);
   (int32_t)(x >= y);
   (int32_t)(x < y);
@@ -4842,7 +4710,7 @@ After that, the Numeric Comparison Operation is performed that exactly matches t
   (int32_t)(x > y ? 1 : x < y ? -1 : 0);
 
 
-For Numeric Type Operation(==, !=, >, >=, <, <=), L<"int Type"> Operation, L<"long Type"> Operation, L<"float Type"> Operation, L<"double Type"> Operation is defined.
+For Numeric Types Operation(==, !=, >, >=, <, <=), L<"int Type"> Operation, L<"long Type"> Operation, L<"float Type"> Operation, L<"double Type"> Operation is defined.
 
 And Object Type Operation(==, !=) is defined.
 
@@ -4946,7 +4814,7 @@ B<isa Operator> is a L<"Comparison Operator"> to check whether Left Expression s
 
 isa Operator has three behaviors, depending on Right Type.
 
-1. If Right Type is L<"Numeric Type">, L<"Multi Numeric Type">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the Type of Left Expression is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
+1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the Type of Left Expression is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
 
 2. If the Right Type is L<"Class Type">, isa operator checks whether the Type of Left Expression is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of Left Expression must be L<"Object Type">, otherwise Compile Error occurs.
 
@@ -5186,12 +5054,12 @@ Special Assignment Operator Example
 
 =head2 Reference Operator
 
-The Reference Operator is an Operator that retrieves the address of a variable for L<"Numeric Type"> or L<"Multi Numeric Type">. Designed to achieve c address Operator "*".
+The Reference Operator is an Operator that retrieves the address of a variable for L<"Numeric Types"> or L<"Multi Numeric Types">. Designed to achieve c address Operator "*".
 
 
   \VARIABLE
 
-If the variable is not numeric type or Multi Numeric Type, Compile Error occurs
+If the variable is not numeric type or Multi Numeric Types, Compile Error occurs
 
 Reference Operator returns expression. The type returned is L<"Reference Type">.
 
@@ -6130,7 +5998,7 @@ A list of Type Initial Value. All Bit columns in the data are set to 0.
   </tr>
   <tr>
     <td>
-      <b>Multi Numeric Type</b>
+      <b>Multi Numeric Types</b>
     </td>
     <td>
       All Field is 0
@@ -6141,16 +6009,13 @@ A list of Type Initial Value. All Bit columns in the data are set to 0.
 =end html
 
 
-=head2 Numeric Type
+=head2 Numeric Types
 
-
-Numeric Type is L<"Integral Types"> or L<"Floating Point Type">.
-
+Numeric Types are L<"Integral Types"> and L<"Floating Point Types">.
 
 =head2 Integral Types
 
-
-Integral Types are the following four types.
+Integral types are the following four types.
 
 =begin html
 
@@ -6214,10 +6079,9 @@ Integral Types are the following four types.
 
 =end html
 
-See L<"Arithmetic Operator"> for integer calculation.
+See L<"Arithmetic Operators"> for integer calculation.
 
-Note that SPVM has only B<singed> Integral Types, and don't has B<unsigned> Integral Types.
-
+Note that SPVM has only B<singed> integral types, and doesn't have B<unsigned> integral types.
 
 =head2 byte Type
 
@@ -6235,9 +6099,9 @@ C<int> type is  is a L<"Integral Types"> that represents signed 32-bit integer. 
 
 C<long> type is a L<"Integral Types"> that represents a signed 64-bit integer. This is the same type as C<int64_t> type of C language.
 
-=head2 Floating Point Type
+=head2 Floating Point Types
 
-B<Floating Point Type> are the following two.
+B<Floating Point Types> are the following two.
 
 =begin html
 
@@ -6258,7 +6122,7 @@ B<Floating Point Type> are the following two.
       <b>float</b>
     </td>
     <td>
-      Single precision (32bit) floating po L<"int Type">
+      Single precision (32bit) floating point type
     </td>
     <td>
       4 bytes
@@ -6269,7 +6133,7 @@ B<Floating Point Type> are the following two.
       <b>double</b>
     </td>
     <td>
-      Double precision (64bit) floating po L<"int Type">
+      Double precision (64bit) floating point type
     </td>
     <td>
       8 bytes
@@ -6279,19 +6143,15 @@ B<Floating Point Type> are the following two.
 
 =end html
 
-See L<"Arithmetic Operator"> for floating-point calculation.
+See L<"Arithmetic Operators"> for floating-point calculation.
 
 =head2 float Type
 
-L<"Floating Point Type <a represents a single precision floating point (32bit). / a> It is the same type as <a href="#language-type-float">float Type"> of C99.
-
-
+C<float> type is a L<"Floating Point Types"> that represents a single precision(32bit) floating point. This is the same type as C<float> type of C language.
 
 =head2 double Type
 
-B<double Type> represents a double precision floating point (64bit) L<"Floating Point Type"> It is the same type as L<"double Type"> of C99.
-
-
+C<double> type is a L<"Floating Point Types"> that represents a double precision(64bit) floating point. This is the same type as C<double> type of C language.
 
 =head2 Class Type
 
@@ -6302,7 +6162,7 @@ Class Type is the Type defined by L<"Class Definition">.
   
   }
 
-Class Type is L<"Class Type"> L<"Callback Type"> <a href = "#language-type It consists of -multi-numeric ">Multi Numeric Type</a>.
+Class Type is L<"Class Type"> L<"Callback Type"> <a href = "#language-type It consists of -multi-numeric ">Multi Numeric Types</a>.
 
 
   # Class Type
@@ -6315,7 +6175,7 @@ Class Type is L<"Class Type"> L<"Callback Type"> <a href = "#language-type It co
   
   }
   
-  # Multi Numeric Type
+  # Multi Numeric Types
   class Foo: mulnum_t {
   
   }
@@ -6331,7 +6191,7 @@ L<"Pointer Type"> is also Class Type, so Pointer Type will also be Class Type.
 
 =head2 Object Type
 
-What is Object Type L<"Class Type"> L<"Callback Type"> <a href = "#language- type-array ">Array Type</a> L<"String Type"> L<"Any Object Type"> It is a combination of a>. "Multi Numeric Type" and "Reference Type" are not included.
+What is Object Type L<"Class Type"> L<"Callback Type"> <a href = "#language- type-array ">Array Type</a> L<"String Type"> L<"Any Object Type"> It is a combination of a>. "Multi Numeric Types" and "Reference Type" are not included.
 
 The Object Type value can be assigned to "Any Object Type".
 
@@ -6412,7 +6272,7 @@ B<Numeric Object Type> are the following six.
 
 =end html
 
-For the conversion between L<"Numeric Type"> and B<Numeric Object Type>, see L<"Type Conversion">.
+For the conversion between L<"Numeric Types"> and B<Numeric Object Type>, see L<"Type Conversion">.
 
 
 =head2 Undefined Type
@@ -6427,7 +6287,7 @@ The value of Undefined Type can be assigned to Object Type.If you assign to anot
 
 =head2 Class Type
 
-Class Type is the Type defined by L<"Class Definition"> and is not "Multi Numeric Type" "Callback Type".
+Class Type is the Type defined by L<"Class Definition"> and is not "Multi Numeric Types" "Callback Type".
 
 
   packag Foo {
@@ -6567,7 +6427,7 @@ B<void Type> is a special Type that can only be used in Return Type of L<"Method
 
 =head2 Basic Type
 
-A Type that does not have dimensions is called a Basic Type. L<"Numeric Type">, L<"Class Type </ a>, <a href = "#language-type- any-object ">Any Object Type">, L<"String Type"> is a Basic Type.
+A Type that does not have dimensions is called a Basic Type. L<"Numeric Types">, L<"Class Type </ a>, <a href = "#language-type- any-object ">Any Object Type">, L<"String Type"> is a Basic Type.
 
 
 
@@ -6604,7 +6464,7 @@ my $nums = new int[] [3];
 
 =head2 Numeric Array Type
 
-Numeric Array Type means L<"Numeric Type"> with the element L<"Array Type"> It is.
+Numeric Array Type means L<"Numeric Types"> with the element L<"Array Type"> It is.
 
 B<Numeric Array Type list>
 
@@ -6634,7 +6494,7 @@ B<Numeric Array Type list>
 
 =end html
 
-Data represented by Numeric Array Type must have elements whose size is L<"Numeric Type">, and must be consecutive by the number of Array Length.
+Data represented by Numeric Array Type must have elements whose size is L<"Numeric Types">, and must be consecutive by the number of Array Length.
 
 All elements of Numeric Array Type are initialized by L<"Type Initial Value"> when Create Array is performed.
 
@@ -6684,7 +6544,7 @@ All elements of Object Array Type are initialized by L<"Type Initial Value"> whe
 
 =head2 Multi Numeric Array Type
 
-Multi Numeric Array Type means L<"Array Type that has the value of <a href="#language-type-multi-numeric">Multi Numeric Type"> as an element.</a>.
+Multi Numeric Array Type means L<"Array Type that has the value of <a href="#language-type-multi-numeric">Multi Numeric Types"> as an element.</a>.
 
 B<Multi Numeric Array Type Example>
 
@@ -6702,7 +6562,7 @@ B<Multi Numeric Array Type Example>
 
 =end html
 
-Data represented by Multi Numeric Array Type must have elements whose size is L<"Multi Numeric Type"> and must be contiguous with the number of Array Length ..
+Data represented by Multi Numeric Array Type must have elements whose size is L<"Multi Numeric Types"> and must be contiguous with the number of Array Length ..
 
 All elements of Multi Numeric Array Type are initialized by L<"Type Initial Value"> when Create Array is performed.
 
@@ -6795,11 +6655,11 @@ When a String Type value is generated, it is guaranteed that the last one after 
 
 
 
-=head2 Multi Numeric Type
+=head2 Multi Numeric Types
 
-Multi Numeric Type is a type that can represent continuous numerical values.
+Multi Numeric Types are a type that can represent continuous numerical values.
 
-Multi Numeric Type can be defined by specifying "mulnum_t" Descriptor in L<"Class Definition">.
+Multi Numeric Types can be defined by specifying "mulnum_t" Descriptor in L<"Class Definition">.
 
 
   class Point_3i : mulnum_t {
@@ -6808,13 +6668,13 @@ Multi Numeric Type can be defined by specifying "mulnum_t" Descriptor in L<"Clas
     has z : int;
   }
 
-See L<"Values ​​"> for a detailed explanation of Multi Numeric Type.
+See L<"Values ​​"> for a detailed explanation of Multi Numeric Types.
 
 
 
 =head2 Reference Type
 
-Reference Type is a Type that can store the address of a variable. Add "*" after L<"Numeric Type"> or L<"Multi Numeric Type"> You can define it.
+Reference Type is a Type that can store the address of a variable. Add "*" after L<"Numeric Types"> or L<"Multi Numeric Types"> You can define it.
 
 
   my $num : int;
@@ -6846,14 +6706,14 @@ See L<"Reference"> for a detailed explanation of Reference.
 =head2 Numeric Reference Type
 
 
-Numeric Reference Type means L<"Numeric Type"> for L<"Reference Type">. Says.
+Numeric Reference Type means L<"Numeric Types"> for L<"Reference Type">. Says.
 
 
 
 =head2 Multi Numeric Reference Type
 
 
-Multi Numeric Reference Type means L<"Reference Type"> for L<"Multi Numeric Type"> variables. > Means.
+Multi Numeric Reference Type means L<"Reference Type"> for L<"Multi Numeric Types"> variables. > Means.
 
 
 
@@ -6985,13 +6845,13 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
   </tr>
   <tr>
     <td>
-      <b>Numeric Type</b>
+      <b>Numeric Types</b>
     </td>
     <td>
-      <b>Numeric Type</b>
+      <b>Numeric Types</b>
     </td>
     <td>
-      L<"Numeric Type Conversion"> is performed.
+      L<"Numeric Types Conversion"> is performed.
     </td>
   </tr>
   <tr>
@@ -6999,10 +6859,10 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
       <b>Numeric Object Type</b>
     </td>
     <td>
-      <b>Numeric Type</b>
+      <b>Numeric Types</b>
     </td>
     <td>
-      L<"Boxing Type Conversion"> is performed. Numeric Type represented by Numeric Type and Numeric Object Type must be the same. For example, if Numeric Type is int, Numeric Object Type must be Int Type.
+      L<"Boxing Type Conversion"> is performed. Numeric Types represented by Numeric Types and Numeric Object Type must be the same. For example, if Numeric Types are int, Numeric Object Type must be Int Type.
     </td>
   </tr>
   <tr>
@@ -7010,7 +6870,7 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
       <b>Any Object Type</b>
     </td>
     <td>
-      <b>Numeric Type</b>
+      <b>Numeric Types</b>
     </td>
     <td>
       L<"Boxing Type Conversion"> is performed.
@@ -7018,18 +6878,18 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
   </tr>
   <tr>
     <td>
-      <b>Numeric Type</b>
+      <b>Numeric Types</b>
     </td>
     <td>
       <b>Numeric Object Type</b>
     </td>
     <td>
-      L<"Unboxing Type Conversion"> is performed. Numeric Type represented by Numeric Type and Numeric Object Type must be the same. For example, if Numeric Type is int, Numeric Object Type must be Int Type.
+      L<"Unboxing Type Conversion"> is performed. Numeric Types represented by Numeric Types and Numeric Object Type must be the same. For example, if Numeric Types are int, Numeric Object Type must be Int Type.
     </td>
   </tr>
   <tr>
     <td>
-      <b>Numeric Type</b>
+      <b>Numeric Types</b>
     </td>
     <td>
       <b>Any Object Type</b>
@@ -7043,7 +6903,7 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
       <b>L<"String Type"></b>
     </td>
     <td>
-      <b>Numeric Type</b>
+      <b>Numeric Types</b>
     </td>
     <td>
       The number is converted to a string using the "%g" format of the C standard sprintf function.
@@ -7071,7 +6931,7 @@ Implicit type conversion is automatic type conversion performed by SPVM. The fol
 
 Implicit Type Conversion occurs when:
 
-If both the source and destination Type are Numeric Type and the destination Type is greater than the source Type, L<"Numeric Widening Type Conversion"> is done.
+If both the source and destination Type are Numeric Types and the destination Type is greater than the source Type, L<"Numeric Widening Type Conversion"> is done.
 
 
   # Implicit Widening Type Conversion
@@ -7079,7 +6939,7 @@ If both the source and destination Type are Numeric Type and the destination Typ
   my $num : double = 12.5f;
 
 
-Both the source and destination Type are Numeric Type, and the destination Type is smaller than the source Type, and the source value can be expressed in the range of Integer Literal and destination Type value. L<"Numeric Narrowing Type Conversion"> is performed.
+Both the source and destination Type are Numeric Types, and the destination Type is smaller than the source Type, and the source value can be expressed in the range of Integer Literal and destination Type value. L<"Numeric Narrowing Type Conversion"> is performed.
 
 
 
@@ -7088,7 +6948,7 @@ Both the source and destination Type are Numeric Type, and the destination Type 
   my $num : short = 134;
 
 
-If the source Type is Numeric Type and the destination Type is Any Object Type, L<"Boxing Type Conversion"> to the corresponding Numeric Object Type Is done. In the following case, the converted Int Type object is assigned to the generic object.
+If the source Type is Numeric Types and the destination Type is Any Object Type, L<"Boxing Type Conversion"> to the corresponding Numeric Object Type Is done. In the following case, the converted Int Type object is assigned to the generic object.
 
 
 
@@ -7096,7 +6956,7 @@ If the source Type is Numeric Type and the destination Type is Any Object Type, 
   my $num = 123;
   my $object : object = $num;
 
-When the source Type is Numeric Type and the destination Type is the corresponding Numeric Object Type, L<"Boxing Type Conversion"> to the corresponding Numeric Object Type a> is done.
+When the source Type is Numeric Types and the destination Type is the corresponding Numeric Object Type, L<"Boxing Type Conversion"> to the corresponding Numeric Object Type a> is done.
 
 
   # Implicit Boxing Type Conversion to object Type
@@ -7104,7 +6964,7 @@ When the source Type is Numeric Type and the destination Type is the correspondi
   my $object : Int = $num;
 
 
-When the source Type is Any Object Type and the destination Type is Numeric Type, L<"Unboxing Type Conversion"> in the corresponding Numeric Type is displayed. Will be opened. In the following case, an attempt is made to convert the Int Type object to L<"int Type">.
+When the source Type is Any Object Type and the destination Type is Numeric Types, L<"Unboxing Type Conversion"> in the corresponding Numeric Types are displayed. Will be opened. In the following case, an attempt is made to convert the Int Type object to L<"int Type">.
 
 
 
@@ -7112,7 +6972,7 @@ When the source Type is Any Object Type and the destination Type is Numeric Type
   my $object : object;
   my $num : int = $object;
 
-If the source Type is Numeric Object Type and the destination Type is the corresponding Numeric Type, L<"Unboxing Type Conversion"> in the corresponding Numeric Type Is done.
+If the source Type is Numeric Object Type and the destination Type is the corresponding Numeric Types, L<"Unboxing Type Conversion"> in the corresponding Numeric Types Is done.
 
 
 
@@ -7121,7 +6981,7 @@ If the source Type is Numeric Object Type and the destination Type is the corres
   my $num : int = $num_obj;
 
 
-If the source Type is Numeric Type and the destination Type is L<"String Type">, <a href = "#language-type-convertion-numeric-to-string ">Numeric-to-String Type Conversion</a> is performed. In the following case, the numerical value "123" is converted to String "" 123 "" and assigned.
+If the source Type is Numeric Types and the destination Type is L<"String Type">, <a href = "#language-type-convertion-numeric-to-string ">Numeric-to-String Type Conversion</a> is performed. In the following case, the numerical value "123" is converted to String "" 123 "" and assigned.
 
 
 
@@ -7131,12 +6991,12 @@ If the source Type is Numeric Type and the destination Type is L<"String Type">,
 
 
 
-=head2 Numeric Type Conversion
+=head2 Numeric Types Conversion
 
 
-Numeric Type Conversion is the conversion from L<"Numeric Type"> to L<"Numeric Type">.
+Numeric Types Conversion is the conversion from L<"Numeric Types"> to L<"Numeric Types">.
 
-Numeric Type Conversion performs exactly the same processing as Numeric Type Conversion in the corresponding C language. For example, Type Conversion from int to long in SPVM is the same as the type conversion from int32_t Type to int64_t Type in C language.
+Numeric Types Conversion performs exactly the same processing as Numeric Types Conversion in the corresponding C language. For example, Type Conversion from int to long in SPVM is the same as the type conversion from int32_t Type to int64_t Type in C language.
 
 
   # SPVM conversion
@@ -7150,9 +7010,9 @@ Numeric Type Conversion performs exactly the same processing as Numeric Type Con
 
 See also L<"Corresponding Type with C99">.
 
-SPVM has two Numeric Type Convertions.
+SPVM has two Numeric Types Convertions.
 
-There are some rules for automatic type conversion of Numeric Type.
+There are some rules for automatic type conversion of Numeric Types.
 
 =begin html
 
@@ -7168,15 +7028,15 @@ Numeric types have an order.
 =begin html
 
 <ul>
-  <li>L<"Numeric Type Order"></li>
+  <li>L<"Numeric Types Order"></li>
 </ul>
 
 =end html
 
 
-=head2 Numeric Type Order
+=head2 Numeric Types Order
 
-L<"Numeric Type"> has the order of Type. The order of Type is "byte", "short", "int", "long", "float", "double" from the smallest.
+L<"Numeric Types"> has the order of Type. The order of Type is "byte", "short", "int", "long", "float", "double" from the smallest.
 
 
 =head2 Unary Numeric Widening Type Conversion
@@ -7200,7 +7060,7 @@ Unary Numeric Widening Type Conversion is performed in the following cases.
 
 =head2 Binary Numeric Widening Type Conversion
 
-Binary Numeric Widening Type Conversion is applied to Left Expression and Right Expression in Binary Operator that takes Numeric Type on the Left and Right sides. L<"Numeric Widening Type Conversion">.
+Binary Numeric Widening Type Conversion is applied to Left Expression and Right Expression in Binary Operator that takes Numeric Types on the Left and Right sides. L<"Numeric Widening Type Conversion">.
 
 The following rules apply.
 
@@ -7217,14 +7077,14 @@ Binary Numeric Widening Type Conversion is performed in the following cases.
 
 =head2 Numeric Narrowing Type Conversion
 
-Numeric Narrowing Type Conversion is a conversion rule applied when converting from a large type to a small type in L<"Numeric Type">.
+Numeric Narrowing Type Conversion is a conversion rule applied when converting from a large type to a small type in L<"Numeric Types">.
 
 
 
 =head2 Numeric Widening Type Conversion
 
 
-Numeric Widening Type Conversion is a conversion rule applied when converting from a small type to a large type in L<"Numeric Type">.
+Numeric Widening Type Conversion is a conversion rule applied when converting from a small type to a large type in L<"Numeric Types">.
 
 
 
@@ -7261,14 +7121,14 @@ A new String Type object is created and all elements in byte[] are copied to the
 
 =head2 Boxing Type Conversion
 
-Boxing Type Conversion is the operation to convert the value of Numeric Type to Numeric Object Type.
+Boxing Type Conversion is the operation to convert the value of Numeric Types to Numeric Object Type.
 
 
 
 =head2 Unboxing Type Conversion
 
 
-Unboxing Type Conversion is an operation to convert the value of Numeric Object Type to the corresponding value of Numeric Type.
+Unboxing Type Conversion is an operation to convert the value of Numeric Object Type to the corresponding value of Numeric Types.
 
 
 
@@ -7322,7 +7182,7 @@ B<Right side of Logical NOT Operator>
 
   !CONDITION
 
-Expression specified by Bool Type Conversion is L<"Numeric Type"> or L<"Object Type"> or It must be L<"Undefined Type">, otherwise Compile Error occurs.
+Expression specified by Bool Type Conversion is L<"Numeric Types"> or L<"Object Type"> or It must be L<"Undefined Type">, otherwise Compile Error occurs.
 
 Return Value of Bool Type Conversion is Expression of L<"int Type">.
 
@@ -7332,7 +7192,7 @@ If Expression is Bool->FALSE, 0 is returned. This is special case of the object 
 
 If Expression is Bool->TRUE, 1 is returned.  This is special case of the object of Bool class. true keywords means Bool->TRUE.
 
-When Expression is L<"Numeric Type">, L<"Unary Numeric Widening Type Conversion"> is done.
+When Expression is L<"Numeric Types">, L<"Unary Numeric Widening Type Conversion"> is done.
 
 If Expression is L<"int Type">, that value is returned.
 
