@@ -676,6 +676,7 @@ t/default/lib/SPVM/TestCase/CompileError/CallMethod/ClassNotFound.spvm
 t/default/lib/SPVM/TestCase/CompileError/CallMethod/NotFound.spvm
 t/default/lib/SPVM/TestCase/CompileError/Class/ClassNameDifferntFromModuleName.spvm
 t/default/lib/SPVM/TestCase/CompileError/Class/classPartNameStartWithLowerCase.spvm
+t/default/lib/SPVM/TestCase/CompileError/Class/NotClosed.spvm
 t/default/lib/SPVM/TestCase/CompileError/ClassVar/OurClassVarNameColon2Twice.spvm
 t/default/lib/SPVM/TestCase/CompileError/ClassVar/OurClassVarNameContainsUnderScoreTwice.spvm
 t/default/lib/SPVM/TestCase/CompileError/ClassVar/OurClassVarNameEndColon2.spvm
@@ -741,6 +742,8 @@ t/default/lib/SPVM/TestCase/CompileError/Sub/SubNameStartDigit.spvm
 t/default/lib/SPVM/TestCase/CompileError/Subtract/LeftIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/Subtract/RightIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/Switch/NoLastBreak.spvm
+t/default/lib/SPVM/TestCase/CompileError/Type/MutableNoStringCaseInt.spvm
+t/default/lib/SPVM/TestCase/CompileError/Type/MutableNoStringCaseStringArray.spvm
 t/default/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
 t/default/lib/SPVM/TestCase/CompileError/UnaryMinus/NotNumeric.spvm
