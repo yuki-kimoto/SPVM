@@ -7,9 +7,7 @@ use warnings;
 use Test::More;
 
 use SPVM 'TestCase';
-use SPVM 'TestCase::Object';
-
-
+use SPVM 'TestCase::Field';
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -25,19 +23,19 @@ my $DOUBLE_PRECICE = 65536.5;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-# Create object
+# Field name
 {
-  # Check object count at least 1 to check object count system itself
-  {
-    my $object = SPVM::TestCase->new();
-    my $memory_blocks_count = SPVM::get_memory_blocks_count();
-    ok($memory_blocks_count > 0);
-  }
+  ok(SPVM::TestCase::Field->get_and_set_filed_same_name_as_keyword);
 }
 
-# Destructor
+# Field access
 {
-  ok(SPVM::TestCase::Object->destructor());
+  ok(SPVM::TestCase::Field->get_field_chain);
+  ok(SPVM::TestCase::Field->core_func_name_field_name());
+  ok(SPVM::TestCase::Field->object_field_set_and_get());
+  ok(SPVM::TestCase::Field->object_field_set_and_get());
+  ok(SPVM::TestCase::Field->object_field_set_and_get_again());
+  ok(SPVM::TestCase::Field->object_field_initialized_zero());
 }
 
 # All object is freed

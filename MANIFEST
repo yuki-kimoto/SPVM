@@ -623,6 +623,7 @@ t/default/exception.t
 t/default/exchange_api.t
 t/default/exchange_api_call_method.t
 t/default/fat_camma.t
+t/default/field.t
 t/default/for.t
 t/default/if.t
 t/default/if_require.t
@@ -766,6 +767,7 @@ t/default/lib/SPVM/TestCase/Examples.spvm
 t/default/lib/SPVM/TestCase/Exception.spvm
 t/default/lib/SPVM/TestCase/ExchangeAPI.spvm
 t/default/lib/SPVM/TestCase/FatCamma.spvm
+t/default/lib/SPVM/TestCase/Field.spvm
 t/default/lib/SPVM/TestCase/FILE.spvm
 t/default/lib/SPVM/TestCase/For.spvm
 t/default/lib/SPVM/TestCase/If.spvm
