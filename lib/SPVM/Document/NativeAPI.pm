@@ -1168,13 +1168,15 @@ B<Examples:>
 
   void* (*new_string_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
 
-Create a new string object by specifying C language char* type value and the length.
+Create a new string object with the bytes and the length.
+
+If the length of bytes is lower than the specified length or the bytes is NULL, The part that longer than the length of bytes will be filled with C<\0>. 
 
 =head2 new_string
 
   void* (*new_string)(SPVM_ENV* env, const char* bytes, int32_t length);
 
-Do the same as C<new_string_raw>, and add the created string object to the mortal stack of the environment. Use this function in normal use instead of C<new_string_raw>.
+Same as C<new_string_raw>, and add the created string object to the mortal stack of the environment. Usually use this function instead of C<new_string_raw>.
 
 B<Examples:>
 
