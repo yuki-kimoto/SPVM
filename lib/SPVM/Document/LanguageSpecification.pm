@@ -2951,7 +2951,7 @@ switch Block is a scope block.
 
 =head1 String
 
-SPVM has B<String Type>. String is created by L<"String Literal"> or Type Convertion from L<"byte[] Type">.
+SPVM has B<string Type>. String is created by L<"String Literal"> or Type Convertion from L<"byte[] Type">.
 
 String is immutable and you can't change the each character. You can only get the each character. 
 
@@ -2962,7 +2962,7 @@ String is immutable and you can't change the each character. You can only get th
   my $char1 = $string->[1];
   my $char2 = $string->[2];
   
-  # a compilation error because String Type is immutable.
+  # a compilation error because string Type is immutable.
   $string_const->[0] = 'd';
   
   # Create new String using Type Convertion;
@@ -2972,7 +2972,51 @@ String is immutable and you can't change the each character. You can only get th
   $bytes->[2] = 'c';
   my $string = (string)$bytes;
 
+When a string Type value is generated, it is guaranteed that the last one after the last memory area reserved for the value will be "\ 0". (For example, if it is "abc", "c" is followed by "\ 0".) From the SPVM language, this "\ 0" has no meaning, but when using the native API, string Type is It can be handled as a C language String.
 
+L<"string Type"> is a Type that represents a String. Expressed by string. Designed to represent C "const char *".
+
+
+  my $str : string;
+
+String Literal allows you to assign the generated String object.
+
+
+  my $str : string = "abc";
+
+SPVM String is an Array of bytes whose elements cannot be changed. You can get the Character by accessing the Array.
+
+  # Acquisition of Character
+  my $ch = $str->[1];
+
+If you try to change the element, compilation errors occur
+
+
+  # a compilation error when changing element
+  $str->[1] = 'd';
+
+L<"string Type"> will be exactly the same as the Array of bytes Type after compilation. For example, the first expression is treated as the second expression.
+
+
+  # isa string Type
+  if ($str isa string) {
+  
+  }
+  
+  # isa L<"byte[] Type">
+  if ($str isa byte[]) {
+  
+  }
+
+Note that SPVM Strings are immutable, but this is a compile-time check.
+
+L<"string Type"> can be cast to L<"byte[] Type">, and the String can be changed at runtime.
+
+
+  my $bytes = (byte[])$str;
+  $bytes->[1] = 'd';
+
+Treat String as if you can always change it.
 
 =head1 Undefined Value
 
@@ -3469,7 +3513,7 @@ B<Get Exception Variable Value Expression> is a Expression to get the value of L
   $@
 
 
-Get Exception Variable Value Expression returns the value of L<"String Type">.
+Get Exception Variable Value Expression returns the value of L<"string Type">.
 
 B<Get Exception Variable Value Example:>
 
@@ -3493,9 +3537,9 @@ B<Set Exception Variable Value Expression> is a Expression to set the value of L
   $@ = RIGHT_EXPRESSION
 
 
-Right Expression must be L<"String Type">.
+Right Expression must be L<"string Type">.
 
-Returns the value of Exception Variable after setting. This is L<"String Type">.
+Returns the value of Exception Variable after setting. This is L<"string Type">.
 
 The Reference Count of Right Expression is incremented by 1.
 
@@ -4797,7 +4841,7 @@ B<String Comparison Operator> is a L<"Comparison Operator"> that compares the by
 
   LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
 
-Left Expression and Right Expression must be L<"String Type"> or byte[] type.
+Left Expression and Right Expression must be L<"string Type"> or byte[] type.
 
 A list of String Comparison Operators.
 
@@ -4986,17 +5030,15 @@ Logical NOT Operator does not throw L<"Exception">.
 
 String Concatenation Operator is a L<"Binary Operator">.
 
-
   LEFT_EXPRESSION . RIGHT_EXPRESSION
-
 
 The left expression and the right expression are concatenated.
 
-The left expression and the right expression must be a string type or byte[] type, otherwise compilation errors occur.
+The left expression and the right expression must be a L<"string type"> or L<"byte[] Type">, otherwise compilation errors occur.
 
 String Concatenation Operator returns the concatenated L<"string">.
 
-String Concatenation Operator retruns L<"Expression">, The Type is L<"String Type">.
+String Concatenation Operator retruns L<"Expression">, The Type is L<"string Type">.
 
 If both Left Expression and Right Expression were L<"String Literal">, a string Literal concatenated at compile time is generated. You can concatenate String Literal with string Concatenation Operator without being aware of the cost of performance.
 
@@ -5008,8 +5050,6 @@ B<String Concatenation Operator Example>
   my $str = "abc" . "def";
   my $str = "def" . 34;
   my $str = 123 . 456;
-
-
 
 =head2 Assignment Operator
 
@@ -5178,7 +5218,7 @@ String Length Operator is a L<"String"></a> L<"Unary Operator">
 
   length RIGHT_EXPRESSION
 
-Right Expression must be L<"String Type">, otherwise compilation errors occur.
+Right Expression must be L<"string Type">, otherwise compilation errors occur.
 
 The String Length Operator returns the length of the String as a L<"int Type"> value. String Length The length of the String returned by the Operator is the length when viewed as a byte string.
 
@@ -5800,14 +5840,11 @@ L<"Method Definition">, if the Return Value Type is other than L<"void Type">, E
 
 =head2 die Statement
 
-die Statement is a Statement for raising L<"Exception">.
-
+C<die> Statement is a Statement to throw an L<"Exception">.
 
   die EXPRESSION;
 
-Expression must be a String Type.
-
-See L<"Exception"> for a detailed explanation of the die statement.
+The operand must be a L<"string Type">, otherwise compilation errors occur.
 
 =head2 weaken Statement
 
@@ -5925,7 +5962,7 @@ Use warnStatement to throw a warning.
 
   warn Expression;
 
-Expression must be L<"String Type">.
+Expression must be L<"string Type">.
 
 If the end is a line feed Character "\ n", the String specified in Expression is output to the standard error output.
 
@@ -5944,7 +5981,7 @@ Use print Statement to print a String to standard output.
 
   print Expression;
 
-Expression must be L<"String Type">.
+Expression must be L<"string Type">.
 
 If Expression is Undefined Value, do nothing.
 
@@ -6258,7 +6295,7 @@ L<"Pointer Type"> is also Class Type, so Pointer Type will also be Class Type.
 
 =head2 Object Type
 
-What is Object Type L<"Class Type"> L<"Callback Type"> <a href = "#language- type-array ">Array Type</a> L<"String Type"> L<"Any Object Type"> It is a combination of a>. "Multi Numeric Types" and "Reference Type" are not included.
+What is Object Type L<"Class Type"> L<"Callback Type"> <a href = "#language- type-array ">Array Type</a> L<"string Type"> L<"Any Object Type"> It is a combination of a>. "Multi Numeric Types" and "Reference Type" are not included.
 
 The Object Type value can be assigned to "Any Object Type".
 
@@ -6494,7 +6531,7 @@ B<void Type> is a special Type that can only be used in Return Type of L<"Method
 
 =head2 Basic Type
 
-A Type that does not have dimensions is called a Basic Type. L<"Numeric Types">, L<"Class Type </ a>, <a href = "#language-type- any-object ">Any Object Type">, L<"String Type"> is a Basic Type.
+A Type that does not have dimensions is called a Basic Type. L<"Numeric Types">, L<"Class Type </ a>, <a href = "#language-type- any-object ">Any Object Type">, L<"string Type"> is a Basic Type.
 
 
 
@@ -6568,12 +6605,12 @@ All elements of Numeric Array Type are initialized by L<"Type Initial Value"> wh
 
 =head2 byte[] Type
 
-In SPVM, the L<"byte[] Type"> is a special Type in that it is L<"String Type">.
+In SPVM, the L<"byte[] Type"> is a special Type in that it is L<"string Type">.
 
 
   byte[]
 
-L<"String Type"> is treated as L<"String Type"> at compile time, but at runtime It will be L<"byte[] Type">.
+L<"string Type"> is treated as L<"string Type"> at compile time, but at runtime It will be L<"byte[] Type">.
 
 
 
@@ -6665,62 +6702,21 @@ When setting the value of the element of Any Object Array Type, a check is made 
 
 
 
-=head2 String Type
+=head2 string Type
 
-L<"String Type"> is a Type that represents a String. Expressed by string. Designed to represent C "const char *".
+C<string> type is a L<"Types"> that represents a L<"String">.
 
+  string
 
-  my $str : string;
+C<string> type can be qualified L<"mutable Type Qualifier">.
 
-String Literal allows you to assign the generated String object.
+  mutable string
 
-
-  my $str : string = "abc";
-
-SPVM String is an Array of bytes whose elements cannot be changed. You can get the Character by accessing the Array.
-
-
-  # Acquisition of Character
-  my $ch = $str->[1];
-
-If you try to change the element, compilation errors occur
-
-
-  # a compilation error when changing element
-  $str->[1] = 'd';
-
-L<"String Type"> will be exactly the same as the Array of bytes Type after compilation. For example, the first expression is treated as the second expression.
-
-
-  # isa String Type
-  if ($str isa string) {
+B<Examples:>
   
-  }
-  
-  # isa L<"byte[] Type">
-  if ($str isa byte[]) {
-  
-  }
-
-Note that SPVM Strings are immutable, but this is a compile-time check.
-
-L<"String Type"> can be cast to L<"byte[] Type">, and the String can be changed at runtime.
-
-
-  my $bytes = (byte[])$str;
-  $bytes->[1] = 'd';
-
-Treat String as if you can always change it.
-
-
-
-=head2 String Type
-
-String Type is a combination of L<"String Type"> and L<"byte[] Type">. Say that.
-
-When a String Type value is generated, it is guaranteed that the last one after the last memory area reserved for the value will be "\ 0". (For example, if it is "abc", "c" is followed by "\ 0".) From the SPVM language, this "\ 0" has no meaning, but when using the native API, String Type is It can be handled as a C language String.
-
-
+  # string type
+  my $message : string;
+  my $message : mutable string;
 
 =head2 Multi Numeric Types
 
@@ -6797,54 +6793,6 @@ Omitting L<"Types"> when L<"Local Variable Declaration"> by Type Inference can. 
   
   # Foo
   my $foo = new Foo;
-
-
-=head1 Type Compatibility
-
-Type compatibility means that the value can be moved without performing L<"Type Cast">.
-
-Types are compatible in the following cases.
-
-B<When the source and destination types are the same>
-
-If the source and destination types are the same, there is Type Compatibility.
-
-
-  my $num1 : int;
-  my $num2 : int;
-  $num1 = $num2;
-
-B<When the source Type is L<"byte[] Type"> and the destination Type is L<"String Type">>
-
-If the source Type is L<"byte[] Type"> and the destination Type is L<"String Type">, there is Type Compatibility.
-
-
-  my $bytes = new byte[3];
-  my $str : string;
-  $str = $bytes;
-
-B<When the source Type is Object Type and the destination Type is Any Object Type>
-
-
-  my $foo : Foo = new Foo;
-  my $object : object;
-  $object = $foo;
-
-B<When the source Type and destination Type are Any Object Type or Any Object Type Array and the source Type Dimension count is greater than or equal to the destination Type Dimension count>
-
-
-  my $objects_dim2_src : object[];
-  my $objects_dim1_dist : object;
-  $objects_dim1_dist = $objects_dim2_src;
-
-Note that the general object Array and the Basic Type Array are not compatible.
-
-
-  # Compilation error
-  my $objets : object[] = new int[3];
-
-If the types are not compatible, L<"implicit Type Conversion"> is tried. If the implicit Type Conversion fails, compilation errors occur
-
 
 
 =head1 Type Conversion
@@ -6967,7 +6915,7 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
   </tr>
   <tr>
     <td>
-      <b>L<"String Type"></b>
+      <b>string Type</b>
     </td>
     <td>
       <b>Numeric Types</b>
@@ -6998,6 +6946,8 @@ Implicit type conversion is automatic type conversion performed by SPVM. The fol
 
 Implicit Type Conversion occurs when:
 
+=head3 Implicit Widening Type Conversion
+
 If both the source and destination Type are Numeric Types and the destination Type is greater than the source Type, L<"Numeric Widening Type Conversion"> is done.
 
 
@@ -7005,35 +6955,33 @@ If both the source and destination Type are Numeric Types and the destination Ty
   my $num : long = 123;
   my $num : double = 12.5f;
 
+=head3 Implicit Narrowing Type Conversion
 
 Both the source and destination Type are Numeric Types, and the destination Type is smaller than the source Type, and the source value can be expressed in the range of Integer Literal and destination Type value. L<"Numeric Narrowing Type Conversion"> is performed.
-
-
 
   # Implicit Narrowing Type Conversion
   my $num : byte = 123;
   my $num : short = 134;
 
+=head3 Implicit Numeric Type to Any Object Conversion
 
 If the source Type is Numeric Types and the destination Type is Any Object Type, L<"Boxing Type Conversion"> to the corresponding Numeric Object Type Is done. In the following case, the converted Int Type object is assigned to the generic object.
-
-
 
   # Implicit Boxing Type Conversion to objectType
   my $num = 123;
   my $object : object = $num;
 
-When the source Type is Numeric Types and the destination Type is the corresponding Numeric Object Type, L<"Boxing Type Conversion"> to the corresponding Numeric Object Type a> is done.
+=head3 Implicit Numeric Type to Numeric Object Type Conversion
 
+When the source Type is Numeric Types and the destination Type is the corresponding Numeric Object Type, L<"Boxing Type Conversion"> to the corresponding Numeric Object Type a> is done.
 
   # Implicit Boxing Type Conversion to object Type
   my $num = 123;
   my $object : Int = $num;
 
-
 When the source Type is Any Object Type and the destination Type is Numeric Types, L<"Unboxing Type Conversion"> in the corresponding Numeric Types are displayed. Will be opened. In the following case, an attempt is made to convert the Int Type object to L<"int Type">.
 
-
+=head3 Implicit Numeric Object Type to Numeric Type Conversion
 
   # Implicit Unboxing Type Conversion from objectType-
   my $object : object;
@@ -7041,25 +6989,19 @@ When the source Type is Any Object Type and the destination Type is Numeric Type
 
 If the source Type is Numeric Object Type and the destination Type is the corresponding Numeric Types, L<"Unboxing Type Conversion"> in the corresponding Numeric Types Is done.
 
-
-
   # Implicit Unboxing Type Conversion from Numeric Object Type
   my $num_obj = Int->new(3);
   my $num : int = $num_obj;
 
+=head3 Implicit Numeric Type to string Type Conversion
 
-If the source Type is Numeric Types and the destination Type is L<"String Type">, <a href = "#language-type-convertion-numeric-to-string ">Numeric-to-String Type Conversion</a> is performed. In the following case, the numerical value "123" is converted to String "" 123 "" and assigned.
+If the source Type is Numeric Types and the destination Type is L<"string Type">, <a href = "#language-type-convertion-numeric-to-string ">Numeric-to-string Type Conversion</a> is performed. In the following case, the numerical value "123" is converted to String "" 123 "" and assigned.
 
-
-
-  # mplicit Boxing Type Conversion to String Type
+  # Implicit Boxing Type Conversion to string Type
   my $num = 123;
   my $str : string = $num;
 
-
-
 =head2 Numeric Types Conversion
-
 
 Numeric Types Conversion is the conversion from L<"Numeric Types"> to L<"Numeric Types">.
 
@@ -7155,36 +7097,28 @@ Numeric Widening Type Conversion is a conversion rule applied when converting fr
 
 
 
-=head2 String-to-byte[] Type Conversion
+=head2 string to byte[] Type Conversion
 
+string to byte[] type conversion is a L<"Type Conversion"> from L<"string Type"> to L<"byte[] Type">.
 
-B<String-to-byte[] Type Conversion> is the Type Conversion from L<"String Type"> to L<"byte[] Type">.
-
-
-  # String-to-byte[] Type Conversion
+  # string to byte[] Type Conversion
   my $string : string = "Hello";
   my $bytes : byte[] = (byte[])$string;
 
+A new byte[] object is created and all characters in the string are copied to the elements of byte[] object.
 
-A new byte[] Type object is created and all characters in string are copied to the elements of byte[] Type.
+=head2 byte[] to string Type Conversion
 
+byte[] to string type conversion is a L<"Type Conversion"> from L<"byte[] type"> to L<"string Type">.
 
-=head2 byte[]-to-String Type Conversion
-
-
-B<byte[]-to-String Type Conversion> is the Type Conversion from L<"byte[] Type"> to L<"String Type">.
-
-
-  # byte[]-to-String Type Conversion
+  # byte[] to string type conversion
   my $bytes : byte[] = new byte[3];
   $bytes->[0] = 'a';
   $bytes->[1] = 'b';
   $bytes->[2] = 'c';
   my $string : string = (string)$bytes;
 
-
-A new String Type object is created and all elements in byte[] are copied to the characters of String Type.
-
+A new string is created and all elements in the byte[] object are copied to the characters of the string.
 
 =head2 Boxing Type Conversion
 
@@ -7340,16 +7274,11 @@ B<Examples:>
 
 SPVM has a mechanism of Exception. Exception consists of raising L<"Exception"> and catching the exception.
 
-
-
 =head2 Throw Exception
 
-Use die Statement to throw L<"Exception">.
-
+Use L<"die Statement"> to throw L<"Exception">.
 
   die EXPRESSION;
-
-Expression must be L<"String Type">.
 
 When the die statement is executed, the stack trace and the String specified by Expression are displayed, and the program ends. The stack trace includes class names, Method names, File Name and line number. File Name is a relative File Name from the path where Module is loaded.
 
