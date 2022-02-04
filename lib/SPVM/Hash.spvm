@@ -33,13 +33,13 @@ class Hash : precompile {
     
     if ($key_values) {
       for (my $i = 0; $i < @$key_values; $i += 2) {
-        my $key = $key_values->[$i];
+        my $key = (string)$key_values->[$i];
         my $value = $key_values->[$i + 1];
         unless ($key isa string) {
           die "Key must be string";
         }
 
-        $self->set((string)$key => $value);
+        $self->set($key => $value);
       }
     }
     
@@ -217,13 +217,19 @@ class Hash : precompile {
     return (int)(Hash->_murmur_hash($key, $default_seed) % $bucket_count);
   }
 
-  static method _set_to_container : void ($entries : Hash::Entry[], $bucket_count : int, $count_ref : int*,
-    $key : string, $val : object) {
+  static method _set_to_container : void (
+    $entries : Hash::Entry[],
+    $bucket_count : int,
+    $count_ref : int*,
+    $key : string,
+    $val : object)
+  {
     my $index = Hash->_index_by_key($key, $bucket_count);
     my $ref = $entries->[$index];
     unless ($ref) {
       $entries->[$index] = new Hash::Entry;
-      $entries->[$index]->{key} = $key;
+      my $new_key = Fn->copy_string($key);
+      $entries->[$index]->{key} = $new_key;
       $entries->[$index]->{val} = $val;
       $entries->[$index]->{next_entry} = undef;
       ++$$count_ref;
@@ -236,7 +242,8 @@ class Hash : precompile {
       }
       unless ($ref->{next_entry}) {
         $ref->{next_entry} = new Hash::Entry;
-        $ref->{next_entry}->{key} = $key;
+        my $new_key = Fn->copy_string($key);
+        $ref->{next_entry}->{key} = $new_key;
         $ref->{next_entry}->{val} = $val;
         $ref->{next_entry}->{next_entry} = undef;
         ++$$count_ref;

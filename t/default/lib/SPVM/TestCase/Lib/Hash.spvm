@@ -390,15 +390,24 @@ class TestCase::Lib::Hash {
       return (string)$a cmp (string)$b;
     });
 
-    unless ($keys->[0] == $key0) {
+    unless ($keys->[0] eq $key0) {
+      return 0;
+    }
+    unless ($keys->[0] != $key0) {
       return 0;
     }
 
-    unless ($keys->[1] == $key1) {
+    unless ($keys->[1] eq $key1) {
+      return 0;
+    }
+    unless ($keys->[1] != $key1) {
       return 0;
     }
 
-    unless ($keys->[2] == $key2) {
+    unless ($keys->[2] eq $key2) {
+      return 0;
+    }
+    unless ($keys->[2] != $key2) {
       return 0;
     }
 
