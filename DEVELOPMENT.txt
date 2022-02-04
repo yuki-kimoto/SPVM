@@ -84,3 +84,10 @@ DEVELOPERS NOTE
     - constant name is ,for example, SPVM_TYPE_C_FLAG_REF.
       all character is upper case or under score. need _C_ between package name and constant base name
     - fix all warnings before CPAN release
+  
+  UTILITIES
+  
+    Get all keywords
+    
+      perl -n -e 'if (/strcmp\s*\(\s*keyword\s*,\s*"(.+?)"/) { print "$1\n" } ' lib/SPVM/Builder/src/spvm_toke.c
+    
