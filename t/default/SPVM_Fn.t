@@ -426,6 +426,12 @@ SKIP: {
   ok(SPVM::TestCase::Lib::Fn1->sort_object);
 }
 
+# new_string_len
+{
+  # copy_array_range_byte
+  ok(SPVM::TestCase::Lib::Fn3->new_string_len);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

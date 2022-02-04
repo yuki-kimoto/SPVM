@@ -706,3 +706,17 @@ int32_t SPVM__Fn__new_array_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__new_string_len(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t length = stack[0].ival;
+  
+  if (length < 0) {
+    return env->die(env, "Length must be a positive value");
+  }
+  
+  void* string = env->new_string(env, NULL, length);
+  
+  stack[0].oval = string;
+  
+  return 0;
+}

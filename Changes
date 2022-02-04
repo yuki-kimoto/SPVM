@@ -1,4 +1,8 @@
 Revision history for SPVM
+0.9502  2021-02-05
+        [CHANGE]
+        * Add new_string_len method to Fn module.
+        
 0.9501  2021-02-04
         [CHANGE]
         * Improve compilation error messages. All method expressions is Foo->bar.

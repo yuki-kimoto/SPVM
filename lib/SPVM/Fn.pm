@@ -1056,6 +1056,14 @@ Get the substring of the string with the start offset and the length.
 
 Create a new generic object array as the same type as the given array.
 
+=head2 new_string_len
+
+  static method new_string_len : string ($length : int);
+
+Create a new string with the length.
+
+If the length is not a positive value, compilation errors occur.
+
 =head2 powi
 
   static method powi : int ($x : int, $y : int)
