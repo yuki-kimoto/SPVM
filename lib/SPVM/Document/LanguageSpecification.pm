@@ -257,7 +257,7 @@ The list of keywords.
 
 =head2 Operators for Tokenization
 
-The list of operators for tokenizing.
+The list of operators for tokenization.
 
   !
   !=
@@ -314,6 +314,40 @@ The list of operators for tokenizing.
   =>
 
 Note that operators for tokenization include those that are not really operators, and do not include operators with names.
+
+=head1 Comments
+
+A comment begins with "#" and ends with L<"Line Terminators">.
+
+  # Comment
+
+Comments have no meaning in tokenization.
+
+=head1 POD
+
+POD(Plain Old Document) is a syntax to write documents easily.
+
+POD starts from the line beginning with C<=>, followed by any string that consists of ASCII printable characters, and ending with L<"Line Terminators">.
+
+POD ends from the line beginning with C<=cut>, and ending with L<"Line Terminators">.
+
+B<POD Examples:>
+
+  =pod
+
+  Multi-Line
+  Comment
+
+  =cut
+
+  =head1
+
+  Multi-Line
+  Comment
+
+  =cut
+
+POD has no meaning in tokenization.
 
 =head1 Syntax Parsing
 
@@ -1057,47 +1091,6 @@ The following is a correspondence table between tokens in yacc/bison and keyword
 </table>
 
 =end html
-
-
-=head1 Comment
-
-
-Comment begins with "#" and ends with L<"Line Terminators">.
-
-
-  # Comment
-
-
-Comment has no meaning in the program execution.
-
-=head1 POD
-
-
-POD(Plain Old Document) is a syntax to write documents easily.
-
-You can use POD as Multi-Line comments.
-
-POD starts from the line beginning with "=", followed by any character string of one or more characters, and ending with L<"Line Terminators">.
-
-POD ends from the line beginning with "=cut", and ending with L<"Line Terminators">.
-
-B<POD Example:>
-
-  =pod
-
-  Multi-Line
-  Comment
-
-  =cut
-
-  =head1
-
-  Multi-Line
-  Comment
-
-  =cut
-
-POD has no meaning in the program execution.
 
 
 =head1 Class
