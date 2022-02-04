@@ -1,0 +1,5 @@
+class TestCase::CompileError::Type::MutableNoStringCaseInt {
+  static method main : int () {
+    my $value : mutable int;
+  }
+}

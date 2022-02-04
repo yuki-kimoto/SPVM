@@ -606,4 +606,21 @@ sub print_error_messages {
   }
 }
 
+# Type
+{
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Type::MutableNoStringCaseStringArray', __FILE__, __LINE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Type::MutableNoStringCaseInt', __FILE__, __LINE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+}
+
+
 done_testing;

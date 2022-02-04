@@ -363,7 +363,7 @@ Decimal Representation of Integer Literal is represented by one or more consecut
 
 Can be prefixed with "+" or "-".
 
-L<"Type"> of Integer Literal is L<"int Type"> by default.
+L<"Types"> of Integer Literal is L<"int Type"> by default.
 
 If Integer Literal exceeds the range of numbers that can be represented by L<"int Type">, compilation errors occur.
 
@@ -487,11 +487,11 @@ Exponential Notation is "e" or "E" for Decimal Floating Point Literal, and "p" o
 
 The meaning of Exponent Part is decimal shift for Decimal Floating Point Literal, or binary shift for Hexadecimal Floating Point Literal.
 
-If Suffix Part is "f" or "F", the L<"Type"> of Floating Point Literal is L<"float Type">.
+If Suffix Part is "f" or "F", the L<"Types"> of Floating Point Literal is L<"float Type">.
 
-If Suffix Part is "d" or "D", the L<"Type"> of Floating Point Literal is L<"double Type">.
+If Suffix Part is "d" or "D", the L<"Types"> of Floating Point Literal is L<"double Type">.
 
-If Suffix Part is omitted, the L<"Type"> of Floating Point Literal is L<"double Type">.
+If Suffix Part is omitted, the L<"Types"> of Floating Point Literal is L<"double Type">.
 
 If Floating Point Literal is L<"float Type">, the Floating Point Literal is converted to float value using C standard "strtof" function. If the conversion fails, compilation errors occur.
 
@@ -526,7 +526,7 @@ Content of Character Literal is one printable ASCII character or one Escape Char
 
 Charater Literal Type is "L<"byte Type">"
 
-L<"Type"> of Charater Literal is L<"byte Type">.
+L<"Types"> of Charater Literal is L<"byte Type">.
 
 =begin html
 
@@ -1944,7 +1944,7 @@ B<Class Variable> is a global variable that belongs to L<"Class"> and exists fro
 
 Class Variable must be defined directly under L<"Class Definition">.
 
-Class Variable Definition must specify L<"Type">. The Type must be L<"Numeric Types"> or L<"Object Type">.
+Class Variable Definition must specify L<"Types">. The Type must be L<"Numeric Types"> or L<"Object Type">.
 
 Class variable mames must follows the rule specified in L<"Class Variable Names">, and must not contain "::", otherwise compilation errors occur.
 
@@ -2090,7 +2090,7 @@ Field is a data area in a L<"object created using new keyword">
 
 Field must be defined directly under L<"Class Definition">.
 
-Field Definition must be specify L<"Type">. The Type must be L<"Numeric Types"> or L<"Object Type">.
+Field Definition must be specify L<"Types">. The Type must be L<"Numeric Types"> or L<"Object Type">.
 
 Field names must follows the rule specified in L<"Field Names">.
 
@@ -2694,7 +2694,7 @@ Local Variable is declared using B<my> L<"Keyword">.
 
 The local variable name must be follow the rule of L<"Local Variable Names">.
 
-L<"Type"> must be specified. Type must be L<"Numeric Types">, L<"Object Type">, L<"Multi Numeric Types">, or L<"Reference Type">.
+L<"Types"> must be specified. Type must be L<"Numeric Types">, L<"Object Type">, L<"Multi Numeric Types">, or L<"Reference Type">.
 
 
   # Local Variable Declaration Examples
@@ -2734,7 +2734,7 @@ Initialization can be done at the same time as Local Variable Declaration.
   my $point : Point = new Point;
 
 
-Using L<"Type Inference">, you omit L<"Type"> in Local Variable Declaration.
+Using L<"Type Inference">, you omit L<"Types"> in Local Variable Declaration.
 
 
   # int
@@ -3096,11 +3096,11 @@ All Fields must be the same L<"Numeric Types">.
 
 The maximum number of Fields is 255.
 
-Multi Numeric Types can be used as L<"Type"> of L<"Local Variable Declaration">.
+Multi Numeric Types can be used as L<"Types"> of L<"Local Variable Declaration">.
 
-Multi Numeric Types can be used as an argument L<"Type"> in L<"Method Definition"> .
+Multi Numeric Types can be used as an argument L<"Types"> in L<"Method Definition"> .
 
-Multi Numeric Types can be used as L<"Type"> of Return Value in L<"Method Definition">.
+Multi Numeric Types can be used as L<"Types"> of Return Value in L<"Method Definition">.
 
 Multi Numeric Types can be used as L<"Basic Type"> of L<"Array Type"> .
 
@@ -3241,7 +3241,7 @@ The Element Type is L<"Multi Numeric Types">, not L<"Object Type">.
 
 For example, Point_3i[5] is continuous 15 (= 3 * 5) count L<"int Type"> Value.
 
-L<"Type"> of Multi Numeric Array is L<"Array Type">.
+L<"Types"> of Multi Numeric Array is L<"Array Type">.
 
 
 =head2 Multi Numeric Array Access
@@ -3523,7 +3523,7 @@ If the field names does not found in the <a href="#language-class">Class">, comp
 
 Get Field Value Expression returns the value of the Field stored in the object.
 
-Retrun Type is The L<"Type"> of the Field.
+Retrun Type is The L<"Types"> of the Field.
 
 B<Get Field Value Example:>
 
@@ -3578,7 +3578,7 @@ If the field names does not found in the L<"Class">, compilation errors occur
 
 Get Multi Numeric Field Value Expression returns the field value in the Multi Numeric Value.
 
-Retrun Type is The L<"Type"> of the Field.
+Retrun Type is The L<"Types"> of the Field.
 
 B<Get Multi Numeric Field Value Example:>
 
@@ -3631,7 +3631,7 @@ If the field names does not found in the L<"Class">, compilation errors occur
 
 Get Multi Numeric Field Value via Dereference Expression returns the field value in the Multi Numeric Value.
 
-Retrun Type is The L<"Type"> of the Field.
+Retrun Type is The L<"Types"> of the Field.
 
 B<Get Multi Numeric Field Value via Dereference Example:>
 
@@ -5978,21 +5978,19 @@ An empty statement is a statement that ends with just ";".
 
 
 
-=head1 Type
+=head1 Types
 
-=head2 Type Summary
+=head2 The Summary of Types
 
 SPVM is a static type language. All data has a static type.
 
 L<"Local Variable Declaration">, L<"Field Definition">, L<"Class Variable Definition">, and B<Arguments> and B<Return Value> of L<"Method Definition"> must specify B<Type>.
 
-
 In L<"Local Variable Declaration">, L<"Type Inference"> can be used.
-
 
 =head2 Type Initial Value
 
-Local Variable Initial Value,L<"Class Variable Initial Value">,Create ObjectにおけるFieldの初期値は,Type Initial Valueによって決まります。
+Local Variable Initial Value are described in L<"Class Variable Initial Value">.
 
 A list of Type Initial Value. All Bit columns in the data are set to 0.
 
@@ -6788,7 +6786,7 @@ Multi Numeric Reference Type means L<"Reference Type"> for L<"Multi Numeric Type
 
 =head1 Type Inference
 
-Omitting L<"Type"> when L<"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the Type on the Right side of Assignment Operator.
+Omitting L<"Types"> when L<"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the Type on the Right side of Assignment Operator.
 
 
   # int
@@ -7318,7 +7316,23 @@ B<Bool Type Conversion Examples>
     # not run
   }
 
+=head1 Type Qualifiers
 
+Type qualifiers qualify the type.
+
+  Qualifier Type
+
+=head2 mutable Type Qualifier
+
+The C<mutable> type qualifier is used to allow to set the character of the string.
+
+  my $string : mutable string;
+
+B<Examples:>
+  
+  # Mutable string
+  my $message = (mutable string)"abc";
+  $message->[0] = 'd';
 
 =head1 Exception
 

@@ -4634,6 +4634,12 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
       SPVM_COMPILER_error(compiler, "Array of oarray type is invalid type at %s line %d", op_type->file, op_type->line);
       return;
     }
+
+    // mutable only allow string type
+    if (type->is_mutable && !(type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING && type->dimension == 0)) {
+      SPVM_COMPILER_error(compiler, "The mutable type qualifier can use only string type at %s line %d", op_type->file, op_type->line);
+      return;
+    }
   }
 }
 
