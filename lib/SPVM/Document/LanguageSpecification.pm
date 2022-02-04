@@ -34,7 +34,7 @@ Identifiers are L<"Class Names">, L<"Method Names">, L<"Field Names">, L<"Class 
 
 =head2 Class Names
 
-A class names is one or more alphabet(C<a-zA-Z>), number(C<0-9>), underscore(C<_>) or C<::> of ASCII.
+A class names consists of one or more alphabet(C<a-zA-Z>), number(C<0-9>), underscore(C<_>) or C<::> of ASCII.
 
 The part names of a class name must start uppercase letter. Part names means, for example, "Foo", "Bar", and "Baz" in the class name "Foo:Bar::Baz".
 
@@ -64,7 +64,7 @@ B<Examples of invalid class names:>
 
 =head2 Method Names
 
-A method name is one or more alphabet(C<a-zA-Z>), number(C<0-9>), or underscore(C<_>) of ASCII.
+A method name consists of one or more alphabet(C<a-zA-Z>), number(C<0-9>), or underscore(C<_>) of ASCII.
 
 The first character must not a number.
 
@@ -97,26 +97,34 @@ A method name can be the same as L<Keywords>.
 
 =head2 Field Names
 
-Field Names is one or more alphabet(a-zA-Z), number(0-9), or underscore(_) of ASCII.
+A field name consists of one or more alphabet(C<a-zA-Z>), number(C<0-9>), or underscore(C<_>) of ASCII.
 
-First character must not number character.
+The first character must not number.
   
-Underscore cannot be continued twice.
+Underscore(C<_>) cannot be continued twice.
 
+If field names are invalid, a compilation error occurs.
 
-  # Valid Field Names
+B<Examples of valid field names:>
+
+  # Valid field names
   FOO
   FOO_BAR3
   foo
   foo_bar
   _foo
   _foo_bar_
-  
-  # Invalid Field Names
-  3foo
+
+B<Examples of invalid field names:>
+
+  # Invalid field names
   foo__bar
+  3foo
 
-
+A field name can be the same as L<Keywords>.
+  
+  # "if" is a valid field name although this name is the same as the "if" keyword.
+  has if : int;
 
 =head2 Class Variable Names
 
@@ -1532,13 +1540,11 @@ Field must be defined directly under L<"Class Definition">.
 
 Field Definition must be specify L<"Type">. The Type must be L<"Numeric Types"> or L<"Object Type">.
 
-Field Names must follows the rule specified in L<"Field Names">.
-
-Field Names is allowed as same as L<"Keyword">.
+Field names must follows the rule specified in L<"Field Names">.
 
 Field Type must be L<"Numeric Types"> or L<"Object Type">, otherwise a compilation error occurs.
 
-If more than one Field Names Variable with the same name is defined, a compilation error occurs.
+If more than one field names Variable with the same name is defined, a compilation error occurs.
 
 Field Descriptor can be specified together in Field Definition.
 
@@ -1585,7 +1591,7 @@ List of Field Descriptors.
       <b>ro</b>
     </td>
     <td>
-      This Field has Read Accessor. Read Accessor name is the same as Field Names. For example, If the Field Names is "foo", Read Accessor name is "foo".
+      This Field has Read Accessor. Read Accessor name is the same as field mames. For example, If the field names is "foo", Read Accessor name is "foo".
     </td>
   </tr>
   <tr>
@@ -1593,7 +1599,7 @@ List of Field Descriptors.
       <b>wo</b>
     </td>
     <td>
-      This Field has Write Accessor. Write Accessor name is the same as Field Names adding "set_" to top. For example, If the Field Names is "foo", Read Accessor name is "set_foo".
+      This Field has Write Accessor. Write Accessor name is the same as field names adding "set_" to top. For example, If the field names is "foo", Read Accessor name is "set_foo".
     </td>
   </tr>
   <tr>
@@ -3440,7 +3446,7 @@ B<Get Field Value Expression> is a Expression to get L<"Field"> Value.
 
 Invocant Expression is L<"Class Type">. If Expression is L<"Multi Numeric Types"> Value, The Field Access is L<"Get Multi Numeric Field Value">. If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise a compilation error occurs.
 
-If the Field Names does not found in the <a href="#language-class">Class">, a compilation error occurs
+If the field names does not found in the <a href="#language-class">Class">, a compilation error occurs
 
 Get Field Value Expression returns the value of the Field stored in the object.
 
@@ -3467,7 +3473,7 @@ Invocant Expression is L<"Class Type">. If Invocant Expression is L<"Multi Numer
 
 If the assignment does not satisfy L<"Type Compatibility"> of the Type of Field, a compilation error occurs.
 
-If the Field Names does not found in the L<"Class">, a compilation error occurs.
+If the field names does not found in the L<"Class">, a compilation error occurs.
 
 Set Field Value Expression returns the value of Field after setting. 
 
@@ -3495,7 +3501,7 @@ B<Get Multi Numeric Field Value Expression> is a Expression to get Field Value o
 
 Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Get Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
   
-If the Field Names does not found in the L<"Class">, a compilation error occurs
+If the field names does not found in the L<"Class">, a compilation error occurs
 
 Get Multi Numeric Field Value Expression returns the field value in the Multi Numeric Value.
 
@@ -3521,7 +3527,7 @@ Set Multi Numeric Field Value Expression is a Expression to set Field Value of L
 
 Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<"Set Field Value">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
 
-If the Field Names does not found in the L<"Class">, a compilation error occurs.
+If the field names does not found in the L<"Class">, a compilation error occurs.
 
 Set Multi Numeric Field Value Expression returns the value of Field after setting. 
 
@@ -3548,7 +3554,7 @@ B<Get Multi Numeric Field Value via Dereference Expression> is a Expression to g
 
 Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, the Field Access is , L<"Get Field Value">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Get Multi Numeric Field Value">, otherwise a compilation error occurs.
 
-If the Field Names does not found in the L<"Class">, a compilation error occurs
+If the field names does not found in the L<"Class">, a compilation error occurs
 
 Get Multi Numeric Field Value via Dereference Expression returns the field value in the Multi Numeric Value.
 
@@ -3574,7 +3580,7 @@ Set Multi Numeric Field Value Expression via Dereference is a Expression to set 
 
 Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, L<"Set Field Value">. If Invocant Expression is L<"Multi Numeric Types">, L<"Set Multi Numeric Field Value">, otherwise a compilation error occurs.
 
-If the Field Names does not found in the L<"Class">, a compilation error occurs
+If the field names does not found in the L<"Class">, a compilation error occurs
 
 Set Multi Numeric Field Value via Dereference Expression returns the value of Field after setting.
 
@@ -5145,7 +5151,7 @@ isweak Operator is an Operator that checks whether Field is</a>L<"Weaken Referen
 
 The Type of object Expression must be L<"Class Type">. otherwise a compilation error occurs.
 
-Field Names must be a existed Field Names, otherwise a compilation error occurs.
+Field names must be a existed field names, otherwise a compilation error occurs.
 
 The Type of the value stored in field must be <a href="#language-type-object">Object Type">, otherwise a compilation error occurs.
 
@@ -5739,7 +5745,7 @@ A weaken Statement is a Statement that sets L<"Weaken Reference"> for the Field.
 
 The Type of the object Expression must be L<"Class Type">, otherwise a compilation error occurs.
 
-Field Names must be an existing Field Names, otherwise a compilation error occurs.
+Field names must be an existing field names, otherwise a compilation error occurs.
 
 The Type of the value saved in Field must be L<"Object Type">, otherwise a compilation error occurs.
 
@@ -5789,7 +5795,7 @@ unweaken Statement is a Statement that cancels L<"Weaken Reference"> for Field.
 
 The Type of the object Expression must be L<"Class Type">, otherwise a compilation error occurs.
 
-Field Names must be an existing Field Names, otherwise a compilation error occurs.
+Field names must be an existing Field names, otherwise a compilation error occurs.
 
 The Type of the value saved in Field must be L<"Object Type">, otherwise a compilation error occurs.
 
