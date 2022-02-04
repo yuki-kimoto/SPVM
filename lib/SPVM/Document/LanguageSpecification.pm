@@ -8,7 +8,7 @@ SPVM::Document::LanguageSpecification - SPVM Language Specification
 
 B<SPVM::Document::LanguageSpecification> describes SPVM language specification.
 
-=head1 Tokenizing
+=head1 Tokenization
 
 Describes the tokenizing of the SPVM language.
 
@@ -255,7 +255,7 @@ The list of keywords.
   __FILE__
   __LINE__
 
-=head2 Operators for Tokenizing
+=head2 Operators for Tokenization
 
 The list of operators for tokenizing.
 
@@ -312,6 +312,8 @@ The list of operators for tokenizing.
   ,
   ->
   =>
+
+Note that operators for tokenization include those that are not really operators, and do not include operators with names.
 
 =head1 Syntax Parsing
 
