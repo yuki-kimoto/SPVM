@@ -193,7 +193,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "MAKE_READ_ONLY",
     "IS_READ_ONLY",
     "ISA_NUMERIC_ARRAY",
-    "ISA_MULTI_NUMERIC_ARRAY",
+    "ISA_MULNUM_ARRAY",
     "ISA_OBJECT_ARRAY",
     "ISA_ARRAY",
     "GET_ELEM_WIDTH",
