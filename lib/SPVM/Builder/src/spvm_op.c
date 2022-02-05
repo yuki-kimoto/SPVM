@@ -188,6 +188,15 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "AS",
     "MUTABLE",
     "END_OF_FILE",
+    "NEW_STRING_LEN",
+    "COPY",
+    "MAKE_READ_ONLY",
+    "IS_READ_ONLY",
+    "ISA_NUMERIC_ARRAY",
+    "ISA_MULTI_MUMERIC_ARRAY",
+    "ISA_OBJECT_ARRAY",
+    "ISA_ARRAY",
+    "GET_ELEM_WIDTH",
   };
   
   return id_names;
