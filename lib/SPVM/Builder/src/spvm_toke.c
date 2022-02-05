@@ -1826,6 +1826,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   return CLASS;
                 }
+                else if (strcmp(keyword, "copy") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COPY);
+                  return COPY;
+                }
                 break;
               }
               case 'd' : {
@@ -1894,6 +1898,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_GE);
                   return STRGE;
                 }
+                else if (strcmp(keyword, "get_elem_width") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, GET_ELEM_WIDTH);
+                  return GET_ELEM_WIDTH;
+                }
                 break;
               }
               case 'h' : {
@@ -1913,13 +1921,33 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISA);
                   return ISA;
                 }
-                else if (strcmp(keyword, "isweak") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISWEAK);
-                  return ISWEAK;
+                else if (strcmp(keyword, "isa_numeric_array") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_NUMERIC_ARRAY);
+                  return ISA_NUMERIC_ARRAY;
+                }
+                else if (strcmp(keyword, "isa_multi_mumeric_array") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_MULTI_MUMERIC_ARRAY);
+                  return ISA_MULTI_MUMERIC_ARRAY;
+                }
+                else if (strcmp(keyword, "isa_object_array") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_OBJECT_ARRAY);
+                  return ISA_OBJECT_ARRAY;
+                }
+                else if (strcmp(keyword, "isa_object_array") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_OBJECT_ARRAY);
+                  return ISA_OBJECT_ARRAY;
+                }
+                else if (strcmp(keyword, "isa_array") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_ARRAY);
+                  return ISA_ARRAY;
                 }
                 else if (strcmp(keyword, "int") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
                   return INT;
+                }
+                else if (strcmp(keyword, "isweak") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISWEAK);
+                  return ISWEAK;
                 }
                 break;
               }
@@ -1951,7 +1979,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 'm' : {
-                if (strcmp(keyword, "my") == 0) {
+                if (strcmp(keyword, "make_read_only") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_MAKE_READ_ONLY);
+                  return MAKE_READ_ONLY;
+                }
+                else if (strcmp(keyword, "my") == 0) {
                   SPVM_MY* my = SPVM_MY_new(compiler);
                   yylvalp->opval = SPVM_OP_new_op_my(compiler, my, compiler->cur_file, compiler->cur_line);
                   return MY;
@@ -1993,6 +2025,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(keyword, "new") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NEW);
                   return NEW;
+                }
+                else if (strcmp(keyword, "new_string_len") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, NEW_STRING_LEN);
+                  return NEW_STRING_LEN;
                 }
                 break;
               }
