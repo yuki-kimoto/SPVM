@@ -25,6 +25,7 @@
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
 %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
 %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
+%token <opval> MAKE_READ_ONLY
 
 %type <opval> grammar
 %type <opval> opt_classes classes class class_block
@@ -51,11 +52,11 @@
 %left <opval> BIT_OR BIT_XOR
 %left <opval> BIT_AND
 %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
-%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA NUMERIC_CMP STRING_CMP
+%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA ISA_NUMERIC_ARRAY ISA_MULTI_MUMERIC_ARRAY ISA_OBJECT_ARRAY ISA_ARRAY NUMERIC_CMP STRING_CMP
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE REMAINDER
-%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP
+%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN COPY  IS_READ_ONLY GET_ELEM_WIDTH
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -500,6 +501,9 @@ statement
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
     }
+  | MAKE_READ_ONLY {
+    $$ = $1;
+  }
 
 for_statement
   : FOR '(' opt_expression ';' expression_or_logical_op ';' opt_expression ')' block
@@ -776,6 +780,22 @@ unary_op
     {
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
+  | NEW_STRING_LEN expression
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+  | COPY expression
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+  | IS_READ_ONLY expression
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+  | GET_ELEM_WIDTH expression
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
 
 inc
   : INC expression
@@ -908,6 +928,22 @@ isa
   : expression ISA type
     {
       $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
+    }
+  | expression ISA_NUMERIC_ARRAY
+    {
+      $$ = SPVM_OP_build_isa(compiler, $2, $1, NULL);
+    }
+  | expression ISA_MULTI_MUMERIC_ARRAY
+    {
+      $$ = SPVM_OP_build_isa(compiler, $2, $1, NULL);
+    }
+  | expression ISA_OBJECT_ARRAY
+    {
+      $$ = SPVM_OP_build_isa(compiler, $2, $1, NULL);
+    }
+  | expression ISA_ARRAY
+    {
+      $$ = SPVM_OP_build_isa(compiler, $2, $1, NULL);
     }
     
 logical_op
