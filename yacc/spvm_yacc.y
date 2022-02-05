@@ -52,7 +52,7 @@
 %left <opval> BIT_OR BIT_XOR
 %left <opval> BIT_AND
 %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
-%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA ISA_NUMERIC_ARRAY ISA_MULTI_MUMERIC_ARRAY ISA_OBJECT_ARRAY ISA_ARRAY NUMERIC_CMP STRING_CMP
+%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA ISA_NUMERIC_ARRAY ISA_MULTI_NUMERIC_ARRAY ISA_OBJECT_ARRAY ISA_ARRAY NUMERIC_CMP STRING_CMP
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE REMAINDER
@@ -933,7 +933,7 @@ isa
     {
       $$ = SPVM_OP_build_isa(compiler, $2, $1, NULL);
     }
-  | expression ISA_MULTI_MUMERIC_ARRAY
+  | expression ISA_MULTI_NUMERIC_ARRAY
     {
       $$ = SPVM_OP_build_isa(compiler, $2, $1, NULL);
     }

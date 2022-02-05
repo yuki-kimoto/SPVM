@@ -1925,9 +1925,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_NUMERIC_ARRAY);
                   return ISA_NUMERIC_ARRAY;
                 }
-                else if (strcmp(keyword, "isa_multi_mumeric_array") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_MULTI_MUMERIC_ARRAY);
-                  return ISA_MULTI_MUMERIC_ARRAY;
+                else if (strcmp(keyword, "isa_multi_numeric_array") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_MULTI_NUMERIC_ARRAY);
+                  return ISA_MULTI_NUMERIC_ARRAY;
                 }
                 else if (strcmp(keyword, "isa_object_array") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_OBJECT_ARRAY);
