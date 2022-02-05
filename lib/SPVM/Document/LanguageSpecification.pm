@@ -2201,7 +2201,7 @@ B<Field Definition Example:>
 Field Access is an operation to access Field to get or set a value.
 
 
-  EXPRESSION->{FIELD_NAME}
+  OPERAND->{FIELD_NAME}
 
 
 Field Access has three different meanings.
@@ -2881,7 +2881,7 @@ if Block is a scope block.
 
 
   # if Block
-  if (EXPRESSION) {
+  if (OPERAND) {
   
   }
 
@@ -2894,7 +2894,7 @@ elsif Block is a scope block.
 
 
   #elsif Block
-  elsif (EXPRESSION) {
+  elsif (OPERAND) {
   
   }
 
@@ -2933,7 +2933,7 @@ while Block is a scope block.
 
 
   # while Block
-  while (EXPRESSION) {
+  while (OPERAND) {
   
   }
 
@@ -2945,7 +2945,7 @@ while Block is a scope block.
 switch Block is a scope block.
 
 
-  switch (EXPRESSION) {
+  switch (OPERAND) {
   
   }
 
@@ -3415,14 +3415,14 @@ B<Get Local Variable Value> is a Expression to get L<"Local Variable"> Value.
 B<Set Local Variable Value Expression> is a Expression to set L<"Local Variable"> Value using L<"Assignment Operator">.
 
 
-  $var = RIGHT_EXPRESSION
+  $var = RIGHT_OPERAND
 
 
 The Assignment must satisfy L<"Type Compatibility">.
 
 Set Local Variable Value Expression returns the value after setting.
 
-If Right Expression is L<"Object Type">, Reference Count of the object is incremented by 1.
+If right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to $var before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3469,13 +3469,13 @@ B<Set Class Variable Value Expression> is a Expression to set L<"Class Variable"
 .
 
 
-  $CLASS_NAME::CLASS_VARIABLE_NAME = RIGHT_EXPRESSION
+  $CLASS_NAME::CLASS_VARIABLE_NAME = RIGHT_OPERAND
 
 
 "CLASS_NAME::" can be omitted when the Class Variable belongs to own L<"Class">.
 
 
-  $CLASS_VARIABLE_NAME = RIGHT_EXPRESSION
+  $CLASS_VARIABLE_NAME = RIGHT_OPERAND
 
 
 If the assignment does not satisfy L<"Type Compatibility">, compilation errors occur.
@@ -3486,7 +3486,7 @@ If you try to get the value of a Class Variable that is not defined, compilation
 
 If you try to access a private Class Variable from outside the Class, compilation errors occur.
 
-If Right Expression is L<"Object Type">, Reference Count of the object is incremented by 1.
+If right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Class Variable before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3534,14 +3534,14 @@ B<Get Exception Variable Value Example:>
 B<Set Exception Variable Value Expression> is a Expression to set the value of L<"Exception Variable"> using L<"Assignment Operator">.
 
 
-  $@ = RIGHT_EXPRESSION
+  $@ = RIGHT_OPERAND
 
 
-Right Expression must be L<"string Type">.
+right operand must be L<"string Type">.
 
 Returns the value of Exception Variable after setting. This is L<"string Type">.
 
-The Reference Count of Right Expression is incremented by 1.
+The Reference Count of right operand is incremented by 1.
 
 If an object has already been assigned to Exception Variable before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3558,7 +3558,7 @@ B<Set Exception Variable Value Example:>
 B<Get Field Value Expression> is a Expression to get L<"Field"> Value.
 
 
-  INVOCANT_EXPRESSION->{FIELD_NAME}
+  INVOCANT_OPERAND->{FIELD_NAME}
 
 
 Invocant Expression is L<"Class Type">. If Expression is L<"Multi Numeric Types"> Value, The Field Access is L<"Get Multi Numeric Field Value">. If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise compilation errors occur.
@@ -3583,7 +3583,7 @@ B<Get Field Value Example:>
 B<Set Field Value Expression> is a Expression to set L<"Field"> Value.
 
 
-  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
+  INVOCANT_OPERAND->{FIELD_NAME} = RIGHT_OPERAND
 
 
 Invocant Expression is L<"Class Type">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Set Multi Numeric Field Value">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Set Multi Numeric Field Value via Dereference">, otherwise compilation errors occur.
@@ -3596,7 +3596,7 @@ Set Field Value Expression returns the value of Field after setting.
 
 Return Value Type is the Type of Field.
 
-If Right Expression is L<"Object Type">, Reference Count of the object is incremented by 1.
+If right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3614,7 +3614,7 @@ B<Set Field Value Example:>
 B<Get Multi Numeric Field Value Expression> is a Expression to get Field Value of L<"Multi Numeric Value">.
 
 
-  INVOCANT_EXPRESSION->{FIELD_NAME}
+  INVOCANT_OPERAND->{FIELD_NAME}
 
 Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Get Multi Numeric Field Value via Dereference">, otherwise compilation errors occur.
   
@@ -3638,7 +3638,7 @@ B<Get Multi Numeric Field Value Example:>
 Set Multi Numeric Field Value Expression is a Expression to set Field Value of L<"Multi Numeric Value"> using L<"Assignment Operator">.
 
 
-  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
+  INVOCANT_OPERAND->{FIELD_NAME} = RIGHT_OPERAND
 
 <
 
@@ -3666,7 +3666,7 @@ B<Set Multi Numeric Field Value Example:>
 B<Get Multi Numeric Field Value via Dereference Expression> is a Expression to get Field Value of L<"Multi Numeric Value"> via L<"Dereference">.
 
 
-  INVOCANT_EXPRESSION->{FIELD_NAME}
+  INVOCANT_OPERAND->{FIELD_NAME}
 
 
 Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, the Field Access is , L<"Get Field Value">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Get Multi Numeric Field Value">, otherwise compilation errors occur.
@@ -3692,7 +3692,7 @@ B<Get Multi Numeric Field Value via Dereference Example:>
 Set Multi Numeric Field Value Expression via Dereference is a Expression to set Field Value of L<"Multi Numeric Value"> via L<"Dereference"> using L<"Assignment Operator">.
 
 
-  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
+  INVOCANT_OPERAND->{FIELD_NAME} = RIGHT_OPERAND
 
 
 Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, L<"Set Field Value">. If Invocant Expression is L<"Multi Numeric Types">, L<"Set Multi Numeric Field Value">, otherwise compilation errors occur.
@@ -3720,7 +3720,7 @@ B<Set Multi Numeric Field Value via Dereference Example:>
 B<Get Array Element Value Expression> is a Expression to get a Element Value of L<"Array">.
 
 
-  ARRAY_EXPRESSION->[INDEX_EXPRESSION]
+  ARRAY_OPERAND->[INDEX_OPERAND]
 
 
 Array Expression must be L<"Array Type">.
@@ -3753,7 +3753,7 @@ B<Get Array Element Value Example:>
 Set Array Element Value Expression is a Expression to set a Element Value of a Array using L<"Assignment Operator">.
 
 
-  ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_EXPRESSION
+  ARRAY_OPERAND->[INDEX_OPERAND] = RIGHT_OPERAND
 
 
 Array Expression must be L<"Array Type">.
@@ -3768,7 +3768,7 @@ If Array Expression is L<"Undefined Value">, a Runtime Exception occurs.
 
 If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
-If Right Expression is L<"Object Type">, Reference Count of the object is incremented by 1.
+If right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3827,7 +3827,7 @@ Create Object has the following information.
 B<Create Array Expression> is a Expression to create Array with B<new> Keyword.
 
 
-  new Type[ELEMENTS_COUNT_EXPRESSION]
+  new Type[ELEMENTS_COUNT_OPERAND]
 
 
 Type must be L<"Numeric Types">, L<"Object Type">, L<"Multi Numeric Types">.
@@ -3978,7 +3978,7 @@ Instance Method Call is a method to call Method which is L<"Method">. In L<"Meth
 Instance Method Call can be done with the following syntax using the object created by L<"Create Object">.
 
 
-  OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
+  OBJECT_OPERAND->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
 Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the Method Definition, compilation errors occur The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, compilation errors occur
 
@@ -3996,7 +3996,7 @@ Instance Method Call is L<"Expression">.
 Since the object created by L<"Create Callback Object"> is a normal object, you can call Method.
 
 
-  OBJECT_EXPRESSION->(ARGS1, ARGS2, ARGS3, ..., ARGSn);
+  OBJECT_OPERAND->(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
 
 B<Example that calls Method from the object created with Create Callback Object>
@@ -4155,7 +4155,7 @@ B<Operators> are L<"Unary Operator">, L<"Binary Operator">, L<"Increment Operato
 Unary Operator is an Operator placed before L<"Expression">.
 
 
-  UNARY_OPERATOR EXPRESSION
+  UNARY_OPERATOR OPERAND
 
 
 Unary Operators are L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Bit NOT Operator">, L<"Logical NOT Operator">, L<"Array Length Operator">, and L<"String Length Operator">.
@@ -4169,7 +4169,7 @@ Note that L<"Increment Operator"> and L<"Decrement Operator"> is not Unary Opera
 Binary Operator is a Operator placed between Left L<"Expression"> and Right L<"Expression">.
 
 
-  LEFT_EXPRESSION BINARY_OPERATOR RIGHT_EXPRESSION
+  LEFT_OPERAND BINARY_OPERATOR RIGHT_OPERAND
 
 
 Binary Operators are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multiplication Operator">, L<"Division Operator">, L<"Remainder Operator">, L<"Bit AND Operator">, L<"Bit OR Operator">, L<"Logical AND Operator">, L<"Logical OR Operator">, L<"Shift Operator">, and L<"String Concatenation Operator">.
@@ -4181,7 +4181,7 @@ Binary Operators are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multi
 Sequential Operator is an Operator that join "," with multiple L<"Expressions"> and return the last Expression.
 
 
-  (EXPRESSION1, EXPRESSION2, EXPRESSION3)
+  (OPERAND1, OPERAND2, OPERAND3)
 
 
 Expression is executed from Left to Right and the last Expression is return.
@@ -4271,12 +4271,12 @@ B<Unary Minus Operator Example:>
 B<Addition Operator> is a L<"Binary Operator"> represtented by "+" to perform addition.
 
 
-  LEFT_EXPRESSION + RIGHT_EXPRESSION
+  LEFT_OPERAND + RIGHT_OPERAND
 
 
-Left Expression and Right Expression must be L<"Numeric Types">, otherwise compilation errors occur.
+left operand and right operand must be L<"Numeric Types">, otherwise compilation errors occur.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
+L<"Binary Numeric Widening Type Conversion"> is applied to left operand and right operand.
 
 After that, Addition Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4297,12 +4297,12 @@ Addition Operator does not throw L<"Exception">.
 B<Subtraction Operator> is a L<"Binary Operator"> represtented by "-" to perform Subtraction.
 
 
-  LEFT_EXPRESSION - RIGHT_EXPRESSION
+  LEFT_OPERAND - RIGHT_OPERAND
 
 
-Left Expression and Right Expression must be L<"Numeric Types">, otherwise compilation errors occur.
+left operand and right operand must be L<"Numeric Types">, otherwise compilation errors occur.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
+L<"Binary Numeric Widening Type Conversion"> is applied to left operand and right operand.
 
 After that, Subtraction Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4321,12 +4321,12 @@ Subtraction Operator does not throw L<"Exception">.
 B<Multiplication Operator> is a L<"Binary Operator"> represtented by "*" to perform Multiplication.
 
 
-  LEFT_EXPRESSION * RIGHT_EXPRESSION
+  LEFT_OPERAND * RIGHT_OPERAND
 
 
-Left Expression and Right Expression must be L<"Numeric Types">, otherwise compilation errors occur.
+left operand and right operand must be L<"Numeric Types">, otherwise compilation errors occur.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
+L<"Binary Numeric Widening Type Conversion"> is applied to left operand and right operand.
 
 After that, Multiplication Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4347,12 +4347,12 @@ Multiplication Operator does not throw L<"Exception">.
 B<Division Operator> is a L<"Binary Operator"> represtented by "/" to perform Division.
 
 
-  LEFT_EXPRESSION / RIGHT_EXPRESSION
+  LEFT_OPERAND / RIGHT_OPERAND
 
 
-Left Expression and Right Expression must be L<"Numeric Types">, otherwise compilation errors occur.
+left operand and right operand must be L<"Numeric Types">, otherwise compilation errors occur.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
+L<"Binary Numeric Widening Type Conversion"> is applied to left operand and right operand.
 
 After that, Division Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4364,7 +4364,7 @@ L<"int Type"> Operation, L<"long Type"> Operation, L<"float Type"> Operation, an
 
 Return Type of Division Operator is the Type after L<"Binary Numeric Widening Type Conversion"> is applied.
 
-In the operation to L<"Integral Types">, Division Operator throw L<"Exception"> if Right Expression is 0.
+In the operation to L<"Integral Types">, Division Operator throw L<"Exception"> if right operand is 0.
 
 In the operation to L<"Floating Point Types">, Division Operator dose not throw L<"Exception">.
 
@@ -4375,12 +4375,12 @@ In the operation to L<"Floating Point Types">, Division Operator dose not throw 
 B<Remainder Operator> is a L<"Binary Operator"> represtented by "%" to perform Division.
 
 
-  LEFT_EXPRESSION % RIGHT_EXPRESSION
+  LEFT_OPERAND % RIGHT_OPERAND
 
 
-Left Expression and Right Expression must be L<"Integral Types">, otherwise compilation errors occur.
+left operand and right operand must be L<"Integral Types">, otherwise compilation errors occur.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
+L<"Binary Numeric Widening Type Conversion"> is applied to left operand and right operand.
 
 After that, Remainder Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4392,7 +4392,7 @@ L<"int Type"> Operation, and L<"long Type"> Operation are defined corresponding 
 
 Return Type of Remainder Operator is the Type after L<"Binary Numeric Widening Type Conversion"> is applied.
 
-Remainder Operator throw L<"Exception"> if Right Expression is 0.
+Remainder Operator throw L<"Exception"> if right operand is 0.
 
 
 =head2 Increment Operator
@@ -4430,7 +4430,7 @@ Pre Increment Operator is equivalent to the following Expression. After 1 is add
 
 
 
-  (OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION + 1))
+  (OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND + 1))
 
 For example, Pre Increment of L<"byte Type"> value is equivalent to the following Expression:
 
@@ -4448,7 +4448,7 @@ Post Increment Operator add 1 to the operand and returns the value before Increm
 Post Increment Operator is equivalent to the following Expression using L<"Sequential Operator">. The value of operand is saved in a temporary variable, 1 is added to the operand, L<"Type Cast"> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
 
 
-  (my TMP_VARIABLE = OPERAND_EXPRESSION, OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION + 1), TMP_VARIABLE)
+  (my TMP_VARIABLE = OPERAND_OPERAND, OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND + 1), TMP_VARIABLE)
 
 
 For example, Post Increment of L<"byte Type"> value is equivalent to the following Expression.
@@ -4494,7 +4494,7 @@ Pre Decrement Operator is equivalent to the following Expression. After 1 is sub
 
 
 
-  (OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION - 1))
+  (OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND - 1))
 
 For example, Pre Decrement of L<"byte Type"> value is equivalent to the following Expression:
 
@@ -4512,7 +4512,7 @@ Post Decrement Operator subtract 1 to the operand and returns the value before D
 Post Decrement Operator is equivalent to the following Expression using L<"Sequential Operator">. The value of operand is saved in a temporary variable, 1 is subtracted to the operand, L<"Type Cast"> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
 
 
-  (my TMP_VARIABLE = OPERAND_EXPRESSION, OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION - 1), TMP_VARIABLE)
+  (my TMP_VARIABLE = OPERAND_OPERAND, OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND - 1), TMP_VARIABLE)
 
 
 For example, Post Decrement of L<"byte Type"> value is equivalent to the following Expression.
@@ -4534,12 +4534,12 @@ Bit Operator is an Operator that performs Bit operation. L<"Bit AND Operator">, 
 Bit AND is L<"Binary Operator"> represented by "&".
 
 
-  LEFT_EXPRESSION & RIGHT_EXPRESSION
+  LEFT_OPERAND & RIGHT_OPERAND
 
-Left Expression and Right Expression must be L<"Integral Types">, otherwise compilation errors occur.
+left operand and right operand must be L<"Integral Types">, otherwise compilation errors occur.
 <p>
 <p>
-  L<"Binary Numeric Widening Type Conversion"> is performed on Left Expression and Right Expression.
+  L<"Binary Numeric Widening Type Conversion"> is performed on left operand and right operand.
 
 After that, the operation result of Bit AND Operator performs the operation that exactly matches the following operation in C99
 
@@ -4561,12 +4561,12 @@ Bit AND Operator does not throw L<"Exception">.
 Bit OR is L<"Binary Operator"> represented by "|".
 
 
-  LEFT_EXPRESSION | RIGHT_EXPRESSION
+  LEFT_OPERAND | RIGHT_OPERAND
 
-Left Expression and Right Expression must be L<"Integral Types">, otherwise compilation errors occur.
+left operand and right operand must be L<"Integral Types">, otherwise compilation errors occur.
 <p>
 <p>
-  L<"Binary Numeric Widening Type Conversion"> is performed on Left Expression and Right Expression.
+  L<"Binary Numeric Widening Type Conversion"> is performed on left operand and right operand.
 
 After that, the operation result of Bit OR Operator performs the operation that exactly matches the following operation in C99.
 
@@ -4588,7 +4588,7 @@ Bit OR Operator does not throw L<"Exception">.
 Bit NOT Operator is L<"Unary Operator"> represented by "~".
 
 
-  ~EXPRESSION
+  ~OPERAND
 
 Expression must be L<"Integral Types">, otherwise compilation errors occur.
 
@@ -4623,12 +4623,12 @@ Shift Operator is an operator that performs Bit shift. L<"Left Shift Operator">,
 The Left shift is L<"Binary Operator"> represented by "<<".
 
 
-  LEFT_EXPRESSION << RIGHT_EXPRESSION
+  LEFT_OPERAND << RIGHT_OPERAND
 
-Left Expression must be L<"Integral Types">, otherwise compilation errors occur.
+left operand must be L<"Integral Types">, otherwise compilation errors occur.
 <p>
 <p>
-  Right Expression must be L<"int Type">, otherwise compilation errors occur.
+  right operand must be L<"int Type">, otherwise compilation errors occur.
 <p>
 <p>
   The calculation result of Left Shift Operator is the same as the following calculation in C99.
@@ -4648,14 +4648,14 @@ Left Shift Operator does not throw L<"Exception">.
 Arithmetic Right Shift Operator is L<"Binary Operator"> represented by ">>".
 
 
-  LEFT_EXPRESSION >> RIGHT_EXPRESSION
+  LEFT_OPERAND >> RIGHT_OPERAND
 
-Left Expression must be L<"Integral Types">, otherwise compilation errors occur.
+left operand must be L<"Integral Types">, otherwise compilation errors occur.
 <p>
 <p>
-  First, for L<"Left Expression">, L<"Unary Numeric Widening Type Conversion"> is performed.
+  First, for L<"left operand">, L<"Unary Numeric Widening Type Conversion"> is performed.
 
-Right Expression must be L<"int Type">, otherwise compilation errors occur.
+right operand must be L<"int Type">, otherwise compilation errors occur.
 <p>
 <p>
   The operation result of Arithmetic Right Shift Operator is the operation that exactly matches the following operation in C99.
@@ -4675,11 +4675,11 @@ Arithmetic Right Shift Operator does not throw L<"Exception">.
 Logical Right Shift Operator is L<"Binary Operator"> represented by ">>>".
 
 
-  LEFT_EXPRESSION >>> RIGHT_EXPRESSION
+  LEFT_OPERAND >>> RIGHT_OPERAND
 
-Left Expression must be L<"Integral Types">, otherwise compilation errors occur.
+left operand must be L<"Integral Types">, otherwise compilation errors occur.
 
-Right Expression must be L<"int Type">, otherwise compilation errors occur.
+right operand must be L<"int Type">, otherwise compilation errors occur.
 <p>
 <p>
   The calculation result of Logical Right Shift Operator is the same as the following calculation in C99.
@@ -4696,10 +4696,10 @@ Logical Right Shift Operator does not throw L<"Exception">.
 
 =head2 Comparison Operator
 
-Comparison Operator is an Operator that is placed between Left Expression and Right Expression to compare the size, and return True/False Value.
+Comparison Operator is an Operator that is placed between left operand and right operand to compare the size, and return True/False Value.
 
 
-  LEFT_EXPRESSION COMPARISON_OPERATOR RIGHT_EXPRESSION
+  LEFT_OPERAND COMPARISON_OPERATOR RIGHT_OPERAND
 
 Comparison Operators are L<"Numeric Comparison Operator">, L<"String Comparison Operator">, and L<"isa Operator">.
 
@@ -4707,10 +4707,10 @@ Comparison Operators are L<"Numeric Comparison Operator">, L<"String Comparison 
 
 =head2 Numeric Comparison Operator
 
-B<Numeric Comparison Operator> is a L<"Comparison Operator"> that is placed between Left Expression and Right Expression to compare the size of number or check the equqlity of objects.
+B<Numeric Comparison Operator> is a L<"Comparison Operator"> that is placed between left operand and right operand to compare the size of number or check the equqlity of objects.
 
 
-  LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_EXPRESSION
+  LEFT_OPERAND NUMERIC_COMPARISON_OPERATOR RIGHT_OPERAND
 
 A list of Numeric Comparison Operators.
 
@@ -4725,88 +4725,88 @@ A list of Numeric Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION == RIGHT_EXPRESSION
+      LEFT_OPERAND == RIGHT_OPERAND
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Types, Left Expression and Right Expression are Object Type (including Undefined Value)
+      left operand and right operand are Numeric Types, left operand and right operand are Object Type (including Undefined Value)
     </td>
     <td>
-      Left Expression and Right Expression are equal
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_EXPRESSION != RIGHT_EXPRESSION
-    </td>
-    <td>
-      Left Expression and Right Expression are Numeric Types, Left Expression and Right Expression are Object Type (including Undefined Value)
-    </td>
-    <td>
-      Left Expression and Right Expression are not equal
+      left operand and right operand are equal
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION > RIGHT_EXPRESSION
+      LEFT_OPERAND != RIGHT_OPERAND
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Types
+      left operand and right operand are Numeric Types, left operand and right operand are Object Type (including Undefined Value)
     </td>
     <td>
-      Left Expression is greater than Right Expression
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_EXPRESSION >= RIGHT_EXPRESSION
-    </td>
-    <td>
-      Left Expression and Right Expression are Numeric Types
-    </td>
-    <td>
-      Left Expression is greater than or equal to Right Expression
+      left operand and right operand are not equal
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION < RIGHT_EXPRESSION
+      LEFT_OPERAND > RIGHT_OPERAND
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Types
+      left operand and right operand are Numeric Types
     </td>
     <td>
-      Left Expression is less than Right Expression
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_EXPRESSION <= RIGHT_EXPRESSION
-    </td>
-    <td>
-      Left Expression and Right Expression are Numeric Types
-    </td>
-    <td>
-      Left Expression is less than or equal to Right Expression
+      left operand is greater than right operand
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION <=> RIGHT_EXPRESSION
+      LEFT_OPERAND >= RIGHT_OPERAND
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Types
+      left operand and right operand are Numeric Types
     </td>
     <td>
-      If Left Expression is greater than Right expression, return 1. If Left Expression is lower than Right expression, return -1. If Left Expression is equals to Right expression, return 0.
+      left operand is greater than or equal to right operand
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LEFT_OPERAND < RIGHT_OPERAND
+    </td>
+    <td>
+      left operand and right operand are Numeric Types
+    </td>
+    <td>
+      left operand is less than right operand
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LEFT_OPERAND <= RIGHT_OPERAND
+    </td>
+    <td>
+      left operand and right operand are Numeric Types
+    </td>
+    <td>
+      left operand is less than or equal to right operand
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LEFT_OPERAND <=> RIGHT_OPERAND
+    </td>
+    <td>
+      left operand and right operand are Numeric Types
+    </td>
+    <td>
+      If left operand is greater than Right expression, return 1. If left operand is lower than Right expression, return -1. If left operand is equals to Right expression, return 0.
     </td>
   </tr>
 </table>
 
 =end html
 
-The Types of Left Expression and Right Expression Comparable Types, otherwise compilation errors occur.
+The Types of left operand and right operand Comparable Types, otherwise compilation errors occur.
 
-In Numeric Types Comparison, L<"Binary Numeric Widening Type Conversion"> is performed for Left Expression and Right Expression.
+In Numeric Types Comparison, L<"Binary Numeric Widening Type Conversion"> is performed for left operand and right operand.
 
 After that, the Numeric Comparison Operation is performed that exactly matches the following operation in C99.
 
@@ -4839,9 +4839,9 @@ Numeric Comparison Operator does not throw L<"Exception">.
 B<String Comparison Operator> is a L<"Comparison Operator"> that compares the bytes in the tow string.
 
 
-  LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
+  LEFT_OPERAND STRING_COMPARISON_OPERATOR RIGHT_OPERAND
 
-Left Expression and Right Expression must be L<"string Type"> or byte[] type.
+left operand and right operand must be L<"string Type"> or byte[] type.
 
 A list of String Comparison Operators.
 
@@ -4855,58 +4855,58 @@ A list of String Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION eq RIGHT_EXPRESSION
+      LEFT_OPERAND eq RIGHT_OPERAND
     </td>
     <td>
-      Left Expression and Right Expression are equal
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_EXPRESSION ne RIGHT_EXPRESSION
-    </td>
-    <td>
-      Left Expression and Right Expression are not equal
+      left operand and right operand are equal
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION gt RIGHT_EXPRESSION
+      LEFT_OPERAND ne RIGHT_OPERAND
     </td>
     <td>
-      Left Expression is greater than Right Expression in dictionary Expression order.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_EXPRESSION ge RIGHT_EXPRESSION
-    </td>
-    <td>
-      Left Expression is greater than or equal to Right Expression compared in dictionary Expression order
+      left operand and right operand are not equal
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION lt RIGHT_EXPRESSION
+      LEFT_OPERAND gt RIGHT_OPERAND
     </td>
     <td>
-      Left Expression is smaller than Right Expression when compared in dictionary Expression order
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_EXPRESSION le RIGHT_EXPRESSION
-    </td>
-    <td>
-      Left Expression is less than or equal to Right Expression compared in dictionary Expression order
+      left operand is greater than right operand in dictionary Expression order.
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION cmp RIGHT_EXPRESSION
+      LEFT_OPERAND ge RIGHT_OPERAND
     </td>
     <td>
-      If Left Expression is greater than Right expression, return 1. If Left Expression is lower than Right expression, return -1. If Left Expression is equals to Right expression, return 0.
+      left operand is greater than or equal to right operand compared in dictionary Expression order
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LEFT_OPERAND lt RIGHT_OPERAND
+    </td>
+    <td>
+      left operand is smaller than right operand when compared in dictionary Expression order
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LEFT_OPERAND le RIGHT_OPERAND
+    </td>
+    <td>
+      left operand is less than or equal to right operand compared in dictionary Expression order
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LEFT_OPERAND cmp RIGHT_OPERAND
+    </td>
+    <td>
+      If left operand is greater than Right expression, return 1. If left operand is lower than Right expression, return -1. If left operand is equals to Right expression, return 0.
     </td>
   </tr>
 </table>
@@ -4919,19 +4919,19 @@ The Type of Return Value of the String Comparison Operator is L<"int Type">. If 
 
 =head2 isa Operator
 
-B<isa Operator> is a L<"Comparison Operator"> to check whether Left Expression satisfies Right Type.
+B<isa Operator> is a L<"Comparison Operator"> to check whether left operand satisfies Right Type.
 
 
 
-  LEFT_EXPRESSION isa RIGHT_TYPE
+  LEFT_OPERAND isa RIGHT_TYPE
 
 isa Operator has three behaviors, depending on Right Type.
 
-1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the Type of Left Expression is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
+1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the Type of left operand is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
 
-2. If the Right Type is L<"Class Type">, isa operator checks whether the Type of Left Expression is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of Left Expression must be L<"Object Type">, otherwise compilation errors occur.
+2. If the Right Type is L<"Class Type">, isa operator checks whether the Type of left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of left operand must be L<"Object Type">, otherwise compilation errors occur.
 
-3. If the Right Type is L<"Callback Type">, isa Operator checks whether the Type of Left Expression satisfy the Callback Type at Run Time. If Left Expression satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of Left Expression must be L<"Object Type">, otherwise compilation errors occur.
+3. If the Right Type is L<"Callback Type">, isa Operator checks whether the Type of left operand satisfy the Callback Type at Run Time. If left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of left operand must be L<"Object Type">, otherwise compilation errors occur.
 
 
 
@@ -4941,12 +4941,12 @@ isa Operator has three behaviors, depending on Right Type.
 B<ref Operator> is a Operator to get type name of the object.
 
 
-  ref EXPRESSION
+  ref OPERAND
 
 
 ref Operator return type name if the object defined. Otherwise return undef.
 
-If EXPRESSION is not a object type, a compile error occurs.
+If OPERAND is not a object type, a compile error occurs.
 
 
 =head2 dump Operator
@@ -4955,12 +4955,12 @@ If EXPRESSION is not a object type, a compile error occurs.
 B<dump Operator> is a Operator to dump object value.
 
 
-  dump EXPRESSION
+  dump OPERAND
 
 
 dump Operator return the dump string.
 
-If EXPRESSION is not a object type, a compile error occurs.
+If OPERAND is not a object type, a compile error occurs.
 
 The contents of the dumped string may vary from SPVM version to version. Please use dump operator only for viewing the content of object data.
 
@@ -4978,15 +4978,15 @@ Logical Operator returns L<"Expression">
 Logical AND Operator is a L<"Binary Operator">
 
 
-  LEFT_EXPRESSION && RIGHT_EXPRESSION
+  LEFT_OPERAND && RIGHT_OPERAND
 
 Logical AND Operator のReturn ValueのTypeは,L<"int Type">.
 
 Logical AND Operator behaves as follows:
 
-1. Run the L<"Bool Type Conversion"> to Left Expression.
+1. Run the L<"Bool Type Conversion"> to left operand.
 
-2. If the value of Left Expression is non-zero, execute the L<"Expression">
+2. If the value of left operand is non-zero, execute the L<"Expression">
 
 Logical AND Operator does not throw L<"Exception">.
 
@@ -4997,15 +4997,15 @@ Logical AND Operator does not throw L<"Exception">.
 Logical OR Operator is a logical OR operation that is "L<"Expression"> is an operand of L<"Binary Operator">
 
 
-  LEFT_EXPRESSION || RIGHT_EXPRESSION
+  LEFT_OPERAND || RIGHT_OPERAND
 
 Logical OR Operator behaves as follows:
 
 Logical OR Operator のReturn ValueのTypeは,L<"int Type">.
 
-1. Run the L<"Bool Type Conversion"> to Left Expression.
+1. Run the L<"Bool Type Conversion"> to left operand.
 
-2. If the value of Left Expression is 0, the L<"Expression">を返します。
+2. If the value of left operand is 0, the L<"Expression">を返します。
 
 Logical OR Operator returns L<"Expression">
 
@@ -5016,7 +5016,7 @@ Logical OR Operator returns L<"Expression">
 Logical NOT Operator is an operator to the Left of expression to perform logical NOT operations,L<"Unary Operator"> For more information about Expression, see L<"Expression">.
 
 
-  !EXPRESSION
+  !OPERAND
 
 Logical NOT Operator のReturn ValueのTypeは,L<"int Type">.
 
@@ -5024,25 +5024,23 @@ Logical NOT Operator executes L<"Expression">
 
 Logical NOT Operator does not throw L<"Exception">.
 
-
-
 =head2 String Concatenation Operator
 
 String Concatenation Operator is a L<"Binary Operator">.
 
-  LEFT_EXPRESSION . RIGHT_EXPRESSION
+  LEFT_OPERAND . RIGHT_OPERAND
 
-The left expression and the right expression are concatenated.
+The left operand and the right operand are concatenated.
 
-The left expression and the right expression must be a L<"string type"> or L<"byte[] Type">, otherwise compilation errors occur.
+The left operand and the right operand must be a L<"string type"> or L<"byte[] Type">, otherwise compilation errors occur.
 
 String Concatenation Operator returns the concatenated L<"string">.
 
 String Concatenation Operator retruns L<"Expression">, The Type is L<"string Type">.
 
-If both Left Expression and Right Expression were L<"String Literal">, a string Literal concatenated at compile time is generated. You can concatenate String Literal with string Concatenation Operator without being aware of the cost of performance.
+If both left operand and right operand were L<"String Literal">, a string Literal concatenated at compile time is generated. You can concatenate String Literal with string Concatenation Operator without being aware of the cost of performance.
 
-If Left expression or Right Expression is L<"Undefined Value"> L<"Exception"> occurs at Run Time.
+If Left expression or right operand is L<"Undefined Value"> L<"Exception"> occurs at Run Time.
 
 B<String Concatenation Operator Example>
 
@@ -5056,11 +5054,11 @@ B<String Concatenation Operator Example>
 Assignment Operator is a L<"Binary Operator"> for assignment, expressed in "=".
 
 
-  LEFT_EXPRESSION = RIGHTH_EXPRESSION
+  LEFT_OPERAND = RIGHTH_OPERAND
 
 Assignment Operator has multiple meanings depending on the Right and Left sides. Please refer to each item.
 
-In Assignment Operator, the Left Expression is evaluated after the Right Expression is evaluated. This is with the exception of expression being executed from Left to Right as a rule.
+In Assignment Operator, the left operand is evaluated after the right operand is evaluated. This is with the exception of expression being executed from Left to Right as a rule.
 
 
 =head2 Special Assignment Operator
@@ -5127,10 +5125,10 @@ The Special Assignment Operator is deployed as follows:
 
 
   # Before unexpanding
-  LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR RIGHT_EXPRESSION
+  LEFT_OPERAND SPECIAL_ASSIGNMENT_OPERATOR RIGHT_OPERAND
   
   # After unwinding
-  LEFT_EXPRESSION ASSIGNMENT_OPERATOR (LEFT EXPRESSION TYPE CAST)(LEFT_EXPRESSION SPECIFIC_OPERATOR RIGHT_EXPRESSION)
+  LEFT_OPERAND ASSIGNMENT_OPERATOR (LEFT OPERAND TYPE CAST)(LEFT_OPERAND SPECIFIC_OPERATOR RIGHT_OPERAND)
 
 For example, for add assignment Operator, it is expanded as follows:
 
@@ -5191,9 +5189,9 @@ For a detailed description of Reference, see L<"Reference">.
 Array Length Operator is a L<"Array"></a>L<"Unary Operator">
 
 
-  @RIGHT EXPRESSION
+  @RIGHT OPERAND
 
-Right Expression must be an Array Type, otherwise compilation errors occur.
+right operand must be an Array Type, otherwise compilation errors occur.
 
 Array Length Operator returns array length for L<"int Type"> value.
 
@@ -5216,9 +5214,9 @@ Note that SPVM does not have the idea of a context in Perl, and array length ope
 String Length Operator is a L<"String"></a> L<"Unary Operator">
 
 
-  length RIGHT_EXPRESSION
+  length RIGHT_OPERAND
 
-Right Expression must be L<"string Type">, otherwise compilation errors occur.
+right operand must be L<"string Type">, otherwise compilation errors occur.
 
 The String Length Operator returns the length of the String as a L<"int Type"> value. String Length The length of the String returned by the Operator is the length when viewed as a byte string.
 
@@ -5239,9 +5237,9 @@ String Length Operator Exampleです。
 Scalar Operator is an Operator that returns the given value itself without doing anything. It is provided only to clarify the meaning of L<"Array Length Operator operator">
 
 
-  scalar RIGHT_EXPRESSION
+  scalar RIGHT_OPERAND
 
-Right ExpressionはL<"Array Length Operator">でなければなりません。 otherwise compilation errors occur.
+right operandはL<"Array Length Operator">でなければなりません。 otherwise compilation errors occur.
 
 Scalar Operator returns Expression.
 
@@ -5461,7 +5459,7 @@ List of Statements
 If Statement is a statement for conditional branching.
 
 
-  if (EXPRESSION) {
+  if (OPERAND) {
   
   }
 
@@ -5470,10 +5468,10 @@ Expression L<"Bool Type Conversion"> is executed and Block is executed if the va
 If you want to write more than one condition, you can continue with "elsif Statement". The condition determination is performed from above, and each Expression is L<"Bool Type Conversion"> is executed, and a corresponding Block is executed if the value is non-zero.
 
 
-  if (EXPRESSION) {
+  if (OPERAND) {
   
   }
-  elsif(EXPRESSION) {
+  elsif(OPERAND) {
   
   }
 
@@ -5482,10 +5480,10 @@ You can use "elseStatement" to describe what happens if or if the elsif Statemen
 
 
 
-  if (EXPRESSION) {
+  if (OPERAND) {
   
   }
-  elsif (EXPRESSION) {
+  elsif (OPERAND) {
   
   }
   else {
@@ -5513,7 +5511,7 @@ The if Statement is internally surrounded by an invisible Simple Block.
 
 
   {
-    if (EXPRESSION) {
+    if (OPERAND) {
   
     }
   }
@@ -5522,10 +5520,10 @@ elsif is internally expanded into if Statement and else Statement.
 
 
   #Before deployment
-  if (EXPRESSION1) {
+  if (OPERAND1) {
   
   }
-  elsif (EXPRESSION2) {
+  elsif (OPERAND2) {
   
   }
   else {
@@ -5533,10 +5531,10 @@ elsif is internally expanded into if Statement and else Statement.
   }
   
   #After deployment
-  if (EXPRESSION1) {
+  if (OPERAND1) {
   }
   else {
-    if (EXPRESSION2) {
+    if (OPERAND2) {
   
     }
     else {
@@ -5584,7 +5582,7 @@ When a variable is declared in the conditional part of if Statement, it must be 
 The switch statement is a statement for conditional branching with an integer of L<"int Type"> as a condition. Faster than if Statement if the condition is an integer of L<"int Type"> and there are many branches.
 
 
-  switch (CONDITION_EXPRESSION) {
+  switch (CONDITION_OPERAND) {
     case constant 1: (
   
       break;
@@ -5620,7 +5618,7 @@ Only case statement and default statement can be described directly under switch
 The case and default Blocks can be omitted.
 
 
-  switch (CONDITION_EXPRESSION) {
+  switch (CONDITION_OPERAND) {
     case constant 1:
     case constant 2:
     {
@@ -5633,7 +5631,7 @@ If you use break Statement, you can exit from the switch block.
 
 
 
-  switch (CONDITION_EXPRESSION) {
+  switch (CONDITION_OPERAND) {
     case constant 1: (
       break;
     }
@@ -5700,7 +5698,7 @@ The default Statement is a Statement that can be used in the switch block to spe
 while Statement is a Statement for repeating.
 
 
-  while (CONDITION_EXPRESSION) {
+  while (CONDITION_OPERAND) {
   
   }
 
@@ -5747,7 +5745,7 @@ The while Statement is internally enclosed by an invisible L<"Simple Block">.
 
 
   {
-    while (CONDITION_EXPRESSION) {
+    while (CONDITION_OPERAND) {
     $i++;
   }
   
@@ -5767,7 +5765,7 @@ The while Statement is internally enclosed by an invisible L<"Simple Block">.
 for Statement is a Statement for repeating.
 
 
-  for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
+  for (INITIALIZATION_OPERAND; CONDITIONAL_OPERAND; INCREMENT_OPERAND) {
   
   }
 
@@ -5775,17 +5773,17 @@ L<"Expression"> can be described in the initialization Expression. Generally, wr
 
 Condition Expression, L<"Expression"> can be described. L<"Bool Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise block.
 
-L<"Expression"> can be described in INCREMENT_EXPRESSION. Generally, Expression of Increment of loop variable is described. INCREMENT_EXPRESSION can be omitted.
+L<"Expression"> can be described in INCREMENT_OPERAND. Generally, Expression of Increment of loop variable is described. INCREMENT_OPERAND can be omitted.
 
-for Statement has the same meaning as the following while Statement. INCREMENT_EXPRESSION is executed at the end of Block. Initialization Expression is enclosed in L<"Simple Block">.
+for Statement has the same meaning as the following while Statement. INCREMENT_OPERAND is executed at the end of Block. Initialization Expression is enclosed in L<"Simple Block">.
 
 
   {
-    INITIALIZATION_EXPRESSION;
-    while (CONDITION_EXPRESSION) {
+    INITIALIZATION_OPERAND;
+    while (CONDITION_OPERAND) {
   
   
-      INCREMENT_EXPRESSION;
+      INCREMENT_OPERAND;
     }
   }
 
@@ -5803,12 +5801,12 @@ Inside the for Block, you can exit the for Block using L<"last Statement">.
 
 
 
-  for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
+  for (INITIALIZATION_OPERAND; CONDITIONAL_OPERAND; INCREMENT_OPERAND) {
   
   }
 
 
-Inside the for Block, you can use L<"next Statement"> to move immediately before the next INCREMENT_EXPRESSION to be executed.
+Inside the for Block, you can use L<"next Statement"> to move immediately before the next INCREMENT_OPERAND to be executed.
 
 
   for (my $i = 0; $i <5; $i++) {
@@ -5830,7 +5828,7 @@ Use the returnl Statement to get out of the Method. The object assigned to the m
 If there is a Return Value, L<"Expression"> can be specified.
 
 
-  return EXPRESSION;
+  return OPERAND;
 
 If the Return Value Type in L<"Method Definition"> is L<"void Type">, Expression Must not exist, otherwise compilation errors occur.
 
@@ -5842,7 +5840,7 @@ L<"Method Definition">, if the Return Value Type is other than L<"void Type">, E
 
 C<die> Statement is a Statement to throw an L<"Exception">.
 
-  die EXPRESSION;
+  die OPERAND;
 
 The operand must be a L<"string Type">, otherwise compilation errors occur.
 
@@ -6803,7 +6801,7 @@ Type Cast is Type Conversion that is explicitly described.
 
 
   # Type Cast
-  (TYPE)EXPRESSION
+  (TYPE)OPERAND
 
 L<"int Type"> value is converted to L<"long Type"> Become.
 
@@ -7069,7 +7067,7 @@ Unary Numeric Widening Type Conversion is performed in the following cases.
 
 =head2 Binary Numeric Widening Type Conversion
 
-Binary Numeric Widening Type Conversion is applied to Left Expression and Right Expression in Binary Operator that takes Numeric Types on the Left and Right sides. L<"Numeric Widening Type Conversion">.
+Binary Numeric Widening Type Conversion is applied to left operand and right operand in Binary Operator that takes Numeric Types on the Left and Right sides. L<"Numeric Widening Type Conversion">.
 
 The following rules apply.
 
@@ -7278,7 +7276,7 @@ SPVM has a mechanism of Exception. Exception consists of raising L<"Exception"> 
 
 Use L<"die Statement"> to throw L<"Exception">.
 
-  die EXPRESSION;
+  die OPERAND;
 
 When the die statement is executed, the stack trace and the String specified by Expression are displayed, and the program ends. The stack trace includes class names, Method names, File Name and line number. File Name is a relative File Name from the path where Module is loaded.
 
