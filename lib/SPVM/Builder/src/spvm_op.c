@@ -192,10 +192,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "COPY",
     "MAKE_READ_ONLY",
     "IS_READ_ONLY",
-    "ISA_NUMERIC_ARRAY",
-    "ISA_MULNUM_ARRAY",
-    "ISA_OBJECT_ARRAY",
-    "ISA_ARRAY",
+    "ISA_CATEGORY",
     "GET_ELEM_WIDTH",
     "DIV_UINT",
     "DIV_ULONG",
@@ -2826,6 +2823,18 @@ SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op
   return op_assign;
 }
 
+SPVM_OP* SPVM_OP_build_isa_category(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_term) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_isa, op_isa->last, op_term);
+
+  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "@condition_flag", op_isa->file, op_isa->line);
+  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_isa->file, op_isa->line);
+  SPVM_OP_build_assign(compiler, op_assign, op_var, op_isa);
+  
+  return op_assign;
+}
 
 SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_last) {
   

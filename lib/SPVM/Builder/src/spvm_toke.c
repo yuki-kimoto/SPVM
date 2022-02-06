@@ -1925,33 +1925,33 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IF);
                   return IF;
                 }
+                else if (strcmp(keyword, "int") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
+                  return INT;
+                }
                 else if (strcmp(keyword, "isa") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISA);
                   return ISA;
                 }
                 else if (strcmp(keyword, "isa_numeric_array") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_NUMERIC_ARRAY);
-                  return ISA_NUMERIC_ARRAY;
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_CATEGORY);
+                  yylvalp->opval->flag |= SPVM_OP_C_FLAG_ISA_CATEGORY_NUMERIC_ARRAY;
+                  return ISA_CATEGORY;
                 }
                 else if (strcmp(keyword, "isa_mulnum_array") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_MULNUM_ARRAY);
-                  return ISA_MULNUM_ARRAY;
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_CATEGORY);
+                  yylvalp->opval->flag |= SPVM_OP_C_FLAG_ISA_CATEGORY_MULNUM_ARRAY;
+                  return ISA_CATEGORY;
                 }
                 else if (strcmp(keyword, "isa_object_array") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_OBJECT_ARRAY);
-                  return ISA_OBJECT_ARRAY;
-                }
-                else if (strcmp(keyword, "isa_object_array") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_OBJECT_ARRAY);
-                  return ISA_OBJECT_ARRAY;
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_CATEGORY);
+                  yylvalp->opval->flag |= SPVM_OP_C_FLAG_ISA_CATEGORY_OBJECT_ARRAY;
+                  return ISA_CATEGORY;
                 }
                 else if (strcmp(keyword, "isa_array") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_ARRAY);
-                  return ISA_ARRAY;
-                }
-                else if (strcmp(keyword, "int") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
-                  return INT;
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, ISA_CATEGORY);
+                  yylvalp->opval->flag |= SPVM_OP_C_FLAG_ISA_CATEGORY_ARRAY;
+                  return ISA_CATEGORY;
                 }
                 else if (strcmp(keyword, "isweak") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISWEAK);
