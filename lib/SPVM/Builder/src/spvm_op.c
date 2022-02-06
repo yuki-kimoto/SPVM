@@ -197,6 +197,10 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "ISA_OBJECT_ARRAY",
     "ISA_ARRAY",
     "GET_ELEM_WIDTH",
+    "DIV_UINT",
+    "DIV_ULONG",
+    "REM_UINT",
+    "REM_ULONG",
   };
   
   return id_names;
