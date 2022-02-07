@@ -44,7 +44,7 @@ Underscore C<_> cannot be continued twice.
 
 A class name must be corresponding to the relative name of the module file. If the class name is "Foo::Bar::Baz", the relative name of the module file must be "Foo/Bar/Baz.spvm".
 
-If class names are invalid, compilation errors occur.
+If class names are invalid, a compilation error occurs.
 
 B<Examples of valid class names:>
 
@@ -70,7 +70,7 @@ The first character must not a number.
 
 Underscore(C<_>) cannot be continued twice.
 
-If method names are invalid, compilation errors occur.
+If method names are invalid, a compilation error occurs.
 
 B<Examples of valid method names:>
 
@@ -103,7 +103,7 @@ The first character must not number.
   
 Underscore(C<_>) cannot be continued twice.
 
-If field names are invalid, compilation errors occur.
+If field names are invalid, a compilation error occurs.
 
 B<Examples of valid field names:>
 
@@ -136,7 +136,7 @@ C<::> cannot be continued twice. Last characters cannot end with C<::>.
 
 Underscore(C<_>) cannot be continued twice.
 
-If class variable names are invalid, compilation errors occur.
+If class variable names are invalid, a compilation error occurs.
 
 B<Examples of valid class variable names:>
 
@@ -161,7 +161,7 @@ The followed character must not start with a number.
 
 Underscore(C<_>) cannot be continued twice.
 
-If local variable names are invalid, compilation errors occur.
+If local variable names are invalid, a compilation error occurs.
 
 B<Examples of valid local variable names:>
 
@@ -365,11 +365,11 @@ Can be prefixed with "+" or "-".
 
 L<"Types"> of Integer Literal is L<"int Type"> by default.
 
-If Integer Literal exceeds the range of numbers that can be represented by L<"int Type">, compilation errors occur.
+If Integer Literal exceeds the range of numbers that can be represented by L<"int Type">, a compilation error occurs.
 
 By suffixing "L" or "l" at the end, that represents L<"long Type"> Integer Literal.
 
-If L<"long Type"> Integer Literal  exceeds the range of numbers that can be represented by L<"long Type">,  If it exceeds the range, compilation errors occur.
+If L<"long Type"> Integer Literal  exceeds the range of numbers that can be represented by L<"long Type">,  If it exceeds the range, a compilation error occurs.
 
 "_" can be used as a separator. Separator has no meaning.
 
@@ -493,9 +493,9 @@ If Suffix Part is "d" or "D", the L<"Types"> of Floating Point Literal is L<"dou
 
 If Suffix Part is omitted, the L<"Types"> of Floating Point Literal is L<"double Type">.
 
-If Floating Point Literal is L<"float Type">, the Floating Point Literal is converted to float value using C standard "strtof" function. If the conversion fails, compilation errors occur.
+If Floating Point Literal is L<"float Type">, the Floating Point Literal is converted to float value using C standard "strtof" function. If the conversion fails, a compilation error occurs.
 
-If Floating Point Literal is L<"double Type">, the Floating Point Literal is converted to double value using C standard "strtod" function. If the conversion fails, compilation errors occur.
+If Floating Point Literal is L<"double Type">, the Floating Point Literal is converted to double value using C standard "strtod" function. If the conversion fails, a compilation error occurs.
 
 B<Floating Point Literal Example:>
 
@@ -1645,7 +1645,7 @@ In direct children of the class block, L<"use">, L<"our">, L<"has">, L<"enum">, 
   }
 
 
-If more than one class with the same name is defined, compilation errors occur.
+If more than one class with the same name is defined, a compilation error occurs.
 
 
 =head2 Class Descriptors
@@ -1716,9 +1716,9 @@ The list of class descriptors.
 
 =end html
 
-If both "public" and "private" are specifed, compilation errors occur.
+If both "public" and "private" are specifed, a compilation error occurs.
 
-If more than one of "callback_t", "mulnum_t", "pointer_t" are specified, compilation errors occur.
+If more than one of "callback_t", "mulnum_t", "pointer_t" are specified, a compilation error occurs.
 
 
 =head2 Destructor
@@ -1730,9 +1730,9 @@ Destructor is a special L<"Method"> called when the object of this class is free
 
 Destructor name must be "DESTROY".
 
-Destructor Retrun Value must be L<"void Type">, otherwise compilation errors occur.
+Destructor Retrun Value must be L<"void Type">, otherwise a compilation error occurs.
 
-Destructor arguments must be one and the type must be L<"self Type">, otherwise compilation errors occur.
+Destructor arguments must be one and the type must be L<"self Type">, otherwise a compilation error occurs.
 
 
   method DESTROY : void () {
@@ -1912,7 +1912,7 @@ if require Statement can be followed by else Statement.
 
 Note that elsif Statement cannot be followed.
 
-Let's look at an example. if Foo does not exist, no compilation errors occur and it is assumed that there is no if block
+Let's look at an example. if Foo does not exist, no a compilation error occurs and it is assumed that there is no if block
 
 Therefore, "$foo = new Foo;" does not result in a compilation error because it is assumed that there is no if block.
 
@@ -1946,9 +1946,9 @@ Class Variable must be defined directly under L<"Class Definition">.
 
 Class Variable Definition must specify L<"Types">. The Type must be L<"Numeric Types"> or L<"Object Type">.
 
-Class variable mames must follows the rule specified in L<"Class Variable Names">, and must not contain "::", otherwise compilation errors occur.
+Class variable mames must follows the rule specified in L<"Class Variable Names">, and must not contain "::", otherwise a compilation error occurs.
 
-If more than one Class Variable with the same name is defined, compilation errors occur.
+If more than one Class Variable with the same name is defined, a compilation error occurs.
 
 Class Variable Descriptor can be specified together in Class Variable definition.
 
@@ -2018,9 +2018,9 @@ List of Class Variable Descriptors.
 
 =end html
 
-If both "public" and "private" Descriptors are specified, compilation errors occur.
+If both "public" and "private" Descriptors are specified, a compilation error occurs.
 
-If more than one of "ro", "wo", and "rw" are specified at the same time, compilation errors occur
+If more than one of "ro", "wo", and "rw" are specified at the same time, a compilation error occurs
 
 Read Accessor of Class Variable has no arguments and the return type is same as the type of Class Variable.
 
@@ -2094,9 +2094,9 @@ Field Definition must be specify L<"Types">. The Type must be L<"Numeric Types">
 
 Field names must follows the rule specified in L<"Field Names">.
 
-Field Type must be L<"Numeric Types"> or L<"Object Type">, otherwise compilation errors occur.
+Field Type must be L<"Numeric Types"> or L<"Object Type">, otherwise a compilation error occurs.
 
-If more than one field names Variable with the same name is defined, compilation errors occur.
+If more than one field names Variable with the same name is defined, a compilation error occurs.
 
 Field Descriptor can be specified together in Field Definition.
 
@@ -2166,9 +2166,9 @@ List of Field Descriptors.
 
 =end html
 
-If both "public" and "private" Descriptors are specified, compilation errors occur.
+If both "public" and "private" Descriptors are specified, a compilation error occurs.
 
-If more than one of "ro", "wo", and "rw" are specified at the same time, compilation errors occur
+If more than one of "ro", "wo", and "rw" are specified at the same time, a compilation error occurs
 
 Read Accessor of Field has one argument that is L<"self Type"> and the Return Type is same as the type of Field.
 
@@ -2271,13 +2271,13 @@ Method name must be follow the rule of L<"Method Names">.
 
 Method names are allowed as same as L<"Keyword">. 
 
-Type of Return Value must be L<"void Type">, L<"Numeric Types">, or L<"Object Type">, otherwise compilation errors occur.
+Type of Return Value must be L<"void Type">, L<"Numeric Types">, or L<"Object Type">, otherwise a compilation error occurs.
 
 Argument name must be follow the rule of L<"Local Variable Names">.
 
 Minimal Argument Count is 0. Max Argument Count is 255.
 
-Type of Argument must be L<"Numeric Types">, L<"Object Type">, or L<"Reference Type">, otherwise compilation errors occur.
+Type of Argument must be L<"Numeric Types">, L<"Object Type">, or L<"Reference Type">, otherwise a compilation error occurs.
 
 The defined Method can be called. See L<"Method Call"> about calling Method, .
 
@@ -2536,7 +2536,7 @@ The value of L<"int Type"> can be set in the enum element.
 
 In the above case, "FLAG1" is "0", "FALG2" is "4", and "FLAG3" is "5".
 
-If Enum Definition is invalid, compilation errors occur.
+If Enum Definition is invalid, a compilation error occurs.
 
 
 =head2 Enumeration Descriptor
@@ -2585,7 +2585,7 @@ List of Enumeration Descriptor
 
 =end html
 
-If both "public" and "private" Descriptors are specified, compilation errors occur.
+If both "public" and "private" Descriptors are specified, a compilation error occurs.
 
 
 =head2 Enumeration Call
@@ -2989,7 +2989,7 @@ SPVM String is an Array of bytes whose elements cannot be changed. You can get t
   # Acquisition of Character
   my $ch = $str->[1];
 
-If you try to change the element, compilation errors occur
+If you try to change the element, a compilation error occurs
 
 
   # a compilation error when changing element
@@ -3384,7 +3384,7 @@ Expression is a syntax component that can be evaluated as a value.
 =head2 Operator
 
 
-L<"Operator"> is a Expression.
+L<"Operators"> is a Expression.
 
 
 =head2 Undefined Value
@@ -3415,14 +3415,14 @@ B<Get Local Variable Value> is a Expression to get L<"Local Variable"> Value.
 B<Set Local Variable Value Expression> is a Expression to set L<"Local Variable"> Value using L<"Assignment Operator">.
 
 
-  $var = RIGHT_EXPRESSION
+  $var = RIGHT_OPERAND
 
 
 The Assignment must satisfy L<"Type Compatibility">.
 
 Set Local Variable Value Expression returns the value after setting.
 
-If Right Expression is L<"Object Type">, Reference Count of the object is incremented by 1.
+If Right Operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to $var before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3444,9 +3444,9 @@ B<Get Class Variable Value Expression> is a Expression to get L<"Class Variable"
   $CLASS_VARIABLE_NAME
 
 
-If you try to get the value of a Class Variable that is not defined, compilation errors occur.
+If you try to get the value of a Class Variable that is not defined, a compilation error occurs.
 
-If you try to access a private Class Variable from outside the Class, compilation errors occur.
+If you try to access a private Class Variable from outside the Class, a compilation error occurs.
 
 B<Get Class Variable Value Example:>
 
@@ -3469,24 +3469,24 @@ B<Set Class Variable Value Expression> is a Expression to set L<"Class Variable"
 .
 
 
-  $CLASS_NAME::CLASS_VARIABLE_NAME = RIGHT_EXPRESSION
+  $CLASS_NAME::CLASS_VARIABLE_NAME = RIGHT_OPERAND
 
 
 "CLASS_NAME::" can be omitted when the Class Variable belongs to own L<"Class">.
 
 
-  $CLASS_VARIABLE_NAME = RIGHT_EXPRESSION
+  $CLASS_VARIABLE_NAME = RIGHT_OPERAND
 
 
-If the assignment does not satisfy L<"Type Compatibility">, compilation errors occur.
+If the assignment does not satisfy L<"Type Compatibility">, a compilation error occurs.
 
 Set Class Variable Value Expression returns the value after setting.
 
-If you try to get the value of a Class Variable that is not defined, compilation errors occur.
+If you try to get the value of a Class Variable that is not defined, a compilation error occurs.
 
-If you try to access a private Class Variable from outside the Class, compilation errors occur.
+If you try to access a private Class Variable from outside the Class, a compilation error occurs.
 
-If Right Expression is L<"Object Type">, Reference Count of the object is incremented by 1.
+If Right Operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Class Variable before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3534,14 +3534,14 @@ B<Get Exception Variable Value Example:>
 B<Set Exception Variable Value Expression> is a Expression to set the value of L<"Exception Variable"> using L<"Assignment Operator">.
 
 
-  $@ = RIGHT_EXPRESSION
+  $@ = RIGHT_OPERAND
 
 
-Right Expression must be L<"string Type">.
+Right Operand must be L<"string Type">.
 
 Returns the value of Exception Variable after setting. This is L<"string Type">.
 
-The Reference Count of Right Expression is incremented by 1.
+The Reference Count of Right Operand is incremented by 1.
 
 If an object has already been assigned to Exception Variable before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3561,9 +3561,9 @@ B<Get Field Value Expression> is a Expression to get L<"Field"> Value.
   INVOCANT_EXPRESSION->{FIELD_NAME}
 
 
-Invocant Expression is L<"Class Type">. If Expression is L<"Multi Numeric Types"> Value, The Field Access is L<"Get Multi Numeric Field Value">. If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise compilation errors occur.
+Invocant Expression is L<"Class Type">. If Expression is L<"Multi Numeric Types"> Value, The Field Access is L<"Get Multi Numeric Field Value">. If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise a compilation error occurs.
 
-If the field names does not found in the <a href="#language-class">Class">, compilation errors occur
+If the field names does not found in the <a href="#language-class">Class">, a compilation error occurs
 
 Get Field Value Expression returns the value of the Field stored in the object.
 
@@ -3583,20 +3583,20 @@ B<Get Field Value Example:>
 B<Set Field Value Expression> is a Expression to set L<"Field"> Value.
 
 
-  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
+  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_OPERAND
 
 
-Invocant Expression is L<"Class Type">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Set Multi Numeric Field Value">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Set Multi Numeric Field Value via Dereference">, otherwise compilation errors occur.
+Invocant Expression is L<"Class Type">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Set Multi Numeric Field Value">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
 
-If the assignment does not satisfy L<"Type Compatibility"> of the Type of Field, compilation errors occur.
+If the assignment does not satisfy L<"Type Compatibility"> of the Type of Field, a compilation error occurs.
 
-If the field names does not found in the L<"Class">, compilation errors occur.
+If the field names does not found in the L<"Class">, a compilation error occurs.
 
 Set Field Value Expression returns the value of Field after setting. 
 
 Return Value Type is the Type of Field.
 
-If Right Expression is L<"Object Type">, Reference Count of the object is incremented by 1.
+If Right Operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3616,9 +3616,9 @@ B<Get Multi Numeric Field Value Expression> is a Expression to get Field Value o
 
   INVOCANT_EXPRESSION->{FIELD_NAME}
 
-Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Get Multi Numeric Field Value via Dereference">, otherwise compilation errors occur.
+Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Get Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
   
-If the field names does not found in the L<"Class">, compilation errors occur
+If the field names does not found in the L<"Class">, a compilation error occurs
 
 Get Multi Numeric Field Value Expression returns the field value in the Multi Numeric Value.
 
@@ -3638,13 +3638,13 @@ B<Get Multi Numeric Field Value Example:>
 Set Multi Numeric Field Value Expression is a Expression to set Field Value of L<"Multi Numeric Value"> using L<"Assignment Operator">.
 
 
-  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
+  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_OPERAND
 
 <
 
-Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<"Set Field Value">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Set Multi Numeric Field Value via Dereference">, otherwise compilation errors occur.
+Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<"Set Field Value">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
 
-If the field names does not found in the L<"Class">, compilation errors occur.
+If the field names does not found in the L<"Class">, a compilation error occurs.
 
 Set Multi Numeric Field Value Expression returns the value of Field after setting. 
 
@@ -3669,9 +3669,9 @@ B<Get Multi Numeric Field Value via Dereference Expression> is a Expression to g
   INVOCANT_EXPRESSION->{FIELD_NAME}
 
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, the Field Access is , L<"Get Field Value">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Get Multi Numeric Field Value">, otherwise compilation errors occur.
+Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, the Field Access is , L<"Get Field Value">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Get Multi Numeric Field Value">, otherwise a compilation error occurs.
 
-If the field names does not found in the L<"Class">, compilation errors occur
+If the field names does not found in the L<"Class">, a compilation error occurs
 
 Get Multi Numeric Field Value via Dereference Expression returns the field value in the Multi Numeric Value.
 
@@ -3692,12 +3692,12 @@ B<Get Multi Numeric Field Value via Dereference Example:>
 Set Multi Numeric Field Value Expression via Dereference is a Expression to set Field Value of L<"Multi Numeric Value"> via L<"Dereference"> using L<"Assignment Operator">.
 
 
-  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
+  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_OPERAND
 
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, L<"Set Field Value">. If Invocant Expression is L<"Multi Numeric Types">, L<"Set Multi Numeric Field Value">, otherwise compilation errors occur.
+Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, L<"Set Field Value">. If Invocant Expression is L<"Multi Numeric Types">, L<"Set Multi Numeric Field Value">, otherwise a compilation error occurs.
 
-If the field names does not found in the L<"Class">, compilation errors occur
+If the field names does not found in the L<"Class">, a compilation error occurs
 
 Set Multi Numeric Field Value via Dereference Expression returns the value of Field after setting.
 
@@ -3753,7 +3753,7 @@ B<Get Array Element Value Example:>
 Set Array Element Value Expression is a Expression to set a Element Value of a Array using L<"Assignment Operator">.
 
 
-  ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_EXPRESSION
+  ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_OPERAND
 
 
 Array Expression must be L<"Array Type">.
@@ -3768,7 +3768,7 @@ If Array Expression is L<"Undefined Value">, a Runtime Exception occurs.
 
 If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
-If Right Expression is L<"Object Type">, Reference Count of the object is incremented by 1.
+If Right Operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3939,7 +3939,7 @@ Defined method can be called by Class Method Call except a case that the first a
 
 The arguments max count is 255.
 
-If the number of arguments does not match the number of arguments defined in the Method Definition, compilation errors occur The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, compilation errors occur.
+If the number of arguments does not match the number of arguments defined in the Method Definition, a compilation error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, a compilation error occurs.
 
 B<Class Method Call Example>
 
@@ -3980,7 +3980,7 @@ Instance Method Call can be done with the following syntax using the object crea
 
   OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
-Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the Method Definition, compilation errors occur The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, compilation errors occur
+Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the Method Definition, a compilation error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, a compilation error occurs
 
 Instance Method Call returns Return Value if Return Value is other than L<"void Type">.
 
@@ -4019,7 +4019,7 @@ Obtaining a value by Dereference is an operation to obtain the actual value from
 
   $VARIABLE
 
-The variable Type must be Reference Type, otherwise compilation errors occur.
+The variable Type must be Reference Type, otherwise a compilation error occurs.
 
 The value obtained by Dereference returns L<"Expression">.
 
@@ -4044,9 +4044,9 @@ Setting a value with Dereference is an operation to set the actual value from Re
 
   $VARIABLE = Expression
 
-The variable Type must be Reference Type, otherwise compilation errors occur.
+The variable Type must be Reference Type, otherwise a compilation error occurs.
 
-The Type of Expression must match the Type of the variable when dereferenced, otherwise compilation errors occur.
+The Type of Expression must match the Type of the variable when dereferenced, otherwise a compilation error occurs.
 
 Setting a value with Dereference returns the set value. This is L<"Expression">.
 
@@ -4137,39 +4137,26 @@ B<Get Current Line Number Example:>
     }
   }
 
+=head1 Operators
 
+B<Operators> are L<"Unary Operators">, L<"Binary Operator">, L<"Increment Operator">, L<"Decrement Operator">, L<"Comparison Operator">, L<"Logical Operator">, and L<"Assignment Operator">.
 
-=head1 Operator
+=head2 Unary Operators
 
-=head2 Operator
+Unary operators are operators have one operand.
 
+  UNARY_OPERATOR OPERAND
 
-B<Operator> is a L<"Expression"> to culcurate number mainly.
+The operand is an L<Expression|"Expressions">.
 
-B<Operators> are L<"Unary Operator">, L<"Binary Operator">, L<"Increment Operator">, L<"Decrement Operator">, L<"Comparison Operator">, L<"Logical Operator">, and L<"Assignment Operator">.
-
-
-=head2 Unary Operator
-
-
-Unary Operator is an Operator placed before L<"Expression">.
-
-
-  UNARY_OPERATOR EXPRESSION
-
-
-Unary Operators are L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Bit NOT Operator">, L<"Logical NOT Operator">, L<"Array Length Operator">, and L<"String Length Operator">.
-
-Note that L<"Increment Operator"> and L<"Decrement Operator"> is not Unary Operator.
-
+Unary operators are L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Bit NOT Operator">, L<"Logical NOT Operator">, L<"Array Length Operator">, and L<"String Length Operator">.
 
 =head2 Binary Operator
-
 
 Binary Operator is a Operator placed between Left L<"Expression"> and Right L<"Expression">.
 
 
-  LEFT_EXPRESSION BINARY_OPERATOR RIGHT_EXPRESSION
+  LEFT_EXPRESSION BINARY_OPERATOR RIGHT_OPERAND
 
 
 Binary Operators are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multiplication Operator">, L<"Division Operator">, L<"Remainder Operator">, L<"Bit AND Operator">, L<"Bit OR Operator">, L<"Logical AND Operator">, L<"Logical OR Operator">, L<"Shift Operator">, and L<"String Concatenation Operator">.
@@ -4202,7 +4189,7 @@ B<Sequential Operator Example:>
 =head2 Arithmetic Operators
 
 
-B<Arithmetic Operators> is an L<"Operator"> that performs arithmetic.
+B<Arithmetic Operators> is an L<"Operators"> that performs arithmetic.
 
 B<Arithmetic Operatorss> are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multiplication Operator">, L<"Division Operator">, L<"Remainder Operator">, L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Increment Operator">, and L<"Decrement Operator">.
 
@@ -4210,13 +4197,13 @@ B<Arithmetic Operatorss> are L<"Addition Operator">, L<"Subtraction Operator">, 
 =head2 Unary Plus Operator
 
 
-Unary Plus Operator is a L<"Unary Operator"> represented by "+".
+Unary Plus Operator is a L<"Unary Operators"> represented by "+".
 
 
   +Expression
 
 
-Expression must be L<"Numeric Types">, otherwise compilation errors occur.
+Expression must be L<"Numeric Types">, otherwise a compilation error occurs.
 
 L<"Unary Numeric Widening Type Conversion"> applys to Expression.
 
@@ -4236,13 +4223,13 @@ B<Unary Plus Operator Example:>
 =head2 Unary Minus Operator
 
 
-Unary Minus Operator is a L<"Unary Operator"> represented by "-".
+Unary Minus Operator is a L<"Unary Operators"> represented by "-".
 
 
   -Expression
 
 
-Expression must be L<"Numeric Types">, otherwise compilation errors occur.
+Expression must be L<"Numeric Types">, otherwise a compilation error occurs.
 
 L<"Unary Numeric Widening Type Conversion"> applys to Expression.
 
@@ -4271,12 +4258,12 @@ B<Unary Minus Operator Example:>
 B<Addition Operator> is a L<"Binary Operator"> represtented by "+" to perform addition.
 
 
-  LEFT_EXPRESSION + RIGHT_EXPRESSION
+  LEFT_EXPRESSION + RIGHT_OPERAND
 
 
-Left Expression and Right Expression must be L<"Numeric Types">, otherwise compilation errors occur.
+Left Expression and Right Operand must be L<"Numeric Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
+L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Operand.
 
 After that, Addition Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4297,12 +4284,12 @@ Addition Operator does not throw L<"Exception">.
 B<Subtraction Operator> is a L<"Binary Operator"> represtented by "-" to perform Subtraction.
 
 
-  LEFT_EXPRESSION - RIGHT_EXPRESSION
+  LEFT_EXPRESSION - RIGHT_OPERAND
 
 
-Left Expression and Right Expression must be L<"Numeric Types">, otherwise compilation errors occur.
+Left Expression and Right Operand must be L<"Numeric Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
+L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Operand.
 
 After that, Subtraction Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4321,12 +4308,12 @@ Subtraction Operator does not throw L<"Exception">.
 B<Multiplication Operator> is a L<"Binary Operator"> represtented by "*" to perform Multiplication.
 
 
-  LEFT_EXPRESSION * RIGHT_EXPRESSION
+  LEFT_EXPRESSION * RIGHT_OPERAND
 
 
-Left Expression and Right Expression must be L<"Numeric Types">, otherwise compilation errors occur.
+Left Expression and Right Operand must be L<"Numeric Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
+L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Operand.
 
 After that, Multiplication Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4347,12 +4334,12 @@ Multiplication Operator does not throw L<"Exception">.
 B<Division Operator> is a L<"Binary Operator"> represtented by "/" to perform Division.
 
 
-  LEFT_EXPRESSION / RIGHT_EXPRESSION
+  LEFT_EXPRESSION / RIGHT_OPERAND
 
 
-Left Expression and Right Expression must be L<"Numeric Types">, otherwise compilation errors occur.
+Left Expression and Right Operand must be L<"Numeric Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
+L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Operand.
 
 After that, Division Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4364,7 +4351,7 @@ L<"int Type"> Operation, L<"long Type"> Operation, L<"float Type"> Operation, an
 
 Return Type of Division Operator is the Type after L<"Binary Numeric Widening Type Conversion"> is applied.
 
-In the operation to L<"Integral Types">, Division Operator throw L<"Exception"> if Right Expression is 0.
+In the operation to L<"Integral Types">, Division Operator throw L<"Exception"> if Right Operand is 0.
 
 In the operation to L<"Floating Point Types">, Division Operator dose not throw L<"Exception">.
 
@@ -4375,12 +4362,12 @@ In the operation to L<"Floating Point Types">, Division Operator dose not throw 
 B<Remainder Operator> is a L<"Binary Operator"> represtented by "%" to perform Division.
 
 
-  LEFT_EXPRESSION % RIGHT_EXPRESSION
+  LEFT_EXPRESSION % RIGHT_OPERAND
 
 
-Left Expression and Right Expression must be L<"Integral Types">, otherwise compilation errors occur.
+Left Expression and Right Operand must be L<"Integral Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
+L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Operand.
 
 After that, Remainder Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4392,7 +4379,7 @@ L<"int Type"> Operation, and L<"long Type"> Operation are defined corresponding 
 
 Return Type of Remainder Operator is the Type after L<"Binary Numeric Widening Type Conversion"> is applied.
 
-Remainder Operator throw L<"Exception"> if Right Expression is 0.
+Remainder Operator throw L<"Exception"> if Right Operand is 0.
 
 
 =head2 Increment Operator
@@ -4415,7 +4402,7 @@ B<Increment Operator> is an Operator that adds 1 to the value. the meaning of In
   ARRAY_ACCESS++
   DEREFERENCE++
 
-The operand of Increment Operator must L<"Local Variable">, L<"Class Variable">, <a href = "#language-field-access">Field Access</a>, L<"Array Access">, L<"Dereference">, otherwise compilation errors occur.
+The operand of Increment Operator must L<"Local Variable">, L<"Class Variable">, <a href = "#language-field-access">Field Access</a>, L<"Array Access">, L<"Dereference">, otherwise a compilation error occurs.
 
 The Type of operand of Increment Operator must be L<"Numeric Types">, otherwise a compilation error will occur.
 
@@ -4479,7 +4466,7 @@ B<Decrement Operator> is an Operator that subtracts 1 to the value. the meaning 
   ARRAY_ACCESS--
   DEREFERENCE--
 
-The operand of Decrement Operator must L<"Local Variable">, L<"Class Variable">, <a href = "#language-field-access">Field Access</a>, L<"Array Access">, L<"Dereference">, otherwise compilation errors occur.
+The operand of Decrement Operator must L<"Local Variable">, L<"Class Variable">, <a href = "#language-field-access">Field Access</a>, L<"Array Access">, L<"Dereference">, otherwise a compilation error occurs.
 
 The Type of operand of Decrement Operator must be L<"Numeric Types">, otherwise a compilation error will occur.
 
@@ -4534,12 +4521,12 @@ Bit Operator is an Operator that performs Bit operation. L<"Bit AND Operator">, 
 Bit AND is L<"Binary Operator"> represented by "&".
 
 
-  LEFT_EXPRESSION & RIGHT_EXPRESSION
+  LEFT_EXPRESSION & RIGHT_OPERAND
 
-Left Expression and Right Expression must be L<"Integral Types">, otherwise compilation errors occur.
+Left Expression and Right Operand must be L<"Integral Types">, otherwise a compilation error occurs.
 <p>
 <p>
-  L<"Binary Numeric Widening Type Conversion"> is performed on Left Expression and Right Expression.
+  L<"Binary Numeric Widening Type Conversion"> is performed on Left Expression and Right Operand.
 
 After that, the operation result of Bit AND Operator performs the operation that exactly matches the following operation in C99
 
@@ -4561,12 +4548,12 @@ Bit AND Operator does not throw L<"Exception">.
 Bit OR is L<"Binary Operator"> represented by "|".
 
 
-  LEFT_EXPRESSION | RIGHT_EXPRESSION
+  LEFT_EXPRESSION | RIGHT_OPERAND
 
-Left Expression and Right Expression must be L<"Integral Types">, otherwise compilation errors occur.
+Left Expression and Right Operand must be L<"Integral Types">, otherwise a compilation error occurs.
 <p>
 <p>
-  L<"Binary Numeric Widening Type Conversion"> is performed on Left Expression and Right Expression.
+  L<"Binary Numeric Widening Type Conversion"> is performed on Left Expression and Right Operand.
 
 After that, the operation result of Bit OR Operator performs the operation that exactly matches the following operation in C99.
 
@@ -4585,12 +4572,12 @@ Bit OR Operator does not throw L<"Exception">.
 
 =head2 Bit NOT Operator
 
-Bit NOT Operator is L<"Unary Operator"> represented by "~".
+Bit NOT Operator is L<"Unary Operators"> represented by "~".
 
 
   ~EXPRESSION
 
-Expression must be L<"Integral Types">, otherwise compilation errors occur.
+Expression must be L<"Integral Types">, otherwise a compilation error occurs.
 
 L<"Unary Numeric Widening Type Conversion"> is performed to Expression before Operation.
 
@@ -4623,12 +4610,12 @@ Shift Operator is an operator that performs Bit shift. L<"Left Shift Operator">,
 The Left shift is L<"Binary Operator"> represented by "<<".
 
 
-  LEFT_EXPRESSION << RIGHT_EXPRESSION
+  LEFT_EXPRESSION << RIGHT_OPERAND
 
-Left Expression must be L<"Integral Types">, otherwise compilation errors occur.
+Left Expression must be L<"Integral Types">, otherwise a compilation error occurs.
 <p>
 <p>
-  Right Expression must be L<"int Type">, otherwise compilation errors occur.
+  Right Operand must be L<"int Type">, otherwise a compilation error occurs.
 <p>
 <p>
   The calculation result of Left Shift Operator is the same as the following calculation in C99.
@@ -4648,14 +4635,14 @@ Left Shift Operator does not throw L<"Exception">.
 Arithmetic Right Shift Operator is L<"Binary Operator"> represented by ">>".
 
 
-  LEFT_EXPRESSION >> RIGHT_EXPRESSION
+  LEFT_EXPRESSION >> RIGHT_OPERAND
 
-Left Expression must be L<"Integral Types">, otherwise compilation errors occur.
+Left Expression must be L<"Integral Types">, otherwise a compilation error occurs.
 <p>
 <p>
   First, for L<"Left Expression">, L<"Unary Numeric Widening Type Conversion"> is performed.
 
-Right Expression must be L<"int Type">, otherwise compilation errors occur.
+Right Operand must be L<"int Type">, otherwise a compilation error occurs.
 <p>
 <p>
   The operation result of Arithmetic Right Shift Operator is the operation that exactly matches the following operation in C99.
@@ -4675,11 +4662,11 @@ Arithmetic Right Shift Operator does not throw L<"Exception">.
 Logical Right Shift Operator is L<"Binary Operator"> represented by ">>>".
 
 
-  LEFT_EXPRESSION >>> RIGHT_EXPRESSION
+  LEFT_EXPRESSION >>> RIGHT_OPERAND
 
-Left Expression must be L<"Integral Types">, otherwise compilation errors occur.
+Left Expression must be L<"Integral Types">, otherwise a compilation error occurs.
 
-Right Expression must be L<"int Type">, otherwise compilation errors occur.
+Right Operand must be L<"int Type">, otherwise a compilation error occurs.
 <p>
 <p>
   The calculation result of Logical Right Shift Operator is the same as the following calculation in C99.
@@ -4696,10 +4683,10 @@ Logical Right Shift Operator does not throw L<"Exception">.
 
 =head2 Comparison Operator
 
-Comparison Operator is an Operator that is placed between Left Expression and Right Expression to compare the size, and return True/False Value.
+Comparison Operator is an Operator that is placed between Left Expression and Right Operand to compare the size, and return True/False Value.
 
 
-  LEFT_EXPRESSION COMPARISON_OPERATOR RIGHT_EXPRESSION
+  LEFT_EXPRESSION COMPARISON_OPERATOR RIGHT_OPERAND
 
 Comparison Operators are L<"Numeric Comparison Operator">, L<"String Comparison Operator">, and L<"isa Operator">.
 
@@ -4707,10 +4694,10 @@ Comparison Operators are L<"Numeric Comparison Operator">, L<"String Comparison 
 
 =head2 Numeric Comparison Operator
 
-B<Numeric Comparison Operator> is a L<"Comparison Operator"> that is placed between Left Expression and Right Expression to compare the size of number or check the equqlity of objects.
+B<Numeric Comparison Operator> is a L<"Comparison Operator"> that is placed between Left Expression and Right Operand to compare the size of number or check the equqlity of objects.
 
 
-  LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_EXPRESSION
+  LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_OPERAND
 
 A list of Numeric Comparison Operators.
 
@@ -4725,76 +4712,76 @@ A list of Numeric Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION == RIGHT_EXPRESSION
+      LEFT_EXPRESSION == RIGHT_OPERAND
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Types, Left Expression and Right Expression are Object Type (including Undefined Value)
+      Left Expression and Right Operand are Numeric Types, Left Expression and Right Operand are Object Type (including Undefined Value)
     </td>
     <td>
-      Left Expression and Right Expression are equal
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_EXPRESSION != RIGHT_EXPRESSION
-    </td>
-    <td>
-      Left Expression and Right Expression are Numeric Types, Left Expression and Right Expression are Object Type (including Undefined Value)
-    </td>
-    <td>
-      Left Expression and Right Expression are not equal
+      Left Expression and Right Operand are equal
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION > RIGHT_EXPRESSION
+      LEFT_EXPRESSION != RIGHT_OPERAND
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Types
+      Left Expression and Right Operand are Numeric Types, Left Expression and Right Operand are Object Type (including Undefined Value)
     </td>
     <td>
-      Left Expression is greater than Right Expression
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_EXPRESSION >= RIGHT_EXPRESSION
-    </td>
-    <td>
-      Left Expression and Right Expression are Numeric Types
-    </td>
-    <td>
-      Left Expression is greater than or equal to Right Expression
+      Left Expression and Right Operand are not equal
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION < RIGHT_EXPRESSION
+      LEFT_EXPRESSION > RIGHT_OPERAND
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Types
+      Left Expression and Right Operand are Numeric Types
     </td>
     <td>
-      Left Expression is less than Right Expression
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_EXPRESSION <= RIGHT_EXPRESSION
-    </td>
-    <td>
-      Left Expression and Right Expression are Numeric Types
-    </td>
-    <td>
-      Left Expression is less than or equal to Right Expression
+      Left Expression is greater than Right Operand
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION <=> RIGHT_EXPRESSION
+      LEFT_EXPRESSION >= RIGHT_OPERAND
     </td>
     <td>
-      Left Expression and Right Expression are Numeric Types
+      Left Expression and Right Operand are Numeric Types
+    </td>
+    <td>
+      Left Expression is greater than or equal to Right Operand
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LEFT_EXPRESSION < RIGHT_OPERAND
+    </td>
+    <td>
+      Left Expression and Right Operand are Numeric Types
+    </td>
+    <td>
+      Left Expression is less than Right Operand
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LEFT_EXPRESSION <= RIGHT_OPERAND
+    </td>
+    <td>
+      Left Expression and Right Operand are Numeric Types
+    </td>
+    <td>
+      Left Expression is less than or equal to Right Operand
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LEFT_EXPRESSION <=> RIGHT_OPERAND
+    </td>
+    <td>
+      Left Expression and Right Operand are Numeric Types
     </td>
     <td>
       If Left Expression is greater than Right expression, return 1. If Left Expression is lower than Right expression, return -1. If Left Expression is equals to Right expression, return 0.
@@ -4804,9 +4791,9 @@ A list of Numeric Comparison Operators.
 
 =end html
 
-The Types of Left Expression and Right Expression Comparable Types, otherwise compilation errors occur.
+The Types of Left Expression and Right Operand Comparable Types, otherwise a compilation error occurs.
 
-In Numeric Types Comparison, L<"Binary Numeric Widening Type Conversion"> is performed for Left Expression and Right Expression.
+In Numeric Types Comparison, L<"Binary Numeric Widening Type Conversion"> is performed for Left Expression and Right Operand.
 
 After that, the Numeric Comparison Operation is performed that exactly matches the following operation in C99.
 
@@ -4839,9 +4826,9 @@ Numeric Comparison Operator does not throw L<"Exception">.
 B<String Comparison Operator> is a L<"Comparison Operator"> that compares the bytes in the tow string.
 
 
-  LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
+  LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_OPERAND
 
-Left Expression and Right Expression must be L<"string Type"> or byte[] type.
+Left Expression and Right Operand must be L<"string Type"> or byte[] type.
 
 A list of String Comparison Operators.
 
@@ -4855,55 +4842,55 @@ A list of String Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION eq RIGHT_EXPRESSION
+      LEFT_EXPRESSION eq RIGHT_OPERAND
     </td>
     <td>
-      Left Expression and Right Expression are equal
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_EXPRESSION ne RIGHT_EXPRESSION
-    </td>
-    <td>
-      Left Expression and Right Expression are not equal
+      Left Expression and Right Operand are equal
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION gt RIGHT_EXPRESSION
+      LEFT_EXPRESSION ne RIGHT_OPERAND
     </td>
     <td>
-      Left Expression is greater than Right Expression in dictionary Expression order.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_EXPRESSION ge RIGHT_EXPRESSION
-    </td>
-    <td>
-      Left Expression is greater than or equal to Right Expression compared in dictionary Expression order
+      Left Expression and Right Operand are not equal
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION lt RIGHT_EXPRESSION
+      LEFT_EXPRESSION gt RIGHT_OPERAND
     </td>
     <td>
-      Left Expression is smaller than Right Expression when compared in dictionary Expression order
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_EXPRESSION le RIGHT_EXPRESSION
-    </td>
-    <td>
-      Left Expression is less than or equal to Right Expression compared in dictionary Expression order
+      Left Expression is greater than Right Operand in dictionary Expression order.
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION cmp RIGHT_EXPRESSION
+      LEFT_EXPRESSION ge RIGHT_OPERAND
+    </td>
+    <td>
+      Left Expression is greater than or equal to Right Operand compared in dictionary Expression order
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LEFT_EXPRESSION lt RIGHT_OPERAND
+    </td>
+    <td>
+      Left Expression is smaller than Right Operand when compared in dictionary Expression order
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LEFT_EXPRESSION le RIGHT_OPERAND
+    </td>
+    <td>
+      Left Expression is less than or equal to Right Operand compared in dictionary Expression order
+    </td>
+  </tr>
+  <tr>
+    <td>
+      LEFT_EXPRESSION cmp RIGHT_OPERAND
     </td>
     <td>
       If Left Expression is greater than Right expression, return 1. If Left Expression is lower than Right expression, return -1. If Left Expression is equals to Right expression, return 0.
@@ -4929,9 +4916,9 @@ isa Operator has three behaviors, depending on Right Type.
 
 1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the Type of Left Expression is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
 
-2. If the Right Type is L<"Class Type">, isa operator checks whether the Type of Left Expression is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of Left Expression must be L<"Object Type">, otherwise compilation errors occur.
+2. If the Right Type is L<"Class Type">, isa operator checks whether the Type of Left Expression is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of Left Expression must be L<"Object Type">, otherwise a compilation error occurs.
 
-3. If the Right Type is L<"Callback Type">, isa Operator checks whether the Type of Left Expression satisfy the Callback Type at Run Time. If Left Expression satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of Left Expression must be L<"Object Type">, otherwise compilation errors occur.
+3. If the Right Type is L<"Callback Type">, isa Operator checks whether the Type of Left Expression satisfy the Callback Type at Run Time. If Left Expression satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of Left Expression must be L<"Object Type">, otherwise a compilation error occurs.
 
 
 
@@ -4978,7 +4965,7 @@ Logical Operator returns L<"Expression">
 Logical AND Operator is a L<"Binary Operator">
 
 
-  LEFT_EXPRESSION && RIGHT_EXPRESSION
+  LEFT_EXPRESSION && RIGHT_OPERAND
 
 Logical AND Operator のReturn ValueのTypeは,L<"int Type">.
 
@@ -4997,7 +4984,7 @@ Logical AND Operator does not throw L<"Exception">.
 Logical OR Operator is a logical OR operation that is "L<"Expression"> is an operand of L<"Binary Operator">
 
 
-  LEFT_EXPRESSION || RIGHT_EXPRESSION
+  LEFT_EXPRESSION || RIGHT_OPERAND
 
 Logical OR Operator behaves as follows:
 
@@ -5013,7 +5000,7 @@ Logical OR Operator returns L<"Expression">
 
 =head2 Logical NOT Operator
 
-Logical NOT Operator is an operator to the Left of expression to perform logical NOT operations,L<"Unary Operator"> For more information about Expression, see L<"Expression">.
+Logical NOT Operator is an operator to the Left of expression to perform logical NOT operations,L<"Unary Operators"> For more information about Expression, see L<"Expression">.
 
 
   !EXPRESSION
@@ -5030,19 +5017,19 @@ Logical NOT Operator does not throw L<"Exception">.
 
 String Concatenation Operator is a L<"Binary Operator">.
 
-  LEFT_EXPRESSION . RIGHT_EXPRESSION
+  LEFT_EXPRESSION . RIGHT_OPERAND
 
 The left expression and the right expression are concatenated.
 
-The left expression and the right expression must be a L<"string type"> or L<"byte[] Type">, otherwise compilation errors occur.
+The left expression and the right expression must be a L<"string type"> or L<"byte[] Type">, otherwise a compilation error occurs.
 
 String Concatenation Operator returns the concatenated L<"string">.
 
 String Concatenation Operator retruns L<"Expression">, The Type is L<"string Type">.
 
-If both Left Expression and Right Expression were L<"String Literal">, a string Literal concatenated at compile time is generated. You can concatenate String Literal with string Concatenation Operator without being aware of the cost of performance.
+If both Left Expression and Right Operand were L<"String Literal">, a string Literal concatenated at compile time is generated. You can concatenate String Literal with string Concatenation Operator without being aware of the cost of performance.
 
-If Left expression or Right Expression is L<"Undefined Value"> L<"Exception"> occurs at Run Time.
+If Left expression or Right Operand is L<"Undefined Value"> L<"Exception"> occurs at Run Time.
 
 B<String Concatenation Operator Example>
 
@@ -5060,12 +5047,12 @@ Assignment Operator is a L<"Binary Operator"> for assignment, expressed in "=".
 
 Assignment Operator has multiple meanings depending on the Right and Left sides. Please refer to each item.
 
-In Assignment Operator, the Left Expression is evaluated after the Right Expression is evaluated. This is with the exception of expression being executed from Left to Right as a rule.
+In Assignment Operator, the Left Expression is evaluated after the Right Operand is evaluated. This is with the exception of expression being executed from Left to Right as a rule.
 
 
 =head2 Special Assignment Operator
 
-Special Assignment Operator is a L<"Assignment Operator">L<"Type Compatibility">を満たさない場合は,compilation errors occur
+Special Assignment Operator is a L<"Assignment Operator">L<"Type Compatibility">を満たさない場合は,a compilation error occurs
 
 B<List of Special Assignment Operators>
 
@@ -5127,10 +5114,10 @@ The Special Assignment Operator is deployed as follows:
 
 
   # Before unexpanding
-  LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR RIGHT_EXPRESSION
+  LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR RIGHT_OPERAND
   
   # After unwinding
-  LEFT_EXPRESSION ASSIGNMENT_OPERATOR (LEFT EXPRESSION TYPE CAST)(LEFT_EXPRESSION SPECIFIC_OPERATOR RIGHT_EXPRESSION)
+  LEFT_EXPRESSION ASSIGNMENT_OPERATOR (LEFT EXPRESSION TYPE CAST)(LEFT_EXPRESSION SPECIFIC_OPERATOR RIGHT_OPERAND)
 
 For example, for add assignment Operator, it is expanded as follows:
 
@@ -5168,7 +5155,7 @@ The Reference Operator is an Operator that retrieves the address of a variable f
 
   \VARIABLE
 
-If the variable is not numeric type or Multi Numeric Types, compilation errors occur
+If the variable is not numeric type or Multi Numeric Types, a compilation error occurs
 
 Reference Operator returns expression. The type returned is L<"Reference Type">.
 
@@ -5188,12 +5175,12 @@ For a detailed description of Reference, see L<"Reference">.
 
 =head2 Array Length Operator
 
-Array Length Operator is a L<"Array"></a>L<"Unary Operator">
+Array Length Operator is a L<"Array"></a>L<"Unary Operators">
 
 
   @RIGHT EXPRESSION
 
-Right Expression must be an Array Type, otherwise compilation errors occur.
+Right Operand must be an Array Type, otherwise a compilation error occurs.
 
 Array Length Operator returns array length for L<"int Type"> value.
 
@@ -5209,39 +5196,36 @@ Array Length Operator Example
 
 Note that SPVM does not have the idea of a context in Perl, and array length operators always return Array Length.
 
-
-
 =head2 String Length Operator
 
-String Length Operator is a L<"String"></a> L<"Unary Operator">
+The string length operator is a L<Unary Operator|"Unary Operators"> to get the length of the string.
 
+  length RIGHT_OPERAND
 
-  length RIGHT_EXPRESSION
+The right operand must be a L<Expression|"Expressions"> that type is a L<"string Type">, otherwise a compilation error occurs.
 
-Right Expression must be L<"string Type">, otherwise compilation errors occur.
+The string length operator returns a L<"int Type"> value that is the length of the L<"String">.
 
-The String Length Operator returns the length of the String as a L<"int Type"> value. String Length The length of the String returned by the Operator is the length when viewed as a byte string.
+Note that the returned length is byte size, not the count of the characters of the string that is encoded to a specific character set.
 
-String Length Operator returns the L<"Expression">
-
-B<String Length Operator Example>
-
-String Length Operator Exampleです。
-
-
-  my $nums = "abcde";
-  my $length = length $nums;
-
-
+B<Examples of string length operators:>
+  
+  # Get the string length. The result is 5
+  my $message = "Hello";
+  my $length = length $message;
+  
+  # Get the string length of UTF-8. The result is 9, not 3
+  my $message = "あいう";
+  my $length = length $message;
 
 =head2 Scalar Operator
 
 Scalar Operator is an Operator that returns the given value itself without doing anything. It is provided only to clarify the meaning of L<"Array Length Operator operator">
 
 
-  scalar RIGHT_EXPRESSION
+  scalar RIGHT_OPERAND
 
-Right ExpressionはL<"Array Length Operator">でなければなりません。 otherwise compilation errors occur.
+Right OperandはL<"Array Length Operator">でなければなりません。 otherwise a compilation error occurs.
 
 Scalar Operator returns Expression.
 
@@ -5262,11 +5246,11 @@ isweak Operator is an Operator that checks whether Field is</a>L<"Weaken Referen
 
   isweak VARIABLE->{FIELD_NAME};
 
-The Type of object Expression must be L<"Class Type">. otherwise compilation errors occur.
+The Type of object Expression must be L<"Class Type">. otherwise a compilation error occurs.
 
-Field names must be a existed field names, otherwise compilation errors occur.
+Field names must be a existed field names, otherwise a compilation error occurs.
 
-The Type of the value stored in field must be <a href="#language-type-object">Object Type">, otherwise compilation errors occur.
+The Type of the value stored in field must be <a href="#language-type-object">Object Type">, otherwise a compilation error occurs.
 
 If the value stored in field at Run Time is</a> L<"Undefined Value, it returns false. This is <a href="#language-expression">Expression">
 
@@ -5605,7 +5589,7 @@ As the condition Expression, L<"Expression"> can be specified. L<"Bool Type Conv
 
 The constants specified in case Statement are L<"byte Type"> or L<"int Type"> constants. must be. For a constant of L<"byte Type">, type conversion to L<"int Type"> at compile time. Will be done. The value of enumType and Constant Method of L<"int Type"> are constants of L<"int Type">. As it is expanded at the time of syntax analysis, it can be used.
 
-The constants specified in the case statement must not overlap. If there are duplicates, compilation errors occur
+The constants specified in the case statement must not overlap. If there are duplicates, a compilation error occurs
 
 If the value specified in the condition Expression matches the value specified in the case statement, jump to the position of that case statement.
 
@@ -5832,9 +5816,9 @@ If there is a Return Value, L<"Expression"> can be specified.
 
   return EXPRESSION;
 
-If the Return Value Type in L<"Method Definition"> is L<"void Type">, Expression Must not exist, otherwise compilation errors occur.
+If the Return Value Type in L<"Method Definition"> is L<"void Type">, Expression Must not exist, otherwise a compilation error occurs.
 
-L<"Method Definition">, if the Return Value Type is other than L<"void Type">, Expression Must match the Type of, otherwise compilation errors occur.
+L<"Method Definition">, if the Return Value Type is other than L<"void Type">, Expression Must match the Type of, otherwise a compilation error occurs.
 
 
 
@@ -5844,7 +5828,7 @@ C<die> Statement is a Statement to throw an L<"Exception">.
 
   die EXPRESSION;
 
-The operand must be a L<"string Type">, otherwise compilation errors occur.
+The operand must be a L<"string Type">, otherwise a compilation error occurs.
 
 =head2 weaken Statement
 
@@ -5853,11 +5837,11 @@ A weaken Statement is a Statement that sets L<"Weaken Reference"> for the Field.
 
   weaken VARIABLE->{FIELD_NAME};
 
-The Type of the object Expression must be L<"Class Type">, otherwise compilation errors occur.
+The Type of the object Expression must be L<"Class Type">, otherwise a compilation error occurs.
 
-Field names must be an existing field names, otherwise compilation errors occur.
+Field names must be an existing field names, otherwise a compilation error occurs.
 
-The Type of the value saved in Field must be L<"Object Type">, otherwise compilation errors occur.
+The Type of the value saved in Field must be L<"Object Type">, otherwise a compilation error occurs.
 
 If the value stored in the Field at execution time is L<"Undefined Value">, the weak Statement does nothing.
 
@@ -5903,11 +5887,11 @@ unweaken Statement is a Statement that cancels L<"Weaken Reference"> for Field.
 
   unweaken VARIABLE->{FIELD_NAME};
 
-The Type of the object Expression must be L<"Class Type">, otherwise compilation errors occur.
+The Type of the object Expression must be L<"Class Type">, otherwise a compilation error occurs.
 
-Field names must be an existing Field names, otherwise compilation errors occur.
+Field names must be an existing Field names, otherwise a compilation error occurs.
 
-The Type of the value saved in Field must be L<"Object Type">, otherwise compilation errors occur.
+The Type of the value saved in Field must be L<"Object Type">, otherwise a compilation error occurs.
 
 If the value stored in the Field at execution time is L<"Undefined Value">, the unweaken Statement does nothing.
 
@@ -6385,7 +6369,7 @@ Undefined Type is the Type that L<"Undefined Value"> has. It cannot be used expl
 
 The only Undefined Type value is L<"Undefined Value">.
 
-The value of Undefined Type can be assigned to Object Type.If you assign to another Type, compilation errors occur
+The value of Undefined Type can be assigned to Object Type.If you assign to another Type, a compilation error occurs
 
 
 
@@ -6424,7 +6408,7 @@ Pointer Type is a type of Class Type.
 
 Pointer type data can store C language pointers.
 
-Field cannot be defined for Pointer Type. If it is defined, compilation errors occur
+Field cannot be defined for Pointer Type. If it is defined, a compilation error occurs
 
 
 
@@ -6680,7 +6664,7 @@ Any Object Array Type is an arbitrary L<"Object Type"> expressed as an oarray as
   my $array : oarray = new Point[3];
   my $array : oarray = new object[3];
 
-If a value with a Type other than Object Type is assigned, compilation errors occur
+If a value with a Type other than Object Type is assigned, a compilation error occurs
 
 Note that "oarrayType" is a different Type than "object[] Type". While oarrayType is a Type that can be methodstituted with an arbitrary Array Type value that has an Object Type value as an element, "object[] Type" is a Type that represents an "Array that has an objectType value as an element". Therefore, the value of arbitrary Array Type cannot be assigned.
 
@@ -6748,9 +6732,9 @@ Reference Type is a Type that can store the address of a variable. Add "*" after
 
 Only the address of the Local Variable acquired by L<"Reference Operator"> can be assigned to the value of Reference Type.
 
-If only Local Variable Declaration of Reference Type is performed, compilation errors occur
+If only Local Variable Declaration of Reference Type is performed, a compilation error occurs
 
-Reference Type can be used as Type of L<"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, compilation errors occur
+Reference Type can be used as Type of L<"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error occurs
 
 Reference Type can be used as Type of argument in L<"Method Definition">.
 
@@ -6760,7 +6744,7 @@ Reference Type cannot be used as the Type of Field in L<"Class Definition">.
 
 Reference Type cannot be used as the Type of Class Variable in L<"Class Definition">.
 
-If the Reference Type is used at an Invalid location, compilation errors occur
+If the Reference Type is used at an Invalid location, a compilation error occurs
 
 See L<"Reference"> for a detailed explanation of Reference.
 
@@ -6819,7 +6803,7 @@ If the source Type and the specified Type are the same, the value is simply copi
 
 B<List of Type Conversion in Type Cast>
 
-It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this table is performed, compilation errors occur.
+It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this table is performed, a compilation error occurs.
 
 
 =begin html
@@ -7069,7 +7053,7 @@ Unary Numeric Widening Type Conversion is performed in the following cases.
 
 =head2 Binary Numeric Widening Type Conversion
 
-Binary Numeric Widening Type Conversion is applied to Left Expression and Right Expression in Binary Operator that takes Numeric Types on the Left and Right sides. L<"Numeric Widening Type Conversion">.
+Binary Numeric Widening Type Conversion is applied to Left Expression and Right Operand in Binary Operator that takes Numeric Types on the Left and Right sides. L<"Numeric Widening Type Conversion">.
 
 The following rules apply.
 
@@ -7183,7 +7167,7 @@ B<Right side of Logical NOT Operator>
 
   !CONDITION
 
-Expression specified by Bool Type Conversion is L<"Numeric Types"> or L<"Object Type"> or It must be L<"Undefined Type">, otherwise compilation errors occur.
+Expression specified by Bool Type Conversion is L<"Numeric Types"> or L<"Object Type"> or It must be L<"Undefined Type">, otherwise a compilation error occurs.
 
 Return Value of Bool Type Conversion is Expression of L<"int Type">.
 
