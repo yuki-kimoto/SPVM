@@ -1811,8 +1811,6 @@ int32_t SPVM__TestCase__NativeAPI__new_string_raw(SPVM_ENV* env, SPVM_VALUE* sta
   
   int32_t e;
   
-  int32_t ret;
-  
   // Basic
   {
     void* string = env->new_string_raw(env, "abc", 3);
@@ -1838,6 +1836,31 @@ int32_t SPVM__TestCase__NativeAPI__new_string_raw(SPVM_ENV* env, SPVM_VALUE* sta
     
     const char* string_chars = env->get_chars(env, string);
     if (strcmp(string_chars, "abc") != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    env->inc_ref_count(env, string);
+    env->dec_ref_count(env, string);
+  }
+
+  int32_t ret;
+  
+  // Basic
+  {
+    void* string = env->new_string_raw(env, "abc", 1);
+
+    if (env->length(env, string) != 1) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "a") != 0) {
       stack[0].ival = 0;
       env->inc_ref_count(env, string);
       env->dec_ref_count(env, string);
