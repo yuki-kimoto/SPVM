@@ -1918,6 +1918,42 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               break;
             }
+            case SPVM_OP_C_ID_DIV_UINT: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left operand must be numeric type
+              if (!SPVM_TYPE_is_int_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of \"div_uint\" operator must be int type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be numeric type
+              if (!SPVM_TYPE_is_int_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of \"div_uint\" operator must be int type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_DIV_ULONG: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left operand must be numeric type
+              if (!SPVM_TYPE_is_long_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of \"div_ulong\" operator must be long type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be numeric type
+              if (!SPVM_TYPE_is_long_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of \"div_ulong\" operator must be long type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_REMAINDER: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
@@ -1940,6 +1976,42 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
                                               
+              break;
+            }
+            case SPVM_OP_C_ID_REM_UINT: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left operand must be numeric type
+              if (!SPVM_TYPE_is_int_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of \"rem_uint\" operator must be int type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be numeric type
+              if (!SPVM_TYPE_is_int_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of \"rem_uint\" operator must be int type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_REM_ULONG: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left operand must be numeric type
+              if (!SPVM_TYPE_is_long_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of \"rem_ulong\" operator must be long type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be numeric type
+              if (!SPVM_TYPE_is_long_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of \"rem_ulong\" operator must be long type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
               break;
             }
             case SPVM_OP_C_ID_BIT_AND: {
@@ -3612,11 +3684,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_SUBTRACT:
                         case SPVM_OP_C_ID_MULTIPLY:
                         case SPVM_OP_C_ID_DIVIDE:
+                        case SPVM_OP_C_ID_DIV_UINT:
+                        case SPVM_OP_C_ID_DIV_ULONG:
+                        case SPVM_OP_C_ID_REMAINDER:
+                        case SPVM_OP_C_ID_REM_UINT:
+                        case SPVM_OP_C_ID_REM_ULONG:
                         case SPVM_OP_C_ID_BIT_AND:
                         case SPVM_OP_C_ID_BIT_OR:
                         case SPVM_OP_C_ID_BIT_XOR:
                         case SPVM_OP_C_ID_BIT_NOT:
-                        case SPVM_OP_C_ID_REMAINDER:
                         case SPVM_OP_C_ID_LEFT_SHIFT:
                         case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT:
                         case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT:

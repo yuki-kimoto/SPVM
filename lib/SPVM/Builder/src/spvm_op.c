@@ -1355,7 +1355,11 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_SUBTRACT:
     case SPVM_OP_C_ID_MULTIPLY:
     case SPVM_OP_C_ID_DIVIDE:
+    case SPVM_OP_C_ID_DIV_UINT:
+    case SPVM_OP_C_ID_DIV_ULONG:
     case SPVM_OP_C_ID_REMAINDER:
+    case SPVM_OP_C_ID_REM_UINT:
+    case SPVM_OP_C_ID_REM_ULONG:
     case SPVM_OP_C_ID_INC:
     case SPVM_OP_C_ID_PRE_INC:
     case SPVM_OP_C_ID_POST_INC:
