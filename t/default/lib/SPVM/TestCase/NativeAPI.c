@@ -2154,3 +2154,58 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen_raw(SPVM_ENV* env, SPVM_VALU
 
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__new_string_nolen(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  // Basic
+  {
+    void* string = env->new_string_nolen(env, "abc");
+
+    /*
+    int32_t string_basic_type_id = *(int32_t*)((intptr_t)string + (intptr_t)env->object_basic_type_id_offset);
+    int32_t string_type_dimension = *(uint8_t*)((intptr_t)string + (intptr_t)env->object_type_dimension_offset);
+    
+    if (!(string_basic_type_id == (intptr_t)env->string_basic_type_id && string_type_dimension == 0)) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    */
+
+    if (env->length(env, string) != 3) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "abc") != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+
+  // ""
+  {
+    void* string = env->new_string_nolen(env, "");
+
+    if (env->length(env, string) != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "") != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+
+  stack[0].ival = 1;
+
+  return 0;
+}
