@@ -54,7 +54,7 @@
 %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA NUMERIC_CMP STRING_CMP
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
-%left <opval> '*' DIVIDE REMAINDER  DIV_UINT DIV_ULONG REM_UINT REM_ULONG
+%left <opval> '*' DIVIDE DIVIDE_UINT DIVIDE_ULONG REMAINDER  REMAINDER_UINT REMAINDER_ULONG
 %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
@@ -821,11 +821,11 @@ binary_op
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
-  | expression DIV_UINT expression
+  | expression DIVIDE_UINT expression
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
-  | expression DIV_ULONG expression
+  | expression DIVIDE_ULONG expression
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
@@ -833,11 +833,11 @@ binary_op
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
-  | expression REM_UINT expression
+  | expression REMAINDER_UINT expression
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
-  | expression REM_ULONG expression
+  | expression REMAINDER_ULONG expression
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }

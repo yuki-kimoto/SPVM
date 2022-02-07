@@ -1838,12 +1838,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return DIE;
                 }
                 else if (strcmp(keyword, "div_uint") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DIV_UINT);
-                  return DIV_UINT;
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DIVIDE_UINT);
+                  return DIVIDE_UINT;
                 }
                 else if (strcmp(keyword, "div_ulong") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DIV_ULONG);
-                  return DIV_ULONG;
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DIVIDE_ULONG);
+                  return DIVIDE_ULONG;
                 }
                 else if (strcmp(keyword, "double") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DOUBLE);
@@ -2056,12 +2056,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return REFCNT;
                 }
                 else if (strcmp(keyword, "rem_uint") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REM_UINT);
-                  return REM_UINT;
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REMAINDER_UINT);
+                  return REMAINDER_UINT;
                 }
                 else if (strcmp(keyword, "rem_ulong") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REM_ULONG);
-                  return REM_ULONG;
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REMAINDER_ULONG);
+                  return REMAINDER_ULONG;
                 }
                 else if (strcmp(keyword, "return") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_RETURN);
