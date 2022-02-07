@@ -220,6 +220,10 @@ ok(!-f "$FindBin::Bin/.spvm_build/work/object/SPVM/CORE.o");
   ok(SPVM::TestCase::NativeAPI->new_string);
 }
 
+# new_string_nolen_raw
+{
+  ok(SPVM::TestCase::NativeAPI->new_string_nolen_raw);
+}
 
 # Clear exception
 SPVM::set_exception(undef);

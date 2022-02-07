@@ -1210,5 +1210,7 @@ class TestCase::NativeAPI {
   native static method new_string_raw : int ();
 
   native static method new_string : int ();
+
+  native static method new_string_nolen_raw : int ();
   
 }
