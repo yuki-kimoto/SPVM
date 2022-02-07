@@ -260,6 +260,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_call_spvm_method, // call_instance_method
     SPVM_API_get_instance_method_id_static,
     SPVM_API_get_bool_object_value,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_STRING, // string_basic_type_id
   };
   
   SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime_noenv(compiler, sizeof(env_init));
