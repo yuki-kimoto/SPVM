@@ -3422,7 +3422,7 @@ The Assignment must satisfy L<"Type Compatibility">.
 
 Set Local Variable Value Expression returns the value after setting.
 
-If Right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
+If the right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to $var before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3486,7 +3486,7 @@ If you try to get the value of a Class Variable that is not defined, a compilati
 
 If you try to access a private Class Variable from outside the Class, a compilation error occurs.
 
-If Right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
+If the right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Class Variable before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3537,11 +3537,11 @@ B<Set Exception Variable Value Expression> is a Expression to set the value of L
   $@ = RIGHT_OPERAND
 
 
-Right operand must be L<"string Type">.
+the right operand must be L<"string Type">.
 
 Returns the value of Exception Variable after setting. This is L<"string Type">.
 
-The Reference Count of Right operand is incremented by 1.
+The Reference Count of the right operand is incremented by 1.
 
 If an object has already been assigned to Exception Variable before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3596,7 +3596,7 @@ Set Field Value Expression returns the value of Field after setting.
 
 Return Value Type is the Type of Field.
 
-If Right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
+If the right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3768,7 +3768,7 @@ If Array Expression is L<"Undefined Value">, a Runtime Exception occurs.
 
 If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
-If Right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
+If the right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -4238,9 +4238,9 @@ B<Addition Operator> is a L<"Binary Operators"> represtented by "+" to perform a
   LEFT_OPERAND + RIGHT_OPERAND
 
 
-Left operand and Right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and Right operand.
+L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and the right operand.
 
 After that, Addition Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4264,9 +4264,9 @@ B<Subtraction Operator> is a L<"Binary Operators"> represtented by "-" to perfor
   LEFT_OPERAND - RIGHT_OPERAND
 
 
-Left operand and Right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and Right operand.
+L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and the right operand.
 
 After that, Subtraction Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4288,9 +4288,9 @@ B<Multiplication Operator> is a L<"Binary Operators"> represtented by "*" to per
   LEFT_OPERAND * RIGHT_OPERAND
 
 
-Left operand and Right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and Right operand.
+L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and the right operand.
 
 After that, Multiplication Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4314,9 +4314,9 @@ B<Division Operator> is a L<"Binary Operators"> represtented by "/" to perform D
   LEFT_OPERAND / RIGHT_OPERAND
 
 
-Left operand and Right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and Right operand.
+L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and the right operand.
 
 After that, Division Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4328,7 +4328,7 @@ L<"int Type"> Operation, L<"long Type"> Operation, L<"float Type"> Operation, an
 
 Return Type of Division Operator is the Type after L<"Binary Numeric Widening Type Conversion"> is applied.
 
-In the operation to L<"Integral Types">, Division Operator throw L<"Exception"> if Right operand is 0.
+In the operation to L<"Integral Types">, Division Operator throw L<"Exception"> if the right operand is 0.
 
 In the operation to L<"Floating Point Types">, Division Operator dose not throw L<"Exception">.
 
@@ -4342,9 +4342,9 @@ B<Remainder Operator> is a L<"Binary Operators"> represtented by "%" to perform 
   LEFT_OPERAND % RIGHT_OPERAND
 
 
-Left operand and Right operand must be L<"Integral Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be L<"Integral Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and Right operand.
+L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and the right operand.
 
 After that, Remainder Operator performs an operation that exactly matches the following operation in C99.
 
@@ -4356,7 +4356,7 @@ L<"int Type"> Operation, and L<"long Type"> Operation are defined corresponding 
 
 Return Type of Remainder Operator is the Type after L<"Binary Numeric Widening Type Conversion"> is applied.
 
-Remainder Operator throw L<"Exception"> if Right operand is 0.
+Remainder Operator throw L<"Exception"> if the right operand is 0.
 
 
 =head2 Increment Operator
@@ -4500,9 +4500,9 @@ Bit AND is L<"Binary Operators"> represented by "&".
 
   LEFT_OPERAND & RIGHT_OPERAND
 
-Left operand and Right operand must be L<"Integral Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be L<"Integral Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is performed on Left operand and Right operand.
+L<"Binary Numeric Widening Type Conversion"> is performed on The left operand and the right operand.
 
 After that, the operation result of Bit AND Operator performs the operation that exactly matches the following operation in C99
 
@@ -4526,9 +4526,9 @@ Bit OR is L<"Binary Operators"> represented by "|".
 
   LEFT_OPERAND | RIGHT_OPERAND
 
-Left operand and Right operand must be L<"Integral Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be L<"Integral Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is performed on Left operand and Right operand.
+L<"Binary Numeric Widening Type Conversion"> is performed on The left operand and the right operand.
 
 After that, the operation result of Bit OR Operator performs the operation that exactly matches the following operation in C99.
 
@@ -4564,21 +4564,19 @@ B<Examples of bit NOT operators:>
   # Bit NOT operations
   my $num = ~0xFF0A;
 
-=head2 Shift Operator
+=head2 Shift Operators
 
-Shift Operator is an operator that performs Bit shift. L<"Left Shift Operator">, <a href = "#language-operator-arithmetic-right-shift" > Arithmetic Right Shift Operator</a>, L<"Logical Right Shift Operator">.
-
+Shift Operators are operators that performs Bit shift operations. These are L<"Left Shift Operator">, L<"Arithmetic Right Shift Operator">, and L<"Logical Right Shift Operator">.
 
 =head2 Left Shift Operator
 
-The Left shift is L<"Binary Operators"> represented by "<<".
-
+The left shift operator C<E<lt>E<lt>> is a L<binary operator|"Binary Operators">.
 
   LEFT_OPERAND << RIGHT_OPERAND
 
-Left operand must be L<"Integral Types">, otherwise a compilation error occurs.
+The left operand must be L<"Integral Types">, otherwise a compilation error occurs.
 
-Right operand must be L<"int Type">, otherwise a compilation error occurs.
+the right operand must be L<"int Type">, otherwise a compilation error occurs.
 
 The calculation result of Left Shift Operator is the same as the following calculation in C99.
 
@@ -4599,11 +4597,11 @@ Arithmetic Right Shift Operator is L<"Binary Operators"> represented by ">>".
 
   LEFT_OPERAND >> RIGHT_OPERAND
 
-Left operand must be L<"Integral Types">, otherwise a compilation error occurs.
+The left operand must be L<"Integral Types">, otherwise a compilation error occurs.
 
-First, for L<"Left operand">, L<"Unary Numeric Widening Type Conversion"> is performed.
+First, for L<"The left operand">, L<"Unary Numeric Widening Type Conversion"> is performed.
 
-Right operand must be L<"int Type">, otherwise a compilation error occurs.
+the right operand must be L<"int Type">, otherwise a compilation error occurs.
 
 The operation result of Arithmetic Right Shift Operator is the operation that exactly matches the following operation in C99.
 
@@ -4624,9 +4622,9 @@ Logical Right Shift Operator is L<"Binary Operators"> represented by ">>>".
 
   LEFT_OPERAND >>> RIGHT_OPERAND
 
-Left operand must be L<"Integral Types">, otherwise a compilation error occurs.
+The left operand must be L<"Integral Types">, otherwise a compilation error occurs.
 
-Right operand must be L<"int Type">, otherwise a compilation error occurs.
+the right operand must be L<"int Type">, otherwise a compilation error occurs.
 
 The calculation result of Logical Right Shift Operator is the same as the following calculation in C99.
 
@@ -4642,7 +4640,7 @@ Logical Right Shift Operator does not throw L<"Exception">.
 
 =head2 Comparison Operator
 
-Comparison Operator is an Operator that is placed between Left operand and Right operand to compare the size, and return True/False Value.
+Comparison Operator is an Operator that is placed between The left operand and the right operand to compare the size, and return True/False Value.
 
 
   LEFT_OPERAND COMPARISON_OPERATOR RIGHT_OPERAND
@@ -4653,7 +4651,7 @@ Comparison Operators are L<"Numeric Comparison Operator">, L<"String Comparison 
 
 =head2 Numeric Comparison Operator
 
-B<Numeric Comparison Operator> is a L<"Comparison Operator"> that is placed between Left operand and Right operand to compare the size of number or check the equqlity of objects.
+B<Numeric Comparison Operator> is a L<"Comparison Operator"> that is placed between The left operand and the right operand to compare the size of number or check the equqlity of objects.
 
 
   LEFT_OPERAND NUMERIC_COMPARISON_OPERATOR RIGHT_OPERAND
@@ -4674,10 +4672,10 @@ A list of Numeric Comparison Operators.
       LEFT_OPERAND == RIGHT_OPERAND
     </td>
     <td>
-      Left operand and Right operand are Numeric Types, Left operand and Right operand are Object Type (including Undefined Value)
+      The left operand and the right operand are Numeric Types, The left operand and the right operand are Object Type (including Undefined Value)
     </td>
     <td>
-      Left operand and Right operand are equal
+      The left operand and the right operand are equal
     </td>
   </tr>
   <tr>
@@ -4685,10 +4683,10 @@ A list of Numeric Comparison Operators.
       LEFT_OPERAND != RIGHT_OPERAND
     </td>
     <td>
-      Left operand and Right operand are Numeric Types, Left operand and Right operand are Object Type (including Undefined Value)
+      The left operand and the right operand are Numeric Types, The left operand and the right operand are Object Type (including Undefined Value)
     </td>
     <td>
-      Left operand and Right operand are not equal
+      The left operand and the right operand are not equal
     </td>
   </tr>
   <tr>
@@ -4696,10 +4694,10 @@ A list of Numeric Comparison Operators.
       LEFT_OPERAND > RIGHT_OPERAND
     </td>
     <td>
-      Left operand and Right operand are Numeric Types
+      The left operand and the right operand are Numeric Types
     </td>
     <td>
-      Left operand is greater than Right operand
+      The left operand is greater than the right operand
     </td>
   </tr>
   <tr>
@@ -4707,10 +4705,10 @@ A list of Numeric Comparison Operators.
       LEFT_OPERAND >= RIGHT_OPERAND
     </td>
     <td>
-      Left operand and Right operand are Numeric Types
+      The left operand and the right operand are Numeric Types
     </td>
     <td>
-      Left operand is greater than or equal to Right operand
+      The left operand is greater than or equal to the right operand
     </td>
   </tr>
   <tr>
@@ -4718,10 +4716,10 @@ A list of Numeric Comparison Operators.
       LEFT_OPERAND < RIGHT_OPERAND
     </td>
     <td>
-      Left operand and Right operand are Numeric Types
+      The left operand and the right operand are Numeric Types
     </td>
     <td>
-      Left operand is less than Right operand
+      The left operand is less than the right operand
     </td>
   </tr>
   <tr>
@@ -4729,10 +4727,10 @@ A list of Numeric Comparison Operators.
       LEFT_OPERAND <= RIGHT_OPERAND
     </td>
     <td>
-      Left operand and Right operand are Numeric Types
+      The left operand and the right operand are Numeric Types
     </td>
     <td>
-      Left operand is less than or equal to Right operand
+      The left operand is less than or equal to the right operand
     </td>
   </tr>
   <tr>
@@ -4740,19 +4738,19 @@ A list of Numeric Comparison Operators.
       LEFT_OPERAND <=> RIGHT_OPERAND
     </td>
     <td>
-      Left operand and Right operand are Numeric Types
+      The left operand and the right operand are Numeric Types
     </td>
     <td>
-      If Left operand is greater than Right expression, return 1. If Left operand is lower than Right expression, return -1. If Left operand is equals to Right expression, return 0.
+      If The left operand is greater than Right expression, return 1. If The left operand is lower than Right expression, return -1. If The left operand is equals to Right expression, return 0.
     </td>
   </tr>
 </table>
 
 =end html
 
-The Types of Left operand and Right operand Comparable Types, otherwise a compilation error occurs.
+The Types of The left operand and the right operand Comparable Types, otherwise a compilation error occurs.
 
-In Numeric Types Comparison, L<"Binary Numeric Widening Type Conversion"> is performed for Left operand and Right operand.
+In Numeric Types Comparison, L<"Binary Numeric Widening Type Conversion"> is performed for The left operand and the right operand.
 
 After that, the Numeric Comparison Operation is performed that exactly matches the following operation in C99.
 
@@ -4787,7 +4785,7 @@ B<String Comparison Operator> is a L<"Comparison Operator"> that compares the by
 
   LEFT_OPERAND STRING_COMPARISON_OPERATOR RIGHT_OPERAND
 
-Left operand and Right operand must be L<"string Type"> or byte[] type.
+The left operand and the right operand must be L<"string Type"> or byte[] type.
 
 A list of String Comparison Operators.
 
@@ -4804,7 +4802,7 @@ A list of String Comparison Operators.
       LEFT_OPERAND eq RIGHT_OPERAND
     </td>
     <td>
-      Left operand and Right operand are equal
+      The left operand and the right operand are equal
     </td>
   </tr>
   <tr>
@@ -4812,7 +4810,7 @@ A list of String Comparison Operators.
       LEFT_OPERAND ne RIGHT_OPERAND
     </td>
     <td>
-      Left operand and Right operand are not equal
+      The left operand and the right operand are not equal
     </td>
   </tr>
   <tr>
@@ -4820,7 +4818,7 @@ A list of String Comparison Operators.
       LEFT_OPERAND gt RIGHT_OPERAND
     </td>
     <td>
-      Left operand is greater than Right operand in dictionary Expression order.
+      The left operand is greater than the right operand in dictionary Expression order.
     </td>
   </tr>
   <tr>
@@ -4828,7 +4826,7 @@ A list of String Comparison Operators.
       LEFT_OPERAND ge RIGHT_OPERAND
     </td>
     <td>
-      Left operand is greater than or equal to Right operand compared in dictionary Expression order
+      The left operand is greater than or equal to the right operand compared in dictionary Expression order
     </td>
   </tr>
   <tr>
@@ -4836,7 +4834,7 @@ A list of String Comparison Operators.
       LEFT_OPERAND lt RIGHT_OPERAND
     </td>
     <td>
-      Left operand is smaller than Right operand when compared in dictionary Expression order
+      The left operand is smaller than the right operand when compared in dictionary Expression order
     </td>
   </tr>
   <tr>
@@ -4844,7 +4842,7 @@ A list of String Comparison Operators.
       LEFT_OPERAND le RIGHT_OPERAND
     </td>
     <td>
-      Left operand is less than or equal to Right operand compared in dictionary Expression order
+      The left operand is less than or equal to the right operand compared in dictionary Expression order
     </td>
   </tr>
   <tr>
@@ -4852,7 +4850,7 @@ A list of String Comparison Operators.
       LEFT_OPERAND cmp RIGHT_OPERAND
     </td>
     <td>
-      If Left operand is greater than Right expression, return 1. If Left operand is lower than Right expression, return -1. If Left operand is equals to Right expression, return 0.
+      If The left operand is greater than Right expression, return 1. If The left operand is lower than Right expression, return -1. If The left operand is equals to Right expression, return 0.
     </td>
   </tr>
 </table>
@@ -4865,7 +4863,7 @@ The Type of Return Value of the String Comparison Operator is L<"int Type">. If 
 
 =head2 isa Operator
 
-B<isa Operator> is a L<"Comparison Operator"> to check whether Left operand satisfies Right Type.
+B<isa Operator> is a L<"Comparison Operator"> to check whether The left operand satisfies Right Type.
 
 
 
@@ -4873,11 +4871,11 @@ B<isa Operator> is a L<"Comparison Operator"> to check whether Left operand sati
 
 isa Operator has three behaviors, depending on Right Type.
 
-1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the Type of Left operand is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
+1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the Type of The left operand is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
 
-2. If the Right Type is L<"Class Type">, isa operator checks whether the Type of Left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of Left operand must be L<"Object Type">, otherwise a compilation error occurs.
+2. If the Right Type is L<"Class Type">, isa operator checks whether the Type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of The left operand must be L<"Object Type">, otherwise a compilation error occurs.
 
-3. If the Right Type is L<"Callback Type">, isa Operator checks whether the Type of Left operand satisfy the Callback Type at Run Time. If Left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of Left operand must be L<"Object Type">, otherwise a compilation error occurs.
+3. If the Right Type is L<"Callback Type">, isa Operator checks whether the Type of The left operand satisfy the Callback Type at Run Time. If The left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of The left operand must be L<"Object Type">, otherwise a compilation error occurs.
 
 
 
@@ -4967,24 +4965,23 @@ Logical NOT operators can be only used as conditions. Note that these can't be u
 
 =head2 String Concatenation Operator
 
-String Concatenation Operator is a L<"Binary Operators">.
+String concatenation operator C<.> is a L<binary operator|"Binary Operators"> to concat two strings.
 
   LEFT_OPERAND . RIGHT_OPERAND
 
-The left expression and the right expression are concatenated.
+The left operand and the right operand must be a L<string type|"string Type">, L<"byte[] Type">, or L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
 
-The left expression and the right expression must be a L<"string type"> or L<"byte[] Type">, otherwise a compilation error occurs.
+If the type of the operand is numeric type, a L<numeric to string type conversion|"Numeric to string Type Conversion"> is performed.
 
-String Concatenation Operator returns the concatenated L<"string">.
+The type of return value is a L<string type|"string Type">.
 
-String Concatenation Operator retruns L<"Expression">, The Type is L<"string Type">.
+A string concatenation operator returns the result to concat two operands.
 
-If both Left operand and Right operand were L<"String Literal">, a string Literal concatenated at compile time is generated. You can concatenate String Literal with string Concatenation Operator without being aware of the cost of performance.
+If both the left operand and the right operand are a L<string literal|"String Literal">, the two string literals are concatenated at compile time.
 
-If Left expression or Right operand is L<"Undefined Value"> L<"Exception"> occurs at Run Time.
+If the left operand or the right operand is L<undef|"Undefined Value">, an exception occurs.
 
-B<String Concatenation Operator Example>
-
+B<Examples of string concatenation operators:>
 
   my $str = "abc" . "def";
   my $str = "def" . 34;
@@ -4999,7 +4996,7 @@ Assignment Operator is a L<"Binary Operators"> for assignment, expressed in "=".
 
 Assignment Operator has multiple meanings depending on the Right and Left sides. Please refer to each item.
 
-In Assignment Operator, the Left operand is evaluated after the Right operand is evaluated. This is with the exception of expression being executed from Left to Right as a rule.
+In Assignment Operator, the The left operand is evaluated after the right operand is evaluated. This is with the exception of expression being executed from Left to Right as a rule.
 
 
 =head2 Special Assignment Operator
@@ -6310,7 +6307,7 @@ B<Numeric Object Type> are the following six.
 
 =end html
 
-For the conversion between L<"Numeric Types"> and B<Numeric Object Type>, see L<"Type Conversion">.
+For the conversion between L<"Numeric Types"> and B<Numeric Object Type>, see L<"Type Conversions">.
 
 
 =head2 Undefined Type
@@ -6729,7 +6726,7 @@ Omitting L<"Types"> when L<"Local Variable Declaration"> by Type Inference can. 
   my $foo = new Foo;
 
 
-=head1 Type Conversion
+=head1 Type Conversions
 
 =head2 Type Cast
 
@@ -6996,14 +6993,14 @@ Unary Numeric Widening Type Conversion is performed in the following cases.
   <li>Dimension when creating Array</li>
   <li>Unary Plus Operator operands</li>
   <li>Unary Minus Operator operands</li>
-  <li>Left and Right operands of Shift Operator "<<" ">>" ">>>"</li>
+  <li>Left and the right operands of Shift Operator "<<" ">>" ">>>"</li>
 </ul>
 
 =end html
 
 =head2 Binary Numeric Widening Type Conversion
 
-Binary Numeric Widening Type Conversion is applied to the left operand and Right operand in Binary Operator that takes Numeric Types on the Left and Right sides. L<"Numeric Widening Type Conversion">.
+Binary Numeric Widening Type Conversion is applied to the left operand and the right operand in Binary Operator that takes Numeric Types on the Left and Right sides. L<"Numeric Widening Type Conversion">.
 
 The following rules apply.
 
@@ -7026,14 +7023,41 @@ Numeric Narrowing Type Conversion is a conversion rule applied when converting f
 
 =head2 Numeric Widening Type Conversion
 
-
 Numeric Widening Type Conversion is a conversion rule applied when converting from a small type to a large type in L<"Numeric Types">.
 
+=head2 Numeric to string Type Conversion
 
+The numerci to string type conversion is a L<type conversion|"Type Conversions"> from a L<numeric type|"Numeric Types"> to a L<string type|"string Type"">.
+
+  # Numeric to string type conversion
+  my $byte = (byte)1;
+  my $short = (short)2;
+  my $int = 3;
+  my $long = 4L;
+  my $float = 2.5f;
+  my $double = 3.3;
+  
+  # The string is "1".
+  my $string_byte = (string)$byte;
+  
+  # The string is "2".
+  my $string_short = (string)$short;
+
+  # The string is "3".
+  my $string_int = (string)$int;
+
+  # The string is "4".
+  my $string_long = (string)$long;
+  
+  # The string is "2.5"
+  my $string_float = (string)$float;
+  
+  # The string is "3.3"
+  my $string_double = (string)$double;
 
 =head2 string to byte[] Type Conversion
 
-string to byte[] type conversion is a L<"Type Conversion"> from L<"string Type"> to L<"byte[] Type">.
+string to byte[] type conversion is a L<"Type Conversions"> from L<"string Type"> to L<"byte[] Type">.
 
   # string to byte[] Type Conversion
   my $string : string = "Hello";
@@ -7043,7 +7067,7 @@ A new byte[] object is created and all characters in the string are copied to th
 
 =head2 byte[] to string Type Conversion
 
-byte[] to string type conversion is a L<"Type Conversion"> from L<"byte[] type"> to L<"string Type">.
+byte[] to string type conversion is a L<"Type Conversions"> from L<"byte[] type"> to L<"string Type">.
 
   # byte[] to string type conversion
   my $bytes : byte[] = new byte[3];
