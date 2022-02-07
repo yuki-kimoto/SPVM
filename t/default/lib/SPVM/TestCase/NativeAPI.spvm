@@ -8,6 +8,8 @@ class TestCase::NativeAPI {
   use TestCase::Callback::ImplementCallback2;
   use Fn;
   
+  native static method new_string_raw : int ();
+  
   our $BYTE_VALUE : byte;
   our $SHORT_VALUE : short;
   our $INT_VALUE : int;
