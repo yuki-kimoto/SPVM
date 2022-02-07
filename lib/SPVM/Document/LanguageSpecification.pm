@@ -3881,8 +3881,7 @@ The max of Dimention of Multi-Dimention Array is 255.
 
 =head2 Array Initialization
 
-<p>
-  SPVM has a syntax for Array Initialization to simplify Create Array. Expression is not required.
+SPVM has a syntax for Array Initialization to simplify Create Array. Expression is not required.
 
 
   []
@@ -3985,9 +3984,8 @@ Instance Method Call takes arguments. If the number of arguments does not match 
 Instance Method Call returns Return Value if Return Value is other than L<"void Type">.
 
 Instance Method Call is L<"Expression">.
-<p>
-<p>
-  B<Instance Method Call Example>
+
+B<Instance Method Call Example>
 
 
   my $point = new Point;
@@ -4503,9 +4501,8 @@ Bit AND is L<"Binary Operators"> represented by "&".
   LEFT_OPERAND & RIGHT_OPERAND
 
 Left operand and Right operand must be L<"Integral Types">, otherwise a compilation error occurs.
-<p>
-<p>
-  L<"Binary Numeric Widening Type Conversion"> is performed on Left operand and Right operand.
+
+L<"Binary Numeric Widening Type Conversion"> is performed on Left operand and Right operand.
 
 After that, the operation result of Bit AND Operator performs the operation that exactly matches the following operation in C99
 
@@ -4530,9 +4527,8 @@ Bit OR is L<"Binary Operators"> represented by "|".
   LEFT_OPERAND | RIGHT_OPERAND
 
 Left operand and Right operand must be L<"Integral Types">, otherwise a compilation error occurs.
-<p>
-<p>
-  L<"Binary Numeric Widening Type Conversion"> is performed on Left operand and Right operand.
+
+L<"Binary Numeric Widening Type Conversion"> is performed on Left operand and Right operand.
 
 After that, the operation result of Bit OR Operator performs the operation that exactly matches the following operation in C99.
 
@@ -4581,12 +4577,10 @@ The Left shift is L<"Binary Operators"> represented by "<<".
   LEFT_OPERAND << RIGHT_OPERAND
 
 Left operand must be L<"Integral Types">, otherwise a compilation error occurs.
-<p>
-<p>
-  Right operand must be L<"int Type">, otherwise a compilation error occurs.
-<p>
-<p>
-  The calculation result of Left Shift Operator is the same as the following calculation in C99.
+
+Right operand must be L<"int Type">, otherwise a compilation error occurs.
+
+The calculation result of Left Shift Operator is the same as the following calculation in C99.
 
 
   x << y;
@@ -4606,14 +4600,12 @@ Arithmetic Right Shift Operator is L<"Binary Operators"> represented by ">>".
   LEFT_OPERAND >> RIGHT_OPERAND
 
 Left operand must be L<"Integral Types">, otherwise a compilation error occurs.
-<p>
-<p>
-  First, for L<"Left operand">, L<"Unary Numeric Widening Type Conversion"> is performed.
+
+First, for L<"Left operand">, L<"Unary Numeric Widening Type Conversion"> is performed.
 
 Right operand must be L<"int Type">, otherwise a compilation error occurs.
-<p>
-<p>
-  The operation result of Arithmetic Right Shift Operator is the operation that exactly matches the following operation in C99.
+
+The operation result of Arithmetic Right Shift Operator is the operation that exactly matches the following operation in C99.
 
 
   x >> y;
@@ -4635,9 +4627,8 @@ Logical Right Shift Operator is L<"Binary Operators"> represented by ">>>".
 Left operand must be L<"Integral Types">, otherwise a compilation error occurs.
 
 Right operand must be L<"int Type">, otherwise a compilation error occurs.
-<p>
-<p>
-  The calculation result of Logical Right Shift Operator is the same as the following calculation in C99.
+
+The calculation result of Logical Right Shift Operator is the same as the following calculation in C99.
 
 
   (SIGNED_INTEGRAL_TYPE_CAST)((UNSINGED_INTEGRAL_TYPE_CAST)x >> y);
@@ -7365,13 +7356,10 @@ B<Create Callback Object Example>
 
 
 You can call Method because the object created by Create Callback Object is a normal object. For the call to Create Callback Object, see L<"Method Call">.
-<p>
-
 
 =head2 Capture
 
-<p>
-  In Create Callback Object, you can use the syntax called Capture to use the variables defined outside the Method defined by Create Callback Object inside the Method defined by Create Callback Object.
+In Create Callback Object, you can use the syntax called Capture to use the variables defined outside the Method defined by Create Callback Object inside the Method defined by Create Callback Object.
 
 
   # Capture
