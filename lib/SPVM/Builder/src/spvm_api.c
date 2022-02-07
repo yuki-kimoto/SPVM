@@ -1957,6 +1957,30 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           = double_vars[opcode->operand1] / double_vars[opcode->operand2];
         break;
       }
+      case SPVM_OPCODE_C_ID_DIVIDE_UINT: {
+        if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
+          void* exception = env->new_string_nolen_raw(env, "0 division");
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          int_vars[opcode->operand0]
+            = (uint32_t)int_vars[opcode->operand1] / (uint32_t)int_vars[opcode->operand2];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_DIVIDE_ULONG: {
+        if (__builtin_expect(long_vars[opcode->operand2] == 0, 0)) {
+          void* exception = env->new_string_nolen_raw(env, "0 division");
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          long_vars[opcode->operand0]
+            = (uint64_t)long_vars[opcode->operand1] / (uint64_t)long_vars[opcode->operand2];
+        }
+        break;
+      }
       case SPVM_OPCODE_C_ID_REMAINDER_INT: {
         if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
           void* exception = env->new_string_nolen_raw(env, "0 division");
@@ -1976,6 +2000,28 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         else {
           long_vars[opcode->operand0] = long_vars[opcode->operand1] % long_vars[opcode->operand2];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_REMAINDER_UINT: {
+        if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
+          void* exception = env->new_string_nolen_raw(env, "0 division");
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          int_vars[opcode->operand0] = (uint32_t)int_vars[opcode->operand1] % (uint32_t)int_vars[opcode->operand2];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_REMAINDER_ULONG: {
+        if (__builtin_expect(long_vars[opcode->operand2] == 0, 0)) {
+          void* exception = env->new_string_nolen_raw(env, "0 division");
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          long_vars[opcode->operand0] = (uint64_t)long_vars[opcode->operand1] % (uint64_t)long_vars[opcode->operand2];
         }
         break;
       }
