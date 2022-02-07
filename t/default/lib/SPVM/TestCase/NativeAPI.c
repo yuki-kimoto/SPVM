@@ -1915,6 +1915,29 @@ int32_t SPVM__TestCase__NativeAPI__new_string_raw(SPVM_ENV* env, SPVM_VALUE* sta
     env->dec_ref_count(env, string);
   }
 
+  // NULL
+  {
+    void* string = env->new_string_raw(env, NULL, 4);
+
+    if (env->length(env, string) != 4) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strncmp(string_chars, "\0\0\0\0\0", 5) != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    env->inc_ref_count(env, string);
+    env->dec_ref_count(env, string);
+  }
+
   stack[0].ival = 1;
 
   return 0;
