@@ -1206,4 +1206,13 @@ class TestCase::NativeAPI {
     return 1;
   }
   native static method get_bool_object_value_native : int ($bool_object : Bool);
+
+  native static method new_string_raw : int ();
+
+  native static method new_string : int ();
+
+  native static method new_string_nolen_raw : int ();
+
+  native static method new_string_nolen : int ();
+  
 }

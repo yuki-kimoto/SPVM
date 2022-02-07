@@ -177,6 +177,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->call_instance_method != &env_array[159]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_instance_method_id_static != &env_array[160]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_bool_object_value != &env_array[161]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->string_basic_type_id != &env_array[162]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 
@@ -1801,6 +1802,395 @@ int32_t SPVM__TestCase__NativeAPI__get_bool_object_value_native(SPVM_ENV* env, S
   int32_t value = env->get_bool_object_value(env, bool_object);
   
   stack[0].ival = value;
+
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__new_string_raw(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  // Basic
+  {
+    void* string = env->new_string_raw(env, "abc", 3);
+
+    int32_t string_basic_type_id = env->get_object_basic_type_id(env, string);
+    int32_t string_type_dimension = env->get_object_type_dimension(env, string);
+    if (!(string_basic_type_id == (intptr_t)env->string_basic_type_id && string_type_dimension == 0)) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+
+    if (env->length(env, string) != 3) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "abc") != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    env->inc_ref_count(env, string);
+    env->dec_ref_count(env, string);
+  }
+
+  // Length is shorten than the string
+  {
+    void* string = env->new_string_raw(env, "abc", 1);
+
+    if (env->length(env, string) != 1) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "a") != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    env->inc_ref_count(env, string);
+    env->dec_ref_count(env, string);
+  }
+
+  // Length is shorten than the string 0
+  {
+    void* string = env->new_string_raw(env, "abc", 0);
+
+    if (env->length(env, string) != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "") != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    env->inc_ref_count(env, string);
+    env->dec_ref_count(env, string);
+  }
+
+  // Length is longer than the string
+  {
+    void* string = env->new_string_raw(env, "abc", 4);
+
+    if (env->length(env, string) != 4) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strncmp(string_chars, "abc\0\0", 5) != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    env->inc_ref_count(env, string);
+    env->dec_ref_count(env, string);
+  }
+
+  // NULL
+  {
+    void* string = env->new_string_raw(env, NULL, 4);
+
+    if (env->length(env, string) != 4) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strncmp(string_chars, "\0\0\0\0\0", 5) != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    env->inc_ref_count(env, string);
+    env->dec_ref_count(env, string);
+  }
+
+  // NULL 0
+  {
+    void* string = env->new_string_raw(env, NULL, 0);
+
+    if (env->length(env, string) != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strncmp(string_chars, "\0", 1) != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    env->inc_ref_count(env, string);
+    env->dec_ref_count(env, string);
+  }
+
+
+  stack[0].ival = 1;
+
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__new_string(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  // Basic
+  {
+    void* string = env->new_string(env, "abc", 3);
+
+    int32_t string_basic_type_id = env->get_object_basic_type_id(env, string);
+    int32_t string_type_dimension = env->get_object_type_dimension(env, string);
+    if (!(string_basic_type_id == (intptr_t)env->string_basic_type_id && string_type_dimension == 0)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+
+    if (env->length(env, string) != 3) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "abc") != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+
+  // Length is shorten than the string
+  {
+    void* string = env->new_string(env, "abc", 1);
+
+    if (env->length(env, string) != 1) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "a") != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+
+  // Length is shorten than the string 0
+  {
+    void* string = env->new_string(env, "abc", 0);
+
+    if (env->length(env, string) != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "") != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+
+  // Length is longer than the string
+  {
+    void* string = env->new_string(env, "abc", 4);
+
+    if (env->length(env, string) != 4) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strncmp(string_chars, "abc\0\0", 5) != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+
+  // NULL
+  {
+    void* string = env->new_string(env, NULL, 4);
+
+    if (env->length(env, string) != 4) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strncmp(string_chars, "\0\0\0\0\0", 5) != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+
+  // NULL 0
+  {
+    void* string = env->new_string(env, NULL, 0);
+
+    if (env->length(env, string) != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strncmp(string_chars, "\0", 1) != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+
+  stack[0].ival = 1;
+
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__new_string_nolen_raw(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  // Basic
+  {
+    void* string = env->new_string_nolen_raw(env, "abc");
+
+    int32_t string_basic_type_id = env->get_object_basic_type_id(env, string);
+    int32_t string_type_dimension = env->get_object_type_dimension(env, string);
+    if (!(string_basic_type_id == (intptr_t)env->string_basic_type_id && string_type_dimension == 0)) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+
+    if (env->length(env, string) != 3) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "abc") != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    env->inc_ref_count(env, string);
+    env->dec_ref_count(env, string);
+  }
+
+  // ""
+  {
+    void* string = env->new_string_nolen_raw(env, "");
+
+    if (env->length(env, string) != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "") != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    env->inc_ref_count(env, string);
+    env->dec_ref_count(env, string);
+  }
+
+  stack[0].ival = 1;
+
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__new_string_nolen(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  // Basic
+  {
+    void* string = env->new_string_nolen(env, "abc");
+
+    int32_t string_basic_type_id = env->get_object_basic_type_id(env, string);
+    int32_t string_type_dimension = env->get_object_type_dimension(env, string);
+    if (!(string_basic_type_id == (intptr_t)env->string_basic_type_id && string_type_dimension == 0)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+
+    if (env->length(env, string) != 3) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "abc") != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+
+  // ""
+  {
+    void* string = env->new_string_nolen(env, "");
+
+    if (env->length(env, string) != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strcmp(string_chars, "") != 0) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+
+  stack[0].ival = 1;
 
   return 0;
 }

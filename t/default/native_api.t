@@ -12,13 +12,13 @@ use SPVM 'TestCase::NativeAPI';
 use SPVM 'TestCase::NativeAPI2';
 use SPVM 'TestCase::Pointer';
 
+# Start objects count
+my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+
 # Use resource
 {
   ok(SPVM::TestCase::NativeAPI2->use_resource);
 }
-
-# Start objects count
-my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # new_object_by_name
 {
@@ -208,6 +208,26 @@ ok(!-f "$FindBin::Bin/.spvm_build/work/object/SPVM/CORE.o");
 # get_bool_object_value
 {
   ok(SPVM::TestCase::NativeAPI->get_bool_object_value);
+}
+
+# new_string_raw
+{
+  ok(SPVM::TestCase::NativeAPI->new_string_raw);
+}
+
+# new_string
+{
+  ok(SPVM::TestCase::NativeAPI->new_string);
+}
+
+# new_string_nolen_raw
+{
+  ok(SPVM::TestCase::NativeAPI->new_string_nolen_raw);
+}
+
+# new_string_nolen
+{
+  ok(SPVM::TestCase::NativeAPI->new_string_nolen);
 }
 
 # Clear exception
