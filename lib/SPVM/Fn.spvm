@@ -1285,8 +1285,6 @@ class Fn : precompile {
 
   native static method new_array_proto : oarray ($proto_array : oarray, $length : int);
 
-  native static method new_string_len : string ($length : int);
-
   static method powi : int ($x : int, $y : int) {
     my $p = 1;
     

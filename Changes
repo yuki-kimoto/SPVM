@@ -1,7 +1,6 @@
 Revision history for SPVM
-0.9502  2021-02-05
+0.9502  2021-02-07
         [CHANGE]
-        * Add new_string_len method to Fn module.
         [NON BACKWORD COMPATIBLE CHANGES]
         * The keys of Hash module is copied defensively.
           If you check the equality of the keys using == operator,
