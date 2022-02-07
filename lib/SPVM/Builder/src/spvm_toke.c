@@ -1837,11 +1837,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DIE);
                   return DIE;
                 }
-                else if (strcmp(keyword, "div_uint") == 0) {
+                else if (strcmp(keyword, "divui") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DIVIDE_UINT);
                   return DIVIDE_UINT;
                 }
-                else if (strcmp(keyword, "div_ulong") == 0) {
+                else if (strcmp(keyword, "divul") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DIVIDE_ULONG);
                   return DIVIDE_ULONG;
                 }
@@ -2055,11 +2055,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REFCNT);
                   return REFCNT;
                 }
-                else if (strcmp(keyword, "rem_uint") == 0) {
+                else if (strcmp(keyword, "remui") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REMAINDER_UINT);
                   return REMAINDER_UINT;
                 }
-                else if (strcmp(keyword, "rem_ulong") == 0) {
+                else if (strcmp(keyword, "remul") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REMAINDER_ULONG);
                   return REMAINDER_ULONG;
                 }
