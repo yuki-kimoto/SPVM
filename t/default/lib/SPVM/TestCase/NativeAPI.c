@@ -1816,17 +1816,14 @@ int32_t SPVM__TestCase__NativeAPI__new_string_raw(SPVM_ENV* env, SPVM_VALUE* sta
   {
     void* string = env->new_string_raw(env, "abc", 3);
 
-    /*
-    int32_t string_basic_type_id = *(int32_t*)((intptr_t)string + (intptr_t)env->object_basic_type_id_offset);
-    int32_t string_type_dimension = *(uint8_t*)((intptr_t)string + (intptr_t)env->object_type_dimension_offset);
-    
+    int32_t string_basic_type_id = env->get_object_basic_type_id(env, string);
+    int32_t string_type_dimension = env->get_object_type_dimension(env, string);
     if (!(string_basic_type_id == (intptr_t)env->string_basic_type_id && string_type_dimension == 0)) {
       stack[0].ival = 0;
       env->inc_ref_count(env, string);
       env->dec_ref_count(env, string);
       return 0;
     }
-    */
 
     if (env->length(env, string) != 3) {
       stack[0].ival = 0;
@@ -1978,17 +1975,12 @@ int32_t SPVM__TestCase__NativeAPI__new_string(SPVM_ENV* env, SPVM_VALUE* stack) 
   {
     void* string = env->new_string(env, "abc", 3);
 
-    /*
-    int32_t string_basic_type_id = *(int32_t*)((intptr_t)string + (intptr_t)env->object_basic_type_id_offset);
-    int32_t string_type_dimension = *(uint8_t*)((intptr_t)string + (intptr_t)env->object_type_dimension_offset);
-    
+    int32_t string_basic_type_id = env->get_object_basic_type_id(env, string);
+    int32_t string_type_dimension = env->get_object_type_dimension(env, string);
     if (!(string_basic_type_id == (intptr_t)env->string_basic_type_id && string_type_dimension == 0)) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, string);
-      env->dec_ref_count(env, string);
       return 0;
     }
-    */
 
     if (env->length(env, string) != 3) {
       stack[0].ival = 0;
@@ -2097,17 +2089,14 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen_raw(SPVM_ENV* env, SPVM_VALU
   {
     void* string = env->new_string_nolen_raw(env, "abc");
 
-    /*
-    int32_t string_basic_type_id = *(int32_t*)((intptr_t)string + (intptr_t)env->object_basic_type_id_offset);
-    int32_t string_type_dimension = *(uint8_t*)((intptr_t)string + (intptr_t)env->object_type_dimension_offset);
-    
+    int32_t string_basic_type_id = env->get_object_basic_type_id(env, string);
+    int32_t string_type_dimension = env->get_object_type_dimension(env, string);
     if (!(string_basic_type_id == (intptr_t)env->string_basic_type_id && string_type_dimension == 0)) {
       stack[0].ival = 0;
       env->inc_ref_count(env, string);
       env->dec_ref_count(env, string);
       return 0;
     }
-    */
 
     if (env->length(env, string) != 3) {
       stack[0].ival = 0;
@@ -2166,17 +2155,12 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen(SPVM_ENV* env, SPVM_VALUE* s
   {
     void* string = env->new_string_nolen(env, "abc");
 
-    /*
-    int32_t string_basic_type_id = *(int32_t*)((intptr_t)string + (intptr_t)env->object_basic_type_id_offset);
-    int32_t string_type_dimension = *(uint8_t*)((intptr_t)string + (intptr_t)env->object_type_dimension_offset);
-    
+    int32_t string_basic_type_id = env->get_object_basic_type_id(env, string);
+    int32_t string_type_dimension = env->get_object_type_dimension(env, string);
     if (!(string_basic_type_id == (intptr_t)env->string_basic_type_id && string_type_dimension == 0)) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, string);
-      env->dec_ref_count(env, string);
       return 0;
     }
-    */
 
     if (env->length(env, string) != 3) {
       stack[0].ival = 0;
