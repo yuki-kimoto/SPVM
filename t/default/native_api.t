@@ -215,6 +215,12 @@ ok(!-f "$FindBin::Bin/.spvm_build/work/object/SPVM/CORE.o");
   ok(SPVM::TestCase::NativeAPI->new_string_raw);
 }
 
+# new_string
+{
+  ok(SPVM::TestCase::NativeAPI->new_string);
+}
+
+
 # Clear exception
 SPVM::set_exception(undef);
 
