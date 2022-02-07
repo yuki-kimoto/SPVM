@@ -1,7 +1,8 @@
 Revision history for SPVM
 0.9502  2021-02-07
         [CHANGE]
-        * SPVM::Document::LanguageSpecification become POD instead of HTML
+        * SPVM::Document::LanguageSpecification becomes POD instead of HTML
+        * SPVM::Document::Tutorial becomes POD instead of HTML
         * Add native api "string_basic_type_id"
         
         [NON BACKWORD COMPATIBLE CHANGES]
