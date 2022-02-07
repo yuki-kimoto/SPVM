@@ -4147,7 +4147,7 @@ Unary operators are operators have one operand.
 
   UNARY_OPERATOR OPERAND
 
-The operand is an L<Expression|"Expressions">.
+The operand is an L<expression|"Expressions">.
 
 Unary operators are L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Bit NOT Operator">, L<"Logical NOT Operator">, L<"Array Length Operator">, and L<"String Length Operator">.
 
@@ -4156,7 +4156,7 @@ Unary operators are L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Bit 
 Binary Operator is a Operator placed between Left L<"Expression"> and Right L<"Expression">.
 
 
-  LEFT_EXPRESSION BINARY_OPERATOR RIGHT_OPERAND
+  LEFT_OPERAND BINARY_OPERATOR RIGHT_OPERAND
 
 
 Binary Operators are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multiplication Operator">, L<"Division Operator">, L<"Remainder Operator">, L<"Bit AND Operator">, L<"Bit OR Operator">, L<"Logical AND Operator">, L<"Logical OR Operator">, L<"Shift Operator">, and L<"String Concatenation Operator">.
@@ -4168,7 +4168,7 @@ Binary Operators are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multi
 Sequential Operator is an Operator that join "," with multiple L<"Expressions"> and return the last Expression.
 
 
-  (EXPRESSION1, EXPRESSION2, EXPRESSION3)
+  (OPERAND1, OPERAND2, OPERAND3)
 
 
 Expression is executed from Left to Right and the last Expression is return.
@@ -4188,77 +4188,56 @@ B<Sequential Operator Example:>
 
 =head2 Arithmetic Operators
 
-
 B<Arithmetic Operators> is an L<"Operators"> that performs arithmetic.
 
 B<Arithmetic Operatorss> are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multiplication Operator">, L<"Division Operator">, L<"Remainder Operator">, L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Increment Operator">, and L<"Decrement Operator">.
 
-
 =head2 Unary Plus Operator
 
+The unary plus operator C<+> is a L<Unary Operator|"Unary Operators"> to return the value of the operand.
 
-Unary Plus Operator is a L<"Unary Operators"> represented by "+".
+  +OPERAND
 
+The operand must be an L<expression|"Expressions"> that type is a L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
 
-  +Expression
+L<"Unary Numeric Widening Type Conversion"> applys to the operand.
 
+After that, returns the value copied from the value of the operand.
 
-Expression must be L<"Numeric Types">, otherwise a compilation error occurs.
+Return Type of the unary plus pperator is the type that L<"Unary Numeric Widening Type Conversion"> is applied.
 
-L<"Unary Numeric Widening Type Conversion"> applys to Expression.
-
-After that, returns the value copied from the avobe value.
-
-Return Type of Unary Plus Operator is the Type after L<"Unary Numeric Widening Type Conversion"> is applied.
-
-Unary Plus Operator does not throw L<"Exception">.
-
-B<Unary Plus Operator Example:>
-
-
+B<Examples of unary plus operators:>
+  
+  # A unary plus operator
   my $num = +10;
-
-
 
 =head2 Unary Minus Operator
 
+The unary minus operator C<-> is a L<Unary Operator|"Unary Operators"> to return the negative value of the operand.
 
-Unary Minus Operator is a L<"Unary Operators"> represented by "-".
+  -OPERAND
 
+The operand must be an L<expression|"Expressions"> that type is a L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
 
-  -Expression
+L<"Unary Numeric Widening Type Conversion"> applys to the operand.
 
-
-Expression must be L<"Numeric Types">, otherwise a compilation error occurs.
-
-L<"Unary Numeric Widening Type Conversion"> applys to Expression.
-
-After that, Unary Minus Operator performs an operation that exactly matches the following operation in C99.
-
+After that, the unary minus operator performs the following operation of C language.
 
   -x
 
+Return type of a unary minus operator is the type that L<"Unary Numeric Widening Type Conversion"> is applied.
 
-L<"int Type"> Operation, L<"long Type"> Operation, L<"float Type"> Operation, and L<"double Type"> Operation are defined corresponding to L<"C99 Type">
+B<Examples of unary minus operators:>
 
-Return Type of Unary Minus Operator is the Type after L<"Unary Numeric Widening Type Conversion"> is applied.
-
-Unary Minus Operator does not throw L<"Exception">.
-
-B<Unary Minus Operator Example:>
-
-
+  # A unary minus operator
   my $num = -10;
 
-
-
 =head2 Addition Operator
-
 
 B<Addition Operator> is a L<"Binary Operators"> represtented by "+" to perform addition.
 
 
-  LEFT_EXPRESSION + RIGHT_OPERAND
+  LEFT_OPERAND + RIGHT_OPERAND
 
 
 Left Expression and Right Operand must be L<"Numeric Types">, otherwise a compilation error occurs.
@@ -4284,7 +4263,7 @@ Addition Operator does not throw L<"Exception">.
 B<Subtraction Operator> is a L<"Binary Operators"> represtented by "-" to perform Subtraction.
 
 
-  LEFT_EXPRESSION - RIGHT_OPERAND
+  LEFT_OPERAND - RIGHT_OPERAND
 
 
 Left Expression and Right Operand must be L<"Numeric Types">, otherwise a compilation error occurs.
@@ -4308,7 +4287,7 @@ Subtraction Operator does not throw L<"Exception">.
 B<Multiplication Operator> is a L<"Binary Operators"> represtented by "*" to perform Multiplication.
 
 
-  LEFT_EXPRESSION * RIGHT_OPERAND
+  LEFT_OPERAND * RIGHT_OPERAND
 
 
 Left Expression and Right Operand must be L<"Numeric Types">, otherwise a compilation error occurs.
@@ -4334,7 +4313,7 @@ Multiplication Operator does not throw L<"Exception">.
 B<Division Operator> is a L<"Binary Operators"> represtented by "/" to perform Division.
 
 
-  LEFT_EXPRESSION / RIGHT_OPERAND
+  LEFT_OPERAND / RIGHT_OPERAND
 
 
 Left Expression and Right Operand must be L<"Numeric Types">, otherwise a compilation error occurs.
@@ -4362,7 +4341,7 @@ In the operation to L<"Floating Point Types">, Division Operator dose not throw 
 B<Remainder Operator> is a L<"Binary Operators"> represtented by "%" to perform Division.
 
 
-  LEFT_EXPRESSION % RIGHT_OPERAND
+  LEFT_OPERAND % RIGHT_OPERAND
 
 
 Left Expression and Right Operand must be L<"Integral Types">, otherwise a compilation error occurs.
@@ -4417,7 +4396,7 @@ Pre Increment Operator is equivalent to the following Expression. After 1 is add
 
 
 
-  (OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION + 1))
+  (OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND + 1))
 
 For example, Pre Increment of L<"byte Type"> value is equivalent to the following Expression:
 
@@ -4435,7 +4414,7 @@ Post Increment Operator add 1 to the operand and returns the value before Increm
 Post Increment Operator is equivalent to the following Expression using L<"Sequential Operator">. The value of operand is saved in a temporary variable, 1 is added to the operand, L<"Type Cast"> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
 
 
-  (my TMP_VARIABLE = OPERAND_EXPRESSION, OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION + 1), TMP_VARIABLE)
+  (my TMP_VARIABLE = OPERAND_OPERAND, OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND + 1), TMP_VARIABLE)
 
 
 For example, Post Increment of L<"byte Type"> value is equivalent to the following Expression.
@@ -4481,7 +4460,7 @@ Pre Decrement Operator is equivalent to the following Expression. After 1 is sub
 
 
 
-  (OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION - 1))
+  (OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND - 1))
 
 For example, Pre Decrement of L<"byte Type"> value is equivalent to the following Expression:
 
@@ -4499,7 +4478,7 @@ Post Decrement Operator subtract 1 to the operand and returns the value before D
 Post Decrement Operator is equivalent to the following Expression using L<"Sequential Operator">. The value of operand is saved in a temporary variable, 1 is subtracted to the operand, L<"Type Cast"> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
 
 
-  (my TMP_VARIABLE = OPERAND_EXPRESSION, OPERAND_EXPRESSION = (TYPE)(OPERAND_EXPRESSION - 1), TMP_VARIABLE)
+  (my TMP_VARIABLE = OPERAND_OPERAND, OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND - 1), TMP_VARIABLE)
 
 
 For example, Post Decrement of L<"byte Type"> value is equivalent to the following Expression.
@@ -4521,7 +4500,7 @@ Bit Operator is an Operator that performs Bit operation. L<"Bit AND Operator">, 
 Bit AND is L<"Binary Operators"> represented by "&".
 
 
-  LEFT_EXPRESSION & RIGHT_OPERAND
+  LEFT_OPERAND & RIGHT_OPERAND
 
 Left Expression and Right Operand must be L<"Integral Types">, otherwise a compilation error occurs.
 <p>
@@ -4548,7 +4527,7 @@ Bit AND Operator does not throw L<"Exception">.
 Bit OR is L<"Binary Operators"> represented by "|".
 
 
-  LEFT_EXPRESSION | RIGHT_OPERAND
+  LEFT_OPERAND | RIGHT_OPERAND
 
 Left Expression and Right Operand must be L<"Integral Types">, otherwise a compilation error occurs.
 <p>
@@ -4568,24 +4547,19 @@ The Type of Return Value of Bit OR Operator is the type that is L<"Binary Numeri
 
 Bit OR Operator does not throw L<"Exception">.
 
-
-
 =head2 Bit NOT Operator
 
-Bit NOT Operator is L<"Unary Operators"> represented by "~".
+The bit NOT operator C<~> is a L<unary operator|"Unary Operators"> to get the value of bit-not operation.
 
+  ~OPERAND
 
-  ~EXPRESSION
-
-Expression must be L<"Integral Types">, otherwise a compilation error occurs.
+The operand must be an L<expression|"Expressions"> that type is an L<integral type|"Integral Types">, otherwise a compilation error occurs.
 
 L<"Unary Numeric Widening Type Conversion"> is performed to Expression before Operation.
 
 After that, the operation result of Bit NOT Operator performs the operation that exactly matches the following operation in C99.
 
-
   ~x
-
 
 L<"int Type"> Operation and L<"long Type"> Operation are defined corresponding to L<"C99 Type">
 
@@ -4598,8 +4572,6 @@ B<Bit NOT Operator Example>
 
   my $num = ~0xFF0A;
 
-
-
 =head2 Shift Operator
 
 Shift Operator is an operator that performs Bit shift. L<"Left Shift Operator">, <a href = "#language-operator-arithmetic-right-shift" > Arithmetic Right Shift Operator</a>, L<"Logical Right Shift Operator">.
@@ -4610,7 +4582,7 @@ Shift Operator is an operator that performs Bit shift. L<"Left Shift Operator">,
 The Left shift is L<"Binary Operators"> represented by "<<".
 
 
-  LEFT_EXPRESSION << RIGHT_OPERAND
+  LEFT_OPERAND << RIGHT_OPERAND
 
 Left Expression must be L<"Integral Types">, otherwise a compilation error occurs.
 <p>
@@ -4635,7 +4607,7 @@ Left Shift Operator does not throw L<"Exception">.
 Arithmetic Right Shift Operator is L<"Binary Operators"> represented by ">>".
 
 
-  LEFT_EXPRESSION >> RIGHT_OPERAND
+  LEFT_OPERAND >> RIGHT_OPERAND
 
 Left Expression must be L<"Integral Types">, otherwise a compilation error occurs.
 <p>
@@ -4662,7 +4634,7 @@ Arithmetic Right Shift Operator does not throw L<"Exception">.
 Logical Right Shift Operator is L<"Binary Operators"> represented by ">>>".
 
 
-  LEFT_EXPRESSION >>> RIGHT_OPERAND
+  LEFT_OPERAND >>> RIGHT_OPERAND
 
 Left Expression must be L<"Integral Types">, otherwise a compilation error occurs.
 
@@ -4686,7 +4658,7 @@ Logical Right Shift Operator does not throw L<"Exception">.
 Comparison Operator is an Operator that is placed between Left Expression and Right Operand to compare the size, and return True/False Value.
 
 
-  LEFT_EXPRESSION COMPARISON_OPERATOR RIGHT_OPERAND
+  LEFT_OPERAND COMPARISON_OPERATOR RIGHT_OPERAND
 
 Comparison Operators are L<"Numeric Comparison Operator">, L<"String Comparison Operator">, and L<"isa Operator">.
 
@@ -4697,7 +4669,7 @@ Comparison Operators are L<"Numeric Comparison Operator">, L<"String Comparison 
 B<Numeric Comparison Operator> is a L<"Comparison Operator"> that is placed between Left Expression and Right Operand to compare the size of number or check the equqlity of objects.
 
 
-  LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_OPERAND
+  LEFT_OPERAND NUMERIC_COMPARISON_OPERATOR RIGHT_OPERAND
 
 A list of Numeric Comparison Operators.
 
@@ -4712,7 +4684,7 @@ A list of Numeric Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION == RIGHT_OPERAND
+      LEFT_OPERAND == RIGHT_OPERAND
     </td>
     <td>
       Left Expression and Right Operand are Numeric Types, Left Expression and Right Operand are Object Type (including Undefined Value)
@@ -4723,7 +4695,7 @@ A list of Numeric Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION != RIGHT_OPERAND
+      LEFT_OPERAND != RIGHT_OPERAND
     </td>
     <td>
       Left Expression and Right Operand are Numeric Types, Left Expression and Right Operand are Object Type (including Undefined Value)
@@ -4734,7 +4706,7 @@ A list of Numeric Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION > RIGHT_OPERAND
+      LEFT_OPERAND > RIGHT_OPERAND
     </td>
     <td>
       Left Expression and Right Operand are Numeric Types
@@ -4745,7 +4717,7 @@ A list of Numeric Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION >= RIGHT_OPERAND
+      LEFT_OPERAND >= RIGHT_OPERAND
     </td>
     <td>
       Left Expression and Right Operand are Numeric Types
@@ -4756,7 +4728,7 @@ A list of Numeric Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION < RIGHT_OPERAND
+      LEFT_OPERAND < RIGHT_OPERAND
     </td>
     <td>
       Left Expression and Right Operand are Numeric Types
@@ -4767,7 +4739,7 @@ A list of Numeric Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION <= RIGHT_OPERAND
+      LEFT_OPERAND <= RIGHT_OPERAND
     </td>
     <td>
       Left Expression and Right Operand are Numeric Types
@@ -4778,7 +4750,7 @@ A list of Numeric Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION <=> RIGHT_OPERAND
+      LEFT_OPERAND <=> RIGHT_OPERAND
     </td>
     <td>
       Left Expression and Right Operand are Numeric Types
@@ -4826,7 +4798,7 @@ Numeric Comparison Operator does not throw L<"Exception">.
 B<String Comparison Operator> is a L<"Comparison Operator"> that compares the bytes in the tow string.
 
 
-  LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_OPERAND
+  LEFT_OPERAND STRING_COMPARISON_OPERATOR RIGHT_OPERAND
 
 Left Expression and Right Operand must be L<"string Type"> or byte[] type.
 
@@ -4842,7 +4814,7 @@ A list of String Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION eq RIGHT_OPERAND
+      LEFT_OPERAND eq RIGHT_OPERAND
     </td>
     <td>
       Left Expression and Right Operand are equal
@@ -4850,7 +4822,7 @@ A list of String Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION ne RIGHT_OPERAND
+      LEFT_OPERAND ne RIGHT_OPERAND
     </td>
     <td>
       Left Expression and Right Operand are not equal
@@ -4858,7 +4830,7 @@ A list of String Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION gt RIGHT_OPERAND
+      LEFT_OPERAND gt RIGHT_OPERAND
     </td>
     <td>
       Left Expression is greater than Right Operand in dictionary Expression order.
@@ -4866,7 +4838,7 @@ A list of String Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION ge RIGHT_OPERAND
+      LEFT_OPERAND ge RIGHT_OPERAND
     </td>
     <td>
       Left Expression is greater than or equal to Right Operand compared in dictionary Expression order
@@ -4874,7 +4846,7 @@ A list of String Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION lt RIGHT_OPERAND
+      LEFT_OPERAND lt RIGHT_OPERAND
     </td>
     <td>
       Left Expression is smaller than Right Operand when compared in dictionary Expression order
@@ -4882,7 +4854,7 @@ A list of String Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION le RIGHT_OPERAND
+      LEFT_OPERAND le RIGHT_OPERAND
     </td>
     <td>
       Left Expression is less than or equal to Right Operand compared in dictionary Expression order
@@ -4890,7 +4862,7 @@ A list of String Comparison Operators.
   </tr>
   <tr>
     <td>
-      LEFT_EXPRESSION cmp RIGHT_OPERAND
+      LEFT_OPERAND cmp RIGHT_OPERAND
     </td>
     <td>
       If Left Expression is greater than Right expression, return 1. If Left Expression is lower than Right expression, return -1. If Left Expression is equals to Right expression, return 0.
@@ -4910,7 +4882,7 @@ B<isa Operator> is a L<"Comparison Operator"> to check whether Left Expression s
 
 
 
-  LEFT_EXPRESSION isa RIGHT_TYPE
+  LEFT_OPERAND isa RIGHT_TYPE
 
 isa Operator has three behaviors, depending on Right Type.
 
@@ -4928,12 +4900,12 @@ isa Operator has three behaviors, depending on Right Type.
 B<ref Operator> is a Operator to get type name of the object.
 
 
-  ref EXPRESSION
+  ref OPERAND
 
 
 ref Operator return type name if the object defined. Otherwise return undef.
 
-If EXPRESSION is not a object type, a compile error occurs.
+If OPERAND is not a object type, a compile error occurs.
 
 
 =head2 dump Operator
@@ -4942,12 +4914,12 @@ If EXPRESSION is not a object type, a compile error occurs.
 B<dump Operator> is a Operator to dump object value.
 
 
-  dump EXPRESSION
+  dump OPERAND
 
 
 dump Operator return the dump string.
 
-If EXPRESSION is not a object type, a compile error occurs.
+If OPERAND is not a object type, a compile error occurs.
 
 The contents of the dumped string may vary from SPVM version to version. Please use dump operator only for viewing the content of object data.
 
@@ -4965,7 +4937,7 @@ Logical Operator returns L<"Expression">
 Logical AND Operator is a L<"Binary Operators">
 
 
-  LEFT_EXPRESSION && RIGHT_OPERAND
+  LEFT_OPERAND && RIGHT_OPERAND
 
 Logical AND Operator のReturn ValueのTypeは,L<"int Type">.
 
@@ -4984,7 +4956,7 @@ Logical AND Operator does not throw L<"Exception">.
 Logical OR Operator is a logical OR operation that is "L<"Expression"> is an operand of L<"Binary Operators">
 
 
-  LEFT_EXPRESSION || RIGHT_OPERAND
+  LEFT_OPERAND || RIGHT_OPERAND
 
 Logical OR Operator behaves as follows:
 
@@ -4996,28 +4968,21 @@ Logical OR Operator のReturn ValueのTypeは,L<"int Type">.
 
 Logical OR Operator returns L<"Expression">
 
-
-
 =head2 Logical NOT Operator
 
-Logical NOT Operator is an operator to the Left of expression to perform logical NOT operations,L<"Unary Operators"> For more information about Expression, see L<"Expression">.
+Logical NOT Operator is an L<unary operator|"Unary Operators"> to the Left of expression to perform logical NOT operations,L<"Unary Operators"> For more information about Expression, see L<"Expression">.
 
-
-  !EXPRESSION
-
-Logical NOT Operator のReturn ValueのTypeは,L<"int Type">.
+  !OPERAND
 
 Logical NOT Operator executes L<"Expression">
 
 Logical NOT Operator does not throw L<"Exception">.
 
-
-
 =head2 String Concatenation Operator
 
 String Concatenation Operator is a L<"Binary Operators">.
 
-  LEFT_EXPRESSION . RIGHT_OPERAND
+  LEFT_OPERAND . RIGHT_OPERAND
 
 The left expression and the right expression are concatenated.
 
@@ -5043,7 +5008,7 @@ B<String Concatenation Operator Example>
 Assignment Operator is a L<"Binary Operators"> for assignment, expressed in "=".
 
 
-  LEFT_EXPRESSION = RIGHTH_EXPRESSION
+  LEFT_OPERAND = RIGHTH_OPERAND
 
 Assignment Operator has multiple meanings depending on the Right and Left sides. Please refer to each item.
 
@@ -5114,10 +5079,10 @@ The Special Assignment Operator is deployed as follows:
 
 
   # Before unexpanding
-  LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR RIGHT_OPERAND
+  LEFT_OPERAND SPECIAL_ASSIGNMENT_OPERATOR RIGHT_OPERAND
   
   # After unwinding
-  LEFT_EXPRESSION ASSIGNMENT_OPERATOR (LEFT EXPRESSION TYPE CAST)(LEFT_EXPRESSION SPECIFIC_OPERATOR RIGHT_OPERAND)
+  LEFT_OPERAND ASSIGNMENT_OPERATOR (LEFT_OPERAND TYPE CAST)(LEFT_OPERAND SPECIFIC_OPERATOR RIGHT_OPERAND)
 
 For example, for add assignment Operator, it is expanded as follows:
 
@@ -5175,9 +5140,9 @@ For a detailed description of Reference, see L<"Reference">.
 
 The array length operator is a L<Unary Operator|"Unary Operators"> to get the length of the array.
 
-  @RIGHT_OPERAND
+  @OPERAND
 
-The right operand must be a L<Expression|"Expressions"> that type is an L<"Array Type">, otherwise a compilation error occurs.
+The operand must be a L<Expression|"Expressions"> that type is an L<"Array Type">, otherwise a compilation error occurs.
 
 The array length operator returns a L<"int Type"> value that is the length of the L<"Array">.
 
@@ -5199,9 +5164,9 @@ Note that SPVM does not have the context different from Perl, and array length o
 
 The string length operator is a L<Unary Operator|"Unary Operators"> to get the length of the string.
 
-  length RIGHT_OPERAND
+  length OPERAND
 
-The right operand must be a L<Expression|"Expressions"> that type is a L<"string Type">, otherwise a compilation error occurs.
+The operand must be a L<Expression|"Expressions"> that type is a L<"string Type">, otherwise a compilation error occurs.
 
 The string length operator returns a L<"int Type"> value that is the length of the L<"String">.
 
@@ -5217,26 +5182,25 @@ B<Examples of string length operators:>
   my $message = "あいう";
   my $length = length $message;
 
-=head2 Scalar Operator
+=head2 scalar Operator
 
-Scalar Operator is an Operator that returns the given value itself without doing anything. It is provided only to clarify the meaning of L<"Array Length Operator">
+The C<scalar> operator is an L<Operator|"Operators"> that returns the value of the operand.
 
+  scalar OPERAND
 
-  scalar RIGHT_OPERAND
+The operand must be an L<"Array Length Operator">, otherwise a compilation error occurs.
 
-Right Operand L<"Array Length Operator">, otherwise a compilation error occurs.
-
-Scalar Operator returns Expression.
-
-B<Scalar Operator Example>
-
-Scalar Operator Example
-
-
+B<Examples of scalar operators:>
+  
+  # Get the array length 
   my $nums = new int[3];
   foo(scalar @$nums);
 
+  # This is exactlly same as the above.
+  my $nums = new int[3];
+  foo(@$nums);
 
+Note that the sclara operator exists only to reduce the confusion.
 
 =head2 isweak Operator
 
@@ -5392,7 +5356,7 @@ Operator Precidence is the following street. The lower you go, the higher your p
       Array Length Operator "@"<br>
       Dereference Operator "$"<br>
       Type Cast"(TypeName)"
-      Scalar Operator "scalar"<br>
+      scalar Operator "scalar"<br>
       String Length Operator "length"<br>
       require keyword "require"<br>
     </td>
