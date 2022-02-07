@@ -4139,7 +4139,7 @@ B<Get Current Line Number Example:>
 
 =head1 Operators
 
-B<Operators> are L<"Unary Operators">, L<"Binary Operator">, L<"Increment Operator">, L<"Decrement Operator">, L<"Comparison Operator">, L<"Logical Operator">, and L<"Assignment Operator">.
+B<Operators> are L<"Unary Operators">, L<"Binary Operators">, L<"Increment Operator">, L<"Decrement Operator">, L<"Comparison Operator">, L<"Logical Operator">, and L<"Assignment Operator">.
 
 =head2 Unary Operators
 
@@ -4151,7 +4151,7 @@ The operand is an L<Expression|"Expressions">.
 
 Unary operators are L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Bit NOT Operator">, L<"Logical NOT Operator">, L<"Array Length Operator">, and L<"String Length Operator">.
 
-=head2 Binary Operator
+=head2 Binary Operators
 
 Binary Operator is a Operator placed between Left L<"Expression"> and Right L<"Expression">.
 
@@ -4255,7 +4255,7 @@ B<Unary Minus Operator Example:>
 =head2 Addition Operator
 
 
-B<Addition Operator> is a L<"Binary Operator"> represtented by "+" to perform addition.
+B<Addition Operator> is a L<"Binary Operators"> represtented by "+" to perform addition.
 
 
   LEFT_EXPRESSION + RIGHT_OPERAND
@@ -4281,7 +4281,7 @@ Addition Operator does not throw L<"Exception">.
 =head2 Subtraction Operator
 
 
-B<Subtraction Operator> is a L<"Binary Operator"> represtented by "-" to perform Subtraction.
+B<Subtraction Operator> is a L<"Binary Operators"> represtented by "-" to perform Subtraction.
 
 
   LEFT_EXPRESSION - RIGHT_OPERAND
@@ -4305,7 +4305,7 @@ Subtraction Operator does not throw L<"Exception">.
 =head2 Multiplication Operator
 
 
-B<Multiplication Operator> is a L<"Binary Operator"> represtented by "*" to perform Multiplication.
+B<Multiplication Operator> is a L<"Binary Operators"> represtented by "*" to perform Multiplication.
 
 
   LEFT_EXPRESSION * RIGHT_OPERAND
@@ -4331,7 +4331,7 @@ Multiplication Operator does not throw L<"Exception">.
 =head2 Division Operator
 
 
-B<Division Operator> is a L<"Binary Operator"> represtented by "/" to perform Division.
+B<Division Operator> is a L<"Binary Operators"> represtented by "/" to perform Division.
 
 
   LEFT_EXPRESSION / RIGHT_OPERAND
@@ -4359,7 +4359,7 @@ In the operation to L<"Floating Point Types">, Division Operator dose not throw 
 =head2 Remainder Operator
 
 
-B<Remainder Operator> is a L<"Binary Operator"> represtented by "%" to perform Division.
+B<Remainder Operator> is a L<"Binary Operators"> represtented by "%" to perform Division.
 
 
   LEFT_EXPRESSION % RIGHT_OPERAND
@@ -4518,7 +4518,7 @@ Bit Operator is an Operator that performs Bit operation. L<"Bit AND Operator">, 
 
 =head2 Bit AND Operator
 
-Bit AND is L<"Binary Operator"> represented by "&".
+Bit AND is L<"Binary Operators"> represented by "&".
 
 
   LEFT_EXPRESSION & RIGHT_OPERAND
@@ -4545,7 +4545,7 @@ Bit AND Operator does not throw L<"Exception">.
 
 =head2 Bit OR Operator
 
-Bit OR is L<"Binary Operator"> represented by "|".
+Bit OR is L<"Binary Operators"> represented by "|".
 
 
   LEFT_EXPRESSION | RIGHT_OPERAND
@@ -4607,7 +4607,7 @@ Shift Operator is an operator that performs Bit shift. L<"Left Shift Operator">,
 
 =head2 Left Shift Operator
 
-The Left shift is L<"Binary Operator"> represented by "<<".
+The Left shift is L<"Binary Operators"> represented by "<<".
 
 
   LEFT_EXPRESSION << RIGHT_OPERAND
@@ -4632,7 +4632,7 @@ Left Shift Operator does not throw L<"Exception">.
 
 =head2 Arithmetic Right Shift Operator
 
-Arithmetic Right Shift Operator is L<"Binary Operator"> represented by ">>".
+Arithmetic Right Shift Operator is L<"Binary Operators"> represented by ">>".
 
 
   LEFT_EXPRESSION >> RIGHT_OPERAND
@@ -4659,7 +4659,7 @@ Arithmetic Right Shift Operator does not throw L<"Exception">.
 
 =head2 Logical Right Shift Operator
 
-Logical Right Shift Operator is L<"Binary Operator"> represented by ">>>".
+Logical Right Shift Operator is L<"Binary Operators"> represented by ">>>".
 
 
   LEFT_EXPRESSION >>> RIGHT_OPERAND
@@ -4962,7 +4962,7 @@ Logical Operator returns L<"Expression">
 
 =head2 Logical AND Operator
 
-Logical AND Operator is a L<"Binary Operator">
+Logical AND Operator is a L<"Binary Operators">
 
 
   LEFT_EXPRESSION && RIGHT_OPERAND
@@ -4981,7 +4981,7 @@ Logical AND Operator does not throw L<"Exception">.
 
 =head2 Logical OR Operator
 
-Logical OR Operator is a logical OR operation that is "L<"Expression"> is an operand of L<"Binary Operator">
+Logical OR Operator is a logical OR operation that is "L<"Expression"> is an operand of L<"Binary Operators">
 
 
   LEFT_EXPRESSION || RIGHT_OPERAND
@@ -4992,7 +4992,7 @@ Logical OR Operator のReturn ValueのTypeは,L<"int Type">.
 
 1. Run the L<"Bool Type Conversion"> to Left Expression.
 
-2. If the value of Left Expression is 0, the L<"Expression">を返します。
+2. If the value of Left Expression is 0, the L<"Expression">
 
 Logical OR Operator returns L<"Expression">
 
@@ -5015,7 +5015,7 @@ Logical NOT Operator does not throw L<"Exception">.
 
 =head2 String Concatenation Operator
 
-String Concatenation Operator is a L<"Binary Operator">.
+String Concatenation Operator is a L<"Binary Operators">.
 
   LEFT_EXPRESSION . RIGHT_OPERAND
 
@@ -5040,7 +5040,7 @@ B<String Concatenation Operator Example>
 
 =head2 Assignment Operator
 
-Assignment Operator is a L<"Binary Operator"> for assignment, expressed in "=".
+Assignment Operator is a L<"Binary Operators"> for assignment, expressed in "=".
 
 
   LEFT_EXPRESSION = RIGHTH_EXPRESSION
@@ -5171,30 +5171,29 @@ Reference Operator returns expression. The type returned is L<"Reference Type">.
 
 For a detailed description of Reference, see L<"Reference">.
 
-
-
 =head2 Array Length Operator
 
-Array Length Operator is a L<"Array"></a>L<"Unary Operators">
+The array length operator is a L<Unary Operator|"Unary Operators"> to get the length of the array.
 
+  @RIGHT_OPERAND
 
-  @RIGHT EXPRESSION
+The right operand must be a L<Expression|"Expressions"> that type is an L<"Array Type">, otherwise a compilation error occurs.
 
-Right Operand must be an Array Type, otherwise a compilation error occurs.
-
-Array Length Operator returns array length for L<"int Type"> value.
+The array length operator returns a L<"int Type"> value that is the length of the L<"Array">.
 
 Array Length Operator returns L<"Expression">
 
-B<Array Length Operator Example>
-
-Array Length Operator Example
-
-
+B<Examples of array length operators:>
+  
+  # Get the length of the array.
   my $nums = new byte[10];
   my $length = @$nums;
 
-Note that SPVM does not have the idea of a context in Perl, and array length operators always return Array Length.
+  # Get the length of the array with a scalar operator. This is exactly same as the avobe
+  my $nums = new byte[10];
+  my $length = scalar @$nums;
+  
+Note that SPVM does not have the context different from Perl, and array length operators always return the length of the array.
 
 =head2 String Length Operator
 
@@ -5220,12 +5219,12 @@ B<Examples of string length operators:>
 
 =head2 Scalar Operator
 
-Scalar Operator is an Operator that returns the given value itself without doing anything. It is provided only to clarify the meaning of L<"Array Length Operator operator">
+Scalar Operator is an Operator that returns the given value itself without doing anything. It is provided only to clarify the meaning of L<"Array Length Operator">
 
 
   scalar RIGHT_OPERAND
 
-Right OperandはL<"Array Length Operator">でなければなりません。 otherwise a compilation error occurs.
+Right Operand L<"Array Length Operator">, otherwise a compilation error occurs.
 
 Scalar Operator returns Expression.
 
