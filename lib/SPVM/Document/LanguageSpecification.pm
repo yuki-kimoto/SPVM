@@ -3253,7 +3253,7 @@ Next is L<"Local Variable Declaration">. Local Variable Declaration create conti
 
 Note that Multi Numeric Types value are not object, so cannot create a Object by L<"new"> syntax.
 
-<h3 id="language-mulnum-access">Multi Numeric Types Field Access</h2>
+=head2 Multi Numeric Types Field Access
 
 B<Multi Numeric Types Field Access> is an operation to access Multi Numeric Types Field to get or set a value.
 
