@@ -1846,8 +1846,6 @@ int32_t SPVM__TestCase__NativeAPI__new_string_raw(SPVM_ENV* env, SPVM_VALUE* sta
     env->dec_ref_count(env, string);
   }
 
-  int32_t ret;
-  
   // Length is shorten than the string
   {
     void* string = env->new_string_raw(env, "abc", 1);
@@ -1893,7 +1891,30 @@ int32_t SPVM__TestCase__NativeAPI__new_string_raw(SPVM_ENV* env, SPVM_VALUE* sta
     env->inc_ref_count(env, string);
     env->dec_ref_count(env, string);
   }
-  
+
+  // Length is longer than the string
+  {
+    void* string = env->new_string_raw(env, "abc", 4);
+
+    if (env->length(env, string) != 4) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    const char* string_chars = env->get_chars(env, string);
+    if (strncmp(string_chars, "abc\0\0", 5) != 0) {
+      stack[0].ival = 0;
+      env->inc_ref_count(env, string);
+      env->dec_ref_count(env, string);
+      return 0;
+    }
+    
+    env->inc_ref_count(env, string);
+    env->dec_ref_count(env, string);
+  }
+
   stack[0].ival = 1;
 
   return 0;
