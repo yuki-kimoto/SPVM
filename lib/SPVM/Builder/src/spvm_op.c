@@ -3097,6 +3097,13 @@ SPVM_OP* SPVM_OP_build_print(SPVM_COMPILER* compiler, SPVM_OP* op_print, SPVM_OP
   return op_print;
 }
 
+SPVM_OP* SPVM_OP_build_make_read_only(SPVM_COMPILER* compiler, SPVM_OP* op_make_read_only, SPVM_OP* op_term) {
+  
+  SPVM_OP_insert_child(compiler, op_make_read_only, op_make_read_only->last, op_term);
+  
+  return op_make_read_only;
+}
+
 SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   
   const char* name = op_name->uv.name;

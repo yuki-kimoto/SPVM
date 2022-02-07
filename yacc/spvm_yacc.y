@@ -495,15 +495,16 @@ statement
     {
       $$ = SPVM_OP_build_print(compiler, $1, $2);
     }
+  | MAKE_READ_ONLY expression ';'
+    {
+      $$ = SPVM_OP_build_make_read_only(compiler, $1, $2);
+    }
   | weaken_field ';'
   | unweaken_field ';'
   | ';'
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
     }
-  | MAKE_READ_ONLY {
-    $$ = $1;
-  }
 
 for_statement
   : FOR '(' opt_expression ';' expression_or_logical_op ';' opt_expression ')' block
