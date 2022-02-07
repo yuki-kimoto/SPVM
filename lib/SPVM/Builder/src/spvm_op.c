@@ -188,6 +188,10 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "AS",
     "MUTABLE",
     "END_OF_FILE",
+    "DIV_UINT",
+    "DIV_ULONG",
+    "REM_UINT",
+    "REM_ULONG",
   };
   
   return id_names;
