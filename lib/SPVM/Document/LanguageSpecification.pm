@@ -4555,21 +4555,17 @@ The bit NOT operator C<~> is a L<unary operator|"Unary Operators"> to get the va
 
 The operand must be an L<expression|"Expressions"> that type is an L<integral type|"Integral Types">, otherwise a compilation error occurs.
 
-L<"Unary Numeric Widening Type Conversion"> is performed to Expression before Operation.
+L<"Unary Numeric Widening Type Conversion"> is performed to the operand.
 
-After that, the operation result of Bit NOT Operator performs the operation that exactly matches the following operation in C99.
+The bit NOT operator performs the operation that exactly same as the following operation in C language.
 
   ~x
 
-L<"int Type"> Operation and L<"long Type"> Operation are defined corresponding to L<"C99 Type">
+The type of return value is the type that L<"Unary Numeric Widening Type Conversion"> is performed.
 
-The Type of Return Value of Bit NOT Operator is the type after L<"Unary Numeric Widening Type Conversion">
-
-Bit NOT Operator does not throw L<"Exception">.
-
-B<Bit NOT Operator Example>
-
-
+B<Examples of bit NOT operators:>
+  
+  # Bit NOT operations
   my $num = ~0xFF0A;
 
 =head2 Shift Operator
