@@ -786,6 +786,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   159 call_instance_method
   160 get_instance_method_id_static
   161 get_bool_object_value
+  162 string_basic_type_id
 
 =head1 List of Native APIs
 
@@ -2431,6 +2432,12 @@ Get the value of a L<Bool|SPVM::Bool> object. If the Bool object is true, return
 B<Examples:>
 
   int32_t bool_value = env->get_bool_object_value(env, bool_object);
+
+=head2 string_basic_type_id
+
+  void* string_basic_type_id;
+
+Basic type ID of the C<string> type. This is used internally.
 
 =head1 Utilities
 

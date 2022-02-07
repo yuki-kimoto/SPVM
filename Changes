@@ -1,4 +1,7 @@
 Revision history for SPVM
+
+0.9502  2021-02-07
+        * Add native api "string_basic_type_id"
 0.9501  2021-02-04
         [CHANGE]
         * Improve compilation error messages. All method expressions is Foo->bar.
