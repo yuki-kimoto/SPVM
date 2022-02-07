@@ -122,17 +122,17 @@ class Hash : precompile {
   }
 
   method keys : string[] () {
-    my $retval = new string[$self->{count}];
+    my $keys = new string[$self->{count}];
     # iterate entries
     my $count = 0;
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $retval->[$count++] = $ref->{key};
+        $keys->[$count++] = Fn->copy_string($ref->{key});
         $ref = $ref->{next_entry};
       }
     }
-    return $retval;
+    return $keys;
   }
 
   method values : object[] () {
