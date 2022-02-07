@@ -72,7 +72,67 @@ SPVM::Test - SPVM test module
   static method FLOAT_PRECICE : float () { return 32767f; }
   static method DOUBLE_PRECICE : double () { return 2147483647.0; }
 
+  static method INT8_MIN : byte () { return -128; }
+  static method INT8_MAX : byte () { return 127; }
+
+  static method INT16_MIN : short () { return -32768; }
+  static method INT16_MAX : short () { return 32767; }
+
+  static method INT32_MIN : int () { return -2147483648; }
+  static method INT32_MAX : int () { return 2147483647; }
+
+  static method INT64_MIN : long () { return -9223372036854775808L; }
+  static method INT64_MAX : long () { return 9223372036854775807L; }
+  static method UINT32_MAX : int () { return 0xFFFFFFFF; }
+  static method UINT64_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
+
   static method main : int ($start_file : string, $args : string[]) {
+    
+    {
+      my $uint_max = &UINT32_MAX;
+      
+      # 0 = -1 / 3
+      my $ret_div = $uint_max / 3;
+      
+      # 1431655765 = 4,294,967,295 / 3
+      my $ret_divui = $uint_max divui 3;
+      
+      warn "$ret_div $ret_divui";
+    }
+    {
+      my $ulong_max = &UINT64_MAX;
+      
+      # 0 = -1 / 3
+      my $ret_div = $ulong_max / 3L;
+      
+      # 6,148,914,691,236,517,205 = 18,446,744,073,709,551,615 / 3
+      my $ret_divui = $ulong_max divul 3L;
+      
+      warn "$ret_div $ret_divui";
+    }
+    
+    {
+      my $uint_max = &UINT32_MAX;
+      
+      # 0 = -1 % 3
+      my $ret_rem = $uint_max % 3;
+      
+      # 1431655765 = 4,294,967,295 / 3
+      my $ret_remui = $uint_max remui 3;
+      
+      warn "$ret_rem $ret_remui";
+    }
+    {
+      my $ulong_max = &UINT64_MAX;
+      
+      # 0 = -1 % 3
+      my $ret_rem = $ulong_max % 3L;
+      
+      # 6,148,914,691,236,517,205 = 18,446,744,073,709,551,615 / 3
+      my $ret_remui = $ulong_max remul 3L;
+      
+      warn "$ret_rem $ret_remui";
+    }
     
     {
       my $string : mutable string = (mutable string)"abc";
@@ -2075,20 +2135,6 @@ SPVM::Test - SPVM test module
     print($nums->[0] . "\n");
     print($nums->[1] . "\n");
   }
-
-  static method INT8_MIN : byte () { return -128; }
-  static method INT8_MAX : byte () { return 127; }
-
-  static method INT16_MIN : short () { return -32768; }
-  static method INT16_MAX : short () { return 32767; }
-
-  static method INT32_MIN : int () { return -2147483648; }
-  static method INT32_MAX : int () { return 2147483647; }
-
-  static method UINT32_MAX : long () { return 4294967295L; }
-
-  static method INT64_MIN : long () { return -9223372036854775808L; }
-  static method INT64_MAX : long () { return 9223372036854775807L; }
 }
 
 =head1 NAME
