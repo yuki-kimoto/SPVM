@@ -31,6 +31,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(SPVM::TestCase::Remainder->remainder_long_long);
   }
 
+  # Divide Unsinged operator
+  {
+    ok(SPVM::TestCase::Remainder->remainder_unsigned_int);
+    ok(SPVM::TestCase::Remainder->remainder_unsigned_long);
+  }
+
   # Remainder - Compile Error
   {
     {

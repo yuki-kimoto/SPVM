@@ -1,5 +1,6 @@
 class TestCase::Remainder {
-
+  use Fn;
+  
   #
   # Spec tests
   #
@@ -110,6 +111,58 @@ class TestCase::Remainder {
     
     unless ($total1 isa long) {
       return 0;
+    }
+    
+    return 1;
+  }
+
+  static method remainder_unsigned_int : int () {
+    {
+      my $x = Fn->UINT32_MAX;
+
+      # 0 = -1 % 3
+      my $ret_rem = $x % 3;
+      
+      # 1431655765 = 4,294,967,295 remui 3
+      my $ret_remui = $x remui 3;
+      
+      unless ($ret_remui isa int) {
+        return 0;
+      }
+      
+      unless ($ret_rem == -1) {
+        return 0;
+      }
+      
+      unless ($ret_remui == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method remainder_unsigned_long : int () {
+    {
+      my $x = Fn->UINT64_MAX;
+
+      # 0 = -1 % 3
+      my $ret_rem = $x % 3L;
+      
+      # 6,148,914,691,236,517,205 = 18,446,744,073,709,551,615 remul 3
+      my $ret_remul = $x remul 3L;
+
+      unless ($ret_remul isa long) {
+        return 0;
+      }
+      
+      unless ($ret_rem == -1) {
+        return 0;
+      }
+      
+      unless ($ret_remul == 0) {
+        return 0;
+      }
     }
     
     return 1;
