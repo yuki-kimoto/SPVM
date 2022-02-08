@@ -357,7 +357,6 @@ SPVM::Test - SPVM test module
     
     {
       warn "PPP";
-      warn;
       warn "QQQ\n";
     }
     

@@ -474,17 +474,9 @@ statement
     {
       $$ = SPVM_OP_build_return(compiler, $1, $2);
     }
-  | DIE ';'
-    {
-      $$ = SPVM_OP_build_die(compiler, $1, NULL);
-    }
   | DIE expression ';'
     {
       $$ = SPVM_OP_build_die(compiler, $1, $2);
-    }
-  | WARN ';'
-    {
-      $$ = SPVM_OP_build_warn(compiler, $1, NULL);
     }
   | WARN expression ';'
     {
