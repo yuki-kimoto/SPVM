@@ -329,38 +329,38 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_integral(SPVM_COMPILER* compiler
   SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_uint(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_unsigned_int(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in2_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string_nolen_raw(env, \"0 division\"));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
 
   SPVM_STRING_BUFFER_add(string_buffer, "  } else {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    ");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, out_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (uint32_t)");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in1_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " / (uint32_t)");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in2_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_ulong(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_unsigned_long(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in2_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string_nolen_raw(env, \"0 division\"));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
 
   SPVM_STRING_BUFFER_add(string_buffer, "  } else {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    ");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, out_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (uint64_t)");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in1_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " / (uint64_t)");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in2_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
 }
@@ -394,9 +394,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_integral(SPVM_COMPILER* compi
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_uint(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_unsigned_int(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in2_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_nolen_raw(env, \"0 division\");\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, exception);\n");
@@ -404,18 +404,18 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_uint(SPVM_COMPILER* compiler,
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    ");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, out_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (uint32_t)");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in1_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " % /* REMAINDER */ (uint32_t)"); // % have undarstandable bug.
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in2_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_ulong(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_unsigned_long(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in2_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_nolen_raw(env, \"0 division\");\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, exception);\n");
@@ -423,11 +423,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_ulong(SPVM_COMPILER* compiler
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    ");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, out_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (uint64_t)");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in1_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " % /* REMAINDER */ (uint64_t)"); // % have undarstandable bug.
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in2_index);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
@@ -2142,6 +2142,14 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_floating_point(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       }
+      case SPVM_OPCODE_C_ID_DIVIDE_UNSIGNED_INT: {
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_unsigned_int(compiler, string_buffer, opcode->operand0, opcode->operand1, opcode->operand2);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_DIVIDE_UNSIGNED_LONG: {
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_unsigned_long(compiler, string_buffer, opcode->operand0, opcode->operand1, opcode->operand2);
+        break;
+      }
       case SPVM_OPCODE_C_ID_REMAINDER_INT: {
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_integral(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
@@ -2156,6 +2164,14 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
       }
       case SPVM_OPCODE_C_ID_LEFT_SHIFT_LONG: {
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_left_shift(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, opcode->operand2);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_INT: {
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_unsigned_int(compiler, string_buffer, opcode->operand0, opcode->operand1, opcode->operand2);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_LONG: {
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_unsigned_long(compiler, string_buffer, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_RIGHT_ARITHMETIC_SHIFT_INT: {
