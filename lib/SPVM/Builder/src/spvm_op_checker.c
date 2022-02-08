@@ -1924,13 +1924,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left operand must be numeric type
               if (!SPVM_TYPE_is_int_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of \"div_uint\" operator must be int type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Left operand of \"divui\" operator must be int type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right operand must be numeric type
               if (!SPVM_TYPE_is_int_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of \"div_uint\" operator must be int type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Right operand of \"divui\" operator must be int type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1942,13 +1942,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left operand must be numeric type
               if (!SPVM_TYPE_is_long_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of \"div_ulong\" operator must be long type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Left operand of \"divul\" operator must be long type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right operand must be numeric type
               if (!SPVM_TYPE_is_long_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of \"div_ulong\" operator must be long type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Right operand of \"divul\" operator must be long type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
