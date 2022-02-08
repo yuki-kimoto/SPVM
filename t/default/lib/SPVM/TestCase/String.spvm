@@ -138,12 +138,22 @@ class TestCase::String {
     
     # The length is 0
     {
-      my $message = new_string_len 0;
+      my $message = new_string_len(0);
       
       unless ($message eq "") {
         return 0;
       }
     }
+
+    # The length is -1
+    {
+      eval { new_string_len -1; };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
     
     return 1;
   }
