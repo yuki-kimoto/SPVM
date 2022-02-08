@@ -1,0 +1,5 @@
+class TestCase::CompileError::Divide::DivuiRightIsNotInt {
+  static method main : int () {
+    1 divui 3L;
+  }
+}

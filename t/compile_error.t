@@ -622,5 +622,45 @@ sub print_error_messages {
   }
 }
 
+# Divide - Compile Error
+{
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Divide::LeftIsNotNumeric', __LINE__, __FILE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Divide::RightIsNotNumeric', __LINE__, __FILE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Divide::DivuiLeftIsNotInt', __LINE__, __FILE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Divide::DivuiRightIsNotInt', __LINE__, __FILE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Divide::DivulLeftIsNotLong', __LINE__, __FILE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Divide::DivulRightIsNotLong', __LINE__, __FILE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+}
+
 
 done_testing;
