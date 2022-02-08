@@ -373,9 +373,9 @@ If L<"long Type"> Integer Literal  exceeds the range of numbers that can be repr
 
 "_" can be used as a separator. Separator has no meaning.
 
-If Integer Literal is assigned to a L<"byte Type"> variable or passed to L<"byte Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"byte Type">, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is applied and the value converted to L<"byte Type"> value. If it exceeds the range, a compilation error will occur.
+If Integer Literal is assigned to a L<"byte Type"> variable or passed to L<"byte Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"byte Type">, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is performed and the value converted to L<"byte Type"> value. If it exceeds the range, a compilation error will occur.
 
-If Integer Literal is assigned to a L<"short Type"> variable or passed to L<"short Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"short Type">, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is applied and the value converted to L<"short Type"> value. If it exceeds the range, a compilation error will occur.
+If Integer Literal is assigned to a L<"short Type"> variable or passed to L<"short Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"short Type">, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is performed and the value converted to L<"short Type"> value. If it exceeds the range, a compilation error will occur.
 
 B<Integer Literal Example:>
 
@@ -2170,7 +2170,7 @@ If both "public" and "private" Descriptors are specified, a compilation error oc
 
 If more than one of "ro", "wo", and "rw" are specified at the same time, a compilation error occurs
 
-Read Accessor of Field has one argument that is L<"self Type"> and the Return Type is same as the type of Field.
+Read Accessor of Field has one argument that is L<"self Type"> and the return type is same as the type of Field.
 
 Write Acessor of Class Variable has two arguments. First argument is L<"self Type"> and second argument is same as the type of Field. The type of return value is L<"void Type">.
 
@@ -2373,7 +2373,7 @@ See <a href="/native-api.html">SPVM Native API</a> Native Method.
 
 If the Class has "precompile" descriptor, the methods of the class become Precompiled Method.
 
-Precompiled Method is translated into C99 Compliant source code and converted into machine code.
+Precompiled Method is translated into C source code and converted into machine code.
 
 The precompiled methods are C code, so you can get performance of C language.
 
@@ -2383,7 +2383,7 @@ Precompiled Method needs Build Directory described in <a href="/native-api.html"
 =head2 Constant Method
 
 
-Constant Method is a Method that Return Type is L<"Numeric Types"> and returns Constant Value.
+Constant Method is a Method that the return type is L<"Numeric Types"> and returns Constant Value.
 
 
   static method foo : int () { return 5; }
@@ -2515,7 +2515,7 @@ The first value starts with "0". The value is incremented by "1". In this exampl
   }
 
 
-Enumeration is an alias for L<"Constant Method"> that Return Type is L<"int Type">. It is equivalent to the following Method Definition:
+Enumeration is an alias for L<"Constant Method"> that the return type is L<"int Type">. It is equivalent to the following Method Definition:
 
 
   static method FLAG1 : int () { return 0; }
@@ -2657,7 +2657,7 @@ Zero or more L<"Statements"> can be written in INIT Block.
 
 L<"return Statement"> cannot be written in INIT Block.
 
-Internally, INIT Block is a L<"Method"> that Return Type is L<"void Type"> and has no arguments.
+Internally, INIT Block is a L<"Method"> that the return type is L<"void Type"> and has no arguments.
 
 You can define multiple INIT Blocks.
 
@@ -3588,13 +3588,13 @@ B<Set Field Value Expression> is a Expression to set L<"Field"> Value.
 
 Invocant Expression is L<"Class Type">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Set Multi Numeric Field Value">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
 
-If the assignment does not satisfy L<"Type Compatibility"> of the Type of Field, a compilation error occurs.
+If the assignment does not satisfy L<"Type Compatibility"> of the type of Field, a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs.
 
 Set Field Value Expression returns the value of Field after setting. 
 
-Return Value Type is the Type of Field.
+Return Value Type is the type of Field.
 
 If the right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
 
@@ -3650,7 +3650,7 @@ Set Multi Numeric Field Value Expression returns the value of Field after settin
 
 The Assignment must satisfy L<"Type Compatibility">.
 
-Return Value Type is the Type of Field.
+Return Value Type is the type of Field.
 
 B<Set Multi Numeric Field Value Example:>
 
@@ -3703,7 +3703,7 @@ Set Multi Numeric Field Value via Dereference Expression returns the value of Fi
 
 The Assignment must satisfy L<"Type Compatibility">.
 
-Return Value Type is the Type of Field.
+Return Value Type is the type of Field.
 
 B<Set Multi Numeric Field Value via Dereference Example:>
 
@@ -3725,7 +3725,7 @@ B<Get Array Element Value Expression> is a Expression to get a Element Value of 
 
 Array Expression must be L<"Array Type">.
 
-Index Expression must be L<"int Type"> or the Type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
+Index Expression must be L<"int Type"> or the type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
 
 Get Array Element Value Expression returns the Element Value of the Index.
 
@@ -3758,7 +3758,7 @@ Set Array Element Value Expression is a Expression to set a Element Value of a A
 
 Array Expression must be L<"Array Type">.
 
-Index Expression must be L<"int Type"> or the Type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
+Index Expression must be L<"int Type"> or the type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
 
 The Assignment must satisfy L<"Type Compatibility">.
 
@@ -3832,7 +3832,7 @@ B<Create Array Expression> is a Expression to create Array with B<new> Keyword.
 
 Type must be L<"Numeric Types">, L<"Object Type">, L<"Multi Numeric Types">.
 
-Elements Count Expression must be L<"int Type"> or the Type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
+Elements Count Expression must be L<"int Type"> or the type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
 
 If Index Expression is lower than 0, a Runtime Exception occurs.
 
@@ -4044,7 +4044,7 @@ Setting a value with Dereference is an operation to set the actual value from Re
 
 The variable Type must be Reference Type, otherwise a compilation error occurs.
 
-The Type of Expression must match the Type of the variable when dereferenced, otherwise a compilation error occurs.
+The Type of Expression must match the type of the variable when dereferenced, otherwise a compilation error occurs.
 
 Setting a value with Dereference returns the set value. This is L<"Expression">.
 
@@ -4191,9 +4191,9 @@ The operand must be an L<expression|"Expressions"> that type is a L<numeric type
 
 L<"Unary Numeric Widening Type Conversion"> applys to the operand.
 
-After that, returns the value copied from the value of the operand.
+returns the value copied from the value of the operand.
 
-Return Type of the unary plus pperator is the type that L<"Unary Numeric Widening Type Conversion"> is applied.
+the return type of the unary plus pperator is the type that L<"Unary Numeric Widening Type Conversion"> is performed.
 
 B<Examples of unary plus operators:>
   
@@ -4210,11 +4210,11 @@ The operand must be an L<expression|"Expressions"> that type is a L<numeric type
 
 L<"Unary Numeric Widening Type Conversion"> applys to the operand.
 
-After that, the unary minus operator performs the following operation of C language.
+the unary minus operator performs the following operation of C language.
 
   -x
 
-Return type of a unary minus operator is the type that L<"Unary Numeric Widening Type Conversion"> is applied.
+Return type of a unary minus operator is the type that L<"Unary Numeric Widening Type Conversion"> is performed.
 
 B<Examples of unary minus operators:>
 
@@ -4223,109 +4223,71 @@ B<Examples of unary minus operators:>
 
 =head2 Addition Operator
 
-B<Addition Operator> is a L<"Binary Operators"> represtented by "+" to perform addition.
-
+The addition operator C<+> is a L<binary operator|"Binary Operators"> to calcurate the result of the addition of two numbers.
 
   LEFT_OPERAND + RIGHT_OPERAND
 
+The left operand and the right operand must be a L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
 
-The left operand and the right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
+L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and the right operand.
-
-After that, Addition Operator performs an operation that exactly matches the following operation in C99.
-
+The addition operator performs the operation that exactly same as the following operation in C language.
 
   x + y;
 
-
-L<"int Type"> Operation, L<"long Type"> Operation, L<"float Type"> Operation, and L<"double Type"> Operation are defined corresponding to L<"C99 Type">
-
-Return Type of Addition Operator is the Type after L<"Binary Numeric Widening Type Conversion"> is applied.
-
-Addition Operator does not throw L<"Exception">.
-
+The return type of the addition operator is the type that L<"Binary Numeric Widening Type Conversion"> is performed.
 
 =head2 Subtraction Operator
 
-
-B<Subtraction Operator> is a L<"Binary Operators"> represtented by "-" to perform Subtraction.
-
+The subtraction operator C<-> is a L<binary operator|"Binary Operators"> to calcurate the result of the subtraction of two numbers.
 
   LEFT_OPERAND - RIGHT_OPERAND
 
+The left operand and the right operand must be a L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
 
-The left operand and the right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
+L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and the right operand.
-
-After that, Subtraction Operator performs an operation that exactly matches the following operation in C99.
-
+The subtraction operator performs an operation that exactly same as the following operation in C language.
 
   x - y;
 
-
-Return Type of Subtraction Operator is the Type after L<"Binary Numeric Widening Type Conversion"> is applied.
-
-Subtraction Operator does not throw L<"Exception">.
-
+The return type of the subtraction operator is the type that L<"Binary Numeric Widening Type Conversion"> is performed.
 
 =head2 Multiplication Operator
 
-
-B<Multiplication Operator> is a L<"Binary Operators"> represtented by "*" to perform Multiplication.
-
+The multiplication operator is a L<binary operator|"Binary Operators"> to calcurate the result of multiplication of two numbers.
 
   LEFT_OPERAND * RIGHT_OPERAND
 
+The left operand and the right operand must be a L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
 
-The left operand and the right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
+L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and the right operand.
-
-After that, Multiplication Operator performs an operation that exactly matches the following operation in C99.
-
+The multiplication operator performs an operation that exactly same as the following operation in C language.
 
   x * y;
 
-
-L<"int Type"> Operation, L<"long Type"> Operation, L<"float Type"> Operation, and L<"double Type"> Operation are defined corresponding to L<"C99 Type">
-
-Return Type of Multiplication Operator is the Type after L<"Binary Numeric Widening Type Conversion"> is applied.
-
-Multiplication Operator does not throw L<"Exception">.
-
+The return type of the multiplication operator is the type after L<"Binary Numeric Widening Type Conversion"> is performed.
 
 =head2 Division Operator
 
-
-B<Division Operator> is a L<"Binary Operators"> represtented by "/" to perform Division.
-
+The division operator C</> is a L<binary operator|"Binary Operators"> to culcurate the division of two numbers.
 
   LEFT_OPERAND / RIGHT_OPERAND
 
-
 The left operand and the right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and the right operand.
+L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
-After that, Division Operator performs an operation that exactly matches the following operation in C99.
-
+The division operator performs an operation that exactly same as the following operation in C language.
 
   x / y;
 
+The return type of the division operator is the type after L<"Binary Numeric Widening Type Conversion"> is performed.
 
-L<"int Type"> Operation, L<"long Type"> Operation, L<"float Type"> Operation, and L<"double Type"> Operation are defined corresponding to L<"C99 Type">
-
-Return Type of Division Operator is the Type after L<"Binary Numeric Widening Type Conversion"> is applied.
-
-In the operation to L<"Integral Types">, Division Operator throw L<"Exception"> if the right operand is 0.
-
-In the operation to L<"Floating Point Types">, Division Operator dose not throw L<"Exception">.
-
+If the two operands are L<integral types|"Integral Types"> and the value of the right operand is C<0>, an L<exception|"Exception"> is thrown.
 
 =head2 Remainder Operator
-
 
 B<Remainder Operator> is a L<"Binary Operators"> represtented by "%" to perform Division.
 
@@ -4335,17 +4297,15 @@ B<Remainder Operator> is a L<"Binary Operators"> represtented by "%" to perform 
 
 The left operand and the right operand must be L<"Integral Types">, otherwise a compilation error occurs.
 
-L<"Binary Numeric Widening Type Conversion"> is applied to the left operand and the right operand.
+L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
-After that, Remainder Operator performs an operation that exactly matches the following operation in C99.
+Remainder Operator performs an operation that exactly same as the following operation in C language.
 
 
   x % y;
 
 
-L<"int Type"> Operation, and L<"long Type"> Operation are defined corresponding to L<"C99 Type">
-
-Return Type of Remainder Operator is the Type after L<"Binary Numeric Widening Type Conversion"> is applied.
+the return type of Remainder Operator is the type after L<"Binary Numeric Widening Type Conversion"> is performed.
 
 Remainder Operator throw L<"Exception"> if the right operand is 0.
 
@@ -4495,20 +4455,14 @@ The left operand and the right operand must be L<"Integral Types">, otherwise a 
 
 L<"Binary Numeric Widening Type Conversion"> is performed on The left operand and the right operand.
 
-After that, the operation result of Bit AND Operator performs the operation that exactly matches the following operation in C99
+the operation result of Bit AND Operator performs the operation that exactly same as the following operation in C language
 
 
 
   x & y;
 
 
-L<"int Type"> Operation and L<"long Type"> Operation are defined corresponding to L<"C99 Type">
-
 The Type of Return Value of Bit AND Operator is the type after L<"Binary Numeric Widening Type"> is performed.
-
-Bit AND Operator does not throw L<"Exception">.
-
-
 
 =head2 Bit OR Operator
 
@@ -4521,18 +4475,14 @@ The left operand and the right operand must be L<"Integral Types">, otherwise a 
 
 L<"Binary Numeric Widening Type Conversion"> is performed on The left operand and the right operand.
 
-After that, the operation result of Bit OR Operator performs the operation that exactly matches the following operation in C99.
+the operation result of Bit OR Operator performs the operation that exactly same as the following operation in C language.
 
 
 
   x | y;
 
 
-L<"int Type"> Operation and L<"long Type"> Operation are defined corresponding to L<"C99 Type">
-
 The Type of Return Value of Bit OR Operator is the type that is L<"Binary Numeric Widening Type Converted">.
-
-Bit OR Operator does not throw L<"Exception">.
 
 =head2 Bit NOT Operator
 
@@ -4569,17 +4519,10 @@ The left operand must be L<"Integral Types">, otherwise a compilation error occu
 
 the right operand must be L<"int Type">, otherwise a compilation error occurs.
 
-The calculation result of Left Shift Operator is the same as the following calculation in C99.
+The calculation result of Left Shift Operator is the same as the following calculation in C language.
 
 
   x << y;
-
-
-L<"int Type"> Operation and L<"long Type"> Operation are defined corresponding to L<"C99 Type">
-
-Left Shift Operator does not throw L<"Exception">.
-
-
 
 =head2 Arithmetic Right Shift Operator
 
@@ -4594,17 +4537,10 @@ First, for L<"The left operand">, L<"Unary Numeric Widening Type Conversion"> is
 
 the right operand must be L<"int Type">, otherwise a compilation error occurs.
 
-The operation result of Arithmetic Right Shift Operator is the operation that exactly matches the following operation in C99.
+The operation result of Arithmetic Right Shift Operator is the operation that exactly same as the following operation in C language.
 
 
   x >> y;
-
-
-L<"int Type"> Operation and L<"long Type"> Operation are defined corresponding to L<"C99 Type">
- 
-Arithmetic Right Shift Operator does not throw L<"Exception">.
-
-
 
 =head2 Logical Right Shift Operator
 
@@ -4617,17 +4553,10 @@ The left operand must be L<"Integral Types">, otherwise a compilation error occu
 
 the right operand must be L<"int Type">, otherwise a compilation error occurs.
 
-The calculation result of Logical Right Shift Operator is the same as the following calculation in C99.
+The calculation result of Logical Right Shift Operator is the same as the following calculation in C language.
 
 
   (SIGNED_INTEGRAL_TYPE_CAST)((UNSINGED_INTEGRAL_TYPE_CAST)x >> y);
-
-
-L<"int Type"> Operation and L<"long Type"> Operation are defined corresponding to L<"C99 Type">
- 
-Logical Right Shift Operator does not throw L<"Exception">.
-
-
 
 =head2 Comparison Operator
 
@@ -4743,7 +4672,7 @@ The Types of The left operand and the right operand Comparable Types, otherwise 
 
 In Numeric Types Comparison, L<"Binary Numeric Widening Type Conversion"> is performed for The left operand and the right operand.
 
-After that, the Numeric Comparison Operation is performed that exactly matches the following operation in C99.
+the Numeric Comparison Operation is performed that exactly same as the following operation in C language.
 
 
   # Numeric Types Comparison, Object Type Comparison
@@ -4763,11 +4692,6 @@ For Numeric Types Operation(==, !=, >, >=, <, <=), L<"int Type"> Operation, L<"l
 And Object Type Operation(==, !=) is defined.
 
 The Type of Return Value of the Numeric Comparison Operator is L<"int Type">.
-
-
-Numeric Comparison Operator does not throw L<"Exception">.
-
-
 
 =head2 String Comparison Operator
 
@@ -4862,11 +4786,11 @@ B<isa Operator> is a L<"Comparison Operator"> to check whether The left operand 
 
 isa Operator has three behaviors, depending on Right Type.
 
-1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the Type of The left operand is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
+1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the type of The left operand is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
 
-2. If the Right Type is L<"Class Type">, isa operator checks whether the Type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of The left operand must be L<"Object Type">, otherwise a compilation error occurs.
+2. If the Right Type is L<"Class Type">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of The left operand must be L<"Object Type">, otherwise a compilation error occurs.
 
-3. If the Right Type is L<"Callback Type">, isa Operator checks whether the Type of The left operand satisfy the Callback Type at Run Time. If The left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of The left operand must be L<"Object Type">, otherwise a compilation error occurs.
+3. If the Right Type is L<"Callback Type">, isa Operator checks whether the type of The left operand satisfy the Callback Type at Run Time. If The left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of The left operand must be L<"Object Type">, otherwise a compilation error occurs.
 
 
 
@@ -5756,7 +5680,7 @@ If there is a Return Value, L<"Expression"> can be specified.
 
 If the Return Value Type in L<"Method Definition"> is L<"void Type">, Expression Must not exist, otherwise a compilation error occurs.
 
-L<"Method Definition">, if the Return Value Type is other than L<"void Type">, Expression Must match the Type of, otherwise a compilation error occurs.
+L<"Method Definition">, if the Return Value Type is other than L<"void Type">, Expression Must match the type of, otherwise a compilation error occurs.
 
 
 
@@ -6181,7 +6105,7 @@ C<double> type is a L<"Floating Point Types"> that represents a double precision
 
 =head2 Class Type
 
-Class Type is the Type defined by L<"Class Definition">.
+Class Type is the type defined by L<"Class Definition">.
 
 
   class Foo {
@@ -6226,7 +6150,7 @@ The Object Type value can be assigned to "Any Object Type".
   my $object: object = new Foo [];
   my $object: object = "abc";
 
-The size of Object Type must match the value of "sizeof (void *)" in C99.
+The size of Object Type must match the value of "sizeof (void *)" in C language.
 
 
 
@@ -6303,7 +6227,7 @@ For the conversion between L<"Numeric Types"> and B<Numeric Object Type>, see L<
 
 =head2 Undefined Type
 
-Undefined Type is the Type that L<"Undefined Value"> has. It cannot be used explicitly.
+Undefined Type is the type that L<"Undefined Value"> has. It cannot be used explicitly.
 
 The only Undefined Type value is L<"Undefined Value">.
 
@@ -6313,7 +6237,7 @@ The value of Undefined Type can be assigned to Object Type.If you assign to anot
 
 =head2 Class Type
 
-Class Type is the Type defined by L<"Class Definition"> and is not "Multi Numeric Types" "Callback Type".
+Class Type is the type defined by L<"Class Definition"> and is not "Multi Numeric Types" "Callback Type".
 
 
   packag Foo {
@@ -6437,14 +6361,14 @@ self Type represents the Class Type to which it belongs, and indicates that the 
   self
 
 
-It can only be used as the Type of the first argument in L<"Method Definition">.
+It can only be used as the type of the first argument in L<"Method Definition">.
 
 
 
 =head2 void Type
 
 
-B<void Type> is a special Type that can only be used in Return Type of L<"Method Definition"> and indicates the Method has no Return Value.
+B<void Type> is a special Type that can only be used in the return type of L<"Method Definition"> and indicates the Method has no Return Value.
 
 
   void
@@ -6620,7 +6544,7 @@ Any Object Array Type is L<"Array Type">. L<"Array Length Operator"> to get leng
   # Setting the value of the element of Any Object Array Type
   $array->[0] = Int->new(5);
 
-When setting the value of the element of Any Object Array Type, a check is made at runtime whether the Type of the element is smaller than the Type Dimension of Array by 1. If the check fails, L<"Exception"> will occur. Any Object Array Type guarantees runtime Type safety.
+When setting the value of the element of Any Object Array Type, a check is made at runtime whether the type of the element is smaller than the type Dimension of Array by 1. If the check fails, L<"Exception"> will occur. Any Object Array Type guarantees runtime Type safety.
 
 
 
@@ -6678,9 +6602,9 @@ Reference Type can be used as Type of argument in L<"Method Definition">.
 
 Reference Type cannot be used as Return Value Type in L<"Method Definition">.
 
-Reference Type cannot be used as the Type of Field in L<"Class Definition">.
+Reference Type cannot be used as the type of Field in L<"Class Definition">.
 
-Reference Type cannot be used as the Type of Class Variable in L<"Class Definition">.
+Reference Type cannot be used as the type of Class Variable in L<"Class Definition">.
 
 If the Reference Type is used at an Invalid location, a compilation error occurs
 
@@ -6704,7 +6628,7 @@ Multi Numeric Reference Type means L<"Reference Type"> for L<"Multi Numeric Type
 
 =head1 Type Inference
 
-Omitting L<"Types"> when L<"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the Type on the Right side of Assignment Operator.
+Omitting L<"Types"> when L<"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
 
 
   # int
@@ -6939,8 +6863,6 @@ Numeric Types Conversion performs exactly the same processing as Numeric Types C
   int64_t dist = (int64_t)src;
 
 
-See also L<"Corresponding Type with C99">.
-
 SPVM has two Numeric Types Convertions.
 
 There are some rules for automatic type conversion of Numeric Types.
@@ -6991,7 +6913,7 @@ Unary Numeric Widening Type Conversion is performed in the following cases.
 
 =head2 Binary Numeric Widening Type Conversion
 
-Binary Numeric Widening Type Conversion is applied to the left operand and the right operand in Binary Operator that takes Numeric Types on the Left and Right sides. L<"Numeric Widening Type Conversion">.
+Binary Numeric Widening Type Conversion is performed to the left operand and the right operand in Binary Operator that takes Numeric Types on the Left and Right sides. L<"Numeric Widening Type Conversion">.
 
 The following rules apply.
 
@@ -7146,7 +7068,7 @@ When Expression is L<"Numeric Types">, L<"Unary Numeric Widening Type Conversion
 
 If Expression is L<"int Type">, that value is returned.
 
-Expression is L<"long Type">, L<"float Type">, <a href = "#language- If it is type-double ">double Type</a>, Object Type, the operation that exactly matches the following operation in C99 is performed and the result is returned.
+Expression is L<"long Type">, L<"float Type">, <a href = "#language- If it is type-double ">double Type</a>, Object Type, the operation that exactly same as the following operation in C language is performed and the result is returned.
 
 
   !!x
