@@ -663,4 +663,46 @@ sub print_error_messages {
 }
 
 
+# Remainder - Compile Error
+{
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Remainder::LeftIsNotIntegral', __LINE__, __FILE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Remainder::RightIsNotIntegral', __LINE__, __FILE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Remainder::RemuiLeftIsNotInt', __LINE__, __FILE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Remainder::RemuiRightIsNotInt', __LINE__, __FILE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Remainder::RemulLeftIsNotLong', __LINE__, __FILE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+  {
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm('TestCase::CompileError::Remainder::RemulRightIsNotLong', __LINE__, __FILE__);
+    ok($success == 0);
+    print_error_messages($builder);
+  }
+}
+
+
 done_testing;

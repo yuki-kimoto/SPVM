@@ -1,4 +1,4 @@
-class TestCase::CompileError::Divide::DivuiLeftIsNotLong {
+class TestCase::CompileError::Divide::DivuiLeftIsNotInt {
   static method main : int () {
     1L divui 3;
   }

@@ -1,0 +1,5 @@
+class TestCase::CompileError::Remainder::RemulLeftIsNotLong {
+  static method main : int () {
+    1 remul 3L;
+  }
+}

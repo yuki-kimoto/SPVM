@@ -1984,13 +1984,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left operand must be numeric type
               if (!SPVM_TYPE_is_int_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The left operand of the \"rem_uint\" operator must be int type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The left operand of the \"remui\" operator must be int type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right operand must be numeric type
               if (!SPVM_TYPE_is_int_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The right operand of the \"rem_uint\" operator must be int type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right operand of the \"remui\" operator must be int type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2002,13 +2002,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left operand must be numeric type
               if (!SPVM_TYPE_is_long_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The left operand of the \"rem_ulong\" operator must be long type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The left operand of the \"remul\" operator must be long type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right operand must be numeric type
               if (!SPVM_TYPE_is_long_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The right operand of the \"rem_ulong\" operator must be long type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right operand of the \"remul\" operator must be long type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               

@@ -36,20 +36,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(SPVM::TestCase::Remainder->remainder_unsigned_int);
     ok(SPVM::TestCase::Remainder->remainder_unsigned_long);
   }
-
-  # Remainder - Compile Error
-  {
-    {
-      my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('TestCase::CompileError::Remainder::LeftIsNotIntegral', __LINE__, __FILE__);
-      ok($success == 0);
-    }
-    {
-      my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('TestCase::CompileError::Remainder::RightIsNotIntegral', __LINE__, __FILE__);
-      ok($success == 0);
-    }
-  }
 }
 
 # Optional tests
