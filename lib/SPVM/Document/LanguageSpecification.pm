@@ -4179,7 +4179,7 @@ B<Examples of sequential operators:>
 
 B<Arithmetic Operators> is an L<"Operators"> that performs arithmetic.
 
-B<Arithmetic Operatorss> are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multiplication Operator">, L<"Division Operator">, L<"Remainder Operator">, L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Increment Operator">, and L<"Decrement Operator">.
+B<Arithmetic Operatorss> are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multiplication Operator">, L<"Division Operator">, L<"Division Unsigned Int Operator">, , L<"Division Unsigned Long Operator">, L<"Remainder Operator">, L<"Remainder Unsigned Int Operator">, L<"Remainder Unsigned Long Operator">, L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Increment Operator">, and L<"Decrement Operator">.
 
 =head2 Unary Plus Operator
 
@@ -4321,29 +4321,55 @@ If the value of the right operand is C<0>, an L<exception|"Exception"> is thrown
 
 =head2 Remainder Operator
 
-B<Remainder Operator> is a L<"Binary Operators"> represtented by "%" to perform Division.
-
+The remainder operator C<%> is a L<binary operator|"Binary Operators"> to calcurate a remainder of two numbers.
 
   LEFT_OPERAND % RIGHT_OPERAND
 
-
-The left operand and the right operand must be L<"Integral Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be an L<integral type|"Integral Types">, otherwise a compilation error occurs.
 
 L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
-Remainder Operator performs the operation that exactly same as the following operation in C language.
-
+The remainder operator performs the operation that exactly same as the following operation in C language.
 
   x % y;
 
+the return type of Remainder Operator is the type that L<"Binary Numeric Widening Type Conversion"> is performed.
 
-the return type of Remainder Operator is the type after L<"Binary Numeric Widening Type Conversion"> is performed.
+If the right operand is C<0>, the remainder operator throw an L<exception|"Exception">.
 
-Remainder Operator throw L<"Exception"> if the right operand is 0.
+=head2 Remainder Unsigned Int Operator
 
+The remainder unsigned int operator C<remui> is a L<binary operator|"Binary Operators"> to calcurate a unsigned int remainder of two numbers.
+
+  LEFT_OPERAND remui RIGHT_OPERAND
+
+The left operand and the right operand must be a L<int type|"int Type">, otherwise a compilation error occurs.
+
+The remainder unsigned int operator performs the operation that exactly same as the following operation in C language.
+
+  (uint32_t)x % (uint32_t)y;
+
+The return type of the remainder unsigned int operator is the L<int type|"int Type">.
+
+If the value of the right operand is C<0>, an L<exception|"Exception"> is thrown .
+
+=head2 Remainder Unsigned Long Operator
+
+The remainder unsigned long operator C<remul> is a L<binary operator|"Binary Operators"> to calcurate a unsigned long remainder of two numbers.
+
+  LEFT_OPERAND remul RIGHT_OPERAND
+
+The left operand and the right operand must be a L<long type|"long Type">, otherwise a compilation error occurs.
+
+The remainder unsigned long operator performs the operation that exactly same as the following operation in C language.
+
+  (ulong64_t)x % (ulong64_t)y;
+
+The return type of the remainder unsigned long operator is the L<long type|"long Type">.
+
+If the value of the right operand is C<0>, an L<exception|"Exception"> is thrown .
 
 =head2 Increment Operator
-
 
 B<Increment Operator> is an Operator that adds 1 to the value. the meaning of Increment Operator is different depending on whether the Increment Operator is placed Pre or Post.
 
