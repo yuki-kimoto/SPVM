@@ -408,6 +408,37 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
+            case SPVM_OP_C_ID_NEW_STRING_LEN: {
+              
+              SPVM_OP* op_length_term = op_cur->first;
+
+              SPVM_TYPE* length_type = SPVM_OP_get_type(compiler, op_length_term);
+              
+              assert(length_type);
+              int32_t is_length_type_integral_type_except_for_long;
+              if (SPVM_TYPE_is_integral_type(compiler, length_type->basic_type->id, length_type->dimension, length_type->flag)) {
+                SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_length_term);
+                
+                SPVM_TYPE* length_type_after_conversion = SPVM_OP_get_type(compiler, op_cur->first);
+                
+                if (SPVM_TYPE_is_int_type(compiler, length_type_after_conversion->basic_type->id, length_type_after_conversion->dimension, length_type_after_conversion->flag)) {
+                  is_length_type_integral_type_except_for_long = 1;
+                }
+                else {
+                  is_length_type_integral_type_except_for_long = 0;
+                }
+              }
+              else {
+                is_length_type_integral_type_except_for_long = 0;
+              }
+              
+              if (!is_length_type_integral_type_except_for_long) {
+                SPVM_COMPILER_error(compiler, "The length of the new_string_len operator must be an integral type except for a long type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_SWITCH: {
               
               SPVM_OP* op_switch_condition = op_cur->first;
@@ -1116,23 +1147,26 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
                   
                   assert(index_type);
-                  if (SPVM_TYPE_is_numeric_type(compiler, index_type->basic_type->id, index_type->dimension, index_type->flag)) {
+                  int32_t is_length_type_integral_type_except_for_long;
+                  if (SPVM_TYPE_is_integral_type(compiler, index_type->basic_type->id, index_type->dimension, index_type->flag)) {
                     SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_index_term);
-                    if (SPVM_COMPILER_get_error_count(compiler) > 0) {
-                      return;
+                    
+                    SPVM_TYPE* index_type_after_conversion = SPVM_OP_get_type(compiler, op_type->last);
+                    
+                    if (SPVM_TYPE_is_int_type(compiler, index_type_after_conversion->basic_type->id, index_type_after_conversion->dimension, index_type_after_conversion->flag)) {
+                      is_length_type_integral_type_except_for_long = 1;
                     }
-                    
-                    SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
-                    
-                    if (!(index_type->dimension == 0 && index_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && index_type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_INT)) {
-                      const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-                      SPVM_COMPILER_error(compiler, "new operator can't create array which don't have int length \"%s\" at %s line %d", type_name, op_cur->file, op_cur->line);
-                      return;
+                    else {
+                      is_length_type_integral_type_except_for_long = 0;
                     }
                   }
                   else {
+                    is_length_type_integral_type_except_for_long = 0;
+                  }
+                  
+                  if (!is_length_type_integral_type_except_for_long) {
                     const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-                    SPVM_COMPILER_error(compiler, "new operator can't create array which don't have numeric length \"%s\" at %s line %d", type_name, op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "The array length of new %s must be an integral type except for a long type at %s line %d", type_name, op_cur->file, op_cur->line);
                     return;
                   }
                 }
@@ -3410,6 +3444,8 @@ void SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(SPVM_COMPILER* comp
     SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, dist_type, op_term->file, op_term->line);
     SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_term, NULL);
     
+    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_convert);
+    
     SPVM_OP_replace_op(compiler, op_stab, op_convert);
   }
 }
@@ -3704,6 +3740,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_CONCAT:
                         case SPVM_OP_C_ID_REFOP:
                         case SPVM_OP_C_ID_DUMP:
+                        case SPVM_OP_C_ID_NEW_STRING_LEN:
                         case SPVM_OP_C_ID_EXCEPTION_VAR:
                         case SPVM_OP_C_ID_CLASS_VAR_ACCESS:
                         case SPVM_OP_C_ID_SWITCH_CONDITION:
