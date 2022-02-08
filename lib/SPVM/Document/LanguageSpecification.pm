@@ -2707,7 +2707,7 @@ A common use of INIT Block is to initialize L<"Class Variable">.
 =head2 Local Variable Declaration
 
 
-B<Local Variable> is a variable that is declared in L<"Scope Block">.  Local Variable has L<"Scope">. This is same as Local Variable in C Language.
+B<Local Variable> is a variable that is declared in L<"Scope Blocks">.  Local Variable has L<"Scope">. This is same as Local Variable in C Language.
 
 Local Variable is declared using B<my> L<"Keyword">.
 
@@ -2807,10 +2807,10 @@ If L<"Class Variable"> with the same name as the Local Variable exists, Program 
 =head2 Scope Summary
 
 
-B<Scope> is a range surrounded by L<"Scope Block">.
+B<Scope> is a range surrounded by L<"Scope Blocks">.
 
 
-  # Scope Block 
+  # Scope Blocks 
   {
     # Start of Scope
     
@@ -2838,137 +2838,113 @@ If the Reference Count become 0, the object released.
 
 =head2 Block
 
+The parts enclosed by C<{> and C<}> are called blocks.
 
-The part enclosed by "{" and "}" is called B<Block>.
-
-
-  # Block 
+  # Blocks
   {
+    1;
+  }
   
+  if (true) {
+    
+  }
+  
+  while (true) {
+    
+  }
+  
+  enum {
+    ONE,
+    TWO,
+  }
+  
+  class Foo {
+    
   }
 
+=head2 Scope Blocks
 
-There are L<"Scope Block"> that creates a scope and Non Scope Block that does not create a scope.
+A scope block is the block that create a scope. Zero or more L<statements|"Statements"> can be written in a scope block.
 
-
-=head2 Scope Block
-
-
-B<Scope Block> is a block that creates a Scope. Zero or more L<"Statement"> can be written in Scope Block.
-
-B<List of Scope Blocks>
+Scope blocks are L<"Simple Block">, L<"Method Block">, L<"eval Block">, L<"if Block">, L<"elsif Block">, L<"else Block">, L<"for Block">, L<"while Block"> and L<"switch Block">.
 
 =head2 Simple Block
 
+A simple block is a scope block.
 
-Simple Block is a scope block.
-
-
-  # Simple Block
+  # A simple block
   {
   
   }
 
-
-
 =head2 Method Block
 
+A C<method> block is a scope block.
 
-Method Block is a scope block.
-
-
-  # Method Block
+  # A method block
   static method foo : int () {
   
   }
 
-
-
 =head2 eval Block
 
+a C<eval> block is a scope block.
 
-eval Block is a scope block.
-
-
-  # eval Block
+  # A eval block
   eval {
   
   }
 
-
-
 =head2 if Block
 
+A C<if> block is a scope block.
 
-if Block is a scope block.
-
-
-  # if Block
-  if (EXPRESSION) {
+  # A if block
+  if (CONDITION) {
   
   }
-
-
 
 =head2 elsif Block
 
+A C<elsif> block is a scope block.
 
-elsif Block is a scope block.
-
-
-  #elsif Block
-  elsif (EXPRESSION) {
+  # A elsif block
+  elsif (CONDITION) {
   
   }
 
-
-
 =head2 else Block
 
+A C<else> block is a scope block.
 
-else Block is a scope block.
-
-
-  # else Block
+  # A else Block
   else {
   
   }
 
-
-
 =head2 for Block
 
+A C<for> block is a scope block.
 
-for Block is a scope block.
-
-
-  # for Block 
+  # A for Block 
   for (my $i = 0; $i < 3; $i++) {
   
   }
 
-
-
 =head2 while Block
 
+A C<while> block is a scope block.
 
-while Block is a scope block.
-
-
-  # while Block
-  while (EXPRESSION) {
+  # A while block
+  while (CONDITION) {
   
   }
 
-
-
 =head2 switch Block
 
+A C<switch> block is a scope block.
 
-switch Block is a scope block.
-
-
-  switch (EXPRESSION) {
+  switch (CONDITION) {
   
   }
 
@@ -5391,7 +5367,7 @@ Operator Precidence can be a top priority by using "()".
 
 =head1 Statement
 
-Statement can be written more than one in L<"Scope Block"> for a single process. L<"Expression"> is not evaluated as a value.
+Statement can be written more than one in L<"Scope Blocks"> for a single process. L<"Expression"> is not evaluated as a value.
 
 B<List of Statements>
 
