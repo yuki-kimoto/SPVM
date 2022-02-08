@@ -2,6 +2,7 @@ Revision history for SPVM
 0.9503  2021-02-08
         [CHANGE]
         * Add divui, divul, remui, remul operators.
+        * Add new_string_len operator.
         
 0.9502  2021-02-07
         [CHANGE]

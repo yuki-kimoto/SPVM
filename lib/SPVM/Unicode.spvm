@@ -31,7 +31,6 @@ class Unicode : precompile {
     
     my $buffer = StringBuffer->new;
     
-    my $utf8_bytes = new byte[4];
     for (my $i = 0; $i < @$uchars; $i++) {
       my $uchar = $uchars->[$i];
       my $utf8_str = &uchar_to_utf8($uchar);

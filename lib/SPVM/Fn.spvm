@@ -1235,7 +1235,7 @@ class Fn : precompile {
     unless ($string) { die "String must be defined"; }
 
     my $length = length $string;
-    my $new_string = new byte [$length];
+    my $new_string = (mutable string)new_string_len($length);
     for (my $i = 0; $i < $length; $i++) {
       my $char = $string->[$i];
       if ($char >= 'A' && $char <= 'Z') {
@@ -1253,7 +1253,7 @@ class Fn : precompile {
     unless ($string) { die "String must be defined"; }
 
     my $length = length $string;
-    my $new_string = new byte [$length];
+    my $new_string = (mutable string)new_string_len($length);
     if ($length > 0) {
       my $char = $string->[0];
       if ($char >= 'A' && $char <= 'Z') {
@@ -2000,7 +2000,7 @@ class Fn : precompile {
       die "Offset + length must not be over array length";
     }
 
-    my $slice = new byte[$length];
+    my $slice = (mutable string)new_string_len($length);
 
     my $pos = 0;
     for (my $i = $offset; $i < $offset + $length; $i++) {
@@ -2008,7 +2008,7 @@ class Fn : precompile {
       $pos++;
     }
 
-    return (string)$slice;
+    return $slice;
   }
 
   native static method to_double : double ($string : string);
@@ -2099,7 +2099,7 @@ class Fn : precompile {
     unless ($string) { die "String must be defined"; }
 
     my $length = length $string;
-    my $new_string = new byte [$length];
+    my $new_string = (mutable string)new_string_len($length);
     for (my $i = 0; $i < $length; $i++) {
       my $char = $string->[$i];
       if ($char >= 'a' && $char <= 'z') {
@@ -2109,7 +2109,7 @@ class Fn : precompile {
         $new_string->[$i] = $string->[$i];
       }
     }
-    return (string)$new_string;
+    return $new_string;
   }
 
   static method ucfirst : string ($string : string) {
@@ -2117,7 +2117,7 @@ class Fn : precompile {
     unless ($string) { die "String must be defined"; }
 
     my $length = length $string;
-    my $new_string = new byte [$length];
+    my $new_string = (mutable string)new_string_len($length);
     if ($length > 0) {
       my $char = $string->[0];
       if ($char >= 'a' && $char <= 'z') {
@@ -2130,7 +2130,7 @@ class Fn : precompile {
     for (my $i = 1; $i < $length; ++$i) {
       $new_string->[$i] = $string->[$i];
     }
-    return (string)$new_string;
+    return $new_string;
   }
 
 
