@@ -4565,56 +4565,71 @@ B<Examples of bit NOT operators:>
 
 =head2 Shift Operators
 
-Shift Operators are operators that performs Bit shift operations. These are L<"Left Shift Operator">, L<"Arithmetic Right Shift Operator">, and L<"Logical Right Shift Operator">.
+Shift operators are operators that performs bit shift operations. These are L<"Left Shift Operator">, L<"Arithmetic Right Shift Operator">, and L<"Logical Right Shift Operator">.
 
 =head2 Left Shift Operator
 
-The left shift operator C<E<lt>E<lt>> is a L<binary operator|"Binary Operators">.
+The left shift operator C<E<lt>E<lt>> is a L<binary operator|"Binary Operators"> to perform the left bit shift.
 
   LEFT_OPERAND << RIGHT_OPERAND
 
 The left operand must be L<"Integral Types">, otherwise a compilation error occurs.
 
-the right operand must be L<"int Type">, otherwise a compilation error occurs.
+L<"Unary Numeric Widening Type Conversion"> is performed to the left operand.
 
-The calculation result of Left Shift Operator is the same as the following calculation in C language.
+The right operand must be L<"Integral Types"> except for the L<long type|"long Type">, otherwise a compilation error occurs.
 
+L<"Unary Numeric Widening Type Conversion"> is performed to the right operand.
+
+The return type is same as the type of the left operand.
+
+The calculation result of the left shift operator is the same as the following calculation in C language.
 
   x << y;
 
 =head2 Arithmetic Right Shift Operator
 
-Arithmetic Right Shift Operator is L<"Binary Operators"> represented by ">>".
-
+The arithmetic right shift operator C<E<gt>E<gt>> is a L<binary operator|"Binary Operators"> to perform the arithmetic right bit shift.
 
   LEFT_OPERAND >> RIGHT_OPERAND
 
 The left operand must be L<"Integral Types">, otherwise a compilation error occurs.
 
-First, for L<"The left operand">, L<"Unary Numeric Widening Type Conversion"> is performed.
+L<"Unary Numeric Widening Type Conversion"> is performed to the left operand.
 
-the right operand must be L<"int Type">, otherwise a compilation error occurs.
+The right operand must be L<"Integral Types"> except for the L<long type|"long Type">, otherwise a compilation error occurs.
 
-The operation result of Arithmetic Right Shift Operator is the operation that exactly same as the following operation in C language.
+L<"Unary Numeric Widening Type Conversion"> is performed to the right operand.
 
+The return type is same as the type of the left operand.
+
+The operation result of the arithmetic right shift Operator is the operation that exactly same as the following operation in C language.
 
   x >> y;
 
 =head2 Logical Right Shift Operator
 
-Logical Right Shift Operator is L<"Binary Operators"> represented by ">>>".
-
+The logical right shift operator C<E<gt>E<gt>E<gt>>is a L<binary operator|"Binary Operators"> to perform the logical right bit shift.
 
   LEFT_OPERAND >>> RIGHT_OPERAND
 
 The left operand must be L<"Integral Types">, otherwise a compilation error occurs.
 
-the right operand must be L<"int Type">, otherwise a compilation error occurs.
+L<"Unary Numeric Widening Type Conversion"> is performed to the left operand.
 
-The calculation result of Logical Right Shift Operator is the same as the following calculation in C language.
+The right operand must be L<"Integral Types"> except for the L<long type|"long Type">, otherwise a compilation error occurs.
 
+L<"Unary Numeric Widening Type Conversion"> is performed to the right operand.
 
-  (SIGNED_INTEGRAL_TYPE_CAST)((UNSINGED_INTEGRAL_TYPE_CAST)x >> y);
+The return type is same as the type of the left operand.
+
+The operation result of logical right shift Operator is the same as the following calculation in C language.
+  
+  // In the case that the left operand is a int type
+  (uint32_t)x >> y;
+
+  // In the case that the left operand is a long type
+  (uint64_t)x >> y;
 
 =head2 Comparison Operator
 
