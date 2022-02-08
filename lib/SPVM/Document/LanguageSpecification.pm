@@ -351,9 +351,7 @@ POD has no meaning in tokenization.
 
 =head1 Literals
 
-=head2 Literal Summary
-
-A literalsis a L<"Expression"> that represents Constant Value.
+Literals are representations of values in source codes. These are L<"Integer Literal">, L<"Floating Point Literal">, L<"Character Literal">, L<"String Literal"> and L<"Bool Literal">.
 
 =head2 Integer Literal
 
@@ -648,13 +646,19 @@ B<Charater Literal> represents one character of ASCII.
 
 =head2 String Literal
 
+The string literal is a L<literal|"Literals"> to represents a string in source codes.
 
-B<String Literal> represents String.
+The return type is a L<string type|"string Type">.
 
-String Literal is enclosed in double quotes '"'. String Literal return the value of string type.
+A string literal is written by the characters of UTF-8.
 
-The content of String Literal is zero or more ASCII printable Characters or Escape Characters of String Literal".
+The string Literal is enclosed in double quotes C<">.
 
+B<Examples of string literals:>
+
+  # String Literal
+  my $message = "abc";
+  my $message_utf8 = "あいう"
 
 =head3 Escape charaters of String Literal
 
@@ -771,21 +775,40 @@ The content of String Literal is zero or more ASCII printable Characters or Esca
 
 =end html
 
-If the espape characters which is not included avobe is used, a compiler error occurs.<br>
+If the espape characters that is not included avobe is used, a compiler error occurs.<br>
 
-B<String Literal Example:>
+B<Examples of escape characters of string literals:>
 
-
-  # String Literal 
-  "abc"
-  "あいう"
-  
-  # Escape Character of String Literal 
+  # Escape characters of string literals
   "abc\tdef\n"
   "\x0D\x0A"
   "\N{U+3042}\N{U+3044}\N{U+3046}"
 
+=head2 Bool Literal
 
+The bool literal is a L<literal|"Literals"> to represent a bool value in source codes.
+
+=head3 true
+
+C<true> is the alias for L<The TRUE method of the Bool module|SPVM::Bool/"TRUE">.
+
+  true
+
+B<Examples of true:>
+
+  # true
+  my $is_valid = true;
+
+=head3 false
+
+C<false> is the alias for L<The FALSE method of the Bool module|SPVM::Bool/"FALSE">.
+
+  false
+
+B<Examples of false:>
+
+  # false
+  my $is_valid = false;
 
 =head2 Variable Expansion
 
