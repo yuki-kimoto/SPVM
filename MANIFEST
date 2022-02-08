@@ -737,6 +737,10 @@ t/default/lib/SPVM/TestCase/CompileError/New/Private.spvm
 t/default/lib/SPVM/TestCase/CompileError/OArray/AssignNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/OArray/AssignNumericArray.spvm
 t/default/lib/SPVM/TestCase/CompileError/Remainder/LeftIsNotIntegral.spvm
+t/default/lib/SPVM/TestCase/CompileError/Remainder/RemuiLeftIsNotInt.spvm
+t/default/lib/SPVM/TestCase/CompileError/Remainder/RemuiRightIsNotInt.spvm
+t/default/lib/SPVM/TestCase/CompileError/Remainder/RemulLeftIsNotLong.spvm
+t/default/lib/SPVM/TestCase/CompileError/Remainder/RemulRightIsNotLong.spvm
 t/default/lib/SPVM/TestCase/CompileError/Remainder/RightIsNotIntegral.spvm
 t/default/lib/SPVM/TestCase/CompileError/String/AssignNonMutableToMutable.spvm
 t/default/lib/SPVM/TestCase/CompileError/String/CharacterAssign.spvm
