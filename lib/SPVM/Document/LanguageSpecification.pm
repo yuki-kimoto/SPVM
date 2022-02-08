@@ -4151,28 +4151,21 @@ Unary operators are L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Bit 
 
 =head2 Binary Operators
 
-Binary Operator is a Operator placed between Left L<"Expression"> and Right L<"Expression">.
-
+Binary Operator is a L<operator|"Operators"> that have two operands.
 
   LEFT_OPERAND BINARY_OPERATOR RIGHT_OPERAND
 
-
-Binary Operators are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multiplication Operator">, L<"Division Operator">, L<"Remainder Operator">, L<"Bit AND Operator">, L<"Bit OR Operator">, L<"Logical AND Operator">, L<"Logical OR Operator">, L<"Shift Operator">, and L<"String Concatenation Operator">.
-
+Binary operators are L<"Addition Operator">, L<"Subtraction Operator">, L<"Multiplication Operator">, L<"Division Operator">, L<"Remainder Operator">, L<"Bit AND Operator">, L<"Bit OR Operator">, L<"Shift Operators">, and L<"String Concatenation Operator">.
 
 =head2 Sequential Operator
 
+The sequential operator C<,> is an L<operator|"Operators"> like the following.
 
-Sequential Operator is an Operator that join "," with multiple L<"Expressions"> and return the last Expression.
+  (OPERAND1, OPERAND2, ..., OPERNADN)
 
+The operands are evaluated from the left to the right, and return the evaluated value of the last operand.
 
-  (OPERAND1, OPERAND2, OPERAND3)
-
-
-Expression is executed from Left to Right and the last Expression is return.
-
-B<Sequential Operator Example:>
-
+B<Examples of sequential operators:>
 
   # 3 is assigned to $foo
   my $foo = (1, 2, 3);
@@ -4181,8 +4174,6 @@ B<Sequential Operator Example:>
   my $x = 1;
   my $y = 2;
   my $ret = ($x += 2, $x + $y);
-
-
 
 =head2 Arithmetic Operators
 
