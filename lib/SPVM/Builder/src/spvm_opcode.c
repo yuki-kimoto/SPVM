@@ -457,6 +457,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "REFCNT",
     "REFOP",
     "DUMP",
+    "NEW_STRING_LEN",
   };
   
   return id_names;

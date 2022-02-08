@@ -3865,6 +3865,26 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], dump);
         break;
       }
+      case SPVM_OPCODE_C_ID_NEW_STRING_LEN: {
+        int32_t length = int_vars[opcode->operand1];
+        if (length >= 0) {
+          void* string = env->new_string_raw(env, NULL, length);
+          if (string == NULL) {
+            void* exception = env->new_string_nolen_raw(env, "The new_string_len operator can't allocate enough memory");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
+          }
+        }
+        else {
+          void* exception = env->new_string_nolen_raw(env, "The length of the new_string_len operator must be a positive number");
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        break;
+      }
       case SPVM_OPCODE_C_ID_GOTO:
         opcode_rel_index = opcode->operand0;
         continue;
