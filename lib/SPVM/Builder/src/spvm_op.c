@@ -192,6 +192,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "DIVIDE_UNSIGNED_LONG",
     "REMAINDER_UNSIGNED_INT",
     "REMAINDER_UNSIGNED_LONG",
+    "NEW_STRING_LEN",
   };
   
   return id_names;
@@ -1438,6 +1439,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_REFOP:
     case SPVM_OP_C_ID_DUMP:
     case SPVM_OP_C_ID_EXCEPTION_VAR:
+    case SPVM_OP_C_ID_NEW_STRING_LEN:
     {
       SPVM_OP* op_type = SPVM_OP_new_op_string_type(compiler, op->file, op->line);
       type = op_type->uv.type;

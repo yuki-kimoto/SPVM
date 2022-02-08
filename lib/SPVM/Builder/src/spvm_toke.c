@@ -2002,6 +2002,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NEW);
                   return NEW;
                 }
+                else if (strcmp(keyword, "new_string_len") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NEW_STRING_LEN);
+                  return NEW_STRING_LEN;
+                }
                 break;
               }
               case 'o' : {

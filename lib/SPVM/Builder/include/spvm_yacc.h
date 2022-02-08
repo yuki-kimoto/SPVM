@@ -144,9 +144,10 @@ extern int SPVM_yydebug;
     REFCNT = 354,
     REFOP = 355,
     DUMP = 356,
-    INC = 357,
-    DEC = 358,
-    ARROW = 359
+    NEW_STRING_LEN = 357,
+    INC = 358,
+    DEC = 359,
+    ARROW = 360
   };
 #endif
 

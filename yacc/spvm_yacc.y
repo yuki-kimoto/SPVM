@@ -55,7 +55,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP
+%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -773,6 +773,10 @@ unary_op
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
   | CREATE_REF var
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+  | NEW_STRING_LEN expression
     {
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
