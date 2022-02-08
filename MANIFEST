@@ -701,6 +701,10 @@ t/default/lib/SPVM/TestCase/CompileError/Convert/ConvertFromStringToByteArray.sp
 t/default/lib/SPVM/TestCase/CompileError/Convert/ConvertFromValueType.spvm
 t/default/lib/SPVM/TestCase/CompileError/Convert/ConvertToInterface.spvm
 t/default/lib/SPVM/TestCase/CompileError/Convert/ConvertToRef.spvm
+t/default/lib/SPVM/TestCase/CompileError/Divide/DivuiLeftIsNotInt.spvm
+t/default/lib/SPVM/TestCase/CompileError/Divide/DivuiRightIsNotInt.spvm
+t/default/lib/SPVM/TestCase/CompileError/Divide/DivulLeftIsNotLong.spvm
+t/default/lib/SPVM/TestCase/CompileError/Divide/DivulRightIsNotLong.spvm
 t/default/lib/SPVM/TestCase/CompileError/Divide/LeftIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/Divide/RightIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/Enum/PrivateAccess.spvm
