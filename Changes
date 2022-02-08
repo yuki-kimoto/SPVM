@@ -1,4 +1,8 @@
 Revision history for SPVM
+0.9503  2021-02-08
+        [CHANGE]
+        * Add divui, divul, remui, remul operators.
+        
 0.9502  2021-02-07
         [CHANGE]
         * SPVM::Document::LanguageSpecification becomes POD instead of HTML
