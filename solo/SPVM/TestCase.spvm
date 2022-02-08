@@ -87,7 +87,9 @@ SPVM::Test - SPVM test module
   static method UINT64_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
 
   static method main : int ($start_file : string, $args : string[]) {
-    
+    {
+      my $message = new_string_len 3;
+    }
     {
       my $uint_max = &UINT32_MAX;
       
