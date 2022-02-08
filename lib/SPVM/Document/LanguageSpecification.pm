@@ -4247,7 +4247,7 @@ The left operand and the right operand must be a L<numeric type|"Numeric Types">
 
 L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
-The subtraction operator performs an operation that exactly same as the following operation in C language.
+The subtraction operator performs the operation that exactly same as the following operation in C language.
 
   x - y;
 
@@ -4263,7 +4263,7 @@ The left operand and the right operand must be a L<numeric type|"Numeric Types">
 
 L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
-The multiplication operator performs an operation that exactly same as the following operation in C language.
+The multiplication operator performs the operation that exactly same as the following operation in C language.
 
   x * y;
 
@@ -4279,13 +4279,45 @@ The left operand and the right operand must be L<"Numeric Types">, otherwise a c
 
 L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
-The division operator performs an operation that exactly same as the following operation in C language.
+The division operator performs the operation that exactly same as the following operation in C language.
 
   x / y;
 
 The return type of the division operator is the type after L<"Binary Numeric Widening Type Conversion"> is performed.
 
 If the two operands are L<integral types|"Integral Types"> and the value of the right operand is C<0>, an L<exception|"Exception"> is thrown.
+
+=head2 Division Unsigned Int Operator
+
+The division unsigned int operator C<divui> is a L<binary operator|"Binary Operators"> to culcurate the unsigned int division of two numbers.
+
+  LEFT_OPERAND divui RIGHT_OPERAND
+
+The left operand and the right operand must be an L<int type|"int Type">, otherwise a compilation error occurs.
+
+The division unsigned int operator performs the operation that exactly same as the following operation in C language.
+
+  (uint32_t)x / (uint32_t)y;
+
+The return type of the division operator is the L<int type|"int Type">.
+
+If the value of the right operand is C<0>, an L<exception|"Exception"> is thrown.
+
+=head2 Division Unsigned Long Operator
+
+The division unsigned long operator C<divul> is a L<binary operator|"Binary Operators"> to culcurate the unsigned long division of two numbers.
+
+  LEFT_OPERAND divul RIGHT_OPERAND
+
+The left operand and the right operand must be an L<long type|"long Type">, otherwise a compilation error occurs.
+
+The division unsigned long operator performs the operation that exactly same as the following operation in C language.
+
+  (uint64_t)x / (uint64_t)y;
+
+The return type of the division operator is the L<long type|"long Type">.
+
+If the value of the right operand is C<0>, an L<exception|"Exception"> is thrown.
 
 =head2 Remainder Operator
 
@@ -4299,7 +4331,7 @@ The left operand and the right operand must be L<"Integral Types">, otherwise a 
 
 L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
-Remainder Operator performs an operation that exactly same as the following operation in C language.
+Remainder Operator performs the operation that exactly same as the following operation in C language.
 
 
   x % y;
