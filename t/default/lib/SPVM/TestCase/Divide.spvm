@@ -195,6 +195,10 @@ class TestCase::Divide {
       # 1431655765 = 4,294,967,295 divui 3
       my $ret_divui = $x divui 3;
       
+      unless ($ret_divui isa int) {
+        return 0;
+      }
+      
       unless ($ret_div == 0) {
         return 0;
       }
@@ -216,6 +220,10 @@ class TestCase::Divide {
       
       # 6,148,914,691,236,517,205 = 18,446,744,073,709,551,615 divul 3
       my $ret_divul = $x divul 3L;
+
+      unless ($ret_divul isa long) {
+        return 0;
+      }
       
       unless ($ret_div == 0) {
         return 0;
