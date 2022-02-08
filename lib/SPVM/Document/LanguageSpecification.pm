@@ -1967,7 +1967,7 @@ B<Class Variable> is a global variable that belongs to L<"Class"> and exists fro
 
 Class Variable must be defined directly under L<"Class Definition">.
 
-Class Variable Definition must specify L<"Types">. The Type must be L<"Numeric Types"> or L<"Object Type">.
+Class Variable Definition must specify L<"Types">. The Type must be L<"Numeric Types"> or L<"Object Types">.
 
 Class variable mames must follows the rule specified in L<"Class Variable Names">, and must not contain "::", otherwise a compilation error occurs.
 
@@ -2113,11 +2113,11 @@ Field is a data area in a L<"object created using new keyword">
 
 Field must be defined directly under L<"Class Definition">.
 
-Field Definition must be specify L<"Types">. The Type must be L<"Numeric Types"> or L<"Object Type">.
+Field Definition must be specify L<"Types">. The Type must be L<"Numeric Types"> or L<"Object Types">.
 
 Field names must follows the rule specified in L<"Field Names">.
 
-Field Type must be L<"Numeric Types"> or L<"Object Type">, otherwise a compilation error occurs.
+Field Type must be L<"Numeric Types"> or L<"Object Types">, otherwise a compilation error occurs.
 
 If more than one field names Variable with the same name is defined, a compilation error occurs.
 
@@ -2294,13 +2294,13 @@ Method name must be follow the rule of L<"Method Names">.
 
 Method names are allowed as same as L<"Keyword">. 
 
-Type of Return Value must be L<"void Type">, L<"Numeric Types">, or L<"Object Type">, otherwise a compilation error occurs.
+Type of Return Value must be L<"void Type">, L<"Numeric Types">, or L<"Object Types">, otherwise a compilation error occurs.
 
 Argument name must be follow the rule of L<"Local Variable Names">.
 
 Minimal Argument Count is 0. Max Argument Count is 255.
 
-Type of Argument must be L<"Numeric Types">, L<"Object Type">, or L<"Reference Type">, otherwise a compilation error occurs.
+Type of Argument must be L<"Numeric Types">, L<"Object Types">, or L<"Reference Type">, otherwise a compilation error occurs.
 
 The defined Method can be called. See L<"Method Call"> about calling Method, .
 
@@ -2717,7 +2717,7 @@ Local Variable is declared using B<my> L<"Keyword">.
 
 The local variable name must be follow the rule of L<"Local Variable Names">.
 
-L<"Types"> must be specified. Type must be L<"Numeric Types">, L<"Object Type">, L<"Multi Numeric Types">, or L<"Reference Type">.
+L<"Types"> must be specified. Type must be L<"Numeric Types">, L<"Object Types">, L<"Multi Numeric Types">, or L<"Reference Type">.
 
 
   # Local Variable Declaration Examples
@@ -2820,7 +2820,7 @@ B<Scope> is a range surrounded by L<"Scope Blocks">.
   }
 
 
-Local Variable Declaration registers the Local Variable that is L<"Object Type"> with Mortal Variable in run-time. 
+Local Variable Declaration registers the Local Variable that is L<"Object Types"> with Mortal Variable in run-time. 
 
 If the object is not L<"undef">, The Reference Count is added by 1.
 
@@ -2950,88 +2950,72 @@ A C<switch> block is a scope block.
 
 =head1 String
 
-SPVM has B<string Type>. String is created by L<"String Literal"> or Type Convertion from L<"byte[] Type">.
+SPVM has the L<string type|"string Type">. A string is created by L<"String Literal"> L<"String Creation Operator"> or L<"Type Convertion"> to the string type.
+  
+  # Create a string using a string literal
+  my $string = "Hello";
+  
+  # Create a string using a string creation operator
+  my $string = new_string_len 3;
+  
+  # Create a string using a type conversion to the string type
+  my $bytes = [(byte)93, 94, 95];
+  my $string = (string)$bytes;
 
-String is immutable and you can't change the each character. You can only get the each character. 
+The each charcter can be get using C<-E<gt>[]>.
 
-
-  # String is Array of byte Type
-  my $string : string = "Hello";
+  # String
+  my $string = "Hello";
   my $char0 = $string->[0];
   my $char1 = $string->[1];
   my $char2 = $string->[2];
+
+By default, each character can't be set.
   
-  # a compilation error because string Type is immutable.
+  # a compilation error.
   $string_const->[0] = 'd';
+
+If you use C<mutable type qualifier|"mutable Type Qualifier">, each character can be set.
+
+  my $string_mut = (mutable string)$string;
+  $string_mut->[0] = 'd';
+
+The created string is one more last byte that value is C<\0> on the internal memory. Although this has no meaning from SPVM language, this has meaning from L<Native APIs|SPVM:Document::NativeAPI>.
+
+The length of the string can be got using a L<string length operator|"String Length Operator">
   
-  # Create new String using Type Convertion;
-  my $bytes = new byte[3];
-  $bytes->[0] = 'a';
-  $bytes->[1] = 'b';
-  $bytes->[2] = 'c';
-  my $string = (string)$bytes;
-
-When a string Type value is generated, it is guaranteed that the last one after the last memory area reserved for the value will be "\ 0". (For example, if it is "abc", "c" is followed by "\ 0".) From the SPVM language, this "\ 0" has no meaning, but when using the native API, string Type is It can be handled as a C language String.
-
-L<"string Type"> is a Type that represents a String. Expressed by string. Designed to represent C "const char *".
-
-
-  my $str : string;
-
-String Literal allows you to assign the generated String object.
-
-
-  my $str : string = "abc";
-
-SPVM String is an Array of bytes whose elements cannot be changed. You can get the Character by accessing the Array.
-
-  # Acquisition of Character
-  my $ch = $str->[1];
-
-If you try to change the element, a compilation error occurs
-
-
-  # a compilation error when changing element
-  $str->[1] = 'd';
-
-L<"string Type"> will be exactly the same as the Array of bytes Type after compilation. For example, the first expression is treated as the second expression.
-
-
-  # isa string Type
-  if ($str isa string) {
-  
-  }
-  
-  # isa L<"byte[] Type">
-  if ($str isa byte[]) {
-  
-  }
-
-Note that SPVM Strings are immutable, but this is a compile-time check.
-
-L<"string Type"> can be cast to L<"byte[] Type">, and the String can be changed at runtime.
-
-
-  my $bytes = (byte[])$str;
-  $bytes->[1] = 'd';
-
-Treat String as if you can always change it.
+  # Get the length of the string
+  my $message = "Hello"+
+  my $length = legnth $message;
 
 =head1 Undefined Value
 
-
-Undefined Value is "undef"
-
+An undefined value is represented by C<undef>.
 
   undef
 
+An undefined value can be assigned to all L<"Object Types">.
 
-Undefined Value can be assigned to all L<"Object Type"> variable.
+In the level of L<native APIs|SPVM:Document::NativeAPI>, C<undef> is defined as the following.
 
-Undefined Value can be compared with the value of Object Type using "==" Operator or "!=" Operator. Undefined Value is guaranteed not to be equal to the created object.
+  (void*)NULL
 
-If Undefined Value is used in the Condition Part, it will be false.
+An undefined value can be compared by the C<==> operator and the C<!=> operator. An undefined value is guaranteed not to be equal to the any created object.
 
+B<Examples of undefined values:>
+  
+  # Undefine values
+  my $string : string = undef;
+  
+  if (undef) {
+    
+  }
+  
+  my $message = "Hello";
+  if ($message == undef) {
+    
+  }
+  
 =head1 Fat Comma
 
 Fat Comma is a L<"Separators"> represented by "B<=>>".
@@ -3082,7 +3066,7 @@ There are the following types of Array.
 
 Numeric Types Array is Array that element type is L<"Numeric Types">.
 
-Numeric Types Array is Array that element type is L<"Object Type">.
+Numeric Types Array is Array that element type is L<"Object Types">.
 
 Numeric Types Array is Array that element type is L<"Multi Numeric Types">.
 
@@ -3280,7 +3264,7 @@ L<"Multi Numeric Value"> can be an element of L<"Array">.
 
 Multi Numeric Array has continuous Multi Numeric Values.
 
-The Element Type is L<"Multi Numeric Types">, not L<"Object Type">.
+The Element Type is L<"Multi Numeric Types">, not L<"Object Types">.
 
 For example, Point_3i[5] is continuous 15 (= 3 * 5) count L<"int Type"> Value.
 
@@ -3323,7 +3307,7 @@ Reference types are represented by appending an * after L<"Numeric Types"> or L<
   my $point_ref : Point_3d* = \$point;
 
 
-Target of Reference Operator is Variable of L<"Numeric Types"> or L<"Multi Numeric Types">. L<"Object Type"> Variable or L<"Literal"> can't be target of Reference Operator.
+Target of Reference Operator is Variable of L<"Numeric Types"> or L<"Multi Numeric Types">. L<"Object Types"> Variable or L<"Literal"> can't be target of Reference Operator.
 
 L<"Reference Type"> can be used in Method Argument.
 
@@ -3421,7 +3405,7 @@ The Assignment must satisfy L<"Type Compatibility">.
 
 Set Local Variable Value Expression returns the value after setting.
 
-If the right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
+If the right operand is L<"Object Types">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to $var before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3485,7 +3469,7 @@ If you try to get the value of a Class Variable that is not defined, a compilati
 
 If you try to access a private Class Variable from outside the Class, a compilation error occurs.
 
-If the right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
+If the right operand is L<"Object Types">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Class Variable before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3595,7 +3579,7 @@ Set Field Value Expression returns the value of Field after setting.
 
 Return Value Type is the type of Field.
 
-If the right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
+If the right operand is L<"Object Types">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3767,7 +3751,7 @@ If Array Expression is L<"Undefined Value">, a Runtime Exception occurs.
 
 If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
-If the right operand is L<"Object Type">, Reference Count of the object is incremented by 1.
+If the right operand is L<"Object Types">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3829,7 +3813,7 @@ B<Create Array Expression> is a Expression to create Array with B<new> Keyword.
   new Type[ELEMENTS_COUNT_EXPRESSION]
 
 
-Type must be L<"Numeric Types">, L<"Object Type">, L<"Multi Numeric Types">.
+Type must be L<"Numeric Types">, L<"Object Types">, L<"Multi Numeric Types">.
 
 Elements Count Expression must be L<"int Type"> or the type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
 
@@ -3841,7 +3825,7 @@ All Array Element is initialized by L<"Type Initial Value">.
 
 All Element is gurantied to be continued on Memory.
 
-Array is L<"Array Type">. This is also L<"Object Type">.
+Array is L<"Array Type">. This is also L<"Object Types">.
 
 B<Create Array Example:>
 
@@ -4860,9 +4844,9 @@ isa Operator has three behaviors, depending on Right Type.
 
 1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the type of The left operand is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
 
-2. If the Right Type is L<"Class Type">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of The left operand must be L<"Object Type">, otherwise a compilation error occurs.
+2. If the Right Type is L<"Class Type">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error occurs.
 
-3. If the Right Type is L<"Callback Type">, isa Operator checks whether the type of The left operand satisfy the Callback Type at Run Time. If The left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of The left operand must be L<"Object Type">, otherwise a compilation error occurs.
+3. If the Right Type is L<"Callback Type">, isa Operator checks whether the type of The left operand satisfy the Callback Type at Run Time. If The left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error occurs.
 
 
 
@@ -5792,7 +5776,7 @@ The Type of the object Expression must be L<"Class Type">, otherwise a compilati
 
 Field names must be an existing field names, otherwise a compilation error occurs.
 
-The Type of the value saved in Field must be L<"Object Type">, otherwise a compilation error occurs.
+The Type of the value saved in Field must be L<"Object Types">, otherwise a compilation error occurs.
 
 If the value stored in the Field at execution time is L<"Undefined Value">, the weak Statement does nothing.
 
@@ -5842,7 +5826,7 @@ The Type of the object Expression must be L<"Class Type">, otherwise a compilati
 
 Field names must be an existing Field names, otherwise a compilation error occurs.
 
-The Type of the value saved in Field must be L<"Object Type">, otherwise a compilation error occurs.
+The Type of the value saved in Field must be L<"Object Types">, otherwise a compilation error occurs.
 
 If the value stored in the Field at execution time is L<"Undefined Value">, the unweaken Statement does nothing.
 
@@ -6228,20 +6212,15 @@ L<"Pointer Type"> is also Class Type, so Pointer Type will also be Class Type.
   }
 
 
-=head2 Object Type
+=head2 Object Types
 
-What is Object Type L<"Class Type"> L<"Callback Type"> <a href = "#language- type-array ">Array Type</a> L<"string Type"> L<"Any Object Type"> It is a combination of a>. "Multi Numeric Types" and "Reference Type" are not included.
+Object types are L<"Class Type">, L<"Callback Type">, L<"Array Type">, L<"string Type">, L<"Any Object Type">.
 
-The Object Type value can be assigned to "Any Object Type".
-
+The value of a object type can be assigned to a any object type.
 
   my $object: object = new Foo;
   my $object: object = new Foo [];
   my $object: object = "abc";
-
-The size of Object Type must match the value of "sizeof (void *)" in C language.
-
-
 
 =head2 Numeric Object Type
 
@@ -6338,7 +6317,7 @@ Class Type can create objects by new Operator.
 
   my $foo = new Foo;
 
-Class Type is a L<"Object Type">.
+Class Type is a L<"Object Types">.
 
 Class Type is a L<"Class Type">.
 
@@ -6382,7 +6361,7 @@ Method names of Callback Type must be anonymouse.
 
 Callback Type must not have any L<"Field Definition"> and L<"Class Variable Definition">.
 
-Callback Type is a L<"Object Type">.
+Callback Type is a L<"Object Types">.
 
 Callback Type cannot be the operand of L<"new Statement">.
 
@@ -6432,7 +6411,7 @@ Any Object Type is represented by "object". Designed to represent the "void *" T
 
   my $object: object;
 
-You can methodstitute the value of "Object Type" for Any Object Type.
+You can methodstitute the value of "Object Types" for Any Object Type.
 
 
   my $object: object = new Foo;
@@ -6490,7 +6469,7 @@ Array has dimensions and can express up to 255 dimensions.
   # Three-dimensional
   int[] [] []
 
-Array Type is L<"Object Type">.
+Array Type is L<"Object Types">.
 
 Use new Operator to create an Array. In the following example, L<"int Type"> Array with 3 elements is created.
 
@@ -6551,7 +6530,7 @@ L<"string Type"> is treated as L<"string Type"> at compile time, but at runtime 
 
 =head2 Object Array Type
 
-Object Array Type is L<"Array Type"> that has the value of L<"Object Type"> as an element. It is.
+Object Array Type is L<"Array Type"> that has the value of L<"Object Types"> as an element. It is.
 
 B<Object Array TypeのExample>
 
@@ -6575,7 +6554,7 @@ B<Object Array TypeのExample>
 
 =end html
 
-The data represented by Object Array Type must have elements of size of L<"Object Type"> and consecutive by the number of Array Length.
+The data represented by Object Array Type must have elements of size of L<"Object Types"> and consecutive by the number of Array Length.
 
 All elements of Object Array Type are initialized by L<"Type Initial Value"> when Create Array is performed.
 
@@ -6609,7 +6588,7 @@ All elements of Multi Numeric Array Type are initialized by L<"Type Initial Valu
 
 =head2 Any Object Array Type
 
-Any Object Array Type is an arbitrary L<"Object Type"> expressed as an oarray as an element. A Type that can be assigned the value of array ">Array Type</a>. Any Array Type can be cast to void * Type and passed to the first argument of the C language qsort function, but Any Object Array Type is not designed to realize the function corresponding to this. It was
+Any Object Array Type is an arbitrary L<"Object Types"> expressed as an oarray as an element. A Type that can be assigned the value of array ">Array Type</a>. Any Array Type can be cast to void * Type and passed to the first argument of the C language qsort function, but Any Object Array Type is not designed to realize the function corresponding to this. It was
 
 
   my $array : oarray = new Point[3];
@@ -7143,7 +7122,7 @@ B<Right side of Logical NOT Operator>
 
   !CONDITION
 
-Expression specified by Bool Type Conversion is L<"Numeric Types"> or L<"Object Type"> or It must be L<"Undefined Type">, otherwise a compilation error occurs.
+Expression specified by Bool Type Conversion is L<"Numeric Types"> or L<"Object Types"> or It must be L<"Undefined Type">, otherwise a compilation error occurs.
 
 Return Value of Bool Type Conversion is Expression of L<"int Type">.
 

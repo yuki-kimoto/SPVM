@@ -612,7 +612,6 @@ Before reading this page, you need to understand Native API.
 
 =head2 Binding your own C language library
 
-
 First, let's bind our own C library.
 
 The following source code is the completed source code.
@@ -718,6 +717,7 @@ C library source file is "lib/SPVM/BindCLib.native/src/bind_clib.c". This is pur
 
 SPVM compiles all source files in the source directory("SPVM/BindCLib.native/src"). It can contain multiple source files.
 
+See L<SPVM:Document::NativeAPI> about the details of the native APIs.
 
 =head2 How to bind other C Library to SPVM
 
