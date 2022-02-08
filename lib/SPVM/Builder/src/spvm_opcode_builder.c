@@ -2028,12 +2028,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           break;
                         }
-                        case SPVM_OP_C_ID_DIVIDE_UINT : {
+                        case SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT : {
 
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_UINT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_UNSIGNED_INT);
 
                           int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                           int32_t mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
@@ -2049,12 +2049,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, method->op_method, op_cur->line);                              
                           break;
                         }
-                        case SPVM_OP_C_ID_DIVIDE_ULONG : {
+                        case SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG : {
 
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_ULONG);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_UNSIGNED_LONG);
 
                           int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                           int32_t mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
@@ -2111,12 +2111,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           break;
                         }
-                        case SPVM_OP_C_ID_REMAINDER_UINT : {
+                        case SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT : {
 
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REMAINDER_UINT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_INT);
 
                           int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                           int32_t mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
@@ -2132,12 +2132,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, method->op_method, op_cur->line);                              
                           break;
                         }
-                        case SPVM_OP_C_ID_REMAINDER_ULONG : {
+                        case SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG : {
 
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REMAINDER_ULONG);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_LONG);
 
                           int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                           int32_t mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);

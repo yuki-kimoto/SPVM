@@ -1957,7 +1957,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           = double_vars[opcode->operand1] / double_vars[opcode->operand2];
         break;
       }
-      case SPVM_OPCODE_C_ID_DIVIDE_UINT: {
+      case SPVM_OPCODE_C_ID_DIVIDE_UNSIGNED_INT: {
         if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
           void* exception = env->new_string_nolen_raw(env, "0 division");
           env->set_exception(env, exception);
@@ -1969,7 +1969,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_DIVIDE_ULONG: {
+      case SPVM_OPCODE_C_ID_DIVIDE_UNSIGNED_LONG: {
         if (__builtin_expect(long_vars[opcode->operand2] == 0, 0)) {
           void* exception = env->new_string_nolen_raw(env, "0 division");
           env->set_exception(env, exception);
@@ -2003,7 +2003,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_REMAINDER_UINT: {
+      case SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_INT: {
         if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
           void* exception = env->new_string_nolen_raw(env, "0 division");
           env->set_exception(env, exception);
@@ -2014,7 +2014,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_REMAINDER_ULONG: {
+      case SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_LONG: {
         if (__builtin_expect(long_vars[opcode->operand2] == 0, 0)) {
           void* exception = env->new_string_nolen_raw(env, "0 division");
           env->set_exception(env, exception);

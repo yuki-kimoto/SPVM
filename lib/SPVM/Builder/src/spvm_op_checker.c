@@ -1918,7 +1918,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               break;
             }
-            case SPVM_OP_C_ID_DIVIDE_UINT: {
+            case SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
@@ -1936,7 +1936,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_DIVIDE_ULONG: {
+            case SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
@@ -1978,7 +1978,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                                               
               break;
             }
-            case SPVM_OP_C_ID_REMAINDER_UINT: {
+            case SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
@@ -1996,7 +1996,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_REMAINDER_ULONG: {
+            case SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
@@ -3684,11 +3684,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_SUBTRACT:
                         case SPVM_OP_C_ID_MULTIPLY:
                         case SPVM_OP_C_ID_DIVIDE:
-                        case SPVM_OP_C_ID_DIVIDE_UINT:
-                        case SPVM_OP_C_ID_DIVIDE_ULONG:
+                        case SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT:
+                        case SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG:
                         case SPVM_OP_C_ID_REMAINDER:
-                        case SPVM_OP_C_ID_REMAINDER_UINT:
-                        case SPVM_OP_C_ID_REMAINDER_ULONG:
+                        case SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT:
+                        case SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG:
                         case SPVM_OP_C_ID_BIT_AND:
                         case SPVM_OP_C_ID_BIT_OR:
                         case SPVM_OP_C_ID_BIT_XOR:
