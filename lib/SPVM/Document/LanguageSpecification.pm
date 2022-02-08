@@ -4146,7 +4146,7 @@ Unary operators are operators have one operand.
 
 The operand is an L<expression|"Expressions">.
 
-Unary operators are L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Bit NOT Operator">, L<"Array Length Operator">, and L<"String Length Operator">.
+Unary operators are L<"Unary Plus Operator">, L<"Unary Minus Operator">, L<"Bit NOT Operator">, L<"Array Length Operator">, L<"String Creation Operator">, and L<"String Length Operator">.
 
 =head2 Binary Operators
 
@@ -4182,7 +4182,7 @@ B<Arithmetic Operatorss> are L<"Addition Operator">, L<"Subtraction Operator">, 
 
 =head2 Unary Plus Operator
 
-The unary plus operator C<+> is a L<Unary Operator|"Unary Operators"> to return the value of the operand.
+The unary plus operator C<+> is an L<Unary Operator|"Unary Operators"> to return the value of the operand.
 
   +OPERAND
 
@@ -4201,7 +4201,7 @@ B<Examples of unary plus operators:>
 
 =head2 Unary Minus Operator
 
-The unary minus operator C<-> is a L<Unary Operator|"Unary Operators"> to return the negative value of the operand.
+The unary minus operator C<-> is an L<Unary Operator|"Unary Operators"> to return the negative value of the operand.
 
   -OPERAND
 
@@ -5109,7 +5109,7 @@ For a detailed description of Reference, see L<"Reference">.
 
 =head2 Array Length Operator
 
-The array length operator is a L<Unary Operator|"Unary Operators"> to get the length of the array.
+The array length operator is an L<Unary Operator|"Unary Operators"> to get the length of the array.
 
   @OPERAND
 
@@ -5131,13 +5131,30 @@ B<Examples of array length operators:>
   
 Note that SPVM does not have the context different from Perl, and array length operators always return the length of the array.
 
+=head2 String Creation Operator
+
+The string creation operator is an L<Unary Operator|"Unary Operators"> to create a L<string|"String"> with the length.
+
+  new_string_len OPERAND
+
+The operand must be an L<expression|"Expressions"> that type is a L<"Integral Type"> except for a L<long type|"long Type">, otherwise a compilation error occurs.
+
+The string creation operator returns the string that is created with the lenght.
+
+The return type is a L<string type|"string Type">.
+
+B<Examples of string creation operators:>
+  
+  # New a string with the length
+  my $message = new_string_len 5;
+
 =head2 String Length Operator
 
-The string length operator is a L<Unary Operator|"Unary Operators"> to get the length of the string.
+The string length operator is an L<Unary Operator|"Unary Operators"> to get the length of the string.
 
   length OPERAND
 
-The operand must be a L<Expression|"Expressions"> that type is a L<"string Type">, otherwise a compilation error occurs.
+The operand must be an L<expression|"Expressions"> that type is a L<"string Type">, otherwise a compilation error occurs.
 
 The string length operator returns a L<"int Type"> value that is the length of the L<"String">.
 
