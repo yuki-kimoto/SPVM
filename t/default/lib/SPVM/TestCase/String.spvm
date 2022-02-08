@@ -112,24 +112,37 @@ class TestCase::String {
   }
 
   static method new_string_len : int () {
-    my $message = new_string_len 3;
     
-    unless ($message isa string) {
-      return 0;
+    # Basic
+    {
+      my $message = new_string_len 3;
+      
+      unless ($message isa string) {
+        return 0;
+      }
+      
+      unless ($message eq "\0\0\0") {
+        return 0;
+      }
+      
+      my $message_mut = (mutable string)$message;
+      
+      $message_mut->[0] = 'a';
+      $message_mut->[1] = 'b';
+      $message_mut->[2] = 'c';
+      
+      unless ($message eq "abc") {
+        return 0;
+      }
     }
     
-    unless ($message eq "\0\0\0") {
-      return 0;
-    }
-    
-    my $message_mut = (mutable string)$message;
-    
-    $message_mut->[0] = 'a';
-    $message_mut->[1] = 'b';
-    $message_mut->[2] = 'c';
-    
-    unless ($message eq "abc") {
-      return 0;
+    # The length is 0
+    {
+      my $message = new_string_len 0;
+      
+      unless ($message eq "") {
+        return 0;
+      }
     }
     
     return 1;
