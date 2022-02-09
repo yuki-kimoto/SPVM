@@ -19,7 +19,7 @@
 %}
 
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS MUTABLE
-%token <opval> DESCRIPTOR
+%token <opval> DESCRIPTOR MAKE_READ_ONLY
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -55,7 +55,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN
+%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -492,6 +492,10 @@ statement
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
     }
+  | MAKE_READ_ONLY expression ';'
+    {
+      $$ = SPVM_OP_build_make_read_only(compiler, $1, $2);
+    }
 
 for_statement
   : FOR '(' opt_expression ';' expression_or_logical_op ';' opt_expression ')' block
@@ -769,6 +773,10 @@ unary_op
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
   | NEW_STRING_LEN expression
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+  | IS_READ_ONLY expression
     {
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }

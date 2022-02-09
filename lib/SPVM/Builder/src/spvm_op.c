@@ -193,6 +193,8 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "REMAINDER_UNSIGNED_INT",
     "REMAINDER_UNSIGNED_LONG",
     "NEW_STRING_LEN",
+    "IS_READ_ONLY",
+    "MAKE_READ_ONLY",
   };
   
   return id_names;
@@ -1290,6 +1292,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_DIE:
     case SPVM_OP_C_ID_WARN:
     case SPVM_OP_C_ID_PRINT:
+    case SPVM_OP_C_ID_MAKE_READ_ONLY:
     {
       // Dummy int variable
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
@@ -1319,6 +1322,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_ISA:
     case SPVM_OP_C_ID_IF:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
+    case SPVM_OP_C_ID_IS_READ_ONLY:
     {
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
       type = op_type->uv.type;
@@ -3083,6 +3087,13 @@ SPVM_OP* SPVM_OP_build_print(SPVM_COMPILER* compiler, SPVM_OP* op_print, SPVM_OP
   SPVM_OP_insert_child(compiler, op_print, op_print->last, op_term);
   
   return op_print;
+}
+
+SPVM_OP* SPVM_OP_build_make_read_only(SPVM_COMPILER* compiler, SPVM_OP* op_make_read_only, SPVM_OP* op_term) {
+  
+  SPVM_OP_insert_child(compiler, op_make_read_only, op_make_read_only->last, op_term);
+  
+  return op_make_read_only;
 }
 
 SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {

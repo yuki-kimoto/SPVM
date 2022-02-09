@@ -2253,6 +2253,28 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               break;
             }
+            case SPVM_OP_C_ID_MAKE_READ_ONLY: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              
+              first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              
+              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand of the make_read_only statement must be a string type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
+            }
+            case SPVM_OP_C_ID_IS_READ_ONLY: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              
+              first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              
+              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand of the is_read_only operator must be a string type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
+            }
             // End of scope
             case SPVM_OP_C_ID_BLOCK: {
               // Pop block my variable base
@@ -3713,6 +3735,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_DIE:
                         case SPVM_OP_C_ID_WARN:
                         case SPVM_OP_C_ID_PRINT:
+                        case SPVM_OP_C_ID_MAKE_READ_ONLY:
+                        case SPVM_OP_C_ID_IS_READ_ONLY:
                         case SPVM_OP_C_ID_LAST:
                         case SPVM_OP_C_ID_NEXT:
                         case SPVM_OP_C_ID_BREAK:
