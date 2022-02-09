@@ -13,7 +13,10 @@ Revision history for SPVM
           is_string
           is_numeric_array
           is_mulnum_array
-        * Add get_elem_byte_size native API.
+        * Add the "get_elem_byte_size" native API.
+        * Add the "new_array_proto" native API.
+        [BUG FIX]
+        * Fix the bug that Fn->new_array_proto doesn't create multi numeric array and number array correctly.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove the syntax of no operand of warn and die statement.

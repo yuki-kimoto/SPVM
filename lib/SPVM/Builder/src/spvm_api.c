@@ -268,6 +268,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_is_numeric_array,
     SPVM_API_is_mulnum_array,
     SPVM_API_get_elem_byte_size,
+    SPVM_API_new_array_proto,
   };
   
   SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime_noenv(compiler, sizeof(env_init));
@@ -7107,4 +7108,33 @@ SPVM_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, SPVM_CLASS* class, const c
   SPVM_CLASS_VAR* class_var = SPVM_HASH_fetch(class->class_var_symtable, class_var_name, strlen(class_var_name));
   
   return class_var;
+}
+
+SPVM_OBJECT* SPVM_API_new_array_proto(SPVM_ENV* env, SPVM_OBJECT* array, int32_t length) {
+
+  if (array == NULL) {
+    return NULL;
+  }
+  
+  if (length < 0) {
+    return NULL;
+  }
+  
+  int32_t element_byte_size = env->get_elem_byte_size(env, array);
+  
+
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + element_byte_size * ((int64_t)length + 1);
+  
+  // Create object
+  SPVM_OBJECT* new_array = SPVM_API_alloc_memory_block_zero(env, (size_t)alloc_byte_size);
+  if (!new_array) {
+    return NULL;
+  }
+
+  new_array->basic_type_id = array->basic_type_id;
+  new_array->type_dimension = array->type_dimension;
+  new_array->type_category = array->type_category;
+  new_array->length = length;
+  
+  return new_array;
 }

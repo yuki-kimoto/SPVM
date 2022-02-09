@@ -267,5 +267,6 @@ struct spvm_env {
   int32_t (*is_numeric_array)(SPVM_ENV* env, void* object);
   int32_t (*is_mulnum_array)(SPVM_ENV* env, void* object);
   int32_t (*get_elem_byte_size)(SPVM_ENV* env, void* array);
+  void* (*new_array_proto)(SPVM_ENV* env, void* array, int32_t length);
 };
 #endif

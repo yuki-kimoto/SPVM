@@ -794,6 +794,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   167 is_numeric_array
   168 is_mulnum_array
   169 get_elem_byte_size
+  170 new_array_proto
 
 =head1 List of Native APIs
 
@@ -2489,6 +2490,18 @@ If the object is a multi numeric array, returns C<1>, otherwise returns C<0>.
   int32_t (*get_elem_byte_size)(SPVM_ENV* env, void* array);
 
 Get the byte size of the element of the array.
+
+=head2 new_array_proto
+
+  void* (*new_array_proto)(SPVM_ENV* env, void* array, int32_t length);
+
+Create a new array that have the type of the given array and the given length.
+
+The given array must be the object that is an array type.
+
+If the given array is L<NULL>, return C<NULL>.
+
+If the given length is lower than C<0>, return C<NULL>.
 
 =head1 Utilities
 

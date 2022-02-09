@@ -689,17 +689,18 @@ int32_t SPVM__Fn__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__new_array_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* oarray = stack[0].oval;
+  void* array = stack[0].oval;
   int32_t length = stack[1].ival;
   
-  if (oarray == NULL) {
+  if (array == NULL) {
     return env->die(env, "Prototype array must be defined", MFILE, __LINE__);
   }
+
+  if (length < 0) {
+    return env->die(env, "The length must be greater than or equals to 0", MFILE, __LINE__);
+  }
   
-  int32_t basic_type_id = env->get_object_basic_type_id(env, oarray);
-  int32_t element_dimension = env->get_object_type_dimension(env, oarray) - 1;
-  
-  void* new_object_array = env->new_muldim_array(env, basic_type_id, element_dimension, length);
+  void* new_object_array = env->new_array_proto(env, array, length);
   
   stack[0].oval = new_object_array;
   
