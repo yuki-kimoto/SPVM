@@ -1069,6 +1069,8 @@ class Fn : precompile {
     }
   }
 
+  native static method is_array : int ($object : object);
+
   static method is_blank : int ($code_point : int) {
 
     if ($code_point >= ' ' ||  $code_point <= '\t') {
@@ -1118,6 +1120,10 @@ class Fn : precompile {
       return 0;
     }
   }
+
+  native static method is_mulnum_array : int ($object : object);
+
+  native static method is_numeric_array : int ($object : object);
 
   # This is same as Perl \s
   static method is_perl_space : int ($code_point : int) {

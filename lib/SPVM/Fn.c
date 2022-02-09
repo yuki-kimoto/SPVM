@@ -86,6 +86,60 @@ int32_t SPVM__Fn__RAND_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
 #define SPRINTF_MAX_RESULT_LEN 256
 #define UINT64_MAX_LEN 20
 
+int32_t SPVM__Fn__is_array(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  void* object = stack[0].oval;
+  
+  int32_t is_array;
+  if (env->is_array(env, object)) {
+    is_array = 1;
+  }
+  else {
+    is_array = 0;
+  }
+
+  stack[0].ival = is_array;
+
+  return 0;
+}
+
+int32_t SPVM__Fn__is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  void* object = stack[0].oval;
+  
+  int32_t is_numeric_array;
+  if (env->is_numeric_array(env, object)) {
+    is_numeric_array = 1;
+  }
+  else {
+    is_numeric_array = 0;
+  }
+
+  stack[0].ival = is_numeric_array;
+
+  return 0;
+}
+
+int32_t SPVM__Fn__is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  void* object = stack[0].oval;
+  
+  int32_t is_mulnum_array;
+  if (env->is_mulnum_array(env, object)) {
+    is_mulnum_array = 1;
+  }
+  else {
+    is_mulnum_array = 0;
+  }
+
+  stack[0].ival = is_mulnum_array;
+
+  return 0;
+}
+
 int32_t SPVM__Fn___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 

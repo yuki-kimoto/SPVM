@@ -426,6 +426,21 @@ SKIP: {
   ok(SPVM::TestCase::Lib::Fn1->sort_object);
 }
 
+# is_array
+{
+  ok(SPVM::TestCase::Lib::Fn3->is_array);
+}
+
+# is_numeric_array
+{
+  ok(SPVM::TestCase::Lib::Fn3->is_numeric_array);
+}
+
+# is_mulnum_array
+{
+  ok(SPVM::TestCase::Lib::Fn3->is_mulnum_array);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
