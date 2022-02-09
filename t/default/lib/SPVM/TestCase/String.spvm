@@ -1,5 +1,39 @@
 class TestCase::String {
+  use Fn;
   static method string_access : int () {
+    # Read-only strings can't be converted to mutable strings
+    {
+      eval { (mutable string)"abc"; };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # String literal is read-only
+    {
+      my $string = "abc";
+      unless (is_read_only $string) {
+        return 0;
+      }
+    }
+
+    # make_read_only
+    {
+      my $string = Fn->copy_string("abc");
+      if (is_read_only $string) {
+        return 0;
+      }
+      make_read_only $string;
+      unless (is_read_only $string) {
+        return 0;
+      }
+      
+      eval { (mutable string)$string; };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
     # Get the charactor
     {
       my $string = "abc";
@@ -19,7 +53,7 @@ class TestCase::String {
     
     # Set the character
     {
-      my $string : mutable string = (mutable string)"abc";
+      my $string : mutable string = (mutable string)Fn->copy_string("abc");
       $string->[0] = 'd';
       $string->[1] = 'e';
       $string->[2] = 'f';
@@ -39,7 +73,7 @@ class TestCase::String {
 
     # Set the character - type inference
     {
-      my $string = (mutable string)"abc";
+      my $string = (mutable string)Fn->copy_string("abc");
       $string->[0] = 'd';
       $string->[1] = 'e';
       $string->[2] = 'f';
