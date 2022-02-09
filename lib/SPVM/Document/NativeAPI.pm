@@ -795,6 +795,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   168 is_mulnum_array
   169 get_elem_byte_size
   170 new_array_proto
+  171 copy
 
 =head1 List of Native APIs
 
@@ -2499,9 +2500,17 @@ Create a new array that have the type of the given array and the given length.
 
 The given array must be the object that is an array type.
 
-If the given array is L<NULL>, return C<NULL>.
+If the given array is L<NULL>, returns C<NULL>.
 
-If the given length is lower than C<0>, return C<NULL>.
+If the given length is lower than C<0>, returns C<NULL>.
+
+=head2 copy
+
+  void* (*copy)(SPVM_ENV* env, void* object);
+
+Copy the object. The type of the object must be a string type, a numeric array, or a multi numeric array.
+
+If the given object is L<NULL>, returns L<NULL>.
 
 =head1 Utilities
 

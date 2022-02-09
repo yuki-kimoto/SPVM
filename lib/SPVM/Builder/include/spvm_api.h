@@ -277,5 +277,6 @@ SPVM_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_CLASS* class, const char* m
 int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
 
 SPVM_OBJECT* SPVM_API_new_array_proto(SPVM_ENV* env, SPVM_OBJECT* array, int32_t length);
+SPVM_OBJECT* SPVM_API_copy(SPVM_ENV* env, SPVM_OBJECT* object);
 
 #endif

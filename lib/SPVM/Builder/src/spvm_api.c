@@ -269,6 +269,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_is_mulnum_array,
     SPVM_API_get_elem_byte_size,
     SPVM_API_new_array_proto,
+    SPVM_API_copy,
   };
   
   SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime_noenv(compiler, sizeof(env_init));
@@ -7137,4 +7138,38 @@ SPVM_OBJECT* SPVM_API_new_array_proto(SPVM_ENV* env, SPVM_OBJECT* array, int32_t
   new_array->length = length;
   
   return new_array;
+}
+
+SPVM_OBJECT* SPVM_API_copy(SPVM_ENV* env, SPVM_OBJECT* object) {
+  if (!object) {
+    return NULL;
+  }
+  
+  SPVM_OBJECT* new_object;
+  
+  int32_t length = object->length;
+  
+  if (env->is_string(env, object)) {
+    new_object = env->new_string(env, NULL, length);
+    
+    const char* object_chars = env->get_chars(env, object);
+    char* new_object_chars = (char*)env->get_chars(env, new_object);
+    
+    memmove(new_object_chars, object_chars, length);
+  }
+  else if (env->is_numeric_array(env, object) || env->is_mulnum_array(env, object)) {
+    new_object = env->new_array_proto(env, object, length);
+    
+    const char* object_bytes = (const char*)env->get_elems_byte(env, object);
+    char* new_object_bytes = (char*)env->get_elems_byte(env, new_object);
+    
+    int32_t element_byte_size = env->get_elem_byte_size(env, object);
+    
+    memmove(new_object_bytes, object_bytes, element_byte_size * length);
+  }
+  else {
+    new_object = NULL;
+  }
+  
+  return new_object;
 }

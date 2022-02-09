@@ -16,6 +16,7 @@ Revision history for SPVM
         * Add the "get_elem_byte_size" native API.
         * Add the "new_array_proto" native API.
         * Fn->new_array_proto throw an exception when the length is lower than 0.
+        * Add the "copy" native API.
         [BUG FIX]
         * Fix the bug that Fn->new_array_proto doesn't create multi numeric array and number array correctly.
         
