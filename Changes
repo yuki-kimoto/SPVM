@@ -13,6 +13,7 @@ Revision history for SPVM
           is_string
           is_numeric_array
           is_mulnum_array
+        * Add get_elem_byte_size native API.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove the syntax of no operand of warn and die statement.

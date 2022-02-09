@@ -267,6 +267,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_is_string,
     SPVM_API_is_numeric_array,
     SPVM_API_is_mulnum_array,
+    SPVM_API_get_elem_byte_size,
   };
   
   SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime_noenv(compiler, sizeof(env_init));
@@ -5404,6 +5405,23 @@ int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_OBJECT* object) {
   }
   
   return is_mulnum_array;
+}
+
+int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array) {
+  
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+  
+  int32_t elem_byte_size;
+  if (array) {
+    int32_t basic_type_id = array->basic_type_id;
+    int32_t type_dimension = array->type_dimension;
+    elem_byte_size = SPVM_TYPE_get_elem_byte_size(compiler, basic_type_id, type_dimension, 0);
+  }
+  else {
+    elem_byte_size = 0;
+  }
+  
+  return elem_byte_size;
 }
 
 int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id) {

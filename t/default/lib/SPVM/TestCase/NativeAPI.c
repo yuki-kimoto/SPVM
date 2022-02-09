@@ -184,6 +184,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->is_string != &env_array[166]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_numeric_array != &env_array[167]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_mulnum_array != &env_array[168]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_elem_byte_size != &env_array[169]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 

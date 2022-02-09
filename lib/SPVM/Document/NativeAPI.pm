@@ -793,6 +793,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   166 is_string
   167 is_numeric_array
   168 is_mulnum_array
+  169 get_elem_byte_size
 
 =head1 List of Native APIs
 
@@ -2471,17 +2472,23 @@ If the object is an array, returns C<1>, otherwise returns C<0>.
 
 If the object is a string, returns C<1>, otherwise returns C<0>.
 
-=head2 is_read_only
+=head2 is_numeric_array
 
   int32_t (*is_numeric_array)(SPVM_ENV* env, void* object);
 
 If the object is a numeric array, returns C<1>, otherwise returns C<0>.
 
-=head2 is_read_only
+=head2 is_mulnum_array
 
   int32_t (*is_mulnum_array)(SPVM_ENV* env, void* object);
 
 If the object is a multi numeric array, returns C<1>, otherwise returns C<0>.
+
+=head2 get_elem_byte_size
+
+  int32_t (*get_elem_byte_size)(SPVM_ENV* env, void* array);
+
+Get the byte size of the element of the array.
 
 =head1 Utilities
 
