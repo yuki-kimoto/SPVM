@@ -348,7 +348,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "ARRAY_STORE_UNDEF",
     "ARRAY_LENGTH",
     "NEW_OBJECT",
-    "NEW_STRING",
+    "NEW_CONSTANT_STRING",
     "NEW_OBJECT_ARRAY",
     "NEW_MULTI_ARRAY",
     "NEW_MULNUM_ARRAY",
@@ -458,6 +458,9 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "REFOP",
     "DUMP",
     "NEW_STRING_LEN",
+    "IS_READ_ONLY",
+    "MAKE_READ_ONLY",
+    "CHECK_READ_ONLY",
   };
   
   return id_names;

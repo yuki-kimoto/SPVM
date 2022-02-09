@@ -3528,7 +3528,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         break;
       }
-      case SPVM_OPCODE_C_ID_NEW_STRING: {
+      case SPVM_OPCODE_C_ID_NEW_CONSTANT_STRING: {
         int32_t constant_id = opcode->operand1;
         SPVM_CONSTANT* constant = class->info_constants->values[constant_id];
         const char* string_value = constant->value.oval;
@@ -3547,6 +3547,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->make_read_only(env, string);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", string);\n");

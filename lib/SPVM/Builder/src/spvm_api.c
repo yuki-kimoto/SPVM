@@ -3827,7 +3827,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_NEW_STRING: {
+      case SPVM_OPCODE_C_ID_NEW_CONSTANT_STRING: {
         int32_t constant_id = opcode->operand1;
         SPVM_CONSTANT* constant = class->info_constants->values[constant_id];
         const char* string_value = constant->value.oval;
@@ -3839,6 +3839,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           exception_flag = 1;
         }
         else {
+          env->make_read_only(env, string);
           SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0] , string);
         }
         break;
