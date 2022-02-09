@@ -2946,6 +2946,24 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
           SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
+      case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY: {
+          SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    void* string = ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (env->is_read_only(env, string)) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Read-only strings can't be converted to mutable strings.\");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(&");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+          SPVM_STRING_BUFFER_add(string_buffer, ", string);\n");
+          SPVM_STRING_BUFFER_add(string_buffer,   "}\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "}\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_MOVE_UNDEF: {
           SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(&");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);

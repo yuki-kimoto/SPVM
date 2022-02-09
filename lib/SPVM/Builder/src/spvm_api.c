@@ -3476,6 +3476,18 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
         break;
       }
+      case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY: {
+        void* string = *(void**)&object_vars[opcode->operand1];
+        if (env->is_read_only(env, string)) {
+          void* exception = env->new_string_nolen_raw(env, "Read-only strings can't be converted to mutable strings.");
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
+        }
+        break;
+      }
       case SPVM_OPCODE_C_ID_MOVE_UNDEF: {
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], NULL);
         break;
@@ -4319,6 +4331,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         break;
       }
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
+        
         if (exception_flag) {
           SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, opcode->operand1);
           int32_t line = opcode->operand2;

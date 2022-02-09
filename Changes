@@ -6,6 +6,7 @@ Revision history for SPVM
         * Add make_read_only statement.
         * Add is_read_only operator.
         * The string created by string literal become read-only.
+        * Read-only string can't be converted to mutable string.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove the syntax of no operand of warn and die statement.

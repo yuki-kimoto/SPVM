@@ -88,6 +88,13 @@ SPVM::Test - SPVM test module
 
   static method main : int ($start_file : string, $args : string[]) {
     {
+      my $const_string = "abc";
+      warn is_read_only $const_string;
+      
+      eval { my $string = (mutable string)$const_string; };
+    }
+    
+    {
       my $string = new_string_len 3;
       make_read_only $string;
       my $is_read_only = is_read_only $string;
@@ -143,7 +150,7 @@ SPVM::Test - SPVM test module
     }
     
     {
-      my $string : mutable string = (mutable string)"abc";
+      my $string : mutable string = (mutable string)new_string_len 3;
       $string->[0] = 'd';
       
       warn $string;

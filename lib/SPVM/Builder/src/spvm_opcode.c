@@ -460,7 +460,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "NEW_STRING_LEN",
     "IS_READ_ONLY",
     "MAKE_READ_ONLY",
-    "CHECK_READ_ONLY",
+    "MOVE_OBJECT_CHECK_READ_ONLY",
   };
   
   return id_names;
