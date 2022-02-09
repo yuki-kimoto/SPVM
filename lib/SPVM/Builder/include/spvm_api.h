@@ -59,6 +59,10 @@ void SPVM_API_free_runtime(SPVM_RUNTIME* runtime);
 void SPVM_API_call_init_blocks(SPVM_ENV* env);
 
 int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension);
+int32_t SPVM_API_is_array(SPVM_ENV* env, SPVM_OBJECT* object);
+int32_t SPVM_API_is_string(SPVM_ENV* env, SPVM_OBJECT* object);
+int32_t SPVM_API_is_numeric_array(SPVM_ENV* env, SPVM_OBJECT* object);
+int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id);
 
 SPVM_METHOD* SPVM_API_method(SPVM_ENV* env, SPVM_CLASS* class, const char* method_name);

@@ -263,6 +263,10 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_STRING, // string_basic_type_id
     SPVM_API_make_read_only,
     SPVM_API_is_read_only,
+    SPVM_API_is_array,
+    SPVM_API_is_string,
+    SPVM_API_is_numeric_array,
+    SPVM_API_is_mulnum_array,
   };
   
   SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime_noenv(compiler, sizeof(env_init));
@@ -5328,6 +5332,78 @@ int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t basic_type_
   else {
     return 0;
   }
+}
+
+int32_t SPVM_API_is_array(SPVM_ENV* env, SPVM_OBJECT* object) {
+  
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+  
+  int32_t is_array;
+  if (object) {
+    int32_t basic_type_id = object->basic_type_id;
+    int32_t type_dimension = object->type_dimension;
+    
+    is_array = SPVM_TYPE_is_array_type(compiler, basic_type_id, type_dimension, 0);
+  }
+  else {
+    is_array = 0;
+  }
+  
+  return is_array;
+}
+
+int32_t SPVM_API_is_string(SPVM_ENV* env, SPVM_OBJECT* object) {
+  
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+  
+  int32_t is_string;
+  if (object) {
+    int32_t basic_type_id = object->basic_type_id;
+    int32_t type_dimension = object->type_dimension;
+    
+    is_string = SPVM_TYPE_is_string_type(compiler, basic_type_id, type_dimension, 0);
+  }
+  else {
+    is_string = 0;
+  }
+  
+  return is_string;
+}
+
+int32_t SPVM_API_is_numeric_array(SPVM_ENV* env, SPVM_OBJECT* object) {
+  
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+  
+  int32_t is_numeric_array;
+  if (object) {
+    int32_t basic_type_id = object->basic_type_id;
+    int32_t type_dimension = object->type_dimension;
+    
+    is_numeric_array = SPVM_TYPE_is_numeric_array_type(compiler, basic_type_id, type_dimension, 0);
+  }
+  else {
+    is_numeric_array = 0;
+  }
+  
+  return is_numeric_array;
+}
+
+int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_OBJECT* object) {
+  
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+  
+  int32_t is_mulnum_array;
+  if (object) {
+    int32_t basic_type_id = object->basic_type_id;
+    int32_t type_dimension = object->type_dimension;
+    
+    is_mulnum_array = SPVM_TYPE_is_mulnum_array_type(compiler, basic_type_id, type_dimension, 0);
+  }
+  else {
+    is_mulnum_array = 0;
+  }
+  
+  return is_mulnum_array;
 }
 
 int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id) {

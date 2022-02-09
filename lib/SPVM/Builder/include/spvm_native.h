@@ -262,5 +262,9 @@ struct spvm_env {
   void* string_basic_type_id;
   void (*make_read_only)(SPVM_ENV* env, void* string);
   int32_t (*is_read_only)(SPVM_ENV* env, void* string);
+  int32_t (*is_array)(SPVM_ENV* env, void* object);
+  int32_t (*is_string)(SPVM_ENV* env, void* object);
+  int32_t (*is_numeric_array)(SPVM_ENV* env, void* object);
+  int32_t (*is_mulnum_array)(SPVM_ENV* env, void* object);
 };
 #endif

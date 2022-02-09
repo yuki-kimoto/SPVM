@@ -1566,7 +1566,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_term_array);
 
-                          if (SPVM_TYPE_is_value_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
+                          if (SPVM_TYPE_is_mulnum_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
                             SPVM_CLASS* class = array_type->basic_type->class;
                             SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
                             
@@ -3300,7 +3300,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                     break;
                                   }
                                   default: {
-                                    if (SPVM_TYPE_is_value_array_type(compiler, runtime_basic_type_id, runtime_type_dimension, type->flag)) {
+                                    if (SPVM_TYPE_is_mulnum_array_type(compiler, runtime_basic_type_id, runtime_type_dimension, type->flag)) {
                                       SPVM_OPCODE opcode;
                                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
@@ -4500,7 +4500,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, method->op_method, op_cur->line);
                         }
                       }
-                      else if (SPVM_TYPE_is_value_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
+                      else if (SPVM_TYPE_is_mulnum_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
                         SPVM_CLASS* class = array_type->basic_type->class;
                         SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
                       

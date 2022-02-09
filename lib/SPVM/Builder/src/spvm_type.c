@@ -174,7 +174,7 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
     else if (SPVM_TYPE_is_numeric_array_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY;
     }
-    else if (SPVM_TYPE_is_value_array_type(compiler, basic_type_id, dimension, flag)) {
+    else if (SPVM_TYPE_is_mulnum_array_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY;
     }
     else if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
@@ -1142,7 +1142,7 @@ int32_t SPVM_TYPE_is_value_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_
   return is_value_ref_type;
 }
 
-int32_t SPVM_TYPE_is_value_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+int32_t SPVM_TYPE_is_mulnum_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
 
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
