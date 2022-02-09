@@ -260,5 +260,7 @@ struct spvm_env {
   int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
   int32_t (*get_bool_object_value)(SPVM_ENV* env, void* bool_object);
   void* string_basic_type_id;
+  void (*make_read_only)(SPVM_ENV* env, void* string);
+  int32_t (*is_read_only)(SPVM_ENV* env, void* string);
 };
 #endif

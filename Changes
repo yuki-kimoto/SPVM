@@ -3,6 +3,8 @@ Revision history for SPVM
         [CHANGE]
         * Add the make_read_only native API.
         * Add the is_read_only native API.
+        * Add make_read_only statement.
+        * Add is_read_only operator.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove the syntax of no operand of warn and die statement.

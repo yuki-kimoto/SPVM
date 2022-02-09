@@ -311,7 +311,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_API_make_read_only(SPVM_ENV* env, SPVM_OBJECT* string) {
-  if (string->type_category == SPVM_TYPE_C_TYPE_CATEGORY_STRING) {
+  if (string && string->type_category == SPVM_TYPE_C_TYPE_CATEGORY_STRING) {
     string->flag |= SPVM_OBJECT_C_FLAG_IS_READ_ONLY;
   }
 }
@@ -319,12 +319,18 @@ void SPVM_API_make_read_only(SPVM_ENV* env, SPVM_OBJECT* string) {
 int32_t SPVM_API_is_read_only(SPVM_ENV* env, SPVM_OBJECT* string) {
   
   int32_t is_read_only;
-  if (string->flag & SPVM_OBJECT_C_FLAG_IS_READ_ONLY) {
-    is_read_only = 1;
+  if (string) {
+    if (string->flag & SPVM_OBJECT_C_FLAG_IS_READ_ONLY) {
+      is_read_only = 1;
+    }
+    else {
+      is_read_only = 0;
+    }
   }
   else {
     is_read_only = 0;
   }
+  
   return is_read_only;
 }
 
@@ -3837,9 +3843,9 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_LENGTH:
+      case SPVM_OPCODE_C_ID_ARRAY_LENGTH: {
         if (*(void**)&object_vars[opcode->operand1] == NULL) {
-          void* exception = env->new_string_nolen_raw(env, "Can't get array length of undef value.");
+          void* exception = env->new_string_nolen_raw(env, "Can't get the array length of undef.");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3847,6 +3853,13 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           int_vars[opcode->operand0] = *(int32_t*)((intptr_t)*(void**)&object_vars[opcode->operand1] + (intptr_t)env->object_length_offset);
         }
         break;
+      }
+      case SPVM_OPCODE_C_ID_IS_READ_ONLY: {
+        void* string = *(void**)&object_vars[opcode->operand1];
+        int32_t is_read_only = env->is_read_only(env, string);
+        int_vars[opcode->operand0] = is_read_only;
+        break;
+      }
       case SPVM_OPCODE_C_ID_CONCAT: {
         
         void* string1 = *(void**)&object_vars[opcode->operand1];
@@ -4336,6 +4349,11 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           }
         }
         
+        break;
+      }
+      case SPVM_OPCODE_C_ID_MAKE_READ_ONLY: {
+        void* string = object_vars[opcode->operand0];
+        env->make_read_only(env, string);
         break;
       }
       case SPVM_OPCODE_C_ID_WARN: {

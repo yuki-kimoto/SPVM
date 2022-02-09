@@ -4603,6 +4603,24 @@ B<Examples of string creation operators:>
   # New a string with the length
   my $message = new_string_len 5;
 
+=head2 is_read_only Operator
+
+The C<is_read_only> is an L<Unary Operator|"Unary Operators"> to check if the L<string|"String"> is read-only.
+
+  is_read_only OPERAND
+
+The operand must be a L<string type|"string Type">, otherwise a compilation error occurs.
+
+If the string is read-only, the C<is_read_only> operator returns C<1>, otherwise returns C<0>.
+
+The return type is an L<int type|"int Type">.
+
+B<Examples of is_read_only operators:>
+  
+  # New a string with the length
+  my $message = "Hello";
+  my $is_read_only = is_read_only $message;
+
 =head2 String Length Operator
 
 The string length operator is an L<Unary Operator|"Unary Operators"> to get the length of the string.
@@ -5100,6 +5118,25 @@ The C<print> statement is a L<statement|"Statements"> to print a L<string|"Strin
 The oeprand must be a L<string type|"string Type">.
 
 If the value of the operand is an L<undef|"Undefined Value">, print nothing.
+
+=head2 make_read_only Statement
+
+The C<make_read_only> statement is a L<statement|"Statements"> to make the L<string|"Strings"> read-only.
+
+  make_read_only OPERAND;
+
+The oeprand must be a L<string type|"string Type">.
+
+Read-only strings can't be cast to L<string type|"string Type"> qualified by L<mutable|"mutable Type Qualifier">.
+
+  # A string
+  my $string = new_string_len 3;
+  
+  # Make the string read-only
+  make_read_only $string;
+  
+  # The conversion to the string type qualified by mutable throw an exception.
+  my $string_mut = (mutable string)$string;
 
 =head2 weaken Statement
 

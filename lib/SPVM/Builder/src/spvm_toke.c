@@ -1925,6 +1925,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISWEAK);
                   return ISWEAK;
                 }
+                else if (strcmp(keyword, "is_read_only") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IS_READ_ONLY);
+                  return IS_READ_ONLY;
+                }
                 else if (strcmp(keyword, "int") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
                   return INT;
@@ -1959,7 +1963,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 'm' : {
-                if (strcmp(keyword, "my") == 0) {
+                if (strcmp(keyword, "make_read_only") == 0) {
+                  warn("AAAAA");
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_MAKE_READ_ONLY);
+                  return MAKE_READ_ONLY;
+                }
+                else if (strcmp(keyword, "my") == 0) {
                   SPVM_MY* my = SPVM_MY_new(compiler);
                   yylvalp->opval = SPVM_OP_new_op_my(compiler, my, compiler->cur_file, compiler->cur_line);
                   return MY;
