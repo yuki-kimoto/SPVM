@@ -870,7 +870,7 @@ SPVM language can be parsed by the LALR(1). It can be parsed by the parser gener
 
 =head2 The Definition of Syntax Parsing
 
-Show the definition of syntax parsing that is written by yacc/bison. 
+Show the definition of syntax parsing that is written by yacc/bison. The definition of the precidence of operators is contained in this difinition.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS MUTABLE
   %token <opval> DESCRIPTOR
@@ -1597,7 +1597,6 @@ The following is a correspondence table between tokens in yacc/bison and keyword
 </table>
 
 =end html
-
 
 =head1 Class
 
@@ -5158,170 +5157,6 @@ The Type of the value stored in field must be <a href="#language-type-object">Ob
 If the value stored in field at Run Time is</a> L<"Undefined Value, it returns false. This is <a href="#language-expression">Expression">
 
 isweak Operator returns L<"Expressions">
-
-
-
-=head2 Precidence
-
-Operator Precidence is the following street. The lower you go, the higher your priority.
-
-=begin html
-
-<table>
-  <tr>
-    <th> join direction</th>
-    <th> Operator</th>
-  </tr>
-  <tr>
-    <td>
-      Right Join
-    </td>
-    <td>
-      Assignment Operator"=" <br>
-      Add Assignment Operator"+=" <br>
-      Subtraction Assignment Operator "-="<br>
-      Multiply Assignment Operator "*=" <br>
-      Division Assignment Operator "/=" <br>
-      Remainder Assignment Operator "%=" <br>
-      Bit ANDAssignment Operator "&=" <br>
-      Bit ORAssignment Operator "|=" <br>
-      Bit Exclusive ORAssignment Operator "^=" <br>
-      Left Shift Assignment Operator"<</<br>
-      Arithmetic Right Shift Assignment Operator ">>=" <br>
-      Logical Right Shift Operator ">>>="<br>
-      String Join Assignment Operator ".="
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Left Join
-    </td>
-    <td>
-      Logical OR Operator "| | "
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Left Join
-    </td>
-    <td>
-      Logical AND Operator "&&"
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Left Join
-    </td>
-    <td>
-      Bit OR Operator "|"<br>
-      Bit XOR Operator "^"
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Left Join
-    </td>
-    <td>
-      Bit AND Operator "&"
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Non Associative
-    </td>
-    <td>
-      Numerical Equivalence Operator "==" <br>
-      Numeric inequality Operator "!=" <br>
-      String Equivalent Operator "eq"<br>
-      String Inequality Operator "ne"<br>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Non Associative
-    </td>
-    <td>
-      Numerical value operator "&gt;" <br>
-      Number less Operator "&lt;"<br>
-      Numerical equivalent Operator "&gt;=" <br>
-      Numerical or equivalent Operator "&lt;="<br>
-      String Large Operator"gt"<br>
-      String-large or equivalent Operator"ge"<br>
-      String less Operator"lt"<br>
-      String less or equivalent Operator"le"<br>
-      isa Operator"isa"
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Left Join 
-    </td>
-    <td>
-      Left Shift Operator "&lt;"<br>
-      Signed Right Shift Operator "&gt;&gt;" <br>
-      Unsigned Right Shift Operator "&gt;&gt;&gt;"
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Left Join
-    </td>
-    <td>
-      Addition Operator"+"<br>
-      Subtraction Operator"-" <br>
-      String Concatenation Operator "."
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Left Join
-    </td>
-    <td>
-      Sand Operator"*" <br>
-      Division Operator "/" <br>
-      Remainder Operator"%"
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Right Join
-    </td>
-    <td>
-      Logical NOT Operator "!"<br>
-      Bit NOT Operator "~"<br>
-      Reference Operator  "\"<br>
-      Unary Plus Operator "+"<br>
-      Unary Minus Operator "-"<br>
-      Array Length Operator "@"<br>
-      Dereference Operator "$"<br>
-      Type Cast"(TypeName)"
-      scalar Operator "scalar"<br>
-      String Length Operator "length"<br>
-      require keyword "require"<br>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Non Associative
-    </td>
-    <td>
-      Pre Increment Operator "++"<br>
-      Post Increment Operator "++"<br>
-      Pre Decrement Operator "--"<br>
-      Post Decrement Operator "--"
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Right Join
-    </td>
-    <td>
-      Arrow Operator "->"<br>
-    </td>
-  </tr>
-</table>
-
-=end html
 
 Operator Precidence can be a top priority by using "()".
 
