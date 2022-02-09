@@ -2093,9 +2093,9 @@ This initial value can be changed by using L<"INIT Block">.
 
 Class Variable Access is an operation to access Class Variable to get or set a value.
 
-See L<"Get Class Variable Value"> for how to get the value of Class Variable.
+See L<"Get Class Variable"> for how to get the value of Class Variable.
 
-See L<"Set Class Variable Value"> for the setting of the value of Class Variable.
+See L<"Set Class Variable"> for the setting of the value of Class Variable.
 
 
 =head1 Field
@@ -2238,9 +2238,9 @@ Class Based Object Field Access is Field Access from object which is create by L
   $point->{x} = 1;
 
 
-See L<"Get Field Value"> to get field of Class Based Object.
+See L<"Get Field"> to get field of Class Based Object.
 
-See L<"Set Field Value"> to set field of Class Based Object.
+See L<"Set Field"> to set field of Class Based Object.
 
 B<2. Multi Numeric Field Access>
 
@@ -2767,7 +2767,7 @@ Using L<"Type Inference">, you omit L<"Types"> in Local Variable Declaration.
   my $num = 1.0;
 
 
-Local Variable Declaration returns the value of Local Variable. This is a L<"Expression">.
+Local Variable Declaration returns the value of Local Variable. This is a L<"Expressions">.
 
 
   my $ppp = my $bar = 4;
@@ -2795,9 +2795,9 @@ Local Variable is initialized by L<"Type Initial Value">.
 
 Local Variable Access is an operation to access Local Variable to get or set the value.
 
-See L<"Get Local Variable Value"> to get Local Variable value.
+See L<"Get Local Variable"> to get Local Variable value.
 
-L<"Set Local Variable Value"> to get Local Variable value.
+L<"Set Local Variable"> to get Local Variable value.
 
 If L<"Class Variable"> with the same name as the Local Variable exists, Program uses the variable as Local Variable, not L<"Class Variable">.
 
@@ -3086,9 +3086,9 @@ Array Access is an operation to access the element of Array to get or set the va
   ARRAY->[INDEX]
 
 
-See L<"Get Array Element Value"> to get the element value of Array.
+See L<"Get Array Element"> to get the element value of Array.
 
-See L<"Set Array Element Value"> to set the element value of Array.
+See L<"Set Array Element"> to set the element value of Array.
 
 
 =head1 Multi Numeric Value
@@ -3280,9 +3280,9 @@ Multi Numeric Array Access is an operation to access Multi Numeric Array to get 
   Array->[INDEX]
 
 
-See L<"Get Array Element Value"> to get Array Element Value.
+See L<"Get Array Element"> to get Array Element Value.
 
-See L<"Set Array Element Value"> to get Array Element Value.
+See L<"Set Array Element"> to get Array Element Value.
 
 
 =head1 Reference
@@ -3307,7 +3307,7 @@ Reference types are represented by appending an * after L<"Numeric Types"> or L<
   my $point_ref : Point_3d* = \$point;
 
 
-Target of Reference Operator is Variable of L<"Numeric Types"> or L<"Multi Numeric Types">. L<"Object Types"> Variable or L<"Literal"> can't be target of Reference Operator.
+Target of Reference Operator is Variable of L<"Numeric Types"> or L<"Multi Numeric Types">. L<"Object Types"> Variable or L<"Literals"> can't be target of Reference Operator.
 
 L<"Reference Type"> can be used in Method Argument.
 
@@ -3354,56 +3354,29 @@ If the target of Reference Type is L<"Multi Numeric Types">, the setting and get
   # If the Target of Reference Type is Multi Numeric Types, set Multi Numeric Types Field Value
   $point_ref->{x} = 1;
 
+=head1 Expressions
 
+Expressions are a syntax part that can be evaluated as a value.
 
-=head1 Expression
+These are L<"Operators">, L<"Undefined Value">, L<"Literals">, L<"Get Local Variable">, L<"Set Local Variable">,
+L<"Get Class Variable">, L<"Get Class Variable">, L<"Set Class Variable">, L<"Get Exception Variable">, L<"Set Exception Variable">,
+L<"Get Field">, L<"Set Field">, L<"Get Array Element">, L<"Set Array Element"> and L<"Method Call">.
 
-=head2 Expression Summary
+=head2 Get Local Variable
 
-
-Expression is a syntax component that can be evaluated as a value.
-
-
-=head2 Operator
-
-
-L<"Operators"> is a Expression.
-
-
-=head2 Undefined Value
-
-
-L<"Undefined Value"> is a Expression.
-
-
-=head2 Literal
-
-
-L<"Literal"> is a Expression.
-
-
-=head2 Get Local Variable Value
-
-
-B<Get Local Variable Value> is a Expression to get L<"Local Variable"> Value.
-
+B<Get Local Variable> is a Expression to get L<"Local Variable"> Value.
 
   $var
 
+=head2 Set Local Variable
 
-
-=head2 Set Local Variable Value
-
-
-B<Set Local Variable Value Expression> is a Expression to set L<"Local Variable"> Value using L<"Assignment Operator">.
-
+B<Set Local Variable Expression> is a Expression to set L<"Local Variable"> Value using L<"Assignment Operator">.
 
   $var = RIGHT_OPERAND
 
-
 The Assignment must satisfy L<"Type Compatibility">.
 
-Set Local Variable Value Expression returns the value after setting.
+Set Local Variable Expression returns the value after setting.
 
 If the right operand is L<"Object Types">, Reference Count of the object is incremented by 1.
 
@@ -3411,11 +3384,10 @@ If an object has already been assigned to $var before the assignment, the Refere
 
 See L<"Scope"> to know Garbage Collection of Local Variable.
 
+=head2 Get Class Variable
 
-=head2 Get Class Variable Value
 
-
-B<Get Class Variable Value Expression> is a Expression to get L<"Class Variable"> Value.
+B<Get Class Variable Expression> is a Expression to get L<"Class Variable"> Value.
 
 
   $CLASS_NAME::CLASS_VARIABLE_NAME
@@ -3431,7 +3403,7 @@ If you try to get the value of a Class Variable that is not defined, a compilati
 
 If you try to access a private Class Variable from outside the Class, a compilation error occurs.
 
-B<Get Class Variable Value Example:>
+B<Get Class Variable Example:>
 
 
   class Foo {
@@ -3445,10 +3417,10 @@ B<Get Class Variable Value Example:>
 
 
 
-=head2 Set Class Variable Value
+=head2 Set Class Variable
 
 
-B<Set Class Variable Value Expression> is a Expression to set L<"Class Variable"> Value using L<"Assignment Operator">.
+B<Set Class Variable Expression> is a Expression to set L<"Class Variable"> Value using L<"Assignment Operator">.
 .
 
 
@@ -3463,7 +3435,7 @@ B<Set Class Variable Value Expression> is a Expression to set L<"Class Variable"
 
 If the assignment does not satisfy L<"Type Compatibility">, a compilation error occurs.
 
-Set Class Variable Value Expression returns the value after setting.
+Set Class Variable Expression returns the value after setting.
 
 If you try to get the value of a Class Variable that is not defined, a compilation error occurs.
 
@@ -3473,8 +3445,7 @@ If the right operand is L<"Object Types">, Reference Count of the object is incr
 
 If an object has already been assigned to Class Variable before the assignment, the Reference Count of that object is decremented by 1.
 
-B<Set Class Variable Value Example:>
-
+B<Set Class Variable Example:>
 
   class Foo {
     our $VAR : int;
@@ -3485,20 +3456,17 @@ B<Set Class Variable Value Example:>
     }
   }
 
+=head2 Get Exception Variable
 
 
-=head2 Get Exception Variable Value
-
-
-B<Get Exception Variable Value Expression> is a Expression to get the value of L<"Exception Variable">.
+B<Set Class Variable Expression> is a Expression to get the value of L<"Exception Variable">.
 
 
   $@
 
+Set Class Variable Expression returns the value of L<"string Type">.
 
-Get Exception Variable Value Expression returns the value of L<"string Type">.
-
-B<Get Exception Variable Value Example:>
+B<Set Class Variable Example:>
 
 
   eval {
@@ -3511,10 +3479,10 @@ B<Get Exception Variable Value Example:>
 
 
 
-=head2 Set Exception Variable Value
+=head2 Set Exception Variable
 
 
-B<Set Exception Variable Value Expression> is a Expression to set the value of L<"Exception Variable"> using L<"Assignment Operator">.
+B<Set Exception Variable Expression> is a Expression to set the value of L<"Exception Variable"> using L<"Assignment Operator">.
 
 
   $@ = RIGHT_OPERAND
@@ -3528,17 +3496,17 @@ The Reference Count of the right operand is incremented by 1.
 
 If an object has already been assigned to Exception Variable before the assignment, the Reference Count of that object is decremented by 1.
 
-B<Set Exception Variable Value Example:>
+B<Set Exception Variable Example:>
 
 
   $@ = "Error";
 
 
 
-=head2 Get Field Value
+=head2 Get Field
 
 
-B<Get Field Value Expression> is a Expression to get L<"Field"> Value.
+B<Get Field Expression> is a Expression to get L<"Field"> Value.
 
 
   INVOCANT_EXPRESSION->{FIELD_NAME}
@@ -3548,11 +3516,11 @@ Invocant Expression is L<"Class Type">. If Expression is L<"Multi Numeric Types"
 
 If the field names does not found in the <a href="#language-class">Class">, a compilation error occurs
 
-Get Field Value Expression returns the value of the Field stored in the object.
+Get Field Expression returns the value of the Field stored in the object.
 
 Retrun Type is The L<"Types"> of the Field.
 
-B<Get Field Value Example:>
+B<Get Field Example:>
 
 
   my $point = Point->new;
@@ -3560,10 +3528,10 @@ B<Get Field Value Example:>
 
 
 
-=head2 Set Field Value
+=head2 Set Field
 
 
-B<Set Field Value Expression> is a Expression to set L<"Field"> Value.
+B<Set Field Expression> is a Expression to set L<"Field"> Value.
 
 
   INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_OPERAND
@@ -3575,7 +3543,7 @@ If the assignment does not satisfy L<"Type Compatibility"> of the type of Field,
 
 If the field names does not found in the L<"Class">, a compilation error occurs.
 
-Set Field Value Expression returns the value of Field after setting. 
+Set Field Expression returns the value of Field after setting. 
 
 Return Value Type is the type of Field.
 
@@ -3583,7 +3551,7 @@ If the right operand is L<"Object Types">, Reference Count of the object is incr
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
-B<Set Field Value Example:>
+B<Set Field Example:>
 
 
   my $point = Point->new;
@@ -3625,7 +3593,7 @@ Set Multi Numeric Field Value Expression is a Expression to set Field Value of L
 
 <
 
-Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<"Set Field Value">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<"Set Field">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs.
 
@@ -3652,7 +3620,7 @@ B<Get Multi Numeric Field Value via Dereference Expression> is a Expression to g
   INVOCANT_EXPRESSION->{FIELD_NAME}
 
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, the Field Access is , L<"Get Field Value">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Get Multi Numeric Field Value">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, the Field Access is , L<"Get Field">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Get Multi Numeric Field Value">, otherwise a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs
 
@@ -3678,7 +3646,7 @@ Set Multi Numeric Field Value Expression via Dereference is a Expression to set 
   INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_OPERAND
 
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, L<"Set Field Value">. If Invocant Expression is L<"Multi Numeric Types">, L<"Set Multi Numeric Field Value">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, L<"Set Field">. If Invocant Expression is L<"Multi Numeric Types">, L<"Set Multi Numeric Field Value">, otherwise a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs
 
@@ -3697,10 +3665,10 @@ B<Set Multi Numeric Field Value via Dereference Example:>
 
 
 
-=head2 Get Array Element Value
+=head2 Get Array Element
 
 
-B<Get Array Element Value Expression> is a Expression to get a Element Value of L<"Array">.
+B<Get Array Element Expression> is a Expression to get a Element Value of L<"Array">.
 
 
   ARRAY_EXPRESSION->[INDEX_EXPRESSION]
@@ -3710,13 +3678,13 @@ Array Expression must be L<"Array Type">.
 
 Index Expression must be L<"int Type"> or the type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
 
-Get Array Element Value Expression returns the Element Value of the Index.
+Get Array Element Expression returns the Element Value of the Index.
 
 If Array Expression is L<"Undefined Value">, a Runtime Exception occurs.
 
 If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
-B<Get Array Element Value Example:>
+B<Get Array Element Example:>
 
 
   my $nums = new int[3];
@@ -3730,10 +3698,10 @@ B<Get Array Element Value Example:>
 
 
 
-=head2 Set Array Element Value
+=head2 Set Array Element
 
 
-Set Array Element Value Expression is a Expression to set a Element Value of a Array using L<"Assignment Operator">.
+Set Array Element Expression is a Expression to set a Element Value of a Array using L<"Assignment Operator">.
 
 
   ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_OPERAND
@@ -3745,7 +3713,7 @@ Index Expression must be L<"int Type"> or the type that become L<"int Type"> by 
 
 The Assignment must satisfy L<"Type Compatibility">.
 
-Set Array Element Value Expression returns the value of the element after setting.
+Set Array Element Expression returns the value of the element after setting.
 
 If Array Expression is L<"Undefined Value">, a Runtime Exception occurs.
 
@@ -3755,7 +3723,7 @@ If the right operand is L<"Object Types">, Reference Count of the object is incr
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
-B<Set Array Element Value Example:>
+B<Set Array Element Example:>
 
 
   my $nums = new int[3];
@@ -3966,7 +3934,7 @@ Instance Method Call takes arguments. If the number of arguments does not match 
 
 Instance Method Call returns Return Value if Return Value is other than L<"void Type">.
 
-Instance Method Call is L<"Expression">.
+Instance Method Call is L<"Expressions">.
 
 B<Instance Method Call Example>
 
@@ -4002,7 +3970,7 @@ Obtaining a value by Dereference is an operation to obtain the actual value from
 
 The variable Type must be Reference Type, otherwise a compilation error occurs.
 
-The value obtained by Dereference returns L<"Expression">.
+The value obtained by Dereference returns L<"Expressions">.
 
 
     B<Example of getting value by Dereference>
@@ -4029,7 +3997,7 @@ The variable Type must be Reference Type, otherwise a compilation error occurs.
 
 The Type of Expression must match the type of the variable when dereferenced, otherwise a compilation error occurs.
 
-Setting a value with Dereference returns the set value. This is L<"Expression">.
+Setting a value with Dereference returns the set value. This is L<"Expressions">.
 
 
     B<Example of setting values ​​with Dereference>
@@ -5101,7 +5069,7 @@ The operand must be a L<Expression|"Expressions"> that type is an L<"Array Type"
 
 The array length operator returns a L<"int Type"> value that is the length of the L<"Array">.
 
-Array Length Operator returns L<"Expression">
+Array Length Operator returns L<"Expressions">
 
 B<Examples of array length operators:>
   
@@ -5189,14 +5157,13 @@ The Type of the value stored in field must be <a href="#language-type-object">Ob
 
 If the value stored in field at Run Time is</a> L<"Undefined Value, it returns false. This is <a href="#language-expression">Expression">
 
-isweak Operator returns L<"Expression">
+isweak Operator returns L<"Expressions">
 
 
 
 =head2 Precidence
 
 Operator Precidence is the following street. The lower you go, the higher your priority.
-
 
 =begin html
 
@@ -5358,64 +5325,70 @@ Operator Precidence is the following street. The lower you go, the higher your p
 
 Operator Precidence can be a top priority by using "()".
 
-
   #  a * b is the first
   a * b + c
   
   # b + c is the first
   a * (b + c)
 
+=head1 Statements
 
-=head1 Statement
+Statements are the parts of syntax that can be written directly under L<"Scope Blocks">.
 
-Statement can be written more than one in L<"Scope Blocks"> for a single process. L<"Expression"> is not evaluated as a value.
+=head2 empty Statement
 
-B<List of Statements>
+An empty statement is a L<statement|"Statements"> that do nothing and ends with just C<;>.
 
-List of Statements
+  ;
 
+=head2 expression Statement
+
+The expression statement is a L<statement|"Statements"> that consisting of an L<expression|"Expressions"> and C<;>.
+
+  Expression;
+
+B<Examples of expression statements:>
+
+  1;
+  $var;
+  1 + 2;
+  foo();
+  my $num = 1 + 2;
 
 =head2 if Statement
 
-If Statement is a statement for conditional branching.
+The C<if> statement is a L<statement|"Statements"> for conditional branching.
 
-
-  if (EXPRESSION) {
+  if (CONDITION) {
   
   }
 
-Expression L<"Bool Type Conversion"> is executed and Block is executed if the value is non-zero.
+The condition L<"Bool Type Conversion"> is executed and Block is executed if the value is non-zero.
 
 If you want to write more than one condition, you can continue with "elsif Statement". The condition determination is performed from above, and each Expression is L<"Bool Type Conversion"> is executed, and a corresponding Block is executed if the value is non-zero.
 
-
-  if (EXPRESSION) {
+  if (CONDITON) {
   
   }
-  elsif(EXPRESSION) {
+  elsif(CONDITION) {
   
   }
 
+You can use C<else> statement to describe what happens if or if the elsif Statement does not meet the criteria. If the if statement and elsif statement condition determination are all false, the statement inside the elseBlock is executed. Elsif Statement does not have to be.
 
-You can use "elseStatement" to describe what happens if or if the elsif Statement does not meet the criteria. If the if statement and elsif statement condition determination are all false, the statement inside the elseBlock is executed. Elsif Statement does not have to be.
-
-
-
-  if (EXPRESSION) {
+  if (CONDITION) {
   
   }
-  elsif (EXPRESSION) {
+  elsif (CONDITION) {
   
   }
   else {
   
   }
 
-B<if Statement Example>
+B<Examples of if statements:>
 
-An example of if Statement.
-
-
+  # An example of if Statement.
   my $flag = 1;
   
   if ($flag == 1) {
@@ -5428,23 +5401,21 @@ An example of if Statement.
     print "Other";
   }
 
-The if Statement is internally surrounded by an invisible Simple Block.
-
+The C<if> Statement is internally surrounded by an invisible Simple Block.
 
   {
-    if (EXPRESSION) {
+    if (CONDITION) {
   
     }
   }
 
-elsif is internally expanded into if Statement and else Statement.
-
+C<elsif> is internally expanded into C<if> Statement and C<else> Statement.
 
   #Before deployment
-  if (EXPRESSION1) {
+  if (CONDITION1) {
   
   }
-  elsif (EXPRESSION2) {
+  elsif (CONDITION2) {
   
   }
   else {
@@ -5452,10 +5423,10 @@ elsif is internally expanded into if Statement and else Statement.
   }
   
   #After deployment
-  if (EXPRESSION1) {
+  if (CONDITION1) {
   }
   else {
-    if (EXPRESSION2) {
+    if (CONDITION2) {
   
     }
     else {
@@ -5464,7 +5435,6 @@ elsif is internally expanded into if Statement and else Statement.
   }
 
 When a variable is declared in the conditional part of if Statement, it must be surrounded by invisible L<"Simple Block">. Be aware that elsif is internally expanded into if Statement and else Statement.
-
 
   #Before deployment
   my $num = 1;
@@ -5496,14 +5466,11 @@ When a variable is declared in the conditional part of if Statement, it must be 
     }
   }
 
-
-
 =head2 switch Statement
 
-The switch statement is a statement for conditional branching with an integer of L<"int Type"> as a condition. Faster than if Statement if the condition is an integer of L<"int Type"> and there are many branches.
+The C<switch> statement is a L<statement|"Statements"> for conditional branching with an integer of L<"int Type"> as a condition. Faster than if Statement if the condition is an integer of L<"int Type"> and there are many branches.
 
-
-  switch (CONDITION_EXPRESSION) {
+  switch (CONDITION) {
     case constant 1: (
   
       break;
@@ -5520,7 +5487,7 @@ The switch statement is a statement for conditional branching with an integer of
     }
   }
 
-As the condition Expression, L<"Expression"> can be specified. L<"Bool Type Conversion"> is executed for the condition Expression.
+As the condition Expression, L<"Expressions"> can be specified. L<"Bool Type Conversion"> is executed for the condition Expression.
 
 The constants specified in case Statement are L<"byte Type"> or L<"int Type"> constants. must be. For a constant of L<"byte Type">, type conversion to L<"int Type"> at compile time. Will be done. The value of enumType and Constant Method of L<"int Type"> are constants of L<"int Type">. As it is expanded at the time of syntax analysis, it can be used.
 
@@ -5538,8 +5505,7 @@ Only case statement and default statement can be described directly under switch
 
 The case and default Blocks can be omitted.
 
-
-  switch (CONDITION_EXPRESSION) {
+  switch (CONDITION) {
     case constant 1:
     case constant 2:
     {
@@ -5550,9 +5516,7 @@ The case and default Blocks can be omitted.
 
 If you use break Statement, you can exit from the switch block.
 
-
-
-  switch (CONDITION_EXPRESSION) {
+  switch (CONDITION) {
     case constant 1: (
       break;
     }
@@ -5570,11 +5534,9 @@ If you use break Statement, you can exit from the switch block.
 If a case Block exists, the last Statement must be a break Statement or a returnl Statement, otherwise a compilation error will occur.
 
 
-B<Switch Statement Example>
+B<Examples of switch statements:>
 
-An example of a switch statement.
-
-
+  # switch statements.
   my $code = 2;
   switch ($code) {
     case 1: {
@@ -5600,30 +5562,23 @@ An example of a switch statement.
     }
   }
 
-
-
 =head2 case Statement
 
-A case statement is a Statement that can be used in a switch block to specify conditions. For more information on case statements, see the L<"switch Statement"> description.
-
-
+The C<case> statement is a L<statement|"Statements"> that can be used in a switch block to specify conditions. For more information on case statements, see the L<"switch Statement"> description.
 
 =head2 default Statement
 
-The default Statement is a Statement that can be used in the switch block to specify the default condition. For more information on the default Statement, see the L<"switch Statement"> description.
-
-
+The C<default> statement is a L<statement|"Statements"> that can be used in the switch block to specify the default condition. For more information on the default Statement, see the L<"switch Statement"> description.
 
 =head2 while Statement
 
-while Statement is a Statement for repeating.
+The C<while> statement is a L<statement|"Statements"> for repeating.
 
-
-  while (CONDITION_EXPRESSION) {
+  while (CONDITION) {
   
   }
 
-L<"Expression"> can be described in the condition Expression. L<"Bool Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
+L<"Expressions"> can be described in the condition Expression. L<"Bool Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
 
 B<While Statement Example>
 
@@ -5666,7 +5621,7 @@ The while Statement is internally enclosed by an invisible L<"Simple Block">.
 
 
   {
-    while (CONDITION_EXPRESSION) {
+    while (CONDITION) {
     $i++;
   }
   
@@ -5683,36 +5638,33 @@ The while Statement is internally enclosed by an invisible L<"Simple Block">.
 
 =head2 for Statement
 
-for Statement is a Statement for repeating.
-
+The C<for> Statement is a L<statement|"Statements"> for repeating.
 
   for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
   
   }
 
-L<"Expression"> can be described in the initialization Expression. Generally, write Expression such as initialization of loop variable. Initialization Expression can be omitted.
+L<"Expressions"> can be described in the initialization Expression. Generally, write Expression such as initialization of loop variable. Initialization Expression can be omitted.
 
-Condition Expression, L<"Expression"> can be described. L<"Bool Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise block.
+Condition Expression, L<"Expressions"> can be described. L<"Bool Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise block.
 
-L<"Expression"> can be described in INCREMENT_EXPRESSION. Generally, Expression of Increment of loop variable is described. INCREMENT_EXPRESSION can be omitted.
+L<"Expressions"> can be described in INCREMENT_EXPRESSION. Generally, Expression of Increment of loop variable is described. INCREMENT_EXPRESSION can be omitted.
 
 for Statement has the same meaning as the following while Statement. INCREMENT_EXPRESSION is executed at the end of Block. Initialization Expression is enclosed in L<"Simple Block">.
 
 
   {
     INITIALIZATION_EXPRESSION;
-    while (CONDITION_EXPRESSION) {
+    while (CONDITION) {
   
   
       INCREMENT_EXPRESSION;
     }
   }
 
-B<for Statement Example>
+B<Exampels fo for statements:>
 
-An example of for Statement.
-
-
+  # for statements
   for (my $i = 0; $i <5; $i++) {
   
     print "$i \ n";
@@ -5720,15 +5672,11 @@ An example of for Statement.
 
 Inside the for Block, you can exit the for Block using L<"last Statement">.
 
-
-
   for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
   
   }
 
-
 Inside the for Block, you can use L<"next Statement"> to move immediately before the next INCREMENT_EXPRESSION to be executed.
-
 
   for (my $i = 0; $i <5; $i++) {
   
@@ -5737,17 +5685,13 @@ Inside the for Block, you can use L<"next Statement"> to move immediately before
     }
   }
 
+=head2 return Statement
 
-
-=head2 returnl Statement
-
-Use the returnl Statement to get out of the Method. The object assigned to the mortal variable is automatically released.
-
+The C<return> statement is a L<statement|"Statements"> to get out of the Method. The object assigned to the mortal variable is automatically released.
 
   return;
 
-If there is a Return Value, L<"Expression"> can be specified.
-
+If there is a Return Value, L<"Expressions"> can be specified.
 
   return EXPRESSION;
 
@@ -5755,15 +5699,79 @@ If the Return Value Type in L<"Method Definition"> is L<"void Type">, Expression
 
 L<"Method Definition">, if the Return Value Type is other than L<"void Type">, Expression Must match the type of, otherwise a compilation error occurs.
 
+=head2 next Statement
 
+The C<next> statement is a L<statement|"Statements"> to move to the beginning of the next loop block.
+
+  next;
+
+See also L<"while Statement">, L<"for Statement">.
+
+=head2 last Statement
+
+The C<last> statement" is a L<statement|"Statements"> to move to the outside of the loop block.
+
+  last;
+
+See also L<"while Statement">, L<"for Statement">.
+
+=head2 break Statement
+
+The C<break> statement is a L<statement|"Statements"> to move to the outside of the L<switch block|"switch Block">.
+
+  break;
+
+See also L<"switch Statement">.
+
+=head2 warn Statement
+
+The C<warn> statement is a L<statement|"Statements"> to print a warning string to the standard error.
+
+  warn OPERNAD;
+
+The operand must be L<"string Type">.
+
+If the end character of the string is C<\n>, C<warn> statement prints the string itself.
+
+If not, the current file name and current line number are added to the end of the string.
+
+If the value of the operand is an L<undef|"Undefined Value">, print "Warning: something's wrong".
+
+The buffer of the standard error is flushed after the printing.
 
 =head2 die Statement
 
-C<die> Statement is a Statement to throw an L<"Exception">.
+The C<die> statement is a L<statement|"Statements"> to throw an L<"Exception">.
 
-  die EXPRESSION;
+  die OPERAND;
 
-The operand must be a L<"string Type">, otherwise a compilation error occurs.
+The operand must be a L<string type|"string Type">, otherwise a compilation error occurs.
+
+The exception thrown by C<die> statement can be cached by an L<eval block|"Exception Catching">
+and can be checked by the L<exception variable|"Exception Variable"> C<$@>.
+
+B<Examples of die statements:>
+  
+  # Catch the exception
+  eval {
+    # Throw a exception
+    die "Error";
+  }
+  
+  # Check the exception
+  if ($@) {
+    # ...
+  }
+  
+=head2 print Statement
+
+The C<print> statement is a L<statement|"Statements"> to print a L<string|"String"> to the standard output.
+
+  print OPERAND;
+
+The oeprand must be a L<string type|"string Type">.
+
+If the value of the operand is an L<undef|"Undefined Value">, print nothing.
 
 =head2 weaken Statement
 
@@ -5813,12 +5821,9 @@ In the above example, "$bar->{foo}" and "$baz->{foo}" have the Weaken Reference 
 
 The information of the back Reference is necessary because when the L<"Garbage Collection"> is performed, it is necessary to assign the Undefined Value to the Field pointed to by the back Reference.
 
-
-
 =head2 unweaken Statement
 
 unweaken Statement is a Statement that cancels L<"Weaken Reference"> for Field.
-
 
   unweaken VARIABLE->{FIELD_NAME};
 
@@ -5837,101 +5842,6 @@ If the value stored in the Field at runtime is not L<"Undefined Value">, then th
 2. Clear the Weaken Reference flag of Field.
 
 3. Delete the Field from the back reference of the object stored in the Field.
-
-
-
-=head2 next Statement
-
-"next Statement" is a Statement to move to the beginning of the next loop. in L<"while Block">, L<"for Block"> You can use it.
-
-
-  next;
-
-Please see the explanation of L<"while Statement">, L<"for Statement"> for the actual operation. ..
-
-
-
-=head2 last Statement
-
-"last Statement" is a Statement to break the loop. in L<"while Block">, L<"for Block"> You can use it.
-
-Please see the explanation of L<"while Statement">, L<"for Statement"> for the actual operation. ..
-
-
-  last;
-
-
-
-=head2 break Statement
-
-"break Statement" is a Statement to escape the switch block. It can be used in L<"switch Block">.
-
-See L<"switch Statement"> for the actual operation.
-
-
-  break;
-
-
-
-=head2 warn Statement
-
-
-Use warnStatement to throw a warning.
-
-
-  warn Expression;
-
-Expression must be L<"string Type">.
-
-If the end is a line feed Character "\ n", the String specified in Expression is output to the standard error output.
-
-If the end is not a line feed character, File Name and line number are added to the end, and standard error is output.
-
-If the length of String specified in Expression is 0 or Undefined Value, the specified message behaves as "Warning: something's wrong".
-
-The standard error output buffer is flushed.
-
-
-
-=head2 print Statement
-
-Use print Statement to print a String to standard output.
-
-
-  print Expression;
-
-Expression must be L<"string Type">.
-
-If Expression is Undefined Value, do nothing.
-
-
-
-=head2 expression Statement
-
-The expression Statement is a Statement consisting of L<"Expression"> and ";".
-
-
-  Expression;
-
-
-An example of an expression statement.
-
-
-  1;
-  $var;
-  1 + 2;
-  foo ();
-  my $num = 1 + 2;
-
-
-
-=head2 empty Statement
-
-An empty statement is a statement that ends with just ";".
-
-
-  ;
-
 
 
 =head1 Types
@@ -6598,7 +6508,7 @@ If a value with a Type other than Object Type is assigned, a compilation error o
 
 Note that "oarrayType" is a different Type than "object[] Type". While oarrayType is a Type that can be methodstituted with an arbitrary Array Type value that has an Object Type value as an element, "object[] Type" is a Type that represents an "Array that has an objectType value as an element". Therefore, the value of arbitrary Array Type cannot be assigned.
 
-Any Object Array Type is L<"Array Type">. L<"Array Length Operator"> to get length, L<"Set Array Element You can use Value">, L<"Get Array Element Value">.
+Any Object Array Type is L<"Array Type">. L<"Array Length Operator"> to get length, L<"Set Array Element">, L<"Get Array Element">.
 
 
   my $array : oarray = new Int[3];
@@ -6724,7 +6634,7 @@ L<"int Type"> value is converted to L<"long Type"> Become.
 
   my $num = (long)3;
 
-ype Cast returns L<"Expression">.
+ype Cast returns L<"Expressions">.
 
 If the source Type and the specified Type are the same, the value is simply copied.
 
@@ -6962,7 +6872,7 @@ L<"Numeric Types"> has the order of Type. The order of Type is "byte", "short", 
 
 =head2 Unary Numeric Widening Type Conversion
 
-Unary Numeric Widening Type Conversion means that L<"Expression"> is L<"byte Type"> or short Type. In this case, perform L<"Numeric Widening Type Conversion"> to L<"int Type"> I say that.
+Unary Numeric Widening Type Conversion means that L<"Expressions"> is L<"byte Type"> or short Type. In this case, perform L<"Numeric Widening Type Conversion"> to L<"int Type"> I say that.
 
 Unary Numeric Widening Type Conversion is performed in the following cases.
 
@@ -7228,7 +7138,7 @@ When the die statement is executed, the stack trace and the String specified by 
 
 
 
-=head2 Catch Exception
+=head2 Exception Catching
 
 Exception catching is a function that can stop the program from ending and get an error message when L<"Exception"> is thrown.
 
@@ -7252,9 +7162,9 @@ B<Exception Variable> is a global variable that is represented by "B<$@>"
   $@
 
 
-See L<"Get Exception Variable Value"> to get Exception Variable Value.
+See L<"Set Class Variable"> to get Exception Variable Value.
 
-See L<"Set Exception Variable Value"> to set Exception Variable Value.
+See L<"Set Exception Variable"> to set Exception Variable Value.
 
 
 =head1 Garbage Collection
