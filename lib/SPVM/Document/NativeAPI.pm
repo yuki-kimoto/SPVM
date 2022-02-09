@@ -789,6 +789,10 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   162 string_basic_type_id
   163 make_read_only
   164 is_read_only
+  165 is_array
+  166 is_string
+  167 is_numeric_array
+  168 is_mulnum_array
 
 =head1 List of Native APIs
 
@@ -2445,15 +2449,39 @@ Basic type ID of the C<string> type. This is used internally.
 
 =head2 make_read_only
 
-  void make_read_only(SPVM_ENV* env, void* string)
+  void (*make_read_only)(SPVM_ENV* env, void* string)
 
 Make the string read-only.
 
 =head2 is_read_only
 
-  void make_read_only(SPVM_ENV* env, void* string)
+  void (*make_read_only)(SPVM_ENV* env, void* string)
 
 If the string is read-only, returns C<1>, otherwise returns C<0>.
+
+=head2 is_array
+
+  int32_t (*is_array)(SPVM_ENV* env, void* object);
+
+If the object is an array, returns C<1>, otherwise returns C<0>.
+
+=head2 is_string
+
+  int32_t (*is_string)(SPVM_ENV* env, void* object);
+
+If the object is a string, returns C<1>, otherwise returns C<0>.
+
+=head2 is_read_only
+
+  int32_t (*is_numeric_array)(SPVM_ENV* env, void* object);
+
+If the object is a numeric array, returns C<1>, otherwise returns C<0>.
+
+=head2 is_read_only
+
+  int32_t (*is_mulnum_array)(SPVM_ENV* env, void* object);
+
+If the object is a multi numeric array, returns C<1>, otherwise returns C<0>.
 
 =head1 Utilities
 
