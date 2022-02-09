@@ -787,6 +787,8 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   160 get_instance_method_id_static
   161 get_bool_object_value
   162 string_basic_type_id
+  163 make_read_only
+  164 is_read_only
 
 =head1 List of Native APIs
 
@@ -2440,6 +2442,18 @@ B<Examples:>
   void* string_basic_type_id;
 
 Basic type ID of the C<string> type. This is used internally.
+
+=head2 make_read_only
+
+  void make_read_only(SPVM_ENV* env, void* string)
+
+Make the string read-only.
+
+=head2 is_read_only
+
+  void make_read_only(SPVM_ENV* env, void* string)
+
+If the string is read-only, returns C<1>, otherwise returns C<0>.
 
 =head1 Utilities
 

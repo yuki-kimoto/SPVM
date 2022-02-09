@@ -261,6 +261,8 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_instance_method_id_static,
     SPVM_API_get_bool_object_value,
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_STRING, // string_basic_type_id
+    SPVM_API_make_read_only,
+    SPVM_API_is_read_only,
   };
   
   SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime_noenv(compiler, sizeof(env_init));
@@ -306,6 +308,24 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   SPVM_API_call_init_blocks(env);
   
   return env;
+}
+
+void SPVM_API_make_read_only(SPVM_ENV* env, SPVM_OBJECT* string) {
+  if (string->type_category == SPVM_TYPE_C_TYPE_CATEGORY_STRING) {
+    string->flag |= SPVM_OBJECT_C_FLAG_IS_READ_ONLY;
+  }
+}
+
+int32_t SPVM_API_is_read_only(SPVM_ENV* env, SPVM_OBJECT* string) {
+  
+  int32_t is_read_only;
+  if (string->flag & SPVM_OBJECT_C_FLAG_IS_READ_ONLY) {
+    is_read_only = 1;
+  }
+  else {
+    is_read_only = 0;
+  }
+  return is_read_only;
 }
 
 SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object) {

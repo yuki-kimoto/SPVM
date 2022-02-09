@@ -223,6 +223,9 @@ int32_t SPVM_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object);
 
 const char* SPVM_API_get_chars(SPVM_ENV* env, SPVM_OBJECT* string);
 
+void SPVM_API_make_read_only(SPVM_ENV* env, SPVM_OBJECT* string);
+int32_t SPVM_API_is_read_only(SPVM_ENV* env, SPVM_OBJECT* string);
+
 SPVM_OBJECT* SPVM_API_new_pointer_by_name(SPVM_ENV* env, const char* class_name, void* pointer, int32_t* exception_flag, const char* file, int32_t line);
 void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int8_t value, int32_t* exception_flag, const char* file, int32_t line);
 void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int16_t value, int32_t* exception_flag, const char* file, int32_t line);
