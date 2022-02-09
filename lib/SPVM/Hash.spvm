@@ -128,7 +128,7 @@ class Hash : precompile {
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $keys->[$count++] = Fn->copy_string($ref->{key});
+        $keys->[$count++] = $ref->{key};
         $ref = $ref->{next_entry};
       }
     }
@@ -228,7 +228,15 @@ class Hash : precompile {
     my $ref = $entries->[$index];
     unless ($ref) {
       $entries->[$index] = new Hash::Entry;
-      my $new_key = Fn->copy_string($key);
+      my $new_key : string;
+      if (is_read_only $key) {
+        $new_key = $key;
+      }
+      else {
+        $new_key = Fn->copy_string($key);
+        make_read_only $new_key;
+      }
+      
       $entries->[$index]->{key} = $new_key;
       $entries->[$index]->{val} = $val;
       $entries->[$index]->{next_entry} = undef;
@@ -241,8 +249,16 @@ class Hash : precompile {
         return;
       }
       unless ($ref->{next_entry}) {
+        my $new_key : string;
+        if (is_read_only $key) {
+          $new_key = $key;
+        }
+        else {
+          $new_key = Fn->copy_string($key);
+          make_read_only $new_key;
+        }
+
         $ref->{next_entry} = new Hash::Entry;
-        my $new_key = Fn->copy_string($key);
         $ref->{next_entry}->{key} = $new_key;
         $ref->{next_entry}->{val} = $val;
         $ref->{next_entry}->{next_entry} = undef;

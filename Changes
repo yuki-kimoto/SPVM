@@ -7,6 +7,7 @@ Revision history for SPVM
         * Add is_read_only operator.
         * The string created by string literal become read-only.
         * Read-only string can't be converted to mutable string.
+        * The key of Hash module become read-only string.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove the syntax of no operand of warn and die statement.

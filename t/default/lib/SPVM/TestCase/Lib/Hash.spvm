@@ -374,7 +374,9 @@ class TestCase::Lib::Hash {
     my $hash = Hash->new({});
     my $key0 = "a";
     my $key1 = "b";
-    my $key2 = "c";
+    
+    my $key2 = (mutable string)new_string_len(1);
+    $key2->[0] = 'c';
 
     $hash->set_int($key0 => 1);
     $hash->set_int($key1 => 2);
@@ -390,17 +392,11 @@ class TestCase::Lib::Hash {
       return (string)$a cmp (string)$b;
     });
 
-    unless ($keys->[0] eq $key0) {
-      return 0;
-    }
-    unless ($keys->[0] != $key0) {
+    unless ($keys->[0] == $key0) {
       return 0;
     }
 
-    unless ($keys->[1] eq $key1) {
-      return 0;
-    }
-    unless ($keys->[1] != $key1) {
+    unless ($keys->[1] == $key1) {
       return 0;
     }
 
