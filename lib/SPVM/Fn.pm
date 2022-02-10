@@ -862,6 +862,8 @@ The destnation byte offset + byte length must be within the byte range of the de
 
 The source byte offset + byte length must be within the byte range of the source, otherwise an exception occurs.
 
+If source data range and destination data overlap, the result is not guaranteed.
+
 =head2 memcpy_byte
 
   static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int)
@@ -967,6 +969,30 @@ Length must be more than or equals to 0, otherwise an exception occurs.
 Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
+
+=head2 memmove
+
+  static method memmove : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
+
+The destination must be a string type, a numeric type, or a multi numeric type, otherwise an exception is thrown.
+
+If the destination is a read-only string, an exception is thrown.
+
+The source must be a string type, a numeric type, or a multi numeric type, otherwise an exception is thrown.
+
+Copy the source to the destination with the given each offset and the given length by byte unit.
+
+If source data range and destination data overlap, the result is not guaranteed.
+
+The destnation must be defined, otherwise an exception occurs.
+
+The source must be defined, otherwise an exception occurs.
+
+The length must be more than or equals to 0, otherwise an exception occurs.
+
+The destnation byte offset + byte length must be within the byte range of the destnation, otherwise an exception occurs.
+
+The source byte offset + byte length must be within the byte range of the source, otherwise an exception occurs.
 
 =head2 memmove_byte
 
