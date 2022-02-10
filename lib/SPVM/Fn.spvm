@@ -55,14 +55,14 @@ class Fn : precompile {
     my $new_string : string;
     my $length = length $string;
     if ($length == 0) {
-      $new_string = &copy_string($string);
+      $new_string = copy $string;
     }
     else {
       if ($string->[$length - 1] == '\n') {
-        $new_string = (string)&copy_array_range_byte((byte[])$string, 0, $length - 1);
+        $new_string = &substr($string, 0, $length - 1);
       }
       else {
-        $new_string = &copy_string($string);
+        $new_string = copy $string;
       }
     }
 
@@ -70,83 +70,23 @@ class Fn : precompile {
   }
 
   static method copy_array_byte : byte[] ($nums : byte[]) {
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $length = @$nums;
-
-    my $new_nums = new byte[$length];
-
-    for (my $i = 0; $i < $length; $i++) {
-      $new_nums->[$i] = $nums->[$i];
-    }
-
-    return $new_nums;
+    return copy $nums;
   }
 
   static method copy_array_double : double[] ($nums : double[]) {
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $length = @$nums;
-
-    my $new_nums = new double[$length];
-
-    for (my $i = 0; $i < $length; $i++) {
-      $new_nums->[$i] = $nums->[$i];
-    }
-
-    return $new_nums;
+    return copy $nums;
   }
 
   static method copy_array_float : float[] ($nums : float[]) {
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $length = @$nums;
-
-    my $new_nums = new float[$length];
-
-    for (my $i = 0; $i < $length; $i++) {
-      $new_nums->[$i] = $nums->[$i];
-    }
-
-    return $new_nums;
+    return copy $nums;
   }
 
   static method copy_array_int : int[] ($nums : int[]) {
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $length = @$nums;
-
-    my $new_nums = new int[$length];
-
-    for (my $i = 0; $i < $length; $i++) {
-      $new_nums->[$i] = $nums->[$i];
-    }
-
-    return $new_nums;
+    return copy $nums;
   }
 
   static method copy_array_long : long[] ($nums : long[]) {
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $length = @$nums;
-
-    my $new_nums = new long[$length];
-
-    for (my $i = 0; $i < $length; $i++) {
-      $new_nums->[$i] = $nums->[$i];
-    }
-
-    return $new_nums;
+    return copy $nums;
   }
 
   static method copy_array_object : object[] ($objects : object[], $cloner : Cloner) {
@@ -415,19 +355,7 @@ class Fn : precompile {
   }
 
   static method copy_array_short : short[] ($nums : short[]) {
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $length = @$nums;
-
-    my $new_nums = new short[$length];
-
-    for (my $i = 0; $i < $length; $i++) {
-      $new_nums->[$i] = $nums->[$i];
-    }
-
-    return $new_nums;
+    return copy $nums;
   }
 
   static method copy_array_string : string[] ($strings : string[]) {
@@ -440,22 +368,14 @@ class Fn : precompile {
     my $new_strings = new string[$length];
 
     for (my $i = 0; $i < $length; $i++) {
-      $new_strings->[$i] = Fn->copy_string($strings->[$i]);
+      $new_strings->[$i] = copy $strings->[$i];
     }
 
     return $new_strings;
   }
   
   static method copy_string : string ($string : string) {
-    unless ($string) {
-      return undef;
-    }
-    
-    my $string_length = length $string;
-    
-    my $bytes = (byte[])$string;
-
-    return (string)$bytes;
+    return copy $string;
   }
 
   native static method crand : int ();
