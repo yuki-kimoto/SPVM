@@ -18,6 +18,7 @@ Revision history for SPVM
         * Fn->new_array_proto throw an exception when the length is lower than 0.
         * Add the "copy" native API.
         * Add Fn->is_array, Fn->is_numeric_array, Fn->is_mulnum_array
+        * Add new_array_proto_raw, new_array_
         [BUG FIX]
         * Fix the bug that Fn->new_array_proto doesn't create multi numeric array and number array correctly.
         

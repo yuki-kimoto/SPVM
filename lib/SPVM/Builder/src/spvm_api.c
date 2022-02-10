@@ -268,7 +268,9 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_is_numeric_array,
     SPVM_API_is_mulnum_array,
     SPVM_API_get_elem_byte_size,
+    SPVM_API_new_array_proto_raw,
     SPVM_API_new_array_proto,
+    SPVM_API_copy_raw,
     SPVM_API_copy,
   };
   
@@ -7111,7 +7113,7 @@ SPVM_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, SPVM_CLASS* class, const c
   return class_var;
 }
 
-SPVM_OBJECT* SPVM_API_new_array_proto(SPVM_ENV* env, SPVM_OBJECT* array, int32_t length) {
+SPVM_OBJECT* SPVM_API_new_array_proto_raw(SPVM_ENV* env, SPVM_OBJECT* array, int32_t length) {
 
   if (array == NULL) {
     return NULL;
@@ -7140,7 +7142,17 @@ SPVM_OBJECT* SPVM_API_new_array_proto(SPVM_ENV* env, SPVM_OBJECT* array, int32_t
   return new_array;
 }
 
-SPVM_OBJECT* SPVM_API_copy(SPVM_ENV* env, SPVM_OBJECT* object) {
+SPVM_OBJECT* SPVM_API_new_array_proto(SPVM_ENV* env, SPVM_OBJECT* array, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_API_new_array_proto_raw(env, array, length);
+  
+  SPVM_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_API_copy_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   if (!object) {
     return NULL;
   }
@@ -7150,7 +7162,7 @@ SPVM_OBJECT* SPVM_API_copy(SPVM_ENV* env, SPVM_OBJECT* object) {
   int32_t length = object->length;
   
   if (env->is_string(env, object)) {
-    new_object = env->new_string(env, NULL, length);
+    new_object = env->new_string_raw(env, NULL, length);
     
     const char* object_chars = env->get_chars(env, object);
     char* new_object_chars = (char*)env->get_chars(env, new_object);
@@ -7158,7 +7170,7 @@ SPVM_OBJECT* SPVM_API_copy(SPVM_ENV* env, SPVM_OBJECT* object) {
     memmove(new_object_chars, object_chars, length);
   }
   else if (env->is_numeric_array(env, object) || env->is_mulnum_array(env, object)) {
-    new_object = env->new_array_proto(env, object, length);
+    new_object = env->new_array_proto_raw(env, object, length);
     
     const char* object_bytes = (const char*)env->get_elems_byte(env, object);
     char* new_object_bytes = (char*)env->get_elems_byte(env, new_object);
@@ -7170,6 +7182,16 @@ SPVM_OBJECT* SPVM_API_copy(SPVM_ENV* env, SPVM_OBJECT* object) {
   else {
     new_object = NULL;
   }
+  
+  return new_object;
+}
+
+SPVM_OBJECT* SPVM_API_copy(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+  
+  SPVM_OBJECT* new_object = SPVM_API_copy_raw(env, object);
+  
+  SPVM_API_push_mortal(env, new_object);
   
   return new_object;
 }

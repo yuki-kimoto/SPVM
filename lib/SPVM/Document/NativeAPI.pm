@@ -794,8 +794,10 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   167 is_numeric_array
   168 is_mulnum_array
   169 get_elem_byte_size
-  170 new_array_proto
-  171 copy
+  170 new_array_proto_raw
+  171 new_array_proto
+  172 copy_raw
+  173 copy
 
 =head1 List of Native APIs
 
