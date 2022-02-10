@@ -191,4 +191,54 @@ class TestCase::String {
     
     return 1;
   }
+
+  static method shorten : int () {
+    
+    # Basic
+    {
+      my $string = copy "abc";
+      
+      Fn->shorten((mutable string)$string, 2);
+      
+      unless ($string eq "ab") {
+        return 0;
+      }
+      
+      Fn->shorten((mutable string)$string, 0);
+      
+      unless ($string eq "") {
+        return 0;
+      }
+    }
+    
+    # Bad cases
+    {
+      my $string = copy "abc";
+      
+      Fn->shorten((mutable string)$string, 4);
+      
+      unless ($string eq "abc") {
+        return 0;
+      }
+      
+      Fn->shorten((mutable string)$string, -1);
+      
+      unless ($string eq "") {
+        return 0;
+      }
+    }
+    
+    # undef
+    {
+      my $string = (string)undef;
+      
+      Fn->shorten((mutable string)$string, 2);
+      
+      unless ($string == undef) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }

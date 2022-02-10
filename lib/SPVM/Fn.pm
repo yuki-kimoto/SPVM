@@ -1044,12 +1044,6 @@ Destnation offset + length must be within the range of the destnation array, oth
 
 Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
-=head2 substr
-
-  static method substr : string ($string : string, $offset : int, $length : int)
-
-Get the substring of the string with the start offset and the length.
-
 =head2 new_array_proto
 
   static method new_array_proto : oarray ($proto_array : oarray, $length : int)
@@ -1083,6 +1077,20 @@ This method is not thread safe because internaly this method use rand function o
   static method rindex : int ($string : string, $method_string : string, $offset : int)
 
 Same as "index" function except that the search is the last of the string.
+
+=head2 shorten
+
+    static method shorten : void ($string : mutable string, $length : int32_t)
+
+Shorten the string to the given length.
+
+If the string is null, does nothing.
+
+If the given length is greater than the length of the string, does nothing.
+
+If the given length is lower than C<0>, the given length become C<0>.
+
+In the level of native APIs, the charaters of the after the given length are filled with C<\0>.
 
 =head2 sort_byte
 
@@ -1275,6 +1283,12 @@ Create a formatted string with the format and the embdded values.
   static method srand : void ($seed : long);
 
 Sets random number seed for the C<crand> or C<rand> class method.
+
+=head2 substr
+
+  static method substr : string ($string : string, $offset : int, $length : int)
+
+Get the substring of the string with the start offset and the length.
 
 =head2 to_double
 

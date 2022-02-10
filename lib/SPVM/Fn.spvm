@@ -1287,6 +1287,8 @@ class Fn : precompile {
     Fn->_sort_byte_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
+  native static method shorten : void ($string : mutable string, $length : int);
+
   static method sort_double : void ($nums : double[], $offset : int, $length : int, $comparator : Comparator::Double) {
     if ($nums == undef) {
       die "Array must be not undef";

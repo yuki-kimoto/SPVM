@@ -140,6 +140,17 @@ int32_t SPVM__Fn__is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__shorten(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  void* string = stack[0].oval;
+  int32_t new_length = stack[1].ival;
+  
+  env->shorten(env, string, new_length);
+
+  return 0;
+}
+
 int32_t SPVM__Fn___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 

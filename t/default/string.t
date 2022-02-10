@@ -19,6 +19,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::String->string_length);
   ok(SPVM::TestCase::String->basic);
   ok(SPVM::TestCase::String->new_string_len);
+  ok(SPVM::TestCase::String->shorten);
 }
 
 # All object is freed
