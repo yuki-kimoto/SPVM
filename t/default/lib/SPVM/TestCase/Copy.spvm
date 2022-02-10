@@ -1,0 +1,34 @@
+class TestCase::Copy {
+  static method copy : int () {
+    # String
+    {
+      my $string = "abc";
+      my $string_copy = copy "abc";
+      
+      unless ($string_copy isa string) {
+        return 0;
+      }
+      
+      if ($string_copy == $string) {
+        return 0;
+      }
+      
+      unless ($string_copy eq "abc") {
+        return 0;
+      }
+      
+      if (is_read_only $string_copy) {
+        return 0;
+      }
+      
+      my $string_copy_mut = (mutable string)$string_copy;
+      
+      $string_copy_mut->[0] = 'd';
+      
+      unless ($string_copy_mut eq "dbc") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+}
