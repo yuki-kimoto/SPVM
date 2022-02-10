@@ -1,9 +1,13 @@
 class TestCase::Copy {
+  use Fn;
+  use Complex_2d;
+  use TestCase::Minimal;
+  
   static method copy : int () {
     # String
     {
       my $string = "abc";
-      my $string_copy = copy "abc";
+      my $string_copy = copy $string;
       
       unless ($string_copy isa string) {
         return 0;
@@ -29,6 +33,102 @@ class TestCase::Copy {
         return 0;
       }
     }
+
+    # Numeric array
+    {
+      # byte
+      {
+        my $nums = [(byte)1, 2, 3];
+        my $nums_copy = copy $nums;
+        
+        unless ($nums_copy isa byte[]) {
+          return 0;
+        }
+        
+        if ($nums_copy == $nums) {
+          return 0;
+        }
+        
+        unless (Fn->equals_array_byte($nums_copy, $nums)) {
+          return 0;
+        }
+      }
+ 
+      # double
+      {
+        my $nums = [(double)1.1, 2.2, 3.3];
+        my $nums_copy = copy $nums;
+        
+        unless ($nums_copy isa double[]) {
+          return 0;
+        }
+        
+        if ($nums_copy == $nums) {
+          return 0;
+        }
+        
+        unless (Fn->equals_array_double($nums_copy, $nums)) {
+          return 0;
+        }
+      }
+   }
+
+    # Multi numeric  array
+    {
+      # Complex_2d;
+      {
+        my $nums = new Complex_2d[3];
+        
+        $nums->[0]{re} = 1;
+        $nums->[0]{im} = 2;
+
+        $nums->[2]{re} = 3;
+        $nums->[2]{im} = 4;
+        
+        my $nums_copy = copy $nums;
+        
+        unless ($nums_copy isa Complex_2d[]) {
+          return 0;
+        }
+        
+        if ($nums_copy == $nums) {
+          return 0;
+        }
+        
+        unless (@$nums_copy == @$nums) {
+          return 0;
+        }
+        
+        unless ($nums_copy->[0]{re} == $nums->[0]{re}) {
+          return 0;
+        }
+        unless ($nums_copy->[0]{im} == $nums->[0]{im}) {
+          return 0;
+        }
+        unless ($nums_copy->[2]{re} == $nums->[2]{re}) {
+          return 0;
+        }
+        unless ($nums_copy->[2]{im} == $nums->[2]{im}) {
+          return 0;
+        }
+      }
+    }
+
+    # Exception
+    {
+      eval { copy TestCase::Minimal->new; };
+      unless ($@) {
+        return 0;
+      }
+
+      eval { copy new TestCase::Minimal[3]; };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
     return 1;
   }
 }
