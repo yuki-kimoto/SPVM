@@ -2025,8 +2025,23 @@ class TestCase::Lib::Fn3 {
           return 0;
         }
       }
-
     }
+
+      # Copy offset + length
+      {
+        # int
+        {
+          my $dist = [(int)1, 2, 3, 4];
+          my $source = [(int)10, 11, 12, 13];
+          
+          Fn->memcpy($dist, 1 * 4, $source, 1 * 4, 2 * 4);
+          
+          my $dist_expected = [(int)1, 11, 12, 4];
+          unless (Fn->equals_array_int($dist, $dist_expected)) {
+            return 0;
+          }
+        }
+      }
     
     return 1;
   }
