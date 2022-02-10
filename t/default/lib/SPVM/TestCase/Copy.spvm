@@ -4,6 +4,17 @@ class TestCase::Copy {
   use TestCase::Minimal;
   
   static method copy : int () {
+    # undef
+    {
+      my $string = (string)undef;
+      
+      my $string_copy = copy $string;
+      
+      if ($string_copy) {
+        return 0;
+      }
+    }
+    
     # String
     {
       my $string = "abc";

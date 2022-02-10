@@ -614,6 +614,7 @@ t/default/compile_native_api.pl
 t/default/concat.t
 t/default/constant.t
 t/default/convert.t
+t/default/copy.t
 t/default/default_loaded_modules.t
 t/default/divide.t
 t/default/dump.t
@@ -766,6 +767,7 @@ t/default/lib/SPVM/TestCase/CompileError/Weaken/HashNotObject.spvm
 t/default/lib/SPVM/TestCase/Concat.spvm
 t/default/lib/SPVM/TestCase/Constant.spvm
 t/default/lib/SPVM/TestCase/Convert.spvm
+t/default/lib/SPVM/TestCase/Copy.spvm
 t/default/lib/SPVM/TestCase/Data/Weaken.spvm
 t/default/lib/SPVM/TestCase/Destructor.spvm
 t/default/lib/SPVM/TestCase/Divide.spvm

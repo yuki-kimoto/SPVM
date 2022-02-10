@@ -3499,14 +3499,20 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_COPY: {
         void* object = *(void**)&object_vars[opcode->operand1];
-        if (!(env->is_string(env, object) || env->is_numeric_array(env, object) || env->is_mulnum_array(env, object))) {
-          void* exception = env->new_string_nolen_raw(env, "The operand of the copy operator must be a string type, a numeric type, or a multi numeric type");
-          env->set_exception(env, exception);
-          exception_flag = 1;
+        
+        if (object) {
+          if (!(env->is_string(env, object) || env->is_numeric_array(env, object) || env->is_mulnum_array(env, object))) {
+            void* exception = env->new_string_nolen_raw(env, "The operand of the copy operator must be a string type, a numeric type, or a multi numeric type");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            void* new_object_raw = env->copy_raw(env, object);
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], new_object_raw);
+          }
         }
         else {
-          void* new_object_raw = env->copy_raw(env, object);
-          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], new_object_raw);
+          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], NULL);
         }
         break;
       }
