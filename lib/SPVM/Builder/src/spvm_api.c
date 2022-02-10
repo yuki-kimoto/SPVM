@@ -272,6 +272,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_new_array_proto,
     SPVM_API_copy_raw,
     SPVM_API_copy,
+    SPVM_API_shorten,
   };
   
   SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime_noenv(compiler, sizeof(env_init));
@@ -7213,4 +7214,29 @@ SPVM_OBJECT* SPVM_API_copy(SPVM_ENV* env, SPVM_OBJECT* object) {
   SPVM_API_push_mortal(env, new_object);
   
   return new_object;
+}
+
+void SPVM_API_shorten(SPVM_ENV* env, SPVM_OBJECT* string, int32_t new_length) {
+  (void)env;
+  
+  if (string != NULL) {
+    if (env->is_string(env, string)) {
+      if (!env->is_read_only(env, string)) {
+        int32_t length = string->length;
+        
+        if (new_length > length) {
+          new_length = length;
+        }
+        else if (new_length < 0) {
+          new_length = 0;
+        }
+        
+        string->length = new_length;
+        char* chars = (char*)env->get_chars(env, string);
+        if (new_length > length) {
+          memset(chars + new_length, 0, new_length - length);
+        }
+      }
+    }
+  }
 }

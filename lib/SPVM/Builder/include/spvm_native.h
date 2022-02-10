@@ -271,5 +271,6 @@ struct spvm_env {
   void* (*new_array_proto)(SPVM_ENV* env, void* array, int32_t length);
   void* (*copy_raw)(SPVM_ENV* env, void* object);
   void* (*copy)(SPVM_ENV* env, void* object);
+  void (*shorten)(SPVM_ENV* env, void* string, int32_t new_length);
 };
 #endif

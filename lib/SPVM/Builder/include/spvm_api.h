@@ -280,5 +280,6 @@ SPVM_OBJECT* SPVM_API_new_array_proto_raw(SPVM_ENV* env, SPVM_OBJECT* array, int
 SPVM_OBJECT* SPVM_API_new_array_proto(SPVM_ENV* env, SPVM_OBJECT* array, int32_t length);
 SPVM_OBJECT* SPVM_API_copy_raw(SPVM_ENV* env, SPVM_OBJECT* object);
 SPVM_OBJECT* SPVM_API_copy(SPVM_ENV* env, SPVM_OBJECT* object);
+void SPVM_API_shorten(SPVM_ENV* env, SPVM_OBJECT* string, int32_t new_length);
 
 #endif
