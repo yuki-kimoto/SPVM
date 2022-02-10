@@ -7187,7 +7187,7 @@ SPVM_OBJECT* SPVM_API_copy_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
     const char* object_chars = env->get_chars(env, object);
     char* new_object_chars = (char*)env->get_chars(env, new_object);
     
-    memmove(new_object_chars, object_chars, length);
+    memcpy(new_object_chars, object_chars, length);
   }
   else if (env->is_numeric_array(env, object) || env->is_mulnum_array(env, object)) {
     new_object = env->new_array_proto_raw(env, object, length);
@@ -7197,7 +7197,7 @@ SPVM_OBJECT* SPVM_API_copy_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
     
     int32_t element_byte_size = env->get_elem_byte_size(env, object);
     
-    memmove(new_object_bytes, object_bytes, element_byte_size * length);
+    memcpy(new_object_bytes, object_bytes, element_byte_size * length);
   }
   else {
     new_object = NULL;
