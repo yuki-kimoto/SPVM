@@ -47,6 +47,20 @@ class Fn : precompile {
     return $ret;
   }
 
+  static method chomp : void ($string : mutable string) {
+    
+    unless ($string) {
+      return;
+    }
+
+    my $length = length $string;
+    if ($length > 0) {
+      if ($string->[$length - 1] == '\n') {
+        &shorten($string, $length - 1);
+      }
+    }
+  }
+
   static method chompr : string ($string : string) {
     unless ($string) {
       return undef;

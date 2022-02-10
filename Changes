@@ -22,6 +22,7 @@ Revision history for SPVM
         * Add copy operator
         * Add the "shorten" native API.
         * Add Fn->shorten.
+        * Add Fn->chomp.
         [BUG FIX]
         * Fix the bug that Fn->new_array_proto doesn't create multi numeric array and number array correctly.
         

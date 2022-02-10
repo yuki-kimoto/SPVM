@@ -1892,4 +1892,52 @@ class TestCase::Lib::Fn3 {
     
     return 1;
   }
+
+  static method chomp : int () {
+    
+    # Basic
+    {
+      my $line = copy "abc\n";
+      Fn->chomp((mutable string)$line);
+      
+      unless ($line eq "abc") {
+        return 0;
+      }
+    }
+    
+    # Non basic cases
+    {
+      # no new line
+      {
+        my $line = copy "abc";
+        Fn->chomp((mutable string)$line);
+      
+        unless ($line eq "abc") {
+          return 0;
+        }
+      }
+      
+      # undef
+      {
+        my $line = (string)undef;
+        Fn->chomp((mutable string)$line);
+      
+        unless ($line == undef) {
+          return 0;
+        }
+      }
+      
+      # The length is zero
+      {
+        my $line = copy "";
+        Fn->chomp((mutable string)$line);
+        
+        unless ($line eq "") {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
 }

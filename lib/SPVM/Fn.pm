@@ -318,11 +318,19 @@ Return -1. The same bit expression of 0xFF in the unsigned 8bit integer in 2's c
 
 Return the absolute value.
 
+=head2 chomp
+
+  static method chomp : void ($string : mutable string)
+
+Remove C<\n> of the end of the string. This method changes the given string itself.
+
+If the string is C<undef> or the length is zero, does nothing.
+
 =head2 chompr
 
   static method chompr : string ($string : string)
 
-Copy the string and remove "\n" of the end of line and return it.
+Copy the string and remove "\n" of the end of the string and return it.
 
 =head2 copy_array_byte
 
