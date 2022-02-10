@@ -1940,4 +1940,80 @@ class TestCase::Lib::Fn3 {
     
     return 1;
   }
+
+
+  static method memcpy : int () {
+    
+    # Basic
+    {
+      # Copy numeric array
+      {
+        # byte
+        {
+          my $dist = [(byte)1, 2, 3, 4];
+          my $source = [(byte)10, 11, 12, 13];
+          
+          Fn->memcpy($dist, 0, $source, 0, 4);
+          
+          my $dist_expected = [(byte)10, 11, 12, 13];
+          unless (Fn->equals_array_byte($dist, $dist_expected)) {
+            return 0;
+          }
+        }
+
+        # double
+        {
+          my $dist = [(double)1, 2, 3, 4];
+          my $source = [(double)10, 11, 12, 13];
+          
+          Fn->memcpy($dist, 0, $source, 0, 8 * 4);
+          
+          my $dist_expected = [(double)10, 11, 12, 13];
+          unless (Fn->equals_array_double($dist, $dist_expected)) {
+            return 0;
+          }
+        }
+      }
+
+      # Copy string
+      {
+        my $dist = (string)[(byte)1, 2, 3, 4];
+        my $source = (string)[(byte)10, 11, 12, 13];
+        
+        Fn->memcpy($dist, 0, $source, 0, 4);
+        
+        my $dist_expected = (string)[(byte)10, 11, 12, 13];
+        unless ($dist eq $dist_expected) {
+          return 0;
+        }
+      }
+
+      # Copy multi numeric array
+      {
+        my $dist = new Complex_2d[4];
+        my $source = new Complex_2d[4];
+        $source->[0]{re} = 1;
+        $source->[0]{im} = 2;
+        $source->[2]{re} = 3;
+        $source->[2]{im} = 4;
+        
+        Fn->memcpy($dist, 0, $source, 0, 2 * 8 * 4);
+        
+        unless ($dist->[0]{re} == 1) {
+          return 0;
+        }
+        unless ($dist->[0]{im} == 2) {
+          return 0;
+        }
+        unless ($dist->[2]{re} == 3) {
+          return 0;
+        }
+        unless ($dist->[2]{im} == 4) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
 }

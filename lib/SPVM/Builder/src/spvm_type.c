@@ -1226,7 +1226,6 @@ int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int3
 int32_t SPVM_TYPE_get_elem_byte_size(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   assert(!(flag & SPVM_TYPE_C_FLAG_REF));
-  assert(dimension > 0);
   
   int32_t elem_byte_size;
   if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {

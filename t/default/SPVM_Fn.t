@@ -388,7 +388,7 @@ SKIP: {
   ok(SPVM::TestCase::Lib::Fn2->test_equals_array_object);
 }
 
-# memcpy
+# memcpy_numeric
 {
   ok(SPVM::TestCase::Lib::Fn2->test_memcpy_byte);
   ok(SPVM::TestCase::Lib::Fn2->test_memcpy_short);
@@ -398,7 +398,7 @@ SKIP: {
   ok(SPVM::TestCase::Lib::Fn2->test_memcpy_double);
 }
 
-# memmove
+# memmove_numeric
 {
   ok(SPVM::TestCase::Lib::Fn2->test_memmove_byte);
   ok(SPVM::TestCase::Lib::Fn2->test_memmove_short);
@@ -444,6 +444,11 @@ SKIP: {
 # chomp
 {
   ok(SPVM::TestCase::Lib::Fn3->chomp);
+}
+
+# memcpy
+{
+  ok(SPVM::TestCase::Lib::Fn3->memcpy);
 }
 
 # All object is freed
