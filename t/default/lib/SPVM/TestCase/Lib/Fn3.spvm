@@ -2012,6 +2012,20 @@ class TestCase::Lib::Fn3 {
           return 0;
         }
       }
+
+      # Copy string to bytes
+      {
+        my $dist = [(byte)1, 2, 3, 4];
+        my $source = (string)[(byte)10, 11, 12, 13];
+        
+        Fn->memcpy($dist, 0, $source, 0, 4);
+        
+        my $dist_expected = [(byte)10, 11, 12, 13];
+        unless ($dist eq $dist_expected) {
+          return 0;
+        }
+      }
+
     }
     
     return 1;
