@@ -195,6 +195,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "NEW_STRING_LEN",
     "IS_READ_ONLY",
     "MAKE_READ_ONLY",
+    "COPY",
   };
   
   return id_names;
@@ -1383,6 +1384,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_NEW:
     case SPVM_OP_C_ID_CHECK_CONVERT:
     case SPVM_OP_C_ID_ARRAY_INIT:
+    case SPVM_OP_C_ID_COPY:
     {
       type = SPVM_OP_get_type(compiler, op->first);
       break;

@@ -195,6 +195,7 @@ enum {
   SPVM_OP_C_ID_NEW_STRING_LEN,
   SPVM_OP_C_ID_IS_READ_ONLY,
   SPVM_OP_C_ID_MAKE_READ_ONLY,
+  SPVM_OP_C_ID_COPY,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);

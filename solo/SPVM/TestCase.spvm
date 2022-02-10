@@ -88,6 +88,12 @@ SPVM::Test - SPVM test module
 
   static method main : int ($start_file : string, $args : string[]) {
     {
+      my $string = copy "abc";
+      
+      warn $string;
+    }
+    
+    {
       my $const_string = "abc";
       warn is_read_only $const_string;
       

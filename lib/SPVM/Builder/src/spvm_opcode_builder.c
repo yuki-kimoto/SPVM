@@ -2450,6 +2450,23 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           break;
                         }
+                        case SPVM_OP_C_ID_COPY : {
+
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                         
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_COPY);
+                          int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                          int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                          
+                          opcode.operand0 = mem_id_out;
+                          opcode.operand1 = mem_id_in;
+                          
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+
+                          SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, method->op_method, op_cur->line);
+                          break;
+                        }
                         case SPVM_OP_C_ID_MINUS : {
 
                           SPVM_OPCODE opcode;

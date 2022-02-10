@@ -1821,10 +1821,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return STRING_CMP;
                 }
                 else if (strcmp(keyword, "class") == 0) {
-                  
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CLASS);
-                  
                   return CLASS;
+                }
+                else if (strcmp(keyword, "copy") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COPY);
+                  return COPY;
                 }
                 break;
               }

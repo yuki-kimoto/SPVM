@@ -461,6 +461,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "IS_READ_ONLY",
     "MAKE_READ_ONLY",
     "MOVE_OBJECT_CHECK_READ_ONLY",
+    "COPY",
   };
   
   return id_names;

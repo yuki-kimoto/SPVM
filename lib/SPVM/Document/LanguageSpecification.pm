@@ -4603,6 +4603,28 @@ B<Examples of string creation operators:>
   # New a string with the length
   my $message = new_string_len 5;
 
+=head2 copy Operator
+
+The L<copy> operator is an L<Unary Operator|"Unary Operators"> to copy the object.
+
+  copy OPERAND
+
+The operand must be an L<expression|"Expressions"> that type is a L<object type|"object Type">, otherwise a compilation error occurs.
+
+If the type of operand is none of a L<string type|"string Type">, a L<numeric type|"Numerci Types">, a L<multi numeric type|"Multi Numeric Types">,
+An L<exception|"Exception"> is thorwn.
+
+The C<copy> operator returns the copied object.
+
+The return type is same as the type of operand.
+
+Read-only flag of the string is dropped.
+
+B<Examples of string creation operators:>
+  
+  # New a string with the length
+  my $message = copy "abc";
+
 =head2 is_read_only Operator
 
 The C<is_read_only> is an L<Unary Operator|"Unary Operators"> to check if the L<string|"String"> is read-only.

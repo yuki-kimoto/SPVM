@@ -1822,6 +1822,17 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
+            case SPVM_OP_C_ID_COPY: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              
+              // Operand must be numeric type
+              if (!SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Operand of unary + operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_MINUS: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
@@ -3758,6 +3769,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT:
                         case SPVM_OP_C_ID_MINUS:
                         case SPVM_OP_C_ID_PLUS:
+                        case SPVM_OP_C_ID_COPY:
                         case SPVM_OP_C_ID_ARRAY_LENGTH:
                         case SPVM_OP_C_ID_STRING_LENGTH:
                         case SPVM_OP_C_ID_NEW:
