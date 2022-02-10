@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9504  2021-02-08
+0.9504  2021-02-10
         [CHANGE]
         * Add the make_read_only native API.
         * Add the is_read_only native API.
