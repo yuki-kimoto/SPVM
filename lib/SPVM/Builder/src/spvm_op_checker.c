@@ -5293,13 +5293,13 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
     
-    // Add compatible class symtable for interface types
+    // Add implement class symtable for interface types
     for (int32_t i = 0; i < class->op_compatibles->length; i++) {
       SPVM_OP* op_compatible = SPVM_LIST_fetch(class->op_compatibles, i);
       
-      SPVM_IMPLEMENT* compatible = op_compatible->uv.compatible;
+      SPVM_IMPLEMENT* implement = op_compatible->uv.implement;
       
-      SPVM_OP* op_type_compatible = compatible->op_type;
+      SPVM_OP* op_type_compatible = implement->op_type;
       SPVM_TYPE* compatible_type = op_type_compatible->uv.type;
       
       SPVM_BASIC_TYPE* compatible_basic_type = compatible_type->basic_type;
@@ -5314,7 +5314,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     if (class->op_compatibles->length > 0) {
       SPVM_OP* first_op_compatible = SPVM_LIST_fetch(class->op_compatibles, 0);
       
-      SPVM_IMPLEMENT* first_compatible = first_op_compatible->uv.compatible;
+      SPVM_IMPLEMENT* first_compatible = first_op_compatible->uv.implement;
       
       SPVM_OP* first_op_type_compatible = first_compatible->op_type;
       SPVM_TYPE* first_compatible_type = first_op_type_compatible->uv.type;
@@ -5332,9 +5332,9 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         for (int32_t i = 1; i < class->op_compatibles->length; i++) {
           SPVM_OP* op_compatible = SPVM_LIST_fetch(class->op_compatibles, i);
           
-          SPVM_IMPLEMENT* compatible = op_compatible->uv.compatible;
+          SPVM_IMPLEMENT* implement = op_compatible->uv.implement;
           
-          SPVM_OP* op_type_compatible = compatible->op_type;
+          SPVM_OP* op_type_compatible = implement->op_type;
           SPVM_TYPE* compatible_type = op_type_compatible->uv.type;
           
           SPVM_BASIC_TYPE* compatible_basic_type = compatible_type->basic_type;

@@ -600,7 +600,7 @@ static const char *const yytname[] =
   "NEW_STRING_LEN", "IS_READ_ONLY", "COPY", "INC", "DEC", "ARROW", "':'",
   "';'", "'}'", "','", "')'", "']'", "$accept", "grammar", "opt_classes",
   "classes", "class", "class_block", "opt_declarations", "declarations",
-  "declaration", "init_block", "use", "require", "allow", "compatible",
+  "declaration", "init_block", "use", "require", "allow", "implement",
   "enumeration", "enumeration_block", "opt_enumeration_values",
   "enumeration_values", "enumeration_value", "our", "has", "method",
   "anon_method", "opt_args", "args", "arg", "opt_vaarg", "opt_descriptors",

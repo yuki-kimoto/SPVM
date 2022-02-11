@@ -1824,7 +1824,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CLASS);
                   return CLASS;
                 }
-                else if (strcmp(keyword, "compatible") == 0) {
+                else if (strcmp(keyword, "implement") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IMPLEMENT);
                   return IMPLEMENT;
                 }

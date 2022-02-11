@@ -287,7 +287,7 @@ struct spvm_op {
     SPVM_CASE_INFO* case_info;
     SPVM_USE* use;
     SPVM_ALLOW* allow;
-    SPVM_IMPLEMENT* compatible;
+    SPVM_IMPLEMENT* implement;
     SPVM_CALL_METHOD* call_method;
     SPVM_FIELD_ACCESS* field_access;
     SPVM_ARRAY_FIELD_ACCESS* array_field_access;

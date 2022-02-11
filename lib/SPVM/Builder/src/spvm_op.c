@@ -1841,10 +1841,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_ALLOW) {
         SPVM_LIST_push(class->op_allows, op_decl);
       }
-      // compatible declarations
+      // implement declarations
       else if (op_decl->id == SPVM_OP_C_ID_IMPLEMENT) {
         if (class->category != SPVM_CLASS_C_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "Non-interface classes can't have \"compatible\" statements at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "Non-interface classes can't have \"implement\" statements at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->op_compatibles, op_decl);
       }
@@ -2307,9 +2307,9 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
 
 SPVM_OP* SPVM_OP_build_compatible(SPVM_COMPILER* compiler, SPVM_OP* op_compatible, SPVM_OP* op_type) {
   
-  SPVM_IMPLEMENT* compatible = SPVM_IMPLEMENT_new(compiler);
-  compatible->op_type = op_type;
-  op_compatible->uv.compatible = compatible;
+  SPVM_IMPLEMENT* implement = SPVM_IMPLEMENT_new(compiler);
+  implement->op_type = op_type;
+  op_compatible->uv.implement = implement;
   
   // add use stack
   SPVM_TYPE* type_use = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
