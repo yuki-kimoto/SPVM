@@ -5447,51 +5447,16 @@ int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array) {
 
 int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id) {
   (void)env;
-  
+
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+
   // Object must be not null
   assert(object);
   
   int32_t object_basic_type_id = object->basic_type_id;
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t has_callback;
-  if (object_type_dimension != 0) {
-    has_callback = 0;
-  }
-  else {
-    SPVM_COMPILER* compiler = env->compiler;
-
-    SPVM_BASIC_TYPE* object_basic_type = SPVM_LIST_fetch(compiler->basic_types, object_basic_type_id);
-    SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(compiler->basic_types, callback_basic_type_id);
-
-    SPVM_CLASS* object_class = SPVM_LIST_fetch(compiler->classes, object_basic_type->class->id);
-    SPVM_CLASS* callback_class = SPVM_LIST_fetch(compiler->classes, callback_basic_type->class->id);
-    
-    SPVM_METHOD* method_callback = SPVM_LIST_fetch(callback_class->methods, 0);
-    
-    const char* method_callback_signature = method_callback->signature;
-    if (object_class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
-      SPVM_METHOD* object_class_method = SPVM_LIST_fetch(object_class->methods, 0);
-      
-      if (strcmp(method_callback_signature, object_class_method->signature) == 0) {
-        has_callback = 1;
-      }
-      else {
-        has_callback = 0;
-      }
-    }
-    else {
-      const char* object_class_name = object_class->name;
-      const char* method_callback_name = method_callback->name;
-      int32_t method_id = SPVM_API_get_instance_method_id_static(env, object_class_name, method_callback_name, method_callback_signature);
-      if (method_id >= 0) {
-        has_callback = 1;
-      }
-      else {
-        has_callback = 0;
-      }
-    }
-  }
+  int32_t has_callback = SPVM_TYPE_has_callback(compiler, object_basic_type_id, object_type_dimension, 0, callback_basic_type_id, 0, 0);
   
   return has_callback;
 }
