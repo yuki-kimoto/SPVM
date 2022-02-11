@@ -217,7 +217,7 @@ allow
 implement
   : IMPLEMENT basic_type ';'
     {
-      $$ = SPVM_OP_build_compatible(compiler, $1, $2);
+      $$ = SPVM_OP_build_implement(compiler, $1, $2);
     }
 
 enumeration

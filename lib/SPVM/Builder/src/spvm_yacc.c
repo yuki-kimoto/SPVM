@@ -2516,7 +2516,7 @@ yyreduce:
   case 30:
 #line 219 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_compatible(compiler, (yyvsp[-2].opval), (yyvsp[-1].opval));
+      (yyval.opval) = SPVM_OP_build_implement(compiler, (yyvsp[-2].opval), (yyvsp[-1].opval));
     }
 #line 2522 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

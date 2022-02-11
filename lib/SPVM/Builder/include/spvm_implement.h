@@ -3,7 +3,7 @@
 
 #include "spvm_typedecl.h"
 
-struct spvm_compatible {
+struct spvm_implement {
   SPVM_OP* op_type;
 };
 

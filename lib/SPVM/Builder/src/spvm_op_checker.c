@@ -5293,76 +5293,42 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
     
-    // Add implement class symtable for interface types
-    for (int32_t i = 0; i < class->op_compatibles->length; i++) {
-      SPVM_OP* op_compatible = SPVM_LIST_fetch(class->op_compatibles, i);
+    // This class must be implement the interface classes 
+    for (int32_t i = 0; i < class->op_implements->length; i++) {
+      SPVM_OP* op_implement = SPVM_LIST_fetch(class->op_implements, i);
       
-      SPVM_IMPLEMENT* implement = op_compatible->uv.implement;
+      SPVM_IMPLEMENT* implement = op_implement->uv.implement;
       
-      SPVM_OP* op_type_compatible = implement->op_type;
-      SPVM_TYPE* compatible_type = op_type_compatible->uv.type;
+      SPVM_OP* op_type_implement = implement->op_type;
+      SPVM_TYPE* implement_type = op_type_implement->uv.type;
       
-      SPVM_BASIC_TYPE* compatible_basic_type = compatible_type->basic_type;
+      SPVM_BASIC_TYPE* implement_basic_type = implement_type->basic_type;
       
-      SPVM_CLASS* compatible_class = compatible_basic_type->class;
+      SPVM_CLASS* implement_class = implement_basic_type->class;
       
-      SPVM_HASH_insert(class->interface_class_symtable, compatible_class->name, strlen(compatible_class->name), compatible_class);
-    }
-
-    // Ceate the methods of interface class
-    SPVM_LIST* first_compatible_class_methods;
-    if (class->op_compatibles->length > 0) {
-      SPVM_OP* first_op_compatible = SPVM_LIST_fetch(class->op_compatibles, 0);
+      if (implement_class->category != SPVM_CLASS_C_CATEGORY_INTERFACE) {
+        SPVM_COMPILER_error(compiler, "The operand of the implement statment must be the interface class at %s line %d", implement_class->name, op_implement->file, op_implement->line);
+        return;
+      }
       
-      SPVM_IMPLEMENT* first_compatible = first_op_compatible->uv.implement;
+      SPVM_LIST* implement_methods = implement_class->methods;
       
-      SPVM_OP* first_op_type_compatible = first_compatible->op_type;
-      SPVM_TYPE* first_compatible_type = first_op_type_compatible->uv.type;
-      
-      SPVM_BASIC_TYPE* first_compatible_basic_type = first_compatible_type->basic_type;
-      
-      SPVM_CLASS* first_compatible_class = first_compatible_basic_type->class;
-      
-      first_compatible_class_methods = first_compatible_class->methods;
-      
-      for (int32_t k = 0; k < first_compatible_class_methods->length; k++) {
-        SPVM_METHOD* first_compatible_class_method = (SPVM_METHOD*)SPVM_LIST_fetch(first_compatible_class_methods, k);
-
-        int32_t is_shared_method = 1;
-        for (int32_t i = 1; i < class->op_compatibles->length; i++) {
-          SPVM_OP* op_compatible = SPVM_LIST_fetch(class->op_compatibles, i);
-          
-          SPVM_IMPLEMENT* implement = op_compatible->uv.implement;
-          
-          SPVM_OP* op_type_compatible = implement->op_type;
-          SPVM_TYPE* compatible_type = op_type_compatible->uv.type;
-          
-          SPVM_BASIC_TYPE* compatible_basic_type = compatible_type->basic_type;
-          
-          SPVM_CLASS* compatible_class = compatible_basic_type->class;
-          
-          SPVM_HASH* compatible_class_method_symtabele = compatible_class->method_symtable;
-          
-          SPVM_METHOD* found_method = SPVM_HASH_fetch(compatible_class_method_symtabele, first_compatible_class_method->name, strlen(first_compatible_class_method->name));
-          if (found_method) {
-            if (strcmp(first_compatible_class_method->signature, found_method->signature) != 0) {
-              is_shared_method = 0;
-              break;
-            }
-          }
-          else {
-            is_shared_method = 0;
-            break;
+      int32_t implement_error = 0;
+      for (int32_t i = 0; i < implement_methods->length; i++) {
+        SPVM_METHOD* implement_method = SPVM_LIST_fetch(implement_methods, i);
+        SPVM_METHOD* found_method = SPVM_HASH_fetch(class->method_symtable, implement_method->name, strlen(implement_method->name));
+        int32_t is_error = 0;
+        if (found_method) {
+          if (strcmp(found_method->signature, implement_method->signature) != 0) {
+            is_error = 1;
           }
         }
-        if (is_shared_method) {
-          SPVM_METHOD* new_method = SPVM_METHOD_new(compiler);
-          new_method->name = first_compatible_class_method->name;
-          new_method->signature = first_compatible_class_method->signature;
-          new_method->class = class;
-          
-          SPVM_LIST_push(class->methods, new_method);
-          SPVM_HASH_insert(class->method_symtable, new_method->name, strlen(new_method->name), new_method);
+        else {
+          is_error = 1;
+        }
+        if (is_error) {
+          SPVM_COMPILER_error(compiler, "The \"%s\" must implement the \"%s\" method with the signature \"%s. This method is declared in \"%s\" at %s line %d", class->name, implement_method->name, implement_method->signature, implement_class->name, op_implement->file, op_implement->line);
+          return;
         }
       }
     }

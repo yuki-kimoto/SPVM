@@ -42,7 +42,7 @@ struct spvm_class {
   SPVM_OP* op_type;
   SPVM_LIST* op_uses;
   SPVM_LIST* op_allows;
-  SPVM_LIST* op_compatibles;
+  SPVM_LIST* op_implements;
   SPVM_HASH* interface_class_symtable;
   const char* name;
   SPVM_OP* op_init_method;

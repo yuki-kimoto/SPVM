@@ -5,8 +5,8 @@
 #include <stddef.h>
 
 // spvm_implement.h
-struct spvm_compatible;
-typedef struct spvm_compatible SPVM_IMPLEMENT;
+struct spvm_implement;
+typedef struct spvm_implement SPVM_IMPLEMENT;
 
 // spvm_hash.h
 struct spvm_hash;
