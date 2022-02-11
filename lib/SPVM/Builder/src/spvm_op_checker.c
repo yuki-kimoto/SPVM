@@ -1181,15 +1181,19 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, type->basic_type->name, strlen(type->basic_type->name));
                   
                   if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-                    SPVM_COMPILER_error(compiler, "Can't create object of callback class at %s line %d", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Can't create the object of a callback type at %s line %d", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  else if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+                    SPVM_COMPILER_error(compiler, "Can't create the object of a interface type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
                   else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-                    SPVM_COMPILER_error(compiler, "Can't create object of mulnum_t class at %s line %d", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Can't create the object of a multi numeric type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
                   else if (class->flag & SPVM_CLASS_C_FLAG_POINTER) {
-                    SPVM_COMPILER_error(compiler, "Can't create object of struct class at %s line %d", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Can't create the object of a pointer type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
                   
@@ -3592,11 +3596,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 SPVM_LIST_push(method->object_arg_ids, (void*)(intptr_t)arg_index);
               }
             }
-          }
-          
-          if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK && (method->op_block || method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
-            SPVM_COMPILER_error(compiler, "Callback sub can't have implementation at %s line %d", method->op_method->file, method->op_method->line);
-            return;
           }
           
           // Check method
