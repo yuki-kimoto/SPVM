@@ -555,7 +555,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
       SPVM_STRING_BUFFER_add_len(string_buffer, (char*)chars, chars_length);
       SPVM_STRING_BUFFER_add(string_buffer, "\"");
     }
-    else if(SPVM_TYPE_is_module_type(compiler, basic_type_id, 0, 0)) {
+    else {
 
       sprintf(tmp_buffer, "%p", object);
       int32_t exists = (int32_t)(intptr_t)SPVM_HASH_fetch(address_symtable, tmp_buffer, strlen(tmp_buffer));
@@ -660,9 +660,6 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
         sprintf(tmp_buffer, "(%p)", object);
         SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
       }
-    }
-    else {
-      assert(0);
     }
   }
 }

@@ -1413,7 +1413,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_term_invocant);
 
                             // Value field dereference access
-                            if (SPVM_TYPE_is_value_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                            if (SPVM_TYPE_is_multi_numeric_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
                               SPVM_FIELD* field = field_access->field;
                               
                               SPVM_OPCODE opcode;
@@ -4635,7 +4635,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_term_invocant);
                       
-                      if (SPVM_TYPE_is_value_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                      if (SPVM_TYPE_is_multi_numeric_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
                         SPVM_FIELD* field = field_access->field;
                         
                         SPVM_OPCODE opcode;
