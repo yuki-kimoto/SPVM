@@ -273,6 +273,10 @@ int32_t SPVM_TYPE_has_callback(
   int32_t callback_basic_type_id, int32_t callback_type_dimension, int32_t callback_type_flag)
 {
   (void)compiler;
+  
+  if (class_type_dimension > 0) {
+    return 0;
+  }
 
   SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->basic_types, class_basic_type_id);
   SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(compiler->basic_types, callback_basic_type_id);
