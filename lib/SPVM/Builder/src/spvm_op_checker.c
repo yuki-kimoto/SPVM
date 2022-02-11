@@ -5349,6 +5349,10 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
               is_shared_method = 0;
               break;
             }
+            else {
+              SPVM_COMPILER_error(compiler, "The %s class that is specified as the operand of the compatible statement has the %s method, but the signature is not %s at %s line %d", compatible_class->name, first_compatible_class_method->name, first_compatible_class_method->signature, op_compatible->file, op_compatible->line);
+              return;
+            }
           }
           else {
             is_shared_method = 0;
