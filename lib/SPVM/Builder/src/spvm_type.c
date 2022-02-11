@@ -270,6 +270,10 @@ int32_t SPVM_TYPE_has_callback(
   int32_t callback_basic_type_id, int32_t callback_type_dimension, int32_t callback_type_flag)
 {
   (void)compiler;
+  
+  if (class_type_dimension > 0) {
+    return 0;
+  }
 
   assert(
     SPVM_TYPE_is_class_type(compiler, class_basic_type_id, class_type_dimension, class_type_flag)
