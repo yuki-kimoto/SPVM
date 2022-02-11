@@ -36,6 +36,7 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   class->method_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   class->class_vars = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->class_var_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
+  class->compatible_class_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   
   class->info_class_var_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->info_class_var_id_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);

@@ -5272,6 +5272,22 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         class->has_precompile_descriptor = anon_method_defined_class->has_precompile_descriptor;
       }
     }
+    
+    // Add compatible class symtable for interface types
+    for (int32_t i = 0; i < class->op_compatibles->length; i++) {
+      SPVM_OP* op_compatible = SPVM_LIST_fetch(class->op_compatibles, i);
+      
+      SPVM_COMPATIBLE* compatible = op_compatible->uv.compatible;
+      
+      SPVM_OP* op_type_compatible = compatible->op_type;
+      SPVM_TYPE* compatible_type = op_type_compatible->uv.type;
+      
+      SPVM_BASIC_TYPE* compatible_basic_type = compatible_type->basic_type;
+      
+      SPVM_CLASS* compatible_class = compatible_basic_type->class;
+      
+      SPVM_HASH_insert(class->compatible_class_symtable, compatible_class->name, strlen(compatible_class->name), compatible_class);
+    }
 
     // Ceate the methods of interface class
     SPVM_LIST* first_compatible_class_methods;
