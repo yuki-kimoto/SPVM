@@ -4197,9 +4197,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
-      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD:
-      case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD:
+      case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD_BY_ID:
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE:
       {
         int32_t var_id = opcode->operand0;
         int32_t decl_method_id = opcode->operand1;
@@ -4243,7 +4243,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         // Call method
         else {
           switch (opcode_id) {
-            case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD: {
+            case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD_BY_ID: {
               SPVM_STRING_BUFFER_add(string_buffer, "    if (");
               SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
               SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
@@ -4274,7 +4274,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
               
               break;
             }
-            case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {
+            case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID: {
               SPVM_STRING_BUFFER_add(string_buffer, "    if (");
               SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
               SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
@@ -4305,7 +4305,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
               
               break;
             }
-            case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD: {
+            case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE: {
               SPVM_STRING_BUFFER_add(string_buffer, "    void* object = stack[0].oval;");
               SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = env->get_instance_method_id(env, object, \"");
               SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
