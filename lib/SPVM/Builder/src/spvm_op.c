@@ -1566,7 +1566,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
           break;
         }
         default:
-          assert(SPVM_TYPE_is_value_ref_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag));
+          assert(SPVM_TYPE_is_multi_numeric_ref_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag));
           type = SPVM_TYPE_new(compiler);
           type->basic_type = term_type->basic_type;
           type->dimension = term_type->dimension;
