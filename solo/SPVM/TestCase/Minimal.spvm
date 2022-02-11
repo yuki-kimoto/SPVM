@@ -1,4 +1,6 @@
 class TestCase::Minimal : public {
+  implement TestCase::CommonInterface;
+  
   has x : public rw int;
   has y : public rw int;
   has tests : public TestCase[];

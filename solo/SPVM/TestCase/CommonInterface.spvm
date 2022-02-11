@@ -1,4 +1,5 @@
 class TestCase::CommonInterface : interface_t {
-  compatible TestCase::Minimal;
-  compatible TestCase::Simple;
+  method shared1 : string ();
+  
+  method shared2 : string ();
 }

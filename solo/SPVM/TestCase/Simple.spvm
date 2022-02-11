@@ -1,4 +1,6 @@
 class TestCase::Simple : public {
+  implement TestCase::CommonInterface;
+
   use TestCase::EnumA;
   use TestCase::Minimal;
 

@@ -254,7 +254,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     moduler_dirs_str_offset += 1 + strlen(module_dir);
                   }
                   
-                  SPVM_COMPILER_error(compiler, "Can't find \"%s\" to use \"%s\" in @INC (@INC contains:%s) at %s line %d", cur_rel_file, class_name, moduler_dirs_str, op_use->file, op_use->line);
+                  SPVM_COMPILER_error(compiler, "Can't find the file \"%s\" to load the \"%s\" class in @INC (@INC contains:%s) at %s line %d", cur_rel_file, class_name, moduler_dirs_str, op_use->file, op_use->line);
                   
                   return 0;
                 }

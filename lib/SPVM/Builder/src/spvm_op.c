@@ -2172,10 +2172,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             assert(op_arg_first_type->uv.type->basic_type);
           }
         }
-        if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "Interface classes can't have methods at %s line %d", op_decl->file, op_decl->line);
-        }
-        
+
         // If Method is anon, sub must be method
         if (strlen(method_name) == 0 && method->is_class_method) {
           SPVM_COMPILER_error(compiler, "Anon methods must be instance methods at %s line %d", method->op_method->file, method->op_method->line);

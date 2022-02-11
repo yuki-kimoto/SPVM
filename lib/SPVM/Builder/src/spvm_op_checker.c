@@ -5291,6 +5291,11 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         class->has_precompile_descriptor = anon_method_defined_class->has_precompile_descriptor;
       }
     }
+  }
+  
+  // classes must be implement the interface classes 
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
     
     // This class must be implement the interface classes 
     for (int32_t i = 0; i < class->op_implements->length; i++) {
@@ -5332,7 +5337,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
   }
-  
+
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
     // Check methods
