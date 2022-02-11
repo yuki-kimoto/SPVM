@@ -5315,24 +5315,29 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       
-      SPVM_LIST* implement_methods = implement_class->methods;
-      
-      int32_t implement_error = 0;
-      for (int32_t i = 0; i < implement_methods->length; i++) {
-        SPVM_METHOD* implement_method = SPVM_LIST_fetch(implement_methods, i);
-        SPVM_METHOD* found_method = SPVM_HASH_fetch(class->method_symtable, implement_method->name, strlen(implement_method->name));
-        int32_t is_error = 0;
-        if (found_method) {
-          if (strcmp(found_method->signature, implement_method->signature) != 0) {
+      SPVM_CLASS* found_implement_class = SPVM_HASH_fetch(class->interface_class_symtable, implement_class->name, strlen(implement_class->name));
+      if (!found_implement_class) {
+        SPVM_LIST* implement_methods = implement_class->methods;
+        int32_t implement_error = 0;
+        for (int32_t i = 0; i < implement_methods->length; i++) {
+          SPVM_METHOD* implement_method = SPVM_LIST_fetch(implement_methods, i);
+          SPVM_METHOD* found_method = SPVM_HASH_fetch(class->method_symtable, implement_method->name, strlen(implement_method->name));
+          int32_t is_error = 0;
+          if (found_method) {
+            if (strcmp(found_method->signature, implement_method->signature) != 0) {
+              is_error = 1;
+            }
+          }
+          else {
             is_error = 1;
           }
-        }
-        else {
-          is_error = 1;
-        }
-        if (is_error) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" must implement the \"%s\" method with the signature \"%s. This method is declared in \"%s\" at %s line %d", class->name, implement_method->name, implement_method->signature, implement_class->name, op_implement->file, op_implement->line);
-          return;
+          if (is_error) {
+            SPVM_COMPILER_error(compiler, "The \"%s\" must implement the \"%s\" method with the signature \"%s. This method is declared in \"%s\" at %s line %d", class->name, implement_method->name, implement_method->signature, implement_class->name, op_implement->file, op_implement->line);
+            return;
+          }
+          else {
+            SPVM_HASH_insert(class->interface_class_symtable, implement_class->name, strlen(implement_class->name), implement_class);
+          }
         }
       }
     }

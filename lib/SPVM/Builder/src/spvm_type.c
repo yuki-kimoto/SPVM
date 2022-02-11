@@ -277,6 +277,18 @@ int32_t SPVM_TYPE_has_callback(
   if (class_type_dimension > 0) {
     return 0;
   }
+  
+  if (class_type_flag & SPVM_TYPE_C_FLAG_REF) {
+    return 0;
+  }
+
+  if (callback_type_dimension > 0) {
+    return 0;
+  }
+
+  if (callback_type_flag & SPVM_TYPE_C_FLAG_REF) {
+    return 0;
+  }
 
   SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->basic_types, class_basic_type_id);
   SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(compiler->basic_types, callback_basic_type_id);
@@ -323,12 +335,31 @@ int32_t SPVM_TYPE_has_interface(
   int32_t interface_basic_type_id, int32_t interface_type_dimension, int32_t interface_type_flag)
 {
   (void)compiler;
+  if (class_type_dimension > 0) {
+    return 0;
+  }
+  
+  if (class_type_flag & SPVM_TYPE_C_FLAG_REF) {
+    return 0;
+  }
 
+  if (interface_type_dimension > 0) {
+    return 0;
+  }
+
+  if (interface_type_flag & SPVM_TYPE_C_FLAG_REF) {
+    return 0;
+  }
+  
   SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->basic_types, class_basic_type_id);
   SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_fetch(compiler->basic_types, interface_basic_type_id);
   
   SPVM_CLASS* class = class_basic_type->class;
   SPVM_CLASS* interface = interface_basic_type->class;
+
+  if (strcmp(class->name, interface->name) == 0) {
+    return 1;
+  }
   
   SPVM_CLASS* found_interface_class = SPVM_HASH_fetch(class->interface_class_symtable, interface->name, strlen(interface->name));
   if (found_interface_class) {
