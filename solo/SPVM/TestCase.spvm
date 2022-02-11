@@ -110,6 +110,8 @@ SPVM::Test - SPVM test module
         my $interface : TestCase::CommonInterface = $minimal;
         my $object = (object)$interface;
         my $interface_again = (TestCase::CommonInterface)$object;
+        warn $interface_again->shared1;
+        warn $interface_again->shared2;
       }
     }
     

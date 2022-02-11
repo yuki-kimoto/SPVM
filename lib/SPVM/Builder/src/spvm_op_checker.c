@@ -3882,7 +3882,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             assert(method->class->module_file);
             
             // Add op my if need
-            if (method->class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
+            if (method->class->category == SPVM_CLASS_C_CATEGORY_CALLBACK || method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
               int32_t arg_index;
               for (arg_index = 0; arg_index < method->args->length; arg_index++) {
                 SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, arg_index);
