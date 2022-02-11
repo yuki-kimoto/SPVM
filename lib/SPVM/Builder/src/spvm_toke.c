@@ -1824,10 +1824,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CLASS);
                   return CLASS;
                 }
-                else if (strcmp(keyword, "implement") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IMPLEMENT);
-                  return IMPLEMENT;
-                }
                 else if (strcmp(keyword, "copy") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COPY);
                   return COPY;
@@ -1934,6 +1930,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(keyword, "is_read_only") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IS_READ_ONLY);
                   return IS_READ_ONLY;
+                }
+                else if (strcmp(keyword, "implement") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IMPLEMENT);
+                  return IMPLEMENT;
                 }
                 else if (strcmp(keyword, "int") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
