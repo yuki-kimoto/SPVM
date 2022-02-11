@@ -4666,13 +4666,33 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
           // Dist type is callback
           else if (SPVM_TYPE_is_callback_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
             
-            // Source type is class or callback
+            // Source type is class, callback or interface
             if (
               SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
               || SPVM_TYPE_is_callback_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+              || SPVM_TYPE_is_interface_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
             )
             {
               can_assign = SPVM_TYPE_has_callback(
+                compiler,
+                src_type->basic_type->id, src_type->dimension, src_type->flag,
+                dist_type->basic_type->id, dist_type->dimension, dist_type->flag
+              );
+            }
+            else {
+              can_assign = 0;
+            }
+          }
+          // Dist type is interface
+          else if (SPVM_TYPE_is_callback_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+            // Source type is class, callback, or interface
+            if (
+              SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+              || SPVM_TYPE_is_callback_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+              || SPVM_TYPE_is_interface_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+            )
+            {
+              can_assign = SPVM_TYPE_has_interface(
                 compiler,
                 src_type->basic_type->id, src_type->dimension, src_type->flag,
                 dist_type->basic_type->id, dist_type->dimension, dist_type->flag

@@ -174,6 +174,9 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
     else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
     }
+    else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
+    }
     else if (SPVM_TYPE_is_numeric_array_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY;
     }
@@ -271,11 +274,6 @@ int32_t SPVM_TYPE_has_callback(
 {
   (void)compiler;
 
-  assert(
-    SPVM_TYPE_is_class_type(compiler, class_basic_type_id, class_type_dimension, class_type_flag)
-    || SPVM_TYPE_is_callback_type(compiler, callback_basic_type_id, callback_type_dimension, callback_type_flag)
-  );
-
   SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->basic_types, class_basic_type_id);
   SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(compiler->basic_types, callback_basic_type_id);
   
@@ -312,6 +310,28 @@ int32_t SPVM_TYPE_has_callback(
     else {
       return 0;
     }
+  }
+}
+
+int32_t SPVM_TYPE_has_interface(
+  SPVM_COMPILER* compiler,
+  int32_t class_basic_type_id, int32_t class_type_dimension, int32_t class_type_flag,
+  int32_t interface_basic_type_id, int32_t interface_type_dimension, int32_t interface_type_flag)
+{
+  (void)compiler;
+
+  SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->basic_types, class_basic_type_id);
+  SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_fetch(compiler->basic_types, interface_basic_type_id);
+  
+  SPVM_CLASS* class = class_basic_type->class;
+  SPVM_CLASS* interface = interface_basic_type->class;
+  
+  SPVM_CLASS* found_compatible_class = SPVM_HASH_fetch(interface->compatible_class_symtable, class->name, strlen(class->name));
+  if (found_compatible_class) {
+    return 1;
+  }
+  else {
+    return 0;
   }
 }
 
@@ -896,6 +916,9 @@ int32_t SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id,
     return 1;
   }
   else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, dimension, flag)) {
+    return 1;
+  }
+  else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
     return 1;
   }
   else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
