@@ -15,6 +15,14 @@ class TestCase::Simple : public {
   
   has minimal : rw public TestCase::Minimal;
   
+  method shared1 : string () {
+    return "TestCase::Simple->shared1";
+  }
+  
+  method shared2 : string () {
+    return "TestCase::Simple->shared2";
+  }
+  
   static method new : TestCase::Simple () {
     return new TestCase::Simple;
   }

@@ -1,0 +1,4 @@
+class TestCase::CommonInterface : interface_t {
+  compatible TestCase::Minimal;
+  compatible TestCase::Simple;
+}

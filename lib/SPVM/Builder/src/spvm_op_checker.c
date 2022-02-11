@@ -2476,7 +2476,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_list_args = op_cur->last;
               
               SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
-              const char* method_name = call_method->method->op_name->uv.name;
+              const char* method_name = call_method->method->name;
               
               if (call_method->method->is_class_method) {
                 if (!call_method->is_class_method_call) {
@@ -4684,7 +4684,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
             }
           }
           // Dist type is interface
-          else if (SPVM_TYPE_is_callback_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+          else if (SPVM_TYPE_is_interface_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
             // Source type is class, callback, or interface
             if (
               SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
@@ -5349,10 +5349,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
               is_shared_method = 0;
               break;
             }
-            else {
-              SPVM_COMPILER_error(compiler, "The %s class that is specified as the operand of the compatible statement has the %s method, but the signature is not %s at %s line %d", compatible_class->name, first_compatible_class_method->name, first_compatible_class_method->signature, op_compatible->file, op_compatible->line);
-              return;
-            }
           }
           else {
             is_shared_method = 0;
@@ -5363,7 +5359,10 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           SPVM_METHOD* new_method = SPVM_METHOD_new(compiler);
           new_method->name = first_compatible_class_method->name;
           new_method->signature = first_compatible_class_method->signature;
+          new_method->class = class;
+          
           SPVM_LIST_push(class->methods, new_method);
+          SPVM_HASH_insert(class->method_symtable, new_method->name, strlen(new_method->name), new_method);
         }
       }
     }

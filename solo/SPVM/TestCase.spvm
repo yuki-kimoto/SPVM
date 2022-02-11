@@ -24,7 +24,8 @@ class TestCase {
   use TestCase::DumpTest1;
   use TestCase::Complex_2f;
   use TestCase::Complex_2d;
-
+  use TestCase::CommonInterface;
+  
 =pod
 
 ABCDE
@@ -87,6 +88,31 @@ SPVM::Test - SPVM test module
   static method UINT64_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
 
   static method main : int ($start_file : string, $args : string[]) {
+    {
+      my $simple = TestCase::Simple->new;
+      
+      {
+        my $minimal = TestCase::Minimal->new;
+        my $interface : TestCase::CommonInterface = $minimal;
+        warn $interface->shared1;
+        warn $interface->shared2;
+      }
+
+      {
+        my $simple = TestCase::Simple->new;
+        my $interface : TestCase::CommonInterface = $simple;
+        warn $interface->shared1;
+        warn $interface->shared2;
+      }
+      
+      {
+        my $minimal = TestCase::Minimal->new;
+        my $interface : TestCase::CommonInterface = $minimal;
+        my $object = (object)$interface;
+        my $interface_again = (TestCase::CommonInterface)$object;
+      }
+    }
+    
     {
       my $string = copy "abc";
       
