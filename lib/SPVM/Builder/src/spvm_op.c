@@ -1843,8 +1843,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       // implement declarations
       else if (op_decl->id == SPVM_OP_C_ID_IMPLEMENT) {
-        if (class->category != SPVM_CLASS_C_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "Non-interface classes can't have \"implement\" statements at %s line %d", op_decl->file, op_decl->line);
+        if (class->category != SPVM_CLASS_C_CATEGORY_CLASS) {
+          SPVM_COMPILER_error(compiler, "Non-noramal classes can't have \"implement\" statements at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->op_compatibles, op_decl);
       }
