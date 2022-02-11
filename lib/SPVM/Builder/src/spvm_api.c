@@ -5531,8 +5531,20 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
   return has_callback;
 }
 
-int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id) {
+int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t interface_basic_type_id) {
+  (void)env;
 
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+
+  // Object must be not null
+  assert(object);
+  
+  int32_t object_basic_type_id = object->basic_type_id;
+  int32_t object_type_dimension = object->type_dimension;
+  
+  int32_t has_interface = SPVM_TYPE_has_interface(compiler, object_basic_type_id, object_type_dimension, 0, interface_basic_type_id, 0, 0);
+  
+  return has_interface;
 }
 
 int32_t SPVM_API_enter_scope(SPVM_ENV* env) {
