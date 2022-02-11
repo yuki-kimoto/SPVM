@@ -1030,7 +1030,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
                           SPVM_TYPE* call_method_return_type = call_method->method->return_type;
-                          if (method_call_method->class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
+                          if (method_call_method->class->category == SPVM_CLASS_C_CATEGORY_CALLBACK ||
+                              method_call_method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE)
+                          {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE);
 
                             // Numeric type
