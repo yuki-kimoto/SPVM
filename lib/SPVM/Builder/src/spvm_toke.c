@@ -1825,8 +1825,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return CLASS;
                 }
                 else if (strcmp(keyword, "compatible") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COMPATIBLE);
-                  return COMPATIBLE;
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IMPLEMENT);
+                  return IMPLEMENT;
                 }
                 else if (strcmp(keyword, "copy") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COPY);

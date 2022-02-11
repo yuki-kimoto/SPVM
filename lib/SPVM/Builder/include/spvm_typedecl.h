@@ -6,7 +6,7 @@
 
 // spvm_compatible.h
 struct spvm_compatible;
-typedef struct spvm_compatible SPVM_COMPATIBLE;
+typedef struct spvm_compatible SPVM_IMPLEMENT;
 
 // spvm_hash.h
 struct spvm_hash;

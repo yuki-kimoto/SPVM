@@ -196,7 +196,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "IS_READ_ONLY",
     "MAKE_READ_ONLY",
     "COPY",
-    "COMPATIBLE",
+    "IMPLEMENT",
   };
   
   return id_names;
@@ -1842,7 +1842,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_LIST_push(class->op_allows, op_decl);
       }
       // compatible declarations
-      else if (op_decl->id == SPVM_OP_C_ID_COMPATIBLE) {
+      else if (op_decl->id == SPVM_OP_C_ID_IMPLEMENT) {
         if (class->category != SPVM_CLASS_C_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "Non-interface classes can't have \"compatible\" statements at %s line %d", op_decl->file, op_decl->line);
         }
@@ -2307,7 +2307,7 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
 
 SPVM_OP* SPVM_OP_build_compatible(SPVM_COMPILER* compiler, SPVM_OP* op_compatible, SPVM_OP* op_type) {
   
-  SPVM_COMPATIBLE* compatible = SPVM_COMPATIBLE_new(compiler);
+  SPVM_IMPLEMENT* compatible = SPVM_IMPLEMENT_new(compiler);
   compatible->op_type = op_type;
   op_compatible->uv.compatible = compatible;
   

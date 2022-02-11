@@ -133,7 +133,7 @@ extern int SPVM_yydebug;
     MUTABLE = 269,
     DESCRIPTOR = 270,
     MAKE_READ_ONLY = 271,
-    COMPATIBLE = 272,
+    IMPLEMENT = 272,
     IF = 273,
     UNLESS = 274,
     ELSIF = 275,
@@ -582,7 +582,7 @@ static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "CLASS", "HAS", "METHOD", "OUR", "ENUM",
   "MY", "USE", "AS", "REQUIRE", "ALLOW", "CURRENT_CLASS", "MUTABLE",
-  "DESCRIPTOR", "MAKE_READ_ONLY", "COMPATIBLE", "IF", "UNLESS", "ELSIF",
+  "DESCRIPTOR", "MAKE_READ_ONLY", "IMPLEMENT", "IF", "UNLESS", "ELSIF",
   "ELSE", "FOR", "WHILE", "LAST", "NEXT", "SWITCH", "CASE", "DEFAULT",
   "BREAK", "EVAL", "NAME", "VAR_NAME", "CONSTANT", "EXCEPTION_VAR",
   "UNDEF", "VOID", "BYTE", "SHORT", "INT", "LONG", "FLOAT", "DOUBLE",

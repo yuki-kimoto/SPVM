@@ -196,7 +196,7 @@ enum {
   SPVM_OP_C_ID_IS_READ_ONLY,
   SPVM_OP_C_ID_MAKE_READ_ONLY,
   SPVM_OP_C_ID_COPY,
-  SPVM_OP_C_ID_COMPATIBLE,
+  SPVM_OP_C_ID_IMPLEMENT,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -287,7 +287,7 @@ struct spvm_op {
     SPVM_CASE_INFO* case_info;
     SPVM_USE* use;
     SPVM_ALLOW* allow;
-    SPVM_COMPATIBLE* compatible;
+    SPVM_IMPLEMENT* compatible;
     SPVM_CALL_METHOD* call_method;
     SPVM_FIELD_ACCESS* field_access;
     SPVM_ARRAY_FIELD_ACCESS* array_field_access;
