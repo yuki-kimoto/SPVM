@@ -3014,7 +3014,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_term_invocker);
               int32_t is_valid_invoker_type;
               if (invoker_type) {
-                if (SPVM_TYPE_is_module_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
+                if (SPVM_TYPE_is_class_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
                   is_valid_invoker_type = 1;
                 }
                 else if (SPVM_TYPE_is_multi_numeric_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
@@ -4649,8 +4649,8 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
         // Dist type is class or callback
         else if (dist_type->dimension == 0){
           // Dist type is class
-          if (SPVM_TYPE_is_module_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-            if (SPVM_TYPE_is_module_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          if (SPVM_TYPE_is_class_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+            if (SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
               if (dist_type->basic_type->id == src_type->basic_type->id) {
                 can_assign = 1;
               }
@@ -4667,7 +4667,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
             
             // Source type is class or callback
             if (
-              SPVM_TYPE_is_module_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+              SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
               || SPVM_TYPE_is_callback_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
             )
             {
