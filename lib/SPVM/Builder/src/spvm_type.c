@@ -330,7 +330,7 @@ int32_t SPVM_TYPE_has_interface(
   SPVM_CLASS* class = class_basic_type->class;
   SPVM_CLASS* interface = interface_basic_type->class;
   
-  SPVM_CLASS* found_compatible_class = SPVM_HASH_fetch(interface->compatible_class_symtable, class->name, strlen(class->name));
+  SPVM_CLASS* found_compatible_class = SPVM_HASH_fetch(interface->interface_class_symtable, class->name, strlen(class->name));
   if (found_compatible_class) {
     return 1;
   }

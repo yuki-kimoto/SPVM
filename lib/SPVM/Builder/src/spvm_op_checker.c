@@ -5306,7 +5306,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       SPVM_CLASS* compatible_class = compatible_basic_type->class;
       
-      SPVM_HASH_insert(class->compatible_class_symtable, compatible_class->name, strlen(compatible_class->name), compatible_class);
+      SPVM_HASH_insert(class->interface_class_symtable, compatible_class->name, strlen(compatible_class->name), compatible_class);
     }
 
     // Ceate the methods of interface class
