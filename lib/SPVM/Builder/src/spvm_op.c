@@ -37,7 +37,7 @@
 #include "spvm_array_field_access.h"
 #include "spvm_string_buffer.h"
 #include "spvm_allow.h"
-
+#include "spvm_compatible.h"
 
 
 
@@ -196,6 +196,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "IS_READ_ONLY",
     "MAKE_READ_ONLY",
     "COPY",
+    "COMPATIBLE",
   };
   
   return id_names;
@@ -1761,36 +1762,48 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       switch (descriptor->id) {
-        case SPVM_DESCRIPTOR_C_ID_CALLBACK_T:
+        case SPVM_DESCRIPTOR_C_ID_CALLBACK_T: {
           class->category = SPVM_CLASS_C_CATEGORY_CALLBACK;
           category_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_POINTER_T:
+        }
+        case SPVM_DESCRIPTOR_C_ID_POINTER_T: {
           class->category = SPVM_CLASS_C_CATEGORY_CLASS;
           class->flag |= SPVM_CLASS_C_FLAG_POINTER;
           category_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_MULNUM_T:
+        }
+        case SPVM_DESCRIPTOR_C_ID_MULNUM_T: {
           class->category = SPVM_CLASS_C_CATEGORY_MULNUM;
           category_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_PRIVATE:
+        }
+        case SPVM_DESCRIPTOR_C_ID_PRIVATE: {
           // Default is private
           access_control_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_PUBLIC:
+        }
+        case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
           class->flag |= SPVM_CLASS_C_FLAG_PUBLIC;
           access_control_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_PRECOMPILE:
+        }
+        case SPVM_DESCRIPTOR_C_ID_PRECOMPILE: {
           class->has_precompile_descriptor = 1;
           break;
-        default:
+        }
+        case SPVM_DESCRIPTOR_C_ID_INTERFACE_T: {
+          class->category = SPVM_CLASS_C_CATEGORY_INTERFACE;
+          category_descriptors_count++;
+          break;
+        }
+        default: {
           SPVM_COMPILER_error(compiler, "Invalid class descriptor %s at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_class->file, op_class->line);
+        }
       }
     }
     if (category_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "callback, mulnum_t, pointer can be specified only one at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
+      SPVM_COMPILER_error(compiler, "callback_t, mulnum_t, pointer_t interface_t can be specified only one at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
       SPVM_COMPILER_error(compiler, "private, public can be specified only one at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
@@ -1828,12 +1841,22 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_ALLOW) {
         SPVM_LIST_push(class->op_allows, op_decl);
       }
+      // compatible declarations
+      else if (op_decl->id == SPVM_OP_C_ID_COMPATIBLE) {
+        if (class->category != SPVM_CLASS_C_CATEGORY_INTERFACE) {
+          SPVM_COMPILER_error(compiler, "Non-interface classes can't have \"compatible\" statements at %s line %d", op_decl->file, op_decl->line);
+        }
+        SPVM_LIST_push(class->op_compatibles, op_decl);
+      }
       // Class var declarations
       else if (op_decl->id == SPVM_OP_C_ID_CLASS_VAR) {
         SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
 
         if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-          SPVM_COMPILER_error(compiler, "Callback class can't have class variable at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "Callback classes can't have class variables at %s line %d", op_decl->file, op_decl->line);
+        }
+        else if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+          SPVM_COMPILER_error(compiler, "Interface classes can't have class variables at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->class_vars, op_decl->uv.class_var);
 
@@ -1934,7 +1957,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_FIELD* field = op_decl->uv.field;
         
         if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-          SPVM_COMPILER_error(compiler, "Callback class can't have field at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "Callback classes can't have fields at %s line %d", op_decl->file, op_decl->line);
+        }
+        else if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+          SPVM_COMPILER_error(compiler, "Interface classes can't have fields at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->fields, field);
         
@@ -2146,6 +2172,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             assert(op_arg_first_type->uv.type->basic_type);
           }
         }
+        if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+          SPVM_COMPILER_error(compiler, "Interface classes can't have methods at %s line %d", op_decl->file, op_decl->line);
+        }
         
         if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
           // Method having callback_t descriptor must be method
@@ -2274,6 +2303,21 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   SPVM_OP_build_use(compiler, op_use, op_type_use, NULL, 0);
   
   return op_allow;
+}
+
+SPVM_OP* SPVM_OP_build_compatible(SPVM_COMPILER* compiler, SPVM_OP* op_compatible, SPVM_OP* op_type) {
+  
+  SPVM_COMPATIBLE* compatible = SPVM_COMPATIBLE_new(compiler);
+  compatible->op_type = op_type;
+  op_compatible->uv.compatible = compatible;
+  
+  // add use stack
+  SPVM_TYPE* type_use = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
+  SPVM_OP* op_type_use = SPVM_OP_new_op_type(compiler, type_use, op_type->file, op_type->line);
+  SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_type->file, op_type->line);
+  SPVM_OP_build_use(compiler, op_use, op_type_use, NULL, 0);
+  
+  return op_compatible;
 }
 
 SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_OP* op_name, SPVM_OP* op_descriptors, SPVM_OP* op_type) {

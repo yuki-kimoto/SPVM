@@ -7,6 +7,7 @@ enum {
   SPVM_CLASS_C_CATEGORY_CLASS,
   SPVM_CLASS_C_CATEGORY_CALLBACK,
   SPVM_CLASS_C_CATEGORY_MULNUM,
+  SPVM_CLASS_C_CATEGORY_INTERFACE,
 };
 
 enum {
@@ -41,6 +42,7 @@ struct spvm_class {
   SPVM_OP* op_type;
   SPVM_LIST* op_uses;
   SPVM_LIST* op_allows;
+  SPVM_LIST* op_compatibles;
   const char* name;
   SPVM_OP* op_init_method;
   SPVM_LIST* anon_methods;

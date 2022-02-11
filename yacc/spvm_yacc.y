@@ -19,7 +19,7 @@
 %}
 
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS MUTABLE
-%token <opval> DESCRIPTOR MAKE_READ_ONLY
+%token <opval> DESCRIPTOR MAKE_READ_ONLY COMPATIBLE
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -40,7 +40,7 @@
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow
 %type <opval> new array_init
-%type <opval> my_var var
+%type <opval> my_var var compatible
 %type <opval> expression opt_expressions expressions opt_expression case_statements
 %type <opval> field_name method_name
 %type <opval> type qualified_type basic_type array_type array_type_with_length ref_type  qualified_type_or_void
@@ -168,6 +168,7 @@ declaration
   | our ';'
   | use
   | allow
+  | compatible
   | init_block
 
 init_block
@@ -213,6 +214,11 @@ allow
       $$ = SPVM_OP_build_allow(compiler, $1, $2);
     }
 
+compatible
+  : COMPATIBLE basic_type ';'
+    {
+      $$ = SPVM_OP_build_compatible(compiler, $1, $2);
+    }
 
 enumeration
   : opt_descriptors ENUM enumeration_block

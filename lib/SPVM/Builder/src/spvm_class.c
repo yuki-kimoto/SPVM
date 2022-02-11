@@ -14,7 +14,8 @@ const char* const* SPVM_CLASS_C_CATEGORY_NAMES(void) {
   static const char* const category_names[] = {
     "class",
     "callback_t",
-    "value",
+    "mulnum_t",
+    "interface_t"
   };
   
   return category_names;
@@ -47,6 +48,7 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   class->info_switch_infos = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->op_uses = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->op_allows = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  class->op_compatibles = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->info_constants = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->anon_methods = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->class_alias_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);

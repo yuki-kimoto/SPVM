@@ -374,6 +374,7 @@ lib/SPVM/Builder/include/spvm_check_ast_info.h
 lib/SPVM/Builder/include/spvm_class.h
 lib/SPVM/Builder/include/spvm_class_var.h
 lib/SPVM/Builder/include/spvm_class_var_access.h
+lib/SPVM/Builder/include/spvm_compatible.h
 lib/SPVM/Builder/include/spvm_compiler.h
 lib/SPVM/Builder/include/spvm_constant.h
 lib/SPVM/Builder/include/spvm_csource_builder_precompile.h
@@ -419,6 +420,7 @@ lib/SPVM/Builder/src/spvm_case_info.c
 lib/SPVM/Builder/src/spvm_class.c
 lib/SPVM/Builder/src/spvm_class_var.c
 lib/SPVM/Builder/src/spvm_class_var_access.c
+lib/SPVM/Builder/src/spvm_compatible.c
 lib/SPVM/Builder/src/spvm_compiler.c
 lib/SPVM/Builder/src/spvm_constant.c
 lib/SPVM/Builder/src/spvm_csource_builder_precompile.c

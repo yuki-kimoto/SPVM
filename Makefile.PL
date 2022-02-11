@@ -88,6 +88,7 @@ my $inc = '-Ilib/SPVM/Builder/include';
 
 # Source files
 my @spvm_csource_files = qw(
+  lib/SPVM/Builder/src/spvm_allocator.c
   lib/SPVM/Builder/src/spvm_allow.c
   lib/SPVM/Builder/src/spvm_api.c
   lib/SPVM/Builder/src/spvm_array_field_access.c
@@ -98,7 +99,7 @@ my @spvm_csource_files = qw(
   lib/SPVM/Builder/src/spvm_class.c
   lib/SPVM/Builder/src/spvm_class_var_access.c
   lib/SPVM/Builder/src/spvm_class_var.c
-  lib/SPVM/Builder/src/spvm_allocator.c
+  lib/SPVM/Builder/src/spvm_compatible.c
   lib/SPVM/Builder/src/spvm_compiler.c
   lib/SPVM/Builder/src/spvm_constant.c
   lib/SPVM/Builder/src/spvm_csource_builder_precompile.c

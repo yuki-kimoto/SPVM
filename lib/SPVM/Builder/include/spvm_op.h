@@ -196,6 +196,7 @@ enum {
   SPVM_OP_C_ID_IS_READ_ONLY,
   SPVM_OP_C_ID_MAKE_READ_ONLY,
   SPVM_OP_C_ID_COPY,
+  SPVM_OP_C_ID_COMPATIBLE,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -286,6 +287,7 @@ struct spvm_op {
     SPVM_CASE_INFO* case_info;
     SPVM_USE* use;
     SPVM_ALLOW* allow;
+    SPVM_COMPATIBLE* compatible;
     SPVM_CALL_METHOD* call_method;
     SPVM_FIELD_ACCESS* field_access;
     SPVM_ARRAY_FIELD_ACCESS* array_field_access;
@@ -346,6 +348,7 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
 SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_classes);
 SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_type_alias, int32_t is_require);
 SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type);
+SPVM_OP* SPVM_OP_build_compatible(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type);
 SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_methodname, SPVM_OP* op_terms);
 SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPVM_OP* op_type, SPVM_OP* op_term, SPVM_OP* op_descriptors);
 SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumeration, SPVM_OP* op_enumeration_block, SPVM_OP* op_descripters);
