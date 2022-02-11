@@ -636,7 +636,7 @@ sub compile_spvm_core_sources {
     spvm_block.c
     spvm_call_method.c
     spvm_case_info.c
-    spvm_compatible.c
+    spvm_implement.c
     spvm_compiler.c
     spvm_constant.c
     spvm_csource_builder_precompile.c

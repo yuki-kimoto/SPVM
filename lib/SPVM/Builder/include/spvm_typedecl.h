@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-// spvm_compatible.h
+// spvm_implement.h
 struct spvm_compatible;
 typedef struct spvm_compatible SPVM_IMPLEMENT;
 

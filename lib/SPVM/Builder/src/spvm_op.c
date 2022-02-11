@@ -37,7 +37,7 @@
 #include "spvm_array_field_access.h"
 #include "spvm_string_buffer.h"
 #include "spvm_allow.h"
-#include "spvm_compatible.h"
+#include "spvm_implement.h"
 
 
 

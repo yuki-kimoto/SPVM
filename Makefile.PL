@@ -99,7 +99,7 @@ my @spvm_csource_files = qw(
   lib/SPVM/Builder/src/spvm_class.c
   lib/SPVM/Builder/src/spvm_class_var_access.c
   lib/SPVM/Builder/src/spvm_class_var.c
-  lib/SPVM/Builder/src/spvm_compatible.c
+  lib/SPVM/Builder/src/spvm_implement.c
   lib/SPVM/Builder/src/spvm_compiler.c
   lib/SPVM/Builder/src/spvm_constant.c
   lib/SPVM/Builder/src/spvm_csource_builder_precompile.c
