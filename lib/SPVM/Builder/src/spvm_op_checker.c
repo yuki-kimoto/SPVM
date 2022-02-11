@@ -36,6 +36,7 @@
 #include "spvm_check_ast_info.h"
 #include "spvm_string_buffer.h"
 #include "spvm_use.h"
+#include "spvm_compatible.h"
 
 void SPVM_OP_CHECKER_free_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_MY* my) {
   (void)compiler;
@@ -5269,6 +5270,29 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_CLASS* anon_method_defined_class = SPVM_HASH_fetch(compiler->class_symtable, method->anon_method_defined_class_name, strlen(method->anon_method_defined_class_name));
         SPVM_LIST_push(anon_method_defined_class->anon_methods, method);
         class->has_precompile_descriptor = anon_method_defined_class->has_precompile_descriptor;
+      }
+    }
+
+    // Check compatible types
+    for (int32_t i = 0; i < class->op_compatibles->length; i++) {
+      SPVM_OP* op_compatible = SPVM_LIST_fetch(class->op_compatibles, i);
+      
+      SPVM_COMPATIBLE* compatible = op_compatible->uv.compatible;
+      
+      SPVM_OP* op_type_compatible = compatible->op_type;
+      SPVM_TYPE* compatible_type = op_type_compatible->uv.type;
+      
+      SPVM_BASIC_TYPE* compatible_basic_type = compatible_type->basic_type;
+      
+      SPVM_CLASS* compatible_class = compatible_basic_type->class;
+      
+      SPVM_LIST* compatible_class_methods = compatible_class->methods;
+      for (int32_t i = 0; i < compatible_class_methods->length; i++) {
+        SPVM_METHOD* compatible_method = (SPVM_METHOD*)SPVM_LIST_fetch(compatible_class_methods, i);
+        const char* compatible_method_name = compatible_method->name;
+        const char* compatible_method_signature = compatible_method->signature;
+        
+        
       }
     }
   }
