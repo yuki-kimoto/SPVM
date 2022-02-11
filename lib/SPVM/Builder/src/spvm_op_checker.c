@@ -5273,26 +5273,58 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
 
-    // Check compatible types
-    for (int32_t i = 0; i < class->op_compatibles->length; i++) {
-      SPVM_OP* op_compatible = SPVM_LIST_fetch(class->op_compatibles, i);
+    // Ceate the methods of interface class
+    SPVM_LIST* first_compatible_class_methods;
+    if (class->op_compatibles->length > 0) {
+      SPVM_OP* first_op_compatible = SPVM_LIST_fetch(class->op_compatibles, 0);
       
-      SPVM_COMPATIBLE* compatible = op_compatible->uv.compatible;
+      SPVM_COMPATIBLE* first_compatible = first_op_compatible->uv.compatible;
       
-      SPVM_OP* op_type_compatible = compatible->op_type;
-      SPVM_TYPE* compatible_type = op_type_compatible->uv.type;
+      SPVM_OP* first_op_type_compatible = first_compatible->op_type;
+      SPVM_TYPE* first_compatible_type = first_op_type_compatible->uv.type;
       
-      SPVM_BASIC_TYPE* compatible_basic_type = compatible_type->basic_type;
+      SPVM_BASIC_TYPE* first_compatible_basic_type = first_compatible_type->basic_type;
       
-      SPVM_CLASS* compatible_class = compatible_basic_type->class;
+      SPVM_CLASS* first_compatible_class = first_compatible_basic_type->class;
       
-      SPVM_LIST* compatible_class_methods = compatible_class->methods;
-      for (int32_t i = 0; i < compatible_class_methods->length; i++) {
-        SPVM_METHOD* compatible_method = (SPVM_METHOD*)SPVM_LIST_fetch(compatible_class_methods, i);
-        const char* compatible_method_name = compatible_method->name;
-        const char* compatible_method_signature = compatible_method->signature;
-        
-        
+      first_compatible_class_methods = first_compatible_class->methods;
+      
+      for (int32_t k = 0; k < first_compatible_class_methods->length; k++) {
+        SPVM_METHOD* first_compatible_class_method = (SPVM_METHOD*)SPVM_LIST_fetch(first_compatible_class_methods, k);
+
+        int32_t is_shared_method = 1;
+        for (int32_t i = 1; i < class->op_compatibles->length; i++) {
+          SPVM_OP* op_compatible = SPVM_LIST_fetch(class->op_compatibles, i);
+          
+          SPVM_COMPATIBLE* compatible = op_compatible->uv.compatible;
+          
+          SPVM_OP* op_type_compatible = compatible->op_type;
+          SPVM_TYPE* compatible_type = op_type_compatible->uv.type;
+          
+          SPVM_BASIC_TYPE* compatible_basic_type = compatible_type->basic_type;
+          
+          SPVM_CLASS* compatible_class = compatible_basic_type->class;
+          
+          SPVM_HASH* compatible_class_method_symtabele = compatible_class->method_symtable;
+          
+          SPVM_METHOD* found_method = SPVM_HASH_fetch(compatible_class_method_symtabele, first_compatible_class_method->name, strlen(first_compatible_class_method->name));
+          if (found_method) {
+            if (strcmp(first_compatible_class_method->signature, found_method->signature) != 0) {
+              is_shared_method = 0;
+              break;
+            }
+          }
+          else {
+            is_shared_method = 0;
+            break;
+          }
+        }
+        if (is_shared_method) {
+          SPVM_METHOD* new_method = SPVM_METHOD_new(compiler);
+          new_method->name = first_compatible_class_method->name;
+          new_method->signature = first_compatible_class_method->signature;
+          SPVM_LIST_push(class->methods, new_method);
+        }
       }
     }
   }
