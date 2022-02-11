@@ -2176,47 +2176,62 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_COMPILER_error(compiler, "Interface classes can't have methods at %s line %d", op_decl->file, op_decl->line);
         }
         
-        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-          // Method having callback_t descriptor must be method
-          if (method->is_class_method) {
-            SPVM_COMPILER_error(compiler, "The method belonging to the class with a callback_t descriptor must be a instance method at %s line %d", method->op_method->file, method->op_method->line);
-          }
-          // Method having callback_t descriptor must be anon
-          if (strlen(method_name) != 0) {
-            SPVM_COMPILER_error(compiler, "The method belonging to the class with a callback_t descriptor can't have the name at %s line %d", method->op_method->file, method->op_method->line);
-          }
-        }
-        
         // If Method is anon, sub must be method
         if (strlen(method_name) == 0 && method->is_class_method) {
           SPVM_COMPILER_error(compiler, "Anon methods must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
         }
 
-        // If class is callback, sub must not be native
-        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK && (method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
-          SPVM_COMPILER_error(compiler, "Method of callback can't have native descriptor at %s line %d", method->op_method->file, method->op_method->line);
-        }
-
-        // If class is callback, sub must not be precompile
-        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK && (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE)) {
-          SPVM_COMPILER_error(compiler, "Method of callback can't have precompile descriptor at %s line %d", method->op_method->file, method->op_method->line);
-        }
-
-        // If class is callback, sub must not be precompile
-        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK && (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE)) {
-          SPVM_COMPILER_error(compiler, "Method of callback can't have precompile descriptor at %s line %d", method->op_method->file, method->op_method->line);
-        }
-
-        // If class is callback, sub must not be precompile
-        if (!method->op_block) {
-          if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-            // OK
+        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
+          // Method having callback_t descriptor must be method
+          if (method->is_class_method) {
+            SPVM_COMPILER_error(compiler, "Methods of callback classes must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
           }
-          else if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
-            // OK
+          
+          // Method having callback_t descriptor must be anon
+          if (strlen(method_name) != 0) {
+            SPVM_COMPILER_error(compiler, "Methods of callback classes can't have names at %s line %d", method->op_method->file, method->op_method->line);
           }
-          else {
-            SPVM_COMPILER_error(compiler, "Method \"%s\" must have the block at %s line %d", method->name, method->op_method->file, method->op_method->line);
+          
+          // If class is callback, the method must not be native
+          if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
+            SPVM_COMPILER_error(compiler, "Methods of callback classes  can't have native descriptors at %s line %d", method->op_method->file, method->op_method->line);
+          }
+
+          // If class is callback, the method must not be precompile
+          if (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
+            SPVM_COMPILER_error(compiler, "Methods of callback classes can't have precompile descriptors at %s line %d", method->op_method->file, method->op_method->line);
+          }
+          
+          // If class is callback, the method must not be precompile
+          if (method->op_block) {
+            SPVM_COMPILER_error(compiler, "Methods of callback classes can't have the blocks at %s line %d", method->op_method->file, method->op_method->line);
+          }
+        }
+        else if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+          // Method having interface_t descriptor must be method
+          if (method->is_class_method) {
+            SPVM_COMPILER_error(compiler, "Methods of interface classes must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
+          }
+          
+          // If class is interface, the method must not be native
+          if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
+            SPVM_COMPILER_error(compiler, "Methods of interface classes  can't have native descriptors at %s line %d", method->op_method->file, method->op_method->line);
+          }
+
+          // If class is interface, the method must not be precompile
+          if (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
+            SPVM_COMPILER_error(compiler, "Methods of interface classes can't have precompile descriptors at %s line %d", method->op_method->file, method->op_method->line);
+          }
+          
+          // If class is interface, the method must not be precompile
+          if (method->op_block) {
+            SPVM_COMPILER_error(compiler, "Methods of interface classes can't have the blocks at %s line %d", method->op_method->file, method->op_method->line);
+          }
+        }
+        
+        if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
+          if (method->op_block) {
+            SPVM_COMPILER_error(compiler, "Native methods can't have blocks at %s line %d", method->op_method->file, method->op_method->line);
           }
         }
         
