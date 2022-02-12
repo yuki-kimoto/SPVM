@@ -7,6 +7,7 @@ use warnings;
 use Test::More;
 
 use FindBin;
+use Config;
 
 use SPVM 'TestCase::NativeAPI';
 use SPVM 'TestCase::NativeAPI2';
@@ -14,6 +15,24 @@ use SPVM 'TestCase::Pointer';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+
+{
+  my $link_info = $main::NATIVE_API2_LINK_INFO;
+  
+  my $config = SPVM::Builder::Config->new_gnu99;
+  
+  ok($link_info->class_name, 'TestCase::NativeAPI2');
+  ok($link_info->ld, $config->ld);
+  ok($link_info->ldflags, $config->ldflags);
+  like($link_info->output_file, qr|TestCase/NativeAPI2\.$Config{dlext}|);
+  my $is_object_file_infos = 1;
+  for my $object_file_info (@{$link_info->object_file_infos}) {
+    unless ($object_file_info->isa('SPVM::Builder::ObjectFileInfo')) {
+      $is_object_file_infos = 0;
+    }
+  }
+  ok($is_object_file_infos);
+}
 
 # Use resource
 {
