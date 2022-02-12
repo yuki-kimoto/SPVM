@@ -4671,7 +4671,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of getting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4688,7 +4688,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         void* object = *(void**)&object_vars[opcode->operand1];
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of getting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4705,7 +4705,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of getting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4722,7 +4722,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of getting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4739,7 +4739,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of getting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4756,7 +4756,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of getting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4773,7 +4773,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of getting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4790,7 +4790,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of setting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4806,7 +4806,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of setting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4822,7 +4822,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of setting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4838,7 +4838,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of setting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4854,7 +4854,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of setting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4870,7 +4870,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of setting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4886,7 +4886,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t field_offset = field->offset;
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of setting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4903,7 +4903,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t field_offset = field->offset;
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_nolen_raw(env, "Invocants of setting fields must not be undefined values");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
