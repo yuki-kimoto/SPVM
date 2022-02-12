@@ -89,6 +89,11 @@ SPVM::Test - SPVM test module
 
   static method main : int ($start_file : string, $args : string[]) {
     {
+      my $minimal = (TestCase::Minimal)undef;
+      
+      eval { $minimal->clear; };
+    }
+    {
       {
         my $minimal = TestCase::Minimal->new;
         my $interface : TestCase::CommonInterface = $minimal;

@@ -9,6 +9,11 @@ class TestCase::Minimal : public {
     
     return new TestCase::Minimal;
   }
+  
+  method clear : void () {
+    $self->{x} = 0;
+    $self->{y} = 0;
+  }
 
   method shared1 : string () {
     return "TestCase::Minimal->shared1";
