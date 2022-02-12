@@ -174,6 +174,9 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
     else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
     }
+    else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
+    }
     else if (SPVM_TYPE_is_numeric_array_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY;
     }
@@ -274,11 +277,18 @@ int32_t SPVM_TYPE_has_callback(
   if (class_type_dimension > 0) {
     return 0;
   }
+  
+  if (class_type_flag & SPVM_TYPE_C_FLAG_REF) {
+    return 0;
+  }
 
-  assert(
-    SPVM_TYPE_is_class_type(compiler, class_basic_type_id, class_type_dimension, class_type_flag)
-    || SPVM_TYPE_is_callback_type(compiler, callback_basic_type_id, callback_type_dimension, callback_type_flag)
-  );
+  if (callback_type_dimension > 0) {
+    return 0;
+  }
+
+  if (callback_type_flag & SPVM_TYPE_C_FLAG_REF) {
+    return 0;
+  }
 
   SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->basic_types, class_basic_type_id);
   SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(compiler->basic_types, callback_basic_type_id);
@@ -316,6 +326,47 @@ int32_t SPVM_TYPE_has_callback(
     else {
       return 0;
     }
+  }
+}
+
+int32_t SPVM_TYPE_has_interface(
+  SPVM_COMPILER* compiler,
+  int32_t class_basic_type_id, int32_t class_type_dimension, int32_t class_type_flag,
+  int32_t interface_basic_type_id, int32_t interface_type_dimension, int32_t interface_type_flag)
+{
+  (void)compiler;
+  if (class_type_dimension > 0) {
+    return 0;
+  }
+  
+  if (class_type_flag & SPVM_TYPE_C_FLAG_REF) {
+    return 0;
+  }
+
+  if (interface_type_dimension > 0) {
+    return 0;
+  }
+
+  if (interface_type_flag & SPVM_TYPE_C_FLAG_REF) {
+    return 0;
+  }
+  
+  SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->basic_types, class_basic_type_id);
+  SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_fetch(compiler->basic_types, interface_basic_type_id);
+  
+  SPVM_CLASS* class = class_basic_type->class;
+  SPVM_CLASS* interface = interface_basic_type->class;
+
+  if (strcmp(class->name, interface->name) == 0) {
+    return 1;
+  }
+  
+  SPVM_CLASS* found_interface_class = SPVM_HASH_fetch(class->interface_class_symtable, interface->name, strlen(interface->name));
+  if (found_interface_class) {
+    return 1;
+  }
+  else {
+    return 0;
   }
 }
 
@@ -902,6 +953,12 @@ int32_t SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id,
   else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, dimension, flag)) {
     return 1;
   }
+  else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
+    return 1;
+  }
+  else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
+    return 1;
+  }
   else if (SPVM_TYPE_is_any_object_type(compiler, basic_type_id, dimension, flag)) {
     return 1;
   }
@@ -935,6 +992,9 @@ int32_t SPVM_TYPE_is_object_array_type(SPVM_COMPILER* compiler, int32_t basic_ty
         return 1;
       }
       else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, element_dimension, flag)) {
+        return 1;
+      }
+      else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, element_dimension, flag)) {
         return 1;
       }
       else if (SPVM_TYPE_is_any_object_type(compiler, basic_type_id, element_dimension, flag)) {
@@ -1014,6 +1074,35 @@ int32_t SPVM_TYPE_is_callback_type(SPVM_COMPILER* compiler, int32_t basic_type_i
   }
   
   return is_class_type;
+}
+
+int32_t SPVM_TYPE_is_interface_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+  
+  int32_t is_interface_type;
+  if (dimension == 0 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+    const char* basic_type_name = basic_type->name;
+    SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
+    // Class
+    if (class) {
+      if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+        is_interface_type = 1;
+      }
+      else {
+        is_interface_type = 0;
+      }
+    }
+    // Numeric type
+    else {
+      is_interface_type = 0;
+    }
+  }
+  // Array
+  else {
+    is_interface_type = 0;
+  }
+  
+  return is_interface_type;
 }
 
 int32_t SPVM_TYPE_is_string_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {

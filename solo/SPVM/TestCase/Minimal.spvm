@@ -1,4 +1,6 @@
 class TestCase::Minimal : public {
+  implement TestCase::CommonInterface;
+  
   has x : public rw int;
   has y : public rw int;
   has tests : public TestCase[];
@@ -7,4 +9,13 @@ class TestCase::Minimal : public {
     
     return new TestCase::Minimal;
   }
+
+  method shared1 : string () {
+    return "TestCase::Minimal->shared1";
+  }
+  
+  method shared2 : string () {
+    return "TestCase::Minimal->shared2";
+  }
+
 }

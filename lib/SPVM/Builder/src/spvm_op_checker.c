@@ -36,6 +36,7 @@
 #include "spvm_check_ast_info.h"
 #include "spvm_string_buffer.h"
 #include "spvm_use.h"
+#include "spvm_implement.h"
 
 void SPVM_OP_CHECKER_free_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_MY* my) {
   (void)compiler;
@@ -1180,15 +1181,19 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, type->basic_type->name, strlen(type->basic_type->name));
                   
                   if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-                    SPVM_COMPILER_error(compiler, "Can't create object of callback class at %s line %d", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Can't create the object of a callback type at %s line %d", op_cur->file, op_cur->line);
+                    return;
+                  }
+                  else if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+                    SPVM_COMPILER_error(compiler, "Can't create the object of a interface type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
                   else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-                    SPVM_COMPILER_error(compiler, "Can't create object of mulnum_t class at %s line %d", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Can't create the object of a multi numeric type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
                   else if (class->flag & SPVM_CLASS_C_FLAG_POINTER) {
-                    SPVM_COMPILER_error(compiler, "Can't create object of struct class at %s line %d", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Can't create the object of a pointer type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
                   
@@ -2475,7 +2480,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_list_args = op_cur->last;
               
               SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
-              const char* method_name = call_method->method->op_name->uv.name;
+              const char* method_name = call_method->method->name;
               
               if (call_method->method->is_class_method) {
                 if (!call_method->is_class_method_call) {
@@ -3593,11 +3598,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
           
-          if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK && (method->op_block || method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
-            SPVM_COMPILER_error(compiler, "Callback sub can't have implementation at %s line %d", method->op_method->file, method->op_method->line);
-            return;
-          }
-          
           // Check method
           if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
             SPVM_CHECK_AST_INFO check_ast_info_struct = {0};
@@ -3882,7 +3882,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             assert(method->class->module_file);
             
             // Add op my if need
-            if (method->class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
+            if (method->class->category == SPVM_CLASS_C_CATEGORY_CALLBACK || method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
               int32_t arg_index;
               for (arg_index = 0; arg_index < method->args->length; arg_index++) {
                 SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, arg_index);
@@ -4665,13 +4665,33 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
           // Dist type is callback
           else if (SPVM_TYPE_is_callback_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
             
-            // Source type is class or callback
+            // Source type is class, callback or interface
             if (
               SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
               || SPVM_TYPE_is_callback_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+              || SPVM_TYPE_is_interface_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
             )
             {
               can_assign = SPVM_TYPE_has_callback(
+                compiler,
+                src_type->basic_type->id, src_type->dimension, src_type->flag,
+                dist_type->basic_type->id, dist_type->dimension, dist_type->flag
+              );
+            }
+            else {
+              can_assign = 0;
+            }
+          }
+          // Dist type is interface
+          else if (SPVM_TYPE_is_interface_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+            // Source type is class, callback, or interface
+            if (
+              SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+              || SPVM_TYPE_is_callback_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+              || SPVM_TYPE_is_interface_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+            )
+            {
+              can_assign = SPVM_TYPE_has_interface(
                 compiler,
                 src_type->basic_type->id, src_type->dimension, src_type->flag,
                 dist_type->basic_type->id, dist_type->dimension, dist_type->flag
@@ -5273,6 +5293,56 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
   }
   
+  // classes must be implement the interface classes 
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
+    
+    // This class must be implement the interface classes 
+    for (int32_t i = 0; i < class->op_implements->length; i++) {
+      SPVM_OP* op_implement = SPVM_LIST_fetch(class->op_implements, i);
+      
+      SPVM_IMPLEMENT* implement = op_implement->uv.implement;
+      
+      SPVM_OP* op_type_implement = implement->op_type;
+      SPVM_TYPE* implement_type = op_type_implement->uv.type;
+      
+      SPVM_BASIC_TYPE* implement_basic_type = implement_type->basic_type;
+      
+      SPVM_CLASS* implement_class = implement_basic_type->class;
+      
+      if (implement_class->category != SPVM_CLASS_C_CATEGORY_INTERFACE) {
+        SPVM_COMPILER_error(compiler, "The operand of the implement statment must be the interface class at %s line %d", implement_class->name, op_implement->file, op_implement->line);
+        return;
+      }
+      
+      SPVM_CLASS* found_implement_class = SPVM_HASH_fetch(class->interface_class_symtable, implement_class->name, strlen(implement_class->name));
+      if (!found_implement_class) {
+        SPVM_LIST* implement_methods = implement_class->methods;
+        int32_t implement_error = 0;
+        for (int32_t i = 0; i < implement_methods->length; i++) {
+          SPVM_METHOD* implement_method = SPVM_LIST_fetch(implement_methods, i);
+          SPVM_METHOD* found_method = SPVM_HASH_fetch(class->method_symtable, implement_method->name, strlen(implement_method->name));
+          int32_t is_error = 0;
+          if (found_method) {
+            if (strcmp(found_method->signature, implement_method->signature) != 0) {
+              is_error = 1;
+            }
+          }
+          else {
+            is_error = 1;
+          }
+          if (is_error) {
+            SPVM_COMPILER_error(compiler, "The \"%s\" must implement the \"%s\" method with the signature \"%s. This method is declared in \"%s\" at %s line %d", class->name, implement_method->name, implement_method->signature, implement_class->name, op_implement->file, op_implement->line);
+            return;
+          }
+          else {
+            SPVM_HASH_insert(class->interface_class_symtable, implement_class->name, strlen(implement_class->name), implement_class);
+          }
+        }
+      }
+    }
+  }
+
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
     // Check methods

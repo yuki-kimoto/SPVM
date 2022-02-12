@@ -628,6 +628,7 @@ sub compile_spvm_core_sources {
   
   # SPVM runtime source files
   my @spvm_runtime_src_base_names = qw(
+    spvm_allocator.c
     spvm_allow.c
     spvm_api.c
     spvm_array_field_access.c
@@ -635,7 +636,7 @@ sub compile_spvm_core_sources {
     spvm_block.c
     spvm_call_method.c
     spvm_case_info.c
-    spvm_allocator.c
+    spvm_implement.c
     spvm_compiler.c
     spvm_constant.c
     spvm_csource_builder_precompile.c

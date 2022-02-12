@@ -273,6 +273,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_copy_raw,
     SPVM_API_copy,
     SPVM_API_shorten,
+    SPVM_API_has_interface,
   };
   
   SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime_noenv(compiler, sizeof(env_init));
@@ -1742,6 +1743,19 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         if (object) {
           int_vars[0] = env->has_callback(env, object, callback_basic_type_id);
+        }
+        else {
+          int_vars[0] = 0;
+        }
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_HAS_INTERFACE: {
+        void* object = *(void**)&object_vars[opcode->operand1];
+        int32_t callback_basic_type_id = opcode->operand2;
+        
+        if (object) {
+          int_vars[0] = env->has_interface(env, object, callback_basic_type_id);
         }
         else {
           int_vars[0] = 0;
@@ -4110,6 +4124,27 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         break;
       }
+      case SPVM_OPCODE_C_ID_CHECK_INTERFACE: {
+        void* object = *(void**)&object_vars[opcode->operand1];
+        
+        if (object != NULL) {
+          int32_t check_basic_type_id = opcode->operand2;
+          
+          int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
+          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
+          
+          if (env->has_interface(env, object, check_basic_type_id)) {
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
+          }
+          else {
+            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible callback type.");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+        }
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD_BY_ID:
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
       {
@@ -5459,6 +5494,22 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
   int32_t has_callback = SPVM_TYPE_has_callback(compiler, object_basic_type_id, object_type_dimension, 0, callback_basic_type_id, 0, 0);
   
   return has_callback;
+}
+
+int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t interface_basic_type_id) {
+  (void)env;
+
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+
+  // Object must be not null
+  assert(object);
+  
+  int32_t object_basic_type_id = object->basic_type_id;
+  int32_t object_type_dimension = object->type_dimension;
+  
+  int32_t has_interface = SPVM_TYPE_has_interface(compiler, object_basic_type_id, object_type_dimension, 0, interface_basic_type_id, 0, 0);
+  
+  return has_interface;
 }
 
 int32_t SPVM_API_enter_scope(SPVM_ENV* env) {

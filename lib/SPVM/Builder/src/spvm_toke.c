@@ -254,7 +254,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     moduler_dirs_str_offset += 1 + strlen(module_dir);
                   }
                   
-                  SPVM_COMPILER_error(compiler, "Can't find \"%s\" to use \"%s\" in @INC (@INC contains:%s) at %s line %d", cur_rel_file, class_name, moduler_dirs_str, op_use->file, op_use->line);
+                  SPVM_COMPILER_error(compiler, "Can't find the file \"%s\" to load the \"%s\" class in @INC (@INC contains:%s) at %s line %d", cur_rel_file, class_name, moduler_dirs_str, op_use->file, op_use->line);
                   
                   return 0;
                 }
@@ -1931,9 +1931,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IS_READ_ONLY);
                   return IS_READ_ONLY;
                 }
+                else if (strcmp(keyword, "implement") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IMPLEMENT);
+                  return IMPLEMENT;
+                }
                 else if (strcmp(keyword, "int") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
                   return INT;
+                }
+                else if (strcmp(keyword, "interface_t") == 0) {
+                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_INTERFACE_T, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_descriptor;
+                  return DESCRIPTOR;
                 }
                 break;
               }

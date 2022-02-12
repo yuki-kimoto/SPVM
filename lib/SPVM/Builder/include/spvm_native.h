@@ -272,5 +272,6 @@ struct spvm_env {
   void* (*copy_raw)(SPVM_ENV* env, void* object);
   void* (*copy)(SPVM_ENV* env, void* object);
   void (*shorten)(SPVM_ENV* env, void* string, int32_t new_length);
+  int32_t (*has_interface)(SPVM_ENV* env, void* object, int32_t interface_basic_type_id);
 };
 #endif

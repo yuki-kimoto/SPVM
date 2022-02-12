@@ -1,4 +1,6 @@
 class TestCase::Simple : public {
+  implement TestCase::CommonInterface;
+
   use TestCase::EnumA;
   use TestCase::Minimal;
 
@@ -14,6 +16,14 @@ class TestCase::Simple : public {
   has title : public int;
   
   has minimal : rw public TestCase::Minimal;
+  
+  method shared1 : string () {
+    return "TestCase::Simple->shared1";
+  }
+  
+  method shared2 : string () {
+    return "TestCase::Simple->shared2";
+  }
   
   static method new : TestCase::Simple () {
     return new TestCase::Simple;

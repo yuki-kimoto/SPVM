@@ -384,6 +384,7 @@ lib/SPVM/Builder/include/spvm_enumeration_value.h
 lib/SPVM/Builder/include/spvm_field.h
 lib/SPVM/Builder/include/spvm_field_access.h
 lib/SPVM/Builder/include/spvm_hash.h
+lib/SPVM/Builder/include/spvm_implement.h
 lib/SPVM/Builder/include/spvm_limit.h
 lib/SPVM/Builder/include/spvm_list.h
 lib/SPVM/Builder/include/spvm_method.h
@@ -429,6 +430,7 @@ lib/SPVM/Builder/src/spvm_enumeration_value.c
 lib/SPVM/Builder/src/spvm_field.c
 lib/SPVM/Builder/src/spvm_field_access.c
 lib/SPVM/Builder/src/spvm_hash.c
+lib/SPVM/Builder/src/spvm_implement.c
 lib/SPVM/Builder/src/spvm_list.c
 lib/SPVM/Builder/src/spvm_method.c
 lib/SPVM/Builder/src/spvm_my.c
@@ -548,6 +550,7 @@ solo/SPVM/TestCase.spvm
 solo/SPVM/TestCase/Allow.spvm
 solo/SPVM/TestCase/Callback1.spvm
 solo/SPVM/TestCase/Callback2.spvm
+solo/SPVM/TestCase/CommonInterface.spvm
 solo/SPVM/TestCase/Comparator.spvm
 solo/SPVM/TestCase/Comparator/Byte.spvm
 solo/SPVM/TestCase/ComparatorAnon.spvm

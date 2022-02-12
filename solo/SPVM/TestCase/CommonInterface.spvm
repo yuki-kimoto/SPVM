@@ -1,0 +1,5 @@
+class TestCase::CommonInterface : interface_t {
+  method shared1 : string ();
+  
+  method shared2 : string ();
+}

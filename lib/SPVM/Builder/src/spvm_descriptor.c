@@ -17,6 +17,7 @@ const char* const* SPVM_DESCRIPTOR_C_ID_NAMES(void) {
     "ro",
     "wo",
     "static",
+    "interface_t",
   };
   
   return id_names;

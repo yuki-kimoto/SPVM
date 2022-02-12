@@ -74,7 +74,7 @@
 /** @{ */
 /** The MAJOR version number (increased when backwards API compatibility is broken). */
 #define SPVM_UTF8PROC_VERSION_MAJOR 2
-/** The MINOR version number (increased when new functionality is added in a backwards-compatible manner). */
+/** The MINOR version number (increased when new functionality is added in a backwards-implement manner). */
 #define SPVM_UTF8PROC_VERSION_MINOR 2
 /** The PATCH version (increased for fixes that do not change the API). */
 #define SPVM_UTF8PROC_VERSION_PATCH 0
