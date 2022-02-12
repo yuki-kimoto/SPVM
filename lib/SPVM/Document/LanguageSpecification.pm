@@ -189,8 +189,11 @@ The list of keywords.
   case
   cmp
   class
+  copy
   default
   die
+  divui
+  divul
   double
   dump
   elsif
@@ -207,12 +210,16 @@ The list of keywords.
   if
   isa
   isweak
+  is_read_only
+  implement
   int
+  interface_t
   last
   length
   lt
   le
   long
+  make_read_only
   my
   mulnum_t
   method
@@ -221,6 +228,7 @@ The list of keywords.
   ne
   next
   new
+  new_string_len
   our
   object
   print
@@ -230,6 +238,8 @@ The list of keywords.
   pointer_t
   ref
   refcnt
+  remui
+  remul
   return
   require
   rw
