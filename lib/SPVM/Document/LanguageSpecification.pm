@@ -843,13 +843,12 @@ The SPVM language is assumed to be parsed by yacc/bison.
 Show the definition of syntax parsing that is written by yacc/bison. The definition of the precidence of operators is contained in this difinition.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS MUTABLE
-  %token <opval> DESCRIPTOR
+  %token <opval> DESCRIPTOR MAKE_READ_ONLY IMPLEMENT
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
   %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
   %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
-  
   %type <opval> grammar
   %type <opval> opt_classes classes class class_block
   %type <opval> opt_declarations declarations declaration
@@ -864,11 +863,10 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow
   %type <opval> new array_init
-  %type <opval> my_var var
+  %type <opval> my_var var implement
   %type <opval> expression opt_expressions expressions opt_expression case_statements
   %type <opval> field_name method_name
   %type <opval> type qualified_type basic_type array_type array_type_with_length ref_type  qualified_type_or_void
-  
   %right <opval> ASSIGN SPECIAL_ASSIGN
   %left <opval> LOGICAL_OR
   %left <opval> LOGICAL_AND
@@ -878,8 +876,8 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA NUMERIC_CMP STRING_CMP
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
-  %left <opval> '*' DIVIDE REMAINDER
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP
+  %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -918,6 +916,7 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
     | our ';'
     | use
     | allow
+    | implement
     | init_block
 
   init_block
@@ -933,6 +932,9 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
 
   allow
     : ALLOW basic_type ';'
+
+  implement
+    : IMPLEMENT basic_type ';'
 
   enumeration
     : opt_descriptors ENUM enumeration_block
@@ -1017,14 +1019,13 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
     | BREAK ';'
     | RETURN ';'
     | RETURN expression ';'
-    | DIE ';'
     | DIE expression ';'
-    | WARN ';'
     | WARN expression ';'
     | PRINT expression ';'
     | weaken_field ';'
     | unweaken_field ';'
     | ';'
+    | MAKE_READ_ONLY expression ';'
 
   for_statement
     : FOR '(' opt_expression ';' expression_or_logical_op ';' opt_expression ')' block
@@ -1123,6 +1124,9 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
     | DUMP expression
     | DEREF var
     | CREATE_REF var
+    | NEW_STRING_LEN expression
+    | IS_READ_ONLY expression
+    | COPY expression
 
   inc
     : INC expression
@@ -1137,7 +1141,11 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
     | expression '-' expression
     | expression '*' expression
     | expression DIVIDE expression
+    | expression DIVIDE_UNSIGNED_INT expression
+    | expression DIVIDE_UNSIGNED_LONG expression
     | expression REMAINDER expression
+    | expression REMAINDER_UNSIGNED_INT expression
+    | expression REMAINDER_UNSIGNED_LONG expression
     | expression BIT_XOR expression
     | expression BIT_AND expression
     | expression BIT_OR expression
@@ -1267,7 +1275,7 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
 
   method_name
     : NAME
-
+  
 The following is a correspondence table between tokens in yacc/bison and keywords and operators in SPVM.
 
 =begin html
@@ -1319,6 +1327,9 @@ The following is a correspondence table between tokens in yacc/bison and keyword
     <td>CONVERT</td><td>(TypeName)</td>
   </tr>
   <tr>
+    <td>COPY</td><td>copy</td>
+  </tr>
+  <tr>
     <td>CURRENT_CLASS</td><td>&</td>
   </tr>
   <tr>
@@ -1334,13 +1345,19 @@ The following is a correspondence table between tokens in yacc/bison and keyword
     <td>DEREF</td><td>$</td>
   </tr>
   <tr>
-    <td>DESCRIPTOR</td><td>descriptor</td>
+    <td>DESCRIPTOR</td><td>The name of a descriptor</td>
   </tr>
   <tr>
     <td>DIE</td><td>die</td>
   </tr>
   <tr>
     <td>DIVIDE</td><td>/</td>
+  </tr>
+  <tr>
+    <td>DIVIDE_UNSIGNED_INT</td><td>divui</td>
+  </tr>
+  <tr>
+    <td>DIVIDE_UNSIGNED_LONG</td><td>divul</td>
   </tr>
   <tr>
     <td>DOT3</td><td>...</td>
@@ -1382,6 +1399,9 @@ The following is a correspondence table between tokens in yacc/bison and keyword
     <td>IF</td><td>if</td>
   </tr>
   <tr>
+    <td>IMPLEMENT</td><td>implement</td>
+  </tr>
+  <tr>
     <td>INC</td><td>++</td>
   </tr>
   <tr>
@@ -1395,6 +1415,9 @@ The following is a correspondence table between tokens in yacc/bison and keyword
   </tr>
   <tr>
     <td>ISWEAK</td><td>isweak</td>
+  </tr>
+  <tr>
+    <td>IS_READ_ONLY</td><td>is_read_only</td>
   </tr>
   <tr>
     <td>LAST</td><td>last</td>
@@ -1415,7 +1438,10 @@ The following is a correspondence table between tokens in yacc/bison and keyword
     <td>LONG</td><td>long</td>
   </tr>
   <tr>
-    <td>METHOD</td><td>sub</td>
+    <td>MAKE_READ_ONLY</td><td>make_read_only</td>
+  </tr>
+  <tr>
+    <td>METHOD</td><td>method</td>
   </tr>
   <tr>
     <td>MINUS</td><td>-</td>
@@ -1431,6 +1457,9 @@ The following is a correspondence table between tokens in yacc/bison and keyword
   </tr>
   <tr>
     <td>NEW</td><td>new</td>
+  </tr>
+  <tr>
+    <td>NEW_STRING_LEN</td><td>new_string_len</td>
   </tr>
   <tr>
     <td>NEXT</td><td>next</td>
@@ -1479,6 +1508,12 @@ The following is a correspondence table between tokens in yacc/bison and keyword
   </tr>
   <tr>
     <td>REMAINDER</td><td>%</td>
+  </tr>
+  <tr>
+    <td>REMAINDER_UNSIGNED_INT</td><td>remui</td>
+  </tr>
+  <tr>
+    <td>REMAINDER_UNSIGNED_LONG</td><td>remul</td>
   </tr>
   <tr>
     <td>REQUIRE</td><td>require</td>
@@ -4598,7 +4633,7 @@ Note that SPVM does not have the context different from Perl, and array length o
 
 =head2 String Creation Operator
 
-The string creation operator is an L<Unary Operator|"Unary Operators"> to create a L<string|"String"> with the length.
+The string creation operator C<new_string_len> is an L<Unary Operator|"Unary Operators"> to create a L<string|"String"> with the length.
 
   new_string_len OPERAND
 
@@ -4615,7 +4650,7 @@ B<Examples of string creation operators:>
 
 =head2 copy Operator
 
-The L<copy> operator is an L<Unary Operator|"Unary Operators"> to copy the object.
+The C<copy> operator is an L<Unary Operator|"Unary Operators"> to copy the object.
 
   copy OPERAND
 
