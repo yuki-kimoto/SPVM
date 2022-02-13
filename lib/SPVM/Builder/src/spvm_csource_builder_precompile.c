@@ -1432,7 +1432,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
   }
 
   // Convert string
-  SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_buffer[256];\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string_buffer[21];\n");
   
   // Copy arguments to variables with type information
   if (method->args->length > 0) {
@@ -2449,39 +2449,39 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_buffer, \"%\" PRId8, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string_buffer, \"%\" PRId8, ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_buffer, \"%\" PRId16, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string_buffer, \"%\" PRId16, ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           case SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_buffer, \"%\" PRId32, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string_buffer, \"%\" PRId32, ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_buffer, \"%\" PRId64, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string_buffer, \"%\" PRId64, ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_buffer, \"%g\", ");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string_buffer, \"%g\", ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_buffer, \"%g\", ");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string_buffer, \"%g\", ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
         }
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string_length = strlen(tmp_buffer);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_raw(env, tmp_buffer, string_length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string_length = strlen(convert_string_buffer);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_raw(env, convert_string_buffer, string_length);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", string);\n");
