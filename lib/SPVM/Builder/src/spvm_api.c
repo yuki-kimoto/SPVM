@@ -1232,7 +1232,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
   
   int32_t exception_flag;
   
-  // Call native sub
+  // Call native method
   if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
     // Enter scope
     int32_t original_mortal_stack_top = SPVM_API_enter_scope(env);
@@ -1285,14 +1285,16 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
       env->set_exception(env, exception);
     }
   }
-  // Call precompiled sub
-  else if (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
-    int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method->precompile_address;
-    exception_flag = (*precompile_address)(env, stack);
-  }
-  // Call sub virtual machine
   else {
-    exception_flag = SPVM_API_call_spvm_method_vm(env, method_id, stack);
+    // Call precompiled method
+    if (method->precompile_address) {
+      int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method->precompile_address;
+      exception_flag = (*precompile_address)(env, stack);
+    }
+    // Call sub virtual machine
+    else {
+      exception_flag = SPVM_API_call_spvm_method_vm(env, method_id, stack);
+    }
   }
   
   return exception_flag;
