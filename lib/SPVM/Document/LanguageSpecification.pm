@@ -1672,7 +1672,7 @@ The list of class descriptors.
 <table>
   <tr>
     <th>
-      Descriptor
+      Descriptors
    </th>
     <th>
       Meaning
@@ -1683,7 +1683,7 @@ The list of class descriptors.
       <b>public</b>
     </td>
     <td>
-      This class is public. Other classes can L<"new"> this class.
+      This class is public. Other classes can new this class.
     </td>
   </tr>
   <tr>
@@ -1691,7 +1691,7 @@ The list of class descriptors.
       <b>private</b>
     </td>
     <td>
-      This class is private. Other classes can't L<"new"> this class. This is default setting.
+      This class is private. Other classes can't new this class. This is default setting.
     </td>
   </tr>
   <tr>
@@ -1699,7 +1699,15 @@ The list of class descriptors.
       <b>callback_t</b>
     </td>
     <td>
-      This class is L<"Callback Type">.
+      This class is a callback type.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>interface_t</b>
+    </td>
+    <td>
+      This class is an interface type.
     </td>
   </tr>
   <tr>
@@ -1707,7 +1715,7 @@ The list of class descriptors.
       <b>mulnum_t</b>
     </td>
     <td>
-      This class is L<"Multi Numeric Types">.
+      This class is a multi numeric type.
     </td>
   </tr>
   <tr>
@@ -1715,7 +1723,7 @@ The list of class descriptors.
       <b>pointer_t</b>
     </td>
     <td>
-      This class is L<"Pointer Type">.
+      This class is a pointer type.
     </td>
   </tr>
   <tr>
@@ -1723,7 +1731,7 @@ The list of class descriptors.
       <b>precompile</b>
     </td>
     <td>
-      Do precompile all methods in this class, except for accessor, and enum. 
+      Do precompile all methods in this class, except for accessors, and enumurations. 
     </td>
   </tr>
 </table>
@@ -1762,6 +1770,71 @@ B<Destructor Example:>
     method DESTROY : void () {
       print "DESTROY";
     }
+  }
+
+=head2 Callback
+
+Callback is a L<class|"Class"> that is designed to receive a callback method.
+
+A callback type is a L<"Class Type"> with L<"Class Descriptors"> "callback_t".
+
+  class Comparator: callback_t {
+    method : int ($x1 : object, $x2 : object);
+  }
+
+A callback type must have only one L<"Method Definition">. The method must be L<"Instance Method">.
+
+Method names of the callback type must be anonymouse.
+
+L<"Field Definition"> and L<"Class Variable Definition"> can't be defined.
+
+A L<private class descriptor|"Class Descriptors"> is specifed.
+
+If the object has the same method declaration of the callback type, it can be assinged to the callback type.
+
+  # the definiton of a callback type
+  class Comparator: callback_t {
+    method : int ($x1 : object, $x2 : object);
+  }
+  
+  # The definition of a class
+  class SomeComparator {
+    static method new: int () {
+      return new SomeComparator;
+    }
+  
+    method : int ($x1 : object, $x2 : object) {
+  
+    }
+  }
+  
+  # The object can be assign to the callback type
+  my $comparator: Comparator = SomeComparator->new;
+
+If the object is created by the syntax of L<"Create Callback"> and the object has the same method declaration of the callback type,
+it can be assinged to the callback type.
+
+  # The definition of a callback type
+  class Comparator: callback_t {
+    method : int ($x1 : object, $x2 : object);
+  }
+  
+  # Create a callback and it is assigned to a callback type
+  my $comparator : Comparator = method : int ($x1 : object, $x2 : object) {
+    
+  }
+
+=head2 Interface
+
+Interface is a L<class|"Class"> that is designed to class abstructions.
+
+Interface Type is a L<"Class Type"> with L<"Class Descriptors"> "interface_t".
+
+  class Asset: interface_t {
+    method add_chunk : void ($chunk : string);
+    method contains : int ($substring : string);
+    method size : int ();
+    method is_file : int ();
   }
 
 =head2 Allow Class Access
@@ -2246,6 +2319,31 @@ Variable Length Argument can recieve Array.
 If you want to treat the value of Array as an individual element of the variable length argument, cast it to Type other than Array Type.
 
   sprintf("aaa %p", (object)[(object)1, 2.0]);
+
+=head2 Instance Method
+
+An instance method is defined without the C<static> keyword.
+
+  method add_chunk : void ($chunk : string) {
+    # ...
+  }
+
+An instance method can be called from the object.
+
+  my $asset = Asset->new;
+  $asset->add_chumk("foo");
+
+=head2 Class Method
+
+A class method is defined with the C<static> keyword.
+
+  static method sum : int ($num1 : int, $num2 : int) {
+    # ...
+  }
+
+A class method can be called from the L<class name|"Class Names">.
+
+  my $total = Foo->sum(1, 2);
 
 =head2 Method Descriptor
 
@@ -3599,13 +3697,13 @@ B<Instance Method Call Example>
   my $point = new Point;
   $point->set_x(3);
 
-Since the object created by L<"Create Callback Object"> is a normal object, you can call Method.
+Since the object created by L<"Create Callback"> is a normal object, you can call Method.
 
   OBJECT_EXPRESSION->(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
-B<Example that calls Method from the object created with Create Callback Object>
+B<Example that calls Method from the object created with Create Callback>
 
-An Example that calls a Method from the object created by Create Callback Object.
+An Example that calls a Method from the object created by Create Callback.
 
   my $cb_obj = method : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
@@ -5668,55 +5766,23 @@ Field cannot be defined for Pointer Type. If it is defined, a compilation error 
 Callback Type is a L<"Class Type"> with L<"Class Descriptors"> "callback_t".
 
   class Comparator: callback_t {
-    method: int ($x1: object, $x2: object);
+    method : int ($x1 : object, $x2 : object);
   }
 
-Callback Type is designed to provide a feature corresponding to Function Pointer in C language.
+See also L<"Callback">.
 
-Callback Type must have only one L<"Method Definition">. Method must be L<"Method">.
+=head2 Interface Type
 
-Method names of Callback Type must be anonymouse.
+Interface Type is a L<"Class Type"> with L<"Class Descriptors"> "interface_t".
 
-Callback Type must not have any L<"Field Definition"> and L<"Class Variable Definition">.
-
-Callback Type is a L<"Object Types">.
-
-Callback Type cannot be the operand of L<"new Statement">.
-
-The variable of Callback Type can be assigned a L<"Class Type"> object that matches the Callback Type. "Matches the Callback Type" means the following two cases.
-
-1. Class Type object with anonimouse name and the L<"Signature"> is same as Callback Type
-
-  # Callback Type Definition
-  class Comparator: callback_t {
-    method: int ($x1: object, $x2: object);
+  class Asset: interface_t {
+    method add_chunk : void ($chunk : string);
+    method contains : int ($substring : string);
+    method size : int ();
+    method is_file : int();
   }
-  
-  # Class Definition
-  class SomeComparator {
-    static method new: int () {
-      return new SomeComparator;
-    }
-  
-    method: int ($x1: object, $x2: object) {
-  
-    }
-  }
-  
-  # The object can be assign to the variable of Callback Type
-  my $comparator: Comparator = SomeComparator->new;
 
-2. Class Type object which is created by L<"Create Callback Object"> and the L<"Signature"> is same as Callback Type.
-
-  Definition of #Callback Type
-  class Comparator: callback_t {
-    method: int ($x1: object, $x2: object);
-  }
-  
-  # The object which is created by Create Callback Object can be assign to the variable of Callback Type
-  my $comparator : Comparator = method: int ($x1: object, $x2: object) {
-  
-  }
+See also L<"Interface">.
 
 =head2 Any Object Type
 
@@ -6495,84 +6561,33 @@ When the object has Back references of Weaken Reference, Undefined Value is assi
 
 The above process is done recursively.
 
-=head1 Callback
+=head2 Create Callback
 
-Callback Type in SPVM is a Class Type in which only one unnamed Method with no implementation is defined. If callback_tDescriptor is specified in L<"Class Definition">, it becomes Callback Type.
-
-The purpose of Callback Type is to provide a Type that can be assigned to different objects when they have the same MethodDefinition. Consider that the function corresponding to the C function pointer is realized in SPVM.
-
-  class Foo1 {
-    static method new : Foo1 () {
-      new Foo1;
-    }
-    method : int ($num : int) {
-      return 1 + $num;
-    }
-  }
-  
-  class Foo2 {
-    static method new : Foo2 () {
-      new Foo2;
-    }
-    method : int ($num : int) {
-      return 2 + $num;
-    }
-  }
-  
-  class FooCallback : callback_t {
-  method : int ($num : int);
-  }
-
-Foo1 and Foo2 have the same MethodDefinition "method: int ($num: int)". Now suppose you want to selectively call the Foo1 or :Foo2 Method.
-
-In this case, if you define a Callback Type FooCallback with the same MethodDefinition, you can assign either object to this Type. Then you can call Method from this object.
-
-  my $foo1 = Foo1->new;
-  my $foo2 = Foo2->new;
-  
-  my $foo : FooCallback;
-  
-  my $flag = 1;
-  if ($flag) {
-    $foo = $foo1;
-  }
-  else {
-    $foo = $foo2;
-  }
-  
-  my $ret = $foo->(5);
-
-If $flag is 1, the anonymous Method of Foo1 is called, otherwise the anonymous Method of Foo2 is called.
-
-For more information on Callback Type, see L<"Callback Type">.
-
-=head2 Create Callback Object
-
-Create Callback Object is a Syntax that creates an object that conforms to Callback Type by using a special syntax for the purpose of Callback.
+Create Callback is a Syntax that creates an object that conforms to Callback Type by using a special syntax for the purpose of Callback.
 
   method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ARGSN : TYPEn) {
   
   }
 
-When Create Callback Object is performed, L<"Class Definition"> is performed internally, an object based on that Class is generated, and <a href = " Returned as # language-expression ">Expression</a>. It is possible to assign to a variable like the following.
+When Create Callback is performed, L<"Class Definition"> is performed internally, an object based on that Class is generated, and <a href = " Returned as # language-expression ">Expression</a>. It is possible to assign to a variable like the following.
 
   my $cb_obj = method : TYPE (ARGS1 : TYPE1, ARGS2 : TYPE2, ..., ARGSn : TYPEn) {
   
   };
 
-Method defined by Create Callback Object must be L<"Method">. It must also be a Method with no name.
+Method defined by Create Callback must be L<"Method">. It must also be a Method with no name.
 
-B<Create Callback Object Example>
+B<Create Callback Example>
 
   my $comparator = method : int ($x1 : object, $x2 : object) {
   
   }
 
-You can call Method because the object created by Create Callback Object is a normal object. For the call to Create Callback Object, see L<"Method Call">.
+You can call Method because the object created by Create Callback is a normal object. For the call to Create Callback, see L<"Method Call">.
 
 =head2 Capture
 
-In Create Callback Object, you can use the syntax called Capture to use the variables defined outside the Method defined by Create Callback Object inside the Method defined by Create Callback Object.
+In Create Callback, you can use the syntax called Capture to use the variables defined outside the Method defined by Create Callback inside the Method defined by Create Callback.
 
   # Capture
   [VariableName1 : Type1, VariableName2 : Type2] method MethodNames : int ($x1 : object, $x2 : object) {
@@ -6598,7 +6613,7 @@ If L<"Local Variable"> with the same name as the Capture variable exists in the 
 
 If there is a L<"Class Variable"> with the same name as the Capture variable, access the Capture variable.
 
-If you write Create Callback Object and Capture without using syntax sugar, it will be as follows.
+If you write Create Callback and Capture without using syntax sugar, it will be as follows.
 
   class ComapartorImpl {
     has foo : int;
