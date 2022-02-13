@@ -4410,18 +4410,20 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
               break;
             }
             case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE: {
-              SPVM_STRING_BUFFER_add(string_buffer, "    void* object = stack[0].oval;");
+              SPVM_STRING_BUFFER_add(string_buffer, "    void* object = stack[0].oval;\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = env->get_instance_method_id(env, object, \"");
               SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
               SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
               SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_signature);
               SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    if (call_method_id < 0) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Method not found ");
-              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
-              SPVM_STRING_BUFFER_add(string_buffer, "->");
+              SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Can't find the \\\"");
               SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
-              SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "\\\" method with the signature \\\"");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_signature);
+              SPVM_STRING_BUFFER_add(string_buffer, "\\\" that is declared in \\\"");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "\\\"\");\n");
               SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
               SPVM_STRING_BUFFER_add(string_buffer, "      return 1;\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    }\n");

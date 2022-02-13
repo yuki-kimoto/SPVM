@@ -4268,12 +4268,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
 
         call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
         if (call_method_id < 0) {
-          void* invocant_class_name_string = env->get_type_name_raw(env, object);
-          const char* invocant_class_name= env->get_chars(env, invocant_class_name_string);
           memset(tmp_buffer, sizeof(tmp_buffer), 0);
-          snprintf(tmp_buffer, 255, "Can't find the \"%s->%s\" method with the signature \"%s\" that is declared in \"%s\"", invocant_class_name, decl_method_name, decl_method_signature, decl_method->class->name);
-          env->inc_ref_count(env, invocant_class_name_string);
-          env->dec_ref_count(env, invocant_class_name_string);
+          snprintf(tmp_buffer, 255, "Can't find the \"%s\" method with the signature \"%s\" that is declared in \"%s\"", decl_method_name, decl_method_signature, decl_method->class->name);
           void* exception = env->new_string_nolen_raw(env, tmp_buffer);
           env->set_exception(env, exception);
           exception_flag = 1;
