@@ -11,6 +11,7 @@ use File::Path 'mkpath';
 use File::Find 'find';
 use File::Basename 'dirname', 'basename';
 
+use SPVM::Builder;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
 use SPVM::Builder::ObjectFileInfo;
@@ -971,12 +972,22 @@ sub create_precompile_csource {
   my $class_rel_file_without_ext = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
   my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
   my $source_file = "$src_dir/$class_rel_file_without_ext.precompile.c";
+  
+  my $spvm_module_dir = $INC{'SPVM/Builder.pm'};
+  $spvm_module_dir =~ s/\.pm$//;
+  $spvm_module_dir .= '/src';
+  
+  my $spvm_precompile_soruce_file = "$spvm_module_dir/spvm_csource_builder_precompile.c";
+  
+  unless (-f $spvm_precompile_soruce_file) {
+    confess "Can't find $spvm_precompile_soruce_file";
+  }
 
   my $need_generate = SPVM::Builder::Util::need_generate({
     global_force => $self->force,
     config_force => 0,
     output_file => $source_file,
-    input_files => [$module_file],
+    input_files => [$module_file, $spvm_precompile_soruce_file],
   });
   
   if ($need_generate) {
