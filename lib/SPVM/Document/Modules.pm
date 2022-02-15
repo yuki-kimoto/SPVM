@@ -96,4 +96,6 @@ The list of some CPAN modules.
 
 =item * L<Math|SPVM::Math> - Math functions
 
+=item * L<JSON|SPVM::JSON> - JSON
+
 =back
