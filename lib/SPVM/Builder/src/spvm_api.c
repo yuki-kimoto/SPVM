@@ -3912,7 +3912,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_IS_READ_ONLY: {
         void* string = *(void**)&object_vars[opcode->operand1];
         int32_t is_read_only = env->is_read_only(env, string);
-        int_vars[opcode->operand0] = is_read_only;
+        int_vars[0] = is_read_only;
         break;
       }
       case SPVM_OPCODE_C_ID_CONCAT: {

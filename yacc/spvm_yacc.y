@@ -42,7 +42,7 @@
 %type <opval> new array_init
 %type <opval> my_var var implement
 %type <opval> expression opt_expressions expressions opt_expression case_statements
-%type <opval> field_name method_name
+%type <opval> field_name method_name is_read_only
 %type <opval> type qualified_type basic_type array_type array_type_with_length ref_type  qualified_type_or_void
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -714,6 +714,7 @@ expression
     {
       $$ = SPVM_OP_new_op_false(compiler, $1);
     }
+  | is_read_only
   | has_implement
 
 expressions
@@ -783,13 +784,15 @@ unary_op
     {
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
-  | IS_READ_ONLY expression
-    {
-      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
-    }
   | COPY expression
     {
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+
+is_read_only
+  : IS_READ_ONLY expression
+    {
+      $$ = SPVM_OP_build_is_read_only(compiler, $1, $2);
     }
 
 inc

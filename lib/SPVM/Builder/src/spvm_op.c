@@ -1630,6 +1630,19 @@ SPVM_OP* SPVM_OP_build_has_implement(SPVM_COMPILER* compiler, SPVM_OP* op_has_im
   return op_assign;
 }
 
+SPVM_OP* SPVM_OP_build_is_read_only(SPVM_COMPILER* compiler, SPVM_OP* op_is_read_only, SPVM_OP* op_term) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_is_read_only, op_is_read_only->last, op_term);
+
+  SPVM_OP* op_name_var_condition = SPVM_OP_new_op_name(compiler, "@condition_flag", op_term->file, op_term->line);
+  SPVM_OP* op_var_condition = SPVM_OP_new_op_var(compiler, op_name_var_condition);
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_term->file, op_term->line);
+  SPVM_OP_build_assign(compiler, op_assign, op_var_condition, op_is_read_only);
+
+  return op_assign;
+}
+
 SPVM_OP* SPVM_OP_build_unweaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_unweaken, SPVM_OP* op_field_access) {
   
   SPVM_OP* op_unweaken_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_UNWEAKEN_FIELD, op_unweaken->file, op_unweaken->line);
