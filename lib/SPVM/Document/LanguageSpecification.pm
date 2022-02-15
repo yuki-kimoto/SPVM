@@ -1605,64 +1605,82 @@ The following is a correspondence table between tokens in yacc/bison and keyword
 
 =head1 Class
 
+Descriptions of classes.
+
 =head2 Class Definition
 
-B<Class Definition> is the following syntax.
+The C<class> keyword defins a class. A class has a class block.
 
-  class PACAKGE_NAME {
+  class CLASS_NAME {
   
   }
 
-PACAKGE_NAME must follow the rule for L<"Class Names">.
+Class names must follow the rule of L<class names|"Class Names">.
 
-L<"Class Descriptors"> can be specified by the following syntax.
+L<Class descriptors|"Class Descriptors"> can be specified after C<:>.
 
-  class PACAKGE_NAME : PACAKGE_DESCRIPTOR {
+  class CLASS_NAME : CLASS_DESCRIPTOR {
   
   }
   
-  class PACAKGE_NAME : PACAKGE_DESCRIPTOR1 PACAKGE_DESCRIPTOR2 PACAKGE_DESCRIPTORN {
+  class CLASS_NAME : CLASS_DESCRIPTOR1 CLASS_DESCRIPTOR2 ... CLASS_DESCRIPTORN {
   
   }
 
-B<Class Definition Example:>
+B<Examples of class definitions:>
 
-  # Class names
+  # The definition of a class
   class Point {
   
   }
 
-  # Class names and class descriptors
+  # With class descriptors
   class Point : public {
   
   }
 
-In direct children of the class block, L<"use">, L<"our">, L<"has">, L<"enum">, L<"sub"> can be defined.
+Direct children of the class block must be L<use|"Load Module">, L<our|"Class Variable">,
+L<has|"Field Definition">, L<enum|"Enumeration Definition">, L<method|"Method Definition">, L<allow|"Allow Class Access">,
+L<implement|"implement Statement"> and L<INIT block|"INIT Block"> can be defined.
 
   class Foo {
-    # use
+ 
     use Point;
   
-    # Class Variable Definition
-    our $VAR int;
+    our $VAR : int;
   
-    # Field Defintion
     has var : int;
   
-    # Enumeration Definition
     enum {
       CONST_VAL1,
       CONST_VAL2,
     }
   
-    # Method Definition
     static method foo : int ($num : int) {
-  
+      # ...
+    }
+
+    implement Asset;
+    
+    INIT {
+      # ...
     }
   }
 
-If more than one class with the same name is defined, a compilation error occurs.
+If more than one class in a module file, a compilation error occurs.
 
+If the class name is different from the name that the module file C</> is replaced with C<::> and added C<.spvm> to the end, a compilation error occurs.
+
+  # Valid class name for "Foo/Bar/Baz.spvm"
+  class Foo::Bar::Baz {
+    
+  }
+
+  # Invalid class name for "Foo/Bar/Baz.spvm"
+  class Foo::Bar::Hello {
+    
+  }
+  
 =head2 Class Descriptors
 
 The list of class descriptors.
@@ -1683,7 +1701,7 @@ The list of class descriptors.
       <b>public</b>
     </td>
     <td>
-      This class is public. Other classes can new this class.
+      This class is public. Other classes can new the object from this class.
     </td>
   </tr>
   <tr>
@@ -1691,7 +1709,7 @@ The list of class descriptors.
       <b>private</b>
     </td>
     <td>
-      This class is private. Other classes can't new this class. This is default setting.
+      This class is private. Other classes can't new the object from this class. This is default setting.
     </td>
   </tr>
   <tr>
@@ -1699,7 +1717,7 @@ The list of class descriptors.
       <b>callback_t</b>
     </td>
     <td>
-      This class is a callback type.
+      This class is a <a href="#Callback-Type">callback type</a>.
     </td>
   </tr>
   <tr>
@@ -1707,7 +1725,7 @@ The list of class descriptors.
       <b>interface_t</b>
     </td>
     <td>
-      This class is an interface type.
+      This class is an <a href="#Interface-Type">interface type</a>.
     </td>
   </tr>
   <tr>
@@ -1715,7 +1733,7 @@ The list of class descriptors.
       <b>mulnum_t</b>
     </td>
     <td>
-      This class is a multi numeric type.
+      This class is a <a href="#Multi-Numeric-Types">multi numeric type</a>.
     </td>
   </tr>
   <tr>
@@ -1723,7 +1741,7 @@ The list of class descriptors.
       <b>pointer_t</b>
     </td>
     <td>
-      This class is a pointer type.
+      This class is a <a href="#Pointer-Type">pointer type</a>.
     </td>
   </tr>
   <tr>
@@ -1731,7 +1749,7 @@ The list of class descriptors.
       <b>precompile</b>
     </td>
     <td>
-      Do precompile all methods in this class, except for accessors, and enumurations. 
+      Do <a href="#Precompiled-Method">precompile</a> all methods in this class, except for accessors, and enumurations. 
     </td>
   </tr>
 </table>
@@ -1836,6 +1854,65 @@ Interface Type is a L<"Class Type"> with L<"Class Descriptors"> "interface_t".
     method size : int ();
     method is_file : int ();
   }
+
+=head2 implement Statement
+
+The class have a L<interface|"Interface"> specified by a C<implement> statement is expected to implement the all methods of the interface class.
+
+  class Asset::Memory {
+    implement Asset;
+
+    method add_chunk : void ($chunk : string) {
+      # ...
+    }
+    method contains : int ($substring : string){
+      # ...
+    }
+    method size : int (){
+      # ...
+    }
+    method is_file : int (){
+      # ...
+    }
+  }
+
+  class Asset::File {
+    implement Asset;
+
+    method add_chunk : void ($chunk : string){
+      # ...
+    }
+    method contains : int ($substring : string){
+      # ...
+    }
+    method size : int (){
+      # ...
+    }
+    method is_file : int (){
+      # ...
+    }
+  }
+
+C<implement> statements can be defined in the class that is L<class types|"Class Type">.
+
+Not that C<implement> statement doesn't force the implementation of all methods of the interface class. 
+
+The class does not necessarily have all the methods declared in the interface.
+
+  class Asset::File {
+    implement Asset;
+
+    method add_chunk : void ($chunk : string){
+      # ...
+    }
+    method contains : int ($substring : string){
+      # ...
+    }
+    
+    # OK although size and is_file method is not defined
+  }
+
+The existence of a the method implementation can be checked by the L<has_implement|"has_implement Operator"> operator.
 
 =head2 Allow Class Access
 
@@ -2105,7 +2182,7 @@ See L<"Set Class Variable"> for the setting of the value of Class Variable.
 
 Field is a data area in a L<"object created using new keyword">
 
-"has" Keyword defines a Field.
+C<has> keyword defines a field.
 
   has FIELD_NAME : TYPE;
 
@@ -3529,7 +3606,7 @@ B<Set Array Element Example:>
 
 =head2 Create Object
 
-B<Create Object Expression> is a Expression to create Object using B<new> keyword.
+B<Create Object Expression> is a Expression to create Object using B<new> operator.
 
   my $object = new CLASS_NAME;
 
@@ -4852,6 +4929,20 @@ Operator Precidence can be a top priority by using "()".
   # b + c is the first
   a * (b + c)
 
+=head2 has_implement Operator
+
+The C<has_implement> operator checks the existence of the method implementation.
+
+  has_implement OPERAND->METHOD_NAME
+
+The operand must the object that has a L<class type|"Class Type"> or a L<interface type|"Interface Type">, otherwise a compilation error occurs.
+
+The method name must be a L<method name|"Method Names">, otherwise a compilation error occurs.
+
+The return type is L<int type|"int Type">.
+
+If the class of the object has the method implementation, returns C<1>, otherwise returns C<0>.
+
 =head1 Statements
 
 Statements are the parts of syntax that can be written directly under L<"Scope Blocks">.
@@ -5612,35 +5703,27 @@ C<double> type is a L<"Floating Point Types"> that represents a double precision
 
 =head2 Class Type
 
-Class Type is the type defined by L<"Class Definition">.
+The class type is the type that can create the object using a L<new operator|"Create Object">. Class types are the L<class|"Class"> that doesn't have class descriptors C<mulnum_t>, C<interface_t>, and C<callback_t>, and the class that has a C<pointer_t> L<class descriptor|"Class Descriptors">.
 
-  class Foo {
-  
-  }
-
-Class Type is L<"Class Type"> L<"Callback Type"> <a href = "#language-type It consists of -multi-numeric ">Multi Numeric Types</a>.
-
-  # Class Type
+  # Class types
   class Foo {
   
   }
   
-  # Callback Type
-  class Foo: callback_t {
-  
-  }
-  
-  # Multi Numeric Types
-  class Foo: mulnum_t {
+  class Foo: pointer_t {
   
   }
 
-L<"Pointer Type"> is also Class Type, so Pointer Type will also be Class Type.
+=head2 Pointer Type
+
+The pointer type is the type that has a C<pointer_t> L<class descriptor|"Class Descriptors">.
 
   # Pointer Type
   class Foo: pointer_t {
   
   }
+
+A pointer type is a L<class type|"Class Type">
 
 =head2 Object Types
 
@@ -5729,38 +5812,6 @@ The only Undefined Type value is L<"Undefined Value">.
 
 The value of Undefined Type can be assigned to Object Type.If you assign to another Type, a compilation error occurs
 
-=head2 Class Type
-
-Class Type is the type defined by L<"Class Definition"> and is not "Multi Numeric Types" "Callback Type".
-
-  packag Foo {
-  
-  }
-
-Class Type can create objects by new Operator.
-
-  my $foo = new Foo;
-
-Class Type is a L<"Object Types">.
-
-Class Type is a L<"Class Type">.
-
-L<"Pointer Type"> is the Class Type.
-
-=head2 Pointer Type
-
-Pointer Type is the one that "pointer_t Descriptor" is specified in L<"Class Definition">.
-
-  class Foo: pointer_t {
-  
-  }
-
-Pointer Type is a type of Class Type.
-
-Pointer type data can store C language pointers.
-
-Field cannot be defined for Pointer Type. If it is defined, a compilation error occurs
-
 =head2 Callback Type
 
 Callback Type is a L<"Class Type"> with L<"Class Descriptors"> "callback_t".
@@ -5773,7 +5824,7 @@ See also L<"Callback">.
 
 =head2 Interface Type
 
-Interface Type is a L<"Class Type"> with L<"Class Descriptors"> "interface_t".
+Interface Type is a L<"Class Type"> with L<"Class Descriptors"> C<interface_t>.
 
   class Asset: interface_t {
     method add_chunk : void ($chunk : string);
@@ -5812,7 +5863,7 @@ B<void Type> is a special Type that can only be used in the return type of L<"Me
 
 =head2 Basic Type
 
-A Type that does not have dimensions is called a Basic Type. L<"Numeric Types">, L<"Class Type </ a>, <a href = "#language-type- any-object ">Any Object Type">, L<"string Type"> is a Basic Type.
+A Type that does not have dimensions is called a Basic Type. L<"Numeric Types">, L<"Class Type">, <a href = "#language-type- any-object ">Any Object Type">, L<"string Type"> is a Basic Type.
 
 =head2 Array Type
 
@@ -6555,7 +6606,7 @@ The object is released from memory when the Reference Count reaches 0.
 
 If the object is an Array that has Object Type values ​​as elements, the Reference Count of all Array elements that are not Undefined Value is decremented by 1 before Garbage Collection
 
-When an object is a Class Type and has a Field of Object Type, the Reference Count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by 1 before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by 1.
+When an object is a Class Type and has a field of Object Type, the Reference Count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by 1 before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by 1.
 
 When the object has Back references of Weaken Reference, Undefined Value is assigned to all Fields registered as back References and all back References are deleted.
 
@@ -6607,7 +6658,7 @@ Capture Example.
 
 The variable name used in Capture must be the one with "$" added at the beginning of L<"Field Names">.
 
-The Capture is actually defined as a Field of Class. Capture is a field definition and value setting syntax sugar.
+The Capture is actually defined as a field of Class. Capture is a field definition and value setting syntax sugar.
 
 If L<"Local Variable"> with the same name as the Capture variable exists in the Scope, access the Local Variable.
 
