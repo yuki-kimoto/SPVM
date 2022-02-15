@@ -2995,13 +2995,15 @@ An undefined value is represented by C<undef>.
 
   undef
 
-An undefined value can be assigned to all L<"Object Types">.
+An undefined value can be assigned to an L<object type|"Object Types">.
 
-In the level of L<native APIs|SPVM:Document::NativeAPI>, C<undef> is defined as the following.
+In the level of L<native APIs|SPVM:Document::NativeAPI>, C<undef> is defined as C<(void*)NULL>.
 
   (void*)NULL
 
 An undefined value can be compared by the C<==> operator and the C<!=> operator. An undefined value is guaranteed not to be equal to the any created object.
+
+The type of C<undef> is L<undefined type|"Undefined Type">
 
 B<Examples of undefined values:>
   
@@ -3061,11 +3063,11 @@ There are the following types of Array.
 
 =end html
 
-Numeric Types Array is Array that element type is L<"Numeric Types">.
+Numeric Types Array is an array that element type is L<"Numeric Types">.
 
-Numeric Types Array is Array that element type is L<"Object Types">.
+Numeric Types Array is an array that element type is L<"Object Types">.
 
-Numeric Types Array is Array that element type is L<"Multi Numeric Types">.
+Numeric Types Array is an array that element type is L<"Multi Numeric Types">.
 
 =head2 Create Array
 
@@ -3723,7 +3725,7 @@ B<Examples:>
   # string array
   my $strings = ["foo", "bar", "baz"];
 
-Array Initialization has another syntax. This is same as above array init syntax, but always the generated object type is Array Type of L<"Any Object Type">. And if count of expression is odd number, a compile error occurs.
+Array Initialization has another syntax. This is same as above array init syntax, but always the generated object type is an array Type of L<"Any Object Type">. And if count of expression is odd number, a compile error occurs.
 
   {}
   {Expression1, Expression2, Expression3, Expression4}
@@ -3746,7 +3748,7 @@ Defined method can be called by Class Method Call except a case that the first a
 
 The arguments max count is 255.
 
-If the number of arguments does not match the number of arguments defined in the Method Definition, a compilation error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, a compilation error occurs.
+If the number of arguments does not match the number of arguments defined in the method Definition, a compilation error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, a compilation error occurs.
 
 B<Class Method Call Example>
 
@@ -3779,7 +3781,7 @@ Instance Method Call can be done with the following syntax using the object crea
 
   OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
-Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the Method Definition, a compilation error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, a compilation error occurs
+Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the method Definition, a compilation error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, a compilation error occurs
 
 Instance Method Call returns Return Value if Return Value is other than L<"void Type">.
 
@@ -5259,7 +5261,7 @@ The while Statement is internally enclosed by an invisible L<"Simple Block">.
 
 The C<for> Statement is a L<statement|"Statements"> for repeating.
 
-  for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
+  for (INIT_STATEMENT; CONDITION; INCREMENT_STATEMENT) {
   
   }
 
@@ -5267,16 +5269,16 @@ L<"Expressions"> can be described in the initialization Expression. Generally, w
 
 Condition Expression, L<"Expressions"> can be described. L<"Bool Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise block.
 
-L<"Expressions"> can be described in INCREMENT_EXPRESSION. Generally, Expression of Increment of loop variable is described. INCREMENT_EXPRESSION can be omitted.
+L<"Expressions"> can be described in INCREMENT_STATEMENT. Generally, Expression of Increment of loop variable is described. INCREMENT_STATEMENT can be omitted.
 
-for Statement has the same meaning as the following while Statement. INCREMENT_EXPRESSION is executed at the end of Block. Initialization Expression is enclosed in L<"Simple Block">.
+for Statement has the same meaning as the following while Statement. INCREMENT_STATEMENT is executed at the end of Block. Initialization Expression is enclosed in L<"Simple Block">.
 
   {
-    INITIALIZATION_EXPRESSION;
+    INIT_STATEMENT;
     while (CONDITION) {
   
   
-      INCREMENT_EXPRESSION;
+      INCREMENT_STATEMENT;
     }
   }
 
@@ -5290,11 +5292,11 @@ B<Exampels fo for statements:>
 
 Inside the for Block, you can exit the for Block using L<"last Statement">.
 
-  for (INITIALIZATION_EXPRESSION; CONDITIONAL_EXPRESSION; INCREMENT_EXPRESSION) {
+  for (INIT_STATEMENT; CONDITION; INCREMENT_STATEMENT) {
   
   }
 
-Inside the for Block, you can use L<"next Statement"> to move immediately before the next INCREMENT_EXPRESSION to be executed.
+Inside the for Block, you can use L<"next Statement"> to move immediately before the next INCREMENT_STATEMENT to be executed.
 
   for (my $i = 0; $i <5; $i++) {
   
@@ -5305,7 +5307,7 @@ Inside the for Block, you can use L<"next Statement"> to move immediately before
 
 =head2 return Statement
 
-The C<return> statement is a L<statement|"Statements"> to get out of the Method. The object assigned to the mortal variable is automatically released.
+The C<return> statement is a L<statement|"Statements"> to get out of the method. The object assigned to the mortal variable is automatically released.
 
   return;
 
@@ -5822,11 +5824,7 @@ For the conversion between L<"Numeric Types"> and B<Numeric Object Type>, see L<
 
 =head2 Undefined Type
 
-Undefined Type is the type that L<"Undefined Value"> has. It cannot be used explicitly.
-
-The only Undefined Type value is L<"Undefined Value">.
-
-The value of Undefined Type can be assigned to Object Type.If you assign to another Type, a compilation error occurs
+The undefined type is the type of L<undef|"Undefined Value">.
 
 =head2 Callback Type
 
@@ -5877,7 +5875,7 @@ It can only be used as the type of the first argument in L<"Method Definition">.
 
 =head2 void Type
 
-B<void Type> is a special Type that can only be used in the return type of L<"Method Definition"> and indicates the Method has no Return Value.
+B<void Type> is a special Type that can only be used in the return type of L<"Method Definition"> and indicates the method has no Return Value.
 
   void
 
@@ -6658,7 +6656,7 @@ You can call Method because the object created by Create Callback is a normal ob
 
 =head2 Capture
 
-In Create Callback, you can use the syntax called Capture to use the variables defined outside the Method defined by Create Callback inside the Method defined by Create Callback.
+In Create Callback, you can use the syntax called Capture to use the variables defined outside the method defined by Create Callback inside the method defined by Create Callback.
 
   # Capture
   [VariableName1 : Type1, VariableName2 : Type2] method MethodNames : int ($x1 : object, $x2 : object) {
