@@ -20,7 +20,7 @@ SPVM::Comparator::Float - Comparator::Float in SPVM | a callback type for float 
 
 L<Comparator::Float|SPVM::Comparator::Float> is a callback type to compare two float values.
 
-=head1 CALLBACK METHOD INTERFACE
+=head1 CALLBACK METHOD
 
   method : int ($a : float, $b : float);
 

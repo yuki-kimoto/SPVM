@@ -20,7 +20,7 @@ SPVM::Comparator::Int - Comparator::Int in SPVM | a callback type for int compar
 
 L<Comparator::Int|SPVM::Comparator::Int> is a callback type to compare two int values.
 
-=head1 CALLBACK METHOD INTERFACE
+=head1 CALLBACK METHOD
 
   method : int ($a : int, $b : int);
 

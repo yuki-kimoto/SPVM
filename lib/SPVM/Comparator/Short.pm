@@ -20,7 +20,7 @@ SPVM::Comparator::Short - Comparator::Short in SPVM | a callback type for short 
 
 L<Comparator::Short|SPVM::Comparator::Short> is a callback type to compare two short values.
 
-=head1 CALLBACK METHOD INTERFACE
+=head1 CALLBACK METHOD
 
   method : int ($a : short, $b : short);
 

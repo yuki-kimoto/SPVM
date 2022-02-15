@@ -31,7 +31,7 @@ SPVM::EqualityChecker - EqualityChecker in SPVM | a callback type to check the o
 
 L<EqualityChecker|SPVM::EqualityChecker> is a callback type to check the object equality.
 
-=head1 CALLBACK METHOD INTERFACE
+=head1 CALLBACK METHOD
 
   method : int ($object1 : object, $object2 : object)
 

@@ -20,7 +20,7 @@ SPVM::Comparator::String - Comparator::String in SPVM | a callback type for stri
 
 L<Comparator::String|SPVM::Comparator::String> is a callback type to compare two strings.
 
-=head1 CALLBACK METHOD INTERFACE
+=head1 CALLBACK METHOD
 
   method : int ($a : string, $b : string);
 

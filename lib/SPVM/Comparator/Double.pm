@@ -20,7 +20,7 @@ SPVM::Comparator::Double - Comparator::Double in SPVM | a callback type for doub
 
 L<Comparator::Double|SPVM::Comparator::Double> is a callback type to compare two double values.
 
-=head1 CALLBACK METHOD INTERFACE
+=head1 CALLBACK METHOD
 
   method : int ($a : double, $b : double);
 

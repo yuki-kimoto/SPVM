@@ -21,7 +21,7 @@ SPVM::Regex::Replacer - Regex::Replacer in SPVM | a callback type for the regex 
 
 L<Regex::Replacer|SPVM::Regex::Replacer> is a callback type for the regex replacement.
 
-=head1 CALLBACK METHOD INTERFACE
+=head1 CALLBACK METHOD
 
   method : string ($re : Regex)
 

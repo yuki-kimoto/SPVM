@@ -4,7 +4,7 @@ package SPVM::Cloner;
 
 =head1 NAME
 
-SPVM::Cloner - Cloner in SPVM | a callback type to clone a object
+SPVM::Cloner - A Callback Type to Clone a Object
 
 =head1 SYNOPSYS
   
@@ -25,10 +25,10 @@ SPVM::Cloner - Cloner in SPVM | a callback type to clone a object
 
 L<Cloner|SPVM::Cloner> is a callback type to clone a object.
 
-=head1 CALLBACK METHOD INTERFACE
+=head1 CALLBACK METHOD
 
   method : object ($object : object);
 
-This method clone object.
+This method clones the object.
 
 This method is planned to be implemented in other classes.
