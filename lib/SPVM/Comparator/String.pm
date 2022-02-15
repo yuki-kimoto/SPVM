@@ -4,7 +4,7 @@ package SPVM::Comparator::String;
 
 =head1 NAME
 
-SPVM::Comparator::String - Comparator::String in SPVM | a callback type for string comparation
+SPVM::Comparator::String - A Callback Type for string Comparation
 
 =head1 SYNOPSYS
   
@@ -24,6 +24,4 @@ L<Comparator::String|SPVM::Comparator::String> is a callback type to compare two
 
   method : int ($a : string, $b : string);
 
-This method must receive two strings and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
-
-This method will be implemented as a anon method.
+The implementation must receive two strings and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.

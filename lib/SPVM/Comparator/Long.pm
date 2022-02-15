@@ -4,7 +4,7 @@ package SPVM::Comparator::Long;
 
 =head1 NAME
 
-SPVM::Comparator::Long - Comparator::Long in SPVM | a callback type for long comparation
+SPVM::Comparator::Long - A Callback Type for long Comparation
 
 =head1 SYNOPSYS
   
@@ -24,6 +24,4 @@ L<Comparator::Long|SPVM::Comparator::Long> is a callback type to compare two lon
 
   method : int ($a : long, $b : long);
 
-This method must receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
-
-This method will be implemented as a anon method.
+The implementation must receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
