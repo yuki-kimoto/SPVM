@@ -1762,23 +1762,23 @@ If more than one of "callback_t", "mulnum_t", "pointer_t" are specified, a compi
 
 =head2 Destructor
 
-If the class is L<"Class Type">, the class defined a destructor.
+If the class is L<"Class Type">, the class can define the destructor.
 
-Destructor is a special L<"Method"> called when the object of this class is freed.
+A destructor is a special L<method|"Method"> called when the object is destroyed.
 
-Destructor name must be "DESTROY".
+A destructor name must be C<DESTROY>.
 
-Destructor Retrun Value must be L<"void Type">, otherwise a compilation error occurs.
+A destructor retrun type must be L<void type|"void Type">, otherwise a compilation error occurs.
 
-Destructor arguments must be one and the type must be L<"self Type">, otherwise a compilation error occurs.
+A destructor must be a L<instance method|"Instance Method"> that don't have the arguments, otherwise a compilation error occurs.
 
   method DESTROY : void () {
   
   }
 
-If a L<"Exception"> occurs in Destructor, the program don't exit, print the message of the exception to STDERR.
+If a L<"Exception"> occurs in the destructor, the exception is not thrown, and prints the message to STDERR.
 
-B<Destructor Example:>
+B<Examples of destructors:>
 
   class Foo {
     static method new : Foo {
@@ -1844,9 +1844,11 @@ it can be assinged to the callback type.
 
 =head2 Interface
 
-Interface is a L<class|"Class"> that is designed to class abstructions.
+Interface is a type that is designed for class abstructions.
 
-Interface Type is a L<"Class Type"> with L<"Class Descriptors"> "interface_t".
+=head3 Interface Definision
+
+A interface type is defined using a L<"class descriptor|"Class Descriptors"> "interface_t".
 
   class Asset: interface_t {
     method add_chunk : void ($chunk : string);
@@ -1854,6 +1856,20 @@ Interface Type is a L<"Class Type"> with L<"Class Descriptors"> "interface_t".
     method size : int ();
     method is_file : int ();
   }
+
+The object that the class has the interface can be assign to the interface type.
+
+  class Asset::Memory {
+    implement Asset;
+  }
+
+  class Asset::File {
+    implement Asset;
+  }
+  
+  my $asset : Asset = Asset::Memory->new;
+  
+  my $asset : Asset = Asset::File->new;
 
 =head2 implement Statement
 
@@ -5814,7 +5830,7 @@ The value of Undefined Type can be assigned to Object Type.If you assign to anot
 
 =head2 Callback Type
 
-Callback Type is a L<"Class Type"> with L<"Class Descriptors"> "callback_t".
+The callback type is a type that is defined using a C<class> keyword and a L<class descriptor|"Class Descriptors"> C<callback_t>.
 
   class Comparator: callback_t {
     method : int ($x1 : object, $x2 : object);
@@ -5822,9 +5838,11 @@ Callback Type is a L<"Class Type"> with L<"Class Descriptors"> "callback_t".
 
 See also L<"Callback">.
 
+Note that callback types are not L<class types|"Class Types"> although they are defined by C<class> keyword.
+
 =head2 Interface Type
 
-Interface Type is a L<"Class Type"> with L<"Class Descriptors"> C<interface_t>.
+The interface type is a type that is defined using a C<class> keyword and a L<class descriptor|"Class Descriptors"> C<interface_t>.
 
   class Asset: interface_t {
     method add_chunk : void ($chunk : string);
@@ -5834,6 +5852,8 @@ Interface Type is a L<"Class Type"> with L<"Class Descriptors"> C<interface_t>.
   }
 
 See also L<"Interface">.
+
+Note that interface types are not L<class types|"Class Types"> although they are defined by C<class> keyword.
 
 =head2 Any Object Type
 
