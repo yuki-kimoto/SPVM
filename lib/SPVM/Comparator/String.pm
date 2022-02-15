@@ -4,7 +4,7 @@ package SPVM::Comparator::String;
 
 =head1 NAME
 
-SPVM::Comparator::String - Comparator::String in SPVM | a callback interface for string comparation
+SPVM::Comparator::String - Comparator::String in SPVM | a callback type for string comparation
 
 =head1 SYNOPSYS
   
@@ -18,7 +18,7 @@ SPVM::Comparator::String - Comparator::String in SPVM | a callback interface for
 
 =head1 DESCRIPTION
 
-L<Comparator::String|SPVM::Comparator::String> is a callback interface to compare two strings.
+L<Comparator::String|SPVM::Comparator::String> is a callback type to compare two strings.
 
 =head1 CALLBACK METHOD INTERFACE
 
