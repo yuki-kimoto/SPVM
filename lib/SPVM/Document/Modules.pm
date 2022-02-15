@@ -16,23 +16,25 @@ The list of SPVM Standard Modules.
 
 =item * L<ByteList|SPVM::ByteList> - Dynamic byte Array
 
-=item * L<Cloner|SPVM::Cloner> - a Callback Interface to Clone a Object
+=item * L<Cloner|SPVM::Cloner> - A Callback Type to Clone a Object
 
-=item * L<Comparator::Byte|SPVM::Comparator::Byte> - a Callback Interface for byte Comparation
+=item * L<Cloneable|SPVM::Cloneable> - A Interface Type to Clone a Object
 
-=item * L<Comparator::Short|SPVM::Comparator::Short> - a Callback Interface for short Comparation
+=item * L<Comparator::Byte|SPVM::Comparator::Byte> - A Callback Type for byte Comparation
 
-=item * L<Comparator::Int|SPVM::Comparator::Int> - a Callback Interface for int Comparation
+=item * L<Comparator::Short|SPVM::Comparator::Short> - A Callback Type for short Comparation
 
-=item * L<Comparator::Long|SPVM::Comparator::Long> - a Callback Interface for long Comparation
+=item * L<Comparator::Int|SPVM::Comparator::Int> - A Callback Type for int Comparation
 
-=item * L<Comparator::Float|SPVM::Comparator::Float> - a Callback Interface for float Comparation
+=item * L<Comparator::Long|SPVM::Comparator::Long> - A Callback Type for long Comparation
 
-=item * L<Comparator::Double|SPVM::Comparator::Double> - a Callback Interface for double Comparation
+=item * L<Comparator::Float|SPVM::Comparator::Float> - A Callback Type for float Comparation
 
-=item * L<Comparator::String|SPVM::Comparator::String> - a Callback Interface for string Comparation
+=item * L<Comparator::Double|SPVM::Comparator::Double> - A Callback Type for double Comparation
 
-=item * L<Comparator::Object|SPVM::Comparator::Object> - a Callback Interface for object Comparation
+=item * L<Comparator::String|SPVM::Comparator::String> - A Callback Type for string Comparation
+
+=item * L<Comparator::Object|SPVM::Comparator::Object> - A Callback Type for object Comparation
 
 =item * L<Complex_2d|SPVM::Complex_2d> - double Complex Type
 
@@ -42,9 +44,9 @@ The list of SPVM Standard Modules.
 
 =item * L<DoubleList|SPVM::DoubleList> - Dynamic double Array
 
-=item * L<EqualityChecker|SPVM::EqualityChecker> - the Callback Interface to Check the Object Equality
+=item * L<EqualityChecker|SPVM::EqualityChecker> - the Callback Type to Check the Object Equality
 
-=item * L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> - a Callback Implementation of L<EqualityChecker|SPVM::EqualityChecker> to Check if the Memory Addresses of the Two Objects are Equal.
+=item * L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> - A Callback Implementation of L<EqualityChecker|SPVM::EqualityChecker> to Check if the Memory Addresses of the Two Objects are Equal.
 
 =item * L<Float|SPVM::Float> - float Object
 
@@ -76,7 +78,7 @@ The list of SPVM Standard Modules.
 
 =item * L<StringBuffer|SPVM::StringBuffer> - String Buffer
 
-=item * L<Stringer|SPVM::Stringer> - the Callback interface to stringify object
+=item * L<Stringer|SPVM::Stringer> - A Callback Type to stringify object
 
 =item * L<StringList|SPVM::StringList> - Dynamic string Array
 
