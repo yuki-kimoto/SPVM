@@ -5978,6 +5978,33 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         break;
       }
+      case SPVM_OPCODE_C_ID_HAS_IMPLEMENT: {
+        int32_t implement_method_id = opcode->operand2;
+        SPVM_METHOD* implement_method = SPVM_LIST_fetch(compiler->methods, implement_method_id);
+        const char* implement_method_name = implement_method->name;
+
+        int32_t interface_basic_type_id = opcode->operand2;
+        SPVM_METHOD* interface_basic_type = SPVM_LIST_fetch(compiler->basic_types, interface_basic_type_id);
+        SPVM_CLASS* interface_class = interface_basic_type->class;
+        SPVM_METHOD* interface_method = SPVM_HASH_fetch(class->method_symtable, implement_method_name, strlen(implement_method_name));
+        const char* implement_method_signature = interface_method->signature;
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = env->get_instance_method_id(env, object, ");
+        SPVM_STRING_BUFFER_add(string_buffer, implement_method_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_STRING_BUFFER_add(string_buffer, implement_method_signature);
+        SPVM_STRING_BUFFER_add(string_buffer, ");");
+        SPVM_STRING_BUFFER_add(string_buffer, "    ");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
+        SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id >= 0;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }");
+
+        break;
+      }
       default:
         assert(0);
     }

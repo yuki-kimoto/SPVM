@@ -3259,6 +3259,19 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
+            case SPVM_OP_C_ID_HAS_IMPLEMENT: {
+              SPVM_OP* op_var = op_cur->first;
+              SPVM_OP* op_name = op_cur->last;
+              
+              SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
+              
+              if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+                SPVM_COMPILER_error(compiler, "The invocant of the has_implement operator must be a class type or an interface type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_CONVERT: {
               
               SPVM_OP* op_src = op_cur->first;
@@ -3820,6 +3833,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_STRING_CMP:
                         case SPVM_OP_C_ID_ISA:
                         case SPVM_OP_C_ID_BOOL:
+                        case SPVM_OP_C_ID_HAS_IMPLEMENT:
                           assert(0);
                           break;
                       }

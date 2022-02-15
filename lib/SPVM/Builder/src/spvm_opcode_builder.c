@@ -4025,6 +4025,32 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           break;
                         }
+                        case SPVM_OP_C_ID_HAS_IMPLEMENT: {
+                          SPVM_OP* op_var = op_assign_src->first;
+                          int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_var);
+
+                          SPVM_TYPE* interface_type = SPVM_OP_get_type(compiler, op_var);
+                          SPVM_BASIC_TYPE* interface_basic_type = interface_type->basic_type;
+                          SPVM_CLASS* interface_class = interface_basic_type->class;
+                          
+                          SPVM_OP* op_name_implement_method = op_assign_src->last;
+
+                          const char* implement_method_name = op_name_implement_method->uv.name;
+                          SPVM_METHOD* implement_method = SPVM_HASH_fetch(interface_class->method_symtable, implement_method_name, strlen(implement_method_name));
+                          
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                          
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_HAS_IMPLEMENT);
+
+                          opcode.operand1 = mem_id_in;
+                          opcode.operand2 = implement_method->id;
+                          opcode.operand3 = interface_type->basic_type->id;
+                          
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          
+                          break;
+                        }
                         case SPVM_OP_C_ID_SWITCH_CONDITION: {
                           SPVM_SWITCH_INFO* switch_info = op_assign_src->uv.switch_info;
 

@@ -197,6 +197,7 @@ enum {
   SPVM_OP_C_ID_MAKE_READ_ONLY,
   SPVM_OP_C_ID_COPY,
   SPVM_OP_C_ID_IMPLEMENT,
+  SPVM_OP_C_ID_HAS_IMPLEMENT,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -444,5 +445,7 @@ int32_t SPVM_OP_get_list_elements_count(SPVM_COMPILER* compiler, SPVM_OP* op_lis
 
 SPVM_OP* SPVM_OP_new_op_true(SPVM_COMPILER* compiler, SPVM_OP* op);
 SPVM_OP* SPVM_OP_new_op_false(SPVM_COMPILER* compiler, SPVM_OP* op);
+
+SPVM_OP* SPVM_OP_build_has_implement(SPVM_COMPILER* compiler, SPVM_OP* op_has_implement, SPVM_OP* op_var, SPVM_OP* op_name);
 
 #endif

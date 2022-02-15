@@ -1912,6 +1912,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   compiler->expect_field_name = 1;
                   return HAS;
                 }
+                else if (strcmp(keyword, "has_implement") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_HAS_IMPLEMENT);
+                  return HAS_IMPLEMENT;
+                }
                 break;
               }
               case 'i' : {

@@ -4,6 +4,7 @@ Revision history for SPVM
         * Improve the error message of getting and setting fields.
         * Detect the change of the SPVM core precompile source code in precompile.
         * Precompile methods is fallbacked to non-precompile methods
+        * Add interface feature
 0.9504  2021-02-10
         [CHANGE]
         * Add the make_read_only native API.

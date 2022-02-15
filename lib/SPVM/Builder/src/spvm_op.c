@@ -197,6 +197,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "MAKE_READ_ONLY",
     "COPY",
     "IMPLEMENT",
+    "HAS_IMPLEMENT",
   };
   
   return id_names;
@@ -1257,6 +1258,7 @@ int32_t SPVM_OP_get_mem_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
+    case SPVM_OP_C_ID_HAS_IMPLEMENT:
       return 0;
     default: {
       SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
@@ -1325,6 +1327,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_IF:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
     case SPVM_OP_C_ID_IS_READ_ONLY:
+    case SPVM_OP_C_ID_HAS_IMPLEMENT:
     {
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
       type = op_type->uv.type;
@@ -1611,6 +1614,15 @@ SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken,
   op_field_access->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN;
   
   return op_weaken_field;
+}
+
+SPVM_OP* SPVM_OP_build_has_implement(SPVM_COMPILER* compiler, SPVM_OP* op_has_implement, SPVM_OP* op_var, SPVM_OP* op_name) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_has_implement, op_has_implement->last, op_var);
+  SPVM_OP_insert_child(compiler, op_has_implement, op_has_implement->last, op_name);
+  
+  return op_has_implement;
 }
 
 SPVM_OP* SPVM_OP_build_unweaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_unweaken, SPVM_OP* op_field_access) {

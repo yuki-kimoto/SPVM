@@ -464,6 +464,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "COPY",
     "HAS_INTERFACE",
     "CHECK_INTERFACE",
+    "HAS_IMPLEMENT",
   };
   
   return id_names;
