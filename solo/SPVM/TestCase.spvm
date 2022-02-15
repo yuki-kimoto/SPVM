@@ -89,6 +89,18 @@ SPVM::Test - SPVM test module
 
   static method main : int ($start_file : string, $args : string[]) {
     {
+      my $minimal = TestCase::Minimal->new;
+      my $interface : TestCase::CommonInterface = $minimal;
+      my $has_implement_share2 = has_implement $interface->shared2;
+        warn $has_implement_share2;
+      if (has_implement $interface->shared2) {
+        warn $has_implement_share2;
+      }
+      my $has_implement_share3 = has_implement $interface->shared3;
+      warn $has_implement_share3;
+    }
+
+    {
       my $minimal = (TestCase::Minimal)undef;
       
       eval { $minimal->clear; };

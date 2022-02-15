@@ -3833,7 +3833,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_STRING_CMP:
                         case SPVM_OP_C_ID_ISA:
                         case SPVM_OP_C_ID_BOOL:
-                        case SPVM_OP_C_ID_HAS_IMPLEMENT:
                           assert(0);
                           break;
                       }

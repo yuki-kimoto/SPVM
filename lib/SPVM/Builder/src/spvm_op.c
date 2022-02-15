@@ -1621,8 +1621,13 @@ SPVM_OP* SPVM_OP_build_has_implement(SPVM_COMPILER* compiler, SPVM_OP* op_has_im
   // Build op
   SPVM_OP_insert_child(compiler, op_has_implement, op_has_implement->last, op_var);
   SPVM_OP_insert_child(compiler, op_has_implement, op_has_implement->last, op_name);
-  
-  return op_has_implement;
+
+  SPVM_OP* op_name_var_condition = SPVM_OP_new_op_name(compiler, "@condition_flag", op_var->file, op_var->line);
+  SPVM_OP* op_var_condition = SPVM_OP_new_op_var(compiler, op_name_var_condition);
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_var->file, op_var->line);
+  SPVM_OP_build_assign(compiler, op_assign, op_var_condition, op_has_implement);
+
+  return op_assign;
 }
 
 SPVM_OP* SPVM_OP_build_unweaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_unweaken, SPVM_OP* op_field_access) {
