@@ -5,8 +5,16 @@ Revision history for SPVM
         * Detect the change of the SPVM core precompile source code in precompile.
         * Precompile methods is fallbacked to non-precompile methods
         * Add interface feature
+        * spvmgenlib command generate main method instead of sum and print "Hello World!"
         [BUG FIX]
         * Fix bug that is_read_only doesn't set condition flag.
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * spvmgenlib command doesn't generate native module by default
+          --native-language option is needed.
+          [Before]
+          spvmgenlib MyLib
+          [After]
+          spvmgenlib MyLib --native-language c
         
 0.9504  2021-02-10
         [CHANGE]

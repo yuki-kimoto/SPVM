@@ -95,13 +95,8 @@ sub new {
   }
   
   my $native_language = $self->native_language;
-  if (defined $native_language) {
-    unless ($native_language eq 'c' || $native_language eq 'c++') {
-      confess "Can't support native_language \"$native_language\"";
-    }
-  }
-  else {
-    $self->native_language('c');
+  if (defined $native_language && !($native_language eq 'c' || $native_language eq 'c++')) {
+    confess "Can't support native_language \"$native_language\"";
   }
   
   return $self;
@@ -122,11 +117,13 @@ sub generate_lib {
   my $native_lib_name = $self->native_lib_name;
 
   my $native_module_ext;
-  if ($native_language eq 'c') {
-    $native_module_ext = 'c';
-  }
-  elsif ($native_language eq 'c++') {
-    $native_module_ext = 'cpp';
+  if (defined $native_language) {
+    if ($native_language eq 'c') {
+      $native_module_ext = 'c';
+    }
+    elsif ($native_language eq 'c++') {
+      $native_module_ext = 'cpp';
+    }
   }
   
   # Create lib directory
@@ -136,6 +133,17 @@ sub generate_lib {
   }
   my $module_dir = $self->module_dir;
   
+  my $spvm_print_hello_world;
+  my $spvm_print_hello_world_method;
+  if (defined $native_language) {
+    $spvm_print_hello_world = '&print_hello_world();';
+    $spvm_print_hello_world_method = 'native static method print_hello_world : void ();';
+  }
+  else {
+    $spvm_print_hello_world = 'print "Hello World!\n;"';
+    $spvm_print_hello_world_method = '';
+  }
+  
   # Create the module file
   my $module_file = "$module_dir/$class_name_rel_file.spvm";
   if ($force || !-f $module_file) {
@@ -143,7 +151,14 @@ sub generate_lib {
     
     my $module_content = <<"EOS";
 class $class_name {
-  native static method sum : int (\$num0 : int, \$num1 : int);
+  static method main : int (\$start_file : string, \$args : string[]) {
+    
+    $spvm_print_hello_world
+    
+    return 0;
+  }
+  
+  $spvm_print_hello_world_method
 }
 EOS
     SPVM::Builder::Util::spurt_binary($module_file, $module_content);
@@ -154,23 +169,24 @@ EOS
   
   # Create the config file
   my $config_file = "$module_dir/$class_name_rel_file.config";
-  if ($force || !-f $config_file) {
-    mkpath dirname $config_file;
-    
-    my $new_method;
-    if ($native_language eq 'c') {
-      $new_method = 'new_gnu99';
-    }
-    elsif ($native_language eq 'c++') {
-      $new_method = 'new_cpp';
-    }
-    
-    my $add_source_files = '';
-    if (defined $native_lib_name) {
-      $add_source_files = "\$config->add_source_files('$native_lib_name.$native_module_ext');"
-    }
-    
-    my $config_content = <<"EOS";
+  if (defined $native_language ) {
+    if ($force || !-f $config_file) {
+      mkpath dirname $config_file;
+      
+      my $new_method;
+      if ($native_language eq 'c') {
+        $new_method = 'new_gnu99';
+      }
+      elsif ($native_language eq 'c++') {
+        $new_method = 'new_cpp';
+      }
+      
+      my $add_source_files = '';
+      if (defined $native_lib_name) {
+        $add_source_files = "\$config->add_source_files('$native_lib_name.$native_module_ext');"
+      }
+      
+      my $config_content = <<"EOS";
 use strict;
 use warnings;
 use SPVM::Builder::Config;
@@ -181,69 +197,69 @@ $add_source_files;
 
 \$config;
 EOS
-    SPVM::Builder::Util::spurt_binary($config_file, $config_content);
-  }
-  else {
-    warn "Config file \"$config_file\" already exists";
+      SPVM::Builder::Util::spurt_binary($config_file, $config_content);
+    }
+    else {
+      warn "Config file \"$config_file\" already exists";
+    }
   }
   
   # Create the native module file
   my $extern_c_start;
   my $extern_c_end;
-  if ($native_language eq 'c++') {
-    $extern_c_start = qq(extern "C" {);
-    $extern_c_end = "}";
-  }
-  else {
-    $extern_c_start = '';
-    $extern_c_end = '';
-  }
-  
-  my $include_native_header;
-  my $calcurate_total;
-  if (defined $native_lib_name) {
-    $include_native_header = qq(#include "$native_lib_name.h");
-    $calcurate_total = "${native_lib_name}_sum(num0, num1)";
-  }
-  else {
-    $include_native_header = '';
-    $calcurate_total = 'num0 + num1';
-  }
-  
-  my $native_module_file = "$module_dir/$class_name_rel_file.$native_module_ext";
-  if ($force || !-f $native_module_file) {
-    mkpath dirname $native_module_file;
+  if (defined $native_language) {
+    if ($native_language eq 'c++') {
+      $extern_c_start = qq(extern "C" {);
+      $extern_c_end = "}";
+    }
+    else {
+      $extern_c_start = '';
+      $extern_c_end = '';
+    }
     
-    my $native_class_name = $class_name;
-    $native_class_name =~ s/::/__/g;
+    my $include_native_header;
+    my $print_hello_world;
+    if (defined $native_lib_name) {
+      $include_native_header = qq(#include "$native_lib_name.h");
+      $print_hello_world = "${native_lib_name}_print_hello_world()";
+    }
+    else {
+      $include_native_header = '';
+      $print_hello_world = 'printf("Hello World!\n");';
+    }
     
-    my $native_module_content = <<"EOS";
+    my $native_module_file = "$module_dir/$class_name_rel_file.$native_module_ext";
+    
+    if ($native_language) {
+      if ($force || !-f $native_module_file) {
+        mkpath dirname $native_module_file;
+        
+        my $native_class_name = $class_name;
+        $native_class_name =~ s/::/__/g;
+        
+        my $native_module_content = <<"EOS";
 #include "spvm_native.h"
 $include_native_header
 
 $extern_c_start
 
-int32_t SPVM__${native_class_name}__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__${native_class_name}__print_hello_world(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
-  int32_t num0 = stack[0].ival;
-  int32_t num1 = stack[1].ival;
-  
-  int32_t total = $calcurate_total;
-  
-  stack[0].ival = total;
+  $print_hello_world
   
   return 0;
 }
 
 $extern_c_end
 EOS
-
-    
-    SPVM::Builder::Util::spurt_binary($native_module_file, $native_module_content);
-  }
-  else {
-    warn "Native module file \"$native_module_file\" already exists";
+        
+        SPVM::Builder::Util::spurt_binary($native_module_file, $native_module_content);
+      }
+      else {
+        warn "Native module file \"$native_module_file\" already exists";
+      }
+    }
   }
   
   if (defined $native_lib_name) {
@@ -254,7 +270,7 @@ EOS
       my $native_header_content = <<"EOS";
 #include <stdint.h>
 
-int32_t ${native_lib_name}_sum(int32_t num0, int32_t num1);
+int32_t ${native_lib_name}_print_hello_world();
 EOS
       SPVM::Builder::Util::spurt_binary($native_header_file, $native_header_content);
     }
@@ -270,10 +286,9 @@ EOS
 #include <stdint.h>
 #include <${native_lib_name}.h>
 
-int32_t ${native_lib_name}_sum(int32_t num0, int32_t num1) {
-  int32_t total = num0 + num1;
+int32_t ${native_lib_name}_print_hello_world() {
   
-  return total;
+  printf("Hello World!\\n");
 }
 EOS
       SPVM::Builder::Util::spurt_binary($native_source_file, $native_source_content);
@@ -299,9 +314,8 @@ use FindBin;
 use lib '$perl_module_dir';
 use SPVM '$class_name';
 
-my \$total = SPVM::$class_name->sum(1, 2);
+SPVM::$class_name->main(\$0, \\\@ARGV);
 
-print "\$total\n";
 EOS
       SPVM::Builder::Util::spurt_binary($script_file, $script_content);
     }

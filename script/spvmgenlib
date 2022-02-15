@@ -54,8 +54,9 @@ spvmgenlib - The Command to Generate SPVM Native Modules
   Usage: spvmgenlib [OPTIONS] [CLASS_NAME]
     
     spvmgenlib MyLib
-    spvmgenlib MyLib --native-lib-name mylib --native-language c
-    spvmgenlib MyLib --native-lib-name mylib --native-language c --script-file=mylib.pl
+    spvmgenlib MyLib --native-language c
+    spvmgenlib MyLib --native-language c --native-lib-name mylib 
+    spvmgenlib MyLib --native-language c --native-lib-name mylib --script-file=mylib.pl
 
   Options:
     -h, --help                     Show this message
@@ -63,9 +64,9 @@ spvmgenlib - The Command to Generate SPVM Native Modules
     -q, --quiet                    Quiet output
     -f, --force                    Force to generate files
     --module-dir                   Module directory, default: "lib/SPVM"
-    --script-file                  Generate the script file
+    --native-language              Generate native module by "c" or "c++"
     --native-lib-name              Generate native library with the name
-    --native-language              Native language name, "c" or "c++", default: "c"
+    --script-file                  Generate the script file
     
 =head1 DESCRIPTION
 
