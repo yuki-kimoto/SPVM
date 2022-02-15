@@ -95,4 +95,7 @@ DEVELOPERS NOTE
     
       perl -n -e 'if (/^(%token|%type|%right|%nonassoc|%left|[a-zA-Z]|\s+:|\s+\|)(.+)/) { my $line = "$1$2"; if ($line =~ /^[a-zA-Z]/) { print "\n"; } print "$line\n" } ' yacc/spvm_yacc.y
     
+    Create compile error test module
+    
+      perl -Mblib blib/script/spvmgenlib --module-dir t/default/lib/SPVM TestCase::CompileError::Foo
       
