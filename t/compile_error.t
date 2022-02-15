@@ -665,44 +665,28 @@ sub print_error_messages {
 
 # Remainder - Compile Error
 {
-  {
-    my $builder = SPVM::Builder->new;
-    my $success = $builder->compile_spvm('TestCase::CompileError::Remainder::LeftIsNotIntegral', __LINE__, __FILE__);
-    ok($success == 0);
-    print_error_messages($builder);
-  }
-  {
-    my $builder = SPVM::Builder->new;
-    my $success = $builder->compile_spvm('TestCase::CompileError::Remainder::RightIsNotIntegral', __LINE__, __FILE__);
-    ok($success == 0);
-    print_error_messages($builder);
-  }
-
-  {
-    my $builder = SPVM::Builder->new;
-    my $success = $builder->compile_spvm('TestCase::CompileError::Remainder::RemuiLeftIsNotInt', __LINE__, __FILE__);
-    ok($success == 0);
-    print_error_messages($builder);
-  }
-  {
-    my $builder = SPVM::Builder->new;
-    my $success = $builder->compile_spvm('TestCase::CompileError::Remainder::RemuiRightIsNotInt', __LINE__, __FILE__);
-    ok($success == 0);
-    print_error_messages($builder);
-  }
-  {
-    my $builder = SPVM::Builder->new;
-    my $success = $builder->compile_spvm('TestCase::CompileError::Remainder::RemulLeftIsNotLong', __LINE__, __FILE__);
-    ok($success == 0);
-    print_error_messages($builder);
-  }
-  {
-    my $builder = SPVM::Builder->new;
-    my $success = $builder->compile_spvm('TestCase::CompileError::Remainder::RemulRightIsNotLong', __LINE__, __FILE__);
-    ok($success == 0);
-    print_error_messages($builder);
-  }
+  compile_not_ok('TestCase::CompileError::Remainder::LeftIsNotIntegral', qr/left.+%.+integral/);
+  compile_not_ok('TestCase::CompileError::Remainder::RightIsNotIntegral', qr/right.+%.+integral/);
+  compile_not_ok('TestCase::CompileError::Remainder::RemuiLeftIsNotInt', qr/left.+remui.+int/);
+  compile_not_ok('TestCase::CompileError::Remainder::RemuiRightIsNotInt', qr/right.+remui.+int/);
+  compile_not_ok('TestCase::CompileError::Remainder::RemulLeftIsNotLong', qr/left.+remul.+long/);
+  compile_not_ok('TestCase::CompileError::Remainder::RemulRightIsNotLong', qr/right.+remul.+long/);
 }
 
+sub compile_not_ok {
+  my ($class_name, $error_message_re) = @_;
+  
+  my (undef, $file, $line) = caller;
+  
+    my $builder = SPVM::Builder->new;
+    my $success = $builder->compile_spvm($class_name, $file, $line);
+    ok($success == 0);
+    my $error_messages = $builder->get_error_messages;
+    my $first_error_message = $error_messages->[0];
+    if ($error_message_re) {
+      like($first_error_message, $error_message_re);
+    }
+    print_error_messages($builder);
+}
 
 done_testing;
