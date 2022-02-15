@@ -271,4 +271,12 @@ sub print_error_messages {
   compile_not_ok('TestCase::CompileError::Remainder::RemulRightIsNotLong', qr/right.+remul.+long/);
 }
 
+# Interface
+{
+  compile_not_ok('TestCase::CompileError::Interface::HaveBlock', qr/interface.+block/i);
+  compile_not_ok('TestCase::CompileError::Interface::NativeMethod', qr/interface.+native/i);
+  compile_not_ok('TestCase::CompileError::Interface::StaticMethod', qr/interface.+instance/i);
+  compile_not_ok('TestCase::CompileError::Interface::ImplementStatement', qr/implement/i);
+}
+
 done_testing;

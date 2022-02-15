@@ -1,0 +1,3 @@
+class TestCase::CompileError::Interface::ImplementStatement : interface_t {
+  implement TestCase::Minimal;
+}
