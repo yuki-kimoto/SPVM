@@ -452,6 +452,8 @@ lib/SPVM/Builder/Util/API.pm
 lib/SPVM/Byte.pm
 lib/SPVM/ByteList.pm
 lib/SPVM/ByteList.spvm
+lib/SPVM/Cloneable.pm
+lib/SPVM/Cloneable.spvm
 lib/SPVM/Cloner.pm
 lib/SPVM/Cloner.spvm
 lib/SPVM/Comparator/Byte.pm
@@ -716,6 +718,10 @@ t/default/lib/SPVM/TestCase/CompileError/Field/HasFieldNameContainsUnderScoreTwi
 t/default/lib/SPVM/TestCase/CompileError/Field/HasFieldNameStartDigit.spvm
 t/default/lib/SPVM/TestCase/CompileError/Field/Private.spvm
 t/default/lib/SPVM/TestCase/CompileError/ForTest.spvm
+t/default/lib/SPVM/TestCase/CompileError/Interface/HaveBlock.spvm
+t/default/lib/SPVM/TestCase/CompileError/Interface/ImplementStatement.spvm
+t/default/lib/SPVM/TestCase/CompileError/Interface/NativeMethod.spvm
+t/default/lib/SPVM/TestCase/CompileError/Interface/StaticMethod.spvm
 t/default/lib/SPVM/TestCase/CompileError/InvalidType.spvm
 t/default/lib/SPVM/TestCase/CompileError/Isa/LeftIsNotObject.spvm
 t/default/lib/SPVM/TestCase/CompileError/LexVar/LexVarNameColon2Twice.spvm

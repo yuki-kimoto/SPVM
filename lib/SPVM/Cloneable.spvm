@@ -1,0 +1,3 @@
+class Cloneable : interface_t {
+  method clone : object ($object : object);
+}

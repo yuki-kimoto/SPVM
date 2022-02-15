@@ -6,6 +6,7 @@ Revision history for SPVM
         * Precompile methods is fallbacked to non-precompile methods
         * Add interface feature
         * spvmgenlib command generate main method instead of sum and print "Hello World!"
+        * Add Cloneable module.
         [BUG FIX]
         * Fix bug that is_read_only doesn't set condition flag.
         [NON BACKWORD COMPATIBLE CHANGES]
