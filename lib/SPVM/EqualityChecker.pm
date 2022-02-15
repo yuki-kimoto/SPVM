@@ -37,4 +37,4 @@ L<EqualityChecker|SPVM::EqualityChecker> is a callback type to check the object 
 
 If the two objects are equals, return 1, otherwise return 0.
 
-This method is planned to be implemented in other classes.
+This method will be implemented as a anon method.

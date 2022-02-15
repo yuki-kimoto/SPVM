@@ -27,4 +27,4 @@ L<Regex::Replacer|SPVM::Regex::Replacer> is a callback type for the regex replac
 
 This method return the string after the replacement.
 
-This method is planned to be implemented in other classes.
+This method will be implemented as a anon method.

@@ -33,4 +33,4 @@ L<Stringer|SPVM::Stringer> is a callback type to stringify a object.
 
 This method receives a object and return the string expression.
 
-This method is planned to be implemented in other classes.
+This method will be implemented as a anon method.
