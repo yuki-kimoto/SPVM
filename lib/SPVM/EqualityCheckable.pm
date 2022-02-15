@@ -28,7 +28,11 @@ SPVM::EqualityCheckable - EqualityCheckable in SPVM | a interface type to check 
 
 L<EqualityCheckable|SPVM::EqualityCheckable> is a interface type to check the object equality.
 
-=head1 CALLBACK METHOD
+=head1 INTERFACE METHODS
+
+Interface methods.
+
+=head2 equals
 
   method equals : int ($object1 : object, $object2 : object);
 
