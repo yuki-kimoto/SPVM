@@ -207,6 +207,7 @@ The list of keywords.
   gt
   ge
   has
+  has_implement
   if
   isa
   isweak
@@ -861,11 +862,11 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   %type <opval> unary_op binary_op comparison_op isa logical_op expression_or_logical_op
   %type <opval> call_spvm_method opt_vaarg
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
-  %type <opval> assign inc dec allow
+  %type <opval> assign inc dec allow has_implement
   %type <opval> new array_init
   %type <opval> my_var var implement
   %type <opval> expression opt_expressions expressions opt_expression case_statements
-  %type <opval> field_name method_name
+  %type <opval> field_name method_name is_read_only
   %type <opval> type qualified_type basic_type array_type array_type_with_length ref_type  qualified_type_or_void
   %right <opval> ASSIGN SPECIAL_ASSIGN
   %left <opval> LOGICAL_OR
@@ -877,7 +878,7 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPLEMENT
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -1108,6 +1109,8 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
     | isa
     | TRUE
     | FALSE
+    | is_read_only
+    | has_implement
 
   expressions
     : expressions ',' expression
@@ -1125,8 +1128,10 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
     | DEREF var
     | CREATE_REF var
     | NEW_STRING_LEN expression
-    | IS_READ_ONLY expression
     | COPY expression
+
+  is_read_only
+    : IS_READ_ONLY expression
 
   inc
     : INC expression
@@ -1222,6 +1227,9 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   isweak_field
     : ISWEAK var ARROW '{' field_name '}'
 
+  has_implement
+    : HAS_IMPLEMENT var ARROW method_name
+
   array_length
     : '@' expression
     | '@' '{' expression '}'
@@ -1275,7 +1283,7 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
 
   method_name
     : NAME
-  
+
 The following is a correspondence table between tokens in yacc/bison and keywords and operators in SPVM.
 
 =begin html
@@ -1394,6 +1402,12 @@ The following is a correspondence table between tokens in yacc/bison and keyword
   </tr>
   <tr>
     <td>FOR</td><td>for</td>
+  </tr>
+  <tr>
+    <td>HAS</td><td>has</td>
+  </tr>
+  <tr>
+    <td>HAS_IMPLEMENT</td><td>has_implement</td>
   </tr>
   <tr>
     <td>IF</td><td>if</td>
