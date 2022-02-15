@@ -4,7 +4,7 @@ package SPVM::EqualityChecker;
 
 =head1 NAME
 
-SPVM::EqualityChecker - EqualityChecker in SPVM | a callback type to check the object equality
+SPVM::EqualityChecker - A Callback Type to Check the Object Equality
 
 =head1 SYNOPSYS
   
@@ -35,6 +35,4 @@ L<EqualityChecker|SPVM::EqualityChecker> is a callback type to check the object 
 
   method : int ($object1 : object, $object2 : object)
 
-If the two objects are equals, return 1, otherwise return 0.
-
-This method will be implemented as a anon method.
+The implementation must receive two objects and if they are equals, return C<1>, otherwise return C<0>.

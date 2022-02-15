@@ -1,0 +1,3 @@
+class EqualityCheckable : interface_t {
+  method equals : int ($object1 : object, $object2 : object);
+}

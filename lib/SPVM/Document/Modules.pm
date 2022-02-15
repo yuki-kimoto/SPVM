@@ -44,9 +44,11 @@ The list of SPVM Standard Modules.
 
 =item * L<DoubleList|SPVM::DoubleList> - Dynamic double Array
 
-=item * L<EqualityChecker|SPVM::EqualityChecker> - the Callback Type to Check the Object Equality
+=item * L<EqualityCheckable|SPVM::EqualityCheckable> - A Interface Type to Check the Object Equality
 
-=item * L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> - A Callback Implementation of L<EqualityChecker|SPVM::EqualityChecker> to Check if the Memory Addresses of the Two Objects are Equal.
+=item * L<EqualityChecker|SPVM::EqualityChecker> - A Callback Type to Check the Object Equality
+
+=item * L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> - A Implementation of L<EqualityChecker|SPVM::EqualityChecker> to Check if the Memory Addresses of the Two Objects are Equal.
 
 =item * L<Float|SPVM::Float> - float Object
 
