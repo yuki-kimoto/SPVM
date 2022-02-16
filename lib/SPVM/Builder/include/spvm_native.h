@@ -273,5 +273,8 @@ struct spvm_env {
   void* (*copy)(SPVM_ENV* env, void* object);
   void (*shorten)(SPVM_ENV* env, void* string, int32_t new_length);
   int32_t (*has_interface)(SPVM_ENV* env, void* object, int32_t interface_basic_type_id);
+  void* no_symbol_cache_flag;
+  void (*set_no_symbol_cache_flag)(SPVM_ENV* env, int32_t flag);
+  int32_t (*get_no_symbol_cache_flag)(SPVM_ENV* env);
 };
 #endif

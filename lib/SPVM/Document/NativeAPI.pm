@@ -798,6 +798,11 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   171 new_array_proto
   172 copy_raw
   173 copy
+  174 shorten
+  175 has_interface
+  176 no_symbol_cache_flag
+  177 set_no_symbol_cache_flag
+  178 get_no_symbol_cache_flag
 
 =head1 List of Native APIs
 
@@ -2513,6 +2518,48 @@ If the given length is lower than C<0>, returns C<NULL>.
 Copy the object. The type of the object must be a string type, a numeric array, or a multi numeric array.
 
 If the given object is L<NULL>, returns L<NULL>.
+
+=head2 shorten
+
+  void (*shorten)(SPVM_ENV* env, void* string, int32_t new_length);
+
+Shorten the string with the given length.
+
+If the string is null, does nothing.
+
+If the given length is greater than the length of the string, does nothing.
+
+If the given length is lower than C<0>, the given length become C<0>.
+
+The charaters of the after the given length are filled with C<\0>.
+
+=head2 has_interface
+
+  int32_t (*has_interface)(SPVM_ENV* env, void* object, int32_t interface_basic_type_id);
+
+Check the class of the object has the interface type.
+
+=head2 no_symbol_cache_flag
+
+  void* no_symbol_cache_flag;
+
+Used internally.
+
+=head2 set_no_symbol_cache_flag
+
+  void (*set_no_symbol_cache_flag)(SPVM_ENV* env, int32_t flag);
+
+Set the flag that precompile and native codes don't use symbol cache such as basic type names, method names, field names, package names.
+
+If the flag is C<1>, caching is not done, if the flag is C<0>, caching is done.
+
+Note that this flag is merely intention for the native module authors. On the other hand, precompile and the core native code follow this flag.
+
+=head2 get_no_symbol_cache_flag
+
+  int32_t (*get_no_symbol_cache_flag)(SPVM_ENV* env);
+
+Get the flag that native code doesn't use symbol cache such as basic type names, method names, field names, package names.
 
 =head1 Utilities
 

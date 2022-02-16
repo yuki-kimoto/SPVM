@@ -1,4 +1,8 @@
 Revision history for SPVM
+0.9506  2021-02-16
+        [CHANGE]
+        * Add no_symbol_cache_flag, set_no_symbol_cache_flag, get_no_symbol_cache_flag native APIs
+
 0.9505  2021-02-16
         [CHANGE]
         * Improve the error message of getting and setting fields.

@@ -283,4 +283,7 @@ SPVM_OBJECT* SPVM_API_copy_raw(SPVM_ENV* env, SPVM_OBJECT* object);
 SPVM_OBJECT* SPVM_API_copy(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_API_shorten(SPVM_ENV* env, SPVM_OBJECT* string, int32_t new_length);
 
+void SPVM_API_set_no_symbol_cache_flag(SPVM_ENV* env, int32_t flag);
+int32_t SPVM_API_get_no_symbol_cache_flag(SPVM_ENV* env);
+
 #endif

@@ -185,6 +185,15 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->is_numeric_array != &env_array[167]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_mulnum_array != &env_array[168]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_elem_byte_size != &env_array[169]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_array_proto_raw != &env_array[170]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_array_proto != &env_array[171]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->copy_raw != &env_array[172]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->copy != &env_array[173]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->shorten != &env_array[174]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->has_interface != &env_array[175]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->no_symbol_cache_flag != &env_array[176]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_no_symbol_cache_flag != &env_array[177]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_no_symbol_cache_flag != &env_array[178]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 
