@@ -23,19 +23,41 @@ class TestCase::Field {
   }
   
   static method get_field_chain : int () {
-    my $simple = TestCase::Simple->new;
-    my $minimal = TestCase::Minimal->new;
-    $minimal->set_x(5);
-    $simple->set_minimal($minimal);
+    {
+      my $simple = TestCase::Simple->new;
+      my $minimal = TestCase::Minimal->new;
+      $minimal->set_x(5);
+      $simple->set_minimal($minimal);
+      
+      my $x = $simple->minimal->x;
+      
+      unless ($x == 5) {
+        return 0;
+      }
+    }
     
-    my $x = $simple->minimal->x;
-    
-    unless ($x == 5) {
-      return 0;
+    {
+      my $minimal = TestCase::Minimal->new;
+      my $new_minimal = TestCase::Minimal->new;
+      
+      $minimal->set_x(3);
+      $minimal->set_y(5);
+      
+      $new_minimal->set_x($minimal->y);
+      $new_minimal->set_y($minimal->x);
+      
+      unless ($new_minimal->x == 5) {
+        return 0;
+      }
+      
+      unless ($new_minimal->y == 3) {
+        return 0;
+      }
     }
     
     return 1;
   }
+  
   static method core_func_name_field_name : int () {
     my $self = new TestCase::Field;
     $self->{INT32_MAX} = 1;

@@ -2742,35 +2742,41 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   // $object->foo
                   // [After]
                   // $object->{foo}
-                  const char* field_name = call_method->method->accessor_original_name;
-
-                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-
-                  SPVM_OP_cut_op(compiler, call_method->op_invocant);
-
-                  SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, call_method->op_invocant, op_name_field_access);
-                  op_field_access->uv.field_access->inline_expansion = 1;
-
-                  // Replace parent call sub op's op_invocant
-                  SPVM_OP* op_parent_list =  SPVM_OP_get_parent(compiler, op_stab);
+                  
+                  // If the parent is a method call, no inline expansion
+                  // This maybe ok, but I don't resolve this problem now
+                  int32_t do_inline_expansion = 1;
+                  // Replace parent call method op's op_invocant
+                  SPVM_OP* op_parent_list =  SPVM_OP_get_parent(compiler, op_cur);
                   if (op_parent_list->id == SPVM_OP_C_ID_LIST) {
                     SPVM_OP* op_parent_call_method =  SPVM_OP_get_parent(compiler, op_parent_list);
                     if (op_parent_call_method->id == SPVM_OP_C_ID_CALL_METHOD) {
                       if (!op_parent_call_method->uv.call_method->is_class_method_call) {
-                        op_parent_call_method->uv.call_method->op_invocant = op_field_access;
+                        do_inline_expansion = 0;
                       }
                     }
                   }
                   
-                  SPVM_OP_replace_op(compiler, op_stab, op_field_access);
+                  if (do_inline_expansion) {
+                    const char* field_name = call_method->method->accessor_original_name;
+
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
-                  SPVM_OP_CHECKER_check_tree(compiler, op_field_access, check_ast_info);
-                  
-                  op_cur = op_field_access;
+                    SPVM_OP_cut_op(compiler, call_method->op_invocant);
+
+                    SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
+                    SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, call_method->op_invocant, op_name_field_access);
+                    op_field_access->uv.field_access->inline_expansion = 1;
+
+                    SPVM_OP_replace_op(compiler, op_stab, op_field_access);
+                    
+                    SPVM_OP_CHECKER_check_tree(compiler, op_field_access, check_ast_info);
+                    op_cur = op_field_access;
+                  }
                 }
                 // Field setter is replaced to field access
                 else if (call_method->method->is_field_setter) {
+                  
                   // [Before]
                   // $object->set_foo($value)
                   // [After]

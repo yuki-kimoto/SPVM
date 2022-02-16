@@ -9,6 +9,8 @@ Revision history for SPVM
         * Add Cloneable module.
         [BUG FIX]
         * Fix bug that is_read_only doesn't set condition flag.
+        * Fix bug that $self->set_x($self->x) become compile error.
+        
         [NON BACKWORD COMPATIBLE CHANGES]
         * spvmgenlib command doesn't generate native module by default
           --native-language option is needed.

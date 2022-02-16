@@ -44,6 +44,56 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const char* const* SPVM_OP_C_ID_NAMES(void) {
 
   static const char* const id_names[] = {
@@ -2840,7 +2890,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant
   SPVM_OP* op_call_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CALL_METHOD, op_name_method->file, op_name_method->line);
   SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_list_terms);
   
-  SPVM_CALL_METHOD*call_method = SPVM_CALL_METHOD_new(compiler);
+  SPVM_CALL_METHOD* call_method = SPVM_CALL_METHOD_new(compiler);
   
   const char* method_name = op_name_method->uv.name;
   
@@ -2875,7 +2925,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant
     op_term->is_passed_to_method = 1;
   }
   
-  op_call_method->uv.call_method =call_method;
+  op_call_method->uv.call_method = call_method;
   
   return op_call_method;
 }

@@ -32,11 +32,8 @@ class TestCase::Minimal : public {
   method cloneable_clone : object () {
     my $new_minimal = TestCase::Minimal->new;
     
-    my $x = $self->x;
-    my $y = $self->y;
-    
-    $new_minimal->set_x($x);
-    $new_minimal->set_y($y);
+    $new_minimal->set_x($self->x);
+    $new_minimal->set_y($self->y);
     
     return $new_minimal;
   }
