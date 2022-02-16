@@ -2335,7 +2335,18 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             
             method->id = compiler->methods->length;
             
+            // Add the method to the list of methods of the compiler
             SPVM_LIST_push(compiler->methods, method);
+            
+            // Add the method to the method symtable of the compiler
+            int32_t method_abs_name_length = strlen(class->name) + 2 + strlen(method->name);
+            char* method_abs_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, method_abs_name_length + 1);
+            memcpy(method_abs_name, class->name, strlen(class->name));
+            memcpy(method_abs_name + strlen(class_name), "->", 2);
+            memcpy(method_abs_name + strlen(class_name) + 2, method_name, strlen(method_name));
+            SPVM_HASH_insert(compiler->method_symtable, method_abs_name, method_abs_name_length, method);
+            
+            // Add the method to the method symtable of the class
             SPVM_HASH_insert(class->method_symtable, method->op_name->uv.name, strlen(method->op_name->uv.name), method);
           }
         }
