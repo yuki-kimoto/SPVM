@@ -128,6 +128,20 @@ class TestCase::Interface {
         return 0;
       }
     }
+
+    # isa
+    {
+      my $minimal = TestCase::Minimal->new;
+      my $minimals = new TestCase::Minimal[3];
+      
+      unless ($minimal isa Stringable) {
+        return 0;
+      }
+
+      if ($minimals isa Stringable) {
+        return 0;
+      }
+    }
     
     $@ = undef;
     
