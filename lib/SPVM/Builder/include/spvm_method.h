@@ -50,6 +50,7 @@ struct spvm_method {
   SPVM_TYPE* return_type;
   SPVM_LIST* args;
   const char* name;
+  const char* abs_name;
   const char* signature;
   SPVM_CLASS* class;
   const char* accessor_original_name;

@@ -276,5 +276,13 @@ struct spvm_env {
   void* no_symbol_cache_flag;
   void (*set_no_symbol_cache_flag)(SPVM_ENV* env, int32_t flag);
   int32_t (*get_no_symbol_cache_flag)(SPVM_ENV* env);
+  int32_t (*get_next_method_id)(SPVM_ENV* env, const char* method_abs_name, int32_t start_index);
+  int32_t (*get_next_native_method_id)(SPVM_ENV* env, const char* method_abs_name, int32_t start_index);
+  int32_t (*get_next_precompile_method_id)(SPVM_ENV* env, const char* method_abs_name, int32_t start_index);
+  const char* (*get_method_abs_name)(SPVM_ENV* env, int32_t method_id);
+  void* (*get_native_method_address)(SPVM_ENV* env, const char* method_abs_name);
+  void* (*get_precompile_method_address)(SPVM_ENV* env, const char* method_abs_name);
+  void (*set_native_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
+  void (*set_precompile_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
 };
 #endif
