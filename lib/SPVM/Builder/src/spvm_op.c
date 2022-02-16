@@ -3358,3 +3358,9 @@ int32_t SPVM_OP_get_list_elements_count(SPVM_COMPILER* compiler, SPVM_OP* op_lis
   
   return count;
 }
+
+const char* SPVM_OP_get_op_name(int32_t op_id) {
+  const char* op_name = (SPVM_OP_C_ID_NAMES())[op_id];
+  
+  return op_name;
+}
