@@ -1,0 +1,3 @@
+class Stringable : interface_t {
+  method to_string : string ();
+}

@@ -78,7 +78,9 @@ The list of SPVM Standard Modules.
 
 =item * L<StringBuffer|SPVM::StringBuffer> - String Buffer
 
-=item * L<Stringer|SPVM::Stringer> - A Callback Type to stringify object
+=item * L<Stringable|SPVM::Stringable> - A Interface Type to Stringify a Object
+
+=item * L<Stringer|SPVM::Stringer> - A Callback Type to Stringify a Object
 
 =item * L<StringList|SPVM::StringList> - Dynamic string Array
 
