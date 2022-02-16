@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9505  2021-02-15
+0.9505  2021-02-16
         [CHANGE]
         * Improve the error message of getting and setting fields.
         * Detect the change of the SPVM core precompile source code in precompile.
