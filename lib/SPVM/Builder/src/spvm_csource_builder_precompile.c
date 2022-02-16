@@ -1028,7 +1028,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(SPVM_COMPILER* compiler, SPVM
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
   SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -1087,7 +1087,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_set_field(SPVM_COMPILER* compiler, SPVM
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
   SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -1809,7 +1809,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_basic_type_access_id_name(string_buffer, class->name, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -1861,7 +1861,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         int32_t dimension = check_type_dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_basic_type_access_id_name(string_buffer, class->name, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -1912,7 +1912,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         int32_t dimension = check_type_dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_basic_type_access_id_name(string_buffer, class->name, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3262,7 +3262,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         const char* basic_type_name = basic_type->name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_basic_type_access_id_name(string_buffer, class->name, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3463,7 +3463,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_basic_type_access_id_name(string_buffer, class->name, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3518,7 +3518,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_basic_type_access_id_name(string_buffer, class->name, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3575,7 +3575,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_basic_type_access_id_name(string_buffer, class->name, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -4145,7 +4145,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_basic_type_access_id_name(string_buffer, class->name, cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -4203,7 +4203,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_basic_type_access_id_name(string_buffer, class->name, cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -4256,7 +4256,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_basic_type_access_id_name(string_buffer, class->name, cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -4348,7 +4348,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         else {
           switch (opcode_id) {
             case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD_BY_ID: {
-              SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+              SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
               SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
               SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -4379,7 +4379,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
               break;
             }
             case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID: {
-              SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+              SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
               SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
               SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -5150,7 +5150,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -5251,7 +5251,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -5312,7 +5312,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -5447,7 +5447,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -5495,7 +5495,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -5570,7 +5570,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -5618,7 +5618,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -5662,7 +5662,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
         SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
