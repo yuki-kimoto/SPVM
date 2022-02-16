@@ -4424,8 +4424,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
               SPVM_STRING_BUFFER_add(string_buffer, "\\\" that is declared in \\\"");
               SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
               SPVM_STRING_BUFFER_add(string_buffer, "\\\"\");\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      return 1;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);exception_flag = 1;\n"); 
               SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
               
               break;
@@ -4435,7 +4434,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
             }
           }
           
-          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = env->call_spvm_method(env, call_method_id, stack);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) { exception_flag = env->call_spvm_method(env, call_method_id, stack); }\n");
         }
         
         // Call method
