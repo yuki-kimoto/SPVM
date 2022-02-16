@@ -12,9 +12,7 @@ SPVM::Cloneable - A Interface Type to Clone a Object
     implement Cloneable;
     
     method cloneable_clone : object () {
-      my $point = (Point)$self;
-      
-      my $new_point = Point->new($point->x, $point->y);
+      my $new_point = Point->new($self->x, $self->y);
       
       return $new_point;
     }
