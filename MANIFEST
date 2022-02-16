@@ -485,8 +485,6 @@ lib/SPVM/Document/Tutorial.pm
 lib/SPVM/Double.pm
 lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
-lib/SPVM/EqualityCheckable.pm
-lib/SPVM/EqualityCheckable.spvm
 lib/SPVM/EqualityChecker.pm
 lib/SPVM/EqualityChecker.spvm
 lib/SPVM/EqualityChecker/SameObject.pm
@@ -522,6 +520,8 @@ lib/SPVM/Regex/Replacer.spvm
 lib/SPVM/Short.pm
 lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm
+lib/SPVM/Stringable.pm
+lib/SPVM/Stringable.spvm
 lib/SPVM/StringBuffer.pm
 lib/SPVM/StringBuffer.spvm
 lib/SPVM/Stringer.pm
