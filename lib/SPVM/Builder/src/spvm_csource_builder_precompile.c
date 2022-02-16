@@ -1028,9 +1028,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(SPVM_COMPILER* compiler, SPVM
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (");
   SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
-  SPVM_STRING_BUFFER_add(string_buffer, " < 0, 0)) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "      ");
   SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_id(env, \"");
@@ -1087,9 +1087,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_set_field(SPVM_COMPILER* compiler, SPVM
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (");
   SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
-  SPVM_STRING_BUFFER_add(string_buffer, " < 0, 0)) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "      ");
   SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_id(env, \"");
@@ -5150,9 +5150,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
         SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0, 0)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_id(env, \"");
@@ -5251,9 +5251,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
         SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0, 0)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_id(env, \"");
@@ -5312,9 +5312,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
         SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0, 0)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_STRING_BUFFER_add_field_access_id_name(string_buffer, class->name, field_class_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_id(env, \"");
@@ -5570,9 +5570,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if ( __builtin_expect(");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
         SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0, 0)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_class_var_id(env, \"");
@@ -5618,9 +5618,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if ( __builtin_expect(");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
         SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0, 0)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_class_var_id(env, \"");
@@ -5662,9 +5662,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if ( __builtin_expect(");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
         SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0, 0)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_class_var_id(env, \"");
