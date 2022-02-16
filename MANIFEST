@@ -637,6 +637,7 @@ t/default/if.t
 t/default/if_require.t
 t/default/increment.t
 t/default/inline.t
+t/default/interface.t
 t/default/isa.t
 t/default/lexical_var.t
 t/default/lib/SPVM/4foo.spvm
@@ -798,6 +799,8 @@ t/default/lib/SPVM/TestCase/If.spvm
 t/default/lib/SPVM/TestCase/IfRequire.spvm
 t/default/lib/SPVM/TestCase/Increment.spvm
 t/default/lib/SPVM/TestCase/Inline.spvm
+t/default/lib/SPVM/TestCase/Interface.spvm
+t/default/lib/SPVM/TestCase/InterfaceType.spvm
 t/default/lib/SPVM/TestCase/Isa.spvm
 t/default/lib/SPVM/TestCase/LexicalVar.spvm
 t/default/lib/SPVM/TestCase/Lib/Bool.spvm
