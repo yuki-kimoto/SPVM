@@ -1,0 +1,142 @@
+class TestCase::Interface {
+  use TestCase::Minimal;
+  use TestCase::Simple;
+  use Stringable;
+  use Cloneable;
+  use List;
+  
+  implement TestCase::InterfaceType;
+  
+  static method new : TestCase::Interface () {
+    return new TestCase::Interface;
+  }
+  
+  static method basic : int () {
+    
+    # Stringable minimal
+    {
+      my $minimal = TestCase::Minimal->new;
+      $minimal->set_x(1);
+      $minimal->set_y(2);
+      
+      my $stringable = (Stringable)$minimal;
+      unless ($stringable->to_string eq "(1,2)") {
+        return 0;
+      }
+    }
+    
+    # Stringable minimal - from object
+    {
+      my $minimal = TestCase::Minimal->new;
+      $minimal->set_x(1);
+      $minimal->set_y(2);
+      
+      my $stringable = (Stringable)(object)$minimal;
+      unless ($stringable->to_string eq "(1,2)") {
+        return 0;
+      }
+    }
+    
+    # Stringable simple
+    {
+      my $simple = TestCase::Simple->new;
+      $simple->set_x(1);
+      $simple->set_y(2);
+      
+      my $stringable = (Stringable)$simple;
+      unless ($stringable->to_string eq "(1,2):Simple") {
+        return 0;
+      }
+    }
+
+    # Stringable simple - from object
+    {
+      my $simple = TestCase::Simple->new;
+      $simple->set_x(1);
+      $simple->set_y(2);
+      
+      my $stringable = (Stringable)(object)$simple;
+      unless ($stringable->to_string eq "(1,2):Simple") {
+        return 0;
+      }
+    }
+    
+    # Stringable List
+    {
+      my $list = List->new([]);
+
+      my $minimal = TestCase::Minimal->new;
+      $minimal->set_x(3);
+      $minimal->set_y(2);
+
+      my $simple = TestCase::Simple->new;
+      $simple->set_x(1);
+      $simple->set_y(2);
+
+      $list->push($minimal);
+      $list->push($simple);
+      
+      my $joined_string = "";
+      for (my $i = 0; $i < $list->length; $i++) {
+        my $stringable = (Stringable)$list->get($i);
+        $joined_string .= $stringable->to_string;
+      }
+      
+      unless ($joined_string eq "(3,2)(1,2):Simple") {
+        return 0;
+      }
+    }
+    
+    # Cloneable minimal
+    {
+      my $minimal = TestCase::Minimal->new;
+      $minimal->set_x(1);
+      $minimal->set_y(2);
+      
+      my $cloneable = (Cloneable)$minimal;
+      
+      my $minimal2 = (TestCase::Minimal)$cloneable->cloneable_clone;
+      
+      if ($minimal == $minimal2) {
+        return 0;
+      }
+      
+      unless ($minimal->to_string eq $minimal2->to_string) {
+        return 0;
+      }
+    }
+
+    # TestCase::InterfaceType
+    {
+      my $testcase_interface = TestCase::Interface->new;
+
+      my $interface = (TestCase::InterfaceType)$testcase_interface;
+      
+      unless ($interface->interface_shared1(3) eq "shared1 3") {
+        return 0;
+      }
+    }
+
+    # TestCase::InterfaceType method not found
+    {
+      my $testcase_interface = TestCase::Interface->new;
+      
+      my $interface = (TestCase::InterfaceType)$testcase_interface;
+      
+      eval { $interface->interface_shared2(3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  method interface_shared1 : string ($num : int) {
+    return "shared1 $num";
+  }
+  
+  # method interface_shared2 : string ($num : int);
+}

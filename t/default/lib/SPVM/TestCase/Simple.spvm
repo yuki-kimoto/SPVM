@@ -1,6 +1,10 @@
 class TestCase::Simple : public {
   use TestCase::Minimal;
   
+  implement Stringable;
+  implement Cloneable;
+  implement TestCase::InterfaceType;
+  
   has x : rw public int;
   has y : rw public int;
   
@@ -32,5 +36,30 @@ class TestCase::Simple : public {
 
   static method import_method2 : int () {
     return 2;
+  }
+  
+  method to_string : string () {
+    my $x = $self->x;
+    my $y = $self->y;
+    
+    my $string = "($x,$y):Simple";
+    
+    return $string;
+  }
+
+  method cloneable_clone : object () {
+    my $new_simple = TestCase::Simple->new;
+    
+    my $x = $self->x;
+    my $y = $self->y;
+    
+    $new_simple->set_x($x);
+    $new_simple->set_y($y);
+    
+    return $new_simple;
+  }
+
+  method interface_shared1 : string ($num : int) {
+    return "interface_shared1 $num";
   }
 }

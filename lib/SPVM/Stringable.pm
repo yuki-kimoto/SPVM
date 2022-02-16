@@ -15,7 +15,7 @@ SPVM::Stringable - A Interface Type to Stringify a Object
       my $x = $sel->x;
       my $y = $sel->y;
       
-      my $string = "($x, $y)";
+      my $string = "($x,$y)";
       
       return $string;
     };
