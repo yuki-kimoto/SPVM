@@ -299,4 +299,14 @@ void SPVM_API_set_precompile_method_address(SPVM_ENV* env, const char* method_ab
 void SPVM_API_fprint(SPVM_ENV* env, FILE* fh, SPVM_OBJECT* string);
 void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_OBJECT* string);
 
+SPVM_COMPILER* SPVM_API_new_compiler(SPVM_ENV* env);
+int32_t SPVM_API_compile_spvm(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* class_name);
+void SPVM_API_set_compiler_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t start_line);
+int32_t SPVM_API_get_compiler_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler);
+void SPVM_API_set_compiler_start_file(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* start_file);
+const char* SPVM_API_get_compiler_start_file(SPVM_ENV* env, SPVM_COMPILER* compiler);
+void SPVM_API_add_module_dir(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* module_dir);
+int32_t SPVM_API_get_module_dirs_length (SPVM_ENV* env, SPVM_COMPILER* compiler);
+const char* SPVM_API_get_module_dir (SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t module_dir_id);
+
 #endif

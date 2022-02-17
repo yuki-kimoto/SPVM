@@ -1213,26 +1213,6 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   }
 }
 
-void SPVM_API_call_init_blocks(SPVM_ENV* env) {
-  (void)env;
-  
-  // Runtime
-  SPVM_COMPILER* compiler = env->compiler;
-  
-  // Call INIT blocks
-  int32_t classes_length = compiler->classes->length;
-  SPVM_VALUE stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
-  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
-    
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
-    
-    if (class->op_init_method) {
-      SPVM_METHOD* init_method = class->op_init_method->uv.method;
-      env->call_spvm_method(env, init_method->id, stack);
-    }
-  }
-}
-
 int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* stack) {
   (void)env;
   
@@ -7340,6 +7320,10 @@ int32_t SPVM_API_get_next_method_id_flag(SPVM_ENV* env, const char* method_abs_n
   for (int32_t method_index = start_index; method_index < methods->length; method_index++) {
     SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
     
+    if (!method) {
+      break;
+    }
+    
     // Native method
     if (flag == 0 || flag == 1) {
       if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
@@ -7442,4 +7426,87 @@ void SPVM_API_set_precompile_method_address(SPVM_ENV* env, const char* method_ab
   SPVM_METHOD* method = SPVM_HASH_fetch(compiler->method_symtable, method_abs_name, strlen(method_abs_name));
   
   method->precompile_address = address;
+}
+
+SPVM_COMPILER* SPVM_API_new_compiler(SPVM_ENV* env) {
+  (void*)env;
+
+  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
+  
+  return compiler;
+}
+
+void SPVM_API_set_compiler_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t start_line) {
+  (void*)env;
+
+  compiler->start_line = start_line;
+}
+
+int32_t SPVM_API_get_compiler_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler) {
+  (void*)env;
+  
+  return compiler->start_line;
+}
+
+void SPVM_API_set_compiler_start_file(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* start_file) {
+  (void*)env;
+
+  compiler->start_file = start_file;
+}
+
+const char* SPVM_API_get_compiler_start_file(SPVM_ENV* env, SPVM_COMPILER* compiler) {
+  (void*)env;
+  
+  return compiler->start_file;
+}
+
+void SPVM_API_add_module_dir(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* module_dir) {
+  (void*)env;
+  
+  SPVM_LIST_push(compiler->module_dirs, (void*)module_dir);
+}
+
+int32_t SPVM_API_get_module_dirs_length (SPVM_ENV* env, SPVM_COMPILER* compiler) {
+  (void*)env;
+  
+  SPVM_LIST* module_dirs = compiler->module_dirs;
+  int32_t module_dirs_length = module_dirs->length;
+  
+  return module_dirs_length;
+}
+
+const char* SPVM_API_get_module_dir (SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t module_dir_id) {
+  (void*)env;
+  
+  const char* module_dir = SPVM_LIST_fetch(compiler->module_dirs, module_dir_id);
+  
+  return module_dir;
+}
+
+int32_t SPVM_API_compile_spvm(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* class_name) {
+  (void*)env;
+
+  int32_t success = SPVM_COMPILER_compile_spvm(compiler, class_name);
+  
+  return success;
+}
+
+void SPVM_API_call_init_blocks(SPVM_ENV* env) {
+  (void)env;
+  
+  // Runtime
+  SPVM_COMPILER* compiler = env->compiler;
+  
+  // Call INIT blocks
+  int32_t classes_length = compiler->classes->length;
+  SPVM_VALUE stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
+  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
+    
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
+    
+    if (class->op_init_method) {
+      SPVM_METHOD* init_method = class->op_init_method->uv.method;
+      env->call_spvm_method(env, init_method->id, stack);
+    }
+  }
 }
