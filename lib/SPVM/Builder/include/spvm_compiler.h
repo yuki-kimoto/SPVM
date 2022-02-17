@@ -151,4 +151,6 @@ const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SP
 
 int32_t SPVM_COMPILER_get_error_count(SPVM_COMPILER* compiler);
 
+int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name);
+
 #endif

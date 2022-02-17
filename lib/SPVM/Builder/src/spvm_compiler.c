@@ -340,6 +340,21 @@ void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh) {
   }
 }
 
+int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name) {
+  
+  const char* start_file = compiler->start_file;
+  int32_t start_line = compiler->start_line;
+  
+  // push class to compiler use stack
+  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, class_name, start_file, start_line);
+  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
+  SPVM_OP* op_use_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, start_file, start_line);
+  SPVM_OP_build_use(compiler, op_use_class, op_type_class, NULL, 0);
+  SPVM_LIST_push(compiler->op_use_stack, op_use_class);
+  
+  return SPVM_COMPILER_compile(compiler);
+}
+
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   
   //yacc/bison debug mode. The default is off.

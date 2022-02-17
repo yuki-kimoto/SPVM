@@ -3511,7 +3511,6 @@ compile_spvm(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  
   // Include directries
   SV** sv_module_dirs_ptr = hv_fetch(hv_self, "module_dirs", strlen("module_dirs"), 0);
   SV* sv_module_dirs = sv_module_dirs_ptr ? *sv_module_dirs_ptr : &PL_sv_undef;
@@ -3528,13 +3527,6 @@ compile_spvm(...)
   
   // Line
   int32_t start_line = (int32_t)SvIV(sv_start_line);
-  
-  // push class to compiler use stack
-  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, class_name_copy, start_file_copy, start_line);
-  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
-  SPVM_OP* op_use_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, start_file_copy, start_line);
-  SPVM_OP_build_use(compiler, op_use_class, op_type_class, NULL, 0);
-  SPVM_LIST_push(compiler->op_use_stack, op_use_class);
   
   // Set starting file
   compiler->start_file = start_file_copy;
@@ -3560,7 +3552,7 @@ compile_spvm(...)
 
   // Compile SPVM
   compiler->cur_class_base = compiler->classes->length;
-  int32_t compile_error = SPVM_COMPILER_compile(compiler);
+  int32_t compile_error = SPVM_COMPILER_compile_spvm(compiler, class_name_copy);
   
   SV* sv_compile_success;
   if (compile_error) {
