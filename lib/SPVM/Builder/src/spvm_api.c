@@ -7510,3 +7510,9 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env) {
     }
   }
 }
+
+void SPVM_API_free_compiler(SPVM_ENV* env, SPVM_COMPILER* compiler) {
+  (void*)env;
+
+  SPVM_COMPILER_free(compiler);
+}
