@@ -352,11 +352,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   SPVM_OP_build_use(compiler, op_use_class, op_type_class, NULL, 0);
   SPVM_LIST_push(compiler->op_use_stack, op_use_class);
   
-  return SPVM_COMPILER_compile(compiler);
-}
-
-int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
-  
   //yacc/bison debug mode. The default is off.
   SPVM_yydebug = 0;
 

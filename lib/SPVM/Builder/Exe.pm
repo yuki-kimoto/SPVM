@@ -435,13 +435,10 @@ EOS
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
 
-  // Create use op for entry point class
-  SPVM_OP* op_name_start = SPVM_OP_new_op_name(compiler, class_name, class_name, 0);
-  SPVM_OP* op_type_start = SPVM_OP_build_basic_type(compiler, op_name_start);
-  SPVM_OP* op_use_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, class_name, 0);
-  SPVM_OP_build_use(compiler, op_use_start, op_type_start, NULL, 0);
-  SPVM_LIST_push(compiler->op_use_stack, op_use_start);
+  compiler->start_file = class_name;
   
+  compiler->start_line = 0;
+
   // Set module source_files
 EOS
     
@@ -458,7 +455,7 @@ EOS
 
     $boot_source .= <<'EOS';
 
-  SPVM_COMPILER_compile(compiler);
+  SPVM_COMPILER_compile_spvm(compiler, class_name);
 
   if (SPVM_COMPILER_get_error_count(compiler) > 0) {
     SPVM_COMPILER_print_error_messages(compiler, stderr);
