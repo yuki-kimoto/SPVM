@@ -352,6 +352,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '\f':
       {
         compiler->bufptr++;
+        compiler->befbufptr = compiler->bufptr;
         continue;
       }
       case '\r':
@@ -364,6 +365,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->bufptr++;
         compiler->cur_line++;
         compiler->line_start_ptr = compiler->bufptr;
+        compiler->befbufptr = compiler->bufptr;
         continue;
       }
       // Cancat

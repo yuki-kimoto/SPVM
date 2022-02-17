@@ -279,4 +279,9 @@ sub print_error_messages {
   compile_not_ok('TestCase::CompileError::Interface::ImplementStatement', qr/implement/i);
 }
 
+# Syntax
+{
+  compile_not_ok('TestCase::CompileError::Syntax::LineNumber', qr/our.*\b8:3\b/i);
+}
+
 done_testing;
