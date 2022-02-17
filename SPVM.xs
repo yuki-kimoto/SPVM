@@ -3501,9 +3501,9 @@ compile_spvm(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
-  SV* sv_name = ST(1);
-  SV* sv_file = ST(2);
-  SV* sv_line = ST(3);
+  SV* sv_class_name = ST(1);
+  SV* sv_start_file = ST(2);
+  SV* sv_start_line = ST(3);
   
   HV* hv_self = (HV*)SvRV(sv_self);
 
@@ -3517,22 +3517,22 @@ compile_spvm(...)
   SV* sv_module_dirs = sv_module_dirs_ptr ? *sv_module_dirs_ptr : &PL_sv_undef;
   
   // Name
-  const char* name = SvPV_nolen(sv_name);
-  char* name_copy = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sv_len(sv_name) + 1);
-  memcpy(name_copy, name, sv_len(sv_name));
+  const char* class_name = SvPV_nolen(sv_class_name);
+  char* class_name_copy = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sv_len(sv_class_name) + 1);
+  memcpy(class_name_copy, class_name, sv_len(sv_class_name));
   
   // File
-  const char* file = SvPV_nolen(sv_file);
-  char* file_copy = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sv_len(sv_file) + 1);
-  memcpy(file_copy, file, sv_len(sv_file));
+  const char* start_file = SvPV_nolen(sv_start_file);
+  char* start_file_copy = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sv_len(sv_start_file) + 1);
+  memcpy(start_file_copy, start_file, sv_len(sv_start_file));
   
   // Line
-  int32_t line = (int32_t)SvIV(sv_line);
+  int32_t start_line = (int32_t)SvIV(sv_start_line);
   
   // push class to compiler use stack
-  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_copy, file_copy, line);
+  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, class_name_copy, start_file_copy, start_line);
   SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
-  SPVM_OP* op_use_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, file_copy, line);
+  SPVM_OP* op_use_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, start_file_copy, start_line);
   SPVM_OP_build_use(compiler, op_use_class, op_type_class, NULL, 0);
   SPVM_LIST_push(compiler->op_use_stack, op_use_class);
   
