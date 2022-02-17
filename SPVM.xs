@@ -3935,6 +3935,8 @@ _init(...)
     croak("Can't create SPVM env");
   }
   
+  env->call_init_blocks(env);
+  
   // Set ENV
   size_t iv_env = PTR2IV(env);
   SV* sviv_env = sv_2mortal(newSViv(iv_env));

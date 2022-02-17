@@ -6,41 +6,40 @@
 
 #include "spvm_native.h"
 #include "spvm_api.h"
-
-#include "spvm_op.h"
 #include "spvm_compiler.h"
-#include "spvm_hash.h"
-#include "spvm_list.h"
-
-#include <spvm_native.h>
 
 int32_t main(int32_t argc, const char *argv[]) {
   
   // Class name
   const char* class_name = "MyExe";
   
+  SPVM_ENV* empty_env = NULL;
+  
   // Create compiler
-  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
+  SPVM_COMPILER* compiler = SPVM_API_new_compiler(empty_env);
   
   // compiler->debug = 1;
   
-  compiler->start_file = class_name;
-  
-  compiler->start_line = 0;
+  SPVM_API_set_compiler_start_file(empty_env, compiler, class_name);
+
+  SPVM_API_set_compiler_start_line(empty_env, compiler, 0);
   
   // Add module directory
   char* module_dir = "solo/SPVM";
-  SPVM_LIST_push(compiler->module_dirs, module_dir);
-  
-  SPVM_COMPILER_compile_spvm(compiler, class_name);
+  SPVM_API_add_module_dir(empty_env, compiler, module_dir);
+
+  SPVM_API_compile_spvm(empty_env, compiler, class_name);
   
   if (SPVM_COMPILER_get_error_count(compiler) > 0) {
     SPVM_COMPILER_print_error_messages(compiler, stderr);
-    exit(1);
+    exit(255);
   }
 
   // Create env
   SPVM_ENV* env = SPVM_API_create_env(compiler);
+  
+  // Call init blocks
+  env->call_init_blocks(env);
   
   // Class
   int32_t method_id = env->get_class_method_id(env, class_name, "main", "int(string,string[])");
@@ -89,7 +88,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   env->free_env(env);
 
   // Free compiler
-  SPVM_COMPILER_free(compiler);
+  SPVM_API_free_compiler(empty_env, compiler);
   
   return status;
 }

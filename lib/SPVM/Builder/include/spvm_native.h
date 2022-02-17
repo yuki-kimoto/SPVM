@@ -286,5 +286,6 @@ struct spvm_env {
   void* (*get_precompile_method_address)(SPVM_ENV* env, const char* method_abs_name);
   void (*set_native_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
   void (*set_precompile_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
+  void (*call_init_blocks)(SPVM_ENV* env);
 };
 #endif
