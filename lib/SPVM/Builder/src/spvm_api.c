@@ -299,27 +299,21 @@ SPVM_ENV* SPVM_API_new_env_raw() {
   return env;
 }
 
-SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
-
-  SPVM_ENV* env = SPVM_API_new_env_raw();
+int32_t SPVM_API_init_env(SPVM_ENV* env) {
   
-  if (env == NULL) {
-    return NULL;
-  }
-  
-  env->compiler = compiler;
+  SPVM_COMPILER* compiler = env->compiler;
 
   // Mortal stack
   int32_t native_mortal_stack_capacity = 1;
   void* native_mortal_stack = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT*) * native_mortal_stack_capacity);
   if (native_mortal_stack == NULL) {
-    return NULL;
+    return 1;
   }
 
   // Initialize Class Variables
   void* class_vars_heap = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * ((int64_t)compiler->class_vars->length + 1));
   if (class_vars_heap == NULL) {
-    return NULL;
+    return 2;
   }
   
   env->native_mortal_stack_capacity = (void*)(intptr_t)native_mortal_stack_capacity;
@@ -335,7 +329,22 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   
   // Object header byte size
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
+  
+  return 0;
+}
 
+SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
+
+  SPVM_ENV* env = SPVM_API_new_env_raw();
+  
+  if (env == NULL) {
+    return NULL;
+  }
+  
+  env->compiler = compiler;
+
+  SPVM_API_init_env(env);
+  
   return env;
 }
 
@@ -1203,12 +1212,16 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   }
 
   // Free class variables heap
-  SPVM_API_free_memory_block(env, env->class_vars_heap);
-  env->class_vars_heap = NULL;
+  if (env->class_vars_heap != NULL) {
+    SPVM_API_free_memory_block(env, env->class_vars_heap);
+    env->class_vars_heap = NULL;
+  }
   
   // Free mortal stack
-  SPVM_API_free_memory_block(env, env->native_mortal_stack);
-  env->native_mortal_stack = NULL;
+  if (env->native_mortal_stack != NULL) {
+    SPVM_API_free_memory_block(env, env->native_mortal_stack);
+    env->native_mortal_stack = NULL;
+  }
   
   // Free env
   free(env);
