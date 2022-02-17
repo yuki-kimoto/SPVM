@@ -67,6 +67,12 @@ struct spvm_compiler {
   // Current class base;
   int32_t cur_class_base;
   
+  // Starting file the starting module is loaded
+  const char* start_file;
+  
+  // Starting line the starting module is loaded
+  int32_t start_line;
+  
   // AST grammar
   SPVM_OP* op_grammar;
   
