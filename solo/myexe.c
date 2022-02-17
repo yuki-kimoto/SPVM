@@ -75,7 +75,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   int32_t status;
   if (exception_flag) {
-    SPVM_API_print(env, env->exception_object);
+    SPVM_API_print_stderr(env, env->exception_object);
     printf("\n");
     status = 255;
   }
