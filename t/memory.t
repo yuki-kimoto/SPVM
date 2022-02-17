@@ -51,7 +51,7 @@ use Test::More;
       }
       $alloc_counts += $match_count;
     }
-    is($alloc_counts, 1);
+    is($alloc_counts, 2);
     ok($calloc_counts_in_compiler_allocator_source);
   }
 
@@ -75,7 +75,7 @@ use Test::More;
       }
       $alloc_counts += $match_count;
     }
-    is($alloc_counts, 1);
+    is($alloc_counts, 2);
     ok($calloc_counts_in_compiler_allocator_source);
   }
   
@@ -83,7 +83,7 @@ use Test::More;
   {
     my $count = 0;
     my $compiler_contains_only_one;
-    my $allocator_contains_only_five;
+    my $allocator_contains_only_four;
     for my $check_file (@check_files) {
       open my $check_fh, '<', $check_file
         or die "Can't open file \"$check_file\": $!";
@@ -99,8 +99,8 @@ use Test::More;
       }
       elsif ($check_file =~ /spvm_allocator\.c$/) {
         $match_count++ while $check_content =~ /$re/g;
-        if ($match_count == 5) {
-          $allocator_contains_only_five = 1;
+        if ($match_count == 4) {
+          $allocator_contains_only_four = 1;
         }
       }
       else {
@@ -108,16 +108,16 @@ use Test::More;
       }
       $count += $match_count;
     }
-    is($count, 6);
+    is($count, 5);
     ok($compiler_contains_only_one);
-    ok($allocator_contains_only_five);
+    ok($allocator_contains_only_four);
   }
 
   # SPVM_ALLOCATOR_new_block_unmanaged is only used to allocate the compiler and allocator
   {
     my $count = 0;
     my $compiler_contains_only_one;
-    my $allocator_contains_only_five;
+    my $allocator_contains_only_four;
     for my $check_file (@check_files) {
       open my $check_fh, '<', $check_file
         or die "Can't open file \"$check_file\": $!";
@@ -133,8 +133,8 @@ use Test::More;
       }
       elsif ($check_file =~ /spvm_allocator\.c$/) {
         $match_count++ while $check_content =~ /$re/g;
-        if ($match_count == 5) {
-          $allocator_contains_only_five = 1;
+        if ($match_count == 4) {
+          $allocator_contains_only_four = 1;
         }
       }
       else {
@@ -142,9 +142,9 @@ use Test::More;
       }
       $count += $match_count;
     }
-    is($count, 6);
+    is($count, 5);
     ok($compiler_contains_only_one);
-    ok($allocator_contains_only_five);
+    ok($allocator_contains_only_four);
   }
 }
 

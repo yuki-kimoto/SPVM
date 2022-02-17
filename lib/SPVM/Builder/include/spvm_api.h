@@ -310,4 +310,6 @@ int32_t SPVM_API_get_module_dirs_length (SPVM_ENV* env, SPVM_COMPILER* compiler)
 const char* SPVM_API_get_module_dir (SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t module_dir_id);
 void SPVM_API_free_compiler(SPVM_ENV* env, SPVM_COMPILER* compiler);
 
+SPVM_ENV* SPVM_API_new_env_raw();
+
 #endif

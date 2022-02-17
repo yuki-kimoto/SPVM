@@ -289,15 +289,9 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_call_init_blocks,
   };
   
-  SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime_noenv(compiler, sizeof(env_init));
+  SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
     return NULL;
-  }
-  
-  {
-    int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
-    memory_blocks_count++;
-    env->memory_blocks_count = (void*)(intptr_t)memory_blocks_count;
   }
   
   memcpy(env, env_init, sizeof(env_init));
@@ -1203,13 +1197,8 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   SPVM_API_free_memory_block(env, env->native_mortal_stack);
   env->native_mortal_stack = NULL;
   
-  SPVM_ALLOCATOR_free_block_runtime_noenv(compiler, env);
-
-  {
-    int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
-    memory_blocks_count--;
-    env->memory_blocks_count = (void*)(intptr_t)memory_blocks_count;
-  }
+  // Free env
+  free(env);
 }
 
 int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* stack) {

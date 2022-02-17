@@ -5,6 +5,7 @@ Revision history for SPVM
         * Precompile and native method of SPVM core become reentrant if no_symbol_cache_flag is set.
         * Fix precompile exception bugs when symbols is not found.
         * Add print, print_stderr native APIs.
+        * env is not managed by SPVM memory allocator because env must exist before the compiler is created.
         [BUG FIX]
         * Fix the line and the position of character in case that a compilation error occurs and some space character exists.
 
