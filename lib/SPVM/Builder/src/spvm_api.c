@@ -93,7 +93,7 @@
 
 
 
-SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
+SPVM_ENV* SPVM_API_new_env_raw() {
 
   // Native APIs. If a element is added, must increment env_length variable.
   void* env_init[]  = {
@@ -112,7 +112,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_LONG_OBJECT,  // long_object_basic_type_id
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT, // float_object_basic_type_id
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT, // double_object_basic_type_id
-    compiler,
+    NULL, // compiler,
     NULL, // exception_object
     NULL, // native_mortal_stack
     NULL, // native_mortal_stack_top
@@ -295,6 +295,19 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   }
   
   memcpy(env, env_init, sizeof(env_init));
+
+  return env;
+}
+
+SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
+
+  SPVM_ENV* env = SPVM_API_new_env_raw();
+  
+  if (env == NULL) {
+    return NULL;
+  }
+  
+  env->compiler = compiler;
 
   // Mortal stack
   int32_t native_mortal_stack_capacity = 1;
