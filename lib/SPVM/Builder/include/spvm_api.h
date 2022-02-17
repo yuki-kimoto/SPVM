@@ -312,5 +312,6 @@ void SPVM_API_free_compiler(SPVM_ENV* env, SPVM_COMPILER* compiler);
 
 SPVM_ENV* SPVM_API_new_env_raw();
 int32_t SPVM_API_init_env(SPVM_ENV* env);
+void SPVM_API_cleanup_global_vars(SPVM_ENV* env);
 
 #endif

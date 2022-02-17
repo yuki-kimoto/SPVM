@@ -1190,7 +1190,7 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
   return SPVM_API_create_env(env->compiler);
 }
 
-void SPVM_API_free_env(SPVM_ENV* env) {
+void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
 
   // Runtime
   SPVM_COMPILER* compiler = env->compiler;
@@ -1210,6 +1210,11 @@ void SPVM_API_free_env(SPVM_ENV* env) {
       }
     }
   }
+}
+
+void SPVM_API_free_env(SPVM_ENV* env) {
+
+  SPVM_API_cleanup_global_vars(env);
 
   // Free class variables heap
   if (env->class_vars_heap != NULL) {
