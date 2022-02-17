@@ -3536,6 +3536,12 @@ compile_spvm(...)
   SPVM_OP_build_use(compiler, op_use_class, op_type_class, NULL, 0);
   SPVM_LIST_push(compiler->op_use_stack, op_use_class);
   
+  // Set starting file
+  compiler->start_file = start_file_copy;
+  
+  // Set starting line
+  compiler->start_line = start_line;
+  
   // Add include paths
   AV* av_module_dirs;
   if (SvOK(sv_module_dirs)) {
