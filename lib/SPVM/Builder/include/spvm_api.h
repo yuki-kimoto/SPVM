@@ -296,4 +296,7 @@ void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, const char* method_a
 void SPVM_API_set_native_method_address(SPVM_ENV* env, const char* method_abs_name, void* address);
 void SPVM_API_set_precompile_method_address(SPVM_ENV* env, const char* method_abs_name, void* address);
 
+void SPVM_API_fprint(SPVM_ENV* env, FILE* fh, SPVM_OBJECT* string);
+void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_OBJECT* string);
+
 #endif
