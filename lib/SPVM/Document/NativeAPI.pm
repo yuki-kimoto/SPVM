@@ -803,6 +803,8 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   176 no_symbol_cache_flag
   177 set_no_symbol_cache_flag
   178 get_no_symbol_cache_flag
+  179 print
+  180 print_stderr
 
 =head1 List of Native APIs
 
@@ -2560,6 +2562,22 @@ Note that this flag is merely intention for the native module authors. On the ot
   int32_t (*get_no_symbol_cache_flag)(SPVM_ENV* env);
 
 Get the flag that native code doesn't use symbol cache such as basic type names, method names, field names, package names.
+
+=head2 print
+
+  void (*print)(SPVM_ENV* env, void* string);
+
+Print the characters of the string to stdout.
+
+If the string is C<NULL>, nothing is printed.
+
+=head2 print_stderr
+
+  void (*print_stderr)(SPVM_ENV* env, void* string);
+
+Print the characters of the string to stderr.
+
+If the string is C<NULL>, nothing is printed.
 
 =head1 Utilities
 

@@ -276,6 +276,8 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     NULL, // no_symbol_cache_flag
     SPVM_API_set_no_symbol_cache_flag,
     SPVM_API_get_no_symbol_cache_flag,
+    SPVM_API_print,
+    SPVM_API_print_stderr,
     SPVM_API_get_next_method_id,
     SPVM_API_get_next_native_method_id,
     SPVM_API_get_next_precompile_method_id,
@@ -5733,6 +5735,10 @@ SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, con
 
 void SPVM_API_fprint(SPVM_ENV* env, FILE* fh, SPVM_OBJECT* string) {
   (void)env;
+  
+  if (string == NULL) {
+    return;
+  }
   
   const char* bytes = env->get_chars(env, string);
   int32_t string_length = env->length(env, string);
