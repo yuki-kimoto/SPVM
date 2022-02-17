@@ -5731,7 +5731,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, con
   return str;
 }
 
-void SPVM_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {
+void SPVM_API_fprint(SPVM_ENV* env, FILE* fh, SPVM_OBJECT* string) {
   (void)env;
   
   const char* bytes = env->get_chars(env, string);
@@ -5740,9 +5740,21 @@ void SPVM_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {
   {
     int32_t i;
     for (i = 0; i < string_length; i++) {
-      putchar((char)bytes[i]);
+      putc((char)bytes[i], fh);
     }
   }
+}
+
+void SPVM_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {
+  (void)env;
+  
+  SPVM_API_fprint(env, stdout, string);
+}
+
+void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_OBJECT* string) {
+  (void)env;
+  
+  SPVM_API_fprint(env, stderr, string);
 }
 
 SPVM_OBJECT* SPVM_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2) {
