@@ -21,7 +21,7 @@ class TestCase {
   use TestCase::Point_3l;
   use TestCase::Point_3f;
   use TestCase::Point_3d;
-  use TestCase::DumpTest1;}
+  use TestCase::DumpTest1;
   use TestCase::Complex_2f;
   use TestCase::Complex_2d;
   use TestCase::CommonInterface;
