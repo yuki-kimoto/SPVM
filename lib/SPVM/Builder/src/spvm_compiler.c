@@ -348,7 +348,9 @@ void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh) {
 }
 
 int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name) {
-  
+
+  compiler->cur_class_base = compiler->classes->length;
+
   const char* start_file = compiler->start_file;
   int32_t start_line = compiler->start_line;
   
