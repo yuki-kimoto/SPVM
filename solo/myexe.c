@@ -13,27 +13,30 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Class name
   const char* class_name = "MyExe";
   
-  SPVM_ENV* empty_env = NULL;
+  SPVM_ENV* empty_env = SPVM_API_new_env(NULL);
   
   // Create compiler
-  SPVM_COMPILER* compiler = SPVM_API_new_compiler(empty_env);
+  SPVM_COMPILER* compiler = empty_env->new_compiler(empty_env);
   
   // compiler->debug = 1;
   
-  SPVM_API_set_compiler_start_file(empty_env, compiler, class_name);
+  empty_env->set_compiler_start_file(empty_env, compiler, class_name);
 
-  SPVM_API_set_compiler_start_line(empty_env, compiler, 0);
+  empty_env->set_compiler_start_line(empty_env, compiler, 0);
   
   // Add module directory
   char* module_dir = "solo/SPVM";
-  SPVM_API_add_module_dir(empty_env, compiler, module_dir);
+  empty_env->add_module_dir(empty_env, compiler, module_dir);
 
-  SPVM_API_compile_spvm(empty_env, compiler, class_name);
+  empty_env->compile_spvm(empty_env, compiler, class_name);
   
   if (SPVM_COMPILER_get_error_count(compiler) > 0) {
     SPVM_COMPILER_print_error_messages(compiler, stderr);
     exit(255);
   }
+  
+  empty_env->free_env(empty_env);
+  empty_env = NULL;
 
   // Create env
   SPVM_ENV* env = SPVM_API_new_env(NULL);
@@ -92,7 +95,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   env->leave_scope(env, scope_id);
   
   // Cleanup global variables
-  SPVM_API_cleanup_global_vars(env);
+  env->cleanup_global_vars(env);
   
   // Free env
   env->free_env(env);

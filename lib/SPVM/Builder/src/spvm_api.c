@@ -1221,6 +1221,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   
   // Free env
   free(env);
+  env = NULL;
 }
 
 int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* stack) {
