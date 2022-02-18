@@ -327,7 +327,7 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
   }
 }
 
-int32_t SPVM_COMPILER_get_error_count(SPVM_COMPILER* compiler) {
+int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler) {
   
   return compiler->error_messages->length;
 }
@@ -378,7 +378,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     error_code = 1;
   }
   else {
-    if (SPVM_COMPILER_get_error_count(compiler) > 0) {
+    if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
       error_code = 2;
     }
     else {
@@ -386,7 +386,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
       int32_t check_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
       SPVM_OP_CHECKER_check(compiler);
       assert(compiler->allocator->memory_blocks_count_compile_tmp == check_start_memory_blocks_count_compile_tmp);
-      if (SPVM_COMPILER_get_error_count(compiler) > 0) {
+      if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
         error_code = 3;
       }
       else {
@@ -394,7 +394,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         int32_t build_opcode_array_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
         SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
         assert(compiler->allocator->memory_blocks_count_compile_tmp == build_opcode_array_start_memory_blocks_count_compile_tmp);
-        if (SPVM_COMPILER_get_error_count(compiler) > 0) {
+        if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           error_code = 4;
         }
       }
