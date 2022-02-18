@@ -15,7 +15,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_ENV* empty_env = SPVM_API_new_env(NULL);
   
   // Create compiler
-  SPVM_COMPILER* compiler = empty_env->new_compiler(empty_env);
+  void* compiler = empty_env->new_compiler(empty_env);
   
   // compiler->debug = 1;
   

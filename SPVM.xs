@@ -3487,7 +3487,14 @@ create_compiler(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
+  SPVM_ENV* empty_env = SPVM_API_new_env(NULL);
+  
+  // Create compiler
+  void* compiler = empty_env->new_compiler(empty_env);
+
+  empty_env->free_env(empty_env);
+  empty_env = NULL;
+
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
   SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
