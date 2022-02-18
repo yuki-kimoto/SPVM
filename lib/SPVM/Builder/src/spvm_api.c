@@ -93,7 +93,7 @@
 
 
 
-SPVM_ENV* SPVM_API_new_env_raw() {
+SPVM_ENV* SPVM_API_new_env(SPVM_ENV* unused_env) {
 
   // Native APIs. If a element is added, must increment env_length variable.
   void* env_init[]  = {
@@ -1169,10 +1169,6 @@ int32_t SPVM_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top,
     }
   }
   return remove_count;
-}
-
-SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
-  return SPVM_API_new_env_raw();
 }
 
 void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
