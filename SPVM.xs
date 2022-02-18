@@ -3487,13 +3487,13 @@ create_compiler(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SPVM_ENV* empty_env = SPVM_API_new_env(NULL);
+  SPVM_ENV* compiler_env = SPVM_API_new_env(NULL);
   
   // Create compiler
-  void* compiler = empty_env->new_compiler(empty_env);
+  void* compiler = compiler_env->new_compiler(compiler_env);
 
-  empty_env->free_env(empty_env);
-  empty_env = NULL;
+  compiler_env->free_env(compiler_env);
+  compiler_env = NULL;
 
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
@@ -3535,13 +3535,13 @@ compile_spvm(...)
   // Line
   int32_t start_line = (int32_t)SvIV(sv_start_line);
 
-  SPVM_ENV* empty_env = SPVM_API_new_env(NULL);
+  SPVM_ENV* compiler_env = SPVM_API_new_env(NULL);
 
   // Set starting file
-  empty_env->compiler_set_start_file(empty_env, compiler, start_file_copy);
+  compiler_env->compiler_set_start_file(compiler_env, compiler, start_file_copy);
   
   // Set starting line
-  empty_env->compiler_set_start_line(empty_env, compiler, start_line);
+  compiler_env->compiler_set_start_line(compiler_env, compiler, start_line);
   
   // Add include paths
   AV* av_module_dirs;
@@ -3556,13 +3556,13 @@ compile_spvm(...)
     SV** sv_include_dir_ptr = av_fetch(av_module_dirs, i, 0);
     SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
     char* include_dir = SvPV_nolen(sv_include_dir);
-    empty_env->compiler_add_module_dir(empty_env, compiler, include_dir);
+    compiler_env->compiler_add_module_dir(compiler_env, compiler, include_dir);
   }
 
   // Compile SPVM
-  int32_t compile_error_code = empty_env->compiler_compile_spvm(empty_env, compiler, class_name_copy);
+  int32_t compile_error_code = compiler_env->compiler_compile_spvm(compiler_env, compiler, class_name_copy);
 
-  empty_env->free_env(empty_env);
+  compiler_env->free_env(compiler_env);
 
   SV* sv_compile_success;
   if (compile_error_code == 0) {

@@ -432,12 +432,12 @@ EOS
 
     $boot_source .= <<'EOS';
 
-  SPVM_ENV* empty_env = SPVM_API_new_env(NULL);
+  SPVM_ENV* compiler_env = SPVM_API_new_env(NULL);
   
   // Create compiler
-  SPVM_COMPILER* compiler = empty_env->new_compiler(empty_env);
+  SPVM_COMPILER* compiler = compiler_env->new_compiler(compiler_env);
 
-  empty_env->compiler_set_start_file(empty_env, compiler, class_name);
+  compiler_env->compiler_set_start_file(compiler_env, compiler, class_name);
 
   // Set module source_files
 EOS
@@ -455,19 +455,19 @@ EOS
 
     $boot_source .= <<'EOS';
 
-  int32_t compile_error_code = empty_env->compiler_compile_spvm(empty_env, compiler, class_name);
+  int32_t compile_error_code = compiler_env->compiler_compile_spvm(compiler_env, compiler, class_name);
 
   if (compile_error_code != 0) {
-    int32_t error_messages_length = empty_env->compiler_get_error_messages_length(empty_env, compiler);
+    int32_t error_messages_length = compiler_env->compiler_get_error_messages_length(compiler_env, compiler);
     for (int32_t i = 0; i < error_messages_length; i++) {
-      const char* error_message = empty_env->compiler_get_error_message(empty_env, compiler, i);
+      const char* error_message = compiler_env->compiler_get_error_message(compiler_env, compiler, i);
       fprintf(stderr, "%s\n", error_message);
     }
     exit(255);
   }
 
-  empty_env->free_env(empty_env);
-  empty_env = NULL;
+  compiler_env->free_env(compiler_env);
+  compiler_env = NULL;
 EOS
     
     for my $class_name (@$class_names_including_anon) {

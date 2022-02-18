@@ -12,34 +12,34 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Class name
   const char* class_name = "MyExe";
   
-  SPVM_ENV* empty_env = SPVM_API_new_env(NULL);
+  SPVM_ENV* compiler_env = SPVM_API_new_env(NULL);
   
   // Create compiler
-  void* compiler = empty_env->new_compiler(empty_env);
+  void* compiler = compiler_env->new_compiler(compiler_env);
   
   // compiler->debug = 1;
   
-  empty_env->compiler_set_start_file(empty_env, compiler, class_name);
+  compiler_env->compiler_set_start_file(compiler_env, compiler, class_name);
 
-  empty_env->compiler_set_start_line(empty_env, compiler, 0);
+  compiler_env->compiler_set_start_line(compiler_env, compiler, 0);
   
   // Add module directory
   char* module_dir = "solo/SPVM";
-  empty_env->compiler_add_module_dir(empty_env, compiler, module_dir);
+  compiler_env->compiler_add_module_dir(compiler_env, compiler, module_dir);
 
-  int32_t compile_error_code = empty_env->compiler_compile_spvm(empty_env, compiler, class_name);
+  int32_t compile_error_code = compiler_env->compiler_compile_spvm(compiler_env, compiler, class_name);
   
   if (compile_error_code != 0) {
-    int32_t error_messages_length = empty_env->compiler_get_error_messages_length(empty_env, compiler);
+    int32_t error_messages_length = compiler_env->compiler_get_error_messages_length(compiler_env, compiler);
     for (int32_t i = 0; i < error_messages_length; i++) {
-      const char* error_message = empty_env->compiler_get_error_message(empty_env, compiler, i);
+      const char* error_message = compiler_env->compiler_get_error_message(compiler_env, compiler, i);
       fprintf(stderr, "%s\n", error_message);
     }
     exit(255);
   }
   
-  empty_env->free_env(empty_env);
-  empty_env = NULL;
+  compiler_env->free_env(compiler_env);
+  compiler_env = NULL;
 
   // Create env
   SPVM_ENV* env = SPVM_API_new_env(NULL);
@@ -104,7 +104,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   env->free_env(env);
 
   // Free compiler
-  SPVM_API_compiler_free(empty_env, compiler);
+  SPVM_API_compiler_free(compiler_env, compiler);
   
   return status;
 }
