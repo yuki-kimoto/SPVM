@@ -4015,6 +4015,80 @@ bind_method(...)
 }
 
 SV*
+set_native_method_address(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_class_name = ST(1);
+  SV* sv_method_name = ST(2);
+  SV* sv_native_address = ST(3);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  // Class name
+  const char* class_name = SvPV_nolen(sv_class_name);
+
+  // Method name
+  const char* method_name = SvPV_nolen(sv_method_name);
+  
+  // Native address
+  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
+  
+  // Class
+  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+  
+  // Method
+  SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
+  
+  method->native_address = native_address;
+
+  XSRETURN(0);
+}
+
+SV*
+set_precompile_method_address(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_class_name = ST(1);
+  SV* sv_method_name = ST(2);
+  SV* sv_native_address = ST(3);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  // Class name
+  const char* class_name = SvPV_nolen(sv_class_name);
+
+  // Method name
+  const char* method_name = SvPV_nolen(sv_method_name);
+  
+  // Native address
+  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
+  
+  // Class
+  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+  
+  // Method
+  SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
+  
+  method->precompile_address = native_address;
+
+  XSRETURN(0);
+}
+
+SV*
 DESTROY(...)
   PPCODE:
 {
