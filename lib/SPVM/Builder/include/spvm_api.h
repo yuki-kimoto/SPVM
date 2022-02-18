@@ -297,7 +297,7 @@ void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_OBJECT* string);
 
 SPVM_COMPILER* SPVM_API_new_compiler(SPVM_ENV* env);
 void SPVM_API_compiler_set_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t start_line);
-int32_t SPVM_API_get_compiler_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler);
+int32_t SPVM_API_compiler_get_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler);
 void SPVM_API_set_compiler_start_file(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* start_file);
 const char* SPVM_API_get_compiler_start_file(SPVM_ENV* env, SPVM_COMPILER* compiler);
 void SPVM_API_add_module_dir(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* module_dir);
