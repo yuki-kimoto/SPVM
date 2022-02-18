@@ -1214,8 +1214,6 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
 
 void SPVM_API_free_env(SPVM_ENV* env) {
 
-  SPVM_API_cleanup_global_vars(env);
-
   // Free class variables heap
   if (env->class_vars_heap != NULL) {
     SPVM_API_free_memory_block(env, env->class_vars_heap);

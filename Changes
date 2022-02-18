@@ -8,6 +8,9 @@ Revision history for SPVM
         * env is not managed by SPVM memory allocator because env must exist before the compiler is created.
         [BUG FIX]
         * Fix the line and the position of character in case that a compilation error occurs and some space character exists.
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * The "free_env" native API don't cleanup global variables such as the exception variable and class variables
+          because the process of envs and compilers must be separated
 
 0.9505  2021-02-16
         [CHANGE]

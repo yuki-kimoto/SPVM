@@ -85,6 +85,10 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Leave scope
   env->leave_scope(env, scope_id);
   
+  // Cleanup global variables
+  SPVM_API_cleanup_global_vars(env);
+  
+  // Free env
   env->free_env(env);
 
   // Free compiler

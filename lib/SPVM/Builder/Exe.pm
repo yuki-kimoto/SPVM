@@ -559,7 +559,11 @@ EOS
   
   // Leave scope
   env->leave_scope(env, scope_id);
+
+  // Cleanup global variables
+  SPVM_API_cleanup_global_vars(env);
   
+  // Free env
   SPVM_API_free_env(env);
 
   // Free compiler

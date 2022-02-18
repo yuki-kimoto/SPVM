@@ -4010,6 +4010,10 @@ DESTROY(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   if (SvOK(sv_env)) {
     SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // Cleanup global variables
+    SPVM_API_cleanup_global_vars(env);
+    
     env->free_env(env);
   }
 
