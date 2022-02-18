@@ -12,6 +12,55 @@ use SPVM::Builder::CC;
 # because SPVM::Builder XS method is loaded when SPVM is loaded
 use SPVM();
 
+# Fields
+sub module_dirs {
+  my $self = shift;
+  if (@_) {
+    $self->{module_dirs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{module_dirs};
+  }
+}
+
+sub build_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{build_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{build_dir};
+  }
+}
+
+sub env {
+  my $self = shift;
+  if (@_) {
+    $self->{env} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{env};
+  }
+}
+
+sub new {
+  my $class = shift;
+  
+  my $self = {
+    module_dirs => [map { "$_/SPVM" } @INC],
+    @_
+  };
+  
+  bless $self, ref $class || $class;
+  
+  $self->create_compiler;
+  
+  return $self;
+}
+
 sub build {
   my ($self, $class_name, $file, $line) = @_;
   
@@ -46,44 +95,6 @@ sub print_error_messages {
   for my $error_message (@$error_messages) {
     printf $fh "[CompileError]$error_message\n";
   }
-}
-
-# Fields
-sub module_dirs {
-  my $self = shift;
-  if (@_) {
-    $self->{module_dirs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{module_dirs};
-  }
-}
-
-sub build_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{build_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{build_dir};
-  }
-}
-
-sub new {
-  my $class = shift;
-  
-  my $self = {
-    module_dirs => [map { "$_/SPVM" } @INC],
-    @_
-  };
-  
-  bless $self, ref $class || $class;
-  
-  $self->create_compiler;
-  
-  return $self;
 }
 
 sub create_build_src_path {
