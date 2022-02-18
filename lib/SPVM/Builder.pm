@@ -46,6 +46,17 @@ sub env {
   }
 }
 
+sub compiler_env {
+  my $self = shift;
+  if (@_) {
+    $self->{compiler_env} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{compiler_env};
+  }
+}
+
 sub new {
   my $class = shift;
   
