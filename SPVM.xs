@@ -4133,7 +4133,7 @@ DESTROY(...)
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  SPVM_COMPILER_free(compiler);
+  compiler_env->compiler_free(compiler_env, compiler);
   
   // Free the environment for the compiler
   compiler_env->free_env(compiler_env);
