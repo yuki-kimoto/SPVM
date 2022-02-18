@@ -368,18 +368,18 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   // Initialize error messages
   compiler->error_messages = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   
-  int32_t error = 0;
+  int32_t error_code = 0;
   
   /* Tokenize and Parse */
   int32_t parse_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   assert(compiler->allocator->memory_blocks_count_compile_tmp == parse_start_memory_blocks_count_compile_tmp);
   if (parse_error_flag) {
-    error = 1;
+    error_code = 1;
   }
   else {
     if (SPVM_COMPILER_get_error_count(compiler) > 0) {
-      error = 1;
+      error_code = 2;
     }
     else {
       // Check syntax
@@ -387,7 +387,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
       SPVM_OP_CHECKER_check(compiler);
       assert(compiler->allocator->memory_blocks_count_compile_tmp == check_start_memory_blocks_count_compile_tmp);
       if (SPVM_COMPILER_get_error_count(compiler) > 0) {
-        error = 1;
+        error_code = 3;
       }
       else {
         // Build operation code
@@ -395,12 +395,12 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
         assert(compiler->allocator->memory_blocks_count_compile_tmp == build_opcode_array_start_memory_blocks_count_compile_tmp);
         if (SPVM_COMPILER_get_error_count(compiler) > 0) {
-          error = 1;
+          error_code = 4;
         }
       }
     }
   }
-  return error;
+  return error_code;
 }
 
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, ...) {

@@ -455,11 +455,11 @@ EOS
 
     $boot_source .= <<'EOS';
 
-  SPVM_COMPILER_compile_spvm(compiler, class_name);
+  int32_t compile_error_code = SPVM_COMPILER_compile_spvm(compiler, class_name);
 
-  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
+  if (compile_error_code != 0) {
     SPVM_COMPILER_print_error_messages(compiler, stderr);
-    exit(1);
+    exit(255);
   }
 EOS
     

@@ -3552,14 +3552,14 @@ compile_spvm(...)
 
   // Compile SPVM
   compiler->cur_class_base = compiler->classes->length;
-  int32_t compile_error = SPVM_COMPILER_compile_spvm(compiler, class_name_copy);
+  int32_t compile_error_code = SPVM_COMPILER_compile_spvm(compiler, class_name_copy);
   
   SV* sv_compile_success;
-  if (compile_error) {
-    sv_compile_success = sv_2mortal(newSViv(0));
+  if (compile_error_code == 0) {
+    sv_compile_success = sv_2mortal(newSViv(1));
   }
   else {
-    sv_compile_success = sv_2mortal(newSViv(1));
+    sv_compile_success = sv_2mortal(newSViv(0));
   }
   
   XPUSHs(sv_compile_success);

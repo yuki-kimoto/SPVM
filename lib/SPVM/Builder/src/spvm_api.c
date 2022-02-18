@@ -95,7 +95,7 @@
 
 SPVM_ENV* SPVM_API_new_env(SPVM_ENV* unused_env) {
 
-  // Native APIs. If a element is added, must increment env_length variable.
+  // The impelements of Native APIs
   void* env_init[]  = {
     NULL, // class_vars_heap
     (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
@@ -7497,9 +7497,9 @@ const char* SPVM_API_get_module_dir (SPVM_ENV* env, SPVM_COMPILER* compiler, int
 int32_t SPVM_API_compile_spvm(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* class_name) {
   (void*)env;
 
-  int32_t success = SPVM_COMPILER_compile_spvm(compiler, class_name);
+  int32_t error_code = SPVM_COMPILER_compile_spvm(compiler, class_name);
   
-  return success;
+  return error_code;
 }
 
 void SPVM_API_call_init_blocks(SPVM_ENV* env) {
