@@ -51,7 +51,7 @@ use Test::More;
       }
       $alloc_counts += $match_count;
     }
-    is($alloc_counts, 2);
+    is($alloc_counts, 4);
     ok($calloc_counts_in_compiler_allocator_source);
   }
 
@@ -75,7 +75,7 @@ use Test::More;
       }
       $alloc_counts += $match_count;
     }
-    is($alloc_counts, 2);
+    is($alloc_counts, 4);
     ok($calloc_counts_in_compiler_allocator_source);
   }
   

@@ -305,13 +305,13 @@ int32_t SPVM_API_init_env(SPVM_ENV* env) {
 
   // Mortal stack
   int32_t native_mortal_stack_capacity = 1;
-  void* native_mortal_stack = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT*) * native_mortal_stack_capacity);
+  void* native_mortal_stack = calloc(sizeof(SPVM_OBJECT*), native_mortal_stack_capacity);
   if (native_mortal_stack == NULL) {
     return 1;
   }
 
   // Initialize Class Variables
-  void* class_vars_heap = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * ((int64_t)compiler->class_vars->length + 1));
+  void* class_vars_heap = calloc(sizeof(SPVM_VALUE), ((int64_t)compiler->class_vars->length + 1));
   if (class_vars_heap == NULL) {
     return 2;
   }
@@ -1216,13 +1216,13 @@ void SPVM_API_free_env(SPVM_ENV* env) {
 
   // Free class variables heap
   if (env->class_vars_heap != NULL) {
-    SPVM_API_free_memory_block(env, env->class_vars_heap);
+    free(env->class_vars_heap);
     env->class_vars_heap = NULL;
   }
   
   // Free mortal stack
   if (env->native_mortal_stack != NULL) {
-    SPVM_API_free_memory_block(env, env->native_mortal_stack);
+    free(env->native_mortal_stack);
     env->native_mortal_stack = NULL;
   }
   
