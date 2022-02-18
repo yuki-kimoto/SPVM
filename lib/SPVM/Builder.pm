@@ -13,17 +13,6 @@ use SPVM::Builder::CC;
 use SPVM();
 
 # Fields
-sub module_dirs {
-  my $self = shift;
-  if (@_) {
-    $self->{module_dirs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{module_dirs};
-  }
-}
-
 sub build_dir {
   my $self = shift;
   if (@_) {
@@ -35,14 +24,14 @@ sub build_dir {
   }
 }
 
-sub env {
+sub module_dirs {
   my $self = shift;
   if (@_) {
-    $self->{env} = $_[0];
+    $self->{module_dirs} = $_[0];
     return $self;
   }
   else {
-    return $self->{env};
+    return $self->{module_dirs};
   }
 }
 
@@ -57,6 +46,28 @@ sub compiler_env {
   }
 }
 
+sub compiler {
+  my $self = shift;
+  if (@_) {
+    $self->{compiler} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{compiler};
+  }
+}
+
+sub env {
+  my $self = shift;
+  if (@_) {
+    $self->{env} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{env};
+  }
+}
+
 sub new {
   my $class = shift;
   
@@ -67,6 +78,10 @@ sub new {
   
   bless $self, ref $class || $class;
   
+  # Create an environment for the compiler
+  $self->create_compiler_env;
+  
+  # Create the compiler
   $self->create_compiler;
   
   return $self;

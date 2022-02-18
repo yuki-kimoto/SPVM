@@ -3479,7 +3479,7 @@ DESTROY(...)
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
-create_compiler(...)
+create_compiler_env(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3489,11 +3489,27 @@ create_compiler(...)
 
   SPVM_ENV* compiler_env = SPVM_API_new_env(NULL);
   
+  size_t iv_compiler_env = PTR2IV(compiler_env);
+  SV* sviv_compiler_env = sv_2mortal(newSViv(iv_compiler_env));
+  SV* sv_compiler_env = sv_2mortal(newRV_inc(sviv_compiler_env));
+  (void)hv_store(hv_self, "compiler_env", strlen("compiler_env"), SvREFCNT_inc(sv_compiler_env), 0);
+}
+
+SV*
+create_compiler(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  
   // Create compiler
   void* compiler = compiler_env->new_compiler(compiler_env);
-
-  compiler_env->free_env(compiler_env);
-  compiler_env = NULL;
 
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
@@ -4107,11 +4123,21 @@ DESTROY(...)
     
     env->free_env(env);
   }
-
+  
+  // Compiler env
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  
+  // Free compiler
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   SPVM_COMPILER_free(compiler);
+  
+  // Free the environment for the compiler
+  compiler_env->free_env(compiler_env);
+  compiler_env = NULL;
 }
 
 MODULE = SPVM::Builder::CC		PACKAGE = SPVM::Builder::CC
