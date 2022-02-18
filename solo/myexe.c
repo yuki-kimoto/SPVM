@@ -26,9 +26,9 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   // Add module directory
   char* module_dir = "solo/SPVM";
-  empty_env->add_module_dir(empty_env, compiler, module_dir);
+  empty_env->compiler_add_module_dir(empty_env, compiler, module_dir);
 
-  int32_t compile_error_code = empty_env->compile_spvm(empty_env, compiler, class_name);
+  int32_t compile_error_code = empty_env->compiler_compile_spvm(empty_env, compiler, class_name);
   
   if (compile_error_code != 0) {
     SPVM_COMPILER_print_error_messages(compiler, stderr);
@@ -101,7 +101,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   env->free_env(env);
 
   // Free compiler
-  SPVM_API_free_compiler(empty_env, compiler);
+  SPVM_API_compiler_free(empty_env, compiler);
   
   return status;
 }

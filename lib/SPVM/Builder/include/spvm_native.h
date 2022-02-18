@@ -291,15 +291,15 @@ struct spvm_env {
   int32_t (*compiler_get_start_line)(SPVM_ENV* env, void* compiler);
   void (*compiler_set_start_file)(SPVM_ENV* env, void* compiler, const char* start_file);
   const char* (*compiler_get_start_file)(SPVM_ENV* env, void* compiler);
-  void (*add_module_dir)(SPVM_ENV* env, void* compiler, const char* module_dir);
-  int32_t (*get_module_dirs_length )(SPVM_ENV* env, void* compiler);
-  const char* (*get_module_dir )(SPVM_ENV* env, void* compiler, int32_t module_dir_id);
-  int32_t (*compile_spvm)(SPVM_ENV* env, void* compiler, const char* class_name);
-  void (*free_compiler)(SPVM_ENV* env, void* compiler);
+  void (*compiler_add_module_dir)(SPVM_ENV* env, void* compiler, const char* module_dir);
+  int32_t (*compiler_get_module_dirs_length )(SPVM_ENV* env, void* compiler);
+  const char* (*compiler_get_module_dir )(SPVM_ENV* env, void* compiler, int32_t module_dir_id);
+  int32_t (*compiler_compile_spvm)(SPVM_ENV* env, void* compiler, const char* class_name);
+  void (*compiler_free)(SPVM_ENV* env, void* compiler);
   int32_t (*init_env)(SPVM_ENV* env);
   void (*call_init_blocks)(SPVM_ENV* env);
   void (*cleanup_global_vars)(SPVM_ENV* env);
-  int32_t (*get_error_messages_length)(SPVM_ENV* env, void* compiler);
-  const char* (*get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
+  int32_t (*compiler_get_error_messages_length)(SPVM_ENV* env, void* compiler);
+  const char* (*compiler_get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
 };
 #endif

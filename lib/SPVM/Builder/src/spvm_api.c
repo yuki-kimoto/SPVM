@@ -291,16 +291,16 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* unused_env) {
     SPVM_API_compiler_get_start_line,
     SPVM_API_compiler_set_start_file,
     SPVM_API_compiler_get_start_file,
-    SPVM_API_add_module_dir,
-    SPVM_API_get_module_dirs_length,
-    SPVM_API_get_module_dir,
-    SPVM_API_compile_spvm,
-    SPVM_API_free_compiler,
+    SPVM_API_compiler_add_module_dir,
+    SPVM_API_compiler_get_module_dirs_length,
+    SPVM_API_compiler_get_module_dir,
+    SPVM_API_compiler_compile_spvm,
+    SPVM_API_compiler_free,
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
     SPVM_API_cleanup_global_vars,
-    SPVM_API_get_error_messages_length,
-    SPVM_API_get_error_message,
+    SPVM_API_compiler_get_error_messages_length,
+    SPVM_API_compiler_get_error_message,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -7473,13 +7473,13 @@ const char* SPVM_API_compiler_get_start_file(SPVM_ENV* env, SPVM_COMPILER* compi
   return compiler->start_file;
 }
 
-void SPVM_API_add_module_dir(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* module_dir) {
+void SPVM_API_compiler_add_module_dir(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* module_dir) {
   (void*)env;
   
   SPVM_LIST_push(compiler->module_dirs, (void*)module_dir);
 }
 
-int32_t SPVM_API_get_module_dirs_length (SPVM_ENV* env, SPVM_COMPILER* compiler) {
+int32_t SPVM_API_compiler_get_module_dirs_length (SPVM_ENV* env, SPVM_COMPILER* compiler) {
   (void*)env;
   
   SPVM_LIST* module_dirs = compiler->module_dirs;
@@ -7488,7 +7488,7 @@ int32_t SPVM_API_get_module_dirs_length (SPVM_ENV* env, SPVM_COMPILER* compiler)
   return module_dirs_length;
 }
 
-const char* SPVM_API_get_module_dir (SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t module_dir_id) {
+const char* SPVM_API_compiler_get_module_dir (SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t module_dir_id) {
   (void*)env;
   
   const char* module_dir = SPVM_LIST_fetch(compiler->module_dirs, module_dir_id);
@@ -7496,7 +7496,7 @@ const char* SPVM_API_get_module_dir (SPVM_ENV* env, SPVM_COMPILER* compiler, int
   return module_dir;
 }
 
-int32_t SPVM_API_compile_spvm(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* class_name) {
+int32_t SPVM_API_compiler_compile_spvm(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* class_name) {
   (void*)env;
 
   int32_t error_code = SPVM_COMPILER_compile_spvm(compiler, class_name);
@@ -7524,16 +7524,16 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env) {
   }
 }
 
-void SPVM_API_free_compiler(SPVM_ENV* env, SPVM_COMPILER* compiler) {
+void SPVM_API_compiler_free(SPVM_ENV* env, SPVM_COMPILER* compiler) {
   (void*)env;
 
   SPVM_COMPILER_free(compiler);
 }
 
-int32_t SPVM_API_get_error_messages_length(SPVM_ENV* env, SPVM_COMPILER* compiler) {
+int32_t SPVM_API_compiler_get_error_messages_length(SPVM_ENV* env, SPVM_COMPILER* compiler) {
   return SPVM_COMPILER_get_error_messages_length(compiler);
 }
 
-const char* SPVM_API_get_error_message(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t index) {
+const char* SPVM_API_compiler_get_error_message(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t index) {
   return  SPVM_COMPILER_get_error_message(compiler, index);
 }
