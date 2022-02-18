@@ -286,6 +286,18 @@ struct spvm_env {
   void* (*get_precompile_method_address)(SPVM_ENV* env, const char* method_abs_name);
   void (*set_native_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
   void (*set_precompile_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
+  void* (*new_compiler)(SPVM_ENV* env);
+  void (*set_compiler_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
+  int32_t (*get_compiler_start_line)(SPVM_ENV* env, void* compiler);
+  void (*set_compiler_start_file)(SPVM_ENV* env, void* compiler, const char* start_file);
+  const char* (*get_compiler_start_file)(SPVM_ENV* env, void* compiler);
+  void (*add_module_dir)(SPVM_ENV* env, void* compiler, const char* module_dir);
+  int32_t (*get_module_dirs_length )(SPVM_ENV* env, void* compiler);
+  const char* (*get_module_dir )(SPVM_ENV* env, void* compiler, int32_t module_dir_id);
+  int32_t (*compile_spvm)(SPVM_ENV* env, void* compiler, const char* class_name);
+  void (*free_compiler)(SPVM_ENV* env, void* compiler);
+  int32_t (*init_env)(SPVM_ENV* env);
   void (*call_init_blocks)(SPVM_ENV* env);
+  void (*cleanup_global_vars)(SPVM_ENV* env);
 };
 #endif

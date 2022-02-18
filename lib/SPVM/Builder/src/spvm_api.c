@@ -286,7 +286,19 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* unused_env) {
     SPVM_API_get_precompile_method_address,
     SPVM_API_set_native_method_address,
     SPVM_API_set_precompile_method_address,
+    SPVM_API_new_compiler,
+    SPVM_API_set_compiler_start_line,
+    SPVM_API_get_compiler_start_line,
+    SPVM_API_set_compiler_start_file,
+    SPVM_API_get_compiler_start_file,
+    SPVM_API_add_module_dir,
+    SPVM_API_get_module_dirs_length,
+    SPVM_API_get_module_dir,
+    SPVM_API_compile_spvm,
+    SPVM_API_free_compiler,
+    SPVM_API_init_env,
     SPVM_API_call_init_blocks,
+    SPVM_API_cleanup_global_vars,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));

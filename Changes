@@ -6,6 +6,29 @@ Revision history for SPVM
         * Fix precompile exception bugs when symbols is not found.
         * Add print, print_stderr native APIs.
         * env is not managed by SPVM memory allocator because env must exist before the compiler is created.
+        * Add the following native APIs for the compilation of SPVM
+          int32_t (*get_next_method_id)(SPVM_ENV* env, const char* method_abs_name, int32_t start_index);
+          int32_t (*get_next_native_method_id)(SPVM_ENV* env, const char* method_abs_name, int32_t start_index);
+          int32_t (*get_next_precompile_method_id)(SPVM_ENV* env, const char* method_abs_name, int32_t start_index);
+          const char* (*get_method_abs_name)(SPVM_ENV* env, int32_t method_id);
+          void* (*get_native_method_address)(SPVM_ENV* env, const char* method_abs_name);
+          void* (*get_precompile_method_address)(SPVM_ENV* env, const char* method_abs_name);
+          void (*set_native_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
+          void (*set_precompile_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
+          void* (*new_compiler)(SPVM_ENV* env);
+          void (*set_compiler_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
+          int32_t (*get_compiler_start_line)(SPVM_ENV* env, void* compiler);
+          void (*set_compiler_start_file)(SPVM_ENV* env, void* compiler, const char* start_file);
+          const char* (*get_compiler_start_file)(SPVM_ENV* env, void* compiler);
+          void (*add_module_dir)(SPVM_ENV* env, void* compiler, const char* module_dir);
+          int32_t (*get_module_dirs_length )(SPVM_ENV* env, void* compiler);
+          const char* (*get_module_dir )(SPVM_ENV* env, void* compiler, int32_t module_dir_id);
+          int32_t (*compile_spvm)(SPVM_ENV* env, void* compiler, const char* class_name);
+          void (*free_compiler)(SPVM_ENV* env, void* compiler);
+          int32_t (*init_env)(SPVM_ENV* env);
+          void (*call_init_blocks)(SPVM_ENV* env);
+          void (*cleanup_global_vars)(SPVM_ENV* env);
+          
         [BUG FIX]
         * Fix the line and the position of character in case that a compilation error occurs and some space character exists.
         [NON BACKWORD COMPATIBLE CHANGES]
