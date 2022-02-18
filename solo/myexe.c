@@ -6,7 +6,6 @@
 
 #include "spvm_native.h"
 #include "spvm_api.h"
-#include "spvm_compiler.h"
 
 int32_t main(int32_t argc, const char *argv[]) {
   
@@ -31,7 +30,11 @@ int32_t main(int32_t argc, const char *argv[]) {
   int32_t compile_error_code = empty_env->compiler_compile_spvm(empty_env, compiler, class_name);
   
   if (compile_error_code != 0) {
-    SPVM_COMPILER_print_error_messages(compiler, stderr);
+    int32_t error_messages_length = empty_env->compiler_get_error_messages_length(empty_env, compiler);
+    for (int32_t i = 0; i < error_messages_length; i++) {
+      const char* error_message = empty_env->compiler_get_error_message(empty_env, compiler, i);
+      fprintf(stderr, "%s\n", error_message);
+    }
     exit(255);
   }
   
