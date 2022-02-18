@@ -299,6 +299,8 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* unused_env) {
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
     SPVM_API_cleanup_global_vars,
+    SPVM_API_get_error_messages_length,
+    SPVM_API_get_error_message,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -7526,4 +7528,12 @@ void SPVM_API_free_compiler(SPVM_ENV* env, SPVM_COMPILER* compiler) {
   (void*)env;
 
   SPVM_COMPILER_free(compiler);
+}
+
+int32_t SPVM_API_get_error_messages_length(SPVM_ENV* env, SPVM_COMPILER* compiler) {
+  return SPVM_COMPILER_get_error_messages_length(compiler);
+}
+
+const char* SPVM_API_get_error_message(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t index) {
+  return  SPVM_COMPILER_get_error_message(compiler, index);
 }

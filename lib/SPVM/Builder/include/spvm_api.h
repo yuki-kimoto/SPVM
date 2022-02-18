@@ -311,4 +311,7 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env);
 
 SPVM_ENV* SPVM_API_new_env(SPVM_ENV* unused_env);
 
+int32_t SPVM_API_get_error_messages_length(SPVM_ENV* env, SPVM_COMPILER* compiler);
+const char* SPVM_API_get_error_message(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t index);
+
 #endif

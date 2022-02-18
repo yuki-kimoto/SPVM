@@ -299,5 +299,7 @@ struct spvm_env {
   int32_t (*init_env)(SPVM_ENV* env);
   void (*call_init_blocks)(SPVM_ENV* env);
   void (*cleanup_global_vars)(SPVM_ENV* env);
+  int32_t (*get_error_messages_length)(SPVM_ENV* env, void* compiler);
+  const char* (*get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
 };
 #endif

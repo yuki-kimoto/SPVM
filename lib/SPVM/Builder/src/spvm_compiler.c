@@ -332,6 +332,13 @@ int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler) {
   return compiler->error_messages->length;
 }
 
+const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index) {
+  
+  const char* error_message = (const char*)SPVM_LIST_fetch(compiler->error_messages, index);
+  
+  return error_message;
+}
+
 void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh) {
   
   for (int32_t i = 0; i < compiler->error_messages->length; i++) {

@@ -149,6 +149,7 @@ const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_F
 const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SPVM_CLASS_VAR* class_var);
 
 int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
+const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);
 
 int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name);
 
