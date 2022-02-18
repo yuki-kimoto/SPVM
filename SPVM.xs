@@ -3930,11 +3930,18 @@ _init(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
 
   // Create env
-  SPVM_ENV* env = SPVM_API_create_env(compiler);
+  SPVM_ENV* env = SPVM_API_new_env_raw();
+  
   if (env == NULL) {
     croak("Can't create SPVM env");
   }
+
+  // Set the compiler
+  env->compiler = compiler;
   
+  // Initialize env
+  SPVM_API_init_env(env);
+
   env->call_init_blocks(env);
   
   // Set ENV

@@ -512,7 +512,13 @@ EOS
     $boot_source .= <<'EOS';
     
   // Create env
-  SPVM_ENV* env = SPVM_API_create_env(compiler);
+  SPVM_ENV* env = SPVM_API_new_env_raw();
+  
+  // Set the compiler
+  env->compiler = compiler;
+  
+  // Initialize env
+  SPVM_API_init_env(env);
   
   env->call_init_blocks(env);
   
