@@ -1843,17 +1843,7 @@ If you specify an object, a new byte[] type object that stores the type name is 
 
   SPVM_ENV* (*new_env)(SPVM_ENV* env);
 
-Create a new execution environment based on the current execution environment.
-
-Create a new SPVM runtime environment.
-
-The exception object and mortal stack information will be initialized.
-
-Share the class variables with the original execution environment.
-
-The number of memory blocks is shared with the original execution environment.
-
-If thie method can't allocate memory for SPVM runtime environment, return NULL.
+Create a new environment. This environment is not yet initialized.
 
 =head2 free_env
 

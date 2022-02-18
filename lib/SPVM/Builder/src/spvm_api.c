@@ -333,21 +333,6 @@ int32_t SPVM_API_init_env(SPVM_ENV* env) {
   return 0;
 }
 
-SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
-
-  SPVM_ENV* env = SPVM_API_new_env_raw();
-  
-  if (env == NULL) {
-    return NULL;
-  }
-  
-  env->compiler = compiler;
-
-  SPVM_API_init_env(env);
-  
-  return env;
-}
-
 void SPVM_API_make_read_only(SPVM_ENV* env, SPVM_OBJECT* string) {
   if (string && string->type_category == SPVM_TYPE_C_TYPE_CATEGORY_STRING) {
     string->flag |= SPVM_OBJECT_C_FLAG_IS_READ_ONLY;
@@ -1187,7 +1172,7 @@ int32_t SPVM_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top,
 }
 
 SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
-  return SPVM_API_create_env(env->compiler);
+  return SPVM_API_new_env_raw();
 }
 
 void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {

@@ -51,7 +51,6 @@ int32_t SPVM_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top,
 int32_t SPVM_API_is_utf8(SPVM_ENV* env, SPVM_OBJECT* object);
 
 SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env);
-SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler);
 SPVM_RUNTIME* SPVM_API_build_runtime(SPVM_COMPILER* compiler);
 void SPVM_API_free_env(SPVM_ENV* env);
 void SPVM_API_free_runtime(SPVM_RUNTIME* runtime);

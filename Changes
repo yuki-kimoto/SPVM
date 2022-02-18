@@ -11,7 +11,7 @@ Revision history for SPVM
         [NON BACKWORD COMPATIBLE CHANGES]
         * The "free_env" native API don't cleanup global variables such as the exception variable and class variables
           because the process of envs and compilers must be separated
-
+        * The "new_env" native API create an uninitialized environment.
 0.9505  2021-02-16
         [CHANGE]
         * Improve the error message of getting and setting fields.
