@@ -3534,12 +3534,14 @@ compile_spvm(...)
   
   // Line
   int32_t start_line = (int32_t)SvIV(sv_start_line);
-  
+
+  SPVM_ENV* empty_env = SPVM_API_new_env(NULL);
+
   // Set starting file
-  compiler->start_file = start_file_copy;
+  empty_env->compiler_set_start_file(empty_env, compiler, start_file_copy);
   
   // Set starting line
-  compiler->start_line = start_line;
+  empty_env->compiler_set_start_line(empty_env, compiler, start_line);
   
   // Add include paths
   AV* av_module_dirs;
@@ -3554,12 +3556,14 @@ compile_spvm(...)
     SV** sv_include_dir_ptr = av_fetch(av_module_dirs, i, 0);
     SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
     char* include_dir = SvPV_nolen(sv_include_dir);
-    SPVM_LIST_push(compiler->module_dirs, include_dir);
+    empty_env->compiler_add_module_dir(empty_env, compiler, include_dir);
   }
 
   // Compile SPVM
-  int32_t compile_error_code = SPVM_COMPILER_compile_spvm(compiler, class_name_copy);
-  
+  int32_t compile_error_code = empty_env->compiler_compile_spvm(empty_env, compiler, class_name_copy);
+
+  empty_env->free_env(empty_env);
+
   SV* sv_compile_success;
   if (compile_error_code == 0) {
     sv_compile_success = sv_2mortal(newSViv(1));
