@@ -289,8 +289,8 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* unused_env) {
     SPVM_API_new_compiler,
     SPVM_API_compiler_set_start_line,
     SPVM_API_compiler_get_start_line,
-    SPVM_API_set_compiler_start_file,
-    SPVM_API_get_compiler_start_file,
+    SPVM_API_compiler_set_start_file,
+    SPVM_API_compiler_get_start_file,
     SPVM_API_add_module_dir,
     SPVM_API_get_module_dirs_length,
     SPVM_API_get_module_dir,
@@ -7461,13 +7461,13 @@ int32_t SPVM_API_compiler_get_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler)
   return compiler->start_line;
 }
 
-void SPVM_API_set_compiler_start_file(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* start_file) {
+void SPVM_API_compiler_set_start_file(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* start_file) {
   (void*)env;
 
   compiler->start_file = start_file;
 }
 
-const char* SPVM_API_get_compiler_start_file(SPVM_ENV* env, SPVM_COMPILER* compiler) {
+const char* SPVM_API_compiler_get_start_file(SPVM_ENV* env, SPVM_COMPILER* compiler) {
   (void*)env;
   
   return compiler->start_file;

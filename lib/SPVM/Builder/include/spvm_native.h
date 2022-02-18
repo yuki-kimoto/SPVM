@@ -289,8 +289,8 @@ struct spvm_env {
   void* (*new_compiler)(SPVM_ENV* env);
   void (*compiler_set_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
   int32_t (*compiler_get_start_line)(SPVM_ENV* env, void* compiler);
-  void (*set_compiler_start_file)(SPVM_ENV* env, void* compiler, const char* start_file);
-  const char* (*get_compiler_start_file)(SPVM_ENV* env, void* compiler);
+  void (*compiler_set_start_file)(SPVM_ENV* env, void* compiler, const char* start_file);
+  const char* (*compiler_get_start_file)(SPVM_ENV* env, void* compiler);
   void (*add_module_dir)(SPVM_ENV* env, void* compiler, const char* module_dir);
   int32_t (*get_module_dirs_length )(SPVM_ENV* env, void* compiler);
   const char* (*get_module_dir )(SPVM_ENV* env, void* compiler, int32_t module_dir_id);
