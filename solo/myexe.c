@@ -22,7 +22,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   empty_env->set_compiler_start_file(empty_env, compiler, class_name);
 
-  empty_env->set_compiler_start_line(empty_env, compiler, 0);
+  empty_env->compiler_set_start_line(empty_env, compiler, 0);
   
   // Add module directory
   char* module_dir = "solo/SPVM";

@@ -287,7 +287,7 @@ struct spvm_env {
   void (*set_native_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
   void (*set_precompile_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
   void* (*new_compiler)(SPVM_ENV* env);
-  void (*set_compiler_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
+  void (*compiler_set_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
   int32_t (*get_compiler_start_line)(SPVM_ENV* env, void* compiler);
   void (*set_compiler_start_file)(SPVM_ENV* env, void* compiler, const char* start_file);
   const char* (*get_compiler_start_file)(SPVM_ENV* env, void* compiler);

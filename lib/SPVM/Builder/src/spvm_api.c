@@ -287,7 +287,7 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* unused_env) {
     SPVM_API_set_native_method_address,
     SPVM_API_set_precompile_method_address,
     SPVM_API_new_compiler,
-    SPVM_API_set_compiler_start_line,
+    SPVM_API_compiler_set_start_line,
     SPVM_API_get_compiler_start_line,
     SPVM_API_set_compiler_start_file,
     SPVM_API_get_compiler_start_file,
@@ -7449,7 +7449,7 @@ SPVM_COMPILER* SPVM_API_new_compiler(SPVM_ENV* env) {
   return compiler;
 }
 
-void SPVM_API_set_compiler_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t start_line) {
+void SPVM_API_compiler_set_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t start_line) {
   (void*)env;
 
   compiler->start_line = start_line;
