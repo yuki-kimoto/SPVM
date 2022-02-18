@@ -16,20 +16,20 @@ Revision history for SPVM
           void (*set_native_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
           void (*set_precompile_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
           void* (*new_compiler)(SPVM_ENV* env);
-          void (*set_compiler_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
-          int32_t (*get_compiler_start_line)(SPVM_ENV* env, void* compiler);
-          void (*set_compiler_start_file)(SPVM_ENV* env, void* compiler, const char* start_file);
-          const char* (*get_compiler_start_file)(SPVM_ENV* env, void* compiler);
-          void (*add_module_dir)(SPVM_ENV* env, void* compiler, const char* module_dir);
-          int32_t (*get_module_dirs_length )(SPVM_ENV* env, void* compiler);
-          const char* (*get_module_dir )(SPVM_ENV* env, void* compiler, int32_t module_dir_id);
-          int32_t (*compile_spvm)(SPVM_ENV* env, void* compiler, const char* class_name);
-          void (*free_compiler)(SPVM_ENV* env, void* compiler);
+          void (*compiler_set_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
+          int32_t (*compiler_get_start_line)(SPVM_ENV* env, void* compiler);
+          void (*compiler_set_start_file)(SPVM_ENV* env, void* compiler, const char* start_file);
+          const char* (*compiler_get_start_file)(SPVM_ENV* env, void* compiler);
+          void (*compiler_add_module_dir)(SPVM_ENV* env, void* compiler, const char* module_dir);
+          int32_t (*compiler_get_module_dirs_length )(SPVM_ENV* env, void* compiler);
+          const char* (*compiler_get_module_dir )(SPVM_ENV* env, void* compiler, int32_t module_dir_id);
+          int32_t (*compiler_compile_spvm)(SPVM_ENV* env, void* compiler, const char* class_name);
+          void (*compiler_free)(SPVM_ENV* env, void* compiler);
           int32_t (*init_env)(SPVM_ENV* env);
           void (*call_init_blocks)(SPVM_ENV* env);
           void (*cleanup_global_vars)(SPVM_ENV* env);
-          int32_t (*get_error_messages_length)(SPVM_ENV* env, void* compiler);
-          const char* (*get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
+          int32_t (*compiler_get_error_messages_length)(SPVM_ENV* env, void* compiler);
+          const char* (*compiler_get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
           
         [BUG FIX]
         * Fix the line and the position of character in case that a compilation error occurs and some space character exists.
