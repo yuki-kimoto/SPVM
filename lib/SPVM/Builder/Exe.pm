@@ -431,13 +431,13 @@ EOS
 EOS
 
     $boot_source .= <<'EOS';
+
+  SPVM_ENV* empty_env = SPVM_API_new_env(NULL);
   
   // Create compiler
-  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
+  SPVM_COMPILER* compiler = empty_env->new_compiler(empty_env);
 
-  compiler->start_file = class_name;
-  
-  compiler->start_line = 0;
+  empty_env->compiler_set_start_file(empty_env, compiler, class_name);
 
   // Set module source_files
 EOS
@@ -455,12 +455,19 @@ EOS
 
     $boot_source .= <<'EOS';
 
-  int32_t compile_error_code = SPVM_COMPILER_compile_spvm(compiler, class_name);
+  int32_t compile_error_code = empty_env->compiler_compile_spvm(empty_env, compiler, class_name);
 
   if (compile_error_code != 0) {
-    SPVM_COMPILER_print_error_messages(compiler, stderr);
+    int32_t error_messages_length = empty_env->compiler_get_error_messages_length(empty_env, compiler);
+    for (int32_t i = 0; i < error_messages_length; i++) {
+      const char* error_message = empty_env->compiler_get_error_message(empty_env, compiler, i);
+      fprintf(stderr, "%s\n", error_message);
+    }
     exit(255);
   }
+
+  empty_env->free_env(empty_env);
+  empty_env = NULL;
 EOS
     
     for my $class_name (@$class_names_including_anon) {
@@ -594,7 +601,7 @@ EOS
   
   # Create source file
   $self->create_source_file({
-    input_files => $module_files,
+    input_files => [@$module_files, __FILE__],
     output_file => $boot_source_file,
     create_cb => $create_cb,
   });
@@ -749,7 +756,7 @@ EOS
     
     # Create source file
     $self->create_source_file({
-      input_files => [$module_file],
+      input_files => [$module_file, __FILE__],
       output_file => $module_source_csource_file,
       create_cb => $create_cb,
     });

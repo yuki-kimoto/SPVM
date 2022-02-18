@@ -30,7 +30,8 @@ Revision history for SPVM
           void (*cleanup_global_vars)(SPVM_ENV* env);
           int32_t (*compiler_get_error_messages_length)(SPVM_ENV* env, void* compiler);
           const char* (*compiler_get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
-          
+        * Fix caching bug that the change of SPVM::Builder::Exe can't be detected.
+        
         [BUG FIX]
         * Fix the line and the position of character in case that a compilation error occurs and some space character exists.
         [NON BACKWORD COMPATIBLE CHANGES]
