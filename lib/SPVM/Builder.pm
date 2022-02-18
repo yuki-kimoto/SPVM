@@ -254,8 +254,6 @@ sub bind_methods {
     my $class_name = $method_info->{class_name};
     my $method_name = $method_info->{method_name};
 
-    my $method_abs_name = "${class_name}::$method_name";
-    
     my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($class_name, $method_name, $category);
 
     my $cfunc_address;
@@ -293,9 +291,10 @@ EOS
     else {
       confess "DLL file is not specified";
     }
-
+    
+    my $method_abs_name = "$class_name->$method_name";
     if ($category eq 'native') {
-      $self->set_native_method_address($class_name, $method_name, $cfunc_address, $category);
+      $self->set_native_method_address($method_abs_name, $cfunc_address, $category);
     }
     elsif ($category eq 'precompile') {
       $self->set_precompile_method_address($class_name, $method_name, $cfunc_address, $category);

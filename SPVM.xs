@@ -4038,31 +4038,26 @@ set_native_method_address(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-  SV* sv_class_name = ST(1);
-  SV* sv_method_name = ST(2);
-  SV* sv_native_address = ST(3);
+  SV* sv_method_abs_name = ST(1);
+  SV* sv_native_address = ST(2);
 
-  SPVM_COMPILER* compiler;
+  // The environment for the compiler
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+
+  // Compiler
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
 
-  // Class name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  // Method name
-  const char* method_name = SvPV_nolen(sv_method_name);
+  // Method absolute name
+  const char* method_abs_name = SvPV_nolen(sv_method_abs_name);
   
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
-  // Class
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-  
-  // Method
-  SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
-  
-  method->native_address = native_address;
+  compiler_env->compiler_set_native_method_address(compiler_env, compiler, method_abs_name, native_address);
 
   XSRETURN(0);
 }
@@ -4078,11 +4073,16 @@ set_precompile_method_address(...)
   SV* sv_class_name = ST(1);
   SV* sv_method_name = ST(2);
   SV* sv_native_address = ST(3);
+  
+  // The environment for the compiler
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
 
-  SPVM_COMPILER* compiler;
+  // Compiler
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
 
   // Class name
   const char* class_name = SvPV_nolen(sv_class_name);

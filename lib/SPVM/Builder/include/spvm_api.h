@@ -282,20 +282,22 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_OBJECT* string, int32_t new_length);
 void SPVM_API_set_no_symbol_cache_flag(SPVM_ENV* env, int32_t flag);
 int32_t SPVM_API_get_no_symbol_cache_flag(SPVM_ENV* env);
 
-int32_t SPVM_API_get_next_method_id_flag(SPVM_ENV* env, const char* method_abs_name, int32_t start_index, int32_t flag);
-int32_t SPVM_API_get_next_method_id(SPVM_ENV* env, const char* method_abs_name, int32_t start_index);
-int32_t SPVM_API_get_next_native_method_id(SPVM_ENV* env, const char* method_abs_name, int32_t start_index);
-int32_t SPVM_API_get_next_precompile_method_id(SPVM_ENV* env, const char* method_abs_name, int32_t start_index);
-const char* SPVM_API_get_method_abs_name(SPVM_ENV* env, int32_t method_id);
-void* SPVM_API_get_native_method_address(SPVM_ENV* env, const char* method_abs_name);
-void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, const char* method_abs_name);
-void SPVM_API_set_native_method_address(SPVM_ENV* env, const char* method_abs_name, void* address);
-void SPVM_API_set_precompile_method_address(SPVM_ENV* env, const char* method_abs_name, void* address);
 
 void SPVM_API_fprint(SPVM_ENV* env, FILE* fh, SPVM_OBJECT* string);
 void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_OBJECT* string);
 
 SPVM_COMPILER* SPVM_API_new_compiler(SPVM_ENV* env);
+
+int32_t SPVM_API_compiler_get_next_method_id_flag(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name, int32_t start_index, int32_t flag);
+int32_t SPVM_API_compiler_get_next_method_id(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name, int32_t start_index);
+int32_t SPVM_API_compiler_get_next_native_method_id(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name, int32_t start_index);
+int32_t SPVM_API_compiler_get_next_precompile_method_id(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name, int32_t start_index);
+const char* SPVM_API_compiler_get_method_abs_name(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id);
+void* SPVM_API_compiler_get_native_method_address(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name);
+void* SPVM_API_compiler_get_precompile_method_address(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name);
+void SPVM_API_compiler_set_native_method_address(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name, void* address);
+void SPVM_API_compiler_set_precompile_method_address(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name, void* address);
+
 void SPVM_API_compiler_set_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t start_line);
 int32_t SPVM_API_compiler_get_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler);
 void SPVM_API_compiler_set_start_file(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* start_file);
