@@ -292,12 +292,11 @@ EOS
       confess "DLL file is not specified";
     }
     
-    my $method_abs_name = "$class_name->$method_name";
     if ($category eq 'native') {
-      $self->set_native_method_address($method_abs_name, $cfunc_address);
+      $self->set_native_method_address($class_name, $method_name, $cfunc_address);
     }
     elsif ($category eq 'precompile') {
-      $self->set_precompile_method_address($method_abs_name, $cfunc_address);
+      $self->set_precompile_method_address($class_name, $method_name, $cfunc_address);
     }
   }
 

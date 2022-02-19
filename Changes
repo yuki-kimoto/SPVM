@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9506  2021-02-17
+0.9506  2021-02-20
         [CHANGE]
         * Add no_symbol_cache_flag, set_no_symbol_cache_flag, get_no_symbol_cache_flag native APIs
         * Precompile and native method of SPVM core become reentrant if no_symbol_cache_flag is set.
@@ -31,7 +31,23 @@ Revision history for SPVM
           int32_t (*compiler_get_error_messages_length)(SPVM_ENV* env, void* compiler);
           const char* (*compiler_get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
         * Fix caching bug that the change of SPVM::Builder::Exe can't be detected.
-        
+        * Add the following compiler native APIs
+          int32_t (*compiler_get_classes_length)(SPVM_ENV* env, void* compiler);
+          const char* (*compiler_get_class_name)(SPVM_ENV* env, void* compiler, int32_t class_id);
+          int32_t (*compiler_is_anon_class)(SPVM_ENV* env, void* compiler, int32_t class_id);
+          int32_t (*compiler_get_methods_length)(SPVM_ENV* env, void* compiler, int32_t class_id);
+          int32_t (*compiler_get_method_id)(SPVM_ENV* env, void* compiler, int32_t class_id, int32_t method_index_of_class);
+          int32_t (*compiler_get_method_id_by_name)(SPVM_ENV* env, void* compiler, const char* class_name, const char* method_name);
+          const char* (*compiler_get_method_name)(SPVM_ENV* env, void* compiler, int32_t method_id);
+          int32_t (*compiler_is_anon_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+          int32_t (*compiler_is_init_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+          int32_t (*compiler_is_native_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+          int32_t (*compiler_is_precompile_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+          void* (*compiler_get_native_method_address_v2)(SPVM_ENV* env, void* compiler, int32_t method_id);
+          void* (*compiler_get_precompile_method_address_v2)(SPVM_ENV* env, void* compiler, int32_t method_id);
+          void (*compiler_set_native_method_address_v2)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
+          void (*compiler_set_precompile_method_address_v2)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
+
         [BUG FIX]
         * Fix the line and the position of character in case that a compilation error occurs and some space character exists.
         [NON BACKWORD COMPATIBLE CHANGES]
