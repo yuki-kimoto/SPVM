@@ -316,4 +316,20 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* unused_env);
 int32_t SPVM_API_compiler_get_error_messages_length(SPVM_ENV* env, SPVM_COMPILER* compiler);
 const char* SPVM_API_compiler_get_error_message(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t index);
 
+int32_t SPVM_API_compiler_get_classes_length(SPVM_ENV* env, SPVM_COMPILER* compiler);
+const char* SPVM_API_compiler_get_class_name(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t class_id);
+int32_t SPVM_API_compiler_is_anon_class(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t class_id);
+int32_t SPVM_API_compiler_get_methods_length(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t class_id);
+int32_t SPVM_API_compiler_get_method_id(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t class_id, int32_t method_index_of_class);
+int32_t SPVM_API_compiler_get_method_id_by_name(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* class_name, const char* method_name);
+const char* SPVM_API_compiler_get_method_name(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id);
+int32_t SPVM_API_compiler_is_anon_method(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id);
+int32_t SPVM_API_compiler_is_init_method(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id);
+int32_t SPVM_API_compiler_is_native_method(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id);
+int32_t SPVM_API_compiler_is_precompile_method(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id);
+void* SPVM_API_compiler_get_native_method_address_v2(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id);
+void* SPVM_API_compiler_get_precompile_method_address_v2(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id);
+void SPVM_API_compiler_set_native_method_address_v2(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id, void* address);
+void SPVM_API_compiler_set_precompile_method_address_v2(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id, void* address);
+
 #endif
