@@ -7,14 +7,6 @@ Revision history for SPVM
         * Add print, print_stderr native APIs.
         * env is not managed by SPVM memory allocator because env must exist before the compiler is created.
         * Add the following native APIs for the compilation of SPVM
-          int32_t (*get_next_method_id)(SPVM_ENV* env, const char* method_abs_name, int32_t start_index);
-          int32_t (*get_next_native_method_id)(SPVM_ENV* env, const char* method_abs_name, int32_t start_index);
-          int32_t (*get_next_precompile_method_id)(SPVM_ENV* env, const char* method_abs_name, int32_t start_index);
-          const char* (*get_method_abs_name)(SPVM_ENV* env, int32_t method_id);
-          void* (*get_native_method_address)(SPVM_ENV* env, const char* method_abs_name);
-          void* (*get_precompile_method_address)(SPVM_ENV* env, const char* method_abs_name);
-          void (*set_native_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
-          void (*set_precompile_method_address)(SPVM_ENV* env, const char* method_abs_name, void* address);
           void* (*new_compiler)(SPVM_ENV* env);
           void (*compiler_set_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
           int32_t (*compiler_get_start_line)(SPVM_ENV* env, void* compiler);
@@ -30,8 +22,6 @@ Revision history for SPVM
           void (*cleanup_global_vars)(SPVM_ENV* env);
           int32_t (*compiler_get_error_messages_length)(SPVM_ENV* env, void* compiler);
           const char* (*compiler_get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
-        * Fix caching bug that the change of SPVM::Builder::Exe can't be detected.
-        * Add the following compiler native APIs
           int32_t (*compiler_get_classes_length)(SPVM_ENV* env, void* compiler);
           const char* (*compiler_get_class_name)(SPVM_ENV* env, void* compiler, int32_t class_id);
           int32_t (*compiler_is_anon_class)(SPVM_ENV* env, void* compiler, int32_t class_id);
@@ -43,17 +33,20 @@ Revision history for SPVM
           int32_t (*compiler_is_init_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
           int32_t (*compiler_is_native_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
           int32_t (*compiler_is_precompile_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
-          void* (*compiler_get_native_method_address_v2)(SPVM_ENV* env, void* compiler, int32_t method_id);
-          void* (*compiler_get_precompile_method_address_v2)(SPVM_ENV* env, void* compiler, int32_t method_id);
-          void (*compiler_set_native_method_address_v2)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
-          void (*compiler_set_precompile_method_address_v2)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
+          void* (*compiler_get_native_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id);
+          void* (*compiler_get_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id);
+          void (*compiler_set_native_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
+          void (*compiler_set_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
 
         [BUG FIX]
         * Fix the line and the position of character in case that a compilation error occurs and some space character exists.
+        * Fix caching bug that the change of SPVM::Builder::Exe can't be detected.
+        
         [NON BACKWORD COMPATIBLE CHANGES]
         * The "free_env" native API don't cleanup global variables such as the exception variable and class variables
           because the process of envs and compilers must be separated
         * The "new_env" native API create an uninitialized environment.
+        
 0.9505  2021-02-16
         [CHANGE]
         * Improve the error message of getting and setting fields.
