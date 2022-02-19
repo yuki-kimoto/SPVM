@@ -2346,9 +2346,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             memcpy(method_abs_name + strlen(class_name) + 2, method_name, strlen(method_name));
             method->abs_name = method_abs_name;
 
-            // Add the method to the method symtable of the compiler
-            SPVM_HASH_insert(compiler->method_symtable, method_abs_name, method_abs_name_length, method);
-            
             // Add the method to the method symtable of the class
             SPVM_HASH_insert(class->method_symtable, method->name, strlen(method->name), method);
           }

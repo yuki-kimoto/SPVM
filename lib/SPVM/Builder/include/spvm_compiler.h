@@ -127,9 +127,6 @@ struct spvm_compiler {
   // Method ops
   SPVM_LIST* methods;
   
-  // Method absolute name symbol table
-  SPVM_HASH* method_symtable;
-
   // Field ops
   SPVM_LIST* fields;
   
