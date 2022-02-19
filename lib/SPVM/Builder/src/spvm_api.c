@@ -308,10 +308,10 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* unused_env) {
     SPVM_API_compiler_is_init_method,
     SPVM_API_compiler_is_native_method,
     SPVM_API_compiler_is_precompile_method,
-    SPVM_API_compiler_get_native_method_address_v2,
-    SPVM_API_compiler_get_precompile_method_address_v2,
-    SPVM_API_compiler_set_native_method_address_v2,
-    SPVM_API_compiler_set_precompile_method_address_v2,
+    SPVM_API_compiler_get_native_method_address,
+    SPVM_API_compiler_get_precompile_method_address,
+    SPVM_API_compiler_set_native_method_address,
+    SPVM_API_compiler_set_precompile_method_address,
     SPVM_API_compiler_get_method_signature,
   };
   
@@ -7539,7 +7539,7 @@ const char* SPVM_API_compiler_get_method_signature(SPVM_ENV* env, SPVM_COMPILER*
   return method->signature;
 }
 
-void* SPVM_API_compiler_get_native_method_address_v2(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id) {
+void* SPVM_API_compiler_get_native_method_address(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id) {
   (void)env;
 
   SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
@@ -7549,7 +7549,7 @@ void* SPVM_API_compiler_get_native_method_address_v2(SPVM_ENV* env, SPVM_COMPILE
   return native_method_address;
 }
 
-void* SPVM_API_compiler_get_precompile_method_address_v2(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id) {
+void* SPVM_API_compiler_get_precompile_method_address(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id) {
   (void)env;
 
   SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
@@ -7559,7 +7559,7 @@ void* SPVM_API_compiler_get_precompile_method_address_v2(SPVM_ENV* env, SPVM_COM
   return precompile_method_address;
 }
 
-void SPVM_API_compiler_set_native_method_address_v2(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id, void* address) {
+void SPVM_API_compiler_set_native_method_address(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id, void* address) {
   (void)env;
 
   SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
@@ -7567,7 +7567,7 @@ void SPVM_API_compiler_set_native_method_address_v2(SPVM_ENV* env, SPVM_COMPILER
   method->native_address = address;
 }
 
-void SPVM_API_compiler_set_precompile_method_address_v2(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id, void* address) {
+void SPVM_API_compiler_set_precompile_method_address(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id, void* address) {
   (void)env;
 
   SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);

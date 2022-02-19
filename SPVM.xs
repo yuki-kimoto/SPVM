@@ -3950,7 +3950,7 @@ set_native_method_address(...)
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
-  compiler_env->compiler_set_native_method_address_v2(compiler_env, compiler, method_id, native_address);
+  compiler_env->compiler_set_native_method_address(compiler_env, compiler, method_id, native_address);
 
   XSRETURN(0);
 }
@@ -3989,7 +3989,7 @@ set_precompile_method_address(...)
   // Native address
   void* precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
   
-  compiler_env->compiler_set_precompile_method_address_v2(compiler_env, compiler, method_id, precompile_address);
+  compiler_env->compiler_set_precompile_method_address(compiler_env, compiler, method_id, precompile_address);
 
   XSRETURN(0);
 }
