@@ -297,10 +297,6 @@ struct spvm_env {
   int32_t (*compiler_get_next_native_method_id)(SPVM_ENV* env, void* compiler, const char* method_abs_name, int32_t start_index);
   int32_t (*compiler_get_next_precompile_method_id)(SPVM_ENV* env, void* compiler, const char* method_abs_name, int32_t start_index);
   const char* (*compiler_get_method_abs_name)(SPVM_ENV* env, void* compiler, int32_t method_id);
-  void* (*compiler_get_native_method_address)(SPVM_ENV* env, void* compiler, const char* method_abs_name);
-  void* (*compiler_get_precompile_method_address)(SPVM_ENV* env, void* compiler, const char* method_abs_name);
-  void (*compiler_set_native_method_address)(SPVM_ENV* env, void* compiler, const char* method_abs_name, void* address);
-  void (*compiler_set_precompile_method_address)(SPVM_ENV* env, void* compiler, const char* method_abs_name, void* address);
   int32_t (*compiler_get_classes_length)(SPVM_ENV* env, void* compiler);
   const char* (*compiler_get_class_name)(SPVM_ENV* env, void* compiler, int32_t class_id);
   int32_t (*compiler_is_anon_class)(SPVM_ENV* env, void* compiler, int32_t class_id);

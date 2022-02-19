@@ -297,10 +297,6 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* unused_env) {
     SPVM_API_compiler_get_next_native_method_id,
     SPVM_API_compiler_get_next_precompile_method_id,
     SPVM_API_compiler_get_method_abs_name,
-    SPVM_API_compiler_get_native_method_address,
-    SPVM_API_compiler_get_precompile_method_address,
-    SPVM_API_compiler_set_native_method_address,
-    SPVM_API_compiler_set_precompile_method_address,
     SPVM_API_compiler_get_classes_length,
     SPVM_API_compiler_get_class_name,
     SPVM_API_compiler_is_anon_class,
@@ -7587,42 +7583,6 @@ const char* SPVM_API_compiler_get_method_abs_name(SPVM_ENV* env, SPVM_COMPILER* 
   const char* method_abs_name = method->abs_name;
   
   return method_abs_name;
-}
-
-void* SPVM_API_compiler_get_native_method_address(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name) {
-  (void)env;
-
-  SPVM_METHOD* method = SPVM_HASH_fetch(compiler->method_symtable, method_abs_name, strlen(method_abs_name));
-  
-  void* native_method_address = method->native_address;
-  
-  return native_method_address;
-}
-
-void* SPVM_API_compiler_get_precompile_method_address(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name) {
-  (void)env;
-
-  SPVM_METHOD* method = SPVM_HASH_fetch(compiler->method_symtable, method_abs_name, strlen(method_abs_name));
-  
-  void* precompile_method_address = method->precompile_address;
-  
-  return precompile_method_address;
-}
-
-void SPVM_API_compiler_set_native_method_address(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name, void* address) {
-  (void)env;
-
-  SPVM_METHOD* method = SPVM_HASH_fetch(compiler->method_symtable, method_abs_name, strlen(method_abs_name));
-  
-  method->native_address = address;
-}
-
-void SPVM_API_compiler_set_precompile_method_address(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name, void* address) {
-  (void)env;
-
-  SPVM_METHOD* method = SPVM_HASH_fetch(compiler->method_symtable, method_abs_name, strlen(method_abs_name));
-  
-  method->precompile_address = address;
 }
 
 SPVM_COMPILER* SPVM_API_new_compiler(SPVM_ENV* env) {
