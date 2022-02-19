@@ -316,5 +316,6 @@ struct spvm_env {
   void* (*compiler_get_precompile_method_address_v2)(SPVM_ENV* env, void* compiler, int32_t method_id);
   void (*compiler_set_native_method_address_v2)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
   void (*compiler_set_precompile_method_address_v2)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
+  const char* (*compiler_get_method_signature)(SPVM_ENV* env, void* compiler, int32_t method_id);
 };
 #endif

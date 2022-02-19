@@ -316,6 +316,7 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* unused_env) {
     SPVM_API_compiler_get_precompile_method_address_v2,
     SPVM_API_compiler_set_native_method_address_v2,
     SPVM_API_compiler_set_precompile_method_address_v2,
+    SPVM_API_compiler_get_method_signature,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -7532,6 +7533,14 @@ int32_t SPVM_API_compiler_is_precompile_method(SPVM_ENV* env, SPVM_COMPILER* com
   SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
   
   return method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE;
+}
+
+const char* SPVM_API_compiler_get_method_signature(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id) {
+  (void)env;
+
+  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  
+  return method->signature;
 }
 
 void* SPVM_API_compiler_get_native_method_address_v2(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id) {

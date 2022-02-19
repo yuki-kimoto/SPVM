@@ -331,5 +331,6 @@ void* SPVM_API_compiler_get_native_method_address_v2(SPVM_ENV* env, SPVM_COMPILE
 void* SPVM_API_compiler_get_precompile_method_address_v2(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id);
 void SPVM_API_compiler_set_native_method_address_v2(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id, void* address);
 void SPVM_API_compiler_set_precompile_method_address_v2(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id, void* address);
+const char* SPVM_API_compiler_get_method_signature(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id);
 
 #endif
