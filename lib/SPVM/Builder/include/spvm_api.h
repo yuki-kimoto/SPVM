@@ -288,12 +288,6 @@ void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_OBJECT* string);
 
 SPVM_COMPILER* SPVM_API_new_compiler(SPVM_ENV* env);
 
-int32_t SPVM_API_compiler_get_next_method_id_flag(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name, int32_t start_index, int32_t flag);
-int32_t SPVM_API_compiler_get_next_method_id(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name, int32_t start_index);
-int32_t SPVM_API_compiler_get_next_native_method_id(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name, int32_t start_index);
-int32_t SPVM_API_compiler_get_next_precompile_method_id(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* method_abs_name, int32_t start_index);
-const char* SPVM_API_compiler_get_method_abs_name(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id);
-
 void SPVM_API_compiler_set_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t start_line);
 int32_t SPVM_API_compiler_get_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler);
 void SPVM_API_compiler_set_start_file(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* start_file);
