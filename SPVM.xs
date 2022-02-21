@@ -3578,7 +3578,7 @@ compile_spvm(...)
   // Compile SPVM
   int32_t compile_error_code = compiler_env->compiler_compile_spvm(compiler_env, compiler, class_name_copy);
 
-  compiler_env->free_env(compiler_env);
+  compiler_env->free_env_raw(compiler_env);
 
   SV* sv_compile_success;
   if (compile_error_code == 0) {
@@ -4040,7 +4040,7 @@ DESTROY(...)
     // Cleanup global variables
     SPVM_API_cleanup_global_vars(env);
     
-    env->free_env(env);
+    env->free_env_raw(env);
   }
   
   // Compiler env
@@ -4055,7 +4055,7 @@ DESTROY(...)
   compiler_env->compiler_free(compiler_env, compiler);
   
   // Free the environment for the compiler
-  compiler_env->free_env(compiler_env);
+  compiler_env->free_env_raw(compiler_env);
   compiler_env = NULL;
 }
 

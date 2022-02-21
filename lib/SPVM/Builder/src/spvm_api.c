@@ -215,7 +215,7 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_get_type_name_raw,
     SPVM_API_get_type_name,
     SPVM_API_new_env_raw,
-    SPVM_API_free_env,
+    SPVM_API_free_env_raw,
     NULL, // memory_blocks_count
     SPVM_API_get_chars,
     SPVM_API_die,
@@ -1215,7 +1215,7 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
   }
 }
 
-void SPVM_API_free_env(SPVM_ENV* env) {
+void SPVM_API_free_env_raw(SPVM_ENV* env) {
 
   // Free class variables heap
   if (env->class_vars_heap != NULL) {

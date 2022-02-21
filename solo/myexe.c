@@ -38,7 +38,7 @@ int32_t main(int32_t argc, const char *argv[]) {
     exit(255);
   }
   
-  compiler_env->free_env(compiler_env);
+  compiler_env->free_env_raw(compiler_env);
   compiler_env = NULL;
 
   // Create env
@@ -101,7 +101,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   env->cleanup_global_vars(env);
   
   // Free env
-  env->free_env(env);
+  env->free_env_raw(env);
 
   // Free compiler
   SPVM_API_compiler_free(compiler_env, compiler);

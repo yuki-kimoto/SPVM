@@ -466,7 +466,7 @@ EOS
     exit(255);
   }
 
-  compiler_env->free_env(compiler_env);
+  compiler_env->free_env_raw(compiler_env);
   compiler_env = NULL;
 EOS
     
@@ -577,7 +577,7 @@ EOS
   SPVM_API_cleanup_global_vars(env);
   
   // Free env
-  SPVM_API_free_env(env);
+  SPVM_API_free_env_raw(env);
 
   // Free compiler
   SPVM_COMPILER_free(compiler);

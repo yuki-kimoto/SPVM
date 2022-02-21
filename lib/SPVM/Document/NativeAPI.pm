@@ -742,7 +742,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   115 get_type_name_raw
   116 get_type_name
   117 new_env_raw
-  118 free_env
+  118 free_env_raw
   119 memory_blocks_count
   120 get_chars
   121 die
@@ -1845,9 +1845,9 @@ If you specify an object, a new byte[] type object that stores the type name is 
 
 Create a new environment. This environment is not yet initialized.
 
-=head2 free_env
+=head2 free_env_raw
 
-  void (*free_env)(SPVM_ENV* env);
+  void (*free_env_raw)(SPVM_ENV* env);
 
 Release the execution environment.
 
