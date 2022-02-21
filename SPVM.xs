@@ -3709,8 +3709,8 @@ get_class_names(...)
 
   for (int32_t class_id = 0; class_id < classes_legnth; class_id++) {
     const char* class_name = compiler_env->compiler_get_class_name(compiler_env, compiler, class_id);
-    int32_t is_anon = compiler_env->compiler_is_anon_method(compiler_env, compiler, class_id);
-    if (!is_anon) {
+    int32_t is_anon_class = compiler_env->compiler_is_anon_class(compiler_env, compiler, class_id);
+    if (!is_anon_class) {
       SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
       av_push(av_class_names, SvREFCNT_inc(sv_class_name));
     }
