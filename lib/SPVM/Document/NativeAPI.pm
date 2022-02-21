@@ -741,7 +741,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   114 get_memory_blocks_count
   115 get_type_name_raw
   116 get_type_name
-  117 new_env
+  117 new_env_raw
   118 free_env
   119 memory_blocks_count
   120 get_chars
@@ -1839,9 +1839,9 @@ This function does not add objects to the mortal stack, so use type_name for nor
 
 If you specify an object, a new byte[] type object that stores the type name is returned. Add the newly created object to the mortal stack.
 
-=head2 new_env
+=head2 new_env_raw
 
-  SPVM_ENV* (*new_env)(SPVM_ENV* env);
+  SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
 
 Create a new environment. This environment is not yet initialized.
 

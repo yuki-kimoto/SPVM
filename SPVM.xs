@@ -3487,7 +3487,7 @@ create_compiler_env(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SPVM_ENV* compiler_env = SPVM_API_new_env(NULL);
+  SPVM_ENV* compiler_env = SPVM_API_new_env_raw(NULL);
   
   size_t iv_compiler_env = PTR2IV(compiler_env);
   SV* sviv_compiler_env = sv_2mortal(newSViv(iv_compiler_env));
@@ -3551,7 +3551,7 @@ compile_spvm(...)
   // Line
   int32_t start_line = (int32_t)SvIV(sv_start_line);
 
-  SPVM_ENV* compiler_env = SPVM_API_new_env(NULL);
+  SPVM_ENV* compiler_env = SPVM_API_new_env_raw(NULL);
 
   // Set starting file
   compiler_env->compiler_set_start_file(compiler_env, compiler, start_file_copy);
@@ -3924,7 +3924,7 @@ _init(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
 
   // Create env
-  SPVM_ENV* env = SPVM_API_new_env(NULL);
+  SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
   
   if (env == NULL) {
     croak("Can't create SPVM env");

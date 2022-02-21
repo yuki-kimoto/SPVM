@@ -214,7 +214,7 @@ struct spvm_env {
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
   void* (*get_type_name_raw)(SPVM_ENV* env, void* object);
   void* (*get_type_name)(SPVM_ENV* env, void* object);
-  SPVM_ENV* (*new_env)(SPVM_ENV* env);
+  SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
   void (*free_env)(SPVM_ENV* env);
   void* memory_blocks_count;
   const char* (*get_chars)(SPVM_ENV* env, void* string_object);

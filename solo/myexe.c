@@ -12,7 +12,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Class name
   const char* class_name = "MyExe";
   
-  SPVM_ENV* compiler_env = SPVM_API_new_env(NULL);
+  SPVM_ENV* compiler_env = SPVM_API_new_env_raw(NULL);
   
   // Create compiler
   void* compiler = compiler_env->new_compiler(compiler_env);
@@ -42,7 +42,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   compiler_env = NULL;
 
   // Create env
-  SPVM_ENV* env = SPVM_API_new_env(NULL);
+  SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
   
   // Set the compiler
   env->compiler = compiler;
