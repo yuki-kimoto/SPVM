@@ -741,8 +741,8 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   114 get_memory_blocks_count
   115 get_type_name_raw
   116 get_type_name
-  117 new_env_raw
-  118 free_env_raw
+  117 new_env
+  118 free_env
   119 memory_blocks_count
   120 get_chars
   121 die
@@ -1839,17 +1839,29 @@ This function does not add objects to the mortal stack, so use type_name for nor
 
 If you specify an object, a new byte[] type object that stores the type name is returned. Add the newly created object to the mortal stack.
 
-=head2 new_env_raw
+=head2 new_env
 
-  SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
+  SPVM_ENV* (*new_env)(SPVM_ENV* env);
 
-Create a new environment. This environment is not yet initialized.
+Create a new environment that is ready to call methods.
 
-=head2 free_env_raw
+1. Create a new environment using the L<"new_env_raw"> native API.
 
-  void (*free_env_raw)(SPVM_ENV* env);
+2. Set the current compiler to the new enviroment.
 
-Release the execution environment.
+3. Initialize the environment using the L<"init_env"> native API
+
+4. Call C<INIT> blocks using the L<"call_init_blocks"> native API.
+
+The number of memory blocks is shared with the original execution environment.
+
+If this method can't allocate memory for the new environment, return NULL.
+
+=head2 free_env
+
+  void (*free_env)(SPVM_ENV* env);
+
+Free an environment that is created by the L<"new_env"> native API.
 
 =head2 memory_blocks_count
 
@@ -2568,6 +2580,18 @@ If the string is C<NULL>, nothing is printed.
 Print the characters of the string to stderr.
 
 If the string is C<NULL>, nothing is printed.
+
+=head2 new_env_raw
+
+  SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
+
+Create a new environment. This environment is not yet initialized.
+
+=head2 free_env_raw
+
+  void (*free_env_raw)(SPVM_ENV* env);
+
+Release the execution environment.
 
 =head1 Utilities
 

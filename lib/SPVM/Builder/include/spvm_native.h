@@ -214,8 +214,8 @@ struct spvm_env {
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
   void* (*get_type_name_raw)(SPVM_ENV* env, void* object);
   void* (*get_type_name)(SPVM_ENV* env, void* object);
-  SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
-  void (*free_env_raw)(SPVM_ENV* env);
+  SPVM_ENV* (*new_env)(SPVM_ENV* env);
+  void (*free_env)(SPVM_ENV* env);
   void* memory_blocks_count;
   const char* (*get_chars)(SPVM_ENV* env, void* string_object);
   int32_t (*die)(SPVM_ENV* env, const char* message, ...);
@@ -309,5 +309,7 @@ struct spvm_env {
   void (*compiler_set_native_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
   void (*compiler_set_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
   const char* (*compiler_get_method_signature)(SPVM_ENV* env, void* compiler, int32_t method_id);
+  SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
+  void (*free_env_raw)(SPVM_ENV* env);
 };
 #endif

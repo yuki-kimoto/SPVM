@@ -214,8 +214,8 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_get_memory_blocks_count,
     SPVM_API_get_type_name_raw,
     SPVM_API_get_type_name,
-    SPVM_API_new_env_raw,
-    SPVM_API_free_env_raw,
+    SPVM_API_new_env,
+    SPVM_API_free_env,
     NULL, // memory_blocks_count
     SPVM_API_get_chars,
     SPVM_API_die,
@@ -309,6 +309,8 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_compiler_set_native_method_address,
     SPVM_API_compiler_set_precompile_method_address,
     SPVM_API_compiler_get_method_signature,
+    SPVM_API_new_env_raw,
+    SPVM_API_free_env_raw,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
