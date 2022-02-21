@@ -7655,3 +7655,29 @@ int32_t SPVM_API_compiler_get_error_messages_length(SPVM_ENV* env, SPVM_COMPILER
 const char* SPVM_API_compiler_get_error_message(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t index) {
   return  SPVM_COMPILER_get_error_message(compiler, index);
 }
+
+SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
+  (void)env;
+  
+  // New raw env
+  SPVM_ENV* new_env = SPVM_API_new_env_raw(NULL);
+  
+  // Set the compiler
+  new_env->compiler = env->compiler;
+  
+  // Initialize env
+  new_env->init_env(new_env);
+  
+  // Call init blocks
+  new_env->call_init_blocks(new_env);
+  
+  return new_env;
+}
+
+void SPVM_API_free_env(SPVM_ENV* env) {
+  (void)env;
+  
+  env->cleanup_global_vars(env);
+  
+  env->free_env_raw(env);
+}
