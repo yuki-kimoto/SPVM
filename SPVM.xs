@@ -3721,7 +3721,7 @@ get_class_names_exclude_anon(...)
 }
 
 SV*
-get_class_names_including_anon(...)
+get_class_names(...)
   PPCODE:
 {
   (void)RETVAL;
