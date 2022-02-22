@@ -7,7 +7,13 @@ Revision history for SPVM
         * Add print, print_stderr native APIs.
         * env is not managed by SPVM memory allocator because env must exist before the compiler is created.
         * Add the following native APIs for the compilation of SPVM
+          SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
+          void (*free_env_raw)(SPVM_ENV* env);
+          int32_t (*init_env)(SPVM_ENV* env);
+          void (*call_init_blocks)(SPVM_ENV* env);
+          void (*cleanup_global_vars)(SPVM_ENV* env);
           void* (*new_compiler)(SPVM_ENV* env);
+          void (*compiler_free)(SPVM_ENV* env, void* compiler);
           void (*compiler_set_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
           int32_t (*compiler_get_start_line)(SPVM_ENV* env, void* compiler);
           void (*compiler_set_start_file)(SPVM_ENV* env, void* compiler, const char* start_file);
@@ -16,12 +22,9 @@ Revision history for SPVM
           int32_t (*compiler_get_module_dirs_length )(SPVM_ENV* env, void* compiler);
           const char* (*compiler_get_module_dir )(SPVM_ENV* env, void* compiler, int32_t module_dir_id);
           int32_t (*compiler_compile_spvm)(SPVM_ENV* env, void* compiler, const char* class_name);
-          void (*compiler_free)(SPVM_ENV* env, void* compiler);
-          int32_t (*init_env)(SPVM_ENV* env);
-          void (*call_init_blocks)(SPVM_ENV* env);
-          void (*cleanup_global_vars)(SPVM_ENV* env);
           int32_t (*compiler_get_error_messages_length)(SPVM_ENV* env, void* compiler);
           const char* (*compiler_get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
+          int32_t (*compiler_get_class_id)(SPVM_ENV* env, void* compiler, const char* class_name);
           int32_t (*compiler_get_classes_length)(SPVM_ENV* env, void* compiler);
           const char* (*compiler_get_class_name)(SPVM_ENV* env, void* compiler, int32_t class_id);
           int32_t (*compiler_is_anon_class)(SPVM_ENV* env, void* compiler, int32_t class_id);
@@ -29,6 +32,7 @@ Revision history for SPVM
           int32_t (*compiler_get_method_id)(SPVM_ENV* env, void* compiler, int32_t class_id, int32_t method_index_of_class);
           int32_t (*compiler_get_method_id_by_name)(SPVM_ENV* env, void* compiler, const char* class_name, const char* method_name);
           const char* (*compiler_get_method_name)(SPVM_ENV* env, void* compiler, int32_t method_id);
+          const char* (*compiler_get_method_signature)(SPVM_ENV* env, void* compiler, int32_t method_id);
           int32_t (*compiler_is_anon_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
           int32_t (*compiler_is_init_block_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
           int32_t (*compiler_is_native_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
@@ -37,7 +41,6 @@ Revision history for SPVM
           void* (*compiler_get_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id);
           void (*compiler_set_native_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
           void (*compiler_set_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
-          int32_t (*compiler_get_class_id)(SPVM_ENV* env, void* compiler, const char* class_name);
 
         [BUG FIX]
         * Fix the line and the position of character in case that a compilation error occurs and some space character exists.
