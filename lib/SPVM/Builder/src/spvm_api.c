@@ -303,6 +303,7 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_compiler_get_method_id,
     SPVM_API_compiler_get_method_id_by_name,
     SPVM_API_compiler_get_method_name,
+    SPVM_API_compiler_get_method_signature,
     SPVM_API_compiler_is_anon_method,
     SPVM_API_compiler_is_init_block_method,
     SPVM_API_compiler_is_native_method,
@@ -311,7 +312,6 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_compiler_get_precompile_method_address,
     SPVM_API_compiler_set_native_method_address,
     SPVM_API_compiler_set_precompile_method_address,
-    SPVM_API_compiler_get_method_signature,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
