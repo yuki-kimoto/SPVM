@@ -4000,6 +4000,8 @@ set_native_method_address(...)
   
   compiler_env->compiler_set_native_method_address(compiler_env, compiler, method_id, native_address);
 
+  assert(native_address == compiler_env->compiler_get_native_method_address(compiler_env, compiler, method_id));
+
   XSRETURN(0);
 }
 
@@ -4038,6 +4040,8 @@ set_precompile_method_address(...)
   void* precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
   
   compiler_env->compiler_set_precompile_method_address(compiler_env, compiler, method_id, precompile_address);
+
+  assert(precompile_address == compiler_env->compiler_get_precompile_method_address(compiler_env, compiler, method_id));
 
   XSRETURN(0);
 }
