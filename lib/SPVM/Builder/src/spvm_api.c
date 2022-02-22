@@ -304,7 +304,7 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_compiler_get_method_id_by_name,
     SPVM_API_compiler_get_method_name,
     SPVM_API_compiler_is_anon_method,
-    SPVM_API_compiler_is_init_method,
+    SPVM_API_compiler_is_init_block_method,
     SPVM_API_compiler_is_native_method,
     SPVM_API_compiler_is_precompile_method,
     SPVM_API_compiler_get_native_method_address,
@@ -7484,7 +7484,7 @@ int32_t SPVM_API_compiler_is_anon_method(SPVM_ENV* env, SPVM_COMPILER* compiler,
   return method->flag & SPVM_METHOD_C_FLAG_ANON;
 }
 
-int32_t SPVM_API_compiler_is_init_method(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id) {
+int32_t SPVM_API_compiler_is_init_block_method(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t method_id) {
   (void)env;
 
   SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
