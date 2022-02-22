@@ -3657,6 +3657,12 @@ get_anon_class_names_by_parent_class_name(...)
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
 
+  // The environment for the compiler
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  
+  // Compiler
   SPVM_COMPILER* compiler;
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
@@ -3668,15 +3674,20 @@ get_anon_class_names_by_parent_class_name(...)
   // Copy class load path to builder
   SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
 
-  for (int32_t anon_method_index = 0; anon_method_index < class->anon_methods->length; anon_method_index++) {
+  int32_t methods_length = compiler_env->compiler_get_methods_length(compiler_env, compiler, class->id);
+
+  for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    SPVM_METHOD* anon_method = SPVM_LIST_fetch(class->anon_methods, anon_method_index);
-    SPVM_CLASS* anon_class = anon_method->class;
+    SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, method_index);
+    int32_t method_id = method->id;
+    int32_t is_anon_method = compiler_env->compiler_is_anon_method(compiler_env, compiler, method_id);
     
-    const char* anon_class_name = anon_class->name;
-    SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
-    
-    av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));
+    if (is_anon_method) {
+      SPVM_CLASS* anon_class = method->class;
+      const char* anon_class_name = anon_class->name;
+      SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
+      av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));
+    }
   }
   
   XPUSHs(sv_anon_class_names);
