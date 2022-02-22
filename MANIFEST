@@ -5,6 +5,7 @@ benchmark/lib/SPVM/MyMathNative.config
 benchmark/lib/SPVM/MyMathNative.spvm
 benchmark/lib/SPVM/MyMathPrecompile.spvm
 Changes
+core
 DEVELOPMENT.txt
 examples/doc/tutorial/basic/lib/SPVM/MyMath.spvm
 examples/doc/tutorial/basic/sum.pl
