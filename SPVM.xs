@@ -3608,6 +3608,11 @@ get_method_names(...)
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
 
+  // The environment for the compiler
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  
   SPVM_COMPILER* compiler;
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
@@ -3616,20 +3621,18 @@ get_method_names(...)
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
   
-  // Copy class load path to builder
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-
-  for (int32_t method_index = 0; method_index < class->methods->length; method_index++) {
-    SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, method_index);
-    const char* method_name = method->name;
+  int32_t class_id = compiler_env->compiler_get_class_id(compiler_env, compiler, class_name);
+  int32_t methods_length = compiler_env->compiler_get_methods_length(compiler_env, compiler, class_id);
+  for (int32_t method_index = 0; method_index < methods_length; method_index++) {
+    int32_t method_id = compiler_env->compiler_get_method_id(compiler_env, compiler, class_id, method_index);
+    const char* method_name = compiler_env->compiler_get_method_name(compiler_env, compiler, method_id);
     SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
-    
     int32_t is_push = 0;
     if (SvOK(sv_category)) {
-      if(strEQ(SvPV_nolen(sv_category), "native") && method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
+      if(strEQ(SvPV_nolen(sv_category), "native") && compiler_env->compiler_is_native_method(compiler_env, compiler, method_id)) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
-      else if (strEQ(SvPV_nolen(sv_category), "precompile") && method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
+      else if (strEQ(SvPV_nolen(sv_category), "precompile") && compiler_env->compiler_is_precompile_method(compiler_env, compiler, method_id)) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
     }
