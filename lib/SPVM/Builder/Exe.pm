@@ -344,7 +344,7 @@ sub create_bootstrap_source {
   my $class_name = $self->class_name;
   
   # Class names
-  my $class_names = $builder->get_class_names;
+  my $class_names = $builder->get_class_names_exclude_anon;
   
   # Module files - Input
   my $module_files = [];
@@ -712,7 +712,7 @@ sub create_spvm_module_sources {
   my $builder = $self->builder;
   
   # Compiled class names
-  my $class_names = $builder->get_class_names;
+  my $class_names = $builder->get_class_names_exclude_anon;
   
   for my $class_name (@$class_names) {
     
@@ -769,7 +769,7 @@ sub compile_spvm_module_sources {
   my $builder = $self->builder;
   
   # Compile module source files
-  my $class_names = $builder->get_class_names;
+  my $class_names = $builder->get_class_names_exclude_anon;
   my $object_file_infos = [];
   for my $class_name (@$class_names) {
     my $perl_class_name = "SPVM::$class_name";
@@ -814,7 +814,7 @@ sub create_precompile_csources {
     force => $self->force,
   );
 
-  my $class_names = $builder->get_class_names;
+  my $class_names = $builder->get_class_names_exclude_anon;
   for my $class_name (@$class_names) {
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     if (@$precompile_method_names) {
@@ -850,7 +850,7 @@ sub compile_precompile_sources {
     force => $self->force,
   );
   
-  my $class_names = $builder->get_class_names;
+  my $class_names = $builder->get_class_names_exclude_anon;
   my $object_files = [];
   for my $class_name (@$class_names) {
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
@@ -894,7 +894,7 @@ sub compile_native_csources {
     force => $self->force,
   );
   
-  my $class_names = $builder->get_class_names;
+  my $class_names = $builder->get_class_names_exclude_anon;
   my $all_object_files = [];
   for my $class_name (@$class_names) {
 
