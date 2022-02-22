@@ -805,6 +805,40 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   178 get_no_symbol_cache_flag
   179 print
   180 print_stderr
+  181 new_env_raw,
+  182 free_env_raw,
+  183 init_env,
+  184 call_init_blocks,
+  185 cleanup_global_vars,
+  186 new_compiler,
+  187 compiler_free,
+  188 compiler_set_start_line,
+  189 compiler_get_start_line,
+  190 compiler_set_start_file,
+  191 compiler_get_start_file,
+  192 compiler_add_module_dir,
+  193 compiler_get_module_dirs_length,
+  194 compiler_get_module_dir,
+  195 compiler_compile_spvm,
+  196 compiler_get_error_messages_length,
+  197 compiler_get_error_message,
+  198 compiler_get_class_id,
+  199 compiler_get_classes_length,
+  200 compiler_get_class_name,
+  201 compiler_is_anon_class,
+  202 compiler_get_methods_length,
+  203 compiler_get_method_id,
+  204 compiler_get_method_id_by_name,
+  205 compiler_get_method_name,
+  206 compiler_get_method_signature,
+  207 compiler_is_anon_method,
+  208 compiler_is_init_block_method,
+  209 compiler_is_native_method,
+  210 compiler_is_precompile_method,
+  211 compiler_get_native_method_address,
+  212 compiler_get_precompile_method_address,
+  213 compiler_set_native_method_address,
+  214 compiler_set_precompile_method_address,
 
 =head1 List of Native APIs
 
@@ -2592,6 +2626,134 @@ Create a new environment. This environment is not yet initialized.
   void (*free_env_raw)(SPVM_ENV* env);
 
 Release the execution environment.
+
+=head2 init_env
+
+  int32_t (*init_env)(SPVM_ENV* env);
+
+=head2 call_init_blocks
+  
+  void (*call_init_blocks)(SPVM_ENV* env);
+
+=head2 cleanup_global_vars
+  
+  void (*cleanup_global_vars)(SPVM_ENV* env);
+
+=head2 new_compiler
+  
+  void* (*new_compiler)(SPVM_ENV* env);
+
+=head2 compiler_free
+  
+  void (*compiler_free)(SPVM_ENV* env, void* compiler);
+
+=head2 compiler_set_start_line
+  
+  void (*compiler_set_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
+
+=head2 compiler_get_start_line
+  
+  int32_t (*compiler_get_start_line)(SPVM_ENV* env, void* compiler);
+
+=head2 compiler_set_start_file
+  
+  void (*compiler_set_start_file)(SPVM_ENV* env, void* compiler, const char* start_file);
+
+=head2 compiler_get_start_file
+  
+  const char* (*compiler_get_start_file)(SPVM_ENV* env, void* compiler);
+
+=head2 compiler_add_module_dir
+  
+  void (*compiler_add_module_dir)(SPVM_ENV* env, void* compiler, const char* module_dir);
+
+=head2 compiler_get_module_dirs_length
+  
+  int32_t (*compiler_get_module_dirs_length)(SPVM_ENV* env, void* compiler);
+
+=head2 compiler_get_module_dir
+
+  const char* (*compiler_get_module_dir)(SPVM_ENV* env, void* compiler, int32_t module_dir_id);
+
+=head2 compiler_compile_spvm
+  
+  int32_t (*compiler_compile_spvm)(SPVM_ENV* env, void* compiler, const char* class_name);
+
+=head2 compiler_get_error_messages_length
+  
+  int32_t (*compiler_get_error_messages_length)(SPVM_ENV* env, void* compiler);
+
+=head2 compiler_get_error_message
+  
+  const char* (*compiler_get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
+
+=head2 compiler_get_class_id
+  
+  int32_t (*compiler_get_class_id)(SPVM_ENV* env, void* compiler, const char* class_name);
+
+=head2 compiler_get_classes_length
+  
+  int32_t (*compiler_get_classes_length)(SPVM_ENV* env, void* compiler);
+
+=head2 compiler_get_class_name
+  
+  const char* (*compiler_get_class_name)(SPVM_ENV* env, void* compiler, int32_t class_id);
+
+=head2 compiler_is_anon_class
+  
+  int32_t (*compiler_is_anon_class)(SPVM_ENV* env, void* compiler, int32_t class_id);
+
+=head2 compiler_get_methods_length
+  
+  int32_t (*compiler_get_methods_length)(SPVM_ENV* env, void* compiler, int32_t class_id);
+
+=head2 compiler_get_method_id
+  
+  int32_t (*compiler_get_method_id)(SPVM_ENV* env, void* compiler, int32_t class_id, int32_t method_index_of_class);
+
+=head2 compiler_get_method_id_by_name
+  
+  int32_t (*compiler_get_method_id_by_name)(SPVM_ENV* env, void* compiler, const char* class_name, const char* method_name);
+
+=head2 compiler_get_method_name
+  
+  const char* (*compiler_get_method_name)(SPVM_ENV* env, void* compiler, int32_t method_id);
+
+=head2 compiler_get_method_signature
+  
+  const char* (*compiler_get_method_signature)(SPVM_ENV* env, void* compiler, int32_t method_id);
+
+=head2 compiler_is_anon_method
+  
+  int32_t (*compiler_is_anon_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+
+=head2 compiler_is_init_block_method
+  
+  int32_t (*compiler_is_init_block_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+
+=head2 compiler_is_native_method
+  
+  int32_t (*compiler_is_native_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+
+=head2 compiler_is_precompile_method
+  
+  int32_t (*compiler_is_precompile_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+
+=head2 compiler_get_native_method_address
+  
+  void* (*compiler_get_native_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id);
+
+=head2 compiler_get_precompile_method_address
+  
+  void* (*compiler_get_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id);
+
+=head2 compiler_set_native_method_address
+  
+  void (*compiler_set_native_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
+
+=head2 compiler_set_precompile_method_address
+  
+  void (*compiler_set_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
 
 =head1 Utilities
 
