@@ -20,14 +20,21 @@ use SPVM::Builder::Util::API;
   # SPVM only support 64bit integer Perl
   my $ivsize = $Config{ivsize};
   if ($ivsize < 8) {
-    warn "SPVM doesn't support the Perl which \"ivsize\" is lower than 8\n";
+    warn "SPVM doesn't support the Perl which \"ivsize\" is lower than 8. The current \"ivsize\" is $ivsize.\n";
     die "OS unsupported\n";
   }
   
   # Currently SPVM doesn't support Alpine Linux
   my $myuname = $Config{myuname};
   if ($myuname =~ /\balpine\b/i) {
-    warn "Currently SPVM doesn't support Alpine Linux because segmentation fault occurs due to incompatibility with glibc. If you want to use SPVM on Alpine Linux, please join SVPM project to fix the problems\n";
+    warn "Currently SPVM doesn't support Alpine Linux because segmentation fault occurs due to incompatibility with glibc. If you want to use SPVM on Alpine Linux, please join SVPM project to fix the problems. The current \"myuname\" is \"$myuname\".\n";
+    die "OS unsupported\n";
+  }
+  
+  # Don't support nmake
+  my $make = $Config{make};
+  if ($make eq 'nmake') {
+    warn "SPVM doesn't support nmake. The current \"make\" is \"$make\"\n";
     die "OS unsupported\n";
   }
 }
