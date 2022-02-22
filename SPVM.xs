@@ -3730,6 +3730,11 @@ get_class_names(...)
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
+  // The environment for the compiler
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+
   SPVM_COMPILER* compiler;
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
@@ -3738,9 +3743,9 @@ get_class_names(...)
   AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
   
-  for (int32_t class_index = 0; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
-    const char* class_name = class->name;
+  int32_t classes_legnth = compiler_env->compiler_get_classes_length(compiler_env, compiler);
+  for (int32_t class_id = 0; class_id < classes_legnth; class_id++) {
+    const char* class_name = compiler_env->compiler_get_class_name(compiler_env, compiler, class_id);
     SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
     av_push(av_class_names, SvREFCNT_inc(sv_class_name));
   }
