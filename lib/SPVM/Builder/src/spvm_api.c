@@ -278,6 +278,8 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_get_no_symbol_cache_flag,
     SPVM_API_print,
     SPVM_API_print_stderr,
+    SPVM_API_new_env_raw,
+    SPVM_API_free_env_raw,
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
     SPVM_API_cleanup_global_vars,
@@ -293,6 +295,7 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_compiler_compile_spvm,
     SPVM_API_compiler_get_error_messages_length,
     SPVM_API_compiler_get_error_message,
+    SPVM_API_compiler_get_class_id,
     SPVM_API_compiler_get_classes_length,
     SPVM_API_compiler_get_class_name,
     SPVM_API_compiler_is_anon_class,
@@ -309,9 +312,6 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_compiler_set_native_method_address,
     SPVM_API_compiler_set_precompile_method_address,
     SPVM_API_compiler_get_method_signature,
-    SPVM_API_new_env_raw,
-    SPVM_API_free_env_raw,
-    SPVM_API_compiler_get_class_id,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));

@@ -278,6 +278,8 @@ struct spvm_env {
   int32_t (*get_no_symbol_cache_flag)(SPVM_ENV* env);
   void (*print)(SPVM_ENV* env, void* string);
   void (*print_stderr)(SPVM_ENV* env, void* string);
+  SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
+  void (*free_env_raw)(SPVM_ENV* env);
   int32_t (*init_env)(SPVM_ENV* env);
   void (*call_init_blocks)(SPVM_ENV* env);
   void (*cleanup_global_vars)(SPVM_ENV* env);
@@ -293,6 +295,7 @@ struct spvm_env {
   int32_t (*compiler_compile_spvm)(SPVM_ENV* env, void* compiler, const char* class_name);
   int32_t (*compiler_get_error_messages_length)(SPVM_ENV* env, void* compiler);
   const char* (*compiler_get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
+  int32_t (*compiler_get_class_id)(SPVM_ENV* env, void* compiler, const char* class_name);
   int32_t (*compiler_get_classes_length)(SPVM_ENV* env, void* compiler);
   const char* (*compiler_get_class_name)(SPVM_ENV* env, void* compiler, int32_t class_id);
   int32_t (*compiler_is_anon_class)(SPVM_ENV* env, void* compiler, int32_t class_id);
@@ -309,8 +312,5 @@ struct spvm_env {
   void (*compiler_set_native_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
   void (*compiler_set_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
   const char* (*compiler_get_method_signature)(SPVM_ENV* env, void* compiler, int32_t method_id);
-  SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
-  void (*free_env_raw)(SPVM_ENV* env);
-  int32_t (*compiler_get_class_id)(SPVM_ENV* env, void* compiler, const char* class_name);
 };
 #endif
