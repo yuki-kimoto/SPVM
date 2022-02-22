@@ -326,4 +326,6 @@ const char* SPVM_API_compiler_get_method_signature(SPVM_ENV* env, SPVM_COMPILER*
 SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env);
 void SPVM_API_free_env(SPVM_ENV* env);
 
+int32_t SPVM_API_compiler_get_class_id(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* class_name);
+
 #endif

@@ -311,5 +311,6 @@ struct spvm_env {
   const char* (*compiler_get_method_signature)(SPVM_ENV* env, void* compiler, int32_t method_id);
   SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
   void (*free_env_raw)(SPVM_ENV* env);
+  int32_t (*compiler_get_class_id)(SPVM_ENV* env, void* compiler, const char* class_name);
 };
 #endif

@@ -37,6 +37,7 @@ Revision history for SPVM
           void* (*compiler_get_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id);
           void (*compiler_set_native_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
           void (*compiler_set_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
+          int32_t (*compiler_get_class_id)(SPVM_ENV* env, void* compiler, const char* class_name);
 
         [BUG FIX]
         * Fix the line and the position of character in case that a compilation error occurs and some space character exists.

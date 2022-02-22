@@ -311,6 +311,7 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_compiler_get_method_signature,
     SPVM_API_new_env_raw,
     SPVM_API_free_env_raw,
+    SPVM_API_compiler_get_class_id,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
