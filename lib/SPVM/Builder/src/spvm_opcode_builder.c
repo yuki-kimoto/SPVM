@@ -4963,6 +4963,26 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       }
     }
   }
+  
+  // Cleanup ops
+  {
+    int32_t class_index;
+    for (class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+      SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
+      class->op_class = NULL;
+      class->op_name = NULL;
+      class->op_type = NULL;
+      
+      SPVM_LIST* methods = class->methods;
+      {
+        int32_t method_index;
+        for (method_index = 0; method_index < methods->length; method_index++) {
+          SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
+        }
+      }
+    }
+  }
+
 #ifdef SPVM_DEBUG_DUMP
 #include "spvm_dumper.h"
   printf("\n[OP codes]\n");
