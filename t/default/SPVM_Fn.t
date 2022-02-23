@@ -41,12 +41,12 @@ my $nan_re = qr/(nan|ind)/i;
 
 # crand
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_crand);
+  ok(SPVM::TestCase::Lib::Fn3->crand);
 }
 
 # rand
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_rand);
+  ok(SPVM::TestCase::Lib::Fn3->rand);
 }
 
 # srand
@@ -56,19 +56,19 @@ SKIP: {
   }
   
   {
-    ok(SPVM::TestCase::Lib::Fn3->test_srand);
+    ok(SPVM::TestCase::Lib::Fn3->srand);
   }
 }
 
 # RAND_MAX
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_RAND_MAX);
+  ok(SPVM::TestCase::Lib::Fn3->RAND_MAX);
 }
 
 # Copy
 {
   # copy_string
-  ok(SPVM::TestCase::Lib::Fn3->test_copy_str);
+  ok(SPVM::TestCase::Lib::Fn3->copy_str);
 }
 
 # Constant integral functions
@@ -96,9 +96,9 @@ SKIP: {
 }
 
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_byte_constant);
-  ok(SPVM::TestCase::Lib::Fn3->test_short_constant);
-  ok(SPVM::TestCase::Lib::Fn3->test_int_constant);
+  ok(SPVM::TestCase::Lib::Fn3->byte_constant);
+  ok(SPVM::TestCase::Lib::Fn3->short_constant);
+  ok(SPVM::TestCase::Lib::Fn3->int_constant);
 }
 
 {
@@ -119,299 +119,299 @@ SKIP: {
 
 # hex
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_hex);
+  ok(SPVM::TestCase::Lib::Fn3->hex);
 }
 
 # trim_ascii_space
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_trim_ascii_space);
+  ok(SPVM::TestCase::Lib::Fn3->trim_ascii_space);
 }
 
 # split
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_split);
+  ok(SPVM::TestCase::Lib::Fn3->split);
 }
 
 # abs
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_abs);
+  ok(SPVM::TestCase::Lib::Fn3->abs);
 }
 
 # labs
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_labs);
+  ok(SPVM::TestCase::Lib::Fn3->labs);
 }
 
 # sprintf
 {
-  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_d);
-  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_u);
-  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_ld);
-  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_lu);
-  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_f);
-  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_c);
-  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_s);
-  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_U);
-  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_percent);
-  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_all);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_d);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_u);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_ld);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_lu);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_f);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_c);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_s);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_U);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_percent);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_all);
 }
 
 # to_int_with_base
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_to_int);
-  ok(SPVM::TestCase::Lib::Fn3->test_to_int_with_base);
-  ok(SPVM::TestCase::Lib::Fn3->test_to_long);
-  ok(SPVM::TestCase::Lib::Fn3->test_to_long_with_base);
-  ok(SPVM::TestCase::Lib::Fn3->test_to_float);
-  ok(SPVM::TestCase::Lib::Fn3->test_to_double);
+  ok(SPVM::TestCase::Lib::Fn3->to_int);
+  ok(SPVM::TestCase::Lib::Fn3->to_int_with_base);
+  ok(SPVM::TestCase::Lib::Fn3->to_long);
+  ok(SPVM::TestCase::Lib::Fn3->to_long_with_base);
+  ok(SPVM::TestCase::Lib::Fn3->to_float);
+  ok(SPVM::TestCase::Lib::Fn3->to_double);
 }
 # chompr
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_chompr);
+  ok(SPVM::TestCase::Lib::Fn3->chompr);
 }
 # is_alnum
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_alnum);
+  ok(SPVM::TestCase::Lib::Fn3->is_alnum);
 }
 
 # is_alpha
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_alpha);
+  ok(SPVM::TestCase::Lib::Fn3->is_alpha);
 }
 
 # is_alpha
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_blank);
+  ok(SPVM::TestCase::Lib::Fn3->is_blank);
 }
 
 # is_cntrl
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_cntrl);
+  ok(SPVM::TestCase::Lib::Fn3->is_cntrl);
 }
 
 # is_digit
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_digit);
+  ok(SPVM::TestCase::Lib::Fn3->is_digit);
 }
 
 # is_graph
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_graph);
+  ok(SPVM::TestCase::Lib::Fn3->is_graph);
 }
 
 # is_lower
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_lower);
+  ok(SPVM::TestCase::Lib::Fn3->is_lower);
 }
 
 # is_print
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_print);
+  ok(SPVM::TestCase::Lib::Fn3->is_print);
 }
 
 # is_print
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_print);
+  ok(SPVM::TestCase::Lib::Fn3->is_print);
 }
 
 # is_punct
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_punct);
+  ok(SPVM::TestCase::Lib::Fn3->is_punct);
 }
 
 # is_space
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_space);
+  ok(SPVM::TestCase::Lib::Fn3->is_space);
 }
 
 # is_upper
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_upper);
+  ok(SPVM::TestCase::Lib::Fn3->is_upper);
 }
 
 # is_xdigit
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_xdigit);
+  ok(SPVM::TestCase::Lib::Fn3->is_xdigit);
 }
 
 # to_lower
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_to_lower);
+  ok(SPVM::TestCase::Lib::Fn3->to_lower);
 }
 
 # to_upper
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_to_upper);
+  ok(SPVM::TestCase::Lib::Fn3->to_upper);
 }
 
 # is_perl_space
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_perl_space);
+  ok(SPVM::TestCase::Lib::Fn3->is_perl_space);
 }
 
 # is_perl_word
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_is_perl_word);
+  ok(SPVM::TestCase::Lib::Fn3->is_perl_word);
 }
 # uc
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_uc);
+  ok(SPVM::TestCase::Lib::Fn3->uc);
 }
 
 # lcfirst
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_lcfirst);
+  ok(SPVM::TestCase::Lib::Fn3->lcfirst);
 }
 
 # lc
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_lc);
+  ok(SPVM::TestCase::Lib::Fn3->lc);
 }
 
 # index
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_index);
+  ok(SPVM::TestCase::Lib::Fn3->index);
 }
 
 # rindex
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_rindex);
+  ok(SPVM::TestCase::Lib::Fn3->rindex);
 }
 
 # join
 {
-  ok(SPVM::TestCase::Lib::Fn3->test_join);
+  ok(SPVM::TestCase::Lib::Fn3->join);
 }
 
 # copy_string
 {
   # copy_string
-  ok(SPVM::TestCase::Lib::Fn3->test_copy_string);
+  ok(SPVM::TestCase::Lib::Fn3->copy_string);
 }
 
 
 # Copy
 {
   # copy_array_byte
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_byte);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_byte);
 
   # copy_array_short
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_short);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_short);
 
   # copy_array_int
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_int);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_int);
 
   # copy_array_long
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_long);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_long);
 
   # copy_array_float
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_float);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_float);
 
   # copy_array_double
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_double);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_double);
 
   # copy_array_string
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_string);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_string);
   
   # copy_array_object
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_object);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_object);
 }
 
 # copy_array_range
 {
   # copy_array_range_byte
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_byte);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_range_byte);
 
   # copy_array_range_short
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_short);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_range_short);
 
   # copy_array_range_int
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_int);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_range_int);
 
   # copy_array_range_long
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_long);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_range_long);
 
   # copy_array_range_float
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_float);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_range_float);
 
   # copy_array_range_double
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_double);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_range_double);
 
   # copy_array_range_double
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_string);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_range_string);
 
   # copy_array_range_double
-  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_object);
+  ok(SPVM::TestCase::Lib::Fn2->copy_array_range_object);
 }
 
 # dump array
 {
   # dump_array_object
-  ok(SPVM::TestCase::Lib::Fn3->test_dump_array_byte);
-  ok(SPVM::TestCase::Lib::Fn3->test_dump_array_short);
-  ok(SPVM::TestCase::Lib::Fn3->test_dump_array_int);
-  ok(SPVM::TestCase::Lib::Fn3->test_dump_array_long);
-  ok(SPVM::TestCase::Lib::Fn3->test_dump_array_float);
-  ok(SPVM::TestCase::Lib::Fn3->test_dump_array_double);
-  ok(SPVM::TestCase::Lib::Fn3->test_dump_unsigned_array_byte);
-  ok(SPVM::TestCase::Lib::Fn3->test_dump_unsigned_array_short);
-  ok(SPVM::TestCase::Lib::Fn3->test_dump_unsigned_array_int);
-  ok(SPVM::TestCase::Lib::Fn3->test_dump_unsigned_array_long);
-  ok(SPVM::TestCase::Lib::Fn3->test_dump_array_string);
-  ok(SPVM::TestCase::Lib::Fn3->test_dump_array_object);
+  ok(SPVM::TestCase::Lib::Fn3->dump_array_byte);
+  ok(SPVM::TestCase::Lib::Fn3->dump_array_short);
+  ok(SPVM::TestCase::Lib::Fn3->dump_array_int);
+  ok(SPVM::TestCase::Lib::Fn3->dump_array_long);
+  ok(SPVM::TestCase::Lib::Fn3->dump_array_float);
+  ok(SPVM::TestCase::Lib::Fn3->dump_array_double);
+  ok(SPVM::TestCase::Lib::Fn3->dump_unsigned_array_byte);
+  ok(SPVM::TestCase::Lib::Fn3->dump_unsigned_array_short);
+  ok(SPVM::TestCase::Lib::Fn3->dump_unsigned_array_int);
+  ok(SPVM::TestCase::Lib::Fn3->dump_unsigned_array_long);
+  ok(SPVM::TestCase::Lib::Fn3->dump_array_string);
+  ok(SPVM::TestCase::Lib::Fn3->dump_array_object);
 }
 
 # equals
 {
   # equals_array_byte
-  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_byte);
+  ok(SPVM::TestCase::Lib::Fn2->equals_array_byte);
 
   # equals_array_short
-  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_short);
+  ok(SPVM::TestCase::Lib::Fn2->equals_array_short);
 
   # equals_array_int
-  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_int);
+  ok(SPVM::TestCase::Lib::Fn2->equals_array_int);
 
   # equeals_array_long
-  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_long);
+  ok(SPVM::TestCase::Lib::Fn2->equals_array_long);
 
   # equals_array_float
-  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_float);
+  ok(SPVM::TestCase::Lib::Fn2->equals_array_float);
 
   # equals_array_double
-  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_double);
+  ok(SPVM::TestCase::Lib::Fn2->equals_array_double);
 
   # equals_array_string
-  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_string);
+  ok(SPVM::TestCase::Lib::Fn2->equals_array_string);
 
   # equals_array_object
-  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_object);
+  ok(SPVM::TestCase::Lib::Fn2->equals_array_object);
 }
 
 # memcpy_numeric
 {
-  ok(SPVM::TestCase::Lib::Fn2->test_memcpy_byte);
-  ok(SPVM::TestCase::Lib::Fn2->test_memcpy_short);
-  ok(SPVM::TestCase::Lib::Fn2->test_memcpy_int);
-  ok(SPVM::TestCase::Lib::Fn2->test_memcpy_long);
-  ok(SPVM::TestCase::Lib::Fn2->test_memcpy_float);
-  ok(SPVM::TestCase::Lib::Fn2->test_memcpy_double);
+  ok(SPVM::TestCase::Lib::Fn2->memcpy_byte);
+  ok(SPVM::TestCase::Lib::Fn2->memcpy_short);
+  ok(SPVM::TestCase::Lib::Fn2->memcpy_int);
+  ok(SPVM::TestCase::Lib::Fn2->memcpy_long);
+  ok(SPVM::TestCase::Lib::Fn2->memcpy_float);
+  ok(SPVM::TestCase::Lib::Fn2->memcpy_double);
 }
 
 # memmove_numeric
 {
-  ok(SPVM::TestCase::Lib::Fn2->test_memmove_byte);
-  ok(SPVM::TestCase::Lib::Fn2->test_memmove_short);
-  ok(SPVM::TestCase::Lib::Fn2->test_memmove_int);
-  ok(SPVM::TestCase::Lib::Fn2->test_memmove_long);
-  ok(SPVM::TestCase::Lib::Fn2->test_memmove_float);
-  ok(SPVM::TestCase::Lib::Fn2->test_memmove_double);
+  ok(SPVM::TestCase::Lib::Fn2->memmove_byte);
+  ok(SPVM::TestCase::Lib::Fn2->memmove_short);
+  ok(SPVM::TestCase::Lib::Fn2->memmove_int);
+  ok(SPVM::TestCase::Lib::Fn2->memmove_long);
+  ok(SPVM::TestCase::Lib::Fn2->memmove_float);
+  ok(SPVM::TestCase::Lib::Fn2->memmove_double);
 }
 
 # new_array_proto
 {
   # copy_array_range_byte
-  ok(SPVM::TestCase::Lib::Fn2->test_new_array_proto);
+  ok(SPVM::TestCase::Lib::Fn2->new_array_proto);
 }
 
 # sort

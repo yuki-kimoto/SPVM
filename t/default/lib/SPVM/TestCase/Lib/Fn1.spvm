@@ -3,7 +3,7 @@ class TestCase::Lib::Fn1 {
   use Unicode as Un;
   use TestCase::Minimal;
 
-  static method test_sprintf_d : int () {
+  static method sprintf_d : int () {
     my $tests = [
         [ Fn->sprintf("abc%d", 123),          "abc123" ],
         [ Fn->sprintf("%dabc", 123),          "123abc" ],
@@ -33,7 +33,7 @@ class TestCase::Lib::Fn1 {
     return 1;
   }
 
-  static method test_sprintf_u : int () {
+  static method sprintf_u : int () {
     my $tests = [
         [ Fn->sprintf("abc%u", 123),          "abc123" ],
         [ Fn->sprintf("%uabc", 123),          "123abc" ],
@@ -64,7 +64,7 @@ class TestCase::Lib::Fn1 {
     return 1;
   }
 
-  static method test_sprintf_ld : int () {
+  static method sprintf_ld : int () {
     my $tests = [
         [ Fn->sprintf("abc%ld", 10000000000L),                                "abc10000000000"                    ],
         [ Fn->sprintf("%ldabc", 10000000000L),                                "10000000000abc"                    ],
@@ -103,7 +103,7 @@ class TestCase::Lib::Fn1 {
     return 1;
   }
 
-  static method test_sprintf_lu : int () {
+  static method sprintf_lu : int () {
     my $tests = [
         [ Fn->sprintf("abc%lu", 10000000000L),                                "abc10000000000"                    ],
         [ Fn->sprintf("%luabc", 10000000000L),                                "10000000000abc"                    ],
@@ -143,7 +143,7 @@ class TestCase::Lib::Fn1 {
     return 1;
   }
 
-  static method test_sprintf_f : int () {
+  static method sprintf_f : int () {
     my $tests = [
         [ Fn->sprintf("abc%.2f", 3.1415),                  "abc3.14"      ],
         [ Fn->sprintf("%.2fabc", 3.14),                  "3.14abc"      ],
@@ -175,7 +175,7 @@ class TestCase::Lib::Fn1 {
     return 1;
   }
 
-  static method test_sprintf_c : int () {
+  static method sprintf_c : int () {
     my $tests = [
         [ Fn->sprintf("abc%c", 'x'),            "abcx"  ],
         [ Fn->sprintf("%cabc", 'x'),            "xabc"  ],
@@ -203,7 +203,7 @@ class TestCase::Lib::Fn1 {
     return 1;
   }
 
-  static method test_sprintf_s : int () {
+  static method sprintf_s : int () {
     my $tests = [
         [ Fn->sprintf("abc%s", "ABC"),                "abcABC"    ],
         [ Fn->sprintf("%sabc", "ABC"),                "ABCabc"    ],
@@ -236,7 +236,7 @@ class TestCase::Lib::Fn1 {
     return Un->uchar($string, \$uchar_pos);
   }
 
-  static method test_sprintf_U : int () {
+  static method sprintf_U : int () {
     my $tests = [
         [ Fn->sprintf("abc%U", &_first_uchar("あ")), "abcあ" ],
         [ Fn->sprintf("%Uabc", &_first_uchar("あ")), "あabc" ],
@@ -262,7 +262,7 @@ class TestCase::Lib::Fn1 {
     return 1;
   }
 
-  static method test_sprintf_percent : int () {
+  static method sprintf_percent : int () {
     my $tests = [
         [ Fn->sprintf("%d%%",    1), "1%"    ],
         [ Fn->sprintf("%%%d",    1), "%1"    ],
@@ -277,7 +277,7 @@ class TestCase::Lib::Fn1 {
     return 1;
   }
 
-  static method test_sprintf_all : int () {
+  static method sprintf_all : int () {
     {
       # Invalid conversion (end of string)
       eval {
