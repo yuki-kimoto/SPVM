@@ -2160,7 +2160,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         // Begin block
         if (op_decl->uv.method->is_init) {
-          class->op_init_method = op_decl;
+          class->has_init_block = 1;
         }
       }
       else {

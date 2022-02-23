@@ -12,7 +12,6 @@
 
 #include "spvm_compiler.h"
 #include "spvm_allocator.h"
-#include "spvm_op.h"
 
 #include "spvm_opcode_array.h"
 #include "spvm_opcode.h"
@@ -32,6 +31,7 @@
 #include "spvm_api.h"
 #include "spvm_object.h"
 #include "spvm_native.h"
+
 
 
 
@@ -7638,8 +7638,9 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env) {
     
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
     
-    if (class->op_init_method) {
-      SPVM_METHOD* init_method = class->op_init_method->uv.method;
+    if (class->has_init_block) {
+      SPVM_METHOD* init_method = SPVM_HASH_fetch(class->method_symtable, "INIT", strlen("INIT"));
+      assert(init_method);
       env->call_spvm_method(env, init_method->id, stack);
     }
   }

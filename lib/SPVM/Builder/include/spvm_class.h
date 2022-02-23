@@ -19,6 +19,8 @@ enum {
 struct spvm_class {
   SPVM_OP* op_class;
   SPVM_OP* op_name;
+  SPVM_OP* op_type;
+  const char* name;
   SPVM_LIST* class_vars;
   SPVM_HASH* class_var_symtable;
   SPVM_HASH* class_alias_symtable;
@@ -39,13 +41,10 @@ struct spvm_class {
   SPVM_LIST* info_constants;
   const char* module_file;
   const char* module_rel_file;
-  SPVM_OP* op_type;
   SPVM_LIST* op_uses;
   SPVM_LIST* op_allows;
   SPVM_LIST* op_implements;
   SPVM_HASH* interface_class_symtable;
-  const char* name;
-  SPVM_OP* op_init_method;
   SPVM_LIST* anon_methods;
   int32_t id;
   int32_t fields_byte_size;
@@ -56,6 +55,7 @@ struct spvm_class {
   int8_t fail_load;
   int8_t has_precompile_descriptor;
   int8_t is_anon;
+  int8_t has_init_block;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);
