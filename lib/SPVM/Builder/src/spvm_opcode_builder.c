@@ -4978,6 +4978,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
         int32_t method_index;
         for (method_index = 0; method_index < methods->length; method_index++) {
           SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
+          method->op_method = NULL;
+          method->op_name = NULL;
+          method->op_block = NULL;
+          method->op_inline = NULL;
+          method->op_list_tmp_mys = NULL;
+          method->op_my_condition_flag = NULL;
         }
       }
     }

@@ -42,6 +42,8 @@ struct spvm_method {
   SPVM_OP* op_name;
   SPVM_OP* op_block;
   SPVM_OP* op_inline;
+  SPVM_OP* op_list_tmp_mys;
+  SPVM_OP* op_my_condition_flag;
   SPVM_LIST* object_arg_ids;
   SPVM_LIST* mys;
   SPVM_LIST* captures;
@@ -54,8 +56,6 @@ struct spvm_method {
   const char* signature;
   SPVM_CLASS* class;
   const char* accessor_original_name;
-  SPVM_OP* op_list_tmp_mys;
-  SPVM_OP* op_my_condition_flag;
   const char* anon_method_defined_class_name;
   int32_t opcodes_base;
   int32_t opcodes_length;
