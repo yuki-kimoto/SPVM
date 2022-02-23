@@ -482,6 +482,7 @@ lib/SPVM/Document/LanguageSpecification.pm
 lib/SPVM/Document/Modules.pm
 lib/SPVM/Document/NativeAPI.pm
 lib/SPVM/Document/Tutorial.pm
+lib/SPVM/Document/Tutorial/Complex.pm
 lib/SPVM/Double.pm
 lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
