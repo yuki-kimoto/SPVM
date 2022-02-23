@@ -1262,16 +1262,25 @@ class Fn : precompile {
     return $random_number;
   }
 
-  static method rindex : int ($string : string, $method_string : string, $offset : int) {
-    my $string_len = length $string;
-    my $method_string_len = length $method_string;
-    if ($offset > $string_len - $method_string_len) {
-      $offset = $string_len - $method_string_len;
+  static method rindex : int ($string : string, $sub_string : string, $start_pos : int) {
+    return &rindex_len($string, $sub_string, $start_pos, length $string);
+  }
+
+  static method rindex_len : int ($string : string, $sub_string : string, $start_pos : int, $max_string_length : int) {
+    my $sub_string_length = length $sub_string;
+
+    if ($max_string_length > length $string) {
+      $max_string_length = length $string;
     }
-    for (my $i = $offset; $i >= 0; --$i) {
+
+    my $sub_string_len = length $sub_string;
+    if ($start_pos > $max_string_length - $sub_string_length) {
+      $start_pos = $max_string_length - $sub_string_len;
+    }
+    for (my $i = $start_pos; $i >= 0; --$i) {
       my $match = 1;
-      for (my $j = 0; $j < $method_string_len; ++$j) {
-        if ($string->[$i + $j] != $method_string->[$j]) {
+      for (my $j = 0; $j < $sub_string_len; ++$j) {
+        if ($string->[$i + $j] != $sub_string->[$j]) {
           $match = 0;
           last;
         }
