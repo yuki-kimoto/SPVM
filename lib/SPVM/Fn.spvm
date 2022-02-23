@@ -936,39 +936,46 @@ class Fn : precompile {
     return $value;
   }
 
-  static method index : int ($string : string, $method_string : string, $position : int) {
-    my $stringCount = length $string;
-    my $method_stringCount = length $method_string;
+  static method index : int ($string : string, $sub_string : string, $start_pos : int) {
+    return &index_len($string, $sub_string, $start_pos, length $string);
+  }
 
-    if ($position >= $stringCount) {
+  static method index_len : int ($string : string, $sub_string : string, $start_pos : int, $max_string_length : int) {
+    my $sub_string_length = length $sub_string;
+    
+    if ($max_string_length > length $string) {
+      $max_string_length = length $string;
+    }
+
+    if ($start_pos >= $max_string_length) {
       my $ret : int;
-      if ($method_stringCount == 0) {
-        $ret = $stringCount;
+      if ($sub_string_length == 0) {
+        $ret = $max_string_length;
       }
       else {
         $ret = -1;
       }
       return $ret;
     }
-    if ($position < 0) {
-      $position = 0;
+    if ($start_pos < 0) {
+      $start_pos = 0;
     }
-    if ($method_stringCount == 0) {
-      return $position;
+    if ($sub_string_length == 0) {
+      return $start_pos;
     }
 
-    my $first : byte  = $method_string->[0];
-    my $max : int = ($stringCount - $method_stringCount);
+    my $first : byte  = $sub_string->[0];
+    my $max : int = ($max_string_length - $sub_string_length);
 
-    for (my $i = $position; $i <= $max; $i++) {
+    for (my $i = $start_pos; $i <= $max; $i++) {
       if ($string->[$i] != $first) {
         while (++$i <= $max && $string->[$i] != $first) {}
       }
 
       if ($i <= $max) {
         my $j = $i + 1;
-        my $end = $j + $method_stringCount - 1;
-        for (my $k = 01; $j < $end && $string->[$j] == $method_string->[$k]; ($j++, $k++)) {}
+        my $end = $j + $sub_string_length - 1;
+        for (my $k = 01; $j < $end && $string->[$j] == $sub_string->[$k]; ($j++, $k++)) {}
 
         if ($j == $end) {
           return $i;

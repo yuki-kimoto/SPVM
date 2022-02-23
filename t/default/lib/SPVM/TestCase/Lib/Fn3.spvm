@@ -1365,6 +1365,65 @@ class TestCase::Lib::Fn3 {
     return 1;
   }
 
+  static method index_len : int () {
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index_len($target, $search, 0, length $target);
+      unless ($pos == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index_len($target, $search, 0, 4);
+      unless ($pos == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index_len($target, $search, 0, 3);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index_len($target, $search, 1, length $target);
+      unless ($pos == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index_len($target, $search, 2, length $target);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "pq";
+      my $pos = Fn->index_len($target, $search, 2, length $target);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   static method rindex : int () {
 
     {

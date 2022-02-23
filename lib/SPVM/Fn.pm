@@ -716,16 +716,19 @@ the hex string must be a valid expression which is represented by a regex "^([0-
 
 =head2 index
 
-  static method index : int ($string : string, $method_string : string, $position : int)
+  static method index : int ($string : string, $sub_string : string, $start_pos : int)
 
-index function searches for one string within another.
-It returns the position of the first occurrence of $method_string in $string at or after $position. If $position is omitted, starts
-searching from the beginning of the string. $position before the
-beginning of the string or after its end is treated as if it were
-the beginning or the end, respectively. $position and the return
-value are based at zero. If the substring is not found, "index"
-returns -1.
-            
+Search for the substring in the string from the starting position
+and return the found position. If the substring is not found, return C<-1>.
+
+=head2 index_len
+
+  static method index_len : int ($string : string, $sub_string : string, $start_pos : int, $max_string_length : int)
+
+Same as the L<"index"> method except that the max length of the string can be specified.
+
+If the max string length of the argument is greater than the lenght of the string, the max string length become the length of string.
+
 =head2 is_alnum
 
   static method is_alnum : int ($code_point : int)
@@ -1132,7 +1135,7 @@ This method is not thread safe because internaly this method use rand function o
 
 =head2 rindex
 
-  static method rindex : int ($string : string, $method_string : string, $offset : int)
+  static method rindex : int ($string : string, $sub_string : string, $offset : int)
 
 Same as "index" function except that the search is the last of the string.
 

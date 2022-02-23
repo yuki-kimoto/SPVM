@@ -1,7 +1,8 @@
 Revision history for SPVM
-0.9506  2021-02-22
+0.9507  2021-02-23
         [CHANGE]
         * SPVM don't support nmake. Already nmake test always fails until now.
+        * Add "index_len" method to the "Fn" module.
         
 0.9506  2021-02-22
         [CHANGE]
