@@ -1135,9 +1135,18 @@ This method is not thread safe because internaly this method use rand function o
 
 =head2 rindex
 
-  static method rindex : int ($string : string, $sub_string : string, $offset : int)
+  static method rindex : int ($string : string, $sub_string : string, $start_pos : int)
 
-Same as "index" function except that the search is the last of the string.
+Search for the substring in the string from the starting position to the start of the string.
+and return the found position. If the substring is not found, return C<-1>.
+
+=head2 rindex_len
+
+  static method rindex_len : int ($string : string, $sub_string : string, $start_pos : int, $max_string_length : int)
+
+Same as the L<"rindex"> method except that the max length of the string can be specified.
+
+If the max string length of the argument is greater than the lenght of the string, the max string length become the length of string.
 
 =head2 shorten
 
