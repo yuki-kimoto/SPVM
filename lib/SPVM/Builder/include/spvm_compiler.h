@@ -86,7 +86,7 @@ struct spvm_compiler {
   SPVM_LIST* module_dirs;
 
   // Constant string symtable
-  SPVM_HASH* const_string_symtable;
+  SPVM_HASH* name_symtable;
 
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
