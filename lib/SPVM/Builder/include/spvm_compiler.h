@@ -16,9 +16,6 @@ enum {
 
 // Parser information
 struct spvm_compiler {
-  // AST grammar
-  SPVM_OP* op_grammar;
-
   // Class loading stack
   SPVM_LIST* op_use_stack;
 

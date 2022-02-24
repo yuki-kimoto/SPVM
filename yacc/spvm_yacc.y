@@ -65,7 +65,6 @@ grammar
   : opt_classes
     {
       $$ = SPVM_OP_build_grammar(compiler, $1);
-      compiler->op_grammar = $$;
     }
 
 opt_classes

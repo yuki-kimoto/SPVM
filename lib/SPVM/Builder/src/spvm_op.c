@@ -1730,11 +1730,7 @@ SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPV
 
 SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_classes) {
   
-  if (!compiler->op_grammar) {
-    compiler->op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_GRAMMAR, op_classes->file, op_classes->line);
-  }
-  
-  SPVM_OP* op_grammar = compiler->op_grammar;
+  SPVM_OP* op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_GRAMMAR, op_classes->file, op_classes->line);
   SPVM_OP_insert_child(compiler, op_grammar, op_grammar->last, op_classes);
 
   return op_grammar;
