@@ -4,6 +4,8 @@ Revision history for SPVM
         * SPVM don't support nmake. Already nmake test always fails until now.
         * Add "index_len" method to the "Fn" module.
         * Add "rindex_len" method to the "Fn" module.
+        [BUG FIX]
+        * Fix the bug that spvmcc can't detect the changes of the SPVM core header files.
         
 0.9506  2021-02-22
         [CHANGE]

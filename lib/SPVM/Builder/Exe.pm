@@ -299,12 +299,18 @@ sub compile_source_file {
 
   my $source_file = $opt->{source_file};
   my $output_file = $opt->{output_file};
+  my $depend_files = $opt->{depend_files};
+  unless ($depend_files) {
+    $depend_files = [];
+  }
+  
+  my $input_files = [$source_file, @$depend_files];
   
   my $need_generate = SPVM::Builder::Util::need_generate({
     global_force => $self->force,
     config_force => $config->force,
     output_file => $output_file,
-    input_files => [$source_file],
+    input_files => $input_files,
   });
 
   # Compile command
@@ -639,13 +645,19 @@ sub compile_spvm_core_sources {
   my $spvm_builder_dir = $spvm_builder_config_dir;
   $spvm_builder_dir =~ s/\/Config\.pm$//;
 
-  # Add SPVM src directory
+  # SPVM src directory
   my $spvm_core_source_dir = "$spvm_builder_dir/src";
+
+  # SPVM header directory
+  my $spvm_core_header_dir = "$spvm_builder_dir/header";
   
   # SPVM runtime source files
   my $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
 
   my @spvm_core_source_files = map { "$spvm_core_source_dir/$_" } @$spvm_runtime_src_base_names;
+
+  my $spvm_core_header_file_names = SPVM::Builder::Util::get_spvm_core_header_file_names();
+  my @spvm_core_header_files = map { "$spvm_core_header_dir/$_" } @$spvm_core_header_file_names;
   
   # Object dir
   my $object_dir = $self->builder->create_build_object_path;
@@ -659,7 +671,11 @@ sub compile_spvm_core_sources {
     $object_file =~ s/\.c$//;
     $object_file .= '.o';
     
-    my $object_file_info = $self->compile_source_file({source_file => $src_file, output_file => $object_file});
+    my $object_file_info = $self->compile_source_file({
+      source_file => $src_file,
+      output_file => $object_file,
+      depend_files => [@spvm_core_header_files]
+    });
     push @$object_file_infos, $object_file_info;
   }
   

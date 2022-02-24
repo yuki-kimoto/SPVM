@@ -62,3 +62,4 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);
 const char* const* SPVM_CLASS_C_CATEGORY_NAMES(void);
 
 #endif
+ 
