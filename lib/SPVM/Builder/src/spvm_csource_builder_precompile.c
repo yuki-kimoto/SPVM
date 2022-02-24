@@ -1046,9 +1046,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(SPVM_COMPILER* compiler, SPVM
   SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "      ");
-  SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "      int32_t access_field_offset");
   SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_offset(env, ");
   SPVM_STRING_BUFFER_add(string_buffer, "access_field_id");
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
@@ -1066,7 +1064,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(SPVM_COMPILER* compiler, SPVM
   SPVM_STRING_BUFFER_add(string_buffer, " = *(");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(compiler, field_ctype_id));
   SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)object + object_header_byte_size + ");
-  SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "access_field_offset");
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -1103,8 +1101,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_set_field(SPVM_COMPILER* compiler, SPVM
 
   SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
 
-  SPVM_STRING_BUFFER_add(string_buffer, "      ");
-  SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "      int32_t access_field_offset");
   SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_offset(env, ");
   SPVM_STRING_BUFFER_add(string_buffer, "access_field_id");
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
@@ -1120,7 +1117,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_set_field(SPVM_COMPILER* compiler, SPVM
   SPVM_STRING_BUFFER_add(string_buffer, "        *(");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(compiler, field_ctype_id));
   SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)object + object_header_byte_size + ");
-  SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "access_field_offset");
   SPVM_STRING_BUFFER_add(string_buffer, ") = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, field_ctype_id, in_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -1140,19 +1137,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler
   // Head part - include and define
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(compiler, string_buffer);
 
-  // Field id declarations
-  SPVM_STRING_BUFFER_add(string_buffer, "// Field id declarations\n");
-  for (int32_t i = 0; i < class->info_field_ids->length; i++) {
-    int32_t field_id = (int32_t)(intptr_t)SPVM_LIST_fetch(class->info_field_ids, i);
-    SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-    SPVM_CLASS* field_class = field->class;
-    const char* field_class_name = field_class->name;
-    const char* field_name = field->name;
-
-    SPVM_STRING_BUFFER_add(string_buffer, "static int32_t ");
-    SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
-    SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
-  }
   // Method id declarations
   SPVM_STRING_BUFFER_add(string_buffer, "// Method id declarations\n");
   for (int32_t i = 0; i < class->info_method_ids->length; i++) {
@@ -3689,8 +3673,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t ");
-        SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t access_field_offset");
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_offset(env, ");
         SPVM_STRING_BUFFER_add(string_buffer, "access_field_id");
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
@@ -3705,7 +3688,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + ");
-        SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "access_field_offset");
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        int32_t status = env->weaken(env, get_field_object_address);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        if (status != 0) {\n");
@@ -3748,8 +3731,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t ");
-        SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t access_field_offset");
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_offset(env, ");
         SPVM_STRING_BUFFER_add(string_buffer, "access_field_id");
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
@@ -3764,7 +3746,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + ");
-        SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "access_field_offset");
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        env->unweaken(env, get_field_object_address);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
@@ -3802,8 +3784,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t ");
-        SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t access_field_offset");
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_offset(env, ");
         SPVM_STRING_BUFFER_add(string_buffer, "access_field_id");
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
@@ -3818,7 +3799,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + ");
-        SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "access_field_offset");
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->isweak(env, get_field_object_address);\n");
@@ -5131,8 +5112,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      ");
-        SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t access_field_offset");
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_offset(env, ");
         SPVM_STRING_BUFFER_add(string_buffer, "access_field_id");
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
@@ -5145,7 +5125,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        void* get_field_object = *(void**)((intptr_t)object + object_header_byte_size + ");
-        SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "access_field_offset");
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
@@ -5226,8 +5206,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      ");
-        SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t access_field_offset");
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_offset(env, ");
         SPVM_STRING_BUFFER_add(string_buffer, "access_field_id");
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
@@ -5240,7 +5219,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        void* get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + ");
-        SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "access_field_offset");
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_API_OBJECT_ASSIGN(");
         SPVM_STRING_BUFFER_add(string_buffer, "get_field_object_address,");
@@ -5281,8 +5260,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      ");
-        SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t access_field_offset");
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_offset(env, ");
         SPVM_STRING_BUFFER_add(string_buffer, "access_field_id");
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
@@ -5296,7 +5274,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        void* get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + ");
-        SPVM_STRING_BUFFER_add_field_access_offset_name(string_buffer, class->name, field_class_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "access_field_offset");
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_API_OBJECT_ASSIGN(get_field_object_address, NULL);");
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
