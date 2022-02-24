@@ -11,7 +11,6 @@ struct spvm_constant {
   int32_t string_length;
   int32_t constant_pool_id;
   int32_t constant_id;
-  const char* num_str;
 };
 
 SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler);

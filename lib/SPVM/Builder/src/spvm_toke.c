@@ -1709,8 +1709,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             assert(0);
           }
           
-          op_constant->uv.constant->num_str = num_str;
-          
           yylvalp->opval = op_constant;
           
           return CONSTANT;
