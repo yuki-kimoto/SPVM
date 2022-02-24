@@ -16,6 +16,18 @@ enum {
 
 // Parser information
 struct spvm_compiler {
+  // AST grammar
+  SPVM_OP* op_grammar;
+
+  // Class loading stack
+  SPVM_LIST* op_use_stack;
+
+  // Constants
+  SPVM_LIST* op_constants;
+
+  // Types
+  SPVM_LIST* op_types;
+  
   // Current parsed file name
   const char* cur_file;
   
@@ -73,9 +85,6 @@ struct spvm_compiler {
   // Starting line the starting module is loaded
   int32_t start_line;
   
-  // AST grammar
-  SPVM_OP* op_grammar;
-  
   // Syntax error count
   SPVM_LIST* error_messages;
   
@@ -85,18 +94,9 @@ struct spvm_compiler {
   // Constant string symtable
   SPVM_HASH* const_string_symtable;
 
-  // Class loading stack
-  SPVM_LIST* op_use_stack;
-
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
   
-  // Constants
-  SPVM_LIST* op_constants;
-
-  // Types
-  SPVM_LIST* op_types;
-
   // Classes
   SPVM_LIST* classes;
 
