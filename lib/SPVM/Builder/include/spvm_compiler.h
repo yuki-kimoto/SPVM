@@ -121,9 +121,6 @@ struct spvm_compiler {
   // Field ops
   SPVM_LIST* fields;
   
-  // module file symtable
-  SPVM_HASH* module_file_symtable;
-
   // module source symtable
   SPVM_HASH* module_source_symtable;
 };
