@@ -3687,22 +3687,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           op_cur->uv.constant->constant_id = class->info_constants->length;
                           SPVM_LIST_push(class->info_constants, op_cur->uv.constant);
                         }
-                        // long or double
-                        else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                          switch (type->basic_type->id) {
-                            case SPVM_BASIC_TYPE_C_ID_LONG: {
-                              // Add long constant
-                              op_cur->uv.constant->constant_id = class->info_constants->length;
-                              SPVM_LIST_push(class->info_constants, op_cur->uv.constant);
-                            }
-                            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                              // Add double constant
-                              op_cur->uv.constant->constant_id = class->info_constants->length;
-                              SPVM_LIST_push(class->info_constants, op_cur->uv.constant);
-                            }
-                          }
-                        }
-                        
                         break;
                       }
                     }
