@@ -1517,41 +1517,24 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
           
           // Ignore under line
-          int32_t num_str_tmp_memoyr_blocks_count = compiler->allocator->memory_blocks_count_compile_tmp;
-          char* num_str_tmp = (char*)SPVM_ALLOCATOR_new_block_compile_tmp(compiler, str_len + 2);
+          int32_t num_str_memoyr_blocks_count = compiler->allocator->memory_blocks_count_compile_tmp;
+          char* num_str = (char*)SPVM_ALLOCATOR_new_block_compile_tmp(compiler, str_len + 2);
           int32_t pos = 0;
           {
             int32_t i;
             for (i = 0; i < str_len; i++) {
               if (*(cur_token_ptr + i) != '_') {
-                *(num_str_tmp + pos) = *(cur_token_ptr + i);
+                *(num_str + pos) = *(cur_token_ptr + i);
                 pos++;
               }
             }
-            num_str_tmp[pos] = '\0';
+            num_str[pos] = '\0';
           }
           // Back suffix such as "f" or "F" when hex floating number
           if (is_hex_floating_number && !isdigit(*(compiler->bufptr - 1))) {
             compiler->bufptr--;
-            num_str_tmp[pos - 1] = '\0';
+            num_str[pos - 1] = '\0';
           }
-          
-          int32_t num_str_length = strlen(num_str_tmp);
-
-          // Keyword name
-          char* num_str;
-          char* found_num_str = SPVM_HASH_fetch(compiler->name_symtable, num_str_tmp, num_str_length);
-          if (found_num_str) {
-            num_str = found_num_str;
-          }
-          else {
-            num_str = (char*)SPVM_ALLOCATOR_new_block_compile_eternal(compiler, num_str_length + 1);
-            memcpy(num_str, num_str_tmp, num_str_length);
-            SPVM_HASH_insert(compiler->name_symtable, num_str, num_str_length, num_str);
-          }
-          
-          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, num_str_tmp);
-          assert(compiler->allocator->memory_blocks_count_compile_tmp == num_str_tmp_memoyr_blocks_count);
 
           // Constant
           SPVM_TYPE* constant_type;
@@ -1708,6 +1691,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else {
             assert(0);
           }
+
+          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, num_str);
+          assert(compiler->allocator->memory_blocks_count_compile_tmp == num_str_memoyr_blocks_count);
+
           
           yylvalp->opval = op_constant;
           
