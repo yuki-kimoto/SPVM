@@ -2637,9 +2637,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_DOUBLE: {
-        int32_t constant_id = opcode->operand1;
-        SPVM_CONSTANT* constant = class->info_constants->values[constant_id];
-        double double_value = constant->value.dval;
+        double double_value = *(double*)&opcode->operand1;
 
         SPVM_VALUE value;
         value.dval = double_value;
