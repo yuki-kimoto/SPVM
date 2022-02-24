@@ -284,6 +284,106 @@ sub create_class_make_rule {
   return $make_rule;
 }
 
+sub get_spvm_core_source_file_names {
+  
+  my @spvm_core_source_file_names = qw(
+    spvm_allocator.c
+    spvm_allow.c
+    spvm_api.c
+    spvm_array_field_access.c
+    spvm_basic_type.c
+    spvm_block.c
+    spvm_call_method.c
+    spvm_case_info.c
+    spvm_class.c
+    spvm_class_var_access.c
+    spvm_class_var.c
+    spvm_implement.c
+    spvm_compiler.c
+    spvm_constant.c
+    spvm_csource_builder_precompile.c
+    spvm_descriptor.c
+    spvm_dumper.c
+    spvm_enumeration.c
+    spvm_enumeration_value.c
+    spvm_field_access.c
+    spvm_field.c
+    spvm_hash.c
+    spvm_list.c
+    spvm_method.c
+    spvm_my.c
+    spvm_op.c
+    spvm_op_checker.c
+    spvm_opcode_array.c
+    spvm_opcode_builder.c
+    spvm_opcode.c
+    spvm_string_buffer.c
+    spvm_switch_info.c
+    spvm_toke.c
+    spvm_type.c
+    spvm_use.c
+    spvm_var.c
+    spvm_yacc.c
+    spvm_yacc_util.c
+  );
+  
+  return \@spvm_core_source_file_names;
+}
+
+
+sub get_spvm_core_header_file_names {
+  
+  my @spvm_core_header_file_names = qw(
+    spvm_allocator.h
+    spvm_allow.h
+    spvm_api.h
+    spvm_array_field_access.h
+    spvm_basic_type.h
+    spvm_block.h
+    spvm_call_method.h
+    spvm_case_info.h
+    spvm_check_ast_info.h
+    spvm_class.h
+    spvm_class_var_access.h
+    spvm_class_var.h
+    spvm_compiler.h
+    spvm_constant.h
+    spvm_csource_builder_precompile.h
+    spvm_descriptor.h
+    spvm_dumper.h
+    spvm_enumeration.h
+    spvm_enumeration_value.h
+    spvm_field_access.h
+    spvm_field.h
+    spvm_hash.h
+    spvm_implement.h
+    spvm_limit.h
+    spvm_list.h
+    spvm_method.h
+    spvm_my.h
+    spvm_name_info.h
+    spvm_native.h
+    spvm_object.h
+    spvm_op_checker.h
+    spvm_opcode_array.h
+    spvm_opcode_builder.h
+    spvm_opcode.h
+    spvm_op.h
+    spvm_string_buffer.h
+    spvm_switch_info.h
+    spvm_toke.h
+    spvm_typedecl.h
+    spvm_type.h
+    spvm_use.h
+    spvm_var.h
+    spvm_weaken_backref.h
+    spvm_yacc.h
+    spvm_yacc_util.h
+  );
+  
+  return \@spvm_core_header_file_names;
+}
+
 1;
 
 =head1 NAME

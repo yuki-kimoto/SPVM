@@ -643,48 +643,9 @@ sub compile_spvm_core_sources {
   my $spvm_core_source_dir = "$spvm_builder_dir/src";
   
   # SPVM runtime source files
-  my @spvm_runtime_src_base_names = qw(
-    spvm_allocator.c
-    spvm_allow.c
-    spvm_api.c
-    spvm_array_field_access.c
-    spvm_basic_type.c
-    spvm_block.c
-    spvm_call_method.c
-    spvm_case_info.c
-    spvm_implement.c
-    spvm_compiler.c
-    spvm_constant.c
-    spvm_csource_builder_precompile.c
-    spvm_descriptor.c
-    spvm_dumper.c
-    spvm_enumeration.c
-    spvm_enumeration_value.c
-    spvm_field_access.c
-    spvm_field.c
-    spvm_hash.c
-    spvm_list.c
-    spvm_my.c
-    spvm_op.c
-    spvm_op_checker.c
-    spvm_opcode_array.c
-    spvm_opcode_builder.c
-    spvm_opcode.c
-    spvm_class.c
-    spvm_class_var_access.c
-    spvm_class_var.c
-    spvm_string_buffer.c
-    spvm_method.c
-    spvm_switch_info.c
-    spvm_toke.c
-    spvm_type.c
-    spvm_use.c
-    spvm_var.c
-    spvm_yacc.c
-    spvm_yacc_util.c
-  );
+  my $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
 
-  my @spvm_core_source_files = map { "$spvm_core_source_dir/$_" } @spvm_runtime_src_base_names;
+  my @spvm_core_source_files = map { "$spvm_core_source_dir/$_" } @$spvm_runtime_src_base_names;
   
   # Object dir
   my $object_dir = $self->builder->create_build_object_path;
