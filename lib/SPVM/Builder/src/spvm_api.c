@@ -2428,9 +2428,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int_vars[opcode->operand0] = (int32_t)opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG: {
-        int32_t constant_id = opcode->operand1;
-        SPVM_CONSTANT* constant = class->info_constants->values[constant_id];
-        long_vars[opcode->operand0] = constant->value.lval;
+        long_vars[opcode->operand0] = *(int64_t*)&opcode->operand1;
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_FLOAT: {

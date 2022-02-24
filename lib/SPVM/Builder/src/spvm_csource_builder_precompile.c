@@ -2613,9 +2613,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG: {
-        int32_t constant_id = opcode->operand1;
-        SPVM_CONSTANT* constant = class->info_constants->values[constant_id];
-        int64_t long_value = constant->value.lval;
+        int64_t long_value = *(int64_t*)&opcode->operand1;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
