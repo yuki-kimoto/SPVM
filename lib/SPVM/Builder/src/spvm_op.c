@@ -694,8 +694,6 @@ SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, con
   
   op_constant->uv.constant = constant;
 
-  SPVM_LIST_push(compiler->op_constants, op_constant);
-  
   constant->op_constant = op_constant;
   
   return op_constant;
@@ -710,8 +708,6 @@ SPVM_OP* SPVM_OP_new_op_constant_short(SPVM_COMPILER* compiler, int16_t value, c
   constant->type = op_constant_type->uv.type;
   
   op_constant->uv.constant = constant;
-
-  SPVM_LIST_push(compiler->op_constants, op_constant);
 
   constant->op_constant = op_constant;
   
@@ -728,8 +724,6 @@ SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, con
   
   op_constant->uv.constant = constant;
 
-  SPVM_LIST_push(compiler->op_constants, op_constant);
-
   constant->op_constant = op_constant;
   
   return op_constant;
@@ -744,8 +738,6 @@ SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, co
   constant->type = op_constant_type->uv.type;
   
   op_constant->uv.constant = constant;
-
-  SPVM_LIST_push(compiler->op_constants, op_constant);
 
   constant->op_constant = op_constant;
   
@@ -762,8 +754,6 @@ SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, con
   
   op_constant->uv.constant = constant;
 
-  SPVM_LIST_push(compiler->op_constants, op_constant);
-
   constant->op_constant = op_constant;
   
   return op_constant;
@@ -779,8 +769,6 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, c
   
   op_constant->uv.constant = constant;
   
-  SPVM_LIST_push(compiler->op_constants, op_constant);
-  
   constant->op_constant = op_constant;
   
   return op_constant;
@@ -795,8 +783,6 @@ SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, const char* str
   constant->type = op_constant_type->uv.type;
   constant->string_length = length;
   op_constant->uv.constant = constant;
-  
-  SPVM_LIST_push(compiler->op_constants, op_constant);
   
   constant->op_constant = op_constant;
   

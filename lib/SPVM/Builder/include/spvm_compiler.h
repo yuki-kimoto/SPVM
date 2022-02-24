@@ -19,9 +19,6 @@ struct spvm_compiler {
   // Class loading stack
   SPVM_LIST* op_use_stack;
 
-  // Constants
-  SPVM_LIST* op_constants;
-
   // Types
   SPVM_LIST* op_types;
   

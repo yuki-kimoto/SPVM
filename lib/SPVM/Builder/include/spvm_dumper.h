@@ -3,7 +3,6 @@
 
 #include "spvm_typedecl.h"
 
-void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_LIST* constants);
 void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant);
 void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field);
 void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_METHOD* method);

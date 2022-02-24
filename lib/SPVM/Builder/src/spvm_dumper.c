@@ -171,18 +171,6 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
   }
 }
 
-void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_LIST* op_constants) {
-  {
-    int32_t i;
-    for (i = 0; i < op_constants->length; i++) {
-      SPVM_OP* op_constant = SPVM_LIST_fetch(op_constants, i);
-      SPVM_CONSTANT* constant = op_constant->uv.constant;
-      printf("    constant[%" PRId32 "]\n", i);
-      SPVM_DUMPER_dump_constant(compiler, constant);
-    }
-  }
-}
-
 void SPVM_DUMPER_dump_classes(SPVM_COMPILER* compiler, SPVM_LIST* classes) {
   {
     int32_t i;
