@@ -1154,20 +1154,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler
   // Head part - include and define
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(compiler, string_buffer);
 
-  // Class variable id declarations
-  SPVM_STRING_BUFFER_add(string_buffer, "// Class variable id declarations\n");
-  for (int32_t i = 0; i < class->info_class_var_ids->length; i++) {
-    int32_t class_var_id = (int32_t)(intptr_t)SPVM_LIST_fetch(class->info_class_var_ids, i);
-    SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
-    SPVM_CLASS* class_var_class = class_var->class;
-    const char* class_var_class_name = class_var_class->name;
-    const char* class_var_name = class_var->name;
-    
-    SPVM_STRING_BUFFER_add(string_buffer, "static int32_t ");
-    SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-    SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
-  }
-
   // Field id declarations
   SPVM_STRING_BUFFER_add(string_buffer, "// Field id declarations\n");
   for (int32_t i = 0; i < class->info_field_ids->length; i++) {
@@ -5455,29 +5441,23 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      ");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "access_class_var_id");
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -5486,7 +5466,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(compiler, class_var_access_ctype_id));
         SPVM_STRING_BUFFER_add(string_buffer, "*)");
         SPVM_STRING_BUFFER_add(string_buffer, "&((SPVM_VALUE*)env->class_vars_heap)[");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "access_class_var_id");
         SPVM_STRING_BUFFER_add(string_buffer, "]");
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -5503,37 +5483,30 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         const char* class_var_signature = class_var->signature;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      ");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "access_class_var_id");
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", *(void**)");
         SPVM_STRING_BUFFER_add(string_buffer, "&((SPVM_VALUE*)env->class_vars_heap)[");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "access_class_var_id");
         SPVM_STRING_BUFFER_add(string_buffer, "]);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -5580,36 +5553,30 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      ");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "access_class_var_id");
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      *(");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(compiler, class_var_access_ctype_id));
         SPVM_STRING_BUFFER_add(string_buffer, "*)");
         SPVM_STRING_BUFFER_add(string_buffer, "&((SPVM_VALUE*)env->class_vars_heap)[");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "access_class_var_id");
         SPVM_STRING_BUFFER_add(string_buffer, "]");
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, class_var_access_ctype_id, opcode->operand1);
@@ -5629,33 +5596,27 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      ");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "access_class_var_id");
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN((void**)&((SPVM_VALUE*)env->class_vars_heap)[");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "access_class_var_id");
         SPVM_STRING_BUFFER_add(string_buffer, "],\n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ");");
@@ -5674,33 +5635,27 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      ");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "access_class_var_id");
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN((void**)&((SPVM_VALUE*)env->class_vars_heap)[");
-        SPVM_STRING_BUFFER_add_class_var_access_id_name(string_buffer, class->name, class_var_class_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "access_class_var_id");
         SPVM_STRING_BUFFER_add(string_buffer, "], NULL);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
