@@ -1728,14 +1728,6 @@ SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPV
   return op_convert;
 }
 
-SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_classes) {
-  
-  SPVM_OP* op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_GRAMMAR, op_classes->file, op_classes->line);
-  SPVM_OP_insert_child(compiler, op_grammar, op_grammar->last, op_classes);
-
-  return op_grammar;
-}
-
 SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_descriptors) {
   
   // Class

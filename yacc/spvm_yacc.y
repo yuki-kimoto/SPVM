@@ -63,9 +63,6 @@
 
 grammar
   : opt_classes
-    {
-      $$ = SPVM_OP_build_grammar(compiler, $1);
-    }
 
 opt_classes
   : /* Empty */
