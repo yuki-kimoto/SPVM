@@ -649,7 +649,7 @@ sub compile_spvm_core_sources {
   my $spvm_core_source_dir = "$spvm_builder_dir/src";
 
   # SPVM header directory
-  my $spvm_core_header_dir = "$spvm_builder_dir/header";
+  my $spvm_core_header_dir = "$spvm_builder_dir/include";
   
   # SPVM runtime source files
   my $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
