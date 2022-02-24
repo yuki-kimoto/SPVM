@@ -16,6 +16,9 @@ enum {
 
 // Parser information
 struct spvm_compiler {
+  // Module searching directories
+  SPVM_LIST* module_dirs;
+
   // Class loading stack
   SPVM_LIST* op_use_stack;
 
@@ -52,6 +55,9 @@ struct spvm_compiler {
   // Before buffer position
   char* befbufptr;
 
+  // Next double quote start position
+  char* next_double_quote_start_bufptr;
+
   // Expect method name
   int8_t expect_method_name;
 
@@ -82,32 +88,17 @@ struct spvm_compiler {
   // Syntax error count
   SPVM_LIST* error_messages;
   
-  // Module searching directories
-  SPVM_LIST* module_dirs;
-
   // Constant string symtable
   SPVM_HASH* name_symtable;
-
-  // Operation codes
-  SPVM_OPCODE_ARRAY* opcode_array;
-  
-  // Classes
-  SPVM_LIST* classes;
-
-  // added_class_names tmp
-  SPVM_LIST* added_class_names;
 
   // Used module symtable
   SPVM_HASH* used_class_symtable;
   
-  // module file symtable
-  SPVM_HASH* module_file_symtable;
+  // added_class_names tmp
+  SPVM_LIST* added_class_names;
 
-  // module source symtable
-  SPVM_HASH* module_source_symtable;
-  
-  // OP class symtable
-  SPVM_HASH* class_symtable;
+  // Operation codes
+  SPVM_OPCODE_ARRAY* opcode_array;
   
   // Single types
   SPVM_LIST* basic_types;
@@ -115,16 +106,26 @@ struct spvm_compiler {
   // Resolved type symbol table
   SPVM_HASH* basic_type_symtable;
 
+  // Classes
+  SPVM_LIST* classes;
+
+  // OP class symtable
+  SPVM_HASH* class_symtable;
+  
+  // Method ops
+  SPVM_LIST* methods;
+
   // OP our symtable
   SPVM_LIST* class_vars;
 
-  // Method ops
-  SPVM_LIST* methods;
-  
   // Field ops
   SPVM_LIST* fields;
   
-  char* next_double_quote_start_bufptr;
+  // module file symtable
+  SPVM_HASH* module_file_symtable;
+
+  // module source symtable
+  SPVM_HASH* module_source_symtable;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
