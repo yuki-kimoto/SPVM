@@ -1137,21 +1137,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler
   // Head part - include and define
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(compiler, string_buffer);
 
-  // Method id declarations
-  SPVM_STRING_BUFFER_add(string_buffer, "// Method id declarations\n");
-  for (int32_t i = 0; i < class->info_method_ids->length; i++) {
-    int32_t method_id = (int32_t)(intptr_t)SPVM_LIST_fetch(class->info_method_ids, i);
-    SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
-    SPVM_CLASS* method_class = method->class;
-    const char* method_class_name = method_class->name;
-    const char* method_name = method->name;
-    
-    SPVM_STRING_BUFFER_add(string_buffer, "static int32_t ");
-    SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, method_class_name, method_name);
-    SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
-  }
-  
-
   // Basic type id declarations
   SPVM_STRING_BUFFER_add(string_buffer, "// Basic type id declarations\n");
   for (int32_t i = 0; i < class->info_basic_type_ids->length; i++) {
@@ -4311,11 +4296,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         else {
           switch (opcode_id) {
             case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD_BY_ID: {
-              SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
-              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
-              SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      ");
-              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_method_id");
               SPVM_STRING_BUFFER_add(string_buffer, " = env->get_class_method_id(env, \"");
               SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
               SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
@@ -4323,19 +4304,14 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
               SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
               SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_signature);
               SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = ");
-              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "access_method_id");
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               
               break;
             }
             case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID: {
-              SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_no_symbol_cache_flag(env) || ");
-              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
-              SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      ");
-              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_method_id");
               SPVM_STRING_BUFFER_add(string_buffer, " = env->get_instance_method_id_static(env, \"");
               SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
               SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
@@ -4343,9 +4319,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
               SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
               SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_signature);
               SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
               SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = ");
-              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "access_method_id");
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
               
               break;
