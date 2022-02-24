@@ -4631,11 +4631,11 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         if (case_infos_length > 0) {
           // min
           SPVM_CASE_INFO* min_case_info = (SPVM_CASE_INFO*)switch_info->case_infos->values[0];
-          int32_t min = min_case_info->constant->value.ival;
+          int32_t min = min_case_info->condition_value;
           
           // max
           SPVM_CASE_INFO* max_case_info = (SPVM_CASE_INFO*)switch_info->case_infos->values[case_infos_length - 1];
-          int32_t max = max_case_info->constant->value.ival;
+          int32_t max = max_case_info->condition_value;
           
           if (int_vars[opcode->operand0] >= min && int_vars[opcode->operand0] <= max) {
             // 2 opcode_rel_index searching
@@ -4649,7 +4649,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
               }
               int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
               SPVM_CASE_INFO* cur_half_case_info = (SPVM_CASE_INFO*)switch_info->case_infos->values[cur_half_pos];
-              int32_t cur_half = cur_half_case_info->constant->value.ival;
+              int32_t cur_half = cur_half_case_info->condition_value;
               
               if (int_vars[opcode->operand0] > cur_half) {
                 cur_min_pos = cur_half_pos + 1;

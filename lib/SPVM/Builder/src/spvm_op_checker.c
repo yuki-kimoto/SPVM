@@ -486,7 +486,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_COMPILER_error(compiler, "case value must be int constant at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
                     return;
                   }
-                  case_info->constant = constant;
+                  case_info->condition_value = constant->value.ival;
                 }
               }
 
@@ -495,8 +495,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 for (int32_t j = i + 1; j < switch_info->case_infos->length; j++) {
                   SPVM_CASE_INFO* case_i = SPVM_LIST_fetch(switch_info->case_infos, i);
                   SPVM_CASE_INFO* case_j = SPVM_LIST_fetch(switch_info->case_infos, j);
-                  int32_t match_i = case_i->constant->value.ival;
-                  int32_t match_j = case_j->constant->value.ival;
+                  int32_t match_i = case_i->condition_value;
+                  int32_t match_j = case_j->condition_value;
                   
                   if (match_i > match_j) {
                     SPVM_LIST_store(switch_info->case_infos, i, case_j);
@@ -512,11 +512,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Min
               SPVM_CASE_INFO* case_info_mini = SPVM_LIST_fetch(switch_info->case_infos, 0);
-              int32_t min = case_info_mini->constant->value.ival;
+              int32_t min = case_info_mini->condition_value;
               
               // Max
               SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->case_infos, switch_info->case_infos->length - 1);
-              int32_t max = case_info_max->constant->value.ival;
+              int32_t max = case_info_max->condition_value;
               
               // Decide switch type
               switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;

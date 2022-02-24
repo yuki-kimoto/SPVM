@@ -4949,7 +4949,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         for (int32_t case_index = 0; case_index < case_infos_length; case_index++) {
           SPVM_CASE_INFO* case_info = switch_info->case_infos->values[case_index];
           
-          int32_t match = case_info->constant->value.ival;
+          int32_t match = case_info->condition_value;
           int32_t opcode_rel_index = case_info->opcode_rel_index;
           
           SPVM_STRING_BUFFER_add(string_buffer, "    case ");
