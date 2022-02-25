@@ -162,9 +162,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
   compiler->parse_start = 1;
 
-  // Initialize added class names
-  compiler->added_class_names = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-
   // Initialize error messages
   compiler->error_messages = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   

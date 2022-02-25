@@ -94,9 +94,6 @@ struct spvm_compiler {
   // Used module symtable
   SPVM_HASH* used_class_symtable;
   
-  // added_class_names tmp
-  SPVM_LIST* added_class_names;
-
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
   
