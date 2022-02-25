@@ -40,16 +40,15 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   compiler->name_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
 
-  // Parser information
+  // Eternal information
+  compiler->module_dirs = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->basic_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->basic_type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   compiler->methods = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->fields = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->classes = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-  compiler->used_class_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   compiler->class_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   compiler->class_vars = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-  compiler->module_dirs = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->module_source_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
 
@@ -175,6 +174,12 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
   compiler->op_use_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
   compiler->op_types = SPVM_LIST_new(compiler, 0, 0, NULL);
+  compiler->used_class_symtable = SPVM_HASH_new(compiler, 0, 0, NULL);
+  for (int32_t i = 0; i < compiler->classes->length; i++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, i);
+    const char* class_name = class->name;
+    SPVM_HASH_insert(compiler->used_class_symtable, class_name, strlen(class_name), (void*)class_name);
+  }
   
   // Use automatically loaded modules
   SPVM_COMPILER_use(compiler, "Bool", "Bool", 0);
@@ -225,6 +230,9 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   
   SPVM_LIST_free(compiler->op_types);
   compiler->op_types = NULL;
+
+  SPVM_HASH_free(compiler->used_class_symtable);
+  compiler->used_class_symtable = NULL;
 
   assert(compiler->allocator->memory_blocks_count_compile_tmp == compile_start_memory_blocks_count_compile_tmp);
 
