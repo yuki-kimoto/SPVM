@@ -88,177 +88,35 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   return compiler;
 }
 
+void SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
+   SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
+   basic_type->id = basic_type_id;
+   basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
+   SPVM_LIST_push(compiler->basic_types, basic_type);
+   SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+}
+
 void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
-  // Add unknown basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_UNKNOWN;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-  
-  // Add undef basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_UNDEF;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add void basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_VOID;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-  
-  // Add byte basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_BYTE;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add short basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_SHORT;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add int basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_INT;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add long basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_LONG;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add float basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_FLOAT;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add double basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_DOUBLE;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add string basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_STRING;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add any object basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_ANY_OBJECT;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add oarray basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_OARRAY;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-  
-  // Add Byte basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add Short basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add Int basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_INT_OBJECT;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add Long basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_LONG_OBJECT;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add Float basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add Double basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add Bool basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_BOOL_OBJECT;
-     basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
+  // Add basic_types
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_UNKNOWN);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_UNDEF);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_VOID);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_BYTE);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_SHORT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_INT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_LONG);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_FLOAT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_DOUBLE);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_STRING);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_OARRAY);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_INT_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_LONG_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_BOOL_OBJECT);
 }
 
 int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler) {
