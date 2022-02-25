@@ -29,14 +29,6 @@ struct spvm_class {
   SPVM_LIST* fields;
   SPVM_HASH* field_symtable;
   SPVM_METHOD* method_destructor;
-  SPVM_LIST* info_class_var_ids;
-  SPVM_HASH* info_class_var_id_symtable;
-  SPVM_LIST* info_method_ids;
-  SPVM_HASH* info_method_id_symtable;
-  SPVM_LIST* info_field_ids;
-  SPVM_HASH* info_field_id_symtable;
-  SPVM_LIST* info_basic_type_ids;
-  SPVM_HASH* info_basic_type_id_symtable;
   SPVM_LIST* info_switch_infos;
   SPVM_LIST* info_constants;
   const char* module_file;

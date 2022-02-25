@@ -120,30 +120,6 @@ SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_METHOD* me
   return op_var;
 }
 
-void SPVM_OP_CHECKER_add_no_dup_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type) {
-
-  if (SPVM_TYPE_is_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
-    SPVM_CLASS* class = op_class->uv.class;
-
-    SPVM_TYPE* type = op_type->uv.type;
-
-    // Runtime type
-    int32_t runtime_basic_type_id;
-    int32_t runtime_type_dimension;
-    const char* runtime_basic_type_name;
-    runtime_basic_type_id = type->basic_type->id;
-    runtime_type_dimension = type->dimension;
-    runtime_basic_type_name = type->basic_type->name;
-    
-    // No duplicate basic type id
-    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(class->info_basic_type_id_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name));
-    if (found_basic_type == NULL) {
-      SPVM_LIST_push(class->info_basic_type_ids, (void*)(intptr_t)runtime_basic_type_id);
-      SPVM_HASH_insert(class->info_basic_type_id_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), type->basic_type);
-    }
-  }
-}
-
 void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_CHECK_AST_INFO* check_ast_info) {
 
   // Class
@@ -257,11 +233,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 type_element->dimension = type_term_element->dimension;
                 op_type_element = SPVM_OP_new_op_type(compiler, type_element, file, line);
                 
-                // Register basic type
-                if (!SPVM_TYPE_is_numeric_type(compiler, op_type_element->uv.type->basic_type->id,op_type_element->uv.type->dimension, op_type_element->uv.type->flag)) {
-                  SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, class->op_class, op_type_element);
-                }
-                                        
                 // Create array type
                 SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
                 type_new->basic_type = type_term_element->basic_type;
@@ -1135,9 +1106,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                       return;
                     }
-
-                    // Add type info to constant pool
-                    SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, class->op_class, op_type);
                   }
                 }
                 // Array type
@@ -1217,9 +1185,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 else {
                   assert(0);
                 }
-                
-                // Add type info to constant pool
-                SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, class->op_class, op_type);
               }
               else {
                 assert(0);
@@ -1303,9 +1268,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_COMPILER_error(compiler, "The right operand of the isa operator must be a object type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
-
-                // Add type info to constant pool
-                SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, class->op_class, op_type);
               }
               
               break;
@@ -2678,13 +2640,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               char method_id_string[sizeof(int32_t)];
               memcpy(method_id_string, &op_cur->uv.call_method->method->id, sizeof(int32_t));
 
-              // No duplicate sub access sub id
-              SPVM_METHOD* found_method = SPVM_HASH_fetch(class->info_method_id_symtable, method_id_string, sizeof(int32_t));
-              if (found_method == NULL) {
-                SPVM_LIST_push(class->info_method_ids, (void*)(intptr_t)op_cur->uv.call_method->method->id);
-                SPVM_HASH_insert(class->info_method_id_symtable, method_id_string, sizeof(int32_t), op_cur->uv.call_method->method);
-              }
-              
               if (call_method->method->flag & SPVM_METHOD_C_FLAG_DESTRUCTOR) {
                 SPVM_COMPILER_error(compiler, "Can't call DESTROY in yourself at %s line %d", op_cur->file, op_cur->line);
                 return;
@@ -2896,13 +2851,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               char class_var_id_string[sizeof(int32_t)];
               memcpy(class_var_id_string, &op_cur->uv.class_var_access->class_var->id, sizeof(int32_t));
 
-              // No duplicate class_var access class_var id
-              SPVM_FIELD* found_class_var = SPVM_HASH_fetch(class->info_class_var_id_symtable, class_var_id_string, sizeof(int32_t));
-              if (found_class_var == NULL) {
-                SPVM_LIST_push(class->info_class_var_ids, (void*)(intptr_t)op_cur->uv.class_var_access->class_var->id);
-                SPVM_HASH_insert(class->info_class_var_id_symtable, class_var_id_string, sizeof(int32_t), op_cur->uv.class_var_access->class_var);
-              }
-
               int32_t is_private;
               // Public flag
               if (class_var->flag & SPVM_CLASS_VAR_C_FLAG_PUBLIC) {
@@ -3092,13 +3040,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               char field_id_string[sizeof(int32_t)];
               memcpy(field_id_string, &op_cur->uv.field_access->field->id, sizeof(int32_t));
 
-              // No duplicate field access field id
-              SPVM_FIELD* found_field = SPVM_HASH_fetch(class->info_field_id_symtable, field_id_string, sizeof(int32_t));
-              if (found_field == NULL) {
-                SPVM_LIST_push(class->info_field_ids, (void*)(intptr_t)op_cur->uv.field_access->field->id);
-                SPVM_HASH_insert(class->info_field_id_symtable, field_id_string, sizeof(int32_t), op_cur->uv.field_access->field);
-              }
-              
               // If invocker is array access and array access object is mulnum_t, this op become array field access
               if (op_term_invocker->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
                 SPVM_OP* op_array_access = op_term_invocker;
@@ -3423,9 +3364,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_COMPILER_error(compiler, "Can't convert %s to %s in type conversion at %s line %d", src_type_name, dist_type_name, op_src->file, op_src->line);
                 return;
               }
-              
-              // Add type info to constant pool
-              SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, class->op_class, op_dist);
             }
             break;
           }

@@ -38,14 +38,6 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   class->class_var_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   class->interface_class_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   
-  class->info_class_var_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-  class->info_class_var_id_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
-  class->info_method_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-  class->info_method_id_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
-  class->info_field_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-  class->info_field_id_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
-  class->info_basic_type_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-  class->info_basic_type_id_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   class->info_switch_infos = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->op_uses = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->op_allows = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
