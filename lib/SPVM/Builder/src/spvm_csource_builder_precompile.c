@@ -38,7 +38,15 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler
   
   // Head part - include and define
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(compiler, string_buffer);
-
+  
+  // Constant strings
+  SPVM_STRING_BUFFER_add(string_buffer, "static const char* CURRENT_CLASS_FILE = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, class->module_file);
+  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "static const char* CURRENT_CLASS_NAME = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, class->name);
+  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  
   // Method decrations
   SPVM_STRING_BUFFER_add(string_buffer, "// Method declarations\n");
   {
@@ -185,6 +193,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
+  
+  // Current method name
+  SPVM_STRING_BUFFER_add(string_buffer, "  const char* CURRENT_METHOD_NAME = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, method->name);
+  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   
   // Object header byte size
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_byte_size = (intptr_t)env->object_header_byte_size;\n");
