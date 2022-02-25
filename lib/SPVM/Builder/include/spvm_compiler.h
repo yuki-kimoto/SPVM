@@ -89,7 +89,7 @@ struct spvm_compiler {
   SPVM_LIST* error_messages;
   
   // Constant string symtable
-  SPVM_HASH* name_symtable;
+  SPVM_HASH* string_symtable;
 
   // Used module symtable
   SPVM_HASH* used_class_symtable;
