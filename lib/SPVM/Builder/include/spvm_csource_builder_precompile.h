@@ -44,9 +44,62 @@ enum {
 #define SPVM_CSOURCE_BUILDER_PRECOMPILE_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
 
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name);
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer);
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_declaration(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name);
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name);
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name);
+
+const char* SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(SPVM_COMPILER* compiler, int32_t ctype_id);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var_value(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t index, int32_t field_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_deref(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_value(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index, int32_t field_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_bool(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_numeric_eq(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_numeric_ne(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_numeric_gt(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_numeric_ge(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_numeric_lt(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_numeric_le(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_numeric_cmp(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_add(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_subtract(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_multiply(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_integral(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_unsigned_int(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_unsigned_long(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_floating_point(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_integral(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_unsigned_int(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_unsigned_long(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_left_shift(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_right_logical_shift(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_right_arithmetic_shift(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_bit_and(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_bit_or(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_bit_xor(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_negate(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_plus(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complement(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_inc(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t number);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_ctype_id, int32_t in_ctype_id, int32_t out_index, int32_t in_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_load_constant_0(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_array_fetch(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_index, int32_t array_index, int32_t index_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_array_store(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t array_index, int32_t index_index, int32_t in_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_array_fetch(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_index, int32_t array_index, int32_t index_index, int32_t fields_length);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_array_field_fetch(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_index, int32_t array_index, int32_t index_index, int32_t fields_length, int32_t field_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_array_store(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t array_index, int32_t index_index, int32_t in_index, int32_t fields_length);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_array_field_store(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t array_index, int32_t index_index, int32_t in_index, int32_t fields_length, int32_t field_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_var_id, int32_t ref_var_id, int32_t fields_length);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_var_id, int32_t ref_var_id, int32_t field_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_set_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t ref_var_id, int32_t in_var_id, int32_t field_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_move(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_deref(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_set_deref(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in_index);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, SPVM_CLASS* class, int32_t field_ctype_id, int32_t out_index, int32_t object_index, SPVM_FIELD* field);
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_set_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, SPVM_CLASS* class, int32_t field_ctype_id, int32_t object_index, SPVM_FIELD* field, int32_t in_index);
+
 
 #endif
