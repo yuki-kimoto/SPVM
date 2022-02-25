@@ -708,31 +708,17 @@ sub create_spvm_module_sources {
     my $create_cb = sub {
       # This source is UTF-8 binary
       my $module_source = $builder->get_module_source($class_name);
-      my $module_source_escape = '';
+      my $module_source_c_hex = $module_source;
       
       # Escape to Hex C launguage string literal
-      while ($module_source =~ /(.)/sg) {
-        my $ch = $1;
-        if ($ch eq '"') {
-          $module_source_escape .= '\\"'
-        }
-        elsif ($ch eq '\\') {
-          $module_source_escape .= '\\\\';
-        }
-        elsif ($ch =~ /^\p{PosixPrint}$/) {
-          $module_source_escape .= $ch;
-        }
-        else {
-          $module_source_escape .= sprintf("\\x%02X", ord($ch));
-        }
-      }
+      $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
       
       # native class name
       my $class_cname = $class_name;
       $class_cname =~ s/::/__/g;
 
       my $get_module_source_csource = <<"EOS";
-static const char* module_source = "$module_source_escape";
+static const char* module_source = "$module_source_c_hex";
 const char* SPMODSRC__${class_cname}__get_module_source() {
 return module_source;
 }
