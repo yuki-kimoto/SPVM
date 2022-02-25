@@ -40,12 +40,14 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(compiler, string_buffer);
   
   // Constant strings
-  SPVM_STRING_BUFFER_add(string_buffer, "static const char* CURRENT_CLASS_FILE = \"");
-  SPVM_STRING_BUFFER_add(string_buffer, class->module_file);
-  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "static const char* CURRENT_CLASS_NAME = \"");
-  SPVM_STRING_BUFFER_add(string_buffer, class->name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  if (!class->is_anon) {
+    SPVM_STRING_BUFFER_add(string_buffer, "static const char* CURRENT_CLASS_FILE = \"");
+    SPVM_STRING_BUFFER_add(string_buffer, class->module_file);
+    SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "static const char* CURRENT_CLASS_NAME = \"");
+    SPVM_STRING_BUFFER_add(string_buffer, class->name);
+    SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  }
   
   // Method decrations
   SPVM_STRING_BUFFER_add(string_buffer, "// Method declarations\n");
@@ -177,8 +179,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_declaration(SPVM_COMPILER* com
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
   
-  
-  
   // Basic type
   SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, class_name, strlen(class_name));
   
@@ -193,7 +193,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
-  
+
+  if (class->is_anon) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    const char* CURRENT_CLASS_NAME = \"");
+    SPVM_STRING_BUFFER_add(string_buffer, class->name);
+    SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  }
+
   // Current method name
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* CURRENT_METHOD_NAME = \"");
   SPVM_STRING_BUFFER_add(string_buffer, method->name);
@@ -3336,26 +3342,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, opcode->operand1);
         int32_t line = opcode->operand2;
         
-        const char* method_name = method->name;
-        SPVM_CLASS* method_class = method->class;
-        const char* class_name = method_class->name;
-        const char* file = method->class->module_file;
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* method_class_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* method_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* file = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)file);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 0;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), method_class_name, method_name, file, line));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), CURRENT_CLASS_NAME, CURRENT_METHOD_NAME, CURRENT_CLASS_FILE, line));\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -3367,25 +3359,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, opcode->operand1);
         int32_t line = opcode->operand2;
         
-        const char* method_name = method->name;
-        SPVM_CLASS* method_class = SPVM_LIST_fetch(compiler->classes, method->class->id);
-        const char* class_name = method_class->name;
-        const char* file = method->class->module_file;
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* method_class_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* method_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* file = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)file);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), method_class_name, method_name, file, line));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), CURRENT_CLASS_NAME, CURRENT_METHOD_NAME, CURRENT_CLASS_FILE, line));\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
