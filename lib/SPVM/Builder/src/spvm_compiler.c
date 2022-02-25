@@ -281,8 +281,12 @@ void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh) {
   }
 }
 
-void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* class_name) {
-  
+void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* class_name, const char* file, int32_t line) {
+  SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, class_name, file, line);
+  SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+  SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+  SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+  SPVM_LIST_push(compiler->op_use_stack, op_use);
 }
 
 int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name) {
@@ -314,75 +318,17 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
   compiler->op_use_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
   
-  // use Bool module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Bool", "Bool", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // use Byte module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Byte", "Byte", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // use Short module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Short", "Short", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // use Int module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Int", "Int", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // use Long module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Long", "Long", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // use Float module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Float", "Float", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // use Double module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Double", "Double", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // push class to compiler use stack
-  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, class_name, start_file, start_line);
-  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
-  SPVM_OP* op_use_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, start_file, start_line);
-  SPVM_OP_build_use(compiler, op_use_class, op_type_class, NULL, 0);
-  SPVM_LIST_push(compiler->op_use_stack, op_use_class);
+  // Use automatically loaded modules
+  SPVM_COMPILER_use(compiler, "Bool", "Bool", 0);
+  SPVM_COMPILER_use(compiler, "Byte", "Byte", 0);
+  SPVM_COMPILER_use(compiler, "Short", "Short", 0);
+  SPVM_COMPILER_use(compiler, "Int", "Int", 0);
+  SPVM_COMPILER_use(compiler, "Long", "Long", 0);
+  SPVM_COMPILER_use(compiler, "Float", "Float", 0);
+  SPVM_COMPILER_use(compiler, "Double", "Double", 0);
+  
+  // Use the module that is specified at the argument
+  SPVM_COMPILER_use(compiler, class_name, start_file, start_line);
 
   /* Tokenize and Parse */
   int32_t parse_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
