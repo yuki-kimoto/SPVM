@@ -3803,7 +3803,7 @@ get_error_messages(...)
 }
 
 SV*
-get_added_class_names(...)
+get_classes_length(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3816,17 +3816,11 @@ get_added_class_names(...)
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  AV* av_added_class_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_added_class_names = sv_2mortal(newRV_inc((SV*)av_added_class_names));
   
-  for (int32_t added_class_index = 0; added_class_index < compiler->added_class_names->length; added_class_index++) {
-    const char* added_class_name = SPVM_LIST_fetch(compiler->added_class_names, added_class_index);
-    SV* sv_added_class_name = sv_2mortal(newSVpv(added_class_name, 0));
-    av_push(av_added_class_names, SvREFCNT_inc(sv_added_class_name));
-  }
+  int32_t classes_length = compiler->classes->length;
+  SV* sv_classes_length = sv_2mortal(newSViv(classes_length));
   
-  XPUSHs(sv_added_class_names);
+  XPUSHs(sv_classes_length);
   XSRETURN(1);
 }
 

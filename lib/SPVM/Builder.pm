@@ -93,6 +93,8 @@ sub build {
   # Add class informations
   if (defined $class_name) {
 
+    my $start_classes_length = $self->get_classes_length;
+
     # Compile SPVM source code and create runtime env
     my $compile_success = $self->compile_spvm($class_name, $file, $line);
     
@@ -100,8 +102,10 @@ sub build {
       return 0;
     }
     
-    my $added_class_names = $self->get_added_class_names;
-    for my $added_class_name (@$added_class_names) {
+    my $class_names = $self->get_class_names;
+    for (my $i = $start_classes_length; $i < @$class_names; $i++) {
+      my $added_class_name =  $class_names->[$i];
+      
       next if $added_class_name =~ /::anon/;
       
       # Build Precompile classs - Compile C source codes and link them to SPVM precompile method

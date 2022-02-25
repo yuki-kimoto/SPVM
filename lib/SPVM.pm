@@ -42,13 +42,20 @@ sub import {
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir, include_dirs => [@INC]);
   }
 
+  my $start_classes_length = $BUILDER->get_classes_length;
+
   my $build_success = $BUILDER->build($class_name, $file, $line);
   unless ($build_success) {
     $BUILDER->print_error_messages(*STDERR);
     exit(255);
   }
 
-  my $added_class_names = $BUILDER->get_added_class_names;
+  my $added_class_names = [];
+  my $class_names = $BUILDER->get_class_names;
+  for (my $i = $start_classes_length; $i < @$class_names; $i++) {
+    my $added_class_name =  $class_names->[$i];
+    push @$added_class_names, $added_class_name;
+  }
 
   # Bind SPVM method to Perl
   bind_to_perl($BUILDER, $added_class_names);
