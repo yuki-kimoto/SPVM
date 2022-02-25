@@ -1428,9 +1428,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_BYTE: {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = '");
-        SPVM_STRING_BUFFER_add_hex_char(string_buffer, (int8_t)(uint8_t)opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, "';\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        SPVM_STRING_BUFFER_add_char(string_buffer, (int8_t)opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_INT: {
