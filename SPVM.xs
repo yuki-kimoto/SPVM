@@ -3822,10 +3822,8 @@ get_added_class_names(...)
   
   for (int32_t added_class_index = 0; added_class_index < compiler->added_class_names->length; added_class_index++) {
     const char* added_class_name = SPVM_LIST_fetch(compiler->added_class_names, added_class_index);
-    if (!strstr(added_class_name, "::anon")) {
-      SV* sv_added_class_name = sv_2mortal(newSVpv(added_class_name, 0));
-      av_push(av_added_class_names, SvREFCNT_inc(sv_added_class_name));
-    }
+    SV* sv_added_class_name = sv_2mortal(newSVpv(added_class_name, 0));
+    av_push(av_added_class_names, SvREFCNT_inc(sv_added_class_name));
   }
   
   XPUSHs(sv_added_class_names);

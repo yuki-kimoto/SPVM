@@ -102,6 +102,7 @@ sub build {
     
     my $added_class_names = $self->get_added_class_names;
     for my $added_class_name (@$added_class_names) {
+      next if $added_class_name =~ /::anon/;
       
       # Build Precompile classs - Compile C source codes and link them to SPVM precompile method
       $self->build_and_bind_shared_lib($added_class_name, 'precompile');

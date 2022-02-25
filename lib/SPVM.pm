@@ -70,6 +70,8 @@ sub bind_to_perl {
   my ($builder, $added_class_names) = @_;
 
   for my $class_name (@$added_class_names) {
+    next if $class_name =~ /::anon/;
+
     my $perl_class_name = "SPVM::$class_name";
     
     unless ($class_name_h->{$class_name}) {
