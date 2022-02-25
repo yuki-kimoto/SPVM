@@ -41,7 +41,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->name_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
 
   // Parser information
-  compiler->op_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->basic_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->basic_type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   compiler->methods = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
@@ -175,6 +174,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   int32_t compile_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
 
   compiler->op_use_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
+  compiler->op_types = SPVM_LIST_new(compiler, 0, 0, NULL);
   
   // Use automatically loaded modules
   SPVM_COMPILER_use(compiler, "Bool", "Bool", 0);
@@ -222,6 +222,9 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   // Free
   SPVM_LIST_free(compiler->op_use_stack);
   compiler->op_use_stack = NULL;
+  
+  SPVM_LIST_free(compiler->op_types);
+  compiler->op_types = NULL;
 
   assert(compiler->allocator->memory_blocks_count_compile_tmp == compile_start_memory_blocks_count_compile_tmp);
 
