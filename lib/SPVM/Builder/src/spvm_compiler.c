@@ -41,7 +41,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->name_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
 
   // Parser information
-  compiler->op_use_stack = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->op_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->basic_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->basic_type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
@@ -86,68 +85,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   const char* spvm_double_module_source = "class Double {\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "Double", strlen("Double"), (void*)spvm_double_module_source);
 
-  // use Bool module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Bool", "Bool", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // use Byte module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Byte", "Byte", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // use Short module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Short", "Short", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // use Int module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Int", "Int", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // use Long module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Long", "Long", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // use Float module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Float", "Float", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
-
-  // use Double module
-  {
-    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Double", "Double", 0);
-    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
-    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
-    SPVM_LIST_push(compiler->op_use_stack, op_use);
-  }
   return compiler;
 }
 
@@ -344,19 +281,16 @@ void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh) {
   }
 }
 
+void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* class_name) {
+  
+}
+
 int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name) {
 
   compiler->cur_class_base = compiler->classes->length;
 
   const char* start_file = compiler->start_file;
   int32_t start_line = compiler->start_line;
-  
-  // push class to compiler use stack
-  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, class_name, start_file, start_line);
-  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
-  SPVM_OP* op_use_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, start_file, start_line);
-  SPVM_OP_build_use(compiler, op_use_class, op_type_class, NULL, 0);
-  SPVM_LIST_push(compiler->op_use_stack, op_use_class);
   
   //yacc/bison debug mode. The default is off.
   SPVM_yydebug = 0;
@@ -375,7 +309,81 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   compiler->error_messages = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   
   int32_t error_code = 0;
+
+  int32_t compile_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
+
+  compiler->op_use_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
   
+  // use Bool module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Bool", "Bool", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use Byte module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Byte", "Byte", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use Short module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Short", "Short", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use Int module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Int", "Int", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use Long module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Long", "Long", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use Float module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Float", "Float", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use Double module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Double", "Double", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // push class to compiler use stack
+  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, class_name, start_file, start_line);
+  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
+  SPVM_OP* op_use_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, start_file, start_line);
+  SPVM_OP_build_use(compiler, op_use_class, op_type_class, NULL, 0);
+  SPVM_LIST_push(compiler->op_use_stack, op_use_class);
+
   /* Tokenize and Parse */
   int32_t parse_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
   int32_t parse_error_flag = SPVM_yyparse(compiler);
@@ -406,6 +414,13 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
       }
     }
   }
+  
+  // Free
+  SPVM_LIST_free(compiler->op_use_stack);
+  compiler->op_use_stack = NULL;
+
+  assert(compiler->allocator->memory_blocks_count_compile_tmp == compile_start_memory_blocks_count_compile_tmp);
+
   return error_code;
 }
 
