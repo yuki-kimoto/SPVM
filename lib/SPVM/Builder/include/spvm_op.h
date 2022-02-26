@@ -327,6 +327,7 @@ struct spvm_op {
   union {
     SPVM_BLOCK* block;
     SPVM_DESCRIPTOR* descriptor;
+    SPVM_USE* use;
     const char* name;
     SPVM_MY* my;
     SPVM_METHOD* method;
@@ -337,7 +338,6 @@ struct spvm_op {
     SPVM_CLASS* class;
     SPVM_SWITCH_INFO* switch_info;
     SPVM_CASE_INFO* case_info;
-    SPVM_USE* use;
     SPVM_ALLOW* allow;
     SPVM_IMPLEMENT* implement;
     SPVM_CALL_METHOD* call_method;
