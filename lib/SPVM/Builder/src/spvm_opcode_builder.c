@@ -4988,6 +4988,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       }
     }
   }
+  for (int32_t i = 0; i < compiler->ops->length; i++) {
+    SPVM_OP* op = SPVM_LIST_fetch(compiler->ops, i);
+    
+  }
 
 #ifdef SPVM_DEBUG_DUMP
 #include "spvm_dumper.h"
