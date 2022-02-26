@@ -140,7 +140,7 @@ void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh) {
 void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* class_name, const char* file, int32_t line) {
   SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, class_name, file, line);
   SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
-  SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name->file, op_name->line);
   SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
   SPVM_LIST_push(compiler->op_use_stack, op_use);
 }

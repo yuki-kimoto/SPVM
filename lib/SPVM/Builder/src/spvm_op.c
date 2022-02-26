@@ -392,6 +392,15 @@ SPVM_OP* SPVM_OP_new_op_block(SPVM_COMPILER* compiler, const char* file, int32_t
   return op_block;
 }
 
+SPVM_OP* SPVM_OP_new_op_use(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, file, line);
+  
+  SPVM_USE* use = SPVM_USE_new(compiler);
+  op_use->uv.use = use;
+  
+  return op_use;
+}
+
 SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const char* file, int32_t line) {
   
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
@@ -2340,8 +2349,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
 SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_type_alias, int32_t is_require) {
   
-  SPVM_USE* use = SPVM_USE_new(compiler);
-  op_use->uv.use = use;
+  SPVM_USE* use = op_use->uv.use;
   use->op_type = op_type;
   use->is_require = is_require;
   
@@ -2371,7 +2379,7 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   // add use stack
   SPVM_TYPE* type_use = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
   SPVM_OP* op_type_use = SPVM_OP_new_op_type(compiler, type_use, op_type->file, op_type->line);
-  SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_type->file, op_type->line);
+  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_type->file, op_type->line);
   SPVM_OP_build_use(compiler, op_use, op_type_use, NULL, 0);
   
   return op_allow;
@@ -2386,7 +2394,7 @@ SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_implement,
   // add use stack
   SPVM_TYPE* type_use = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
   SPVM_OP* op_type_use = SPVM_OP_new_op_type(compiler, type_use, op_type->file, op_type->line);
-  SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_type->file, op_type->line);
+  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_type->file, op_type->line);
   SPVM_OP_build_use(compiler, op_use, op_type_use, NULL, 0);
   
   return op_implement;

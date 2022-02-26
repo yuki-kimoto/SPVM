@@ -195,12 +195,12 @@ use
 require
   : REQUIRE basic_type
     {
-      SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_use(compiler, op_use, $2, NULL, 1);
     }
   | REQUIRE basic_type AS basic_type';'
     {
-      SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_use(compiler, op_use, $2, $4, 1);
     }
 

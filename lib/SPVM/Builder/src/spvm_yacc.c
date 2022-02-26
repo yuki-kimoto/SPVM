@@ -2490,7 +2490,7 @@ yyreduce:
   case 27:
 #line 197 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
       (yyval.opval) = SPVM_OP_build_use(compiler, op_use, (yyvsp[0].opval), NULL, 1);
     }
 #line 2497 "spvm_yacc.tab.c" /* yacc.c:1646  */
@@ -2499,7 +2499,7 @@ yyreduce:
   case 28:
 #line 202 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
       (yyval.opval) = SPVM_OP_build_use(compiler, op_use, (yyvsp[-3].opval), (yyvsp[-1].opval), 1);
     }
 #line 2506 "spvm_yacc.tab.c" /* yacc.c:1646  */

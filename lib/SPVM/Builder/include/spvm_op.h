@@ -499,4 +499,6 @@ SPVM_OP* SPVM_OP_build_has_implement(SPVM_COMPILER* compiler, SPVM_OP* op_has_im
 
 const char* SPVM_OP_get_op_name(int32_t op_id);
 
+SPVM_OP* SPVM_OP_new_op_use(SPVM_COMPILER* compiler, const char* file, int32_t line);
+
 #endif
