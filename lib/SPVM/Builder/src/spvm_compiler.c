@@ -251,6 +251,10 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
           SPVM_ALLOCATOR_free_block_compile_tmp(compiler, op->uv.block);
           break;
         }
+        case SPVM_OP_C_ID_DESCRIPTOR: {
+          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, op->uv.descriptor);
+          break;
+        }
       }
     }
   }

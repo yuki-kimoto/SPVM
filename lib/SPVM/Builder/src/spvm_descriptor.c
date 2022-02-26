@@ -24,5 +24,5 @@ const char* const* SPVM_DESCRIPTOR_C_ID_NAMES(void) {
 }
 
 SPVM_DESCRIPTOR* SPVM_DESCRIPTOR_new(SPVM_COMPILER* compiler) {
-  return SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_DESCRIPTOR));
+  return SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(SPVM_DESCRIPTOR));
 }
