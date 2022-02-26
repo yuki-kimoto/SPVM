@@ -169,6 +169,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
   int32_t compile_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
 
+  compiler->ops = SPVM_LIST_new(compiler, 0, 0, NULL);
   compiler->op_use_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
   compiler->op_types = SPVM_LIST_new(compiler, 0, 0, NULL);
   compiler->used_class_symtable = SPVM_HASH_new(compiler, 0, 0, NULL);
@@ -230,6 +231,9 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
   SPVM_HASH_free(compiler->used_class_symtable);
   compiler->used_class_symtable = NULL;
+
+  SPVM_LIST_free(compiler->ops);
+  compiler->ops = NULL;
 
   assert(compiler->allocator->memory_blocks_count_compile_tmp == compile_start_memory_blocks_count_compile_tmp);
 

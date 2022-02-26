@@ -16,6 +16,9 @@ enum {
 
 // Parser information
 struct spvm_compiler {
+  // OPs
+  SPVM_LIST* ops;
+  
   // Module searching directories
   SPVM_LIST* module_dirs;
 
