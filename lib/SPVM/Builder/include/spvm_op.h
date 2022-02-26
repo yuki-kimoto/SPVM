@@ -325,6 +325,8 @@ struct spvm_op {
   SPVM_OP* sibparent;
   const char* file;
   union {
+    SPVM_BLOCK* block;
+    SPVM_DESCRIPTOR* descriptor;
     const char* name;
     SPVM_MY* my;
     SPVM_METHOD* method;
@@ -333,7 +335,6 @@ struct spvm_op {
     SPVM_VAR* var;
     SPVM_FIELD* field;
     SPVM_CLASS* class;
-    SPVM_ENUMERATION* enumeration;
     SPVM_SWITCH_INFO* switch_info;
     SPVM_CASE_INFO* case_info;
     SPVM_USE* use;
@@ -344,8 +345,6 @@ struct spvm_op {
     SPVM_ARRAY_FIELD_ACCESS* array_field_access;
     SPVM_CLASS_VAR* class_var;
     SPVM_CLASS_VAR_ACCESS* class_var_access;
-    SPVM_BLOCK* block;
-    SPVM_DESCRIPTOR* descriptor;
   } uv;
   int32_t id;
   int32_t flag;

@@ -379,8 +379,6 @@ lib/SPVM/Builder/include/spvm_constant.h
 lib/SPVM/Builder/include/spvm_csource_builder_precompile.h
 lib/SPVM/Builder/include/spvm_descriptor.h
 lib/SPVM/Builder/include/spvm_dumper.h
-lib/SPVM/Builder/include/spvm_enumeration.h
-lib/SPVM/Builder/include/spvm_enumeration_value.h
 lib/SPVM/Builder/include/spvm_field.h
 lib/SPVM/Builder/include/spvm_field_access.h
 lib/SPVM/Builder/include/spvm_hash.h
@@ -425,8 +423,6 @@ lib/SPVM/Builder/src/spvm_constant.c
 lib/SPVM/Builder/src/spvm_csource_builder_precompile.c
 lib/SPVM/Builder/src/spvm_descriptor.c
 lib/SPVM/Builder/src/spvm_dumper.c
-lib/SPVM/Builder/src/spvm_enumeration.c
-lib/SPVM/Builder/src/spvm_enumeration_value.c
 lib/SPVM/Builder/src/spvm_field.c
 lib/SPVM/Builder/src/spvm_field_access.c
 lib/SPVM/Builder/src/spvm_hash.c

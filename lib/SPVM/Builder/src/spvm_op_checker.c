@@ -5,7 +5,6 @@
 #include <assert.h>
 #include <ctype.h>
 
-
 #include "spvm_compiler.h"
 #include "spvm_list.h"
 #include "spvm_hash.h"
@@ -17,14 +16,11 @@
 #include "spvm_field.h"
 #include "spvm_my.h"
 #include "spvm_var.h"
-#include "spvm_enumeration_value.h"
 #include "spvm_type.h"
-#include "spvm_enumeration.h"
 #include "spvm_class.h"
 #include "spvm_field_access.h"
 #include "spvm_call_method.h"
 #include "spvm_type.h"
-
 #include "spvm_switch_info.h"
 #include "spvm_limit.h"
 #include "spvm_class_var.h"

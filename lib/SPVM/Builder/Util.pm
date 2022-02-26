@@ -304,8 +304,6 @@ sub get_spvm_core_source_file_names {
     spvm_csource_builder_precompile.c
     spvm_descriptor.c
     spvm_dumper.c
-    spvm_enumeration.c
-    spvm_enumeration_value.c
     spvm_field_access.c
     spvm_field.c
     spvm_hash.c
@@ -351,8 +349,6 @@ sub get_spvm_core_header_file_names {
     spvm_csource_builder_precompile.h
     spvm_descriptor.h
     spvm_dumper.h
-    spvm_enumeration.h
-    spvm_enumeration_value.h
     spvm_field_access.h
     spvm_field.h
     spvm_hash.h

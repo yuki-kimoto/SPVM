@@ -150,14 +150,6 @@ typedef struct spvm_type SPVM_TYPE;
 struct spvm_type_part;
 typedef struct spvm_type_part SPVM_TYPE_PART;
 
-// spvm_enum.h
-struct spvm_enumeration;
-typedef struct spvm_enumeration SPVM_ENUMERATION;
-
-// spvm_enumeration_value.h
-struct spvm_enumeration_value;
-typedef struct spvm_enumeration_value SPVM_ENUMERATION_VALUE;
-
 // spvm_var.h
 struct spvm_var;
 typedef struct spvm_var SPVM_VAR;
