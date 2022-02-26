@@ -359,14 +359,6 @@ SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_build_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_name) {
-      
-  // Class var op
-  SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
-  
-  return op_class_var_access;
-}
-
 SPVM_OP* SPVM_OP_new_op_descriptor(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line) {
   SPVM_OP* op_descriptor = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DESCRIPTOR, file, line);
   
@@ -518,10 +510,14 @@ SPVM_OP* SPVM_OP_new_op_array_field_access_clone(SPVM_COMPILER* compiler, SPVM_O
 SPVM_OP* SPVM_OP_new_op_class_var_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_class_var_access) {
   (void)compiler;
   
-  SPVM_OP* op_class_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_VAR_ACCESS, original_op_class_var_access->file, original_op_class_var_access->line);
+  SPVM_CLASS_VAR_ACCESS* oritinal_class_var_access = original_op_class_var_access->uv.class_var_access;
+
+  const char* class_var_name = oritinal_class_var_access->op_name->uv.name;
   
-  op_class_var_access->uv.class_var_access = original_op_class_var_access->uv.class_var_access;
+  SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, original_op_class_var_access->file, original_op_class_var_access->line);
   
+  SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
+
   return op_class_var_access;
 }
 
@@ -1001,7 +997,7 @@ SPVM_OP* SPVM_OP_new_op_true(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   const char* class_var_name = "$Bool::TRUE";
   SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op->file, op->line);
-  SPVM_OP* op_class_var_access = SPVM_OP_build_class_var_access(compiler, op_class_var_name);
+  SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
   op_class_var_access->uv.class_var_access->inline_expansion = 1;
 
   return op_class_var_access;
@@ -1011,7 +1007,7 @@ SPVM_OP* SPVM_OP_new_op_false(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   const char* class_var_name = "$Bool::FALSE";
   SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op->file, op->line);
-  SPVM_OP* op_class_var_access = SPVM_OP_build_class_var_access(compiler, op_class_var_name);
+  SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
   op_class_var_access->uv.class_var_access->inline_expansion = 1;
   
   return op_class_var_access;
@@ -1938,7 +1934,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_decl->file, op_decl->line);
 
           SPVM_OP* op_name_class_var_access = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_class_var_access = SPVM_OP_build_class_var_access(compiler, op_name_class_var_access);
+          SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var_access);
           
           SPVM_OP_insert_child(compiler, op_return, op_return->last, op_class_var_access);
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
@@ -1986,7 +1982,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
 
           SPVM_OP* op_name_class_var_access = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_class_var_access = SPVM_OP_build_class_var_access(compiler, op_name_class_var_access);
+          SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var_access);
 
           SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);

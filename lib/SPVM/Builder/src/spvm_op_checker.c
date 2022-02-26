@@ -2394,7 +2394,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 else {
                   // Variable is class var
                   SPVM_OP* op_name_class_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->op_name->uv.name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_class_var_access = SPVM_OP_build_class_var_access(compiler, op_name_class_var);
+                  SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var);
                   
                   op_class_var_access->is_lvalue = op_cur->is_lvalue;
                   op_class_var_access->is_assigned_to_var = op_cur->is_assigned_to_var;
@@ -2775,7 +2775,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   memcpy(class_var_name + 1 + strlen(class_name), "::", 2);
                   memcpy(class_var_name + 1 + strlen(class_name) + 2, class_var_base_name + 1, strlen(class_var_base_name) - 1);
                   SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_class_var_access = SPVM_OP_build_class_var_access(compiler, op_class_var_name);
+                  SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
                   op_class_var_access->uv.class_var_access->inline_expansion = 1;
                   
                   SPVM_OP_replace_op(compiler, op_stab, op_class_var_access);
@@ -2810,7 +2810,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   memcpy(class_var_name + 1 + strlen(class_name), "::", 2);
                   memcpy(class_var_name + 1 + strlen(class_name) + 2, class_var_base_name + 1, strlen(class_var_base_name) - 1);
                   SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_class_var_access = SPVM_OP_build_class_var_access(compiler, op_class_var_name);
+                  SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
                   op_class_var_access->uv.class_var_access->inline_expansion = 1;
                   
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
