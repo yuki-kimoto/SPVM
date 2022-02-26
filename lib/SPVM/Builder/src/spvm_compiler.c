@@ -192,9 +192,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   SPVM_COMPILER_use(compiler, class_name, start_file, start_line);
 
   /* Tokenize and Parse */
-  int32_t parse_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
   int32_t parse_error_flag = SPVM_yyparse(compiler);
-  assert(compiler->allocator->memory_blocks_count_compile_tmp == parse_start_memory_blocks_count_compile_tmp);
   if (parse_error_flag) {
     error_code = 1;
   }
@@ -204,9 +202,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     }
     else {
       // Check syntax
-      int32_t check_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
       SPVM_OP_CHECKER_check(compiler);
-      assert(compiler->allocator->memory_blocks_count_compile_tmp == check_start_memory_blocks_count_compile_tmp);
       if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
         error_code = 3;
       }
@@ -217,6 +213,43 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         assert(compiler->allocator->memory_blocks_count_compile_tmp == build_opcode_array_start_memory_blocks_count_compile_tmp);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           error_code = 4;
+        }
+      }
+    }
+  }
+
+  // Cleanup ops
+  {
+    {
+      int32_t class_index;
+      for (class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+        SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
+        class->op_class = NULL;
+        class->op_name = NULL;
+        class->op_type = NULL;
+        
+        SPVM_LIST* methods = class->methods;
+        {
+          int32_t method_index;
+          for (method_index = 0; method_index < methods->length; method_index++) {
+            SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
+            method->op_method = NULL;
+            method->op_name = NULL;
+            method->op_block = NULL;
+            method->op_inline = NULL;
+            method->op_list_tmp_mys = NULL;
+            method->op_my_condition_flag = NULL;
+          }
+        }
+      }
+    }
+    for (int32_t i = 0; i < compiler->ops->length; i++) {
+      SPVM_OP* op = SPVM_LIST_fetch(compiler->ops, i);
+      int32_t op_id = op->id;
+      switch(op_id) {
+        case SPVM_OP_C_ID_BLOCK: {
+          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, op->uv.block);
+          break;
         }
       }
     }

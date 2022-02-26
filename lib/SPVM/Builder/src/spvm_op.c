@@ -3308,6 +3308,8 @@ SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t id, const char* file, i
   op->file = file;
   op->line = line;
   
+  SPVM_LIST_push(compiler->ops, op);
+  
   return op;
 }
 
