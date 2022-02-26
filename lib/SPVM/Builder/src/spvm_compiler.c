@@ -28,6 +28,7 @@
 #include "spvm_my.h"
 #include "spvm_string_buffer.h"
 #include "spvm_allow.h"
+#include "spvm_implement.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_new_block_unmanaged(sizeof(SPVM_COMPILER));
@@ -267,6 +268,12 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
           SPVM_ALLOW* allow = op->uv.allow;
           allow->op_type = NULL;
           SPVM_ALLOCATOR_free_block_compile_tmp(compiler, allow);
+          break;
+        }
+        case SPVM_OP_C_ID_IMPLEMENT: {
+          SPVM_IMPLEMENT* implement = op->uv.implement;
+          implement->op_type = NULL;
+          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, implement);
           break;
         }
       }
