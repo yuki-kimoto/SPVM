@@ -1726,20 +1726,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           // Keyword name
-          char* symbol_name;
           int32_t symbol_name_length = (compiler->bufptr - cur_token_ptr);
-          char* found_name = SPVM_HASH_fetch(compiler->string_symtable, cur_token_ptr, symbol_name_length);
-          if (found_name) {
-            symbol_name = found_name;
-          }
-          else {
-            symbol_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, symbol_name_length + 1);
-            memcpy(symbol_name, cur_token_ptr, symbol_name_length);
-            symbol_name[symbol_name_length] = '\0';
-            SPVM_LIST_push(compiler->strings, symbol_name);
-            SPVM_HASH_insert(compiler->string_symtable, symbol_name, symbol_name_length, symbol_name);
-          }
-
+          char* symbol_name = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, symbol_name_length + 1);
+          memcpy(symbol_name, cur_token_ptr, symbol_name_length);
+          symbol_name[symbol_name_length] = '\0';
+          
           // If following token is fat comma, symbol_name is manipulated as string literal
           int32_t next_is_fat_camma = 0;
           char* fat_camma_check_ptr = compiler->bufptr;
@@ -2296,25 +2287,43 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             term = keyword_term;
           }
           else {
+            // Create eternal symbol name
+            char* found_symbol_name = SPVM_HASH_fetch(compiler->string_symtable, symbol_name, symbol_name_length);
+            const char* symbol_name_eternal;
+            if (found_symbol_name) {
+              symbol_name_eternal = found_symbol_name;
+            }
+            else {
+              char* new_symbol_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, symbol_name_length + 1);
+              memcpy(new_symbol_name, symbol_name, symbol_name_length);
+              new_symbol_name[symbol_name_length] = '\0';
+              SPVM_LIST_push(compiler->strings, new_symbol_name);
+              SPVM_HASH_insert(compiler->string_symtable, new_symbol_name, symbol_name_length, new_symbol_name);
+              symbol_name_eternal = new_symbol_name;
+            }
+
             // String literal
             if (next_is_fat_camma) {
-              SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name, symbol_name_length, compiler->cur_file, compiler->cur_line);
+              SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name_eternal, symbol_name_length, compiler->cur_file, compiler->cur_line);
               yylvalp->opval = op_constant;
               term = CONSTANT;
             }
             // Symbol name
             else {
               // Symbol name can't conatain __
-              if (strstr(symbol_name, "__")) {
-                SPVM_COMPILER_error(compiler, "Symbol name \"%s\" must not contains __ at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+              if (strstr(symbol_name_eternal, "__")) {
+                SPVM_COMPILER_error(compiler, "Symbol name \"%s\" must not contains __ at %s line %d", symbol_name_eternal, compiler->cur_file, compiler->cur_line);
               }
 
-              SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name, compiler->cur_file, compiler->cur_line);
+              SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name_eternal, compiler->cur_file, compiler->cur_line);
               yylvalp->opval = op_name;
               
               term = NAME;
             }
           }
+
+          // Free symbol name
+          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, symbol_name);
           
           return term;
         }
