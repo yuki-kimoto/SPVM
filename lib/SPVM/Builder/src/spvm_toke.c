@@ -1752,18 +1752,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else {
             next_is_fat_camma = 0;
           }
-          if (next_is_fat_camma) {
-            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name, symbol_name_length, compiler->cur_file, compiler->cur_line);
-            
-            yylvalp->opval = op_constant;
-            
-            return CONSTANT;
-          }
-          
           // Check if the symbol is symbol_name
           int32_t is_keyword = 0;
           int32_t keyword_term = 0;
-          if (expect_method_name) {
+          if (next_is_fat_camma) {
+            // None
+          }
+          else if (expect_method_name) {
             // None
           }
           else if (expect_field_name) {
@@ -2300,17 +2295,25 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             assert(keyword_term > 0);
             term = keyword_term;
           }
-          // Symbol name
           else {
-            // Symbol name can't conatain __
-            if (strstr(symbol_name, "__")) {
-              SPVM_COMPILER_error(compiler, "Symbol name \"%s\" must not contains __ at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+            // String literal
+            if (next_is_fat_camma) {
+              SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name, symbol_name_length, compiler->cur_file, compiler->cur_line);
+              yylvalp->opval = op_constant;
+              term = CONSTANT;
             }
+            // Symbol name
+            else {
+              // Symbol name can't conatain __
+              if (strstr(symbol_name, "__")) {
+                SPVM_COMPILER_error(compiler, "Symbol name \"%s\" must not contains __ at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+              }
 
-            SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name, compiler->cur_file, compiler->cur_line);
-            yylvalp->opval = op_name;
-            
-            term = NAME;
+              SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name, compiler->cur_file, compiler->cur_line);
+              yylvalp->opval = op_name;
+              
+              term = NAME;
+            }
           }
           
           return term;
