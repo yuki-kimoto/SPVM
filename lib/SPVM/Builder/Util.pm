@@ -315,6 +315,7 @@ sub get_spvm_core_source_file_names {
     spvm_opcode_array.c
     spvm_opcode_builder.c
     spvm_opcode.c
+    spvm_string.c
     spvm_string_buffer.c
     spvm_switch_info.c
     spvm_toke.c
@@ -365,6 +366,7 @@ sub get_spvm_core_header_file_names {
     spvm_opcode_builder.h
     spvm_opcode.h
     spvm_op.h
+    spvm_string.h
     spvm_string_buffer.h
     spvm_switch_info.h
     spvm_toke.h

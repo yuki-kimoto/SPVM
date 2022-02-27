@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stddef.h>
 
+// spvm_string.h
+struct spvm_string;
+typedef struct spvm_string SPVM_STRING;
+
 // spvm_implement.h
 struct spvm_implement;
 typedef struct spvm_implement SPVM_IMPLEMENT;

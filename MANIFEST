@@ -395,6 +395,7 @@ lib/SPVM/Builder/include/spvm_op_checker.h
 lib/SPVM/Builder/include/spvm_opcode.h
 lib/SPVM/Builder/include/spvm_opcode_array.h
 lib/SPVM/Builder/include/spvm_opcode_builder.h
+lib/SPVM/Builder/include/spvm_string.h
 lib/SPVM/Builder/include/spvm_string_buffer.h
 lib/SPVM/Builder/include/spvm_switch_info.h
 lib/SPVM/Builder/include/spvm_toke.h
@@ -435,6 +436,7 @@ lib/SPVM/Builder/src/spvm_op_checker.c
 lib/SPVM/Builder/src/spvm_opcode.c
 lib/SPVM/Builder/src/spvm_opcode_array.c
 lib/SPVM/Builder/src/spvm_opcode_builder.c
+lib/SPVM/Builder/src/spvm_string.c
 lib/SPVM/Builder/src/spvm_string_buffer.c
 lib/SPVM/Builder/src/spvm_switch_info.c
 lib/SPVM/Builder/src/spvm_toke.c
