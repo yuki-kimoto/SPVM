@@ -888,7 +888,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->bufptr++;
           }
           else {
-            SPVM_COMPILER_error(compiler, "Can't find the terminiator \"'\" of the character literal at %s line %d", compiler->cur_file, compiler->cur_line);
+            SPVM_COMPILER_error(compiler, "Can't find the keyword_terminiator \"'\" of the character literal at %s line %d", compiler->cur_file, compiler->cur_line);
           }
         }
         
@@ -1037,7 +1037,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           if (*compiler->bufptr == '\0') {
-            SPVM_COMPILER_error(compiler, "Can't find string terminator '\"' anywhere before EOF at %s line %d", compiler->cur_file, compiler->cur_line);
+            SPVM_COMPILER_error(compiler, "Can't find string keyword_terminator '\"' anywhere before EOF at %s line %d", compiler->cur_file, compiler->cur_line);
             SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, "", 0, compiler->cur_file, compiler->cur_line);
             yylvalp->opval = op_constant;
             return CONSTANT;
@@ -1760,7 +1760,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             return CONSTANT;
           }
           
-          // Keyword
+          // Check if the symbol is keyword
+          int32_t is_keyword = 0;
+          int32_t keyword_term = 0;
           if (expect_method_name) {
             // None
           }
@@ -1768,27 +1770,32 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // None
           }
           else {
+            // Keywords
             switch (keyword[0]) {
               // Keyword
               case 'a' : {
                 if (strcmp(keyword, "allow") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ALLOW);
-                  return ALLOW;
+                  is_keyword = 1;
+                  keyword_term = ALLOW;
                 }
                 else if (strcmp(keyword, "as") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_AS);
-                  return AS;
+                  is_keyword = 1;
+                  keyword_term = AS;
                 }
                 break;
               }
               case 'b' : {
                 if (strcmp(keyword, "break") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BREAK);
-                  return BREAK;
+                  is_keyword = 1;
+                  keyword_term = BREAK;
                 }
                 else if (strcmp(keyword, "byte") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BYTE);
-                  return BYTE;
+                  is_keyword = 1;
+                  keyword_term = BYTE;
                 }
                 break;
               }
@@ -1797,99 +1804,120 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_CALLBACK_T, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
                   
-                  return DESCRIPTOR;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
                 }
                 else if (strcmp(keyword, "case") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CASE);
-                  return CASE;
+                  is_keyword = 1;
+                  keyword_term = CASE;
                 }
                 else if (strcmp(keyword, "cmp") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_CMP);
-                  return STRING_CMP;
+                  is_keyword = 1;
+                  keyword_term = STRING_CMP;
                 }
                 else if (strcmp(keyword, "class") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CLASS);
-                  return CLASS;
+                  is_keyword = 1;
+                  keyword_term = CLASS;
                 }
                 else if (strcmp(keyword, "copy") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COPY);
-                  return COPY;
+                  is_keyword = 1;
+                  keyword_term = COPY;
                 }
                 break;
               }
               case 'd' : {
                 if (strcmp(keyword, "default") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DEFAULT);
-                  return DEFAULT;
+                  is_keyword = 1;
+                  keyword_term = DEFAULT;
                 }
                 else if (strcmp(keyword, "die") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DIE);
-                  return DIE;
+                  is_keyword = 1;
+                  keyword_term = DIE;
                 }
                 else if (strcmp(keyword, "divui") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT);
-                  return DIVIDE_UNSIGNED_INT;
+                  is_keyword = 1;
+                  keyword_term = DIVIDE_UNSIGNED_INT;
                 }
                 else if (strcmp(keyword, "divul") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG);
-                  return DIVIDE_UNSIGNED_LONG;
+                  is_keyword = 1;
+                  keyword_term = DIVIDE_UNSIGNED_LONG;
                 }
                 else if (strcmp(keyword, "double") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DOUBLE);
-                  return DOUBLE;
+                  is_keyword = 1;
+                  keyword_term = DOUBLE;
                 }
                 else if (strcmp(keyword, "dump") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DUMP);
-                  return DUMP;
+                  is_keyword = 1;
+                  keyword_term = DUMP;
                 }
                 break;
               }
               case 'e' : {
                 if (strcmp(keyword, "elsif") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ELSIF);
-                  return ELSIF;
+                  is_keyword = 1;
+                  keyword_term = ELSIF;
                 }
                 else if (strcmp(keyword, "else") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ELSE);
-                  return ELSE;
+                  is_keyword = 1;
+                  keyword_term = ELSE;
                 }
                 else if (strcmp(keyword, "enum") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ENUM);
-                  return ENUM;
+                  is_keyword = 1;
+                  keyword_term = ENUM;
                 }
                 else if (strcmp(keyword, "eq") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_EQ);
-                  return STREQ;
+                  is_keyword = 1;
+                  keyword_term = STREQ;
                 }
                 else if (strcmp(keyword, "eval") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_EVAL);
-                  return EVAL;
+                  is_keyword = 1;
+                  keyword_term = EVAL;
                 }
                 break;
               }
               case 'f' : {
                 if (strcmp(keyword, "for") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FOR);
-                  return FOR;
+                  is_keyword = 1;
+                  keyword_term = FOR;
                 }
                 else if (strcmp(keyword, "float") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FLOAT);
-                  return FLOAT;
+                  is_keyword = 1;
+                  keyword_term = FLOAT;
                 }
                 else if (strcmp(keyword, "false") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FALSE);
-                  return FALSE;
+                  is_keyword = 1;
+                  keyword_term = FALSE;
                 }
                 break;
               }
               case 'g' : {
                 if (strcmp(keyword, "gt") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_GT);
-                  return STRGT;
+                  is_keyword = 1;
+                  keyword_term = STRGT;
                 }
                 else if (strcmp(keyword, "ge") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_GE);
-                  return STRGE;
+                  is_keyword = 1;
+                  keyword_term = STRGE;
                 }
                 break;
               }
@@ -1897,87 +1925,104 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (strcmp(keyword, "has") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FIELD);
                   compiler->expect_field_name = 1;
-                  return HAS;
+                  is_keyword = 1;
+                  keyword_term = HAS;
                 }
                 else if (strcmp(keyword, "has_implement") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_HAS_IMPLEMENT);
-                  return HAS_IMPLEMENT;
+                  is_keyword = 1;
+                  keyword_term = HAS_IMPLEMENT;
                 }
                 break;
               }
               case 'i' : {
                 if (strcmp(keyword, "if") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IF);
-                  return IF;
+                  is_keyword = 1;
+                  keyword_term = IF;
                 }
                 else if (strcmp(keyword, "isa") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISA);
-                  return ISA;
+                  is_keyword = 1;
+                  keyword_term = ISA;
                 }
                 else if (strcmp(keyword, "isweak") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISWEAK);
-                  return ISWEAK;
+                  is_keyword = 1;
+                  keyword_term = ISWEAK;
                 }
                 else if (strcmp(keyword, "is_read_only") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IS_READ_ONLY);
-                  return IS_READ_ONLY;
+                  is_keyword = 1;
+                  keyword_term = IS_READ_ONLY;
                 }
                 else if (strcmp(keyword, "implement") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IMPLEMENT);
-                  return IMPLEMENT;
+                  is_keyword = 1;
+                  keyword_term = IMPLEMENT;
                 }
                 else if (strcmp(keyword, "int") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
-                  return INT;
+                  is_keyword = 1;
+                  keyword_term = INT;
                 }
                 else if (strcmp(keyword, "interface_t") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_INTERFACE_T, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
-                  return DESCRIPTOR;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
                 }
                 break;
               }
               case 'l' : {
                 if (strcmp(keyword, "last") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LAST);
-                  return LAST;
+                  is_keyword = 1;
+                  keyword_term = LAST;
                 }
                 else if (strcmp(keyword, "length") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_LENGTH);
-                  return STRING_LENGTH;
+                  is_keyword = 1;
+                  keyword_term = STRING_LENGTH;
                 }
                 else if (strcmp(keyword, "lt") == 0) {
                   SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_LT);
                   yylvalp->opval = op;
                   
-                  return STRLT;
+                  is_keyword = 1;
+                  keyword_term = STRLT;
                 }
                 else if (strcmp(keyword, "le") == 0) {
                   SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_LE);
                   yylvalp->opval = op;
                   
-                  return STRLE;
+                  is_keyword = 1;
+                  keyword_term = STRLE;
                 }
                 else if (strcmp(keyword, "long") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LONG);
-                  return LONG;
+                  is_keyword = 1;
+                  keyword_term = LONG;
                 }
                 break;
               }
               case 'm' : {
                 if (strcmp(keyword, "make_read_only") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_MAKE_READ_ONLY);
-                  return MAKE_READ_ONLY;
+                  is_keyword = 1;
+                  keyword_term = MAKE_READ_ONLY;
                 }
                 else if (strcmp(keyword, "my") == 0) {
                   SPVM_MY* my = SPVM_MY_new(compiler);
                   yylvalp->opval = SPVM_OP_new_op_my(compiler, my, compiler->cur_file, compiler->cur_line);
-                  return MY;
+                  is_keyword = 1;
+                  keyword_term = MY;
                 }
                 else if (strcmp(keyword, "mulnum_t") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_MULNUM_T, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
-                  return DESCRIPTOR;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
                 }
                 else if (strcmp(keyword, "method") == 0) {
                   SPVM_OP* op_method = SPVM_TOKE_newOP_with_keyword_start_pos(compiler, SPVM_OP_C_ID_METHOD, keyword_start_pos);
@@ -1985,11 +2030,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
                   compiler->expect_method_name = 1;
 
-                  return METHOD;
+                  is_keyword = 1;
+                  keyword_term = METHOD;
                 }
                 else if (strcmp(keyword, "mutable") == 0) {
                   SPVM_OP* op_mutable = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_MUTABLE);
-                  return MUTABLE;
+                  is_keyword = 1;
+                  keyword_term = MUTABLE;
                 }
                 break;
               }
@@ -1998,102 +2045,122 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_NATIVE, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
                   
-                  return DESCRIPTOR;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
                 }
                 else if (strcmp(keyword, "ne") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_NE);
-                  return STRNE;
+                  is_keyword = 1;
+                  keyword_term = STRNE;
                 }
                 else if (strcmp(keyword, "next") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NEXT);
-                  return NEXT;
+                  is_keyword = 1;
+                  keyword_term = NEXT;
                 }
                 else if (strcmp(keyword, "new") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NEW);
-                  return NEW;
+                  is_keyword = 1;
+                  keyword_term = NEW;
                 }
                 else if (strcmp(keyword, "new_string_len") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NEW_STRING_LEN);
-                  return NEW_STRING_LEN;
+                  is_keyword = 1;
+                  keyword_term = NEW_STRING_LEN;
                 }
                 break;
               }
               case 'o' : {
                 if (strcmp(keyword, "our") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CLASS_VAR);
-                  return OUR;
+                  is_keyword = 1;
+                  keyword_term = OUR;
                 }
                 else if (strcmp(keyword, "object") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_OBJECT);
-                  return OBJECT;
+                  is_keyword = 1;
+                  keyword_term = OBJECT;
                 }
                 break;
               }
               case 'p' : {
                 if (strcmp(keyword, "print") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_PRINT);
-                  return PRINT;
+                  is_keyword = 1;
+                  keyword_term = PRINT;
                 }
                 else if (strcmp(keyword, "private") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_PRIVATE, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
                   
-                  return DESCRIPTOR;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
                 }
                 else if (strcmp(keyword, "public") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_PUBLIC, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
                   
-                  return DESCRIPTOR;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
                 }
                 else if (strcmp(keyword, "precompile") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_PRECOMPILE, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
                   
-                  return DESCRIPTOR;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
                 }
                 else if (strcmp(keyword, "pointer_t") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_POINTER_T, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
                   
-                  return DESCRIPTOR;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
                 }
                 break;
               }
               case 'r' : {
                 if (strcmp(keyword, "ref") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REFOP);
-                  return REFOP;
+                  is_keyword = 1;
+                  keyword_term = REFOP;
                 }
                 else if (strcmp(keyword, "refcnt") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REFCNT);
-                  return REFCNT;
+                  is_keyword = 1;
+                  keyword_term = REFCNT;
                 }
                 else if (strcmp(keyword, "remui") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT);
-                  return REMAINDER_UNSIGNED_INT;
+                  is_keyword = 1;
+                  keyword_term = REMAINDER_UNSIGNED_INT;
                 }
                 else if (strcmp(keyword, "remul") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG);
-                  return REMAINDER_UNSIGNED_LONG;
+                  is_keyword = 1;
+                  keyword_term = REMAINDER_UNSIGNED_LONG;
                 }
                 else if (strcmp(keyword, "return") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_RETURN);
-                  return RETURN;
+                  is_keyword = 1;
+                  keyword_term = RETURN;
                 }
                 else if (strcmp(keyword, "require") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REQUIRE);
-                  return REQUIRE;
+                  is_keyword = 1;
+                  keyword_term = REQUIRE;
                 }
                 else if (strcmp(keyword, "rw") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_RW, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
-                  return DESCRIPTOR;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
                 }
                 else if (strcmp(keyword, "ro") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_RO, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
-                  return DESCRIPTOR;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
                 }
                 break;
               }
@@ -2101,86 +2168,102 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (strcmp(keyword, "static") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
-                  return DESCRIPTOR;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
                 }
                 else if (strcmp(keyword, "switch") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SWITCH);
-                  return SWITCH;
+                  is_keyword = 1;
+                  keyword_term = SWITCH;
                 }
                 else if (strcmp(keyword, "string") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING);
-                  return STRING;
+                  is_keyword = 1;
+                  keyword_term = STRING;
                 }
                 else if (strcmp(keyword, "short") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SHORT);
-                  return SHORT;
+                  is_keyword = 1;
+                  keyword_term = SHORT;
                 }
                 else if (strcmp(keyword, "scalar") == 0) {
                   compiler->bufptr++;
                   SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SCALAR);
                   yylvalp->opval = op;
                   
-                  return SCALAR;
+                  is_keyword = 1;
+                  keyword_term = SCALAR;
                 }
                 break;
               }
               case 't' : {
                 if (strcmp(keyword, "true") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_TRUE);
-                  return TRUE;
+                  is_keyword = 1;
+                  keyword_term = TRUE;
                 }
                 break;
               }
               case 'u' : {
                 if (strcmp(keyword, "undef") == 0) {
                   yylvalp->opval = SPVM_OP_new_op_undef(compiler, compiler->cur_file, compiler->cur_line);
-                  return UNDEF;
+                  is_keyword = 1;
+                  keyword_term = UNDEF;
                 }
                 else if (strcmp(keyword, "unless") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_UNLESS);
-                  return UNLESS;
+                  is_keyword = 1;
+                  keyword_term = UNLESS;
                 }
                 else if (strcmp(keyword, "unweaken") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_UNLESS);
-                  return UNWEAKEN;
+                  is_keyword = 1;
+                  keyword_term = UNWEAKEN;
                 }
                 else if (strcmp(keyword, "use") == 0) {
                   yylvalp->opval = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
-                  return USE;
+                  is_keyword = 1;
+                  keyword_term = USE;
                 }
                 break;
               }
               case 'v' : {
                 if (strcmp(keyword, "void") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_VOID);
-                  return VOID;
+                  is_keyword = 1;
+                  keyword_term = VOID;
                 }
                 break;
               }
               case 'w' : {
                 if (strcmp(keyword, "warn") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_WARN);
-                  return WARN;
+                  is_keyword = 1;
+                  keyword_term = WARN;
                 }
                 else if (strcmp(keyword, "while") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_WHILE);
-                  return WHILE;
+                  is_keyword = 1;
+                  keyword_term = WHILE;
                 }
                 else if (strcmp(keyword, "weaken") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_WEAKEN);
-                  return WEAKEN;
+                  is_keyword = 1;
+                  keyword_term = WEAKEN;
                 }
                 else if (strcmp(keyword, "wo") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_WO, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
-                  return DESCRIPTOR;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
                 }
                 break;
               }
               case 'I' : {
                 if (strcmp(keyword, "INIT") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INIT);
-                  return INIT;
+                  is_keyword = 1;
+                  keyword_term = INIT;
                 }
                 break;
               }
@@ -2191,32 +2274,43 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else if (strcmp(keyword, "__CLASS__") == 0) {
                   yylvalp->opval = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CURRENT_CLASS_NAME, compiler->cur_file, compiler->cur_line);
-                  return CURRENT_CLASS_NAME;
+                  is_keyword = 1;
+                  keyword_term = CURRENT_CLASS_NAME;
                 }
                 else if (strcmp(keyword, "__FILE__") == 0) {
                   SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->cur_rel_file, strlen(compiler->cur_rel_file), compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_constant;
-                  return CONSTANT;
+                  is_keyword = 1;
+                  keyword_term = CONSTANT;
                 }
                 else if (strcmp(keyword, "__LINE__") == 0) {
                   SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, compiler->cur_line, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_constant;
-                  return CONSTANT;
+                  is_keyword = 1;
+                  keyword_term = CONSTANT;
                 }
                 break;
               }
             }
           }
           
-          // Symbol name can't conatain __
-          if (strstr(keyword, "__")) {
-            SPVM_COMPILER_error(compiler, "Symbol name \"%s\" must not contains __ at %s line %d", keyword, compiler->cur_file, compiler->cur_line);
+          // Keyword
+          if (is_keyword) {
+            assert(keyword_term > 0);
+            return keyword_term;
           }
+          // Symbol name
+          else {
+            // Symbol name can't conatain __
+            if (strstr(keyword, "__")) {
+              SPVM_COMPILER_error(compiler, "Symbol name \"%s\" must not contains __ at %s line %d", keyword, compiler->cur_file, compiler->cur_line);
+            }
 
-          SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, keyword, compiler->cur_file, compiler->cur_line);
-          yylvalp->opval = op_name;
-          
-          return NAME;
+            SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, keyword, compiler->cur_file, compiler->cur_line);
+            yylvalp->opval = op_name;
+            
+            return NAME;
+          }
         }
         
         // Return character
