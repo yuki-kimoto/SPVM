@@ -1742,12 +1742,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     // If Foo::Bar anon sub is defined line 123, sub keyword start pos 32, the anon sub class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
     const char* anon_method_defined_rel_file_class_name = compiler->cur_rel_file_class_name;
     int32_t anon_method_defined_line = op_method->line;
-    int32_t anon_method_defined_symbol_name_start_pos = op_method->symbol_name_start_pos;
+    int32_t anon_method_defined_column = op_method->column;
     int32_t anon_method_class_name_length = 6 + strlen(anon_method_defined_rel_file_class_name) + 2 + int32_max_length + 2 + int32_max_length;
     
     // Anon class name
     char* name_class = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, anon_method_class_name_length + 1);
-    sprintf(name_class, "%s::anon::%d::%d", anon_method_defined_rel_file_class_name, anon_method_defined_line, anon_method_defined_symbol_name_start_pos);
+    sprintf(name_class, "%s::anon::%d::%d", anon_method_defined_rel_file_class_name, anon_method_defined_line, anon_method_defined_column);
     SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
     op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
     

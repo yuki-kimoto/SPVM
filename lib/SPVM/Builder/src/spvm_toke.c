@@ -32,12 +32,12 @@ SPVM_OP* SPVM_TOKE_new_op(SPVM_COMPILER* compiler, int32_t type) {
   return op;
 }
 
-SPVM_OP* SPVM_TOKE_new_op_with_symbol_name_start_pos(SPVM_COMPILER* compiler, int32_t type, int32_t symbol_name_start_pos) {
+SPVM_OP* SPVM_TOKE_new_op_with_column(SPVM_COMPILER* compiler, int32_t type, int32_t column) {
   
   SPVM_OP* op = SPVM_OP_new_op(compiler, type, compiler->cur_file, compiler->cur_line);
   
-  // symbol_name_start_pos is only used to decide anon sub uniquness
-  op->symbol_name_start_pos = symbol_name_start_pos;
+  // column is only used to decide anon sub uniquness
+  op->column = column;
   
   return op;
 }
@@ -1705,7 +1705,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // Keyword or name
         else if (isalpha(ch) || ch == '_') {
           // Keyword start position
-          int32_t symbol_name_start_pos = compiler->bufptr - compiler->line_start_ptr;
+          int32_t column = compiler->bufptr - compiler->line_start_ptr;
           
           // Save current position
           const char* cur_token_ptr = compiler->bufptr;
@@ -2025,7 +2025,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_term = DESCRIPTOR;
                 }
                 else if (strcmp(symbol_name, "method") == 0) {
-                  SPVM_OP* op_method = SPVM_TOKE_new_op_with_symbol_name_start_pos(compiler, SPVM_OP_C_ID_METHOD, symbol_name_start_pos);
+                  SPVM_OP* op_method = SPVM_TOKE_new_op_with_column(compiler, SPVM_OP_C_ID_METHOD, column);
                   yylvalp->opval = op_method;
 
                   compiler->expect_method_name = 1;
