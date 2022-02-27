@@ -91,7 +91,10 @@ struct spvm_compiler {
   // Syntax error count
   SPVM_LIST* error_messages;
   
-  // Constant string symtable
+  // Strings - string literals and symbol names
+  SPVM_LIST* strings;
+  
+  // String symtable
   SPVM_HASH* string_symtable;
 
   // Used module symtable
