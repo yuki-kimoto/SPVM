@@ -24,6 +24,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_method.h"
 #include "spvm_class.h"
+#include "spvm_string.h"
 
 SPVM_OP* SPVM_TOKE_new_op(SPVM_COMPILER* compiler, int32_t type) {
   
@@ -1295,6 +1296,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           memcpy(str, str_tmp, str_length);
           SPVM_LIST_push(compiler->strings, str);
           SPVM_HASH_insert(compiler->string_symtable, str, str_length, str);
+          
+          SPVM_STRING* string2 = SPVM_STRING_new(compiler, str, str_length);
+          SPVM_LIST_push(compiler->strings2, string2);
+          SPVM_HASH_insert(compiler->string_symtable2, str, str_length, string2);
         }
         
         SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, str, str_length, compiler->cur_file, compiler->cur_line);
@@ -1392,6 +1397,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               var_name[1 + var_name_length_without_sigil] = '\0';
               SPVM_LIST_push(compiler->strings, var_name);
               SPVM_HASH_insert(compiler->string_symtable, var_name, var_name_length_without_sigil + 1, var_name);
+
+              SPVM_STRING* string2 = SPVM_STRING_new(compiler, var_name, var_name_length);
+              SPVM_LIST_push(compiler->strings2, string2);
+              SPVM_HASH_insert(compiler->string_symtable2, var_name, var_name_length, string2);
             }
 
             if (have_brace) {
@@ -2300,6 +2309,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               SPVM_LIST_push(compiler->strings, new_symbol_name);
               SPVM_HASH_insert(compiler->string_symtable, new_symbol_name, symbol_name_length, new_symbol_name);
               symbol_name_eternal = new_symbol_name;
+
+              SPVM_STRING* string2 = SPVM_STRING_new(compiler, new_symbol_name, symbol_name_length);
+              SPVM_LIST_push(compiler->strings2, string2);
+              SPVM_HASH_insert(compiler->string_symtable2, new_symbol_name, symbol_name_length, string2);
             }
 
             // String literal
