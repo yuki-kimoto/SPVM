@@ -41,7 +41,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->bufptr = "";
 
-  compiler->strings = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->string_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
 
   compiler->strings2 = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);

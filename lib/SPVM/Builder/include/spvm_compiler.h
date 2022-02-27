@@ -91,9 +91,6 @@ struct spvm_compiler {
   // Syntax error count
   SPVM_LIST* error_messages;
   
-  // Strings - string literals and symbol names
-  SPVM_LIST* strings;
-
   // String symtable
   SPVM_HASH* string_symtable;
 
