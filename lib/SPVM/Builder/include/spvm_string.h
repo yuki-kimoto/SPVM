@@ -9,6 +9,6 @@ struct spvm_string {
   int32_t id;
 };
 
-SPVM_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler);
+SPVM_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t length);
 
 #endif

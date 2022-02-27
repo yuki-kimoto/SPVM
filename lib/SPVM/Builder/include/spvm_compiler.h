@@ -93,10 +93,16 @@ struct spvm_compiler {
   
   // Strings - string literals and symbol names
   SPVM_LIST* strings;
-  
+
   // String symtable
   SPVM_HASH* string_symtable;
 
+  // Strings - string literals and symbol names
+  SPVM_LIST* strings2;
+  
+  // String symtable
+  SPVM_HASH* string_symtable2;
+  
   // Used module symtable
   SPVM_HASH* used_class_symtable;
   
