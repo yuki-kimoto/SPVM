@@ -2295,9 +2295,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           // Keyword
+          int32_t term;
           if (is_keyword) {
             assert(keyword_term > 0);
-            return keyword_term;
+            term = keyword_term;
           }
           // Symbol name
           else {
@@ -2309,8 +2310,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name, compiler->cur_file, compiler->cur_line);
             yylvalp->opval = op_name;
             
-            return NAME;
+            term = NAME;
           }
+          
+          return term;
         }
         
         // Return character
