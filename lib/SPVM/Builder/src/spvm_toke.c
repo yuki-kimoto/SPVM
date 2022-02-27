@@ -1293,6 +1293,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else {
           str = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, str_length + 1);
           memcpy(str, str_tmp, str_length);
+          SPVM_LIST_push(compiler->strings, str);
           SPVM_HASH_insert(compiler->string_symtable, str, str_length, str);
         }
         
@@ -1389,6 +1390,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               var_name[0] = '$';
               memcpy(&var_name[1], cur_token_ptr, var_name_length_without_sigil);
               var_name[1 + var_name_length_without_sigil] = '\0';
+              SPVM_LIST_push(compiler->strings, var_name);
               SPVM_HASH_insert(compiler->string_symtable, var_name, var_name_length_without_sigil + 1, var_name);
             }
 
@@ -1734,6 +1736,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             keyword = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, keyword_length + 1);
             memcpy(keyword, cur_token_ptr, keyword_length);
             keyword[keyword_length] = '\0';
+            SPVM_LIST_push(compiler->strings, keyword);
             SPVM_HASH_insert(compiler->string_symtable, keyword, keyword_length, keyword);
           }
 
