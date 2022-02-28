@@ -22,7 +22,6 @@
 #include "spvm_method.h"
 #include "spvm_type.h"
 #include "spvm_my.h"
-#include "spvm_constant.h"
 #include "spvm_weaken_backref.h"
 #include "spvm_switch_info.h"
 #include "spvm_case_info.h"
@@ -31,7 +30,7 @@
 #include "spvm_api.h"
 #include "spvm_object.h"
 #include "spvm_native.h"
-
+#include "spvm_string.h"
 
 
 
@@ -3894,11 +3893,9 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_CONSTANT_STRING: {
-        int32_t constant_id = opcode->operand1;
-        SPVM_CONSTANT* constant = class->info_constants->values[constant_id];
-        const char* string_value = constant->value.oval;
-        
-        void* string = env->new_string_raw(env, string_value, constant->string_length);
+        int32_t string_id = opcode->operand2;
+        SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->strings, string_id);
+        void* string = env->new_string_raw(env, constant_string->value, constant_string->length);
         if (string == NULL) {
           void* exception = env->new_string_nolen_raw(env, "Can't allocate memory for string");
           env->set_exception(env, exception);
