@@ -6,7 +6,7 @@
 
 SPVM_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t length) {
   
-  SPVM_STRING* found_string = SPVM_HASH_fetch(compiler->string_symtable2, value, length);
+  SPVM_STRING* found_string = SPVM_HASH_fetch(compiler->string_symtable, value, length);
   if (found_string) {
     return found_string;
   }
@@ -18,10 +18,10 @@ SPVM_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t
     SPVM_STRING* string = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_STRING));
     string->value = new_value;
     string->length = length;
-    string->id = compiler->strings2->length;
+    string->id = compiler->strings->length;
 
-    SPVM_LIST_push(compiler->strings2, string);
-    SPVM_HASH_insert(compiler->string_symtable2, new_value, length, string);
+    SPVM_LIST_push(compiler->strings, string);
+    SPVM_HASH_insert(compiler->string_symtable, new_value, length, string);
     
     return string;
   }
