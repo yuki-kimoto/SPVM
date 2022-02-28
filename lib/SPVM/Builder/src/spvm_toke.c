@@ -2287,18 +2287,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           else {
             // Create eternal symbol name
-            char* found_symbol_name = SPVM_HASH_fetch(compiler->string_symtable, symbol_name, symbol_name_length);
-            const char* symbol_name_eternal;
-            if (found_symbol_name) {
-              symbol_name_eternal = found_symbol_name;
-            }
-            else {
-              char* new_symbol_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, symbol_name_length + 1);
-              memcpy(new_symbol_name, symbol_name, symbol_name_length);
-              new_symbol_name[symbol_name_length] = '\0';
-              SPVM_HASH_insert(compiler->string_symtable, new_symbol_name, symbol_name_length, new_symbol_name);
-              symbol_name_eternal = new_symbol_name;
-            }
+            SPVM_STRING* symbol_name_string = SPVM_STRING_new(compiler, symbol_name, symbol_name_length);
+            const char* symbol_name_eternal = symbol_name_string->value;
 
             // String literal
             if (next_is_fat_camma) {
