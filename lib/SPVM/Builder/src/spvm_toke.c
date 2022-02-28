@@ -1388,18 +1388,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t var_name_length_without_sigil = compiler->bufptr - cur_token_ptr;
             int32_t var_name_length = var_name_length_without_sigil + 1;
 
-            char* var_name;
-            char* found_var_name = SPVM_HASH_fetch(compiler->string_symtable, cur_token_ptr - 1, var_name_length);
-            if (found_var_name) {
-              var_name = found_var_name;
-            }
-            else {
-              var_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, 1 + var_name_length_without_sigil + 1);
-              var_name[0] = '$';
-              memcpy(&var_name[1], cur_token_ptr, var_name_length_without_sigil);
-              var_name[1 + var_name_length_without_sigil] = '\0';
-              SPVM_HASH_insert(compiler->string_symtable, var_name, var_name_length_without_sigil + 1, var_name);
-            }
+            SPVM_STRING* var_name_string = SPVM_STRING_new(compiler, (char*)(cur_token_ptr - 1), var_name_length);
+            const char* var_name = var_name_string->value;
 
             if (have_brace) {
               if (*compiler->bufptr == '}') {
