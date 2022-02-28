@@ -35,6 +35,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
+#include "spvm_string.h"
 
 void SPVM_OPCODE_BUILDER_set_opcode_id(SPVM_COMPILER* compiler, SPVM_OPCODE* opcode, int32_t opcode_id) {
   opcode->id = opcode_id;
@@ -2559,9 +2560,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                             int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                             SPVM_CONSTANT* constant = op_assign_src->uv.constant;
-
+                            
+                            const char* constant_string_value = constant->value.oval;
+                            int32_t constant_string_length = constant->string_length;
+                            SPVM_STRING* constant_string = SPVM_HASH_fetch(compiler->string_symtable, constant_string_value, constant_string_length);
+                            assert(constant_string);
+                            
                             opcode.operand0 = mem_id_out;
                             opcode.operand1 = constant->constant_id;
+                            opcode.operand2 = constant_string->id;
 
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
