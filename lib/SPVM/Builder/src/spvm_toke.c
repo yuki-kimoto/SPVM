@@ -1285,17 +1285,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           string_literal_tmp[string_literal_length] = '\0';
         }
 
-        char* string_literal;
-        // String Literal
-        char* found_string_literal = SPVM_HASH_fetch(compiler->string_symtable, string_literal_tmp, string_literal_length);
-        if (found_string_literal) {
-          string_literal = found_string_literal;
-        }
-        else {
-          string_literal = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, string_literal_length + 1);
-          memcpy(string_literal, string_literal_tmp, string_literal_length);
-          SPVM_HASH_insert(compiler->string_symtable, string_literal, string_literal_length, string_literal);
-        }
+        SPVM_STRING* string_literal_string = SPVM_STRING_new(compiler, string_literal_tmp, string_literal_length);
+        const char* string_literal = string_literal_string->value;
         
         SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, string_literal, string_literal_length, compiler->cur_file, compiler->cur_line);
         
