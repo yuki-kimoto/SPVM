@@ -352,6 +352,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->bufptr++;
         compiler->befbufptr = compiler->bufptr;
         continue;
+        break;
       }
       case '\r':
       case '\n':
@@ -365,6 +366,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->line_start_ptr = compiler->bufptr;
         compiler->befbufptr = compiler->bufptr;
         continue;
+        break;
       }
       // Cancat
       case '.': {
@@ -399,9 +401,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             return '.';
           }
         }
+        break;
       }
       // Addition
-      case '+':
+      case '+': {
         compiler->bufptr++;
         
         if (*compiler->bufptr == '+') {
@@ -422,9 +425,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NULL);
           return '+';
         }
-      
+        break;
+      }
       // Subtract
-      case '-':
+      case '-': {
         compiler->bufptr++;
         
         // Decimal Literal or Floating point Literal allow minus
@@ -465,6 +469,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NULL);;
           return '-';
         }
+        break;
+      }
       // Multiply
       case '*': {
         compiler->bufptr++;
@@ -538,7 +544,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return BIT_XOR;
         }
       }
-      case '|':
+      case '|': {
         compiler->bufptr++;
         // Or
         if (*compiler->bufptr == '|') {
@@ -561,8 +567,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op;
           return BIT_OR;
         }
-
-      case '&':
+        break;
+      }
+      case '&': {
         compiler->bufptr++;
         // &&
         if (*compiler->bufptr == '&') {
@@ -593,9 +600,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op;
           return BIT_AND;
         }
-      
+        break;
+      }
       // Comment
-      case '#':
+      case '#': {
         compiler->bufptr++;
         while(1) {
           if (*compiler->bufptr == '\r' && *(compiler->bufptr + 1) == '\n') {
@@ -610,8 +618,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         
         continue;
-      
-      case '=':
+        break;
+      }
+      case '=': {
         // POD
         if (compiler->bufptr == compiler->cur_src || *(compiler->bufptr - 1) == '\n') {
           while (1) {
@@ -667,8 +676,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             return ASSIGN;
           }
         }
-        
-      case '<':
+        break;
+      }
+      case '<': {
         compiler->bufptr++;
         
         if (*compiler->bufptr == '<') {
@@ -715,8 +725,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op;
           return NUMLT;
         }
-      
-      case '>':
+        break;
+      }
+      case '>': {
         compiler->bufptr++;
         
         if (*compiler->bufptr == '>') {
@@ -773,7 +784,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op;
           return NUMGT;
         }
-      case '!':
+        break;
+      }
+      case '!': {
         compiler->bufptr++;
         
         if (*compiler->bufptr == '=') {
@@ -787,11 +800,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op;
           return LOGICAL_NOT;
         }
+        break;
+      }
       case '~': {
         compiler->bufptr++;
           SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_BIT_NOT);
           yylvalp->opval = op;
         return BIT_NOT;
+        break;
       }
       // Character literals
       case '\'': {
@@ -1303,12 +1319,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         return CONSTANT;
       }
-      case '\\':
+      case '\\': {
         compiler->bufptr++;
         SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CREATE_REF);
         yylvalp->opval = op;
         return CREATE_REF;
-      default:
+      }
+      default: {
         // Variable
         if (ch == '$') {
           // Derefernece
@@ -2317,6 +2334,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         
         return (int) (uint8_t) ch;
+      }
     }
   }
 }
