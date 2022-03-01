@@ -33,6 +33,7 @@
 #include "spvm_constant.h"
 #include "spvm_array_field_access.h"
 #include "spvm_field_access.h"
+#include "spvm_call_method.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_new_block_unmanaged(sizeof(SPVM_COMPILER));
@@ -307,6 +308,14 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
           field_access->op_name = NULL;
           field_access->field = NULL;
           SPVM_ALLOCATOR_free_block_compile_tmp(compiler, field_access);
+          break;
+        }
+        case SPVM_OP_C_ID_CALL_METHOD: {
+          SPVM_CALL_METHOD* call_method = op->uv.call_method;
+          call_method->op_invocant = NULL;
+          call_method->op_name = NULL;
+          call_method->method = NULL;
+          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, call_method);
           break;
         }
       }
