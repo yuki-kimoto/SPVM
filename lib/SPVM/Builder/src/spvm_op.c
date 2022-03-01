@@ -495,10 +495,22 @@ SPVM_OP* SPVM_OP_new_op_array_access_clone(SPVM_COMPILER* compiler, SPVM_OP* ori
   return op_array_access;
 }
 
+SPVM_OP* SPVM_OP_new_op_array_field_access(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  (void)compiler;
+  
+  SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, file, line);
+  
+  SPVM_ARRAY_FIELD_ACCESS* array_field_access = SPVM_ARRAY_FIELD_ACCESS_new(compiler);
+  
+  op_array_field_access->uv.array_field_access = array_field_access;
+  
+  return op_array_field_access;
+}
+
 SPVM_OP* SPVM_OP_new_op_array_field_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_array_field_access) {
   (void)compiler;
   
-  SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, original_op_array_field_access->file, original_op_array_field_access->line);
+  SPVM_OP* op_array_field_access = SPVM_OP_new_op_array_field_access(compiler, original_op_array_field_access->file, original_op_array_field_access->line);
   
   SPVM_OP* op_var_array = SPVM_OP_new_op_var_clone_var_or_assign(compiler, original_op_array_field_access->first);
   SPVM_OP* op_var_index = SPVM_OP_new_op_var_clone_var_or_assign(compiler, original_op_array_field_access->last);
@@ -506,7 +518,7 @@ SPVM_OP* SPVM_OP_new_op_array_field_access_clone(SPVM_COMPILER* compiler, SPVM_O
   SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_var_array);
   SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_var_index);
   
-  op_array_field_access->uv.array_field_access = original_op_array_field_access->uv.array_field_access;
+  op_array_field_access->uv.array_field_access->field = original_op_array_field_access->uv.array_field_access->field;
   
   return op_array_field_access;
 }

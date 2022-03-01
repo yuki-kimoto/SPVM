@@ -3067,14 +3067,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   else {
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                     
-                    SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, op_cur->file, op_cur->line);
+                    SPVM_OP* op_array_field_access = SPVM_OP_new_op_array_field_access(compiler, op_cur->file, op_cur->line);
                     op_array_field_access->is_lvalue = op_cur->is_lvalue;
 
                     op_cur = op_array_field_access;
                     
-                    SPVM_ARRAY_FIELD_ACCESS* array_field_access = SPVM_ARRAY_FIELD_ACCESS_new(compiler);
+                    SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
                     array_field_access->field = field;
-                    op_array_field_access->uv.array_field_access = array_field_access;
                     
                     SPVM_OP* op_array = op_array_access->first;
                     SPVM_OP* op_index = op_array_access->last;
