@@ -31,11 +31,12 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   // Class variables
   class->class_vars = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->class_var_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
-
+  
+  // Methods
   class->methods = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->method_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
-  class->class_vars = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-  class->class_var_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
+  
+  // Interfaces
   class->interface_class_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   
   class->op_uses = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
