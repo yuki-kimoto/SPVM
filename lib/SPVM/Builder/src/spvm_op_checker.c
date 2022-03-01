@@ -3537,7 +3537,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           
           SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
           SPVM_CLASS* class = method->class;
-          SPVM_TYPE* class_type = class->op_type->uv.type;
+          SPVM_TYPE* class_type = class->type;
           
           // Destructor must receive own class object
           if (method->flag & SPVM_METHOD_C_FLAG_DESTRUCTOR) {

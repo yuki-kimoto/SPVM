@@ -19,8 +19,8 @@ enum {
 struct spvm_class {
   SPVM_OP* op_class;
   SPVM_OP* op_name;
-  SPVM_OP* op_type;
   const char* name;
+  SPVM_TYPE* type;
   SPVM_LIST* class_vars;
   SPVM_HASH* class_var_symtable;
   SPVM_HASH* class_alias_symtable;

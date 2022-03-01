@@ -235,7 +235,8 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
         class->op_class = NULL;
         class->op_name = NULL;
-        class->op_type = NULL;
+        
+        SPVM_LIST_free(class->allows);
         
         SPVM_LIST* methods = class->methods;
         {

@@ -1358,7 +1358,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_CLASS: {
       SPVM_CLASS* class = op->uv.class;
-      type = class->op_type->uv.type;
+      type = class->type;
       break;
     }
     case SPVM_OP_C_ID_NUMERIC_EQ:
@@ -1775,7 +1775,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
   
   const char* class_name = op_type->uv.type->basic_type->name;
-  class->op_type = op_type;
+  class->type = op_type->uv.type;
 
   if (!class->is_anon) {
 
