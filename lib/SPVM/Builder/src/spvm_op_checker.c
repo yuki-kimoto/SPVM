@@ -33,6 +33,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_use.h"
 #include "spvm_implement.h"
+#include "spvm_string.h"
 
 void SPVM_OP_CHECKER_free_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_MY* my) {
   (void)compiler;
@@ -984,10 +985,19 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 
-                char* concat_string = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, string1_length + string2_length + 1);
-                memcpy(concat_string, string1, string1_length);
-                memcpy(concat_string + string1_length, string2, string2_length);
+                int32_t memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
+                char* concat_string_tmp = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, string1_length + string2_length + 1);
+                memcpy(concat_string_tmp, string1, string1_length);
+                memcpy(concat_string_tmp + string1_length, string2, string2_length);
                 int32_t concant_string_length = string1_length + string2_length;
+                
+                SPVM_STRING* concat_string_string = SPVM_STRING_new(compiler, concat_string_tmp, concant_string_length);
+                const char* concat_string = concat_string_string->value;
+                
+                SPVM_ALLOCATOR_free_block_compile_tmp(compiler, concat_string_tmp);
+                
+                assert(compiler->allocator->memory_blocks_count_compile_tmp == memory_blocks_count_compile_tmp);
+                
                 SPVM_OP* op_concat_constant_string = SPVM_OP_new_op_constant_string(compiler, concat_string, concant_string_length, op_cur->file, op_cur->line);
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_concat_constant_string);

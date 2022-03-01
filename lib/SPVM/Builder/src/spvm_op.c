@@ -36,6 +36,8 @@
 #include "spvm_string_buffer.h"
 #include "spvm_allow.h"
 #include "spvm_implement.h"
+#include "spvm_string.h"
+
 
 
 
@@ -780,10 +782,13 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, c
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, const char* string, int32_t length, const char* file, int32_t line) {
+  
+  SPVM_STRING* cached_string_string = SPVM_STRING_new(compiler, string, length);
+  const char* cached_string = cached_string_string->value;
 
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-  constant->value.oval = (void*)string;
+  constant->value.oval = (void*)cached_string;
   SPVM_OP* op_constant_type = SPVM_OP_new_op_string_type(compiler, file, line);
   constant->type = op_constant_type->uv.type;
   constant->string_length = length;

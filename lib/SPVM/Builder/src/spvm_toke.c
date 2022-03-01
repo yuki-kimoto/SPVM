@@ -1388,8 +1388,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t var_name_length_without_sigil = compiler->bufptr - cur_token_ptr;
             int32_t var_name_length = var_name_length_without_sigil + 1;
 
-            SPVM_STRING* var_name_string = SPVM_STRING_new(compiler, (char*)(cur_token_ptr - 1), var_name_length);
+            int32_t memory_blocks_count_compile_tmp_var_name_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
+            char* var_name_tmp = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, 1 + var_name_length_without_sigil + 1);
+            var_name_tmp[0] = '$';
+            memcpy(&var_name_tmp[1], cur_token_ptr, var_name_length_without_sigil);
+            var_name_tmp[1 + var_name_length_without_sigil] = '\0';
+            
+            SPVM_STRING* var_name_string = SPVM_STRING_new(compiler, var_name_tmp, 1 + var_name_length_without_sigil);
             const char* var_name = var_name_string->value;
+            
+            SPVM_ALLOCATOR_free_block_compile_tmp(compiler, var_name_tmp);
+            assert(compiler->allocator->memory_blocks_count_compile_tmp == memory_blocks_count_compile_tmp_var_name_tmp);
 
             if (have_brace) {
               if (*compiler->bufptr == '}') {
