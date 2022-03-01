@@ -22,11 +22,10 @@
 #include "spvm_my.h"
 #include "spvm_api.h"
 #include "spvm_opcode_array.h"
-#include "spvm_constant.h"
-
 #include "spvm_compiler.h"
 #include "spvm_switch_info.h"
 #include "spvm_case_info.h"
+#include "spvm_string.h"
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   
@@ -2440,17 +2439,16 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_CONSTANT_STRING: {
-        int32_t constant_id = opcode->operand1;
-        SPVM_CONSTANT* constant = class->info_constants->values[constant_id];
-        const char* string_value = constant->value.oval;
+        int32_t string_id = opcode->operand2;
+        SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->strings, string_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_raw(env, \"");
-        for (int32_t i = 0; i < constant->string_length; i++) {
-          SPVM_STRING_BUFFER_add_hex_char(string_buffer, string_value[i]);
+        for (int32_t i = 0; i < constant_string->length; i++) {
+          SPVM_STRING_BUFFER_add_hex_char(string_buffer, constant_string->value[i]);
         }
         SPVM_STRING_BUFFER_add(string_buffer, "\", ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, constant->string_length);
+        SPVM_STRING_BUFFER_add_int(string_buffer, constant_string->length);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (string == NULL) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for string\");\n");
