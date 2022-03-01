@@ -13,6 +13,5 @@ struct spvm_constant {
 };
 
 SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler);
-SPVM_CONSTANT* SPVM_CONSTANT_create_int_1(SPVM_COMPILER* compiler);
 
 #endif
