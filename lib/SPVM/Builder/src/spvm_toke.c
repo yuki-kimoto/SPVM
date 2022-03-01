@@ -1303,11 +1303,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
         SPVM_STRING* string_literal_string = SPVM_STRING_new(compiler, string_literal_tmp, string_literal_length);
         const char* string_literal = string_literal_string->value;
-        
-        SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, string_literal, string_literal_length, compiler->cur_file, compiler->cur_line);
-        
+
         SPVM_ALLOCATOR_free_block_compile_tmp(compiler, string_literal_tmp);
         assert(compiler->allocator->memory_blocks_count_compile_tmp == memory_blocks_count_compile_tmp);
+        
+        SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, string_literal, string_literal_length, compiler->cur_file, compiler->cur_line);
         
         yylvalp->opval = op_constant;
         
@@ -1580,29 +1580,25 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           char *end;
-          // Constant op
-          SPVM_OP* op_constant;
+          SPVM_VALUE num;
           
           // float
           if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-            double num = strtof(num_str, &end);
+            num.dval = strtof(num_str, &end);
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid float literal at %s line %d", compiler->cur_file, compiler->cur_line);
             }
-            op_constant = SPVM_OP_new_op_constant_float(compiler, (float)num, compiler->cur_file, compiler->cur_line);
           }
           // double
           else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
             
-            double num = strtod(num_str, &end);
+            num.dval = strtod(num_str, &end);
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid double literal at %s line %d", compiler->cur_file, compiler->cur_line);
             }
-            op_constant = SPVM_OP_new_op_constant_double(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // int
           else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-            int64_t num;
             errno = 0;
             int32_t out_of_range = 0;
             int32_t invalid = 0;
@@ -1628,14 +1624,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               else if (unum > UINT32_MAX || errno == ERANGE) {
                 out_of_range = 1;
               }
-              num = (int64_t)unum;
+              num.lval = (int64_t)unum;
             }
             else {
-              num = (int64_t)strtoll(num_str, &end, 10);
+              num.lval = (int64_t)strtoll(num_str, &end, 10);
               if (*end != '\0') {
                 invalid = 1;
               }
-              else if (num < INT32_MIN || num > INT32_MAX || errno == ERANGE) {
+              else if (num.lval < INT32_MIN || num.lval > INT32_MAX || errno == ERANGE) {
                 out_of_range = 1;
               }
             }
@@ -1646,11 +1642,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             else if (out_of_range) {
               SPVM_COMPILER_error(compiler, "int literal out of range at %s line %d", compiler->cur_file, compiler->cur_line);
             }
-            op_constant = SPVM_OP_new_op_constant_int(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           // long
           else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-            int64_t num;
             errno = 0;
             int32_t out_of_range = 0;
             int32_t invalid = 0;
@@ -1676,14 +1670,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               else if (unum > UINT64_MAX || errno == ERANGE) {
                 out_of_range = 1;
               }
-              num = (int64_t)unum;
+              num.lval = (int64_t)unum;
             }
             else {
-              num = (int64_t)strtoll(num_str, &end, 10);
+              num.lval = (int64_t)strtoll(num_str, &end, 10);
               if (*end != '\0') {
                 invalid = 1;
               }
-              else if (num < INT64_MIN || num > INT64_MAX || errno == ERANGE) {
+              else if (num.lval < INT64_MIN || num.lval > INT64_MAX || errno == ERANGE) {
                 out_of_range = 1;
               }
             }
@@ -1694,15 +1688,27 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             else if (out_of_range) {
               SPVM_COMPILER_error(compiler, "long literal out of range at %s line %d", compiler->cur_file, compiler->cur_line);
             }
-            op_constant = SPVM_OP_new_op_constant_long(compiler, num, compiler->cur_file, compiler->cur_line);
           }
           else {
             assert(0);
           }
-
           SPVM_ALLOCATOR_free_block_compile_tmp(compiler, num_str);
           assert(compiler->allocator->memory_blocks_count_compile_tmp == num_str_memoyr_blocks_count);
 
+          // Constant op
+          SPVM_OP* op_constant;
+          if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+            op_constant = SPVM_OP_new_op_constant_float(compiler, (float)num.dval, compiler->cur_file, compiler->cur_line);
+          }
+          else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+            op_constant = SPVM_OP_new_op_constant_double(compiler, num.dval, compiler->cur_file, compiler->cur_line);
+          }
+          else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+            op_constant = SPVM_OP_new_op_constant_int(compiler, num.lval, compiler->cur_file, compiler->cur_line);
+          }
+          else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+            op_constant = SPVM_OP_new_op_constant_long(compiler, num.lval, compiler->cur_file, compiler->cur_line);
+          }
           
           yylvalp->opval = op_constant;
           
