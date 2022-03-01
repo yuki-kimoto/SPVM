@@ -691,110 +691,96 @@ SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   return op_stab;
 }
 
-SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_constant(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
+  assert(constant);
+  op_constant->uv.constant = constant;
+  constant->op_constant = op_constant;
+  
+  return op_constant;
+}
+
+SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, const char* file, int32_t line) {
+  SPVM_OP* op_constant = SPVM_OP_new_op_constant(compiler, file, line);
+  SPVM_CONSTANT* constant = op_constant->uv.constant;
   
   constant->value.bval = value;
   SPVM_OP* op_constant_type = SPVM_OP_new_op_byte_type(compiler, file, line);
   constant->type = op_constant_type->uv.type;
   
-  op_constant->uv.constant = constant;
-
-  constant->op_constant = op_constant;
-  
   return op_constant;
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_short(SPVM_COMPILER* compiler, int16_t value, const char* file, int32_t line) {
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
-  SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
+  SPVM_OP* op_constant = SPVM_OP_new_op_constant(compiler, file, line);
+  SPVM_CONSTANT* constant = op_constant->uv.constant;
   
   constant->value.sval = value;
   SPVM_OP* op_constant_type = SPVM_OP_new_op_short_type(compiler, file, line);
   constant->type = op_constant_type->uv.type;
   
-  op_constant->uv.constant = constant;
-
-  constant->op_constant = op_constant;
-  
   return op_constant;
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, const char* file, int32_t line) {
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
-  SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
+  SPVM_OP* op_constant = SPVM_OP_new_op_constant(compiler, file, line);
+  SPVM_CONSTANT* constant = op_constant->uv.constant;
+  
+  assert(op_constant->uv.constant);
   
   constant->value.ival = value;
   SPVM_OP* op_constant_type = SPVM_OP_new_op_int_type(compiler, file, line);
   constant->type = op_constant_type->uv.type;
   
-  op_constant->uv.constant = constant;
-
-  constant->op_constant = op_constant;
-  
   return op_constant;
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, const char* file, int32_t line) {
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
-  SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
+  SPVM_OP* op_constant = SPVM_OP_new_op_constant(compiler, file, line);
+  SPVM_CONSTANT* constant = op_constant->uv.constant;
   
   constant->value.lval = value;
   SPVM_OP* op_constant_type = SPVM_OP_new_op_long_type(compiler, file, line);
   constant->type = op_constant_type->uv.type;
   
-  op_constant->uv.constant = constant;
-
-  constant->op_constant = op_constant;
-  
   return op_constant;
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, const char* file, int32_t line) {
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
-  SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
+  SPVM_OP* op_constant = SPVM_OP_new_op_constant(compiler, file, line);
+  SPVM_CONSTANT* constant = op_constant->uv.constant;
   
   constant->value.fval = value;
   SPVM_OP* op_constant_type = SPVM_OP_new_op_float_type(compiler, file, line);
   constant->type = op_constant_type->uv.type;
   
-  op_constant->uv.constant = constant;
-
-  constant->op_constant = op_constant;
-  
   return op_constant;
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, const char* file, int32_t line) {
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
-  SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
+  SPVM_OP* op_constant = SPVM_OP_new_op_constant(compiler, file, line);
+  SPVM_CONSTANT* constant = op_constant->uv.constant;
   
   constant->value.dval = value;
   SPVM_OP* op_constant_type = SPVM_OP_new_op_double_type(compiler, file, line);
   constant->type = op_constant_type->uv.type;
   
-  op_constant->uv.constant = constant;
-  
-  constant->op_constant = op_constant;
-  
   return op_constant;
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, const char* string, int32_t length, const char* file, int32_t line) {
+
+  SPVM_OP* op_constant = SPVM_OP_new_op_constant(compiler, file, line);
+  SPVM_CONSTANT* constant = op_constant->uv.constant;
   
   SPVM_STRING* cached_string_string = SPVM_STRING_new(compiler, string, length);
   const char* cached_string = cached_string_string->value;
 
-  SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
-  SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
   constant->value.oval = (void*)cached_string;
   SPVM_OP* op_constant_type = SPVM_OP_new_op_string_type(compiler, file, line);
   constant->type = op_constant_type->uv.type;
   constant->string_length = length;
-  op_constant->uv.constant = constant;
-  
-  constant->op_constant = op_constant;
   
   return op_constant;
 }
