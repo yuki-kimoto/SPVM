@@ -4,6 +4,7 @@
 #include "spvm_typedecl.h"
 
 struct spvm_allow {
+  SPVM_OP* op_allow;
   SPVM_OP* op_type;
 };
 

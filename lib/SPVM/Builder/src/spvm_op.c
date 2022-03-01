@@ -256,7 +256,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
 int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_class_current, SPVM_OP* op_class_dist) {
   (void)compiler;
   
-  SPVM_LIST* op_allows = op_class_dist->uv.class->op_allows;
+  SPVM_LIST* allows = op_class_dist->uv.class->allows;
   
   const char* current_class_name = op_class_current->uv.class->name;
   const char* dist_class_name = op_class_dist->uv.class->name;
@@ -266,9 +266,8 @@ int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_class_current, S
     is_allowed = 1;
   }
   else {
-    for (int32_t i = 0; i < op_allows->length; i++) {
-      SPVM_OP* op_allow = SPVM_LIST_fetch(op_allows, i);
-      SPVM_ALLOW* allow = op_allow->uv.allow;
+    for (int32_t i = 0; i < allows->length; i++) {
+      SPVM_ALLOW* allow = SPVM_LIST_fetch(allows, i);
       SPVM_OP* op_type = allow->op_type;
       const char* allow_basic_type_name = op_type->uv.type->basic_type->name;
       if (strcmp(current_class_name, allow_basic_type_name) == 0) {
@@ -1915,7 +1914,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       // allow declarations
       else if (op_decl->id == SPVM_OP_C_ID_ALLOW) {
-        SPVM_LIST_push(class->op_allows, op_decl);
+        SPVM_LIST_push(class->allows, op_decl->uv.allow);
       }
       // implement declarations
       else if (op_decl->id == SPVM_OP_C_ID_IMPLEMENT) {
