@@ -32,7 +32,7 @@ struct spvm_class {
   const char* module_file;
   const char* module_rel_file;
   SPVM_LIST* allows;
-  SPVM_LIST* op_implements;
+  SPVM_LIST* implements;
   SPVM_HASH* interface_class_symtable;
   SPVM_LIST* anon_methods;
   int32_t id;

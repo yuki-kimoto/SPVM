@@ -5249,10 +5249,10 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
     
     // Add the interfaces to the class
-    for (int32_t i = 0; i < class->op_implements->length; i++) {
-      SPVM_OP* op_implement = SPVM_LIST_fetch(class->op_implements, i);
-      
-      SPVM_IMPLEMENT* implement = op_implement->uv.implement;
+    for (int32_t i = 0; i < class->implements->length; i++) {
+      SPVM_IMPLEMENT* implement =  SPVM_LIST_fetch(class->implements, i);
+
+      SPVM_OP* op_implement = implement->op_implement;
       
       SPVM_OP* op_type_implement = implement->op_type;
       SPVM_TYPE* implement_type = op_type_implement->uv.type;

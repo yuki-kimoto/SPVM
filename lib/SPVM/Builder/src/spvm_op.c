@@ -1921,7 +1921,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (class->category != SPVM_CLASS_C_CATEGORY_CLASS) {
           SPVM_COMPILER_error(compiler, "Non-noramal classes can't have \"implement\" statements at %s line %d", op_decl->file, op_decl->line);
         }
-        SPVM_LIST_push(class->op_implements, op_decl);
+        SPVM_LIST_push(class->implements, op_decl->uv.implement);
       }
       // Class var declarations
       else if (op_decl->id == SPVM_OP_C_ID_CLASS_VAR) {
@@ -2396,6 +2396,7 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   SPVM_ALLOW* allow = SPVM_ALLOW_new(compiler);
   allow->op_type = op_type;
   op_allow->uv.allow = allow;
+  allow->op_allow = op_allow;
   
   // add use stack
   SPVM_TYPE* type_use = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
@@ -2411,6 +2412,7 @@ SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_implement,
   SPVM_IMPLEMENT* implement = SPVM_IMPLEMENT_new(compiler);
   implement->op_type = op_type;
   op_implement->uv.implement = implement;
+  implement->op_implement = op_implement;
   
   // add use stack
   SPVM_TYPE* type_use = SPVM_TYPE_clone_type(compiler, op_type->uv.type);

@@ -40,7 +40,7 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   class->interface_class_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   
   class->allows = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-  class->op_implements = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  class->implements = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->anon_methods = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   class->class_alias_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
 
