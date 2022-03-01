@@ -1,4 +1,7 @@
 Revision history for SPVM
+0.9508  2021-03-01
+        [CHANGE]
+        * Add "constant_string_length" native API.
 0.9507  2021-02-24
         [CHANGE]
         * SPVM don't support nmake. Already nmake test always fails until now.

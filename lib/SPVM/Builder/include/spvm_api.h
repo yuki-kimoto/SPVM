@@ -328,4 +328,6 @@ void SPVM_API_free_env(SPVM_ENV* env);
 
 int32_t SPVM_API_compiler_get_class_id(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* class_name);
 
+const char* SPVM_API_get_constant_string(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
+
 #endif
