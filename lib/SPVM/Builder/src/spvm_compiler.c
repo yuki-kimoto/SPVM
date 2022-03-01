@@ -31,6 +31,7 @@
 #include "spvm_implement.h"
 #include "spvm_class_var_access.h"
 #include "spvm_constant.h"
+#include "spvm_array_field_access.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_new_block_unmanaged(sizeof(SPVM_COMPILER));
@@ -291,6 +292,12 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
           constant->op_constant = NULL;
           constant->type = NULL;
           SPVM_ALLOCATOR_free_block_compile_tmp(compiler, constant);
+          break;
+        }
+        case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
+          SPVM_ARRAY_FIELD_ACCESS* array_field_access = op->uv.array_field_access;
+          array_field_access->field = NULL;
+          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, array_field_access);
           break;
         }
       }

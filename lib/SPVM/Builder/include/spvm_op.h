@@ -331,6 +331,7 @@ struct spvm_op {
     SPVM_ALLOW* allow;
     SPVM_IMPLEMENT* implement;
     SPVM_CLASS_VAR_ACCESS* class_var_access;
+    SPVM_ARRAY_FIELD_ACCESS* array_field_access;
     SPVM_CONSTANT* constant;
     const char* name;
     SPVM_MY* my;
@@ -344,7 +345,6 @@ struct spvm_op {
     SPVM_CASE_INFO* case_info;
     SPVM_CALL_METHOD* call_method;
     SPVM_FIELD_ACCESS* field_access;
-    SPVM_ARRAY_FIELD_ACCESS* array_field_access;
   } uv;
   int32_t id;
   int32_t flag;
