@@ -475,8 +475,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_LIST_pop(check_ast_info->op_switch_stack);
 
-              op_cur->uv.switch_info->switch_id = class->info_switch_infos->length;
-              SPVM_LIST_push(class->info_switch_infos, op_cur->uv.switch_info);
+              op_cur->uv.switch_info->switch_id = compiler->switch_infos->length;
+              SPVM_LIST_push(compiler->switch_infos, op_cur->uv.switch_info);
               
               // Min
               SPVM_CASE_INFO* case_info_mini = SPVM_LIST_fetch(switch_info->case_infos, 0);

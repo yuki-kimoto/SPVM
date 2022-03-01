@@ -124,6 +124,9 @@ struct spvm_compiler {
   // Field ops
   SPVM_LIST* fields;
   
+  // Switch 
+  SPVM_LIST* switch_infos;
+  
   // module source symtable
   SPVM_HASH* module_source_symtable;
 };

@@ -59,6 +59,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->class_vars = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->module_source_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
+  compiler->switch_infos = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);

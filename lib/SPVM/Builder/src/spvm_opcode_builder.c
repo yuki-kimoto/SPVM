@@ -4090,7 +4090,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           if (default_opcode_rel_index == 0) {
                             default_opcode_rel_index = opcode_array->length - method_opcodes_base;
                           }
-                          SPVM_SWITCH_INFO* default_opcode_rel_index_switch_info = class->info_switch_infos->values[switch_info->switch_id];
+                          SPVM_SWITCH_INFO* default_opcode_rel_index_switch_info = compiler->switch_infos->values[switch_info->switch_id];
                           default_opcode_rel_index_switch_info->default_opcode_rel_index = default_opcode_rel_index;
 
                           // Match values and branchs
