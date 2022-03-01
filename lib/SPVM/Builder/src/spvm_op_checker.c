@@ -3630,13 +3630,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         break;
                       case SPVM_OP_C_ID_CONSTANT: {
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                        
-                        // String
-                        if (SPVM_TYPE_is_string_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                          // Add string constant
-                          op_cur->uv.constant->constant_id = class->info_constants->length;
-                          SPVM_LIST_push(class->info_constants, op_cur->uv.constant);
-                        }
                         break;
                       }
                     }

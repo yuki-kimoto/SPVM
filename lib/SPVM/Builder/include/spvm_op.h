@@ -331,6 +331,7 @@ struct spvm_op {
     SPVM_ALLOW* allow;
     SPVM_IMPLEMENT* implement;
     SPVM_CLASS_VAR_ACCESS* class_var_access;
+    SPVM_CONSTANT* constant;
     const char* name;
     SPVM_MY* my;
     SPVM_TYPE* type;
@@ -339,7 +340,6 @@ struct spvm_op {
     SPVM_CLASS_VAR* class_var;
     SPVM_FIELD* field;
     SPVM_METHOD* method;
-    SPVM_CONSTANT* constant;
     SPVM_SWITCH_INFO* switch_info;
     SPVM_CASE_INFO* case_info;
     SPVM_CALL_METHOD* call_method;

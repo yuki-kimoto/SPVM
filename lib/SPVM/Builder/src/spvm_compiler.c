@@ -286,6 +286,13 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
           SPVM_ALLOCATOR_free_block_compile_tmp(compiler, class_var_access);
           break;
         }
+        case SPVM_OP_C_ID_CONSTANT: {
+          SPVM_CONSTANT* constant = op->uv.constant;
+          constant->op_constant = NULL;
+          constant->type = NULL;
+          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, constant);
+          break;
+        }
       }
     }
   }

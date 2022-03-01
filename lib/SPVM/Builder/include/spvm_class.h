@@ -30,7 +30,6 @@ struct spvm_class {
   SPVM_HASH* field_symtable;
   SPVM_METHOD* method_destructor;
   SPVM_LIST* info_switch_infos;
-  SPVM_LIST* info_constants;
   const char* module_file;
   const char* module_rel_file;
   SPVM_LIST* op_uses;
