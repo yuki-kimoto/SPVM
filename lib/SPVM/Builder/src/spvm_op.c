@@ -1895,7 +1895,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       // use declarations
       if (op_decl->id == SPVM_OP_C_ID_USE) {
         SPVM_OP* op_use = op_decl;
-        SPVM_LIST_push(class->op_uses, op_use);
         
         // Class alias
         SPVM_OP* op_type_alias = op_use->uv.use->op_type_alias;
