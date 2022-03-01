@@ -541,26 +541,33 @@ SPVM_OP* SPVM_OP_new_op_term_mutable_clone(SPVM_COMPILER* compiler, SPVM_OP* ori
   
   SPVM_OP* op_term_mutable;
   switch (original_op_term_mutable->id) {
-    case SPVM_OP_C_ID_VAR:
+    case SPVM_OP_C_ID_VAR: {
       op_term_mutable = SPVM_OP_new_op_var_clone(compiler, original_op_term_mutable, original_op_term_mutable->file, original_op_term_mutable->line);
       break;
-    case SPVM_OP_C_ID_CLASS_VAR_ACCESS:
+    }
+    case SPVM_OP_C_ID_CLASS_VAR_ACCESS: {
       op_term_mutable = SPVM_OP_new_op_class_var_access_clone(compiler, original_op_term_mutable);
       break;
-    case SPVM_OP_C_ID_ARRAY_ACCESS:
+    }
+    case SPVM_OP_C_ID_ARRAY_ACCESS: {
       op_term_mutable = SPVM_OP_new_op_array_access_clone(compiler, original_op_term_mutable);
       break;
-    case SPVM_OP_C_ID_FIELD_ACCESS:
+    }
+    case SPVM_OP_C_ID_FIELD_ACCESS: {
       op_term_mutable = SPVM_OP_new_op_field_access_clone(compiler, original_op_term_mutable);
       break;
-    case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
+    }
+    case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
       op_term_mutable = SPVM_OP_new_op_array_field_access_clone(compiler, original_op_term_mutable);
       break;
-    case SPVM_OP_C_ID_DEREF:
+    }
+    case SPVM_OP_C_ID_DEREF: {
       op_term_mutable = SPVM_OP_new_op_deref_clone(compiler, original_op_term_mutable);
       break;
-    default:
+    }
+    default: {
       assert(0);
+    }
   }
   
   return op_term_mutable;
