@@ -2895,13 +2895,24 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   return op_var;
 }
 
+SPVM_OP* SPVM_OP_new_op_call_method(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+
+  SPVM_OP* op_call_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CALL_METHOD, file, line);
+  
+  SPVM_CALL_METHOD* call_method = SPVM_CALL_METHOD_new(compiler);
+  
+  op_call_method->uv.call_method = call_method;
+  
+  return op_call_method;
+}
+
 SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_name_method, SPVM_OP* op_list_terms) {
   
   // Build OP_METHOD
-  SPVM_OP* op_call_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CALL_METHOD, op_name_method->file, op_name_method->line);
+  SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_name_method->file, op_name_method->line);
   SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_list_terms);
   
-  SPVM_CALL_METHOD* call_method = SPVM_CALL_METHOD_new(compiler);
+  SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
   
   const char* method_name = op_name_method->uv.name;
   
@@ -2935,8 +2946,6 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant
   while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
     op_term->is_passed_to_method = 1;
   }
-  
-  op_call_method->uv.call_method = call_method;
   
   return op_call_method;
 }
