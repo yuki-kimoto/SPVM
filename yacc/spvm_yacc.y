@@ -1047,35 +1047,42 @@ array_access
 call_spvm_method
   : CURRENT_CLASS NAME '(' opt_expressions  ')'
     {
-      $$ = SPVM_OP_build_call_method(compiler, $1, $2, $4);
+      SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_call_method(compiler, op_call_method, $1, $2, $4);
     }
   | CURRENT_CLASS NAME
     {
+      SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_expressions = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
-      $$ = SPVM_OP_build_call_method(compiler, $1, $2, op_expressions);
+      $$ = SPVM_OP_build_call_method(compiler, op_call_method, $1, $2, op_expressions);
     }
   | basic_type ARROW method_name '(' opt_expressions  ')'
     {
-      $$ = SPVM_OP_build_call_method(compiler, $1, $3, $5);
+      SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_call_method(compiler, op_call_method, $1, $3, $5);
     }
   | basic_type ARROW method_name
     {
+      SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_expressions = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
-      $$ = SPVM_OP_build_call_method(compiler, $1, $3, op_expressions);
+      $$ = SPVM_OP_build_call_method(compiler, op_call_method, $1, $3, op_expressions);
     }
   | expression ARROW method_name '(' opt_expressions ')'
     {
-      $$ = SPVM_OP_build_call_method(compiler, $1, $3, $5);
+      SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_call_method(compiler, op_call_method, $1, $3, $5);
     }
   | expression ARROW method_name
     {
+      SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_expressions = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
-      $$ = SPVM_OP_build_call_method(compiler, $1, $3, op_expressions);
+      $$ = SPVM_OP_build_call_method(compiler, op_call_method, $1, $3, op_expressions);
     }
   | expression ARROW '(' opt_expressions ')'
     {
+      SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "", $2->file, $2->line);
-      $$ = SPVM_OP_build_call_method(compiler, $1, op_method_name, $4);
+      $$ = SPVM_OP_build_call_method(compiler, op_call_method, $1, op_method_name, $4);
     }
 
 field_access

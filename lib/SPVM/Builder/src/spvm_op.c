@@ -2906,10 +2906,8 @@ SPVM_OP* SPVM_OP_new_op_call_method(SPVM_COMPILER* compiler, const char* file, i
   return op_call_method;
 }
 
-SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_name_method, SPVM_OP* op_list_terms) {
+SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_OP* op_invocant, SPVM_OP* op_name_method, SPVM_OP* op_list_terms) {
   
-  // Build OP_METHOD
-  SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_name_method->file, op_name_method->line);
   SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_list_terms);
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
