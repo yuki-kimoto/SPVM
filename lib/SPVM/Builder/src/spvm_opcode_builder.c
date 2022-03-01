@@ -2567,8 +2567,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             assert(constant_string);
                             
                             opcode.operand0 = mem_id_out;
-                            opcode.operand1 = constant->constant_id;
-                            opcode.operand2 = constant_string->id;
+                            opcode.operand1 = constant_string->id;
 
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
