@@ -2665,14 +2665,17 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   op_cur = op_constant;
                 }
-                // Constant sub is replaced to constant value
+                // Constant method is replaced to constant value
                 else if (call_method->method->is_constant) {
-                  // Replace sub to constant
-                  op_cur->id = SPVM_OP_C_ID_CONSTANT;
-                  op_cur->uv.constant = call_method->method->op_inline->uv.constant;
+                  // Replace method to constant
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
-                  op_cur->first = NULL;
-                  op_cur->last = NULL;
+                  int32_t value = call_method->method->op_inline->uv.constant->value.ival;
+                  SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, value, op_cur->file, op_cur->line);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_constant);
+                  
+                  op_cur = op_constant;
                 }
                 // Simple constructor is inlined
                 else if (call_method->method->is_simple_constructor) {
