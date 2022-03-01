@@ -1087,7 +1087,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       SPVM_OP* op_term_invoker = SPVM_OP_new_op_var(compiler, op_name_invoker);
                       op_term_invoker->uv.var->my = found_my;
                       SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, found_my->op_name->uv.name + 1, op_cur->file, op_cur->line);
-                      SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_term_invoker, op_name_field);
+                      
+                      SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+                      SPVM_OP_build_field_access(compiler, op_field_access, op_term_invoker, op_name_field);
                       
                       SPVM_OP* op_name_var_capture = SPVM_OP_new_op_name(compiler, found_my->op_name->uv.name, op_cur->file, op_cur->line);
                       SPVM_OP* op_var_capture = SPVM_OP_new_op_var(compiler, op_name_var_capture);
@@ -2381,7 +2383,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_term_invoker = SPVM_OP_new_op_var(compiler, op_name_invoker);
                   op_term_invoker->uv.var->my = arg_first_my;
                   SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, op_cur->uv.var->op_name->uv.name + 1, op_cur->file, op_cur->line);
-                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_term_invoker, op_name_field);
+                  
+                  SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+                  SPVM_OP_build_field_access(compiler, op_field_access, op_term_invoker, op_name_field);
                   op_field_access->uv.field_access->field = found_capture_field;
 
                   op_field_access->is_lvalue = op_cur->is_lvalue;
@@ -2732,7 +2736,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP_cut_op(compiler, call_method->op_invocant);
 
                     SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
-                    SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, call_method->op_invocant, op_name_field_access);
+                    SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+                    SPVM_OP_build_field_access(compiler, op_field_access, call_method->op_invocant, op_name_field_access);
                     op_field_access->uv.field_access->inline_expansion = 1;
 
                     SPVM_OP_replace_op(compiler, op_stab, op_field_access);
@@ -2762,7 +2767,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   const char* field_name = call_method->method->accessor_original_name;
                   SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, call_method->op_invocant, op_name_field_access);
+                  SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+                  SPVM_OP_build_field_access(compiler, op_field_access, call_method->op_invocant, op_name_field_access);
                   op_field_access->uv.field_access->inline_expansion = 1;
                   
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);

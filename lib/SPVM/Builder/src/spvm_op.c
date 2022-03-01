@@ -474,13 +474,16 @@ SPVM_OP* SPVM_OP_new_op_field_access_clone(SPVM_COMPILER* compiler, SPVM_OP* ori
   
   SPVM_OP* op_var_invoker = SPVM_OP_new_op_var_clone_var_or_assign(compiler, original_op_field_access->first);
   
-  
-  
+  SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, original_op_field_access->file, original_op_field_access->line);
+
   SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, original_op_field_access->uv.field_access->op_name->uv.name, original_op_field_access->file, original_op_field_access->line);
-  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_var_invoker, op_name_field);
+  SPVM_OP_build_field_access(compiler, op_field_access, op_var_invoker, op_name_field);
   
-  op_field_access->uv.field_access = original_op_field_access->uv.field_access;
-  
+  op_field_access->uv.field_access->op_term = original_op_field_access->uv.field_access->op_term;
+  op_field_access->uv.field_access->op_name = original_op_field_access->uv.field_access->op_name;
+  op_field_access->uv.field_access->field = original_op_field_access->uv.field_access->field;
+  op_field_access->uv.field_access->inline_expansion = original_op_field_access->uv.field_access->inline_expansion;
+
   return op_field_access;
 }
 
@@ -1653,8 +1656,7 @@ SPVM_OP* SPVM_OP_new_op_field_access(SPVM_COMPILER* compiler, const char* file, 
   return op_field_access;
 }
 
-SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_term, SPVM_OP* op_name_field) {
-  SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_term->file, op_term->line);
+SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access, SPVM_OP* op_term, SPVM_OP* op_name_field) {
   
   SPVM_OP_insert_child(compiler, op_field_access, op_field_access->last, op_term);
   
@@ -2061,7 +2063,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", op_decl->file, op_decl->line);
           SPVM_OP* op_var_self_invocant = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
           SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_var_self_invocant, op_name_field_access);
+          
+          SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_decl->file, op_decl->line);
+
+          SPVM_OP_build_field_access(compiler, op_field_access, op_var_self_invocant, op_name_field_access);
           
           SPVM_OP_insert_child(compiler, op_return, op_return->last, op_field_access);
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
@@ -2107,7 +2112,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", op_decl->file, op_decl->line);
           SPVM_OP* op_var_self_invocant = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
           SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_var_self_invocant, op_name_field_access);
+          SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_decl->file, op_decl->line);
+          SPVM_OP_build_field_access(compiler, op_field_access, op_var_self_invocant, op_name_field_access);
 
           SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);

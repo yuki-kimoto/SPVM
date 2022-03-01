@@ -1077,38 +1077,45 @@ call_spvm_method
       SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "", $2->file, $2->line);
       $$ = SPVM_OP_build_call_method(compiler, $1, op_method_name, $4);
     }
+
 field_access
   : expression ARROW '{' field_name '}'
     {
-      $$ = SPVM_OP_build_field_access(compiler, $1, $4);
+      SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_field_access(compiler, op_field_access, $1, $4);
     }
   | field_access '{' field_name '}'
     {
-      $$ = SPVM_OP_build_field_access(compiler, $1, $3);
+      SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_field_access(compiler, op_field_access, $1, $3);
     }
   | array_access '{' field_name '}'
     {
-      $$ = SPVM_OP_build_field_access(compiler, $1, $3);
+      SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_field_access(compiler, op_field_access, $1, $3);
     }
 
 weaken_field
   : WEAKEN var ARROW '{' field_name '}'
     {
-      SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, $2, $5);
+      SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->cur_file, compiler->cur_line);
+      SPVM_OP_build_field_access(compiler, op_field_access, $2, $5);
       $$ = SPVM_OP_build_weaken_field(compiler, $1, op_field_access);
     }
 
 unweaken_field
   : UNWEAKEN var ARROW '{' field_name '}'
     {
-      SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, $2, $5);
+      SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->cur_file, compiler->cur_line);
+      SPVM_OP_build_field_access(compiler, op_field_access, $2, $5);
       $$ = SPVM_OP_build_unweaken_field(compiler, $1, op_field_access);
     }
 
 isweak_field
   : ISWEAK var ARROW '{' field_name '}'
     {
-      SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, $2, $5);
+      SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->cur_file, compiler->cur_line);
+      SPVM_OP_build_field_access(compiler, op_field_access, $2, $5);
       $$ = SPVM_OP_build_isweak_field(compiler, $1, op_field_access);
     }
 
