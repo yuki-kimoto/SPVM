@@ -3254,10 +3254,7 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
 SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_original) {
   
   // Type
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = op_type_original->uv.type->basic_type;
-  type->dimension = op_type_original->uv.type->dimension;
-  type->flag |= SPVM_TYPE_C_FLAG_REF;
+  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, op_type_original->uv.type->basic_type->id, op_type_original->uv.type->dimension, SPVM_TYPE_C_FLAG_REF);
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_original->file, op_type_original->line);
@@ -3271,10 +3268,7 @@ SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_origin
 SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child) {
   
   // Type
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->dimension = op_type_child->uv.type->dimension;
-  type->basic_type = op_type_child->uv.type->basic_type;
-  type->flag = op_type_child->uv.type->flag | SPVM_TYPE_C_FLAG_MUTABLE;
+  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, op_type_child->uv.type->basic_type->id, op_type_child->uv.type->dimension, op_type_child->uv.type->flag | SPVM_TYPE_C_FLAG_MUTABLE);
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_child->file, op_type_child->line);
@@ -3285,9 +3279,7 @@ SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_ch
 SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child, SPVM_OP* op_term_length) {
   
   // Type
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->dimension = op_type_child->uv.type->dimension + 1;
-  type->basic_type = op_type_child->uv.type->basic_type;
+  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, op_type_child->uv.type->basic_type->id, op_type_child->uv.type->dimension + 1, 0);
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_child->file, op_type_child->line);
