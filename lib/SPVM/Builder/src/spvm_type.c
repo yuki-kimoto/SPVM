@@ -370,16 +370,6 @@ int32_t SPVM_TYPE_has_interface(
   }
 }
 
-SPVM_TYPE* SPVM_TYPE_clone_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
-  SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
-  new_type->basic_type = type->basic_type;
-  new_type->dimension = type->dimension;
-  new_type->flag = type->flag;
-  new_type->is_self = type->is_self;
-  
-  return new_type;
-}
-
 int32_t SPVM_TYPE_get_type_name_length(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   assert(basic_type);

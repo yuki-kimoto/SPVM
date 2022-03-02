@@ -2241,7 +2241,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_MY* arg_my_first = SPVM_LIST_fetch(method->args, 0);
           SPVM_OP* op_arg_first_type = NULL;
           if (arg_my_first->type->is_self) {
-            SPVM_TYPE* arg_invocant_type = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
+            SPVM_TYPE* arg_invocant_type = op_type->uv.type;
             op_arg_first_type = SPVM_OP_new_op_type(compiler, arg_invocant_type, method->op_method->file, method->op_method->line);
             arg_my_first->type = op_arg_first_type->uv.type;
             assert(arg_invocant_type->basic_type);
@@ -2399,7 +2399,7 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   allow->op_allow = op_allow;
   
   // add use stack
-  SPVM_TYPE* type_use = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
+  SPVM_TYPE* type_use = op_type->uv.type;
   SPVM_OP* op_type_use = SPVM_OP_new_op_type(compiler, type_use, op_type->file, op_type->line);
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_type->file, op_type->line);
   SPVM_OP_build_use(compiler, op_use, op_type_use, NULL, 0);
@@ -2415,7 +2415,7 @@ SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_implement,
   implement->op_implement = op_implement;
   
   // add use stack
-  SPVM_TYPE* type_use = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
+  SPVM_TYPE* type_use = op_type->uv.type;
   SPVM_OP* op_type_use = SPVM_OP_new_op_type(compiler, type_use, op_type->file, op_type->line);
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_type->file, op_type->line);
   SPVM_OP_build_use(compiler, op_use, op_type_use, NULL, 0);
