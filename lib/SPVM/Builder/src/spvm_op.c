@@ -3297,6 +3297,20 @@ SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_origin
   return op_type;
 }
 
+SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child) {
+  
+  // Type
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  type->dimension = op_type_child->uv.type->dimension;
+  type->basic_type = op_type_child->uv.type->basic_type;
+  type->flag = op_type_child->uv.type->flag | SPVM_TYPE_C_FLAG_MUTABLE;
+  
+  // Type OP
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_child->file, op_type_child->line);
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child, SPVM_OP* op_term_length) {
   
   // Type

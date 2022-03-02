@@ -507,4 +507,6 @@ SPVM_OP* SPVM_OP_new_op_array_field_access(SPVM_COMPILER* compiler, const char* 
 SPVM_OP* SPVM_OP_new_op_field_access(SPVM_COMPILER* compiler, const char* file, int32_t line);
 SPVM_OP* SPVM_OP_new_op_call_method(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
+SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child);
+
 #endif

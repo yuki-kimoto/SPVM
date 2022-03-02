@@ -386,13 +386,18 @@ int32_t SPVM_TYPE_get_type_name_length(SPVM_COMPILER* compiler, int32_t basic_ty
   
   int32_t length = 0;
   
+  // *
+  if (flag & SPVM_TYPE_C_FLAG_MUTABLE) {
+    length += strlen("mutable ");
+  }
+  
   // Basic type
   length += strlen(basic_type->name);
   
   // []
   length += dimension * 2;
   
-  // Back slash
+  // *
   if (flag & SPVM_TYPE_C_FLAG_REF) {
     length += 1;
   }
@@ -413,8 +418,14 @@ const char* SPVM_TYPE_new_type_name_with_eternal_flag(SPVM_COMPILER* compiler, i
   else {
     type_name = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, type_name_length + 1);
   }
+  
   char* cur = type_name;
 
+  if (flag & SPVM_TYPE_C_FLAG_MUTABLE) {
+    sprintf(cur, "mutable ");
+    cur += strlen("mutable ");
+  }
+  
   sprintf(cur, "%s", basic_type->name);
   cur += strlen(basic_type->name);
   
@@ -432,7 +443,7 @@ const char* SPVM_TYPE_new_type_name_with_eternal_flag(SPVM_COMPILER* compiler, i
   
   *cur = '\0';
   cur++;
-  
+
   return type_name;
 }
 

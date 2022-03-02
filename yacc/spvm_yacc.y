@@ -1173,8 +1173,7 @@ var
 qualified_type
   : type
   | MUTABLE type {
-    $2->uv.type->flag |= SPVM_TYPE_C_FLAG_MUTABLE;
-    $$ = $2;
+    $$ = SPVM_OP_build_mutable_type(compiler, $2);
   }
 
 type
