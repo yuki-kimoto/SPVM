@@ -304,8 +304,6 @@ SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, const cha
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
   op_type->uv.type = type;
   
-  type->op_type = op_type;
-  
   SPVM_LIST_push(compiler->op_types, op_type);
   
   return op_type;
@@ -3249,8 +3247,6 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
     type->basic_type = new_basic_type;
   }
   
-  type->op_type = op_type;
-  
   return op_type;
 }
 
@@ -3263,8 +3259,6 @@ SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_origin
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_original->file, op_type_original->line);
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_type_original);
 
-  type->op_type = op_type;
-  
   return op_type;
 }
 
