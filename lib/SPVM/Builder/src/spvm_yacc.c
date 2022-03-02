@@ -3898,7 +3898,7 @@ yyreduce:
   case 224:
 #line 1175 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-    (yyvsp[0].opval)->uv.type->is_mutable = 1;
+    (yyvsp[0].opval)->uv.type->flag |= SPVM_TYPE_C_FLAG_MUTABLE;
     (yyval.opval) = (yyvsp[0].opval);
   }
 #line 3905 "spvm_yacc.tab.c" /* yacc.c:1646  */

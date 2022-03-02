@@ -7,6 +7,7 @@
 
 enum {
   SPVM_TYPE_C_FLAG_REF = 1,
+  SPVM_TYPE_C_FLAG_MUTABLE = 2,
 };
 
 enum {
@@ -53,7 +54,6 @@ struct spvm_type {
   int8_t is_self;
   int8_t is_class_alias;
   int8_t is_maybe_class_alias;
-  int8_t is_mutable;
 };
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
