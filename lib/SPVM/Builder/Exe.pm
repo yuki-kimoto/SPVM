@@ -656,9 +656,6 @@ sub compile_spvm_core_sources {
 
   my @spvm_core_source_files = map { "$spvm_core_source_dir/$_" } @$spvm_runtime_src_base_names;
 
-  my $spvm_core_header_file_names = SPVM::Builder::Util::get_spvm_core_header_file_names();
-  my @spvm_core_header_files = map { "$spvm_core_header_dir/$_" } @$spvm_core_header_file_names;
-  
   # Object dir
   my $object_dir = $self->builder->create_build_object_path;
   mkpath $object_dir;
@@ -674,7 +671,6 @@ sub compile_spvm_core_sources {
     my $object_file_info = $self->compile_source_file({
       source_file => $src_file,
       output_file => $object_file,
-      depend_files => [@spvm_core_header_files]
     });
     push @$object_file_infos, $object_file_info;
   }
