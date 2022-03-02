@@ -225,34 +225,23 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_TYPE* type_term_element = SPVM_OP_get_type(compiler, op_term_element);
 
                 // Create element type
-                SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
-                type_element->basic_type = type_term_element->basic_type;
-                type_element->dimension = type_term_element->dimension;
-                op_type_element = SPVM_OP_new_op_type(compiler, type_element, file, line);
+                op_type_element = SPVM_OP_new_op_type(compiler, type_term_element, file, line);
                 
                 // Create array type
-                SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
-                type_new->basic_type = type_term_element->basic_type;
-                type_new->dimension = type_term_element->dimension + 1;
+                SPVM_TYPE* type_new = SPVM_TYPE_new2(compiler, type_term_element->basic_type->id, type_term_element->dimension + 1, 0);
                 op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
               }
               else if (length == 0) {
                 op_type_element = SPVM_OP_new_op_any_object_type(compiler, op_cur->file, op_cur->line);
                 SPVM_TYPE* type_element = op_type_element->uv.type;
-                SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
-                type_new->basic_type = type_element->basic_type;
-                type_new->dimension = type_element->dimension + 1;
+                SPVM_TYPE* type_new = SPVM_TYPE_new2(compiler, type_element->basic_type->id, type_element->dimension + 1, 0);
                 op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
               }
               else {
                 assert(0);
               }
               
-              SPVM_TYPE* type_var_tmp_new = SPVM_TYPE_new(compiler);
-              type_var_tmp_new->basic_type =op_type_new->uv.type->basic_type;
-              type_var_tmp_new->dimension = op_type_new->uv.type->dimension;
-              type_var_tmp_new->flag = op_type_new->uv.type->flag;
-              SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, type_var_tmp_new, file, line);
+              SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, op_type_new->uv.type, file, line);
               
               SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
@@ -1053,11 +1042,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     
                     SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                     SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                    SPVM_TYPE* type_var_tmp_new = SPVM_TYPE_new(compiler);
-                    type_var_tmp_new->basic_type = op_type->uv.type->basic_type;
-                    type_var_tmp_new->dimension = op_type->uv.type->dimension;
-                    type_var_tmp_new->flag = op_type->uv.type->flag;
-                    SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, type_var_tmp_new, file, line);
+                    SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, op_type->uv.type, file, line);
                     
                     SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
 
@@ -2524,27 +2509,16 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_TYPE* vaarg_last_arg_type = vaarg_last_arg_my->type;
 
                 // Create new type
-                SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
-                type_new->basic_type = vaarg_last_arg_type->basic_type;
-                type_new->dimension = vaarg_last_arg_type->dimension;
-                type_new->flag = vaarg_last_arg_type->flag;
-                SPVM_OP* op_type_new = SPVM_OP_new_op_type(compiler, type_new, op_cur->file, op_cur->line);
+                SPVM_OP* op_type_new = SPVM_OP_new_op_type(compiler, vaarg_last_arg_type, op_cur->file, op_cur->line);
                 
                 // Create element type
-                SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
-                type_element->basic_type = vaarg_last_arg_type->basic_type;
-                type_element->dimension = vaarg_last_arg_type->dimension - 1;
-                type_element->flag = vaarg_last_arg_type->flag;
+                SPVM_TYPE* type_element = SPVM_TYPE_new2(compiler, vaarg_last_arg_type->basic_type->id, vaarg_last_arg_type->dimension - 1, vaarg_last_arg_type->flag);
                 SPVM_OP* op_type_element = SPVM_OP_new_op_type(compiler, type_element, op_cur->file, op_cur->line);
                 
                 // Sequence
                 SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                 SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                SPVM_TYPE* type_var_tmp_new = SPVM_TYPE_new(compiler);
-                type_var_tmp_new->basic_type = type_new->basic_type;
-                type_var_tmp_new->dimension = type_new->dimension;
-                type_var_tmp_new->flag = type_new->flag;
-                SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, type_var_tmp_new, file, line);
+                SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, op_type_new->uv.type, file, line);
                 
                 SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
 
@@ -2693,12 +2667,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_cur->file, op_cur->line);
                   op_new->flag |= SPVM_OP_C_FLAG_NEW_INLINE;
                   
-                  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-                  type->basic_type = type_original->basic_type;
-                  type->dimension = type_original->dimension;
-                  type->flag = type_original->flag;
-                  
-                  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_cur->file, op_cur->line);
+                  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type_original, op_cur->file, op_cur->line);
                   op_new = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
                   
                   SPVM_OP_CHECKER_check_tree(compiler, op_new, check_ast_info);
