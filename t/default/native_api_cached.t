@@ -6,11 +6,12 @@ use warnings;
 use Config;
 
 use Test::More;
+use Time::HiRes 'sleep';
 
 use FindBin;
 
 # Wait 2 seconds because the time in 1 secend is not detected.
-my $wait_time = 2;
+my $wait_time = 1.1;
 
 my $compile_native_api_prgoram = "$^X -Mblib $FindBin::Bin/compile_native_api.pl";
 
