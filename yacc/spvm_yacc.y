@@ -187,7 +187,7 @@ use
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2, NULL, 0);
     }
-  | USE basic_type AS basic_type';'
+  | USE basic_type AS NAME ';'
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2, $4, 0);
     }

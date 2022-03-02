@@ -8,7 +8,7 @@ struct spvm_use {
   int32_t is_require;
   int32_t load_fail;
   const char* file;
-  SPVM_OP* op_type_alias;
+  const char* class_alias_name;
 };
 
 SPVM_USE* SPVM_USE_new(SPVM_COMPILER* compiler);

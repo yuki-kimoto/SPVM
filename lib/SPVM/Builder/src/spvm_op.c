@@ -1896,13 +1896,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_OP* op_use = op_decl;
         
         // Class alias
-        SPVM_OP* op_type_alias = op_use->uv.use->op_type_alias;
-        if (op_type_alias) {
+        const char* class_alias_name = op_use->uv.use->class_alias_name;
+        if (class_alias_name) {
           SPVM_OP* op_type = op_use->uv.use->op_type;
           const char* use_class_name = op_type->uv.type->basic_type->name;
-          
-          const char* class_alias_name = op_type_alias->uv.type->basic_type->name;
-          
           const char* use_class_name_exists = SPVM_HASH_fetch(class->class_alias_symtable, class_alias_name, strlen(class_alias_name));
           if (use_class_name_exists) {
             SPVM_COMPILER_error(compiler, "Class alias name \"%s\" is already used at %s line %d", class_alias_name, op_decl->file, op_decl->line);
@@ -2368,22 +2365,21 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   return op_class;
 }
 
-SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_type_alias, int32_t is_require) {
+SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_name_class_alias, int32_t is_require) {
   
   SPVM_USE* use = op_use->uv.use;
   use->op_type = op_type;
   use->is_require = is_require;
   
-  if (op_type_alias) {
-    const char* class_alias_name = op_type_alias->uv.type->basic_type->name;
-    op_type_alias->uv.type->is_class_alias = 1;
+  if (op_name_class_alias) {
+    const char* class_alias_name = op_name_class_alias->uv.name;
     
     // Class name must start with upper case, otherwise compiler error occur.
     // (Invalid example) Foo::bar
     if (islower(class_alias_name[0])) {
-      SPVM_COMPILER_error(compiler, "Class alias name \"%s\" must start with upper case at %s line %d", class_alias_name, op_type_alias->file, op_type_alias->line);
+      SPVM_COMPILER_error(compiler, "Class alias name \"%s\" must start with upper case at %s line %d", class_alias_name, op_name_class_alias->file, op_name_class_alias->line);
     }
-    use->op_type_alias = op_type_alias;
+    use->class_alias_name = class_alias_name;
   }
 
   SPVM_LIST_push(compiler->op_use_stack, op_use);

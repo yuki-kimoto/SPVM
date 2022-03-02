@@ -4716,10 +4716,7 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     
     SPVM_TYPE* type = op_type->uv.type;
 
-    if (type->is_self) {
-      continue;
-    }
-    else if (type->is_class_alias) {
+    if (!type->basic_type) {
       continue;
     }
     else if (type->is_maybe_class_alias) {
