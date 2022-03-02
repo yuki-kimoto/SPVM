@@ -228,13 +228,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 op_type_element = SPVM_OP_new_op_type(compiler, type_term_element, file, line);
                 
                 // Create array type
-                SPVM_TYPE* type_new = SPVM_TYPE_new2(compiler, type_term_element->basic_type->id, type_term_element->dimension + 1, 0);
+                SPVM_TYPE* type_new = SPVM_TYPE_new(compiler, type_term_element->basic_type->id, type_term_element->dimension + 1, 0);
                 op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
               }
               else if (length == 0) {
                 op_type_element = SPVM_OP_new_op_any_object_type(compiler, op_cur->file, op_cur->line);
                 SPVM_TYPE* type_element = op_type_element->uv.type;
-                SPVM_TYPE* type_new = SPVM_TYPE_new2(compiler, type_element->basic_type->id, type_element->dimension + 1, 0);
+                SPVM_TYPE* type_new = SPVM_TYPE_new(compiler, type_element->basic_type->id, type_element->dimension + 1, 0);
                 op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
               }
               else {
@@ -2512,7 +2512,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_type_new = SPVM_OP_new_op_type(compiler, vaarg_last_arg_type, op_cur->file, op_cur->line);
                 
                 // Create element type
-                SPVM_TYPE* type_element = SPVM_TYPE_new2(compiler, vaarg_last_arg_type->basic_type->id, vaarg_last_arg_type->dimension - 1, vaarg_last_arg_type->flag);
+                SPVM_TYPE* type_element = SPVM_TYPE_new(compiler, vaarg_last_arg_type->basic_type->id, vaarg_last_arg_type->dimension - 1, vaarg_last_arg_type->flag);
                 SPVM_OP* op_type_element = SPVM_OP_new_op_type(compiler, type_element, op_cur->file, op_cur->line);
                 
                 // Sequence

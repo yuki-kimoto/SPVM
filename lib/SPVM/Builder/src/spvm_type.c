@@ -447,7 +447,7 @@ const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_
   return SPVM_TYPE_new_type_name_with_eternal_flag(compiler, basic_type_id, dimension, flag, is_eternal);
 }
 
-SPVM_TYPE* SPVM_TYPE_new2(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   int32_t start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
   
@@ -490,7 +490,7 @@ SPVM_TYPE* SPVM_TYPE_create_void_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_VOID);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -501,7 +501,7 @@ SPVM_TYPE* SPVM_TYPE_create_oarray_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_OARRAY);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -512,7 +512,7 @@ SPVM_TYPE* SPVM_TYPE_create_undef_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_UNDEF);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -523,7 +523,7 @@ SPVM_TYPE* SPVM_TYPE_create_byte_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BYTE);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -535,7 +535,7 @@ SPVM_TYPE* SPVM_TYPE_create_short_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_SHORT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -546,7 +546,7 @@ SPVM_TYPE* SPVM_TYPE_create_int_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -558,7 +558,7 @@ SPVM_TYPE* SPVM_TYPE_create_long_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_LONG);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -569,7 +569,7 @@ SPVM_TYPE* SPVM_TYPE_create_float_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -580,7 +580,7 @@ SPVM_TYPE* SPVM_TYPE_create_double_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -591,7 +591,7 @@ SPVM_TYPE* SPVM_TYPE_create_string_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_STRING);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -602,7 +602,7 @@ SPVM_TYPE* SPVM_TYPE_create_object_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -613,7 +613,7 @@ SPVM_TYPE* SPVM_TYPE_create_byte_object_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -624,7 +624,7 @@ SPVM_TYPE* SPVM_TYPE_create_short_object_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -635,7 +635,7 @@ SPVM_TYPE* SPVM_TYPE_create_int_object_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -646,7 +646,7 @@ SPVM_TYPE* SPVM_TYPE_create_long_object_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_LONG_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -657,7 +657,7 @@ SPVM_TYPE* SPVM_TYPE_create_float_object_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -668,7 +668,7 @@ SPVM_TYPE* SPVM_TYPE_create_double_object_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -679,7 +679,7 @@ SPVM_TYPE* SPVM_TYPE_create_bool_object_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BOOL_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -690,7 +690,7 @@ SPVM_TYPE* SPVM_TYPE_create_byte_ref_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BYTE);
   int32_t type_dimension = 0;
   int32_t type_flag = SPVM_TYPE_C_FLAG_REF;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -701,7 +701,7 @@ SPVM_TYPE* SPVM_TYPE_create_short_ref_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_SHORT);
   int32_t type_dimension = 0;
   int32_t type_flag = SPVM_TYPE_C_FLAG_REF;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -712,7 +712,7 @@ SPVM_TYPE* SPVM_TYPE_create_int_ref_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT);
   int32_t type_dimension = 0;
   int32_t type_flag = SPVM_TYPE_C_FLAG_REF;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -723,7 +723,7 @@ SPVM_TYPE* SPVM_TYPE_create_long_ref_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_LONG);
   int32_t type_dimension = 0;
   int32_t type_flag = SPVM_TYPE_C_FLAG_REF;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -734,7 +734,7 @@ SPVM_TYPE* SPVM_TYPE_create_float_ref_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT);
   int32_t type_dimension = 0;
   int32_t type_flag = SPVM_TYPE_C_FLAG_REF;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
 
   return type;
 }
@@ -745,7 +745,7 @@ SPVM_TYPE* SPVM_TYPE_create_double_ref_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE);
   int32_t type_dimension = 0;
   int32_t type_flag = SPVM_TYPE_C_FLAG_REF;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
@@ -756,7 +756,7 @@ SPVM_TYPE* SPVM_TYPE_create_any_object_type(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
-  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
   
   return type;
 }
