@@ -2221,7 +2221,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             assert(arg_invocant_type->basic_type);
           }
           else {
-            op_arg_first_type = arg_my_first->type->op_type;
+            SPVM_OP* op_type_new_arg_my_first = SPVM_OP_new_op_type(compiler, arg_my_first->type, arg_my_first->op_my->file, arg_my_first->op_my->line);
+            op_arg_first_type = op_type_new_arg_my_first;
             assert(op_arg_first_type->uv.type->basic_type);
           }
         }
