@@ -21,7 +21,44 @@ sub need_generate {
   my $config_force = $opt->{config_force};
   my $input_files = $opt->{input_files};
   my $output_file = $opt->{output_file};
-
+  
+  # SPVM::Builder modules
+  my @spvm_core_files;
+  if (my $builder_loaded_file = $INC{'SPVM/Builder.pm'}) {
+    my $builder_loaded_dir = $builder_loaded_file;
+    $builder_loaded_dir =~ s|SPVM/Builder\.pm$||;
+    
+    # SPVM::Builder module files
+    my $spvm_builder_module_file_names = &get_spvm_builder_module_file_names();
+    for my $spvm_builder_module_file_name (@$spvm_builder_module_file_names) {
+      my $module_file = "$builder_loaded_dir/$spvm_builder_module_file_name";
+      unless (-f $module_file) {
+        confess 'Unexpected';
+      }
+      push @spvm_core_files, $module_file;
+    }
+    
+    # SPVM core header files
+    my $spvm_core_header_file_names = &get_spvm_core_header_file_names();
+    for my $spvm_core_header_file_name (@$spvm_core_header_file_names) {
+      my $spvm_core_header_file = "$builder_loaded_dir/SPVM/Builder/include/$spvm_core_header_file_name";
+      unless (-f $spvm_core_header_file) {
+        confess 'Unexpected';
+      }
+      push @spvm_core_files, $spvm_core_header_file;
+    }
+    
+    # SPVM core source files
+    my $spvm_core_source_file_names  = &get_spvm_core_source_file_names();
+    for my $spvm_core_source_file_name (@$spvm_core_source_file_names) {
+      my $spvm_core_source_file = "$builder_loaded_dir/SPVM/Builder/src/$spvm_core_source_file_name";
+      unless (-f $spvm_core_source_file) {
+        confess 'Unexpected';
+      }
+      push @spvm_core_files, $spvm_core_source_file;
+    }
+  }
+  
   my $need_generate;
   if ($global_force) {
     $need_generate = 1;
@@ -36,7 +73,7 @@ sub need_generate {
     else {
       my $input_files_mtime_max = 0;
       my $exists_input_file_at_least_one;
-      for my $input_file (@$input_files) {
+      for my $input_file (@$input_files, @spvm_core_files) {
         if (-f $input_file) {
           $exists_input_file_at_least_one = 1;
           my $input_file_mtime = (stat($input_file))[9];

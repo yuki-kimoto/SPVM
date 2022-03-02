@@ -2,6 +2,7 @@ Revision history for SPVM
 0.9508  2021-03-01
         [CHANGE]
         * Add "constant_string_length" native API.
+        * SPVM::Builder can detect the changed of SPVM::Builder modules and SPVM core header files and source files in all places.
 0.9507  2021-02-24
         [CHANGE]
         * SPVM don't support nmake. Already nmake test always fails until now.
