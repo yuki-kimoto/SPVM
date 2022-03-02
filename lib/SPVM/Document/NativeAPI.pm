@@ -2581,11 +2581,15 @@ Check the class of the object has the interface type.
 
   void* no_symbol_cache_flag;
 
+(Currently Unused)
+
 Used internally.
 
 =head2 set_no_symbol_cache_flag
 
   void (*set_no_symbol_cache_flag)(SPVM_ENV* env, int32_t flag);
+
+(Currently Unused)
 
 Set the flag that precompile and native codes don't use symbol cache such as basic type names, method names, field names, package names.
 
@@ -2596,6 +2600,8 @@ Note that this flag is merely intention for the native module authors. On the ot
 =head2 get_no_symbol_cache_flag
 
   int32_t (*get_no_symbol_cache_flag)(SPVM_ENV* env);
+
+(Currently Unused)
 
 Get the flag that native code doesn't use symbol cache such as basic type names, method names, field names, package names.
 
