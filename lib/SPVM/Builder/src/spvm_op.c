@@ -2611,7 +2611,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   if (!method->is_class_method) {
     SPVM_OP* op_arg_var_name_self = SPVM_OP_new_op_name(compiler, "$self", op_method->file, op_method->line);
     SPVM_OP* op_arg_var_self = SPVM_OP_new_op_var(compiler, op_arg_var_name_self);
-    SPVM_TYPE* self_type = SPVM_TYPE_new(compiler);
+    SPVM_TYPE* self_type = SPVM_TYPE_new2(compiler, 0, 0, 0);
     SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_method->file, op_method->line);
     op_self_type->flag |= SPVM_OP_C_FLAG_TYPE_IS_SELF;
     SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg_var_self, op_self_type, NULL);
