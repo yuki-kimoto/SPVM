@@ -770,9 +770,11 @@ SPVM_TYPE* SPVM_TYPE_create_double_ref_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_create_any_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
-  type->dimension = 0;
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
+  int32_t type_dimension = 0;
+  int32_t type_flag = 0;
+  
+  SPVM_TYPE* type = SPVM_TYPE_new2(compiler, basic_type->id, type_dimension, type_flag);
   
   assert(type);
   
