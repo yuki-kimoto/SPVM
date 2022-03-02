@@ -284,6 +284,24 @@ sub create_class_make_rule {
   return $make_rule;
 }
 
+sub get_spvm_builder_module_file_names {
+  my @spvm_builder_module_file_names = qw(
+    SPVM/Builder/Exe.pm
+    SPVM/Builder/API.pm
+    SPVM/Builder/Util/API.pm
+    SPVM/Builder/Config/Exe.pm
+    SPVM/Builder/LinkInfo.pm
+    SPVM/Builder/Generator/Lib.pm
+    SPVM/Builder/Config.pm
+    SPVM/Builder/CC.pm
+    SPVM/Builder/ObjectFileInfo.pm
+    SPVM/Builder/Util.pm
+    SPVM/Builder.pm
+  );
+  
+  return \@spvm_builder_module_file_names;
+}
+
 sub get_spvm_core_source_file_names {
   
   my @spvm_core_source_file_names = qw(
