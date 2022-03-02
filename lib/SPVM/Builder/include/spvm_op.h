@@ -316,6 +316,7 @@ enum {
 enum {
   // ARRAY_INIT flag
   SPVM_OP_C_FLAG_TYPE_MUTABLE = 1,
+  SPVM_OP_C_FLAG_TYPE_IS_MAYBE_CLASS_ALIAS = 2,
 };
 
 /* Binary operation */
