@@ -52,8 +52,6 @@ struct spvm_type {
   int32_t flag;
 };
 
-SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
-
 int32_t SPVM_TYPE_has_callback(
   SPVM_COMPILER* compiler,
   int32_t class_basic_type_id, int32_t class_type_dimension, int32_t class_type_flag,
