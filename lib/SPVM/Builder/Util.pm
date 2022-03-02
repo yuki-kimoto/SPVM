@@ -24,6 +24,7 @@ sub need_generate {
   
   # SPVM::Builder modules
   my @spvm_core_files;
+  my $spvm_core_files_mtime_max;
   if (my $builder_loaded_file = $INC{'SPVM/Builder.pm'}) {
     my $builder_loaded_dir = $builder_loaded_file;
     $builder_loaded_dir =~ s|SPVM/Builder\.pm$||;
@@ -57,8 +58,16 @@ sub need_generate {
       }
       push @spvm_core_files, $spvm_core_source_file;
     }
+    
+    $spvm_core_files_mtime_max = 0;
+    for my $spvm_core_file (@spvm_core_files) {
+      my $spvm_core_file_mtime = (stat($spvm_core_file))[9];
+      if ($spvm_core_file_mtime > $spvm_core_files_mtime_max) {
+        $spvm_core_files_mtime_max = $spvm_core_file_mtime;
+      }
+    }
   }
-  
+
   my $need_generate;
   if ($global_force) {
     $need_generate = 1;
@@ -73,7 +82,7 @@ sub need_generate {
     else {
       my $input_files_mtime_max = 0;
       my $exists_input_file_at_least_one;
-      for my $input_file (@$input_files, @spvm_core_files) {
+      for my $input_file (@$input_files) {
         if (-f $input_file) {
           $exists_input_file_at_least_one = 1;
           my $input_file_mtime = (stat($input_file))[9];
@@ -84,6 +93,13 @@ sub need_generate {
       }
       if ($exists_input_file_at_least_one) {
         my $output_file_mtime = (stat($output_file))[9];
+        
+        if (defined $spvm_core_files_mtime_max) {
+          if ($spvm_core_files_mtime_max > $input_files_mtime_max) {
+            $input_files_mtime_max = $spvm_core_files_mtime_max;
+          }
+        }
+        
         if ($input_files_mtime_max > $output_file_mtime) {
           $need_generate = 1;
         }
