@@ -3228,15 +3228,14 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   
   const char* name = op_name->uv.name;
   
-  // Type op
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_name->file, op_name->line);
-  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
+  SPVM_OP* op_type;
   
   // Add basic type
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, name, strlen(name));
   if (found_basic_type) {
-    type->basic_type = found_basic_type;
+    // Type op
+    SPVM_TYPE* type = SPVM_TYPE_new2(compiler, found_basic_type->id, 0, 0);
+    op_type = SPVM_OP_new_op_type(compiler, type, op_name->file, op_name->line);
   }
   else {
     SPVM_BASIC_TYPE* new_basic_type = SPVM_BASIC_TYPE_new(compiler);
@@ -3244,9 +3243,13 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
     new_basic_type->name = name;
     SPVM_LIST_push(compiler->basic_types, new_basic_type);
     SPVM_HASH_insert(compiler->basic_type_symtable, new_basic_type->name, strlen(new_basic_type->name), new_basic_type);
-    type->basic_type = new_basic_type;
+
+    SPVM_TYPE* type = SPVM_TYPE_new2(compiler, new_basic_type->id, 0, 0);
+    op_type = SPVM_OP_new_op_type(compiler, type, op_name->file, op_name->line);
   }
   
+  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
+
   return op_type;
 }
 
