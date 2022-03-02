@@ -2124,7 +2124,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, capture_my->op_my->file, capture_my->op_my->line);
           SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, capture_my->op_name->uv.name + 1, capture_my->op_my->file, capture_my->op_my->line);
           
-          SPVM_OP_build_has(compiler, op_field, op_name_field, NULL, capture_my->type->op_type);
+          SPVM_TYPE* type_new_capture_my = SPVM_TYPE_new2(compiler, capture_my->type->basic_type->id, capture_my->type->dimension, capture_my->type->flag);
+          SPVM_OP* op_type_new_capture_my = SPVM_OP_new_op_type(compiler, type_new_capture_my, capture_my->op_my->file, capture_my->op_my->line);
+          SPVM_OP_build_has(compiler, op_field, op_name_field, NULL, op_type_new_capture_my);
           SPVM_LIST_push(class->fields, op_field->uv.field);
           op_field->uv.field->is_captured = 1;
         }
