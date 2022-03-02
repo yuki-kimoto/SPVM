@@ -424,9 +424,9 @@ const char* SPVM_TYPE_new_type_name_with_eternal_flag(SPVM_COMPILER* compiler, i
     cur += 2;
   }
 
-  // Back slash
+  // Reference
   if (flag & SPVM_TYPE_C_FLAG_REF) {
-    sprintf(cur, "&");
+    sprintf(cur, "*");
     cur += 1;
   }
   
