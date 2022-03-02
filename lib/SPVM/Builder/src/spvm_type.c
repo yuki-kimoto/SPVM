@@ -400,13 +400,19 @@ int32_t SPVM_TYPE_get_type_name_length(SPVM_COMPILER* compiler, int32_t basic_ty
   return length;
 }
 
-const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+const char* SPVM_TYPE_new_type_name_with_eternal_flag(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag, int32_t is_eternal) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   assert(basic_type);
   
   int32_t type_name_length = SPVM_TYPE_get_type_name_length(compiler, basic_type_id, dimension, flag);
   
-  char* type_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, type_name_length + 1);
+  char* type_name;
+  if (is_eternal) {
+    type_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, type_name_length + 1);
+  }
+  else {
+    type_name = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, type_name_length + 1);
+  }
   char* cur = type_name;
 
   sprintf(cur, "%s", basic_type->name);
@@ -430,8 +436,47 @@ const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_
   return type_name;
 }
 
+const char* SPVM_TYPE_new_type_name_tmp(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  int32_t is_eternal = 0;
+  return SPVM_TYPE_new_type_name_with_eternal_flag(compiler, basic_type_id, dimension, flag, is_eternal);
+}
+
+const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  int32_t is_eternal = 1;
+  return SPVM_TYPE_new_type_name_with_eternal_flag(compiler, basic_type_id, dimension, flag, is_eternal);
+}
+
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_TYPE));
+  
+  return type;
+}
+
+SPVM_TYPE* SPVM_TYPE_new2(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  
+  int32_t start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
+  
+  const char* type_name = SPVM_TYPE_new_type_name_tmp(compiler,  basic_type_id, dimension, flag);
+  
+  SPVM_TYPE* found_type = SPVM_HASH_fetch(compiler->type_symtable, type_name, strlen(type_name));
+  SPVM_TYPE* type;
+  if (found_type) {
+    type = found_type;
+  }
+  else {
+    type = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_TYPE));
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+    type->basic_type = basic_type;
+    type->dimension = dimension;
+    type->flag = flag;
+    type->type_name = SPVM_TYPE_new_type_name(compiler,  basic_type_id, dimension, flag);
+    SPVM_LIST_push(compiler->types, type);
+    SPVM_HASH_insert(compiler->type_symtable, type_name, strlen(type_name), type);
+  }
+  
+  SPVM_ALLOCATOR_free_block_compile_tmp(compiler, (void*)type_name);
+  type_name = NULL;
+  assert(compiler->allocator->memory_blocks_count_compile_tmp == start_memory_blocks_count_compile_tmp);
   
   return type;
 }

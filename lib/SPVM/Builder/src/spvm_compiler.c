@@ -50,6 +50,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   // Eternal information
   compiler->module_dirs = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   compiler->basic_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->basic_type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   compiler->methods = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);

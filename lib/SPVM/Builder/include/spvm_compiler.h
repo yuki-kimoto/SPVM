@@ -103,12 +103,18 @@ struct spvm_compiler {
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
   
-  // Single types
+  // Basic types
   SPVM_LIST* basic_types;
   
-  // Resolved type symbol table
+  // Basic type symbol table
   SPVM_HASH* basic_type_symtable;
-
+  
+  // Types
+  SPVM_LIST* types;
+  
+  // Types symbol table
+  SPVM_HASH* type_symtable;
+  
   // Classes
   SPVM_LIST* classes;
 
