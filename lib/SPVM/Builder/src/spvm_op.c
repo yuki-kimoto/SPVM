@@ -1396,20 +1396,15 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_ARRAY_ACCESS: {
       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op->first);
-      type = SPVM_TYPE_new(compiler);
       SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, first_type->basic_type->name, strlen(first_type->basic_type->name));
       if (basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING && first_type->dimension == 0) {
-        type->basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, "byte", strlen("byte"));
-        type->dimension = 0;
+        type = SPVM_TYPE_create_byte_type(compiler);
       }
       else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_OARRAY && first_type->dimension == 0) {
-        type->basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, "object", strlen("object"));
-        type->dimension = 0;
+        type = SPVM_TYPE_create_any_object_type(compiler);
       }
       else {
-        type->basic_type = basic_type;
-        assert(first_type->dimension > 0);
-        type->dimension = first_type->dimension - 1;
+        type = SPVM_TYPE_new2(compiler, basic_type->id, first_type->dimension - 1, 0);
       }
       
       break;
@@ -1579,12 +1574,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
           type = op_type->uv.type;
           break;
         }
-        default:
+        default: {
           assert(SPVM_TYPE_is_multi_numeric_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag));
-          type = SPVM_TYPE_new(compiler);
-          type->basic_type = term_type->basic_type;
-          type->dimension = term_type->dimension;
-          type->flag = term_type->flag | SPVM_TYPE_C_FLAG_REF;
+          type = SPVM_TYPE_new2(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag | SPVM_TYPE_C_FLAG_REF);
+        }
       }
       break;
     }
@@ -1622,12 +1615,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
           type = op_type->uv.type;
           break;
         }
-        default:
+        default: {
           assert(SPVM_TYPE_is_multi_numeric_ref_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag));
-          type = SPVM_TYPE_new(compiler);
-          type->basic_type = term_type->basic_type;
-          type->dimension = term_type->dimension;
-          type->flag = term_type->flag & ~SPVM_TYPE_C_FLAG_REF;
+          type = SPVM_TYPE_new2(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag & ~SPVM_TYPE_C_FLAG_REF);
+        }
       }
       break;
     }
@@ -1940,11 +1931,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, class_var->name + 1, op_decl->file, op_decl->line);
-          SPVM_TYPE* return_type = SPVM_TYPE_new(compiler);
-          return_type->basic_type =  class_var->type->basic_type;
-          return_type->dimension =  class_var->type->dimension;
-          return_type->flag =  class_var->type->flag;
-          SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type, op_decl->file, op_decl->line);
+          SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, class_var->type, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
           
           SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
@@ -1985,11 +1972,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
 
-          SPVM_TYPE* arg_multi_numeric_type = SPVM_TYPE_new(compiler);
-          arg_multi_numeric_type->basic_type = class_var->type->basic_type;
-          arg_multi_numeric_type->dimension = class_var->type->dimension;
-          arg_multi_numeric_type->flag = class_var->type->flag;
-          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_multi_numeric_type, op_decl->file, op_decl->line);
+          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, class_var->type, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
           SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value, NULL);
@@ -2044,11 +2027,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
-          SPVM_TYPE* return_type = SPVM_TYPE_new(compiler);
-          return_type->basic_type = field->type->basic_type;
-          return_type->dimension = field->type->dimension;
-          return_type->flag = field->type->flag;
-          SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type, op_decl->file, op_decl->line);
+          SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, field->type, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
           
           SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
@@ -2090,11 +2069,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
 
-          SPVM_TYPE* arg_multi_numeric_type = SPVM_TYPE_new(compiler);
-          arg_multi_numeric_type->basic_type = field->type->basic_type;
-          arg_multi_numeric_type->dimension = field->type->dimension;
-          arg_multi_numeric_type->flag = field->type->flag;
-          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_multi_numeric_type, op_decl->file, op_decl->line);
+          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, field->type, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
           SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value, NULL);
