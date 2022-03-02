@@ -51,7 +51,6 @@ struct spvm_type {
   SPVM_BASIC_TYPE* basic_type;
   int32_t dimension;
   int32_t flag;
-  int8_t is_self;
 };
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);

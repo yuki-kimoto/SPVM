@@ -4716,7 +4716,7 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     
     SPVM_TYPE* type = op_type->uv.type;
 
-    if (type->is_self) {
+    if (op_type->flag & SPVM_OP_C_FLAG_TYPE_IS_SELF) {
       continue;
     }
     else if (op_type->flag & SPVM_OP_C_FLAG_TYPE_IS_MAYBE_CLASS_ALIAS) {

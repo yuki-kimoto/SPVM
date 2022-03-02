@@ -2237,7 +2237,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (method->args->length > 0) {
           SPVM_MY* arg_my_first = SPVM_LIST_fetch(method->args, 0);
           SPVM_OP* op_arg_first_type = NULL;
-          if (arg_my_first->type->is_self) {
+          if (!method->is_class_method) {
             SPVM_TYPE* arg_invocant_type = op_type->uv.type;
             op_arg_first_type = SPVM_OP_new_op_type(compiler, arg_invocant_type, method->op_method->file, method->op_method->line);
             arg_my_first->type = op_arg_first_type->uv.type;
@@ -2636,8 +2636,8 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_OP* op_arg_var_name_self = SPVM_OP_new_op_name(compiler, "$self", op_method->file, op_method->line);
     SPVM_OP* op_arg_var_self = SPVM_OP_new_op_var(compiler, op_arg_var_name_self);
     SPVM_TYPE* self_type = SPVM_TYPE_new(compiler);
-    self_type->is_self = 1;
     SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_method->file, op_method->line);
+    op_self_type->flag |= SPVM_OP_C_FLAG_TYPE_IS_SELF;
     SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg_var_self, op_self_type, NULL);
     SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_self);
   }
