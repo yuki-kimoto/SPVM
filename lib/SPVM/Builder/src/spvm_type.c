@@ -261,7 +261,7 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_VOID;
   }
   else {
-    assert(0);
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_UNKNOWN;
   }
   
   return type_category;
@@ -465,6 +465,7 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t
     type->dimension = dimension;
     type->flag = flag;
     type->type_name = SPVM_TYPE_new_type_name(compiler,  basic_type_id, dimension, flag);
+
     SPVM_LIST_push(compiler->types, type);
     SPVM_HASH_insert(compiler->type_symtable, type_name, strlen(type_name), type);
   }

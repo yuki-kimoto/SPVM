@@ -3476,8 +3476,8 @@ void SPVM_OP_CHECKER_apply_binary_numeric_convertion(SPVM_COMPILER* compiler, SP
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
-  // Resolve types
-  SPVM_OP_CHECKER_resolve_types(compiler);
+  // Resolve type ops
+  SPVM_OP_CHECKER_resolve_op_types(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
   }
@@ -3494,6 +3494,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     return;
   }
   
+  // Resolve types
+  SPVM_OP_CHECKER_resolve_types(compiler);
+
   // Check trees
   {
     int32_t class_index;
@@ -4675,7 +4678,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
   return op_src;
 }
 
-void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
+void SPVM_OP_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
 
   SPVM_LIST* op_types = compiler->op_types;
   
@@ -4726,6 +4729,18 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
       SPVM_COMPILER_error(compiler, "The mutable type qualifier can use only string type at %s line %d", op_type->file, op_type->line);
       return;
     }
+  }
+}
+
+void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
+
+  SPVM_LIST* types = compiler->types;
+  
+  // Check type names
+  for (int32_t i = 0; i < types->length; i++) {
+    SPVM_TYPE* type = SPVM_LIST_fetch(types, i);
+    type->category = SPVM_TYPE_get_type_category(compiler, type->basic_type->id, type->dimension, type->flag);
+    type->width = SPVM_TYPE_get_width(compiler, type->basic_type->id, type->dimension, type->flag);
   }
 }
 
