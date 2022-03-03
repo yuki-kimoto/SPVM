@@ -429,17 +429,11 @@ SPVM_OP* SPVM_OP_new_op_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_cl
 SPVM_OP* SPVM_OP_new_op_var_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_var, const char* file, int32_t line) {
   (void)compiler;
   
-  SPVM_VAR* var = SPVM_VAR_new(compiler);
-  SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
+  SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, original_op_var->uv.var->name, file, line);
+  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name);
+  SPVM_VAR* var = op_var->uv.var;
   
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
-  op_name->uv.name = original_op_var->uv.var->name;
-  var->op_name = op_name;
-  var->name = op_name->uv.name;
   var->my = original_op_var->uv.var->my;
-  op_var->uv.var = var;
-  
-  assert(original_op_var->uv.var != op_var->uv.var);
   
   return op_var;
 }
