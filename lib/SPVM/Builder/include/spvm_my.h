@@ -6,7 +6,7 @@
 struct spvm_my {
   SPVM_OP* op_my;
   SPVM_TYPE* type;
-  SPVM_OP* op_name;
+  SPVM_VAR* var;
   int32_t id;
   int32_t mem_id;
   int32_t type_category;

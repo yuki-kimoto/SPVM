@@ -1051,13 +1051,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     // Check capture variable exists
                     for (int32_t caputre_index = 0; caputre_index < anon_method->captures->length; caputre_index++) {
                       SPVM_MY* capture_my = SPVM_LIST_fetch(anon_method->captures, caputre_index);
-                      const char* capture_name = capture_my->op_name->uv.name;
+                      const char* capture_name = capture_my->var->name;
 
                       // Search same name variable
                       SPVM_MY* found_my = NULL;
                       for (int32_t stack_my_index = check_ast_info->my_stack->length - 1; stack_my_index >= 0; stack_my_index--) {
                         SPVM_MY* my = SPVM_LIST_fetch(check_ast_info->my_stack, stack_my_index);
-                        if (strcmp(capture_name, my->op_name->uv.name) == 0) {
+                        if (strcmp(capture_name, my->var->name) == 0) {
                           found_my = my;
                           break;
                         }
@@ -1071,16 +1071,16 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       SPVM_OP* op_name_invoker = SPVM_OP_new_op_name(compiler, op_var_tmp_new->uv.var->name , op_cur->file, op_cur->line);
                       SPVM_OP* op_term_invoker = SPVM_OP_new_op_var(compiler, op_name_invoker);
                       op_term_invoker->uv.var->my = found_my;
-                      SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, found_my->op_name->uv.name + 1, op_cur->file, op_cur->line);
+                      SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, found_my->var->name + 1, op_cur->file, op_cur->line);
                       
                       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
                       SPVM_OP_build_field_access(compiler, op_field_access, op_term_invoker, op_name_field);
                       
-                      SPVM_OP* op_name_var_capture = SPVM_OP_new_op_name(compiler, found_my->op_name->uv.name, op_cur->file, op_cur->line);
+                      SPVM_OP* op_name_var_capture = SPVM_OP_new_op_name(compiler, found_my->var->name, op_cur->file, op_cur->line);
                       SPVM_OP* op_var_capture = SPVM_OP_new_op_var(compiler, op_name_var_capture);
                       op_var_capture->uv.var->my = found_my;
 
-                      SPVM_FIELD* capture_field = SPVM_HASH_fetch(new_class->field_symtable, found_my->op_name->uv.name + 1, strlen(found_my->op_name->uv.name) - 1);
+                      SPVM_FIELD* capture_field = SPVM_HASH_fetch(new_class->field_symtable, found_my->var->name + 1, strlen(found_my->var->name) - 1);
                       op_field_access->uv.field_access->field = capture_field;
                       
                       SPVM_OP* op_assign_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
@@ -2309,9 +2309,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   for (i = block_my_base; i < check_ast_info->my_stack->length; i++) {
                     SPVM_MY* bef_my = SPVM_LIST_fetch(check_ast_info->my_stack, i);
                     
-                    if (strcmp(my->op_name->uv.name, bef_my->op_name->uv.name) == 0) {
+                    if (strcmp(my->var->name, bef_my->var->name) == 0) {
                       // Temporaly variable is not duplicated
-                      if (my->op_name->uv.name[0] != '@') {
+                      if (my->var->name[0] != '@') {
                         found = 1;
                       }
                       break;
@@ -2320,7 +2320,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 if (found) {
-                  SPVM_COMPILER_error(compiler, "redeclaration of my \"%s\" at %s line %d", my->op_name->uv.name, my->op_my->file, my->op_my->line);
+                  SPVM_COMPILER_error(compiler, "redeclaration of my \"%s\" at %s line %d", my->var->name, my->op_my->file, my->op_my->line);
                   return;
                 }
                 else {
@@ -2345,7 +2345,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 for (i = check_ast_info->my_stack->length - 1; i >= 0; i--) {
                   SPVM_MY* my = SPVM_LIST_fetch(check_ast_info->my_stack, i);
                   assert(my);
-                  if (strcmp(var->name, my->op_name->uv.name) == 0) {
+                  if (strcmp(var->name, my->var->name) == 0) {
                     found_my = my;
                     break;
                   }
@@ -2364,7 +2364,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   // Capture var is converted to field access
                   SPVM_MY* arg_first_my = SPVM_LIST_fetch(method->args, 0);
                   assert(arg_first_my);
-                  SPVM_OP* op_name_invoker = SPVM_OP_new_op_name(compiler, arg_first_my->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_OP* op_name_invoker = SPVM_OP_new_op_name(compiler, arg_first_my->var->name, op_cur->file, op_cur->line);
                   SPVM_OP* op_term_invoker = SPVM_OP_new_op_var(compiler, op_name_invoker);
                   op_term_invoker->uv.var->my = arg_first_my;
                   SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, op_cur->uv.var->name + 1, op_cur->file, op_cur->line);
@@ -4235,7 +4235,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               }
                               case SPVM_BASIC_TYPE_C_ID_INT: {
                                 mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, int_mem_stack, my);
-                                if (strcmp(my->op_name->uv.name, "@condition_flag") == 0) {
+                                if (strcmp(my->var->name, "@condition_flag") == 0) {
                                   assert(mem_id == 0);
                                 }
                                 break;

@@ -433,7 +433,7 @@ SPVM_OP* SPVM_OP_new_op_var_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_
   SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
   
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
-  op_name->uv.name = original_op_var->uv.var->my->op_name->uv.name;
+  op_name->uv.name = original_op_var->uv.var->name;
   var->op_name = op_name;
   var->name = op_name->uv.name;
   var->my = original_op_var->uv.var->my;
@@ -2122,7 +2122,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_MY* capture_my = SPVM_LIST_fetch(captures, i);
           
           SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, capture_my->op_my->file, capture_my->op_my->line);
-          SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, capture_my->op_name->uv.name + 1, capture_my->op_my->file, capture_my->op_my->line);
+          SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, capture_my->var->name + 1, capture_my->op_my->file, capture_my->op_my->line);
           
           SPVM_TYPE* type_new_capture_my = SPVM_TYPE_new(compiler, capture_my->type->basic_type->id, capture_my->type->dimension, capture_my->type->flag);
           SPVM_OP* op_type_new_capture_my = SPVM_OP_new_op_type(compiler, type_new_capture_my, capture_my->op_my->file, capture_my->op_my->line);
@@ -2669,7 +2669,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
         SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, i);
         assert(arg_my);
         SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, arg_my, arg_my->op_my->file, arg_my->op_my->line);
-        SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_my->uv.my->op_name);
+        SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_my->uv.my->var->op_name);
         op_var->uv.var->my = arg_my;
         op_var->uv.var->is_declaration = 1;
         op_var->uv.var->is_arg = 1;
@@ -2862,7 +2862,7 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   // Name OP
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
   op_name->uv.name = op_var->uv.var->name;
-  my->op_name = op_name;
+  my->var = op_var->uv.var;
 
   op_var->uv.var->my = my;
 
