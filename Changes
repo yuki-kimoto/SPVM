@@ -1,7 +1,7 @@
 Revision history for SPVM
 0.9508  2021-03-03
         [CHANGE]
-        * Add "constant_string_length" native API.
+        * Add "get_constant_string" native API.
         * SPVM::Builder can detect the changed of SPVM::Builder modules and SPVM core header files and source files in all places.
         * Native API's no_symbol_cache_flag, set_no_symbol_cache_flag, get_no_symbol_cache_flag are currently unused.
           By this, the peformance of calling methods is down, however, I plan to fix the performance in the future release.
