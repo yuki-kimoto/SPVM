@@ -2598,7 +2598,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_COMPILER_error(compiler, "Native method can't have block at %s line %d", op_block->file, op_block->line);
   }
   
-  // sub args
+  // method args
   if (!op_args) {
     op_args = SPVM_OP_new_op_list(compiler, op_method->file, op_method->line);
   }
@@ -2620,6 +2620,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
       SPVM_LIST_push(method->args, op_arg->uv.var->my);
+      SPVM_LIST_push(method->arg_types, op_arg->uv.var->my->type);
       method_index++;
     }
   }
@@ -2636,6 +2637,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+      SPVM_LIST_push(method->mys, op_arg->uv.var->my);
       SPVM_LIST_push(method->mys, op_arg->uv.var->my);
     }
   }
