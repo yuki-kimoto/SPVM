@@ -1458,7 +1458,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
     for (int32_t arg_index = 0; arg_index < method->args->length; arg_index++) {
       SPVM_MY* arg = SPVM_LIST_fetch(method->args, arg_index);
       
-      int32_t type_width = arg->type_width;
+      int32_t type_width = arg->type->width;
       switch (arg->type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
           byte_vars[arg->mem_id] = *(int8_t*)&stack[stack_index];

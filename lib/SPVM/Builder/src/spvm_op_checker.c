@@ -38,7 +38,9 @@
 void SPVM_OP_CHECKER_free_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_MY* my) {
   (void)compiler;
   
-  int32_t width = my->type_width;
+  SPVM_TYPE* my_type = my->type;
+  
+  int32_t width = SPVM_TYPE_get_width(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
 
   for (int32_t mem_id = 0; mem_id < mem_stack->length; mem_id++) {
     int32_t my_id = (intptr_t)SPVM_LIST_fetch(mem_stack, mem_id);
@@ -55,7 +57,9 @@ int32_t SPVM_OP_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack
   
   int32_t found_mem_id = -1;
   
-  int32_t width = my->type_width;
+  SPVM_TYPE* my_type = my->type;
+
+  int32_t width = SPVM_TYPE_get_width(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
   
   // Search free memory
   int32_t found = 0;
@@ -3899,13 +3903,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
               SPVM_LIST_free(op_block_stack);
             }
-          }
-
-          // Resolve my type category and width
-          for (int32_t my_index = 0; my_index < method->mys->length; my_index++) {
-            SPVM_MY* my = SPVM_LIST_fetch(method->mys, my_index);
-            SPVM_TYPE* my_type = my->type;
-            my->type_width = SPVM_TYPE_get_width(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
           }
 
           // Arg alloc length
