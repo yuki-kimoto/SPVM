@@ -4,6 +4,7 @@
 #include "spvm_typedecl.h"
 
 struct spvm_var {
+  const char* name;
   SPVM_OP* op_name;
   SPVM_MY* my;
   int8_t is_declaration;

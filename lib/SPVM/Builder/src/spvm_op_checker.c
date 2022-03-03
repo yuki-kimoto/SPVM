@@ -1068,7 +1068,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       }
                       
                       // Create field assignment
-                      SPVM_OP* op_name_invoker = SPVM_OP_new_op_name(compiler, op_var_tmp_new->uv.var->op_name->uv.name , op_cur->file, op_cur->line);
+                      SPVM_OP* op_name_invoker = SPVM_OP_new_op_name(compiler, op_var_tmp_new->uv.var->name , op_cur->file, op_cur->line);
                       SPVM_OP* op_term_invoker = SPVM_OP_new_op_var(compiler, op_name_invoker);
                       op_term_invoker->uv.var->my = found_my;
                       SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, found_my->op_name->uv.name + 1, op_cur->file, op_cur->line);
@@ -2345,7 +2345,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 for (i = check_ast_info->my_stack->length - 1; i >= 0; i--) {
                   SPVM_MY* my = SPVM_LIST_fetch(check_ast_info->my_stack, i);
                   assert(my);
-                  if (strcmp(var->op_name->uv.name, my->op_name->uv.name) == 0) {
+                  if (strcmp(var->name, my->op_name->uv.name) == 0) {
                     found_my = my;
                     break;
                   }
@@ -2358,7 +2358,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               else {
                 // Variable is capture var
-                SPVM_FIELD* found_capture_field = SPVM_HASH_fetch(class->field_symtable, var->op_name->uv.name + 1, strlen(var->op_name->uv.name) - 1);
+                SPVM_FIELD* found_capture_field = SPVM_HASH_fetch(class->field_symtable, var->name + 1, strlen(var->name) - 1);
                 if (found_capture_field && found_capture_field->is_captured) {
                   
                   // Capture var is converted to field access
@@ -2367,7 +2367,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_name_invoker = SPVM_OP_new_op_name(compiler, arg_first_my->op_name->uv.name, op_cur->file, op_cur->line);
                   SPVM_OP* op_term_invoker = SPVM_OP_new_op_var(compiler, op_name_invoker);
                   op_term_invoker->uv.var->my = arg_first_my;
-                  SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, op_cur->uv.var->op_name->uv.name + 1, op_cur->file, op_cur->line);
+                  SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, op_cur->uv.var->name + 1, op_cur->file, op_cur->line);
                   
                   SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
                   SPVM_OP_build_field_access(compiler, op_field_access, op_term_invoker, op_name_field);
@@ -2392,7 +2392,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 else {
                   // Variable is class var
-                  SPVM_OP* op_name_class_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_OP* op_name_class_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->name, op_cur->file, op_cur->line);
                   SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var);
                   
                   op_class_var_access->is_lvalue = op_cur->is_lvalue;
@@ -2416,7 +2416,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "Local variable %s is not declared at %s line %d", var->op_name->uv.name, op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Local variable %s is not declared at %s line %d", var->name, op_cur->file, op_cur->line);
                     return;
                   }
                 }

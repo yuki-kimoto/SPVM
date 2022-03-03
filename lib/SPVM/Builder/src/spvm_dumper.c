@@ -79,7 +79,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     }
     else if (id == SPVM_OP_C_ID_VAR) {
       SPVM_VAR* var = op_cur->uv.var;
-      printf(" \"%s\"", var->op_name->uv.name);
+      printf(" \"%s\"", var->name);
       if (var->my) {
         printf(" (my->id:%d) declaration : %d", var->my->id, op_cur->uv.var->is_declaration);
       }

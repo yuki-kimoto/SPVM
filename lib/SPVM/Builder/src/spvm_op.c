@@ -407,6 +407,7 @@ SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
 
   SPVM_VAR* var = SPVM_VAR_new(compiler);
   var->op_name = op_name;
+  var->name = op_name->uv.name;
   op_var->uv.var = var;
   
   return op_var;
@@ -434,6 +435,7 @@ SPVM_OP* SPVM_OP_new_op_var_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = original_op_var->uv.var->my->op_name->uv.name;
   var->op_name = op_name;
+  var->name = op_name->uv.name;
   var->my = original_op_var->uv.var->my;
   op_var->uv.var = var;
   
@@ -2859,7 +2861,7 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   
   // Name OP
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
-  op_name->uv.name = op_var->uv.var->op_name->uv.name;
+  op_name->uv.name = op_var->uv.var->name;
   my->op_name = op_name;
 
   op_var->uv.var->my = my;
