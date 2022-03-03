@@ -231,111 +231,108 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   }
 
   // Cleanup ops
-  {
-    {
-      int32_t class_index;
-      for (class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-        SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
-        class->op_class = NULL;
-        class->op_name = NULL;
-        
-        SPVM_LIST_free(class->allows);
-        
-        SPVM_LIST* methods = class->methods;
-        {
-          int32_t method_index;
-          for (method_index = 0; method_index < methods->length; method_index++) {
-            SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
-            method->op_method = NULL;
-            method->op_name = NULL;
-            method->op_block = NULL;
-            method->op_inline = NULL;
-            method->op_list_tmp_mys = NULL;
-            method->op_my_condition_flag = NULL;
-          }
-        }
+  for (int32_t i = 0; i < compiler->ops->length; i++) {
+    SPVM_OP* op = SPVM_LIST_fetch(compiler->ops, i);
+    int32_t op_id = op->id;
+    switch(op_id) {
+      case SPVM_OP_C_ID_BLOCK: {
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, op->uv.block);
+        break;
       }
-    }
-    for (int32_t i = 0; i < compiler->ops->length; i++) {
-      SPVM_OP* op = SPVM_LIST_fetch(compiler->ops, i);
-      int32_t op_id = op->id;
-      switch(op_id) {
-        case SPVM_OP_C_ID_BLOCK: {
-          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, op->uv.block);
-          break;
-        }
-        case SPVM_OP_C_ID_DESCRIPTOR: {
-          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, op->uv.descriptor);
-          break;
-        }
-        case SPVM_OP_C_ID_USE: {
-          SPVM_USE* use = op->uv.use;
-          use->op_type = NULL;
-          use->class_alias_name = NULL;
-          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, use);
-          break;
-        }
-        case SPVM_OP_C_ID_ALLOW: {
-          SPVM_ALLOW* allow = op->uv.allow;
-          allow->op_type = NULL;
-          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, allow);
-          break;
-        }
-        case SPVM_OP_C_ID_IMPLEMENT: {
-          SPVM_IMPLEMENT* implement = op->uv.implement;
-          implement->op_type = NULL;
-          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, implement);
-          break;
-        }
-        case SPVM_OP_C_ID_CLASS_VAR_ACCESS: {
-          SPVM_CLASS_VAR_ACCESS* class_var_access = op->uv.class_var_access;
-          class_var_access->op_name = NULL;
-          class_var_access->class_var = NULL;
-          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, class_var_access);
-          break;
-        }
-        case SPVM_OP_C_ID_CONSTANT: {
-          SPVM_CONSTANT* constant = op->uv.constant;
-          constant->op_constant = NULL;
-          constant->type = NULL;
-          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, constant);
-          break;
-        }
-        case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
-          SPVM_ARRAY_FIELD_ACCESS* array_field_access = op->uv.array_field_access;
-          array_field_access->field = NULL;
-          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, array_field_access);
-          break;
-        }
-        case SPVM_OP_C_ID_FIELD_ACCESS: {
-          SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
-          field_access->op_term = NULL;
-          field_access->op_name = NULL;
-          field_access->field = NULL;
-          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, field_access);
-          break;
-        }
-        case SPVM_OP_C_ID_CALL_METHOD: {
-          SPVM_CALL_METHOD* call_method = op->uv.call_method;
-          call_method->op_invocant = NULL;
-          call_method->op_name = NULL;
-          call_method->method = NULL;
-          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, call_method);
-          break;
-        }
-        case SPVM_OP_C_ID_VAR: {
-          SPVM_VAR* var = op->uv.var;
-          var->op_name = NULL;
-          var->name = NULL;
-          var->my = NULL;
-          var->call_method = NULL;
-          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, var);
-          break;
-        }
+      case SPVM_OP_C_ID_DESCRIPTOR: {
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, op->uv.descriptor);
+        break;
+      }
+      case SPVM_OP_C_ID_USE: {
+        SPVM_USE* use = op->uv.use;
+        use->op_type = NULL;
+        use->class_alias_name = NULL;
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, use);
+        break;
+      }
+      case SPVM_OP_C_ID_ALLOW: {
+        SPVM_ALLOW* allow = op->uv.allow;
+        allow->op_type = NULL;
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, allow);
+        break;
+      }
+      case SPVM_OP_C_ID_IMPLEMENT: {
+        SPVM_IMPLEMENT* implement = op->uv.implement;
+        implement->op_type = NULL;
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, implement);
+        break;
+      }
+      case SPVM_OP_C_ID_CLASS_VAR_ACCESS: {
+        SPVM_CLASS_VAR_ACCESS* class_var_access = op->uv.class_var_access;
+        class_var_access->op_name = NULL;
+        class_var_access->class_var = NULL;
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, class_var_access);
+        break;
+      }
+      case SPVM_OP_C_ID_CONSTANT: {
+        SPVM_CONSTANT* constant = op->uv.constant;
+        constant->op_constant = NULL;
+        constant->type = NULL;
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, constant);
+        break;
+      }
+      case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
+        SPVM_ARRAY_FIELD_ACCESS* array_field_access = op->uv.array_field_access;
+        array_field_access->field = NULL;
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, array_field_access);
+        break;
+      }
+      case SPVM_OP_C_ID_FIELD_ACCESS: {
+        SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
+        field_access->op_term = NULL;
+        field_access->op_name = NULL;
+        field_access->field = NULL;
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, field_access);
+        break;
+      }
+      case SPVM_OP_C_ID_CALL_METHOD: {
+        SPVM_CALL_METHOD* call_method = op->uv.call_method;
+        call_method->op_invocant = NULL;
+        call_method->op_name = NULL;
+        call_method->method = NULL;
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, call_method);
+        break;
+      }
+      case SPVM_OP_C_ID_VAR: {
+        SPVM_VAR* var = op->uv.var;
+        var->op_name = NULL;
+        var->name = NULL;
+        var->my = NULL;
+        var->call_method = NULL;
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, var);
+        break;
       }
     }
   }
   
+  // Clear unused pointers
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
+    class->op_class = NULL;
+    class->op_name = NULL;
+    
+    SPVM_LIST_free(class->allows);
+    
+    SPVM_LIST* methods = class->methods;
+    {
+      int32_t method_index;
+      for (method_index = 0; method_index < methods->length; method_index++) {
+        SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
+        method->op_method = NULL;
+        method->op_name = NULL;
+        method->op_block = NULL;
+        method->op_inline = NULL;
+        method->op_list_tmp_mys = NULL;
+        method->op_my_condition_flag = NULL;
+      }
+    }
+  }
+
   // Free
   SPVM_LIST_free(compiler->op_use_stack);
   compiler->op_use_stack = NULL;
