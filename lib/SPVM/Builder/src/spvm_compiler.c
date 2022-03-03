@@ -229,6 +229,22 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
       }
     }
   }
+  
+  // Create runtime information
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
+    SPVM_LIST* methods = class->methods;
+    {
+      for (int32_t method_index = 0; method_index < methods->length; method_index++) {
+        SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
+        for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
+          SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, args_index);
+          SPVM_LIST_push(method->arg_mem_ids, (void*)(intptr_t)arg_my->mem_id);
+          SPVM_LIST_push(method->arg_types, arg_my->type);
+        }
+      }
+    }
+  }
 
   // Cleanup ops
   for (int32_t i = 0; i < compiler->ops->length; i++) {
