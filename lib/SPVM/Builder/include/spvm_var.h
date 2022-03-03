@@ -8,7 +8,6 @@ struct spvm_var {
   SPVM_OP* op_name;
   SPVM_MY* my;
   int8_t is_declaration;
-  int8_t is_arg;
   int8_t is_initialized;
   SPVM_CALL_METHOD* call_method;
 };

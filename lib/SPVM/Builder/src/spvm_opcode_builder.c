@@ -402,7 +402,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       
                       // Initialized not initialized variable
-                      if (!op_cur->uv.var->is_initialized && !op_cur->uv.var->is_arg) {
+                      if (!op_cur->uv.var->is_initialized && !op_cur->uv.var->my->is_arg) {
                         // Multi numeric type
                         if (SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           SPVM_CLASS* value_class = type->basic_type->class;

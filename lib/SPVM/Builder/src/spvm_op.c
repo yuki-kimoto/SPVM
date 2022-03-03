@@ -2666,7 +2666,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
         SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_my->uv.my->var->op_name);
         op_var->uv.var->my = arg_my;
         op_var->uv.var->is_declaration = 1;
-        op_var->uv.var->is_arg = 1;
+        arg_my->is_arg = 1;
 
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
       }
@@ -2837,7 +2837,7 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   
   op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type, op_descriptors);
   
-  op_var->uv.var->is_arg = 1;
+  my->is_arg = 1;
   
   return op_var;
 }
