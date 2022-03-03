@@ -51,6 +51,7 @@ struct spvm_method {
   void* native_address;
   SPVM_TYPE* return_type;
   SPVM_LIST* args;
+  SPVM_LIST* arg_types;
   const char* name;
   const char* abs_name;
   const char* signature;
