@@ -4279,6 +4279,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                 }
               }
+              
+              for (int32_t i = 0; i < method->args->length; i++) {
+                SPVM_MY* my = SPVM_LIST_fetch(method->args, i);
+                SPVM_LIST_push(method->arg_mem_ids, (void*)(intptr_t)my->mem_id);
+              }
 
               method->byte_vars_alloc_length = byte_mem_stack->length;
               method->short_vars_alloc_length = short_mem_stack->length;

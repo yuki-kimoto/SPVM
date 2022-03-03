@@ -16,6 +16,7 @@ SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   method->args = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   method->mys = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   method->arg_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  method->arg_mem_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   method->object_arg_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   method->captures = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   

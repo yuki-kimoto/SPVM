@@ -35,6 +35,7 @@ struct spvm_method {
   SPVM_TYPE* return_type;
   SPVM_LIST* args;
   SPVM_LIST* arg_types;
+  SPVM_LIST* arg_mem_ids;
   const char* name;
   const char* abs_name;
   const char* signature;
