@@ -3904,17 +3904,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           // Resolve my type width
           for (int32_t my_index = 0; my_index < method->mys->length; my_index++) {
             SPVM_MY* my = SPVM_LIST_fetch(method->mys, my_index);
-            SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, my->op_my);
-            
-            int32_t type_width;
-            if (SPVM_TYPE_is_multi_numeric_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
-              SPVM_CLASS* value_class =  my_type->basic_type->class;
-              type_width = value_class->fields->length;
-            }
-            else {
-              type_width = 1;
-            }
-            my->type_width = type_width;
+            SPVM_TYPE* my_type = my->type;
+            my->type_width = SPVM_TYPE_get_width(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
           }
 
           // Resolve my runtime type
