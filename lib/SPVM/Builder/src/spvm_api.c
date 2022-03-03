@@ -21,6 +21,7 @@
 #include "spvm_field.h"
 #include "spvm_method.h"
 #include "spvm_type.h"
+#include "spvm_my.h"
 #include "spvm_weaken_backref.h"
 #include "spvm_switch_info.h"
 #include "spvm_case_info.h"
@@ -30,8 +31,6 @@
 #include "spvm_object.h"
 #include "spvm_native.h"
 #include "spvm_string.h"
-
-
 
 
 
@@ -1457,11 +1456,11 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   {
     int32_t stack_index = 0;
     for (int32_t arg_index = 0; arg_index < method->args->length; arg_index++) {
-      SPVM_TYPE* arg_type = SPVM_LIST_fetch(method->arg_types, arg_index);
+      SPVM_MY* arg = SPVM_LIST_fetch(method->args, arg_index);
       int32_t arg_mem_id = (intptr_t)SPVM_LIST_fetch(method->arg_mem_ids, arg_index);
       
-      int32_t type_width = arg_type->width;
-      switch (arg_type->category) {
+      int32_t type_width = arg->type->width;
+      switch (arg->type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
           byte_vars[arg_mem_id] = *(int8_t*)&stack[stack_index];
           stack_index++;

@@ -33,6 +33,7 @@
 #include "spvm_use.h"
 #include "spvm_limit.h"
 #include "spvm_allocator.h"
+#include "spvm_my.h"
 
 static const char* MFILE = "SPVM.xs";
 
@@ -268,12 +269,12 @@ call_spvm_method(...)
     SV* sv_value = ST(spvm_args_base + args_index);
     
     // Argument information
-    SPVM_TYPE* arg_type = SPVM_LIST_fetch(method->arg_types, args_index);
-    int32_t arg_basic_type_id = arg_type->basic_type->id;
-    int32_t arg_type_dimension = arg_type->dimension;
+    SPVM_MY* arg = SPVM_LIST_fetch(method->args, args_index);
+    int32_t arg_basic_type_id = arg->type->basic_type->id;
+    int32_t arg_type_dimension = arg->type->dimension;
     
     // Process argument corresponding to the type category
-    switch (arg_type->category) {
+    switch (arg->type->category) {
       // Perl scalar to SPVM byte
       case SPVM_TYPE_C_TYPE_CATEGORY_BYTE : {
         int8_t value = (int8_t)SvIV(sv_value);
@@ -736,7 +737,7 @@ call_spvm_method(...)
                   break;
                 }
                 default: {
-                  if (arg_type->category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
+                  if (arg->type->category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
                     SV* sv_error = NULL;
                     SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
                     const char* arg_basic_type_name = arg_basic_type->name;
@@ -1257,14 +1258,15 @@ call_spvm_method(...)
   if (args_have_ref) {
     for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
       SV* sv_value = ST(spvm_args_base + args_index);
-      SPVM_TYPE* arg_type = SPVM_LIST_fetch(method->arg_types, args_index);
+      
+      SPVM_MY* arg = SPVM_LIST_fetch(method->args, args_index);
       
       // Convert to runtime type
-      int32_t arg_basic_type_id = arg_type->basic_type->id;
-      int32_t arg_type_dimension = arg_type->dimension;
+      int32_t arg_basic_type_id = arg->type->basic_type->id;
+      int32_t arg_type_dimension = arg->type->dimension;
 
       int32_t ref_stack_index = ref_stack_indexes[args_index];
-      switch (arg_type->category) {
+      switch (arg->type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE : {
           SV* sv_value_deref = SvRV(sv_value);
           sv_setiv(sv_value_deref, ref_stack[ref_stack_index].bval);

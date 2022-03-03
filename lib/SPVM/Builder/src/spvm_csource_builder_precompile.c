@@ -19,6 +19,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_field.h"
 #include "spvm_type.h"
+#include "spvm_my.h"
 #include "spvm_api.h"
 #include "spvm_opcode_array.h"
 #include "spvm_compiler.h"
@@ -293,12 +294,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
   {
     int32_t stack_index = 0;
     for (int32_t arg_index = 0; arg_index < method->args->length; arg_index++) {
-      SPVM_TYPE* arg_type = SPVM_LIST_fetch(method->arg_types, arg_index);
+      SPVM_MY* arg = SPVM_LIST_fetch(method->args, arg_index);
       int32_t arg_mem_id = (intptr_t)SPVM_LIST_fetch(method->arg_mem_ids, arg_index);
 
       // Numeric type
-      int32_t type_width = SPVM_TYPE_get_width(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-      switch (arg_type->category) {
+      int32_t type_width = SPVM_TYPE_get_width(compiler, arg->type->basic_type->id, arg->type->dimension, arg->type->flag);
+      switch (arg->type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, arg_mem_id);
