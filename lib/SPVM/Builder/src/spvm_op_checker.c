@@ -3906,12 +3906,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_MY* my = SPVM_LIST_fetch(method->mys, my_index);
             SPVM_TYPE* my_type = my->type;
             my->type_width = SPVM_TYPE_get_width(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
-            my->type_category = SPVM_TYPE_get_type_category(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
           }
 
-          // Resolve return runtime type
-          method->return_type_category = SPVM_TYPE_get_type_category(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag);
-          
           // Arg alloc length
           int32_t args_alloc_length = SPVM_METHOD_get_arg_alloc_length(compiler, method);
           method->args_alloc_length = args_alloc_length;

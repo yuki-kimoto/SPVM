@@ -1260,7 +1260,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
     
     // Increment ref count of return value
     if (!exception_flag) {
-      switch (method->return_type_category) {
+      switch (method->return_type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
@@ -1280,7 +1280,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
 
     // Decrement ref count of return value
     if (!exception_flag) {
-      switch (method->return_type_category) {
+      switch (method->return_type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
@@ -1459,7 +1459,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       SPVM_MY* arg = SPVM_LIST_fetch(method->args, arg_index);
       
       int32_t type_width = arg->type_width;
-      switch (arg->type_category) {
+      switch (arg->type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
           byte_vars[arg->mem_id] = *(int8_t*)&stack[stack_index];
           stack_index++;
@@ -5401,7 +5401,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   
   // Decrement ref count of return value
   if (!exception_flag) {
-    switch (method->return_type_category) {
+    switch (method->return_type->category) {
       case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
       case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
       case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:

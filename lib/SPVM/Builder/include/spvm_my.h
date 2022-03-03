@@ -9,7 +9,6 @@ struct spvm_my {
   SPVM_VAR* var;
   int32_t id;
   int32_t mem_id;
-  int32_t type_category;
   int32_t type_width;
   int8_t is_tmp;
   int8_t is_arg;

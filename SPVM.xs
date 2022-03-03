@@ -274,7 +274,7 @@ call_spvm_method(...)
     int32_t arg_type_dimension = arg->type->dimension;
     
     // Process argument corresponding to the type category
-    switch (arg->type_category) {
+    switch (arg->type->category) {
       // Perl scalar to SPVM byte
       case SPVM_TYPE_C_TYPE_CATEGORY_BYTE : {
         int8_t value = (int8_t)SvIV(sv_value);
@@ -737,7 +737,7 @@ call_spvm_method(...)
                   break;
                 }
                 default: {
-                  if (arg->type_category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
+                  if (arg->type->category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
                     SV* sv_error = NULL;
                     SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
                     const char* arg_basic_type_name = arg_basic_type->name;
@@ -1105,7 +1105,7 @@ call_spvm_method(...)
 
   SV* sv_return_value = NULL;
   int32_t excetpion_flag = 0;
-  switch (method->return_type_category) {
+  switch (method->return_type->category) {
     case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
       excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
       break;
@@ -1266,7 +1266,7 @@ call_spvm_method(...)
       int32_t arg_type_dimension = arg->type->dimension;
 
       int32_t ref_stack_index = ref_stack_indexes[args_index];
-      switch (arg->type_category) {
+      switch (arg->type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE : {
           SV* sv_value_deref = SvRV(sv_value);
           sv_setiv(sv_value_deref, ref_stack[ref_stack_index].bval);
@@ -1402,7 +1402,7 @@ call_spvm_method(...)
   // Success
   else {
     int32_t return_count;
-    if (method->return_type_category == SPVM_TYPE_C_TYPE_CATEGORY_VOID) {
+    if (method->return_type->category == SPVM_TYPE_C_TYPE_CATEGORY_VOID) {
       return_count = 0;
     }
     else {

@@ -77,7 +77,6 @@ struct spvm_method {
   int32_t double_vars_alloc_length;
   int32_t object_vars_alloc_length;
   int32_t ref_vars_alloc_length;
-  int32_t return_type_category;
   int32_t tmp_vars_length;
   int8_t have_vaarg;
   int8_t is_class_var_setter;
