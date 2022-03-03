@@ -3901,17 +3901,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
 
-          // Resolve my type width
+          // Resolve my type category and width
           for (int32_t my_index = 0; my_index < method->mys->length; my_index++) {
             SPVM_MY* my = SPVM_LIST_fetch(method->mys, my_index);
             SPVM_TYPE* my_type = my->type;
             my->type_width = SPVM_TYPE_get_width(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
-          }
-
-          // Resolve my runtime type
-          for (int32_t my_index = 0; my_index < method->mys->length; my_index++) {
-            SPVM_MY* my = SPVM_LIST_fetch(method->mys, my_index);
-            SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, my->op_my);
             my->type_category = SPVM_TYPE_get_type_category(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
           }
 
