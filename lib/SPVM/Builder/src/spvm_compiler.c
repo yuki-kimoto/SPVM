@@ -323,6 +323,16 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         SPVM_ALLOCATOR_free_block_compile_tmp(compiler, var);
         break;
       }
+      case SPVM_OP_C_ID_MY: {
+        SPVM_MY* my = op->uv.my;
+        if (!my->is_eternal) {
+          my->op_my = NULL;
+          my->type = NULL;
+          my->var = NULL;
+          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, my);
+        }
+        break;
+      }
     }
   }
   
