@@ -2599,7 +2599,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   }
                   
                   SPVM_MY* method_arg_my = SPVM_LIST_fetch(call_method->method->args, call_method_args_count - 1);
-                  SPVM_TYPE* method_arg_my_type = SPVM_OP_get_type(compiler, method_arg_my->op_my);
+                  SPVM_TYPE* method_arg_my_type = method_arg_my->type;
                   
                   // Check if source can be assigned to dist
                   // If needed, numeric convertion op is added
