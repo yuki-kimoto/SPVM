@@ -813,119 +813,119 @@ SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, const char* str
 }
 
 SPVM_OP* SPVM_OP_new_op_void_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_void_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_void_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_byte_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_byte_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_byte_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_short_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_short_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_short_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_int_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_int_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_int_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_bool_object_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_bool_object_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_bool_object_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_long_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_long_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_long_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_float_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_float_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_float_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_double_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_double_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_double_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_string_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_string_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_string_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_undef_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_undef_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_undef_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_byte_ref_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_byte_ref_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_byte_ref_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_short_ref_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_short_ref_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_short_ref_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_int_ref_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_int_ref_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_int_ref_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_long_ref_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_long_ref_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_long_ref_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_float_ref_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_float_ref_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_float_ref_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_double_ref_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_double_ref_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_double_ref_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_any_object_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_create_any_object_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_any_object_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
@@ -1404,10 +1404,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op->first);
       SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, first_type->basic_type->name, strlen(first_type->basic_type->name));
       if (basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING && first_type->dimension == 0) {
-        type = SPVM_TYPE_create_byte_type(compiler);
+        type = SPVM_TYPE_new_byte_type(compiler);
       }
       else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_OARRAY && first_type->dimension == 0) {
-        type = SPVM_TYPE_create_any_object_type(compiler);
+        type = SPVM_TYPE_new_any_object_type(compiler);
       }
       else {
         type = SPVM_TYPE_new(compiler, basic_type->id, first_type->dimension - 1, 0);

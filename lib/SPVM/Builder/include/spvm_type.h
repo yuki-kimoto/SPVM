@@ -70,25 +70,25 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
 
 const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
-SPVM_TYPE* SPVM_TYPE_create_void_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_undef_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_byte_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_short_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_int_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_long_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_float_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_double_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_string_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_void_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_undef_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_byte_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_short_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_int_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_long_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_float_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_double_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_string_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_object_type(SPVM_COMPILER* compiler);
 
 
-SPVM_TYPE* SPVM_TYPE_create_byte_ref_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_short_ref_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_int_ref_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_long_ref_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_float_ref_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_double_ref_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_any_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_byte_ref_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_short_ref_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_int_ref_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_long_ref_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_float_ref_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_double_ref_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_any_object_type(SPVM_COMPILER* compiler);
 
 int32_t SPVM_TYPE_is_void_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_byte_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
@@ -99,13 +99,13 @@ int32_t SPVM_TYPE_is_float_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
 int32_t SPVM_TYPE_is_double_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_numeric_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
-SPVM_TYPE* SPVM_TYPE_create_byte_object_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_short_object_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_int_object_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_long_object_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_float_object_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_double_object_type(SPVM_COMPILER* compiler);
-SPVM_TYPE* SPVM_TYPE_create_bool_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_byte_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_short_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_int_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_long_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_float_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_double_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_new_bool_object_type(SPVM_COMPILER* compiler);
 
 int32_t SPVM_TYPE_is_byte_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_short_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);

@@ -1548,28 +1548,28 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // long suffix
           if (*compiler->bufptr == 'l' || *compiler->bufptr == 'L')  {
-            constant_type = SPVM_TYPE_create_long_type(compiler);
+            constant_type = SPVM_TYPE_new_long_type(compiler);
             compiler->bufptr++;
           }
           // float suffix
           else if (*compiler->bufptr == 'f' || *compiler->bufptr == 'F')  {
-            constant_type = SPVM_TYPE_create_float_type(compiler);
+            constant_type = SPVM_TYPE_new_float_type(compiler);
             compiler->bufptr++;
           }
           // double suffix
           else if (*compiler->bufptr == 'd' || *compiler->bufptr == 'D')  {
-            constant_type = SPVM_TYPE_create_double_type(compiler);
+            constant_type = SPVM_TYPE_new_double_type(compiler);
             compiler->bufptr++;
           }
           // no suffix
           else {
             // floating point
             if (is_floating_number) {
-              constant_type = SPVM_TYPE_create_double_type(compiler);
+              constant_type = SPVM_TYPE_new_double_type(compiler);
             }
             // integer
             else {
-              constant_type = SPVM_TYPE_create_int_type(compiler);
+              constant_type = SPVM_TYPE_new_int_type(compiler);
             }
           }
           

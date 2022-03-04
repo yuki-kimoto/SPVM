@@ -437,7 +437,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                   // Upgrade byte to int
                   if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                    constant->type = SPVM_TYPE_create_int_type(compiler);
+                    constant->type = SPVM_TYPE_new_int_type(compiler);
                     constant->value.ival = (int32_t)constant->value.bval;
                   }
                   

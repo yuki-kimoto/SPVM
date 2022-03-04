@@ -485,7 +485,7 @@ int32_t SPVM_TYPE_is_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id, in
   return flag & SPVM_TYPE_C_FLAG_REF;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_void_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_void_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_VOID);
@@ -496,7 +496,7 @@ SPVM_TYPE* SPVM_TYPE_create_void_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_oarray_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_oarray_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_OARRAY);
@@ -507,7 +507,7 @@ SPVM_TYPE* SPVM_TYPE_create_oarray_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_undef_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_undef_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_UNDEF);
@@ -518,7 +518,7 @@ SPVM_TYPE* SPVM_TYPE_create_undef_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_byte_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_byte_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BYTE);
@@ -529,7 +529,7 @@ SPVM_TYPE* SPVM_TYPE_create_byte_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_short_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_short_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
 
@@ -541,7 +541,7 @@ SPVM_TYPE* SPVM_TYPE_create_short_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_int_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_int_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT);
@@ -552,7 +552,7 @@ SPVM_TYPE* SPVM_TYPE_create_int_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_long_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_long_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
 
@@ -564,7 +564,7 @@ SPVM_TYPE* SPVM_TYPE_create_long_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_float_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_float_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT);
@@ -575,7 +575,7 @@ SPVM_TYPE* SPVM_TYPE_create_float_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_double_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_double_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE);
@@ -586,7 +586,7 @@ SPVM_TYPE* SPVM_TYPE_create_double_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_string_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_string_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_STRING);
@@ -597,7 +597,7 @@ SPVM_TYPE* SPVM_TYPE_create_string_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_object_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
@@ -608,7 +608,7 @@ SPVM_TYPE* SPVM_TYPE_create_object_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_byte_object_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_byte_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT);
@@ -619,7 +619,7 @@ SPVM_TYPE* SPVM_TYPE_create_byte_object_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_short_object_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_short_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT);
@@ -630,7 +630,7 @@ SPVM_TYPE* SPVM_TYPE_create_short_object_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_int_object_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_int_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT_OBJECT);
@@ -641,7 +641,7 @@ SPVM_TYPE* SPVM_TYPE_create_int_object_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_long_object_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_long_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_LONG_OBJECT);
@@ -652,7 +652,7 @@ SPVM_TYPE* SPVM_TYPE_create_long_object_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_float_object_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_float_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT);
@@ -663,7 +663,7 @@ SPVM_TYPE* SPVM_TYPE_create_float_object_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_double_object_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_double_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT);
@@ -674,7 +674,7 @@ SPVM_TYPE* SPVM_TYPE_create_double_object_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_bool_object_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_bool_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BOOL_OBJECT);
@@ -685,7 +685,7 @@ SPVM_TYPE* SPVM_TYPE_create_bool_object_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_byte_ref_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_byte_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BYTE);
@@ -696,7 +696,7 @@ SPVM_TYPE* SPVM_TYPE_create_byte_ref_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_short_ref_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_short_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_SHORT);
@@ -707,7 +707,7 @@ SPVM_TYPE* SPVM_TYPE_create_short_ref_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_int_ref_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_int_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT);
@@ -718,7 +718,7 @@ SPVM_TYPE* SPVM_TYPE_create_int_ref_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_long_ref_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_long_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_LONG);
@@ -729,7 +729,7 @@ SPVM_TYPE* SPVM_TYPE_create_long_ref_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_float_ref_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_float_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT);
@@ -740,7 +740,7 @@ SPVM_TYPE* SPVM_TYPE_create_float_ref_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_double_ref_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_double_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE);
@@ -751,7 +751,7 @@ SPVM_TYPE* SPVM_TYPE_create_double_ref_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_create_any_object_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_any_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
