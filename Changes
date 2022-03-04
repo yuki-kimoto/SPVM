@@ -1,11 +1,11 @@
 Revision history for SPVM
-0.9508  2021-03-03
+0.9508  2021-03-04
         [CHANGE]
         * Add "get_constant_string" native API.
         * SPVM::Builder can detect the changed of SPVM::Builder modules and SPVM core header files and source files in all places.
         * Native API's no_symbol_cache_flag, set_no_symbol_cache_flag, get_no_symbol_cache_flag are currently unused.
           By this, the peformance of calling methods is down, however, I plan to fix the performance in the future release.
-        * Reduce memory usage of SPVM compiler.
+        * Reduce memory usage  from about 24MB to 9.5MB on 64 bit environment by free memories that is created at compile time.
 0.9507  2021-02-24
         [CHANGE]
         * SPVM don't support nmake. Already nmake test always fails until now.
