@@ -2442,26 +2442,34 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         int32_t string_id = opcode->operand1;
         SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->strings, string_id);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_raw(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer,
+          "  {\n"
+          "    void* string = env->new_string_raw(env, \""
+        );
         for (int32_t i = 0; i < constant_string->length; i++) {
           SPVM_STRING_BUFFER_add_hex_char(string_buffer, constant_string->value[i]);
         }
-        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add(string_buffer,
+          "\", "
+        );
         SPVM_STRING_BUFFER_add_int(string_buffer, constant_string->length);
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (string == NULL) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for string\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->make_read_only(env, string);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(&");
+        SPVM_STRING_BUFFER_add(string_buffer,
+          ");\n"
+          "    if (string == NULL) {\n"
+          "      void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for string\");\n"
+          "      env->set_exception(env, exception);\n"
+          "      exception_flag = 1;\n"
+          "    }\n"
+          "    else {\n"
+          "      env->make_read_only(env, string);\n"
+          "      SPVM_API_OBJECT_ASSIGN(&"
+        );
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", string);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer,
+          ", string);\n"
+          "    }\n"
+          "  }\n"
+        );
 
         break;
       }
