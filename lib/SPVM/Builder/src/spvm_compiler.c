@@ -334,6 +334,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         break;
       }
     }
+    // SPVM_ALLOCATOR_free_block_compile_tmp(compiler, op);
   }
   
   // Clear unused pointers

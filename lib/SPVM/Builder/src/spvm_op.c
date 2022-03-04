@@ -1337,8 +1337,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_TRUE:
     case SPVM_OP_C_ID_FALSE:
     {
-      SPVM_OP* op_type = SPVM_OP_new_op_bool_object_type(compiler, op->file, op->line);
-      type = op_type->uv.type;
+      type = SPVM_TYPE_new_bool_object_type(compiler);
       break;
     }
     case SPVM_OP_C_ID_RETURN:
@@ -1358,8 +1357,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_MAKE_READ_ONLY:
     {
       // Dummy int variable
-      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
-      type = op_type->uv.type;
+      type = SPVM_TYPE_new_int_type(compiler);
       break;
     }
     case SPVM_OP_C_ID_CLASS: {
@@ -1388,16 +1386,14 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_IS_READ_ONLY:
     case SPVM_OP_C_ID_HAS_IMPLEMENT:
     {
-      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
-      type = op_type->uv.type;
+      type = SPVM_TYPE_new_int_type(compiler);
       break;
     }
     case SPVM_OP_C_ID_ARRAY_LENGTH:
     case SPVM_OP_C_ID_STRING_LENGTH:
     case SPVM_OP_C_ID_REFCNT:
     {
-      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
-      type = op_type->uv.type;
+      type = SPVM_TYPE_new_int_type(compiler);
       break;
     }
     case SPVM_OP_C_ID_ARRAY_ACCESS: {
@@ -1471,8 +1467,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_UNDEF : {
-      SPVM_OP* op_type = SPVM_OP_new_op_undef_type(compiler, op->file, op->line);
-      type = op_type->uv.type;
+      type = SPVM_TYPE_new_undef_type(compiler);
       break;
     }
     case SPVM_OP_C_ID_CONSTANT: {
@@ -1505,8 +1500,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_EXCEPTION_VAR:
     case SPVM_OP_C_ID_NEW_STRING_LEN:
     {
-      SPVM_OP* op_type = SPVM_OP_new_op_string_type(compiler, op->file, op->line);
-      type = op_type->uv.type;
+      type = SPVM_TYPE_new_string_type(compiler);
       break;
     }
     case SPVM_OP_C_ID_MY: {
@@ -1525,8 +1519,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_FIELD_ACCESS: {
       if (op->flag & (SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK)) {
-        SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
-        type = op_type->uv.type;
+        type = SPVM_TYPE_new_int_type(compiler);
       }
       else {
         SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
@@ -1551,33 +1544,27 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       assert(term_type->dimension == 0);
       switch (term_type->basic_type->id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
-          SPVM_OP* op_type = SPVM_OP_new_op_byte_ref_type(compiler, op->file, op->line);
-          type = op_type->uv.type;
+          type = SPVM_TYPE_new_byte_ref_type(compiler);
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_SHORT: {
-          SPVM_OP* op_type = SPVM_OP_new_op_short_ref_type(compiler, op->file, op->line);
-          type = op_type->uv.type;
+          type = SPVM_TYPE_new_short_ref_type(compiler);
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_INT: {
-          SPVM_OP* op_type = SPVM_OP_new_op_int_ref_type(compiler, op->file, op->line);
-          type = op_type->uv.type;
+          type = SPVM_TYPE_new_int_ref_type(compiler);
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_LONG: {
-          SPVM_OP* op_type = SPVM_OP_new_op_long_ref_type(compiler, op->file, op->line);
-          type = op_type->uv.type;
+          type = SPVM_TYPE_new_long_ref_type(compiler);
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          SPVM_OP* op_type = SPVM_OP_new_op_float_ref_type(compiler, op->file, op->line);
-          type = op_type->uv.type;
+          type = SPVM_TYPE_new_float_ref_type(compiler);
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          SPVM_OP* op_type = SPVM_OP_new_op_double_ref_type(compiler, op->file, op->line);
-          type = op_type->uv.type;
+          type = SPVM_TYPE_new_double_ref_type(compiler);
           break;
         }
         default: {
@@ -1592,33 +1579,27 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       assert(term_type->dimension == 0);
       switch (term_type->basic_type->id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
-          SPVM_OP* op_type = SPVM_OP_new_op_byte_type(compiler, op->file, op->line);
-          type = op_type->uv.type;
+          type = SPVM_TYPE_new_byte_type(compiler);
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_SHORT: {
-          SPVM_OP* op_type = SPVM_OP_new_op_short_type(compiler, op->file, op->line);
-          type = op_type->uv.type;
+          type = SPVM_TYPE_new_short_type(compiler);
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_INT: {
-          SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
-          type = op_type->uv.type;
+          type = SPVM_TYPE_new_int_type(compiler);
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_LONG: {
-          SPVM_OP* op_type = SPVM_OP_new_op_long_type(compiler, op->file, op->line);
-          type = op_type->uv.type;
+          type = SPVM_TYPE_new_long_type(compiler);
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          SPVM_OP* op_type = SPVM_OP_new_op_float_type(compiler, op->file, op->line);
-          type = op_type->uv.type;
+          type = SPVM_TYPE_new_float_type(compiler);
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          SPVM_OP* op_type = SPVM_OP_new_op_double_type(compiler, op->file, op->line);
-          type = op_type->uv.type;
+          type = SPVM_TYPE_new_double_type(compiler);
           break;
         }
         default: {
