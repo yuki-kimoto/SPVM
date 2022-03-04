@@ -87,57 +87,53 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer) {
   
-  // Include header
-  SPVM_STRING_BUFFER_add(string_buffer, "#ifndef SPVM_CSOURCE_BUILDER_PRECOMPILE_H\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_CSOURCE_BUILDER_PRECOMPILE_H\n");
-  
-  // API header
-  SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_native.h>\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  
-  // Inline macro function
-  SPVM_STRING_BUFFER_add(string_buffer, "#include <stdlib.h>\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#include <string.h>\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#include <stdio.h>\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#include <inttypes.h>\n");
-
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(object) ((void*)((intptr_t)object & ~(intptr_t)1))\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_API_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_API_INC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_API_INC_REF_COUNT(object)\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "do {\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (object != NULL) {\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_INC_REF_COUNT_ONLY(object);\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "} while (0)\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_API_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_API_DEC_REF_COUNT(object)\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "do {\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (object != NULL) {\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_API_GET_REF_COUNT(object) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(object); }\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    else { env->dec_ref_count(env, object); }\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "} while (0)\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_API_ISWEAK(dist_address) (((intptr_t)*(void**)dist_address) & 1)\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_API_OBJECT_ASSIGN(dist_address, src_object) \\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "do {\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* tmp_object = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(src_object);\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (tmp_object != NULL) {\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_INC_REF_COUNT_ONLY(tmp_object);\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (*(void**)(dist_address) != NULL) {\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(SPVM_API_ISWEAK(dist_address), 0)) { env->unweaken(env, dist_address); }\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_API_GET_REF_COUNT(*(void**)(dist_address)) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(*(void**)(dist_address)); }\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    else { env->dec_ref_count(env, *(void**)(dist_address)); }\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)(dist_address) = tmp_object;\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "} while (0)\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#endif\n");
-
+  // Include headers and define macros
+  SPVM_STRING_BUFFER_add(string_buffer,
+    "#ifndef SPVM_CSOURCE_BUILDER_PRECOMPILE_H\n"
+    "#define SPVM_CSOURCE_BUILDER_PRECOMPILE_H\n"
+    "#include <spvm_native.h>\n"
+    "\n"
+    "#include <stdlib.h>\n"
+    "#include <string.h>\n"
+    "#include <stdio.h>\n"
+    "#include <inttypes.h>\n"
+    "#define SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(object) ((void*)((intptr_t)object & ~(intptr_t)1))\n"
+    "#define SPVM_API_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))\n"
+    "#define SPVM_API_INC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)\n"
+    "#define SPVM_API_INC_REF_COUNT(object)\\\n"
+    "do {\\\n"
+    "  if (object != NULL) {\\\n"
+    "    SPVM_API_INC_REF_COUNT_ONLY(object);\\\n"
+    "  }\\\n"
+    "} while (0)\\\n"
+    "\n"
+    "#define SPVM_API_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)\n"
+    "#define SPVM_API_DEC_REF_COUNT(object)\\\n"
+    "do {\\\n"
+    "  if (object != NULL) {\\\n"
+    "    if (SPVM_API_GET_REF_COUNT(object) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(object); }\\\n"
+    "    else { env->dec_ref_count(env, object); }\\\n"
+    "  }\\\n"
+    "} while (0)\\\n"
+    "\n"
+    "#define SPVM_API_ISWEAK(dist_address) (((intptr_t)*(void**)dist_address) & 1)\n"
+    "\n"
+    "#define SPVM_API_OBJECT_ASSIGN(dist_address, src_object) \\\n"
+    "do {\\\n"
+    "  void* tmp_object = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(src_object);\\\n"
+    "  if (tmp_object != NULL) {\\\n"
+    "    SPVM_API_INC_REF_COUNT_ONLY(tmp_object);\\\n"
+    "  }\\\n"
+    "  if (*(void**)(dist_address) != NULL) {\\\n"
+    "    if (__builtin_expect(SPVM_API_ISWEAK(dist_address), 0)) { env->unweaken(env, dist_address); }\\\n"
+    "    if (SPVM_API_GET_REF_COUNT(*(void**)(dist_address)) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(*(void**)(dist_address)); }\\\n"
+    "    else { env->dec_ref_count(env, *(void**)(dist_address)); }\\\n"
+    "  }\\\n"
+    "  *(void**)(dist_address) = tmp_object;\\\n"
+    "} while (0)\\\n"
+    "\n"
+    "#endif\n"
+  );
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_declaration(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
