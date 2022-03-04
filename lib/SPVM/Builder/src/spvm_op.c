@@ -302,6 +302,16 @@ SPVM_OP* SPVM_OP_new_op_my(SPVM_COMPILER* compiler, const char* file, int32_t li
   return op_my;
 }
 
+SPVM_OP* SPVM_OP_new_op_my_eternal(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
+  SPVM_MY* my = SPVM_MY_new_eternal(compiler);
+  
+  op_my->uv.my = my;
+  my->op_my = op_my;
+  
+  return op_my;
+}
+
 SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
   op_type->uv.type = type;
@@ -2669,7 +2679,6 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
         SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
         op_var->uv.var->my = arg_my;
         op_var->uv.var->is_declaration = 1;
-        arg_my->is_arg = 1;
         op_var->uv.var->my = arg_my;
 
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
@@ -2834,11 +2843,11 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
 
 SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_descriptors) {
   
-  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, op_var->file, op_var->line);
+  SPVM_OP* op_my = SPVM_OP_new_op_my_eternal(compiler, op_var->file, op_var->line);
+
+  op_my->uv.my->is_arg = 1;
   
   op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type, op_descriptors);
-  
-  op_var->uv.var->my->is_arg = 1;
   
   return op_var;
 }
