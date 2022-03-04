@@ -3898,8 +3898,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t string_id = opcode->operand1;
         int32_t constant_string_length;
         const char* constant_string = env->get_constant_string(env, string_id, &constant_string_length);
-        
-        SPVM_LIST_fetch(compiler->strings, string_id);
         void* string = env->new_string_raw(env, constant_string, constant_string_length);
         if (string == NULL) {
           void* exception = env->new_string_nolen_raw(env, "Can't allocate memory for string");
