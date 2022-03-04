@@ -1,4 +1,5 @@
 class TestCase::Field {
+  use TestCase;
   use TestCase::Minimal;
   use TestCase::Simple;
   
@@ -71,7 +72,7 @@ class TestCase::Field {
 
   # object field is initialized zero
   static method object_field_initialized_zero : int () {
-    my $obj =TestCase->new;
+    my $obj = TestCase->new;
     if ($obj->{x_byte} == 0) {
       if ($obj->{x_int} == 0) {
         if ($obj->{x_byte_array} == undef) {

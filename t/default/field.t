@@ -6,7 +6,6 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase';
 use SPVM 'TestCase::Field';
 
 my $BYTE_MAX = 127;
