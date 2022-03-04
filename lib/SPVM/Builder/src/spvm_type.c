@@ -464,7 +464,7 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t
     type->basic_type = basic_type;
     type->dimension = dimension;
     type->flag = flag;
-    type->type_name = SPVM_TYPE_new_type_name(compiler,  basic_type_id, dimension, flag);
+    type->name = SPVM_TYPE_new_type_name(compiler,  basic_type_id, dimension, flag);
 
     SPVM_LIST_push(compiler->types, type);
     SPVM_HASH_insert(compiler->type_symtable, type_name, strlen(type_name), type);
