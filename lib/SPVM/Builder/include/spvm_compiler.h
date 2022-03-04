@@ -108,6 +108,12 @@ struct spvm_compiler {
   
   // Basic type symbol table
   SPVM_HASH* basic_type_symtable;
+
+  // Runtime Basic types
+  SPVM_LIST* runtime_basic_types;
+  
+  // Runtime Basic type symbol table
+  SPVM_HASH* runtime_basic_type_symtable;
   
   // Types
   SPVM_LIST* types;

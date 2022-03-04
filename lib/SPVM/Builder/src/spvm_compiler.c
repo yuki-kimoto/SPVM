@@ -35,6 +35,7 @@
 #include "spvm_field_access.h"
 #include "spvm_call_method.h"
 #include "spvm_var.h"
+#include "spvm_runtime_basic_type.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_new_block_unmanaged(sizeof(SPVM_COMPILER));
@@ -63,6 +64,9 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->module_source_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   compiler->switch_infos = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+
+  compiler->runtime_basic_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->runtime_basic_type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
@@ -161,6 +165,8 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
   compiler->cur_class_base = compiler->classes->length;
 
+  int32_t cur_basic_type_base = compiler->basic_types->length;
+  
   const char* start_file = compiler->start_file;
   int32_t start_line = compiler->start_line;
   
@@ -374,6 +380,19 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   compiler->ops = NULL;
 
   assert(compiler->allocator->memory_blocks_count_compile_tmp == compile_start_memory_blocks_count_compile_tmp);
+  
+  // Runtime basic types - this is moved to the more after place in the future.
+  for (int32_t basic_type_id = cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_BASIC_TYPE));
+    
+    runtime_basic_type->name = basic_type->name;
+    runtime_basic_type->class = basic_type->class;
+    runtime_basic_type->id = basic_type->id;
+
+    SPVM_LIST_push(compiler->runtime_basic_types, runtime_basic_type);
+    SPVM_HASH_insert(compiler->runtime_basic_type_symtable, basic_type->name, strlen(basic_type->name), runtime_basic_type);
+  }
 
   return error_code;
 }

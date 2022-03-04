@@ -4,10 +4,11 @@
 #include "spvm_typedecl.h"
 
 struct spvm_runtime_basic_type {
-  int32_t name_id;
   const char* name;
+  SPVM_RUNTIME_CLASS* rutnime_class;
+  SPVM_CLASS* class;
+  int32_t name_id;
   int32_t class_id;
-  SPVM_RUNTIME_CLASS* class;
   int32_t id;
 };
 
