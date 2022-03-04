@@ -46,7 +46,7 @@ int32_t SPVM_METHOD_get_arg_alloc_length(SPVM_COMPILER* compiler, SPVM_METHOD* m
     int32_t arg_index;
     for (arg_index = 0; arg_index < method->args->length; arg_index++) {
       SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, arg_index);
-      SPVM_TYPE* type = SPVM_OP_get_type(compiler, arg_my->op_my);
+      SPVM_TYPE* type = arg_my->type;
       int32_t width = SPVM_TYPE_get_width(compiler, type->basic_type->id, type->dimension, type->flag);
       arg_alloc_length += width;
     }

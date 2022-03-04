@@ -3523,7 +3523,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
             else {
               SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, 0);
-              SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
+              SPVM_TYPE* arg_type = arg_my->type;
               
               if (!(arg_type->basic_type->id == class_type->basic_type->id && arg_type->dimension == class_type->dimension)) {
                 error = 1;
@@ -3540,7 +3540,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             int32_t arg_index;
             for (arg_index = 0 ; arg_index < method->args->length; arg_index++) {
               SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, arg_index);
-              SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
+              SPVM_TYPE* arg_type = arg_my->type;
               if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
                 SPVM_LIST_push(method->object_arg_ids, (void*)(intptr_t)arg_index);
               }
@@ -5110,7 +5110,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       for (int32_t arg_index = 0; arg_index < method->args->length; arg_index++) {
         SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, arg_index);
 
-        SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
+        SPVM_TYPE* arg_type = arg_my->type;
         
         int32_t is_arg_type_is_multi_numeric_type = SPVM_TYPE_is_multi_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_multi_numeric_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);

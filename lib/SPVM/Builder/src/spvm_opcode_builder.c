@@ -884,7 +884,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_MY* arg_my = SPVM_LIST_fetch(args, arg_index);
                               
                               // Argument type
-                              SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
+                              SPVM_TYPE* arg_type = arg_my->type;
 
                               // Term argment type
                               op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);

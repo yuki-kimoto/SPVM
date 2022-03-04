@@ -334,7 +334,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         break;
       }
     }
-    // SPVM_ALLOCATOR_free_block_compile_tmp(compiler, op);
+    SPVM_ALLOCATOR_free_block_compile_tmp(compiler, op);
   }
   
   // Clear unused pointers
@@ -454,7 +454,7 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
       }
       else {
         SPVM_MY* arg_my_method = SPVM_LIST_fetch(method->args, arg_index);
-        SPVM_TYPE* type_arg_method = SPVM_OP_get_type(compiler, arg_my_method->op_my);
+        SPVM_TYPE* type_arg_method = arg_my_method->type;
         
         // Ref
         if (SPVM_TYPE_is_ref_type(compiler, type_arg_method->basic_type->id, type_arg_method->dimension, type_arg_method->flag)) {
@@ -505,7 +505,7 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
       }
       else {
         SPVM_MY* arg_my_method = SPVM_LIST_fetch(method->args, arg_index);
-        SPVM_TYPE* type_arg_method = SPVM_OP_get_type(compiler, arg_my_method->op_my);
+        SPVM_TYPE* type_arg_method = arg_my_method->type;
         
         // Ref
         if (SPVM_TYPE_is_ref_type(compiler, type_arg_method->basic_type->id, type_arg_method->dimension, type_arg_method->flag)) {
