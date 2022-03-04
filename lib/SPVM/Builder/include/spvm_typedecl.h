@@ -4,6 +4,38 @@
 #include <stdint.h>
 #include <stddef.h>
 
+// spvm_runtime_manager.h
+struct spvm_runtime_manager;
+typedef struct spvm_runtime_manager SPVM_RUNTIME_MANAGER;
+
+// spvm_runtime_basic_type.h
+struct spvm_runtime_basic_type;
+typedef struct spvm_runtime_basic_type SPVM_RUNTIME_BASIC_TYPE;
+
+// spvm_runtime_type.h
+struct spvm_runtime_type;
+typedef struct spvm_runtime_type SPVM_RUNTIME_TYPE;
+
+// spvm_runtime_switch_info.h
+struct spvm_runtime_switch_info;
+typedef struct spvm_runtime_switch_info SPVM_RUNTIME_SWITCH_INFO;
+
+// spvm_runtime_field.h
+struct spvm_runtime_field;
+typedef struct spvm_runtime_field SPVM_RUNTIME_FIELD;
+
+// spvm_runtime_method.h
+struct spvm_runtime_method;
+typedef struct spvm_runtime_method SPVM_RUNTIME_METHOD;
+
+// spvm_runtime_class.h
+struct spvm_runtime_class;
+typedef struct spvm_runtime_class SPVM_RUNTIME_CLASS;
+
+// spvm_runtime_info.h
+struct spvm_runtime_info;
+typedef struct spvm_runtime_info SPVM_RUNTIME_INFO;
+
 // spvm_string.h
 struct spvm_string;
 typedef struct spvm_string SPVM_STRING;

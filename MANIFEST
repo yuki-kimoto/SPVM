@@ -395,6 +395,14 @@ lib/SPVM/Builder/include/spvm_op_checker.h
 lib/SPVM/Builder/include/spvm_opcode.h
 lib/SPVM/Builder/include/spvm_opcode_array.h
 lib/SPVM/Builder/include/spvm_opcode_builder.h
+lib/SPVM/Builder/include/spvm_runtime_basic_type.h
+lib/SPVM/Builder/include/spvm_runtime_class.h
+lib/SPVM/Builder/include/spvm_runtime_field.h
+lib/SPVM/Builder/include/spvm_runtime_info.h
+lib/SPVM/Builder/include/spvm_runtime_manager.h
+lib/SPVM/Builder/include/spvm_runtime_method.h
+lib/SPVM/Builder/include/spvm_runtime_switch_info.h
+lib/SPVM/Builder/include/spvm_runtime_type.h
 lib/SPVM/Builder/include/spvm_string.h
 lib/SPVM/Builder/include/spvm_string_buffer.h
 lib/SPVM/Builder/include/spvm_switch_info.h
