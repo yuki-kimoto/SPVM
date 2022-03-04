@@ -4400,63 +4400,63 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_BYTE_OBJECT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int8_t value = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int8_t value = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = (intptr_t)(void*)env->byte_object_basic_type_id;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    *(int8_t*)&fields[0] = value;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t basic_type_id = (intptr_t)(void*)env->byte_object_basic_type_id;\n"
+                                              "    void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
+                                              "    *(int8_t*)&fields[0] = value;\n"
+                                              "    SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
+                                              "  }\n");
         
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_SHORT_OBJECT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int16_t value = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int16_t value = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = (intptr_t)(void*)env->short_object_basic_type_id;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    *(int16_t*)&fields[0] = value;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t basic_type_id = (intptr_t)(void*)env->short_object_basic_type_id;\n"
+                                              "    void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
+                                              "    *(int16_t*)&fields[0] = value;\n"
+                                              "    SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
+                                              "  }\n");
         
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_INT_TO_INT_OBJECT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t value = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t value = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = (intptr_t)(void*)env->int_object_basic_type_id;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    *(int32_t*)&fields[0] = value;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t basic_type_id = (intptr_t)(void*)env->int_object_basic_type_id;\n"
+                                              "    void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
+                                              "    *(int32_t*)&fields[0] = value;\n"
+                                              "    SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
+                                              "  }\n");
         
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_LONG_OBJECT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int64_t value = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int64_t value = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = (intptr_t)(void*)env->long_object_basic_type_id;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    *(int64_t*)&fields[0] = value;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t basic_type_id = (intptr_t)(void*)env->long_object_basic_type_id;\n"
+                                              "    void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
+                                              "    *(int64_t*)&fields[0] = value;\n"
+                                              "    SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -4464,18 +4464,18 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_FLOAT_OBJECT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    float value = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    float value = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = (intptr_t)(void*)env->float_object_basic_type_id;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    *(float*)&fields[0] = value;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t basic_type_id = (intptr_t)(void*)env->float_object_basic_type_id;\n"
+                                              "    void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
+                                              "    *(float*)&fields[0] = value;\n"
+                                              "    SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
+                                              "  }\n");
         
         break;
       }
@@ -4483,12 +4483,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    double value = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = (intptr_t)(void*)env->double_object_basic_type_id;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    *(double*)&fields[0] = value;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t basic_type_id = (intptr_t)(void*)env->double_object_basic_type_id;\n"
+                                              "    void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
+                                              "    *(double*)&fields[0] = value;\n"
+                                              "    SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -4499,168 +4499,168 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == (intptr_t)(void*)env->byte_object_basic_type_id && object_type_dimension_id == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        \n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    if (object == NULL) {\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n"
+                                              "      env->set_exception(env, exception);\n"
+                                              "      exception_flag = 1;\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n"
+                                              "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n"
+                                              "      if (object_basic_type_id == (intptr_t)(void*)env->byte_object_basic_type_id && object_type_dimension_id == 0) {\n"
+                                              "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
+                                              "        \n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = *(int8_t*)&fields[0];\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Can't convert imcompatible object type.\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " = *(int8_t*)&fields[0];\n"
+                                              "      }\n"
+                                              "      else {\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't convert imcompatible object type.\");\n"
+                                              "        env->set_exception(env, exception);\n"
+                                              "        exception_flag = 1;\n"
+                                              "      }\n"
+                                              "    }\n"
+                                              "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_SHORT_OBJECT_TO_SHORT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == (intptr_t)(void*)env->short_object_basic_type_id && object_type_dimension_id == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        \n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    if (object == NULL) {\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n"
+                                              "      env->set_exception(env, exception);\n"
+                                              "      exception_flag = 1;\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n"
+                                              "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n"
+                                              "      if (object_basic_type_id == (intptr_t)(void*)env->short_object_basic_type_id && object_type_dimension_id == 0) {\n"
+                                              "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
+                                              "        \n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = *(int16_t*)&fields[0];\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Can't convert imcompatible object type.\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " = *(int16_t*)&fields[0];\n"
+                                              "      }\n"
+                                              "      else {\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't convert imcompatible object type.\");\n"
+                                              "        env->set_exception(env, exception);\n"
+                                              "        exception_flag = 1;\n"
+                                              "      }\n"
+                                              "    }\n"
+                                              "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_INT_OBJECT_TO_INT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == (intptr_t)(void*)env->int_object_basic_type_id && object_type_dimension_id == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        \n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    if (object == NULL) {\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n"
+                                              "      env->set_exception(env, exception);\n"
+                                              "      exception_flag = 1;\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n"
+                                              "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n"
+                                              "      if (object_basic_type_id == (intptr_t)(void*)env->int_object_basic_type_id && object_type_dimension_id == 0) {\n"
+                                              "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
+                                              "        \n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = *(int32_t*)&fields[0];\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Can't convert imcompatible object type.\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " = *(int32_t*)&fields[0];\n"
+                                              "      }\n"
+                                              "      else {\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't convert imcompatible object type.\");\n"
+                                              "        env->set_exception(env, exception);\n"
+                                              "        exception_flag = 1;\n"
+                                              "      }\n"
+                                              "    }\n"
+                                              "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_LONG_OBJECT_TO_LONG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == (intptr_t)(void*)env->long_object_basic_type_id && object_type_dimension_id == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        \n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    if (object == NULL) {\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n"
+                                              "      env->set_exception(env, exception);\n"
+                                              "      exception_flag = 1;\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n"
+                                              "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n"
+                                              "      if (object_basic_type_id == (intptr_t)(void*)env->long_object_basic_type_id && object_type_dimension_id == 0) {\n"
+                                              "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
+                                              "        \n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = *(int64_t*)&fields[0];\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Can't convert imcompatible object type.\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " = *(int64_t*)&fields[0];\n"
+                                              "      }\n"
+                                              "      else {\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't convert imcompatible object type.\");\n"
+                                              "        env->set_exception(env, exception);\n"
+                                              "        exception_flag = 1;\n"
+                                              "      }\n"
+                                              "    }\n"
+                                              "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_FLOAT_OBJECT_TO_FLOAT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == (intptr_t)(void*)env->float_object_basic_type_id && object_type_dimension_id == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        \n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    if (object == NULL) {\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n"
+                                              "      env->set_exception(env, exception);\n"
+                                              "      exception_flag = 1;\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n"
+                                              "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n"
+                                              "      if (object_basic_type_id == (intptr_t)(void*)env->float_object_basic_type_id && object_type_dimension_id == 0) {\n"
+                                              "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
+                                              "        \n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = *(float*)&fields[0];\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Can't convert imcompatible object type.\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " = *(float*)&fields[0];\n"
+                                              "      }\n"
+                                              "      else {\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't convert imcompatible object type.\");\n"
+                                              "        env->set_exception(env, exception);\n"
+                                              "        exception_flag = 1;\n"
+                                              "      }\n"
+                                              "    }\n"
+                                              "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_OBJECT_TO_DOUBLE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == (intptr_t)(void*)env->double_object_basic_type_id && object_type_dimension_id == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        \n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    if (object == NULL) {\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n"
+                                              "      env->set_exception(env, exception);\n"
+                                              "      exception_flag = 1;\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n"
+                                              "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n"
+                                              "      if (object_basic_type_id == (intptr_t)(void*)env->double_object_basic_type_id && object_type_dimension_id == 0) {\n"
+                                              "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
+                                              "        \n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = *(double*)&fields[0];\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Can't convert imcompatible object type.\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " = *(double*)&fields[0];\n"
+                                              "      }\n"
+                                              "      else {\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't convert imcompatible object type.\");\n"
+                                              "        env->set_exception(env, exception);\n"
+                                              "        exception_flag = 1;\n"
+                                              "      }\n"
+                                              "    }\n"
+                                              "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_HAS_IMPLEMENT: {
@@ -4674,19 +4674,19 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_METHOD* interface_method = SPVM_HASH_fetch(interface_class->method_symtable, implement_method_name, strlen(implement_method_name));
         const char* implement_method_signature = interface_method->signature;
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = env->get_instance_method_id(env, object, ");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t call_method_id = env->get_instance_method_id(env, object, ");
         SPVM_STRING_BUFFER_add(string_buffer, implement_method_name);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_STRING_BUFFER_add(string_buffer, implement_method_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, ");");
-        SPVM_STRING_BUFFER_add(string_buffer, "    ");
+        SPVM_STRING_BUFFER_add(string_buffer, ");"
+                                              "    ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id >= 0;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id >= 0;\n"
+                                              "  }\n");
 
         break;
       }
@@ -4710,13 +4710,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
     }
     break;
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "  return exception_flag;\n");
-  
-  // Close method
-  SPVM_STRING_BUFFER_add(string_buffer, "}\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n"
+  "  return exception_flag;\n"
+                                        "}\n"
+                                        "\n");
 }
 
 const char* SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(SPVM_COMPILER* compiler, int32_t ctype_id) {
@@ -5005,12 +5002,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_multiply(SPVM_COMPILER* compiler, SPVM_
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_integral(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in2_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string_nolen_raw(env, \"0 division\"));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
-
-  SPVM_STRING_BUFFER_add(string_buffer, "  } else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n"
+                                        "    env->set_exception(env, env->new_string_nolen_raw(env, \"0 division\"));\n"
+                                        "    exception_flag = 1;\n"
+                                        "  } else {\n"
+                                        "    ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in1_index);
@@ -5023,12 +5019,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_integral(SPVM_COMPILER* compiler
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_unsigned_int(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string_nolen_raw(env, \"0 division\"));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
-
-  SPVM_STRING_BUFFER_add(string_buffer, "  } else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n"
+                                        "    env->set_exception(env, env->new_string_nolen_raw(env, \"0 division\"));\n"
+                                        "    exception_flag = 1;\n"
+                                        "  } else {\n"
+                                        "    ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (uint32_t)");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in1_index);
@@ -5041,12 +5036,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_unsigned_int(SPVM_COMPILER* comp
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_unsigned_long(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, in2_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_string_nolen_raw(env, \"0 division\"));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
-
-  SPVM_STRING_BUFFER_add(string_buffer, "  } else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n"
+                                        "    env->set_exception(env, env->new_string_nolen_raw(env, \"0 division\"));\n"
+                                        "    exception_flag = 1;\n"
+                                        "  } else {\n"
+                                        "    ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (uint64_t)");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, in1_index);
@@ -5069,13 +5063,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_floating_point(SPVM_COMPILER* co
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_integral(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in2_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_nolen_raw(env, \"0 division\");\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, exception);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n"
+                                        "    void* exception = env->new_string_nolen_raw(env, \"0 division\");\n"
+                                        "    env->set_exception(env, exception);\n"
+                                        "    exception_flag = 1;\n"
+                                        "  }\n"
+                                        "  else {\n"
+                                        "    ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, in1_index);
@@ -5088,32 +5082,32 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_integral(SPVM_COMPILER* compi
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_unsigned_int(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_nolen_raw(env, \"0 division\");\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, exception);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n"
+                                        "    void* exception = env->new_string_nolen_raw(env, \"0 division\");\n"
+                                        "    env->set_exception(env, exception);\n"
+                                        "    exception_flag = 1;\n"
+                                        "  }\n"
+                                        "  else {\n"
+                                        "    ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (uint32_t)");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " % /* REMAINDER */ (uint32_t)"); // % have undarstandable bug.
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                        "  }\n");
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_unsigned_long(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, in2_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_nolen_raw(env, \"0 division\");\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, exception);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n"
+                                        "    void* exception = env->new_string_nolen_raw(env, \"0 division\");\n"
+                                        "    env->set_exception(env, exception);\n"
+                                        "    exception_flag = 1;\n"
+                                        "  }\n"
+                                        "  else {\n"
+                                        "    ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (uint64_t)");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, in1_index);
@@ -5257,89 +5251,85 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(SPVM_COMPILER* compiler, SPVM_S
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_array_fetch(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_index, int32_t array_index, int32_t index_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    void* array = ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                        "    void* array = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, array_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t index = ");
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                        "    int32_t index = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, index_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(array == NULL, 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      else { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        ");
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                        "    if (__builtin_expect(array == NULL, 0)) { \n"
+                                        "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                        "      exception_flag = 1;\n"
+                                        "    } \n"
+                                        "    else { \n"
+                                        "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
+                                        "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                        "        exception_flag = 1;\n"
+                                        "      } \n"
+                                        "      else { \n"
+                                        "        ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, element_ctype_id, out_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " = ");
-  SPVM_STRING_BUFFER_add(string_buffer, "((");
+  SPVM_STRING_BUFFER_add(string_buffer, " = ((");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(compiler, element_ctype_id));
-  SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)array + object_header_byte_size))[index];\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)array + object_header_byte_size))[index];\n"
+                                        "      } \n"
+                                        "    } \n"
+                                        "  } \n");
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_array_store(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t array_index, int32_t index_index, int32_t in_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    void* array = ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                        "    void* array = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, array_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t index = ");
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                        "    int32_t index = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, index_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(array == NULL, 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      else { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "((");
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                        "    if (__builtin_expect(array == NULL, 0)) { \n"
+                                        "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                        "      exception_flag = 1;\n"
+                                        "    } \n"
+                                        "    else { \n"
+                                        "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
+                                        "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                        "        exception_flag = 1;\n"
+                                        "      } \n"
+                                        "      else { \n"
+                                        "((");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(compiler, element_ctype_id));
-  SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)array + object_header_byte_size))[index]\n");
-  SPVM_STRING_BUFFER_add(string_buffer, " = ");
+  SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)array + object_header_byte_size))[index] = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, element_ctype_id, in_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                        "      } \n"
+                                        "    } \n"
+                                        "  } \n");
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_array_fetch(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_index, int32_t array_index, int32_t index_index, int32_t fields_length) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    void* array = ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                        "    void* array = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, array_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t index = ");
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                        "    int32_t index = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, index_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(array == NULL, 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      else { \n");
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                        "    if (__builtin_expect(array == NULL, 0)) { \n"
+                                        "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                        "      exception_flag = 1;\n"
+                                        "    } \n"
+                                        "    else { \n"
+                                        "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
+                                        "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                        "        exception_flag = 1;\n"
+                                        "      } \n"
+                                        "      else { \n");
   {
     int32_t field_index;
     for (field_index = 0; field_index < fields_length; field_index++) {
       SPVM_STRING_BUFFER_add(string_buffer, "        ");
       SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_value(compiler, string_buffer, element_ctype_id, out_index, field_index);
-      SPVM_STRING_BUFFER_add(string_buffer, " = ");
-      SPVM_STRING_BUFFER_add(string_buffer, "((");
+      SPVM_STRING_BUFFER_add(string_buffer, " = ((");
       SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(compiler, element_ctype_id));
       SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)array + object_header_byte_size))[");
       SPVM_STRING_BUFFER_add_int(string_buffer, fields_length);
@@ -5348,42 +5338,41 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_array_fetch(SPVM_COMPILER* compi
       SPVM_STRING_BUFFER_add(string_buffer, "]; \n");
     }
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      } \n"
+                                        "    } \n"
+                                        "  } \n");
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_array_field_fetch(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_index, int32_t array_index, int32_t index_index, int32_t fields_length, int32_t field_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    void* array = ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                        "    void* array = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, array_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    int32_t index = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, index_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(array == NULL, 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      else { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        ");
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                        "    if (__builtin_expect(array == NULL, 0)) { \n"
+                                        "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                        "      exception_flag = 1;\n"
+                                        "    } \n"
+                                        "    else { \n"
+                                        "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
+                                        "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                        "        exception_flag = 1;\n"
+                                        "      } \n"
+                                        "      else { \n"
+                                        "        ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, element_ctype_id, out_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " =");
-  SPVM_STRING_BUFFER_add(string_buffer, "((");
+  SPVM_STRING_BUFFER_add(string_buffer, " = ((");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(compiler, element_ctype_id));
   SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)array + object_header_byte_size))[");
   SPVM_STRING_BUFFER_add_int(string_buffer, fields_length);
   SPVM_STRING_BUFFER_add(string_buffer, " * index + ");
   SPVM_STRING_BUFFER_add_int(string_buffer, field_index);
-  SPVM_STRING_BUFFER_add(string_buffer, "]; \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "]; \n"
+                                        "      } \n"
+                                        "    } \n"
+                                        "  } \n");
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_array_store(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t array_index, int32_t index_index, int32_t in_index, int32_t fields_length) {
