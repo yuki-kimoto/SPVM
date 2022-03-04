@@ -108,8 +108,7 @@ SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_METHOD* me
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = name;
   SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
-  SPVM_MY* my = SPVM_MY_new(compiler);
-  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, file, line);
+  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, file, line);
   assert(type);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   

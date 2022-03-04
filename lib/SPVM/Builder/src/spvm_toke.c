@@ -2010,8 +2010,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_term = MAKE_READ_ONLY;
                 }
                 else if (strcmp(symbol_name, "my") == 0) {
-                  SPVM_MY* my = SPVM_MY_new(compiler);
-                  yylvalp->opval = SPVM_OP_new_op_my(compiler, my, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_my;
                   is_keyword = 1;
                   keyword_term = MY;
                 }
