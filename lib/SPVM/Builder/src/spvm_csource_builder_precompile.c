@@ -5,11 +5,11 @@
 #include <assert.h>
 #include <stddef.h>
 
-#include "spvm_native.h"
+#include "spvm_csource_builder_precompile.h"
 
+#include "spvm_native.h"
 #include "spvm_list.h"
 #include "spvm_hash.h"
-#include "spvm_csource_builder_precompile.h"
 #include "spvm_string_buffer.h"
 #include "spvm_opcode.h"
 #include "spvm_object.h"
@@ -39,9 +39,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler
   
   // Constant strings
   if (!class->is_anon) {
-    SPVM_STRING_BUFFER_add(string_buffer, "static const char* CURRENT_CLASS_FILE = \"");
+    SPVM_STRING_BUFFER_add(string_buffer,"static const char* CURRENT_CLASS_FILE = \"");
     SPVM_STRING_BUFFER_add(string_buffer, class->module_file);
     SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+    
     SPVM_STRING_BUFFER_add(string_buffer, "static const char* CURRENT_CLASS_NAME = \"");
     SPVM_STRING_BUFFER_add(string_buffer, class->name);
     SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
@@ -138,21 +139,14 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(SPVM_COMPILER* compiler, SPVM_ST
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_declaration(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
   
-  // Basic type
+  // Method
   SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, class_name, strlen(class_name));
-  
-  // Class name
   SPVM_CLASS* class = basic_type->class;
-
   SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
-
   assert(method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE);
   
-  // Return type
-  SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
-        
-  // Method name. Replace : to _
-  SPVM_STRING_BUFFER_add(string_buffer, "SPVMPRECOMPILE__");
+  // Method declaration
+  SPVM_STRING_BUFFER_add(string_buffer, "int32_t SPVMPRECOMPILE__");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
   SPVM_STRING_BUFFER_add(string_buffer, (char*)"__");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
@@ -166,30 +160,24 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_declaration(SPVM_COMPILER* com
       index++;
     }
   }
-  
-  // Arguments
   SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_ENV* env, SPVM_VALUE* stack)");
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
   
-  // Basic type
+  // Method
   SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, class_name, strlen(class_name));
-  
-  // Class name
   SPVM_CLASS* class = basic_type->class;
-
   SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
-
-  assert(method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE);
   
+  // Method declaration
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_declaration(compiler, string_buffer, class_name, method_name);
 
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
 
   if (class->is_anon) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    const char* CURRENT_CLASS_NAME = \"");
+    SPVM_STRING_BUFFER_add(string_buffer,"    const char* CURRENT_CLASS_NAME = \"");
     SPVM_STRING_BUFFER_add(string_buffer, class->name);
     SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   }
