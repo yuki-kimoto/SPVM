@@ -36,6 +36,7 @@
 #include "spvm_call_method.h"
 #include "spvm_var.h"
 #include "spvm_runtime_basic_type.h"
+#include "spvm_runtime_class.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_new_block_unmanaged(sizeof(SPVM_COMPILER));
@@ -64,9 +65,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->module_source_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   compiler->switch_infos = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-
-  compiler->runtime_basic_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-  compiler->runtime_basic_type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
@@ -380,9 +378,32 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   compiler->ops = NULL;
 
   assert(compiler->allocator->memory_blocks_count_compile_tmp == compile_start_memory_blocks_count_compile_tmp);
+
+  // Runtime classes - this is moved to the more after place and is optimized in the near future.
+  compiler->runtime_classes = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->runtime_class_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
+  for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
+    SPVM_RUNTIME_CLASS* runtime_class = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_CLASS));
+    
+    runtime_class->name = class->name;
+    runtime_class->type = class->type;
+    runtime_class->class_vars = class->class_vars;
+    runtime_class->class_var_symtable = class->class_var_symtable;
+    runtime_class->methods = class->methods;
+    runtime_class->method_symtable = class->method_symtable;
+    runtime_class->fields = class->fields;
+    runtime_class->field_symtable = class->field_symtable;
+    runtime_class->id = class->id;
+
+    SPVM_LIST_push(compiler->runtime_classes, runtime_class);
+    SPVM_HASH_insert(compiler->runtime_class_symtable, runtime_class->name, strlen(runtime_class->name), runtime_class);
+  }
   
-  // Runtime basic types - this is moved to the more after place in the future.
-  for (int32_t basic_type_id = cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+  // Runtime basic types - this is moved to the more after place and is optimized in the near future.
+  compiler->runtime_basic_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->runtime_basic_type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_BASIC_TYPE));
     
@@ -390,8 +411,12 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     runtime_basic_type->class = basic_type->class;
     runtime_basic_type->id = basic_type->id;
 
+    SPVM_RUNTIME_CLASS* runtime_class = SPVM_HASH_fetch(compiler->runtime_class_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name));
+    if (runtime_class) {
+      runtime_basic_type->runtime_class = runtime_class;
+    }
     SPVM_LIST_push(compiler->runtime_basic_types, runtime_basic_type);
-    SPVM_HASH_insert(compiler->runtime_basic_type_symtable, basic_type->name, strlen(basic_type->name), runtime_basic_type);
+    SPVM_HASH_insert(compiler->runtime_basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
   }
 
   return error_code;
