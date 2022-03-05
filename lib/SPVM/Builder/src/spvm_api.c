@@ -4471,7 +4471,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        SPVM_CLASS* method_class = SPVM_LIST_fetch(compiler->classes, method->class->id);
         const char* file = class->module_file;
         
         void* object = object_vars[opcode->operand0];
