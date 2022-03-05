@@ -17,7 +17,6 @@
 #include "spvm_opcode.h"
 #include "spvm_class.h"
 #include "spvm_basic_type.h"
-#include "spvm_runtime_basic_type.h"
 #include "spvm_class_var.h"
 #include "spvm_field.h"
 #include "spvm_method.h"
@@ -32,13 +31,14 @@
 #include "spvm_native.h"
 #include "spvm_string.h"
 
-
-
-
-
-
-
-
+#include "spvm_runtime_basic_type.h"
+#include "spvm_runtime_class.h"
+#include "spvm_runtime_field.h"
+#include "spvm_runtime_info.h"
+#include "spvm_runtime_manager.h"
+#include "spvm_runtime_method.h"
+#include "spvm_runtime_switch_info.h"
+#include "spvm_runtime_type.h"
 
 
 

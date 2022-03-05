@@ -17,7 +17,6 @@
 #include "spvm_class_var.h"
 #include "spvm_method.h"
 #include "spvm_basic_type.h"
-#include "spvm_runtime_basic_type.h"
 #include "spvm_field.h"
 #include "spvm_type.h"
 #include "spvm_api.h"
@@ -26,6 +25,15 @@
 #include "spvm_switch_info.h"
 #include "spvm_case_info.h"
 #include "spvm_string.h"
+
+#include "spvm_runtime_basic_type.h"
+#include "spvm_runtime_class.h"
+#include "spvm_runtime_field.h"
+#include "spvm_runtime_info.h"
+#include "spvm_runtime_manager.h"
+#include "spvm_runtime_method.h"
+#include "spvm_runtime_switch_info.h"
+#include "spvm_runtime_type.h"
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   

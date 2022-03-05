@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "spvm_runtime_typedecl.h"
+#include "spvm_typedecl.h"
 
 struct spvm_runtime_type {
   const char* name;

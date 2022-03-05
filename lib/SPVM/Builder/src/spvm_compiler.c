@@ -35,8 +35,15 @@
 #include "spvm_field_access.h"
 #include "spvm_call_method.h"
 #include "spvm_var.h"
+
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class.h"
+#include "spvm_runtime_field.h"
+#include "spvm_runtime_info.h"
+#include "spvm_runtime_manager.h"
+#include "spvm_runtime_method.h"
+#include "spvm_runtime_switch_info.h"
+#include "spvm_runtime_type.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_new_block_unmanaged(sizeof(SPVM_COMPILER));
