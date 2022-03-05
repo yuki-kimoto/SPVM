@@ -405,6 +405,9 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
     SPVM_LIST_push(compiler->runtime_classes, runtime_class);
     SPVM_HASH_insert(compiler->runtime_class_symtable, runtime_class->name, strlen(runtime_class->name), runtime_class);
+    
+    // Class variable
+    
   }
   
   // Runtime basic types - this is moved to the more after place and is optimized in the near future.

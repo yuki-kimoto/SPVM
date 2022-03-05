@@ -439,6 +439,7 @@ sub get_spvm_core_header_file_names {
     spvm_op.h
     spvm_runtime_basic_type.h
     spvm_runtime_class.h
+    spvm_runtime_class_var.h
     spvm_runtime_field.h
     spvm_runtime_info.h
     spvm_runtime_manager.h

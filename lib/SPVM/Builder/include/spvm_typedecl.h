@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stddef.h>
 
+// spvm_runtime_class_var.h
+struct spvm_runtime_class_var;
+typedef struct spvm_runtime_class_var SPVM_RUNTIME_CLASS_VAR;
+
 // spvm_runtime_manager.h
 struct spvm_runtime_manager;
 typedef struct spvm_runtime_manager SPVM_RUNTIME_MANAGER;
