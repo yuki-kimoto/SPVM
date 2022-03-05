@@ -418,13 +418,16 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_BASIC_TYPE));
     
     runtime_basic_type->name = basic_type->name;
-    runtime_basic_type->class = basic_type->class;
+    if (basic_type->class) {
+      runtime_basic_type->class = basic_type->class;
+      runtime_basic_type->class_id = basic_type->class->id;
+    }
+    else {
+      runtime_basic_type->class_id = -1;
+    }
     runtime_basic_type->id = basic_type->id;
 
     SPVM_RUNTIME_CLASS* runtime_class = SPVM_HASH_fetch(compiler->runtime_class_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name));
-    if (runtime_class) {
-      runtime_basic_type->runtime_class = runtime_class;
-    }
     SPVM_LIST_push(compiler->runtime_basic_types, runtime_basic_type);
     SPVM_HASH_insert(compiler->runtime_basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
   }

@@ -5,7 +5,6 @@
 
 struct spvm_runtime_basic_type {
   const char* name;
-  SPVM_RUNTIME_CLASS* runtime_class;
   SPVM_CLASS* class;
   int32_t name_id;
   int32_t class_id;
