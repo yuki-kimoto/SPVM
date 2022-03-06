@@ -48,6 +48,7 @@ enum {
 struct spvm_type {
   const char* name;
   SPVM_BASIC_TYPE* basic_type;
+  int32_t id;
   int32_t dimension;
   int32_t flag;
   int32_t category;

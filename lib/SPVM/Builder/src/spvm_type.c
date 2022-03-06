@@ -461,11 +461,12 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t
   else {
     type = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_TYPE));
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+    type->id = compiler->types->length;
     type->basic_type = basic_type;
     type->dimension = dimension;
     type->flag = flag;
     type->name = SPVM_TYPE_new_type_name(compiler,  basic_type_id, dimension, flag);
-
+    
     SPVM_LIST_push(compiler->types, type);
     SPVM_HASH_insert(compiler->type_symtable, type_name, strlen(type_name), type);
   }

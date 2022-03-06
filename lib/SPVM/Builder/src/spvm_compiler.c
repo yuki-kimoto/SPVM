@@ -38,6 +38,7 @@
 
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class.h"
+#include "spvm_runtime_class_var.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_info.h"
 #include "spvm_runtime_manager.h"
@@ -429,7 +430,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     SPVM_HASH_insert(compiler->runtime_basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
   }
 
-  // Runtime basic types - this is moved to the more after place and is optimized in the near future.
+  // Runtime types - this is moved to the more after place and is optimized in the near future.
   compiler->runtime_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->runtime_type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   for (int32_t type_id = 0; type_id < compiler->types->length; type_id++) {
@@ -445,6 +446,20 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     
     SPVM_LIST_push(compiler->runtime_types, runtime_type);
     SPVM_HASH_insert(compiler->runtime_type_symtable, runtime_type->name, strlen(runtime_type->name), runtime_type);
+  }
+
+  // Runtime class_vars - this is moved to the more after place and is optimized in the near future.
+  compiler->runtime_class_vars = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  for (int32_t class_var_id = 0; class_var_id < compiler->class_vars->length; class_var_id++) {
+    SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
+    SPVM_RUNTIME_CLASS_VAR* runtime_class_var = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_CLASS_VAR));
+
+    runtime_class_var->name = class_var->name;
+    runtime_class_var->signature = class_var->signature;
+    runtime_class_var->type_id = class_var->type->id;
+    runtime_class_var->class_id = class_var->class->id;
+    
+    SPVM_LIST_push(compiler->runtime_class_vars, runtime_class_var);
   }
 
   return error_code;
