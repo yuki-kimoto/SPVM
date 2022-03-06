@@ -1222,12 +1222,11 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
   SPVM_API_set_exception(env, NULL);
   
   // Free objects of class variables
-  SPVM_LIST* class_vars = compiler->class_vars;
-  for (int32_t i = 0; i < class_vars->length; i++) {
-    SPVM_CLASS_VAR* class_var = (SPVM_CLASS_VAR*)SPVM_LIST_fetch(class_vars, i);
-    SPVM_TYPE* class_var_type = class_var->type;
-    if (SPVM_TYPE_is_object_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, 0)) {
-      SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var->id];
+  for (int32_t class_var_id = 0; class_var_id < compiler->runtime_class_vars->length; class_var_id++) {
+    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->runtime_class_vars, class_var_id);
+    SPVM_RUNTIME_TYPE* class_var_type = SPVM_LIST_fetch(compiler->runtime_types, class_var->type_id);
+    if (SPVM_TYPE_is_object_type(compiler, class_var_type->basic_type_id, class_var_type->dimension, 0)) {
+      SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
       if (object) {
         SPVM_API_dec_ref_count(env, object);
       }
