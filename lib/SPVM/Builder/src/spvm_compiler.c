@@ -407,7 +407,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     SPVM_HASH_insert(compiler->runtime_class_symtable, runtime_class->name, strlen(runtime_class->name), runtime_class);
     
     // Class variable
-    
   }
   
   // Runtime basic types - this is moved to the more after place and is optimized in the near future.
@@ -428,6 +427,24 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
     SPVM_LIST_push(compiler->runtime_basic_types, runtime_basic_type);
     SPVM_HASH_insert(compiler->runtime_basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
+  }
+
+  // Runtime basic types - this is moved to the more after place and is optimized in the near future.
+  compiler->runtime_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->runtime_type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
+  for (int32_t type_id = 0; type_id < compiler->types->length; type_id++) {
+    SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
+    SPVM_RUNTIME_TYPE* runtime_type = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_TYPE));
+    
+    runtime_type->name = type->basic_type->name;
+    runtime_type->basic_type_id = type->basic_type->id;
+    runtime_type->dimension = type->dimension;
+    runtime_type->flag = type->flag;
+    runtime_type->category = type->category;
+    runtime_type->width = type->width;
+    
+    SPVM_LIST_push(compiler->runtime_types, runtime_type);
+    SPVM_HASH_insert(compiler->runtime_type_symtable, runtime_type->name, strlen(runtime_type->name), runtime_type);
   }
 
   return error_code;
