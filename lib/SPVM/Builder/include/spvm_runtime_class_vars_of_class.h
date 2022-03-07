@@ -4,6 +4,8 @@
 #include "spvm_typedecl.h"
 
 struct spvm_runtime_class_vars_of_class {
+  const char* name;
+  int32_t name_id;
   int32_t class_id;
   int32_t class_var_id;
 };

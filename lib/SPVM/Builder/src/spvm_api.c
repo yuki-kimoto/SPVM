@@ -17,7 +17,6 @@
 #include "spvm_opcode.h"
 #include "spvm_class.h"
 #include "spvm_basic_type.h"
-#include "spvm_class_var.h"
 #include "spvm_field.h"
 #include "spvm_method.h"
 #include "spvm_type.h"
@@ -40,6 +39,9 @@
 #include "spvm_runtime_method.h"
 #include "spvm_runtime_switch_info.h"
 #include "spvm_runtime_type.h"
+#include "spvm_runtime_class_vars_of_class.h"
+#include "spvm_runtime_fields_of_class.h"
+#include "spvm_runtime_methods_of_class.h"
 
 
 
@@ -6755,7 +6757,7 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const c
   }
 
   // Class variable name
-  SPVM_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class, class_var_name);
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class->id, class_var_name);
   if (!class_var) {
     return -1;
   }
@@ -7225,9 +7227,20 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, int32_t packagke_var_id, SPVM_
 
 
 // Private API
-SPVM_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, SPVM_CLASS* class, const char* class_var_name) {
-
-  SPVM_CLASS_VAR* class_var = SPVM_HASH_fetch(class->class_var_symtable, class_var_name, strlen(class_var_name));
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, int32_t class_id, const char* class_var_name) {
+  
+  SPVM_COMPILER* compiler = env->compiler;
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = NULL;
+  for (int32_t i = 0; i < compiler->runtime_class_vars->length; i++) {
+    SPVM_RUNTIME_CLASS_VARS_OF_CLASS* class_var_of_class = (SPVM_RUNTIME_CLASS_VARS_OF_CLASS*)&compiler->runtime_class_vars_of_class[i];
+    if (class_id == class_var_of_class->class_id) {
+      if (strcmp(class_var_name, class_var_of_class->name) == 0) {
+        class_var = SPVM_LIST_fetch(compiler->runtime_class_vars, class_var_of_class->class_var_id);
+        break;
+      }
+    }
+  }
   
   return class_var;
 }

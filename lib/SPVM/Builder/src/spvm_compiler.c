@@ -412,12 +412,35 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   int32_t runtime_class_vars_of_class_id = 0;
   for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
+    
+    // Methods
     for (int32_t index = 0; index < class->methods->length; index++) {
       SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, index);
       SPVM_RUNTIME_METHODS_OF_CLASS* methods_of_class = (SPVM_RUNTIME_METHODS_OF_CLASS*)&compiler->runtime_methods_of_class[runtime_methods_of_class_id];
       methods_of_class->class_id = class->id;
       methods_of_class->method_id = method->id;
+      methods_of_class->name = method->name;
       runtime_methods_of_class_id++;
+    }
+    
+    // Fields
+    for (int32_t index = 0; index < class->fields->length; index++) {
+      SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, index);
+      SPVM_RUNTIME_FIELDS_OF_CLASS* fields_of_class = (SPVM_RUNTIME_FIELDS_OF_CLASS*)&compiler->runtime_fields_of_class[runtime_fields_of_class_id];
+      fields_of_class->class_id = class->id;
+      fields_of_class->field_id = field->id;
+      fields_of_class->name = field->name;
+      runtime_fields_of_class_id++;
+    }
+    
+    // Class variables
+    for (int32_t index = 0; index < class->class_vars->length; index++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(class->class_vars, index);
+      SPVM_RUNTIME_CLASS_VARS_OF_CLASS* class_vars_of_class = (SPVM_RUNTIME_CLASS_VARS_OF_CLASS*)&compiler->runtime_class_vars_of_class[runtime_class_vars_of_class_id];
+      class_vars_of_class->class_id = class->id;
+      class_vars_of_class->class_var_id = class_var->id;
+      class_vars_of_class->name = class_var->name;
+      runtime_class_vars_of_class_id++;
     }
   }
 
@@ -487,6 +510,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     SPVM_RUNTIME_CLASS_VAR* runtime_class_var = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_CLASS_VAR));
 
     runtime_class_var->name = class_var->name;
+    runtime_class_var->id = class_var->id;
     runtime_class_var->signature = class_var->signature;
     runtime_class_var->type_id = class_var->type->id;
     runtime_class_var->class_id = class_var->class->id;
