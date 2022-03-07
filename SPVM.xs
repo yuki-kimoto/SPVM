@@ -150,7 +150,8 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
           return NULL;
         }
 
-        switch (first_field->type->basic_type->id) {
+        SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(compiler->runtime_types, first_field->type_id);
+        switch (first_field_type->basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
             ((int8_t*)elems)[(fields_length * index) + field_index] = (int8_t)SvIV(sv_field_value);
             break;
@@ -1226,7 +1227,8 @@ call_spvm_method(...)
         const char* field_name = field->name;
         
         SV* sv_field_value = NULL;
-        switch (method_return_first_field->type->basic_type->id) {
+        SPVM_RUNTIME_TYPE* method_return_first_field_type = SPVM_LIST_fetch(compiler->runtime_types, method_return_first_field->type_id);
+        switch (method_return_first_field_type->basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
             sv_field_value = sv_2mortal(newSViv(args_stack[field_index].bval));
             break;
@@ -1479,7 +1481,8 @@ array_to_elems(...)
           const char* field_name = field->name;
 
           SV* sv_field_value;
-          switch (first_field->type->basic_type->id) {
+          SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(compiler->runtime_types, first_field->type_id);
+          switch (first_field_type->basic_type_id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               int8_t field_value = ((int8_t*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
@@ -1672,7 +1675,8 @@ array_to_bin(...)
 
       int32_t field_length = class->fields->length;
 
-      switch (first_field->type->basic_type->id) {
+      SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(compiler->runtime_types, first_field->type_id);
+      switch (first_field_type->basic_type_id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
           int8_t* elems = env->get_elems_byte(env, array);
           
@@ -3294,7 +3298,9 @@ _new_mulnum_array_from_bin(...)
   
   
   int32_t field_width;
-  switch (first_field->type->basic_type->id) {
+  
+  SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(compiler->runtime_types, first_field->type_id);
+  switch (first_field_type->basic_type_id) {
     case SPVM_BASIC_TYPE_C_ID_BYTE: {
       field_width = 1;
       break;
@@ -3334,7 +3340,7 @@ _new_mulnum_array_from_bin(...)
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
   
-  switch (first_field->type->basic_type->id) {
+  switch (first_field_type->basic_type_id) {
     case SPVM_BASIC_TYPE_C_ID_BYTE: {
       int8_t* elems = env->get_elems_byte(env, array);
       if (array_length > 0) {
