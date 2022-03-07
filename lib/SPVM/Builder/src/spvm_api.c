@@ -7400,6 +7400,71 @@ int32_t SPVM_API_get_no_symbol_cache_flag(SPVM_ENV* env) {
   return (int32_t)(intptr_t)env->no_symbol_cache_flag;
 }
 
+void SPVM_API_call_init_blocks(SPVM_ENV* env) {
+  (void)env;
+  
+  // Runtime
+  SPVM_COMPILER* compiler = env->compiler;
+  
+  // Call INIT blocks
+  int32_t classes_length = compiler->runtime_classes->length;
+  SPVM_VALUE stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
+  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
+    
+    SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_id);
+    
+    if (class->has_init_block) {
+      SPVM_METHOD* init_method = SPVM_HASH_fetch(class->method_symtable, "INIT", strlen("INIT"));
+      assert(init_method);
+      env->call_spvm_method(env, init_method->id, stack);
+    }
+  }
+}
+
+SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
+  (void)env;
+  
+  // New raw env
+  SPVM_ENV* new_env = SPVM_API_new_env_raw(NULL);
+  
+  // Set the compiler
+  new_env->compiler = env->compiler;
+  
+  // Initialize env
+  new_env->init_env(new_env);
+  
+  // Call init blocks
+  new_env->call_init_blocks(new_env);
+  
+  return new_env;
+}
+
+void SPVM_API_free_env(SPVM_ENV* env) {
+  (void)env;
+  
+  env->cleanup_global_vars(env);
+  
+  env->free_env_raw(env);
+}
+
+const char* SPVM_API_get_constant_string(SPVM_ENV* env, int32_t string_id, int32_t* string_length) {
+  SPVM_COMPILER* compiler = env->compiler;
+  
+  SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->strings, string_id);
+  
+  const char* constant_string_value = constant_string->value;
+  *string_length = constant_string->length;
+  
+  return constant_string_value;
+}
+
+SPVM_METHOD* SPVM_API_get_method_from_runtime_class(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* method_name) {
+
+  SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
+  
+  return method;
+}
+
 // flag
 // 0 : all
 // 1 : native method
@@ -7696,27 +7761,6 @@ int32_t SPVM_API_compiler_compile_spvm(SPVM_ENV* env, SPVM_COMPILER* compiler, c
   return error_code;
 }
 
-void SPVM_API_call_init_blocks(SPVM_ENV* env) {
-  (void)env;
-  
-  // Runtime
-  SPVM_COMPILER* compiler = env->compiler;
-  
-  // Call INIT blocks
-  int32_t classes_length = compiler->runtime_classes->length;
-  SPVM_VALUE stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
-  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
-    
-    SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_id);
-    
-    if (class->has_init_block) {
-      SPVM_METHOD* init_method = SPVM_HASH_fetch(class->method_symtable, "INIT", strlen("INIT"));
-      assert(init_method);
-      env->call_spvm_method(env, init_method->id, stack);
-    }
-  }
-}
-
 void SPVM_API_compiler_free(SPVM_ENV* env, SPVM_COMPILER* compiler) {
   (void*)env;
 
@@ -7731,46 +7775,3 @@ const char* SPVM_API_compiler_get_error_message(SPVM_ENV* env, SPVM_COMPILER* co
   return  SPVM_COMPILER_get_error_message(compiler, index);
 }
 
-SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
-  (void)env;
-  
-  // New raw env
-  SPVM_ENV* new_env = SPVM_API_new_env_raw(NULL);
-  
-  // Set the compiler
-  new_env->compiler = env->compiler;
-  
-  // Initialize env
-  new_env->init_env(new_env);
-  
-  // Call init blocks
-  new_env->call_init_blocks(new_env);
-  
-  return new_env;
-}
-
-void SPVM_API_free_env(SPVM_ENV* env) {
-  (void)env;
-  
-  env->cleanup_global_vars(env);
-  
-  env->free_env_raw(env);
-}
-
-const char* SPVM_API_get_constant_string(SPVM_ENV* env, int32_t string_id, int32_t* string_length) {
-  SPVM_COMPILER* compiler = env->compiler;
-  
-  SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->strings, string_id);
-  
-  const char* constant_string_value = constant_string->value;
-  *string_length = constant_string->length;
-  
-  return constant_string_value;
-}
-
-SPVM_METHOD* SPVM_API_get_method_from_runtime_class(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* method_name) {
-
-  SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
-  
-  return method;
-}
