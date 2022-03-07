@@ -18,6 +18,15 @@ struct spvm_runtime_method {
   int32_t class_id;
   int32_t flag;
   int8_t is_class_method;
+  int32_t byte_vars_alloc_length;
+  int32_t short_vars_alloc_length;
+  int32_t int_vars_alloc_length;
+  int32_t long_vars_alloc_length;
+  int32_t float_vars_alloc_length;
+  int32_t double_vars_alloc_length;
+  int32_t object_vars_alloc_length;
+  int32_t ref_vars_alloc_length;
+  int32_t mortal_stack_length;
 };
 
 #endif
