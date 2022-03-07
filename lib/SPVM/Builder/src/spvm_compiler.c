@@ -579,10 +579,14 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
     runtime_field->name = field->name;
     runtime_field->signature = field->signature;
-    runtime_field->type = field->type;
     runtime_field->id = field->id;
     runtime_field->index = field->index;
     runtime_field->offset = field->offset;
+    runtime_field->type_id = field->type->id;
+    runtime_field->type = field->type;
+    
+    // Tmp
+    field->type_id = field->type->id;
     
     SPVM_LIST_push(compiler->runtime_fields, runtime_field);
   }
