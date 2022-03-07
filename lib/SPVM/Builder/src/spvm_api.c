@@ -6728,15 +6728,6 @@ int32_t SPVM_API_get_field_offset(SPVM_ENV* env, int32_t field_id) {
   return field->offset;
 }
 
-SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* field_name) {
-  // Runtime
-  SPVM_COMPILER* compiler = env->compiler;
-
-  SPVM_RUNTIME_FIELD* field = SPVM_HASH_fetch(class->field_symtable, field_name, strlen(field_name));
-  
-  return field;
-}
-
 int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* class_name, const char* field_name, const char* signature) {
   (void)env;
   
@@ -6754,7 +6745,7 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* class_name, const char*
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, class, field_name);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_runtime_class(env, class->id, field_name);
   if (!field) {
     return -1;
   }

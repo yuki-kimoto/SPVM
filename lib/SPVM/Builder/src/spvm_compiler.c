@@ -454,11 +454,9 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     runtime_class->name = class->name;
     runtime_class->type = class->type;
     runtime_class->class_vars = class->class_vars;
-    runtime_class->class_var_symtable = class->class_var_symtable;
     runtime_class->methods = class->methods;
     runtime_class->method_symtable = class->method_symtable;
     runtime_class->fields = class->fields;
-    runtime_class->field_symtable = class->field_symtable;
     runtime_class->id = class->id;
     runtime_class->module_file = class->module_file;
     runtime_class->flag = class->flag;
