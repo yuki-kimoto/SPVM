@@ -171,6 +171,15 @@ struct spvm_compiler {
   
   // Runtime switch infos
   SPVM_LIST* runtime_switch_infos;
+
+  // Runtime methods of a class
+  SPVM_LIST* runtime_methods_of_class;
+
+  // Runtime fields of a class
+  SPVM_LIST* runtime_fields_of_class;
+
+  // Runtime class variables of a class
+  SPVM_LIST* runtime_class_vars_of_class;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
