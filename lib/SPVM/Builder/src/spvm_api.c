@@ -4447,7 +4447,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           const char* method_name = method->name;
           SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(compiler->runtime_classes, method->class_id);
           const char* class_name = method_class->name;
-          const char* file = method->class->module_file;
+          const char* file = method_class->module_file;
           
           // Exception stack trace
           env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), class_name, method_name, file, line));
