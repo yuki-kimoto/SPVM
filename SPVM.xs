@@ -18,19 +18,14 @@
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
 #include "spvm_list.h"
-#include "spvm_method.h"
-#include "spvm_class.h"
-#include "spvm_method.h"
 #include "spvm_type.h"
 #include "spvm_basic_type.h"
-#include "spvm_field.h"
 #include "spvm_object.h"
 #include "spvm_native.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_csource_builder_precompile.h"
 #include "spvm_list.h"
 #include "spvm_string_buffer.h"
-#include "spvm_use.h"
 #include "spvm_limit.h"
 #include "spvm_allocator.h"
 
@@ -223,12 +218,12 @@ call_spvm_method(...)
   
   // Method not found
   int32_t method_not_found;
-  SPVM_METHOD* method = NULL;
+  SPVM_RUNTIME_METHOD* method = NULL;
   if (class == NULL) {
     method_not_found = 1;
   }
   else {
-    method = SPVM_API_get_method_from_runtime_class(env, class, method_name);
+    method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_name);
     if (method == NULL) {
       method_not_found = 1;
     }
@@ -3697,12 +3692,12 @@ get_anon_class_names_by_parent_class_name(...)
 
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, method_index);
+    SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(class->methods, method_index);
     int32_t method_id = method->id;
     int32_t is_anon_method = compiler_env->compiler_is_anon_method(compiler_env, compiler, method_id);
     
     if (is_anon_method) {
-      SPVM_RUNTIME_CLASS* anon_class = (SPVM_RUNTIME_CLASS*)method->class;
+      SPVM_RUNTIME_CLASS* anon_class = SPVM_LIST_fetch(compiler->runtime_classes, method->class_id);
       const char* anon_class_name = anon_class->name;
       SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
       av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));
