@@ -343,22 +343,6 @@ SPVM_RUNTIME_CLASS* SPVM_API_get_runtime_class_from_basic_type_id(SPVM_ENV* env,
   return class;
 }
 
-SPVM_CLASS* SPVM_API_get_class_from_basic_type_id(SPVM_ENV* env, int32_t basic_type_id) {
-  SPVM_COMPILER* compiler = env->compiler;
-  
-  SPVM_CLASS* class = NULL;
-  if (basic_type_id >= 0) {
-    SPVM_LIST* runtime_basic_types = compiler->runtime_basic_types;
-    
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_LIST_fetch(runtime_basic_types, basic_type_id);
-    int32_t class_id = runtime_basic_type->class_id;
-    
-    class = SPVM_LIST_fetch(compiler->classes, class_id);
-  }
-  
-  return class;
-}
-
 int32_t SPVM_API_init_env(SPVM_ENV* env) {
   
   SPVM_COMPILER* compiler = env->compiler;
@@ -7785,13 +7769,6 @@ const char* SPVM_API_get_constant_string(SPVM_ENV* env, int32_t string_id, int32
 }
 
 SPVM_METHOD* SPVM_API_get_method_from_runtime_class(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* method_name) {
-
-  SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
-  
-  return method;
-}
-
-SPVM_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_CLASS* class, const char* method_name) {
 
   SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
   
