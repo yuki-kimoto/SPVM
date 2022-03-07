@@ -568,6 +568,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     
     // Temporary
     method->arg_type_ids = runtime_method->arg_type_ids;
+    method->class_id = runtime_method->class_id;
 
     SPVM_LIST_push(compiler->runtime_methods, runtime_method);
   }

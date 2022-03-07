@@ -1354,7 +1354,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
   
   // Runtime class
-  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, method->class->id);
+  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, method->class_id);
 
   // Operation codes
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
@@ -4445,7 +4445,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           int32_t line = opcode->operand2;
           
           const char* method_name = method->name;
-          SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(compiler->runtime_classes, method->class->id);
+          SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(compiler->runtime_classes, method->class_id);
           const char* class_name = method_class->name;
           const char* file = method->class->module_file;
           
@@ -4463,7 +4463,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           int32_t line = opcode->operand2;
           
           const char* method_name = method->name;
-          SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(compiler->runtime_classes, method->class->id);
+          SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(compiler->runtime_classes, method->class_id);
           const char* class_name = method_class->name;
           const char* file = class->module_file;
 
