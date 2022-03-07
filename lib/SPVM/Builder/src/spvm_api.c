@@ -1493,7 +1493,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
     int32_t stack_index = 0;
     for (int32_t arg_index = 0; arg_index < method->args->length; arg_index++) {
       int32_t arg_mem_id = (intptr_t)SPVM_LIST_fetch(method->arg_mem_ids, arg_index);
-      SPVM_TYPE* arg_type = SPVM_LIST_fetch(method->arg_types, arg_index);
+      SPVM_TYPE* arg_type_tmp = SPVM_LIST_fetch(method->arg_types, arg_index);
+      SPVM_RUNTIME_TYPE* arg_type = SPVM_LIST_fetch(compiler->runtime_types, arg_type_tmp->id);
       
       int32_t type_width = arg_type->width;
       switch (arg_type->category) {
