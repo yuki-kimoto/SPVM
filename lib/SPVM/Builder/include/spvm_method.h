@@ -23,8 +23,6 @@ enum {
 struct spvm_method {
   void* precompile_address;
   void* native_address;
-  int32_t return_type_id;
-  SPVM_LIST* arg_type_ids;
   SPVM_LIST* arg_mem_ids;
   const char* name;
   const char* signature;
@@ -34,6 +32,7 @@ struct spvm_method {
   int32_t class_id;
   int32_t flag;
   int8_t is_class_method;
+  int8_t is_init;
   int32_t byte_vars_alloc_length;
   int32_t short_vars_alloc_length;
   int32_t int_vars_alloc_length;
@@ -42,7 +41,11 @@ struct spvm_method {
   int32_t double_vars_alloc_length;
   int32_t object_vars_alloc_length;
   int32_t ref_vars_alloc_length;
+  int32_t args_alloc_length;
   int32_t mortal_stack_length;
+  SPVM_TYPE* return_type;
+  int32_t return_type_id;
+  SPVM_LIST* arg_type_ids;
   SPVM_OP* op_method;
   SPVM_OP* op_name;
   SPVM_OP* op_block;
@@ -52,7 +55,6 @@ struct spvm_method {
   SPVM_LIST* object_arg_ids;
   SPVM_LIST* mys;
   SPVM_LIST* captures;
-  SPVM_TYPE* return_type;
   SPVM_LIST* args;
   SPVM_LIST* arg_types;
   const char* abs_name;
@@ -62,7 +64,6 @@ struct spvm_method {
   int32_t call_method_arg_stack_max;
   int32_t rel_id;
   int32_t eval_stack_max_length;
-  int32_t args_alloc_length;
   int32_t vars_alloc_length;
   int32_t tmp_vars_length;
   int8_t have_vaarg;
@@ -72,7 +73,6 @@ struct spvm_method {
   int8_t is_field_getter;
   int8_t is_simple_constructor;
   int8_t is_constant;
-  int8_t is_init;
   int8_t can_precompile;
 };
 

@@ -539,7 +539,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
     runtime_method->precompile_address = method->precompile_address;
     runtime_method->native_address = method->native_address;
-    runtime_method->return_type_id = method->return_type->id;
     runtime_method->arg_mem_ids = method->arg_mem_ids;
     runtime_method->name = method->name;
     runtime_method->signature = method->signature;
@@ -549,21 +548,21 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     runtime_method->class_id = method->class->id;
     runtime_method->flag = method->flag;
     runtime_method->is_class_method = method->is_class_method;
-
-    runtime_method->long_vars_alloc_length  = method->long_vars_alloc_length;
-    runtime_method->double_vars_alloc_length  = method->double_vars_alloc_length;
-    runtime_method->int_vars_alloc_length  = method->int_vars_alloc_length;
-    runtime_method->float_vars_alloc_length  = method->float_vars_alloc_length;
-    runtime_method->short_vars_alloc_length  = method->short_vars_alloc_length;
-    runtime_method->mortal_stack_length  = method->mortal_stack_length;
+    runtime_method->is_init = method->is_init;
     runtime_method->byte_vars_alloc_length  = method->byte_vars_alloc_length;
-    
-    // Address area byte size
-    int32_t address_vars_byte_size = 0;
-    address_vars_byte_size += method->object_vars_alloc_length * sizeof(void*);
-    address_vars_byte_size += method->ref_vars_alloc_length * sizeof(void*);
-    
+    runtime_method->short_vars_alloc_length  = method->short_vars_alloc_length;
+    runtime_method->int_vars_alloc_length  = method->int_vars_alloc_length;
+    runtime_method->long_vars_alloc_length  = method->long_vars_alloc_length;
+    runtime_method->float_vars_alloc_length  = method->float_vars_alloc_length;
+    runtime_method->double_vars_alloc_length  = method->double_vars_alloc_length;
+    runtime_method->object_vars_alloc_length = method->object_vars_alloc_length;
+    runtime_method->ref_vars_alloc_length = method->ref_vars_alloc_length;
+    runtime_method->args_alloc_length  = method->args_alloc_length;
+    runtime_method->mortal_stack_length  = method->mortal_stack_length;
+    runtime_method->return_type  = method->return_type;
+    runtime_method->return_type_id = method->return_type->id;
     runtime_method->arg_type_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, method->arg_types->length);
+
     for (int32_t i = 0; i < method->arg_types->length; i++) {
       SPVM_TYPE* arg_type = SPVM_LIST_fetch(method->arg_types, i);
       SPVM_LIST_push(runtime_method->arg_type_ids, (void*)(intptr_t)arg_type->id);
