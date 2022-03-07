@@ -6,10 +6,11 @@
 struct spvm_runtime_field {
   const char* name;
   const char* signature;
-  SPVM_TYPE* type;
   int32_t id;
   int32_t index;
   int32_t offset;
+  int32_t type_id;
+  SPVM_TYPE* type;
 };
 
 #endif

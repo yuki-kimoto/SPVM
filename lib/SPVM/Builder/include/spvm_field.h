@@ -11,10 +11,11 @@ enum {
 struct spvm_field {
   const char* name;
   const char* signature;
-  SPVM_TYPE* type;
   int32_t id;
   int32_t index;
   int32_t offset;
+  int32_t type_id; // tmp
+  SPVM_TYPE* type;
   SPVM_CLASS* class;
   SPVM_OP* op_field;
   SPVM_OP* op_name;
