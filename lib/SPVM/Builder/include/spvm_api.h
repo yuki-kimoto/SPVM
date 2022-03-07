@@ -63,10 +63,10 @@ int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array);
 int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id);
 int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id);
 
-SPVM_METHOD* SPVM_API_method(SPVM_ENV* env, SPVM_CLASS* class, const char* method_name);
+SPVM_METHOD* SPVM_API_method(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* method_name);
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env,  const char* basic_type_name);
-SPVM_CLASS_VAR* SPVM_API_class_var(SPVM_ENV* env, SPVM_CLASS* class, const char* class_var_name);
+SPVM_CLASS_VAR* SPVM_API_class_var(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* class_var_name);
 
 // Get
 int32_t SPVM_API_object_header_byte_size(SPVM_ENV* env);
@@ -269,6 +269,7 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth, SPVM_STRING_BUFFER* string_buffer, SPVM_HASH* address_symtable);
 
 SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, int32_t class_id, const char* class_var_name);
+SPVM_METHOD* SPVM_API_get_method_from_runtime_class(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* method_name);
 SPVM_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_CLASS* class, const char* method_name);
 
 int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
@@ -330,6 +331,7 @@ int32_t SPVM_API_compiler_get_class_id(SPVM_ENV* env, SPVM_COMPILER* compiler, c
 
 const char* SPVM_API_get_constant_string(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
 
+SPVM_RUNTIME_CLASS* SPVM_API_get_runtime_class_from_basic_type_id(SPVM_ENV* env, int32_t basic_type_id);
 SPVM_CLASS* SPVM_API_get_class_from_basic_type_id(SPVM_ENV* env, int32_t basic_type_id);
 
 #endif
