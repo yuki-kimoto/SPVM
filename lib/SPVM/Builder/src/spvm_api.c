@@ -1294,7 +1294,8 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
     
     // Increment ref count of return value
     if (!exception_flag) {
-      switch (method->return_type->category) {
+      SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(compiler->runtime_types, method->return_type->id);
+      switch (method_return_type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
@@ -1314,7 +1315,8 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
 
     // Decrement ref count of return value
     if (!exception_flag) {
-      switch (method->return_type->category) {
+      SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(compiler->runtime_types, method->return_type->id);
+      switch (method_return_type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
@@ -4201,7 +4203,9 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         call_spvm_method_arg_stack_top -= call_spvm_method->args_alloc_length;
         exception_flag = env->call_spvm_method(env, call_method_id, stack);
         
-        switch (call_spvm_method->return_type->category) {
+        SPVM_RUNTIME_TYPE* call_spvm_method_return_type = SPVM_LIST_fetch(compiler->runtime_types, call_spvm_method->return_type->id);
+
+        switch (call_spvm_method_return_type->category) {
           case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
             break;
           }
@@ -4331,7 +4335,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         else {
           exception_flag = env->call_spvm_method(env, call_method_id, stack);
           
-          switch (decl_method->return_type->category) {
+          SPVM_RUNTIME_TYPE* decl_method_return_type = SPVM_LIST_fetch(compiler->runtime_types, decl_method->return_type->id);
+          switch (decl_method_return_type->category) {
             case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
               break;
             }
@@ -5445,7 +5450,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   
   // Decrement ref count of return value
   if (!exception_flag) {
-    switch (method->return_type->category) {
+    SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(compiler->runtime_types, method->return_type->id);
+    switch (method_return_type->category) {
       case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
       case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
       case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
