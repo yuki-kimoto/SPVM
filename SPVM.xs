@@ -119,7 +119,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
       SPVM_CLASS* class = SPVM_API_get_class_from_basic_type_id(env, basic_type->id);
       assert(class);
       
-      SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
+      SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
       assert(first_field);
 
       void* elems = (void*)env->get_elems_int(env, array);
@@ -137,7 +137,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
       }
 
       for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(class->fields, field_index);
         const char* field_name = field->name;
         
         SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -410,7 +410,7 @@ call_spvm_method(...)
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t fields_length = arg_class->fields->length;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
             SV* sv_field_value;
@@ -438,7 +438,7 @@ call_spvm_method(...)
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t fields_length = arg_class->fields->length;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
             SV* sv_field_value;
@@ -466,7 +466,7 @@ call_spvm_method(...)
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t fields_length = arg_class->fields->length;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
             SV* sv_field_value;
@@ -494,7 +494,7 @@ call_spvm_method(...)
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t fields_length = arg_class->fields->length;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
             SV* sv_field_value;
@@ -522,7 +522,7 @@ call_spvm_method(...)
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t fields_length = arg_class->fields->length;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
             SV* sv_field_value;
@@ -550,7 +550,7 @@ call_spvm_method(...)
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t fields_length = arg_class->fields->length;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
             SV* sv_field_value;
@@ -898,7 +898,7 @@ call_spvm_method(...)
         SPVM_CLASS* arg_class = SPVM_API_get_class_from_basic_type_id(env, arg_basic_type->id);
         int32_t fields_length = arg_class->fields->length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
           const char* field_name = field->name;
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
@@ -936,7 +936,7 @@ call_spvm_method(...)
         SPVM_CLASS* arg_class = SPVM_API_get_class_from_basic_type_id(env, arg_basic_type->id);
         int32_t fields_length = arg_class->fields->length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
           const char* field_name = field->name;
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
@@ -973,7 +973,7 @@ call_spvm_method(...)
         SPVM_CLASS* arg_class = SPVM_API_get_class_from_basic_type_id(env, arg_basic_type->id);
         int32_t fields_length = arg_class->fields->length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
           const char* field_name = field->name;
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
@@ -1010,7 +1010,7 @@ call_spvm_method(...)
         SPVM_CLASS* arg_class = SPVM_API_get_class_from_basic_type_id(env, arg_basic_type->id);
         int32_t fields_length = arg_class->fields->length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
           const char* field_name = field->name;
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
@@ -1047,7 +1047,7 @@ call_spvm_method(...)
         SPVM_CLASS* arg_class = SPVM_API_get_class_from_basic_type_id(env, arg_basic_type->id);
         int32_t fields_length = arg_class->fields->length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
           const char* field_name = field->name;
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
@@ -1084,7 +1084,7 @@ call_spvm_method(...)
         SPVM_CLASS* arg_class = SPVM_API_get_class_from_basic_type_id(env, arg_basic_type->id);
         int32_t fields_length = arg_class->fields->length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
           const char* field_name = field->name;
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
@@ -1217,12 +1217,12 @@ call_spvm_method(...)
       SPVM_CLASS* method_return_class = SPVM_API_get_class_from_basic_type_id(env, method_return_basic_type->id);
       assert(method_return_class);
       
-      SPVM_FIELD* method_return_first_field = SPVM_LIST_fetch(method_return_class->fields, 0);
+      SPVM_RUNTIME_FIELD* method_return_first_field = SPVM_LIST_fetch(method_return_class->fields, 0);
       assert(method_return_first_field);
       
       HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
       for (int32_t field_index = 0; field_index < method_return_class->fields->length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_fetch(method_return_class->fields, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(method_return_class->fields, field_index);
         const char* field_name = field->name;
         
         SV* sv_field_value = NULL;
@@ -1313,10 +1313,10 @@ call_spvm_method(...)
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_CLASS* arg_class = SPVM_API_get_class_from_basic_type_id(env, arg_basic_type->id);
           assert(arg_class);
-          SPVM_FIELD* arg_first_field = SPVM_LIST_fetch(arg_class->fields, 0);
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_class->fields, 0);
           assert(arg_first_field);
           for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
             SV* sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
@@ -1328,10 +1328,10 @@ call_spvm_method(...)
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_CLASS* arg_class = SPVM_API_get_class_from_basic_type_id(env, arg_basic_type->id);
           assert(arg_class);
-          SPVM_FIELD* arg_first_field = SPVM_LIST_fetch(arg_class->fields, 0);
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_class->fields, 0);
           assert(arg_first_field);
           for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
             SV* sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
@@ -1343,10 +1343,10 @@ call_spvm_method(...)
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_CLASS* arg_class = SPVM_API_get_class_from_basic_type_id(env, arg_basic_type->id);
           assert(arg_class);
-          SPVM_FIELD* arg_first_field = SPVM_LIST_fetch(arg_class->fields, 0);
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_class->fields, 0);
           assert(arg_first_field);
           for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
             SV* sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
@@ -1358,10 +1358,10 @@ call_spvm_method(...)
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_CLASS* arg_class = SPVM_API_get_class_from_basic_type_id(env, arg_basic_type->id);
           assert(arg_class);
-          SPVM_FIELD* arg_first_field = SPVM_LIST_fetch(arg_class->fields, 0);
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_class->fields, 0);
           assert(arg_first_field);
           for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
             SV* sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
@@ -1373,10 +1373,10 @@ call_spvm_method(...)
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_CLASS* arg_class = SPVM_API_get_class_from_basic_type_id(env, arg_basic_type->id);
           assert(arg_class);
-          SPVM_FIELD* arg_first_field = SPVM_LIST_fetch(arg_class->fields, 0);
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_class->fields, 0);
           assert(arg_first_field);
           for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
             SV* sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
@@ -1388,10 +1388,10 @@ call_spvm_method(...)
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_CLASS* arg_class = SPVM_API_get_class_from_basic_type_id(env, arg_basic_type->id);
           assert(arg_class);
-          SPVM_FIELD* arg_first_field = SPVM_LIST_fetch(arg_class->fields, 0);
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_class->fields, 0);
           assert(arg_first_field);
           for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
             SV* sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
@@ -1467,7 +1467,7 @@ array_to_elems(...)
         SPVM_CLASS* class = SPVM_API_get_class_from_basic_type_id(env, basic_type->id);
         assert(class);
         
-        SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
+        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
         assert(first_field);
 
         void* elems = (void*)env->get_elems_int(env, array);
@@ -1475,7 +1475,7 @@ array_to_elems(...)
         HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
         int32_t field_length = class->fields->length;
         for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(class->fields, field_index);
           const char* field_name = field->name;
 
           SV* sv_field_value;
@@ -1667,7 +1667,7 @@ array_to_bin(...)
       SPVM_CLASS* class = SPVM_API_get_class_from_basic_type_id(env, basic_type->id);
       assert(class);
       
-      SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
+      SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
       assert(first_field);
 
       int32_t field_length = class->fields->length;
@@ -3285,7 +3285,7 @@ _new_mulnum_array_from_bin(...)
   SPVM_CLASS* class = SPVM_API_get_class_from_basic_type_id(env, basic_type->id);
   assert(class);
   
-  SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
+  SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
   assert(first_field);
 
   int32_t field_length = class->fields->length;
