@@ -389,15 +389,24 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   compiler->ops = NULL;
 
   assert(compiler->allocator->memory_blocks_count_compile_tmp == compile_start_memory_blocks_count_compile_tmp);
-
+  
+  
+  
   // Runtime methods, fields, class variables of classes
-  compiler->runtime_methods_of_class = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-  compiler->runtime_fields_of_class = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
-  compiler->runtime_class_vars_of_class = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  int32_t runtime_methods_of_class_length = 0;
+  int32_t runtime_fields_of_class_length = 0;
+  int32_t runtime_class_vars_of_class_length = 0;
+  
   for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
-    SPVM_RUNTIME_CLASS* runtime_class = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_CLASS));
+    runtime_methods_of_class_length += class->methods->length;
+    runtime_fields_of_class_length += class->fields->length;
+    runtime_class_vars_of_class_length += class->class_vars->length;
   }
+  
+  compiler->runtime_methods_of_class = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, sizeof(SPVM_RUNTIME_METHODS_OF_CLASS) * runtime_methods_of_class_length);
+  compiler->runtime_fields_of_class = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, sizeof(SPVM_RUNTIME_FIELDS_OF_CLASS) * runtime_fields_of_class_length);
+  compiler->runtime_class_vars_of_class = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, sizeof(SPVM_RUNTIME_CLASS_VARS_OF_CLASS) * runtime_class_vars_of_class_length);
 
   // Runtime classes - this is moved to the more after place and is optimized in the near future.
   compiler->runtime_classes = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
