@@ -249,10 +249,10 @@ call_spvm_method(...)
   }
   
   // Check argument count
-  if (items - spvm_args_base < method->arg_types->length) {
+  if (items - spvm_args_base < method->arg_type_ids->length) {
     croak("Too few arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
-  else if (items - spvm_args_base > method->arg_types->length) {
+  else if (items - spvm_args_base > method->arg_type_ids->length) {
     croak("Too many arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
 
@@ -271,7 +271,7 @@ call_spvm_method(...)
   int32_t ref_stack_indexes[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
 
   // Arguments
-  for (int32_t args_index = 0; args_index < method->arg_types->length; args_index++) {
+  for (int32_t args_index = 0; args_index < method->arg_type_ids->length; args_index++) {
     
     int32_t args_index_nth = args_index + 1;
     
@@ -1268,7 +1268,7 @@ call_spvm_method(...)
   
   // Restore reference value
   if (args_have_ref) {
-    for (int32_t args_index = 0; args_index < method->arg_types->length; args_index++) {
+    for (int32_t args_index = 0; args_index < method->arg_type_ids->length; args_index++) {
       SV* sv_value = ST(spvm_args_base + args_index);
       
       SPVM_RUNTIME_TYPE* arg_type_tmp = SPVM_LIST_fetch(method->arg_types, args_index);
