@@ -248,10 +248,10 @@ call_spvm_method(...)
   }
   
   // Check argument count
-  if (items - spvm_args_base < method->args->length) {
+  if (items - spvm_args_base < method->arg_types->length) {
     croak("Too few arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
-  else if (items - spvm_args_base > method->args->length) {
+  else if (items - spvm_args_base > method->arg_types->length) {
     croak("Too many arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
 
@@ -270,15 +270,12 @@ call_spvm_method(...)
   int32_t ref_stack_indexes[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
 
   // Arguments
-  for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
+  for (int32_t args_index = 0; args_index < method->arg_types->length; args_index++) {
     
     int32_t args_index_nth = args_index + 1;
     
     // Get value from Perl argument stack
     SV* sv_value = ST(spvm_args_base + args_index);
-    
-    // Argument information
-    SPVM_MY* arg = SPVM_LIST_fetch(method->args, args_index);
     
     SPVM_TYPE* arg_type = SPVM_LIST_fetch(method->arg_types, args_index);
     
@@ -1268,7 +1265,7 @@ call_spvm_method(...)
   
   // Restore reference value
   if (args_have_ref) {
-    for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
+    for (int32_t args_index = 0; args_index < method->arg_types->length; args_index++) {
       SV* sv_value = ST(spvm_args_base + args_index);
       
       SPVM_TYPE* arg_type = SPVM_LIST_fetch(method->arg_types, args_index);
