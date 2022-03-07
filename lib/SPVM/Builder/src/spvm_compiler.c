@@ -460,6 +460,19 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     runtime_class->fields = class->fields;
     runtime_class->field_symtable = class->field_symtable;
     runtime_class->id = class->id;
+    runtime_class->module_file = class->module_file;
+    runtime_class->flag = class->flag;
+    runtime_class->object_fields_length = class->object_fields_length;
+    runtime_class->object_fields_offset = class->object_fields_offset;
+    runtime_class->has_init_block = class->has_init_block;
+    runtime_class->is_anon = class->is_anon;
+    
+    if (class->method_destructor) {
+      runtime_class->method_destructor_id = class->method_destructor->id;
+    }
+    else {
+      runtime_class->method_destructor_id = -1;
+    }
     
     SPVM_LIST_push(compiler->runtime_classes, runtime_class);
     SPVM_HASH_insert(compiler->runtime_class_symtable, runtime_class->name, strlen(runtime_class->name), runtime_class);
@@ -516,6 +529,44 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     runtime_class_var->class_id = class_var->class->id;
     
     SPVM_LIST_push(compiler->runtime_class_vars, runtime_class_var);
+  }
+
+  // Runtime methods - this is moved to the more after place and is optimized in the near future.
+  compiler->runtime_methods = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  for (int32_t method_id = 0; method_id < compiler->methods->length; method_id++) {
+    SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+    SPVM_RUNTIME_METHOD* runtime_method = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_METHOD));
+
+    runtime_method->precompile_address = method->precompile_address;
+    runtime_method->native_address = method->native_address;
+    runtime_method->return_type = method->return_type;
+    runtime_method->arg_types = method->arg_types;
+    runtime_method->arg_mem_ids = method->arg_mem_ids;
+    runtime_method->name = method->name;
+    runtime_method->signature = method->signature;
+    runtime_method->opcodes_base = method->opcodes_base;
+    runtime_method->opcodes_length = method->opcodes_length;
+    runtime_method->id = method->id;
+    runtime_method->class_id = method->class->id;
+    runtime_method->flag = method->flag;
+
+    SPVM_LIST_push(compiler->runtime_methods, runtime_method);
+  }
+
+  // Runtime fields - this is moved to the more after place and is optimized in the near future.
+  compiler->runtime_fields = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
+    SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+    SPVM_RUNTIME_FIELD* runtime_field = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_FIELD));
+
+    runtime_field->name = field->name;
+    runtime_field->signature = field->signature;
+    runtime_field->type = field->type;
+    runtime_field->id = field->id;
+    runtime_field->index = field->index;
+    runtime_field->offset = field->offset;
+    
+    SPVM_LIST_push(compiler->runtime_fields, runtime_field);
   }
 
   return error_code;
