@@ -6384,7 +6384,10 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
   int32_t fields_length = class->fields->length;
   SPVM_RUNTIME_FIELD* field_first = SPVM_LIST_fetch(class->fields, 0);
-  int32_t field_basic_type_id = field_first->type->basic_type->id;
+
+  SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(compiler->runtime_types, field_first->type_id);
+
+  int32_t field_basic_type_id = first_field_type->basic_type_id;
 
   int32_t unit_size;
   if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {

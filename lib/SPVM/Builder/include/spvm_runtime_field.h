@@ -10,7 +10,6 @@ struct spvm_runtime_field {
   int32_t index;
   int32_t offset;
   int32_t type_id;
-  SPVM_TYPE* type;
 };
 
 #endif
