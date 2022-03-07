@@ -6786,6 +6786,42 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const c
   return class_var->id;
 }
 
+SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_runtime_class(SPVM_ENV* env, int32_t class_id, const char* method_name) {
+  
+  SPVM_COMPILER* compiler = env->compiler;
+  
+  SPVM_RUNTIME_METHOD* method = NULL;
+  for (int32_t i = 0; i < compiler->runtime_methods->length; i++) {
+    SPVM_RUNTIME_METHODS_OF_CLASS* method_of_class = (SPVM_RUNTIME_METHODS_OF_CLASS*)&compiler->runtime_methods_of_class[i];
+    if (class_id == method_of_class->class_id) {
+      if (strcmp(method_name, method_of_class->name) == 0) {
+        method = SPVM_LIST_fetch(compiler->runtime_methods, method_of_class->method_id);
+        break;
+      }
+    }
+  }
+  
+  return method;
+}
+
+SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_runtime_class(SPVM_ENV* env, int32_t class_id, const char* field_name) {
+  
+  SPVM_COMPILER* compiler = env->compiler;
+  
+  SPVM_RUNTIME_FIELD* field = NULL;
+  for (int32_t i = 0; i < compiler->runtime_fields->length; i++) {
+    SPVM_RUNTIME_FIELDS_OF_CLASS* field_of_class = (SPVM_RUNTIME_FIELDS_OF_CLASS*)&compiler->runtime_fields_of_class[i];
+    if (class_id == field_of_class->class_id) {
+      if (strcmp(field_name, field_of_class->name) == 0) {
+        field = SPVM_LIST_fetch(compiler->runtime_fields, field_of_class->field_id);
+        break;
+      }
+    }
+  }
+  
+  return field;
+}
+
 SPVM_METHOD* SPVM_API_get_method_from_runtime_class(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* method_name) {
 
   SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
