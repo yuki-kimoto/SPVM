@@ -7,8 +7,8 @@
 struct spvm_runtime_method {
   void* precompile_address;
   void* native_address;
-  SPVM_TYPE* return_type;
-  SPVM_LIST* arg_types;
+  int32_t return_type_id;
+  SPVM_LIST* arg_type_ids;
   SPVM_LIST* arg_mem_ids;
   const char* name;
   const char* signature;
