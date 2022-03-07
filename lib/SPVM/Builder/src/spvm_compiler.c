@@ -541,6 +541,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     runtime_method->native_address = method->native_address;
     runtime_method->return_type = method->return_type;
     runtime_method->arg_types = method->arg_types;
+    
     runtime_method->arg_mem_ids = method->arg_mem_ids;
     runtime_method->name = method->name;
     runtime_method->signature = method->signature;
@@ -549,6 +550,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     runtime_method->id = method->id;
     runtime_method->class_id = method->class->id;
     runtime_method->flag = method->flag;
+    runtime_method->is_class_method = method->is_class_method;
 
     SPVM_LIST_push(compiler->runtime_methods, runtime_method);
   }

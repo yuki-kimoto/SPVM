@@ -17,6 +17,7 @@ struct spvm_runtime_method {
   int32_t id;
   int32_t class_id;
   int32_t flag;
+  int8_t is_class_method;
 };
 
 #endif
