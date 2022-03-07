@@ -396,7 +396,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   int32_t runtime_methods_of_class_length = 0;
   int32_t runtime_fields_of_class_length = 0;
   int32_t runtime_class_vars_of_class_length = 0;
-  
   for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
     runtime_methods_of_class_length += class->methods->length;
@@ -404,9 +403,23 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     runtime_class_vars_of_class_length += class->class_vars->length;
   }
   
-  compiler->runtime_methods_of_class = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, sizeof(SPVM_RUNTIME_METHODS_OF_CLASS) * runtime_methods_of_class_length);
-  compiler->runtime_fields_of_class = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, sizeof(SPVM_RUNTIME_FIELDS_OF_CLASS) * runtime_fields_of_class_length);
-  compiler->runtime_class_vars_of_class = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, sizeof(SPVM_RUNTIME_CLASS_VARS_OF_CLASS) * runtime_class_vars_of_class_length);
+  compiler->runtime_methods_of_class = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_METHODS_OF_CLASS) * runtime_methods_of_class_length);
+  compiler->runtime_fields_of_class = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_FIELDS_OF_CLASS) * runtime_fields_of_class_length);
+  compiler->runtime_class_vars_of_class = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_CLASS_VARS_OF_CLASS) * runtime_class_vars_of_class_length);
+
+  int32_t runtime_methods_of_class_id = 0;
+  int32_t runtime_fields_of_class_id = 0;
+  int32_t runtime_class_vars_of_class_id = 0;
+  for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
+    for (int32_t index = 0; index < class->methods->length; index++) {
+      SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, index);
+      SPVM_RUNTIME_METHODS_OF_CLASS* methods_of_class = (SPVM_RUNTIME_METHODS_OF_CLASS*)&compiler->runtime_methods_of_class[runtime_methods_of_class_id];
+      methods_of_class->class_id = class->id;
+      methods_of_class->method_id = method->id;
+      runtime_methods_of_class_id++;
+    }
+  }
 
   // Runtime classes - this is moved to the more after place and is optimized in the near future.
   compiler->runtime_classes = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
