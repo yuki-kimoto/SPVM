@@ -6828,7 +6828,7 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
     if (class) {
 
       // Method
-      SPVM_METHOD* method = SPVM_API_get_method_from_runtime_class(env, class, method_name);
+      SPVM_RUNTIME_METHOD* method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_name);
       if (method) {
         // Class method
         if (method->is_class_method) {
@@ -6859,7 +6859,7 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_
     if (class) {
 
       // Method
-      SPVM_METHOD* method = SPVM_API_get_method_from_runtime_class(env, class, method_name);
+      SPVM_RUNTIME_METHOD* method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_name);
       if (method) {
         // Instance method
         if (!method->is_class_method) {
@@ -6892,7 +6892,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
   if (class) {
     // Method
-    SPVM_METHOD* method = NULL;
+    SPVM_RUNTIME_METHOD* method = NULL;
     
     // Anon instance method
     if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
@@ -6901,7 +6901,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
     }
     // Normal instance method
     else {
-      method = SPVM_API_get_method_from_runtime_class(env, class, method_name);
+      method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_name);
     }
     if (method) {
       // Instance method
@@ -7457,13 +7457,6 @@ const char* SPVM_API_get_constant_string(SPVM_ENV* env, int32_t string_id, int32
   *string_length = constant_string->length;
   
   return constant_string_value;
-}
-
-SPVM_METHOD* SPVM_API_get_method_from_runtime_class(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* method_name) {
-
-  SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
-  
-  return method;
 }
 
 // flag
