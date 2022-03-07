@@ -7511,7 +7511,7 @@ int32_t SPVM_API_compiler_get_next_method_id_flag(SPVM_ENV* env, SPVM_COMPILER* 
 int32_t SPVM_API_compiler_get_class_id(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* class_name) {
   (void)env;
 
-  SPVM_RUNTIME_CLASS* class = SPVM_HASH_fetch(compiler->runtime_class_symtable, class_name, strlen(class_name));
+  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
   
   int32_t class_id;
   if (class) {
@@ -7527,7 +7527,7 @@ int32_t SPVM_API_compiler_get_class_id(SPVM_ENV* env, SPVM_COMPILER* compiler, c
 int32_t SPVM_API_compiler_get_classes_length(SPVM_ENV* env, SPVM_COMPILER* compiler) {
   (void)env;
 
-  int32_t classes_length= compiler->runtime_classes->length;
+  int32_t classes_length= compiler->classes->length;
   
   return classes_length;
 }
@@ -7535,7 +7535,7 @@ int32_t SPVM_API_compiler_get_classes_length(SPVM_ENV* env, SPVM_COMPILER* compi
 const char* SPVM_API_compiler_get_class_name(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t class_id) {
   (void)env;
 
-  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_id);
+  SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
   
   const char* class_name = class->name;
   
@@ -7545,7 +7545,7 @@ const char* SPVM_API_compiler_get_class_name(SPVM_ENV* env, SPVM_COMPILER* compi
 int32_t SPVM_API_compiler_is_anon_class(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t class_id) {
   (void)env;
 
-  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_id);
+  SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
   
   return class->is_anon;
 }
@@ -7553,7 +7553,7 @@ int32_t SPVM_API_compiler_is_anon_class(SPVM_ENV* env, SPVM_COMPILER* compiler, 
 int32_t SPVM_API_compiler_get_methods_length(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t class_id) {
   (void)env;
 
-  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_id);
+  SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
   
   int32_t methods_length = class->methods->length;
   
@@ -7563,7 +7563,7 @@ int32_t SPVM_API_compiler_get_methods_length(SPVM_ENV* env, SPVM_COMPILER* compi
 int32_t SPVM_API_compiler_get_method_id(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t class_id, int32_t method_index_of_class) {
   (void)env;
 
-  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_id);
+  SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
   
   int32_t method_id;
   if (class) {
@@ -7585,7 +7585,7 @@ int32_t SPVM_API_compiler_get_method_id(SPVM_ENV* env, SPVM_COMPILER* compiler, 
 int32_t SPVM_API_compiler_get_method_id_by_name(SPVM_ENV* env, SPVM_COMPILER* compiler, const char* class_name, const char* method_name) {
   (void)env;
 
-  SPVM_RUNTIME_CLASS* class = SPVM_HASH_fetch(compiler->runtime_class_symtable, class_name, strlen(class_name));
+  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
   
   int32_t method_id;
   if (class) {
