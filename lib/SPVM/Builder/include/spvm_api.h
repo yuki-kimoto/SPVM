@@ -333,4 +333,6 @@ const char* SPVM_API_get_constant_string(SPVM_ENV* env, int32_t string_id, int32
 
 SPVM_RUNTIME_CLASS* SPVM_API_get_runtime_class_from_basic_type_id(SPVM_ENV* env, int32_t basic_type_id);
 
+SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_index(SPVM_ENV* env, int32_t class_id, int32_t field_index);
+
 #endif

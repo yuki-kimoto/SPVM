@@ -6815,6 +6815,20 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_runtime_class(SPVM_ENV* env,
   return field;
 }
 
+SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_index(SPVM_ENV* env, int32_t class_id, int32_t field_index) {
+  
+  SPVM_COMPILER* compiler = env->compiler;
+  
+  SPVM_RUNTIME_FIELD* field = NULL;
+  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, field_index);
+  if (class) {
+    int32_t field_id = (intptr_t)SPVM_LIST_fetch(class->field_ids, field_index);
+    field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  }
+  
+  return field;
+}
+
 int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature) {
   (void)env;
   
