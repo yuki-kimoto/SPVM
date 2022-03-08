@@ -43,7 +43,6 @@ struct spvm_method {
   int32_t ref_vars_alloc_length;
   int32_t args_alloc_length;
   int32_t mortal_stack_length;
-  SPVM_TYPE* return_type;
   int32_t return_type_id;
   SPVM_LIST* arg_type_ids;
   SPVM_OP* op_method;
@@ -74,6 +73,7 @@ struct spvm_method {
   int8_t is_simple_constructor;
   int8_t is_constant;
   int8_t can_precompile;
+  SPVM_TYPE* return_type;
 };
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);

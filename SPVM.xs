@@ -1106,13 +1106,13 @@ call_spvm_method(...)
   }
   
   // Return
-
-  int32_t method_return_basic_type_id = method->return_type->basic_type->id;
-  int32_t method_return_type_dimension = method->return_type->dimension;
+  SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(compiler->runtime_types, method->return_type_id);
+  int32_t method_return_basic_type_id = method_return_type->basic_type_id;
+  int32_t method_return_type_dimension = method_return_type->dimension;
 
   SV* sv_return_value = NULL;
   int32_t excetpion_flag = 0;
-  switch (method->return_type->category) {
+  switch (method_return_type->category) {
     case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
       excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
       break;
@@ -1411,7 +1411,7 @@ call_spvm_method(...)
   // Success
   else {
     int32_t return_count;
-    if (method->return_type->category == SPVM_TYPE_C_TYPE_CATEGORY_VOID) {
+    if (method_return_type->category == SPVM_TYPE_C_TYPE_CATEGORY_VOID) {
       return_count = 0;
     }
     else {

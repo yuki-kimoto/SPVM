@@ -554,7 +554,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     runtime_method->ref_vars_alloc_length = method->ref_vars_alloc_length;
     runtime_method->args_alloc_length  = method->args_alloc_length;
     runtime_method->mortal_stack_length  = method->mortal_stack_length;
-    runtime_method->return_type  = method->return_type;
     runtime_method->return_type_id = method->return_type->id;
     runtime_method->arg_type_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, method->arg_types->length);
 
