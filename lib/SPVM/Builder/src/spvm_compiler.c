@@ -468,7 +468,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
       runtime_class->method_destructor_id = -1;
     }
 
-    runtime_class->methods = class->methods;
     runtime_class->method_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, class->methods->length);
     for (int32_t i = 0; i < class->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, i);
