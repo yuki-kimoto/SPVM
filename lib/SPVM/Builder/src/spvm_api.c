@@ -4441,8 +4441,9 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         if (exception_flag) {
           exception_flag = 0;
           
-          int32_t method_id = opcode->operand1;
-          SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(class->methods, method_id);
+          int32_t method_index = opcode->operand1;
+          int32_t method_id = (intptr_t)SPVM_LIST_fetch(class->method_ids, method_index);
+          SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(compiler->runtime_methods, method_id);
           int32_t line = opcode->operand2;
           
           const char* method_name = method->name;
@@ -4460,7 +4461,9 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
         
         if (exception_flag) {
-          SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(class->methods, opcode->operand1);
+          int32_t method_index = opcode->operand1;
+          int32_t method_id = (intptr_t)SPVM_LIST_fetch(class->method_ids, method_index);
+          SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(compiler->runtime_methods, method_id);
           int32_t line = opcode->operand2;
           
           const char* method_name = method->name;
@@ -6897,7 +6900,8 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
     // Anon instance method
     if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
       // Method name
-      method = SPVM_LIST_fetch(class->methods, 0);
+      int32_t method_id = (intptr_t)SPVM_LIST_fetch(class->method_ids, 0);
+      method = SPVM_LIST_fetch(compiler->runtime_methods, method_id);
     }
     // Normal instance method
     else {
