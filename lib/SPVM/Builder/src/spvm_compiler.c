@@ -477,7 +477,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     runtime_class->fields = class->fields;
     runtime_class->field_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, class->fields->length);
     for (int32_t i = 0; i < class->fields->length; i++) {
-      SPVM_METHOD* field = SPVM_LIST_fetch(class->fields, i);
+      SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, i);
       SPVM_LIST_push(runtime_class->field_ids, (void*)(intptr_t)field->id);
     }
     
