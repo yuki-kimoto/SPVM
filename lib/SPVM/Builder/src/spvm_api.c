@@ -4189,7 +4189,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
       {
         int32_t call_method_id = opcode->operand1;
-        SPVM_METHOD* call_spvm_method = SPVM_LIST_fetch(compiler->methods, call_method_id);
+        SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_LIST_fetch(compiler->runtime_methods, call_method_id);
         call_spvm_method_arg_stack_top -= call_spvm_method->args_alloc_length;
         exception_flag = env->call_spvm_method(env, call_method_id, stack);
         
@@ -4308,7 +4308,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE:
       {
         int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
+        SPVM_RUNTIME_METHOD* decl_method = SPVM_LIST_fetch(compiler->runtime_methods, decl_method_id);
         void* object = stack[0].oval;
         const char* decl_method_name = decl_method->name;
         const char* decl_method_signature = decl_method->signature;
@@ -4442,7 +4442,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           exception_flag = 0;
           
           int32_t method_id = opcode->operand1;
-          SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, method_id);
+          SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(class->methods, method_id);
           int32_t line = opcode->operand2;
           
           const char* method_name = method->name;
@@ -4460,7 +4460,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
         
         if (exception_flag) {
-          SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, opcode->operand1);
+          SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(class->methods, opcode->operand1);
           int32_t line = opcode->operand2;
           
           const char* method_name = method->name;
@@ -5019,7 +5019,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_HAS_IMPLEMENT: {
         int32_t implement_method_id = opcode->operand2;
-        SPVM_METHOD* implement_method = SPVM_LIST_fetch(compiler->methods, implement_method_id);
+        SPVM_RUNTIME_METHOD* implement_method = SPVM_LIST_fetch(compiler->runtime_methods, implement_method_id);
         const char* implement_method_name = implement_method->name;
         
         int32_t interface_basic_type_id = opcode->operand3;
