@@ -223,6 +223,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 SPVM_LIST_push(mortal_top_stack, (void*)(intptr_t)mortal_top);
                 break;
               }
+              case SPVM_OP_C_ID_SWITCH: {
+                SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
+                SPVM_LIST_push(switch_info_stack, switch_info);
+                break;
+              }
               case SPVM_OP_C_ID_CASE: {
                 if (switch_info_stack->length > 0) {
                   SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
@@ -4063,9 +4068,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             branch_opcode_rel_index_case_info->opcode_rel_index = case_info->opcode_rel_index;
                           }
                           
-                          // Switch opcode index
-                          SPVM_LIST_push(switch_info_stack, switch_info);
-
                           break;
                         }
                         case SPVM_OP_C_ID_SWITCH: {
