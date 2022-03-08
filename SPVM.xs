@@ -19,6 +19,9 @@
 #include "spvm_hash.h"
 #include "spvm_list.h"
 #include "spvm_type.h"
+#include "spvm_class.h"
+#include "spvm_field.h"
+#include "spvm_class_var.h"
 #include "spvm_basic_type.h"
 #include "spvm_object.h"
 #include "spvm_native.h"
@@ -3687,18 +3690,18 @@ get_anon_class_names_by_parent_class_name(...)
   SV* sv_anon_class_names = sv_2mortal(newRV_inc((SV*)av_anon_class_names));
   
   // Copy class load path to builder
-  SPVM_RUNTIME_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
 
   int32_t methods_length = compiler_env->compiler_get_methods_length(compiler_env, compiler, class->id);
 
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(class->methods, method_index);
+    SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, method_index);
     int32_t method_id = method->id;
     int32_t is_anon_method = compiler_env->compiler_is_anon_method(compiler_env, compiler, method_id);
     
     if (is_anon_method) {
-      SPVM_RUNTIME_CLASS* anon_class = SPVM_LIST_fetch(compiler->runtime_classes, method->class_id);
+      SPVM_CLASS* anon_class = SPVM_LIST_fetch(compiler->classes, method->class->id);
       const char* anon_class_name = anon_class->name;
       SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
       av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));
