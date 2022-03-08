@@ -102,7 +102,7 @@ int32_t SPVM_OP_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack
 SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_METHOD* method, SPVM_TYPE* type, const char* file, int32_t line) {
 
   // Temparary variable name
-  char* name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, strlen("@tmp2147483647") + 1);
+  char* name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, strlen("@tmp2147483647") + 1);
   sprintf(name, "@tmp%d", method->tmp_vars_length);
   method->tmp_vars_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
@@ -978,7 +978,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 
                 int32_t memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
-                char* concat_string_tmp = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, string1_length + string2_length + 1);
+                char* concat_string_tmp = SPVM_ALLOCATOR_new_block_compile_tmp(compiler->allocator, string1_length + string2_length + 1);
                 memcpy(concat_string_tmp, string1, string1_length);
                 memcpy(concat_string_tmp + string1_length, string2, string2_length);
                 int32_t concant_string_length = string1_length + string2_length;
@@ -986,7 +986,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_STRING* concat_string_string = SPVM_STRING_new(compiler, concat_string_tmp, concant_string_length);
                 const char* concat_string = concat_string_string->value;
                 
-                SPVM_ALLOCATOR_free_block_compile_tmp(compiler, concat_string_tmp);
+                SPVM_ALLOCATOR_free_block_compile_tmp(compiler->allocator, concat_string_tmp);
                 
                 assert(compiler->allocator->memory_blocks_count_compile_tmp == memory_blocks_count_compile_tmp);
                 
@@ -2763,7 +2763,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   const char* class_name = call_method->method->class->name;
                   const char* class_var_base_name = call_method->method->accessor_original_name;
-                  char* class_var_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
+                  char* class_var_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
                   memcpy(class_var_name, "$", 1);
                   memcpy(class_var_name + 1, class_name, strlen(class_name));
                   memcpy(class_var_name + 1 + strlen(class_name), "::", 2);
@@ -2798,7 +2798,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   const char* class_name = call_method->method->class->name;
                   const char* class_var_base_name = call_method->method->accessor_original_name;
-                  char* class_var_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
+                  char* class_var_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
                   memcpy(class_var_name, "$", 1);
                   memcpy(class_var_name + 1, class_name, strlen(class_name));
                   memcpy(class_var_name + 1 + strlen(class_name), "::", 2);
@@ -3565,13 +3565,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             check_ast_info->loop_block_stack_length = 0;
             
             // My stack
-            check_ast_info->my_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
+            check_ast_info->my_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
             
             // Block my base stack
-            check_ast_info->block_my_base_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
+            check_ast_info->block_my_base_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
             
             // Switch stack
-            check_ast_info->op_switch_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
+            check_ast_info->op_switch_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
             
             // First tree traversal
             SPVM_OP_CHECKER_check_tree(compiler, method->op_block, check_ast_info);
@@ -3820,7 +3820,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Fix LEAVE_SCOPE
             {
               // Block stack
-              SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
+              SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
               
               // Run OPs
               SPVM_OP* op_root = method->op_block;
@@ -3912,18 +3912,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           // Resolve my mem ids
           if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
             {
-              SPVM_LIST* tmp_my_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
-              SPVM_LIST* no_tmp_my_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
-              SPVM_LIST* block_no_tmp_my_base_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
+              SPVM_LIST* tmp_my_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+              SPVM_LIST* no_tmp_my_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+              SPVM_LIST* block_no_tmp_my_base_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
               
-              SPVM_LIST* byte_mem_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
-              SPVM_LIST* short_mem_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
-              SPVM_LIST* int_mem_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
-              SPVM_LIST* long_mem_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
-              SPVM_LIST* float_mem_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
-              SPVM_LIST* double_mem_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
-              SPVM_LIST* object_mem_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
-              SPVM_LIST* ref_mem_stack = SPVM_LIST_new(compiler, 0, 0, NULL);
+              SPVM_LIST* byte_mem_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+              SPVM_LIST* short_mem_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+              SPVM_LIST* int_mem_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+              SPVM_LIST* long_mem_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+              SPVM_LIST* float_mem_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+              SPVM_LIST* double_mem_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+              SPVM_LIST* object_mem_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+              SPVM_LIST* ref_mem_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
 
               // Run OPs
               SPVM_OP* op_root = method->op_block;
@@ -4849,12 +4849,12 @@ void SPVM_OP_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* 
     // Class name
     // (end - start + 1) - $ - colon * 2
     int32_t class_name_length = (colon_ptr - name + 1) - 1 - 2;
-    class_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, class_name_length + 1);
+    class_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, class_name_length + 1);
     memcpy(class_name, name + 1, class_name_length);
     
     // Base name($foo)
     int32_t base_name_length = 1 + (name + strlen(name) - 1) - colon_ptr;
-    base_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, base_name_length + 1);
+    base_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, base_name_length + 1);
     base_name[0] = '$';
     memcpy(base_name + 1, colon_ptr + 1, base_name_length);
   }
@@ -5016,7 +5016,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           }
           
           // Check type name
-          char* tail_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, 255);
+          char* tail_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 255);
           switch (first_field_type->basic_type->id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE:
               sprintf(tail_name, "_%db", fields->length);

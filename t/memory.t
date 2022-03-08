@@ -82,7 +82,7 @@ use Test::More;
   # SPVM_ALLOCATOR_free_block_unmanaged is only used to allocate the compiler and allocator
   {
     my $count = 0;
-    my $compiler_contains_only_one;
+    my $compiler_contains_only_zero;
     my $allocator_contains_only_four;
     for my $check_file (@check_files) {
       open my $check_fh, '<', $check_file
@@ -93,8 +93,8 @@ use Test::More;
       my $match_count = 0;
       if ($check_file =~ /spvm_compiler\.c$/) {
         $match_count++ while $check_content =~ /$re/g;
-        if ($match_count == 1) {
-          $compiler_contains_only_one = 1;
+        if ($match_count == 0) {
+          $compiler_contains_only_zero = 1;
         }
       }
       elsif ($check_file =~ /spvm_allocator\.c$/) {
@@ -108,8 +108,8 @@ use Test::More;
       }
       $count += $match_count;
     }
-    is($count, 5);
-    ok($compiler_contains_only_one);
+    is($count, 4);
+    ok($compiler_contains_only_zero);
     ok($allocator_contains_only_four);
   }
 

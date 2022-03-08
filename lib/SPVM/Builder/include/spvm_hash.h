@@ -6,7 +6,7 @@
 
 // Hash table
 struct spvm_hash {
-  SPVM_COMPILER* compiler;
+  SPVM_ALLOCATOR* allocator;
   int32_t* table;
   char* key_buffer;
   SPVM_HASH_ENTRY* entries;
@@ -26,7 +26,7 @@ struct spvm_hash_entry {
   int32_t key_index;
 };
 
-SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t memory_block_type, SPVM_ENV* env);
+SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t capacity, int32_t memory_block_type, SPVM_ENV* env);
 
 void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* value);
 void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length);

@@ -416,8 +416,8 @@ SPVM_OBJECT* SPVM_API_dump_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
   int32_t depth = 0;
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler, 255, SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME, env);
-  SPVM_HASH* address_symtable = SPVM_HASH_new(compiler, 255, SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME, env);
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 255, SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME, env);
+  SPVM_HASH* address_symtable = SPVM_HASH_new(compiler->allocator, 255, SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME, env);
   
   SPVM_API_dump_recursive(env, object, &depth, string_buffer, address_symtable);
   
@@ -7156,7 +7156,7 @@ void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size) {
     return NULL;
   }
   
-  void* block = SPVM_ALLOCATOR_new_block_runtime(compiler, (size_t)byte_size, env);
+  void* block = SPVM_ALLOCATOR_new_block_runtime(compiler->allocator, (size_t)byte_size, env);
   
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
   fprintf(stderr, "[ALLOC_MEMORY %p %d]\n", block, (int32_t)(intptr_t)env->memory_blocks_count);
@@ -7174,7 +7174,7 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, void* block) {
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
     fprintf(stderr, "[FREE_MEMORY %p %d]\n", block, (int32_t)(intptr_t)env->memory_blocks_count);
 #endif
-    SPVM_ALLOCATOR_free_block_runtime(compiler, block, env);
+    SPVM_ALLOCATOR_free_block_runtime(compiler->allocator, block, env);
   }
 }
 

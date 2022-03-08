@@ -4,7 +4,7 @@
 #include "spvm_compiler.h"
 
 SPVM_BLOCK* SPVM_BLOCK_new(SPVM_COMPILER* compiler) {
-  SPVM_BLOCK* block = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(SPVM_BLOCK));
+  SPVM_BLOCK* block = SPVM_ALLOCATOR_new_block_compile_tmp(compiler->allocator, sizeof(SPVM_BLOCK));
   
   return block;
 }

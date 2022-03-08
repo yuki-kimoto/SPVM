@@ -3555,12 +3555,12 @@ compile_spvm(...)
   
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
-  char* class_name_copy = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sv_len(sv_class_name) + 1);
+  char* class_name_copy = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, sv_len(sv_class_name) + 1);
   memcpy(class_name_copy, class_name, sv_len(sv_class_name));
   
   // File
   const char* start_file = SvPV_nolen(sv_start_file);
-  char* start_file_copy = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sv_len(sv_start_file) + 1);
+  char* start_file_copy = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, sv_len(sv_start_file) + 1);
   memcpy(start_file_copy, start_file, sv_len(sv_start_file));
   
   // Line
@@ -4091,7 +4091,7 @@ build_class_csource_precompile(...)
   compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   // String buffer for csource
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler, 0, 0, NULL);
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 0, 0, NULL);
 
   // Build class csource
   
