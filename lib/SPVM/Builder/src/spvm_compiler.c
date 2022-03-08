@@ -452,7 +452,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     SPVM_RUNTIME_CLASS* runtime_class = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_CLASS));
     
     runtime_class->name = class->name;
-    runtime_class->type = class->type;
+    runtime_class->type_id = class->type->id;
     runtime_class->methods = class->methods;
     runtime_class->method_symtable = class->method_symtable;
     runtime_class->fields = class->fields;
