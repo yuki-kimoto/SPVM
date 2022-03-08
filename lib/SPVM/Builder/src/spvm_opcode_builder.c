@@ -4032,17 +4032,36 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_SWITCH_CONDITION: {
                           SPVM_SWITCH_INFO* switch_info = op_assign_src->uv.switch_info;
 
+                          int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+
+                          // Max
+                          SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->case_infos, switch_info->case_infos->length - 1);
+
+                          // Default branch
+                          int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
+                          
+                          if (default_opcode_rel_index == 0) {
+                            default_opcode_rel_index = opcode_array->length + 1 - method_opcodes_base;
+                          }
+                          switch_info->default_opcode_rel_index = default_opcode_rel_index;
+
+                          // Add switch opcode
                           SPVM_OPCODE opcode_switch_info;
                           memset(&opcode_switch_info, 0, sizeof(SPVM_OPCODE));
-                          
                           opcode_switch_info.id = SPVM_OPCODE_C_ID_LOOKUP_SWITCH;
-
-                          int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                           opcode_switch_info.operand0 = mem_id_in;
-
                           opcode_switch_info.operand1 = switch_info->switch_id;
-
+                          opcode_switch_info.operand2 = default_opcode_rel_index;
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
+
+                          // Match values and branchs
+                          for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
+                            SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
+                            
+                            // Branch
+                            SPVM_CASE_INFO* branch_opcode_rel_index_case_info = switch_info->case_infos->values[i];
+                            branch_opcode_rel_index_case_info->opcode_rel_index = case_info->opcode_rel_index;
+                          }
                           
                           // Switch opcode index
                           SPVM_LIST_push(switch_info_stack, switch_info);
@@ -4052,29 +4071,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_SWITCH: {
                           
                           // Pop switch information
-                          SPVM_SWITCH_INFO* switch_info = SPVM_LIST_pop(switch_info_stack);
-                          
-                          // Max
-                          SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->case_infos, switch_info->case_infos->length - 1);
-
-                          // Default branch
-                          int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
-                          if (default_opcode_rel_index == 0) {
-                            default_opcode_rel_index = opcode_array->length - method_opcodes_base;
-                          }
-                          SPVM_SWITCH_INFO* default_opcode_rel_index_switch_info = compiler->switch_infos->values[switch_info->switch_id];
-                          default_opcode_rel_index_switch_info->default_opcode_rel_index = default_opcode_rel_index;
-
-                          // Match values and branchs
-                          for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
-                            SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
-                            
-                            // Match value
-                            
-                            // Branch
-                            SPVM_CASE_INFO* branch_opcode_rel_index_case_info = switch_info->case_infos->values[i];
-                            branch_opcode_rel_index_case_info->opcode_rel_index = case_info->opcode_rel_index;
-                          }
+                          SPVM_LIST_pop(switch_info_stack);
                           
                           break;
                         }
