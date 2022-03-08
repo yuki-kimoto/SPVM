@@ -27,7 +27,6 @@ struct spvm_class {
   const char* name;
   const char* module_file;
   SPVM_TYPE* type;
-  SPVM_LIST* class_vars;
   SPVM_LIST* methods;
   SPVM_HASH* method_symtable;
   SPVM_LIST* fields;
@@ -46,6 +45,7 @@ struct spvm_class {
   int8_t category;
   int8_t fail_load;
   int8_t has_precompile_descriptor;
+  SPVM_LIST* class_vars;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);
