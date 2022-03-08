@@ -1351,7 +1351,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   SPVM_COMPILER* compiler = env->compiler;
 
   // Runtime method
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(compiler->runtime_methods, method_id);
   
   // Runtime class
   SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, method->class_id);
@@ -5025,7 +5025,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t interface_basic_type_id = opcode->operand3;
         SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, interface_basic_type_id);
         SPVM_RUNTIME_CLASS* interface_class = SPVM_API_get_runtime_class_from_basic_type_id(env, interface_basic_type->id);
-        SPVM_METHOD* interface_method = SPVM_HASH_fetch(interface_class->method_symtable, implement_method_name, strlen(implement_method_name));
+        SPVM_RUNTIME_METHOD* interface_method = SPVM_HASH_fetch(interface_class->method_symtable, implement_method_name, strlen(implement_method_name));
         const char* implement_method_signature = interface_method->signature;
         
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -7415,7 +7415,7 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env) {
     SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_id);
     
     if (class->has_init_block) {
-      SPVM_METHOD* init_method = SPVM_HASH_fetch(class->method_symtable, "INIT", strlen("INIT"));
+      SPVM_RUNTIME_METHOD* init_method = SPVM_HASH_fetch(class->method_symtable, "INIT", strlen("INIT"));
       assert(init_method);
       env->call_spvm_method(env, init_method->id, stack);
     }
