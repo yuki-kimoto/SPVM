@@ -28,6 +28,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_limit.h"
 #include "spvm_allocator.h"
+#include "spvm_method.h"
 
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class.h"
@@ -3916,7 +3917,15 @@ _init(...)
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
+  
+  for (int32_t i = 0; i < compiler->methods->length; i++) {
+    SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, i);
+    SPVM_RUNTIME_METHOD* runtime_method = SPVM_LIST_fetch(compiler->runtime_methods, i);
+    
+    runtime_method->precompile_address = method->precompile_address;
+    runtime_method->native_address = method->native_address;
+  }
+  
   // Create env
   SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
   

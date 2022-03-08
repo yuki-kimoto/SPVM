@@ -1267,7 +1267,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
   SPVM_COMPILER* compiler = env->compiler;
   
   // Method
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(compiler->runtime_methods, method_id);
   
   int32_t exception_flag;
   

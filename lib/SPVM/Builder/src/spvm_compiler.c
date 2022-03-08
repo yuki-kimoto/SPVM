@@ -535,8 +535,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
     SPVM_RUNTIME_METHOD* runtime_method = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_RUNTIME_METHOD));
 
-    runtime_method->precompile_address = method->precompile_address;
-    runtime_method->native_address = method->native_address;
     runtime_method->arg_mem_ids = method->arg_mem_ids;
     runtime_method->name = method->name;
     runtime_method->signature = method->signature;

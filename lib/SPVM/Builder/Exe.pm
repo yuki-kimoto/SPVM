@@ -390,6 +390,19 @@ sub create_bootstrap_source {
 #include "spvm_method.h"
 #include "spvm_basic_type.h"
 
+#include "spvm_runtime_basic_type.h"
+#include "spvm_runtime_class.h"
+#include "spvm_runtime_class_var.h"
+#include "spvm_runtime_field.h"
+#include "spvm_runtime_info.h"
+#include "spvm_runtime_manager.h"
+#include "spvm_runtime_method.h"
+#include "spvm_runtime_switch_info.h"
+#include "spvm_runtime_type.h"
+#include "spvm_runtime_class_vars_of_class.h"
+#include "spvm_runtime_fields_of_class.h"
+#include "spvm_runtime_methods_of_class.h"
+
 EOS
     
     $boot_source .= "// module source get functions declaration\n";
@@ -494,6 +507,8 @@ EOS
     SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
     assert(method);
     method->precompile_address = SPVMPRECOMPILE__${class_cname}__$precompile_method_name;
+    SPVM_RUNTIME_METHOD* runtime_method = SPVM_LIST_fetch(compiler->runtime_methods, method->id);
+    runtime_method->precompile_address = method->precompile_address;
   }
 EOS
       }
@@ -517,6 +532,8 @@ EOS
     SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
     assert(method);
     method->native_address = SPVM__${class_cname}__$native_method_name;
+    SPVM_RUNTIME_METHOD* runtime_method = SPVM_LIST_fetch(compiler->runtime_methods, method->id);
+    runtime_method->native_address = method->native_address;
   }
 EOS
       }
