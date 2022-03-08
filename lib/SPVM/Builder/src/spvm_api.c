@@ -469,7 +469,6 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
 
           SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
           SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
-          SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
           int32_t fields_length = class->field_ids->length;
           
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
