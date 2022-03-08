@@ -14,7 +14,6 @@ struct spvm_runtime_class {
   const char* name;
   const char* module_file;
   SPVM_LIST* methods;
-  SPVM_HASH* method_symtable;
   SPVM_LIST* fields;
   int32_t type_id;
 };
