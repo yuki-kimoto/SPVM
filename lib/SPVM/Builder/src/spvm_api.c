@@ -632,14 +632,14 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
         SPVM_STRING_BUFFER_add(string_buffer, "{\n");
         
         // Free object fields
-        SPVM_LIST* fields = class->fields;
-        int32_t fields_length = fields->length;
+        SPVM_LIST* field_ids = class->field_ids;
+        int32_t fields_length = field_ids->length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           for (int32_t depth_index = 0; depth_index < *depth + 1; depth_index++) {
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
           }
 
-          SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(fields, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, class->id, field_index);
           
           SPVM_RUNTIME_TYPE* field_type = SPVM_LIST_fetch(compiler->runtime_types, field->type_id);
           
@@ -6370,7 +6370,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   // Class
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
   int32_t fields_length = class->field_ids->length;
-  SPVM_RUNTIME_FIELD* field_first = SPVM_LIST_fetch(class->fields, 0);
+  SPVM_RUNTIME_FIELD* field_first = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
 
   SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(compiler->runtime_types, field_first->type_id);
 
