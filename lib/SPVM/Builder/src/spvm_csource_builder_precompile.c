@@ -3579,7 +3579,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_SWITCH_INFO* switch_info = compiler->switch_infos->values[switch_id];
 
         // Default branch
-        int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
+        int32_t default_opcode_rel_index = opcode->operand2;
         
         // Cases length
         int32_t case_infos_length = switch_info->case_infos->length;

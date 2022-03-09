@@ -4040,11 +4040,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);;
 
                           int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                          
+                          int32_t opcode_id = opcode_array->length;
+                          switch_info->opcode_id = opcode_id;
 
                           // Default branch
                           int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
                           if (default_opcode_rel_index == 0) {
-                            default_opcode_rel_index = opcode_array->length + 1 - method_opcodes_base;
+                            default_opcode_rel_index = opcode_id + 1 - method_opcodes_base;
                           }
                           switch_info->default_opcode_rel_index = default_opcode_rel_index;
 
@@ -4053,8 +4056,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           memset(&opcode_switch_info, 0, sizeof(SPVM_OPCODE));
                           opcode_switch_info.id = SPVM_OPCODE_C_ID_LOOKUP_SWITCH;
                           opcode_switch_info.operand0 = mem_id_in;
-                          opcode_switch_info.operand1 = switch_info->switch_id;
-                          opcode_switch_info.operand2 = switch_info->default_opcode_rel_index;
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
 
                           // Match values and branchs
@@ -4071,7 +4072,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_SWITCH: {
                           
                           // Pop switch information
-                          SPVM_LIST_pop(switch_info_stack);
+                          SPVM_SWITCH_INFO* switch_info = SPVM_LIST_pop(switch_info_stack);
+                          
+                          // Set the information of switch opcodes
+                          int32_t opcode_id = switch_info->opcode_id;
+                          SPVM_OPCODE* opcode = (SPVM_OPCODE*)&opcode_array->values[opcode_id];
+                          opcode->operand1 = switch_info->switch_id;
+                          opcode->operand2 = switch_info->default_opcode_rel_index;
                           
                           break;
                         }
