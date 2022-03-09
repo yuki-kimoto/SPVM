@@ -21,8 +21,6 @@
 #include "spvm_method.h"
 #include "spvm_type.h"
 #include "spvm_weaken_backref.h"
-#include "spvm_switch_info.h"
-#include "spvm_case_info.h"
 #include "spvm_limit.h"
 #include "spvm_string_buffer.h"
 #include "spvm_api.h"
@@ -4663,8 +4661,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         int32_t switch_id = opcode->operand1;
         
-        SPVM_SWITCH_INFO* switch_info = compiler->switch_infos->values[switch_id];
-
         // Default branch
         int32_t default_opcode_rel_index = opcode->operand2;
         
@@ -4673,12 +4669,12 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
 
         if (case_infos_length > 0) {
           // min
-          SPVM_CASE_INFO* min_case_info = (SPVM_CASE_INFO*)switch_info->case_infos->values[0];
-          int32_t min = min_case_info->condition_value;
+          SPVM_OPCODE* opcode_case_info_min = &(opcodes[method_opcodes_base + opcode_rel_index + 1 + 0]);
+          int32_t min = opcode_case_info_min->operand1;
           
           // max
-          SPVM_CASE_INFO* max_case_info = (SPVM_CASE_INFO*)switch_info->case_infos->values[case_infos_length - 1];
-          int32_t max = max_case_info->condition_value;
+          SPVM_OPCODE* opcode_case_info_max = &(opcodes[method_opcodes_base + opcode_rel_index + 1 + case_infos_length - 1]);
+          int32_t max = opcode_case_info_max->operand1;
           
           if (int_vars[opcode->operand0] >= min && int_vars[opcode->operand0] <= max) {
             // 2 opcode_rel_index searching
@@ -4691,8 +4687,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
                 break;
               }
               int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-              SPVM_CASE_INFO* cur_half_case_info = (SPVM_CASE_INFO*)switch_info->case_infos->values[cur_half_pos];
-              int32_t cur_half = cur_half_case_info->condition_value;
+              SPVM_OPCODE* opcode_case_cur_half = &(opcodes[method_opcodes_base + opcode_rel_index + 1 + cur_half_pos]);
+              int32_t cur_half = opcode_case_cur_half->operand1;
               
               if (int_vars[opcode->operand0] > cur_half) {
                 cur_min_pos = cur_half_pos + 1;
@@ -4701,7 +4697,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
                 cur_max_pos = cur_half_pos - 1;
               }
               else {
-                opcode_rel_index = cur_half_case_info->opcode_rel_index;
+                opcode_rel_index = opcode_case_cur_half->operand2;
                 break;
               }
             }
