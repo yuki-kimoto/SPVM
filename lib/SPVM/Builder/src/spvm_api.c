@@ -469,7 +469,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
         }
 
-        if (SPVM_TYPE_is_multi_numeric_type(compiler, basic_type_id, element_type_dimension, 0)) {
+        if (SPVM_API_is_mulnum_array(env, object)) {
 
           SPVM_STRING_BUFFER_add(string_buffer, "{\n");
 
@@ -541,7 +541,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
 
           SPVM_STRING_BUFFER_add(string_buffer, "  }");
         }
-        else if (SPVM_TYPE_is_numeric_type(compiler, basic_type_id, element_type_dimension, 0)) {
+        else if (SPVM_API_is_numeric_array(env, object)) {
           switch (basic_type_id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               int8_t element = ((int8_t*)((intptr_t)object + env->object_header_byte_size))[array_index];
@@ -581,7 +581,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
             }
           }
         }
-        else if (SPVM_TYPE_is_object_type(compiler, basic_type_id, element_type_dimension, 0)) {
+        else if (SPVM_API_is_object_array(env, object)) {
           SPVM_OBJECT* element = (((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[array_index]);
           (*depth)++;
           SPVM_API_dump_recursive(env, element, depth, string_buffer, address_symtable);
