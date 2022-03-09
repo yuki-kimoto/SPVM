@@ -808,37 +808,38 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   181 new_env_raw,
   182 free_env_raw,
   183 init_env,
-  184 call_init_blocks,
-  185 cleanup_global_vars,
-  186 new_compiler,
-  187 compiler_free,
-  188 compiler_set_start_line,
-  189 compiler_get_start_line,
-  190 compiler_set_start_file,
-  191 compiler_get_start_file,
-  192 compiler_add_module_dir,
-  193 compiler_get_module_dirs_length,
-  194 compiler_get_module_dir,
-  195 compiler_compile_spvm,
-  196 compiler_get_error_messages_length,
-  197 compiler_get_error_message,
-  198 compiler_get_class_id,
-  199 compiler_get_classes_length,
-  200 compiler_get_class_name,
-  201 compiler_is_anon_class,
-  202 compiler_get_methods_length,
-  203 compiler_get_method_id,
-  204 compiler_get_method_id_by_name,
-  205 compiler_get_method_name,
-  206 compiler_get_method_signature,
-  207 compiler_is_anon_method,
-  208 compiler_is_init_block_method,
-  209 compiler_is_native_method,
-  210 compiler_is_precompile_method,
-  211 compiler_get_native_method_address,
-  212 compiler_get_precompile_method_address,
-  213 compiler_set_native_method_address,
-  214 compiler_set_precompile_method_address,
+  184 call_init_blocks
+  185 cleanup_global_vars
+  186 new_compiler
+  187 compiler_free
+  188 compiler_set_start_line
+  189 compiler_get_start_line
+  190 compiler_set_start_file
+  191 compiler_get_start_file
+  192 compiler_add_module_dir
+  193 compiler_get_module_dirs_length
+  194 compiler_get_module_dir
+  195 compiler_compile_spvm
+  196 compiler_get_error_messages_length
+  197 compiler_get_error_message
+  198 compiler_get_class_id
+  199 compiler_get_classes_length
+  200 compiler_get_class_name
+  201 compiler_is_anon_class
+  202 compiler_get_methods_length
+  203 compiler_get_method_id
+  204 compiler_get_method_id_by_name
+  205 compiler_get_method_name
+  206 compiler_get_method_signature
+  207 compiler_is_anon_method
+  208 compiler_is_init_block_method
+  209 compiler_is_native_method
+  210 compiler_is_precompile_method
+  211 compiler_get_native_method_address
+  212 compiler_get_precompile_method_address
+  213 compiler_set_native_method_address
+  214 compiler_set_precompile_method_address
+  215 is_object_array
 
 =head1 List of Native APIs
 
@@ -2513,11 +2514,15 @@ If the string is read-only, returns C<1>, otherwise returns C<0>.
 
 If the object is an array, returns C<1>, otherwise returns C<0>.
 
+If the object is C<NULL>, returns C<0>.
+
 =head2 is_string
 
   int32_t (*is_string)(SPVM_ENV* env, void* object);
 
 If the object is a string, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
 
 =head2 is_numeric_array
 
@@ -2525,11 +2530,15 @@ If the object is a string, returns C<1>, otherwise returns C<0>.
 
 If the object is a numeric array, returns C<1>, otherwise returns C<0>.
 
+If the object is C<NULL>, returns C<0>.
+
 =head2 is_mulnum_array
 
   int32_t (*is_mulnum_array)(SPVM_ENV* env, void* object);
 
 If the object is a multi numeric array, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
 
 =head2 get_elem_byte_size
 
@@ -2830,6 +2839,14 @@ Set the native method address.
   void (*compiler_set_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
 
 Set the precompile method address.
+
+=head2 is_object_array
+
+  int32_t (*is_object_array)(SPVM_ENV* env, void* object);
+
+If the object is a object array, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
 
 =head1 Utilities
 

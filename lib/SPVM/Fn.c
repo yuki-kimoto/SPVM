@@ -122,6 +122,24 @@ int32_t SPVM__Fn__is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__is_object_array(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  void* object = stack[0].oval;
+  
+  int32_t is_object_array;
+  if (env->is_object_array(env, object)) {
+    is_object_array = 1;
+  }
+  else {
+    is_object_array = 0;
+  }
+
+  stack[0].ival = is_object_array;
+
+  return 0;
+}
+
 int32_t SPVM__Fn__is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 

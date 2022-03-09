@@ -312,6 +312,7 @@ struct spvm_env {
   void* (*compiler_get_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id);
   void (*compiler_set_native_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
   void (*compiler_set_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
+  int32_t (*is_object_array)(SPVM_ENV* env, void* object);
   const char* (*get_constant_string)(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
 };
 #endif

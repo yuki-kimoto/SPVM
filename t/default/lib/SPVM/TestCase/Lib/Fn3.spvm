@@ -2047,6 +2047,63 @@ class TestCase::Lib::Fn3 {
     return 1;
   }
 
+  static method is_object_array : int () {
+
+    # Numeric Array
+    {
+      if (Fn->is_object_array(new byte[3])) {
+        return 0;
+      }
+
+      if (Fn->is_object_array(new double[3])) {
+        return 0;
+      }
+    }
+
+    # Multi Numeric Array
+    {
+      if (Fn->is_object_array(new Complex_2d[3])) {
+        return 0;
+      }
+    }
+    
+    # string
+    {
+      my $string = "abc";
+      
+      if (Fn->is_object_array($string)) {
+        return 0;
+      }
+    }
+    
+    # Object
+    {
+      my $minimal = TestCase::Minimal->new;
+      
+      if (Fn->is_object_array($minimal)) {
+        return 0;
+      }
+    }
+
+    # Object array
+    {
+      my $minimals = new TestCase::Minimal[3];
+      
+      unless (Fn->is_object_array($minimals)) {
+        return 0;
+      }
+    }
+
+    # undef
+    {
+      if (Fn->is_object_array(undef)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   static method chomp : int () {
     
     # Basic

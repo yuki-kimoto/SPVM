@@ -441,6 +441,11 @@ SKIP: {
   ok(SPVM::TestCase::Lib::Fn3->is_mulnum_array);
 }
 
+# is_object_array
+{
+  ok(SPVM::TestCase::Lib::Fn3->is_object_array);
+}
+
 # chomp
 {
   ok(SPVM::TestCase::Lib::Fn3->chomp);

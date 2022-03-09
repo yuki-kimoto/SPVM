@@ -312,6 +312,7 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_compiler_get_precompile_method_address,
     SPVM_API_compiler_set_native_method_address,
     SPVM_API_compiler_set_precompile_method_address,
+    SPVM_API_is_object_array,
     SPVM_API_get_constant_string,
   };
   
@@ -5522,6 +5523,20 @@ int32_t SPVM_API_is_numeric_array(SPVM_ENV* env, SPVM_OBJECT* object) {
   }
   
   return is_numeric_array;
+}
+
+
+int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object) {
+  
+  int32_t is_object_array;
+  if (object) {
+    is_object_array = object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY;
+  }
+  else {
+    is_object_array = 0;
+  }
+  
+  return is_object_array;
 }
 
 int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_OBJECT* object) {

@@ -1066,6 +1066,8 @@ class Fn : precompile {
 
   native static method is_numeric_array : int ($object : object);
 
+  native static method is_object_array : int ($object : object);
+
   # This is same as Perl \s
   static method is_perl_space : int ($code_point : int) {
     my $ispspace = 0;

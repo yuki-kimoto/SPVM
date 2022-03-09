@@ -813,6 +813,30 @@ If character is uppercase letter('A'-'Z'), return 1. If not, return 0.
 
 If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return 1. If not, return 0.
 
+=head2 is_mulnum_array
+
+  static method is_mulnum_array : int ($object : object)
+
+If the object is a multi numeric array, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
+
+=head2 is_numeric_array
+
+  static method is_numeric_array : int ($object : object)
+
+If the object is a numeric array, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
+
+=head2 is_object_array
+
+  static method is_object_array : int ($object : object)
+
+If the object is a object array, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
+
 =head2 join
 
   static method join : string ($sep : string, $strings : string[])
