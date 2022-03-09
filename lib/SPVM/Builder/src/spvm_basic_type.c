@@ -38,3 +38,7 @@ SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
   
   return basic_type;
 }
+
+const char* SPVM_BASIC_TYPE_get_basic_type_name(int32_t basic_type_id) {
+  return (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type_id];
+}

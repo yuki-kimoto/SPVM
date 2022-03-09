@@ -42,4 +42,6 @@ struct spvm_basic_type {
 SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler);
 const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void);
 
+const char* SPVM_BASIC_TYPE_get_basic_type_name(int32_t basic_type_id);
+
 #endif
