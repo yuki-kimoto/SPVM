@@ -4,7 +4,8 @@ Revision history for SPVM
         * Add Fn->is_numeric_array, Fn->is_mulnum_array doc.
         * Add Fn->is_object_array
         * Add is_object_array native API.
-        * Native API get_elem_byte_size use only runtime information
+        * Native API get_elem_byte_size uses only runtime information
+        * Native API has_callback uses only runtime information
         
 0.9508  2021-03-04
         [CHANGE]

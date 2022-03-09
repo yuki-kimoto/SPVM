@@ -5632,10 +5632,60 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
   // Object must be not null
   assert(object);
   
-  int32_t object_basic_type_id = object->basic_type_id;
-  int32_t object_type_dimension = object->type_dimension;
+  int32_t class_basic_type_id = object->basic_type_id;
+  int32_t class_type_dimension = object->type_dimension;
   
-  int32_t has_callback = SPVM_TYPE_has_callback(compiler, object_basic_type_id, object_type_dimension, 0, callback_basic_type_id, 0, 0);
+  int32_t has_callback;
+  
+  if (class_type_dimension > 0) {
+    return 0;
+  }
+
+  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, class_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, callback_basic_type_id);
+  
+  if (class_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  if (callback_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_basic_type->class_id);
+  SPVM_RUNTIME_CLASS* callback = SPVM_LIST_fetch(compiler->runtime_classes, callback_basic_type->class_id);
+  
+  // Class which have only anon sub
+  if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
+    assert(class->method_ids->length == 1);
+    assert(callback->method_ids->length == 1);
+    SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_runtime_method_from_index(env, class->id, 0);
+    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_get_runtime_method_from_index(env, callback->id, 0);
+    
+    if (strcmp(method_callback->signature, found_method->signature) == 0) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  // Normal class
+  else {
+    assert(callback->method_ids->length == 1);
+    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_get_runtime_method_from_index(env, callback->id, 0);
+    
+    SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_callback->name);
+    if (!found_method) {
+      return 0;
+    }
+    
+    if (strcmp(method_callback->signature, found_method->signature) == 0) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
   
   return has_callback;
 }
@@ -6884,6 +6934,20 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_index(SPVM_ENV* env, int32_t
   }
   
   return field;
+}
+
+SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_index(SPVM_ENV* env, int32_t class_id, int32_t method_index) {
+  
+  SPVM_COMPILER* compiler = env->compiler;
+  
+  SPVM_RUNTIME_METHOD* method = NULL;
+  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_id);
+  if (class) {
+    int32_t method_id = (intptr_t)SPVM_LIST_fetch(class->method_ids, method_index);
+    method = SPVM_LIST_fetch(compiler->runtime_methods, method_id);
+  }
+  
+  return method;
 }
 
 int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature) {
