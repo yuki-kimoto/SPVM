@@ -171,6 +171,15 @@ void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* class_name, const ch
   SPVM_LIST_push(compiler->op_use_stack, op_use);
 }
 
+const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_string_symtable, const char* name) {
+  
+  SPVM_RUNTIME_STRING* string = SPVM_HASH_fetch(runtime_string_symtable, name, strlen(name));
+
+  const char* new_name = string->value;
+  
+  return new_name;
+}
+
 int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name) {
 
   compiler->cur_class_base = compiler->classes->length;
@@ -404,6 +413,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     memcpy((char*)runtime_string->value, string->value, string->length);
     
     SPVM_LIST_push(compiler->runtime_strings, runtime_string);
+    
     SPVM_HASH_insert(compiler->runtime_string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
   }
   
@@ -444,7 +454,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
       SPVM_RUNTIME_FIELDS_OF_CLASS* fields_of_class = (SPVM_RUNTIME_FIELDS_OF_CLASS*)&compiler->runtime_fields_of_class[runtime_fields_of_class_id];
       fields_of_class->class_id = class->id;
       fields_of_class->field_id = field->id;
-      fields_of_class->name = field->name;
+      fields_of_class->name = SPVM_COMPILER_get_runtime_name(compiler->runtime_string_symtable, field->name);
       runtime_fields_of_class_id++;
     }
     
