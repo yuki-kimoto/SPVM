@@ -5486,18 +5486,7 @@ int32_t SPVM_API_is_array(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   int32_t is_array;
   if (object) {
-    switch(object->type_category) {
-      case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
-      case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
-      case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-      {
-        is_array = 1;
-        break;
-      }
-      default: {
-        is_array = 0;
-      }
-    }
+    is_array = object->type_dimension > 0;
   }
   else {
     is_array = 0;
