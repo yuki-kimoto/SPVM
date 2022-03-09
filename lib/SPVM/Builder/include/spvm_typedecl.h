@@ -32,9 +32,9 @@ typedef struct spvm_runtime_basic_type SPVM_RUNTIME_BASIC_TYPE;
 struct spvm_runtime_type;
 typedef struct spvm_runtime_type SPVM_RUNTIME_TYPE;
 
-// spvm_runtime_switch_info.h
-struct spvm_runtime_switch_info;
-typedef struct spvm_runtime_switch_info SPVM_RUNTIME_SWITCH_INFO;
+// spvm_runtime_string.h
+struct spvm_runtime_string;
+typedef struct spvm_runtime_string SPVM_RUNTIME_STRING;
 
 // spvm_runtime_field.h
 struct spvm_runtime_field;
