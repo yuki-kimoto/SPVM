@@ -5550,13 +5550,72 @@ int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_OBJECT* object) {
 
 int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array) {
   
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+  SPVM_COMPILER* compiler = env->compiler;
   
   int32_t elem_byte_size;
   if (array) {
-    int32_t basic_type_id = array->basic_type_id;
-    int32_t type_dimension = array->type_dimension;
-    elem_byte_size = SPVM_TYPE_get_elem_byte_size(compiler, basic_type_id, type_dimension, 0);
+    if (SPVM_API_is_string(env, array)) {
+      elem_byte_size = 1;
+    }
+    else if (SPVM_API_is_object_array(env, array)) {
+      elem_byte_size = sizeof(void*);
+    }
+    else if (SPVM_API_is_numeric_array(env, array)) {
+      int32_t basic_type_id = array->basic_type_id;
+      int32_t type_dimension = array->type_dimension;
+      assert(type_dimension == 1);
+      
+      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
+      if (basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+        elem_byte_size = 1;
+      }
+      else if (basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+        elem_byte_size = 2;
+      }
+      else if (basic_type_id == SPVM_BASIC_TYPE_C_ID_INT || basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+        elem_byte_size = 4;
+      }
+      else if (basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG || basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+        elem_byte_size = 8;
+      }
+      else {
+        assert(0);
+      }
+    }
+    else if (SPVM_API_is_mulnum_array(env, array)) {
+      int32_t basic_type_id = array->basic_type_id;
+      int32_t type_dimension = array->type_dimension;
+      assert(type_dimension == 1);
+      
+      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
+      assert(basic_type->class_id > -1);
+      SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, basic_type->class_id);
+      
+      int32_t width = class->field_ids->length;
+      
+      SPVM_RUNTIME_FIELD* first_field = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
+      int32_t first_field_type_id = first_field->type_id;
+      assert(first_field_type_id > -1);
+      SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(compiler->runtime_types, first_field_type_id);
+      
+      int32_t field_basic_type_id = first_field_type->basic_type_id;
+      
+      if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+        elem_byte_size = 1 * width;
+      }
+      else if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+        elem_byte_size = 2 * width;
+      }
+      else if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT || field_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+        elem_byte_size = 4 * width;
+      }
+      else if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG || field_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+        elem_byte_size = 8 * width;
+      }
+      else {
+        assert(0);
+      }
+    }
   }
   else {
     elem_byte_size = 0;

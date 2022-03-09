@@ -44,7 +44,8 @@ class TestCase::Copy {
         return 0;
       }
     }
-
+    
+    
     # Numeric array
     {
       # byte
@@ -125,6 +126,7 @@ class TestCase::Copy {
       }
     }
 
+    
     # Exception
     {
       eval { copy TestCase::Minimal->new; };
