@@ -22,8 +22,6 @@
 #include "spvm_api.h"
 #include "spvm_opcode_array.h"
 #include "spvm_compiler.h"
-#include "spvm_switch_info.h"
-#include "spvm_case_info.h"
 #include "spvm_string.h"
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
@@ -3576,8 +3574,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         int32_t switch_id = opcode->operand1;
         
-        SPVM_SWITCH_INFO* switch_info = compiler->switch_infos->values[switch_id];
-
         // Default branch
         int32_t default_opcode_rel_index = opcode->operand2;
         
@@ -3588,10 +3584,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
         for (int32_t case_index = 0; case_index < case_infos_length; case_index++) {
-          SPVM_CASE_INFO* case_info = switch_info->case_infos->values[case_index];
-          
-          int32_t match = case_info->condition_value;
-          int32_t opcode_rel_index = case_info->opcode_rel_index;
+          SPVM_OPCODE* opcode_case_info = &(opcodes[method_opcodes_base + opcode_index + 1 + case_index]);
+
+          int32_t match = opcode_case_info->operand1;
+          int32_t opcode_rel_index = opcode_case_info->operand2;
           
           SPVM_STRING_BUFFER_add(string_buffer, "    case ");
           SPVM_STRING_BUFFER_add_int(string_buffer, match);
