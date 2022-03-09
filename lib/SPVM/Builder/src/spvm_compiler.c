@@ -35,6 +35,7 @@
 #include "spvm_field_access.h"
 #include "spvm_call_method.h"
 #include "spvm_var.h"
+#include "spvm_string.h"
 
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class.h"
@@ -390,7 +391,21 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
   assert(compiler->allocator->memory_blocks_count_compile_tmp == compile_start_memory_blocks_count_compile_tmp);
   
-  
+  // Strings
+  compiler->runtime_strings = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
+  compiler->runtime_string_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler->allocator, 0);
+  for (int32_t string_id = 0; string_id < compiler->strings->length; string_id++) {
+    SPVM_STRING* string = SPVM_LIST_fetch(compiler->strings, string_id);
+    SPVM_RUNTIME_STRING* runtime_string = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, sizeof(SPVM_RUNTIME_STRING));
+    
+    runtime_string->id = string->id;
+    runtime_string->length = string->length;
+    runtime_string->value = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, string->length + 1);
+    memcpy((char*)runtime_string->value, string->value, string->length);
+    
+    SPVM_LIST_push(compiler->runtime_strings, runtime_string);
+    SPVM_HASH_insert(compiler->runtime_string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
+  }
   
   // Runtime methods, fields, class variables of classes
   int32_t runtime_methods_of_class_length = 0;
