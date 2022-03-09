@@ -649,7 +649,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
           
           SPVM_STRING_BUFFER_add(string_buffer, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " => ");
-          if (SPVM_TYPE_is_numeric_type(compiler, field_basic_type_id, field_type_dimension, 0)) {
+          if (field_type_dimension == 0 && field_basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && field_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
             switch (field_basic_type_id) {
               case SPVM_BASIC_TYPE_C_ID_BYTE: {
                 int8_t field_value = *(int8_t*)((intptr_t)object + (intptr_t)env->object_header_byte_size + field_offset);
@@ -692,14 +692,11 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
               }
             }
           }
-          else if (SPVM_TYPE_is_object_type(compiler, field_basic_type_id, field_type_dimension, 0)) {
+          else  {
             SPVM_OBJECT* field_value = *(SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + field_offset);
             (*depth)++;
             SPVM_API_dump_recursive(env, field_value, depth, string_buffer, address_symtable);
             (*depth)--;
-          }
-          else {
-            assert(0);
           }
           
           if (field_index == fields_length - 1) {
