@@ -457,7 +457,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
       SPVM_STRING_BUFFER_add_len(string_buffer, (char*)chars, chars_length);
       SPVM_STRING_BUFFER_add(string_buffer, "\"");
     }
-    else if (SPVM_TYPE_is_array_type(compiler, basic_type_id, type_dimension, 0)) {
+    else if (type_dimension > 0) {
       int32_t array_length = object->length;
       int32_t element_type_dimension = type_dimension - 1;
 
