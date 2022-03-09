@@ -4059,13 +4059,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_CASE_INFO* branch_opcode_rel_index_case_info = switch_info->case_infos->values[i];
                             branch_opcode_rel_index_case_info->opcode_rel_index = case_info->opcode_rel_index;
                             
-                            // Add case operand
-                            if (i % 2 == 0) {
-                              // Add case matching value and branch
-                              SPVM_OPCODE opcode_case_info;
-                              memset(&opcode_case_info, 0, sizeof(SPVM_OPCODE));
-                              SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_case_info);
-                            }
+                            // Add case info
+                            SPVM_OPCODE opcode_case_info;
+                            memset(&opcode_case_info, 0, sizeof(SPVM_OPCODE));
+                            opcode_case_info.id = SPVM_OPCODE_C_ID_CASE_INFO;
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_case_info);
                           }
 
                           // Default branch
@@ -4089,25 +4087,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode->operand2 = switch_info->default_opcode_rel_index;
                           opcode->operand3 = switch_info->case_infos->length;
 
-                          // Set case infos operand
+                          // Set case info operands
                           SPVM_LIST* case_infos = switch_info->case_infos;
-                          SPVM_OPCODE* cur_opcode_case_info = NULL;
                           for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
-                            
+                            SPVM_OPCODE* opcode_case_info = (SPVM_OPCODE*)&opcode_array->values[opcode_id + 1 + i];
                             SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(case_infos, i);
-                            
-                            if (i % 2 == 0) {
-                              cur_opcode_case_info = (SPVM_OPCODE*)&opcode_array->values[(i + 1) / 2];
-                            }
-                            
-                            if (i % 2 == 0) {
-                              cur_opcode_case_info->operand0 = case_info->condition_value;
-                              cur_opcode_case_info->operand1 = case_info->opcode_rel_index;
-                            }
-                            else {
-                              cur_opcode_case_info->operand2 = case_info->condition_value;
-                              cur_opcode_case_info->operand3 = case_info->opcode_rel_index;
-                            }
+                            opcode_case_info->operand1 = case_info->condition_value;
+                            opcode_case_info->operand2 = case_info->opcode_rel_index;
                           }
                           
                           break;

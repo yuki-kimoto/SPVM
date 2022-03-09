@@ -3604,13 +3604,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
         
                                               "  }\n");
-        // Opcode switch
-        opcode_index++;
-        
-        // Opcode case infos
-        opcode_index += ((case_infos_length + 1) / 2);
-        
-        continue;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CASE_INFO: {
+        break;
       }
       case SPVM_OPCODE_C_ID_REF_BYTE: {
         SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)&");

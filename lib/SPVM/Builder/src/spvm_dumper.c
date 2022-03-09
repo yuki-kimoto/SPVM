@@ -267,19 +267,7 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
       SPVM_OPCODE opcode = opcode_array->values[i];
       printf("        [%" PRId32 "] %-20s", i, (SPVM_OPCODE_C_ID_NAMES())[opcode.id]);
       printf(" %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3);
-      
-      if (opcode.id == SPVM_OPCODE_C_ID_LOOKUP_SWITCH) {
-        int32_t case_infos_length = opcode.operand3;
-        
-        // Opcode switch
-        i++;
-        
-        // Opcode case infos
-        i += ((case_infos_length + 1) / 2);
-        continue;
-      }
     }
-    
   }
 }
 

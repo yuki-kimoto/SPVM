@@ -330,6 +330,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "IF_EXCEPTION_CATCH",
     "IF_EXCEPTION_RETURN",
     "LOOKUP_SWITCH",
+    "CASE_INFO",
     "ARRAY_FETCH_BYTE",
     "ARRAY_FETCH_SHORT",
     "ARRAY_FETCH_INT",
@@ -474,4 +475,8 @@ SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler) {
   SPVM_OPCODE* opcode = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, sizeof(SPVM_OPCODE));
   
   return opcode;
+}
+
+const char* SPVM_OPCODE_get_opcode_name(SPVM_COMPILER* compiler, int32_t opcode_id) {
+  return (SPVM_OPCODE_C_ID_NAMES())[opcode_id];
 }
