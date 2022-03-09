@@ -174,7 +174,9 @@ void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* class_name, const ch
 const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_string_symtable, const char* name) {
   
   SPVM_RUNTIME_STRING* string = SPVM_HASH_fetch(runtime_string_symtable, name, strlen(name));
-
+  
+  assert(string);
+  
   const char* new_name = string->value;
   
   return new_name;
@@ -444,7 +446,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
       SPVM_RUNTIME_METHODS_OF_CLASS* methods_of_class = (SPVM_RUNTIME_METHODS_OF_CLASS*)&compiler->runtime_methods_of_class[runtime_methods_of_class_id];
       methods_of_class->class_id = class->id;
       methods_of_class->method_id = method->id;
-      methods_of_class->name = method->name;
+      methods_of_class->name = SPVM_COMPILER_get_runtime_name(compiler->runtime_string_symtable, method->name);
       runtime_methods_of_class_id++;
     }
     

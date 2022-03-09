@@ -2763,11 +2763,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   const char* class_name = call_method->method->class->name;
                   const char* class_var_base_name = call_method->method->accessor_original_name;
-                  char* class_var_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
-                  memcpy(class_var_name, "$", 1);
-                  memcpy(class_var_name + 1, class_name, strlen(class_name));
-                  memcpy(class_var_name + 1 + strlen(class_name), "::", 2);
-                  memcpy(class_var_name + 1 + strlen(class_name) + 2, class_var_base_name + 1, strlen(class_var_base_name) - 1);
+                  char* class_var_name_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
+                  memcpy(class_var_name_tmp, "$", 1);
+                  memcpy(class_var_name_tmp + 1, class_name, strlen(class_name));
+                  memcpy(class_var_name_tmp + 1 + strlen(class_name), "::", 2);
+                  memcpy(class_var_name_tmp + 1 + strlen(class_name) + 2, class_var_base_name + 1, strlen(class_var_base_name) - 1);
+                  
+                  SPVM_STRING* class_var_name_string = SPVM_STRING_new(compiler, class_var_name_tmp, strlen(class_var_name_tmp));
+                  const char* class_var_name = class_var_name_string->value;
+                  
                   SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op_cur->file, op_cur->line);
                   SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
                   op_class_var_access->uv.class_var_access->inline_expansion = 1;
@@ -2798,11 +2802,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   const char* class_name = call_method->method->class->name;
                   const char* class_var_base_name = call_method->method->accessor_original_name;
-                  char* class_var_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
-                  memcpy(class_var_name, "$", 1);
-                  memcpy(class_var_name + 1, class_name, strlen(class_name));
-                  memcpy(class_var_name + 1 + strlen(class_name), "::", 2);
-                  memcpy(class_var_name + 1 + strlen(class_name) + 2, class_var_base_name + 1, strlen(class_var_base_name) - 1);
+                  char* class_var_name_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
+                  memcpy(class_var_name_tmp, "$", 1);
+                  memcpy(class_var_name_tmp + 1, class_name, strlen(class_name));
+                  memcpy(class_var_name_tmp + 1 + strlen(class_name), "::", 2);
+                  memcpy(class_var_name_tmp + 1 + strlen(class_name) + 2, class_var_base_name + 1, strlen(class_var_base_name) - 1);
+                  SPVM_STRING* class_var_name_string = SPVM_STRING_new(compiler, class_var_name_tmp, strlen(class_var_name_tmp));
+                  const char* class_var_name = class_var_name_string->value;
+                  
                   SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op_cur->file, op_cur->line);
                   SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
                   op_class_var_access->uv.class_var_access->inline_expansion = 1;

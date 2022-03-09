@@ -1015,7 +1015,8 @@ SPVM_OP* SPVM_OP_build_default_statement(SPVM_COMPILER* compiler, SPVM_OP* op_de
 
 SPVM_OP* SPVM_OP_new_op_true(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
-  const char* class_var_name = "$Bool::TRUE";
+  SPVM_STRING* class_var_name_string = SPVM_STRING_new(compiler, "$Bool::TRUE", strlen("$Bool::TRUE"));
+  const char* class_var_name = class_var_name_string->value;
   SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op->file, op->line);
   SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
   op_class_var_access->uv.class_var_access->inline_expansion = 1;
@@ -1025,7 +1026,8 @@ SPVM_OP* SPVM_OP_new_op_true(SPVM_COMPILER* compiler, SPVM_OP* op) {
 
 SPVM_OP* SPVM_OP_new_op_false(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
-  const char* class_var_name = "$Bool::FALSE";
+  SPVM_STRING* class_var_name_string = SPVM_STRING_new(compiler, "$Bool::FALSE", strlen("$Bool::FALSE"));
+  const char* class_var_name = class_var_name_string->value;
   SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op->file, op->line);
   SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
   op_class_var_access->uv.class_var_access->inline_expansion = 1;
@@ -1917,7 +1919,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           // }
 
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, class_var->name + 1, op_decl->file, op_decl->line);
+          SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, class_var->name + 1, strlen(class_var->name) - 1);
+          const char* method_name = method_name_string->value;
+          SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
           SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, class_var->type, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
           
