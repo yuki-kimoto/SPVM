@@ -4031,7 +4031,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_DOUBLE:
       {
         int32_t class_var_id = opcode->operand1;
-        SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
+        SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->runtime_class_vars, class_var_id);
         SPVM_CLASS* class_var_class = class_var->class;
         const char* class_var_class_name = class_var_class->name;
         const char* class_var_name = class_var->name;
@@ -4092,7 +4092,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_OBJECT: {
         int32_t class_var_id = opcode->operand1;
-        SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
+        SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->runtime_class_vars, class_var_id);
         SPVM_CLASS* class_var_class = class_var->class;
         const char* class_var_class_name = class_var_class->name;
         const char* class_var_name = class_var->name;
@@ -4132,7 +4132,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_DOUBLE:
       {
         int32_t class_var_id = opcode->operand0;
-         SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
+         SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->runtime_class_vars, class_var_id);
         SPVM_CLASS* class_var_class = class_var->class;
         const char* class_var_class_name = class_var_class->name;
         const char* class_var_name = class_var->name;
@@ -4194,7 +4194,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT: {
         int32_t class_var_id = opcode->operand0;
-         SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
+         SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->runtime_class_vars, class_var_id);
         SPVM_CLASS* class_var_class = class_var->class;
         const char* class_var_class_name = class_var_class->name;
         const char* class_var_name = class_var->name;
@@ -4232,7 +4232,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
         int32_t class_var_id = opcode->operand0;
-        SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
+        SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->runtime_class_vars, class_var_id);
         SPVM_CLASS* class_var_class = class_var->class;
         const char* class_var_class_name = class_var_class->name;
         const char* class_var_name = class_var->name;
