@@ -5526,14 +5526,9 @@ int32_t SPVM_API_is_numeric_array(SPVM_ENV* env, SPVM_OBJECT* object) {
 
 int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_OBJECT* object) {
   
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
-  
   int32_t is_mulnum_array;
   if (object) {
-    int32_t basic_type_id = object->basic_type_id;
-    int32_t type_dimension = object->type_dimension;
-    
-    is_mulnum_array = SPVM_TYPE_is_mulnum_array_type(compiler, basic_type_id, type_dimension, 0);
+    is_mulnum_array = object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY;
   }
   else {
     is_mulnum_array = 0;
