@@ -563,7 +563,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
     runtime_class_var->name = SPVM_COMPILER_get_runtime_name(compiler->runtime_string_symtable, class_var->name);
     runtime_class_var->id = class_var->id;
-    runtime_class_var->signature = class_var->signature;
+    runtime_class_var->signature = SPVM_COMPILER_get_runtime_name(compiler->runtime_string_symtable, class_var->signature);
     runtime_class_var->type_id = class_var->type->id;
     runtime_class_var->class_id = class_var->class->id;
     
@@ -578,7 +578,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
     runtime_method->arg_mem_ids = method->arg_mem_ids;
     runtime_method->name = SPVM_COMPILER_get_runtime_name(compiler->runtime_string_symtable, method->name);
-    runtime_method->signature = method->signature;
+    runtime_method->signature = SPVM_COMPILER_get_runtime_name(compiler->runtime_string_symtable, method->signature);
     runtime_method->opcodes_base = method->opcodes_base;
     runtime_method->opcodes_length = method->opcodes_length;
     runtime_method->id = method->id;
@@ -618,7 +618,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     SPVM_RUNTIME_FIELD* runtime_field = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, sizeof(SPVM_RUNTIME_FIELD));
 
     runtime_field->name = SPVM_COMPILER_get_runtime_name(compiler->runtime_string_symtable, field->name);
-    runtime_field->signature = field->signature;
+    runtime_field->signature = SPVM_COMPILER_get_runtime_name(compiler->runtime_string_symtable, field->signature);
     runtime_field->id = field->id;
     runtime_field->index = field->index;
     runtime_field->offset = field->offset;
@@ -732,10 +732,10 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
     length += 1;
   }
   
-  char* method_signature = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, length + 1);
+  char* method_signature_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, length + 1);
   
   // Calcurate method signature length
-  char* bufptr = method_signature;
+  char* bufptr = method_signature_tmp;
   {
     // Return type
     memcpy(bufptr, method->return_type->basic_type->name, strlen(method->return_type->basic_type->name));
@@ -790,7 +790,10 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
     memcpy(bufptr, ")", 1);
     bufptr += 1;
   }
-
+  
+  SPVM_STRING* method_signature_string = SPVM_STRING_new(compiler, method_signature_tmp, strlen(method_signature_tmp));
+  const char* method_signature = method_signature_string->value;
+  
   return method_signature;
 }
 
@@ -807,10 +810,10 @@ const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_F
     length += field->type->dimension * 2;
   }
   
-  char* field_signature = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, length + 1);
+  char* field_signature_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, length + 1);
   
   // Calcurate field signature length
-  char* bufptr = field_signature;
+  char* bufptr = field_signature_tmp;
   {
     // Basic type
     memcpy(bufptr, field->type->basic_type->name, strlen(field->type->basic_type->name));
@@ -823,6 +826,9 @@ const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_F
       bufptr += 2;
     }
   }
+
+  SPVM_STRING* field_signature_string = SPVM_STRING_new(compiler, field_signature_tmp, strlen(field_signature_tmp));
+  const char* field_signature = field_signature_string->value;
 
   return field_signature;
 }
@@ -840,10 +846,10 @@ const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SP
     length += class_var->type->dimension * 2;
   }
   
-  char* class_var_signature = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, length + 1);
+  char* class_var_signature_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, length + 1);
   
   // Calcurate class_var signature length
-  char* bufptr = class_var_signature;
+  char* bufptr = class_var_signature_tmp;
   {
     // Basic type
     memcpy(bufptr, class_var->type->basic_type->name, strlen(class_var->type->basic_type->name));
@@ -856,6 +862,9 @@ const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SP
       bufptr += 2;
     }
   }
+
+  SPVM_STRING* class_var_signature_string = SPVM_STRING_new(compiler, class_var_signature_tmp, strlen(class_var_signature_tmp));
+  const char* class_var_signature = class_var_signature_string->value;
 
   return class_var_signature;
 }
