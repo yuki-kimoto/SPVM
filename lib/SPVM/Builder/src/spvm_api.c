@@ -354,7 +354,7 @@ int32_t SPVM_API_init_env(SPVM_ENV* env) {
   }
 
   // Initialize Class Variables
-  void* class_vars_heap = calloc(sizeof(SPVM_VALUE), ((int64_t)compiler->class_vars->length + 1));
+  void* class_vars_heap = calloc(sizeof(SPVM_VALUE), ((int64_t)compiler->runtime_class_vars->length + 1));
   if (class_vars_heap == NULL) {
     return 2;
   }
