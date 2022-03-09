@@ -3939,6 +3939,9 @@ _init(...)
   // Set the compiler
   env->compiler = compiler;
   
+  // Don't use compiler information
+  compiler->strings = NULL;
+  
   // Initialize env
   SPVM_API_init_env(env);
 
