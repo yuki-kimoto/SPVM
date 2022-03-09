@@ -629,7 +629,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     
     SPVM_LIST_push(compiler->runtime_fields, runtime_field);
   }
-
+  
   return error_code;
 }
 
