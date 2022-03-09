@@ -3949,6 +3949,8 @@ _init(...)
   compiler->methods = NULL;
 
   compiler->fields = NULL;
+
+  compiler->class_vars = NULL;
   
   // Initialize env
   SPVM_API_init_env(env);
