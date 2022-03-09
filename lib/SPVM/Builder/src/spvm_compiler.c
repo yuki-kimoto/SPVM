@@ -464,7 +464,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
       SPVM_RUNTIME_CLASS_VARS_OF_CLASS* class_vars_of_class = (SPVM_RUNTIME_CLASS_VARS_OF_CLASS*)&compiler->runtime_class_vars_of_class[runtime_class_vars_of_class_id];
       class_vars_of_class->class_id = class->id;
       class_vars_of_class->class_var_id = class_var->id;
-      class_vars_of_class->name = class_var->name;
+      class_vars_of_class->name = SPVM_COMPILER_get_runtime_name(compiler->runtime_string_symtable, class_var->name);
       runtime_class_vars_of_class_id++;
     }
   }
