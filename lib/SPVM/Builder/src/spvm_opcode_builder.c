@@ -4044,13 +4044,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t opcode_id = opcode_array->length;
                           switch_info->opcode_id = opcode_id;
 
-                          // Default branch
-                          int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
-                          if (default_opcode_rel_index == 0) {
-                            default_opcode_rel_index = opcode_id + 1 - method_opcodes_base;
-                          }
-                          switch_info->default_opcode_rel_index = default_opcode_rel_index;
-
                           // Add switch opcode
                           SPVM_OPCODE opcode_switch_info;
                           memset(&opcode_switch_info, 0, sizeof(SPVM_OPCODE));
@@ -4065,8 +4058,23 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             // Branch
                             SPVM_CASE_INFO* branch_opcode_rel_index_case_info = switch_info->case_infos->values[i];
                             branch_opcode_rel_index_case_info->opcode_rel_index = case_info->opcode_rel_index;
+                            
+                            // Add case operand
+                            if (i % 2 == 0) {
+                              // Add case matching value and branch
+                              SPVM_OPCODE opcode_case_info;
+                              memset(&opcode_case_info, 0, sizeof(SPVM_OPCODE));
+                              SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_case_info);
+                            }
                           }
-                          
+
+                          // Default branch
+                          int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
+                          if (default_opcode_rel_index == 0) {
+                            default_opcode_rel_index = opcode_array->length + 1 - method_opcodes_base;
+                          }
+                          switch_info->default_opcode_rel_index = default_opcode_rel_index;
+
                           break;
                         }
                         case SPVM_OP_C_ID_SWITCH: {
