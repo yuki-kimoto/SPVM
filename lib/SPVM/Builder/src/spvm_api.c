@@ -5476,14 +5476,20 @@ int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t basic_type_
 
 int32_t SPVM_API_is_array(SPVM_ENV* env, SPVM_OBJECT* object) {
   
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
-  
   int32_t is_array;
   if (object) {
-    int32_t basic_type_id = object->basic_type_id;
-    int32_t type_dimension = object->type_dimension;
-    
-    is_array = SPVM_TYPE_is_array_type(compiler, basic_type_id, type_dimension, 0);
+    switch(object->type_category) {
+      case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
+      case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
+      case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
+      {
+        is_array = 1;
+        break;
+      }
+      default: {
+        is_array = 0;
+      }
+    }
   }
   else {
     is_array = 0;
@@ -5493,8 +5499,6 @@ int32_t SPVM_API_is_array(SPVM_ENV* env, SPVM_OBJECT* object) {
 }
 
 int32_t SPVM_API_is_string(SPVM_ENV* env, SPVM_OBJECT* object) {
-  
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
   int32_t is_string;
   if (object) {
