@@ -3946,6 +3946,7 @@ _init(...)
   compiler->types = NULL;
   compiler->type_symtable = NULL;
   compiler->fields = NULL;
+  compiler->methods = NULL;
   
   // Initialize env
   SPVM_API_init_env(env);
