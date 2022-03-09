@@ -1230,10 +1230,20 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
   for (int32_t class_var_id = 0; class_var_id < compiler->runtime_class_vars->length; class_var_id++) {
     SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->runtime_class_vars, class_var_id);
     SPVM_RUNTIME_TYPE* class_var_type = SPVM_LIST_fetch(compiler->runtime_types, class_var->type_id);
-    if (SPVM_TYPE_is_object_type(compiler, class_var_type->basic_type_id, class_var_type->dimension, 0)) {
-      SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
-      if (object) {
-        SPVM_API_dec_ref_count(env, object);
+    int32_t class_var_type_category = class_var_type->category;
+    
+    switch (class_var_type_category) {
+      case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
+      case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
+      case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
+      case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
+      case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
+      case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
+      {
+        SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
+        if (object) {
+          SPVM_API_dec_ref_count(env, object);
+        }
       }
     }
   }
