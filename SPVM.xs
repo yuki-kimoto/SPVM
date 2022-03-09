@@ -3942,6 +3942,8 @@ _init(...)
   // Don't use compiler information
   compiler->strings = NULL;
   compiler->string_symtable = NULL;
+
+  compiler->types = NULL;
   
   // Initialize env
   SPVM_API_init_env(env);
