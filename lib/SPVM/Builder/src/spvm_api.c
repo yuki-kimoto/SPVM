@@ -7464,7 +7464,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
 const char* SPVM_API_get_constant_string(SPVM_ENV* env, int32_t string_id, int32_t* string_length) {
   SPVM_COMPILER* compiler = env->compiler;
   
-  SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->strings, string_id);
+  SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->runtime_strings, string_id);
   
   const char* constant_string_value = constant_string->value;
   *string_length = constant_string->length;
