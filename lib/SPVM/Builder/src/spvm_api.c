@@ -450,7 +450,14 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
     const char* basic_type_name = basic_type->name;
     
-    if (SPVM_TYPE_is_array_type(compiler, basic_type_id, type_dimension, 0)) {
+    if (SPVM_API_is_string(env, object)) {
+      const char* chars = env->get_chars(env, object);
+      int32_t chars_length  = env->length(env, object);
+      SPVM_STRING_BUFFER_add(string_buffer, "\"");
+      SPVM_STRING_BUFFER_add_len(string_buffer, (char*)chars, chars_length);
+      SPVM_STRING_BUFFER_add(string_buffer, "\"");
+    }
+    else if (SPVM_TYPE_is_array_type(compiler, basic_type_id, type_dimension, 0)) {
       int32_t array_length = object->length;
       int32_t element_type_dimension = type_dimension - 1;
 
@@ -605,13 +612,6 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
       
       sprintf(tmp_buffer, "(%p)", object);
       SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
-    }
-    else if (SPVM_TYPE_is_string_type(compiler, basic_type_id, 0, 0)) {
-      const char* chars = env->get_chars(env, object);
-      int32_t chars_length  = env->length(env, object);
-      SPVM_STRING_BUFFER_add(string_buffer, "\"");
-      SPVM_STRING_BUFFER_add_len(string_buffer, (char*)chars, chars_length);
-      SPVM_STRING_BUFFER_add(string_buffer, "\"");
     }
     else {
 
