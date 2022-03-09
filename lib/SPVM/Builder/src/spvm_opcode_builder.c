@@ -4088,6 +4088,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode->operand1 = switch_info->switch_id;
                           opcode->operand2 = switch_info->default_opcode_rel_index;
                           opcode->operand3 = switch_info->case_infos->length;
+
+                          // Set case infos operand
+                          SPVM_LIST* case_infos = switch_info->case_infos;
+                          SPVM_OPCODE* cur_opcode_case_info = NULL;
+                          for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
+                            
+                            SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(case_infos, i);
+                            
+                            if (i % 2 == 0) {
+                              cur_opcode_case_info = (SPVM_OPCODE*)&opcode_array->values[(i + 1) / 2];
+                            }
+                            
+                            if (i % 2 == 0) {
+                              cur_opcode_case_info->operand0 = case_info->condition_value;
+                              cur_opcode_case_info->operand1 = case_info->opcode_rel_index;
+                            }
+                            else {
+                              cur_opcode_case_info->operand2 = case_info->condition_value;
+                              cur_opcode_case_info->operand3 = case_info->opcode_rel_index;
+                            }
+                          }
                           
                           break;
                         }
