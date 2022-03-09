@@ -4669,7 +4669,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t default_opcode_rel_index = opcode->operand2;
         
         // Cases length
-        int32_t case_infos_length = switch_info->case_infos->length;
+        int32_t case_infos_length = opcode->operand3;
 
         if (case_infos_length > 0) {
           // min

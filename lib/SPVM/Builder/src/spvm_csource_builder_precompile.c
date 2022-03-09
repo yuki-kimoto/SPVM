@@ -3582,7 +3582,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         int32_t default_opcode_rel_index = opcode->operand2;
         
         // Cases length
-        int32_t case_infos_length = switch_info->case_infos->length;
+        int32_t case_infos_length = opcode->operand3;;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
