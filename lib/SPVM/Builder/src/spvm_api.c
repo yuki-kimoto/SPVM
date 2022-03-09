@@ -5498,10 +5498,7 @@ int32_t SPVM_API_is_string(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   int32_t is_string;
   if (object) {
-    int32_t basic_type_id = object->basic_type_id;
-    int32_t type_dimension = object->type_dimension;
-    
-    is_string = SPVM_TYPE_is_string_type(compiler, basic_type_id, type_dimension, 0);
+    is_string = object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_STRING;
   }
   else {
     is_string = 0;
