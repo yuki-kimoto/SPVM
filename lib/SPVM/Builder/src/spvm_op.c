@@ -1952,9 +1952,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           //   $FOO = $foo;
           // }
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          char* method_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 4 + strlen(class_var->name) - 1 + 1);
-          memcpy(method_name, "SET_", 4);
-          memcpy(method_name + 4, class_var->name + 1, strlen(class_var->name) - 1);
+          char* method_name_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 4 + strlen(class_var->name) - 1 + 1);
+          memcpy(method_name_tmp, "SET_", 4);
+          memcpy(method_name_tmp + 4, class_var->name + 1, strlen(class_var->name) - 1);
+
+          SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
+          const char* method_name = method_name_string->value;
+
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
           SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
@@ -2049,9 +2053,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           // }
 
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          char* method_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 4 + strlen(field->name) + 1);
-          memcpy(method_name, "set_", 4);
-          memcpy(method_name + 4, field->name, strlen(field->name));
+          char* method_name_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 4 + strlen(field->name) + 1);
+          memcpy(method_name_tmp, "set_", 4);
+          memcpy(method_name_tmp + 4, field->name, strlen(field->name));
+          SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
+          const char* method_name = method_name_string->value;
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
           SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
