@@ -37,7 +37,9 @@ int32_t main(int32_t argc, const char *argv[]) {
     }
     exit(255);
   }
-  
+
+  SPVM_COMPILER_build_runtime_info(compiler);
+
   compiler_env->free_env_raw(compiler_env);
   compiler_env = NULL;
 

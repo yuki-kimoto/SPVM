@@ -404,12 +404,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
   assert(compiler->allocator->memory_blocks_count_compile_tmp == compile_start_memory_blocks_count_compile_tmp);
   
-  if (error_code) {
-    return error_code;
-  }
-  
-  SPVM_COMPILER_build_runtime_info(compiler);
-  
   return error_code;
 }
 
