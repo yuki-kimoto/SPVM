@@ -23,6 +23,7 @@
 #include "spvm_opcode_array.h"
 #include "spvm_compiler.h"
 #include "spvm_string.h"
+#include "spvm_runtime_info.h"
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   
@@ -2394,7 +2395,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
       }
       case SPVM_OPCODE_C_ID_NEW_CONSTANT_STRING: {
         int32_t string_id = opcode->operand1;
-        SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->runtime_strings, string_id);
+        SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->runtime_info->strings, string_id);
 
         SPVM_STRING_BUFFER_add(string_buffer,
           "  {\n"

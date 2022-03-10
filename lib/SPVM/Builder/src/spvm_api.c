@@ -331,12 +331,12 @@ SPVM_RUNTIME_CLASS* SPVM_API_get_runtime_class_from_basic_type_id(SPVM_ENV* env,
   
   SPVM_RUNTIME_CLASS* class = NULL;
   if (basic_type_id >= 0) {
-    SPVM_LIST* runtime_basic_types = compiler->runtime_basic_types;
+    SPVM_LIST* runtime_basic_types = compiler->runtime_info->basic_types;
     
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_LIST_fetch(runtime_basic_types, basic_type_id);
     int32_t class_id = runtime_basic_type->class_id;
     
-    class = SPVM_LIST_fetch(compiler->runtime_classes, class_id);
+    class = SPVM_LIST_fetch(compiler->runtime_info->classes, class_id);
   }
   
   return class;
@@ -354,7 +354,7 @@ int32_t SPVM_API_init_env(SPVM_ENV* env) {
   }
 
   // Initialize Class Variables
-  void* class_vars_heap = calloc(sizeof(SPVM_VALUE), ((int64_t)compiler->runtime_class_vars->length + 1));
+  void* class_vars_heap = calloc(sizeof(SPVM_VALUE), ((int64_t)compiler->runtime_info->class_vars->length + 1));
   if (class_vars_heap == NULL) {
     return 2;
   }
@@ -447,7 +447,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
     int32_t basic_type_id = object->basic_type_id;
     int32_t type_dimension = object->type_dimension;
     
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, basic_type_id);
     const char* basic_type_name = basic_type->name;
     
     if (SPVM_API_is_string(env, object)) {
@@ -473,7 +473,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
 
           SPVM_STRING_BUFFER_add(string_buffer, "{\n");
 
-          SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
+          SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, basic_type_id);
           SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
           int32_t fields_length = class->field_ids->length;
           
@@ -484,7 +484,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
             
             SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, class->id, field_index);
             
-            SPVM_RUNTIME_TYPE* field_type = SPVM_LIST_fetch(compiler->runtime_types, field->type_id);
+            SPVM_RUNTIME_TYPE* field_type = SPVM_LIST_fetch(compiler->runtime_info->types, field->type_id);
 
             int32_t field_basic_type_id = field_type->basic_type_id;
 
@@ -624,7 +624,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
       else {
         SPVM_HASH_insert(address_symtable, tmp_buffer, strlen(tmp_buffer), (void*)(intptr_t)1);
         
-        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, basic_type_id);
         SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
         assert(class);
 
@@ -640,7 +640,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
 
           SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, class->id, field_index);
           
-          SPVM_RUNTIME_TYPE* field_type = SPVM_LIST_fetch(compiler->runtime_types, field->type_id);
+          SPVM_RUNTIME_TYPE* field_type = SPVM_LIST_fetch(compiler->runtime_info->types, field->type_id);
           
           int32_t field_basic_type_id = field_type->basic_type_id;
           int32_t field_type_dimension = field_type->dimension;
@@ -1224,9 +1224,9 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
   SPVM_API_set_exception(env, NULL);
   
   // Free objects of class variables
-  for (int32_t class_var_id = 0; class_var_id < compiler->runtime_class_vars->length; class_var_id++) {
-    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->runtime_class_vars, class_var_id);
-    SPVM_RUNTIME_TYPE* class_var_type = SPVM_LIST_fetch(compiler->runtime_types, class_var->type_id);
+  for (int32_t class_var_id = 0; class_var_id < compiler->runtime_info->class_vars->length; class_var_id++) {
+    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->runtime_info->class_vars, class_var_id);
+    SPVM_RUNTIME_TYPE* class_var_type = SPVM_LIST_fetch(compiler->runtime_info->types, class_var->type_id);
     int32_t class_var_type_category = class_var_type->category;
     
     switch (class_var_type_category) {
@@ -1272,7 +1272,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
   SPVM_COMPILER* compiler = env->compiler;
   
   // Method
-  SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(compiler->runtime_methods, method_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(compiler->runtime_info->methods, method_id);
   
   int32_t exception_flag;
   
@@ -1288,7 +1288,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
     
     // Increment ref count of return value
     if (!exception_flag) {
-      SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(compiler->runtime_types, method->return_type_id);
+      SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(compiler->runtime_info->types, method->return_type_id);
       switch (method_return_type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
@@ -1309,7 +1309,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
 
     // Decrement ref count of return value
     if (!exception_flag) {
-      SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(compiler->runtime_types, method->return_type_id);
+      SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(compiler->runtime_info->types, method->return_type_id);
       switch (method_return_type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
@@ -1356,10 +1356,10 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   SPVM_COMPILER* compiler = env->compiler;
 
   // Runtime method
-  SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(compiler->runtime_methods, method_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(compiler->runtime_info->methods, method_id);
   
   // Runtime class
-  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, method->class_id);
+  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_info->classes, method->class_id);
 
   // Operation codes
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
@@ -1488,7 +1488,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
     for (int32_t args_index = 0; args_index < method->arg_type_ids->length; args_index++) {
       int32_t arg_mem_id = (intptr_t)SPVM_LIST_fetch(method->arg_mem_ids, args_index);
       int32_t arg_type_id = (intptr_t)SPVM_LIST_fetch(method->arg_type_ids, args_index);
-      SPVM_RUNTIME_TYPE* arg_type = SPVM_LIST_fetch(compiler->runtime_types, arg_type_id);
+      SPVM_RUNTIME_TYPE* arg_type = SPVM_LIST_fetch(compiler->runtime_info->types, arg_type_id);
       
       int32_t type_width = arg_type->width;
       switch (arg_type->category) {
@@ -4194,11 +4194,11 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
       {
         int32_t call_method_id = opcode->operand1;
-        SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_LIST_fetch(compiler->runtime_methods, call_method_id);
+        SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_LIST_fetch(compiler->runtime_info->methods, call_method_id);
         call_spvm_method_arg_stack_top -= call_spvm_method->args_alloc_length;
         exception_flag = env->call_spvm_method(env, call_method_id, stack);
         
-        SPVM_RUNTIME_TYPE* call_spvm_method_return_type = SPVM_LIST_fetch(compiler->runtime_types, call_spvm_method->return_type_id);
+        SPVM_RUNTIME_TYPE* call_spvm_method_return_type = SPVM_LIST_fetch(compiler->runtime_info->types, call_spvm_method->return_type_id);
 
         switch (call_spvm_method_return_type->category) {
           case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
@@ -4313,7 +4313,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE:
       {
         int32_t decl_method_id = opcode->operand1;
-        SPVM_RUNTIME_METHOD* decl_method = SPVM_LIST_fetch(compiler->runtime_methods, decl_method_id);
+        SPVM_RUNTIME_METHOD* decl_method = SPVM_LIST_fetch(compiler->runtime_info->methods, decl_method_id);
         void* object = stack[0].oval;
         const char* decl_method_name = decl_method->name;
         const char* decl_method_signature = decl_method->signature;
@@ -4322,7 +4322,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
         if (call_method_id < 0) {
           memset(tmp_buffer, sizeof(tmp_buffer), 0);
-          SPVM_RUNTIME_CLASS* decl_method_class = SPVM_LIST_fetch(compiler->runtime_classes, decl_method->class_id);
+          SPVM_RUNTIME_CLASS* decl_method_class = SPVM_LIST_fetch(compiler->runtime_info->classes, decl_method->class_id);
           snprintf(tmp_buffer, 255, "Can't find the \"%s\" method with the signature \"%s\" that is declared in \"%s\"", decl_method_name, decl_method_signature, decl_method_class->name);
           void* exception = env->new_string_nolen_raw(env, tmp_buffer);
           env->set_exception(env, exception);
@@ -4331,7 +4331,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         else {
           exception_flag = env->call_spvm_method(env, call_method_id, stack);
           
-          SPVM_RUNTIME_TYPE* decl_method_return_type = SPVM_LIST_fetch(compiler->runtime_types, decl_method->return_type_id);
+          SPVM_RUNTIME_TYPE* decl_method_return_type = SPVM_LIST_fetch(compiler->runtime_info->types, decl_method->return_type_id);
           switch (decl_method_return_type->category) {
             case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
               break;
@@ -4448,11 +4448,11 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           
           int32_t method_index = opcode->operand1;
           int32_t method_id = (intptr_t)SPVM_LIST_fetch(class->method_ids, method_index);
-          SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(compiler->runtime_methods, method_id);
+          SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(compiler->runtime_info->methods, method_id);
           int32_t line = opcode->operand2;
           
           const char* method_name = method->name;
-          SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(compiler->runtime_classes, method->class_id);
+          SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(compiler->runtime_info->classes, method->class_id);
           const char* class_name = method_class->name;
           const char* file = method_class->module_file;
           
@@ -4468,11 +4468,11 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         if (exception_flag) {
           int32_t method_index = opcode->operand1;
           int32_t method_id = (intptr_t)SPVM_LIST_fetch(class->method_ids, method_index);
-          SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(compiler->runtime_methods, method_id);
+          SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(compiler->runtime_info->methods, method_id);
           int32_t line = opcode->operand2;
           
           const char* method_name = method->name;
-          SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(compiler->runtime_classes, method->class_id);
+          SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(compiler->runtime_info->classes, method->class_id);
           const char* class_name = method_class->name;
           const char* file = class->module_file;
 
@@ -4722,7 +4722,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
         int32_t field_id = opcode->operand2;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -4739,7 +4739,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
         int32_t field_id = opcode->operand2;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -4756,7 +4756,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
         int32_t field_id = opcode->operand2;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -4773,7 +4773,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
         int32_t field_id = opcode->operand2;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -4790,7 +4790,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
         int32_t field_id = opcode->operand2;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -4807,7 +4807,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
         int32_t field_id = opcode->operand2;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -4824,7 +4824,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
         int32_t field_id = opcode->operand2;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -4843,7 +4843,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -4859,7 +4859,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -4875,7 +4875,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -4891,7 +4891,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -4907,7 +4907,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -4923,7 +4923,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -4939,7 +4939,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
 
         if (__builtin_expect(object == NULL, 0)) {
@@ -4956,7 +4956,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
 
         if (__builtin_expect(object == NULL, 0)) {
@@ -4972,7 +4972,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand0];
         if (object == NULL) {
@@ -4993,7 +4993,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand0];
         if (object == NULL) {
@@ -5009,7 +5009,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
         int32_t field_id = opcode->operand2;
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
@@ -5025,11 +5025,11 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_HAS_IMPLEMENT: {
         int32_t implement_method_id = opcode->operand2;
-        SPVM_RUNTIME_METHOD* implement_method = SPVM_LIST_fetch(compiler->runtime_methods, implement_method_id);
+        SPVM_RUNTIME_METHOD* implement_method = SPVM_LIST_fetch(compiler->runtime_info->methods, implement_method_id);
         const char* implement_method_name = implement_method->name;
         
         int32_t interface_basic_type_id = opcode->operand3;
-        SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, interface_basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, interface_basic_type_id);
         SPVM_RUNTIME_CLASS* interface_class = SPVM_API_get_runtime_class_from_basic_type_id(env, interface_basic_type->id);
         SPVM_RUNTIME_METHOD* interface_method = SPVM_API_get_runtime_method_from_runtime_class(env, interface_class->id, implement_method_name);
         const char* implement_method_signature = interface_method->signature;
@@ -5447,7 +5447,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   
   // Decrement ref count of return value
   if (!exception_flag) {
-    SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(compiler->runtime_types, method->return_type_id);
+    SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(compiler->runtime_info->types, method->return_type_id);
     switch (method_return_type->category) {
       case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
       case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
@@ -5565,7 +5565,7 @@ int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array) {
       int32_t type_dimension = array->type_dimension;
       assert(type_dimension == 1);
       
-      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
+      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, basic_type_id);
       if (basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
         elem_byte_size = 1;
       }
@@ -5587,16 +5587,16 @@ int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array) {
       int32_t type_dimension = array->type_dimension;
       assert(type_dimension == 1);
       
-      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
+      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, basic_type_id);
       assert(basic_type->class_id > -1);
-      SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, basic_type->class_id);
+      SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_info->classes, basic_type->class_id);
       
       int32_t width = class->field_ids->length;
       
       SPVM_RUNTIME_FIELD* first_field = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
       int32_t first_field_type_id = first_field->type_id;
       assert(first_field_type_id > -1);
-      SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(compiler->runtime_types, first_field_type_id);
+      SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(compiler->runtime_info->types, first_field_type_id);
       
       int32_t field_basic_type_id = first_field_type->basic_type_id;
       
@@ -5641,8 +5641,8 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
     return 0;
   }
 
-  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, class_basic_type_id);
-  SPVM_RUNTIME_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, callback_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, class_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, callback_basic_type_id);
   
   if (class_basic_type->class_id < 0) {
     return 0;
@@ -5652,8 +5652,8 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
     return 0;
   }
   
-  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_basic_type->class_id);
-  SPVM_RUNTIME_CLASS* callback = SPVM_LIST_fetch(compiler->runtime_classes, callback_basic_type->class_id);
+  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_info->classes, class_basic_type->class_id);
+  SPVM_RUNTIME_CLASS* callback = SPVM_LIST_fetch(compiler->runtime_info->classes, callback_basic_type->class_id);
   
   // Class which have only anon sub
   if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
@@ -5707,8 +5707,8 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t inter
     return 0;
   }
 
-  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, class_basic_type_id);
-  SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, interface_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, class_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, interface_basic_type_id);
   
   if (class_basic_type->class_id < 0) {
     return 0;
@@ -5718,8 +5718,8 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t inter
     return 0;
   }
   
-  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_basic_type->class_id);
-  SPVM_RUNTIME_CLASS* interface = SPVM_LIST_fetch(compiler->runtime_classes, interface_basic_type->class_id);
+  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_info->classes, class_basic_type->class_id);
+  SPVM_RUNTIME_CLASS* interface = SPVM_LIST_fetch(compiler->runtime_info->classes, interface_basic_type->class_id);
   
   if (class->id, interface->id) {
     return 1;
@@ -5780,7 +5780,7 @@ SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   int32_t basic_type_id = object->basic_type_id;
   int32_t type_dimension = object->type_dimension;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, basic_type_id);
   const char* basic_type_name = basic_type->name;
   
   int32_t length = 0;
@@ -6459,7 +6459,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
     SPVM_OBJECT* get_field_object = ((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[index];
   }
 
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, basic_type_id);
 
   object->basic_type_id = basic_type->id;
   object->type_dimension = 1;
@@ -6500,7 +6500,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   SPVM_COMPILER* compiler = env->compiler;
 
   // valut_t array dimension must be 1
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, basic_type_id);
   const char* basic_type_name = basic_type->name;
   
   // Class
@@ -6508,7 +6508,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   int32_t fields_length = class->field_ids->length;
   SPVM_RUNTIME_FIELD* field_first = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
 
-  SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(compiler->runtime_types, field_first->type_id);
+  SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(compiler->runtime_info->types, field_first->type_id);
 
   int32_t field_basic_type_id = first_field_type->basic_type_id;
 
@@ -6559,7 +6559,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_id) {
   
   SPVM_COMPILER* compiler = env->compiler;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, basic_type_id);
   
   SPVM_RUNTIME_CLASS* class;
   if (!SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id)) {
@@ -6604,7 +6604,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void
   
   SPVM_COMPILER* compiler = env->compiler;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, basic_type_id);
 
   SPVM_RUNTIME_CLASS* class;
   if (!SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id)) {
@@ -6636,7 +6636,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void
   object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
   
   // Has destructor
-  if (SPVM_LIST_fetch(compiler->runtime_methods, class->method_destructor_id)) {
+  if (SPVM_LIST_fetch(compiler->runtime_info->methods, class->method_destructor_id)) {
     object->flag |= SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR;
   }
   
@@ -6756,7 +6756,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
 
       // Class
       SPVM_COMPILER* compiler = env->compiler;
-      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, object->basic_type_id);
+      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, object->basic_type_id);
       SPVM_RUNTIME_CLASS* class;
       if (!SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id)) {
         class = NULL;
@@ -6846,7 +6846,7 @@ int32_t SPVM_API_get_field_offset(SPVM_ENV* env, int32_t field_id) {
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
   
   return field->offset;
 }
@@ -6920,11 +6920,11 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_runtime_class(SPVM_ENV* en
   SPVM_COMPILER* compiler = env->compiler;
   
   SPVM_RUNTIME_METHOD* method = NULL;
-  for (int32_t i = 0; i < compiler->runtime_methods->length; i++) {
-    SPVM_RUNTIME_METHODS_OF_CLASS* method_of_class = (SPVM_RUNTIME_METHODS_OF_CLASS*)&compiler->runtime_methods_of_class[i];
+  for (int32_t i = 0; i < compiler->runtime_info->methods->length; i++) {
+    SPVM_RUNTIME_METHODS_OF_CLASS* method_of_class = (SPVM_RUNTIME_METHODS_OF_CLASS*)&compiler->runtime_info->methods_of_class[i];
     if (class_id == method_of_class->class_id) {
       if (strcmp(method_name, method_of_class->name) == 0) {
-        method = SPVM_LIST_fetch(compiler->runtime_methods, method_of_class->method_id);
+        method = SPVM_LIST_fetch(compiler->runtime_info->methods, method_of_class->method_id);
         break;
       }
     }
@@ -6938,11 +6938,11 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_runtime_class(SPVM_ENV* env,
   SPVM_COMPILER* compiler = env->compiler;
   
   SPVM_RUNTIME_FIELD* field = NULL;
-  for (int32_t i = 0; i < compiler->runtime_fields->length; i++) {
-    SPVM_RUNTIME_FIELDS_OF_CLASS* field_of_class = (SPVM_RUNTIME_FIELDS_OF_CLASS*)&compiler->runtime_fields_of_class[i];
+  for (int32_t i = 0; i < compiler->runtime_info->fields->length; i++) {
+    SPVM_RUNTIME_FIELDS_OF_CLASS* field_of_class = (SPVM_RUNTIME_FIELDS_OF_CLASS*)&compiler->runtime_info->fields_of_class[i];
     if (class_id == field_of_class->class_id) {
       if (strcmp(field_name, field_of_class->name) == 0) {
-        field = SPVM_LIST_fetch(compiler->runtime_fields, field_of_class->field_id);
+        field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_of_class->field_id);
         break;
       }
     }
@@ -6956,10 +6956,10 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_index(SPVM_ENV* env, int32_t
   SPVM_COMPILER* compiler = env->compiler;
   
   SPVM_RUNTIME_FIELD* field = NULL;
-  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_id);
+  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_info->classes, class_id);
   if (class) {
     int32_t field_id = (intptr_t)SPVM_LIST_fetch(class->field_ids, field_index);
-    field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+    field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
   }
   
   return field;
@@ -6970,10 +6970,10 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_index(SPVM_ENV* env, int32
   SPVM_COMPILER* compiler = env->compiler;
   
   SPVM_RUNTIME_METHOD* method = NULL;
-  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_id);
+  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_info->classes, class_id);
   if (class) {
     int32_t method_id = (intptr_t)SPVM_LIST_fetch(class->method_ids, method_index);
-    method = SPVM_LIST_fetch(compiler->runtime_methods, method_id);
+    method = SPVM_LIST_fetch(compiler->runtime_info->methods, method_id);
   }
   
   return method;
@@ -7052,7 +7052,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
   SPVM_COMPILER* compiler = env->compiler;
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, object->basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->runtime_info->basic_types, object->basic_type_id);
   
   // Class
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
@@ -7064,7 +7064,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
     if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
       // Method name
       int32_t method_id = (intptr_t)SPVM_LIST_fetch(class->method_ids, 0);
-      method = SPVM_LIST_fetch(compiler->runtime_methods, method_id);
+      method = SPVM_LIST_fetch(compiler->runtime_info->methods, method_id);
     }
     // Normal instance method
     else {
@@ -7088,7 +7088,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env,  const char* bas
   // Runtime
   SPVM_COMPILER* compiler = env->compiler;
 
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = (SPVM_RUNTIME_BASIC_TYPE*)SPVM_HASH_fetch(compiler->runtime_basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = (SPVM_RUNTIME_BASIC_TYPE*)SPVM_HASH_fetch(compiler->runtime_info->basic_type_symtable, basic_type_name, strlen(basic_type_name));
   
   return basic_type;
 }
@@ -7116,7 +7116,7 @@ int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
   
   // Get field value
   int8_t value = *(int8_t*)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -7130,7 +7130,7 @@ int16_t SPVM_API_get_field_short(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fie
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
   
   // Get field value
   int16_t value = *(int16_t*)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -7144,7 +7144,7 @@ int32_t SPVM_API_get_field_int(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
 
   // Get field value
   int32_t value = *(int32_t*)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -7158,7 +7158,7 @@ int64_t SPVM_API_get_field_long(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fiel
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
 
   // Get field value
   int64_t value = *(int64_t*)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -7172,7 +7172,7 @@ float SPVM_API_get_field_float(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
 
   // Get field value
   float value = *(float*)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -7186,7 +7186,7 @@ double SPVM_API_get_field_double(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fie
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
 
   // Get field value
   double value = *(double*)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -7200,7 +7200,7 @@ SPVM_OBJECT* SPVM_API_get_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
   
   // Get field value
   SPVM_OBJECT* value_maybe_weaken = *(SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -7215,7 +7215,7 @@ void SPVM_API_set_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_i
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
 
   // Get field value
   *(int8_t*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
@@ -7227,7 +7227,7 @@ void SPVM_API_set_field_short(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
 
   // Get field value
   *(int16_t*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
@@ -7239,7 +7239,7 @@ void SPVM_API_set_field_int(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
 
   // Get field value
   *(int32_t*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
@@ -7251,7 +7251,7 @@ void SPVM_API_set_field_long(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_i
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
 
   // Get field value
   *(int64_t*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
@@ -7263,7 +7263,7 @@ void SPVM_API_set_field_float(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
 
   // Get field value
   *(float*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
@@ -7275,7 +7275,7 @@ void SPVM_API_set_field_double(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
 
   // Get field value
   *(double*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
@@ -7287,7 +7287,7 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   SPVM_COMPILER* compiler = env->compiler;
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_fields, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(compiler->runtime_info->fields, field_id);
   
   // Get field value
   void* get_field_object_address = (void**)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -7435,11 +7435,11 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, int32_t class_id, 
   SPVM_COMPILER* compiler = env->compiler;
   
   SPVM_RUNTIME_CLASS_VAR* class_var = NULL;
-  for (int32_t i = 0; i < compiler->runtime_class_vars->length; i++) {
-    SPVM_RUNTIME_CLASS_VARS_OF_CLASS* class_var_of_class = (SPVM_RUNTIME_CLASS_VARS_OF_CLASS*)&compiler->runtime_class_vars_of_class[i];
+  for (int32_t i = 0; i < compiler->runtime_info->class_vars->length; i++) {
+    SPVM_RUNTIME_CLASS_VARS_OF_CLASS* class_var_of_class = (SPVM_RUNTIME_CLASS_VARS_OF_CLASS*)&compiler->runtime_info->class_vars_of_class[i];
     if (class_id == class_var_of_class->class_id) {
       if (strcmp(class_var_name, class_var_of_class->name) == 0) {
-        class_var = SPVM_LIST_fetch(compiler->runtime_class_vars, class_var_of_class->class_var_id);
+        class_var = SPVM_LIST_fetch(compiler->runtime_info->class_vars, class_var_of_class->class_var_id);
         break;
       }
     }
@@ -7575,11 +7575,11 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env) {
   SPVM_COMPILER* compiler = env->compiler;
   
   // Call INIT blocks
-  int32_t classes_length = compiler->runtime_classes->length;
+  int32_t classes_length = compiler->runtime_info->classes->length;
   SPVM_VALUE stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
   for (int32_t class_id = 0; class_id < classes_length; class_id++) {
     
-    SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_id);
+    SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_info->classes, class_id);
     
     if (class->has_init_block) {
       SPVM_RUNTIME_METHOD* init_method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, "INIT");
@@ -7618,7 +7618,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
 const char* SPVM_API_get_constant_string(SPVM_ENV* env, int32_t string_id, int32_t* string_length) {
   SPVM_COMPILER* compiler = env->compiler;
   
-  SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->runtime_strings, string_id);
+  SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->runtime_info->strings, string_id);
   
   const char* constant_string_value = constant_string->value;
   *string_length = constant_string->length;
