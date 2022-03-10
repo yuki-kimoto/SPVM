@@ -30,7 +30,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->long_object_basic_type_id != &env_array[12]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->float_object_basic_type_id != &env_array[13]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->double_object_basic_type_id != &env_array[14]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->compiler != &env_array[15]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->runtime_info != &env_array[15]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->exception_object != &env_array[16]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->native_mortal_stack != &env_array[17]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->native_mortal_stack_top != &env_array[18]) { stack[0].ival = 0; return 0; }
