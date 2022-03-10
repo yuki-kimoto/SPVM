@@ -3957,7 +3957,7 @@ _init(...)
   compiler->basic_types = NULL;
   
   // Initialize env
-  SPVM_API_init_env(env);
+  env->init_env(env);
 
   env->call_init_blocks(env);
   
@@ -4065,7 +4065,7 @@ DESTROY(...)
     SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
     
     // Cleanup global variables
-    SPVM_API_cleanup_global_vars(env);
+    env->cleanup_global_vars(env);
     
     env->free_env_raw(env);
   }
