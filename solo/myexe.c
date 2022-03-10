@@ -48,7 +48,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   env->compiler = compiler;
   
   // Initialize env
-  SPVM_API_init_env(env);
+  env->init_env(env);
   
   // Call INIT blocks
   env->call_init_blocks(env);

@@ -548,7 +548,7 @@ EOS
   env->compiler = compiler;
   
   // Initialize env
-  SPVM_API_init_env(env);
+  env->init_env(env);
   
   env->call_init_blocks(env);
   
