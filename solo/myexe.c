@@ -45,6 +45,9 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Build runtime information
   SPVM_RUNTIME_INFO* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
 
+  // Free compiler
+  SPVM_API_compiler_free(compiler_env, compiler);
+  
   // Create env
   SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
   
@@ -85,9 +88,6 @@ int32_t main(int32_t argc, const char *argv[]) {
   stack[0].oval = cmd_start_file_obj;
   stack[1].oval = cmd_args_obj;
 
-  // Free compiler
-  SPVM_API_compiler_free(compiler_env, compiler);
-  
   // Run
   int32_t exception_flag = env->call_spvm_method(env, method_id, stack);
   
