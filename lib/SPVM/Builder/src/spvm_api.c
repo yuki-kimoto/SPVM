@@ -5698,12 +5698,41 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t inter
   // Object must be not null
   assert(object);
   
-  int32_t object_basic_type_id = object->basic_type_id;
-  int32_t object_type_dimension = object->type_dimension;
+  int32_t class_basic_type_id = object->basic_type_id;
+  int32_t class_type_dimension = object->type_dimension;
   
-  int32_t has_interface = SPVM_TYPE_has_interface(compiler, object_basic_type_id, object_type_dimension, 0, interface_basic_type_id, 0, 0);
+  int32_t has_interface;
   
-  return has_interface;
+  if (class_type_dimension > 0) {
+    return 0;
+  }
+
+  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, class_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_LIST_fetch(compiler->runtime_basic_types, interface_basic_type_id);
+  
+  if (class_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  if (interface_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(compiler->runtime_classes, class_basic_type->class_id);
+  SPVM_RUNTIME_CLASS* interface = SPVM_LIST_fetch(compiler->runtime_classes, interface_basic_type->class_id);
+  
+  if (class->id, interface->id) {
+    return 1;
+  }
+  
+  for (int32_t i = 0; i < class->interface_class_ids->length; i++) {
+    int32_t must_implement_class_id = (intptr_t)SPVM_LIST_fetch(class->interface_class_ids, i);
+    if (must_implement_class_id == interface->id) {
+      return 1;
+    }
+  }
+
+  return 0;
 }
 
 int32_t SPVM_API_enter_scope(SPVM_ENV* env) {
