@@ -87,38 +87,6 @@ sub new {
   return $self;
 }
 
-sub build {
-  my ($self, $class_name, $file, $line) = @_;
-  
-  # Add class informations
-  if (defined $class_name) {
-
-    my $start_classes_length = $self->get_classes_length;
-
-    # Compile SPVM source code and create runtime env
-    my $compile_success = $self->compile_spvm($class_name, $file, $line);
-    
-    unless ($compile_success) {
-      return 0;
-    }
-    
-    my $class_names = $self->get_class_names;
-    for (my $i = $start_classes_length; $i < @$class_names; $i++) {
-      my $added_class_name =  $class_names->[$i];
-      
-      next if $added_class_name =~ /::anon/;
-      
-      # Build Precompile classs - Compile C source codes and link them to SPVM precompile method
-      $self->build_and_bind_shared_lib($added_class_name, 'precompile');
-
-      # Build native classs - Compile C source codes and link them to SPVM native method
-      $self->build_and_bind_shared_lib($added_class_name, 'native');
-    }
-  }
-  
-  return 1;
-}
-
 sub print_error_messages {
   my ($self, $fh) = @_;
 
