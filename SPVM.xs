@@ -3918,6 +3918,11 @@ _init(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
+  // The environment for the compiler
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
@@ -3931,6 +3936,9 @@ _init(...)
     runtime_method->precompile_address = method->precompile_address;
     runtime_method->native_address = method->native_address;
   }
+
+  // Free compiler
+  compiler_env->compiler_free(compiler_env, compiler);
   
   // Create env
   SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
@@ -3941,22 +3949,6 @@ _init(...)
 
   // Set runtime information
   env->runtime_info = runtime_info;
-  
-  // Don't use compiler information
-  compiler->strings = NULL;
-  compiler->string_symtable = NULL;
-
-  compiler->types = NULL;
-  compiler->type_symtable = NULL;
-
-  compiler->methods = NULL;
-
-  compiler->fields = NULL;
-
-  compiler->class_vars = NULL;
-
-  compiler->basic_type_symtable = NULL;
-  compiler->basic_types = NULL;
   
   // Initialize env
   env->init_env(env);
@@ -4076,12 +4068,6 @@ DESTROY(...)
   SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
   SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
   SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
-  
-  // Free compiler
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  compiler_env->compiler_free(compiler_env, compiler);
   
   // Free the environment for the compiler
   compiler_env->free_env_raw(compiler_env);
