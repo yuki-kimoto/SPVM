@@ -38,10 +38,11 @@ int32_t main(int32_t argc, const char *argv[]) {
     exit(255);
   }
 
-  SPVM_COMPILER_build_runtime_info(compiler);
-
   compiler_env->free_env_raw(compiler_env);
   compiler_env = NULL;
+  
+  // Build runtime information
+  SPVM_RUNTIME* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
 
   // Create env
   SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
