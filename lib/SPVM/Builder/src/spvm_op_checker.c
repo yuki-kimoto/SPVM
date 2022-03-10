@@ -5233,6 +5233,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       SPVM_CLASS* found_implement_class = SPVM_HASH_fetch(class->interface_class_symtable, implement_class->name, strlen(implement_class->name));
       if (!found_implement_class) {
+        SPVM_LIST_push(class->interface_classes, implement_class);
         SPVM_HASH_insert(class->interface_class_symtable, implement_class->name, strlen(implement_class->name), implement_class);
       }
     }

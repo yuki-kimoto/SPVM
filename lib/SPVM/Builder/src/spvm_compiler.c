@@ -512,6 +512,12 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
       SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, i);
       SPVM_LIST_push(runtime_class->field_ids, (void*)(intptr_t)field->id);
     }
+
+    runtime_class->interface_class_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, class->interface_classes->length);
+    for (int32_t i = 0; i < class->interface_classes->length; i++) {
+      SPVM_CLASS* interface_class = SPVM_LIST_fetch(class->interface_classes, i);
+      SPVM_LIST_push(runtime_class->interface_class_ids, (void*)(intptr_t)interface_class->id);
+    }
     
     SPVM_LIST_push(compiler->runtime_classes, runtime_class);
     SPVM_HASH_insert(compiler->runtime_class_symtable, runtime_class->name, strlen(runtime_class->name), runtime_class);

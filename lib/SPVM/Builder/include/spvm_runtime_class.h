@@ -16,6 +16,7 @@ struct spvm_runtime_class {
   int32_t type_id;
   SPVM_LIST* method_ids;
   SPVM_LIST* field_ids;
+  SPVM_LIST* interface_class_ids;
 };
 
 #endif
