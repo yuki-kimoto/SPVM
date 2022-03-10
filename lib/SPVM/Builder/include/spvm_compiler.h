@@ -135,8 +135,6 @@ struct spvm_compiler {
   
   // module source symtable
   SPVM_HASH* module_source_symtable;
-
-  SPVM_RUNTIME_INFO* runtime_info;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();

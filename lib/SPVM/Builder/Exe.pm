@@ -509,7 +509,7 @@ EOS
     SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
     assert(method);
     method->precompile_address = SPVMPRECOMPILE__${class_cname}__$precompile_method_name;
-    SPVM_RUNTIME_METHOD* runtime_method = SPVM_LIST_fetch(compiler->runtime_info->methods, method->id);
+    SPVM_RUNTIME_METHOD* runtime_method = SPVM_LIST_fetch(runtime_info->methods, method->id);
     runtime_method->precompile_address = method->precompile_address;
   }
 EOS
@@ -534,7 +534,7 @@ EOS
     SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
     assert(method);
     method->native_address = SPVM__${class_cname}__$native_method_name;
-    SPVM_RUNTIME_METHOD* runtime_method = SPVM_LIST_fetch(compiler->runtime_info->methods, method->id);
+    SPVM_RUNTIME_METHOD* runtime_method = SPVM_LIST_fetch(runtime_info->methods, method->id);
     runtime_method->native_address = method->native_address;
   }
 EOS
