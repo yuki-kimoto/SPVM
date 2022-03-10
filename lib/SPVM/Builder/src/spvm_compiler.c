@@ -49,6 +49,7 @@
 #include "spvm_runtime_class_vars_of_class.h"
 #include "spvm_runtime_fields_of_class.h"
 #include "spvm_runtime_methods_of_class.h"
+#include "spvm_runtime_info.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_new_block_unmanaged(sizeof(SPVM_COMPILER));
@@ -407,6 +408,8 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   if (error_code) {
     return error_code;
   }
+  
+  compiler->runtime_info = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, sizeof(SPVM_RUNTIME_INFO));
   
   // Strings
   compiler->runtime_strings = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
