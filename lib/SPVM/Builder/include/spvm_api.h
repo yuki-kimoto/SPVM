@@ -287,7 +287,7 @@ int32_t SPVM_API_get_no_symbol_cache_flag(SPVM_ENV* env);
 void SPVM_API_fprint(SPVM_ENV* env, FILE* fh, SPVM_OBJECT* string);
 void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_OBJECT* string);
 
-SPVM_COMPILER* SPVM_API_new_compiler(SPVM_ENV* env);
+SPVM_COMPILER* SPVM_API_compiler_new(SPVM_ENV* env);
 
 void SPVM_API_compiler_set_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t start_line);
 int32_t SPVM_API_compiler_get_start_line(SPVM_ENV* env, SPVM_COMPILER* compiler);

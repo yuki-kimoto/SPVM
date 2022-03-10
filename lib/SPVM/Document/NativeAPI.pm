@@ -810,7 +810,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   183 init_env,
   184 call_init_blocks
   185 cleanup_global_vars
-  186 new_compiler
+  186 compiler_new
   187 compiler_free
   188 compiler_set_start_line
   189 compiler_get_start_line
@@ -2660,11 +2660,11 @@ Call C<INIT> blocks.
 
 Cleanup gloval variable, such as class variables and the exception variable.
 
-=head2 new_compiler
+=head2 compiler_new
   
-  void* (*new_compiler)(SPVM_ENV* env);
+  void* (*compiler_new)(SPVM_ENV* env);
 
-New a compiler.
+New a SVPM compiler.
 
 =head2 compiler_free
   

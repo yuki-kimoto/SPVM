@@ -283,7 +283,7 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
     SPVM_API_cleanup_global_vars,
-    SPVM_API_new_compiler,
+    SPVM_API_compiler_new,
     SPVM_API_compiler_free,
     SPVM_API_compiler_set_start_line,
     SPVM_API_compiler_get_start_line,
@@ -7865,7 +7865,7 @@ const char* SPVM_API_compiler_get_method_abs_name(SPVM_ENV* env, SPVM_COMPILER* 
   return method_abs_name;
 }
 
-SPVM_COMPILER* SPVM_API_new_compiler(SPVM_ENV* env) {
+SPVM_COMPILER* SPVM_API_compiler_new(SPVM_ENV* env) {
   (void*)env;
 
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();

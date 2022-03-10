@@ -454,7 +454,7 @@ EOS
   SPVM_ENV* compiler_env = SPVM_API_new_env_raw(NULL);
   
   // Create compiler
-  SPVM_COMPILER* compiler = compiler_env->new_compiler(compiler_env);
+  SPVM_COMPILER* compiler = compiler_env->compiler_new(compiler_env);
 
   compiler_env->compiler_set_start_file(compiler_env, compiler, class_name);
 

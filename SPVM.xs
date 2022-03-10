@@ -3525,7 +3525,7 @@ create_compiler(...)
   SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
   
   // Create compiler
-  void* compiler = compiler_env->new_compiler(compiler_env);
+  void* compiler = compiler_env->compiler_new(compiler_env);
 
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));

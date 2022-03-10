@@ -283,7 +283,7 @@ struct spvm_env {
   int32_t (*init_env)(SPVM_ENV* env);
   void (*call_init_blocks)(SPVM_ENV* env);
   void (*cleanup_global_vars)(SPVM_ENV* env);
-  void* (*new_compiler)(SPVM_ENV* env);
+  void* (*compiler_new)(SPVM_ENV* env);
   void (*compiler_free)(SPVM_ENV* env, void* compiler);
   void (*compiler_set_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
   int32_t (*compiler_get_start_line)(SPVM_ENV* env, void* compiler);

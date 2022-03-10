@@ -1,4 +1,8 @@
 Revision history for SPVM
+0.9508_02  2021-03-11
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Rename native API new_compiler to compiler_new becuae this is my mistake and compiler API shoud start compiler_.
+          This has a litte effect over 0.9506+.
 0.9508_01  2021-03-11
         [CHANGE]
         * Add Fn->is_numeric_array, Fn->is_mulnum_array doc.
