@@ -487,8 +487,6 @@ EOS
 
   SPVM_RUNTIME_INFO* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
 
-  compiler_env->free_env_raw(compiler_env);
-  compiler_env = NULL;
 EOS
     
     for my $class_name (@$class_names) {
@@ -544,8 +542,10 @@ EOS
     $boot_source .= <<'EOS';
     
   // Free compiler
-  SPVM_COMPILER_free(compiler);
-  
+  compiler_env->compiler_free(compiler_env, compiler);
+  compiler_env->free_env_raw(compiler_env);
+  compiler_env = NULL;
+
   // Create env
   SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
   
