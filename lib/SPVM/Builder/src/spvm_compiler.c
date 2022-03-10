@@ -411,6 +411,10 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   
   compiler->runtime_info = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, sizeof(SPVM_RUNTIME_INFO));
   
+  compiler->runtime_info->allocator = compiler->allocator;
+
+  compiler->runtime_info->opcode_array = compiler->opcode_array;
+  
   // Strings
   compiler->runtime_info->strings = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
   compiler->runtime_info->string_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler->allocator, 0);

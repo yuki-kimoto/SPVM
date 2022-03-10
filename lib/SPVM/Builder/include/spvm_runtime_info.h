@@ -4,6 +4,9 @@
 #include "spvm_typedecl.h"
 
 struct spvm_runtime_info {
+  // Operation codes
+  SPVM_OPCODE_ARRAY* opcode_array;
+
   // Strings - string literals and symbol names
   SPVM_LIST* strings;
   
@@ -45,6 +48,8 @@ struct spvm_runtime_info {
 
   // Runtime class variables of a class
   SPVM_RUNTIME_CLASS_VARS_OF_CLASS* class_vars_of_class;
+  
+  SPVM_ALLOCATOR* allocator;
 };
 
 #endif
