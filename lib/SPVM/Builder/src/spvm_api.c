@@ -1356,9 +1356,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   // Runtime
   SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;;
 
-  // Runtime
-  SPVM_COMPILER* compiler = env->compiler;;
-
   // Runtime method
   SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(runtime_info->methods, method_id);
   
@@ -1366,7 +1363,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   SPVM_RUNTIME_CLASS* class = SPVM_LIST_fetch(runtime_info->classes, method->class_id);
 
   // Operation codes
-  SPVM_OPCODE* opcodes = compiler->opcode_array->values;
+  SPVM_OPCODE* opcodes = runtime_info->opcodes;
 
   // Exception flag
   int32_t exception_flag = 0;

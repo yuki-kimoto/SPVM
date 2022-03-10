@@ -413,10 +413,8 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   
   compiler->runtime_info->allocator = compiler->allocator;
 
-  compiler->runtime_info->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
-  for (int32_t i = 0; i < compiler->opcode_array->length; i++) {
-    SPVM_OPCODE_ARRAY_push_opcode(compiler, compiler->runtime_info->opcode_array, (SPVM_OPCODE*)&compiler->opcode_array->values[i]);
-  }
+  compiler->runtime_info->opcodes = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
+  memcpy(compiler->runtime_info->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
   
   // Strings
   compiler->runtime_info->strings = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);

@@ -5,7 +5,7 @@
 
 struct spvm_runtime_info {
   // Operation codes
-  SPVM_OPCODE_ARRAY* opcode_array;
+  SPVM_OPCODE* opcodes;
 
   // Strings - string literals and symbol names
   SPVM_LIST* strings;
