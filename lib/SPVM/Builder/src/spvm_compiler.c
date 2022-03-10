@@ -593,7 +593,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
     SPVM_RUNTIME_METHOD* runtime_method = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_METHOD));
 
-    runtime_method->arg_mem_ids = method->arg_mem_ids;
+    runtime_method->arg_mem_ids = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, method->arg_mem_ids->length);
     runtime_method->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, method->name);
     runtime_method->signature = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, method->signature);
     runtime_method->opcodes_base = method->opcodes_base;
@@ -620,10 +620,11 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
       SPVM_TYPE* arg_type = SPVM_LIST_fetch(method->arg_types, i);
       SPVM_LIST_push(runtime_method->arg_type_ids, (void*)(intptr_t)arg_type->id);
     }
-    
-    // Temporary
-    method->arg_type_ids = runtime_method->arg_type_ids;
-    method->class_id = runtime_method->class_id;
+
+    for (int32_t i = 0; i < method->arg_mem_ids->length; i++) {
+      int32_t arg_mem_id = (intptr_t)SPVM_LIST_fetch(method->arg_mem_ids, i);
+      SPVM_LIST_push(runtime_method->arg_mem_ids, (void*)(intptr_t)arg_mem_id);
+    }
 
     SPVM_LIST_push(runtime_info->methods, runtime_method);
   }

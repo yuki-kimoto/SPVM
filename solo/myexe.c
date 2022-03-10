@@ -84,6 +84,9 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_VALUE stack[255];
   stack[0].oval = cmd_start_file_obj;
   stack[1].oval = cmd_args_obj;
+
+  // Free compiler
+  SPVM_API_compiler_free(compiler_env, compiler);
   
   // Run
   int32_t exception_flag = env->call_spvm_method(env, method_id, stack);
@@ -97,7 +100,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   else {
     status = stack[0].ival;
   }
-  
+
   // Leave scope
   env->leave_scope(env, scope_id);
   
@@ -106,9 +109,6 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   // Free env
   env->free_env_raw(env);
-
-  // Free compiler
-  SPVM_API_compiler_free(compiler_env, compiler);
   
   return status;
 }
