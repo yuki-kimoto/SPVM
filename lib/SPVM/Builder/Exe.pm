@@ -543,6 +543,9 @@ EOS
 
     $boot_source .= <<'EOS';
     
+  // Free compiler
+  SPVM_COMPILER_free(compiler);
+  
   // Create env
   SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
   
@@ -604,9 +607,6 @@ EOS
   // Free env
   SPVM_API_free_env_raw(env);
 
-  // Free compiler
-  SPVM_COMPILER_free(compiler);
-  
   return status;
 }
 EOS
