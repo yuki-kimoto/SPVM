@@ -548,6 +548,9 @@ EOS
   
   // Set the compiler
   env->compiler = compiler;
+
+  // Set runtime information
+  env->runtime_info = runtime_info;
   
   // Initialize env
   env->init_env(env);

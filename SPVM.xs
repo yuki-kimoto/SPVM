@@ -3942,6 +3942,9 @@ _init(...)
   // Set the compiler
   env->compiler = compiler;
   
+  // Set runtime information
+  env->runtime_info = runtime_info;
+  
   // Don't use compiler information
   compiler->strings = NULL;
   compiler->string_symtable = NULL;
