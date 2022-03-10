@@ -3604,10 +3604,6 @@ compile_spvm(...)
     sv_compile_success = sv_2mortal(newSViv(0));
   }
 
-  if (!compile_error_code) {
-    SPVM_RUNTIME_INFO* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
-  }
-  
   XPUSHs(sv_compile_success);
   
   XSRETURN(1);
@@ -3925,6 +3921,8 @@ _init(...)
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  SPVM_RUNTIME_INFO* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
   
   for (int32_t i = 0; i < compiler->methods->length; i++) {
     SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, i);
