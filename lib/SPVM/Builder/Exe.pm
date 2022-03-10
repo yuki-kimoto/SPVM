@@ -485,6 +485,8 @@ EOS
     exit(255);
   }
 
+  SPVM_RUNTIME_INFO* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
+
   compiler_env->free_env_raw(compiler_env);
   compiler_env = NULL;
 EOS
