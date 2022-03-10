@@ -3594,10 +3594,6 @@ compile_spvm(...)
   // Compile SPVM
   int32_t compile_error_code = compiler_env->compiler_compile_spvm(compiler_env, compiler, class_name_copy);
   
-  if (!compile_error_code) {
-    SPVM_COMPILER_build_runtime_info(compiler);
-  }
-  
   compiler_env->free_env_raw(compiler_env);
 
   SV* sv_compile_success;
@@ -3606,6 +3602,10 @@ compile_spvm(...)
   }
   else {
     sv_compile_success = sv_2mortal(newSViv(0));
+  }
+
+  if (!compile_error_code) {
+    SPVM_RUNTIME_INFO* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
   }
   
   XPUSHs(sv_compile_success);

@@ -6,6 +6,7 @@
 
 #include "spvm_native.h"
 #include "spvm_api.h"
+#include "spvm_compiler.h"
 
 int32_t main(int32_t argc, const char *argv[]) {
   
@@ -42,7 +43,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   compiler_env = NULL;
   
   // Build runtime information
-  SPVM_RUNTIME* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
+  SPVM_RUNTIME_INFO* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
 
   // Create env
   SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
