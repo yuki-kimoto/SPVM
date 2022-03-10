@@ -321,6 +321,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->cur_file = embedded_file_name;
               }
               
+              SPVM_STRING* cur_file_string = SPVM_STRING_new(compiler, compiler->cur_file, strlen(compiler->cur_file));
+              compiler->cur_file = cur_file_string->value;
+              
               // Set initial information for tokenization
               compiler->bufptr = compiler->cur_src;
               compiler->befbufptr = compiler->cur_src;

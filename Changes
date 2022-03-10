@@ -7,6 +7,8 @@ Revision history for SPVM
         * Native API get_elem_byte_size uses only runtime information
         * Native API has_callback uses only runtime information
         * Native API has_interface uses only runtime information
+        * Separate compiler allocator and runtime allocator.
+          The memory allocated at compile time is freed just before runtime.
         [NON BACKWORD COMPATIBLE CHANGES]
         * Rename Internal native API "compiler" field to "runtime_info"
           because in this release SPVM compiler and runtime is completly separated.
