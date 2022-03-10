@@ -408,6 +408,13 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     return error_code;
   }
   
+  SPVM_COMPILER_build_runtime_info(compiler);
+  
+  return error_code;
+}
+
+SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
+  
   compiler->runtime_info = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, sizeof(SPVM_RUNTIME_INFO));
   
   // Strings
@@ -638,7 +645,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     SPVM_LIST_push(compiler->runtime_info->fields, runtime_field);
   }
   
-  return error_code;
+  return compiler->runtime_info;
 }
 
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, ...) {
