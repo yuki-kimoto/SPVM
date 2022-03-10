@@ -639,7 +639,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   12 long_object_basic_type_id
   13 float_object_basic_type_id
   14 double_object_basic_type_id
-  15 compiler
+  15 runtime_info
   16 exception_object
   17 native_mortal_stack
   18 native_mortal_stack_top
@@ -935,11 +935,11 @@ ID of the base type of L<Float|SPVM::Float> type. This is used internally.
 
 ID of the base type of L<Double|SPVM::Double> type. This is used internally.
 
-=head2 compiler
+=head2 runtime_info
 
-  void* compiler;
+  void* runtime_info;
 
-A pointer to the SPVM compiler. This is used internally.
+A pointer to the runtime information. This is used internally.
 
 =head2 exception_object
 
