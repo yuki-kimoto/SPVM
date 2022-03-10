@@ -112,7 +112,7 @@ struct spvm_env {
   void* long_object_basic_type_id;
   void* float_object_basic_type_id;
   void* double_object_basic_type_id;
-  void* compiler;
+  void* runtime_info;
   void* exception_object;
   void* native_mortal_stack;
   void* native_mortal_stack_top;
@@ -314,6 +314,5 @@ struct spvm_env {
   void (*compiler_set_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
   int32_t (*is_object_array)(SPVM_ENV* env, void* object);
   const char* (*get_constant_string)(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
-  void* runtime_info;
 };
 #endif

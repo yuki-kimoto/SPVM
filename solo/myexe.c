@@ -48,9 +48,6 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Create env
   SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
   
-  // Set the compiler
-  env->compiler = compiler;
-
   // Set runtime information
   env->runtime_info = runtime_info;
   

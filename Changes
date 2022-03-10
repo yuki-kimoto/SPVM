@@ -7,6 +7,10 @@ Revision history for SPVM
         * Native API get_elem_byte_size uses only runtime information
         * Native API has_callback uses only runtime information
         * Native API has_interface uses only runtime information
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Rename Internal native API "compiler" field to "runtime_info"
+          because in this release SPVM compiler and runtime is completly separated.
+          I think the effect is litte because this is internal field.
 0.9508  2021-03-04
         [CHANGE]
         * Add "get_constant_string" native API.

@@ -112,7 +112,7 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_LONG_OBJECT,  // long_object_basic_type_id
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT, // float_object_basic_type_id
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT, // double_object_basic_type_id
-    NULL, // compiler,
+    NULL, // runtime_info
     NULL, // exception_object
     NULL, // native_mortal_stack
     NULL, // native_mortal_stack_top
@@ -314,7 +314,6 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_compiler_set_precompile_method_address,
     SPVM_API_is_object_array,
     SPVM_API_get_constant_string,
-    NULL, // runtime_info
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -7597,7 +7596,7 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
   SPVM_ENV* new_env = SPVM_API_new_env_raw(NULL);
   
   // Set the compiler
-  new_env->compiler = env->compiler;
+  new_env->runtime_info = env->runtime_info;
   
   // Initialize env
   new_env->init_env(new_env);

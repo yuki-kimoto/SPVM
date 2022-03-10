@@ -3939,9 +3939,6 @@ _init(...)
     croak("Can't create SPVM env");
   }
 
-  // Set the compiler
-  env->compiler = compiler;
-  
   // Set runtime information
   env->runtime_info = runtime_info;
   
