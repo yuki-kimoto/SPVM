@@ -7612,6 +7612,12 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   
   env->cleanup_global_vars(env);
   
+  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_ALLOCATOR* allocator = runtime_info->allocator;
+  SPVM_ALLOCATOR_free(allocator);
+  runtime_info->allocator = NULL;
+  allocator= NULL;
+  
   env->free_env_raw(env);
 }
 
