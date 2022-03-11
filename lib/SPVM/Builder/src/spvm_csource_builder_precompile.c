@@ -300,11 +300,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
           break;
         }
         case SPVM_TYPE_C_TYPE_CATEGORY_INT: {
-          SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, arg_mem_id);
-          SPVM_STRING_BUFFER_add(string_buffer, " = ");
-          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, stack_index);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
           stack_index++;
           break;
         }
@@ -481,6 +476,15 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_INT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t arg_mem_id = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t stack_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int_vars[arg_mem_id] = *(int32_t*)&stack[stack_index];\n"
+                                              "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_LONG: {
