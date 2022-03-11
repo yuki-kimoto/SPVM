@@ -474,6 +474,48 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
     
     switch (opcode_id) {
+      case SPVM_OPCODE_C_ID_GET_ARG_BYTE: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_SHORT: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_INT: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_LONG: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_FLOAT: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_DOUBLE: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_OBJECT: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_REF: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_BYTE: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_SHORT: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_INT: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_LONG: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_FLOAT: {
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_DOUBLE: {
+        break;
+      }
       case SPVM_OPCODE_C_ID_BOOL_INT: {
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_bool(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         break;

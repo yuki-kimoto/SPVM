@@ -1615,31 +1615,31 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
     int32_t opcode_id = opcode->id;
     
     switch (opcode_id) {
-      SPVM_OPCODE_C_ID_GET_ARG_BYTE: {
+      case SPVM_OPCODE_C_ID_GET_ARG_BYTE: {
         byte_vars[opcode->operand1] = *(int8_t*)&stack[opcode->operand2];
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_SHORT: {
+      case SPVM_OPCODE_C_ID_GET_ARG_SHORT: {
         short_vars[opcode->operand1] = *(int16_t*)&stack[opcode->operand2];
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_INT: {
+      case SPVM_OPCODE_C_ID_GET_ARG_INT: {
         int_vars[opcode->operand1] = *(int32_t*)&stack[opcode->operand2];
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_LONG: {
+      case SPVM_OPCODE_C_ID_GET_ARG_LONG: {
         long_vars[opcode->operand1] = *(int64_t*)&stack[opcode->operand2];
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_FLOAT: {
+      case SPVM_OPCODE_C_ID_GET_ARG_FLOAT: {
         float_vars[opcode->operand1] = *(float*)&stack[opcode->operand2];
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_DOUBLE: {
+      case SPVM_OPCODE_C_ID_GET_ARG_DOUBLE: {
         double_vars[opcode->operand1] = *(double*)&stack[opcode->operand2];
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_OBJECT: {
+      case SPVM_OPCODE_C_ID_GET_ARG_OBJECT: {
         object_vars[opcode->operand1] = *(void**)&stack[opcode->operand2];
 
         // If arg is object, increment reference count
@@ -1650,46 +1650,46 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_REF: {
+      case SPVM_OPCODE_C_ID_GET_ARG_REF: {
         ref_vars[opcode->operand1] = *(void**)&stack[opcode->operand2];
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_MULNUM_BYTE: {
+      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_BYTE: {
         int32_t type_width = opcode->operand3;
         for (int32_t field_index = 0; field_index < type_width; field_index++) {
           byte_vars[opcode->operand1 + field_index] = *(int8_t*)&stack[opcode->operand2 + field_index];
         }
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_MULNUM_SHORT: {
+      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_SHORT: {
         int32_t type_width = opcode->operand3;
         for (int32_t field_index = 0; field_index < type_width; field_index++) {
           short_vars[opcode->operand1 + field_index] = *(int16_t*)&stack[opcode->operand2 + field_index];
         }
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_MULNUM_INT: {
+      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_INT: {
         int32_t type_width = opcode->operand3;
         for (int32_t field_index = 0; field_index < type_width; field_index++) {
           int_vars[opcode->operand1 + field_index] = *(int32_t*)&stack[opcode->operand2 + field_index];
         }
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_MULNUM_LONG: {
+      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_LONG: {
         int32_t type_width = opcode->operand3;
         for (int32_t field_index = 0; field_index < type_width; field_index++) {
           long_vars[opcode->operand1 + field_index] = *(int64_t*)&stack[opcode->operand2 + field_index];
         }
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_MULNUM_FLOAT: {
+      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_FLOAT: {
         int32_t type_width = opcode->operand3;
         for (int32_t field_index = 0; field_index < type_width; field_index++) {
           float_vars[opcode->operand1 + field_index] = *(float*)&stack[opcode->operand2 + field_index];
         }
         break;
       }
-      SPVM_OPCODE_C_ID_GET_ARG_MULNUM_DOUBLE: {
+      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_DOUBLE: {
         int32_t type_width = opcode->operand3;
         for (int32_t field_index = 0; field_index < type_width; field_index++) {
           double_vars[opcode->operand1 + field_index] = *(double*)&stack[opcode->operand2 + field_index];
