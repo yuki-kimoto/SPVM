@@ -302,11 +302,9 @@ EOS
     }
     
     if ($category eq 'native') {
-      $self->set_native_method_address($class_name, $method_name, $cfunc_address);
       $self->native_address_info->{$class_name}{$method_name} = $cfunc_address;
     }
     elsif ($category eq 'precompile') {
-      $self->set_precompile_method_address($class_name, $method_name, $cfunc_address);
       $self->precompile_address_info->{$class_name}{$method_name} = $cfunc_address;
     }
   }

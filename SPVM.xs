@@ -3929,14 +3929,6 @@ build_runtime(...)
 
   SPVM_RUNTIME_INFO* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
 
-  for (int32_t i = 0; i < compiler->methods->length; i++) {
-    SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, i);
-    SPVM_RUNTIME_METHOD* runtime_method = SPVM_LIST_fetch(runtime_info->methods, i);
-    
-    runtime_method->precompile_address = method->precompile_address;
-    runtime_method->native_address = method->native_address;
-  }
-
   // Free compiler
   compiler_env->compiler_free(compiler_env, compiler);
 
@@ -3996,88 +3988,6 @@ call_init_blocks(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   env->call_init_blocks(env);
-}
-
-SV*
-set_native_method_address(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  SV* sv_class_name = ST(1);
-  SV* sv_method_name = ST(2);
-  SV* sv_native_address = ST(3);
-
-  // The environment for the compiler
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
-
-  // Compiler
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  // Class name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  // Method name
-  const char* method_name = SvPV_nolen(sv_method_name);
-  
-  // Method id
-  int32_t method_id = compiler_env->compiler_get_method_id_by_name(compiler_env, compiler, class_name, method_name);
-  
-  // Native address
-  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
-  
-  compiler_env->compiler_set_native_method_address(compiler_env, compiler, method_id, native_address);
-
-  assert(native_address == compiler_env->compiler_get_native_method_address(compiler_env, compiler, method_id));
-
-  XSRETURN(0);
-}
-
-SV*
-set_precompile_method_address(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  SV* sv_class_name = ST(1);
-  SV* sv_method_name = ST(2);
-  SV* sv_precompile_address = ST(3);
-
-  // The environment for the compiler
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
-
-  // Compiler
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  // Class name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  // Method name
-  const char* method_name = SvPV_nolen(sv_method_name);
-  
-  // Method id
-  int32_t method_id = compiler_env->compiler_get_method_id_by_name(compiler_env, compiler, class_name, method_name);
-  
-  // Native address
-  void* precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
-  
-  compiler_env->compiler_set_precompile_method_address(compiler_env, compiler, method_id, precompile_address);
-
-  assert(precompile_address == compiler_env->compiler_get_precompile_method_address(compiler_env, compiler, method_id));
-
-  XSRETURN(0);
 }
 
 SV*
