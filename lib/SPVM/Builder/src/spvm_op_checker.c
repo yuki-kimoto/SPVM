@@ -2623,10 +2623,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 method->call_method_arg_stack_max = call_method_args_count;
               }
 
-              // Call sub constant pool id
-              char method_id_string[sizeof(int32_t)];
-              memcpy(method_id_string, &op_cur->uv.call_method->method->id, sizeof(int32_t));
-
               if (call_method->method->flag & SPVM_METHOD_C_FLAG_DESTRUCTOR) {
                 SPVM_COMPILER_error(compiler, "Can't call DESTROY in yourself at %s line %d", op_cur->file, op_cur->line);
                 return;
@@ -2844,10 +2840,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_CLASS_VAR* class_var = class_var_access->class_var;
               SPVM_CLASS* class_var_access_class = class_var->class;
               
-              // Field accesss constant pool id
-              char class_var_id_string[sizeof(int32_t)];
-              memcpy(class_var_id_string, &op_cur->uv.class_var_access->class_var->id, sizeof(int32_t));
-
               int32_t is_private;
               // Public flag
               if (class_var->flag & SPVM_CLASS_VAR_C_FLAG_PUBLIC) {
@@ -3033,10 +3025,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               
-              // Field accesss constant pool id
-              char field_id_string[sizeof(int32_t)];
-              memcpy(field_id_string, &op_cur->uv.field_access->field->id, sizeof(int32_t));
-
               // If invocker is array access and array access object is mulnum_t, this op become array field access
               if (op_term_invocker->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
                 SPVM_OP* op_array_access = op_term_invocker;
