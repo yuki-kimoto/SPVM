@@ -259,21 +259,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     }
   }
   
-  // Create runtime information
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
-    SPVM_LIST* methods = class->methods;
-    {
-      for (int32_t method_index = 0; method_index < methods->length; method_index++) {
-        SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
-        for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
-          SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, args_index);
-          SPVM_LIST_push(method->arg_types, arg_my->type);
-        }
-      }
-    }
-  }
-
   // Cleanup ops
   for (int32_t i = 0; i < compiler->ops->length; i++) {
     SPVM_OP* op = SPVM_LIST_fetch(compiler->ops, i);
@@ -614,10 +599,11 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_method->args_alloc_length  = method->args_alloc_length;
     runtime_method->mortal_stack_length  = method->mortal_stack_length;
     runtime_method->return_type_id = method->return_type->id;
-    runtime_method->arg_type_ids = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, method->arg_types->length);
+    runtime_method->arg_type_ids = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, method->args->length);
 
-    for (int32_t i = 0; i < method->arg_types->length; i++) {
-      SPVM_TYPE* arg_type = SPVM_LIST_fetch(method->arg_types, i);
+    for (int32_t i = 0; i < method->args->length; i++) {
+      SPVM_MY* arg = SPVM_LIST_fetch(method->args, i);
+      SPVM_TYPE* arg_type = arg->type;
       SPVM_LIST_push(runtime_method->arg_type_ids, (void*)(intptr_t)arg_type->id);
     }
 
