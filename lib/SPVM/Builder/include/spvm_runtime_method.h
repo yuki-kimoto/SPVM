@@ -39,7 +39,6 @@
 struct spvm_runtime_method {
   void* precompile_address;
   void* native_address;
-  SPVM_LIST* arg_mem_ids;
   const char* name;
   const char* signature;
   int32_t opcodes_base;
