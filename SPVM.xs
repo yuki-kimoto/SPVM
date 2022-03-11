@@ -3991,7 +3991,7 @@ call_init_blocks(...)
 }
 
 SV*
-set_native_method_address_runtime(...)
+set_native_method_address(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -4029,7 +4029,7 @@ set_native_method_address_runtime(...)
 }
 
 SV*
-set_precompile_method_address_runtime(...)
+set_precompile_method_address(...)
   PPCODE:
 {
   (void)RETVAL;

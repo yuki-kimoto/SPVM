@@ -95,7 +95,7 @@ sub init {
         my $address_of_methods = $builder->native_address_info->{$class_name};
         for my $method_name (keys %$address_of_methods) {
           my $address = $address_of_methods->{$method_name};
-          $builder->set_native_method_address_runtime($class_name, $method_name, $address);
+          $builder->set_native_method_address($class_name, $method_name, $address);
         }
       }
 
@@ -104,7 +104,7 @@ sub init {
         my $address_of_methods = $builder->precompile_address_info->{$class_name};
         for my $method_name (keys %$address_of_methods) {
           my $address = $address_of_methods->{$method_name};
-          $builder->set_precompile_method_address_runtime($class_name, $method_name, $address);
+          $builder->set_precompile_method_address($class_name, $method_name, $address);
         }
       }
 
