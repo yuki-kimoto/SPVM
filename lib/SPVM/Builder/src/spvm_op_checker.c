@@ -5230,12 +5230,21 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
     // Check methods
+    int32_t method_id = compiler->methods->length;
     for (int32_t i = 0; i < class->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, i);
-      // Set sub precompile flag if class have precompile descriptor
+      // Set method precompile flag if class have precompile descriptor
       if (class->has_precompile_descriptor && method->can_precompile) {
         method->flag |= SPVM_METHOD_C_FLAG_PRECOMPILE;
       }
+
+      // Set method id
+      method->id = method_id;
+
+      // Add the method to the compiler
+      SPVM_LIST_push(compiler->methods, method);
+      
+      method_id++;
     }
   }
 }

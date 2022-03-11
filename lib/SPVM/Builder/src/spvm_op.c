@@ -2310,11 +2310,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             
             assert(method->op_method->file);
             
-            method->id = compiler->methods->length;
-            
-            // Add the method to the list of methods of the compiler
-            SPVM_LIST_push(compiler->methods, method);
-            
             // Method absolute name
             int32_t method_abs_name_length = strlen(class->name) + 2 + strlen(method->name);
             char* method_abs_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, method_abs_name_length + 1);
