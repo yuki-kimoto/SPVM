@@ -90,6 +90,24 @@ sub init {
       # Prepare runtime environment
       $builder->prepare_env;
 
+      # Set native method addresses
+      for my $class_name (keys %{$builder->native_address_info}) {
+        my $address_of_methods = $builder->native_address_info->{$class_name};
+        for my $method_name (keys %$address_of_methods) {
+          my $address = $address_of_methods->{$method_name};
+          $builder->set_native_method_address_runtime($class_name, $method_name, $address);
+        }
+      }
+
+      # Set precompile method addresses
+      for my $class_name (keys %{$builder->precompile_address_info}) {
+        my $address_of_methods = $builder->precompile_address_info->{$class_name};
+        for my $method_name (keys %$address_of_methods) {
+          my $address = $address_of_methods->{$method_name};
+          $builder->set_precompile_method_address_runtime($class_name, $method_name, $address);
+        }
+      }
+
       # Call INIT blocks
       $builder->call_init_blocks;
     }
