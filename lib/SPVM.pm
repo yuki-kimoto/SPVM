@@ -63,13 +63,14 @@ sub import {
       my $added_class_name =  $class_names->[$i];
       push @$added_class_names, $added_class_name;
     }
-
+    
+    my $address_info = {};
     for my $added_class_name (@$added_class_names) {
       next if $added_class_name =~ /::anon/;
       
       # Build Precompile classs - Compile C source codes and link them to SPVM precompile method
       $BUILDER->build_and_bind_shared_lib($added_class_name, 'precompile');
-
+      
       # Build native classs - Compile C source codes and link them to SPVM native method
       $BUILDER->build_and_bind_shared_lib($added_class_name, 'native');
     }
@@ -82,6 +83,7 @@ sub import {
 sub init {
   unless ($SPVM_INITED) {
     if (my $builder = $BUILDER) {
+      
       # Call init blocks
       $builder->_init;
     }

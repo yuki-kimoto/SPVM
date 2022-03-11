@@ -68,6 +68,28 @@ sub env {
   }
 }
 
+sub native_address_info {
+  my $self = shift;
+  if (@_) {
+    $self->{native_address_info} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{native_address_info};
+  }
+}
+
+sub precompile_address_info {
+  my $self = shift;
+  if (@_) {
+    $self->{precompile_address_info} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{precompile_address_info};
+  }
+}
+
 sub new {
   my $class = shift;
   
@@ -83,6 +105,10 @@ sub new {
   
   # Create the compiler
   $self->create_compiler;
+  
+  $self->native_address_info({});
+  
+  $self->precompile_address_info({});
   
   return $self;
 }
@@ -195,9 +221,9 @@ sub build_and_bind_shared_lib {
     unless (-f $shared_lib_file) {
       $shared_lib_file = $cc->build_shared_lib_runtime($class_name);
     }
+    
     $self->bind_methods($cc, $shared_lib_file, $class_name, $category);
   }
-  
 }
 
 sub bind_methods {
@@ -222,7 +248,7 @@ sub bind_methods {
       push @$method_infos, $method_info;
     }
   }
-
+  
   for my $method_info (@$method_infos) {
     my $class_name = $method_info->{class_name};
     my $method_name = $method_info->{method_name};
@@ -267,12 +293,13 @@ EOS
     
     if ($category eq 'native') {
       $self->set_native_method_address($class_name, $method_name, $cfunc_address);
+      $self->native_address_info->{$class_name}{$method_name} = $cfunc_address;
     }
     elsif ($category eq 'precompile') {
       $self->set_precompile_method_address($class_name, $method_name, $cfunc_address);
+      $self->precompile_address_info->{$class_name}{$method_name} = $cfunc_address;
     }
   }
-
 }
 
 1;
