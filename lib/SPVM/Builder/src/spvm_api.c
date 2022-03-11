@@ -7632,6 +7632,55 @@ const char* SPVM_API_get_constant_string(SPVM_ENV* env, int32_t string_id, int32
   return constant_string_value;
 }
 
+void SPVM_API_set_native_method_address(SPVM_ENV* env, int32_t method_id, void* address) {
+  (void)env;
+  
+  // Runtime
+  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+
+  SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(runtime_info->methods, method_id);
+  
+  method->native_address = address;
+}
+
+void SPVM_API_set_precompile_method_address(SPVM_ENV* env, int32_t method_id, void* address) {
+  (void)env;
+  
+  // Runtime
+  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+
+  SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(runtime_info->methods, method_id);
+  
+  method->precompile_address = address;
+}
+
+void* SPVM_API_get_native_method_address(SPVM_ENV* env, int32_t method_id) {
+  (void)env;
+  
+  // Runtime
+  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+
+  SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(runtime_info->methods, method_id);
+  
+  void* native_method_address = method->native_address;
+  
+  return native_method_address;
+}
+
+void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id) {
+  (void)env;
+  
+  // Runtime
+  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+
+  SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(runtime_info->methods, method_id);
+  
+  void* precompile_method_address = method->precompile_address;
+  
+  return precompile_method_address;
+}
+
+
 // flag
 // 0 : all
 // 1 : native method
