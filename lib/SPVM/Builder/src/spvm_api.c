@@ -315,6 +315,7 @@ SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
     SPVM_API_is_object_array,
     SPVM_API_get_method_id_without_signature,
     SPVM_API_get_constant_string_value,
+    SPVM_API_compiler_build_runtime_info,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -8000,6 +8001,14 @@ int32_t SPVM_API_compiler_compile_spvm(SPVM_ENV* env, SPVM_COMPILER* compiler, c
   int32_t error_code = SPVM_COMPILER_compile_spvm(compiler, class_name);
   
   return error_code;
+}
+
+SPVM_RUNTIME_INFO* SPVM_API_compiler_build_runtime_info(SPVM_ENV* env, SPVM_COMPILER* compiler) {
+  (void*)env;
+
+  SPVM_RUNTIME_INFO* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
+  
+  return runtime_info;
 }
 
 void SPVM_API_compiler_free(SPVM_ENV* env, SPVM_COMPILER* compiler) {

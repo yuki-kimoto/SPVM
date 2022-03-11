@@ -344,4 +344,6 @@ void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id);
 
 int32_t SPVM_API_get_method_id_without_signature(SPVM_ENV* env, const char* class_name, const char* method_name);
 
+SPVM_RUNTIME_INFO* SPVM_API_compiler_build_runtime_info(SPVM_ENV* env, SPVM_COMPILER* compiler);
+
 #endif

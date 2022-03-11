@@ -842,6 +842,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   215 is_object_array
   216 get_method_id_without_signature
   217 get_constant_string_value
+  218 compiler_build_runtime_info
 
 =head1 List of Native APIs
 
@@ -2867,6 +2868,12 @@ Get the method ID by the class name and method name. If the method does not exis
   const char* (*get_constant_string_value)(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
 
 Get the value and length of the string with the string ID. 
+
+=head2 compiler_build_runtime_info
+
+  void* (*compiler_build_runtime_info)(SPVM_ENV* env, void* compiler);
+
+Build runtime information.
 
 =head1 Utilities
 

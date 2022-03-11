@@ -232,6 +232,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->set_precompile_method_address != &env_array[214]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->is_object_array != &env_array[215]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_method_id_without_signature != &env_array[216]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_constant_string_value != &env_array[217]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->compiler_build_runtime_info != &env_array[218]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 
