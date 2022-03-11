@@ -27,4 +27,6 @@ int32_t SPVM_STRING_BUFFER_add_long(SPVM_STRING_BUFFER* string_buffer, int64_t v
 
 void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer);
 
+int32_t SPVM_STRING_BUFFER_add_len_nullstr(SPVM_STRING_BUFFER* string_buffer, char* string, int32_t string_length);
+
 #endif

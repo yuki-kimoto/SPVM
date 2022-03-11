@@ -7,6 +7,7 @@ struct spvm_string {
   const char* value;
   int32_t length;
   int32_t id;
+  int32_t string_buffer_id;
 };
 
 SPVM_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t length);

@@ -132,6 +132,23 @@ int32_t SPVM_STRING_BUFFER_add_len(SPVM_STRING_BUFFER* string_buffer, char* stri
   return id;
 }
 
+int32_t SPVM_STRING_BUFFER_add_len_nullstr(SPVM_STRING_BUFFER* string_buffer, char* string, int32_t string_length) {
+  
+  int32_t id = string_buffer->length;
+  
+  int32_t new_length = string_buffer->length + string_length + 1;
+  
+  // Extend
+  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_length);
+  
+  memcpy(string_buffer->buffer + string_buffer->length, string, string_length);
+  *(string_buffer->buffer + string_buffer->length + string_length) = '\0';
+  
+  string_buffer->length = new_length;
+  
+  return id;
+}
+
 int32_t SPVM_STRING_BUFFER_add_hex_char(SPVM_STRING_BUFFER* string_buffer, char ch) {
   
   int32_t id = string_buffer->length;
