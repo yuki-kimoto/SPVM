@@ -437,7 +437,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    for (int32_t field_index = 0; field_index < type_width; field_index++) {\n"
-                                              "      int_vars[arg_mem_id + field_index] = *(int8_t*)&stack[stack_index + field_index];\n"
+                                              "      int_vars[arg_mem_id + field_index] = *(int32_t*)&stack[stack_index + field_index];\n"
                                               "    }\n"
                                               "  }\n");
         break;
