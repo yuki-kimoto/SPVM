@@ -5,14 +5,14 @@
 #include <assert.h>
 
 #include "spvm_native.h"
-#include "spvm_api.h"
+#include "spvm_public_api.h"
 
 int32_t main(int32_t argc, const char *argv[]) {
   
   // Class name
   const char* class_name = "MyExe";
   
-  SPVM_ENV* compiler_env = SPVM_API_new_env_raw(NULL);
+  SPVM_ENV* compiler_env = SPVM_PUBLIC_API_new_env_raw(NULL);
   
   // Create compiler
   void* compiler = compiler_env->compiler_new(compiler_env);
@@ -39,14 +39,14 @@ int32_t main(int32_t argc, const char *argv[]) {
   }
 
   // Build runtime information
-  void* runtime_info = env->build_runtime_info(compiler);
+  void* runtime_info = compiler_env->compiler_build_runtime_info(compiler_env, compiler);
   
   compiler_env->compiler_free(compiler_env, compiler);
   compiler_env->free_env_raw(compiler_env);
   compiler_env = NULL;
 
   // Create env
-  SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
+  SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw(NULL);
   
   // Set runtime information
   env->runtime_info = runtime_info;

@@ -3,6 +3,7 @@ Revision history for SPVM
         [CHANGE]
         * Add get_method_id_without_signature native API.
         * Add get_constant_string_value native API.
+        * Add compiler_build_runtime_info native API.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Rename native API new_compiler to compiler_new
