@@ -5246,5 +5246,18 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       method_id++;
     }
+
+    int32_t field_id = compiler->fields->length;
+    for (int32_t i = 0; i < class->fields->length; i++) {
+      SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, i);
+
+      // Set field id
+      field->id = field_id;
+
+      // Add the field to the compiler
+      SPVM_LIST_push(compiler->fields, field);
+      
+      field_id++;
+    }
   }
 }

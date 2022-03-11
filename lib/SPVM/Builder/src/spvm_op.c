@@ -2162,8 +2162,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_COMPILER_error(compiler, "Redeclaration of field \"%s->{%s}\" at %s line %d", class_name, field_name, field->op_field->file, field->op_field->line);
       }
       else {
-        field->id = compiler->fields->length;
-        SPVM_LIST_push(compiler->fields, field);
         SPVM_HASH_insert(class->field_symtable, field_name, strlen(field_name), field);
         
         // Add op class
