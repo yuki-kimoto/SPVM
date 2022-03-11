@@ -4021,9 +4021,9 @@ set_native_method_address(...)
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
-  SPVM_API_set_native_method_address(env, method_id, native_address);
+  env->set_native_method_address(env, method_id, native_address);
 
-  assert(native_address == SPVM_API_get_native_method_address(env, method_id));
+  assert(native_address == env->get_native_method_address(env, method_id));
 
   XSRETURN(0);
 }
@@ -4059,9 +4059,9 @@ set_precompile_method_address(...)
   // Native address
   void* precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
   
-  SPVM_API_set_precompile_method_address(env, method_id, precompile_address);
+  env->set_precompile_method_address(env, method_id, precompile_address);
 
-  assert(precompile_address == SPVM_API_get_precompile_method_address(env, method_id));
+  assert(precompile_address == env->get_precompile_method_address(env, method_id));
 
   XSRETURN(0);
 }

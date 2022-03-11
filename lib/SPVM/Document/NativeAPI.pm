@@ -840,6 +840,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   213 compiler_set_native_method_address
   214 compiler_set_precompile_method_address
   215 is_object_array
+  216 get_method_id_without_signature
 
 =head1 List of Native APIs
 
@@ -2816,27 +2817,27 @@ If the method is a native method, return C<1>, otherwise return C<0>.
 
 If the method is a precompile method, return C<1>, otherwise return C<0>.
 
-=head2 compiler_get_native_method_address
+=head2 get_native_method_address
   
-  void* (*compiler_get_native_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id);
+  void* (*get_native_method_address)(SPVM_ENV* env, int32_t method_id);
 
 Get the native method address.
 
-=head2 compiler_get_precompile_method_address
+=head2 get_precompile_method_address
   
-  void* (*compiler_get_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id);
+  void* (*get_precompile_method_address)(SPVM_ENV* env, int32_t method_id);
 
 Get the precompile method address.
 
-=head2 compiler_set_native_method_address
+=head2 set_native_method_address
   
-  void (*compiler_set_native_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
+  void (*set_native_method_address)(SPVM_ENV* env, int32_t method_id, void* address);
 
 Set the native method address.
 
-=head2 compiler_set_precompile_method_address
+=head2 set_precompile_method_address
   
-  void (*compiler_set_precompile_method_address)(SPVM_ENV* env, void* compiler, int32_t method_id, void* address);
+  void (*set_precompile_method_address)(SPVM_ENV* env, int32_t method_id, void* address);
 
 Set the precompile method address.
 
@@ -2847,6 +2848,12 @@ Set the precompile method address.
 If the object is a object array, returns C<1>, otherwise returns C<0>.
 
 If the object is C<NULL>, returns C<0>.
+
+=head2 get_method_id_without_signature
+
+  int32_t (*get_method_id_without_signature)(SPVM_ENV* env, const char* class_name, const char* method_name);
+
+Get the method ID by the class name and method name. If the method does not exists, a negative value is returned.
 
 =head1 Utilities
 
