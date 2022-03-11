@@ -404,7 +404,6 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "GET_ARG_DOUBLE",
     "GET_ARG_OBJECT",
     "GET_ARG_REF",
-    "GET_ARG_UNDEF",
     "GET_ARG_MULNUM_BYTE",
     "GET_ARG_MULNUM_SHORT",
     "GET_ARG_MULNUM_INT",
