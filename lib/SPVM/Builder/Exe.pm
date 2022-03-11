@@ -380,29 +380,11 @@ sub create_bootstrap_source {
 #include <assert.h>
 
 #include "spvm_native.h"
+#include "spvm_public_api.h"
 
-#include "spvm_api.h"
-#include "spvm_op.h"
+// This will be removed in the near feature release
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
-#include "spvm_list.h"
-#include "spvm_class.h"
-#include "spvm_method.h"
-#include "spvm_basic_type.h"
-
-#include "spvm_runtime_basic_type.h"
-#include "spvm_runtime_class.h"
-#include "spvm_runtime_class_var.h"
-#include "spvm_runtime_field.h"
-#include "spvm_runtime_info.h"
-#include "spvm_runtime_manager.h"
-#include "spvm_runtime_method.h"
-#include "spvm_runtime_string.h"
-#include "spvm_runtime_type.h"
-#include "spvm_runtime_class_vars_of_class.h"
-#include "spvm_runtime_fields_of_class.h"
-#include "spvm_runtime_methods_of_class.h"
-
 EOS
     
     $boot_source .= "// module source get functions declaration\n";
@@ -451,7 +433,7 @@ EOS
 
     $boot_source .= <<'EOS';
 
-  SPVM_ENV* compiler_env = SPVM_API_new_env_raw(NULL);
+  SPVM_ENV* compiler_env = SPVM_PUBLIC_API_new_env_raw(NULL);
   
   // Create compiler
   SPVM_COMPILER* compiler = compiler_env->compiler_new(compiler_env);
@@ -485,7 +467,7 @@ EOS
     exit(255);
   }
 
-  SPVM_RUNTIME_INFO* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
+  void* runtime_info = compiler_env->compiler_build_runtime_info(compiler_env, compiler);
 
 EOS
     
@@ -497,7 +479,7 @@ EOS
   compiler_env = NULL;
 
   // Create env
-  SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
+  SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw(NULL);
   
   // Set runtime information
   env->runtime_info = runtime_info;
@@ -550,7 +532,7 @@ EOS
   env->call_init_blocks(env);
   
   // Class
-  int32_t method_id = SPVM_API_get_class_method_id(env, class_name, "main", "int(string,string[])");
+  int32_t method_id = env->get_class_method_id(env, class_name, "main", "int(string,string[])");
   
   if (method_id < 0) {
     fprintf(stderr, "Can't find the definition of valid %s->main method:.\n    static method main : int ($start_file : string, $args : string[]) { ... } \n", class_name);
@@ -582,7 +564,7 @@ EOS
   
   int32_t status;
   if (exception_flag) {
-    SPVM_API_print(env, env->exception_object);
+    env->print_stderr(env, env->exception_object);
     printf("\n");
     status = 255;
   }
@@ -594,10 +576,10 @@ EOS
   env->leave_scope(env, scope_id);
 
   // Cleanup global variables
-  SPVM_API_cleanup_global_vars(env);
+  env->cleanup_global_vars(env);
   
   // Free env
-  SPVM_API_free_env_raw(env);
+  env->free_env_raw(env);
 
   return status;
 }
