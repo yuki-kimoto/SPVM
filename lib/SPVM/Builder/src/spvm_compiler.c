@@ -62,7 +62,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   compiler->strings = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
   compiler->string_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler->allocator, 0);
-
+  compiler->string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 1024, SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL, NULL);
+ 
   // Eternal information
   compiler->module_dirs = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
   compiler->types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);

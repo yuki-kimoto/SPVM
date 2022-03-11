@@ -96,6 +96,9 @@ struct spvm_compiler {
   
   // String symtable
   SPVM_HASH* string_symtable;
+
+  // String Buffer
+  SPVM_STRING_BUFFER* string_buffer;
   
   // Used module symtable
   SPVM_HASH* used_class_symtable;
