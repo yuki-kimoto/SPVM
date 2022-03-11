@@ -4286,15 +4286,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
               }
               
-              method->byte_vars_alloc_length = byte_mem_stack->length;
-              method->short_vars_alloc_length = short_mem_stack->length;
-              method->int_vars_alloc_length = int_mem_stack->length;
-              method->long_vars_alloc_length = long_mem_stack->length;
-              method->float_vars_alloc_length = float_mem_stack->length;
-              method->double_vars_alloc_length = double_mem_stack->length;
+              method->call_stack_byte_vars_legnth = byte_mem_stack->length;
+              method->call_stack_short_vars_legnth = short_mem_stack->length;
+              method->call_stack_int_vars_legnth = int_mem_stack->length;
+              method->call_stack_long_vars_legnth = long_mem_stack->length;
+              method->call_stack_float_vars_legnth = float_mem_stack->length;
+              method->call_stack_double_vars_legnth = double_mem_stack->length;
 
-              method->object_vars_alloc_length = object_mem_stack->length;
-              method->ref_vars_alloc_length = ref_mem_stack->length;
+              method->call_stack_object_vars_legnth = object_mem_stack->length;
+              method->call_stack_ref_vars_legnth = ref_mem_stack->length;
 
               SPVM_LIST_free(tmp_my_stack);
               SPVM_LIST_free(no_tmp_my_stack);

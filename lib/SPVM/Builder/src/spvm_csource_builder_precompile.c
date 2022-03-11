@@ -192,50 +192,50 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
   int32_t call_spvm_method_arg_stack_top = 0;
 
   // object variable declarations
-  int32_t object_vars_alloc_length = method->object_vars_alloc_length;
-  if (object_vars_alloc_length > 0) {
+  int32_t call_stack_object_vars_legnth = method->call_stack_object_vars_legnth;
+  if (call_stack_object_vars_legnth > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  void* object_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, object_vars_alloc_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_object_vars_legnth);
     SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
   }
 
   // ref variable declarations
-  int32_t ref_vars_alloc_length = method->ref_vars_alloc_length;
-  if (ref_vars_alloc_length > 0) {
+  int32_t call_stack_ref_vars_legnth = method->call_stack_ref_vars_legnth;
+  if (call_stack_ref_vars_legnth > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  void* ref_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, ref_vars_alloc_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_ref_vars_legnth);
     SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
   }
 
   // double variable declarations
-  int32_t double_vars_alloc_length = method->double_vars_alloc_length;
-  if (double_vars_alloc_length > 0) {
+  int32_t call_stack_double_vars_legnth = method->call_stack_double_vars_legnth;
+  if (call_stack_double_vars_legnth > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  double double_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, double_vars_alloc_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_double_vars_legnth);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // float variable declarations
-  int32_t float_vars_alloc_length = method->float_vars_alloc_length;
-  if (float_vars_alloc_length > 0) {
+  int32_t call_stack_float_vars_legnth = method->call_stack_float_vars_legnth;
+  if (call_stack_float_vars_legnth > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  float float_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, float_vars_alloc_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_float_vars_legnth);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // long variable declarations
-  int32_t long_vars_alloc_length = method->long_vars_alloc_length;
-  if (long_vars_alloc_length > 0) {
+  int32_t call_stack_long_vars_legnth = method->call_stack_long_vars_legnth;
+  if (call_stack_long_vars_legnth > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int64_t long_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, long_vars_alloc_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_long_vars_legnth);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // int variable declarations
-  int32_t int_vars_alloc_length = method->int_vars_alloc_length;
-  if (int_vars_alloc_length > 0) {
+  int32_t call_stack_int_vars_legnth = method->call_stack_int_vars_legnth;
+  if (call_stack_int_vars_legnth > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t int_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, int_vars_alloc_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_int_vars_legnth);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
@@ -250,18 +250,18 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
   }
   
   // short variable declarations
-  int32_t short_vars_alloc_length = method->short_vars_alloc_length;
-  if (short_vars_alloc_length > 0) {
+  int32_t call_stack_short_vars_legnth = method->call_stack_short_vars_legnth;
+  if (call_stack_short_vars_legnth > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int16_t short_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, short_vars_alloc_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_short_vars_legnth);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // byte variable declarations
-  int32_t byte_vars_alloc_length = method->byte_vars_alloc_length;
-  if (byte_vars_alloc_length > 0) {
+  int32_t call_stack_byte_vars_legnth = method->call_stack_byte_vars_legnth;
+  if (call_stack_byte_vars_legnth > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int8_t byte_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, byte_vars_alloc_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_byte_vars_legnth);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
