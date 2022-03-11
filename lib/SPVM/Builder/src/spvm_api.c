@@ -7010,6 +7010,30 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
   return method_id;
 }
 
+int32_t SPVM_API_get_method_id_without_signature(SPVM_ENV* env, const char* class_name, const char* method_name) {
+  (void)env;
+  
+  // Method ID
+  int32_t method_id = -1;
+  
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, class_name);
+  if (basic_type) {
+    
+    // Class
+    SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
+    if (class) {
+      // Method
+      SPVM_RUNTIME_METHOD* method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_name);
+      if (method) {
+        method_id = method->id;
+      }
+    }
+  }
+  
+  return method_id;
+}
+
 int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature) {
   (void)env;
   

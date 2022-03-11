@@ -4065,6 +4065,82 @@ set_precompile_method_address(...)
 }
 
 SV*
+set_native_method_address_runtime(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_class_name = ST(1);
+  SV* sv_method_name = ST(2);
+  SV* sv_native_address = ST(3);
+
+  // The environment for the compiler
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+
+  // Class name
+  const char* class_name = SvPV_nolen(sv_class_name);
+
+  // Method name
+  const char* method_name = SvPV_nolen(sv_method_name);
+  
+  // Method id
+  int32_t method_id = SPVM_API_get_method_id_without_signature(env, class_name, method_name);
+  
+  // Native address
+  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
+  
+  SPVM_API_set_native_method_address(env, method_id, native_address);
+
+  assert(native_address == SPVM_API_get_native_method_address(env, compiler, method_id));
+
+  XSRETURN(0);
+}
+
+SV*
+set_precompile_method_address_runtime(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_class_name = ST(1);
+  SV* sv_method_name = ST(2);
+  SV* sv_precompile_address = ST(3);
+
+  // The environment for the compiler
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+
+  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+
+  // Class name
+  const char* class_name = SvPV_nolen(sv_class_name);
+
+  // Method name
+  const char* method_name = SvPV_nolen(sv_method_name);
+  
+  // Method id
+  int32_t method_id = SPVM_API_get_method_id_without_signature(env, class_name, method_name);
+  
+  // Native address
+  void* precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
+  
+  SPVM_API_set_precompile_method_address(env, method_id, precompile_address);
+
+  assert(precompile_address == SPVM_API_get_precompile_method_address(env, compiler, method_id));
+
+  XSRETURN(0);
+}
+
+SV*
 DESTROY(...)
   PPCODE:
 {
