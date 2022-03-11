@@ -2182,8 +2182,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_COMPILER_error(compiler, "Redeclaration of class variable \"$%s::%s\" at %s line %d", class_name, class_var_name + 1, class_var->op_class_var->file, class_var->op_class_var->line);
         }
         else {
-          class_var->id = compiler->class_vars->length;
-          SPVM_LIST_push(compiler->class_vars, class_var);
           SPVM_HASH_insert(class->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
           
           // Add op class

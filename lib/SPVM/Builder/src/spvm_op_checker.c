@@ -5259,5 +5259,19 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       field_id++;
     }
+
+    int32_t class_var_id = compiler->class_vars->length;
+    for (int32_t i = 0; i < class->class_vars->length; i++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(class->class_vars, i);
+
+      // Set class_var id
+      class_var->id = class_var_id;
+
+      // Add the class_var to the compiler
+      SPVM_LIST_push(compiler->class_vars, class_var);
+      
+      class_var_id++;
+    }
+
   }
 }
