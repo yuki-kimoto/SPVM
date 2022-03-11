@@ -489,6 +489,24 @@ EOS
 
 EOS
     
+    $boot_source .= <<'EOS';
+    
+  // Free compiler
+  compiler_env->compiler_free(compiler_env, compiler);
+  compiler_env->free_env_raw(compiler_env);
+  compiler_env = NULL;
+
+  // Create env
+  SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
+  
+  // Set runtime information
+  env->runtime_info = runtime_info;
+  
+  // Initialize env
+  env->init_env(env);
+  
+EOS
+
     for my $class_name (@$class_names) {
       my $class_cname = $class_name;
       $class_cname =~ s/::/__/g;
@@ -500,15 +518,9 @@ EOS
   { 
     const char* class_name = "$class_name";
     const char* method_name = "$precompile_method_name";
-    SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, class_name, strlen(class_name));
-    assert(basic_type);
-    SPVM_CLASS* class = basic_type->class;
-    assert(class);
-    SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
-    assert(method);
-    method->precompile_address = SPVMPRECOMPILE__${class_cname}__$precompile_method_name;
-    SPVM_RUNTIME_METHOD* runtime_method = SPVM_LIST_fetch(runtime_info->methods, method->id);
-    runtime_method->precompile_address = method->precompile_address;
+    int32_t method_id = env->get_method_id_without_signature(env, class_name, method_name);
+    void* precompile_address = SPVMPRECOMPILE__${class_cname}__$precompile_method_name;
+    env->set_precompile_method_address(env, method_id, precompile_address);
   }
 EOS
       }
@@ -525,35 +537,15 @@ EOS
   { 
     const char* class_name = "$class_name";
     const char* method_name = "$native_method_name";
-    SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, class_name, strlen(class_name));
-    assert(basic_type);
-    SPVM_CLASS* class = basic_type->class;
-    assert(class);
-    SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
-    assert(method);
-    method->native_address = SPVM__${class_cname}__$native_method_name;
-    SPVM_RUNTIME_METHOD* runtime_method = SPVM_LIST_fetch(runtime_info->methods, method->id);
-    runtime_method->native_address = method->native_address;
+    int32_t method_id = env->get_method_id_without_signature(env, class_name, method_name);
+    void* native_address = SPVM__${class_cname}__$native_method_name;
+    env->set_native_method_address(env, method_id, native_address);
   }
 EOS
       }
     }
 
     $boot_source .= <<'EOS';
-    
-  // Free compiler
-  compiler_env->compiler_free(compiler_env, compiler);
-  compiler_env->free_env_raw(compiler_env);
-  compiler_env = NULL;
-
-  // Create env
-  SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
-  
-  // Set runtime information
-  env->runtime_info = runtime_info;
-  
-  // Initialize env
-  env->init_env(env);
   
   env->call_init_blocks(env);
   
