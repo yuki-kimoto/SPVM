@@ -841,6 +841,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   214 compiler_set_precompile_method_address
   215 is_object_array
   216 get_method_id_without_signature
+  217 get_constant_string_value
 
 =head1 List of Native APIs
 
@@ -2854,6 +2855,18 @@ If the object is C<NULL>, returns C<0>.
   int32_t (*get_method_id_without_signature)(SPVM_ENV* env, const char* class_name, const char* method_name);
 
 Get the method ID by the class name and method name. If the method does not exists, a negative value is returned.
+
+=head2 get_method_id_without_signature
+
+  int32_t (*get_method_id_without_signature)(SPVM_ENV* env, const char* class_name, const char* method_name);
+
+Get the method ID by the class name and method name. If the method does not exists, a negative value is returned.
+
+=head2 get_constant_string_value
+
+  const char* (*get_constant_string_value)(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
+
+Get the value and length of the string with the string ID. 
 
 =head1 Utilities
 

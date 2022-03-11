@@ -314,6 +314,6 @@ struct spvm_env {
   void (*set_precompile_method_address)(SPVM_ENV* env, int32_t method_id, void* address);
   int32_t (*is_object_array)(SPVM_ENV* env, void* object);
   int32_t (*get_method_id_without_signature)(SPVM_ENV* env, const char* class_name, const char* method_name);
-  const char* (*get_constant_string)(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
+  const char* (*get_constant_string_value)(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
 };
 #endif
