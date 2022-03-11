@@ -1484,128 +1484,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   // int64_t need 21 gidit (-9223372036854775808 + (null character))
   char tmp_buffer[256];
   
-  // Copy arguments to variables
-  {
-    int32_t stack_index = 0;
-    for (int32_t args_index = 0; args_index < method->arg_type_ids->length; args_index++) {
-      int32_t arg_mem_id = (intptr_t)SPVM_LIST_fetch(method->arg_mem_ids, args_index);
-      int32_t arg_type_id = (intptr_t)SPVM_LIST_fetch(method->arg_type_ids, args_index);
-      SPVM_RUNTIME_TYPE* arg_type = SPVM_LIST_fetch(runtime_info->types, arg_type_id);
-      
-      int32_t type_width = arg_type->width;
-      switch (arg_type->category) {
-        case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
-          byte_vars[arg_mem_id] = *(int8_t*)&stack[stack_index];
-          stack_index++;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_SHORT: {
-          short_vars[arg_mem_id] = *(int16_t*)&stack[stack_index];
-          stack_index++;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_INT: {
-          int_vars[arg_mem_id] = *(int32_t*)&stack[stack_index];
-          stack_index++;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_LONG: {
-          long_vars[arg_mem_id] = *(int64_t*)&stack[stack_index];
-          stack_index++;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT: {
-          float_vars[arg_mem_id] = *(float*)&stack[stack_index];
-          stack_index++;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE: {
-          double_vars[arg_mem_id] = *(double*)&stack[stack_index];
-          stack_index++;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE: {
-          for (int32_t field_index = 0; field_index < type_width; field_index++) {
-            byte_vars[arg_mem_id + field_index] = *(int8_t*)&stack[stack_index + field_index];
-          }
-          stack_index += type_width;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT: {
-          for (int32_t field_index = 0; field_index < type_width; field_index++) {
-            short_vars[arg_mem_id + field_index] = *(int16_t*)&stack[stack_index + field_index];
-          }
-          stack_index += type_width;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT: {
-          for (int32_t field_index = 0; field_index < type_width; field_index++) {
-            int_vars[arg_mem_id + field_index] = *(int32_t*)&stack[stack_index + field_index];
-          }
-          stack_index += type_width;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_LONG: {
-          for (int32_t field_index = 0; field_index < type_width; field_index++) {
-            long_vars[arg_mem_id + field_index] = *(int64_t*)&stack[stack_index + field_index];
-          }
-          stack_index += type_width;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT: {
-          for (int32_t field_index = 0; field_index < type_width; field_index++) {
-            float_vars[arg_mem_id + field_index] = *(float*)&stack[stack_index + field_index];
-          }
-          stack_index += type_width;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE: {
-          for (int32_t field_index = 0; field_index < type_width; field_index++) {
-            double_vars[arg_mem_id + field_index] = *(double*)&stack[stack_index + field_index];
-          }
-          stack_index += type_width;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
-        case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
-        case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
-        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
-        case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-        case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
-        {
-          object_vars[arg_mem_id] = *(void**)&stack[stack_index];
-
-          // If arg is object, increment reference count
-          void* object = *(void**)&object_vars[arg_mem_id];
-          if (object != NULL) {
-            SPVM_API_INC_REF_COUNT_ONLY(object);
-          }
-          stack_index++;
-          break;
-        }
-        case SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE:
-        case SPVM_TYPE_C_TYPE_CATEGORY_REF_SHORT:
-        case SPVM_TYPE_C_TYPE_CATEGORY_REF_INT:
-        case SPVM_TYPE_C_TYPE_CATEGORY_REF_LONG:
-        case SPVM_TYPE_C_TYPE_CATEGORY_REF_FLOAT:
-        case SPVM_TYPE_C_TYPE_CATEGORY_REF_DOUBLE:
-        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE:
-        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_SHORT:
-        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_INT:
-        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_LONG:
-        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_FLOAT:
-        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE:
-        {
-          ref_vars[arg_mem_id] = *(void**)&stack[stack_index];
-          stack_index++;
-          break;
-        }
-        default:
-          assert(0);
-      }
-    }
-  }
-
   int32_t object_header_byte_size = (intptr_t)env->object_header_byte_size;
 
   // Execute operation codes
@@ -1641,13 +1519,10 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_GET_ARG_OBJECT: {
         object_vars[opcode->operand1] = *(void**)&stack[opcode->operand2];
-
-        // If arg is object, increment reference count
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object != NULL) {
           SPVM_API_INC_REF_COUNT_ONLY(object);
         }
-        
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_REF: {
