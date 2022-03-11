@@ -3947,6 +3947,7 @@ build_runtime(...)
   (void)hv_store(hv_self, "runtime_info", strlen("runtime_info"), SvREFCNT_inc(sv_runtime_info), 0);
 }
 
+
 SV*
 prepare_env(...)
   PPCODE:
@@ -3973,13 +3974,28 @@ prepare_env(...)
   // Initialize env
   env->init_env(env);
 
-  env->call_init_blocks(env);
-  
   // Set ENV
   size_t iv_env = PTR2IV(env);
   SV* sviv_env = sv_2mortal(newSViv(iv_env));
   SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
   (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+}
+
+SV*
+call_init_blocks(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // The environment for the compiler
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  env->call_init_blocks(env);
 }
 
 SV*

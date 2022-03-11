@@ -89,6 +89,9 @@ sub init {
       
       # Prepare runtime environment
       $builder->prepare_env;
+
+      # Call INIT blocks
+      $builder->call_init_blocks;
     }
     $SPVM_INITED = 1;
   }
