@@ -67,6 +67,16 @@ sub env {
     return $self->{env};
   }
 }
+sub runtime_info {
+  my $self = shift;
+  if (@_) {
+    $self->{runtime_info} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{runtime_info};
+  }
+}
 
 sub native_address_info {
   my $self = shift;

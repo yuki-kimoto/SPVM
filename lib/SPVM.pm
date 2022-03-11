@@ -84,8 +84,11 @@ sub init {
   unless ($SPVM_INITED) {
     if (my $builder = $BUILDER) {
       
-      # Call init blocks
-      $builder->_init;
+      # Build runtime information
+      $builder->build_runtime;
+      
+      # Prepare runtime environment
+      $builder->prepare_env;
     }
     $SPVM_INITED = 1;
   }

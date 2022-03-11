@@ -3910,7 +3910,7 @@ get_module_source(...)
 }
 
 SV*
-_init(...)
+build_runtime(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3928,7 +3928,7 @@ _init(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
 
   SPVM_RUNTIME_INFO* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
-  
+
   for (int32_t i = 0; i < compiler->methods->length; i++) {
     SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, i);
     SPVM_RUNTIME_METHOD* runtime_method = SPVM_LIST_fetch(runtime_info->methods, i);
@@ -3939,7 +3939,27 @@ _init(...)
 
   // Free compiler
   compiler_env->compiler_free(compiler_env, compiler);
+
+  // Set runtime information
+  size_t iv_runtime_info = PTR2IV(runtime_info);
+  SV* sviv_runtime_info = sv_2mortal(newSViv(iv_runtime_info));
+  SV* sv_runtime_info = sv_2mortal(newRV_inc(sviv_runtime_info));
+  (void)hv_store(hv_self, "runtime_info", strlen("runtime_info"), SvREFCNT_inc(sv_runtime_info), 0);
+}
+
+SV*
+prepare_env(...)
+  PPCODE:
+{
+  (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_runtime_info_ptr = hv_fetch(hv_self, "runtime_info", strlen("runtime_info"), 0);
+  SV* sv_runtime_info = sv_runtime_info_ptr ? *sv_runtime_info_ptr : &PL_sv_undef;
+  SPVM_RUNTIME_INFO* runtime_info = INT2PTR(SPVM_RUNTIME_INFO*, SvIV(SvRV(sv_runtime_info)));
+
   // Create env
   SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
   
