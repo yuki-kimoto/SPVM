@@ -164,11 +164,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             check_ast_info->loop_block_stack_length++;
           }
           else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
-            // Eval block max length
             check_ast_info->eval_block_stack_length++;
-            if (check_ast_info->eval_block_stack_length > method->eval_stack_max_length) {
-              method->eval_stack_max_length = check_ast_info->eval_block_stack_length;
-            }
           }
           
           break;
