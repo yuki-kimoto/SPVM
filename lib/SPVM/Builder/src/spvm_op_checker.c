@@ -3522,17 +3522,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
           
-          {
-            int32_t arg_index;
-            for (arg_index = 0 ; arg_index < method->args->length; arg_index++) {
-              SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, arg_index);
-              SPVM_TYPE* arg_type = arg_my->type;
-              if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
-                SPVM_LIST_push(method->object_arg_ids, (void*)(intptr_t)arg_index);
-              }
-            }
-          }
-          
           // Check method
           if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
             SPVM_CHECK_AST_INFO check_ast_info_struct = {0};

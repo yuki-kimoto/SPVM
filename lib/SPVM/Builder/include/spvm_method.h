@@ -21,23 +21,21 @@ enum {
 
 // Method information
 struct spvm_method {
-  void* precompile_address;
-  void* native_address;
   const char* name;
   const char* signature;
   SPVM_OP* op_method;
   SPVM_OP* op_name;
   SPVM_OP* op_block;
-  SPVM_OP* op_inline;
-  SPVM_LIST* object_arg_ids;
-  SPVM_LIST* mys;
-  SPVM_LIST* captures;
   SPVM_LIST* args;
   SPVM_TYPE* return_type;
+  SPVM_LIST* mys;
+  SPVM_LIST* captures;
   const char* abs_name;
   SPVM_CLASS* class;
   const char* accessor_original_name;
   const char* anon_method_defined_class_name;
+  void* precompile_address;
+  void* native_address;
   int32_t id;
   int32_t rel_id;
   int32_t tmp_vars_length;
@@ -52,7 +50,6 @@ struct spvm_method {
   int32_t call_stack_double_vars_legnth;
   int32_t call_stack_object_vars_legnth;
   int32_t call_stack_ref_vars_legnth;
-  int32_t mortal_stack_length;
   int8_t have_vaarg;
   int8_t is_class_var_setter;
   int8_t is_class_var_getter;
@@ -63,6 +60,8 @@ struct spvm_method {
   int8_t can_precompile;
   int8_t is_class_method;
   int8_t is_init;
+  int32_t mortal_stack_length;
+  SPVM_OP* op_inline;
 };
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);
