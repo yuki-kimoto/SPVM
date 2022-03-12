@@ -102,8 +102,8 @@ int32_t SPVM_OP_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack
 SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_METHOD* method, SPVM_TYPE* type, const char* file, int32_t line) {
 
   // Temparary variable name
-  char* name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, strlen("@tmp2147483647") + 1);
-  sprintf(name, "@tmp%d", method->tmp_vars_length);
+  char* name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, strlen("$.tmp_2147483647") + 1);
+  sprintf(name, "$.tmp_%d", method->tmp_vars_length);
   method->tmp_vars_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = name;
@@ -2310,7 +2310,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     
                     if (strcmp(my->var->name, bef_my->var->name) == 0) {
                       // Temporaly variable is not duplicated
-                      if (my->var->name[0] != '@') {
+                      if (strncmp(my->var->name, "$.", 2) != 0) {
                         found = 1;
                       }
                       break;
@@ -2319,7 +2319,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 if (found) {
-                  SPVM_COMPILER_error(compiler, "redeclaration of my \"%s\" at %s line %d", my->var->name, my->op_my->file, my->op_my->line);
+                  SPVM_COMPILER_error(compiler, "Redeclaration of variable \"%s\" at %s line %d", my->var->name, my->op_my->file, my->op_my->line);
                   return;
                 }
                 else {
@@ -4197,7 +4197,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               }
                               case SPVM_BASIC_TYPE_C_ID_INT: {
                                 mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_int_vars, my);
-                                if (strcmp(my->var->name, "@condition_flag") == 0) {
+                                if (strcmp(my->var->name, "$.condition_flag") == 0) {
                                   assert(mem_id == 0);
                                 }
                                 break;
