@@ -29,7 +29,6 @@ struct spvm_method {
   SPVM_OP* op_name;
   SPVM_OP* op_block;
   SPVM_OP* op_inline;
-  SPVM_OP* op_my_condition_flag;
   SPVM_LIST* object_arg_ids;
   SPVM_LIST* mys;
   SPVM_LIST* captures;
