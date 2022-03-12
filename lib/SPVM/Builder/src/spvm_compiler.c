@@ -368,7 +368,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         method->op_name = NULL;
         method->op_block = NULL;
         method->op_inline = NULL;
-        method->op_list_tmp_mys = NULL;
         method->op_my_condition_flag = NULL;
       }
     }
