@@ -71,6 +71,5 @@ struct spvm_method {
 };
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);
-int32_t SPVM_METHOD_get_var_alloc_length(SPVM_COMPILER* compiler, SPVM_METHOD* method);
 
 #endif

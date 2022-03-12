@@ -20,18 +20,3 @@ SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   
   return method;
 }
-
-int32_t SPVM_METHOD_get_var_alloc_length(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
-  // Calcurate variable alloc length
-  int32_t var_alloc_length = 0;
-  {
-    int32_t my_index;
-    for (my_index = 0; my_index < method->mys->length; my_index++) {
-      SPVM_MY* my = SPVM_LIST_fetch(method->mys, my_index);
-      SPVM_TYPE* type = SPVM_OP_get_type(compiler, my->op_my);
-      int32_t width = SPVM_TYPE_get_width(compiler, type->basic_type->id, type->dimension, type->flag);
-      var_alloc_length += width;
-    }
-  }
-  return var_alloc_length;
-}

@@ -314,9 +314,6 @@ void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
     printf("\n");
     printf("      is_enum => %d\n", (method->flag & SPVM_METHOD_C_FLAG_ENUM) ? 1 : 0);
     printf("      have_native_desc => %d\n", (method->flag & SPVM_METHOD_C_FLAG_NATIVE) ? 1 : 0);
-    printf("      var_alloc_length => %d\n", SPVM_METHOD_get_var_alloc_length(compiler, method));
-    printf("      arg_alloc_length => %d\n", SPVM_METHOD_get_var_alloc_length(compiler, method));
-    
     printf("      args\n");
     SPVM_LIST* args = method->args;
     {
@@ -358,9 +355,6 @@ void SPVM_DUMPER_dump_method_opcode_array(SPVM_COMPILER* compiler, SPVM_METHOD* 
   if (method) {
     
     printf("      name => \"%s\"\n", method->op_name->uv.name);
-    printf("      var_alloc_length => %d\n", SPVM_METHOD_get_var_alloc_length(compiler, method));
-    printf("      arg_alloc_length => %d\n", SPVM_METHOD_get_var_alloc_length(compiler, method));
-    
     if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
       printf("      mys\n");
       SPVM_LIST* mys = method->mys;
