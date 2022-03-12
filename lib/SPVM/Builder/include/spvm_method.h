@@ -42,7 +42,6 @@ struct spvm_method {
   const char* anon_method_defined_class_name;
   int32_t id;
   int32_t rel_id;
-  int32_t call_method_arg_stack_max;
   int32_t eval_stack_max_length;
   int32_t vars_alloc_length;
   int32_t tmp_vars_length;

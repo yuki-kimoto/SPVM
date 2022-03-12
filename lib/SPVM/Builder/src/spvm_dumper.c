@@ -337,8 +337,6 @@ void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
         }
       }
       
-      printf("      call_method_arg_stack_max => %" PRId32 "\n", method->call_method_arg_stack_max);
-      
       printf("      AST\n");
       SPVM_DUMPER_dump_ast(compiler, method->op_block);
       printf("\n");

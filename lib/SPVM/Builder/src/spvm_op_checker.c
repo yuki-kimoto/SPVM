@@ -2618,11 +2618,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
-              // Update operand stack max
-              if (call_method_args_count > method->call_method_arg_stack_max) {
-                method->call_method_arg_stack_max = call_method_args_count;
-              }
-
               if (call_method->method->flag & SPVM_METHOD_C_FLAG_DESTRUCTOR) {
                 SPVM_COMPILER_error(compiler, "Can't call DESTROY in yourself at %s line %d", op_cur->file, op_cur->line);
                 return;
