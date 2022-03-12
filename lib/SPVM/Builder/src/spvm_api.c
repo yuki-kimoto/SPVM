@@ -1373,7 +1373,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   int32_t method_opcodes_base = method->opcodes_base;
 
   // Call method argument stack top
-  int32_t call_spvm_method_arg_stack_top = 0;
+  int32_t stack_index = 0;
   
   // Mortal stack
   uint16_t* mortal_stack = NULL;
@@ -3992,96 +3992,96 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE: {
-        *(int8_t*)&stack[call_spvm_method_arg_stack_top] = byte_vars[opcode->operand0];
-        call_spvm_method_arg_stack_top++;
+        *(int8_t*)&stack[stack_index] = byte_vars[opcode->operand0];
+        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT: {
-        *(int16_t*)&stack[call_spvm_method_arg_stack_top] = short_vars[opcode->operand0];
-        call_spvm_method_arg_stack_top++;
+        *(int16_t*)&stack[stack_index] = short_vars[opcode->operand0];
+        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_INT: {
-        *(int32_t*)&stack[call_spvm_method_arg_stack_top] = int_vars[opcode->operand0];
-        call_spvm_method_arg_stack_top++;
+        *(int32_t*)&stack[stack_index] = int_vars[opcode->operand0];
+        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_LONG: {
-        *(int64_t*)&stack[call_spvm_method_arg_stack_top] = long_vars[opcode->operand0];
-        call_spvm_method_arg_stack_top++;
+        *(int64_t*)&stack[stack_index] = long_vars[opcode->operand0];
+        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT: {
-        *(float*)&stack[call_spvm_method_arg_stack_top] = float_vars[opcode->operand0];
-        call_spvm_method_arg_stack_top++;
+        *(float*)&stack[stack_index] = float_vars[opcode->operand0];
+        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE: {
-        *(double*)&stack[call_spvm_method_arg_stack_top] = double_vars[opcode->operand0];
-        call_spvm_method_arg_stack_top++;
+        *(double*)&stack[stack_index] = double_vars[opcode->operand0];
+        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT: {
-        *(void**)&stack[call_spvm_method_arg_stack_top] = *(void**)&object_vars[opcode->operand0];
-        call_spvm_method_arg_stack_top++;
+        *(void**)&stack[stack_index] = *(void**)&object_vars[opcode->operand0];
+        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_REF: {
-        *(void**)&stack[call_spvm_method_arg_stack_top] = *(void**)&ref_vars[opcode->operand0];
-        call_spvm_method_arg_stack_top++;
+        *(void**)&stack[stack_index] = *(void**)&ref_vars[opcode->operand0];
+        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
-        *(void**)&stack[call_spvm_method_arg_stack_top] = NULL;
-        call_spvm_method_arg_stack_top++;
+        *(void**)&stack[stack_index] = NULL;
+        stack_index++;
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_BYTE: {
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(int8_t*)&stack[call_spvm_method_arg_stack_top + field_index] = byte_vars[opcode->operand0 + field_index];
+          *(int8_t*)&stack[stack_index + field_index] = byte_vars[opcode->operand0 + field_index];
         }
-        call_spvm_method_arg_stack_top += fields_length;
+        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_SHORT: {
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(int16_t*)&stack[call_spvm_method_arg_stack_top + field_index] = short_vars[opcode->operand0 + field_index];
+          *(int16_t*)&stack[stack_index + field_index] = short_vars[opcode->operand0 + field_index];
         }
-        call_spvm_method_arg_stack_top += fields_length;
+        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_INT: {
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(int32_t*)&stack[call_spvm_method_arg_stack_top + field_index] = int_vars[opcode->operand0 + field_index];
+          *(int32_t*)&stack[stack_index + field_index] = int_vars[opcode->operand0 + field_index];
         }
-        call_spvm_method_arg_stack_top += fields_length;
+        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_LONG: {
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(int64_t*)&stack[call_spvm_method_arg_stack_top + field_index] = long_vars[opcode->operand0 + field_index];
+          *(int64_t*)&stack[stack_index + field_index] = long_vars[opcode->operand0 + field_index];
         }
-        call_spvm_method_arg_stack_top += fields_length;
+        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_FLOAT: {
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(float*)&stack[call_spvm_method_arg_stack_top + field_index] = float_vars[opcode->operand0 + field_index];
+          *(float*)&stack[stack_index + field_index] = float_vars[opcode->operand0 + field_index];
         }
-        call_spvm_method_arg_stack_top += fields_length;
+        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_DOUBLE: {
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(double*)&stack[call_spvm_method_arg_stack_top + field_index] = double_vars[opcode->operand0 + field_index];
+          *(double*)&stack[stack_index + field_index] = double_vars[opcode->operand0 + field_index];
         }
-        call_spvm_method_arg_stack_top += fields_length;
+        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE: {
@@ -4153,7 +4153,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       {
         int32_t call_method_id = opcode->operand1;
         SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_LIST_fetch(runtime_info->methods, call_method_id);
-        call_spvm_method_arg_stack_top -= call_spvm_method->args_alloc_length;
+        stack_index = 0;
         exception_flag = env->call_spvm_method(env, call_method_id, stack);
         
         SPVM_RUNTIME_TYPE* call_spvm_method_return_type = SPVM_LIST_fetch(runtime_info->types, call_spvm_method->return_type_id);
@@ -4277,7 +4277,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         const char* decl_method_signature = decl_method->signature;
         int32_t call_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
 
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
+        stack_index = 0;
         if (call_method_id < 0) {
           memset(tmp_buffer, sizeof(tmp_buffer), 0);
           SPVM_RUNTIME_CLASS* decl_method_class = SPVM_LIST_fetch(runtime_info->classes, decl_method->class_id);

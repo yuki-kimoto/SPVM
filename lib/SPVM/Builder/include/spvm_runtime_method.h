@@ -23,7 +23,6 @@ struct spvm_runtime_method {
   int32_t call_stack_double_vars_legnth;
   int32_t call_stack_object_vars_legnth;
   int32_t call_stack_ref_vars_legnth;
-  int32_t args_alloc_length;
   int32_t mortal_stack_length;
   int32_t return_type_id;
   int8_t is_class_method;

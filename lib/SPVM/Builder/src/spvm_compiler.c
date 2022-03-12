@@ -597,7 +597,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_method->call_stack_double_vars_legnth  = method->call_stack_double_vars_legnth;
     runtime_method->call_stack_object_vars_legnth = method->call_stack_object_vars_legnth;
     runtime_method->call_stack_ref_vars_legnth = method->call_stack_ref_vars_legnth;
-    runtime_method->args_alloc_length  = method->args_alloc_length;
     runtime_method->mortal_stack_length  = method->mortal_stack_length;
     runtime_method->return_type_id = method->return_type->id;
     runtime_method->arg_type_ids = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, method->args->length);

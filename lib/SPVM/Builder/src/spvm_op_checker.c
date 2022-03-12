@@ -3899,10 +3899,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
 
-          // Arg alloc length
-          int32_t args_alloc_length = SPVM_METHOD_get_arg_alloc_length(compiler, method);
-          method->args_alloc_length = args_alloc_length;
-
           // Fifth tree traversal
           // Resolve my mem ids
           if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {

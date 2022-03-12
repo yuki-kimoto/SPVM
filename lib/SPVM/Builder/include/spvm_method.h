@@ -57,7 +57,6 @@ struct spvm_method {
   int32_t call_stack_double_vars_legnth;
   int32_t call_stack_object_vars_legnth;
   int32_t call_stack_ref_vars_legnth;
-  int32_t args_alloc_length;
   int32_t mortal_stack_length;
   int8_t have_vaarg;
   int8_t is_class_var_setter;
@@ -73,6 +72,5 @@ struct spvm_method {
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);
 int32_t SPVM_METHOD_get_var_alloc_length(SPVM_COMPILER* compiler, SPVM_METHOD* method);
-int32_t SPVM_METHOD_get_arg_alloc_length(SPVM_COMPILER* compiler, SPVM_METHOD* method);
 
 #endif
