@@ -407,18 +407,16 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   memcpy((char*)runtime_info->string_buffer, compiler->string_buffer->buffer, compiler->string_buffer->length);
   
   // Strings
-  runtime_info->strings = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, 0);
+  runtime_info->strings = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_STRING) * compiler->strings->length);
   runtime_info->string_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(allocator, 0);
   for (int32_t string_id = 0; string_id < compiler->strings->length; string_id++) {
     SPVM_STRING* string = SPVM_LIST_fetch(compiler->strings, string_id);
-    SPVM_RUNTIME_STRING* runtime_string = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_STRING));
+    SPVM_RUNTIME_STRING* runtime_string = &runtime_info->strings[string_id];
     
     runtime_string->id = string->id;
     runtime_string->length = string->length;
     runtime_string->string_buffer_id = string->string_buffer_id;
     runtime_string->value = &runtime_info->string_buffer[runtime_string->string_buffer_id];
-    
-    SPVM_LIST_push(runtime_info->strings, runtime_string);
     
     SPVM_HASH_insert(runtime_info->string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
   }
