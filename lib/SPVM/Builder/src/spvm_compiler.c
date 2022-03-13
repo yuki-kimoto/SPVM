@@ -401,6 +401,10 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
 
   runtime_info->opcodes = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
   memcpy(runtime_info->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
+
+  // String buffers
+  runtime_info->string_buffer = (const char*)SPVM_ALLOCATOR_new_block_compile_eternal(allocator, compiler->string_buffer->length);
+  memcpy((char*)runtime_info->string_buffer, compiler->string_buffer->buffer, compiler->string_buffer->length);
   
   // Strings
   runtime_info->strings = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, 0);
@@ -411,6 +415,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     
     runtime_string->id = string->id;
     runtime_string->length = string->length;
+    runtime_string->string_buffer_id = string->string_buffer_id;
     runtime_string->value = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, string->length + 1);
     memcpy((char*)runtime_string->value, string->value, string->length);
     
