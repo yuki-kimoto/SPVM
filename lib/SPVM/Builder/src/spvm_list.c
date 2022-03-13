@@ -11,7 +11,7 @@ SPVM_LIST* SPVM_LIST_new(SPVM_ALLOCATOR* allocator, int32_t capacity, int32_t me
   assert(capacity >= 0);
   
   SPVM_LIST* list;
-  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
+  if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
     list = SPVM_ALLOCATOR_new_block_compile_tmp(allocator, sizeof(SPVM_LIST));
   }
   else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
@@ -34,7 +34,7 @@ SPVM_LIST* SPVM_LIST_new(SPVM_ALLOCATOR* allocator, int32_t capacity, int32_t me
   }
   
   void** values;
-  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
+  if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
     values = SPVM_ALLOCATOR_new_block_compile_tmp(allocator, list->capacity * sizeof(void*));
   }
   else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
@@ -71,7 +71,7 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
     int32_t new_capacity = capacity * 2;
     
     void** new_values;
-    if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
+    if (list->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
       new_values = SPVM_ALLOCATOR_new_block_compile_tmp(allocator, new_capacity * sizeof(void*));
     }
     else if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
@@ -84,7 +84,7 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
       assert(0);
     }
     memcpy(new_values, list->values, capacity * sizeof(void*));
-    if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
+    if (list->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
       SPVM_ALLOCATOR_free_block_compile_tmp(allocator, list->values);
     }
     else if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
@@ -107,7 +107,7 @@ void SPVM_LIST_free(SPVM_LIST* list) {
 
   SPVM_ALLOCATOR* allocator = list->allocator;
 
-  if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
+  if (list->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
     SPVM_ALLOCATOR_free_block_compile_tmp(allocator, list->values);
     SPVM_ALLOCATOR_free_block_compile_tmp(allocator, list);
   }
