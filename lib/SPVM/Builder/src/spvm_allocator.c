@@ -96,7 +96,7 @@ void SPVM_ALLOCATOR_free_block_compile_eternal(SPVM_ALLOCATOR* allocator, void* 
 SPVM_LIST* SPVM_ALLOCATOR_new_list_compile_eternal(SPVM_ALLOCATOR* allocator, int32_t capacity) {
   (void)allocator;
 
-  int32_t memory_block_type = SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL;
+  int32_t memory_block_type = SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT;
   SPVM_LIST* list = SPVM_LIST_new(allocator, capacity, memory_block_type, NULL);
   
   return list;
@@ -105,7 +105,7 @@ SPVM_LIST* SPVM_ALLOCATOR_new_list_compile_eternal(SPVM_ALLOCATOR* allocator, in
 SPVM_HASH* SPVM_ALLOCATOR_new_hash_compile_eternal(SPVM_ALLOCATOR* allocator, int32_t capacity) {
   (void)allocator;
 
-  int32_t memory_block_type = SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL;
+  int32_t memory_block_type = SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT;
   SPVM_HASH* hash = SPVM_HASH_new(allocator, capacity, memory_block_type, NULL);
   
   return hash;
