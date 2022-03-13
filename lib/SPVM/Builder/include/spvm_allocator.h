@@ -19,7 +19,7 @@ struct spvm_allocator {
   int32_t memory_blocks_count;
 
   // This is temporary memory blocks count allocated by the SPVM compiler.
-  int32_t memory_blocks_count_compile_tmp;
+  int32_t memory_blocks_count_tmp;
 
   // This is eternal memory blocks count allocated by the SPVM compiler.
   int32_t memory_blocks_count_permanent;
@@ -34,8 +34,8 @@ void SPVM_ALLOCATOR_init(SPVM_ALLOCATOR* allocator);
 void* SPVM_ALLOCATOR_new_block_unmanaged(size_t byte_size);
 void SPVM_ALLOCATOR_free_block_unmanaged(void* block);
 
-void* SPVM_ALLOCATOR_new_block_compile_tmp(SPVM_ALLOCATOR* allocator, size_t byte_size);
-void SPVM_ALLOCATOR_free_block_compile_tmp(SPVM_ALLOCATOR* allocator, void* block);
+void* SPVM_ALLOCATOR_new_block_tmp(SPVM_ALLOCATOR* allocator, size_t byte_size);
+void SPVM_ALLOCATOR_free_block_tmp(SPVM_ALLOCATOR* allocator, void* block);
 
 void* SPVM_ALLOCATOR_new_block_permanent(SPVM_ALLOCATOR* allocator, size_t byte_size);
 SPVM_LIST* SPVM_ALLOCATOR_new_list_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity);

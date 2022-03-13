@@ -8,7 +8,7 @@
 #include "spvm_type.h"
 
 SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler) {
-  SPVM_CONSTANT* constant = SPVM_ALLOCATOR_new_block_compile_tmp(compiler->allocator, sizeof(SPVM_CONSTANT));
+  SPVM_CONSTANT* constant = SPVM_ALLOCATOR_new_block_tmp(compiler->allocator, sizeof(SPVM_CONSTANT));
   
   return constant;
 }

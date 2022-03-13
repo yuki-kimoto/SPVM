@@ -4,7 +4,7 @@
 #include "spvm_compiler.h"
 
 SPVM_MY* SPVM_MY_new(SPVM_COMPILER* compiler) {
-  SPVM_MY* my = SPVM_ALLOCATOR_new_block_compile_tmp(compiler->allocator, sizeof(SPVM_MY));
+  SPVM_MY* my = SPVM_ALLOCATOR_new_block_tmp(compiler->allocator, sizeof(SPVM_MY));
 
   my->id = -1;
   my->mem_id = -1;

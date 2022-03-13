@@ -51,25 +51,25 @@ void SPVM_ALLOCATOR_free_block_unmanaged(void* block) {
   free(block);
 }
 
-void* SPVM_ALLOCATOR_new_block_compile_tmp(SPVM_ALLOCATOR* allocator, size_t byte_size) {
+void* SPVM_ALLOCATOR_new_block_tmp(SPVM_ALLOCATOR* allocator, size_t byte_size) {
   (void)allocator;
   
   void* block = SPVM_ALLOCATOR_new_block_unmanaged(byte_size);
 
   assert(allocator);
   allocator->memory_blocks_count++;
-  allocator->memory_blocks_count_compile_tmp++;
+  allocator->memory_blocks_count_tmp++;
 
   return block;
 }
 
-void SPVM_ALLOCATOR_free_block_compile_tmp(SPVM_ALLOCATOR* allocator, void* block) {
+void SPVM_ALLOCATOR_free_block_tmp(SPVM_ALLOCATOR* allocator, void* block) {
   (void)allocator;
 
   SPVM_ALLOCATOR_free_block_unmanaged(block);
   
   allocator->memory_blocks_count--;
-  allocator->memory_blocks_count_compile_tmp--;
+  allocator->memory_blocks_count_tmp--;
 }
 
 void* SPVM_ALLOCATOR_new_block_permanent(SPVM_ALLOCATOR* allocator, size_t byte_size) {
@@ -160,7 +160,7 @@ void SPVM_ALLOCATOR_free(SPVM_ALLOCATOR* allocator) {
   }
   SPVM_LIST_free(allocator->blocks);
   
-  assert(allocator->memory_blocks_count_compile_tmp == 0);
+  assert(allocator->memory_blocks_count_tmp == 0);
   assert(allocator->memory_blocks_count_permanent == 0);
 
   SPVM_ALLOCATOR_free_block_unmanaged(allocator);
