@@ -179,7 +179,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             // Create moudle relative file name from class name by changing :: to / and add ".spvm"
             int32_t cur_rel_file_length = (int32_t)(strlen(class_name) + 6);
-            char* cur_rel_file = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, cur_rel_file_length + 1);
+            char* cur_rel_file = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, cur_rel_file_length + 1);
             const char* bufptr_orig = class_name;
             char* bufptr_to = cur_rel_file;
             while (*bufptr_orig) {
@@ -217,7 +217,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 
                 // File name
                 int32_t file_name_length = (int32_t)(strlen(module_dir) + 1 + strlen(cur_rel_file));
-                cur_file = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, file_name_length + 1);
+                cur_file = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, file_name_length + 1);
                 sprintf(cur_file, "%s/%s", module_dir, cur_rel_file);
                 cur_file[file_name_length] = '\0';
                 
@@ -244,7 +244,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     const char* module_dir = (const char*) SPVM_LIST_fetch(compiler->module_dirs, i);
                     moduler_dirs_str_length += 1 + strlen(module_dir);
                   }
-                  char* moduler_dirs_str = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, moduler_dirs_str_length + 1);
+                  char* moduler_dirs_str = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, moduler_dirs_str_length + 1);
                   int32_t moduler_dirs_str_offset = 0;
                   for (int32_t i = 0; i < module_dirs_length; i++) {
                     const char* module_dir = (const char*) SPVM_LIST_fetch(compiler->module_dirs, i);
@@ -267,7 +267,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return 0;
                 }
                 fseek(fh, 0, SEEK_SET);
-                char* src = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, file_size + 1);
+                char* src = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, file_size + 1);
                 if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
                   SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d", cur_file, op_use->file, op_use->line);
                   SPVM_ALLOCATOR_free_block_compile_tmp(compiler->allocator, src);
@@ -316,7 +316,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->cur_file = cur_file;
               }
               else {
-                char* embedded_file_name = (char*)SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 11 + strlen(cur_rel_file) + 1);
+                char* embedded_file_name = (char*)SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, 11 + strlen(cur_rel_file) + 1);
                 sprintf(embedded_file_name, "embedded://%s", cur_rel_file);
                 compiler->cur_file = embedded_file_name;
               }

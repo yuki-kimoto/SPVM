@@ -1746,7 +1746,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     int32_t anon_method_class_name_length = 6 + strlen(anon_method_defined_rel_file_class_name) + 2 + int32_max_length + 2 + int32_max_length;
     
     // Anon class name
-    char* name_class_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, anon_method_class_name_length + 1);
+    char* name_class_tmp = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, anon_method_class_name_length + 1);
     sprintf(name_class_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_class_name, anon_method_defined_line, anon_method_defined_column);
 
     SPVM_STRING* name_class_string = SPVM_STRING_new(compiler, name_class_tmp, strlen(name_class_tmp));
@@ -1960,7 +1960,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           //   $FOO = $foo;
           // }
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          char* method_name_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 4 + strlen(class_var->name) - 1 + 1);
+          char* method_name_tmp = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, 4 + strlen(class_var->name) - 1 + 1);
           memcpy(method_name_tmp, "SET_", 4);
           memcpy(method_name_tmp + 4, class_var->name + 1, strlen(class_var->name) - 1);
 
@@ -2061,7 +2061,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           // }
 
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          char* method_name_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, 4 + strlen(field->name) + 1);
+          char* method_name_tmp = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, 4 + strlen(field->name) + 1);
           memcpy(method_name_tmp, "set_", 4);
           memcpy(method_name_tmp + 4, field->name, strlen(field->name));
           SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
@@ -2308,7 +2308,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             
             // Method absolute name
             int32_t method_abs_name_length = strlen(class->name) + 2 + strlen(method->name);
-            char* method_abs_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, method_abs_name_length + 1);
+            char* method_abs_name = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, method_abs_name_length + 1);
             memcpy(method_abs_name, class->name, strlen(class->name));
             memcpy(method_abs_name + strlen(class_name), "->", 2);
             memcpy(method_abs_name + strlen(class_name) + 2, method_name, strlen(method_name));

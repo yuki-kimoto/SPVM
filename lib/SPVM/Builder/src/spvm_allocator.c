@@ -72,28 +72,28 @@ void SPVM_ALLOCATOR_free_block_compile_tmp(SPVM_ALLOCATOR* allocator, void* bloc
   allocator->memory_blocks_count_compile_tmp--;
 }
 
-void* SPVM_ALLOCATOR_new_block_compile_eternal(SPVM_ALLOCATOR* allocator, size_t byte_size) {
+void* SPVM_ALLOCATOR_new_block_permanent(SPVM_ALLOCATOR* allocator, size_t byte_size) {
   (void)allocator;
   
   void* block = SPVM_ALLOCATOR_new_block_unmanaged(byte_size);
   allocator->memory_blocks_count++;
-  allocator->memory_blocks_count_compile_eternal++;
+  allocator->memory_blocks_count_permanent++;
   
   SPVM_LIST_push(allocator->blocks, block);
   
   return block;
 }
 
-void SPVM_ALLOCATOR_free_block_compile_eternal(SPVM_ALLOCATOR* allocator, void* block) {
+void SPVM_ALLOCATOR_free_block_permanent(SPVM_ALLOCATOR* allocator, void* block) {
   (void)allocator;
 
   SPVM_ALLOCATOR_free_block_unmanaged(block);
   
   allocator->memory_blocks_count--;
-  allocator->memory_blocks_count_compile_eternal--;
+  allocator->memory_blocks_count_permanent--;
 }
 
-SPVM_LIST* SPVM_ALLOCATOR_new_list_compile_eternal(SPVM_ALLOCATOR* allocator, int32_t capacity) {
+SPVM_LIST* SPVM_ALLOCATOR_new_list_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity) {
   (void)allocator;
 
   int32_t memory_block_type = SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT;
@@ -102,7 +102,7 @@ SPVM_LIST* SPVM_ALLOCATOR_new_list_compile_eternal(SPVM_ALLOCATOR* allocator, in
   return list;
 }
 
-SPVM_HASH* SPVM_ALLOCATOR_new_hash_compile_eternal(SPVM_ALLOCATOR* allocator, int32_t capacity) {
+SPVM_HASH* SPVM_ALLOCATOR_new_hash_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity) {
   (void)allocator;
 
   int32_t memory_block_type = SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT;
@@ -155,13 +155,13 @@ void SPVM_ALLOCATOR_free(SPVM_ALLOCATOR* allocator) {
   for (i = 0; i < allocator->blocks->length; i++) {
     void* block = SPVM_LIST_fetch(allocator->blocks, i);
     if (block != NULL) {
-      SPVM_ALLOCATOR_free_block_compile_eternal(allocator, block);
+      SPVM_ALLOCATOR_free_block_permanent(allocator, block);
     }
   }
   SPVM_LIST_free(allocator->blocks);
   
   assert(allocator->memory_blocks_count_compile_tmp == 0);
-  assert(allocator->memory_blocks_count_compile_eternal == 0);
+  assert(allocator->memory_blocks_count_permanent == 0);
 
   SPVM_ALLOCATOR_free_block_unmanaged(allocator);
 }

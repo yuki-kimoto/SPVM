@@ -60,24 +60,24 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->bufptr = "";
 
-  compiler->strings = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 128);
-  compiler->string_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler->allocator, 128);
+  compiler->strings = SPVM_ALLOCATOR_new_list_permanent(compiler->allocator, 128);
+  compiler->string_symtable = SPVM_ALLOCATOR_new_hash_permanent(compiler->allocator, 128);
   compiler->string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT, NULL);
  
   // Eternal information
-  compiler->module_dirs = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
-  compiler->types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
-  compiler->type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler->allocator, 0);
-  compiler->basic_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
-  compiler->basic_type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler->allocator, 0);
-  compiler->methods = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
-  compiler->fields = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
-  compiler->classes = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
-  compiler->class_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler->allocator, 0);
-  compiler->class_vars = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
+  compiler->module_dirs = SPVM_ALLOCATOR_new_list_permanent(compiler->allocator, 0);
+  compiler->types = SPVM_ALLOCATOR_new_list_permanent(compiler->allocator, 0);
+  compiler->type_symtable = SPVM_ALLOCATOR_new_hash_permanent(compiler->allocator, 0);
+  compiler->basic_types = SPVM_ALLOCATOR_new_list_permanent(compiler->allocator, 0);
+  compiler->basic_type_symtable = SPVM_ALLOCATOR_new_hash_permanent(compiler->allocator, 0);
+  compiler->methods = SPVM_ALLOCATOR_new_list_permanent(compiler->allocator, 0);
+  compiler->fields = SPVM_ALLOCATOR_new_list_permanent(compiler->allocator, 0);
+  compiler->classes = SPVM_ALLOCATOR_new_list_permanent(compiler->allocator, 0);
+  compiler->class_symtable = SPVM_ALLOCATOR_new_hash_permanent(compiler->allocator, 0);
+  compiler->class_vars = SPVM_ALLOCATOR_new_list_permanent(compiler->allocator, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
-  compiler->module_source_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler->allocator, 0);
-  compiler->switch_infos = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
+  compiler->module_source_symtable = SPVM_ALLOCATOR_new_hash_permanent(compiler->allocator, 0);
+  compiler->switch_infos = SPVM_ALLOCATOR_new_list_permanent(compiler->allocator, 0);
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
@@ -205,7 +205,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   compiler->parse_start = 1;
 
   // Initialize error messages
-  compiler->error_messages = SPVM_ALLOCATOR_new_list_compile_eternal(compiler->allocator, 0);
+  compiler->error_messages = SPVM_ALLOCATOR_new_list_permanent(compiler->allocator, 0);
   
   int32_t error_code = 0;
 
@@ -395,21 +395,21 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
   SPVM_ALLOCATOR_init(allocator);
 
-  SPVM_RUNTIME_INFO* runtime_info = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_INFO));
+  SPVM_RUNTIME_INFO* runtime_info = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_RUNTIME_INFO));
 
   runtime_info->allocator = allocator;
 
-  runtime_info->opcodes = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
+  runtime_info->opcodes = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
   memcpy(runtime_info->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
 
   // String buffers
   runtime_info->string_buffer_length = compiler->string_buffer->length;
-  runtime_info->string_buffer = (const char*)SPVM_ALLOCATOR_new_block_compile_eternal(allocator, compiler->string_buffer->length);
+  runtime_info->string_buffer = (const char*)SPVM_ALLOCATOR_new_block_permanent(allocator, compiler->string_buffer->length);
   memcpy((char*)runtime_info->string_buffer, compiler->string_buffer->buffer, compiler->string_buffer->length);
   
   // Strings
   runtime_info->strings_length = compiler->strings->length;
-  runtime_info->strings = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_STRING) * compiler->strings->length);
+  runtime_info->strings = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_RUNTIME_STRING) * compiler->strings->length);
   for (int32_t string_id = 0; string_id < compiler->strings->length; string_id++) {
     SPVM_STRING* string = SPVM_LIST_fetch(compiler->strings, string_id);
     SPVM_RUNTIME_STRING* runtime_string = &runtime_info->strings[string_id];
@@ -430,12 +430,12 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_class_vars_of_class_length += class->class_vars->length;
   }
   
-  runtime_info->methods_of_class = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_METHODS_OF_CLASS) * runtime_methods_of_class_length);
-  runtime_info->fields_of_class = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_FIELDS_OF_CLASS) * runtime_fields_of_class_length);
-  runtime_info->class_vars_of_class = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_CLASS_VARS_OF_CLASS) * runtime_class_vars_of_class_length);
+  runtime_info->methods_of_class = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_RUNTIME_METHODS_OF_CLASS) * runtime_methods_of_class_length);
+  runtime_info->fields_of_class = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_RUNTIME_FIELDS_OF_CLASS) * runtime_fields_of_class_length);
+  runtime_info->class_vars_of_class = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS_VARS_OF_CLASS) * runtime_class_vars_of_class_length);
   
   // Init strings
-  runtime_info->string_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(allocator, 0);
+  runtime_info->string_symtable = SPVM_ALLOCATOR_new_hash_permanent(allocator, 0);
   for (int32_t string_id = 0; string_id < runtime_info->strings_length; string_id++) {
     SPVM_RUNTIME_STRING* runtime_string = &runtime_info->strings[string_id];
     runtime_string->value = &runtime_info->string_buffer[runtime_string->string_buffer_id];
@@ -480,11 +480,11 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   }
 
   // Runtime classes - this is moved to the more after place and is optimized in the near future.
-  runtime_info->classes = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, 0);
-  runtime_info->class_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(allocator, 0);
+  runtime_info->classes = SPVM_ALLOCATOR_new_list_permanent(allocator, 0);
+  runtime_info->class_symtable = SPVM_ALLOCATOR_new_hash_permanent(allocator, 0);
   for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
-    SPVM_RUNTIME_CLASS* runtime_class = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_CLASS));
+    SPVM_RUNTIME_CLASS* runtime_class = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS));
     
     runtime_class->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, class->name);
     runtime_class->type_id = class->type->id;
@@ -505,19 +505,19 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
       runtime_class->method_destructor_id = -1;
     }
 
-    runtime_class->method_ids = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, class->methods->length);
+    runtime_class->method_ids = SPVM_ALLOCATOR_new_list_permanent(allocator, class->methods->length);
     for (int32_t i = 0; i < class->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, i);
       SPVM_LIST_push(runtime_class->method_ids, (void*)(intptr_t)method->id);
     }
 
-    runtime_class->field_ids = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, class->fields->length);
+    runtime_class->field_ids = SPVM_ALLOCATOR_new_list_permanent(allocator, class->fields->length);
     for (int32_t i = 0; i < class->fields->length; i++) {
       SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, i);
       SPVM_LIST_push(runtime_class->field_ids, (void*)(intptr_t)field->id);
     }
 
-    runtime_class->interface_class_ids = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, class->interface_classes->length);
+    runtime_class->interface_class_ids = SPVM_ALLOCATOR_new_list_permanent(allocator, class->interface_classes->length);
     for (int32_t i = 0; i < class->interface_classes->length; i++) {
       SPVM_CLASS* interface_class = SPVM_LIST_fetch(class->interface_classes, i);
       SPVM_LIST_push(runtime_class->interface_class_ids, (void*)(intptr_t)interface_class->id);
@@ -528,11 +528,11 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   }
   
   // Runtime basic types - this is moved to the more after place and is optimized in the near future.
-  runtime_info->basic_types = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, 0);
-  runtime_info->basic_type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(allocator, 0);
+  runtime_info->basic_types = SPVM_ALLOCATOR_new_list_permanent(allocator, 0);
+  runtime_info->basic_type_symtable = SPVM_ALLOCATOR_new_hash_permanent(allocator, 0);
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE));
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE));
     
     runtime_basic_type->id = basic_type->id;
     runtime_basic_type->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, basic_type->name);
@@ -548,11 +548,11 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   }
 
   // Runtime types - this is moved to the more after place and is optimized in the near future.
-  runtime_info->types = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, 0);
-  runtime_info->type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(allocator, 0);
+  runtime_info->types = SPVM_ALLOCATOR_new_list_permanent(allocator, 0);
+  runtime_info->type_symtable = SPVM_ALLOCATOR_new_hash_permanent(allocator, 0);
   for (int32_t type_id = 0; type_id < compiler->types->length; type_id++) {
     SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
-    SPVM_RUNTIME_TYPE* runtime_type = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_TYPE));
+    SPVM_RUNTIME_TYPE* runtime_type = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_RUNTIME_TYPE));
     
     runtime_type->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, type->basic_type->name);
     runtime_type->basic_type_id = type->basic_type->id;
@@ -566,10 +566,10 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   }
 
   // Runtime class_vars - this is moved to the more after place and is optimized in the near future.
-  runtime_info->class_vars = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, 0);
+  runtime_info->class_vars = SPVM_ALLOCATOR_new_list_permanent(allocator, 0);
   for (int32_t class_var_id = 0; class_var_id < compiler->class_vars->length; class_var_id++) {
     SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
-    SPVM_RUNTIME_CLASS_VAR* runtime_class_var = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_CLASS_VAR));
+    SPVM_RUNTIME_CLASS_VAR* runtime_class_var = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS_VAR));
 
     runtime_class_var->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, class_var->name);
     runtime_class_var->id = class_var->id;
@@ -581,10 +581,10 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   }
 
   // Runtime methods - this is moved to the more after place and is optimized in the near future.
-  runtime_info->methods = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, 0);
+  runtime_info->methods = SPVM_ALLOCATOR_new_list_permanent(allocator, 0);
   for (int32_t method_id = 0; method_id < compiler->methods->length; method_id++) {
     SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
-    SPVM_RUNTIME_METHOD* runtime_method = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_METHOD));
+    SPVM_RUNTIME_METHOD* runtime_method = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_RUNTIME_METHOD));
 
     runtime_method->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, method->name);
     runtime_method->signature = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, method->signature);
@@ -605,7 +605,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_method->call_stack_ref_vars_legnth = method->call_stack_ref_vars_legnth;
     runtime_method->mortal_stack_length  = method->mortal_stack_length;
     runtime_method->return_type_id = method->return_type->id;
-    runtime_method->arg_type_ids = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, method->args->length);
+    runtime_method->arg_type_ids = SPVM_ALLOCATOR_new_list_permanent(allocator, method->args->length);
 
     for (int32_t i = 0; i < method->args->length; i++) {
       SPVM_MY* arg = SPVM_LIST_fetch(method->args, i);
@@ -617,10 +617,10 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   }
 
   // Runtime fields - this is moved to the more after place and is optimized in the near future.
-  runtime_info->fields = SPVM_ALLOCATOR_new_list_compile_eternal(allocator, 0);
+  runtime_info->fields = SPVM_ALLOCATOR_new_list_permanent(allocator, 0);
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
     SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-    SPVM_RUNTIME_FIELD* runtime_field = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_FIELD));
+    SPVM_RUNTIME_FIELD* runtime_field = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_RUNTIME_FIELD));
 
     runtime_field->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, field->name);
     runtime_field->signature = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, field->signature);
@@ -682,7 +682,7 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
   }
   va_end(args);
   
-  char* message = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, message_length + 1);
+  char* message = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, message_length + 1);
   
   va_start(args, message_template);
   vsprintf(message, message_template, args);
@@ -737,7 +737,7 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
     length += 1;
   }
   
-  char* method_signature_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, length + 1);
+  char* method_signature_tmp = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, length + 1);
   
   // Calcurate method signature length
   char* bufptr = method_signature_tmp;
@@ -815,7 +815,7 @@ const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_F
     length += field->type->dimension * 2;
   }
   
-  char* field_signature_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, length + 1);
+  char* field_signature_tmp = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, length + 1);
   
   // Calcurate field signature length
   char* bufptr = field_signature_tmp;
@@ -851,7 +851,7 @@ const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SP
     length += class_var->type->dimension * 2;
   }
   
-  char* class_var_signature_tmp = SPVM_ALLOCATOR_new_block_compile_eternal(compiler->allocator, length + 1);
+  char* class_var_signature_tmp = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, length + 1);
   
   // Calcurate class_var signature length
   char* bufptr = class_var_signature_tmp;

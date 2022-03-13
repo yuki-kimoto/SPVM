@@ -22,7 +22,7 @@ struct spvm_allocator {
   int32_t memory_blocks_count_compile_tmp;
 
   // This is eternal memory blocks count allocated by the SPVM compiler.
-  int32_t memory_blocks_count_compile_eternal;
+  int32_t memory_blocks_count_permanent;
 
   // This is memory blocks count allocated by the SPVM runtime.
   int32_t memory_blocks_count_runtime;
@@ -37,9 +37,9 @@ void SPVM_ALLOCATOR_free_block_unmanaged(void* block);
 void* SPVM_ALLOCATOR_new_block_compile_tmp(SPVM_ALLOCATOR* allocator, size_t byte_size);
 void SPVM_ALLOCATOR_free_block_compile_tmp(SPVM_ALLOCATOR* allocator, void* block);
 
-void* SPVM_ALLOCATOR_new_block_compile_eternal(SPVM_ALLOCATOR* allocator, size_t byte_size);
-SPVM_LIST* SPVM_ALLOCATOR_new_list_compile_eternal(SPVM_ALLOCATOR* allocator, int32_t capacity);
-SPVM_HASH* SPVM_ALLOCATOR_new_hash_compile_eternal(SPVM_ALLOCATOR* allocator, int32_t capacity);
+void* SPVM_ALLOCATOR_new_block_permanent(SPVM_ALLOCATOR* allocator, size_t byte_size);
+SPVM_LIST* SPVM_ALLOCATOR_new_list_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity);
+SPVM_HASH* SPVM_ALLOCATOR_new_hash_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity);
 
 void* SPVM_ALLOCATOR_new_block_runtime(SPVM_ALLOCATOR* allocator, size_t byte_size, SPVM_ENV* env);
 void SPVM_ALLOCATOR_free_block_runtime(SPVM_ALLOCATOR* allocator, void* block, SPVM_ENV* env);

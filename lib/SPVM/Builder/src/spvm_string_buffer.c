@@ -20,7 +20,7 @@ SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(SPVM_ALLOCATOR* allocator, int32_t ca
     string_buffer = (SPVM_STRING_BUFFER*)SPVM_ALLOCATOR_new_block_compile_tmp(allocator, sizeof(SPVM_STRING_BUFFER));
   }
   else if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-    string_buffer = (SPVM_STRING_BUFFER*)SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_STRING_BUFFER));
+    string_buffer = (SPVM_STRING_BUFFER*)SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_STRING_BUFFER));
   }
   else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
     string_buffer = (SPVM_STRING_BUFFER*)SPVM_ALLOCATOR_new_block_runtime(allocator, sizeof(SPVM_STRING_BUFFER), env);
@@ -34,7 +34,7 @@ SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(SPVM_ALLOCATOR* allocator, int32_t ca
     string_buffer->buffer = (char*)SPVM_ALLOCATOR_new_block_compile_tmp(allocator, capacity);
   }
   else if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-    string_buffer->buffer = (char*)SPVM_ALLOCATOR_new_block_compile_eternal(allocator, capacity);
+    string_buffer->buffer = (char*)SPVM_ALLOCATOR_new_block_permanent(allocator, capacity);
   }
   else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
     string_buffer->buffer = (char*)SPVM_ALLOCATOR_new_block_runtime(allocator, capacity, env);
@@ -69,7 +69,7 @@ void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t 
       new_buffer = (char*)SPVM_ALLOCATOR_new_block_compile_tmp(allocator, new_capacity);
     }
     else if (string_buffer->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-      new_buffer = (char*)SPVM_ALLOCATOR_new_block_compile_eternal(allocator, new_capacity);
+      new_buffer = (char*)SPVM_ALLOCATOR_new_block_permanent(allocator, new_capacity);
     }
     else if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
       new_buffer = (char*)SPVM_ALLOCATOR_new_block_runtime(allocator, new_capacity, string_buffer->env);

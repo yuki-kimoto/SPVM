@@ -17,7 +17,7 @@ SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t table_capacity, int3
     hash = SPVM_ALLOCATOR_new_block_compile_tmp(allocator, sizeof(SPVM_HASH));
   }
   else if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-    hash = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_HASH));
+    hash = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_HASH));
   }
   else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
     hash = SPVM_ALLOCATOR_new_block_runtime(allocator, sizeof(SPVM_HASH), env);
@@ -39,7 +39,7 @@ SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t table_capacity, int3
     hash->table = SPVM_ALLOCATOR_new_block_compile_tmp(allocator, hash->table_capacity * sizeof(int32_t));
   }
   else if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-    hash->table = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, hash->table_capacity * sizeof(int32_t));
+    hash->table = SPVM_ALLOCATOR_new_block_permanent(allocator, hash->table_capacity * sizeof(int32_t));
   }
   else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
     hash->table = SPVM_ALLOCATOR_new_block_runtime(allocator, hash->table_capacity * sizeof(int32_t), env);
@@ -57,7 +57,7 @@ SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t table_capacity, int3
     hash->entries =  SPVM_ALLOCATOR_new_block_compile_tmp(allocator, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY));
   }
   else if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-    hash->entries =  SPVM_ALLOCATOR_new_block_compile_eternal(allocator, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY));
+    hash->entries =  SPVM_ALLOCATOR_new_block_permanent(allocator, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY));
   }
   else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
     hash->entries =  SPVM_ALLOCATOR_new_block_runtime(allocator, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY), env);
@@ -73,7 +73,7 @@ SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t table_capacity, int3
     hash->key_buffer = SPVM_ALLOCATOR_new_block_compile_tmp(allocator, hash->key_buffer_capacity);
   }
   else if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-    hash->key_buffer = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, hash->key_buffer_capacity);
+    hash->key_buffer = SPVM_ALLOCATOR_new_block_permanent(allocator, hash->key_buffer_capacity);
   }
   else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
     hash->key_buffer = SPVM_ALLOCATOR_new_block_runtime(allocator, hash->key_buffer_capacity, env);
@@ -204,7 +204,7 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
       new_entries = SPVM_ALLOCATOR_new_block_compile_tmp(allocator, new_entries_capacity * sizeof(SPVM_HASH_ENTRY));
     }
     else if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-      new_entries = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, new_entries_capacity * sizeof(SPVM_HASH_ENTRY));
+      new_entries = SPVM_ALLOCATOR_new_block_permanent(allocator, new_entries_capacity * sizeof(SPVM_HASH_ENTRY));
     }
     else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
       new_entries = SPVM_ALLOCATOR_new_block_runtime(allocator, new_entries_capacity * sizeof(SPVM_HASH_ENTRY), hash->env);
@@ -253,7 +253,7 @@ void SPVM_HASH_maybe_extend_key_buffer(SPVM_HASH* hash, int32_t length) {
       new_key_buffer = SPVM_ALLOCATOR_new_block_compile_tmp(allocator, new_key_buffer_capacity);
     }
     else if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-      new_key_buffer = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, new_key_buffer_capacity);
+      new_key_buffer = SPVM_ALLOCATOR_new_block_permanent(allocator, new_key_buffer_capacity);
     }
     else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
       new_key_buffer = SPVM_ALLOCATOR_new_block_runtime(allocator, new_key_buffer_capacity, hash->env);
