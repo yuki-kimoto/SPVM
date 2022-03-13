@@ -416,8 +416,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_string->id = string->id;
     runtime_string->length = string->length;
     runtime_string->string_buffer_id = string->string_buffer_id;
-    runtime_string->value = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, string->length + 1);
-    memcpy((char*)runtime_string->value, string->value, string->length);
+    runtime_string->value = &runtime_info->string_buffer[runtime_string->string_buffer_id];
     
     SPVM_LIST_push(runtime_info->strings, runtime_string);
     
