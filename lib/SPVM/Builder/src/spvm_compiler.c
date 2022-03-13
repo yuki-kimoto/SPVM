@@ -403,12 +403,13 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   memcpy(runtime_info->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
 
   // String buffers
+  runtime_info->string_buffer_length = compiler->string_buffer->length;
   runtime_info->string_buffer = (const char*)SPVM_ALLOCATOR_new_block_compile_eternal(allocator, compiler->string_buffer->length);
   memcpy((char*)runtime_info->string_buffer, compiler->string_buffer->buffer, compiler->string_buffer->length);
   
   // Strings
+  runtime_info->strings_length = compiler->strings->length;
   runtime_info->strings = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_STRING) * compiler->strings->length);
-  runtime_info->string_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(allocator, 0);
   for (int32_t string_id = 0; string_id < compiler->strings->length; string_id++) {
     SPVM_STRING* string = SPVM_LIST_fetch(compiler->strings, string_id);
     SPVM_RUNTIME_STRING* runtime_string = &runtime_info->strings[string_id];
@@ -416,9 +417,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_string->id = string->id;
     runtime_string->length = string->length;
     runtime_string->string_buffer_id = string->string_buffer_id;
-    runtime_string->value = &runtime_info->string_buffer[runtime_string->string_buffer_id];
-    
-    SPVM_HASH_insert(runtime_info->string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
   }
   
   // Runtime methods, fields, class variables of classes
@@ -435,6 +433,14 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   runtime_info->methods_of_class = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_METHODS_OF_CLASS) * runtime_methods_of_class_length);
   runtime_info->fields_of_class = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_FIELDS_OF_CLASS) * runtime_fields_of_class_length);
   runtime_info->class_vars_of_class = SPVM_ALLOCATOR_new_block_compile_eternal(allocator, sizeof(SPVM_RUNTIME_CLASS_VARS_OF_CLASS) * runtime_class_vars_of_class_length);
+  
+  // Init strings
+  runtime_info->string_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(allocator, 0);
+  for (int32_t string_id = 0; string_id < runtime_info->strings_length; string_id++) {
+    SPVM_RUNTIME_STRING* runtime_string = &runtime_info->strings[string_id];
+    runtime_string->value = &runtime_info->string_buffer[runtime_string->string_buffer_id];
+    SPVM_HASH_insert(runtime_info->string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
+  }
 
   int32_t runtime_methods_of_class_id = 0;
   int32_t runtime_fields_of_class_id = 0;

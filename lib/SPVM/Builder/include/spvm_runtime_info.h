@@ -10,8 +10,14 @@ struct spvm_runtime_info {
   // String buffer
   const char* string_buffer;
 
+  // String buffer length
+  int32_t string_buffer_length;
+
   // Strings - string literals and symbol names
   SPVM_RUNTIME_STRING* strings;
+
+  // Strings - string literals and symbol names
+  int32_t strings_length;
   
   // String symtable
   SPVM_HASH* string_symtable;
