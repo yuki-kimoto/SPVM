@@ -17,7 +17,12 @@ Revision history for SPVM
           Change Native API compiler_set_native_method_address to set_native_method_address
           Change Native API compiler_get_precompile_method_address to get_precompile_method_address
           Change Native API compiler_set_precompile_method_address to set_precompile_method_address
-          
+       * Internally used "memory_blocks_count" native API is no more used. The count of memory blocks is managed in "runtime_info".
+         Because this is internal used, the effect is little.
+
+Unused from v0.9508+. The count of memory blocks is managed in L<"runtime_info">.
+
+
 0.9508_01  2021-03-11
         [CHANGE]
         * Add Fn->is_numeric_array, Fn->is_mulnum_array doc.
