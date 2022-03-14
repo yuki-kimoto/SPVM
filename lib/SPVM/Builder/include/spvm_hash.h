@@ -2,7 +2,6 @@
 #define SPVM_HASH_H
 
 #include "spvm_typedecl.h"
-#include "spvm_native.h"
 
 // Hash table
 struct spvm_hash {
@@ -26,6 +25,7 @@ struct spvm_hash_entry {
 };
 
 SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t capacity, int32_t memory_block_type);
+SPVM_HASH* SPVM_HASH_new_hash_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity);
 
 void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* value);
 void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length);

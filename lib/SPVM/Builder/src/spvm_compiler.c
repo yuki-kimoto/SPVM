@@ -60,22 +60,22 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->bufptr = "";
 
   compiler->strings = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
-  compiler->string_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(compiler->allocator, 128);
+  compiler->string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
   compiler->string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
  
   // Eternal information
   compiler->module_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  compiler->type_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(compiler->allocator, 0);
+  compiler->type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  compiler->basic_type_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(compiler->allocator, 0);
+  compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->classes = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  compiler->class_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(compiler->allocator, 0);
+  compiler->class_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
-  compiler->module_source_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(compiler->allocator, 0);
+  compiler->module_source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->switch_infos = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
 
   // Add basic types
@@ -432,7 +432,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   runtime_info->class_vars_of_class = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS_VARS_OF_CLASS) * runtime_class_vars_of_class_length);
   
   // Init strings
-  runtime_info->string_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(allocator, 0);
+  runtime_info->string_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t string_id = 0; string_id < runtime_info->strings_length; string_id++) {
     SPVM_RUNTIME_STRING* runtime_string = &runtime_info->strings[string_id];
     runtime_string->value = &runtime_info->string_buffer[runtime_string->string_buffer_id];
@@ -478,7 +478,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
 
   // Runtime classes - this is moved to the more after place and is optimized in the near future.
   runtime_info->classes = SPVM_LIST_new_list_permanent(allocator, 0);
-  runtime_info->class_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(allocator, 0);
+  runtime_info->class_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
     SPVM_RUNTIME_CLASS* runtime_class = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS));
@@ -526,7 +526,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   
   // Runtime basic types - this is moved to the more after place and is optimized in the near future.
   runtime_info->basic_types = SPVM_LIST_new_list_permanent(allocator, 0);
-  runtime_info->basic_type_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(allocator, 0);
+  runtime_info->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE));
@@ -546,7 +546,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
 
   // Runtime types - this is moved to the more after place and is optimized in the near future.
   runtime_info->types = SPVM_LIST_new_list_permanent(allocator, 0);
-  runtime_info->type_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(allocator, 0);
+  runtime_info->type_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t type_id = 0; type_id < compiler->types->length; type_id++) {
     SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
     SPVM_RUNTIME_TYPE* runtime_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_TYPE));

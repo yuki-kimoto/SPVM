@@ -4,7 +4,6 @@
 
 #include "spvm_list.h"
 #include "spvm_allocator.h"
-#include "spvm_native.h"
 
 SPVM_LIST* SPVM_LIST_new(SPVM_ALLOCATOR* allocator, int32_t capacity, int32_t memory_block_type) {
   

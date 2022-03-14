@@ -4,8 +4,6 @@
 
 #include "spvm_hash.h"
 #include "spvm_allocator.h"
-#include "spvm_allocator.h"
-#include "spvm_native.h"
 
 SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t table_capacity, int32_t memory_block_type) {
   
@@ -75,6 +73,15 @@ SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t table_capacity, int3
   hash->allocator = allocator;
   
   hash->memory_block_type = memory_block_type;
+  
+  return hash;
+}
+
+SPVM_HASH* SPVM_HASH_new_hash_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity) {
+  (void)allocator;
+
+  int32_t memory_block_type = SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT;
+  SPVM_HASH* hash = SPVM_HASH_new(allocator, capacity, memory_block_type);
   
   return hash;
 }

@@ -1,9 +1,9 @@
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 
 #include "spvm_allocator.h"
-#include "spvm_list.h"
-#include "spvm_hash.h"
 
 SPVM_ALLOCATOR* SPVM_ALLOCATOR_new() {
   
@@ -103,15 +103,6 @@ void SPVM_ALLOCATOR_free_memory_block_permanent(SPVM_ALLOCATOR* allocator, void*
   
   allocator->memory_blocks_count_permanent--;
 
-}
-
-SPVM_HASH* SPVM_ALLOCATOR_alloc_hash_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity) {
-  (void)allocator;
-
-  int32_t memory_block_type = SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT;
-  SPVM_HASH* hash = SPVM_HASH_new(allocator, capacity, memory_block_type);
-  
-  return hash;
 }
 
 void SPVM_ALLOCATOR_free(SPVM_ALLOCATOR* allocator) {

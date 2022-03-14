@@ -2,7 +2,6 @@
 #define SPVM_LIST_H
 
 #include "spvm_typedecl.h"
-#include "spvm_native.h"
 
 struct spvm_list {
   SPVM_ALLOCATOR* allocator;
