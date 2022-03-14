@@ -38,7 +38,6 @@ void* SPVM_ALLOCATOR_alloc_memory_block_tmp(SPVM_ALLOCATOR* allocator, size_t by
 void SPVM_ALLOCATOR_free_memory_block_tmp(SPVM_ALLOCATOR* allocator, void* block);
 
 void* SPVM_ALLOCATOR_alloc_memory_block_permanent(SPVM_ALLOCATOR* allocator, size_t byte_size);
-SPVM_LIST* SPVM_ALLOCATOR_alloc_list_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity);
 SPVM_HASH* SPVM_ALLOCATOR_alloc_hash_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity);
 
 void SPVM_ALLOCATOR_free(SPVM_ALLOCATOR* allocator);

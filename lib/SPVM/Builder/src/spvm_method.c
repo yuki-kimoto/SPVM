@@ -13,9 +13,9 @@
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   SPVM_METHOD* method = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_METHOD));
   
-  method->args = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 0);
-  method->mys = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 0);
-  method->captures = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 0);
+  method->args = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  method->mys = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  method->captures = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   
   return method;
 }

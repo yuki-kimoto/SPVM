@@ -25,24 +25,24 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   SPVM_CLASS* class = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_CLASS));
   
   // Fields
-  class->fields = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 0);
+  class->fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->field_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(compiler->allocator, 0);
   
   // Class variables
-  class->class_vars = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 0);
+  class->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->class_var_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(compiler->allocator, 0);
   
   // Methods
-  class->methods = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 0);
+  class->methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->method_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(compiler->allocator, 0);
   
   // Interfaces
-  class->interface_classes = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 0);
+  class->interface_classes = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->interface_class_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(compiler->allocator, 0);
   
-  class->allows = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 0);
-  class->implements = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 0);
-  class->anon_methods = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 0);
+  class->allows = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  class->implements = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  class->anon_methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->class_alias_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(compiler->allocator, 0);
 
   return class;

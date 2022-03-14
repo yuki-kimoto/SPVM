@@ -50,6 +50,15 @@ SPVM_LIST* SPVM_LIST_new(SPVM_ALLOCATOR* allocator, int32_t capacity, int32_t me
   return list;
 }
 
+SPVM_LIST* SPVM_LIST_new_list_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity) {
+  (void)allocator;
+
+  int32_t memory_block_type = SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT;
+  SPVM_LIST* list = SPVM_LIST_new(allocator, capacity, memory_block_type);
+  
+  return list;
+}
+
 void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
   
   assert(list);
