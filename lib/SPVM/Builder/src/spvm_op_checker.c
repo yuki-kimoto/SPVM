@@ -102,7 +102,7 @@ int32_t SPVM_OP_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack
 SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_METHOD* method, SPVM_TYPE* type, const char* file, int32_t line) {
 
   // Temparary variable name
-  char* name = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, strlen("$.tmp_2147483647") + 1);
+  char* name = SPVM_ALLOCATOR_alloc_block_permanent(compiler->allocator, strlen("$.tmp_2147483647") + 1);
   sprintf(name, "$.tmp_%d", method->tmp_vars_length);
   method->tmp_vars_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
@@ -974,7 +974,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 
                 int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
-                char* concat_string_tmp = SPVM_ALLOCATOR_new_block_tmp(compiler->allocator, string1_length + string2_length + 1);
+                char* concat_string_tmp = SPVM_ALLOCATOR_alloc_block_tmp(compiler->allocator, string1_length + string2_length + 1);
                 memcpy(concat_string_tmp, string1, string1_length);
                 memcpy(concat_string_tmp + string1_length, string2, string2_length);
                 int32_t concant_string_length = string1_length + string2_length;
@@ -2750,7 +2750,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   const char* class_name = call_method->method->class->name;
                   const char* class_var_base_name = call_method->method->accessor_original_name;
-                  char* class_var_name_tmp = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
+                  char* class_var_name_tmp = SPVM_ALLOCATOR_alloc_block_permanent(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
                   memcpy(class_var_name_tmp, "$", 1);
                   memcpy(class_var_name_tmp + 1, class_name, strlen(class_name));
                   memcpy(class_var_name_tmp + 1 + strlen(class_name), "::", 2);
@@ -2789,7 +2789,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   const char* class_name = call_method->method->class->name;
                   const char* class_var_base_name = call_method->method->accessor_original_name;
-                  char* class_var_name_tmp = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
+                  char* class_var_name_tmp = SPVM_ALLOCATOR_alloc_block_permanent(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
                   memcpy(class_var_name_tmp, "$", 1);
                   memcpy(class_var_name_tmp + 1, class_name, strlen(class_name));
                   memcpy(class_var_name_tmp + 1 + strlen(class_name), "::", 2);
@@ -4819,12 +4819,12 @@ void SPVM_OP_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* 
     // Class name
     // (end - start + 1) - $ - colon * 2
     int32_t class_name_length = (colon_ptr - name + 1) - 1 - 2;
-    class_name = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, class_name_length + 1);
+    class_name = SPVM_ALLOCATOR_alloc_block_permanent(compiler->allocator, class_name_length + 1);
     memcpy(class_name, name + 1, class_name_length);
     
     // Base name($foo)
     int32_t base_name_length = 1 + (name + strlen(name) - 1) - colon_ptr;
-    base_name = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, base_name_length + 1);
+    base_name = SPVM_ALLOCATOR_alloc_block_permanent(compiler->allocator, base_name_length + 1);
     base_name[0] = '$';
     memcpy(base_name + 1, colon_ptr + 1, base_name_length);
   }
@@ -4986,7 +4986,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           }
           
           // Check type name
-          char* tail_name = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, 255);
+          char* tail_name = SPVM_ALLOCATOR_alloc_block_permanent(compiler->allocator, 255);
           switch (first_field_type->basic_type->id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE:
               sprintf(tail_name, "_%db", fields->length);

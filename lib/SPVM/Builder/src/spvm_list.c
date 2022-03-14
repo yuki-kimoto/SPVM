@@ -12,13 +12,13 @@ SPVM_LIST* SPVM_LIST_new(SPVM_ALLOCATOR* allocator, int32_t capacity, int32_t me
   
   SPVM_LIST* list;
   if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-    list = SPVM_ALLOCATOR_new_block_tmp(allocator, sizeof(SPVM_LIST));
+    list = SPVM_ALLOCATOR_alloc_block_tmp(allocator, sizeof(SPVM_LIST));
   }
   else if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-    list = SPVM_ALLOCATOR_new_block_permanent(allocator, sizeof(SPVM_LIST));
+    list = SPVM_ALLOCATOR_alloc_block_permanent(allocator, sizeof(SPVM_LIST));
   }
   else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
-    list = SPVM_ALLOCATOR_new_block_runtime(allocator, sizeof(SPVM_LIST), env);
+    list = SPVM_ALLOCATOR_alloc_block_runtime(allocator, sizeof(SPVM_LIST), env);
   }
   else {
     assert(0);
@@ -35,13 +35,13 @@ SPVM_LIST* SPVM_LIST_new(SPVM_ALLOCATOR* allocator, int32_t capacity, int32_t me
   
   void** values;
   if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-    values = SPVM_ALLOCATOR_new_block_tmp(allocator, list->capacity * sizeof(void*));
+    values = SPVM_ALLOCATOR_alloc_block_tmp(allocator, list->capacity * sizeof(void*));
   }
   else if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-    values = SPVM_ALLOCATOR_new_block_permanent(allocator, list->capacity * sizeof(void*));
+    values = SPVM_ALLOCATOR_alloc_block_permanent(allocator, list->capacity * sizeof(void*));
   }
   else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
-    values = SPVM_ALLOCATOR_new_block_runtime(allocator, list->capacity * sizeof(void*), env);
+    values = SPVM_ALLOCATOR_alloc_block_runtime(allocator, list->capacity * sizeof(void*), env);
   }
   else {
     assert(0);
@@ -72,13 +72,13 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
     
     void** new_values;
     if (list->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-      new_values = SPVM_ALLOCATOR_new_block_tmp(allocator, new_capacity * sizeof(void*));
+      new_values = SPVM_ALLOCATOR_alloc_block_tmp(allocator, new_capacity * sizeof(void*));
     }
     else if (list->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-      new_values = SPVM_ALLOCATOR_new_block_permanent(allocator, new_capacity * sizeof(void*));
+      new_values = SPVM_ALLOCATOR_alloc_block_permanent(allocator, new_capacity * sizeof(void*));
     }
     else if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
-      new_values = SPVM_ALLOCATOR_new_block_runtime(allocator, new_capacity * sizeof(void*), list->env);
+      new_values = SPVM_ALLOCATOR_alloc_block_runtime(allocator, new_capacity * sizeof(void*), list->env);
     }
     else {
       assert(0);

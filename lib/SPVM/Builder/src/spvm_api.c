@@ -7288,7 +7288,7 @@ void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size) {
     return NULL;
   }
   
-  void* block = SPVM_ALLOCATOR_new_block_runtime(runtime_info->allocator, (size_t)byte_size, env);
+  void* block = SPVM_ALLOCATOR_alloc_block_runtime(runtime_info->allocator, (size_t)byte_size, env);
   
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
   fprintf(stderr, "[ALLOC_MEMORY %p %d]\n", block, (int32_t)(intptr_t)env->memory_blocks_count);

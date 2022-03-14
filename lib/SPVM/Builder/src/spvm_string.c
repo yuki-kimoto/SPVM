@@ -16,7 +16,7 @@ SPVM_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t
     
     SPVM_STRING_BUFFER_add_len_nullstr(compiler->string_buffer, (char*)value, length);
     
-    SPVM_STRING* string = SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, sizeof(SPVM_STRING));
+    SPVM_STRING* string = SPVM_ALLOCATOR_alloc_block_permanent(compiler->allocator, sizeof(SPVM_STRING));
     string->value = (char*)(compiler->string_buffer->buffer + string_buffer_id);
     string->length = length;
     string->id = compiler->strings->length;

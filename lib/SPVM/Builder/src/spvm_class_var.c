@@ -8,6 +8,6 @@
 SPVM_CLASS_VAR* SPVM_CLASS_VAR_new(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  return SPVM_ALLOCATOR_new_block_permanent(compiler->allocator, sizeof(SPVM_CLASS_VAR));
+  return SPVM_ALLOCATOR_alloc_block_permanent(compiler->allocator, sizeof(SPVM_CLASS_VAR));
 }
 
