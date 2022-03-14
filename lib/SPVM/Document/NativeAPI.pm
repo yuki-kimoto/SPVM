@@ -835,10 +835,10 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   208 compiler_is_init_block_method
   209 compiler_is_native_method
   210 compiler_is_precompile_method
-  211 compiler_get_native_method_address
-  212 compiler_get_precompile_method_address
-  213 compiler_set_native_method_address
-  214 compiler_set_precompile_method_address
+  211 get_native_method_address
+  212 get_precompile_method_address
+  213 set_native_method_address
+  214 set_precompile_method_address
   215 is_object_array
   216 get_method_id_without_signature
   217 get_constant_string_value
@@ -1905,7 +1905,7 @@ Free an environment that is created by the L<"new_env"> native API.
 
   void* memory_blocks_count;
 
-Memory blocks count. This is used internally.
+Unused from v0.9508+. The count of memory blocks is managed in L<"runtime_info">.
 
 =head2 get_chars
 
