@@ -7286,7 +7286,7 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
 void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size) {
 
   // Runtime
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;;
+  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
   
   assert(byte_size > 0);
 
@@ -7297,7 +7297,9 @@ void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size) {
   void* block = SPVM_ALLOCATOR_alloc_memory_block_tmp(runtime_info->allocator, (size_t)byte_size);
   
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
-  fprintf(stderr, "[ALLOC_MEMORY %p %d]\n", block, (int32_t)(intptr_t)env->memory_blocks_count);
+    SPVM_ALLOCATOR* allocator = runtime_info->allocator;
+    fprintf(stderr, "[ALLOC_MEMORY %p (All:%d, Tmp:%d, Perm: %d]\n", block,
+      (int32_t)(intptr_t)env->get_memory_blocks_count(env), allocator->memory_blocks_count_tmp, allocator->memory_blocks_count_permanent);
 #endif
 
   return block;
@@ -7309,10 +7311,12 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, void* block) {
   SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;;
 
   if (block) {
-#ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
-    fprintf(stderr, "[FREE_MEMORY %p %d]\n", block, (int32_t)(intptr_t)env->memory_blocks_count);
-#endif
     SPVM_ALLOCATOR_free_memory_block_tmp(runtime_info->allocator, block);
+#ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
+    SPVM_ALLOCATOR* allocator = runtime_info->allocator;
+    fprintf(stderr, "[FREE_MEMORY %p (All:%d, Tmp:%d, Perm: %d]\n", block,
+      (int32_t)(intptr_t)env->get_memory_blocks_count(env), allocator->memory_blocks_count_tmp, allocator->memory_blocks_count_permanent);
+#endif
   }
 }
 
