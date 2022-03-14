@@ -5945,7 +5945,9 @@ int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env) {
   
   SPVM_ALLOCATOR* allocator = runtime_info->allocator;
   
-  return (int32_t)(intptr_t)allocator->memory_blocks_count;
+  int32_t memory_blocks_count = SPVM_ALLOCATOR_get_memory_blocks_count(allocator);
+  
+  return memory_blocks_count;
 }
 
 void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_WEAKEN_BACKREF* weaken_backref_head) {

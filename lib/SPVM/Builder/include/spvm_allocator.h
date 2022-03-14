@@ -14,9 +14,6 @@ struct spvm_allocator {
   // Blocks
   SPVM_LIST* blocks;
 
-  // This is all memory blocks count allocated by the SPVM.
-  int32_t memory_blocks_count;
-
   // This is temporary memory blocks count allocated by the SPVM compiler.
   int32_t memory_blocks_count_tmp;
 
@@ -26,6 +23,8 @@ struct spvm_allocator {
 
 SPVM_ALLOCATOR* SPVM_ALLOCATOR_new();
 void SPVM_ALLOCATOR_init(SPVM_ALLOCATOR* allocator);
+
+int32_t SPVM_ALLOCATOR_get_memory_blocks_count(SPVM_ALLOCATOR* allocator);
 
 void* SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size_t byte_size);
 void SPVM_ALLOCATOR_free_memory_block_unmanaged(void* block);
