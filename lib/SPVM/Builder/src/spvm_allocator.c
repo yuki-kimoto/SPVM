@@ -115,9 +115,10 @@ void SPVM_ALLOCATOR_free(SPVM_ALLOCATOR* allocator) {
   // Free permanent blocks
   int32_t i;
   for (i = 0; i < allocator->permanent_memory_blocks->length; i++) {
-    void* permanent_block = SPVM_LIST_fetch(allocator->permanent_memory_blocks, i);
-    if (permanent_block != NULL) {
-      SPVM_ALLOCATOR_free_memory_block_permanent(allocator, permanent_block);
+    void* permanent_memory_block = SPVM_LIST_fetch(allocator->permanent_memory_blocks, i);
+    assert(permanent_memory_block);
+    if (permanent_memory_block) {
+      SPVM_ALLOCATOR_free_memory_block_permanent(allocator, permanent_memory_block);
     }
   }
   SPVM_LIST_free(allocator->permanent_memory_blocks);
