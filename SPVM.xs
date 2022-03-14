@@ -751,7 +751,7 @@ call_spvm_method(...)
                   if (arg_type->category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
                     SV* sv_error = NULL;
                     SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime_info->basic_types, arg_basic_type_id);
-                    const char* arg_basic_type_name = arg_basic_type->name;
+                    const char* arg_basic_type_name = SPVM_API_get_basic_type_name(env, arg_basic_type->id);
                     SPVM_OBJECT* array = SPVM_XS_UTIL_new_mulnum_array(env, arg_basic_type_name, sv_value, &sv_error);
                     if (sv_error) {
                       croak_sv(sv_error);
@@ -1192,7 +1192,7 @@ call_spvm_method(...)
             else {
               SPVM_RUNTIME_BASIC_TYPE* method_return_basic_type = SPVM_LIST_fetch(runtime_info->basic_types, return_value->basic_type_id);
               SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-              sv_catpv(sv_perl_class_name, method_return_basic_type->name);
+              sv_catpv(sv_perl_class_name, SPVM_API_get_basic_type_name(env, method_return_basic_type->id));
               sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_perl_class_name));
             }
           }
@@ -1559,7 +1559,7 @@ array_to_elems(...)
             }
             else {
               SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-              sv_catpv(sv_perl_class_name, basic_type->name);
+              sv_catpv(sv_perl_class_name, SPVM_API_get_basic_type_name(env, basic_type->id));
               sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_perl_class_name));
             }
             av_push(av_values, SvREFCNT_inc(sv_value));
@@ -2060,7 +2060,7 @@ array_get(...)
     
     if (element_dimension == 0) {
       SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-      sv_catpv(sv_perl_class_name, basic_type->name);
+      sv_catpv(sv_perl_class_name, SPVM_API_get_basic_type_name(env, basic_type->id));
       sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_perl_class_name));
     }
     else if (element_dimension > 0) {
@@ -3282,7 +3282,7 @@ _new_mulnum_array_from_bin(...)
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
   
   if (basic_type == NULL) {
-    const char* basic_type_name = basic_type->name;
+    const char* basic_type_name = SPVM_API_get_basic_type_name(env, basic_type->id);
     croak("Can't load %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
   }
 
