@@ -210,10 +210,10 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
   int32_t compile_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
 
-  compiler->ops = SPVM_LIST_new(compiler->allocator, 0, 0);
-  compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
-  compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, 0);
-  compiler->used_class_symtable = SPVM_HASH_new(compiler->allocator, 0, 0);
+  compiler->ops = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  compiler->used_class_symtable = SPVM_HASH_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   for (int32_t i = 0; i < compiler->classes->length; i++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, i);
     const char* class_name = class->name;

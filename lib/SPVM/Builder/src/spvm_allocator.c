@@ -16,7 +16,7 @@ SPVM_ALLOCATOR* SPVM_ALLOCATOR_new() {
   assert(allocator->memory_blocks_count_tmp == 0);
   assert(allocator->memory_blocks_count_permanent == 0);
 
-  allocator->blocks = SPVM_LIST_new(allocator, 0, 0);
+  allocator->blocks = SPVM_LIST_new(allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 
   return allocator;
 }
