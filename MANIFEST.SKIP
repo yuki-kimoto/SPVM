@@ -33,3 +33,4 @@ SPVM-.*
 ^SPVM.def
 \.spvm_build
 ^tmp/
+^core$
