@@ -450,7 +450,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
     int32_t type_dimension = object->type_dimension;
     
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime_info->basic_types, basic_type_id);
-    const char* basic_type_name = basic_type->name;
+    const char* basic_type_name = SPVM_API_get_basic_type_name(env, basic_type->id);
     
     if (SPVM_API_is_string(env, object)) {
       const char* chars = env->get_chars(env, object);
@@ -5739,7 +5739,7 @@ SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   int32_t type_dimension = object->type_dimension;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime_info->basic_types, basic_type_id);
-  const char* basic_type_name = basic_type->name;
+  const char* basic_type_name = SPVM_API_get_basic_type_name(env, basic_type->id);
   
   int32_t length = 0;
   
@@ -6465,7 +6465,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
 
   // valut_t array dimension must be 1
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime_info->basic_types, basic_type_id);
-  const char* basic_type_name = basic_type->name;
+  const char* basic_type_name = SPVM_API_get_basic_type_name(env, basic_type->id);
   
   // Class
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
@@ -7991,3 +7991,14 @@ const char* SPVM_API_compiler_get_error_message(SPVM_ENV* env, SPVM_COMPILER* co
   return  SPVM_COMPILER_get_error_message(compiler, index);
 }
 
+const char* SPVM_API_get_basic_type_name(SPVM_ENV* env, int32_t basic_type_id) {
+  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = (SPVM_RUNTIME_BASIC_TYPE*)SPVM_LIST_fetch(runtime_info->basic_types, basic_type_id);
+  
+  SPVM_RUNTIME_STRING* basic_type_name_string = (SPVM_RUNTIME_STRING*)&runtime_info->strings[basic_type->name_id];
+
+  const char* basic_type_name = (const char*)&runtime_info->string_buffer[basic_type_name_string->string_buffer_id];
+  
+  return basic_type_name;
+}

@@ -348,4 +348,6 @@ SPVM_RUNTIME_INFO* SPVM_API_compiler_build_runtime_info(SPVM_ENV* env, SPVM_COMP
 
 int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object);
 
+const char* SPVM_API_get_basic_type_name(SPVM_ENV* env, int32_t basic_type_id);
+
 #endif
