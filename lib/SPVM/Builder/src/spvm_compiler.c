@@ -539,6 +539,9 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     else {
       runtime_basic_type->class_id = -1;
     }
+    
+    SPVM_STRING* basic_type_string = SPVM_HASH_fetch(compiler->string_symtable, basic_type->name, strlen(basic_type->name));
+    runtime_basic_type->name_id = basic_type_string->id;
 
     SPVM_LIST_push(runtime_info->basic_types, runtime_basic_type);
     SPVM_HASH_insert(runtime_info->basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
