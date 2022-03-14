@@ -11,7 +11,7 @@
 
 SPVM_ALLOCATOR* SPVM_ALLOCATOR_new() {
   
-  SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_alloc_block_unmanaged(sizeof(SPVM_ALLOCATOR));
+  SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_ALLOCATOR));
 
   assert(allocator->memory_blocks_count == 0);
 
@@ -25,7 +25,7 @@ void SPVM_ALLOCATOR_init(SPVM_ALLOCATOR* allocator) {
   allocator->blocks = SPVM_LIST_new(allocator, 0, 0, NULL);
 }
 
-void* SPVM_ALLOCATOR_alloc_block_unmanaged(size_t byte_size) {
+void* SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size_t byte_size) {
   
   if (byte_size < 1) {
     fprintf(stderr, "Failed to allocate memory. Size must be more than 0(%s)\n", __FILE__);
@@ -51,10 +51,10 @@ void SPVM_ALLOCATOR_free_block_unmanaged(void* block) {
   free(block);
 }
 
-void* SPVM_ALLOCATOR_alloc_block_tmp(SPVM_ALLOCATOR* allocator, size_t byte_size) {
+void* SPVM_ALLOCATOR_alloc_memory_block_tmp(SPVM_ALLOCATOR* allocator, size_t byte_size) {
   (void)allocator;
   
-  void* block = SPVM_ALLOCATOR_alloc_block_unmanaged(byte_size);
+  void* block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(byte_size);
 
   assert(allocator);
   allocator->memory_blocks_count++;
@@ -72,10 +72,10 @@ void SPVM_ALLOCATOR_free_block_tmp(SPVM_ALLOCATOR* allocator, void* block) {
   allocator->memory_blocks_count_tmp--;
 }
 
-void* SPVM_ALLOCATOR_alloc_block_permanent(SPVM_ALLOCATOR* allocator, size_t byte_size) {
+void* SPVM_ALLOCATOR_alloc_memory_block_permanent(SPVM_ALLOCATOR* allocator, size_t byte_size) {
   (void)allocator;
   
-  void* block = SPVM_ALLOCATOR_alloc_block_unmanaged(byte_size);
+  void* block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(byte_size);
   allocator->memory_blocks_count++;
   allocator->memory_blocks_count_permanent++;
   
@@ -111,10 +111,10 @@ SPVM_HASH* SPVM_ALLOCATOR_alloc_hash_permanent(SPVM_ALLOCATOR* allocator, int32_
   return hash;
 }
 
-void* SPVM_ALLOCATOR_alloc_block_runtime(SPVM_ALLOCATOR* allocator, size_t byte_size, SPVM_ENV* env) {
+void* SPVM_ALLOCATOR_alloc_memory_block_runtime(SPVM_ALLOCATOR* allocator, size_t byte_size, SPVM_ENV* env) {
   (void)allocator;
   
-  void* block = SPVM_ALLOCATOR_alloc_block_unmanaged(byte_size);
+  void* block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(byte_size);
 
   assert(allocator);
   allocator->memory_blocks_count++;

@@ -33,7 +33,7 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message_not_used) {
     ptr++;
   }
   
-  char* token = (char*) SPVM_ALLOCATOR_alloc_block_tmp(compiler->allocator, length + 1);
+  char* token = (char*) SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, length + 1);
   memcpy(token, compiler->befbufptr + empty_count, length);
   token[length] = '\0';
   

@@ -3556,12 +3556,12 @@ compile_spvm(...)
   
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
-  char* class_name_copy = SPVM_ALLOCATOR_alloc_block_permanent(compiler->allocator, sv_len(sv_class_name) + 1);
+  char* class_name_copy = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sv_len(sv_class_name) + 1);
   memcpy(class_name_copy, class_name, sv_len(sv_class_name));
   
   // File
   const char* start_file = SvPV_nolen(sv_start_file);
-  char* start_file_copy = SPVM_ALLOCATOR_alloc_block_permanent(compiler->allocator, sv_len(sv_start_file) + 1);
+  char* start_file_copy = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sv_len(sv_start_file) + 1);
   memcpy(start_file_copy, start_file, sv_len(sv_start_file));
   
   // Line

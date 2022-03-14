@@ -22,7 +22,7 @@ const char* const* SPVM_CLASS_C_CATEGORY_NAMES(void) {
 }
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
-  SPVM_CLASS* class = SPVM_ALLOCATOR_alloc_block_permanent(compiler->allocator, sizeof(SPVM_CLASS));
+  SPVM_CLASS* class = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_CLASS));
   
   // Fields
   class->fields = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 0);

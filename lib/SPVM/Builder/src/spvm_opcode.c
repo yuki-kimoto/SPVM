@@ -486,7 +486,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
 }
 
 SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler) {
-  SPVM_OPCODE* opcode = SPVM_ALLOCATOR_alloc_block_permanent(compiler->allocator, sizeof(SPVM_OPCODE));
+  SPVM_OPCODE* opcode = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_OPCODE));
   
   return opcode;
 }
