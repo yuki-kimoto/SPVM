@@ -333,9 +333,7 @@ SPVM_RUNTIME_CLASS* SPVM_API_get_runtime_class_from_basic_type_id(SPVM_ENV* env,
   
   SPVM_RUNTIME_CLASS* class = NULL;
   if (basic_type_id >= 0) {
-    SPVM_LIST* runtime_basic_types = runtime_info->basic_types;
-    
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_LIST_fetch(runtime_basic_types, basic_type_id);
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_API_get_basic_type(env, basic_type_id);
     int32_t class_id = runtime_basic_type->class_id;
     
     class = SPVM_LIST_fetch(runtime_info->classes, class_id);
