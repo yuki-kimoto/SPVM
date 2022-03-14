@@ -350,4 +350,6 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object);
 
 const char* SPVM_API_get_basic_type_name(SPVM_ENV* env, int32_t basic_type_id);
 
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env,  int32_t basic_type_id);
+
 #endif

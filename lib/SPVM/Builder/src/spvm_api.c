@@ -7081,6 +7081,23 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type_with_name(SPVM_ENV* env,  const
   return basic_type;
 }
 
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env,  int32_t basic_type_id) {
+  // Runtime
+  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  
+  if (basic_type_id < 0) {
+    return NULL;
+  }
+  
+  if (basic_type_id >= runtime_info->basic_types->length) {
+    return NULL;
+  }
+
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = runtime_info->basic_types->values[basic_type_id];
+  
+  return basic_type;
+}
+
 int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
   (void)env;
   
