@@ -56,7 +56,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // Allocator
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
   compiler->allocator = allocator;
-  SPVM_ALLOCATOR_init(compiler->allocator);
   
   compiler->bufptr = "";
 
@@ -393,8 +392,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
 
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
-  SPVM_ALLOCATOR_init(allocator);
-
   SPVM_RUNTIME_INFO* runtime_info = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_INFO));
 
   runtime_info->allocator = allocator;

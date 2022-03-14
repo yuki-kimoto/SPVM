@@ -22,7 +22,6 @@ struct spvm_allocator {
 };
 
 SPVM_ALLOCATOR* SPVM_ALLOCATOR_new();
-void SPVM_ALLOCATOR_init(SPVM_ALLOCATOR* allocator);
 
 int32_t SPVM_ALLOCATOR_get_memory_blocks_count(SPVM_ALLOCATOR* allocator);
 
