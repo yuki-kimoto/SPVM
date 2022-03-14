@@ -100,7 +100,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
   // Runtime
   SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
   
   if (basic_type == NULL) {
     *sv_error = sv_2mortal(newSVpvf("Not found %s at %s line %d\n", basic_type_name, MFILE, __LINE__));
@@ -216,7 +216,7 @@ call_spvm_method(...)
   const char* method_name = SvPV_nolen(sv_method_name);
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, class_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, class_name);
   
   // Class
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
@@ -3045,7 +3045,7 @@ new_string_array_len(...)
   // Element type id
   const char* basic_type_name = "string";
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
   assert(basic_type);
   
   // New array
@@ -3080,7 +3080,7 @@ new_object_array_len(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
   assert(basic_type);
   
   // New array
@@ -3119,7 +3119,7 @@ _new_object_array(...)
   // Runtime
   SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
   assert(basic_type);
   
   // New array
@@ -3188,7 +3188,7 @@ _new_muldim_array(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
   assert(basic_type);
   
   // New array
@@ -3279,7 +3279,7 @@ _new_mulnum_array_from_bin(...)
   // Runtime
   SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
   
   if (basic_type == NULL) {
     const char* basic_type_name = SPVM_API_get_basic_type_name(env, basic_type->id);
