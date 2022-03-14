@@ -4118,7 +4118,7 @@ build_class_csource_precompile(...)
   compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   // String buffer for csource
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 0, 0, NULL);
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 0, 0);
 
   // Build class csource
   

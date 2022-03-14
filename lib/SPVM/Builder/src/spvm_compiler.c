@@ -62,7 +62,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   compiler->strings = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 128);
   compiler->string_symtable = SPVM_ALLOCATOR_alloc_hash_permanent(compiler->allocator, 128);
-  compiler->string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT, NULL);
+  compiler->string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
  
   // Eternal information
   compiler->module_dirs = SPVM_ALLOCATOR_alloc_list_permanent(compiler->allocator, 0);
@@ -211,10 +211,10 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
   int32_t compile_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
 
-  compiler->ops = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
-  compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
-  compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
-  compiler->used_class_symtable = SPVM_HASH_new(compiler->allocator, 0, 0, NULL);
+  compiler->ops = SPVM_LIST_new(compiler->allocator, 0, 0);
+  compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
+  compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, 0);
+  compiler->used_class_symtable = SPVM_HASH_new(compiler->allocator, 0, 0);
   for (int32_t i = 0; i < compiler->classes->length; i++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, i);
     const char* class_name = class->name;

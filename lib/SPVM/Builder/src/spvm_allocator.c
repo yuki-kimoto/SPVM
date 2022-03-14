@@ -22,7 +22,7 @@ void SPVM_ALLOCATOR_init(SPVM_ALLOCATOR* allocator) {
   (void)allocator;
 
   // Objects
-  allocator->blocks = SPVM_LIST_new(allocator, 0, 0, NULL);
+  allocator->blocks = SPVM_LIST_new(allocator, 0, 0);
 }
 
 void* SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size_t byte_size) {
@@ -97,7 +97,7 @@ SPVM_LIST* SPVM_ALLOCATOR_alloc_list_permanent(SPVM_ALLOCATOR* allocator, int32_
   (void)allocator;
 
   int32_t memory_block_type = SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT;
-  SPVM_LIST* list = SPVM_LIST_new(allocator, capacity, memory_block_type, NULL);
+  SPVM_LIST* list = SPVM_LIST_new(allocator, capacity, memory_block_type);
   
   return list;
 }
@@ -106,45 +106,9 @@ SPVM_HASH* SPVM_ALLOCATOR_alloc_hash_permanent(SPVM_ALLOCATOR* allocator, int32_
   (void)allocator;
 
   int32_t memory_block_type = SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT;
-  SPVM_HASH* hash = SPVM_HASH_new(allocator, capacity, memory_block_type, NULL);
+  SPVM_HASH* hash = SPVM_HASH_new(allocator, capacity, memory_block_type);
   
   return hash;
-}
-
-void* SPVM_ALLOCATOR_alloc_memory_block_runtime(SPVM_ALLOCATOR* allocator, size_t byte_size, SPVM_ENV* env) {
-  (void)allocator;
-  
-  void* block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(byte_size);
-
-  assert(allocator);
-  allocator->memory_blocks_count++;
-  allocator->memory_blocks_count_runtime++;
-  
-  assert(env);
-  
-  {
-    int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
-    memory_blocks_count++;
-    env->memory_blocks_count = (void*)(intptr_t)memory_blocks_count;
-  }
-  
-  return block;
-}
-
-void SPVM_ALLOCATOR_free_memory_block_runtime(SPVM_ALLOCATOR* allocator, void* block, SPVM_ENV* env) {
-  (void)allocator;
-
-  SPVM_ALLOCATOR_free_memory_block_unmanaged(block);
-  
-  allocator->memory_blocks_count--;
-  allocator->memory_blocks_count_runtime--;
-  
-  assert(env);
-  {
-    int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
-    memory_blocks_count--;
-    env->memory_blocks_count = (void*)(intptr_t)memory_blocks_count;
-  }
 }
 
 void SPVM_ALLOCATOR_free(SPVM_ALLOCATOR* allocator) {

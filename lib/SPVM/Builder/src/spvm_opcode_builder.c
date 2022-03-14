@@ -108,58 +108,58 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           }
 
           // opcode index stack for if start
-          SPVM_LIST* if_eq_or_if_ne_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* if_eq_or_if_ne_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           // opcode index stack for if end
-          SPVM_LIST* if_block_end_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* if_block_end_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           // opcode index stack for loop start
-          SPVM_LIST* loop_first_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* loop_first_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           // opcode index stack for last
-          SPVM_LIST* last_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* last_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
 
           // opcode index stack for break
-          SPVM_LIST* break_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* break_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           // opcode index stack for next
-          SPVM_LIST* next_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* next_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           // opcode index stack for eval start
-          SPVM_LIST* push_eval_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* push_eval_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           // IF_EXCEPTION_CATCH opcode index stack
-          SPVM_LIST* if_die_catch_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* if_die_catch_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
 
           // IF_EXCEPTION_RETURN opcode index stack
-          SPVM_LIST* if_die_return_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* if_die_return_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
 
           // RETURN goto opcode index stack
-          SPVM_LIST* return_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* return_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           // Switch stack
-          SPVM_LIST* switch_info_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* switch_info_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           // Block stack
-          SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           // next block base stack
-          SPVM_LIST* next_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* next_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           // last block base stack
-          SPVM_LIST* last_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* last_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
 
           // break block base stack
-          SPVM_LIST* break_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* break_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           // Mortal variable stack
-          SPVM_LIST* mortal_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* mortal_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           // Mortal variable base stack
-          SPVM_LIST* mortal_top_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* mortal_top_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
 
           // Object temporary variable stack
-          SPVM_LIST* object_op_var_tmp_stack = SPVM_LIST_new(compiler->allocator, 0, 0, NULL);
+          SPVM_LIST* object_op_var_tmp_stack = SPVM_LIST_new(compiler->allocator, 0, 0);
           
           int32_t method_opcodes_base = opcode_array->length;
           
