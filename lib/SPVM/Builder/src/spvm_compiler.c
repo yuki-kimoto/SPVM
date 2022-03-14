@@ -532,19 +532,20 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE));
     
     runtime_basic_type->id = basic_type->id;
-    runtime_basic_type->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, basic_type->name);
     if (basic_type->class) {
       runtime_basic_type->class_id = basic_type->class->id;
     }
     else {
       runtime_basic_type->class_id = -1;
     }
-    
     SPVM_STRING* basic_type_string = SPVM_HASH_fetch(compiler->string_symtable, basic_type->name, strlen(basic_type->name));
     runtime_basic_type->name_id = basic_type_string->id;
 
+    SPVM_RUNTIME_STRING* basic_type_name_string = (SPVM_RUNTIME_STRING*)&runtime_info->strings[ runtime_basic_type->name_id];
+    const char* runtime_basic_type_name = (const char*)&runtime_info->string_buffer[basic_type_name_string->string_buffer_id];
+
     SPVM_LIST_push(runtime_info->basic_types, runtime_basic_type);
-    SPVM_HASH_insert(runtime_info->basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
+    SPVM_HASH_insert(runtime_info->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
   }
 
   // Runtime types - this is moved to the more after place and is optimized in the near future.
