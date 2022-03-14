@@ -1,13 +1,9 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <assert.h>
-#include <string.h>
-#include <stdarg.h>
 
+#include "spvm_allocator.h"
 #include "spvm_list.h"
 #include "spvm_hash.h"
-#include "spvm_allocator.h"
-#include "spvm_native.h"
 
 SPVM_ALLOCATOR* SPVM_ALLOCATOR_new() {
   
@@ -16,7 +12,8 @@ SPVM_ALLOCATOR* SPVM_ALLOCATOR_new() {
   assert(allocator->memory_blocks_count_tmp == 0);
   assert(allocator->memory_blocks_count_permanent == 0);
 
-  allocator->permanent_memory_blocks = SPVM_LIST_new(allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  allocator->permanent_memory_blocks_capacity = 1024;
+  allocator->permanent_memory_blocks = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(void*) * allocator->permanent_memory_blocks_capacity);
 
   return allocator;
 }
@@ -75,12 +72,28 @@ void SPVM_ALLOCATOR_free_memory_block_tmp(SPVM_ALLOCATOR* allocator, void* block
 void* SPVM_ALLOCATOR_alloc_memory_block_permanent(SPVM_ALLOCATOR* allocator, size_t byte_size) {
   (void)allocator;
   
-  void* block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(byte_size);
+  void* parmanent_block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(byte_size);
   allocator->memory_blocks_count_permanent++;
   
-  SPVM_LIST_push(allocator->permanent_memory_blocks, block);
+  int32_t length = allocator->permanent_memory_blocks_length;
+  int32_t capacity = allocator->permanent_memory_blocks_capacity;
   
-  return block;
+  if (length >= capacity) {
+    int32_t new_capacity = capacity * 2;
+    void** new_permanent_memory_blocks;
+    new_permanent_memory_blocks = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(void*) * new_capacity);
+    memcpy(new_permanent_memory_blocks, allocator->permanent_memory_blocks, sizeof(void*) * capacity);
+    SPVM_ALLOCATOR_free_memory_block_unmanaged(allocator->permanent_memory_blocks);
+
+    allocator->permanent_memory_blocks = new_permanent_memory_blocks;
+    allocator->permanent_memory_blocks_capacity = new_capacity;
+  }
+  
+  int32_t permanent_memory_blocks_index = allocator->permanent_memory_blocks_length;
+  allocator->permanent_memory_blocks[permanent_memory_blocks_index] = parmanent_block;
+  allocator->permanent_memory_blocks_length++;
+  
+  return parmanent_block;
 }
 
 void SPVM_ALLOCATOR_free_memory_block_permanent(SPVM_ALLOCATOR* allocator, void* block) {
@@ -89,6 +102,7 @@ void SPVM_ALLOCATOR_free_memory_block_permanent(SPVM_ALLOCATOR* allocator, void*
   SPVM_ALLOCATOR_free_memory_block_unmanaged(block);
   
   allocator->memory_blocks_count_permanent--;
+
 }
 
 SPVM_LIST* SPVM_ALLOCATOR_alloc_list_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity) {
@@ -112,18 +126,19 @@ SPVM_HASH* SPVM_ALLOCATOR_alloc_hash_permanent(SPVM_ALLOCATOR* allocator, int32_
 void SPVM_ALLOCATOR_free(SPVM_ALLOCATOR* allocator) {
   (void)allocator;
   
-  // Free permanent blocks
+  // Free permanent memory blocks
   int32_t i;
-  for (i = 0; i < allocator->permanent_memory_blocks->length; i++) {
-    void* permanent_memory_block = SPVM_LIST_fetch(allocator->permanent_memory_blocks, i);
+  for (i = 0; i < allocator->permanent_memory_blocks_length; i++) {
+    void* permanent_memory_block = allocator->permanent_memory_blocks[i];
     assert(permanent_memory_block);
     if (permanent_memory_block) {
       SPVM_ALLOCATOR_free_memory_block_permanent(allocator, permanent_memory_block);
     }
   }
-  SPVM_LIST_free(allocator->permanent_memory_blocks);
+  SPVM_ALLOCATOR_free_memory_block_unmanaged(allocator->permanent_memory_blocks);
   
   assert(allocator->memory_blocks_count_tmp == 0);
+  
   assert(allocator->memory_blocks_count_permanent == 0);
 
   SPVM_ALLOCATOR_free_memory_block_unmanaged(allocator);

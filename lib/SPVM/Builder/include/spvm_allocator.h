@@ -11,8 +11,14 @@ enum {
 
 // Parser information
 struct spvm_allocator {
-  // Blocks
-  SPVM_LIST* permanent_memory_blocks;
+  // Parmanent memory blocks
+  void** permanent_memory_blocks;
+
+  // The length of parmanent memory blocks
+  int32_t permanent_memory_blocks_length;
+
+  // The capacity of parmanent memory blocks
+  int32_t permanent_memory_blocks_capacity;
 
   // This is temporary memory blocks count allocated by the SPVM compiler.
   int32_t memory_blocks_count_tmp;
