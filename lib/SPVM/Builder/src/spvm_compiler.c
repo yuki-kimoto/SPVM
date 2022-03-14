@@ -266,50 +266,50 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
     int32_t op_id = op->id;
     switch(op_id) {
       case SPVM_OP_C_ID_BLOCK: {
-        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, op->uv.block);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, op->uv.block);
         break;
       }
       case SPVM_OP_C_ID_DESCRIPTOR: {
-        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, op->uv.descriptor);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, op->uv.descriptor);
         break;
       }
       case SPVM_OP_C_ID_USE: {
         SPVM_USE* use = op->uv.use;
         use->op_type = NULL;
         use->class_alias_name = NULL;
-        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, use);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, use);
         break;
       }
       case SPVM_OP_C_ID_ALLOW: {
         SPVM_ALLOW* allow = op->uv.allow;
         allow->op_type = NULL;
-        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, allow);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, allow);
         break;
       }
       case SPVM_OP_C_ID_IMPLEMENT: {
         SPVM_IMPLEMENT* implement = op->uv.implement;
         implement->op_type = NULL;
-        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, implement);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, implement);
         break;
       }
       case SPVM_OP_C_ID_CLASS_VAR_ACCESS: {
         SPVM_CLASS_VAR_ACCESS* class_var_access = op->uv.class_var_access;
         class_var_access->op_name = NULL;
         class_var_access->class_var = NULL;
-        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, class_var_access);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, class_var_access);
         break;
       }
       case SPVM_OP_C_ID_CONSTANT: {
         SPVM_CONSTANT* constant = op->uv.constant;
         constant->op_constant = NULL;
         constant->type = NULL;
-        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, constant);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, constant);
         break;
       }
       case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
         SPVM_ARRAY_FIELD_ACCESS* array_field_access = op->uv.array_field_access;
         array_field_access->field = NULL;
-        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, array_field_access);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, array_field_access);
         break;
       }
       case SPVM_OP_C_ID_FIELD_ACCESS: {
@@ -317,7 +317,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         field_access->op_term = NULL;
         field_access->op_name = NULL;
         field_access->field = NULL;
-        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, field_access);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, field_access);
         break;
       }
       case SPVM_OP_C_ID_CALL_METHOD: {
@@ -325,7 +325,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         call_method->op_invocant = NULL;
         call_method->op_name = NULL;
         call_method->method = NULL;
-        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, call_method);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, call_method);
         break;
       }
       case SPVM_OP_C_ID_VAR: {
@@ -334,7 +334,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         var->name = NULL;
         var->my = NULL;
         var->call_method = NULL;
-        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, var);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var);
         break;
       }
       case SPVM_OP_C_ID_MY: {
@@ -343,12 +343,12 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
           my->op_my = NULL;
           my->type = NULL;
           my->var = NULL;
-          SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, my);
+          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, my);
         }
         break;
       }
     }
-    SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, op);
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, op);
   }
   
   // Clear unused pointers

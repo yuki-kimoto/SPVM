@@ -982,7 +982,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_STRING* concat_string_string = SPVM_STRING_new(compiler, concat_string_tmp, concant_string_length);
                 const char* concat_string = concat_string_string->value;
                 
-                SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, concat_string_tmp);
+                SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, concat_string_tmp);
                 
                 assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
                 

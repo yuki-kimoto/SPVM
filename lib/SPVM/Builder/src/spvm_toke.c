@@ -270,7 +270,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 char* src = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, file_size + 1);
                 if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
                   SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d", cur_file, op_use->file, op_use->line);
-                  SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, src);
+                  SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, src);
                   return 0;
                 }
                 fclose(fh);
@@ -885,7 +885,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   SPVM_COMPILER_error(compiler, "A invalid hexadecimal ascii code \"\\x%c%c\" in the second hexadecimal character of the charater literal at %s line %d", *(compiler->bufptr - 1), *compiler->bufptr, compiler->cur_file, compiler->cur_line);
                   compiler->bufptr++;
                 }
-                SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, num_str);
+                SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, num_str);
                 assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
               }
               else {
@@ -1145,7 +1145,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     else {
                       SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of string literal at %s line %d", compiler->cur_file, compiler->cur_line);
                     }
-                    SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, num_str);
+                    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, num_str);
                     assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
                   }
                   else {
@@ -1196,7 +1196,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         else {
                           SPVM_COMPILER_error(compiler, "Invalid unicode code point at %s line %d", compiler->cur_file, compiler->cur_line);
                         }
-                        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, unicode_chars);
+                        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, unicode_chars);
                         assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
                       }
                     }
@@ -1306,7 +1306,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         SPVM_STRING* string_literal_string = SPVM_STRING_new(compiler, string_literal_tmp, string_literal_length);
         const char* string_literal = string_literal_string->value;
 
-        SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, string_literal_tmp);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, string_literal_tmp);
         assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
         
         SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, string_literal, string_literal_length, compiler->cur_file, compiler->cur_line);
@@ -1399,7 +1399,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_STRING* var_name_string = SPVM_STRING_new(compiler, var_name_tmp, 1 + var_name_length_without_sigil);
             const char* var_name = var_name_string->value;
             
-            SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, var_name_tmp);
+            SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var_name_tmp);
             assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp_var_name_tmp);
 
             if (have_brace) {
@@ -1689,7 +1689,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else {
             assert(0);
           }
-          SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, num_str);
+          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, num_str);
           assert(compiler->allocator->memory_blocks_count_tmp == num_str_memoyr_blocks_count);
 
           // Constant op
@@ -2321,7 +2321,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
 
           // Free symbol name
-          SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, symbol_name);
+          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, symbol_name);
           
           return term;
         }

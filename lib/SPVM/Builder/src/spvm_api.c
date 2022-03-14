@@ -7306,7 +7306,7 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, void* block) {
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
     fprintf(stderr, "[FREE_MEMORY %p %d]\n", block, (int32_t)(intptr_t)env->memory_blocks_count);
 #endif
-    SPVM_ALLOCATOR_free_block_runtime(runtime_info->allocator, block, env);
+    SPVM_ALLOCATOR_free_memory_block_runtime(runtime_info->allocator, block, env);
   }
 }
 

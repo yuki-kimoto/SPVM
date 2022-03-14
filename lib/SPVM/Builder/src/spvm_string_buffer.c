@@ -81,13 +81,13 @@ void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t 
     memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
 
     if (string_buffer->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-      SPVM_ALLOCATOR_free_block_tmp(allocator, string_buffer->buffer);
+      SPVM_ALLOCATOR_free_memory_block_tmp(allocator, string_buffer->buffer);
     }
     else if (string_buffer->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
       // Nothing
     }
     else if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
-      SPVM_ALLOCATOR_free_block_runtime(allocator, string_buffer->buffer, string_buffer->env);
+      SPVM_ALLOCATOR_free_memory_block_runtime(allocator, string_buffer->buffer, string_buffer->env);
     }
     else {
       assert(0);
@@ -254,15 +254,15 @@ void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer) {
   SPVM_ALLOCATOR* allocator = string_buffer->allocator;
   
   if (string_buffer->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-    SPVM_ALLOCATOR_free_block_tmp(allocator, string_buffer->buffer);
-    SPVM_ALLOCATOR_free_block_tmp(allocator, string_buffer);
+    SPVM_ALLOCATOR_free_memory_block_tmp(allocator, string_buffer->buffer);
+    SPVM_ALLOCATOR_free_memory_block_tmp(allocator, string_buffer);
   }
   else if (string_buffer->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
     // Nothing
   }
   else if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
-    SPVM_ALLOCATOR_free_block_runtime(allocator, string_buffer->buffer, string_buffer->env);
-    SPVM_ALLOCATOR_free_block_runtime(allocator, string_buffer, string_buffer->env);
+    SPVM_ALLOCATOR_free_memory_block_runtime(allocator, string_buffer->buffer, string_buffer->env);
+    SPVM_ALLOCATOR_free_memory_block_runtime(allocator, string_buffer, string_buffer->env);
   }
   else {
     assert(0);

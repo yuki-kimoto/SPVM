@@ -85,13 +85,13 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
     }
     memcpy(new_values, list->values, capacity * sizeof(void*));
     if (list->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-      SPVM_ALLOCATOR_free_block_tmp(allocator, list->values);
+      SPVM_ALLOCATOR_free_memory_block_tmp(allocator, list->values);
     }
     else if (list->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
       // Nothing
     }
     else if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
-      SPVM_ALLOCATOR_free_block_runtime(allocator, list->values, list->env);
+      SPVM_ALLOCATOR_free_memory_block_runtime(allocator, list->values, list->env);
     }
     else {
       assert(0);
@@ -108,15 +108,15 @@ void SPVM_LIST_free(SPVM_LIST* list) {
   SPVM_ALLOCATOR* allocator = list->allocator;
 
   if (list->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-    SPVM_ALLOCATOR_free_block_tmp(allocator, list->values);
-    SPVM_ALLOCATOR_free_block_tmp(allocator, list);
+    SPVM_ALLOCATOR_free_memory_block_tmp(allocator, list->values);
+    SPVM_ALLOCATOR_free_memory_block_tmp(allocator, list);
   }
   else if (list->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
     // Nothing
   }
   else if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
-    SPVM_ALLOCATOR_free_block_runtime(allocator, list->values, list->env);
-    SPVM_ALLOCATOR_free_block_runtime(allocator, list, list->env);
+    SPVM_ALLOCATOR_free_memory_block_runtime(allocator, list->values, list->env);
+    SPVM_ALLOCATOR_free_memory_block_runtime(allocator, list, list->env);
   }
   else {
     assert(0);

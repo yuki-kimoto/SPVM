@@ -471,7 +471,7 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t
     SPVM_HASH_insert(compiler->type_symtable, type_name, strlen(type_name), type);
   }
   
-  SPVM_ALLOCATOR_free_block_tmp(compiler->allocator, (void*)type_name);
+  SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)type_name);
   type_name = NULL;
   assert(compiler->allocator->memory_blocks_count_tmp == start_memory_blocks_count_tmp);
   
