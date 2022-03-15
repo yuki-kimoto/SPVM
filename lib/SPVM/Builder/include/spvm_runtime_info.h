@@ -16,14 +16,17 @@ struct spvm_runtime_info {
   // String buffer length
   int32_t string_buffer_length;
 
-  // Strings - string literals and symbol names
+  // Strings
   SPVM_RUNTIME_STRING* strings;
 
-  // Strings - string literals and symbol names
+  // The length of strings
   int32_t strings_length;
   
-  // Runtime Basic types
-  SPVM_LIST* basic_types;
+  // Basic types
+  SPVM_RUNTIME_BASIC_TYPE* basic_types;
+  
+  // The length of basic types
+  int32_t basic_types_length;
   
   // Runtime Basic types
   SPVM_LIST* types;

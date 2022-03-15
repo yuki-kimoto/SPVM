@@ -7087,11 +7087,11 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env,  int32_t basic_t
     return NULL;
   }
   
-  if (basic_type_id >= runtime_info->basic_types->length) {
+  if (basic_type_id >= runtime_info->basic_types_length) {
     return NULL;
   }
 
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = runtime_info->basic_types->values[basic_type_id];
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime_info->basic_types[basic_type_id];
   
   return basic_type;
 }

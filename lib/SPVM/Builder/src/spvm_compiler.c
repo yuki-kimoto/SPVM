@@ -525,11 +525,12 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   }
   
   // Runtime basic types - this is moved to the more after place and is optimized in the near future.
-  runtime_info->basic_types = SPVM_LIST_new_list_permanent(allocator, 0);
+  runtime_info->basic_types_length = compiler->basic_types->length;
+  runtime_info->basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * compiler->basic_types->length);
   runtime_info->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE));
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime_info->basic_types[basic_type_id];
     
     runtime_basic_type->id = basic_type->id;
     if (basic_type->class) {
@@ -544,7 +545,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     SPVM_RUNTIME_STRING* basic_type_name_string = (SPVM_RUNTIME_STRING*)&runtime_info->strings[ runtime_basic_type->name_id];
     const char* runtime_basic_type_name = (const char*)&runtime_info->string_buffer[basic_type_name_string->string_buffer_id];
 
-    SPVM_LIST_push(runtime_info->basic_types, runtime_basic_type);
     SPVM_HASH_insert(runtime_info->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
   }
 
