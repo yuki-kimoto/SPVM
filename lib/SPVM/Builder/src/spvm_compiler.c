@@ -564,10 +564,11 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   }
 
   // Runtime class_vars - this is moved to the more after place and is optimized in the near future.
-  runtime_info->class_vars = SPVM_LIST_new_list_permanent(allocator, 0);
+  runtime_info->class_vars_length = compiler->class_vars->length;
+  runtime_info->class_vars = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS_VAR) * compiler->class_vars->length);
   for (int32_t class_var_id = 0; class_var_id < compiler->class_vars->length; class_var_id++) {
     SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
-    SPVM_RUNTIME_CLASS_VAR* runtime_class_var = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS_VAR));
+    SPVM_RUNTIME_CLASS_VAR* runtime_class_var = &runtime_info->class_vars[class_var_id];
 
     runtime_class_var->id = class_var->id;
     runtime_class_var->type_id = class_var->type->id;
@@ -578,8 +579,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
 
     SPVM_STRING* class_var_signature_string = SPVM_HASH_fetch(compiler->string_symtable, class_var->signature, strlen(class_var->signature));
     runtime_class_var->signature_id = class_var_signature_string->id;
-    
-    SPVM_LIST_push(runtime_info->class_vars, runtime_class_var);
   }
 
   // Runtime methods - this is moved to the more after place and is optimized in the near future.

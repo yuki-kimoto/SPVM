@@ -40,8 +40,11 @@ struct spvm_runtime_info {
   // Runtime methods
   SPVM_LIST* methods;
 
-  // Runtime class variables
-  SPVM_LIST* class_vars;
+  // Class variables
+  SPVM_RUNTIME_CLASS_VAR* class_vars;
+
+  // The length of class variables
+  int32_t class_vars_length;
 
   // Runtime fields
   SPVM_LIST* fields;

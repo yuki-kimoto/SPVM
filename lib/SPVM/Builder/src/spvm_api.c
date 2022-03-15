@@ -354,7 +354,7 @@ int32_t SPVM_API_init_env(SPVM_ENV* env) {
   }
 
   // Initialize Class Variables
-  void* class_vars_heap = calloc(sizeof(SPVM_VALUE), ((int64_t)runtime_info->class_vars->length + 1));
+  void* class_vars_heap = calloc(sizeof(SPVM_VALUE), ((int64_t)runtime_info->class_vars_length + 1));
   if (class_vars_heap == NULL) {
     return 2;
   }
@@ -1224,8 +1224,8 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
   SPVM_API_set_exception(env, NULL);
   
   // Free objects of class variables
-  for (int32_t class_var_id = 0; class_var_id < runtime_info->class_vars->length; class_var_id++) {
-    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_LIST_fetch(runtime_info->class_vars, class_var_id);
+  for (int32_t class_var_id = 0; class_var_id < runtime_info->class_vars_length; class_var_id++) {
+    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class_var_id);
     SPVM_RUNTIME_TYPE* class_var_type = SPVM_API_get_type(env, class_var->type_id);
     int32_t class_var_type_category = class_var_type->category;
     
@@ -6864,7 +6864,7 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const c
   }
 
   // Class variable name
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class->id, class_var_name);
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var_by_class_id_and_class_var_name(env, class->id, class_var_name);
   if (!class_var) {
     return -1;
   }
@@ -7113,6 +7113,23 @@ SPVM_RUNTIME_TYPE* SPVM_API_get_type(SPVM_ENV* env, int32_t type_id) {
   SPVM_RUNTIME_TYPE* type = &runtime_info->types[type_id];
   
   return type;
+}
+
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, int32_t class_var_id) {
+  // Runtime
+  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  
+  if (class_var_id < 0) {
+    return NULL;
+  }
+  
+  if (class_var_id >= runtime_info->class_vars_length) {
+    return NULL;
+  }
+
+  SPVM_RUNTIME_CLASS_VAR* class_var = &runtime_info->class_vars[class_var_id];
+  
+  return class_var;
 }
 
 int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
@@ -7456,16 +7473,16 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, int32_t packagke_var_id, SPVM_
 
 
 // Private API
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, int32_t class_id, const char* class_var_name) {
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var_by_class_id_and_class_var_name(SPVM_ENV* env, int32_t class_id, const char* class_var_name) {
   
   SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
   
   SPVM_RUNTIME_CLASS_VAR* class_var = NULL;
-  for (int32_t i = 0; i < runtime_info->class_vars->length; i++) {
+  for (int32_t i = 0; i < runtime_info->class_vars_length; i++) {
     SPVM_RUNTIME_CLASS_VARS_OF_CLASS* class_var_of_class = (SPVM_RUNTIME_CLASS_VARS_OF_CLASS*)&runtime_info->class_vars_of_class[i];
     if (class_id == class_var_of_class->class_id) {
       if (strcmp(class_var_name, class_var_of_class->name) == 0) {
-        class_var = SPVM_LIST_fetch(runtime_info->class_vars, class_var_of_class->class_var_id);
+        class_var = SPVM_API_get_class_var(env, class_var_of_class->class_var_id);
         break;
       }
     }
