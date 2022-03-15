@@ -46,6 +46,24 @@ struct spvm_runtime_info {
   // The length of methods
   int32_t methods_length;
 
+  // Method argument type ids
+  int32_t* method_arg_type_ids;
+
+  // The length of methods
+  int32_t method_arg_type_ids_length;
+
+  // Native method addresses
+  void** method_native_addresses;
+
+  // The length of native method addresses
+  int32_t method_native_addresses_length;
+
+  // Precompile method addresses
+  void** method_precompile_addresses;
+
+  // The length of precompile method addresses
+  int32_t method_precompile_addresses_length;
+
   // Class variables
   SPVM_RUNTIME_CLASS_VAR* class_vars;
 
