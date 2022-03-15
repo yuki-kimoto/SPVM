@@ -6869,8 +6869,10 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const c
     return -1;
   }
   
+  const char* class_var_signature = SPVM_API_get_constant_string_value(env, class_var->signature_id, NULL);
+  
   // Signature
-  if (strcmp(signature, class_var->signature) != 0) {
+  if (strcmp(signature, class_var_signature) != 0) {
     return -1;
   }
  
@@ -7651,7 +7653,10 @@ const char* SPVM_API_get_constant_string_value(SPVM_ENV* env, int32_t string_id,
   SPVM_RUNTIME_STRING* constant_string = &runtime_info->strings[string_id];
   
   const char* constant_string_value = constant_string->value;
-  *string_length = constant_string->length;
+  
+  if (string_length) {
+    *string_length = constant_string->length;
+  }
   
   return constant_string_value;
 }

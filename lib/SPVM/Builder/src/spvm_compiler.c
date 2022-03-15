@@ -569,11 +569,15 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
     SPVM_RUNTIME_CLASS_VAR* runtime_class_var = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS_VAR));
 
-    runtime_class_var->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, class_var->name);
     runtime_class_var->id = class_var->id;
-    runtime_class_var->signature = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, class_var->signature);
     runtime_class_var->type_id = class_var->type->id;
     runtime_class_var->class_id = class_var->class->id;
+
+    SPVM_STRING* class_var_name_string = SPVM_HASH_fetch(compiler->string_symtable, class_var->name, strlen(class_var->name));
+    runtime_class_var->name_id = class_var_name_string->id;
+
+    SPVM_STRING* class_var_signature_string = SPVM_HASH_fetch(compiler->string_symtable, class_var->signature, strlen(class_var->signature));
+    runtime_class_var->signature_id = class_var_signature_string->id;
     
     SPVM_LIST_push(runtime_info->class_vars, runtime_class_var);
   }
