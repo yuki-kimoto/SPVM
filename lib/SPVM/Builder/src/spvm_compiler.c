@@ -582,10 +582,11 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   }
 
   // Runtime methods - this is moved to the more after place and is optimized in the near future.
-  runtime_info->methods = SPVM_LIST_new_list_permanent(allocator, 0);
+  runtime_info->methods_length = compiler->methods->length;
+  runtime_info->methods = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_METHOD) * compiler->methods->length);
   for (int32_t method_id = 0; method_id < compiler->methods->length; method_id++) {
     SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
-    SPVM_RUNTIME_METHOD* runtime_method = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_METHOD));
+    SPVM_RUNTIME_METHOD* runtime_method = &runtime_info->methods[method_id];
 
     runtime_method->opcodes_base = method->opcodes_base;
     runtime_method->opcodes_length = method->opcodes_length;
@@ -617,8 +618,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
       SPVM_TYPE* arg_type = arg->type;
       SPVM_LIST_push(runtime_method->arg_type_ids, (void*)(intptr_t)arg_type->id);
     }
-
-    SPVM_LIST_push(runtime_info->methods, runtime_method);
   }
 
   // Runtime fields

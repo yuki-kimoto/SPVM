@@ -37,8 +37,11 @@ struct spvm_runtime_info {
   // Runtime class types
   SPVM_LIST* classes;
   
-  // Runtime methods
-  SPVM_LIST* methods;
+  // Methods
+  SPVM_RUNTIME_METHOD* methods;
+
+  // The length of methods
+  int32_t methods_length;
 
   // Class variables
   SPVM_RUNTIME_CLASS_VAR* class_vars;
