@@ -356,4 +356,6 @@ SPVM_RUNTIME_TYPE* SPVM_API_get_type(SPVM_ENV* env,  int32_t type_id);
 
 SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, int32_t class_var_id);
 
+SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, int32_t field_id);
+
 #endif

@@ -563,7 +563,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_type->width = type->width;
   }
 
-  // Runtime class_vars - this is moved to the more after place and is optimized in the near future.
+  // Runtime class variables
   runtime_info->class_vars_length = compiler->class_vars->length;
   runtime_info->class_vars = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS_VAR) * compiler->class_vars->length);
   for (int32_t class_var_id = 0; class_var_id < compiler->class_vars->length; class_var_id++) {
@@ -621,11 +621,12 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     SPVM_LIST_push(runtime_info->methods, runtime_method);
   }
 
-  // Runtime fields - this is moved to the more after place and is optimized in the near future.
-  runtime_info->fields = SPVM_LIST_new_list_permanent(allocator, 0);
+  // Runtime fields
+  runtime_info->fields_length = compiler->fields->length;
+  runtime_info->fields = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_FIELD) * compiler->fields->length);
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
     SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-    SPVM_RUNTIME_FIELD* runtime_field = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_FIELD));
+    SPVM_RUNTIME_FIELD* runtime_field = &runtime_info->fields[field_id];
 
     runtime_field->id = field->id;
     runtime_field->index = field->index;
@@ -637,8 +638,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
 
     SPVM_STRING* field_signature_string = SPVM_HASH_fetch(compiler->string_symtable, field->signature, strlen(field->signature));
     runtime_field->signature_id = field_signature_string->id;
-    
-    SPVM_LIST_push(runtime_info->fields, runtime_field);
   }
   
   return runtime_info;
