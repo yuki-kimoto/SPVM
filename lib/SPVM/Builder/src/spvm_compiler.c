@@ -608,6 +608,12 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_method->return_type_id = method->return_type->id;
     runtime_method->arg_type_ids = SPVM_LIST_new_list_permanent(allocator, method->args->length);
 
+    SPVM_STRING* method_name_string = SPVM_HASH_fetch(compiler->string_symtable, method->name, strlen(method->name));
+    runtime_method->name_id = method_name_string->id;
+
+    SPVM_STRING* method_signature_string = SPVM_HASH_fetch(compiler->string_symtable, method->signature, strlen(method->signature));
+    runtime_method->signature_id = method_signature_string->id;
+
     for (int32_t i = 0; i < method->args->length; i++) {
       SPVM_MY* arg = SPVM_LIST_fetch(method->args, i);
       SPVM_TYPE* arg_type = arg->type;
