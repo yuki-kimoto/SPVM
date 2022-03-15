@@ -628,7 +628,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     SPVM_RUNTIME_FIELD* runtime_field = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_FIELD));
 
     runtime_field->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, field->name);
-    runtime_field->signature = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, field->signature);
     runtime_field->id = field->id;
     runtime_field->index = field->index;
     runtime_field->offset = field->offset;

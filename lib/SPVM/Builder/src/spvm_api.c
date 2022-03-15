@@ -6841,7 +6841,8 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* class_name, const char*
   }
 
   // Signature
-  if (strcmp(signature, field->signature) != 0) {
+  const char* field_signature = SPVM_API_get_constant_string_value(env, field->signature_id, NULL);
+  if (strcmp(signature, field_signature) != 0) {
     return -1;
   }
   
