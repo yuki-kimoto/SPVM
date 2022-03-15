@@ -9,6 +9,7 @@ struct spvm_my {
   SPVM_VAR* var;
   int32_t id;
   int32_t mem_id;
+  int32_t method_arg_id;
   int8_t is_tmp;
   int8_t is_arg;
   int8_t is_eternal;

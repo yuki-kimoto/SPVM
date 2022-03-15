@@ -127,6 +127,9 @@ struct spvm_compiler {
   // Method ops
   SPVM_LIST* methods;
 
+  // Method ops
+  SPVM_LIST* method_args;
+
   // OP our symtable
   SPVM_LIST* class_vars;
 
