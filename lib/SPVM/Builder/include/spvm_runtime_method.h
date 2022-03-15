@@ -7,7 +7,6 @@
 struct spvm_runtime_method {
   void* precompile_address;
   void* native_address;
-  const char* name;
   SPVM_LIST* arg_type_ids;
   int32_t opcodes_base;
   int32_t opcodes_length;

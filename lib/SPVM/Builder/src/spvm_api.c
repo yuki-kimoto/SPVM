@@ -4271,7 +4271,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t decl_method_id = opcode->operand1;
         SPVM_RUNTIME_METHOD* decl_method = SPVM_LIST_fetch(runtime_info->methods, decl_method_id);
         void* object = stack[0].oval;
-        const char* decl_method_name = decl_method->name;
+        const char* decl_method_name = SPVM_API_get_constant_string_value(env, decl_method->name_id, NULL);
         const char* decl_method_signature = SPVM_API_get_constant_string_value(env, decl_method->signature_id, NULL);
         int32_t call_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
 
@@ -4407,7 +4407,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(runtime_info->methods, method_id);
           int32_t line = opcode->operand2;
           
-          const char* method_name = method->name;
+          const char* method_name = SPVM_API_get_constant_string_value(env, method->name_id, NULL);
           SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(runtime_info->classes, method->class_id);
           const char* class_name = method_class->name;
           const char* file = method_class->module_file;
@@ -4427,7 +4427,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           SPVM_RUNTIME_METHOD* method = SPVM_LIST_fetch(runtime_info->methods, method_id);
           int32_t line = opcode->operand2;
           
-          const char* method_name = method->name;
+          const char* method_name = SPVM_API_get_constant_string_value(env, method->name_id, NULL);
           SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(runtime_info->classes, method->class_id);
           const char* class_name = method_class->name;
           const char* file = class->module_file;
@@ -4982,7 +4982,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_HAS_IMPLEMENT: {
         int32_t implement_method_id = opcode->operand2;
         SPVM_RUNTIME_METHOD* implement_method = SPVM_LIST_fetch(runtime_info->methods, implement_method_id);
-        const char* implement_method_name = implement_method->name;
+        const char* implement_method_name = SPVM_API_get_constant_string_value(env, implement_method->name_id, NULL);
         
         int32_t interface_basic_type_id = opcode->operand3;
         SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_API_get_basic_type(env, interface_basic_type_id);
@@ -5632,7 +5632,8 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
     assert(callback->method_ids->length == 1);
     SPVM_RUNTIME_METHOD* method_callback = SPVM_API_get_runtime_method_from_index(env, callback->id, 0);
     
-    SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_callback->name);
+    const char* method_callback_name =  SPVM_API_get_constant_string_value(env, method_callback->name_id, NULL);
+    SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_callback_name);
     if (!found_method) {
       return 0;
     }
