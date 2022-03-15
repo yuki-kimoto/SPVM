@@ -634,8 +634,11 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_field->offset = field->offset;
     runtime_field->type_id = field->type->id;
     
-    // Tmp
-    field->type_id = field->type->id;
+    SPVM_STRING* field_name_string = SPVM_HASH_fetch(compiler->string_symtable, field->name, strlen(field->name));
+    runtime_field->name_id = field_name_string->id;
+
+    SPVM_STRING* field_signature_string = SPVM_HASH_fetch(compiler->string_symtable, field->signature, strlen(field->signature));
+    runtime_field->signature_id = field_signature_string->id;
     
     SPVM_LIST_push(runtime_info->fields, runtime_field);
   }
