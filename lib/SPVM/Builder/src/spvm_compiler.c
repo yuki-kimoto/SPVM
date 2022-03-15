@@ -492,6 +492,9 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_class->object_fields_offset = class->object_fields_offset;
     runtime_class->has_init_block = class->has_init_block;
     runtime_class->is_anon = class->is_anon;
+
+    SPVM_STRING* class_string = SPVM_HASH_fetch(compiler->string_symtable, class->name, strlen(class->name));
+    runtime_class->name_id = class_string->id;
     
     if (class->method_destructor) {
       runtime_class->method_destructor_id = class->method_destructor->id;
