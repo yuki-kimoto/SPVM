@@ -481,7 +481,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
     SPVM_RUNTIME_CLASS* runtime_class = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS));
     
-    runtime_class->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, class->name);
     runtime_class->type_id = class->type->id;
     runtime_class->id = class->id;
     if (class->module_file) {
@@ -522,9 +521,12 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     }
     
     SPVM_LIST_push(runtime_info->classes, runtime_class);
-    SPVM_HASH_insert(runtime_info->class_symtable, runtime_class->name, strlen(runtime_class->name), runtime_class);
+
+    SPVM_RUNTIME_STRING* class_name_string = (SPVM_RUNTIME_STRING*)&runtime_info->strings[runtime_class->name_id];
+    const char* runtime_class_name = (const char*)&runtime_info->string_buffer[class_name_string->string_buffer_id];
+    SPVM_HASH_insert(runtime_info->class_symtable, runtime_class_name, strlen(runtime_class_name), runtime_class);
   }
-  
+
   // Runtime basic types
   runtime_info->basic_types_length = compiler->basic_types->length;
   runtime_info->basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * compiler->basic_types->length);

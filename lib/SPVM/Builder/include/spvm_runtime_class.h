@@ -12,7 +12,6 @@ struct spvm_runtime_class {
   int32_t object_fields_offset;
   int8_t has_init_block;
   int8_t is_anon;
-  const char* name;
   const char* module_file;
   int32_t type_id;
   SPVM_LIST* method_ids;

@@ -419,7 +419,7 @@ call_spvm_method(...)
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, arg_class->name, MFILE, __LINE__);
+              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
             }
             int8_t value = (int8_t)SvIV(sv_field_value);
             args_stack[args_stack_index + field_index].bval = value;
@@ -447,7 +447,7 @@ call_spvm_method(...)
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, arg_class->name, MFILE, __LINE__);
+              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
             }
             int16_t value = (int16_t)SvIV(sv_field_value);
             args_stack[args_stack_index + field_index].sval = value;
@@ -475,7 +475,7 @@ call_spvm_method(...)
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, arg_class->name, MFILE, __LINE__);
+              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
             }
             int32_t value = (int32_t)SvIV(sv_field_value);
             args_stack[args_stack_index + field_index].ival = value;
@@ -503,7 +503,7 @@ call_spvm_method(...)
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, arg_class->name, MFILE, __LINE__);
+              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
             }
             int64_t value = (int64_t)SvIV(sv_field_value);
             args_stack[args_stack_index + field_index].lval = value;
@@ -531,7 +531,7 @@ call_spvm_method(...)
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, arg_class->name, MFILE, __LINE__);
+              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
             }
             float value = (float)SvNV(sv_field_value);
             args_stack[args_stack_index + field_index].fval = value;
@@ -559,7 +559,7 @@ call_spvm_method(...)
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, arg_class->name, MFILE, __LINE__);
+              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
             }
             double value = (double)SvNV(sv_field_value);
             args_stack[args_stack_index + field_index].dval = value;
@@ -907,7 +907,7 @@ call_spvm_method(...)
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, arg_class->name, MFILE, __LINE__);
+            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
           }
           int8_t value = (int8_t)SvIV(sv_field_value);
           ((int8_t*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -945,7 +945,7 @@ call_spvm_method(...)
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, arg_class->name, MFILE, __LINE__);
+            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
           }
           int16_t value = (int16_t)SvIV(sv_field_value);
           ((int16_t*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -982,7 +982,7 @@ call_spvm_method(...)
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, arg_class->name, MFILE, __LINE__);
+            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
           }
           int32_t value = (int32_t)SvIV(sv_field_value);
           ((int32_t*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -1019,7 +1019,7 @@ call_spvm_method(...)
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, arg_class->name, MFILE, __LINE__);
+            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
           }
           int64_t value = (int64_t)SvIV(sv_field_value);
           ((int64_t*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -1056,7 +1056,7 @@ call_spvm_method(...)
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, arg_class->name, MFILE, __LINE__);
+            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
           }
           float value = (float)SvNV(sv_field_value);
           ((float*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -1093,7 +1093,7 @@ call_spvm_method(...)
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, arg_class->name, MFILE, __LINE__);
+            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
           }
           double value = (double)SvNV(sv_field_value);
           ((double*)&ref_stack[ref_stack_index])[field_index] = value;

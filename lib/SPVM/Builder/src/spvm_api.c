@@ -4279,7 +4279,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         if (call_method_id < 0) {
           memset(tmp_buffer, sizeof(tmp_buffer), 0);
           SPVM_RUNTIME_CLASS* decl_method_class = SPVM_LIST_fetch(runtime_info->classes, decl_method->class_id);
-          snprintf(tmp_buffer, 255, "Can't find the \"%s\" method with the signature \"%s\" that is declared in \"%s\"", decl_method_name, decl_method_signature, decl_method_class->name);
+          snprintf(tmp_buffer, 255, "Can't find the \"%s\" method with the signature \"%s\" that is declared in \"%s\"", decl_method_name, decl_method_signature, SPVM_API_get_constant_string_value(env, decl_method_class->name_id, NULL));
           void* exception = env->new_string_nolen_raw(env, tmp_buffer);
           env->set_exception(env, exception);
           exception_flag = 1;
@@ -4409,7 +4409,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           
           const char* method_name = SPVM_API_get_constant_string_value(env, method->name_id, NULL);
           SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(runtime_info->classes, method->class_id);
-          const char* class_name = method_class->name;
+          const char* class_name = SPVM_API_get_constant_string_value(env, method_class->name_id, NULL);
           const char* file = method_class->module_file;
           
           // Exception stack trace
@@ -4429,7 +4429,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           
           const char* method_name = SPVM_API_get_constant_string_value(env, method->name_id, NULL);
           SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(runtime_info->classes, method->class_id);
-          const char* class_name = method_class->name;
+          const char* class_name = SPVM_API_get_constant_string_value(env, method_class->name_id, NULL);
           const char* file = class->module_file;
 
           // Exception stack trace
