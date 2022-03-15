@@ -5,6 +5,7 @@
 
 struct spvm_runtime_class {
   int32_t name_id;
+  int32_t module_file_id;
   int32_t id;
   int32_t method_destructor_id;
   int32_t flag;

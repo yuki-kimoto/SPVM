@@ -485,6 +485,11 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_class->id = class->id;
     if (class->module_file) {
       runtime_class->module_file = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, class->module_file);
+      SPVM_STRING* class_module_file_string = SPVM_HASH_fetch(compiler->string_symtable, class->module_file, strlen(class->module_file));
+      runtime_class->module_file_id = class_module_file_string->id;
+    }
+    else {
+      runtime_class->name_id = -1;
     }
     runtime_class->flag = class->flag;
     runtime_class->object_fields_length = class->object_fields_length;
