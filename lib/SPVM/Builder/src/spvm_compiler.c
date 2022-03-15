@@ -590,7 +590,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_class_var->signature_id = class_var_signature_string->id;
   }
 
-  // Runtime methods - this is moved to the more after place and is optimized in the near future.
+  // Runtime methods
   runtime_info->methods_length = compiler->methods->length;
   runtime_info->methods = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_METHOD) * compiler->methods->length);
   for (int32_t method_id = 0; method_id < compiler->methods->length; method_id++) {
@@ -627,6 +627,15 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
       SPVM_TYPE* arg_type = arg->type;
       SPVM_LIST_push(runtime_method->arg_type_ids, (void*)(intptr_t)arg_type->id);
     }
+  }
+
+  // Runtime method argument type ids
+  runtime_info->method_arg_type_ids_length = compiler->method_args->length;
+  runtime_info->method_arg_type_ids = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * compiler->method_args->length);
+  for (int32_t method_arg_id = 0; method_arg_id < compiler->method_args->length; method_arg_id++) {
+    SPVM_MY* method_arg = SPVM_LIST_fetch(compiler->method_args, method_arg_id);
+    int32_t method_arg_type_id = method_arg->type->id;
+    runtime_info->method_arg_type_ids[method_arg_id] = method_arg_type_id;
   }
 
   // Runtime fields
