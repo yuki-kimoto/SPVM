@@ -540,7 +540,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_basic_type->name_id = basic_type_string->id;
   }
 
-  // Basic type symtable
+  // Runtime basic type symtable
   runtime_info->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, runtime_info->basic_types_length);
   for (int32_t basic_type_id = 0; basic_type_id < runtime_info->basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime_info->basic_types[basic_type_id];
@@ -549,19 +549,18 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     SPVM_HASH_insert(runtime_info->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
   }
 
-  // Runtime types - this is moved to the more after place and is optimized in the near future.
-  runtime_info->types = SPVM_LIST_new_list_permanent(allocator, 0);
+  // Runtime types
+  runtime_info->types_length = compiler->types->length;
+  runtime_info->types = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_TYPE) * compiler->types->length);
   for (int32_t type_id = 0; type_id < compiler->types->length; type_id++) {
     SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
-    SPVM_RUNTIME_TYPE* runtime_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_TYPE));
+    SPVM_RUNTIME_TYPE* runtime_type = &runtime_info->types[type_id];
     
     runtime_type->basic_type_id = type->basic_type->id;
     runtime_type->dimension = type->dimension;
     runtime_type->flag = type->flag;
     runtime_type->category = type->category;
     runtime_type->width = type->width;
-
-    SPVM_LIST_push(runtime_info->types, runtime_type);
   }
 
   // Runtime class_vars - this is moved to the more after place and is optimized in the near future.

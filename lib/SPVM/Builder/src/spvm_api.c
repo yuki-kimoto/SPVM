@@ -484,7 +484,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
             
             SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, class->id, field_index);
             
-            SPVM_RUNTIME_TYPE* field_type = SPVM_LIST_fetch(runtime_info->types, field->type_id);
+            SPVM_RUNTIME_TYPE* field_type = SPVM_API_get_type(env, field->type_id);
 
             int32_t field_basic_type_id = field_type->basic_type_id;
 
@@ -640,7 +640,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
 
           SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, class->id, field_index);
           
-          SPVM_RUNTIME_TYPE* field_type = SPVM_LIST_fetch(runtime_info->types, field->type_id);
+          SPVM_RUNTIME_TYPE* field_type = SPVM_API_get_type(env, field->type_id);
           
           int32_t field_basic_type_id = field_type->basic_type_id;
           int32_t field_type_dimension = field_type->dimension;
@@ -1226,7 +1226,7 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
   // Free objects of class variables
   for (int32_t class_var_id = 0; class_var_id < runtime_info->class_vars->length; class_var_id++) {
     SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_LIST_fetch(runtime_info->class_vars, class_var_id);
-    SPVM_RUNTIME_TYPE* class_var_type = SPVM_LIST_fetch(runtime_info->types, class_var->type_id);
+    SPVM_RUNTIME_TYPE* class_var_type = SPVM_API_get_type(env, class_var->type_id);
     int32_t class_var_type_category = class_var_type->category;
     
     switch (class_var_type_category) {
@@ -1288,7 +1288,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
     
     // Increment ref count of return value
     if (!exception_flag) {
-      SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(runtime_info->types, method->return_type_id);
+      SPVM_RUNTIME_TYPE* method_return_type = SPVM_API_get_type(env, method->return_type_id);
       switch (method_return_type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
@@ -1309,7 +1309,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
 
     // Decrement ref count of return value
     if (!exception_flag) {
-      SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(runtime_info->types, method->return_type_id);
+      SPVM_RUNTIME_TYPE* method_return_type = SPVM_API_get_type(env, method->return_type_id);
       switch (method_return_type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
@@ -4154,7 +4154,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         stack_index = 0;
         exception_flag = env->call_spvm_method(env, call_method_id, stack);
         
-        SPVM_RUNTIME_TYPE* call_spvm_method_return_type = SPVM_LIST_fetch(runtime_info->types, call_spvm_method->return_type_id);
+        SPVM_RUNTIME_TYPE* call_spvm_method_return_type = SPVM_API_get_type(env, call_spvm_method->return_type_id);
 
         switch (call_spvm_method_return_type->category) {
           case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
@@ -4287,7 +4287,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         else {
           exception_flag = env->call_spvm_method(env, call_method_id, stack);
           
-          SPVM_RUNTIME_TYPE* decl_method_return_type = SPVM_LIST_fetch(runtime_info->types, decl_method->return_type_id);
+          SPVM_RUNTIME_TYPE* decl_method_return_type = SPVM_API_get_type(env, decl_method->return_type_id);
           switch (decl_method_return_type->category) {
             case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
               break;
@@ -5403,7 +5403,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   
   // Decrement ref count of return value
   if (!exception_flag) {
-    SPVM_RUNTIME_TYPE* method_return_type = SPVM_LIST_fetch(runtime_info->types, method->return_type_id);
+    SPVM_RUNTIME_TYPE* method_return_type = SPVM_API_get_type(env, method->return_type_id);
     switch (method_return_type->category) {
       case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
       case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
@@ -5552,7 +5552,7 @@ int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array) {
       SPVM_RUNTIME_FIELD* first_field = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
       int32_t first_field_type_id = first_field->type_id;
       assert(first_field_type_id > -1);
-      SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(runtime_info->types, first_field_type_id);
+      SPVM_RUNTIME_TYPE* first_field_type = SPVM_API_get_type(env, first_field_type_id);
       
       int32_t field_basic_type_id = first_field_type->basic_type_id;
       
@@ -6470,7 +6470,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   int32_t fields_length = class->field_ids->length;
   SPVM_RUNTIME_FIELD* field_first = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
 
-  SPVM_RUNTIME_TYPE* first_field_type = SPVM_LIST_fetch(runtime_info->types, field_first->type_id);
+  SPVM_RUNTIME_TYPE* first_field_type = SPVM_API_get_type(env, field_first->type_id);
 
   int32_t field_basic_type_id = first_field_type->basic_type_id;
 
@@ -7094,6 +7094,23 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env,  int32_t basic_t
   SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime_info->basic_types[basic_type_id];
   
   return basic_type;
+}
+
+SPVM_RUNTIME_TYPE* SPVM_API_get_type(SPVM_ENV* env, int32_t type_id) {
+  // Runtime
+  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  
+  if (type_id < 0) {
+    return NULL;
+  }
+  
+  if (type_id >= runtime_info->types_length) {
+    return NULL;
+  }
+
+  SPVM_RUNTIME_TYPE* type = &runtime_info->types[type_id];
+  
+  return type;
 }
 
 int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {

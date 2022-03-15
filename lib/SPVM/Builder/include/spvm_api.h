@@ -352,4 +352,6 @@ const char* SPVM_API_get_basic_type_name(SPVM_ENV* env, int32_t basic_type_id);
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env,  int32_t basic_type_id);
 
+SPVM_RUNTIME_TYPE* SPVM_API_get_type(SPVM_ENV* env,  int32_t type_id);
+
 #endif
