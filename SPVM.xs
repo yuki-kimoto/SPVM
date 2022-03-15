@@ -3861,7 +3861,7 @@ get_module_file(...)
   compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
 
   // Copy class load path to builder
-  SPVM_RUNTIME_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
   const char* module_file;
   SV* sv_module_file;
   if (class) {
