@@ -11,10 +11,9 @@ struct spvm_runtime_class {
   int32_t flag;
   int32_t object_fields_length;
   int32_t object_fields_offset;
+  int32_t type_id;
   int8_t has_init_block;
   int8_t is_anon;
-  const char* module_file;
-  int32_t type_id;
   SPVM_LIST* method_ids;
   SPVM_LIST* field_ids;
   SPVM_LIST* interface_class_ids;

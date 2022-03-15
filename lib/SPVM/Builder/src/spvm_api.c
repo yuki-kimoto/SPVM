@@ -4410,7 +4410,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           const char* method_name = SPVM_API_get_constant_string_value(env, method->name_id, NULL);
           SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(runtime_info->classes, method->class_id);
           const char* class_name = SPVM_API_get_constant_string_value(env, method_class->name_id, NULL);
-          const char* file = method_class->module_file;
+          const char* file = SPVM_API_get_constant_string_value(env, method_class->module_file_id, NULL);
           
           // Exception stack trace
           env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), class_name, method_name, file, line));
@@ -4430,7 +4430,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           const char* method_name = SPVM_API_get_constant_string_value(env, method->name_id, NULL);
           SPVM_RUNTIME_CLASS* method_class = SPVM_LIST_fetch(runtime_info->classes, method->class_id);
           const char* class_name = SPVM_API_get_constant_string_value(env, method_class->name_id, NULL);
-          const char* file = class->module_file;
+          const char* file = SPVM_API_get_constant_string_value(env, class->module_file_id, NULL);
 
           // Exception stack trace
           env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), class_name, method_name, file, line));
@@ -4464,7 +4464,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        const char* file = class->module_file;
+        const char* file = SPVM_API_get_constant_string_value(env, class->module_file_id, NULL);
         
         void* object = object_vars[opcode->operand0];
         
