@@ -360,6 +360,6 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, int32_t field_id);
 
 SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, int32_t method_id);
 
-SPVM_RUNTIME_METHOD* SPVM_API_get_class(SPVM_ENV* env, int32_t class_id);
+SPVM_RUNTIME_CLASS* SPVM_API_get_class(SPVM_ENV* env, int32_t class_id);
 
 #endif

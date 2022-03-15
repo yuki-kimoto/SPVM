@@ -475,11 +475,12 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   }
 
   // Runtime classes - this is moved to the more after place and is optimized in the near future.
-  runtime_info->classes = SPVM_LIST_new_list_permanent(allocator, 0);
+  runtime_info->classes_length = compiler->classes->length;
+  runtime_info->classes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS) * compiler->classes->length);
   runtime_info->class_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
-    SPVM_RUNTIME_CLASS* runtime_class = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS));
+    SPVM_RUNTIME_CLASS* runtime_class = &runtime_info->classes[class_id];
     
     runtime_class->type_id = class->type->id;
     runtime_class->id = class->id;
@@ -523,8 +524,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
       SPVM_CLASS* interface_class = SPVM_LIST_fetch(class->interface_classes, i);
       SPVM_LIST_push(runtime_class->interface_class_ids, (void*)(intptr_t)interface_class->id);
     }
-    
-    SPVM_LIST_push(runtime_info->classes, runtime_class);
 
     SPVM_RUNTIME_STRING* class_name_string = (SPVM_RUNTIME_STRING*)&runtime_info->strings[runtime_class->name_id];
     const char* runtime_class_name = (const char*)&runtime_info->string_buffer[class_name_string->string_buffer_id];
