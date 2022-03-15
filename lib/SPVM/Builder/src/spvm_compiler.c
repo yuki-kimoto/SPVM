@@ -177,8 +177,6 @@ const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_string_symtable, c
   
   SPVM_RUNTIME_STRING* string = SPVM_HASH_fetch(runtime_string_symtable, name, strlen(name));
   
-  assert(string);
-  
   const char* new_name = string->value;
   
   return new_name;
@@ -553,20 +551,17 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
 
   // Runtime types - this is moved to the more after place and is optimized in the near future.
   runtime_info->types = SPVM_LIST_new_list_permanent(allocator, 0);
-  runtime_info->type_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t type_id = 0; type_id < compiler->types->length; type_id++) {
     SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
     SPVM_RUNTIME_TYPE* runtime_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_TYPE));
     
-    runtime_type->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, type->basic_type->name);
     runtime_type->basic_type_id = type->basic_type->id;
     runtime_type->dimension = type->dimension;
     runtime_type->flag = type->flag;
     runtime_type->category = type->category;
     runtime_type->width = type->width;
-    
+
     SPVM_LIST_push(runtime_info->types, runtime_type);
-    SPVM_HASH_insert(runtime_info->type_symtable, runtime_type->name, strlen(runtime_type->name), runtime_type);
   }
 
   // Runtime class_vars - this is moved to the more after place and is optimized in the near future.
