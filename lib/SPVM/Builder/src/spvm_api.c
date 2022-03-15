@@ -4272,7 +4272,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         SPVM_RUNTIME_METHOD* decl_method = SPVM_LIST_fetch(runtime_info->methods, decl_method_id);
         void* object = stack[0].oval;
         const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
+        const char* decl_method_signature = SPVM_API_get_constant_string_value(env, decl_method->signature_id, NULL);
         int32_t call_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
 
         stack_index = 0;
@@ -4988,7 +4988,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_API_get_basic_type(env, interface_basic_type_id);
         SPVM_RUNTIME_CLASS* interface_class = SPVM_API_get_runtime_class_from_basic_type_id(env, interface_basic_type->id);
         SPVM_RUNTIME_METHOD* interface_method = SPVM_API_get_runtime_method_from_runtime_class(env, interface_class->id, implement_method_name);
-        const char* implement_method_signature = interface_method->signature;
+        const char* implement_method_signature = SPVM_API_get_constant_string_value(env, implement_method->signature_id, NULL);
         
         void* object = *(void**)&object_vars[opcode->operand1];
         
@@ -5618,7 +5618,9 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
     SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_runtime_method_from_index(env, class->id, 0);
     SPVM_RUNTIME_METHOD* method_callback = SPVM_API_get_runtime_method_from_index(env, callback->id, 0);
     
-    if (strcmp(method_callback->signature, found_method->signature) == 0) {
+    const char* method_callback_signature = SPVM_API_get_constant_string_value(env, method_callback->signature_id, NULL);
+    const char* found_method_signature = SPVM_API_get_constant_string_value(env, found_method->signature_id, NULL);
+    if (strcmp(method_callback_signature, found_method_signature) == 0) {
       return 1;
     }
     else {
@@ -5635,7 +5637,9 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
       return 0;
     }
     
-    if (strcmp(method_callback->signature, found_method->signature) == 0) {
+    const char* method_callback_signature = SPVM_API_get_constant_string_value(env, method_callback->signature_id, NULL);
+    const char* found_method_signature = SPVM_API_get_constant_string_value(env, found_method->signature_id, NULL);
+    if (strcmp(method_callback_signature, found_method_signature) == 0) {
       return 1;
     }
     else {
@@ -6963,7 +6967,8 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
         // Class method
         if (method->is_class_method) {
           // Signature
-          if (strcmp(signature, method->signature) == 0) {
+          const char* method_signature = SPVM_API_get_constant_string_value(env, method->signature_id, NULL);
+          if (strcmp(signature, method_signature) == 0) {
             method_id = method->id;
           }
         }
@@ -7018,7 +7023,8 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_
         // Instance method
         if (!method->is_class_method) {
           // Signature
-          if (strcmp(signature, method->signature) == 0) {
+          const char* method_signature = SPVM_API_get_constant_string_value(env, method->signature_id, NULL);
+          if (strcmp(signature, method_signature) == 0) {
             method_id = method->id;
           }
         }
@@ -7062,7 +7068,8 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
       // Instance method
       if (!method->is_class_method) {
         // Signature
-        if (strcmp(signature, method->signature) == 0) {
+        const char* method_signature = SPVM_API_get_constant_string_value(env, method->signature_id, NULL);
+        if (strcmp(signature, method_signature) == 0) {
           method_id = method->id;
         }
       }

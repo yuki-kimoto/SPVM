@@ -588,7 +588,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     SPVM_RUNTIME_METHOD* runtime_method = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_METHOD));
 
     runtime_method->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, method->name);
-    runtime_method->signature = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, method->signature);
     runtime_method->opcodes_base = method->opcodes_base;
     runtime_method->opcodes_length = method->opcodes_length;
     runtime_method->id = method->id;
