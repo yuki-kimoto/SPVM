@@ -6889,14 +6889,10 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_runtime_class(SPVM_ENV* en
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
   
   SPVM_RUNTIME_METHOD* found_method = NULL;
-  
   if (class->method_ids_length > 0) {
     for (int32_t method_id = class->method_ids_base; method_id <  class->method_ids_base + class->method_ids_length; method_id++) {
-      
       SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-      
       const char* method_name = SPVM_API_get_name(env, method->name_id);
-      
       if (strcmp(method_name, search_method_name) == 0) {
         found_method = method;
         break;
@@ -6907,22 +6903,23 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_runtime_class(SPVM_ENV* en
   return found_method;
 }
 
-SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_runtime_class(SPVM_ENV* env, int32_t class_id, const char* field_name) {
+SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_runtime_class(SPVM_ENV* env, int32_t class_id, const char* search_field_name) {
   
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
   
-  SPVM_RUNTIME_FIELD* field = NULL;
-  for (int32_t i = 0; i < runtime_info->fields_length; i++) {
-    SPVM_RUNTIME_FIELDS_OF_CLASS* field_of_class = (SPVM_RUNTIME_FIELDS_OF_CLASS*)&runtime_info->fields_of_class[i];
-    if (class_id == field_of_class->class_id) {
-      if (strcmp(field_name, field_of_class->name) == 0) {
-        field = SPVM_API_get_field(env, field_of_class->field_id);
+  SPVM_RUNTIME_FIELD* found_field = NULL;
+  if (class->field_ids_length > 0) {
+    for (int32_t field_id = class->field_ids_base; field_id <  class->field_ids_base + class->field_ids_length; field_id++) {
+      SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, field_id);
+      const char* field_name = SPVM_API_get_name(env, field->name_id);
+      if (strcmp(field_name, search_field_name) == 0) {
+        found_field = field;
         break;
       }
     }
   }
   
-  return field;
+  return found_field;
 }
 
 SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_index(SPVM_ENV* env, int32_t class_id, int32_t field_index) {
