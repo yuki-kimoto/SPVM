@@ -507,11 +507,20 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     else {
       runtime_class->method_destructor_id = -1;
     }
-
+    
     runtime_class->method_ids = SPVM_LIST_new_list_permanent(allocator, class->methods->length);
     for (int32_t i = 0; i < class->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, i);
       SPVM_LIST_push(runtime_class->method_ids, (void*)(intptr_t)method->id);
+    }
+    
+    runtime_class->method_ids_length = class->methods->length;
+    if (class->methods->length > 0) {
+      SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, 0);
+      runtime_class->method_ids_base = method->id;
+    }
+    else {
+       runtime_class->method_ids_base = -1;
     }
 
     runtime_class->field_ids = SPVM_LIST_new_list_permanent(allocator, class->fields->length);
@@ -520,10 +529,28 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
       SPVM_LIST_push(runtime_class->field_ids, (void*)(intptr_t)field->id);
     }
 
+    runtime_class->field_ids_length = class->fields->length;
+    if (class->fields->length > 0) {
+      SPVM_METHOD* field = SPVM_LIST_fetch(class->fields, 0);
+      runtime_class->field_ids_base = field->id;
+    }
+    else {
+       runtime_class->field_ids_base = -1;
+    }
+
     runtime_class->interface_class_ids = SPVM_LIST_new_list_permanent(allocator, class->interface_classes->length);
     for (int32_t i = 0; i < class->interface_classes->length; i++) {
       SPVM_CLASS* interface_class = SPVM_LIST_fetch(class->interface_classes, i);
       SPVM_LIST_push(runtime_class->interface_class_ids, (void*)(intptr_t)interface_class->id);
+    }
+
+    runtime_class->interface_class_ids_length = class->interface_classes->length;
+    if (class->interface_classes->length > 0) {
+      SPVM_METHOD* interface_class = SPVM_LIST_fetch(class->interface_classes, 0);
+      runtime_class->interface_class_ids_base = interface_class->id;
+    }
+    else {
+       runtime_class->interface_class_ids_base = -1;
     }
 
     SPVM_RUNTIME_STRING* class_name_string = (SPVM_RUNTIME_STRING*)&runtime_info->strings[runtime_class->name_id];
@@ -626,6 +653,15 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
       SPVM_MY* arg = SPVM_LIST_fetch(method->args, i);
       SPVM_TYPE* arg_type = arg->type;
       SPVM_LIST_push(runtime_method->arg_type_ids, (void*)(intptr_t)arg_type->id);
+    }
+    
+    runtime_method->arg_type_ids_length = method->args->length;
+    if (method->args->length > 0) {
+      SPVM_MY* arg = SPVM_LIST_fetch(method->args, 0);
+      runtime_method->arg_type_ids_base = arg->method_arg_id;
+    }
+    else {
+       runtime_method->arg_type_ids_base = -1;
     }
   }
 
