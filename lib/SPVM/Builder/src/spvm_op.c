@@ -2655,7 +2655,6 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
       SPVM_LIST_push(method->mys, op_arg->uv.var->my);
-      SPVM_LIST_push(method->mys, op_arg->uv.var->my);
     }
   }
 
