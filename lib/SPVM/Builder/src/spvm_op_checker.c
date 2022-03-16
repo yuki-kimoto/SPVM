@@ -5205,7 +5205,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
     // Check methods
-    int32_t method_id = compiler->methods->length;
     for (int32_t i = 0; i < class->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, i);
       // Set method precompile flag if class have precompile descriptor
@@ -5214,48 +5213,37 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
 
       // Set method id
-      method->id = method_id;
+      method->id = compiler->methods->length;
 
       // Add the method to the compiler
       SPVM_LIST_push(compiler->methods, method);
       
-      method_id++;
-      
       // Add the method arguments
-      int32_t method_arg_id = compiler->method_args->length;
       for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
         SPVM_MY* method_arg = SPVM_LIST_fetch(method->args, args_index);
-        method_arg->method_arg_id = method_arg_id;
+        method_arg->method_arg_id = compiler->method_args->length;
         SPVM_LIST_push(compiler->method_args, method_arg);
-        method_arg_id++;
       }
     }
 
-    int32_t field_id = compiler->fields->length;
     for (int32_t i = 0; i < class->fields->length; i++) {
       SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, i);
 
       // Set field id
-      field->id = field_id;
+      field->id = compiler->fields->length;
 
       // Add the field to the compiler
       SPVM_LIST_push(compiler->fields, field);
-      
-      field_id++;
     }
 
-    int32_t class_var_id = compiler->class_vars->length;
     for (int32_t i = 0; i < class->class_vars->length; i++) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(class->class_vars, i);
 
       // Set class_var id
-      class_var->id = class_var_id;
+      class_var->id = compiler->class_vars->length;
 
       // Add the class_var to the compiler
       SPVM_LIST_push(compiler->class_vars, class_var);
-      
-      class_var_id++;
     }
-
   }
 }
