@@ -6869,7 +6869,7 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const c
   }
 
   // Class variable name
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var_by_class_id_and_class_var_name(env, class->id, class_var_name);
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_runtime_class_var_from_runtime_class(env, class->id, class_var_name);
   if (!class_var) {
     return -1;
   }
@@ -7535,7 +7535,7 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, int32_t packagke_var_id, SPVM_
 
 
 // Private API
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var_by_class_id_and_class_var_name(SPVM_ENV* env, int32_t class_id, const char* class_var_name) {
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_runtime_class_var_from_runtime_class(SPVM_ENV* env, int32_t class_id, const char* class_var_name) {
   
   SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
   
