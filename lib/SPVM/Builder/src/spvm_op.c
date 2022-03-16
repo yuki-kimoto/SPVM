@@ -1987,8 +1987,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, class_var->type, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
-          SPVM_OP* op_arg = SPVM_OP_new_op_arg(compiler, compiler->cur_file, compiler->cur_line);
-          SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_arg, op_var_value, op_type_value, NULL);
+          SPVM_OP* op_arg_value = SPVM_OP_new_op_arg(compiler, compiler->cur_file, compiler->cur_line);
+          SPVM_OP_build_arg(compiler, op_arg_value, op_var_value, op_type_value, NULL);
 
           SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg_value);
           
@@ -2087,8 +2087,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, field->type, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
-          SPVM_OP* op_arg = SPVM_OP_new_op_arg(compiler, compiler->cur_file, compiler->cur_line);
-          SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_arg, op_var_value, op_type_value, NULL);
+          SPVM_OP* op_arg_value = SPVM_OP_new_op_arg(compiler, compiler->cur_file, compiler->cur_line);
+          SPVM_OP_build_arg(compiler, op_arg_value, op_var_value, op_type_value, NULL);
 
           SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg_value);
           
@@ -2627,8 +2627,8 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_TYPE* self_type = SPVM_TYPE_new(compiler, 0, 0, 0);
     SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_method->file, op_method->line);
     op_self_type->flag |= SPVM_OP_C_FLAG_TYPE_IS_SELF;
-    SPVM_OP* op_arg = SPVM_OP_new_op_arg(compiler, compiler->cur_file, compiler->cur_line);
-    SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg, op_arg_var_self, op_self_type, NULL);
+    SPVM_OP* op_arg_self = SPVM_OP_new_op_arg(compiler, compiler->cur_file, compiler->cur_line);
+    SPVM_OP_build_arg(compiler, op_arg_self, op_arg_var_self, op_self_type, NULL);
     SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_self);
   }
 
@@ -2637,7 +2637,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     int32_t method_index = 0;
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-      SPVM_LIST_push(method->args, op_arg->uv.var->my);
+      SPVM_LIST_push(method->args, op_arg->uv.arg->var->my);
       method_index++;
     }
   }
@@ -2646,7 +2646,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   if (op_captures) {
     SPVM_OP* op_capture = op_captures->first;
     while ((op_capture = SPVM_OP_sibling(compiler, op_capture))) {
-      SPVM_LIST_push(method->captures, op_capture->uv.var->my);
+      SPVM_LIST_push(method->captures, op_capture->uv.arg->var->my);
     }
   }
   
@@ -2847,7 +2847,9 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_arg, SPVM_OP* op
   
   SPVM_OP_insert_child(compiler, op_arg, op_arg->last, op_var);
   
-  return op_var;
+  op_arg->uv.arg->var = op_var->uv.var;
+  
+  return op_arg;
 }
 
 SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_descriptors) {
