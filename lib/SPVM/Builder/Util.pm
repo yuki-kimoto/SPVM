@@ -408,6 +408,7 @@ sub get_spvm_core_header_file_names {
     spvm_allocator.h
     spvm_allow.h
     spvm_api.h
+    spvm_arg.h
     spvm_array_field_access.h
     spvm_basic_type.h
     spvm_block.h
