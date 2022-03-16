@@ -110,6 +110,7 @@ enum {
   SPVM_OP_C_ID_NAME,
   SPVM_OP_C_ID_CLASS,
   SPVM_OP_C_ID_MY,
+  SPVM_OP_C_ID_ARG,
   SPVM_OP_C_ID_FIELD,
   SPVM_OP_C_ID_METHOD,
   SPVM_OP_C_ID_ENUM,
@@ -511,5 +512,7 @@ SPVM_OP* SPVM_OP_new_op_field_access(SPVM_COMPILER* compiler, const char* file, 
 SPVM_OP* SPVM_OP_new_op_call_method(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
 SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child);
+
+SPVM_OP* SPVM_OP_new_op_arg(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
 #endif

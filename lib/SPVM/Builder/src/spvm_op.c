@@ -110,6 +110,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "NAME",
     "CLASS",
     "MY",
+    "ARG",
     "FIELD",
     "METHOD",
     "ENUM",
