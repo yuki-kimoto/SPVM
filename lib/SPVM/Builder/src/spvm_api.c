@@ -6922,6 +6922,25 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_runtime_class(SPVM_ENV* env,
   return found_field;
 }
 
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_runtime_class_var_from_runtime_class(SPVM_ENV* env, int32_t class_id, const char* search_class_var_name) {
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
+  
+  SPVM_RUNTIME_CLASS_VAR* found_class_var = NULL;
+  if (class->class_var_ids_length > 0) {
+    for (int32_t class_var_id = class->class_var_ids_base; class_var_id <  class->class_var_ids_base + class->class_var_ids_length; class_var_id++) {
+      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class_var_id);
+      const char* class_var_name = SPVM_API_get_name(env, class_var->name_id);
+      if (strcmp(class_var_name, search_class_var_name) == 0) {
+        found_class_var = class_var;
+        break;
+      }
+    }
+  }
+  
+  return found_class_var;
+}
+
 SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_index(SPVM_ENV* env, int32_t class_id, int32_t field_index) {
   
   SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
@@ -7533,25 +7552,6 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, int32_t packagke_var_id, SPVM_
   SPVM_API_OBJECT_ASSIGN(get_field_object_address, value);
 }
 
-
-// Private API
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_runtime_class_var_from_runtime_class(SPVM_ENV* env, int32_t class_id, const char* class_var_name) {
-  
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
-  
-  SPVM_RUNTIME_CLASS_VAR* class_var = NULL;
-  for (int32_t i = 0; i < runtime_info->class_vars_length; i++) {
-    SPVM_RUNTIME_CLASS_VARS_OF_CLASS* class_var_of_class = (SPVM_RUNTIME_CLASS_VARS_OF_CLASS*)&runtime_info->class_vars_of_class[i];
-    if (class_id == class_var_of_class->class_id) {
-      if (strcmp(class_var_name, class_var_of_class->name) == 0) {
-        class_var = SPVM_API_get_class_var(env, class_var_of_class->class_var_id);
-        break;
-      }
-    }
-  }
-  
-  return class_var;
-}
 
 SPVM_OBJECT* SPVM_API_new_array_proto_raw(SPVM_ENV* env, SPVM_OBJECT* array, int32_t length) {
 
