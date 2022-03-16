@@ -399,13 +399,10 @@ lib/SPVM/Builder/include/spvm_public_api.h
 lib/SPVM/Builder/include/spvm_runtime_basic_type.h
 lib/SPVM/Builder/include/spvm_runtime_class.h
 lib/SPVM/Builder/include/spvm_runtime_class_var.h
-lib/SPVM/Builder/include/spvm_runtime_class_vars_of_class.h
 lib/SPVM/Builder/include/spvm_runtime_field.h
-lib/SPVM/Builder/include/spvm_runtime_fields_of_class.h
 lib/SPVM/Builder/include/spvm_runtime_info.h
 lib/SPVM/Builder/include/spvm_runtime_manager.h
 lib/SPVM/Builder/include/spvm_runtime_method.h
-lib/SPVM/Builder/include/spvm_runtime_methods_of_class.h
 lib/SPVM/Builder/include/spvm_runtime_string.h
 lib/SPVM/Builder/include/spvm_runtime_type.h
 lib/SPVM/Builder/include/spvm_string.h

@@ -76,15 +76,6 @@ struct spvm_runtime_info {
   // The length of the fields
   int32_t fields_length;
   
-  // Runtime methods of a class
-  SPVM_RUNTIME_METHODS_OF_CLASS* methods_of_class;
-
-  // Runtime fields of a class
-  SPVM_RUNTIME_FIELDS_OF_CLASS* fields_of_class;
-
-  // Runtime class variables of a class
-  SPVM_RUNTIME_CLASS_VARS_OF_CLASS* class_vars_of_class;
-  
   // String symtable
   SPVM_HASH* string_symtable;
 

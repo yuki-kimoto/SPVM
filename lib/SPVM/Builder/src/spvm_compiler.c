@@ -46,9 +46,6 @@
 #include "spvm_runtime_method.h"
 #include "spvm_runtime_string.h"
 #include "spvm_runtime_type.h"
-#include "spvm_runtime_class_vars_of_class.h"
-#include "spvm_runtime_fields_of_class.h"
-#include "spvm_runtime_methods_of_class.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_COMPILER));
@@ -415,64 +412,12 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_string->string_buffer_id = string->string_buffer_id;
   }
   
-  // Runtime methods, fields, class variables of classes
-  int32_t runtime_methods_of_class_length = 0;
-  int32_t runtime_fields_of_class_length = 0;
-  int32_t runtime_class_vars_of_class_length = 0;
-  for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
-    runtime_methods_of_class_length += class->methods->length;
-    runtime_fields_of_class_length += class->fields->length;
-    runtime_class_vars_of_class_length += class->class_vars->length;
-  }
-  
-  runtime_info->methods_of_class = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_METHODS_OF_CLASS) * runtime_methods_of_class_length);
-  runtime_info->fields_of_class = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_FIELDS_OF_CLASS) * runtime_fields_of_class_length);
-  runtime_info->class_vars_of_class = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS_VARS_OF_CLASS) * runtime_class_vars_of_class_length);
-  
   // String symtable
   runtime_info->string_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t string_id = 0; string_id < runtime_info->strings_length; string_id++) {
     SPVM_RUNTIME_STRING* runtime_string = &runtime_info->strings[string_id];
     runtime_string->value = &runtime_info->string_buffer[runtime_string->string_buffer_id];
     SPVM_HASH_insert(runtime_info->string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
-  }
-
-  int32_t runtime_methods_of_class_id = 0;
-  int32_t runtime_fields_of_class_id = 0;
-  int32_t runtime_class_vars_of_class_id = 0;
-  for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
-    
-    // Methods
-    for (int32_t index = 0; index < class->methods->length; index++) {
-      SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, index);
-      SPVM_RUNTIME_METHODS_OF_CLASS* methods_of_class = (SPVM_RUNTIME_METHODS_OF_CLASS*)&runtime_info->methods_of_class[runtime_methods_of_class_id];
-      methods_of_class->class_id = class->id;
-      methods_of_class->method_id = method->id;
-      methods_of_class->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, method->name);
-      runtime_methods_of_class_id++;
-    }
-    
-    // Fields
-    for (int32_t index = 0; index < class->fields->length; index++) {
-      SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, index);
-      SPVM_RUNTIME_FIELDS_OF_CLASS* fields_of_class = (SPVM_RUNTIME_FIELDS_OF_CLASS*)&runtime_info->fields_of_class[runtime_fields_of_class_id];
-      fields_of_class->class_id = class->id;
-      fields_of_class->field_id = field->id;
-      fields_of_class->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, field->name);
-      runtime_fields_of_class_id++;
-    }
-    
-    // Class variables
-    for (int32_t index = 0; index < class->class_vars->length; index++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(class->class_vars, index);
-      SPVM_RUNTIME_CLASS_VARS_OF_CLASS* class_vars_of_class = (SPVM_RUNTIME_CLASS_VARS_OF_CLASS*)&runtime_info->class_vars_of_class[runtime_class_vars_of_class_id];
-      class_vars_of_class->class_id = class->id;
-      class_vars_of_class->class_var_id = class_var->id;
-      class_vars_of_class->name = SPVM_COMPILER_get_runtime_name(runtime_info->string_symtable, class_var->name);
-      runtime_class_vars_of_class_id++;
-    }
   }
 
   // Runtime classes - this is moved to the more after place and is optimized in the near future.
