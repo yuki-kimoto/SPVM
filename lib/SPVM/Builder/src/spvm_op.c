@@ -1453,6 +1453,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CHECK_CONVERT:
     case SPVM_OP_C_ID_ARRAY_INIT:
     case SPVM_OP_C_ID_COPY:
+    case SPVM_OP_C_ID_ARG:
     {
       type = SPVM_OP_get_type(compiler, op->first);
       break;
@@ -2844,6 +2845,8 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_arg, SPVM_OP* op
   op_my->uv.my->is_arg = 1;
   
   op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type, op_descriptors);
+  
+  SPVM_OP_insert_child(compiler, op_arg, op_arg->last, op_var);
   
   return op_var;
 }
