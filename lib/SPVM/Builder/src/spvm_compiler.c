@@ -514,7 +514,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
       runtime_class->method_ids_base = method->id;
     }
     else {
-       runtime_class->method_ids_base = -1;
+      runtime_class->method_ids_base = -1;
     }
 
     runtime_class->field_ids = SPVM_LIST_new_list_permanent(allocator, class->fields->length);
@@ -525,11 +525,11 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
 
     runtime_class->field_ids_length = class->fields->length;
     if (class->fields->length > 0) {
-      SPVM_METHOD* field = SPVM_LIST_fetch(class->fields, 0);
+      SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, 0);
       runtime_class->field_ids_base = field->id;
     }
     else {
-       runtime_class->field_ids_base = -1;
+      runtime_class->field_ids_base = -1;
     }
 
     runtime_class->interface_class_ids = SPVM_LIST_new_list_permanent(allocator, class->interface_classes->length);
@@ -540,11 +540,11 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
 
     runtime_class->interface_class_ids_length = class->interface_classes->length;
     if (class->interface_classes->length > 0) {
-      SPVM_METHOD* interface_class = SPVM_LIST_fetch(class->interface_classes, 0);
+      SPVM_CLASS* interface_class = SPVM_LIST_fetch(class->interface_classes, 0);
       runtime_class->interface_class_ids_base = interface_class->id;
     }
     else {
-       runtime_class->interface_class_ids_base = -1;
+      runtime_class->interface_class_ids_base = -1;
     }
 
     SPVM_RUNTIME_STRING* class_name_string = (SPVM_RUNTIME_STRING*)&runtime_info->strings[runtime_class->name_id];

@@ -475,7 +475,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
 
           SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_id);
           SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
-          int32_t fields_length = class->field_ids->length;
+          int32_t fields_length = class->field_ids_length;
           
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             for (int32_t depth_index = 0; depth_index < *depth + 2; depth_index++) {
@@ -5547,7 +5547,7 @@ int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array) {
       assert(basic_type->class_id > -1);
       SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, basic_type->class_id);
       
-      int32_t width = class->field_ids->length;
+      int32_t width = class->field_ids_length;
       
       SPVM_RUNTIME_FIELD* first_field = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
       int32_t first_field_type_id = first_field->type_id;
@@ -6472,7 +6472,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   
   // Class
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
-  int32_t fields_length = class->field_ids->length;
+  int32_t fields_length = class->field_ids_length;
   SPVM_RUNTIME_FIELD* field_first = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
 
   SPVM_RUNTIME_TYPE* first_field_type = SPVM_API_get_type(env, field_first->type_id);
@@ -6540,7 +6540,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_id) {
   }
 
   // Alloc body length + 1
-  int32_t fields_length = class->field_ids->length;
+  int32_t fields_length = class->field_ids_length;
 
   int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * ((int64_t)fields_length + 1);
   
