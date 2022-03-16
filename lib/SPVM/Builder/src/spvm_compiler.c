@@ -528,7 +528,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
 
     runtime_class->class_var_ids_length = class->class_vars->length;
     if (class->class_vars->length > 0) {
-      SPVM_FIELD* class_var = SPVM_LIST_fetch(class->class_vars, 0);
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(class->class_vars, 0);
       runtime_class->class_var_ids_base = class_var->id;
     }
     else {
