@@ -5685,8 +5685,8 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t inter
     return 1;
   }
   
-  for (int32_t i = 0; i < class->interface_class_ids->length; i++) {
-    int32_t must_implement_class_id = (intptr_t)SPVM_LIST_fetch(class->interface_class_ids, i);
+  for (int32_t i = 0; i < class->interface_class_ids_length; i++) {
+    int32_t must_implement_class_id = class->interface_class_ids_base + i;
     if (must_implement_class_id == interface->id) {
       return 1;
     }

@@ -12,15 +12,14 @@ struct spvm_runtime_class {
   int32_t object_fields_length;
   int32_t object_fields_offset;
   int32_t type_id;
-  int8_t has_init_block;
-  int8_t is_anon;
   int32_t method_ids_base;
   int32_t method_ids_length;
   int32_t field_ids_base;
   int32_t field_ids_length;
   int32_t interface_class_ids_base;
   int32_t interface_class_ids_length;
-  SPVM_LIST* interface_class_ids;
+  int8_t has_init_block;
+  int8_t is_anon;
 };
 
 #endif
