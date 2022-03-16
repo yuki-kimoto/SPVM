@@ -376,7 +376,8 @@ args
 arg
   : var ':' qualified_type
     {
-      $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL);
+      SPVM_OP* op_arg = SPVM_OP_new_op_arg(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_arg(compiler, op_arg, $1, $3, NULL);
     }
 
 opt_vaarg
