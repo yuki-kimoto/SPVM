@@ -361,6 +361,7 @@ sub get_spvm_core_source_file_names {
     spvm_allocator.c
     spvm_allow.c
     spvm_api.c
+    spvm_arg.c
     spvm_array_field_access.c
     spvm_basic_type.c
     spvm_block.c
