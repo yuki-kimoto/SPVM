@@ -4403,7 +4403,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           exception_flag = 0;
           
           int32_t method_index = opcode->operand1;
-          int32_t method_id = (intptr_t)SPVM_LIST_fetch(class->method_ids, method_index);
+          int32_t method_id = class->method_ids_base + method_index;
           SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
           int32_t line = opcode->operand2;
           
@@ -4423,7 +4423,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         if (exception_flag) {
           int32_t method_index = opcode->operand1;
-          int32_t method_id = (intptr_t)SPVM_LIST_fetch(class->method_ids, method_index);
+          int32_t method_id = class->method_ids_base + method_index;
           SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
           int32_t line = opcode->operand2;
           
@@ -5613,8 +5613,8 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
   
   // Class which have only anon sub
   if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
-    assert(class->method_ids->length == 1);
-    assert(callback->method_ids->length == 1);
+    assert(class->method_ids_length == 1);
+    assert(callback->method_ids_length == 1);
     SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_runtime_method_from_index(env, class->id, 0);
     SPVM_RUNTIME_METHOD* method_callback = SPVM_API_get_runtime_method_from_index(env, callback->id, 0);
     
@@ -5629,7 +5629,7 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
   }
   // Normal class
   else {
-    assert(callback->method_ids->length == 1);
+    assert(callback->method_ids_length == 1);
     SPVM_RUNTIME_METHOD* method_callback = SPVM_API_get_runtime_method_from_index(env, callback->id, 0);
     
     const char* method_callback_name =  SPVM_API_get_constant_string_value(env, method_callback->name_id, NULL);
@@ -6947,7 +6947,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_index(SPVM_ENV* env, int32
   SPVM_RUNTIME_METHOD* method = NULL;
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
   if (class) {
-    int32_t method_id = (intptr_t)SPVM_LIST_fetch(class->method_ids, method_index);
+    int32_t method_id = class->method_ids_base +  method_index;
     method = SPVM_API_get_method(env, method_id);
   }
   
@@ -7065,7 +7065,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
     // Anon instance method
     if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
       // Method name
-      int32_t method_id = (intptr_t)SPVM_LIST_fetch(class->method_ids, 0);
+      int32_t method_id = class->method_ids_base;
       method = SPVM_API_get_method(env, method_id);
     }
     // Normal instance method

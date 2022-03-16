@@ -20,7 +20,6 @@ struct spvm_runtime_class {
   int32_t field_ids_length;
   int32_t interface_class_ids_base;
   int32_t interface_class_ids_length;
-  SPVM_LIST* method_ids;
   SPVM_LIST* field_ids;
   SPVM_LIST* interface_class_ids;
 };

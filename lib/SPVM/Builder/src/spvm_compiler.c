@@ -508,12 +508,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
       runtime_class->method_destructor_id = -1;
     }
     
-    runtime_class->method_ids = SPVM_LIST_new_list_permanent(allocator, class->methods->length);
-    for (int32_t i = 0; i < class->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, i);
-      SPVM_LIST_push(runtime_class->method_ids, (void*)(intptr_t)method->id);
-    }
-    
     runtime_class->method_ids_length = class->methods->length;
     if (class->methods->length > 0) {
       SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, 0);
