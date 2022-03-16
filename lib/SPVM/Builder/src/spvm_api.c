@@ -6885,22 +6885,27 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const c
   return class_var->id;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_runtime_class(SPVM_ENV* env, int32_t class_id, const char* method_name) {
+SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_runtime_class(SPVM_ENV* env, int32_t class_id, const char* search_method_name) {
   
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
   
-  SPVM_RUNTIME_METHOD* method = NULL;
-  for (int32_t i = 0; i < runtime_info->methods_length; i++) {
-    SPVM_RUNTIME_METHODS_OF_CLASS* method_of_class = (SPVM_RUNTIME_METHODS_OF_CLASS*)&runtime_info->methods_of_class[i];
-    if (class_id == method_of_class->class_id) {
-      if (strcmp(method_name, method_of_class->name) == 0) {
-        method = SPVM_API_get_method(env, method_of_class->method_id);
+  SPVM_RUNTIME_METHOD* found_method = NULL;
+  
+  if (class->method_ids_length > 0) {
+    for (int32_t method_id = class->method_ids_base; method_id <  class->method_ids_base + class->method_ids_length; method_id++) {
+      
+      SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+      
+      const char* method_name = SPVM_API_get_name(env, method->name_id);
+      
+      if (strcmp(method_name, search_method_name) == 0) {
+        found_method = method;
         break;
       }
     }
   }
   
-  return method;
+  return found_method;
 }
 
 SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_runtime_class(SPVM_ENV* env, int32_t class_id, const char* field_name) {
@@ -6965,6 +6970,7 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
 
       // Method
       SPVM_RUNTIME_METHOD* method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_name);
+      
       if (method) {
         // Class method
         if (method->is_class_method) {
@@ -7736,6 +7742,13 @@ const char* SPVM_API_get_constant_string_value(SPVM_ENV* env, int32_t string_id,
   }
   
   return constant_string_value;
+}
+
+const char* SPVM_API_get_name(SPVM_ENV* env, int32_t string_id) {
+  
+  const char* name = SPVM_API_get_constant_string_value(env, string_id, NULL);
+  
+  return name;
 }
 
 void SPVM_API_set_native_method_address(SPVM_ENV* env, int32_t method_id, void* address) {

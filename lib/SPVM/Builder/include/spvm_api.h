@@ -362,4 +362,6 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, int32_t method_id);
 
 SPVM_RUNTIME_CLASS* SPVM_API_get_class(SPVM_ENV* env, int32_t class_id);
 
+const char* SPVM_API_get_name(SPVM_ENV* env, int32_t string_id);
+
 #endif
