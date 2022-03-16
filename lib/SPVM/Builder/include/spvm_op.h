@@ -339,6 +339,7 @@ struct spvm_op {
     SPVM_CONSTANT* constant;
     SPVM_VAR* var;
     SPVM_MY* my;
+    SPVM_ARG* arg;
     SPVM_TYPE* type;
     const char* name;
     SPVM_CLASS* class;

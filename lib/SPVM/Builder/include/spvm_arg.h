@@ -5,7 +5,8 @@
 
 struct spvm_arg {
   SPVM_OP* op_arg;
-  SPVM_MY* arg;
+  SPVM_VAR* var;
+  int32_t type_id;
 };
 
 SPVM_ARG* SPVM_ARG_new();
