@@ -631,8 +631,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
         SPVM_STRING_BUFFER_add(string_buffer, "{\n");
         
         // Free object fields
-        SPVM_LIST* field_ids = class->field_ids;
-        int32_t fields_length = field_ids->length;
+        int32_t fields_length = class->field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           for (int32_t depth_index = 0; depth_index < *depth + 1; depth_index++) {
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
@@ -6933,7 +6932,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_index(SPVM_ENV* env, int32_t
   SPVM_RUNTIME_FIELD* field = NULL;
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
   if (class) {
-    int32_t field_id = (intptr_t)SPVM_LIST_fetch(class->field_ids, field_index);
+    int32_t field_id = class->field_ids_base + field_index;
     field = SPVM_API_get_field(env, field_id);
   }
   

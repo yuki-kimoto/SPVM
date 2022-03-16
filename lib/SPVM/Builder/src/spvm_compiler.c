@@ -517,12 +517,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
       runtime_class->method_ids_base = -1;
     }
 
-    runtime_class->field_ids = SPVM_LIST_new_list_permanent(allocator, class->fields->length);
-    for (int32_t i = 0; i < class->fields->length; i++) {
-      SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, i);
-      SPVM_LIST_push(runtime_class->field_ids, (void*)(intptr_t)field->id);
-    }
-
     runtime_class->field_ids_length = class->fields->length;
     if (class->fields->length > 0) {
       SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, 0);
