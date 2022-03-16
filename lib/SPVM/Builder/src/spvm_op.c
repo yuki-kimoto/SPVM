@@ -37,6 +37,7 @@
 #include "spvm_allow.h"
 #include "spvm_implement.h"
 #include "spvm_string.h"
+#include "spvm_arg.h"
 
 
 
@@ -311,6 +312,16 @@ SPVM_OP* SPVM_OP_new_op_my_eternal(SPVM_COMPILER* compiler, const char* file, in
   my->op_my = op_my;
   
   return op_my;
+}
+
+SPVM_OP* SPVM_OP_new_op_arg(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_OP* op_arg = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARG, file, line);
+  SPVM_ARG* arg = SPVM_ARG_new(compiler);
+  
+  op_arg->uv.arg = arg;
+  arg->op_arg = op_arg;
+  
+  return op_arg;
 }
 
 SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
