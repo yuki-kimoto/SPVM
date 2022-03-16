@@ -5220,9 +5220,9 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       // Add the method arguments
       for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
-        SPVM_MY* method_arg = SPVM_LIST_fetch(method->args, args_index);
-        method_arg->method_arg_id = compiler->method_args->length;
-        SPVM_LIST_push(compiler->method_args, method_arg);
+        SPVM_MY* method_arg_my = SPVM_LIST_fetch(method->args, args_index);
+        method_arg_my->method_arg_id = compiler->method_args->length;
+        SPVM_LIST_push(compiler->method_args, method_arg_my);
       }
     }
 
