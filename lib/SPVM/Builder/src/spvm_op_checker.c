@@ -2361,7 +2361,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 if (found_capture_field && found_capture_field->is_captured) {
                   
                   // Capture var is converted to field access
-                  SPVM_MY* arg_first_my = SPVM_LIST_fetch(method->args, 0);
+                  SPVM_MY* arg_first_my = SPVM_LIST_fetch(method->mys, 0);
                   assert(arg_first_my);
                   SPVM_OP* op_name_invoker = SPVM_OP_new_op_name(compiler, arg_first_my->var->name, op_cur->file, op_cur->line);
                   SPVM_OP* op_term_invoker = SPVM_OP_new_op_var(compiler, op_name_invoker);
@@ -2504,7 +2504,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // New
                 SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_cur->file, op_cur->line);
                 
-                SPVM_MY* vaarg_last_arg_my = SPVM_LIST_fetch(call_method->method->args, call_method->method->args->length - 1);
+                SPVM_MY* vaarg_last_arg_my = SPVM_LIST_fetch(call_method->method->mys, call_method->method->args->length - 1);
                 SPVM_TYPE* vaarg_last_arg_type = vaarg_last_arg_my->type;
 
                 // Create new type
@@ -2594,7 +2594,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     return;
                   }
                   
-                  SPVM_MY* method_arg_my = SPVM_LIST_fetch(call_method->method->args, call_method_args_count - 1);
+                  SPVM_MY* method_arg_my = SPVM_LIST_fetch(call_method->method->mys, call_method_args_count - 1);
                   SPVM_TYPE* method_arg_my_type = method_arg_my->type;
                   
                   // Check if source can be assigned to dist
@@ -3508,7 +3508,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               error = 1;
             }
             else {
-              SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, 0);
+              SPVM_MY* arg_my = SPVM_LIST_fetch(method->mys, 0);
               SPVM_TYPE* arg_type = arg_my->type;
               
               if (!(arg_type->basic_type->id == class_type->basic_type->id && arg_type->dimension == class_type->dimension)) {
@@ -3786,7 +3786,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             if (method->class->category == SPVM_CLASS_C_CATEGORY_CALLBACK || method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
               int32_t arg_index;
               for (arg_index = 0; arg_index < method->args->length; arg_index++) {
-                SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, arg_index);
+                SPVM_MY* arg_my = SPVM_LIST_fetch(method->mys, arg_index);
                 SPVM_LIST_push(method->mys, arg_my);
               }
             }
@@ -5078,7 +5078,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       int32_t arg_allow_count = 0;
       SPVM_TYPE* last_arg_type = NULL;
       for (int32_t arg_index = 0; arg_index < method->args->length; arg_index++) {
-        SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, arg_index);
+        SPVM_MY* arg_my = SPVM_LIST_fetch(method->mys, arg_index);
 
         SPVM_TYPE* arg_type = arg_my->type;
         
@@ -5220,7 +5220,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       // Add the method arguments
       for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
-        SPVM_MY* method_arg_my = SPVM_LIST_fetch(method->args, args_index);
+        SPVM_MY* method_arg_my = SPVM_LIST_fetch(method->mys, args_index);
         method_arg_my->method_arg_id = compiler->method_args->length;
         SPVM_LIST_push(compiler->method_args, method_arg_my);
       }
