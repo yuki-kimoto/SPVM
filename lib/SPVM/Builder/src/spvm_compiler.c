@@ -594,6 +594,9 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     }
   }
 
+  runtime_info->method_native_addresses = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(void*) * runtime_info->methods_length);
+  runtime_info->method_precompile_addresses = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(void*) * runtime_info->methods_length);
+
   // Runtime method argument type ids
   runtime_info->arg_type_ids_length = compiler->args->length;
   runtime_info->arg_type_ids = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * compiler->args->length);
