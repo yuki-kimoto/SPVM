@@ -278,7 +278,7 @@ call_spvm_method(...)
     // Get value from Perl argument stack
     SV* sv_value = ST(spvm_args_base + args_index);
 
-    int32_t arg_type_id = (intptr_t)SPVM_LIST_fetch(method->arg_type_ids, args_index);
+    int32_t arg_type_id = runtime_info->arg_type_ids[method->arg_type_ids_base + args_index];
     SPVM_RUNTIME_TYPE* arg_type = SPVM_API_get_type(env, arg_type_id);
     
     int32_t arg_basic_type_id = arg_type->basic_type_id;
@@ -1271,7 +1271,7 @@ call_spvm_method(...)
     for (int32_t args_index = 0; args_index < method->arg_type_ids_length; args_index++) {
       SV* sv_value = ST(spvm_args_base + args_index);
       
-      int32_t arg_type_id = (intptr_t)SPVM_LIST_fetch(method->arg_type_ids, args_index);
+      int32_t arg_type_id = runtime_info->arg_type_ids[method->arg_type_ids_base + args_index];
       SPVM_RUNTIME_TYPE* arg_type = SPVM_API_get_type(env, arg_type_id);
       
       // Convert to runtime type

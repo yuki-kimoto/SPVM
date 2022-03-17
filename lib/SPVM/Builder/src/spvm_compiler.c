@@ -577,7 +577,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_method->call_stack_ref_vars_legnth = method->call_stack_ref_vars_legnth;
     runtime_method->mortal_stack_length  = method->mortal_stack_length;
     runtime_method->return_type_id = method->return_type->id;
-    runtime_method->arg_type_ids = SPVM_LIST_new_list_permanent(allocator, method->args_length);
 
     SPVM_STRING* method_name_string = SPVM_HASH_fetch(compiler->string_symtable, method->name, strlen(method->name));
     runtime_method->name_id = method_name_string->id;
@@ -585,19 +584,13 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     SPVM_STRING* method_signature_string = SPVM_HASH_fetch(compiler->string_symtable, method->signature, strlen(method->signature));
     runtime_method->signature_id = method_signature_string->id;
 
-    for (int32_t i = 0; i < method->args_length; i++) {
-      SPVM_MY* arg = SPVM_LIST_fetch(method->mys, i);
-      SPVM_TYPE* arg_type = arg->type;
-      SPVM_LIST_push(runtime_method->arg_type_ids, (void*)(intptr_t)arg_type->id);
-    }
-    
     runtime_method->arg_type_ids_length = method->args_length;
     if (method->args_length > 0) {
       SPVM_MY* arg = SPVM_LIST_fetch(method->mys, 0);
       runtime_method->arg_type_ids_base = arg->arg_id;
     }
     else {
-       runtime_method->arg_type_ids_base = -1;
+      runtime_method->arg_type_ids_base = -1;
     }
   }
 
