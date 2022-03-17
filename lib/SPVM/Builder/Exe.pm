@@ -273,11 +273,16 @@ sub create_source_file {
   my $output_file = $opt->{output_file};
   my $create_cb = $opt->{create_cb};
   
+  my $need_generate_input_files = [@$input_files];
+  my $config_file = $self->config_file;
+  if (defined $config_file && -f $config_file) {
+    push @$need_generate_input_files, $config_file;
+  }
   my $need_generate = SPVM::Builder::Util::need_generate({
     global_force => $self->force,
     config_force => $config->force,
     output_file => $output_file,
-    input_files => $input_files,
+    input_files => $need_generate_input_files,
   });
   
   if ($need_generate) {
@@ -304,13 +309,16 @@ sub compile_source_file {
     $depend_files = [];
   }
   
-  my $input_files = [$source_file, @$depend_files];
-  
+  my $need_generate_input_files = [$source_file, @$depend_files];
+  my $config_file = $self->config_file;
+  if (defined $config_file && -f $config_file) {
+    push @$need_generate_input_files, $config_file;
+  }
   my $need_generate = SPVM::Builder::Util::need_generate({
     global_force => $self->force,
     config_force => $config->force,
     output_file => $output_file,
-    input_files => $input_files,
+    input_files => $need_generate_input_files,
   });
 
   # Compile command
@@ -943,11 +951,16 @@ sub link {
     libpth => '',
   };
   
+  my $need_generate_input_files = [@$object_file_infos];
+  my $config_file = $self->config_file;
+  if (defined $config_file && -f $config_file) {
+    push @$need_generate_input_files, $config_file;
+  }
   my $need_generate = SPVM::Builder::Util::need_generate({
     global_force => $self->force,
     config_force => $config->force,
     output_file => $output_file,
-    input_files => $object_file_infos,
+    input_files => $need_generate_input_files,
   });
 
   my $link_info = SPVM::Builder::LinkInfo->new(

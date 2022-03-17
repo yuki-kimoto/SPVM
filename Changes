@@ -19,9 +19,8 @@ Revision history for SPVM
           Change Native API compiler_set_precompile_method_address to set_precompile_method_address
        * Internally used "memory_blocks_count" native API is no more used. The count of memory blocks is managed in "runtime_info".
          Because this is internal used, the effect is little.
-
-Unused from v0.9508+. The count of memory blocks is managed in L<"runtime_info">.
-
+       [BUG FIX]
+       * Fix the bug that spvmcc can't detect the change of config file.
 
 0.9508_01  2021-03-11
         [CHANGE]
