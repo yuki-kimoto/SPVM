@@ -314,17 +314,6 @@ void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
     printf("\n");
     printf("      is_enum => %d\n", (method->flag & SPVM_METHOD_C_FLAG_ENUM) ? 1 : 0);
     printf("      have_native_desc => %d\n", (method->flag & SPVM_METHOD_C_FLAG_NATIVE) ? 1 : 0);
-    printf("      args\n");
-    SPVM_LIST* args = method->args;
-    {
-      int32_t i;
-      for (i = 0; i < args->length; i++) {
-        SPVM_MY* my = SPVM_LIST_fetch(method->args, i);
-        printf("        [%" PRId32 "] ", i);
-        SPVM_DUMPER_dump_my(compiler, my);
-      }
-    }
-    
     if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
       printf("      mys\n");
       SPVM_LIST* mys = method->mys;

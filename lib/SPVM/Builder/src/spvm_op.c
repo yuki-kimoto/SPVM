@@ -2211,7 +2211,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         // Set first argument type if not set
         if (method->args->length > 0) {
-          SPVM_MY* arg_my_first = SPVM_LIST_fetch(method->args, 0);
+          SPVM_MY* arg_my_first = SPVM_LIST_fetch(method->mys, 0);
           SPVM_OP* op_arg_first_type = NULL;
           if (!method->is_class_method) {
             SPVM_TYPE* arg_invocant_type = op_type->uv.type;
@@ -2660,7 +2660,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     {
       int32_t i;
       for (i = method->args->length - 1; i >= 0; i--) {
-        SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, i);
+        SPVM_MY* arg_my = SPVM_LIST_fetch(method->mys, i);
         assert(arg_my);
         SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, arg_my->var->name, arg_my->op_my->file, arg_my->op_my->line);
         SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);

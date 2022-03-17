@@ -586,14 +586,14 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_method->signature_id = method_signature_string->id;
 
     for (int32_t i = 0; i < method->args->length; i++) {
-      SPVM_MY* arg = SPVM_LIST_fetch(method->args, i);
+      SPVM_MY* arg = SPVM_LIST_fetch(method->mys, i);
       SPVM_TYPE* arg_type = arg->type;
       SPVM_LIST_push(runtime_method->arg_type_ids, (void*)(intptr_t)arg_type->id);
     }
     
     runtime_method->arg_type_ids_length = method->args->length;
     if (method->args->length > 0) {
-      SPVM_MY* arg = SPVM_LIST_fetch(method->args, 0);
+      SPVM_MY* arg = SPVM_LIST_fetch(method->mys, 0);
       runtime_method->arg_type_ids_base = arg->method_arg_id;
     }
     else {
@@ -707,7 +707,7 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
         length += 4;
       }
       else {
-        SPVM_MY* arg_my_method = SPVM_LIST_fetch(method->args, arg_index);
+        SPVM_MY* arg_my_method = SPVM_LIST_fetch(method->mys, arg_index);
         SPVM_TYPE* type_arg_method = arg_my_method->type;
         
         // Ref
@@ -758,7 +758,7 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
         bufptr += 4;
       }
       else {
-        SPVM_MY* arg_my_method = SPVM_LIST_fetch(method->args, arg_index);
+        SPVM_MY* arg_my_method = SPVM_LIST_fetch(method->mys, arg_index);
         SPVM_TYPE* type_arg_method = arg_my_method->type;
         
         // Ref
