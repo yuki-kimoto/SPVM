@@ -15,6 +15,7 @@
 #include "spvm_constant.h"
 #include "spvm_field.h"
 #include "spvm_my.h"
+#include "spvm_arg.h"
 #include "spvm_var.h"
 #include "spvm_type.h"
 #include "spvm_class.h"

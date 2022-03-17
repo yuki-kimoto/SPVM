@@ -26,6 +26,7 @@
 #include "spvm_opcode_builder.h"
 #include "spvm_object.h"
 #include "spvm_my.h"
+#include "spvm_arg.h"
 #include "spvm_string_buffer.h"
 #include "spvm_allow.h"
 #include "spvm_implement.h"
