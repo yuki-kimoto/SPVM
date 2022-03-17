@@ -26,7 +26,6 @@ struct spvm_method {
   SPVM_OP* op_method;
   SPVM_OP* op_name;
   SPVM_OP* op_block;
-  SPVM_LIST* args;
   SPVM_TYPE* return_type;
   SPVM_LIST* mys;
   SPVM_LIST* captures;
@@ -36,6 +35,7 @@ struct spvm_method {
   const char* anon_method_defined_class_name;
   void* precompile_address;
   void* native_address;
+  int32_t args_length;
   int32_t id;
   int32_t rel_id;
   int32_t tmp_vars_length;

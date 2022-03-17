@@ -2210,7 +2210,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         // Method check
         
         // Set first argument type if not set
-        if (method->args->length > 0) {
+        if (method->args_length > 0) {
           SPVM_MY* arg_my_first = SPVM_LIST_fetch(method->mys, 0);
           SPVM_OP* op_arg_first_type = NULL;
           if (!method->is_class_method) {
@@ -2618,12 +2618,12 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
 
   // Add method arguments
   {
-    int32_t method_index = 0;
+    int32_t args_length = 0;
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-      SPVM_LIST_push(method->args, op_arg->uv.var->my);
-      method_index++;
+      args_length++;
     }
+    method->args_length = args_length;
   }
 
   // Capture variables
@@ -2659,7 +2659,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     // Add variable declarations before the first of the statements
     {
       int32_t i;
-      for (i = method->args->length - 1; i >= 0; i--) {
+      for (i = method->args_length - 1; i >= 0; i--) {
         SPVM_MY* arg_my = SPVM_LIST_fetch(method->mys, i);
         assert(arg_my);
         SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, arg_my->var->name, arg_my->op_my->file, arg_my->op_my->line);

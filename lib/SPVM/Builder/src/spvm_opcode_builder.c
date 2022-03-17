@@ -174,7 +174,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
           // Copy arguments to variables
           int32_t stack_index = 0;
-          for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
+          for (int32_t args_index = 0; args_index < method->args_length; args_index++) {
             SPVM_MY* arg = SPVM_LIST_fetch(method->mys, args_index);
             SPVM_TYPE* arg_type = arg->type;
             
@@ -1026,7 +1026,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_LIST* args = method_call_method->mys;
                           {
                             int32_t arg_index;
-                            for (arg_index = 0; arg_index < method_call_method->args->length; arg_index++) {
+                            for (arg_index = 0; arg_index < method_call_method->args_length; arg_index++) {
                               SPVM_MY* arg_my = SPVM_LIST_fetch(args, arg_index);
                               
                               // Argument type

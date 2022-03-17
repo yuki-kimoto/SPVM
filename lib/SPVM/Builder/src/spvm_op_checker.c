@@ -2468,7 +2468,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               
-              int32_t method_args_count = call_method->method->args->length;
+              int32_t method_args_count = call_method->method->args_length;
               int32_t method_is_vaarg = call_method->method->have_vaarg;
 
               // Variable length argument. Last argument is not array.
@@ -2504,7 +2504,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // New
                 SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_cur->file, op_cur->line);
                 
-                SPVM_MY* vaarg_last_arg_my = SPVM_LIST_fetch(call_method->method->mys, call_method->method->args->length - 1);
+                SPVM_MY* vaarg_last_arg_my = SPVM_LIST_fetch(call_method->method->mys, call_method->method->args_length - 1);
                 SPVM_TYPE* vaarg_last_arg_type = vaarg_last_arg_my->type;
 
                 // Create new type
@@ -3504,7 +3504,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           if (method->flag & SPVM_METHOD_C_FLAG_DESTRUCTOR) {
             // DESTROY argument must be 0
             int32_t error = 0;
-            if (method->args->length != 1) {
+            if (method->args_length != 1) {
               error = 1;
             }
             else {
@@ -3785,7 +3785,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Add op my if need
             if (method->class->category == SPVM_CLASS_C_CATEGORY_CALLBACK || method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
               int32_t arg_index;
-              for (arg_index = 0; arg_index < method->args->length; arg_index++) {
+              for (arg_index = 0; arg_index < method->args_length; arg_index++) {
                 SPVM_MY* arg_my = SPVM_LIST_fetch(method->mys, arg_index);
                 SPVM_LIST_push(method->mys, arg_my);
               }
@@ -5077,7 +5077,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       // Argument limit check
       int32_t arg_allow_count = 0;
       SPVM_TYPE* last_arg_type = NULL;
-      for (int32_t arg_index = 0; arg_index < method->args->length; arg_index++) {
+      for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
         SPVM_MY* arg_my = SPVM_LIST_fetch(method->mys, arg_index);
 
         SPVM_TYPE* arg_type = arg_my->type;
@@ -5092,7 +5092,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           arg_allow_count++;
         }
         
-        if (arg_index == method->args->length - 1) {
+        if (arg_index == method->args_length - 1) {
           last_arg_type = arg_type;
         }
       }
@@ -5143,7 +5143,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
               assert(op_type->id == SPVM_OP_C_ID_TYPE);
               SPVM_TYPE* type = op_type->uv.type;
               if (SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                if (method->args->length == 0) {
+                if (method->args_length == 0) {
                   method->is_simple_constructor = 1;
                   method->op_inline = op_type;
                 }
@@ -5219,7 +5219,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_LIST_push(compiler->methods, method);
       
       // Add the method arguments
-      for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
+      for (int32_t args_index = 0; args_index < method->args_length; args_index++) {
         SPVM_MY* method_arg = SPVM_LIST_fetch(method->mys, args_index);
         method_arg->method_arg_id = compiler->method_args->length;
         SPVM_LIST_push(compiler->method_args, method_arg);
