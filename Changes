@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9508_02  2021-03-11
+0.9508_02  2021-03-18
         [CHANGE]
         * Add get_method_id_without_signature native API.
         * Add get_constant_string_value native API.
