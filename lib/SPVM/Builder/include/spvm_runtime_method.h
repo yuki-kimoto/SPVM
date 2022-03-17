@@ -5,7 +5,6 @@
 
 // Runtime method information
 struct spvm_runtime_method {
-  void* precompile_address;
   int32_t arg_type_ids_base;
   int32_t arg_type_ids_length;
   int32_t opcodes_base;

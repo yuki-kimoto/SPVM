@@ -1332,8 +1332,9 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
   }
   else {
     // Call precompiled method
-    if (method->precompile_address) {
-      int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method->precompile_address;
+    void* method_precompile_address = runtime_info->method_precompile_addresses[method->id];
+    if (method_precompile_address) {
+      int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
       exception_flag = (*precompile_address)(env, stack);
     }
     // Call sub virtual machine
@@ -7766,7 +7767,7 @@ void SPVM_API_set_precompile_method_address(SPVM_ENV* env, int32_t method_id, vo
 
   SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
   
-  method->precompile_address = address;
+  runtime_info->method_precompile_addresses[method->id] = address;
 }
 
 void* SPVM_API_get_native_method_address(SPVM_ENV* env, int32_t method_id) {
@@ -7790,7 +7791,7 @@ void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id) {
 
   SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
   
-  void* precompile_method_address = method->precompile_address;
+  void* precompile_method_address = runtime_info->method_precompile_addresses[method->id];
   
   return precompile_method_address;
 }
