@@ -2637,13 +2637,15 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_self);
   }
 
-  // Add method arguments
+  // Arguments
   {
-    int32_t method_index = 0;
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+      // Add a argument
       SPVM_LIST_push(method->args, op_arg->uv.arg->var->my);
-      method_index++;
+      
+      // Add a variable declaration for the argument
+      SPVM_LIST_push(method->mys, op_arg->uv.arg->var->my);
     }
   }
 
@@ -2655,12 +2657,6 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     }
   }
   
-  // Variable declarations of arguments
-  SPVM_OP* op_arg = op_args->first;
-  while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-    SPVM_LIST_push(method->mys, op_arg->uv.var->my);
-  }
-
   // return type
   method->return_type = op_return_type->uv.type;
   
@@ -2682,7 +2678,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       int32_t i;
       for (i = method->args->length - 1; i >= 0; i--) {
         
-        SPVM_MY* arg_my = SPVM_LIST_fetch(method->args, i);
+        SPVM_MY* arg_my = SPVM_LIST_fetch(method->mys, i);
         assert(arg_my);
         SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, arg_my->var->name, arg_my->op_my->file, arg_my->op_my->line);
         SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
