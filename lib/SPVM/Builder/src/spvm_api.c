@@ -1281,7 +1281,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
     int32_t original_mortal_stack_top = SPVM_API_enter_scope(env);
 
     // Call native subrotuine
-    int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = method->native_address;
+    int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime_info->method_native_addresses[method->id];
     assert(native_address != NULL);
     exception_flag = (*native_address)(env, stack);
     
@@ -7755,7 +7755,7 @@ void SPVM_API_set_native_method_address(SPVM_ENV* env, int32_t method_id, void* 
 
   SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
   
-  method->native_address = address;
+  runtime_info->method_native_addresses[method->id] = address;
 }
 
 void SPVM_API_set_precompile_method_address(SPVM_ENV* env, int32_t method_id, void* address) {
@@ -7777,7 +7777,7 @@ void* SPVM_API_get_native_method_address(SPVM_ENV* env, int32_t method_id) {
 
   SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
   
-  void* native_method_address = method->native_address;
+  void* native_method_address = runtime_info->method_native_addresses[method->id];
   
   return native_method_address;
 }
