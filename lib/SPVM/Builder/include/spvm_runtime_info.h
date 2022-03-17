@@ -47,10 +47,10 @@ struct spvm_runtime_info {
   int32_t methods_length;
 
   // Method argument type ids
-  int32_t* method_arg_type_ids;
+  int32_t* arg_type_ids;
 
   // The length of methods
-  int32_t method_arg_type_ids_length;
+  int32_t arg_type_ids_length;
 
   // Native method addresses
   void** method_native_addresses;

@@ -2468,7 +2468,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               
-              int32_t method_args_count = call_method->method->args_length;
+              int32_t args_count = call_method->method->args_length;
               int32_t method_is_vaarg = call_method->method->have_vaarg;
 
               // Variable length argument. Last argument is not array.
@@ -2477,7 +2477,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 int32_t arg_index = 0;
                 SPVM_OP* op_term = op_list_args->first;
                 while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-                  if (arg_index == method_args_count - 1) {
+                  if (arg_index == args_count - 1) {
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
                     if (!SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                       vaarg_last_arg_is_not_array = 1;
@@ -2488,7 +2488,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 // Empty vaargs 
-                if (arg_index == method_args_count - 1) {
+                if (arg_index == args_count - 1) {
                   vaarg_last_arg_is_not_array = 1;
                 }
               }
@@ -2532,7 +2532,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                   op_term_element->no_need_check = 1;
 
-                  if (arg_index < method_args_count - 1) {
+                  if (arg_index < args_count - 1) {
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
                     SPVM_OP_insert_child(compiler, op_list_args_new, op_list_args_new->last, op_term_element);
                     op_term_element = op_stab;
@@ -2589,27 +2589,27 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_term = op_list_args->first;
                 while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
                   call_method_args_count++;
-                  if (call_method_args_count > method_args_count) {
+                  if (call_method_args_count > args_count) {
                     SPVM_COMPILER_error(compiler, "Too many arguments \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                     return;
                   }
                   
-                  SPVM_MY* method_arg_my = SPVM_LIST_fetch(call_method->method->mys, call_method_args_count - 1);
-                  SPVM_TYPE* method_arg_my_type = method_arg_my->type;
+                  SPVM_MY* arg_my = SPVM_LIST_fetch(call_method->method->mys, call_method_args_count - 1);
+                  SPVM_TYPE* arg_my_type = arg_my->type;
                   
                   // Check if source can be assigned to dist
                   // If needed, numeric convertion op is added
                   char place[50];
                   sprintf(place, "%dth argument", call_method_args_count);
                   
-                  op_term = SPVM_OP_CHECKER_check_assign(compiler, method_arg_my_type, op_term, place, op_cur->file, op_cur->line);
+                  op_term = SPVM_OP_CHECKER_check_assign(compiler, arg_my_type, op_term, place, op_cur->file, op_cur->line);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
                 }
               }
               
-              if (call_method_args_count < method_args_count) {
+              if (call_method_args_count < args_count) {
                 SPVM_COMPILER_error(compiler, "Too few argument \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                 return;
               }
@@ -5220,9 +5220,9 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       // Add the method arguments
       for (int32_t args_index = 0; args_index < method->args_length; args_index++) {
-        SPVM_MY* method_arg = SPVM_LIST_fetch(method->mys, args_index);
-        method_arg->method_arg_id = compiler->method_args->length;
-        SPVM_LIST_push(compiler->method_args, method_arg);
+        SPVM_MY* arg = SPVM_LIST_fetch(method->mys, args_index);
+        arg->arg_id = compiler->args->length;
+        SPVM_LIST_push(compiler->args, arg);
       }
     }
 

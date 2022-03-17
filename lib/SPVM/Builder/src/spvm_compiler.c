@@ -67,7 +67,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  compiler->method_args = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  compiler->args = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->classes = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->class_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
@@ -594,7 +594,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_method->arg_type_ids_length = method->args_length;
     if (method->args_length > 0) {
       SPVM_MY* arg = SPVM_LIST_fetch(method->mys, 0);
-      runtime_method->arg_type_ids_base = arg->method_arg_id;
+      runtime_method->arg_type_ids_base = arg->arg_id;
     }
     else {
        runtime_method->arg_type_ids_base = -1;
@@ -602,12 +602,12 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   }
 
   // Runtime method argument type ids
-  runtime_info->method_arg_type_ids_length = compiler->method_args->length;
-  runtime_info->method_arg_type_ids = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * compiler->method_args->length);
-  for (int32_t method_arg_id = 0; method_arg_id < compiler->method_args->length; method_arg_id++) {
-    SPVM_MY* method_arg_my = SPVM_LIST_fetch(compiler->method_args, method_arg_id);
-    int32_t method_arg_type_id = method_arg_my->type->id;
-    runtime_info->method_arg_type_ids[method_arg_id] = method_arg_type_id;
+  runtime_info->arg_type_ids_length = compiler->args->length;
+  runtime_info->arg_type_ids = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * compiler->args->length);
+  for (int32_t arg_id = 0; arg_id < compiler->args->length; arg_id++) {
+    SPVM_MY* arg_my = SPVM_LIST_fetch(compiler->args, arg_id);
+    int32_t arg_type_id = arg_my->type->id;
+    runtime_info->arg_type_ids[arg_id] = arg_type_id;
   }
 
   // Runtime fields
