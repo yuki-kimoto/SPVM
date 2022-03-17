@@ -605,8 +605,8 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   runtime_info->method_arg_type_ids_length = compiler->method_args->length;
   runtime_info->method_arg_type_ids = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * compiler->method_args->length);
   for (int32_t method_arg_id = 0; method_arg_id < compiler->method_args->length; method_arg_id++) {
-    SPVM_MY* method_arg = SPVM_LIST_fetch(compiler->method_args, method_arg_id);
-    int32_t method_arg_type_id = method_arg->type->id;
+    SPVM_MY* method_arg_my = SPVM_LIST_fetch(compiler->method_args, method_arg_id);
+    int32_t method_arg_type_id = method_arg_my->type->id;
     runtime_info->method_arg_type_ids[method_arg_id] = method_arg_type_id;
   }
 
