@@ -1023,11 +1023,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OP* op_term_args = op_assign_src->last;
                           SPVM_OP* op_term_arg = op_term_args->first;
 
-                          SPVM_LIST* args = method_call_method->args;
+                          SPVM_LIST* arg_mys = method_call_method->mys;
                           {
                             int32_t arg_index;
                             for (arg_index = 0; arg_index < method_call_method->args->length; arg_index++) {
-                              SPVM_MY* arg_my = SPVM_LIST_fetch(args, arg_index);
+                              SPVM_MY* arg_my = SPVM_LIST_fetch(arg_mys, arg_index);
                               
                               // Argument type
                               SPVM_TYPE* arg_type = arg_my->type;
