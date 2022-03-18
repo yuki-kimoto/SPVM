@@ -10,6 +10,8 @@ This document describes L<the usage of SPVM Native APIs|/"List-of-Native-APIs">,
 
 Native methods can be written by C language or C++. If the rule of the function call is same as C, you can use any language, for example, CUDA/nvcc.
 
+B<The interfaces and IDs of Native APIs that is added after 0.9506+(after 181+) will be changed many times.>
+
 =head1 Native Methods
 
 =head2 Native Method Declarations
