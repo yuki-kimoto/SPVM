@@ -3510,6 +3510,8 @@ create_compiler_env(...)
   SV* sviv_compiler_env = sv_2mortal(newSViv(iv_compiler_env));
   SV* sv_compiler_env = sv_2mortal(newRV_inc(sviv_compiler_env));
   (void)hv_store(hv_self, "compiler_env", strlen("compiler_env"), SvREFCNT_inc(sv_compiler_env), 0);
+
+  XSRETURN(0);
 }
 
 SV*
@@ -3532,6 +3534,8 @@ create_compiler(...)
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
   SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
   (void)hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
+
+  XSRETURN(0);
 }
 
 SV*
@@ -3943,6 +3947,8 @@ build_runtime(...)
   SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
   SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
   (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+
+  XSRETURN(0);
 }
 
 
@@ -3977,6 +3983,8 @@ prepare_env(...)
   SV* sviv_env = sv_2mortal(newSViv(iv_env));
   SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
   (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+
+  XSRETURN(0);
 }
 
 SV*
@@ -3994,6 +4002,8 @@ call_init_blocks(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   env->call_init_blocks(env);
+
+  XSRETURN(0);
 }
 
 SV*
@@ -4100,6 +4110,8 @@ DESTROY(...)
   // Free the environment for the compiler
   compiler_env->free_env_raw(compiler_env);
   compiler_env = NULL;
+
+  XSRETURN(0);
 }
 
 MODULE = SPVM::Builder::CC		PACKAGE = SPVM::Builder::CC
