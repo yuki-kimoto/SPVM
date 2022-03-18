@@ -35,17 +35,6 @@ sub module_dirs {
   }
 }
 
-sub compiler_env {
-  my $self = shift;
-  if (@_) {
-    $self->{compiler_env} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{compiler_env};
-  }
-}
-
 sub compiler {
   my $self = shift;
   if (@_) {
@@ -110,8 +99,8 @@ sub new {
   
   bless $self, ref $class || $class;
   
-  # Create an environment for the compiler
-  $self->create_compiler_env;
+  # Create an environment
+  $self->create_env;
   
   # Create the compiler
   $self->create_compiler;

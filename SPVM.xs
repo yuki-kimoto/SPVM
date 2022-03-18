@@ -3496,7 +3496,7 @@ DESTROY(...)
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
-create_compiler_env(...)
+create_env(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3504,21 +3504,12 @@ create_compiler_env(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SPVM_ENV* compiler_env = SPVM_API_new_env_raw(NULL);
-  
-  size_t iv_compiler_env = PTR2IV(compiler_env);
-  SV* sviv_compiler_env = sv_2mortal(newSViv(iv_compiler_env));
-  SV* sv_compiler_env = sv_2mortal(newRV_inc(sviv_compiler_env));
-  (void)hv_store(hv_self, "compiler_env", strlen("compiler_env"), SvREFCNT_inc(sv_compiler_env), 0);
-
   // Create env
-  {
-    SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
-    size_t iv_env = PTR2IV(env);
-    SV* sviv_env = sv_2mortal(newSViv(iv_env));
-    SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-    (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
-  }
+  SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
+  size_t iv_env = PTR2IV(env);
+  SV* sviv_env = sv_2mortal(newSViv(iv_env));
+  SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
+  (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
   
   XSRETURN(0);
 }
@@ -3532,12 +3523,12 @@ create_compiler(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Create compiler
-  void* compiler = compiler_env->compiler_new(compiler_env);
+  void* compiler = env->compiler_new(env);
 
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
@@ -3581,15 +3572,15 @@ compile_spvm(...)
   // Line
   int32_t start_line = (int32_t)SvIV(sv_start_line);
 
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
   // Set starting file
-  compiler_env->compiler_set_start_file(compiler_env, compiler, start_file_copy);
+  env->compiler_set_start_file(env, compiler, start_file_copy);
   
   // Set starting line
-  compiler_env->compiler_set_start_line(compiler_env, compiler, start_line);
+  env->compiler_set_start_line(env, compiler, start_line);
   
   // Add include paths
   AV* av_module_dirs;
@@ -3604,11 +3595,11 @@ compile_spvm(...)
     SV** sv_include_dir_ptr = av_fetch(av_module_dirs, i, 0);
     SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
     char* include_dir = SvPV_nolen(sv_include_dir);
-    compiler_env->compiler_add_module_dir(compiler_env, compiler, include_dir);
+    env->compiler_add_module_dir(env, compiler, include_dir);
   }
 
   // Compile SPVM
-  int32_t compile_error_code = compiler_env->compiler_compile_spvm(compiler_env, compiler, class_name_copy);
+  int32_t compile_error_code = env->compiler_compile_spvm(env, compiler, class_name_copy);
   
   SV* sv_compile_success;
   if (compile_error_code == 0) {
@@ -3638,10 +3629,10 @@ get_method_names(...)
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
 
-  // The environment for the compiler
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  // The environment
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   SPVM_COMPILER* compiler;
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
@@ -3651,18 +3642,18 @@ get_method_names(...)
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
   
-  int32_t class_id = compiler_env->compiler_get_class_id(compiler_env, compiler, class_name);
-  int32_t methods_length = compiler_env->compiler_get_methods_length(compiler_env, compiler, class_id);
+  int32_t class_id = env->compiler_get_class_id(env, compiler, class_name);
+  int32_t methods_length = env->compiler_get_methods_length(env, compiler, class_id);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    int32_t method_id = compiler_env->compiler_get_method_id(compiler_env, compiler, class_id, method_index);
-    const char* method_name = compiler_env->compiler_get_method_name(compiler_env, compiler, method_id);
+    int32_t method_id = env->compiler_get_method_id(env, compiler, class_id, method_index);
+    const char* method_name = env->compiler_get_method_name(env, compiler, method_id);
     SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
     int32_t is_push = 0;
     if (SvOK(sv_category)) {
-      if(strEQ(SvPV_nolen(sv_category), "native") && compiler_env->compiler_is_native_method(compiler_env, compiler, method_id)) {
+      if(strEQ(SvPV_nolen(sv_category), "native") && env->compiler_is_native_method(env, compiler, method_id)) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
-      else if (strEQ(SvPV_nolen(sv_category), "precompile") && compiler_env->compiler_is_precompile_method(compiler_env, compiler, method_id)) {
+      else if (strEQ(SvPV_nolen(sv_category), "precompile") && env->compiler_is_precompile_method(env, compiler, method_id)) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
     }
@@ -3690,10 +3681,10 @@ get_anon_class_names_by_parent_class_name(...)
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
 
-  // The environment for the compiler
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  // The environment
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Compiler
   SPVM_COMPILER* compiler;
@@ -3707,13 +3698,13 @@ get_anon_class_names_by_parent_class_name(...)
   // Copy class load path to builder
   SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
 
-  int32_t methods_length = compiler_env->compiler_get_methods_length(compiler_env, compiler, class->id);
+  int32_t methods_length = env->compiler_get_methods_length(env, compiler, class->id);
 
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
     SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, method_index);
     int32_t method_id = method->id;
-    int32_t is_anon_method = compiler_env->compiler_is_anon_method(compiler_env, compiler, method_id);
+    int32_t is_anon_method = env->compiler_is_anon_method(env, compiler, method_id);
     
     if (is_anon_method) {
       SPVM_CLASS* anon_class = SPVM_LIST_fetch(compiler->classes, method->class->id);
@@ -3737,10 +3728,10 @@ get_class_names_exclude_anon(...)
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  // The environment for the compiler
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  // The environment
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
@@ -3749,11 +3740,11 @@ get_class_names_exclude_anon(...)
   AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
 
-  int32_t classes_legnth = compiler_env->compiler_get_classes_length(compiler_env, compiler);
+  int32_t classes_legnth = env->compiler_get_classes_length(env, compiler);
 
   for (int32_t class_id = 0; class_id < classes_legnth; class_id++) {
-    const char* class_name = compiler_env->compiler_get_class_name(compiler_env, compiler, class_id);
-    int32_t is_anon_class = compiler_env->compiler_is_anon_class(compiler_env, compiler, class_id);
+    const char* class_name = env->compiler_get_class_name(env, compiler, class_id);
+    int32_t is_anon_class = env->compiler_is_anon_class(env, compiler, class_id);
     if (!is_anon_class) {
       SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
       av_push(av_class_names, SvREFCNT_inc(sv_class_name));
@@ -3774,10 +3765,10 @@ get_class_names(...)
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  // The environment for the compiler
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  // The environment
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
   SPVM_COMPILER* compiler;
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
@@ -3787,9 +3778,9 @@ get_class_names(...)
   AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
   
-  int32_t classes_legnth = compiler_env->compiler_get_classes_length(compiler_env, compiler);
+  int32_t classes_legnth = env->compiler_get_classes_length(env, compiler);
   for (int32_t class_id = 0; class_id < classes_legnth; class_id++) {
-    const char* class_name = compiler_env->compiler_get_class_name(compiler_env, compiler, class_id);
+    const char* class_name = env->compiler_get_class_name(env, compiler, class_id);
     SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
     av_push(av_class_names, SvREFCNT_inc(sv_class_name));
   }
@@ -3808,10 +3799,10 @@ get_error_messages(...)
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  // The environment for the compiler
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  // The environment
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Compiler
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
@@ -3821,10 +3812,10 @@ get_error_messages(...)
   AV* av_error_messages = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_error_messages = sv_2mortal(newRV_inc((SV*)av_error_messages));
 
-  int32_t error_messages_legnth = compiler_env->compiler_get_error_messages_length(compiler_env, compiler);
+  int32_t error_messages_legnth = env->compiler_get_error_messages_length(env, compiler);
 
   for (int32_t i = 0; i < error_messages_legnth; i++) {
-    const char* error_message = compiler_env->compiler_get_error_message(compiler_env, compiler, i);
+    const char* error_message = env->compiler_get_error_message(env, compiler, i);
     SV* sv_error_message = sv_2mortal(newSVpv(error_message, 0));
     av_push(av_error_messages, SvREFCNT_inc(sv_error_message));
   }
@@ -3996,7 +3987,7 @@ call_init_blocks(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  // The environment for the compiler
+  // The environment
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -4018,7 +4009,7 @@ set_native_method_address(...)
   SV* sv_method_name = ST(2);
   SV* sv_native_address = ST(3);
 
-  // The environment for the compiler
+  // The environment
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -4056,7 +4047,7 @@ set_precompile_method_address(...)
   SV* sv_method_name = ST(2);
   SV* sv_precompile_address = ST(3);
 
-  // The environment for the compiler
+  // The environment
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -4104,14 +4095,6 @@ DESTROY(...)
     env->free_env_raw(env);
   }
   
-  // Compiler env
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
-  
-  // Free the environment for the compiler
-  compiler_env->free_env_raw(compiler_env);
-  compiler_env = NULL;
 
   XSRETURN(0);
 }
