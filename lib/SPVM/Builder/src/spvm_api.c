@@ -1218,7 +1218,9 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
-
+  
+  assert(runtime);
+  
   // Free exception
   SPVM_API_set_exception(env, NULL);
   
@@ -1227,7 +1229,7 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
     SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class_var_id);
     SPVM_RUNTIME_TYPE* class_var_type = SPVM_API_get_type(env, class_var->type_id);
     int32_t class_var_type_category = class_var_type->category;
-    
+
     switch (class_var_type_category) {
       case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
       case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:

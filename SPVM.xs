@@ -3511,6 +3511,15 @@ create_compiler_env(...)
   SV* sv_compiler_env = sv_2mortal(newRV_inc(sviv_compiler_env));
   (void)hv_store(hv_self, "compiler_env", strlen("compiler_env"), SvREFCNT_inc(sv_compiler_env), 0);
 
+  // Create env
+  {
+    SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
+    size_t iv_env = PTR2IV(env);
+    SV* sviv_env = sv_2mortal(newSViv(iv_env));
+    SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
+    (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+  }
+  
   XSRETURN(0);
 }
 
@@ -3923,14 +3932,6 @@ build_runtime(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  // Create env
-  {
-    SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
-    size_t iv_env = PTR2IV(env);
-    SV* sviv_env = sv_2mortal(newSViv(iv_env));
-    SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-    (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
-  }
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -3951,7 +3952,6 @@ build_runtime(...)
   SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
   SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
   (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
-
 
   XSRETURN(0);
 }
@@ -4097,7 +4097,9 @@ DESTROY(...)
     SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
     
     // Cleanup global variables
-    env->cleanup_global_vars(env);
+    if (env->runtime) {
+      env->cleanup_global_vars(env);
+    }
     
     env->free_env_raw(env);
   }

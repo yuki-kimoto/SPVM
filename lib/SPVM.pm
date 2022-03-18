@@ -77,6 +77,7 @@ sub import {
 
     # Bind SPVM method to Perl
     bind_to_perl($BUILDER, $added_class_names);
+
   }
 }
 
