@@ -414,14 +414,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_string->string_buffer_id = string->string_buffer_id;
   }
 
-  // String symtable
-  runtime_info->string_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
-  for (int32_t string_id = 0; string_id < runtime_info->strings_length; string_id++) {
-    SPVM_RUNTIME_STRING* runtime_string = &runtime_info->strings[string_id];
-    runtime_string->value = &runtime_info->string_buffer[runtime_string->string_buffer_id];
-    SPVM_HASH_insert(runtime_info->string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
-  }
-
   // Runtime classes
   runtime_info->classes_length = compiler->classes->length;
   runtime_info->classes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS) * compiler->classes->length);
@@ -634,6 +626,14 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   fprintf(stderr, "arg_type_ids size: %d bytes\n", (int32_t)(sizeof(int32_t) * runtime_info->arg_type_ids_length));
   fprintf(stderr, "fields size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_FIELD) * runtime_info->fields_length));
 #endif
+
+  // Runtime string symtable
+  runtime_info->string_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
+  for (int32_t string_id = 0; string_id < runtime_info->strings_length; string_id++) {
+    SPVM_RUNTIME_STRING* runtime_string = &runtime_info->strings[string_id];
+    runtime_string->value = &runtime_info->string_buffer[runtime_string->string_buffer_id];
+    SPVM_HASH_insert(runtime_info->string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
+  }
 
   // Runtime basic type symtable
   runtime_info->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, runtime_info->basic_types_length);
