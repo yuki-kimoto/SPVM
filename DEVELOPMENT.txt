@@ -40,6 +40,9 @@ DEVELOPERS NOTE
     
        # Cleanup
        make -f solo/Makefile clean
+
+       # Normal run + show runtime info memory size
+       yacc/bison.sh && perl solo/solo_Makefile.PL --OPTIMIZE="-O0 -g"  --DEFINE=SPVM_DEBUG_RUNTIME_INFO && make -f solo/Makefile && ./solo/work/myexe foo bar
     
     See batcktrace of core dump
 

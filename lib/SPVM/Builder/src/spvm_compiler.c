@@ -393,12 +393,14 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   runtime_info->allocator = allocator;
 
   runtime_info->opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
+  runtime_info->opcodes_length = compiler->opcode_array->length;
   memcpy(runtime_info->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
-
+  
   // String buffers
   runtime_info->string_buffer_length = compiler->string_buffer->length;
   runtime_info->string_buffer = (const char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, compiler->string_buffer->length);
   memcpy((char*)runtime_info->string_buffer, compiler->string_buffer->buffer, compiler->string_buffer->length);
+
   
   // Strings
   runtime_info->strings_length = compiler->strings->length;
@@ -411,7 +413,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     runtime_string->length = string->length;
     runtime_string->string_buffer_id = string->string_buffer_id;
   }
-  
+
   // String symtable
   runtime_info->string_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t string_id = 0; string_id < runtime_info->strings_length; string_id++) {
@@ -597,6 +599,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   runtime_info->method_native_addresses = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(void*) * runtime_info->methods_length);
   runtime_info->method_precompile_addresses = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(void*) * runtime_info->methods_length);
 
+
   // Runtime method argument type ids
   runtime_info->arg_type_ids_length = compiler->args->length;
   runtime_info->arg_type_ids = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * compiler->args->length);
@@ -624,6 +627,23 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     SPVM_STRING* field_signature_string = SPVM_HASH_fetch(compiler->string_symtable, field->signature, strlen(field->signature));
     runtime_field->signature_id = field_signature_string->id;
   }
+
+#ifdef SPVM_DEBUG_RUNTIME_INFO
+  fprintf(stderr, "[RUNTIME MEMORY SIZE]\n");
+  fprintf(stderr, "opcodes size: %d bytes\n", (int32_t)(sizeof(SPVM_OPCODE) * runtime_info->opcodes_length));
+  fprintf(stderr, "string_buffer size: %d bytes\n", (int32_t)(runtime_info->string_buffer_length));
+  fprintf(stderr, "strings size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_STRING) * runtime_info->strings_length));
+  fprintf(stderr, "classes size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CLASS) * runtime_info->classes_length));
+  fprintf(stderr, "basic_types size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_BASIC_TYPE) * runtime_info->basic_types_length));
+  fprintf(stderr, "types size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_TYPE) * runtime_info->types_length));
+  fprintf(stderr, "class_vars size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CLASS_VAR) * runtime_info->class_vars_length));
+  fprintf(stderr, "methods size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_METHOD) * runtime_info->methods_length));
+  fprintf(stderr, "method_native_addresses size: %d bytes\n", (int32_t)(sizeof(void*) * runtime_info->methods_length));
+  fprintf(stderr, "method_native_precompile size: %d bytes\n", (int32_t)(sizeof(void*) * runtime_info->methods_length));
+  fprintf(stderr, "arg_type_ids size: %d bytes\n", (int32_t)(sizeof(int32_t) * runtime_info->arg_type_ids_length));
+  fprintf(stderr, "fields size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_FIELD) * runtime_info->fields_length));
+#endif
+
   
   return runtime_info;
 }
