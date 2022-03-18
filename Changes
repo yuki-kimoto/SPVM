@@ -1,12 +1,41 @@
 Revision history for SPVM
-0.9508_03  2021-03-18
-        [CHANGE]
-        * Rename compiler_build_runtime_info to compiler_build_runtime native API.
-        * Change Native API "compiler_build_runtime" argument and return values.
+0.9509  2021-03-19
         [WARNINGS]
         * Interfaces and IDs of Native APIs that is added after 0.9506+(181+) will be changed many times.
-          because Native APIs that compile SPVM are not yet implemented correctly in tests.
+          because I realize Native APIs that compile SPVM are not yet implemented correctly in tests.
+        [BUG FIX]
+        * Fix the bug that spvmcc can't detect the change of config file.
+        [CHANGE]
+        * Add Fn->is_numeric_array, Fn->is_mulnum_array doc.
+        * Add Fn->is_object_array
+        * Add is_object_array native API.
+        * Native API get_elem_byte_size uses only runtime information
+        * Native API has_callback uses only runtime information
+        * Native API has_interface uses only runtime information
+        * Separate compiler allocator and runtime allocator.
+          The memory allocated at compile time is freed just before runtime.
+        * Add get_method_id_without_signature native API.
+        * Add get_constant_string_value native API.
+        * Add compiler_build_runtime_info native API.
+        * Rename compiler_build_runtime_info to compiler_build_runtime native API.
+        * Change Native API "compiler_build_runtime" argument and return values.
         [NON BACKWORD COMPATIBLE CHANGES]
+        * Rename Internal native API "compiler" field to "runtime_info"
+          because in this release SPVM compiler and runtime is completly separated.
+          I think the effect is litte because this is internal field.
+        * Rename native API new_compiler to compiler_new
+          becuae this is my mistake and compiler API shoud start compiler_.
+          This has a litte effect over 0.9506+.
+        * The native API compiler methods is changed to runtime methods
+          because I realize setting and getting native/precompile address
+          should be done at only runtime. This has a litte effect over 0.9506+.
+          
+          Change Native API compiler_get_native_method_address to get_native_method_address
+          Change Native API compiler_set_native_method_address to set_native_method_address
+          Change Native API compiler_get_precompile_method_address to get_precompile_method_address
+          Change Native API compiler_set_precompile_method_address to set_precompile_method_address
+       * Internally used "memory_blocks_count" native API is no more used. The count of memory blocks is managed in "runtime_info".
+         Because this is internal used, the effect is little.
         * Change the following Native APIs. First argument don't receive env.
         [Before]
         SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
@@ -64,43 +93,6 @@ Revision history for SPVM
         int32_t (*compiler_is_native_method)(void* compiler, int32_t method_id);
         int32_t (*compiler_is_precompile_method)(void* compiler, int32_t method_id);
         
-0.9508_02  2021-03-18
-        [CHANGE]
-        * Add get_method_id_without_signature native API.
-        * Add get_constant_string_value native API.
-        * Add compiler_build_runtime_info native API.
-        
-        [NON BACKWORD COMPATIBLE CHANGES]
-        * Rename native API new_compiler to compiler_new
-          becuae this is my mistake and compiler API shoud start compiler_.
-          This has a litte effect over 0.9506+.
-        * The native API compiler methods is changed to runtime methods
-          because I realize setting and getting native/precompile address
-          should be done at only runtime. This has a litte effect over 0.9506+.
-          
-          Change Native API compiler_get_native_method_address to get_native_method_address
-          Change Native API compiler_set_native_method_address to set_native_method_address
-          Change Native API compiler_get_precompile_method_address to get_precompile_method_address
-          Change Native API compiler_set_precompile_method_address to set_precompile_method_address
-       * Internally used "memory_blocks_count" native API is no more used. The count of memory blocks is managed in "runtime_info".
-         Because this is internal used, the effect is little.
-       [BUG FIX]
-       * Fix the bug that spvmcc can't detect the change of config file.
-
-0.9508_01  2021-03-11
-        [CHANGE]
-        * Add Fn->is_numeric_array, Fn->is_mulnum_array doc.
-        * Add Fn->is_object_array
-        * Add is_object_array native API.
-        * Native API get_elem_byte_size uses only runtime information
-        * Native API has_callback uses only runtime information
-        * Native API has_interface uses only runtime information
-        * Separate compiler allocator and runtime allocator.
-          The memory allocated at compile time is freed just before runtime.
-        [NON BACKWORD COMPATIBLE CHANGES]
-        * Rename Internal native API "compiler" field to "runtime_info"
-          because in this release SPVM compiler and runtime is completly separated.
-          I think the effect is litte because this is internal field.
 0.9508  2021-03-04
         [CHANGE]
         * Add "get_constant_string" native API.
