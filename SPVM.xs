@@ -3572,7 +3572,9 @@ compile_spvm(...)
   // Line
   int32_t start_line = (int32_t)SvIV(sv_start_line);
 
-  SPVM_ENV* compiler_env = SPVM_API_new_env_raw(NULL);
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
 
   // Set starting file
   compiler_env->compiler_set_start_file(compiler_env, compiler, start_file_copy);
@@ -3599,8 +3601,6 @@ compile_spvm(...)
   // Compile SPVM
   int32_t compile_error_code = compiler_env->compiler_compile_spvm(compiler_env, compiler, class_name_copy);
   
-  compiler_env->free_env_raw(compiler_env);
-
   SV* sv_compile_success;
   if (compile_error_code == 0) {
     sv_compile_success = sv_2mortal(newSViv(1));
