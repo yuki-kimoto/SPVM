@@ -488,6 +488,9 @@ EOS
   // Free compiler
   env->compiler_free(compiler);
 
+  // Prepare runtime
+  SPVM_API_runtime_prepare(runtime);
+
   // Set runtime information
   env->runtime = runtime;
   

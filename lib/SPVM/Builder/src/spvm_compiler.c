@@ -624,31 +624,6 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   fprintf(stderr, "fields size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_FIELD) * runtime->fields_length));
 #endif
 
-  // Runtime string symtable
-  runtime->string_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
-  for (int32_t string_id = 0; string_id < runtime->strings_length; string_id++) {
-    SPVM_RUNTIME_STRING* runtime_string = &runtime->strings[string_id];
-    runtime_string->value = &runtime->string_buffer[runtime_string->string_buffer_id];
-    SPVM_HASH_insert(runtime->string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
-  }
-
-  // Runtime basic type symtable
-  runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, runtime->basic_types_length);
-  for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
-    SPVM_RUNTIME_STRING* basic_type_name_string = (SPVM_RUNTIME_STRING*)&runtime->strings[runtime_basic_type->name_id];
-    const char* runtime_basic_type_name = (const char*)&runtime->string_buffer[basic_type_name_string->string_buffer_id];
-    SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
-  }
-
-  // Runtime class symtable
-  runtime->class_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
-  for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
-    SPVM_RUNTIME_CLASS* runtime_class = &runtime->classes[class_id];
-    SPVM_RUNTIME_STRING* class_name_string = (SPVM_RUNTIME_STRING*)&runtime->strings[runtime_class->name_id];
-    const char* runtime_class_name = (const char*)&runtime->string_buffer[class_name_string->string_buffer_id];
-    SPVM_HASH_insert(runtime->class_symtable, runtime_class_name, strlen(runtime_class_name), runtime_class);
-  }
 }
 
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, ...) {

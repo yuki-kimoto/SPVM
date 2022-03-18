@@ -45,6 +45,9 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_API_compiler_build_runtime(compiler, runtime);
   
   env->compiler_free(compiler);
+  
+  // Prepare runtime
+  SPVM_API_runtime_prepare(runtime);
 
   // Set runtime information
   env->runtime = runtime;
