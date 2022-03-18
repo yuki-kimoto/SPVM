@@ -3966,7 +3966,17 @@ prepare_env(...)
   SPVM_RUNTIME* runtime = INT2PTR(SPVM_RUNTIME*, SvIV(SvRV(sv_runtime)));
 
   // Create env
-  SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
+  {
+    SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
+    size_t iv_env = PTR2IV(env);
+    SV* sviv_env = sv_2mortal(newSViv(iv_env));
+    SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
+    (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+  }
+  
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   if (env == NULL) {
     croak("Can't create SPVM env");
@@ -3977,12 +3987,6 @@ prepare_env(...)
   
   // Initialize env
   env->init_env(env);
-
-  // Set ENV
-  size_t iv_env = PTR2IV(env);
-  SV* sviv_env = sv_2mortal(newSViv(iv_env));
-  SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-  (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
 
   XSRETURN(0);
 }
