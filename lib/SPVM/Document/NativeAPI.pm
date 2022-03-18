@@ -2637,7 +2637,7 @@ If the string is C<NULL>, nothing is printed.
 
 =head2 new_env_raw
 
-  SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
+  SPVM_ENV* (*new_env_raw)();
 
 Create a new environment. This environment is not yet initialized.
 

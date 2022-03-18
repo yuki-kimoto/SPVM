@@ -6,6 +6,14 @@ Revision history for SPVM
         [WARNINGS]
         * Interfaces and IDs of Native APIs that is added after 0.9506+(181+) will be changed many times.
           because Native APIs that compile SPVM are not yet implemented correctly in tests.
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Change the following Native APIs. First argument don't receive env.
+        [Before]
+        SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
+        
+        [After]
+        SPVM_ENV* (*new_env_raw)();
+        
 0.9508_02  2021-03-18
         [CHANGE]
         * Add get_method_id_without_signature native API.

@@ -93,7 +93,7 @@
 
 
 
-SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env) {
+SPVM_ENV* SPVM_API_new_env_raw() {
 
   // The impelements of Native APIs
   void* env_init[]  = {

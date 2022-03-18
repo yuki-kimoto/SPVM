@@ -14,7 +14,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   const char* class_name = "MyExe";
 
   // Create env
-  SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw(NULL);
+  SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw();
   
   // Create compiler
   void* compiler = env->compiler_new(env);

@@ -278,7 +278,7 @@ struct spvm_env {
   int32_t (*get_no_symbol_cache_flag)(SPVM_ENV* env);
   void (*print)(SPVM_ENV* env, void* string);
   void (*print_stderr)(SPVM_ENV* env, void* string);
-  SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
+  SPVM_ENV* (*new_env_raw)();
   void (*free_env_raw)(SPVM_ENV* env);
   int32_t (*init_env)(SPVM_ENV* env);
   void (*call_init_blocks)(SPVM_ENV* env);

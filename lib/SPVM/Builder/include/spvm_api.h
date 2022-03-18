@@ -300,7 +300,7 @@ int32_t SPVM_API_init_env(SPVM_ENV* env);
 void SPVM_API_call_init_blocks(SPVM_ENV* env);
 void SPVM_API_cleanup_global_vars(SPVM_ENV* env);
 
-SPVM_ENV* SPVM_API_new_env_raw(SPVM_ENV* unused_env);
+SPVM_ENV* SPVM_API_new_env_raw();
 
 int32_t SPVM_API_compiler_get_error_messages_length(SPVM_ENV* env, SPVM_COMPILER* compiler);
 const char* SPVM_API_compiler_get_error_message(SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t index);

@@ -443,7 +443,7 @@ EOS
     $boot_source .= <<'EOS';
 
   // Create env
-  SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw(NULL);
+  SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw();
   
   // Create compiler
   SPVM_COMPILER* compiler = env->compiler_new(env);
@@ -478,7 +478,7 @@ EOS
   }
 
   // Build runtime information
-  SPVM_ENV* runtime_env = SPVM_PUBLIC_API_new_env_raw(NULL);
+  SPVM_ENV* runtime_env = SPVM_PUBLIC_API_new_env_raw();
   void* runtime = SPVM_API_runtime_new(runtime_env);
   SPVM_API_compiler_build_runtime(runtime_env, compiler, runtime);
   runtime_env->free_env_raw(runtime_env);
