@@ -10,9 +10,59 @@ Revision history for SPVM
         * Change the following Native APIs. First argument don't receive env.
         [Before]
         SPVM_ENV* (*new_env_raw)(SPVM_ENV* env);
+        void* (*compiler_new)(SPVM_ENV* env);
+        void (*compiler_free)(SPVM_ENV* env, void* compiler);
+        void (*compiler_set_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
+        int32_t (*compiler_get_start_line)(SPVM_ENV* env, void* compiler);
+        void (*compiler_set_start_file)(SPVM_ENV* env, void* compiler, const char* start_file);
+        const char* (*compiler_get_start_file)(SPVM_ENV* env, void* compiler);
+        void (*compiler_add_module_dir)(SPVM_ENV* env, void* compiler, const char* module_dir);
+        int32_t (*compiler_get_module_dirs_length )(SPVM_ENV* env, void* compiler);
+        const char* (*compiler_get_module_dir )(SPVM_ENV* env, void* compiler, int32_t module_dir_id);
+        int32_t (*compiler_compile_spvm)(SPVM_ENV* env, void* compiler, const char* class_name);
+        int32_t (*compiler_get_error_messages_length)(SPVM_ENV* env, void* compiler);
+        const char* (*compiler_get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
+        int32_t (*compiler_get_class_id)(SPVM_ENV* env, void* compiler, const char* class_name);
+        int32_t (*compiler_get_classes_length)(SPVM_ENV* env, void* compiler);
+        const char* (*compiler_get_class_name)(SPVM_ENV* env, void* compiler, int32_t class_id);
+        int32_t (*compiler_is_anon_class)(SPVM_ENV* env, void* compiler, int32_t class_id);
+        int32_t (*compiler_get_methods_length)(SPVM_ENV* env, void* compiler, int32_t class_id);
+        int32_t (*compiler_get_method_id)(SPVM_ENV* env, void* compiler, int32_t class_id, int32_t method_index_of_class);
+        int32_t (*compiler_get_method_id_by_name)(SPVM_ENV* env, void* compiler, const char* class_name, const char* method_name);
+        const char* (*compiler_get_method_name)(SPVM_ENV* env, void* compiler, int32_t method_id);
+        const char* (*compiler_get_method_signature)(SPVM_ENV* env, void* compiler, int32_t method_id);
+        int32_t (*compiler_is_anon_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+        int32_t (*compiler_is_init_block_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+        int32_t (*compiler_is_native_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+        int32_t (*compiler_is_precompile_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
         
         [After]
         SPVM_ENV* (*new_env_raw)();
+        void* (*compiler_new)();
+        void (*compiler_free)(void* compiler);
+        void (*compiler_set_start_line)(void* compiler, int32_t start_line);
+        int32_t (*compiler_get_start_line)(void* compiler);
+        void (*compiler_set_start_file)(void* compiler, const char* start_file);
+        const char* (*compiler_get_start_file)(void* compiler);
+        void (*compiler_add_module_dir)(void* compiler, const char* module_dir);
+        int32_t (*compiler_get_module_dirs_length )(void* compiler);
+        const char* (*compiler_get_module_dir )(void* compiler, int32_t module_dir_id);
+        int32_t (*compiler_compile_spvm)(void* compiler, const char* class_name);
+        int32_t (*compiler_get_error_messages_length)(void* compiler);
+        const char* (*compiler_get_error_message)(void* compiler, int32_t index);
+        int32_t (*compiler_get_class_id)(void* compiler, const char* class_name);
+        int32_t (*compiler_get_classes_length)(void* compiler);
+        const char* (*compiler_get_class_name)(void* compiler, int32_t class_id);
+        int32_t (*compiler_is_anon_class)(void* compiler, int32_t class_id);
+        int32_t (*compiler_get_methods_length)(void* compiler, int32_t class_id);
+        int32_t (*compiler_get_method_id)(void* compiler, int32_t class_id, int32_t method_index_of_class);
+        int32_t (*compiler_get_method_id_by_name)(void* compiler, const char* class_name, const char* method_name);
+        const char* (*compiler_get_method_name)(void* compiler, int32_t method_id);
+        const char* (*compiler_get_method_signature)(void* compiler, int32_t method_id);
+        int32_t (*compiler_is_anon_method)(void* compiler, int32_t method_id);
+        int32_t (*compiler_is_init_block_method)(void* compiler, int32_t method_id);
+        int32_t (*compiler_is_native_method)(void* compiler, int32_t method_id);
+        int32_t (*compiler_is_precompile_method)(void* compiler, int32_t method_id);
         
 0.9508_02  2021-03-18
         [CHANGE]

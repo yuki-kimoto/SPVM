@@ -446,9 +446,9 @@ EOS
   SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw();
   
   // Create compiler
-  SPVM_COMPILER* compiler = env->compiler_new(env);
+  SPVM_COMPILER* compiler = env->compiler_new();
 
-  env->compiler_set_start_file(env, compiler, class_name);
+  env->compiler_set_start_file(compiler, class_name);
 
   // Set module source_files
 EOS
@@ -466,12 +466,12 @@ EOS
 
     $boot_source .= <<'EOS';
 
-  int32_t compile_error_code = env->compiler_compile_spvm(env, compiler, class_name);
+  int32_t compile_error_code = env->compiler_compile_spvm(compiler, class_name);
 
   if (compile_error_code != 0) {
-    int32_t error_messages_length = env->compiler_get_error_messages_length(env, compiler);
+    int32_t error_messages_length = env->compiler_get_error_messages_length(compiler);
     for (int32_t i = 0; i < error_messages_length; i++) {
-      const char* error_message = env->compiler_get_error_message(env, compiler, i);
+      const char* error_message = env->compiler_get_error_message(compiler, i);
       fprintf(stderr, "%s\n", error_message);
     }
     exit(255);
@@ -489,7 +489,7 @@ EOS
     $boot_source .= <<'EOS';
     
   // Free compiler
-  env->compiler_free(env, compiler);
+  env->compiler_free(compiler);
 
   // Set runtime information
   env->runtime = runtime;

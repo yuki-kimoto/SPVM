@@ -2667,79 +2667,79 @@ Cleanup gloval variable, such as class variables and the exception variable.
 
 =head2 compiler_new
   
-  void* (*compiler_new)(SPVM_ENV* env);
+  void* (*compiler_new)();
 
 New a SVPM compiler.
 
 =head2 compiler_free
   
-  void (*compiler_free)(SPVM_ENV* env, void* compiler);
+  void (*compiler_free)(void* compiler);
 
 Free a compiler.
 
 =head2 compiler_set_start_line
   
-  void (*compiler_set_start_line)(SPVM_ENV* env, void* compiler, int32_t start_line);
+  void (*compiler_set_start_line)(void* compiler, int32_t start_line);
 
 Set the start line of the compiler.
 
 =head2 compiler_get_start_line
   
-  int32_t (*compiler_get_start_line)(SPVM_ENV* env, void* compiler);
+  int32_t (*compiler_get_start_line)(void* compiler);
 
 Get the start line of the compiler.
 
 =head2 compiler_set_start_file
   
-  void (*compiler_set_start_file)(SPVM_ENV* env, void* compiler, const char* start_file);
+  void (*compiler_set_start_file)(void* compiler, const char* start_file);
 
 Set the start file of the compiler.
 
 =head2 compiler_get_start_file
   
-  const char* (*compiler_get_start_file)(SPVM_ENV* env, void* compiler);
+  const char* (*compiler_get_start_file)(void* compiler);
 
 Get the start file of the compiler.
 
 =head2 compiler_add_module_dir
   
-  void (*compiler_add_module_dir)(SPVM_ENV* env, void* compiler, const char* module_dir);
+  void (*compiler_add_module_dir)(void* compiler, const char* module_dir);
 
 Add a module searching directory of the compiler.
 
 =head2 compiler_get_module_dirs_length
   
-  int32_t (*compiler_get_module_dirs_length)(SPVM_ENV* env, void* compiler);
+  int32_t (*compiler_get_module_dirs_length)(void* compiler);
 
 Get the length of the module searching directories of the compiler.
 
 =head2 compiler_get_module_dir
 
-  const char* (*compiler_get_module_dir)(SPVM_ENV* env, void* compiler, int32_t module_dir_id);
+  const char* (*compiler_get_module_dir)(void* compiler, int32_t module_dir_id);
 
 Get a searching directories of the compiler with the index.
 
 =head2 compiler_compile_spvm
   
-  int32_t (*compiler_compile_spvm)(SPVM_ENV* env, void* compiler, const char* class_name);
+  int32_t (*compiler_compile_spvm)(void* compiler, const char* class_name);
 
 Compile the SPVM class.
 
 =head2 compiler_get_error_messages_length
   
-  int32_t (*compiler_get_error_messages_length)(SPVM_ENV* env, void* compiler);
+  int32_t (*compiler_get_error_messages_length)(void* compiler);
 
 Get the length of the compiler error messages.
 
 =head2 compiler_get_error_message
   
-  const char* (*compiler_get_error_message)(SPVM_ENV* env, void* compiler, int32_t index);
+  const char* (*compiler_get_error_message)(void* compiler, int32_t index);
 
 Get a compiler error messages with the index.
 
 =head2 compiler_get_class_id
   
-  int32_t (*compiler_get_class_id)(SPVM_ENV* env, void* compiler, const char* class_name);
+  int32_t (*compiler_get_class_id)(void* compiler, const char* class_name);
 
 Get class ID with the class name.
 
@@ -2747,31 +2747,31 @@ If the class doesn't found, return a negative value.
 
 =head2 compiler_get_classes_length
   
-  int32_t (*compiler_get_classes_length)(SPVM_ENV* env, void* compiler);
+  int32_t (*compiler_get_classes_length)(void* compiler);
 
 Get the length of classes that is compiled by the compiler.
 
 =head2 compiler_get_class_name
   
-  const char* (*compiler_get_class_name)(SPVM_ENV* env, void* compiler, int32_t class_id);
+  const char* (*compiler_get_class_name)(void* compiler, int32_t class_id);
 
 Get the class name with the class id.
 
 =head2 compiler_is_anon_class
   
-  int32_t (*compiler_is_anon_class)(SPVM_ENV* env, void* compiler, int32_t class_id);
+  int32_t (*compiler_is_anon_class)(void* compiler, int32_t class_id);
 
 If the class is an anon class, return C<1>, otherwise return C<0>.
 
 =head2 compiler_get_methods_length
   
-  int32_t (*compiler_get_methods_length)(SPVM_ENV* env, void* compiler, int32_t class_id);
+  int32_t (*compiler_get_methods_length)(void* compiler, int32_t class_id);
 
 Get the length of methods of the class.
 
 =head2 compiler_get_method_id
   
-  int32_t (*compiler_get_method_id)(SPVM_ENV* env, void* compiler, int32_t class_id, int32_t method_index_of_class);
+  int32_t (*compiler_get_method_id)(void* compiler, int32_t class_id, int32_t method_index_of_class);
 
 Get the method id with the class id and the method index of the class.
 
@@ -2779,7 +2779,7 @@ If the method doesn't found, return a negative value.
 
 =head2 compiler_get_method_id_by_name
   
-  int32_t (*compiler_get_method_id_by_name)(SPVM_ENV* env, void* compiler, const char* class_name, const char* method_name);
+  int32_t (*compiler_get_method_id_by_name)(void* compiler, const char* class_name, const char* method_name);
 
 Get the method id with the class name and the method name.
 
@@ -2787,37 +2787,37 @@ If the method doesn't found, return a negative value.
 
 =head2 compiler_get_method_name
   
-  const char* (*compiler_get_method_name)(SPVM_ENV* env, void* compiler, int32_t method_id);
+  const char* (*compiler_get_method_name)(void* compiler, int32_t method_id);
 
 Get the method name with the method ID.
 
 =head2 compiler_get_method_signature
   
-  const char* (*compiler_get_method_signature)(SPVM_ENV* env, void* compiler, int32_t method_id);
+  const char* (*compiler_get_method_signature)(void* compiler, int32_t method_id);
 
 Get the method signature with the method ID.
 
 =head2 compiler_is_anon_method
   
-  int32_t (*compiler_is_anon_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+  int32_t (*compiler_is_anon_method)(void* compiler, int32_t method_id);
 
 Get the method name with the method ID.
 
 =head2 compiler_is_init_block_method
   
-  int32_t (*compiler_is_init_block_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+  int32_t (*compiler_is_init_block_method)(void* compiler, int32_t method_id);
 
 If the method is the method of C<INIT> block, return C<1>, otherwise return C<0>.
 
 =head2 compiler_is_native_method
   
-  int32_t (*compiler_is_native_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+  int32_t (*compiler_is_native_method)(void* compiler, int32_t method_id);
 
 If the method is a native method, return C<1>, otherwise return C<0>.
 
 =head2 compiler_is_precompile_method
   
-  int32_t (*compiler_is_precompile_method)(SPVM_ENV* env, void* compiler, int32_t method_id);
+  int32_t (*compiler_is_precompile_method)(void* compiler, int32_t method_id);
 
 If the method is a precompile method, return C<1>, otherwise return C<0>.
 
@@ -2873,7 +2873,7 @@ Get the value and length of the string with the string ID.
 
 =head2 compiler_build_runtime
 
-  void* (*compiler_build_runtime)(SPVM_ENV* env, void* compiler);
+  void* (*compiler_build_runtime)(void* compiler);
 
 Build runtime information.
 
