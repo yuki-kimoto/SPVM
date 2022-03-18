@@ -3923,6 +3923,18 @@ build_runtime(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
+  // Create env
+  {
+    SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
+    size_t iv_env = PTR2IV(env);
+    SV* sviv_env = sv_2mortal(newSViv(iv_env));
+    SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
+    (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+  }
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
   // The environment for the compiler
   SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
   SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
@@ -3933,11 +3945,8 @@ build_runtime(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
 
   // Build runtime information
-  SPVM_ENV* runtime_env = SPVM_PUBLIC_API_new_env_raw(NULL);
-  void* runtime = SPVM_API_runtime_new(runtime_env);
-  SPVM_API_compiler_build_runtime(runtime_env, compiler, runtime);
-  runtime_env->free_env_raw(runtime_env);
-  runtime_env = NULL;
+  void* runtime = SPVM_API_runtime_new(env);
+  SPVM_API_compiler_build_runtime(env, compiler, runtime);
 
   // Free compiler
   compiler_env->compiler_free(compiler_env, compiler);
@@ -3947,6 +3956,7 @@ build_runtime(...)
   SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
   SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
   (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+
 
   XSRETURN(0);
 }
@@ -3965,15 +3975,6 @@ prepare_env(...)
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
   SPVM_RUNTIME* runtime = INT2PTR(SPVM_RUNTIME*, SvIV(SvRV(sv_runtime)));
 
-  // Create env
-  {
-    SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
-    size_t iv_env = PTR2IV(env);
-    SV* sviv_env = sv_2mortal(newSViv(iv_env));
-    SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-    (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
-  }
-  
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
