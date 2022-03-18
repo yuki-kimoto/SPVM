@@ -388,6 +388,7 @@ sub create_bootstrap_source {
 #include <assert.h>
 
 #include "spvm_native.h"
+#include "spvm_api.h"
 #include "spvm_public_api.h"
 
 // This will be removed in the near feature release
@@ -475,7 +476,12 @@ EOS
     exit(255);
   }
 
-  void* runtime = compiler_env->compiler_build_runtime(compiler_env, compiler);
+  // Build runtime information
+  SPVM_ENV* runtime_env = SPVM_PUBLIC_API_new_env_raw(NULL);
+  void* runtime = SPVM_API_runtime_new(runtime_env);
+  SPVM_API_compiler_build_runtime2(runtime_env, compiler, runtime);
+  runtime_env->free_env_raw(runtime_env);
+  runtime_env = NULL;
 
 EOS
     
