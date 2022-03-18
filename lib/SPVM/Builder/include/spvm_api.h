@@ -366,4 +366,6 @@ const char* SPVM_API_get_name(SPVM_ENV* env, int32_t string_id);
 SPVM_RUNTIME* SPVM_API_runtime_new(SPVM_ENV* env);
 void SPVM_API_runtime_free(SPVM_ENV* env, SPVM_RUNTIME* runtime);
 
+void SPVM_API_compiler_build_runtime2(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime);
+
 #endif

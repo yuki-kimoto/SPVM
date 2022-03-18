@@ -8101,6 +8101,12 @@ SPVM_RUNTIME* SPVM_API_compiler_build_runtime(SPVM_ENV* env, SPVM_COMPILER* comp
   return runtime;
 }
 
+void SPVM_API_compiler_build_runtime2(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {
+  (void*)env;
+
+  SPVM_COMPILER_build_runtime2(compiler, runtime);
+}
+
 void SPVM_API_compiler_free(SPVM_ENV* env, SPVM_COMPILER* compiler) {
   (void*)env;
 

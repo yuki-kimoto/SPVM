@@ -161,4 +161,6 @@ const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t ind
 int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name);
 SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler);
 
+void SPVM_COMPILER_build_runtime2(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime);
+
 #endif
