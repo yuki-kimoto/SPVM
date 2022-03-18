@@ -422,10 +422,9 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
     SPVM_HASH_insert(runtime_info->string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
   }
 
-  // Runtime classes - this is moved to the more after place and is optimized in the near future.
+  // Runtime classes
   runtime_info->classes_length = compiler->classes->length;
   runtime_info->classes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS) * compiler->classes->length);
-  runtime_info->class_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
     SPVM_RUNTIME_CLASS* runtime_class = &runtime_info->classes[class_id];
@@ -493,7 +492,6 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
 
     SPVM_RUNTIME_STRING* class_name_string = (SPVM_RUNTIME_STRING*)&runtime_info->strings[runtime_class->name_id];
     const char* runtime_class_name = (const char*)&runtime_info->string_buffer[class_name_string->string_buffer_id];
-    SPVM_HASH_insert(runtime_info->class_symtable, runtime_class_name, strlen(runtime_class_name), runtime_class);
   }
 
   // Runtime basic types
@@ -595,10 +593,12 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
       runtime_method->arg_type_ids_base = -1;
     }
   }
-
+  
+  // Method native addresses
   runtime_info->method_native_addresses = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(void*) * runtime_info->methods_length);
+  
+  // Method precompile addresses
   runtime_info->method_precompile_addresses = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(void*) * runtime_info->methods_length);
-
 
   // Runtime method argument type ids
   runtime_info->arg_type_ids_length = compiler->args->length;
@@ -644,7 +644,15 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler) {
   fprintf(stderr, "fields size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_FIELD) * runtime_info->fields_length));
 #endif
 
-  
+  // Runtime class symtable
+  runtime_info->class_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
+  for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
+    SPVM_RUNTIME_CLASS* runtime_class = &runtime_info->classes[class_id];
+    SPVM_RUNTIME_STRING* class_name_string = (SPVM_RUNTIME_STRING*)&runtime_info->strings[runtime_class->name_id];
+    const char* runtime_class_name = (const char*)&runtime_info->string_buffer[class_name_string->string_buffer_id];
+    SPVM_HASH_insert(runtime_info->class_symtable, runtime_class_name, strlen(runtime_class_name), runtime_class);
+  }
+
   return runtime_info;
 }
 
