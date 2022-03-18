@@ -3931,7 +3931,7 @@ build_runtime(...)
   // Build runtime information
   SPVM_ENV* runtime_env = SPVM_PUBLIC_API_new_env_raw(NULL);
   void* runtime = SPVM_API_runtime_new(runtime_env);
-  SPVM_API_compiler_build_runtime2(runtime_env, compiler, runtime);
+  SPVM_API_compiler_build_runtime(runtime_env, compiler, runtime);
   runtime_env->free_env_raw(runtime_env);
   runtime_env = NULL;
 

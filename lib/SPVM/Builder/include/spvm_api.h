@@ -50,7 +50,6 @@ int32_t SPVM_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top,
 
 int32_t SPVM_API_is_utf8(SPVM_ENV* env, SPVM_OBJECT* object);
 
-SPVM_RUNTIME* SPVM_API_build_runtime(SPVM_COMPILER* compiler);
 void SPVM_API_free_env_raw(SPVM_ENV* env);
 
 int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension);
@@ -343,8 +342,6 @@ void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id);
 
 int32_t SPVM_API_get_method_id_without_signature(SPVM_ENV* env, const char* class_name, const char* method_name);
 
-SPVM_RUNTIME* SPVM_API_compiler_build_runtime(SPVM_ENV* env, SPVM_COMPILER* compiler);
-
 int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object);
 
 const char* SPVM_API_get_basic_type_name(SPVM_ENV* env, int32_t basic_type_id);
@@ -366,6 +363,6 @@ const char* SPVM_API_get_name(SPVM_ENV* env, int32_t string_id);
 SPVM_RUNTIME* SPVM_API_runtime_new(SPVM_ENV* env);
 void SPVM_API_runtime_free(SPVM_ENV* env, SPVM_RUNTIME* runtime);
 
-void SPVM_API_compiler_build_runtime2(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime);
+void SPVM_API_compiler_build_runtime(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime);
 
 #endif
