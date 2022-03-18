@@ -50,7 +50,7 @@ typedef struct spvm_runtime_class SPVM_RUNTIME_CLASS;
 
 // spvm_runtime.h
 struct spvm_runtime;
-typedef struct spvm_runtime SPVM_RUNTIME_INFO;
+typedef struct spvm_runtime SPVM_RUNTIME;
 
 // spvm_string.h
 struct spvm_string;

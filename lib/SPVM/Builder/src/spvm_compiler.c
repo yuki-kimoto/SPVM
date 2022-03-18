@@ -385,10 +385,10 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   return error_code;
 }
 
-SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
+SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
 
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
-  SPVM_RUNTIME_INFO* runtime = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_INFO));
+  SPVM_RUNTIME* runtime = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME));
 
   runtime->allocator = allocator;
 
@@ -611,7 +611,7 @@ SPVM_RUNTIME_INFO* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     runtime_field->signature_id = field_signature_string->id;
   }
 
-#ifdef SPVM_DEBUG_RUNTIME_INFO
+#ifdef SPVM_DEBUG_RUNTIME
   fprintf(stderr, "[RUNTIME MEMORY SIZE]\n");
   fprintf(stderr, "opcodes size: %d bytes\n", (int32_t)(sizeof(SPVM_OPCODE) * runtime->opcodes_length));
   fprintf(stderr, "string_buffer size: %d bytes\n", (int32_t)(runtime->string_buffer_length));

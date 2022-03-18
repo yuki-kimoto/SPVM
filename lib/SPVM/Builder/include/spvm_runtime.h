@@ -1,7 +1,11 @@
-#ifndef SPVM_RUNTIME_INFO_H
-#define SPVM_RUNTIME_INFO_H
+#ifndef SPVM_RUNTIME_H
+#define SPVM_RUNTIME_H
 
 #include "spvm_typedecl.h"
+
+SPVM_RUNTIME* SPVM_RUNTIME_new();
+
+void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
 
 struct spvm_runtime {
   // Allocator

@@ -98,7 +98,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
   int32_t length = av_len(av_elems) + 1;
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
   
@@ -207,7 +207,7 @@ call_spvm_method(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
   // Runtime
-  SPVM_RUNTIME_INFO* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   // Class Name
   const char* class_name = SvPV_nolen(sv_class_name);
@@ -1440,7 +1440,7 @@ array_to_elems(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
 
   // Array must be SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
@@ -1645,7 +1645,7 @@ array_to_bin(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
 
   // Array must be SPVM::BlessedObject::Array object or SPVM::BlessedObject::String
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
@@ -1784,7 +1784,7 @@ string_object_to_string(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
 
   // String must be SPVM::BlessedObject::String or SPVM::BlessedObject::String
   if (!(SvROK(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String"))) {
@@ -1821,7 +1821,7 @@ array_length(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
 
   // Array must be SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
@@ -2044,7 +2044,7 @@ array_get(...)
   }
   
   if (is_object) {
-    SPVM_RUNTIME_INFO* runtime = env->runtime;
+    SPVM_RUNTIME* runtime = env->runtime;
     
     // Element dimension
     int32_t element_dimension = array->type_dimension - 1;
@@ -3117,7 +3117,7 @@ _new_object_array(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
   assert(basic_type);
@@ -3181,7 +3181,7 @@ _new_muldim_array(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
 
   int32_t element_type_dimension = (int32_t)SvIV(sv_element_type_dimension);
 
@@ -3277,7 +3277,7 @@ _new_mulnum_array_from_bin(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
   
@@ -3927,7 +3927,7 @@ build_runtime(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
 
-  SPVM_RUNTIME_INFO* runtime = SPVM_COMPILER_build_runtime(compiler);
+  SPVM_RUNTIME* runtime = SPVM_COMPILER_build_runtime(compiler);
 
   // Free compiler
   compiler_env->compiler_free(compiler_env, compiler);
@@ -3951,7 +3951,7 @@ prepare_env(...)
 
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  SPVM_RUNTIME_INFO* runtime = INT2PTR(SPVM_RUNTIME_INFO*, SvIV(SvRV(sv_runtime)));
+  SPVM_RUNTIME* runtime = INT2PTR(SPVM_RUNTIME*, SvIV(SvRV(sv_runtime)));
 
   // Create env
   SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
@@ -4007,7 +4007,7 @@ set_native_method_address(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  SPVM_RUNTIME_INFO* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
 
   // Class name
   const char* class_name = SvPV_nolen(sv_class_name);
@@ -4045,7 +4045,7 @@ set_precompile_method_address(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
-  SPVM_RUNTIME_INFO* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
 
   // Class name
   const char* class_name = SvPV_nolen(sv_class_name);

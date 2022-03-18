@@ -387,6 +387,7 @@ sub get_spvm_core_source_file_names {
     spvm_opcode_builder.c
     spvm_opcode.c
     spvm_public_api.c
+    spvm_runtime.c
     spvm_string.c
     spvm_string_buffer.c
     spvm_switch_info.c
