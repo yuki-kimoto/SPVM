@@ -6,7 +6,7 @@
 struct spvm_runtime {
   // Allocator
   SPVM_ALLOCATOR* allocator;
-
+  
   // Operation codes
   SPVM_OPCODE* opcodes;
 
