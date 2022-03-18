@@ -12,47 +12,40 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   // Class name
   const char* class_name = "MyExe";
-  
-  SPVM_ENV* compiler_env = SPVM_PUBLIC_API_new_env_raw(NULL);
+
+  // Create env
+  SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw(NULL);
   
   // Create compiler
-  void* compiler = compiler_env->compiler_new(compiler_env);
+  void* compiler = env->compiler_new(env);
   
   // compiler->debug = 1;
   
-  compiler_env->compiler_set_start_file(compiler_env, compiler, class_name);
+  env->compiler_set_start_file(env, compiler, class_name);
 
-  compiler_env->compiler_set_start_line(compiler_env, compiler, 0);
+  env->compiler_set_start_line(env, compiler, 0);
   
   // Add module directory
   char* module_dir = "solo/SPVM";
-  compiler_env->compiler_add_module_dir(compiler_env, compiler, module_dir);
+  env->compiler_add_module_dir(env, compiler, module_dir);
 
-  int32_t compile_error_code = compiler_env->compiler_compile_spvm(compiler_env, compiler, class_name);
+  int32_t compile_error_code = env->compiler_compile_spvm(env, compiler, class_name);
   
   if (compile_error_code != 0) {
-    int32_t error_messages_length = compiler_env->compiler_get_error_messages_length(compiler_env, compiler);
+    int32_t error_messages_length = env->compiler_get_error_messages_length(env, compiler);
     for (int32_t i = 0; i < error_messages_length; i++) {
-      const char* error_message = compiler_env->compiler_get_error_message(compiler_env, compiler, i);
+      const char* error_message = env->compiler_get_error_message(env, compiler, i);
       fprintf(stderr, "%s\n", error_message);
     }
     exit(255);
   }
 
   // Build runtime information
-  SPVM_ENV* runtime_env = SPVM_PUBLIC_API_new_env_raw(NULL);
-  void* runtime = SPVM_API_runtime_new(runtime_env);
-  SPVM_API_compiler_build_runtime(runtime_env, compiler, runtime);
-  runtime_env->free_env_raw(runtime_env);
-  runtime_env = NULL;
+  void* runtime = SPVM_API_runtime_new(env);
+  SPVM_API_compiler_build_runtime(env, compiler, runtime);
   
-  compiler_env->compiler_free(compiler_env, compiler);
-  compiler_env->free_env_raw(compiler_env);
-  compiler_env = NULL;
+  env->compiler_free(env, compiler);
 
-  // Create env
-  SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw(NULL);
-  
   // Set runtime information
   env->runtime = runtime;
   
