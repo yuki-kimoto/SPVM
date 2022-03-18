@@ -112,7 +112,7 @@ struct spvm_env {
   void* long_object_basic_type_id;
   void* float_object_basic_type_id;
   void* double_object_basic_type_id;
-  void* runtime_info;
+  void* runtime;
   void* exception_object;
   void* native_mortal_stack;
   void* native_mortal_stack_top;
@@ -315,6 +315,6 @@ struct spvm_env {
   int32_t (*is_object_array)(SPVM_ENV* env, void* object);
   int32_t (*get_method_id_without_signature)(SPVM_ENV* env, const char* class_name, const char* method_name);
   const char* (*get_constant_string_value)(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
-  void* (*compiler_build_runtime_info)(SPVM_ENV* env, void* compiler);
+  void* (*compiler_build_runtime)(SPVM_ENV* env, void* compiler);
 };
 #endif

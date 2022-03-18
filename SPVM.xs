@@ -37,12 +37,12 @@
 #include "spvm_runtime_class.h"
 #include "spvm_runtime_class_var.h"
 #include "spvm_runtime_field.h"
-#include "spvm_runtime_info.h"
+#include "spvm_runtime.h"
 #include "spvm_runtime_manager.h"
 #include "spvm_runtime_method.h"
 #include "spvm_runtime_string.h"
 #include "spvm_runtime_type.h"
-#include "spvm_runtime_info.h"
+#include "spvm_runtime.h"
 
 static const char* MFILE = "SPVM.xs";
 
@@ -98,7 +98,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
   int32_t length = av_len(av_elems) + 1;
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_INFO* runtime = env->runtime;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
   
@@ -207,7 +207,7 @@ call_spvm_method(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
   // Runtime
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_INFO* runtime = env->runtime;
   
   // Class Name
   const char* class_name = SvPV_nolen(sv_class_name);
@@ -278,7 +278,7 @@ call_spvm_method(...)
     // Get value from Perl argument stack
     SV* sv_value = ST(spvm_args_base + args_index);
 
-    int32_t arg_type_id = runtime_info->arg_type_ids[method->arg_type_ids_base + args_index];
+    int32_t arg_type_id = runtime->arg_type_ids[method->arg_type_ids_base + args_index];
     SPVM_RUNTIME_TYPE* arg_type = SPVM_API_get_type(env, arg_type_id);
     
     int32_t arg_basic_type_id = arg_type->basic_type_id;
@@ -1271,7 +1271,7 @@ call_spvm_method(...)
     for (int32_t args_index = 0; args_index < method->arg_type_ids_length; args_index++) {
       SV* sv_value = ST(spvm_args_base + args_index);
       
-      int32_t arg_type_id = runtime_info->arg_type_ids[method->arg_type_ids_base + args_index];
+      int32_t arg_type_id = runtime->arg_type_ids[method->arg_type_ids_base + args_index];
       SPVM_RUNTIME_TYPE* arg_type = SPVM_API_get_type(env, arg_type_id);
       
       // Convert to runtime type
@@ -1440,7 +1440,7 @@ array_to_elems(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_INFO* runtime = env->runtime;
 
   // Array must be SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
@@ -1645,7 +1645,7 @@ array_to_bin(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_INFO* runtime = env->runtime;
 
   // Array must be SPVM::BlessedObject::Array object or SPVM::BlessedObject::String
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
@@ -1784,7 +1784,7 @@ string_object_to_string(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_INFO* runtime = env->runtime;
 
   // String must be SPVM::BlessedObject::String or SPVM::BlessedObject::String
   if (!(SvROK(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String"))) {
@@ -1821,7 +1821,7 @@ array_length(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_INFO* runtime = env->runtime;
 
   // Array must be SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
@@ -2044,7 +2044,7 @@ array_get(...)
   }
   
   if (is_object) {
-    SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+    SPVM_RUNTIME_INFO* runtime = env->runtime;
     
     // Element dimension
     int32_t element_dimension = array->type_dimension - 1;
@@ -3117,7 +3117,7 @@ _new_object_array(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_INFO* runtime = env->runtime;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
   assert(basic_type);
@@ -3181,7 +3181,7 @@ _new_muldim_array(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_INFO* runtime = env->runtime;
 
   int32_t element_type_dimension = (int32_t)SvIV(sv_element_type_dimension);
 
@@ -3277,7 +3277,7 @@ _new_mulnum_array_from_bin(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_INFO* runtime = env->runtime;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
   
@@ -3927,16 +3927,16 @@ build_runtime(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
 
-  SPVM_RUNTIME_INFO* runtime_info = SPVM_COMPILER_build_runtime_info(compiler);
+  SPVM_RUNTIME_INFO* runtime = SPVM_COMPILER_build_runtime(compiler);
 
   // Free compiler
   compiler_env->compiler_free(compiler_env, compiler);
 
   // Set runtime information
-  size_t iv_runtime_info = PTR2IV(runtime_info);
-  SV* sviv_runtime_info = sv_2mortal(newSViv(iv_runtime_info));
-  SV* sv_runtime_info = sv_2mortal(newRV_inc(sviv_runtime_info));
-  (void)hv_store(hv_self, "runtime_info", strlen("runtime_info"), SvREFCNT_inc(sv_runtime_info), 0);
+  size_t iv_runtime = PTR2IV(runtime);
+  SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
+  SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
+  (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
 }
 
 
@@ -3949,9 +3949,9 @@ prepare_env(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV** sv_runtime_info_ptr = hv_fetch(hv_self, "runtime_info", strlen("runtime_info"), 0);
-  SV* sv_runtime_info = sv_runtime_info_ptr ? *sv_runtime_info_ptr : &PL_sv_undef;
-  SPVM_RUNTIME_INFO* runtime_info = INT2PTR(SPVM_RUNTIME_INFO*, SvIV(SvRV(sv_runtime_info)));
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  SPVM_RUNTIME_INFO* runtime = INT2PTR(SPVM_RUNTIME_INFO*, SvIV(SvRV(sv_runtime)));
 
   // Create env
   SPVM_ENV* env = SPVM_API_new_env_raw(NULL);
@@ -3961,7 +3961,7 @@ prepare_env(...)
   }
 
   // Set runtime information
-  env->runtime_info = runtime_info;
+  env->runtime = runtime;
   
   // Initialize env
   env->init_env(env);
@@ -4007,7 +4007,7 @@ set_native_method_address(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_INFO* runtime = env->runtime;
 
   // Class name
   const char* class_name = SvPV_nolen(sv_class_name);
@@ -4045,7 +4045,7 @@ set_precompile_method_address(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
-  SPVM_RUNTIME_INFO* runtime_info = env->runtime_info;
+  SPVM_RUNTIME_INFO* runtime = env->runtime;
 
   // Class name
   const char* class_name = SvPV_nolen(sv_class_name);

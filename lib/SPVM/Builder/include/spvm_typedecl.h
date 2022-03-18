@@ -48,9 +48,9 @@ typedef struct spvm_runtime_method SPVM_RUNTIME_METHOD;
 struct spvm_runtime_class;
 typedef struct spvm_runtime_class SPVM_RUNTIME_CLASS;
 
-// spvm_runtime_info.h
-struct spvm_runtime_info;
-typedef struct spvm_runtime_info SPVM_RUNTIME_INFO;
+// spvm_runtime.h
+struct spvm_runtime;
+typedef struct spvm_runtime SPVM_RUNTIME_INFO;
 
 // spvm_string.h
 struct spvm_string;

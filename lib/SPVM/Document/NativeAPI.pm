@@ -639,7 +639,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   12 long_object_basic_type_id
   13 float_object_basic_type_id
   14 double_object_basic_type_id
-  15 runtime_info
+  15 runtime
   16 exception_object
   17 native_mortal_stack
   18 native_mortal_stack_top
@@ -842,7 +842,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   215 is_object_array
   216 get_method_id_without_signature
   217 get_constant_string_value
-  218 compiler_build_runtime_info
+  218 compiler_build_runtime
 
 =head1 List of Native APIs
 
@@ -938,9 +938,9 @@ ID of the base type of L<Float|SPVM::Float> type. This is used internally.
 
 ID of the base type of L<Double|SPVM::Double> type. This is used internally.
 
-=head2 runtime_info
+=head2 runtime
 
-  void* runtime_info;
+  void* runtime;
 
 A pointer to the runtime information. This is used internally.
 
@@ -1905,7 +1905,7 @@ Free an environment that is created by the L<"new_env"> native API.
 
   void* memory_blocks_count;
 
-Unused from v0.9508+. The count of memory blocks is managed in L<"runtime_info">.
+Unused from v0.9508+. The count of memory blocks is managed in L<"runtime">.
 
 =head2 get_chars
 
@@ -2869,9 +2869,9 @@ Get the method ID by the class name and method name. If the method does not exis
 
 Get the value and length of the string with the string ID. 
 
-=head2 compiler_build_runtime_info
+=head2 compiler_build_runtime
 
-  void* (*compiler_build_runtime_info)(SPVM_ENV* env, void* compiler);
+  void* (*compiler_build_runtime)(SPVM_ENV* env, void* compiler);
 
 Build runtime information.
 

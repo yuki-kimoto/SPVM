@@ -475,7 +475,7 @@ EOS
     exit(255);
   }
 
-  void* runtime_info = compiler_env->compiler_build_runtime_info(compiler_env, compiler);
+  void* runtime = compiler_env->compiler_build_runtime(compiler_env, compiler);
 
 EOS
     
@@ -490,7 +490,7 @@ EOS
   SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw(NULL);
   
   // Set runtime information
-  env->runtime_info = runtime_info;
+  env->runtime = runtime;
   
   // Initialize env
   env->init_env(env);

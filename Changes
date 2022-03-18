@@ -1,4 +1,7 @@
 Revision history for SPVM
+0.9508_03  2021-03-18
+        [CHANGE]
+        * Rename compiler_build_runtime_info to compiler_build_runtime native API.
 0.9508_02  2021-03-18
         [CHANGE]
         * Add get_method_id_without_signature native API.

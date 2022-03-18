@@ -3,7 +3,7 @@
 
 #include "spvm_typedecl.h"
 
-struct spvm_runtime_info {
+struct spvm_runtime {
   // Allocator
   SPVM_ALLOCATOR* allocator;
 

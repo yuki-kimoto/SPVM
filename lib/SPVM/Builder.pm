@@ -67,14 +67,14 @@ sub env {
     return $self->{env};
   }
 }
-sub runtime_info {
+sub runtime {
   my $self = shift;
   if (@_) {
-    $self->{runtime_info} = $_[0];
+    $self->{runtime} = $_[0];
     return $self;
   }
   else {
-    return $self->{runtime_info};
+    return $self->{runtime};
   }
 }
 

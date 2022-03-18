@@ -39,7 +39,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   }
 
   // Build runtime information
-  void* runtime_info = compiler_env->compiler_build_runtime_info(compiler_env, compiler);
+  void* runtime = compiler_env->compiler_build_runtime(compiler_env, compiler);
   
   compiler_env->compiler_free(compiler_env, compiler);
   compiler_env->free_env_raw(compiler_env);
@@ -49,7 +49,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw(NULL);
   
   // Set runtime information
-  env->runtime_info = runtime_info;
+  env->runtime = runtime;
   
   // Initialize env
   env->init_env(env);
