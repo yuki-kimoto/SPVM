@@ -3935,11 +3935,6 @@ build_runtime(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  // The environment for the compiler
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
-
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
@@ -3949,7 +3944,7 @@ build_runtime(...)
   SPVM_API_compiler_build_runtime(env, compiler, runtime);
 
   // Free compiler
-  compiler_env->compiler_free(compiler_env, compiler);
+  env->compiler_free(env, compiler);
 
   // Set runtime information
   size_t iv_runtime = PTR2IV(runtime);
