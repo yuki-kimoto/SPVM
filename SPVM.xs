@@ -14,6 +14,7 @@
 #include <stdint.h>
 
 #include "spvm_api.h"
+#include "spvm_public_api.h"
 
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
@@ -3927,7 +3928,12 @@ build_runtime(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
 
-  SPVM_RUNTIME* runtime = SPVM_COMPILER_build_runtime(compiler);
+  // Build runtime information
+  SPVM_ENV* runtime_env = SPVM_PUBLIC_API_new_env_raw(NULL);
+  void* runtime = SPVM_API_runtime_new(runtime_env);
+  SPVM_API_compiler_build_runtime2(runtime_env, compiler, runtime);
+  runtime_env->free_env_raw(runtime_env);
+  runtime_env = NULL;
 
   // Free compiler
   compiler_env->compiler_free(compiler_env, compiler);
