@@ -88,4 +88,6 @@ struct spvm_runtime {
 
 };
 
+void SPVM_RUNTIME_prepare(SPVM_RUNTIME* runtime);
+
 #endif

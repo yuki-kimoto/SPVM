@@ -365,4 +365,6 @@ void SPVM_API_runtime_free(SPVM_ENV* env, SPVM_RUNTIME* runtime);
 
 void SPVM_API_compiler_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime);
 
+void SPVM_API_runtime_prepare(SPVM_RUNTIME* runtime);
+
 #endif

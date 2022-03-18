@@ -8072,6 +8072,11 @@ void SPVM_API_compiler_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runt
   SPVM_COMPILER_build_runtime(compiler, runtime);
 }
 
+void SPVM_API_runtime_prepare(SPVM_RUNTIME* runtime) {
+
+  SPVM_RUNTIME_prepare(runtime);
+}
+
 void SPVM_API_compiler_free(SPVM_COMPILER* compiler) {
 
   SPVM_COMPILER_free(compiler);
