@@ -368,5 +368,9 @@ void SPVM_API_compiler_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runt
 void SPVM_API_runtime_prepare(SPVM_RUNTIME* runtime);
 
 int32_t SPVM_API_compiler_get_method_class_id(SPVM_COMPILER* compiler, int32_t method_id);
+int32_t SPVM_API_get_method_arg_type_ids_length(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_method_is_class_method(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_method_arg_type_ids_base(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_method_return_type_id(SPVM_ENV* env, int32_t method_id);
 
 #endif

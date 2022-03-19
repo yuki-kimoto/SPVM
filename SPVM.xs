@@ -36,7 +36,6 @@
 #include "spvm_runtime_class_var.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime.h"
-#include "spvm_runtime_method.h"
 #include "spvm_runtime_type.h"
 #include "spvm_runtime.h"
 
@@ -218,37 +217,29 @@ call_spvm_method(...)
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
   
   // Method not found
-  int32_t method_not_found;
-  SPVM_RUNTIME_METHOD* method = NULL;
-  if (class == NULL) {
-    method_not_found = 1;
-  }
-  else {
-    method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_name);
-    if (method == NULL) {
-      method_not_found = 1;
-    }
-    else {
-      method_not_found = 0;
-    }
-  }
-  if (method_not_found) {
+  int32_t method_id = SPVM_API_get_method_id_without_signature(env, class_name, method_name);
+  if (method_id < 0) {
     croak("%s->%s method not found at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
   
   // Base index of SPVM arguments
   int32_t spvm_args_base = 3;
 
+  int32_t method_is_class_method = SPVM_API_get_method_is_class_method(env, method_id);
+  int32_t method_arg_type_ids_length = SPVM_API_get_method_arg_type_ids_length(env, method_id);
+  int32_t method_arg_type_ids_base = SPVM_API_get_method_arg_type_ids_base(env, method_id);
+  int32_t method_return_type_id = SPVM_API_get_method_return_type_id(env, method_id);
+
   // If class method, first argument is ignored
-  if (method->is_class_method) {
+  if (method_is_class_method) {
     spvm_args_base++;
   }
   
   // Check argument count
-  if (items - spvm_args_base < method->arg_type_ids_length) {
+  if (items - spvm_args_base < method_arg_type_ids_length) {
     croak("Too few arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
-  else if (items - spvm_args_base > method->arg_type_ids_length) {
+  else if (items - spvm_args_base > method_arg_type_ids_length) {
     croak("Too many arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
 
@@ -267,14 +258,14 @@ call_spvm_method(...)
   int32_t ref_stack_indexes[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
 
   // Arguments
-  for (int32_t args_index = 0; args_index < method->arg_type_ids_length; args_index++) {
+  for (int32_t args_index = 0; args_index < method_arg_type_ids_length; args_index++) {
     
     int32_t args_index_nth = args_index + 1;
     
     // Get value from Perl argument stack
     SV* sv_value = ST(spvm_args_base + args_index);
 
-    int32_t arg_type_id = runtime->arg_type_ids[method->arg_type_ids_base + args_index];
+    int32_t arg_type_id = runtime->arg_type_ids[method_arg_type_ids_base + args_index];
     SPVM_RUNTIME_TYPE* arg_type = SPVM_API_get_type(env, arg_type_id);
     
     int32_t arg_basic_type_id = arg_type->basic_type_id;
@@ -1106,7 +1097,7 @@ call_spvm_method(...)
   }
   
   // Return
-  SPVM_RUNTIME_TYPE* method_return_type = SPVM_API_get_type(env, method->return_type_id);
+  SPVM_RUNTIME_TYPE* method_return_type = SPVM_API_get_type(env, method_return_type_id);
   int32_t method_return_basic_type_id = method_return_type->basic_type_id;
   int32_t method_return_type_dimension = method_return_type->dimension;
 
@@ -1114,46 +1105,46 @@ call_spvm_method(...)
   int32_t excetpion_flag = 0;
   switch (method_return_type->category) {
     case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
-      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
+      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
-      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
+      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(args_stack[0].bval));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_SHORT: {
-      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
+      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(args_stack[0].sval));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_INT: {
-      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
+      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(args_stack[0].ival));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_LONG: {
-      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
+      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(args_stack[0].lval));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT: {
-      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
+      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSVnv(args_stack[0].fval));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE: {
-      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
+      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSVnv(args_stack[0].dval));
       }
@@ -1166,7 +1157,7 @@ call_spvm_method(...)
     case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
     {
-      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
+      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
       
       if (!excetpion_flag) {
         SPVM_OBJECT* return_value = (SPVM_OBJECT*)args_stack[0].oval;
@@ -1207,7 +1198,7 @@ call_spvm_method(...)
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE:
     {
-      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
+      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
       
       SPVM_RUNTIME_BASIC_TYPE* method_return_basic_type = SPVM_API_get_basic_type(env, method_return_basic_type_id);
 
@@ -1264,10 +1255,10 @@ call_spvm_method(...)
   
   // Restore reference value
   if (args_have_ref) {
-    for (int32_t args_index = 0; args_index < method->arg_type_ids_length; args_index++) {
+    for (int32_t args_index = 0; args_index < method_arg_type_ids_length; args_index++) {
       SV* sv_value = ST(spvm_args_base + args_index);
       
-      int32_t arg_type_id = runtime->arg_type_ids[method->arg_type_ids_base + args_index];
+      int32_t arg_type_id = runtime->arg_type_ids[method_arg_type_ids_base + args_index];
       SPVM_RUNTIME_TYPE* arg_type = SPVM_API_get_type(env, arg_type_id);
       
       // Convert to runtime type
