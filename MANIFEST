@@ -441,12 +441,12 @@ lib/SPVM/Builder/src/spvm_implement.c
 lib/SPVM/Builder/src/spvm_list.c
 lib/SPVM/Builder/src/spvm_method.c
 lib/SPVM/Builder/src/spvm_my.c
+lib/SPVM/Builder/src/spvm_native.c
 lib/SPVM/Builder/src/spvm_op.c
 lib/SPVM/Builder/src/spvm_op_checker.c
 lib/SPVM/Builder/src/spvm_opcode.c
 lib/SPVM/Builder/src/spvm_opcode_array.c
 lib/SPVM/Builder/src/spvm_opcode_builder.c
-lib/SPVM/Builder/src/spvm_public_api.c
 lib/SPVM/Builder/src/spvm_runtime.c
 lib/SPVM/Builder/src/spvm_string.c
 lib/SPVM/Builder/src/spvm_string_buffer.c

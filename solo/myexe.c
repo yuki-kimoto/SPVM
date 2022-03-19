@@ -5,7 +5,6 @@
 #include <assert.h>
 
 #include "spvm_native.h"
-#include "spvm_public_api.h"
 #include "spvm_api.h"
 
 int32_t main(int32_t argc, const char *argv[]) {
@@ -14,7 +13,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   const char* class_name = "MyExe";
 
   // Create env
-  SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw();
+  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
   
   // Create compiler
   void* compiler = env->compiler_new();

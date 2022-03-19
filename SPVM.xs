@@ -14,7 +14,6 @@
 #include <stdint.h>
 
 #include "spvm_api.h"
-#include "spvm_public_api.h"
 
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
@@ -3505,7 +3504,7 @@ create_env(...)
   HV* hv_self = (HV*)SvRV(sv_self);
 
   // Create env
-  SPVM_ENV* env = SPVM_API_new_env_raw();
+  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
   size_t iv_env = PTR2IV(env);
   SV* sviv_env = sv_2mortal(newSViv(iv_env));
   SV* sv_env = sv_2mortal(newRV_inc(sviv_env));

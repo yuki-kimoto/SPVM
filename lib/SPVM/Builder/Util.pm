@@ -381,12 +381,12 @@ sub get_spvm_core_source_file_names {
     spvm_list.c
     spvm_method.c
     spvm_my.c
+    spvm_native.c
     spvm_op.c
     spvm_op_checker.c
     spvm_opcode_array.c
     spvm_opcode_builder.c
     spvm_opcode.c
-    spvm_public_api.c
     spvm_runtime.c
     spvm_string.c
     spvm_string_buffer.c
@@ -439,7 +439,6 @@ sub get_spvm_core_header_file_names {
     spvm_opcode_builder.h
     spvm_opcode.h
     spvm_op.h
-    spvm_public_api.h
     spvm_runtime_basic_type.h
     spvm_runtime_class.h
     spvm_runtime_class_var.h

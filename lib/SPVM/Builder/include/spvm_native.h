@@ -317,4 +317,7 @@ struct spvm_env {
   const char* (*get_constant_string_value)(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
   void (*compiler_build_runtime)(void* compiler, void* runtime);
 };
+
+SPVM_ENV* SPVM_NATIVE_new_env_raw();
+
 #endif

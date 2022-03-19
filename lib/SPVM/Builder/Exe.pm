@@ -389,7 +389,6 @@ sub create_bootstrap_source {
 
 #include "spvm_native.h"
 #include "spvm_api.h"
-#include "spvm_public_api.h"
 
 // This will be removed in the near feature release
 #include "spvm_compiler.h"
@@ -443,7 +442,7 @@ EOS
     $boot_source .= <<'EOS';
 
   // Create env
-  SPVM_ENV* env = SPVM_PUBLIC_API_new_env_raw();
+  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
   
   // Create compiler
   SPVM_COMPILER* compiler = env->compiler_new();
