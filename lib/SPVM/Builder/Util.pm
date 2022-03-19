@@ -431,7 +431,6 @@ sub get_spvm_core_header_file_names {
     spvm_list.h
     spvm_method.h
     spvm_my.h
-    spvm_name_info.h
     spvm_native.h
     spvm_object.h
     spvm_op_checker.h

@@ -387,7 +387,6 @@ lib/SPVM/Builder/include/spvm_limit.h
 lib/SPVM/Builder/include/spvm_list.h
 lib/SPVM/Builder/include/spvm_method.h
 lib/SPVM/Builder/include/spvm_my.h
-lib/SPVM/Builder/include/spvm_name_info.h
 lib/SPVM/Builder/include/spvm_native.h
 lib/SPVM/Builder/include/spvm_object.h
 lib/SPVM/Builder/include/spvm_op.h
