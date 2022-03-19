@@ -20,7 +20,6 @@
 #include "spvm_hash.h"
 #include "spvm_list.h"
 #include "spvm_type.h"
-#include "spvm_class.h"
 #include "spvm_basic_type.h"
 #include "spvm_object.h"
 #include "spvm_csource_builder_precompile.h"
@@ -3649,13 +3648,13 @@ get_anon_class_names_by_parent_class_name(...)
   SV* sv_anon_class_names = sv_2mortal(newRV_inc((SV*)av_anon_class_names));
   
   // Copy class load path to builder
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+  int32_t class_id = SPVM_API_compiler_get_class_id(compiler, class_name);
 
-  int32_t methods_length = env->compiler_get_methods_length(compiler, class->id);
+  int32_t methods_length = env->compiler_get_methods_length(compiler, class_id);
 
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    int32_t method_id = SPVM_API_compiler_get_method_id(compiler, class->id, method_index);
+    int32_t method_id = SPVM_API_compiler_get_method_id(compiler, class_id, method_index);
     int32_t is_anon_method = env->compiler_is_anon_method(compiler, method_id);
     
     if (is_anon_method) {
@@ -3818,11 +3817,12 @@ get_module_file(...)
   compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
 
   // Copy class load path to builder
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+  int32_t class_id = SPVM_API_compiler_get_class_id(compiler, class_name);
   const char* module_file;
   SV* sv_module_file;
-  if (class) {
-    module_file = class->module_file;
+
+  if (class_id >= 0) {
+    module_file = SPVM_API_compiler_get_class_module_file(compiler, class_id);
     sv_module_file = sv_2mortal(newSVpv(module_file, 0));
   }
   else {

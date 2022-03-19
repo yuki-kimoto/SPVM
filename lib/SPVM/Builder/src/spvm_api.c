@@ -7928,9 +7928,22 @@ const char* SPVM_API_compiler_get_class_name(SPVM_COMPILER* compiler, int32_t cl
 
   SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
   
+  assert(class);
+  
   const char* class_name = class->name;
   
   return class_name;
+}
+
+const char* SPVM_API_compiler_get_class_module_file(SPVM_COMPILER* compiler, int32_t class_id) {
+
+  SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
+  
+  assert(class);
+  
+  const char* class_module_file = class->module_file;
+  
+  return class_module_file;
 }
 
 int32_t SPVM_API_compiler_get_method_class_id(SPVM_COMPILER* compiler, int32_t method_id) {
