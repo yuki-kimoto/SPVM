@@ -21,7 +21,6 @@
 #include "spvm_list.h"
 #include "spvm_type.h"
 #include "spvm_class.h"
-#include "spvm_field.h"
 #include "spvm_basic_type.h"
 #include "spvm_object.h"
 #include "spvm_csource_builder_precompile.h"
