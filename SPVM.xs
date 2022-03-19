@@ -25,7 +25,6 @@
 #include "spvm_basic_type.h"
 #include "spvm_object.h"
 #include "spvm_native.h"
-#include "spvm_opcode_builder.h"
 #include "spvm_csource_builder_precompile.h"
 #include "spvm_list.h"
 #include "spvm_string_buffer.h"
@@ -3703,7 +3702,7 @@ get_anon_class_names_by_parent_class_name(...)
     int32_t is_anon_method = env->compiler_is_anon_method(compiler, method_id);
     
     if (is_anon_method) {
-      int32_t anon_class_id =  SPVM_API_compiler_get_class_id(compiler, method_id);
+      int32_t anon_class_id =  SPVM_API_compiler_get_method_class_id(compiler, method_id);
       const char* anon_class_name = SPVM_API_compiler_get_class_name(compiler, anon_class_id);
       SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
       av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));
