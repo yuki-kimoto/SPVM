@@ -7,9 +7,6 @@ enum {
   // Max count of sub arguments
   SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT = 255,
   
-  // mulnum fields count min
-  SPVM_LIMIT_C_MULNUM_T_FIELDS_MIN_COUNT = 1,
-  
   // Max count of mulnum fields
   SPVM_LIMIT_C_MULNUM_T_FIELDS_MAX_COUNT = 255,
   

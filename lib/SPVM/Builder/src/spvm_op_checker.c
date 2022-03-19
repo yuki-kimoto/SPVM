@@ -4957,7 +4957,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       // Minilal mulnum_t fields length is 1
-      else if (class->fields->length < SPVM_LIMIT_C_MULNUM_T_FIELDS_MIN_COUNT) {
+      else if (class->fields->length < 1) {
         SPVM_COMPILER_error(compiler, "Neet at least one field at %s line %d", class->op_class->file, class->op_class->line);
         return;
       }
