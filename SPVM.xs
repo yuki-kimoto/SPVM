@@ -27,7 +27,6 @@
 #include "spvm_limit.h"
 #include "spvm_allocator.h"
 
-#include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime.h"
