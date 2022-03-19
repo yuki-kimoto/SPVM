@@ -367,4 +367,6 @@ void SPVM_API_compiler_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runt
 
 void SPVM_API_runtime_prepare(SPVM_RUNTIME* runtime);
 
+int32_t SPVM_API_compiler_get_method_class_id(SPVM_COMPILER* compiler, int32_t method_id);
+
 #endif

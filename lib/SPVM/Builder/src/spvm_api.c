@@ -7872,6 +7872,20 @@ const char* SPVM_API_compiler_get_class_name(SPVM_COMPILER* compiler, int32_t cl
   return class_name;
 }
 
+int32_t SPVM_API_compiler_get_method_class_id(SPVM_COMPILER* compiler, int32_t method_id) {
+
+  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  int32_t method_class_id;
+  if (method) {
+    method_class_id = method->class->id;
+  }
+  else {
+    method_class_id = -1;
+  }
+
+  return method_class_id;
+}
+
 int32_t SPVM_API_compiler_is_anon_class(SPVM_COMPILER* compiler, int32_t class_id) {
 
   SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);

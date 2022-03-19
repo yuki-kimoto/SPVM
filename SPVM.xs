@@ -31,7 +31,6 @@
 #include "spvm_string_buffer.h"
 #include "spvm_limit.h"
 #include "spvm_allocator.h"
-#include "spvm_method.h"
 
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class.h"
@@ -3700,13 +3699,12 @@ get_anon_class_names_by_parent_class_name(...)
 
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, method_index);
-    int32_t method_id = method->id;
+    int32_t method_id = SPVM_API_compiler_get_method_id(compiler, class->id, method_index);
     int32_t is_anon_method = env->compiler_is_anon_method(compiler, method_id);
     
     if (is_anon_method) {
-      SPVM_CLASS* anon_class = SPVM_LIST_fetch(compiler->classes, method->class->id);
-      const char* anon_class_name = anon_class->name;
+      int32_t anon_class_id =  SPVM_API_compiler_get_class_id(compiler, method_id);
+      const char* anon_class_name = SPVM_API_compiler_get_class_name(compiler, anon_class_id);
       SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
       av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));
     }
