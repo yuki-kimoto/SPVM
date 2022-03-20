@@ -7131,7 +7131,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env,  int32_t basic_t
   return basic_type;
 }
 
-SPVM_RUNTIME_CLASS* SPVM_API_get_class(SPVM_ENV* env, int32_t class_id) {
+SPVM_RUNTIME_CLASS* SPVM_API_get_class(SPVM_ENV* env,  int32_t class_id) {
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -7146,23 +7146,6 @@ SPVM_RUNTIME_CLASS* SPVM_API_get_class(SPVM_ENV* env, int32_t class_id) {
   SPVM_RUNTIME_CLASS* class = &runtime->classes[class_id];
   
   return class;
-}
-
-int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_HASH_fetch(runtime->class_symtable, class_name, strlen(class_name));
-  
-  int32_t class_id;
-  if (class) {
-    class_id = class->id;
-  }
-  else {
-    class_id = -1;
-  }
-  
-  return class_id;
 }
 
 SPVM_RUNTIME_TYPE* SPVM_API_get_type(SPVM_ENV* env, int32_t type_id) {
