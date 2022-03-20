@@ -1286,7 +1286,7 @@ call_spvm_method(...)
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
           SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
           assert(arg_class);
-          SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, 0);
+          SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_field(env, arg_class->field_ids_base);
           assert(arg_mulnum_field);
           for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, field_index);
@@ -1301,7 +1301,7 @@ call_spvm_method(...)
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
           SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
           assert(arg_class);
-          SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, 0);
+          SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_field(env, arg_class->field_ids_base);
           assert(arg_mulnum_field);
           for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, field_index);
@@ -1316,7 +1316,7 @@ call_spvm_method(...)
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
           SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
           assert(arg_class);
-          SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, 0);
+          SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_field(env, arg_class->field_ids_base);
           assert(arg_mulnum_field);
           for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, field_index);
@@ -1331,7 +1331,7 @@ call_spvm_method(...)
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
           SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
           assert(arg_class);
-          SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, 0);
+          SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_field(env, arg_class->field_ids_base);
           assert(arg_mulnum_field);
           for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, field_index);
@@ -1346,7 +1346,7 @@ call_spvm_method(...)
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
           SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
           assert(arg_class);
-          SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, 0);
+          SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_field(env, arg_class->field_ids_base);
           assert(arg_mulnum_field);
           for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, field_index);
@@ -1361,7 +1361,7 @@ call_spvm_method(...)
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
           SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
           assert(arg_class);
-          SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, 0);
+          SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_field(env, arg_class->field_ids_base);
           assert(arg_mulnum_field);
           for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, field_index);
@@ -1439,7 +1439,7 @@ array_to_elems(...)
 
         assert(class);
         
-        SPVM_RUNTIME_FIELD* mulnum_field = SPVM_API_get_runtime_field_from_index(env, class_id, 0);
+        SPVM_RUNTIME_FIELD* mulnum_field = SPVM_API_get_field(env, class->field_ids_base);
         assert(mulnum_field);
 
         void* elems = (void*)env->get_elems_int(env, array);
@@ -1637,7 +1637,7 @@ array_to_bin(...)
       SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
       assert(class);
       
-      SPVM_RUNTIME_FIELD* mulnum_field = SPVM_API_get_runtime_field_from_index(env, class_id, 0);
+      SPVM_RUNTIME_FIELD* mulnum_field = SPVM_API_get_field(env, class->field_ids_base);
       assert(mulnum_field);
 
       int32_t field_length = class->field_ids_length;
@@ -3252,7 +3252,7 @@ _new_mulnum_array_from_bin(...)
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
   assert(class);
   
-  SPVM_RUNTIME_FIELD* mulnum_field = SPVM_API_get_runtime_field_from_index(env, class_id, 0);
+  SPVM_RUNTIME_FIELD* mulnum_field = SPVM_API_get_field(env, class->field_ids_base);
   assert(mulnum_field);
 
   int32_t field_length = class->field_ids_length;
