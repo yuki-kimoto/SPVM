@@ -382,5 +382,7 @@ int32_t SPVM_API_get_basic_type_class_id(SPVM_ENV* env, int32_t basic_type_id);
 
 int32_t SPVM_API_get_type_basic_type_id(SPVM_ENV* env, int32_t type_id);
 int32_t SPVM_API_get_type_dimension(SPVM_ENV* env, int32_t type_id);
+int32_t SPVM_API_get_type_category(SPVM_ENV* env, int32_t type_id);
+int32_t SPVM_API_get_type_width(SPVM_ENV* env, int32_t type_id);
 
 #endif
