@@ -7343,6 +7343,17 @@ int32_t SPVM_API_get_type_width(SPVM_ENV* env, int32_t type_id) {
   return type_width;
 }
 
+int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id) {
+  
+  SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, field_id);
+  
+  assert(field);
+  
+  int32_t field_type_id = field->type_id;
+  
+  return field_type_id;
+}
+
 int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
