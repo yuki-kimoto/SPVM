@@ -1194,7 +1194,7 @@ call_spvm_method(...)
       
       HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
       for (int32_t field_index = 0; field_index < method_return_class->field_ids_length; field_index++) {
-        SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, method_return_class_id, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, method_return_class->field_ids_base + field_index);
         const char* field_name = SPVM_API_get_constant_string_value(env, field->name_id, NULL);
         
         SV* sv_field_value = NULL;
@@ -1289,7 +1289,7 @@ call_spvm_method(...)
           SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_field(env, arg_class->field_ids_base);
           assert(arg_mulnum_field);
           for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
-            SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, arg_class->field_ids_base + field_index);
             const char* field_name = SPVM_API_get_constant_string_value(env, field->name_id, NULL);
             SV* sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
@@ -1304,7 +1304,7 @@ call_spvm_method(...)
           SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_field(env, arg_class->field_ids_base);
           assert(arg_mulnum_field);
           for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
-            SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, arg_class->field_ids_base + field_index);
             const char* field_name = SPVM_API_get_constant_string_value(env, field->name_id, NULL);
             SV* sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
@@ -1319,7 +1319,7 @@ call_spvm_method(...)
           SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_field(env, arg_class->field_ids_base);
           assert(arg_mulnum_field);
           for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
-            SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, arg_class->field_ids_base + field_index);
             const char* field_name = SPVM_API_get_constant_string_value(env, field->name_id, NULL);
             SV* sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
@@ -1334,7 +1334,7 @@ call_spvm_method(...)
           SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_field(env, arg_class->field_ids_base);
           assert(arg_mulnum_field);
           for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
-            SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, arg_class->field_ids_base + field_index);
             const char* field_name = SPVM_API_get_constant_string_value(env, field->name_id, NULL);
             SV* sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
@@ -1349,7 +1349,7 @@ call_spvm_method(...)
           SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_field(env, arg_class->field_ids_base);
           assert(arg_mulnum_field);
           for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
-            SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, arg_class->field_ids_base + field_index);
             const char* field_name = SPVM_API_get_constant_string_value(env, field->name_id, NULL);
             SV* sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
@@ -1364,7 +1364,7 @@ call_spvm_method(...)
           SPVM_RUNTIME_FIELD* arg_mulnum_field = SPVM_API_get_field(env, arg_class->field_ids_base);
           assert(arg_mulnum_field);
           for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
-            SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, arg_class_id, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, arg_class->field_ids_base + field_index);
             const char* field_name = SPVM_API_get_constant_string_value(env, field->name_id, NULL);
             SV* sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
@@ -1447,7 +1447,7 @@ array_to_elems(...)
         HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
         int32_t field_length = class->field_ids_length;
         for (int32_t field_index = 0; field_index < class->field_ids_length; field_index++) {
-          SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, class_id, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, class->field_ids_base +field_index);
           const char* field_name = SPVM_API_get_constant_string_value(env, field->name_id, NULL);
 
           SV* sv_field_value;
