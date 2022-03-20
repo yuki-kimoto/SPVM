@@ -27,12 +27,10 @@
 #include "spvm_limit.h"
 #include "spvm_allocator.h"
 
-#include "spvm_runtime_basic_type.h"
+#include "spvm_runtime.h"
 #include "spvm_runtime_class.h"
 #include "spvm_runtime_field.h"
-#include "spvm_runtime.h"
 #include "spvm_runtime_type.h"
-#include "spvm_runtime.h"
 
 static const char* MFILE = "SPVM.xs";
 
@@ -90,15 +88,15 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
+  int32_t basic_type_id = SPVM_API_get_basic_type_id(env, basic_type_name);
   
-  if (basic_type == NULL) {
+  if (basic_type_id < 0) {
     *sv_error = sv_2mortal(newSVpvf("Not found %s at %s line %d\n", basic_type_name, MFILE, __LINE__));
     return NULL;
   }
   
   // New array
-  void* array = env->new_mulnum_array(env, basic_type->id, length);
+  void* array = env->new_mulnum_array(env, basic_type_id, length);
 
   for (int32_t index = 0; index < length; index++) {
     SV** sv_element_ptr = av_fetch(av_elems, index, 0);
@@ -106,7 +104,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
 
     if (sv_derived_from(sv_element, "HASH")) {
       
-      SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
+      SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type_id);
       assert(class);
       
       SPVM_RUNTIME_FIELD* first_field = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
@@ -207,9 +205,6 @@ call_spvm_method(...)
   
   // Basic type
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, class_name);
-  
-  // Class
-  SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
   
   // Method not found
   int32_t method_id = SPVM_API_get_method_id_without_signature(env, class_name, method_name);
@@ -1172,9 +1167,8 @@ call_spvm_method(...)
             }
             // Object
             else {
-              SPVM_RUNTIME_BASIC_TYPE* method_return_basic_type = SPVM_API_get_basic_type(env, return_value->basic_type_id);
               SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-              sv_catpv(sv_perl_class_name, SPVM_API_get_basic_type_name(env, method_return_basic_type->id));
+              sv_catpv(sv_perl_class_name, SPVM_API_get_basic_type_name(env, return_value->basic_type_id));
               sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_perl_class_name));
             }
           }
@@ -1195,9 +1189,7 @@ call_spvm_method(...)
     {
       excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
       
-      SPVM_RUNTIME_BASIC_TYPE* method_return_basic_type = SPVM_API_get_basic_type(env, method_return_basic_type_id);
-
-      SPVM_RUNTIME_CLASS* method_return_class = SPVM_API_get_runtime_class_from_basic_type_id(env, method_return_basic_type->id);
+      SPVM_RUNTIME_CLASS* method_return_class = SPVM_API_get_runtime_class_from_basic_type_id(env, method_return_basic_type_id);
       assert(method_return_class);
       
       SPVM_RUNTIME_FIELD* method_return_first_field = SPVM_API_get_runtime_field_from_index(env, method_return_class->id, 0);
@@ -1440,9 +1432,7 @@ array_to_elems(...)
     if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
       
       for (int32_t index = 0; index < length; index++) {
-        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, array->basic_type_id);
-        
-        SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
+        SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, array->basic_type_id);
         assert(class);
         
         SPVM_RUNTIME_FIELD* first_field = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
@@ -1518,9 +1508,6 @@ array_to_elems(...)
       }
       else {
         for (int32_t index = 0; index < length; index++) {
-          // Element type id
-          SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, array->basic_type_id);
-
           // Index
           SPVM_OBJECT* value = env->get_elem_object(env, array, index);
           if (value == NULL) {
@@ -1535,7 +1522,7 @@ array_to_elems(...)
             }
             else {
               SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-              sv_catpv(sv_perl_class_name, SPVM_API_get_basic_type_name(env, basic_type->id));
+              sv_catpv(sv_perl_class_name, SPVM_API_get_basic_type_name(env, array->basic_type_id));
               sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_perl_class_name));
             }
             av_push(av_values, SvREFCNT_inc(sv_value));
@@ -1639,11 +1626,10 @@ array_to_bin(...)
   
   SV* sv_bin;
   if (is_array_type) {
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_id);
     int32_t element_type_dimension = dimension - 1;
 
     if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
-      SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
+      SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type_id);
       assert(class);
       
       SPVM_RUNTIME_FIELD* first_field = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
@@ -2025,9 +2011,6 @@ array_get(...)
     // Element dimension
     int32_t element_dimension = array->type_dimension - 1;
     
-    // Element type id
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, array->basic_type_id);
-
     // Index
     SPVM_OBJECT* value = env->get_elem_object(env, array, index);
     if (value != NULL) {
@@ -2036,7 +2019,7 @@ array_get(...)
     
     if (element_dimension == 0) {
       SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-      sv_catpv(sv_perl_class_name, SPVM_API_get_basic_type_name(env, basic_type->id));
+      sv_catpv(sv_perl_class_name, SPVM_API_get_basic_type_name(env, array->basic_type_id));
       sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_perl_class_name));
     }
     else if (element_dimension > 0) {
@@ -3021,11 +3004,10 @@ new_string_array_len(...)
   // Element type id
   const char* basic_type_name = "string";
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
-  assert(basic_type);
+  int32_t basic_type_id = SPVM_API_get_basic_type_id(env, basic_type_name);
   
   // New array
-  void* array = env->new_object_array(env, basic_type->id, length);
+  void* array = env->new_object_array(env, basic_type_id, length);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
@@ -3056,11 +3038,11 @@ new_object_array_len(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
-  assert(basic_type);
+  int32_t basic_type_id = SPVM_API_get_basic_type_id(env, basic_type_name);
+  assert(basic_type_id >= 0);
   
   // New array
-  void* array = env->new_object_array(env, basic_type->id, length);
+  void* array = env->new_object_array(env, basic_type_id, length);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
@@ -3095,11 +3077,11 @@ _new_object_array(...)
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
-  assert(basic_type);
+ int32_t basic_type_id = SPVM_API_get_basic_type_id(env, basic_type_name);
+  assert(basic_type_id >= 0);
   
   // New array
-  SPVM_OBJECT* array = env->new_object_array(env, basic_type->id, length);
+  SPVM_OBJECT* array = env->new_object_array(env, basic_type_id, length);
 
   int32_t array_basic_type_id  = array->basic_type_id;
   int32_t array_type_dimension = array->type_dimension;
@@ -3164,11 +3146,11 @@ _new_muldim_array(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
-  assert(basic_type);
+ int32_t basic_type_id = SPVM_API_get_basic_type_id(env, basic_type_name);
+  assert(basic_type_id >= 0);
   
   // New array
-  SPVM_OBJECT* array = env->new_muldim_array(env, basic_type->id, element_type_dimension, length);
+  SPVM_OBJECT* array = env->new_muldim_array(env, basic_type_id, element_type_dimension, length);
   
   int32_t array_basic_type_id = array->basic_type_id;
 
@@ -3255,14 +3237,13 @@ _new_mulnum_array_from_bin(...)
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, basic_type_name);
+  int32_t basic_type_id = SPVM_API_get_basic_type_id(env, basic_type_name);
   
-  if (basic_type == NULL) {
-    const char* basic_type_name = SPVM_API_get_basic_type_name(env, basic_type->id);
+  if (basic_type_id < 0) {
     croak("Can't load %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
   }
 
-  SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type->id);
+  SPVM_RUNTIME_CLASS* class = SPVM_API_get_runtime_class_from_basic_type_id(env, basic_type_id);
   assert(class);
   
   SPVM_RUNTIME_FIELD* first_field = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
@@ -3311,9 +3292,8 @@ _new_mulnum_array_from_bin(...)
   
   array_length = binary_length / field_length / field_width;
 
-  SPVM_OBJECT* array = env->new_mulnum_array(env, basic_type->id, array_length);
+  SPVM_OBJECT* array = env->new_mulnum_array(env, basic_type_id, array_length);
 
-  int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
   
   switch (first_field_type->basic_type_id) {
