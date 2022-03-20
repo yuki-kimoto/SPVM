@@ -202,9 +202,6 @@ call_spvm_method(...)
   // Method name
   const char* method_name = SvPV_nolen(sv_method_name);
   
-  // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, class_name);
-  
   // Method not found
   int32_t method_id = SPVM_API_get_method_id_without_signature(env, class_name, method_name);
   if (method_id < 0) {
@@ -381,7 +378,6 @@ call_spvm_method(...)
       // Perl hash reference to SPVM byte multi numeric type
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE: {
         if (sv_derived_from(sv_value, "HASH")) {
-          SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
           SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_runtime_class_from_basic_type_id(env, arg_basic_type_id);
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t fields_length = arg_class->field_ids_length;
@@ -409,7 +405,6 @@ call_spvm_method(...)
       // Perl hash reference to SPVM short multi numeric type
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT: {
         if (sv_derived_from(sv_value, "HASH")) {
-          SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
           SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_runtime_class_from_basic_type_id(env, arg_basic_type_id);
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t fields_length = arg_class->field_ids_length;
@@ -437,7 +432,6 @@ call_spvm_method(...)
       // Perl hash reference to SPVM int multi numeric type
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT: {
         if (sv_derived_from(sv_value, "HASH")) {
-          SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
           SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_runtime_class_from_basic_type_id(env, arg_basic_type_id);
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t fields_length = arg_class->field_ids_length;
@@ -465,7 +459,6 @@ call_spvm_method(...)
       // Perl hash reference to SPVM long multi numeric type
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_LONG: {
         if (sv_derived_from(sv_value, "HASH")) {
-          SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
           SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_runtime_class_from_basic_type_id(env, arg_basic_type_id);
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t fields_length = arg_class->field_ids_length;
@@ -493,7 +486,6 @@ call_spvm_method(...)
       // Perl hash reference to SPVM float multi numeric type
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT: {
         if (sv_derived_from(sv_value, "HASH")) {
-          SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
           SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_runtime_class_from_basic_type_id(env, arg_basic_type_id);
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t fields_length = arg_class->field_ids_length;
@@ -521,7 +513,6 @@ call_spvm_method(...)
       // Perl hash reference to SPVM double multi numeric type
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE: {
         if (sv_derived_from(sv_value, "HASH")) {
-          SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
           SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_runtime_class_from_basic_type_id(env, arg_basic_type_id);
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t fields_length = arg_class->field_ids_length;
@@ -725,7 +716,6 @@ call_spvm_method(...)
                 default: {
                   if (arg_type_category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
                     SV* sv_error = NULL;
-                    SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
                     const char* arg_basic_type_name = SPVM_API_get_basic_type_name(env, arg_basic_type_id);
                     SPVM_OBJECT* array = SPVM_XS_UTIL_new_mulnum_array(env, arg_basic_type_name, sv_value, &sv_error);
                     if (sv_error) {
@@ -870,7 +860,6 @@ call_spvm_method(...)
         if (hv_value == NULL) {
           croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
-        SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
         SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_runtime_class_from_basic_type_id(env, arg_basic_type_id);
         int32_t fields_length = arg_class->field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
@@ -908,7 +897,6 @@ call_spvm_method(...)
         if (hv_value == NULL) {
           croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
-        SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
         SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_runtime_class_from_basic_type_id(env, arg_basic_type_id);
         int32_t fields_length = arg_class->field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
@@ -945,7 +933,6 @@ call_spvm_method(...)
         if (hv_value == NULL) {
           croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
-        SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
         SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_runtime_class_from_basic_type_id(env, arg_basic_type_id);
         int32_t fields_length = arg_class->field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
@@ -982,7 +969,6 @@ call_spvm_method(...)
         if (hv_value == NULL) {
           croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
-        SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
         SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_runtime_class_from_basic_type_id(env, arg_basic_type_id);
         int32_t fields_length = arg_class->field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
@@ -1019,7 +1005,6 @@ call_spvm_method(...)
         if (hv_value == NULL) {
           croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
-        SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
         SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_runtime_class_from_basic_type_id(env, arg_basic_type_id);
         int32_t fields_length = arg_class->field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
@@ -1056,7 +1041,6 @@ call_spvm_method(...)
         if (hv_value == NULL) {
           croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
-        SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = SPVM_API_get_basic_type(env, arg_basic_type_id);
         SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_runtime_class_from_basic_type_id(env, arg_basic_type_id);
         int32_t fields_length = arg_class->field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
@@ -1424,7 +1408,6 @@ array_to_elems(...)
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   if (is_array_type) {
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_id);
     int32_t element_type_dimension = dimension - 1;
 
     if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
