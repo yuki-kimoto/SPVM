@@ -8180,3 +8180,20 @@ SPVM_RUNTIME* SPVM_API_runtime_new(SPVM_ENV* env) {
 void SPVM_API_runtime_free(SPVM_ENV* env, SPVM_RUNTIME* runtime) {
   return SPVM_RUNTIME_free(runtime);
 }
+
+int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
+
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  SPVM_RUNTIME_CLASS* class = SPVM_HASH_fetch(runtime->class_symtable, class_name, strlen(class_name));
+
+  int32_t class_id;
+  if (class) {
+    class_id = class->id;
+  }
+  else {
+    class_id = -1;
+  }
+
+  return class_id;
+}
