@@ -7277,6 +7277,28 @@ int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
   }
 }
 
+int32_t SPVM_API_get_basic_type_name_id(SPVM_ENV* env, int32_t basic_type_id) {
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_id);
+  
+  assert(basic_type);
+  
+  int32_t basic_type_name_id = basic_type->name_id;
+  
+  return basic_type_name_id;
+}
+
+int32_t SPVM_API_get_basic_type_class_id(SPVM_ENV* env, int32_t basic_type_id) {
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_id);
+  
+  assert(basic_type);
+  
+  int32_t basic_type_class_id = basic_type->class_id;
+  
+  return basic_type_class_id;
+}
+
 int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
