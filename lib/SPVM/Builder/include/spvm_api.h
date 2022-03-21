@@ -384,4 +384,11 @@ int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id);
 int32_t SPVM_API_get_field_name_id(SPVM_ENV* env, int32_t field_id);
 int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id);
 
+int32_t SPVM_API_get_class_name_id(SPVM_ENV* env, int32_t class_id);
+int32_t SPVM_API_get_class_field_ids_base(SPVM_ENV* env, int32_t class_id);
+int32_t SPVM_API_get_class_field_ids_length(SPVM_ENV* env, int32_t class_id);
+int32_t SPVM_API_get_class_method_ids_base(SPVM_ENV* env, int32_t class_id);
+int32_t SPVM_API_get_class_method_ids_length(SPVM_ENV* env, int32_t class_id);
+int32_t SPVM_API_get_class_class_var_ids_base(SPVM_ENV* env, int32_t class_id);
+
 #endif
