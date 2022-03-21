@@ -381,4 +381,7 @@ int32_t SPVM_API_get_type_width(SPVM_ENV* env, int32_t type_id);
 
 int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id);
 
+int32_t SPVM_API_get_field_name_id(SPVM_ENV* env, int32_t field_id);
+int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id);
+
 #endif

@@ -7340,6 +7340,17 @@ int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id) {
   return field_type_id;
 }
 
+int32_t SPVM_API_get_field_name_id(SPVM_ENV* env, int32_t field_id) {
+  
+  SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, field_id);
+  
+  assert(field);
+  
+  int32_t field_name_id = field->name_id;
+  
+  return field_name_id;
+}
+
 int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
