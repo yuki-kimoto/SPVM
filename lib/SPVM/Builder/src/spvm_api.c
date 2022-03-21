@@ -5603,8 +5603,8 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
   if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
     assert(class->method_ids_length == 1);
     assert(callback->method_ids_length == 1);
-    SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_runtime_method_from_index(env, class->id, 0);
-    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_get_runtime_method_from_index(env, callback->id, 0);
+    SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_method(env, class->method_ids_base + 0);
+    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_get_method(env, callback->method_ids_base + 0);
     
     const char* method_callback_signature = SPVM_API_get_constant_string_value(env, method_callback->signature_id, NULL);
     const char* found_method_signature = SPVM_API_get_constant_string_value(env, found_method->signature_id, NULL);
@@ -5618,7 +5618,7 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
   // Normal class
   else {
     assert(callback->method_ids_length == 1);
-    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_get_runtime_method_from_index(env, callback->id, 0);
+    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_get_method(env, callback->method_ids_base + 0);
     
     const char* method_callback_name =  SPVM_API_get_constant_string_value(env, method_callback->name_id, NULL);
     SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_callback_name);
