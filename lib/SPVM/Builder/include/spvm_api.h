@@ -329,8 +329,6 @@ int32_t SPVM_API_compiler_get_class_id(SPVM_COMPILER* compiler, const char* clas
 
 const char* SPVM_API_get_constant_string_value(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
 
-SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_index(SPVM_ENV* env, int32_t class_id, int32_t field_index);
-
 SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_index(SPVM_ENV* env, int32_t class_id, int32_t method_index);
 
 void SPVM_API_set_native_method_address(SPVM_ENV* env, int32_t method_id, void* address);

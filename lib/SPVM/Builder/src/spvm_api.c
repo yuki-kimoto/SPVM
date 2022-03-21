@@ -468,7 +468,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
             }
             
-            SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, class->id, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, class->field_ids_base + field_index);
             
             SPVM_RUNTIME_TYPE* field_type = SPVM_API_get_type(env, field->type_id);
 
@@ -623,7 +623,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
           }
 
-          SPVM_RUNTIME_FIELD* field = SPVM_API_get_runtime_field_from_index(env, class->id, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, class->field_ids_base + field_index);
           
           SPVM_RUNTIME_TYPE* field_type = SPVM_API_get_type(env, field->type_id);
           
@@ -5537,7 +5537,7 @@ int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array) {
       
       int32_t width = class->field_ids_length;
       
-      SPVM_RUNTIME_FIELD* first_field = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
+      SPVM_RUNTIME_FIELD* first_field = SPVM_API_get_field(env, class->field_ids_base + 0);
       int32_t first_field_type_id = first_field->type_id;
       assert(first_field_type_id > -1);
       SPVM_RUNTIME_TYPE* first_field_type = SPVM_API_get_type(env, first_field_type_id);
@@ -6461,7 +6461,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   // Class
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, basic_type->class_id);
   int32_t fields_length = class->field_ids_length;
-  SPVM_RUNTIME_FIELD* field_first = SPVM_API_get_runtime_field_from_index(env, class->id, 0);
+  SPVM_RUNTIME_FIELD* field_first = SPVM_API_get_field(env, class->field_ids_base + 0);
 
   SPVM_RUNTIME_TYPE* first_field_type = SPVM_API_get_type(env, field_first->type_id);
 
