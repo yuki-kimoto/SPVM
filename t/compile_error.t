@@ -127,6 +127,8 @@ sub print_error_messages {
   compile_not_ok('TestCase::CompileError::Method::Begin');
   compile_not_ok('TestCase::CompileError::Method::MethodNameStartDigit');
   compile_not_ok('TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice');
+  compile_not_ok('TestCase::CompileError::Method::TooManyArguments', qr/Too many arguments/i);
+  compile_not_ok('TestCase::CompileError::Method::TooManyArgumentsMulnum'. qr/Too many arguments/i);
 }
 
 # Field
