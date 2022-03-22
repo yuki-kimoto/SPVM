@@ -2,6 +2,11 @@ Revision history for SPVM
 0.9510  2021-03-22
         [CHANGE]
         * Add element[] type. This is same as oarray type, but element[] type has correct type dimension.
+        [DEPRECATIONS]
+        * oarray type is deprecated. oarray type will be removed at 0.9511.
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * oarray type signature change from oarray to element[].
+          For this reason, 0.9510 don't have binary compatibility of precompiled source from 0.9509
 0.9509  2021-03-19
         [WARNINGS]
         * Interfaces and IDs of Native APIs that is added after 0.9506+(181+) will be changed many times.
