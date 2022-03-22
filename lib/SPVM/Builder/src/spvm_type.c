@@ -184,7 +184,7 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY;
     }
     else if (SPVM_TYPE_is_any_object_array_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY;
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY;
     }
     else if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY;

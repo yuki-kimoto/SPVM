@@ -566,7 +566,7 @@ call_spvm_method(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-      case SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY:
+      case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
       {
         // Perl undef to SPVM undef
         if (!SvOK(sv_value)) {
@@ -1178,7 +1178,7 @@ call_spvm_method(...)
     case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
     case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
     case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-    case SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY:
+    case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
     {
       excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
@@ -1540,7 +1540,7 @@ array_to_elems(...)
         av_push(av_values, SvREFCNT_inc(sv_value));
       }
     }
-    else if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY || array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY) {
+    else if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY || array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY) {
       if (basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
         for (int32_t i = 0; i < length; i++) {
           void* object = env->get_elem_object(env, array, i);
@@ -1731,7 +1731,7 @@ array_to_bin(...)
           croak("Invalid type at %s line %d\n", MFILE, __LINE__);
       }
     }
-    else if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY || array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY) {
+    else if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY || array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY) {
       croak("Objec type is not supported at %s line %d\n", MFILE, __LINE__);
     }
     else {
