@@ -9,9 +9,6 @@ enum {
   
   // Max count of mulnum fields
   SPVM_LIMIT_C_MULNUM_T_FIELDS_MAX_COUNT = 255,
-  
-  // mulnum fields count max
-  SPVM_LIMIT_C_ARRAY_DIMENSION_MAX_COUNT = 255,
 };
 
 #endif
