@@ -21,7 +21,6 @@
 #include "spvm_method.h"
 #include "spvm_type.h"
 #include "spvm_weaken_backref.h"
-#include "spvm_limit.h"
 #include "spvm_string_buffer.h"
 #include "spvm_api.h"
 #include "spvm_object.h"
@@ -37,6 +36,7 @@
 #include "spvm_runtime_method.h"
 #include "spvm_runtime_string.h"
 #include "spvm_runtime_type.h"
+
 
 
 

@@ -24,7 +24,6 @@
 #include "spvm_switch_info.h"
 #include "spvm_descriptor.h"
 #include "spvm_allocator.h"
-#include "spvm_limit.h"
 #include "spvm_use.h"
 #include "spvm_class_var.h"
 #include "spvm_class_var_access.h"
@@ -37,6 +36,7 @@
 #include "spvm_allow.h"
 #include "spvm_implement.h"
 #include "spvm_string.h"
+
 
 
 

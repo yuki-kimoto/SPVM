@@ -6,7 +6,6 @@
 #include "spvm_op.h"
 #include "spvm_list.h"
 #include "spvm_type.h"
-#include "spvm_limit.h"
 #include "spvm_hash.h"
 
 const char* const* SPVM_CLASS_C_CATEGORY_NAMES(void) {

@@ -25,7 +25,6 @@
 #include "spvm_field.h"
 #include "spvm_switch_info.h"
 #include "spvm_type.h"
-#include "spvm_limit.h"
 #include "spvm_object.h"
 #include "spvm_class_var.h"
 #include "spvm_class_var_access.h"

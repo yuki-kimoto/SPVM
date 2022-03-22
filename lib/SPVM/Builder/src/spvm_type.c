@@ -11,7 +11,6 @@
 #include "spvm_yacc_util.h"
 #include "spvm_class.h"
 #include "spvm_field.h"
-#include "spvm_limit.h"
 #include "spvm_basic_type.h"
 #include "spvm_method.h"
 

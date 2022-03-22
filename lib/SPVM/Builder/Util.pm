@@ -427,7 +427,6 @@ sub get_spvm_core_header_file_names {
     spvm_field.h
     spvm_hash.h
     spvm_implement.h
-    spvm_limit.h
     spvm_list.h
     spvm_method.h
     spvm_my.h

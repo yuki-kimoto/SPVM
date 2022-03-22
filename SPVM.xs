@@ -24,7 +24,6 @@
 #include "spvm_object.h"
 #include "spvm_csource_builder_precompile.h"
 #include "spvm_string_buffer.h"
-#include "spvm_limit.h"
 #include "spvm_allocator.h"
 
 #include "spvm_runtime.h"

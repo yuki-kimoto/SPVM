@@ -2364,81 +2364,68 @@ See L<"Set Multi Numeric Field Value via Dereference"> to set Multi Numeric Fiel
 
 =head2 Method Definition
 
-"sub" Keyword defines Method.
-
-  static method METHOD_NAME : RETURN_VALUE_TYPE_NAME () {
+The C<method> keyword defines a class method or an instance method.
   
-  }
-  static method METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
-  
+  # Static method
+  static method METHOD_NAME : RETURN_VALUE_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
+    
   }
 
-Method must be defined directly under L<"Class Definition">.
-
-Method name must be follow the rule of L<"Method Names">.
-
-Method names are allowed as same as L<"Keyword">. 
-
-Type of Return Value must be L<"void Type">, L<"Numeric Types">, or L<"Object Types">, otherwise a compilation error occurs.
-
-Argument name must be follow the rule of L<"Local Variable Names">.
-
-Minimal Argument Count is 0. Max Argument Count is 255.
-
-Type of Argument must be L<"Numeric Types">, L<"Object Types">, or L<"Reference Type">, otherwise a compilation error occurs.
-
-The defined Method can be called. See L<"Method Call"> about calling Method, .
-
-L<"Method Block"> can have zero or more Statements.
-
-Method Definition can have L<"Method Descriptor">.
-
-  DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN static method METHOD_NAME : RETURN_VALUE_TYPE_NAME () {
-  
+  # Instance method
+  method METHOD_NAME : RETURN_VALUE_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
+    
   }
-  DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN static method METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
+
+Methods must be defined directly under L<"Class Definition">.
+
+Method names must be follow the rule of L<"Method Names">.
+
+The argument names must be follow the rule of L<"Local Variable Names">.
+
+The minimal length of arguments is C<0>. The max length of arguments is C<255>.
+
+The types of the arguments must be L<"Numeric Types">, L<"Multi Numeric Types">, L<"Object Types">, or L<"Reference Type">, otherwise a compilation error occurs.
+
+The type of the return value must be L<"void Type">, L<"Numeric Types">, L<"Multi Numeric Types"> or L<"Object Types">, otherwise a compilation error occurs.
+
+Defined methods can be called using L<"Method Call"> syntax.
+
+A method can have L<method descriptors|"Method Descriptors">.
+
+  DESCRIPTORS static method METHOD_NAME : RETURN_VALUE_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
   
   }
 
-If "..." follows Type of Argument, the Argument becomes Variable Length Argument. Only the last Argument can be Variable Length Argument.
+A method has L<"Method Block"> except for the case that the method has the C<native> L<method descriptors|"Method Descriptors">. 
 
-The Type must be L<"Array Type">.
+=head3 Variable Length Arguments
 
-  static method METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2...) {
+C<...> after the type of the argument indicates the argument is a variable length argument. Only the last argument can become a variable length argument.
+
+  static method METHOD_NAME : RETURN_VALUE_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2...) {
   
   }
 
-Variable Length Argument can recieve multi values.
+The type of the variable length argument must be L<"Array Types">.
 
-  # Variable Length Argument Definition
+A variable length argument can recieve multiple values.
+
+  # Definition of variable length argument 
   static method sprintf : string ($format : string, $values : object[]...) {
   
   }
   
-  # Call Variable Length Argument Method with multi values.
+  # Pass multiple values to the a variable length argument
   sprintf("Value %d %f", 1, 2.0);
 
-Variable Length Argument can recieve Array.
+A variable length argument can recieve an array.
 
-  # Call Variable Length Argument Method with Array.
+  # Pass array to a variable lenght argument
   sprintf("Value  %d %f", [(object)1, 2.0]);
 
-If you want to treat the value of Array as an individual element of the variable length argument, cast it to Type other than Array Type.
+If you want to treat the value as an individual element, cast it to type other than L<"Array Types">..
 
   sprintf("aaa %p", (object)[(object)1, 2.0]);
-
-=head2 Instance Method
-
-An instance method is defined without the C<static> keyword.
-
-  method add_chunk : void ($chunk : string) {
-    # ...
-  }
-
-An instance method can be called from the object.
-
-  my $asset = Asset->new;
-  $asset->add_chumk("foo");
 
 =head2 Class Method
 
@@ -2449,22 +2436,42 @@ A class method is defined with the C<static> keyword.
   }
 
 A class method can be called from the L<class name|"Class Names">.
-
+  
+  # Call a class method
   my $total = Foo->sum(1, 2);
 
-=head2 Method Descriptor
+If the class method is belong to the current class, a class method can be called using L<&|"Current Class"> syntax.
+  
+  # Call a class method using "&"
+  my $total = &sum(1, 2);
 
-List of Method Descriptor.
+=head2 Instance Method
+
+An instance method is defined without the C<static> keyword.
+
+  method add_chunk : void ($chunk : string) {
+    # ...
+  }
+
+An instance method can be called from the object.
+  
+  # Call an instance method
+  my $asset = Asset->new;
+  $asset->add_chumk("foo");
+
+=head2 Method Descriptors
+
+List of Method Descriptors.
 
 =begin html
 
 <table>
   <tr>
     <th>
-      Descriptor
+      Descriptors
    </th>
     <th>
-      Description
+      Descriptions
    </th>
   </tr>
   <tr>
@@ -3132,7 +3139,7 @@ Multi Numeric Types can be used as an argument L<"Types"> in L<"Method Definitio
 
 Multi Numeric Types can be used as L<"Types"> of Return Value in L<"Method Definition">.
 
-Multi Numeric Types can be used as L<"Basic Type"> of L<"Array Type"> .
+Multi Numeric Types can be used as L<"Basic Type"> of L<"Array Types"> .
 
   my $points = new Point_3i[5];
 
@@ -3252,7 +3259,7 @@ The Element Type is L<"Multi Numeric Types">, not L<"Object Types">.
 
 For example, Point_3i[5] is continuous 15 (= 3 * 5) count L<"int Type"> Value.
 
-L<"Types"> of Multi Numeric Array is L<"Array Type">.
+L<"Types"> of Multi Numeric Array is L<"Array Types">.
 
 =head2 Multi Numeric Array Access
 
@@ -3309,10 +3316,10 @@ Dereference is an operation to get and set the value pointed by Reference.
   # Dereference Numeric Types Reference to set the pointed value
   $$num_ref = 3;
   
-  # Dereference Mutil Numeric Types Reference to get the pointed value
+  # Dereference Multi Numeric Types Reference to get the pointed value
   my $point2 = $$point_ref;
   
-  # Dereference Mutil Numeric Types Reference to set the pointed value
+  # Dereference Multi Numeric Types Reference to set the pointed value
   $$point_ref = $point2;
 
 If the target of Reference Type is L<"Multi Numeric Types">, the setting and getting of Multi Numeric Types Field Value can be done by Arrow Operator.
@@ -3582,7 +3589,7 @@ B<Get Array Element Expression> is a Expression to get a Element Value of L<"Arr
 
   ARRAY_EXPRESSION->[INDEX_EXPRESSION]
 
-Array Expression must be L<"Array Type">.
+Array Expression must be L<"Array Types">.
 
 Index Expression must be L<"int Type"> or the type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
 
@@ -3609,7 +3616,7 @@ Set Array Element Expression is a Expression to set a Element Value of a Array u
 
   ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_OPERAND
 
-Array Expression must be L<"Array Type">.
+Array Expression must be L<"Array Types">.
 
 Index Expression must be L<"int Type"> or the type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
 
@@ -3683,7 +3690,7 @@ All Array Element is initialized by L<"Type Initial Value">.
 
 All Element is gurantied to be continued on Memory.
 
-Array is L<"Array Type">. This is also L<"Object Types">.
+Array is L<"Array Types">. This is also L<"Object Types">.
 
 B<Create Array Example:>
 
@@ -3724,7 +3731,7 @@ SPVM has a syntax for Array Initialization to simplify Create Array. Expression 
 
 Array Initialization returns an Array that has the length of the number of elements of Expression.
 
-The type of Array is the type of Expression1 converted to Array Type. If no element is specified, it will be an Array Type of L<"Any Object Type">.
+The type of Array is the type of Expression1 converted to Array Types. If no element is specified, it will be an Array Types of L<"Any Object Type">.
 
 If Expression2 or later does not satisfy L<"Type Compatibility">, a a compilation error will occur.
 
@@ -4820,7 +4827,7 @@ The array length operator is an L<Unary Operator|"Unary Operators"> to get the l
 
   @OPERAND
 
-The operand must be a L<Expression|"Expressions"> that type is an L<"Array Type">, otherwise a compilation error occurs.
+The operand must be a L<Expression|"Expressions"> that type is an L<"Array Types">, otherwise a compilation error occurs.
 
 The array length operator returns a L<"int Type"> value that is the length of the L<"Array">.
 
@@ -5759,7 +5766,7 @@ A pointer type is a L<class type|"Class Type">
 
 =head2 Object Types
 
-Object types are L<"Class Type">, L<"Callback Type">, L<"Array Type">, L<"string Type">, L<"Any Object Type">.
+Object types are L<"Class Type">, L<"Callback Type">, L<"Array Types">, L<"string Type">, L<"Any Object Type">.
 
 The value of a object type can be assigned to a any object type.
 
@@ -5897,9 +5904,9 @@ B<void Type> is a special Type that can only be used in the return type of L<"Me
 
 A Type that does not have dimensions is called a Basic Type. L<"Numeric Types">, L<"Class Type">, <a href = "#language-type- any-object ">Any Object Type">, L<"string Type"> is a Basic Type.
 
-=head2 Array Type
+=head2 Array Types
 
-Array Type represents multiple continuous data areas. L<"Basic Type"> can be an Array.
+Array Types represents multiple continuous data areas. L<"Basic Type"> can be an Array.
 
   int[]
   double[]
@@ -5915,7 +5922,7 @@ Array has dimensions and can express up to 255 dimensions.
   # Three-dimensional
   int[] [] []
 
-Array Type is L<"Object Types">.
+Array Types is L<"Object Types">.
 
 Use new Operator to create an Array. In the following example, L<"int Type"> Array with 3 elements is created.
 
@@ -5925,11 +5932,11 @@ You also use new Operator when creating a multidimensional Array.The following e
 
 my $nums = new int[] [3];
 
-=head2 Numeric Array Type
+=head2 Numeric Array Types
 
-Numeric Array Type means L<"Numeric Types"> with the element L<"Array Type"> It is.
+Numeric Array Types means L<"Numeric Types"> with the element L<"Array Types"> It is.
 
-B<Numeric Array Type list>
+B<Numeric Array Types list>
 
 =begin html
 
@@ -5956,9 +5963,9 @@ B<Numeric Array Type list>
 
 =end html
 
-Data represented by Numeric Array Type must have elements whose size is L<"Numeric Types">, and must be consecutive by the number of Array Length.
+Data represented by Numeric Array Types must have elements whose size is L<"Numeric Types">, and must be consecutive by the number of Array Length.
 
-All elements of Numeric Array Type are initialized by L<"Type Initial Value"> when Create Array is performed.
+All elements of Numeric Array Types are initialized by L<"Type Initial Value"> when Create Array is performed.
 
 =head2 byte[] Type
 
@@ -5968,11 +5975,11 @@ In SPVM, the L<"byte[] Type"> is a special Type in that it is L<"string Type">.
 
 L<"string Type"> is treated as L<"string Type"> at compile time, but at runtime It will be L<"byte[] Type">.
 
-=head2 Object Array Type
+=head2 Object Array Types
 
-Object Array Type is L<"Array Type"> that has the value of L<"Object Types"> as an element. It is.
+Object Array Types is L<"Array Types"> that has the value of L<"Object Types"> as an element. It is.
 
-B<Object Array TypeのExample>
+B<Object Array TypesのExample>
 
 =begin html
 
@@ -5993,15 +6000,15 @@ B<Object Array TypeのExample>
 
 =end html
 
-The data represented by Object Array Type must have elements of size of L<"Object Types"> and consecutive by the number of Array Length.
+The data represented by Object Array Types must have elements of size of L<"Object Types"> and consecutive by the number of Array Length.
 
-All elements of Object Array Type are initialized by L<"Type Initial Value"> when Create Array is performed.
+All elements of Object Array Types are initialized by L<"Type Initial Value"> when Create Array is performed.
 
-=head2 Multi Numeric Array Type
+=head2 Multi Numeric Array Types
 
-Multi Numeric Array Type means L<"Array Type that has the value of <a href="#language-type-multi-numeric">Multi Numeric Types"> as an element.</a>.
+Multi Numeric Array Types means L<"Array Types that has the value of <a href="#language-type-multi-numeric">Multi Numeric Types"> as an element.</a>.
 
-B<Multi Numeric Array Type Example>
+B<Multi Numeric Array Types Example>
 
 =begin html
 
@@ -6016,35 +6023,35 @@ B<Multi Numeric Array Type Example>
 
 =end html
 
-Data represented by Multi Numeric Array Type must have elements whose size is L<"Multi Numeric Types"> and must be contiguous with the number of Array Length ..
+Data represented by Multi Numeric Array Types must have elements whose size is L<"Multi Numeric Types"> and must be contiguous with the number of Array Length ..
 
-All elements of Multi Numeric Array Type are initialized by L<"Type Initial Value"> when Create Array is performed.
+All elements of Multi Numeric Array Types are initialized by L<"Type Initial Value"> when Create Array is performed.
 
-=head2 Any Object Array Type
+=head2 Any Object Array Types
 
-Any Object Array Type is an arbitrary L<"Object Types"> expressed as an oarray as an element. A Type that can be assigned the value of array ">Array Type</a>. Any Array Type can be cast to void * Type and passed to the first argument of the C language qsort function, but Any Object Array Type is not designed to realize the function corresponding to this. It was
+Any Object Array Types is an arbitrary L<"Object Types"> expressed as an oarray as an element. A Type that can be assigned the value of array ">Array Types</a>. Any Array Types can be cast to void * Type and passed to the first argument of the C language qsort function, but Any Object Array Types is not designed to realize the function corresponding to this. It was
 
   my $array : oarray = new Point[3];
   my $array : oarray = new object[3];
 
 If a value with a Type other than Object Type is assigned, a compilation error occurs
 
-Note that "oarrayType" is a different Type than "object[] Type". While oarrayType is a Type that can be methodstituted with an arbitrary Array Type value that has an Object Type value as an element, "object[] Type" is a Type that represents an "Array that has an objectType value as an element". Therefore, the value of arbitrary Array Type cannot be assigned.
+Note that "oarrayType" is a different Type than "object[] Type". While oarrayType is a Type that can be methodstituted with an arbitrary Array Types value that has an Object Type value as an element, "object[] Type" is a Type that represents an "Array that has an objectType value as an element". Therefore, the value of arbitrary Array Types cannot be assigned.
 
-Any Object Array Type is L<"Array Type">. L<"Array Length Operator"> to get length, L<"Set Array Element">, L<"Get Array Element">.
+Any Object Array Types is L<"Array Types">. L<"Array Length Operator"> to get length, L<"Set Array Element">, L<"Get Array Element">.
 
   my $array : oarray = new Int[3];
   
-  # Get the length of the element of Any Object Array Type
+  # Get the length of the element of Any Object Array Types
   my $length = @$array;
   
   # Get the value of any object array type element
   my $num = (Int)$array->[0];
   
-  # Setting the value of the element of Any Object Array Type
+  # Setting the value of the element of Any Object Array Types
   $array->[0] = Int->new(5);
 
-When setting the value of the element of Any Object Array Type, a check is made at runtime whether the type of the element is smaller than the type Dimension of Array by 1. If the check fails, L<"Exception"> will occur. Any Object Array Type guarantees runtime Type safety.
+When setting the value of the element of Any Object Array Types, a check is made at runtime whether the type of the element is smaller than the type Dimension of Array by 1. If the check fails, L<"Exception"> will occur. Any Object Array Types guarantees runtime Type safety.
 
 =head2 string Type
 
