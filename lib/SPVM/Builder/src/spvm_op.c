@@ -248,6 +248,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "COPY",
     "IMPLEMENT",
     "HAS_IMPLEMENT",
+    "ELEMENT",
   };
   
   return id_names;
@@ -926,6 +927,13 @@ SPVM_OP* SPVM_OP_new_op_double_ref_type(SPVM_COMPILER* compiler, const char* fil
 
 SPVM_OP* SPVM_OP_new_op_any_object_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   SPVM_TYPE* type = SPVM_TYPE_new_any_object_type(compiler);
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
+  
+  return op_type;
+}
+
+SPVM_OP* SPVM_OP_new_op_element_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_TYPE* type = SPVM_TYPE_new_element_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;

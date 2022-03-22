@@ -141,6 +141,7 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT);
   SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT);
   SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_BOOL_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_ELEMENT);
 }
 
 int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler) {
