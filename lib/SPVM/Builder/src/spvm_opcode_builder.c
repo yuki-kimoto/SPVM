@@ -277,6 +277,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
               case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
               case SPVM_TYPE_C_TYPE_CATEGORY_OARRAY:
+              case SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY:
               case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
               {
                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
