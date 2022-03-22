@@ -512,6 +512,6 @@ SPVM_OP* SPVM_OP_new_op_call_method(SPVM_COMPILER* compiler, const char* file, i
 
 SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child);
 
-SPVM_OP* SPVM_OP_new_op_element_type(SPVM_COMPILER* compiler, const char* file, int32_t line);
+SPVM_OP* SPVM_OP_build_element_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_element);
 
 #endif

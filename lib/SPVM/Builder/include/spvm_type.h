@@ -156,4 +156,6 @@ int32_t SPVM_TYPE_get_elem_byte_size(SPVM_COMPILER* compiler, int32_t basic_type
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
+SPVM_TYPE* SPVM_TYPE_new_element_array_type(SPVM_COMPILER* compiler);
+
 #endif

@@ -932,13 +932,6 @@ SPVM_OP* SPVM_OP_new_op_any_object_type(SPVM_COMPILER* compiler, const char* fil
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_new_op_element_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_new_element_type(compiler);
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
-  
-  return op_type;
-}
-
 SPVM_OP* SPVM_OP_build_eval(SPVM_COMPILER* compiler, SPVM_OP* op_eval, SPVM_OP* op_eval_block) {
   
   SPVM_OP_insert_child(compiler, op_eval, op_eval->last, op_eval_block);
@@ -3284,6 +3277,17 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
     SPVM_OP* op_null = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_type_child->file, op_type_child->line);
     SPVM_OP_insert_child(compiler, op_type, op_type->last, op_null);
   }
+
+  return op_type;
+}
+
+SPVM_OP* SPVM_OP_build_element_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_element) {
+  
+  // Type
+  SPVM_TYPE* type = SPVM_TYPE_new_element_array_type(compiler);
+  
+  // Type OP
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_element->file, op_element->line);
 
   return op_type;
 }
