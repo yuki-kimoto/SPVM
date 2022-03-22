@@ -222,7 +222,7 @@ class TestCase::ExchangeAPI {
     return 1;
   }
   
-  static method any_object_array : oarray ($oarray : oarray) {
+  static method any_object_array : oarray ($oarray : element[]) {
     
     my $bytes = (Byte[])$oarray;
     

@@ -763,7 +763,7 @@ call_spvm_method(...)
           if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
             
-            if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
+            if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY || arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_ELEMENT) {
               if (object->type_dimension == 0) {
                 croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
               }
