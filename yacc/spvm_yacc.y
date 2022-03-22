@@ -1258,7 +1258,7 @@ array_type
 element_array_type
   : ELEMENT '[' ']'
     {
-      $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
+      $$ = SPVM_OP_build_element_array_type(compiler, $1);
     }
 
 array_type_with_length
