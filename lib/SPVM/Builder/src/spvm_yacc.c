@@ -619,7 +619,7 @@ static const char *const yytname[] =
   "convert", "array_access", "call_spvm_method", "field_access",
   "weaken_field", "unweaken_field", "isweak_field", "has_implement",
   "array_length", "my_var", "var", "qualified_type", "type", "basic_type",
-  "ref_type", "array_type", "element_array_type", "oarray_type",
+  "ref_type", "array_type", "any_object_array_type", "oarray_type",
   "array_type_with_length", "qualified_type_or_void", "field_name",
   "method_name", YY_NULLPTR
 };
@@ -4032,7 +4032,7 @@ yyreduce:
   case 242:
 #line 1261 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_element_array_type(compiler, (yyvsp[-2].opval));
+      (yyval.opval) = SPVM_OP_build_any_object_array_type(compiler, (yyvsp[-2].opval));
     }
 #line 4038 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -4040,7 +4040,7 @@ yyreduce:
   case 243:
 #line 1267 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_element_array_type(compiler, (yyvsp[0].opval));
+      (yyval.opval) = SPVM_OP_build_any_object_array_type(compiler, (yyvsp[0].opval));
     }
 #line 4046 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

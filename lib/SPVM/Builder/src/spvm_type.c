@@ -183,7 +183,7 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
     else if (SPVM_TYPE_is_mulnum_array_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY;
     }
-    else if (SPVM_TYPE_is_element_array_type(compiler, basic_type_id, dimension, flag)) {
+    else if (SPVM_TYPE_is_any_object_array_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY;
     }
     else if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
@@ -500,7 +500,7 @@ SPVM_TYPE* SPVM_TYPE_new_void_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-SPVM_TYPE* SPVM_TYPE_new_element_array_type(SPVM_COMPILER* compiler) {
+SPVM_TYPE* SPVM_TYPE_new_any_object_array_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_ELEMENT);
@@ -1014,7 +1014,7 @@ int32_t SPVM_TYPE_is_object_array_type(SPVM_COMPILER* compiler, int32_t basic_ty
   (void)compiler;
   
   if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
-    if (SPVM_TYPE_is_element_array_type(compiler, basic_type_id, dimension, flag)) {
+    if (SPVM_TYPE_is_any_object_array_type(compiler, basic_type_id, dimension, flag)) {
       return 1;
     }
     else {
@@ -1180,7 +1180,7 @@ int32_t SPVM_TYPE_is_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
   return dimension > 0 && !(flag & SPVM_TYPE_C_FLAG_REF);
 }
 
-int32_t SPVM_TYPE_is_element_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+int32_t SPVM_TYPE_is_any_object_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
   if (basic_type_id == SPVM_BASIC_TYPE_C_ID_ELEMENT && dimension == 1 && !(flag & SPVM_TYPE_C_FLAG_REF)) {

@@ -1406,7 +1406,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       if (SPVM_TYPE_is_string_type(compiler, basic_type->id, first_type->dimension, 0)) {
         type = SPVM_TYPE_new_byte_type(compiler);
       }
-      else if (SPVM_TYPE_is_element_array_type(compiler, basic_type->id, first_type->dimension, 0)) {
+      else if (SPVM_TYPE_is_any_object_array_type(compiler, basic_type->id, first_type->dimension, 0)) {
         type = SPVM_TYPE_new_any_object_type(compiler);
       }
       else {
@@ -3282,10 +3282,10 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_build_element_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_element) {
+SPVM_OP* SPVM_OP_build_any_object_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_element) {
   
   // Type
-  SPVM_TYPE* type = SPVM_TYPE_new_element_array_type(compiler);
+  SPVM_TYPE* type = SPVM_TYPE_new_any_object_array_type(compiler);
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_element->file, op_element->line);
