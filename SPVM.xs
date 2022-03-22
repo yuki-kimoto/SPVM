@@ -1324,7 +1324,6 @@ call_spvm_method(...)
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
           int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
           int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-          assert(arg_class);
 
           int32_t arg_mulnum_field_id = arg_class_field_ids_base;
           int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
@@ -1342,7 +1341,6 @@ call_spvm_method(...)
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
           int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
           int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-          assert(arg_class);
           int32_t arg_mulnum_field_id = arg_class_field_ids_base;
           int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
           for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
@@ -1359,7 +1357,6 @@ call_spvm_method(...)
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
           int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
           int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-          assert(arg_class);
           int32_t arg_mulnum_field_id = arg_class_field_ids_base;
           int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
           for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
@@ -1376,7 +1373,6 @@ call_spvm_method(...)
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
           int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
           int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-          assert(arg_class);
           int32_t arg_mulnum_field_id = arg_class_field_ids_base;
           int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
           for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
@@ -1393,7 +1389,6 @@ call_spvm_method(...)
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
           int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
           int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-          assert(arg_class);
           int32_t arg_mulnum_field_id = arg_class_field_ids_base;
           int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
           for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
@@ -1410,7 +1405,6 @@ call_spvm_method(...)
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
           int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
           int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-          assert(arg_class);
           int32_t arg_mulnum_field_id = arg_class_field_ids_base;
           int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
           for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
