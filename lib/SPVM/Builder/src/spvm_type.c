@@ -1203,6 +1203,9 @@ int32_t SPVM_TYPE_is_oarray_type(SPVM_COMPILER* compiler, int32_t basic_type_id,
   if (basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY && dimension == 0 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
+  else if (basic_type_id == SPVM_BASIC_TYPE_C_ID_ELEMENT && dimension == 1 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+    return 1;
+  }
   else {
     return 0;
   }
@@ -1212,6 +1215,9 @@ int32_t SPVM_TYPE_is_element_array_type(SPVM_COMPILER* compiler, int32_t basic_t
   (void)compiler;
   
   if (basic_type_id == SPVM_BASIC_TYPE_C_ID_ELEMENT && dimension == 1 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+    return 1;
+  }
+  else if (basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY && dimension == 0 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
