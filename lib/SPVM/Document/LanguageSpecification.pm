@@ -3607,7 +3607,7 @@ B<Get Array Element Example:>
   my $points = new Point[3];
   my $point = $points->[1];
   
-  my $objects : oarray = $points;
+  my $objects : element[] = $points;
   my $object = (Point)$objects->[1];
 
 =head2 Set Array Element
@@ -3640,7 +3640,7 @@ B<Set Array Element Example:>
   my $points = new Point[3];
   $points->[1] = Point->new(1, 2);
   
-  my $objects : oarray = $points;
+  my $objects : element[] = $points;
   $objects->[2] = Point->new(3, 5);
 
 =head2 Create Object
@@ -5969,17 +5969,15 @@ All elements of Numeric Array Types are initialized by L<"Type Initial Value"> w
 
 =head2 byte[] Type
 
-In SPVM, the L<"byte[] Type"> is a special Type in that it is L<"string Type">.
+The C<byte[]> type is an L<array type|"Array Types"> that the element type is C<byte>.
 
   byte[]
 
-L<"string Type"> is treated as L<"string Type"> at compile time, but at runtime It will be L<"byte[] Type">.
-
 =head2 Object Array Types
 
-Object Array Types is L<"Array Types"> that has the value of L<"Object Types"> as an element. It is.
+Object array types are L<"Array Types"> that the type of the element is an L<object type|"Object Types">.
 
-B<Object Array TypesのExample>
+B<Examples of object array types:>
 
 =begin html
 
@@ -6027,31 +6025,38 @@ Data represented by Multi Numeric Array Types must have elements whose size is L
 
 All elements of Multi Numeric Array Types are initialized by L<"Type Initial Value"> when Create Array is performed.
 
-=head2 Any Object Array Types
+=head2 Any Object-Array Type
 
-Any Object Array Types is an arbitrary L<"Object Types"> expressed as an oarray as an element. A Type that can be assigned the value of array ">Array Types</a>. Any Array Types can be cast to void * Type and passed to the first argument of the C language qsort function, but Any Object Array Types is not designed to realize the function corresponding to this. It was
+The any object-array type C<element[]> is the type that any L<object array type|"Object Array Types"> can be assigned.
 
-  my $array : oarray = new Point[3];
-  my $array : oarray = new object[3];
+  # Any object-array Type
+  my $array : element[] = new Point[3];
+  my $array : element[] = new object[3];
 
-If a value with a Type other than Object Type is assigned, a compilation error occurs
+If a invalid type is assigned, a compilation error occurs.
 
-Note that "oarrayType" is a different Type than "object[] Type". While oarrayType is a Type that can be methodstituted with an arbitrary Array Types value that has an Object Type value as an element, "object[] Type" is a Type that represents an "Array that has an objectType value as an element". Therefore, the value of arbitrary Array Types cannot be assigned.
+Note that the C<element[]> type is different from the C<object[]> type. An L<object array type|"Object Array Types"> can't be assinged to the C<object[]> type.
 
-Any Object Array Types is L<"Array Types">. L<"Array Length Operator"> to get length, L<"Set Array Element">, L<"Get Array Element">.
+Any Object-Array Type is an L<array type|"Array Types">.
 
-  my $array : oarray = new Int[3];
+You can get the array length using the L<array length operator|"Array Length Operator">.
+
+  my $array : element[] = new Int[3];
   
-  # Get the length of the element of Any Object Array Types
+  # Get the length of the element of Any Object-Array Type
   my $length = @$array;
-  
-  # Get the value of any object array type element
+
+You can get and set the element using the L<get array element|"Get Array Element"> syntax and the L<set array element|"Set Array Element">.
+ 
+  # Get the element of any object-array
   my $num = (Int)$array->[0];
   
-  # Setting the value of the element of Any Object Array Types
+  # Set the element of any object-array
   $array->[0] = Int->new(5);
 
-When setting the value of the element of Any Object Array Types, a check is made at runtime whether the type of the element is smaller than the type Dimension of Array by 1. If the check fails, L<"Exception"> will occur. Any Object Array Types guarantees runtime Type safety.
+When setting the element of any object-array, the element type is checked. If the dimension of the element is not the dimension of the array - C<1>, an L<exception|"Exception"> is thrown.
+
+C<oarray> is alias for C<element[]>. C<oarray> will be removed at 0.9511.
 
 =head2 string Type
 
