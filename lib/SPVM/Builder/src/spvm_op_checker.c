@@ -5075,7 +5075,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, i);
       
       // Argument limit check
-      int32_t arg_allow_count = 0;
+      int32_t args_width = 0;
       SPVM_TYPE* last_arg_type = NULL;
       for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
         SPVM_MY* arg_my = SPVM_LIST_fetch(method->mys, arg_index);
@@ -5086,18 +5086,18 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_multi_numeric_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
         if (is_arg_type_is_multi_numeric_type || is_arg_type_is_value_ref_type) {
-          arg_allow_count += arg_type->basic_type->class->fields->length;
+          args_width += arg_type->basic_type->class->fields->length;
         }
         else {
-          arg_allow_count++;
+          args_width++;
         }
         
         if (arg_index == method->args_length - 1) {
           last_arg_type = arg_type;
         }
       }
-      if (arg_allow_count > SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT) {
-        SPVM_COMPILER_error(compiler, "Too many method arguments count. Max count of method arguments is 255 at %s line %d", method->op_method->file, method->op_method->line);
+      if (args_width > 255) {
+        SPVM_COMPILER_error(compiler, "Too many arguments at %s line %d", method->op_method->file, method->op_method->line);
         return;
       }
       

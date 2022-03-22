@@ -7879,7 +7879,7 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env) {
   
   // Call INIT blocks
   int32_t classes_length = runtime->classes_length;
-  SPVM_VALUE stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
+  SPVM_VALUE stack[256];
   for (int32_t class_id = 0; class_id < classes_length; class_id++) {
     
     SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);

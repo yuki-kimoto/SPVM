@@ -185,6 +185,18 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
+# The max length of arguments
+{
+  {
+    my $ret = SPVM::TestCase::Method->args_max_count((1) x 254, 2);
+    is($ret, 2);
+  }
+  {
+    my $ret = SPVM::TestCase::Method->args_max_count_mulnum((1) x 253, {re => 2, im => 3});
+    is_deeply($ret, {re => 2, im => 3});
+  }
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

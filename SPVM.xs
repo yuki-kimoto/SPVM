@@ -233,7 +233,7 @@ call_spvm_method(...)
   // Argument stack
   // In SPVM, argument index is different from arguments stack index which is
   // used arguments and return values because multi numeric type have multi width.
-  SPVM_VALUE args_stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
+  SPVM_VALUE args_stack[256];
   int32_t args_stack_index = 0;
 
   // Arguments have reference type
@@ -241,8 +241,8 @@ call_spvm_method(...)
 
   // Reference stack.
   int32_t ref_stack_index = 0;
-  SPVM_VALUE ref_stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
-  int32_t ref_stack_indexes[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
+  SPVM_VALUE ref_stack[256];
+  int32_t ref_stack_indexes[256];
 
   // Arguments
   for (int32_t args_index = 0; args_index < method_arg_type_ids_length; args_index++) {
