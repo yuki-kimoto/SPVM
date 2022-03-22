@@ -699,6 +699,7 @@ call_spvm_method(...)
                 }
                 case SPVM_BASIC_TYPE_C_ID_ANY_OBJECT:
                 case SPVM_BASIC_TYPE_C_ID_OARRAY:
+                case SPVM_BASIC_TYPE_C_ID_ELEMENT:
                 {
                   // New array
                   void* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT, length);
