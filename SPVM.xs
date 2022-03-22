@@ -566,7 +566,6 @@ call_spvm_method(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-      case SPVM_TYPE_C_TYPE_CATEGORY_OARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY:
       {
         // Perl undef to SPVM undef
@@ -583,7 +582,7 @@ call_spvm_method(...)
             
             int32_t length = av_len(av_elems) + 1;
             
-            if (arg_type_dimension == 1 || arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
+            if (arg_type_dimension == 1) {
               switch (arg_basic_type_id) {
                 // Argument: Perl array referecne to SPVM byte array
                 case SPVM_BASIC_TYPE_C_ID_BYTE: {
@@ -698,7 +697,6 @@ call_spvm_method(...)
                   break;
                 }
                 case SPVM_BASIC_TYPE_C_ID_ANY_OBJECT:
-                case SPVM_BASIC_TYPE_C_ID_OARRAY:
                 case SPVM_BASIC_TYPE_C_ID_ELEMENT:
                 {
                   // New array
@@ -764,7 +762,7 @@ call_spvm_method(...)
           if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
             
-            if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY || arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_ELEMENT) {
+            if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_ELEMENT) {
               if (object->type_dimension == 0) {
                 croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
               }
@@ -1180,7 +1178,6 @@ call_spvm_method(...)
     case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
     case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
     case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-    case SPVM_TYPE_C_TYPE_CATEGORY_OARRAY:
     case SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
     {
@@ -1543,7 +1540,7 @@ array_to_elems(...)
         av_push(av_values, SvREFCNT_inc(sv_value));
       }
     }
-    else if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY || array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OARRAY || array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY) {
+    else if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY || array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY) {
       if (basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
         for (int32_t i = 0; i < length; i++) {
           void* object = env->get_elem_object(env, array, i);
@@ -1734,7 +1731,7 @@ array_to_bin(...)
           croak("Invalid type at %s line %d\n", MFILE, __LINE__);
       }
     }
-    else if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY || array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OARRAY || array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY) {
+    else if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY || array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_ELEMENT_ARRAY) {
       croak("Objec type is not supported at %s line %d\n", MFILE, __LINE__);
     }
     else {

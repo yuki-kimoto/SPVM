@@ -1403,13 +1403,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_ARRAY_ACCESS: {
       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op->first);
       SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, first_type->basic_type->name, strlen(first_type->basic_type->name));
-      if (basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING && first_type->dimension == 0) {
+      if (SPVM_TYPE_is_string_type(compiler, basic_type->id, first_type->dimension, 0)) {
         type = SPVM_TYPE_new_byte_type(compiler);
       }
-      else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_OARRAY && first_type->dimension == 0) {
-        type = SPVM_TYPE_new_any_object_type(compiler);
-      }
-      else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_ELEMENT && first_type->dimension == 1) {
+      else if (SPVM_TYPE_is_element_array_type(compiler, basic_type->id, first_type->dimension, 0)) {
         type = SPVM_TYPE_new_any_object_type(compiler);
       }
       else {

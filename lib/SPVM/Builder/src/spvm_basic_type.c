@@ -20,7 +20,6 @@ const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void) {
     "double",
     "string",
     "object",
-    "oarray",
     "element",
     "Byte",
     "Short",

@@ -35,7 +35,6 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
     "NUMERIC_ARRAY",
     "MULNUM_ARRAY",
     "OBJECT_ARRAY",
-    "OARRAY",
     "REF_BYTE",
     "REF_SHORT",
     "REF_INT",

@@ -133,7 +133,6 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_DOUBLE);
   SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_STRING);
   SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_OARRAY);
   SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_ELEMENT);
   SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT);
   SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT);
