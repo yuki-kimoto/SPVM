@@ -4962,7 +4962,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       // Max fields length is 255
-      else if (class->fields->length > SPVM_LIMIT_C_MULNUM_T_FIELDS_MAX_COUNT) {
+      else if (class->fields->length > 255) {
         SPVM_COMPILER_error(compiler, "Too many mulnum_t fields. Max count of mulnum_t fields is 255 at %s line %d", class->op_class->file, class->op_class->line);
         return;
       }
