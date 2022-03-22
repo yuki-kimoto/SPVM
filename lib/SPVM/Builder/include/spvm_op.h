@@ -515,6 +515,4 @@ SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_ch
 
 SPVM_OP* SPVM_OP_build_element_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_element);
 
-SPVM_OP* SPVM_OP_build_oarray_type(SPVM_COMPILER* compiler, SPVM_OP* op_oarray);
-
 #endif

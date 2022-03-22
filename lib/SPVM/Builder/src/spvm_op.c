@@ -3296,17 +3296,6 @@ SPVM_OP* SPVM_OP_build_element_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_e
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_build_oarray_type(SPVM_COMPILER* compiler, SPVM_OP* op_oarray) {
-  
-  // Type
-  SPVM_TYPE* type = SPVM_TYPE_new_oarray_type(compiler);
-  
-  // Type OP
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_oarray->file, op_oarray->line);
-
-  return op_type;
-}
-
 SPVM_OP* SPVM_OP_new_op_list(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   
   SPVM_OP* op_pushmark = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PUSHMARK, file, line);
