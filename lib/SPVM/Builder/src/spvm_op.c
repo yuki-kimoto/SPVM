@@ -249,6 +249,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "IMPLEMENT",
     "HAS_IMPLEMENT",
     "ELEMENT",
+    "OARRAY",
   };
   
   return id_names;
@@ -3288,6 +3289,17 @@ SPVM_OP* SPVM_OP_build_element_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_e
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_element->file, op_element->line);
+
+  return op_type;
+}
+
+SPVM_OP* SPVM_OP_build_oarray_type(SPVM_COMPILER* compiler, SPVM_OP* op_oarray) {
+  
+  // Type
+  SPVM_TYPE* type = SPVM_TYPE_new_oarray_type(compiler);
+  
+  // Type OP
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_oarray->file, op_oarray->line);
 
   return op_type;
 }

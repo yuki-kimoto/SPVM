@@ -158,4 +158,6 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t
 
 SPVM_TYPE* SPVM_TYPE_new_element_array_type(SPVM_COMPILER* compiler);
 
+SPVM_TYPE* SPVM_TYPE_new_oarray_type(SPVM_COMPILER* compiler);
+
 #endif

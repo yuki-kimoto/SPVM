@@ -23,7 +23,7 @@
 %token <opval> DESCRIPTOR MAKE_READ_ONLY IMPLEMENT
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
-%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
+%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT OARRAY TRUE FALSE END_OF_FILE
 %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
 %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
@@ -44,7 +44,7 @@
 %type <opval> my_var var implement
 %type <opval> expression opt_expressions expressions opt_expression case_statements
 %type <opval> field_name method_name is_read_only
-%type <opval> type qualified_type basic_type array_type element_array_type array_type_with_length ref_type  qualified_type_or_void
+%type <opval> type qualified_type basic_type array_type element_array_type oarray_type array_type_with_length ref_type  qualified_type_or_void
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
 %left <opval> LOGICAL_OR
@@ -1183,6 +1183,7 @@ type
   : basic_type
   | array_type
   | element_array_type
+  | oarray_type
   | ref_type
 
 basic_type
@@ -1259,6 +1260,12 @@ element_array_type
   : ELEMENT '[' ']'
     {
       $$ = SPVM_OP_build_element_array_type(compiler, $1);
+    }
+
+oarray_type
+  : OARRAY
+    {
+      $$ = SPVM_OP_build_oarray_type(compiler, $1);
     }
 
 array_type_with_length
