@@ -1,4 +1,7 @@
 Revision history for SPVM
+0.9510  2021-03-22
+        [CHANGE]
+        * Add element[] type. This is same as oarray type, but element[] type has correct type dimension.
 0.9509  2021-03-19
         [WARNINGS]
         * Interfaces and IDs of Native APIs that is added after 0.9506+(181+) will be changed many times.

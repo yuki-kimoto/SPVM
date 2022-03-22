@@ -486,7 +486,7 @@ SPVM::Test - SPVM test module
       my $minimals = new TestCase::Minimal[3];
       $minimals->[0] = TestCase::Minimal->new;
       $minimals->[0]{x} = 1;
-      my $nums : oarray = $minimals;
+      my $nums : element[] = $minimals;
       my $nums2 : oarray = $nums;
       my $len = @$nums;
       warn "$len";

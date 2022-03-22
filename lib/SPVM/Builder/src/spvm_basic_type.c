@@ -21,6 +21,7 @@ const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void) {
     "string",
     "object",
     "oarray",
+    "element",
     "Byte",
     "Short",
     "Int",
@@ -28,7 +29,6 @@ const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void) {
     "Float",
     "Double",
     "Bool",
-    "element",
   };
   
   return id_names;

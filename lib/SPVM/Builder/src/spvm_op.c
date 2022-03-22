@@ -1409,6 +1409,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_OARRAY && first_type->dimension == 0) {
         type = SPVM_TYPE_new_any_object_type(compiler);
       }
+      else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_ELEMENT && first_type->dimension == 1) {
+        type = SPVM_TYPE_new_any_object_type(compiler);
+      }
       else {
         type = SPVM_TYPE_new(compiler, basic_type->id, first_type->dimension - 1, 0);
       }
