@@ -1483,8 +1483,6 @@ array_to_elems(...)
         int32_t class_id = SPVM_API_get_basic_type_class_id(env, array->basic_type_id);
         int32_t class_field_ids_length = SPVM_API_get_class_field_ids_length(env, class_id);
         int32_t class_field_ids_base = SPVM_API_get_class_field_ids_base(env, class_id);
-
-        assert(class);
         
         int32_t mulnum_field_id = class_field_ids_base;
         int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
