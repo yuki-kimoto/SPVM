@@ -28,7 +28,6 @@
 #include "spvm_allocator.h"
 
 #include "spvm_runtime.h"
-#include "spvm_runtime_class.h"
 
 static const char* MFILE = "SPVM.xs";
 
@@ -103,16 +102,16 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
     if (sv_derived_from(sv_element, "HASH")) {
       
       int32_t class_id = SPVM_API_get_basic_type_class_id(env, basic_type_id);
-      SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
-      assert(class);
+      int32_t class_field_ids_length = SPVM_API_get_class_field_ids_length(env, class_id);
+      int32_t class_field_ids_base = SPVM_API_get_class_field_ids_base(env, class_id);
       
-      int32_t mulnum_field_id = class->field_ids_base;
+      int32_t mulnum_field_id = class_field_ids_base;
       int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
 
       void* elems = (void*)env->get_elems_int(env, array);
       
       HV* hv_value = (HV*)SvRV(sv_element);
-      int32_t fields_length = class->field_ids_length;
+      int32_t fields_length = class_field_ids_length;
       // Field exists check
       int32_t hash_keys_length = 0;
       while (hv_iternext(hv_value)) {
@@ -123,8 +122,8 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
         return NULL;
       }
 
-      for (int32_t field_index = 0; field_index < class->field_ids_length; field_index++) {
-        int32_t field_id = class->field_ids_base + field_index;
+      for (int32_t field_index = 0; field_index < class_field_ids_length; field_index++) {
+        int32_t field_id = class_field_ids_base + field_index;
         int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
         
         const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
@@ -381,12 +380,14 @@ call_spvm_method(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE: {
         if (sv_derived_from(sv_value, "HASH")) {
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+          int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
 
           HV* hv_value = (HV*)SvRV(sv_value);
-          int32_t fields_length = arg_class->field_ids_length;
+          int32_t fields_length = arg_class_field_ids_length;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            int32_t field_id = arg_class->field_ids_base + field_index;
+            int32_t field_id = arg_class_field_ids_base + field_index;
             int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
 
             const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
@@ -396,12 +397,12 @@ call_spvm_method(...)
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
+              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
             }
             int8_t value = (int8_t)SvIV(sv_field_value);
             args_stack[args_stack_index + field_index].bval = value;
           }
-          args_stack_index += arg_class->field_ids_length;
+          args_stack_index += arg_class_field_ids_length;
         }
         else {
           croak("%dth argument of %s->%s must be a hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
@@ -412,11 +413,13 @@ call_spvm_method(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT: {
         if (sv_derived_from(sv_value, "HASH")) {
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+          int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
           HV* hv_value = (HV*)SvRV(sv_value);
-          int32_t fields_length = arg_class->field_ids_length;
+          int32_t fields_length = arg_class_field_ids_length;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            int32_t field_id = arg_class->field_ids_base + field_index;
+            int32_t field_id = arg_class_field_ids_base + field_index;
             int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
             const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -425,12 +428,12 @@ call_spvm_method(...)
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
+              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
             }
             int16_t value = (int16_t)SvIV(sv_field_value);
             args_stack[args_stack_index + field_index].sval = value;
           }
-          args_stack_index += arg_class->field_ids_length;
+          args_stack_index += arg_class_field_ids_length;
         }
         else {
           croak("%dth argument of %s->%s must be a hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
@@ -441,11 +444,13 @@ call_spvm_method(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT: {
         if (sv_derived_from(sv_value, "HASH")) {
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+          int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
           HV* hv_value = (HV*)SvRV(sv_value);
-          int32_t fields_length = arg_class->field_ids_length;
+          int32_t fields_length = arg_class_field_ids_length;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            int32_t field_id = arg_class->field_ids_base + field_index;
+            int32_t field_id = arg_class_field_ids_base + field_index;
             int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
             const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -454,12 +459,12 @@ call_spvm_method(...)
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
+              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
             }
             int32_t value = (int32_t)SvIV(sv_field_value);
             args_stack[args_stack_index + field_index].ival = value;
           }
-          args_stack_index += arg_class->field_ids_length;
+          args_stack_index += arg_class_field_ids_length;
         }
         else {
           croak("%dth argument of %s->%s must be a hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
@@ -470,11 +475,13 @@ call_spvm_method(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_LONG: {
         if (sv_derived_from(sv_value, "HASH")) {
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+          int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
           HV* hv_value = (HV*)SvRV(sv_value);
-          int32_t fields_length = arg_class->field_ids_length;
+          int32_t fields_length = arg_class_field_ids_length;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            int32_t field_id = arg_class->field_ids_base + field_index;
+            int32_t field_id = arg_class_field_ids_base + field_index;
             int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
             const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -483,12 +490,12 @@ call_spvm_method(...)
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
+              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
             }
             int64_t value = (int64_t)SvIV(sv_field_value);
             args_stack[args_stack_index + field_index].lval = value;
           }
-          args_stack_index += arg_class->field_ids_length;
+          args_stack_index += arg_class_field_ids_length;
         }
         else {
           croak("%dth argument of %s->%s must be a hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
@@ -499,11 +506,13 @@ call_spvm_method(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT: {
         if (sv_derived_from(sv_value, "HASH")) {
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+          int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
           HV* hv_value = (HV*)SvRV(sv_value);
-          int32_t fields_length = arg_class->field_ids_length;
+          int32_t fields_length = arg_class_field_ids_length;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            int32_t field_id = arg_class->field_ids_base + field_index;
+            int32_t field_id = arg_class_field_ids_base + field_index;
             int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
             const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -512,12 +521,12 @@ call_spvm_method(...)
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
+              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
             }
             float value = (float)SvNV(sv_field_value);
             args_stack[args_stack_index + field_index].fval = value;
           }
-          args_stack_index += arg_class->field_ids_length;
+          args_stack_index += arg_class_field_ids_length;
         }
         else {
           croak("%dth argument of %s->%s must be a hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
@@ -528,11 +537,13 @@ call_spvm_method(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE: {
         if (sv_derived_from(sv_value, "HASH")) {
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+          int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
           HV* hv_value = (HV*)SvRV(sv_value);
-          int32_t fields_length = arg_class->field_ids_length;
+          int32_t fields_length = arg_class_field_ids_length;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            int32_t field_id = arg_class->field_ids_base + field_index;
+            int32_t field_id = arg_class_field_ids_base + field_index;
             int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
             const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -541,12 +552,12 @@ call_spvm_method(...)
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
+              croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
             }
             double value = (double)SvNV(sv_field_value);
             args_stack[args_stack_index + field_index].dval = value;
           }
-          args_stack_index += arg_class->field_ids_length;
+          args_stack_index += arg_class_field_ids_length;
         }
         else {
           croak("%dth argument of %s->%s must be a hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
@@ -877,10 +888,12 @@ call_spvm_method(...)
           croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-        SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
-        int32_t fields_length = arg_class->field_ids_length;
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+        int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+        int32_t fields_length = arg_class_field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          int32_t field_id = arg_class->field_ids_base + field_index;
+          int32_t field_id = arg_class_field_ids_base + field_index;
           int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
           const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -889,7 +902,7 @@ call_spvm_method(...)
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
+            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
           }
           int8_t value = (int8_t)SvIV(sv_field_value);
           ((int8_t*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -916,10 +929,12 @@ call_spvm_method(...)
           croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-        SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
-        int32_t fields_length = arg_class->field_ids_length;
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+        int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+        int32_t fields_length = arg_class_field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          int32_t field_id = arg_class->field_ids_base + field_index;
+          int32_t field_id = arg_class_field_ids_base + field_index;
           int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
           const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -928,7 +943,7 @@ call_spvm_method(...)
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
+            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
           }
           int16_t value = (int16_t)SvIV(sv_field_value);
           ((int16_t*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -954,10 +969,12 @@ call_spvm_method(...)
           croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-        SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
-        int32_t fields_length = arg_class->field_ids_length;
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+        int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+        int32_t fields_length = arg_class_field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          int32_t field_id = arg_class->field_ids_base + field_index;
+          int32_t field_id = arg_class_field_ids_base + field_index;
           int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
           const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -966,7 +983,7 @@ call_spvm_method(...)
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
+            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
           }
           int32_t value = (int32_t)SvIV(sv_field_value);
           ((int32_t*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -992,10 +1009,12 @@ call_spvm_method(...)
           croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-        SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
-        int32_t fields_length = arg_class->field_ids_length;
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+        int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+        int32_t fields_length = arg_class_field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          int32_t field_id = arg_class->field_ids_base + field_index;
+          int32_t field_id = arg_class_field_ids_base + field_index;
           int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
           const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -1004,7 +1023,7 @@ call_spvm_method(...)
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
+            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
           }
           int64_t value = (int64_t)SvIV(sv_field_value);
           ((int64_t*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -1030,10 +1049,12 @@ call_spvm_method(...)
           croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-        SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
-        int32_t fields_length = arg_class->field_ids_length;
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+        int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+        int32_t fields_length = arg_class_field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          int32_t field_id = arg_class->field_ids_base + field_index;
+          int32_t field_id = arg_class_field_ids_base + field_index;
           int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
           const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -1042,7 +1063,7 @@ call_spvm_method(...)
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
+            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
           }
           float value = (float)SvNV(sv_field_value);
           ((float*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -1068,10 +1089,12 @@ call_spvm_method(...)
           croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-        SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
-        int32_t fields_length = arg_class->field_ids_length;
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+        int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+        int32_t fields_length = arg_class_field_ids_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          int32_t field_id = arg_class->field_ids_base + field_index;
+          int32_t field_id = arg_class_field_ids_base + field_index;
           int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
           const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -1080,7 +1103,7 @@ call_spvm_method(...)
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class->name_id, NULL), MFILE, __LINE__);
+            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
           }
           double value = (double)SvNV(sv_field_value);
           ((double*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -1200,15 +1223,15 @@ call_spvm_method(...)
       excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
       
       int32_t method_return_class_id = SPVM_API_get_basic_type_class_id(env, method_return_basic_type_id);
-      SPVM_RUNTIME_CLASS* method_return_class = SPVM_API_get_class(env, method_return_class_id);
-      assert(method_return_class);
+      int32_t method_return_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, method_return_class_id);
+      int32_t method_return_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, method_return_class_id);
       
-      int32_t method_return_mulnum_field_id = method_return_class->field_ids_base;
+      int32_t method_return_mulnum_field_id = method_return_class_field_ids_base;
       int32_t method_return_mulnum_field_type_id = SPVM_API_get_field_type_id(env, method_return_mulnum_field_id);
       
       HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-      for (int32_t field_index = 0; field_index < method_return_class->field_ids_length; field_index++) {
-        int32_t field_id = method_return_class->field_ids_base + field_index;
+      for (int32_t field_index = 0; field_index < method_return_class_field_ids_length; field_index++) {
+        int32_t field_id = method_return_class_field_ids_base + field_index;
         int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
         const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
         
@@ -1299,13 +1322,14 @@ call_spvm_method(...)
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
           assert(arg_class);
 
-          int32_t arg_mulnum_field_id = arg_class->field_ids_base;
+          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
           int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
-            int32_t field_id = arg_class->field_ids_base + field_index;
+          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+            int32_t field_id = arg_class_field_ids_base + field_index;
             int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
             const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
             SV* sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_index])[field_index]));
@@ -1316,12 +1340,13 @@ call_spvm_method(...)
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
           assert(arg_class);
-          int32_t arg_mulnum_field_id = arg_class->field_ids_base;
+          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
           int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
-            int32_t field_id = arg_class->field_ids_base + field_index;
+          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+            int32_t field_id = arg_class_field_ids_base + field_index;
             int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
             const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
             SV* sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_index])[field_index]));
@@ -1332,12 +1357,13 @@ call_spvm_method(...)
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_INT: {
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
           assert(arg_class);
-          int32_t arg_mulnum_field_id = arg_class->field_ids_base;
+          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
           int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
-            int32_t field_id = arg_class->field_ids_base + field_index;
+          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+            int32_t field_id = arg_class_field_ids_base + field_index;
             int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
             const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
             SV* sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_index])[field_index]));
@@ -1348,12 +1374,13 @@ call_spvm_method(...)
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
           assert(arg_class);
-          int32_t arg_mulnum_field_id = arg_class->field_ids_base;
+          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
           int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
-            int32_t field_id = arg_class->field_ids_base + field_index;
+          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+            int32_t field_id = arg_class_field_ids_base + field_index;
             int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
             const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
             SV* sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_index])[field_index]));
@@ -1364,12 +1391,13 @@ call_spvm_method(...)
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
           assert(arg_class);
-          int32_t arg_mulnum_field_id = arg_class->field_ids_base;
+          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
           int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
-            int32_t field_id = arg_class->field_ids_base + field_index;
+          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+            int32_t field_id = arg_class_field_ids_base + field_index;
             int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
             const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
             SV* sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_index])[field_index]));
@@ -1380,12 +1408,13 @@ call_spvm_method(...)
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          SPVM_RUNTIME_CLASS* arg_class = SPVM_API_get_class(env, arg_class_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
           assert(arg_class);
-          int32_t arg_mulnum_field_id = arg_class->field_ids_base;
+          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
           int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class->field_ids_length; field_index++) {
-            int32_t field_id = arg_class->field_ids_base + field_index;
+          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+            int32_t field_id = arg_class_field_ids_base + field_index;
             int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
             const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
             SV* sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_index])[field_index]));
@@ -1457,19 +1486,20 @@ array_to_elems(...)
       
       for (int32_t index = 0; index < length; index++) {
         int32_t class_id = SPVM_API_get_basic_type_class_id(env, array->basic_type_id);
-        SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
+        int32_t class_field_ids_length = SPVM_API_get_class_field_ids_length(env, class_id);
+        int32_t class_field_ids_base = SPVM_API_get_class_field_ids_base(env, class_id);
 
         assert(class);
         
-        int32_t mulnum_field_id = class->field_ids_base;
+        int32_t mulnum_field_id = class_field_ids_base;
         int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
 
         void* elems = (void*)env->get_elems_int(env, array);
         
         HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-        int32_t field_length = class->field_ids_length;
-        for (int32_t field_index = 0; field_index < class->field_ids_length; field_index++) {
-          int32_t field_id = class->field_ids_base + field_index;
+        int32_t field_length = class_field_ids_length;
+        for (int32_t field_index = 0; field_index < class_field_ids_length; field_index++) {
+          int32_t field_id = class_field_ids_base + field_index;
           int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
 
           const char* field_name = SPVM_API_get_constant_string_value(env, field_name_id, NULL);
@@ -1658,13 +1688,13 @@ array_to_bin(...)
 
     if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
       int32_t class_id = SPVM_API_get_basic_type_class_id(env, basic_type_id);
-      SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
-      assert(class);
-      
-      int32_t mulnum_field_id = class->field_ids_base;
+      int32_t class_field_ids_length = SPVM_API_get_class_field_ids_length(env, class_id);
+      int32_t class_field_ids_base = SPVM_API_get_class_field_ids_base(env, class_id);
+
+      int32_t mulnum_field_id = class_field_ids_base;
       int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
 
-      int32_t field_length = class->field_ids_length;
+      int32_t field_length = class_field_ids_length;
 
       int32_t mulnum_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, mulnum_field_type_id);
       switch (mulnum_field_type_basic_type_id) {
@@ -3273,13 +3303,13 @@ _new_mulnum_array_from_bin(...)
   }
 
   int32_t class_id = SPVM_API_get_basic_type_class_id(env, basic_type_id);
-  SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
-  assert(class);
+  int32_t class_field_ids_length = SPVM_API_get_class_field_ids_length(env, class_id);
+  int32_t class_field_ids_base = SPVM_API_get_class_field_ids_base(env, class_id);
   
-  int32_t mulnum_field_id = class->field_ids_base;
+  int32_t mulnum_field_id = class_field_ids_base;
   int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
 
-  int32_t field_length = class->field_ids_length;
+  int32_t field_length = class_field_ids_length;
 
   int32_t array_length;
   
