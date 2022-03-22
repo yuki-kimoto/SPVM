@@ -4040,7 +4040,7 @@ yyreduce:
   case 243:
 #line 1267 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_oarray_type(compiler, (yyvsp[0].opval));
+      (yyval.opval) = SPVM_OP_build_element_array_type(compiler, (yyvsp[0].opval));
     }
 #line 4046 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

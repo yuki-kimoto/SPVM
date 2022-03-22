@@ -1265,7 +1265,7 @@ element_array_type
 oarray_type
   : OARRAY
     {
-      $$ = SPVM_OP_build_oarray_type(compiler, $1);
+      $$ = SPVM_OP_build_element_array_type(compiler, $1);
     }
 
 array_type_with_length
