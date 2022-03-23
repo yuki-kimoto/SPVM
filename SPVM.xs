@@ -18,7 +18,6 @@
 
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
-#include "spvm_list.h"
 #include "spvm_basic_type.h"
 #include "spvm_type.h"
 #include "spvm_object.h"
@@ -3834,11 +3833,16 @@ get_classes_length(...)
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
+  // The environment
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  int32_t classes_length = compiler->classes->length;
+  int32_t classes_length = env->compiler_get_classes_length(compiler);
   SV* sv_classes_length = sv_2mortal(newSViv(classes_length));
   
   XPUSHs(sv_classes_length);
