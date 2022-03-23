@@ -6,7 +6,7 @@
 
 struct spvm_string_buffer {
   SPVM_ALLOCATOR* allocator;
-  char* buffer;
+  char* value;
   int32_t capacity;
   int32_t length;
   int8_t memory_block_type;

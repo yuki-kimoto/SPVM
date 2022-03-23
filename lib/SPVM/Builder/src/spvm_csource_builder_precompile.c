@@ -152,8 +152,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_declaration(SPVM_COMPILER* com
     int32_t index = string_buffer->length - (strlen(class_name) + 2 + strlen(method_name));
     
     while (index < string_buffer->length) {
-      if (string_buffer->buffer[index] == ':') {
-        string_buffer->buffer[index] = '_';
+      if (string_buffer->value[index] == ':') {
+        string_buffer->value[index] = '_';
       }
       index++;
     }
@@ -3070,8 +3070,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
             int32_t index = string_buffer->length - (strlen(decl_method_class_name) + 2 + strlen(decl_method_name));
             
             while (index < string_buffer->length) {
-              if (string_buffer->buffer[index] == ':') {
-                string_buffer->buffer[index] = '_';
+              if (string_buffer->value[index] == ':') {
+                string_buffer->value[index] = '_';
               }
               index++;
             }

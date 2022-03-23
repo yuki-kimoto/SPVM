@@ -408,7 +408,7 @@ SPVM_OBJECT* SPVM_API_dump_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   int32_t string_buffer_length = string_buffer->length;
   
-  SPVM_OBJECT* dump = SPVM_API_new_string_raw(env, string_buffer->buffer, string_buffer->length);
+  SPVM_OBJECT* dump = SPVM_API_new_string_raw(env, string_buffer->value, string_buffer->length);
   
   SPVM_HASH_free(address_symtable);
   address_symtable = NULL;
@@ -8403,7 +8403,7 @@ SPVM_STRING_BUFFER* SPVM_API_string_buffer_new_tmp(SPVM_ALLOCATOR* allocator, in
 }
 
 const char* SPVM_API_string_buffer_get_value(SPVM_STRING_BUFFER* string_buffer) {
-  return string_buffer->buffer;
+  return string_buffer->value;
 }
 
 int32_t SPVM_API_string_buffer_get_length(SPVM_STRING_BUFFER* string_buffer) {

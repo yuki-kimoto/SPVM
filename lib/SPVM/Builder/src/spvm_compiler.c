@@ -399,7 +399,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   // String buffers
   runtime->string_buffer_length = compiler->string_buffer->length;
   runtime->string_buffer = (const char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, compiler->string_buffer->length);
-  memcpy((char*)runtime->string_buffer, compiler->string_buffer->buffer, compiler->string_buffer->length);
+  memcpy((char*)runtime->string_buffer, compiler->string_buffer->value, compiler->string_buffer->length);
 
   
   // Strings

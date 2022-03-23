@@ -28,10 +28,10 @@ SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(SPVM_ALLOCATOR* allocator, int32_t ca
   
   string_buffer->capacity = capacity;
   if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-    string_buffer->buffer = (char*)SPVM_ALLOCATOR_alloc_memory_block_tmp(allocator, capacity);
+    string_buffer->value = (char*)SPVM_ALLOCATOR_alloc_memory_block_tmp(allocator, capacity);
   }
   else if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-    string_buffer->buffer = (char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, capacity);
+    string_buffer->value = (char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, capacity);
   }
   else {
     assert(0);
@@ -51,7 +51,7 @@ SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new_tmp(SPVM_ALLOCATOR* allocator, int32_
 
 char* SPVM_STRING_BUFFER_get_buffer(SPVM_STRING_BUFFER* string_buffer) {
   
-  return string_buffer->buffer;
+  return string_buffer->value;
 }
 
 void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t new_length) {
@@ -72,10 +72,10 @@ void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t 
       assert(0);
     }
 
-    memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
+    memcpy(new_buffer, string_buffer->value, string_buffer->length);
 
     if (string_buffer->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-      SPVM_ALLOCATOR_free_memory_block_tmp(allocator, string_buffer->buffer);
+      SPVM_ALLOCATOR_free_memory_block_tmp(allocator, string_buffer->value);
     }
     else if (string_buffer->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
       // Nothing
@@ -84,7 +84,7 @@ void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t 
       assert(0);
     }
 
-    string_buffer->buffer = new_buffer;
+    string_buffer->value = new_buffer;
     string_buffer->capacity = new_capacity;
   }
 }
@@ -100,7 +100,7 @@ int32_t SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, const char* st
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_length);
   
-  memcpy(string_buffer->buffer + string_buffer->length, string, string_length);
+  memcpy(string_buffer->value + string_buffer->length, string, string_length);
   
   string_buffer->length = new_length;
   
@@ -116,7 +116,7 @@ int32_t SPVM_STRING_BUFFER_add_len(SPVM_STRING_BUFFER* string_buffer, char* stri
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_length);
   
-  memcpy(string_buffer->buffer + string_buffer->length, string, string_length);
+  memcpy(string_buffer->value + string_buffer->length, string, string_length);
   
   string_buffer->length = new_length;
   
@@ -132,8 +132,8 @@ int32_t SPVM_STRING_BUFFER_add_len_nullstr(SPVM_STRING_BUFFER* string_buffer, ch
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_length);
   
-  memcpy(string_buffer->buffer + string_buffer->length, string, string_length);
-  *(string_buffer->buffer + string_buffer->length + string_length) = '\0';
+  memcpy(string_buffer->value + string_buffer->length, string, string_length);
+  *(string_buffer->value + string_buffer->length + string_length) = '\0';
   
   string_buffer->length = new_length;
   
@@ -149,7 +149,7 @@ int32_t SPVM_STRING_BUFFER_add_hex_char(SPVM_STRING_BUFFER* string_buffer, char 
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_length);
   
-  sprintf(string_buffer->buffer + string_buffer->length, "\\x%02X", ch & 0x000000FF);
+  sprintf(string_buffer->value + string_buffer->length, "\\x%02X", ch & 0x000000FF);
   
   string_buffer->length = new_length;
   
@@ -167,7 +167,7 @@ int32_t SPVM_STRING_BUFFER_add_char(SPVM_STRING_BUFFER* string_buffer, int8_t va
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%" PRId8, value);
+  int32_t write_length = sprintf(string_buffer->value + string_buffer->length, "%" PRId8, value);
   
   string_buffer->length += write_length;
   
@@ -185,7 +185,7 @@ int32_t SPVM_STRING_BUFFER_add_short(SPVM_STRING_BUFFER* string_buffer, int16_t 
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%" PRId16, value);
+  int32_t write_length = sprintf(string_buffer->value + string_buffer->length, "%" PRId16, value);
   
   string_buffer->length += write_length;
   
@@ -205,10 +205,10 @@ int32_t SPVM_STRING_BUFFER_add_int(SPVM_STRING_BUFFER* string_buffer, int32_t va
   
   int32_t write_length;
   if (value == INT32_MIN) {
-    write_length = sprintf(string_buffer->buffer + string_buffer->length, "INT32_MIN");
+    write_length = sprintf(string_buffer->value + string_buffer->length, "INT32_MIN");
   }
   else {
-    write_length = sprintf(string_buffer->buffer + string_buffer->length, "%" PRId32, value);
+    write_length = sprintf(string_buffer->value + string_buffer->length, "%" PRId32, value);
   }
   
   string_buffer->length += write_length;
@@ -229,10 +229,10 @@ int32_t SPVM_STRING_BUFFER_add_long(SPVM_STRING_BUFFER* string_buffer, int64_t v
   
   int32_t write_length;
   if (value == INT64_MIN) {
-    write_length = sprintf(string_buffer->buffer + string_buffer->length, "INT64_MIN");
+    write_length = sprintf(string_buffer->value + string_buffer->length, "INT64_MIN");
   }
   else {
-    write_length = sprintf(string_buffer->buffer + string_buffer->length, "%" PRId64 "LL", value);
+    write_length = sprintf(string_buffer->value + string_buffer->length, "%" PRId64 "LL", value);
   }
   
   string_buffer->length += write_length;
@@ -245,7 +245,7 @@ void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer) {
   SPVM_ALLOCATOR* allocator = string_buffer->allocator;
   
   if (string_buffer->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-    SPVM_ALLOCATOR_free_memory_block_tmp(allocator, string_buffer->buffer);
+    SPVM_ALLOCATOR_free_memory_block_tmp(allocator, string_buffer->value);
     SPVM_ALLOCATOR_free_memory_block_tmp(allocator, string_buffer);
   }
   else if (string_buffer->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
