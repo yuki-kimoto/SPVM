@@ -203,8 +203,8 @@ call_spvm_method(...)
   int32_t spvm_args_base = 3;
 
   int32_t method_is_class_method = SPVM_API_get_method_is_class_method(env, method_id);
-  int32_t method_arg_type_ids_length = SPVM_API_get_method_arg_type_ids_length(env, method_id);
-  int32_t method_arg_type_ids_base = SPVM_API_get_method_arg_type_ids_base(env, method_id);
+  int32_t method_arg_ids_length = SPVM_API_get_method_arg_ids_length(env, method_id);
+  int32_t method_arg_ids_base = SPVM_API_get_method_arg_ids_base(env, method_id);
   int32_t method_return_type_id = SPVM_API_get_method_return_type_id(env, method_id);
 
   // If class method, first argument is ignored
@@ -213,10 +213,10 @@ call_spvm_method(...)
   }
   
   // Check argument count
-  if (items - spvm_args_base < method_arg_type_ids_length) {
+  if (items - spvm_args_base < method_arg_ids_length) {
     croak("Too few arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
-  else if (items - spvm_args_base > method_arg_type_ids_length) {
+  else if (items - spvm_args_base > method_arg_ids_length) {
     croak("Too many arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
 
@@ -235,14 +235,14 @@ call_spvm_method(...)
   int32_t ref_stack_indexes[256];
 
   // Arguments
-  for (int32_t args_index = 0; args_index < method_arg_type_ids_length; args_index++) {
+  for (int32_t args_index = 0; args_index < method_arg_ids_length; args_index++) {
     
     int32_t args_index_nth = args_index + 1;
     
     // Get value from Perl argument stack
     SV* sv_value = ST(spvm_args_base + args_index);
     
-    int32_t arg_id = method_arg_type_ids_base + args_index;
+    int32_t arg_id = method_arg_ids_base + args_index;
     int32_t arg_type_id = SPVM_API_get_arg_type_id(env, arg_id);
     int32_t arg_basic_type_id = SPVM_API_get_type_basic_type_id(env, arg_type_id);
     int32_t arg_type_dimension = SPVM_API_get_type_dimension(env, arg_type_id);
@@ -1271,10 +1271,10 @@ call_spvm_method(...)
   
   // Restore reference value
   if (args_have_ref) {
-    for (int32_t args_index = 0; args_index < method_arg_type_ids_length; args_index++) {
+    for (int32_t args_index = 0; args_index < method_arg_ids_length; args_index++) {
       SV* sv_value = ST(spvm_args_base + args_index);
       
-      int32_t arg_id = method_arg_type_ids_base + args_index;
+      int32_t arg_id = method_arg_ids_base + args_index;
       int32_t arg_type_id = SPVM_API_get_arg_type_id(env, arg_id);
       
       // Convert to runtime type

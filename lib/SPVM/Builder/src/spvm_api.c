@@ -7208,26 +7208,26 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, int32_t method_id) {
   return method;
 }
 
-int32_t SPVM_API_get_method_arg_type_ids_length(SPVM_ENV* env, int32_t method_id) {
+int32_t SPVM_API_get_method_arg_ids_length(SPVM_ENV* env, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
 
   assert(method);
 
-  int32_t arg_type_ids_length = method->arg_type_ids_length;
+  int32_t arg_ids_length = method->arg_ids_length;
   
-  return arg_type_ids_length;
+  return arg_ids_length;
 }
 
-int32_t SPVM_API_get_method_arg_type_ids_base(SPVM_ENV* env, int32_t method_id) {
+int32_t SPVM_API_get_method_arg_ids_base(SPVM_ENV* env, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
 
   assert(method);
 
-  int32_t arg_type_ids_base = method->arg_type_ids_base;
+  int32_t arg_ids_base = method->arg_ids_base;
   
-  return arg_type_ids_base;
+  return arg_ids_base;
 }
 
 int32_t SPVM_API_get_method_is_class_method(SPVM_ENV* env, int32_t method_id) {

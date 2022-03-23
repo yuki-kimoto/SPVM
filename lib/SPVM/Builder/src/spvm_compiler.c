@@ -567,13 +567,13 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     SPVM_STRING* method_signature_string = SPVM_HASH_fetch(compiler->string_symtable, method->signature, strlen(method->signature));
     runtime_method->signature_id = method_signature_string->id;
 
-    runtime_method->arg_type_ids_length = method->args_length;
+    runtime_method->arg_ids_length = method->args_length;
     if (method->args_length > 0) {
       SPVM_MY* arg = SPVM_LIST_fetch(method->mys, 0);
-      runtime_method->arg_type_ids_base = arg->arg_id;
+      runtime_method->arg_ids_base = arg->arg_id;
     }
     else {
-      runtime_method->arg_type_ids_base = -1;
+      runtime_method->arg_ids_base = -1;
     }
   }
   
