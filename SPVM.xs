@@ -16,7 +16,6 @@
 #include "spvm_native.h"
 #include "spvm_api.h"
 
-#include "spvm_compiler.h"
 #include "spvm_csource_builder_precompile.h"
 #include "spvm_string_buffer.h"
 
@@ -3556,7 +3555,7 @@ compile_spvm(...)
 
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
   // Include directries
   SV** sv_module_dirs_ptr = hv_fetch(hv_self, "module_dirs", strlen("module_dirs"), 0);
@@ -3635,7 +3634,7 @@ get_method_names(...)
   
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
@@ -3687,7 +3686,7 @@ get_anon_class_names_by_parent_class_name(...)
   // Compiler
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
   AV* av_anon_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_anon_class_names = sv_2mortal(newRV_inc((SV*)av_anon_class_names));
@@ -3731,7 +3730,7 @@ get_class_names_exclude_anon(...)
 
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
   AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
@@ -3768,7 +3767,7 @@ get_class_names(...)
 
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
   AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
@@ -3802,7 +3801,7 @@ get_error_messages(...)
   // Compiler
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
   AV* av_error_messages = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_error_messages = sv_2mortal(newRV_inc((SV*)av_error_messages));
@@ -3836,7 +3835,7 @@ get_classes_length(...)
 
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
   int32_t classes_length = env->compiler_get_classes_length(compiler);
   SV* sv_classes_length = sv_2mortal(newSViv(classes_length));
@@ -3861,7 +3860,7 @@ get_module_file(...)
 
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
   // Copy class load path to builder
   int32_t class_id = SPVM_API_compiler_get_class_id(compiler, class_name);
@@ -3896,7 +3895,7 @@ get_module_source(...)
 
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
   // Copy class load path to builder
   SV* sv_module_source;
@@ -3927,7 +3926,7 @@ build_runtime(...)
   
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
   // Build runtime information
   void* runtime = SPVM_API_runtime_new(env);
@@ -4118,7 +4117,7 @@ build_class_csource_precompile(...)
 
   SV** sv_compiler_ptr = hv_fetch(hv_builder, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
   void* allocator = SPVM_API_compiler_get_allocator(compiler);
   
