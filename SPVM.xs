@@ -3572,8 +3572,6 @@ compile_spvm(...)
   
   // File
   const char* start_file = SvPV_nolen(sv_start_file);
-  char* start_file_copy = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sv_len(sv_start_file) + 1);
-  memcpy(start_file_copy, start_file, sv_len(sv_start_file));
   
   // Line
   int32_t start_line = (int32_t)SvIV(sv_start_line);
@@ -3583,7 +3581,7 @@ compile_spvm(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
   // Set starting file
-  env->compiler_set_start_file(compiler, start_file_copy);
+  env->compiler_set_start_file(compiler, start_file);
   
   // Set starting line
   env->compiler_set_start_line(compiler, start_line);
