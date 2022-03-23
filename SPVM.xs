@@ -1727,7 +1727,7 @@ array_to_bin(...)
           croak("Invalid type at %s line %d\n", MFILE, __LINE__);
       }
     }
-    else if (SPVM_API_object_get_type_category(array) == SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY || SPVM_API_object_get_type_category(array) == SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY) {
+    else if (SPVM_API_object_get_type_category(array) == SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY) {
       croak("Objec type is not supported at %s line %d\n", MFILE, __LINE__);
     }
     else {
