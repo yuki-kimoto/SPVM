@@ -17,7 +17,6 @@
 #include "spvm_api.h"
 
 #include "spvm_csource_builder_precompile.h"
-#include "spvm_string_buffer.h"
 
 static const char* MFILE = "SPVM.xs";
 
@@ -4122,15 +4121,18 @@ build_class_csource_precompile(...)
   void* allocator = SPVM_API_compiler_get_allocator(compiler);
   
   // String buffer for csource
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new_tmp(allocator, 0);
+  void* string_buffer = SPVM_API_string_buffer_new_tmp(allocator, 0);
 
   // Build class csource
   
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(compiler, string_buffer, class_name);
   
-  SV* sv_class_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
+  const char* string_buffer_value = SPVM_API_string_buffer_get_value(string_buffer);
+  int32_t string_buffer_length = SPVM_API_string_buffer_get_length(string_buffer);
   
-  SPVM_STRING_BUFFER_free(string_buffer);
+  SV* sv_class_csource = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
+  
+  SPVM_API_string_buffer_free(string_buffer);
 
   XPUSHs(sv_class_csource);
   XSRETURN(1);

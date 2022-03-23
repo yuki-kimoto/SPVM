@@ -459,4 +459,9 @@ SPVM_ALLOCATOR* SPVM_API_compiler_get_allocator(SPVM_COMPILER* compiler);
 
 int32_t SPVM_API_get_arg_type_id(SPVM_ENV* env, int32_t arg_id);
 
+SPVM_STRING_BUFFER* SPVM_API_string_buffer_new_tmp(SPVM_ALLOCATOR* allocator, int32_t capacity);
+const char* SPVM_API_string_buffer_get_value(SPVM_STRING_BUFFER* string_buffer);
+int32_t SPVM_API_string_buffer_get_length(SPVM_STRING_BUFFER* string_buffer);
+void SPVM_API_string_buffer_free(SPVM_STRING_BUFFER* string_buffer);
+
 #endif
