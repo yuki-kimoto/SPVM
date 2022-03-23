@@ -19,8 +19,6 @@
 #include "spvm_csource_builder_precompile.h"
 #include "spvm_string_buffer.h"
 
-#include "spvm_runtime.h"
-
 static const char* MFILE = "SPVM.xs";
 
 SV* SPVM_XS_UTIL_new_sv_object(SPVM_ENV* env, SPVM_OBJECT* object, const char* class) {
@@ -243,8 +241,9 @@ call_spvm_method(...)
     
     // Get value from Perl argument stack
     SV* sv_value = ST(spvm_args_base + args_index);
-
-    int32_t arg_type_id = runtime->arg_type_ids[method_arg_type_ids_base + args_index];
+    
+    int32_t arg_id = method_arg_type_ids_base + args_index;
+    int32_t arg_type_id = SPVM_API_get_arg_type_id(env, arg_id);
     int32_t arg_basic_type_id = SPVM_API_get_type_basic_type_id(env, arg_type_id);
     int32_t arg_type_dimension = SPVM_API_get_type_dimension(env, arg_type_id);
     int32_t arg_type_category = SPVM_API_get_type_category(env, arg_type_id);
@@ -1275,7 +1274,8 @@ call_spvm_method(...)
     for (int32_t args_index = 0; args_index < method_arg_type_ids_length; args_index++) {
       SV* sv_value = ST(spvm_args_base + args_index);
       
-      int32_t arg_type_id = runtime->arg_type_ids[method_arg_type_ids_base + args_index];
+      int32_t arg_id = method_arg_type_ids_base + args_index;
+      int32_t arg_type_id = SPVM_API_get_arg_type_id(env, arg_id);
       
       // Convert to runtime type
       int32_t arg_basic_type_id = SPVM_API_get_type_basic_type_id(env, arg_type_id);
