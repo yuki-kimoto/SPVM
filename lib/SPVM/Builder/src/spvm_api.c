@@ -2775,7 +2775,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FETCH_BYTE: {
+      case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_BYTE: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = opcode->operand3;
@@ -2800,7 +2800,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FETCH_SHORT: {
+      case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_SHORT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = opcode->operand3;
@@ -2824,7 +2824,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FETCH_INT: {
+      case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_INT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = opcode->operand3;
@@ -2848,7 +2848,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FETCH_LONG: {
+      case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_LONG: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = opcode->operand3;
@@ -2873,7 +2873,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FETCH_FLOAT: {
+      case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FLOAT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = opcode->operand3;
@@ -2898,7 +2898,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FETCH_DOUBLE: {
+      case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_DOUBLE: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = opcode->operand3;
