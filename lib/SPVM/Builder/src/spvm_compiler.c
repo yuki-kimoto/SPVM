@@ -181,6 +181,9 @@ const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_string_symtable, c
 }
 
 int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name) {
+  
+  SPVM_STRING* class_name_string = SPVM_STRING_new(compiler, class_name, strlen(class_name));
+  class_name = class_name_string->value;
 
   compiler->cur_class_base = compiler->classes->length;
 

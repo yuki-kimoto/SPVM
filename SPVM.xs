@@ -3569,8 +3569,6 @@ compile_spvm(...)
   
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
-  char* class_name_copy = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sv_len(sv_class_name) + 1);
-  memcpy(class_name_copy, class_name, sv_len(sv_class_name));
   
   // File
   const char* start_file = SvPV_nolen(sv_start_file);
@@ -3607,7 +3605,7 @@ compile_spvm(...)
   }
 
   // Compile SPVM
-  int32_t compile_error_code = env->compiler_compile_spvm(compiler, class_name_copy);
+  int32_t compile_error_code = env->compiler_compile_spvm(compiler, class_name);
   
   SV* sv_compile_success;
   if (compile_error_code == 0) {
