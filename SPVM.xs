@@ -19,7 +19,6 @@
 #include "spvm_compiler.h"
 #include "spvm_csource_builder_precompile.h"
 #include "spvm_string_buffer.h"
-#include "spvm_allocator.h"
 
 #include "spvm_runtime.h"
 
@@ -1536,7 +1535,7 @@ array_to_elems(...)
         av_push(av_values, SvREFCNT_inc(sv_value));
       }
     }
-    else if (SPVM_API_object_get_type_category(array) == SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY || SPVM_API_object_get_type_category(array) == SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY) {
+    else if (SPVM_API_object_get_type_category(array) == SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY) {
       if (basic_type_id == SPVM_API_C_BASIC_TYPE_ID_STRING) {
         for (int32_t i = 0; i < length; i++) {
           void* object = env->get_elem_object(env, array, i);
@@ -4121,14 +4120,14 @@ build_class_csource_precompile(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
+  void* allocator = SPVM_API_compiler_get_allocator(compiler);
+  
   // String buffer for csource
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new_tmp(allocator, 0);
 
   // Build class csource
   
-  int32_t build_class_csource_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(compiler, string_buffer, class_name);
-  assert(compiler->allocator->memory_blocks_count_tmp == build_class_csource_start_memory_blocks_count_tmp);
   
   SV* sv_class_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   

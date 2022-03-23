@@ -44,6 +44,11 @@ SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(SPVM_ALLOCATOR* allocator, int32_t ca
   return string_buffer;
 }
 
+
+SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new_tmp(SPVM_ALLOCATOR* allocator, int32_t capacity) {
+  return SPVM_STRING_BUFFER_new(allocator, capacity, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+}
+
 char* SPVM_STRING_BUFFER_get_buffer(SPVM_STRING_BUFFER* string_buffer) {
   
   return string_buffer->buffer;

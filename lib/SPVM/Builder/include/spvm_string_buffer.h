@@ -29,4 +29,6 @@ void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer);
 
 int32_t SPVM_STRING_BUFFER_add_len_nullstr(SPVM_STRING_BUFFER* string_buffer, char* string, int32_t string_length);
 
+SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new_tmp(SPVM_ALLOCATOR* allocator, int32_t capacity);
+
 #endif

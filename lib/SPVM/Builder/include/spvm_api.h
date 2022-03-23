@@ -455,4 +455,6 @@ int32_t SPVM_API_object_get_basic_type_id(SPVM_OBJECT* object);
 int32_t SPVM_API_object_get_type_dimension(SPVM_OBJECT* object);
 int32_t SPVM_API_object_get_type_category(SPVM_OBJECT* object);
 
+SPVM_ALLOCATOR* SPVM_API_compiler_get_allocator(SPVM_COMPILER* compiler);
+
 #endif
