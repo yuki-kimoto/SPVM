@@ -98,9 +98,6 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
 
   static const char* const id_names[] = {
     "END_METHOD",
-    "CALL_CLASS_METHOD",
-    "CALL_INSTANCE_METHOD",
-    "CALL_CALLBACK_METHOD",
     "ADD_INT",
     "ADD_LONG",
     "ADD_FLOAT",
@@ -336,6 +333,9 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "PUSH_ARG_MULNUM_LONG",
     "PUSH_ARG_MULNUM_FLOAT",
     "PUSH_ARG_MULNUM_DOUBLE",
+    "CALL_CLASS_METHOD",
+    "CALL_INSTANCE_METHOD",
+    "CALL_CALLBACK_METHOD",
     "GET_ARG_BYTE",
     "GET_ARG_SHORT",
     "GET_ARG_INT",
