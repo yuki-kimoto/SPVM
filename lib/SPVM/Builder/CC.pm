@@ -994,7 +994,7 @@ sub create_precompile_source {
     my $source_dir = "$src_dir/$class_rel_dir";
     mkpath $source_dir;
     
-    my $precompile_source = $self->build_precompile_source($class_name);
+    my $precompile_source = $self->create_precompile_source($class_name);
     open my $fh, '>', $source_file
       or die "Can't create $source_file";
     print $fh $precompile_source;

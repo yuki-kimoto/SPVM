@@ -4101,7 +4101,7 @@ DESTROY(...)
 MODULE = SPVM::Builder::CC		PACKAGE = SPVM::Builder::CC
 
 SV*
-build_precompile_source(...)
+create_precompile_source(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
@@ -4125,7 +4125,7 @@ build_precompile_source(...)
 
   // Build class source
   
-  SPVM_PRECOMPILE_build_precompile_source(compiler, string_buffer, class_name);
+  SPVM_PRECOMPILE_create_precompile_source(compiler, string_buffer, class_name);
   
   const char* string_buffer_value = SPVM_API_string_buffer_get_value(string_buffer);
   int32_t string_buffer_length = SPVM_API_string_buffer_get_length(string_buffer);

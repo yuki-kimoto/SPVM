@@ -24,7 +24,7 @@
 #include "spvm_compiler.h"
 #include "spvm_string.h"
 
-void SPVM_PRECOMPILE_build_precompile_source(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
+void SPVM_PRECOMPILE_create_precompile_source(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   
   // Basic type
   SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, class_name, strlen(class_name));
@@ -80,7 +80,7 @@ void SPVM_PRECOMPILE_build_precompile_source(SPVM_COMPILER* compiler, SPVM_STRIN
   for (int32_t i = 0; i < class->anon_methods->length; i++) {
     SPVM_METHOD* anon_method = SPVM_LIST_fetch(class->anon_methods, i);
     SPVM_CLASS* anon_method_class = anon_method->class;
-    SPVM_PRECOMPILE_build_precompile_source(compiler, string_buffer, anon_method_class->name);
+    SPVM_PRECOMPILE_create_precompile_source(compiler, string_buffer, anon_method_class->name);
   }
 }
 
