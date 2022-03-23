@@ -8310,6 +8310,13 @@ void SPVM_API_compiler_free(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_free(compiler);
 }
 
+const char* SPVM_API_get_module_source(SPVM_COMPILER* compiler, const char* class_name) {
+  
+  const char* module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
+  
+  return module_source;
+}
+
 int32_t SPVM_API_compiler_get_error_messages_length(SPVM_COMPILER* compiler) {
   return SPVM_COMPILER_get_error_messages_length(compiler);
 }

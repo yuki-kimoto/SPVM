@@ -391,4 +391,6 @@ int32_t SPVM_API_get_class_method_ids_base(SPVM_ENV* env, int32_t class_id);
 int32_t SPVM_API_get_class_method_ids_length(SPVM_ENV* env, int32_t class_id);
 int32_t SPVM_API_get_class_class_var_ids_base(SPVM_ENV* env, int32_t class_id);
 
+const char* SPVM_API_get_module_source(SPVM_COMPILER* compiler, const char* class_name);
+
 #endif

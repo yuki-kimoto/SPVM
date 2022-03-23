@@ -17,7 +17,6 @@
 #include "spvm_api.h"
 
 #include "spvm_compiler.h"
-#include "spvm_hash.h"
 #include "spvm_basic_type.h"
 #include "spvm_type.h"
 #include "spvm_object.h"
@@ -3904,7 +3903,7 @@ get_module_source(...)
 
   // Copy class load path to builder
   SV* sv_module_source;
-  const char* module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
+  const char* module_source =  SPVM_API_get_module_source(compiler, class_name);
   if (module_source) {
     sv_module_source = sv_2mortal(newSVpv(module_source, 0));
   }
