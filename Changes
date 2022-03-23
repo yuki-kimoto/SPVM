@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9510  2021-03-22
+0.9510  2021-03-23
         [CHANGE]
         * Add element[] type. This is same as oarray type, but element[] type has correct type dimension.
         [DEPRECATIONS]
