@@ -2411,7 +2411,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         break;
       }
-      case SPVM_OPCODE_C_ID_NEW_CONSTANT_STRING: {
+      case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t string_id = opcode->operand1;
         SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->strings, string_id);
 

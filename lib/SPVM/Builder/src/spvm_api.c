@@ -3872,7 +3872,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_NEW_CONSTANT_STRING: {
+      case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t string_id = opcode->operand1;
         int32_t constant_string_length;
         const char* constant_string = env->get_constant_string_value(env, string_id, &constant_string_length);

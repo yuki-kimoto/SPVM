@@ -296,7 +296,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "NEW_LONG_ARRAY",
     "NEW_FLOAT_ARRAY",
     "NEW_DOUBLE_ARRAY",
-    "NEW_CONSTANT_STRING",
+    "NEW_STRING",
     "NEW_STRING_LEN",
     "IS_READ_ONLY",
     "MAKE_READ_ONLY",
