@@ -86,7 +86,7 @@ class TestCase::ExchangeAPI {
     return undef;
   }
 
-  static method return_oarray : oarray () {
+  static method return_any_object_array : element[] () {
     
     my $minimal = new TestCase::Minimal[2];
     $minimal->[0] = new TestCase::Minimal;
@@ -99,7 +99,7 @@ class TestCase::ExchangeAPI {
     return $minimal;
   }
 
-  static method return_oarray_undef : TestCase::Minimal[] () {
+  static method return_any_object_array_undef : TestCase::Minimal[] () {
     
     return undef;
   }
@@ -222,9 +222,9 @@ class TestCase::ExchangeAPI {
     return 1;
   }
   
-  static method any_object_array : oarray ($oarray : element[]) {
+  static method any_object_array : element[] ($any_object_array : element[]) {
     
-    my $bytes = (Byte[])$oarray;
+    my $bytes = (Byte[])$any_object_array;
     
     $bytes->[2] = Byte->new(5);
     
@@ -808,7 +808,7 @@ class TestCase::ExchangeAPI {
   }
   
 
-  static method spvm_new_object_array_len_element_oarray : int ($nums : TestCase[]) {
+  static method spvm_new_object_array_len_element_any_object_array : int ($nums : TestCase[]) {
     if ($nums->[0]{x_int} == 1) {
       if ($nums->[1]{x_int} == 2) {
         return 1;

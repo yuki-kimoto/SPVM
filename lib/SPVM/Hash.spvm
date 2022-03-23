@@ -11,7 +11,7 @@ class Hash : precompile {
   }
   private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
 
-  static method new : Hash ($key_values : oarray) {
+  static method new : Hash ($key_values : element[]) {
     my $self = new Hash;
     
     my $default_capacity = 32;

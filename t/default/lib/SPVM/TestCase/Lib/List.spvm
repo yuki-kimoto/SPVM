@@ -184,7 +184,7 @@ class TestCase::Lib::List {
     }
   }
 
-  static method equals_array : int ($got : oarray, $expected : oarray) {
+  static method equals_array : int ($got : element[], $expected : element[]) {
     if (@$got != @$expected) {
       warn("Array size mismatch. got: " . @$got . ", expected: " . @$expected);
       return 0;

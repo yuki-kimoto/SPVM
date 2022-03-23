@@ -274,7 +274,7 @@ class Fn : precompile {
     return $range;
   }
 
-  static method copy_array_range_object : oarray ($objects : oarray, $offset : int, $length : int) {
+  static method copy_array_range_object : element[] ($objects : element[], $offset : int, $length : int) {
 
     if ($objects == undef) {
       die "The argument array must be defined";
@@ -514,7 +514,7 @@ class Fn : precompile {
     return $dump;
   }
 
-  static method dump_array_object : string ($objects : oarray, $stringer : Stringer) {
+  static method dump_array_object : string ($objects : element[], $stringer : Stringer) {
     
     if ($objects == undef) {
       return undef;
@@ -817,7 +817,7 @@ class Fn : precompile {
     return $is_equals;
   }
 
-  static method equals_array_object : int ($objects1 : oarray, $objects2 : oarray, $equality_checker : EqualityChecker) {
+  static method equals_array_object : int ($objects1 : element[], $objects2 : element[], $equality_checker : EqualityChecker) {
     if ($objects1 == undef && $objects2 == undef) {
       return 1;
     }
@@ -1234,7 +1234,7 @@ class Fn : precompile {
   native static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
   native static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
 
-  native static method new_array_proto : oarray ($proto_array : oarray, $length : int);
+  native static method new_array_proto : element[] ($proto_array : element[], $length : int);
 
   static method powi : int ($x : int, $y : int) {
     my $p = 1;
@@ -1431,7 +1431,7 @@ class Fn : precompile {
     Fn->_sort_long_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_object : void ($objects : oarray, $offset : int, $length : int, $comparator : Comparator::Object) {
+  static method sort_object : void ($objects : element[], $offset : int, $length : int, $comparator : Comparator::Object) {
     if ($objects == undef) {
       die "Array must be not undef";
     }
@@ -2438,7 +2438,7 @@ class Fn : precompile {
     Fn->_sort_string_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
 
-  private static method _sort_object_merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Object) {
+  private static method _sort_object_merge : void($a : element[], $b : element[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Object) {
       my $i = $left;
       my $j = $mid + 1;
       my $k = 0;
@@ -2475,7 +2475,7 @@ class Fn : precompile {
       }
   }
 
-  private static method _sort_object_merge_sort : void($a : oarray, $b : oarray, $left : int, $right : int, $n : int, $comparator : Comparator::Object){
+  private static method _sort_object_merge_sort : void($a : element[], $b : element[], $left : int, $right : int, $n : int, $comparator : Comparator::Object){
     if ($left >= $right) {
       return;
     }

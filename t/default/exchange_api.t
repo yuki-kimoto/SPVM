@@ -563,7 +563,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     $object2->set_x_int(2);
     my $spvm_oarray = SPVM::new_object_array("TestCase[]", [$object1, $object2]);
     
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_oarray($spvm_oarray));
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_any_object_array($spvm_oarray));
     
     my $oarray_out = $spvm_oarray->to_elems;
     is($oarray_out->[0]->get_x_int, 1);
