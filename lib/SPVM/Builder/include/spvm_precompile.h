@@ -44,7 +44,7 @@ enum {
 #define SPVM_PRECOMPILE_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
 
-void SPVM_PRECOMPILE_build_class_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name);
+void SPVM_PRECOMPILE_build_class_source(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name);
 void SPVM_PRECOMPILE_build_head(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer);
 void SPVM_PRECOMPILE_build_method_declaration(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name);
 void SPVM_PRECOMPILE_build_method_implementation(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name);

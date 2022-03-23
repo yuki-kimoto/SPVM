@@ -4101,7 +4101,7 @@ DESTROY(...)
 MODULE = SPVM::Builder::CC		PACKAGE = SPVM::Builder::CC
 
 SV*
-build_class_csource_precompile(...)
+build_class_source_precompile(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
@@ -4120,21 +4120,21 @@ build_class_csource_precompile(...)
   
   void* allocator = SPVM_API_compiler_get_allocator(compiler);
   
-  // String buffer for csource
+  // String buffer for source
   void* string_buffer = SPVM_API_string_buffer_new_tmp(allocator, 0);
 
-  // Build class csource
+  // Build class source
   
-  SPVM_PRECOMPILE_build_class_csource(compiler, string_buffer, class_name);
+  SPVM_PRECOMPILE_build_class_source(compiler, string_buffer, class_name);
   
   const char* string_buffer_value = SPVM_API_string_buffer_get_value(string_buffer);
   int32_t string_buffer_length = SPVM_API_string_buffer_get_length(string_buffer);
   
-  SV* sv_class_csource = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
+  SV* sv_class_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
   
   SPVM_API_string_buffer_free(string_buffer);
 
-  XPUSHs(sv_class_csource);
+  XPUSHs(sv_class_source);
   XSRETURN(1);
 }
 

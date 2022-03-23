@@ -242,14 +242,14 @@ sub build_exe_file {
   push @$object_files, @$spvm_module_objects;
 
   # Create precompile C source_files
-  $self->create_precompile_csources;
+  $self->create_precompile_sources;
   
   # Compile precompile C source_files
   my $precompile_object_files = $self->compile_precompile_sources;
   push @$object_files, @$precompile_object_files;
 
   # Compile precompile C source_files
-  my $native_object_files = $self->compile_native_csources;
+  my $native_object_files = $self->compile_native_sources;
   push @$object_files, @$native_object_files;
   
   # Create bootstrap C source
@@ -700,7 +700,7 @@ sub create_spvm_module_sources {
     my $perl_class_name = "SPVM::$class_name";
     my $module_source_base = $perl_class_name;
     $module_source_base =~ s|::|/|g;
-    my $module_source_csource_file = "$build_src_dir/$module_source_base.modsrc.c";
+    my $module_source_source_file = "$build_src_dir/$module_source_base.modsrc.c";
     
     # Source creating callback
     my $create_cb = sub {
@@ -715,24 +715,24 @@ sub create_spvm_module_sources {
       my $class_cname = $class_name;
       $class_cname =~ s/::/__/g;
 
-      my $get_module_source_csource = <<"EOS";
+      my $get_module_source_source = <<"EOS";
 static const char* module_source = "$module_source_c_hex";
 const char* SPMODSRC__${class_cname}__get_module_source() {
 return module_source;
 }
 EOS
-      mkpath dirname $module_source_csource_file;
+      mkpath dirname $module_source_source_file;
       
-      open my $module_source_csource_fh, '>', $module_source_csource_file
-        or die "Can't open file $module_source_csource_file:$!";
+      open my $module_source_source_fh, '>', $module_source_source_file
+        or die "Can't open file $module_source_source_file:$!";
 
-      print $module_source_csource_fh $get_module_source_csource;
+      print $module_source_source_fh $get_module_source_source;
     };
     
     # Create source file
     $self->create_source_file({
       input_files => [$module_file, __FILE__],
-      output_file => $module_source_csource_file,
+      output_file => $module_source_source_file,
       create_cb => $create_cb,
     });
   }
@@ -771,7 +771,7 @@ sub compile_spvm_module_sources {
   return $object_file_infos;
 }
 
-sub create_precompile_csources {
+sub create_precompile_sources {
   my ($self) = @_;
 
   my $builder = $self->builder;
@@ -796,7 +796,7 @@ sub create_precompile_csources {
       
       my $src_dir = $self->builder->create_build_src_path;
       mkpath $src_dir;
-      $builder_c_precompile->create_precompile_csource(
+      $builder_c_precompile->create_precompile_source(
         $class_name,
         {
           src_dir => $src_dir,
@@ -850,7 +850,7 @@ sub compile_precompile_sources {
   return $object_files;
 }
 
-sub compile_native_csources {
+sub compile_native_sources {
   my ($self) = @_;
   
   my $builder = $self->builder;
