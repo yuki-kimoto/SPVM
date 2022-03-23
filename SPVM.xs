@@ -17,7 +17,6 @@
 #include "spvm_api.h"
 
 #include "spvm_compiler.h"
-#include "spvm_basic_type.h"
 #include "spvm_type.h"
 #include "spvm_object.h"
 #include "spvm_csource_builder_precompile.h"
@@ -137,27 +136,27 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
 
         int32_t mulnum_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, mulnum_field_type_id);
         switch (mulnum_field_type_basic_type_id) {
-          case SPVM_BASIC_TYPE_C_ID_BYTE: {
+          case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
             ((int8_t*)elems)[(fields_length * index) + field_index] = (int8_t)SvIV(sv_field_value);
             break;
           }
-          case SPVM_BASIC_TYPE_C_ID_SHORT: {
+          case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
             ((int16_t*)elems)[(fields_length * index) + field_index] = (int16_t)SvIV(sv_field_value);
             break;
           }
-          case SPVM_BASIC_TYPE_C_ID_INT: {
+          case SPVM_API_C_BASIC_TYPE_ID_INT: {
             ((int32_t*)elems)[(fields_length * index) + field_index] = (int32_t)SvIV(sv_field_value);
             break;
           }
-          case SPVM_BASIC_TYPE_C_ID_LONG: {
+          case SPVM_API_C_BASIC_TYPE_ID_LONG: {
             ((int64_t*)elems)[(fields_length * index) + field_index] = (int64_t)SvIV(sv_field_value);
             break;
           }
-          case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+          case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
             ((float*)elems)[(fields_length * index) + field_index] = (float)SvNV(sv_field_value);
             break;
           }
-          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+          case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
             ((double*)elems)[(fields_length * index) + field_index] = (double)SvNV(sv_field_value);
             break;
           }
@@ -583,7 +582,7 @@ call_spvm_method(...)
             if (arg_type_dimension == 1) {
               switch (arg_basic_type_id) {
                 // Argument: Perl array referecne to SPVM byte array
-                case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
                   void* array = env->new_byte_array(env, length);
                   int8_t* elems = env->get_elems_byte(env, array);
                   for (int32_t i = 0; i < length; i++) {
@@ -596,7 +595,7 @@ call_spvm_method(...)
                   break;
                 }
                 // Argument: Perl array referecne to SPVM short array
-                case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
                   void* array = env->new_short_array(env, length);
                   int16_t* elems = env->get_elems_short(env, array);
                   for (int32_t i = 0; i < length; i++) {
@@ -609,7 +608,7 @@ call_spvm_method(...)
                   break;
                 }
                 // Argument: Perl array referecne to SPVM int array
-                case SPVM_BASIC_TYPE_C_ID_INT: {
+                case SPVM_API_C_BASIC_TYPE_ID_INT: {
                   void* array = env->new_int_array(env, length);
                   int32_t* elems = env->get_elems_int(env, array);
                   for (int32_t i = 0; i < length; i++) {
@@ -622,7 +621,7 @@ call_spvm_method(...)
                   break;
                 }
                 // Argument: Perl array referecne to SPVM long array
-                case SPVM_BASIC_TYPE_C_ID_LONG: {
+                case SPVM_API_C_BASIC_TYPE_ID_LONG: {
                   void* array = env->new_long_array(env, length);
                   int64_t* elems = env->get_elems_long(env, array);
                   for (int32_t i = 0; i < length; i++) {
@@ -635,7 +634,7 @@ call_spvm_method(...)
                   break;
                 }
                 // Argument: Perl array referecne to SPVM float array
-                case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
                   void* array = env->new_float_array(env, length);
                   float* elems = env->get_elems_float(env, array);
                   for (int32_t i = 0; i < length; i++) {
@@ -648,7 +647,7 @@ call_spvm_method(...)
                   break;
                 }
                 // Argument: Perl array referecne to SPVM double array
-                case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
                   void* array = env->new_double_array(env, length);
                   double* elems = env->get_elems_double(env, array);
                   for (int32_t i = 0; i < length; i++) {
@@ -661,9 +660,9 @@ call_spvm_method(...)
                   break;
                 }
                 // Argument: Perl array referecne to SPVM string array
-                case SPVM_BASIC_TYPE_C_ID_STRING: {
+                case SPVM_API_C_BASIC_TYPE_ID_STRING: {
                   
-                  void* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_STRING, length);
+                  void* array = env->new_object_array(env, SPVM_API_C_BASIC_TYPE_ID_STRING, length);
                   for (int32_t i = 0; i < length; i++) {
                     SV** sv_elem_ptr = av_fetch(av_elems, i, 0);
                     SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
@@ -694,11 +693,11 @@ call_spvm_method(...)
 
                   break;
                 }
-                case SPVM_BASIC_TYPE_C_ID_ANY_OBJECT:
-                case SPVM_BASIC_TYPE_C_ID_ELEMENT:
+                case SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT:
+                case SPVM_API_C_BASIC_TYPE_ID_ELEMENT:
                 {
                   // New array
-                  void* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT, length);
+                  void* array = env->new_object_array(env, SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT, length);
 
                   for (int32_t i = 0; i < length; i++) {
                     SV** sv_value_ptr = av_fetch(av_elems, i, 0);
@@ -760,7 +759,7 @@ call_spvm_method(...)
           if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
             
-            if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_ELEMENT) {
+            if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ELEMENT) {
               if (object->type_dimension == 0) {
                 croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
               }
@@ -1194,7 +1193,7 @@ call_spvm_method(...)
           else {
             
             // String
-            if (return_value->basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
+            if (return_value->basic_type_id == SPVM_API_C_BASIC_TYPE_ID_STRING) {
               sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::String");
             }
             // Object
@@ -1237,27 +1236,27 @@ call_spvm_method(...)
         SV* sv_field_value = NULL;
         int32_t method_return_mulnum_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, method_return_mulnum_field_type_id);
         switch (method_return_mulnum_field_type_basic_type_id) {
-          case SPVM_BASIC_TYPE_C_ID_BYTE: {
+          case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
             sv_field_value = sv_2mortal(newSViv(args_stack[field_index].bval));
             break;
           }
-          case SPVM_BASIC_TYPE_C_ID_SHORT: {
+          case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
             sv_field_value = sv_2mortal(newSViv(args_stack[field_index].sval));
             break;
           }
-          case SPVM_BASIC_TYPE_C_ID_INT: {
+          case SPVM_API_C_BASIC_TYPE_ID_INT: {
             sv_field_value = sv_2mortal(newSViv(args_stack[field_index].ival));
             break;
           }
-          case SPVM_BASIC_TYPE_C_ID_LONG: {
+          case SPVM_API_C_BASIC_TYPE_ID_LONG: {
             sv_field_value = sv_2mortal(newSViv(args_stack[field_index].lval));
             break;
           }
-          case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+          case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
             sv_field_value = sv_2mortal(newSVnv(args_stack[field_index].fval));
             break;
           }
-          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+          case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
             sv_field_value = sv_2mortal(newSVnv(args_stack[field_index].dval));
             break;
           }
@@ -1498,32 +1497,32 @@ array_to_elems(...)
           SV* sv_field_value;
           int32_t mulnum_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, mulnum_field_type_id);
           switch (mulnum_field_type_basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_BYTE: {
+            case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
               int8_t field_value = ((int8_t*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
               break;
             }
-            case SPVM_BASIC_TYPE_C_ID_SHORT: {
+            case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
               int16_t field_value = ((int16_t*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
               break;
             }
-            case SPVM_BASIC_TYPE_C_ID_INT: {
+            case SPVM_API_C_BASIC_TYPE_ID_INT: {
               int32_t field_value = ((int32_t*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
               break;
             }
-            case SPVM_BASIC_TYPE_C_ID_LONG: {
+            case SPVM_API_C_BASIC_TYPE_ID_LONG: {
               int64_t field_value = ((int64_t*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
               break;
             }
-            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+            case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
               float field_value = ((float*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSVnv(field_value));
               break;
             }
-            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+            case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
               double field_value = ((double*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSVnv(field_value));
               break;
@@ -1539,7 +1538,7 @@ array_to_elems(...)
       }
     }
     else if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY || array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY) {
-      if (basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
+      if (basic_type_id == SPVM_API_C_BASIC_TYPE_ID_STRING) {
         for (int32_t i = 0; i < length; i++) {
           void* object = env->get_elem_object(env, array, i);
           
@@ -1581,7 +1580,7 @@ array_to_elems(...)
     }
     else {
       switch (basic_type_id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
           int8_t* elems = env->get_elems_byte(env, array);
           for (int32_t i = 0; i < length; i++) {
             SV* sv_value = sv_2mortal(newSViv(elems[i]));
@@ -1589,7 +1588,7 @@ array_to_elems(...)
           }
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
           int16_t* elems = env->get_elems_short(env, array);
           for (int32_t i = 0; i < length; i++) {
             SV* sv_value = sv_2mortal(newSViv(elems[i]));
@@ -1597,7 +1596,7 @@ array_to_elems(...)
           }
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
+        case SPVM_API_C_BASIC_TYPE_ID_INT: {
           int32_t* elems = env->get_elems_int(env, array);
           for (int32_t i = 0; i < length; i++) {
             SV* sv_value = sv_2mortal(newSViv(elems[i]));
@@ -1605,7 +1604,7 @@ array_to_elems(...)
           }
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
+        case SPVM_API_C_BASIC_TYPE_ID_LONG: {
           int64_t* elems = env->get_elems_long(env, array);
           for (int32_t i = 0; i < length; i++) {
             SV* sv_value = sv_2mortal(newSViv(elems[i]));
@@ -1613,7 +1612,7 @@ array_to_elems(...)
           }
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
           float* elems = env->get_elems_float(env, array);
           for (int32_t i = 0; i < length; i++) {
             SV* sv_value = sv_2mortal(newSVnv(elems[i]));
@@ -1621,7 +1620,7 @@ array_to_elems(...)
           }
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
           double* elems = env->get_elems_double(env, array);
           for (int32_t i = 0; i < length; i++) {
             SV* sv_value = sv_2mortal(newSVnv(elems[i]));
@@ -1689,37 +1688,37 @@ array_to_bin(...)
 
       int32_t mulnum_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, mulnum_field_type_id);
       switch (mulnum_field_type_basic_type_id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
           int8_t* elems = env->get_elems_byte(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length));
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
           int16_t* elems = env->get_elems_short(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length * 2));
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
+        case SPVM_API_C_BASIC_TYPE_ID_INT: {
           int32_t* elems = env->get_elems_int(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length * 4));
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
+        case SPVM_API_C_BASIC_TYPE_ID_LONG: {
           int64_t* elems = env->get_elems_long(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length * 8));
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
           float* elems = env->get_elems_float(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length * 4));
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
           double* elems = env->get_elems_double(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length * 8));
@@ -1734,37 +1733,37 @@ array_to_bin(...)
     }
     else {
       switch (basic_type_id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
           int8_t* elems = env->get_elems_byte(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, length));
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
           int16_t* elems = env->get_elems_short(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, length * 2));
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
+        case SPVM_API_C_BASIC_TYPE_ID_INT: {
           int32_t* elems = env->get_elems_int(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, length * 4));
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
+        case SPVM_API_C_BASIC_TYPE_ID_LONG: {
           int64_t* elems = env->get_elems_long(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, length * 8));
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
           float* elems = env->get_elems_float(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, length * 4));
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
           double* elems = env->get_elems_double(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, length * 8));
@@ -1885,7 +1884,7 @@ array_set(...)
 
   if (dimension == 1) {
     switch (basic_type_id) {
-      case SPVM_BASIC_TYPE_C_ID_BYTE: {
+      case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
         // Value
         int8_t value = (int8_t)SvIV(sv_value);
         
@@ -1896,7 +1895,7 @@ array_set(...)
         
         break;
       }
-      case SPVM_BASIC_TYPE_C_ID_SHORT: {
+      case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
         // Value
         int16_t value = (int16_t)SvIV(sv_value);
         
@@ -1906,7 +1905,7 @@ array_set(...)
         elements[index] = value;
         break;
       }
-      case SPVM_BASIC_TYPE_C_ID_INT: {
+      case SPVM_API_C_BASIC_TYPE_ID_INT: {
         // Value
         int32_t value = (int32_t)SvIV(sv_value);
         
@@ -1916,7 +1915,7 @@ array_set(...)
         elements[index] = value;
         break;
       }
-      case SPVM_BASIC_TYPE_C_ID_LONG: {
+      case SPVM_API_C_BASIC_TYPE_ID_LONG: {
         // Value
         int64_t value = (int64_t)SvIV(sv_value);
         
@@ -1926,7 +1925,7 @@ array_set(...)
         elements[index] = value;
         break;
       }
-      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+      case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
         // Value
         float value = (float)SvNV(sv_value);
         
@@ -1936,7 +1935,7 @@ array_set(...)
         elements[index] = value;
         break;
       }
-      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+      case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
         // Value
         double value = (double)SvNV(sv_value);
         
@@ -2002,42 +2001,42 @@ array_get(...)
   _Bool is_object = 0;
   if (dimension == 1) {
     switch (basic_type_id) {
-      case SPVM_BASIC_TYPE_C_ID_BYTE: {
+      case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
         // Get element
         int8_t* elements = env->get_elems_byte(env, array);
         int8_t value = elements[index];
         sv_value = sv_2mortal(newSViv(value));
         break;
       }
-      case SPVM_BASIC_TYPE_C_ID_SHORT: {
+      case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
         // Get element
         int16_t* elements = env->get_elems_short(env, array);
         int16_t value = elements[index];
         sv_value = sv_2mortal(newSViv(value));
         break;
       }
-      case SPVM_BASIC_TYPE_C_ID_INT: {
+      case SPVM_API_C_BASIC_TYPE_ID_INT: {
         // Get element
         int32_t* elements = env->get_elems_int(env, array);
         int32_t value = elements[index];
         sv_value = sv_2mortal(newSViv(value));
         break;
       }
-      case SPVM_BASIC_TYPE_C_ID_LONG: {
+      case SPVM_API_C_BASIC_TYPE_ID_LONG: {
         // Get element
         int64_t* elements = env->get_elems_long(env, array);
         int64_t value = elements[index];
         sv_value = sv_2mortal(newSViv(value));
         break;
       }
-      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+      case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
         // Get element
         float* elements = env->get_elems_float(env, array);
         float value = elements[index];
         sv_value = sv_2mortal(newSVnv(value));
         break;
       }
-      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+      case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
         // Get element
         double* elements = env->get_elems_double(env, array);
         double value = elements[index];
@@ -2104,7 +2103,7 @@ new_string_array(...)
     int32_t length = av_len(av_elems) + 1;
 
     // New array
-    SPVM_OBJECT* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_STRING, length);
+    SPVM_OBJECT* array = env->new_object_array(env, SPVM_API_C_BASIC_TYPE_ID_STRING, length);
 
     for (int32_t i = 0; i < length; i++) {
       SV** sv_str_value_ptr = av_fetch(av_elems, i, 0);
@@ -3309,27 +3308,27 @@ _new_mulnum_array_from_bin(...)
   
   int32_t mulnum_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, mulnum_field_type_id);
   switch (mulnum_field_type_basic_type_id) {
-    case SPVM_BASIC_TYPE_C_ID_BYTE: {
+    case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
       field_width = 1;
       break;
     }
-    case SPVM_BASIC_TYPE_C_ID_SHORT: {
+    case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
       field_width = 2;
       break;
     }
-    case SPVM_BASIC_TYPE_C_ID_INT: {
+    case SPVM_API_C_BASIC_TYPE_ID_INT: {
       field_width = 4;
       break;
     }
-    case SPVM_BASIC_TYPE_C_ID_LONG: {
+    case SPVM_API_C_BASIC_TYPE_ID_LONG: {
       field_width = 8;
       break;
     }
-    case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+    case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
       field_width = 4;
       break;
     }
-    case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+    case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
       field_width = 8;
       break;
     }
@@ -3348,42 +3347,42 @@ _new_mulnum_array_from_bin(...)
   int32_t dimension = array->type_dimension;
   
   switch (mulnum_field_type_basic_type_id) {
-    case SPVM_BASIC_TYPE_C_ID_BYTE: {
+    case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
       int8_t* elems = env->get_elems_byte(env, array);
       if (array_length > 0) {
         memcpy(elems, binary, field_length * array_length * field_width);
       }
       break;
     }
-    case SPVM_BASIC_TYPE_C_ID_SHORT: {
+    case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
       int16_t* elems = env->get_elems_short(env, array);
       if (array_length > 0) {
         memcpy(elems, binary, field_length * array_length * field_width);
       }
       break;
     }
-    case SPVM_BASIC_TYPE_C_ID_INT: {
+    case SPVM_API_C_BASIC_TYPE_ID_INT: {
       int32_t* elems = env->get_elems_int(env, array);
       if (array_length > 0) {
         memcpy(elems, binary, field_length * array_length * field_width);
       }
       break;
     }
-    case SPVM_BASIC_TYPE_C_ID_LONG: {
+    case SPVM_API_C_BASIC_TYPE_ID_LONG: {
       int64_t* elems = env->get_elems_long(env, array);
       if (array_length > 0) {
         memcpy(elems, binary, field_length * array_length * field_width);
       }
       break;
     }
-    case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+    case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
       float* elems = env->get_elems_float(env, array);
       if (array_length > 0) {
         memcpy(elems, binary, field_length * array_length * field_width);
       }
       break;
     }
-    case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+    case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
       double* elems = env->get_elems_double(env, array);
       if (array_length > 0) {
         memcpy(elems, binary, field_length * array_length * field_width);
