@@ -16,7 +16,7 @@
 #include "spvm_native.h"
 #include "spvm_api.h"
 
-#include "spvm_csource_builder_precompile.h"
+#include "spvm_precompile.h"
 
 static const char* MFILE = "SPVM.xs";
 
@@ -4125,7 +4125,7 @@ build_class_csource_precompile(...)
 
   // Build class csource
   
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(compiler, string_buffer, class_name);
+  SPVM_PRECOMPILE_build_class_csource(compiler, string_buffer, class_name);
   
   const char* string_buffer_value = SPVM_API_string_buffer_get_value(string_buffer);
   int32_t string_buffer_length = SPVM_API_string_buffer_get_length(string_buffer);

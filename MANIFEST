@@ -376,7 +376,6 @@ lib/SPVM/Builder/include/spvm_class_var.h
 lib/SPVM/Builder/include/spvm_class_var_access.h
 lib/SPVM/Builder/include/spvm_compiler.h
 lib/SPVM/Builder/include/spvm_constant.h
-lib/SPVM/Builder/include/spvm_csource_builder_precompile.h
 lib/SPVM/Builder/include/spvm_descriptor.h
 lib/SPVM/Builder/include/spvm_dumper.h
 lib/SPVM/Builder/include/spvm_field.h
@@ -393,6 +392,7 @@ lib/SPVM/Builder/include/spvm_op_checker.h
 lib/SPVM/Builder/include/spvm_opcode.h
 lib/SPVM/Builder/include/spvm_opcode_array.h
 lib/SPVM/Builder/include/spvm_opcode_builder.h
+lib/SPVM/Builder/include/spvm_precompile.h
 lib/SPVM/Builder/include/spvm_public_api.h
 lib/SPVM/Builder/include/spvm_runtime.h
 lib/SPVM/Builder/include/spvm_runtime_basic_type.h
@@ -429,7 +429,6 @@ lib/SPVM/Builder/src/spvm_class_var.c
 lib/SPVM/Builder/src/spvm_class_var_access.c
 lib/SPVM/Builder/src/spvm_compiler.c
 lib/SPVM/Builder/src/spvm_constant.c
-lib/SPVM/Builder/src/spvm_csource_builder_precompile.c
 lib/SPVM/Builder/src/spvm_descriptor.c
 lib/SPVM/Builder/src/spvm_dumper.c
 lib/SPVM/Builder/src/spvm_field.c
@@ -445,6 +444,7 @@ lib/SPVM/Builder/src/spvm_op_checker.c
 lib/SPVM/Builder/src/spvm_opcode.c
 lib/SPVM/Builder/src/spvm_opcode_array.c
 lib/SPVM/Builder/src/spvm_opcode_builder.c
+lib/SPVM/Builder/src/spvm_precompile.c
 lib/SPVM/Builder/src/spvm_runtime.c
 lib/SPVM/Builder/src/spvm_string.c
 lib/SPVM/Builder/src/spvm_string_buffer.c

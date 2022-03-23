@@ -977,7 +977,7 @@ sub create_precompile_csource {
   $spvm_module_dir =~ s/\.pm$//;
   $spvm_module_dir .= '/src';
   
-  my $spvm_precompile_soruce_file = "$spvm_module_dir/spvm_csource_builder_precompile.c";
+  my $spvm_precompile_soruce_file = "$spvm_module_dir/spvm_precompile.c";
   
   unless (-f $spvm_precompile_soruce_file) {
     confess "Can't find $spvm_precompile_soruce_file";
