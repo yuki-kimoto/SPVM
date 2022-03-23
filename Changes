@@ -1,19 +1,14 @@
 Revision history for SPVM
-0.9510  2021-03-23
-        [CHANGE]
-        * Add element[] type. This is same as oarray type, but element[] type has correct type dimension.
+0.9508_04  2021-03-23
         [DEPRECATIONS]
-        * oarray type is deprecated. oarray type will be removed at 0.9511.
-        [NON BACKWORD COMPATIBLE CHANGES]
-        * oarray type signature change from oarray to element[].
-          For this reason, 0.9510 don't have binary compatibility of precompiled source from 0.9509
-0.9509  2021-03-19
+        * oarray type is deprecated. oarray type will be removed at 0.9510.
         [WARNINGS]
         * Interfaces and IDs of Native APIs that is added after 0.9506+(181+) will be changed many times.
           because I realize Native APIs that compile SPVM are not yet implemented correctly in tests.
         [BUG FIX]
         * Fix the bug that spvmcc can't detect the change of config file.
         [CHANGE]
+        * Add element[] type. This is same as oarray type, but element[] type has correct type dimension.
         * Add Fn->is_numeric_array, Fn->is_mulnum_array doc.
         * Add Fn->is_object_array
         * Add is_object_array native API.
@@ -28,6 +23,8 @@ Revision history for SPVM
         * Rename compiler_build_runtime_info to compiler_build_runtime native API.
         * Change Native API "compiler_build_runtime" argument and return values.
         [NON BACKWORD COMPATIBLE CHANGES]
+        * oarray type signature change from oarray to element[].
+          For this reason, 0.9510 don't have binary compatibility of precompiled source from 0.9509
         * Rename Internal native API "compiler" field to "runtime_info"
           because in this release SPVM compiler and runtime is completly separated.
           I think the effect is litte because this is internal field.
