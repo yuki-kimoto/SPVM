@@ -4997,27 +4997,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       int32_t mem_id_in;
                       if (element_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_STORE_BYTE);
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_BYTE);
                         mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src);
                       }
                       else if (element_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_STORE_SHORT);
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_SHORT);
                         mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src);
                       }
                       else if (element_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_STORE_INT);
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_INT);
                         mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src);
                       }
                       else if (element_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_STORE_LONG);
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_LONG);
                         mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src);
                       }
                       else if (element_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_STORE_FLOAT);
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_FLOAT);
                         mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src);
                       }
                       else if (element_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_STORE_DOUBLE);
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_DOUBLE);
                         mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src);
                       }
                       else {
