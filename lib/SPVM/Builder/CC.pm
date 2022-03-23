@@ -141,7 +141,7 @@ sub build_shared_lib_runtime {
     $src_dir = $self->builder->create_build_src_path;
     mkpath $src_dir;
     
-    $self->create_precompile_source(
+    $self->create_precompile_source_file(
       $class_name,
       {
         src_dir => $src_dir,
@@ -183,7 +183,7 @@ sub build_shared_lib_dist {
     $src_dir = $self->builder->create_build_src_path;
     mkpath $src_dir;
 
-    $self->create_precompile_source(
+    $self->create_precompile_source_file(
       $class_name,
       {
         src_dir => $src_dir,
@@ -959,7 +959,7 @@ sub link {
   return $shared_lib_file;
 }
 
-sub create_precompile_source {
+sub create_precompile_source_file {
   my ($self, $class_name, $opt) = @_;
 
   my $src_dir = $opt->{src_dir};

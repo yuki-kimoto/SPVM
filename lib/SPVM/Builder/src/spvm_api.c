@@ -36,7 +36,7 @@
 #include "spvm_runtime_method.h"
 #include "spvm_runtime_string.h"
 #include "spvm_runtime_type.h"
-
+#include "spvm_precompile.h"
 
 
 
@@ -8412,4 +8412,8 @@ int32_t SPVM_API_string_buffer_get_length(SPVM_STRING_BUFFER* string_buffer) {
 
 void SPVM_API_string_buffer_free(SPVM_STRING_BUFFER* string_buffer) {
   SPVM_STRING_BUFFER_free(string_buffer);
+}
+
+const char* SPVM_API_precompile_create_precompile_source(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
+  SPVM_PRECOMPILE_create_precompile_source(compiler, string_buffer, class_name);
 }

@@ -796,7 +796,7 @@ sub create_precompile_sources {
       
       my $src_dir = $self->builder->create_build_src_path;
       mkpath $src_dir;
-      $builder_c_precompile->create_precompile_source(
+      $builder_c_precompile->create_precompile_source_file(
         $class_name,
         {
           src_dir => $src_dir,

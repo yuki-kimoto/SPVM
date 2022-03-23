@@ -16,8 +16,6 @@
 #include "spvm_native.h"
 #include "spvm_api.h"
 
-#include "spvm_precompile.h"
-
 static const char* MFILE = "SPVM.xs";
 
 SV* SPVM_XS_UTIL_new_sv_object(SPVM_ENV* env, SPVM_OBJECT* object, const char* class) {
@@ -4125,7 +4123,7 @@ create_precompile_source(...)
 
   // Build class source
   
-  SPVM_PRECOMPILE_create_precompile_source(compiler, string_buffer, class_name);
+  SPVM_API_precompile_create_precompile_source(compiler, string_buffer, class_name);
   
   const char* string_buffer_value = SPVM_API_string_buffer_get_value(string_buffer);
   int32_t string_buffer_length = SPVM_API_string_buffer_get_length(string_buffer);
