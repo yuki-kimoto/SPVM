@@ -15,7 +15,6 @@
 #include "spvm_string_buffer.h"
 #include "spvm_opcode.h"
 #include "spvm_class.h"
-#include "spvm_class_var.h"
 #include "spvm_method.h"
 #include "spvm_basic_type.h"
 #include "spvm_field.h"
@@ -25,7 +24,6 @@
 #include "spvm_runtime.h"
 #include "spvm_runtime_method.h"
 #include "spvm_runtime_field.h"
-#include "spvm_runtime_class_var.h"
 #include "spvm_runtime_basic_type.h"
 
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
@@ -4052,11 +4050,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_DOUBLE:
       {
         int32_t class_var_id = opcode->operand1;
-        SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
-        SPVM_CLASS* class_var_class = class_var->class;
-        const char* class_var_class_name = class_var_class->name;
-        const char* class_var_name = class_var->name;
-        const char* class_var_signature = class_var->signature;
+        
+        int32_t class_var_class_id = SPVM_API_get_class_var_class_id(env, class_var_id);
+        int32_t class_var_class_name_id = SPVM_API_get_class_name_id(env, class_var_class_id);
+        const char* class_var_class_name = SPVM_API_get_name(env, class_var_class_name_id);
+        int32_t class_var_name_id = SPVM_API_get_class_var_name_id(env, class_var_id);
+        const char* class_var_name = SPVM_API_get_name(env, class_var_name_id);
+        int32_t class_var_signature_id = SPVM_API_get_class_var_signature_id(env, class_var_id);
+        const char* class_var_signature = SPVM_API_get_name(env, class_var_signature_id);
 
         int32_t class_var_access_ctype_id;
         switch (opcode_id) {
@@ -4113,11 +4114,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_OBJECT: {
         int32_t class_var_id = opcode->operand1;
-        SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
-        SPVM_CLASS* class_var_class = class_var->class;
-        const char* class_var_class_name = class_var_class->name;
-        const char* class_var_name = class_var->name;
-        const char* class_var_signature = class_var->signature;
+        
+        int32_t class_var_class_id = SPVM_API_get_class_var_class_id(env, class_var_id);
+        int32_t class_var_class_name_id = SPVM_API_get_class_name_id(env, class_var_class_id);
+        const char* class_var_class_name = SPVM_API_get_name(env, class_var_class_name_id);
+        int32_t class_var_name_id = SPVM_API_get_class_var_name_id(env, class_var_id);
+        const char* class_var_name = SPVM_API_get_name(env, class_var_name_id);
+        int32_t class_var_signature_id = SPVM_API_get_class_var_signature_id(env, class_var_id);
+        const char* class_var_signature = SPVM_API_get_name(env, class_var_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
@@ -4153,11 +4157,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_DOUBLE:
       {
         int32_t class_var_id = opcode->operand0;
-         SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
-        SPVM_CLASS* class_var_class = class_var->class;
-        const char* class_var_class_name = class_var_class->name;
-        const char* class_var_name = class_var->name;
-        const char* class_var_signature = class_var->signature;
+        
+        int32_t class_var_class_id = SPVM_API_get_class_var_class_id(env, class_var_id);
+        int32_t class_var_class_name_id = SPVM_API_get_class_name_id(env, class_var_class_id);
+        const char* class_var_class_name = SPVM_API_get_name(env, class_var_class_name_id);
+        int32_t class_var_name_id = SPVM_API_get_class_var_name_id(env, class_var_id);
+        const char* class_var_name = SPVM_API_get_name(env, class_var_name_id);
+        int32_t class_var_signature_id = SPVM_API_get_class_var_signature_id(env, class_var_id);
+        const char* class_var_signature = SPVM_API_get_name(env, class_var_signature_id);
 
         int32_t class_var_access_ctype_id;
         switch (opcode_id) {
@@ -4215,11 +4222,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT: {
         int32_t class_var_id = opcode->operand0;
-         SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
-        SPVM_CLASS* class_var_class = class_var->class;
-        const char* class_var_class_name = class_var_class->name;
-        const char* class_var_name = class_var->name;
-        const char* class_var_signature = class_var->signature;
+        
+        int32_t class_var_class_id = SPVM_API_get_class_var_class_id(env, class_var_id);
+        int32_t class_var_class_name_id = SPVM_API_get_class_name_id(env, class_var_class_id);
+        const char* class_var_class_name = SPVM_API_get_name(env, class_var_class_name_id);
+        int32_t class_var_name_id = SPVM_API_get_class_var_name_id(env, class_var_id);
+        const char* class_var_name = SPVM_API_get_name(env, class_var_name_id);
+        int32_t class_var_signature_id = SPVM_API_get_class_var_signature_id(env, class_var_id);
+        const char* class_var_signature = SPVM_API_get_name(env, class_var_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
@@ -4253,11 +4263,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
         int32_t class_var_id = opcode->operand0;
-        SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
-        SPVM_CLASS* class_var_class = class_var->class;
-        const char* class_var_class_name = class_var_class->name;
-        const char* class_var_name = class_var->name;
-        const char* class_var_signature = class_var->signature;
+        
+        int32_t class_var_class_id = SPVM_API_get_class_var_class_id(env, class_var_id);
+        int32_t class_var_class_name_id = SPVM_API_get_class_name_id(env, class_var_class_id);
+        const char* class_var_class_name = SPVM_API_get_name(env, class_var_class_name_id);
+        int32_t class_var_name_id = SPVM_API_get_class_var_name_id(env, class_var_id);
+        const char* class_var_name = SPVM_API_get_name(env, class_var_name_id);
+        int32_t class_var_signature_id = SPVM_API_get_class_var_signature_id(env, class_var_id);
+        const char* class_var_signature = SPVM_API_get_name(env, class_var_signature_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
