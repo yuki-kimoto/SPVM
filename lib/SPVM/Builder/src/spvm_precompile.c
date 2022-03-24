@@ -173,8 +173,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
   
   // Method
   SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-  SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
   
+  int32_t method_id = SPVM_API_get_method_id_without_signature(env, class_name, method_name);
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+  int32_t method_return_type_category = SPVM_API_get_type_category(env, method->return_type_id);
+
   // Method declaration
   SPVM_PRECOMPILE_build_method_declaration(env, compiler, string_buffer, class_name, method_name);
 
@@ -189,7 +193,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
 
   // Current method name
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* CURRENT_METHOD_NAME = \"");
-  SPVM_STRING_BUFFER_add(string_buffer, method->name);
+  SPVM_STRING_BUFFER_add(string_buffer, method_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   
   // Object header byte size
@@ -3079,7 +3083,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
                                               "  {\n");
         
         // Method inline expantion in same class
-        if (decl_method_class_id == method->class->id && decl_method_has_precompile_flag) {
+        if (decl_method_class_id == method->class_id && decl_method_has_precompile_flag) {
           
           SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVMPRECOMPILE__");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
@@ -3363,8 +3367,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        SPVM_CLASS* method_class = method->class;
-        const char* file = method->class->module_file;
+        const char* file = class->module_file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* object = ");
@@ -4623,7 +4626,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
   
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
-  switch (method->return_type->category) {
+  switch (method_return_type_category) {
     case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
     case SPVM_API_C_TYPE_CATEGORY_CLASS:
     case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
