@@ -5193,6 +5193,13 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_HASH_insert(class->interface_class_symtable, implement_class->name, strlen(implement_class->name), implement_class);
       }
     }
+
+    // Add the anon method
+    for (int32_t anon_methods_index = 0; anon_methods_index < class->anon_methods->length; anon_methods_index++) {
+      SPVM_METHOD* anon_method = SPVM_LIST_fetch(class->anon_methods, anon_methods_index);
+      anon_method->anon_method_id = compiler->anon_methods->length;
+      SPVM_LIST_push(compiler->anon_methods, anon_method);
+    }
   }
 
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {

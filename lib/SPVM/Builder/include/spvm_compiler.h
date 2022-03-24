@@ -123,11 +123,14 @@ struct spvm_compiler {
 
   // OP class symtable
   SPVM_HASH* class_symtable;
+
+  // Anon methods
+  SPVM_LIST* anon_methods;
   
   // Method ops
   SPVM_LIST* methods;
 
-  // Method ops
+  // Argments
   SPVM_LIST* args;
 
   // OP our symtable

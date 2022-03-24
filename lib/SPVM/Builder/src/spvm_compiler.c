@@ -482,6 +482,15 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
       runtime_class->interface_class_ids_base = -1;
     }
 
+    runtime_class->anon_method_ids_length = class->anon_methods->length;
+    if (class->anon_methods->length > 0) {
+      SPVM_METHOD* anon_method = SPVM_LIST_fetch(class->anon_methods, 0);
+      runtime_class->anon_method_ids_base = anon_method->anon_method_id;
+    }
+    else {
+      runtime_class->anon_method_ids_base = -1;
+    }
+
     SPVM_RUNTIME_STRING* class_name_string = (SPVM_RUNTIME_STRING*)&runtime->strings[runtime_class->name_id];
     const char* runtime_class_name = (const char*)&runtime->string_buffer[class_name_string->string_buffer_id];
   }

@@ -14,6 +14,8 @@ struct spvm_runtime_class {
   int32_t type_id;
   int32_t method_ids_base;
   int32_t method_ids_length;
+  int32_t anon_method_ids_base;
+  int32_t anon_method_ids_length;
   int32_t field_ids_base;
   int32_t field_ids_length;
   int32_t class_var_ids_base;
