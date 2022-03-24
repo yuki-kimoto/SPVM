@@ -26,6 +26,7 @@ struct spvm_runtime_method {
   int32_t return_type_id;
   int8_t is_class_method;
   int8_t is_init;
+  int8_t is_anon;
 };
 
 #endif

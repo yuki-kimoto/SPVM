@@ -7274,6 +7274,17 @@ int32_t SPVM_API_get_method_name_id(SPVM_ENV* env, int32_t method_id) {
   return name_id;
 }
 
+int32_t SPVM_API_get_method_is_anon(SPVM_ENV* env, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+
+  assert(method);
+
+  int32_t is_anon = method->is_anon;
+  
+  return is_anon;
+}
+
 int32_t SPVM_API_get_method_signature_id(SPVM_ENV* env, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
