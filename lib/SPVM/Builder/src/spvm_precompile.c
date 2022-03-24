@@ -87,15 +87,11 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* comp
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
   // If the class has anon methods, the anon methods is merged to this class
-  for (int32_t method_index = 0; method_index < class_method_ids_length; method_index++) {
-    int32_t anon_method_id = class_method_ids_base + method_index;
-    int32_t anon_method_is_anon = SPVM_API_get_method_is_anon(env, anon_method_id);
-    if (anon_method_is_anon) {
-      int32_t anon_method_class_id = SPVM_API_get_method_class_id(env, anon_method_id);
-      int32_t anon_method_class_name_id = SPVM_API_get_class_name_id(env, anon_method_class_id);
-      const char* anon_method_class_name = SPVM_API_get_name(env, anon_method_class_name_id);
-      SPVM_PRECOMPILE_create_precompile_source(env, compiler, string_buffer, anon_method_class_name);
-    }
+  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+  for (int32_t i = 0; i < class->anon_methods->length; i++) {
+    SPVM_METHOD* anon_method = SPVM_LIST_fetch(class->anon_methods, i);
+    SPVM_CLASS* anon_method_class = anon_method->class;
+    SPVM_PRECOMPILE_create_precompile_source(env, compiler, string_buffer, anon_method_class->name);
   }
 }
 
