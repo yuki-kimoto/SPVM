@@ -4164,6 +4164,7 @@ create_precompile_source(...)
 
   // Build class source
   
+  
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
   
   env->runtime = runtime;

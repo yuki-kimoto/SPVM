@@ -224,6 +224,9 @@ sub build_exe_file {
     exit(255);
   }
   
+  # Build runtime
+  $builder->build_runtime;
+  
   # Config file
   my $module_file = $builder->get_module_file($class_name);
   
