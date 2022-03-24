@@ -23,7 +23,6 @@
 #include "spvm_type.h"
 #include "spvm_opcode_array.h"
 #include "spvm_compiler.h"
-#include "spvm_string.h"
 
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   
@@ -2409,19 +2408,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t string_id = opcode->operand1;
-        SPVM_STRING* constant_string = SPVM_LIST_fetch(compiler->strings, string_id);
+        
+        int32_t constant_string_length;
+        const char* constant_string_value = SPVM_API_get_constant_string_value(env, string_id, &constant_string_length);
 
         SPVM_STRING_BUFFER_add(string_buffer,
           "  {\n"
           "    void* string = env->new_string_raw(env, \""
         );
-        for (int32_t i = 0; i < constant_string->length; i++) {
-          SPVM_STRING_BUFFER_add_hex_char(string_buffer, constant_string->value[i]);
+        for (int32_t i = 0; i < constant_string_length; i++) {
+          SPVM_STRING_BUFFER_add_hex_char(string_buffer, constant_string_value[i]);
         }
         SPVM_STRING_BUFFER_add(string_buffer,
           "\", "
         );
-        SPVM_STRING_BUFFER_add_int(string_buffer, constant_string->length);
+        SPVM_STRING_BUFFER_add_int(string_buffer, constant_string_length);
         SPVM_STRING_BUFFER_add(string_buffer,
           ");\n"
           "    if (string == NULL) {\n"
