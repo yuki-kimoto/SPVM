@@ -7479,6 +7479,28 @@ int32_t SPVM_API_get_class_name_id(SPVM_ENV* env, int32_t class_id) {
   return class_name_id;
 }
 
+int32_t SPVM_API_get_class_anon_method_ids_base(SPVM_ENV* env, int32_t class_id) {
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
+  
+  assert(class);
+  
+  int32_t class_anon_method_ids_base = class->anon_method_ids_base;
+  
+  return class_anon_method_ids_base;
+}
+
+int32_t SPVM_API_get_class_anon_method_ids_length(SPVM_ENV* env, int32_t class_id) {
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
+  
+  assert(class);
+  
+  int32_t class_anon_method_ids_length = class->anon_method_ids_length;
+  
+  return class_anon_method_ids_length;
+}
+
 int32_t SPVM_API_get_class_is_anon(SPVM_ENV* env, int32_t class_id) {
   
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
@@ -8527,6 +8549,15 @@ int32_t SPVM_API_get_arg_type_id(SPVM_ENV* env, int32_t arg_id) {
   int32_t arg_type_id = runtime->arg_type_ids[arg_id];
   
   return arg_type_id;
+}
+
+int32_t SPVM_API_get_anon_method_method_id(SPVM_ENV* env, int32_t anon_method_id) {
+
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int32_t anon_method_method_id = runtime->anon_method_ids[anon_method_id];
+  
+  return anon_method_method_id;
 }
 
 SPVM_STRING_BUFFER* SPVM_API_string_buffer_new_tmp(SPVM_ALLOCATOR* allocator, int32_t capacity) {

@@ -480,4 +480,9 @@ int32_t SPVM_API_get_class_module_file_id(SPVM_ENV* env, int32_t class_id);
 int32_t SPVM_API_get_method_is_anon(SPVM_ENV* env, int32_t method_id);
 int32_t SPVM_API_get_method_has_precompile_flag(SPVM_ENV* env, int32_t method_id);
 
+int32_t SPVM_API_get_class_anon_method_ids_base(SPVM_ENV* env, int32_t class_id);
+int32_t SPVM_API_get_class_anon_method_ids_length(SPVM_ENV* env, int32_t class_id);
+
+int32_t SPVM_API_get_anon_method_method_id(SPVM_ENV* env, int32_t anon_method_id);
+
 #endif
