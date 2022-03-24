@@ -4152,6 +4152,10 @@ create_precompile_source(...)
   SV** sv_compiler_ptr = hv_fetch(hv_builder, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
+
+  SV** sv_runtime_ptr = hv_fetch(hv_builder, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
   
   void* allocator = SPVM_API_compiler_get_allocator(compiler);
   
@@ -4159,8 +4163,14 @@ create_precompile_source(...)
   void* string_buffer = SPVM_API_string_buffer_new_tmp(allocator, 0);
 
   // Build class source
+
+  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
   
-  SPVM_API_precompile_create_precompile_source(NULL, compiler, string_buffer, class_name);
+  env->runtime = runtime;
+  
+  SPVM_API_precompile_create_precompile_source(env, compiler, string_buffer, class_name);
+  
+  env->free_env_raw(env);
   
   const char* string_buffer_value = SPVM_API_string_buffer_get_value(string_buffer);
   int32_t string_buffer_length = SPVM_API_string_buffer_get_length(string_buffer);
