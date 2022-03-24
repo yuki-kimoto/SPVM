@@ -66,6 +66,9 @@ sub import {
     
     # Bind SPVM method to Perl
     bind_to_perl($BUILDER, $added_class_names);
+
+    # Build runtime information
+    $BUILDER->build_runtime;
     
     # Set addresses of native methods and precompile methods
     for my $added_class_name (@$added_class_names) {
@@ -83,9 +86,6 @@ sub import {
 sub init {
   unless ($SPVM_INITED) {
     if (my $builder = $BUILDER) {
-      
-      # Build runtime information
-      $builder->build_runtime;
       
       # Prepare runtime environment
       $builder->prepare_env;

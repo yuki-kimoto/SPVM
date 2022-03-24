@@ -3924,9 +3924,23 @@ build_runtime(...)
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
+  
+  void* runtime = NULL;
+  {
+    SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+    SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+    if (SvOK(sv_runtime)) {
+      runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+    }
+  }
+  
+  if (runtime) {
+    SPVM_API_runtime_free(runtime);
+    runtime = NULL;
+  }
 
   // Build runtime information
-  void* runtime = SPVM_API_runtime_new(env);
+  runtime = SPVM_API_runtime_new(env);
   SPVM_API_compiler_build_runtime(compiler, runtime);
 
   // Set runtime information
