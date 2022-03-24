@@ -8,6 +8,8 @@
 #include "spvm_precompile.h"
 
 #include "spvm_native.h"
+#include "spvm_api.h"
+
 #include "spvm_list.h"
 #include "spvm_hash.h"
 #include "spvm_string_buffer.h"
@@ -19,7 +21,6 @@
 #include "spvm_basic_type.h"
 #include "spvm_field.h"
 #include "spvm_type.h"
-#include "spvm_api.h"
 #include "spvm_opcode_array.h"
 #include "spvm_compiler.h"
 #include "spvm_string.h"
@@ -3134,10 +3135,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
         // Call method
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
         switch (decl_method->return_type->category) {
-          case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
+          case SPVM_API_C_TYPE_CATEGORY_VOID: {
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
+          case SPVM_API_C_TYPE_CATEGORY_BYTE: {
             SPVM_STRING_BUFFER_add(string_buffer, "      ");
             SPVM_PRECOMPILE_add_operand(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, var_id);
             SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -3145,7 +3146,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
             SPVM_STRING_BUFFER_add(string_buffer, ";\n");
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_SHORT: {
+          case SPVM_API_C_TYPE_CATEGORY_SHORT: {
             SPVM_STRING_BUFFER_add(string_buffer, "      ");
             SPVM_PRECOMPILE_add_operand(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, var_id);
             SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -3153,7 +3154,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
             SPVM_STRING_BUFFER_add(string_buffer, ";\n");
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_INT: {
+          case SPVM_API_C_TYPE_CATEGORY_INT: {
             SPVM_STRING_BUFFER_add(string_buffer, "      ");
             SPVM_PRECOMPILE_add_operand(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, var_id);
             SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -3161,7 +3162,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
             SPVM_STRING_BUFFER_add(string_buffer, ";\n");
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_LONG: {
+          case SPVM_API_C_TYPE_CATEGORY_LONG: {
             SPVM_STRING_BUFFER_add(string_buffer, "      ");
             SPVM_PRECOMPILE_add_operand(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, var_id);
             SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -3169,7 +3170,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
             SPVM_STRING_BUFFER_add(string_buffer, ";\n");
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT: {
+          case SPVM_API_C_TYPE_CATEGORY_FLOAT: {
             SPVM_STRING_BUFFER_add(string_buffer, "      ");
             SPVM_PRECOMPILE_add_operand(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, var_id);
             SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -3177,7 +3178,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
             SPVM_STRING_BUFFER_add(string_buffer, ";\n");
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE: {
+          case SPVM_API_C_TYPE_CATEGORY_DOUBLE: {
             SPVM_STRING_BUFFER_add(string_buffer, "      ");
             SPVM_PRECOMPILE_add_operand(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, var_id);
             SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -3185,20 +3186,20 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
             SPVM_STRING_BUFFER_add(string_buffer, ";\n");
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
-          case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
-          case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
-          case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
-          case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-          case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
+          case SPVM_API_C_TYPE_CATEGORY_STRING:
+          case SPVM_API_C_TYPE_CATEGORY_CLASS:
+          case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
+          case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
+          case SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY:
+          case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:
           {
             SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(&");
             SPVM_PRECOMPILE_add_operand(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, var_id);
             SPVM_STRING_BUFFER_add(string_buffer, ", stack[0].oval);\n");
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE: {
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_BYTE: {
             int32_t decl_method_return_type_width = opcode->operand3;
             for (int32_t field_index = 0; field_index < decl_method_return_type_width; field_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3209,7 +3210,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
             }
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT: {
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_SHORT: {
             int32_t decl_method_return_type_width = opcode->operand3;
             for (int32_t field_index = 0; field_index < decl_method_return_type_width; field_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3220,7 +3221,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
             }
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_LONG: {
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_LONG: {
             int32_t decl_method_return_type_width = opcode->operand3;
             for (int32_t field_index = 0; field_index < decl_method_return_type_width; field_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3231,7 +3232,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
             }
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT: {
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_FLOAT: {
             int32_t decl_method_return_type_width = opcode->operand3;
             for (int32_t field_index = 0; field_index < decl_method_return_type_width; field_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3242,7 +3243,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
             }
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE: {
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_DOUBLE: {
             int32_t decl_method_return_type_width = opcode->operand3;
             for (int32_t field_index = 0; field_index < decl_method_return_type_width; field_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3253,7 +3254,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
             }
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT: {
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_INT: {
             int32_t decl_method_return_type_width = opcode->operand3;
             for (int32_t field_index = 0; field_index < decl_method_return_type_width; field_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -4597,13 +4598,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
   switch (method->return_type->category) {
-    case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
-    case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
-    case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
-    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
-    case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-    case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
-    case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
+    case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
+    case SPVM_API_C_TYPE_CATEGORY_CLASS:
+    case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
+    case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:
+    case SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY:
+    case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
+    case SPVM_API_C_TYPE_CATEGORY_STRING:
     {
       SPVM_STRING_BUFFER_add(string_buffer, "    if (stack[0].oval != NULL) { SPVM_API_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");
     }
