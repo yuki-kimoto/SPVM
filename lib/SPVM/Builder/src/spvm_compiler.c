@@ -603,6 +603,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_field->index = field->index;
     runtime_field->offset = field->offset;
     runtime_field->type_id = field->type->id;
+    runtime_field->class_id = field->class->id;
     
     SPVM_STRING* field_name_string = SPVM_HASH_fetch(compiler->string_symtable, field->name, strlen(field->name));
     runtime_field->name_id = field_name_string->id;

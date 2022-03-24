@@ -7174,6 +7174,61 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, int32_t class_var_
   return class_var;
 }
 
+int32_t SPVM_API_get_class_var_name_id(SPVM_ENV* env, int32_t class_var_id) {
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class_var_id);
+
+  assert(class_var);
+
+  int32_t name_id = class_var->name_id;
+  
+  return name_id;
+}
+
+int32_t SPVM_API_get_class_var_signature_id(SPVM_ENV* env, int32_t class_var_id) {
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class_var_id);
+
+  assert(class_var);
+
+  int32_t signature_id = class_var->signature_id;
+  
+  return signature_id;
+}
+
+int32_t SPVM_API_get_class_var_class_id(SPVM_ENV* env, int32_t class_var_id) {
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class_var_id);
+
+  assert(class_var);
+
+  int32_t class_id = class_var->class_id;
+  
+  return class_id;
+}
+
+int32_t SPVM_API_get_field_class_id(SPVM_ENV* env, int32_t field_id) {
+  
+  SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, field_id);
+
+  assert(field);
+
+  int32_t class_id = field->class_id;
+  
+  return class_id;
+}
+
+int32_t SPVM_API_get_method_class_id(SPVM_ENV* env, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+
+  assert(method);
+
+  int32_t class_id = method->class_id;
+  
+  return class_id;
+}
+
 SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, int32_t field_id) {
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -7207,6 +7262,29 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, int32_t method_id) {
   
   return method;
 }
+
+int32_t SPVM_API_get_method_name_id(SPVM_ENV* env, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+
+  assert(method);
+
+  int32_t name_id = method->name_id;
+  
+  return name_id;
+}
+
+int32_t SPVM_API_get_method_signature_id(SPVM_ENV* env, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+
+  assert(method);
+
+  int32_t signature_id = method->signature_id;
+  
+  return signature_id;
+}
+
 
 int32_t SPVM_API_get_method_arg_ids_length(SPVM_ENV* env, int32_t method_id) {
   
@@ -7355,6 +7433,17 @@ int32_t SPVM_API_get_field_name_id(SPVM_ENV* env, int32_t field_id) {
   int32_t field_name_id = field->name_id;
   
   return field_name_id;
+}
+
+int32_t SPVM_API_get_field_signature_id(SPVM_ENV* env, int32_t field_id) {
+  
+  SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, field_id);
+
+  assert(field);
+
+  int32_t signature_id = field->signature_id;
+  
+  return signature_id;
 }
 
 int32_t SPVM_API_get_class_name_id(SPVM_ENV* env, int32_t class_id) {

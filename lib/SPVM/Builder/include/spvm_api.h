@@ -466,4 +466,13 @@ void SPVM_API_string_buffer_free(SPVM_STRING_BUFFER* string_buffer);
 
 const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name);
 
+int32_t SPVM_API_get_method_name_id(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_class_var_name_id(SPVM_ENV* env, int32_t class_var_id);
+int32_t SPVM_API_get_method_signature_id(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_field_signature_id(SPVM_ENV* env, int32_t field_id);
+int32_t SPVM_API_get_class_var_signature_id(SPVM_ENV* env, int32_t class_var_id);
+int32_t SPVM_API_get_class_var_class_id(SPVM_ENV* env, int32_t class_var_id);
+int32_t SPVM_API_get_field_class_id(SPVM_ENV* env, int32_t field_id);
+int32_t SPVM_API_get_method_class_id(SPVM_ENV* env, int32_t method_id);
+
 #endif
