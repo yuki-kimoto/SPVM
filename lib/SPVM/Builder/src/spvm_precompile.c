@@ -2478,11 +2478,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
         int32_t field_id = opcode->operand1;
         
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-        SPVM_CLASS* field_class = field->class;
-        const char* field_class_name = field_class->name;
-        const char* field_name = field->name;
-        const char* field_signature = field->signature;
+        int32_t field_class_id = SPVM_API_get_field_class_id(env, field_id);
+        int32_t field_class_name_id = SPVM_API_get_class_name_id(env, field_class_id);
+        const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
+        int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
+        const char* field_name = SPVM_API_get_name(env, field_name_id);
+        int32_t field_signature_id = SPVM_API_get_field_signature_id(env, field_id);
+        const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_field_id = env->get_field_id(env, \"");
@@ -2527,11 +2529,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
         int32_t field_id = opcode->operand1;
         
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-        SPVM_CLASS* field_class = field->class;
-        const char* field_class_name = field_class->name;
-        const char* field_name = field->name;
-        const char* field_signature = field->signature;
+        int32_t field_class_id = SPVM_API_get_field_class_id(env, field_id);
+        int32_t field_class_name_id = SPVM_API_get_class_name_id(env, field_class_id);
+        const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
+        int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
+        const char* field_name = SPVM_API_get_name(env, field_name_id);
+        int32_t field_signature_id = SPVM_API_get_field_signature_id(env, field_id);
+        const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_field_id = env->get_field_id(env, \"");
@@ -2574,11 +2578,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
         int32_t field_id = opcode->operand2;
         
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-        SPVM_CLASS* field_class = field->class;
-        const char* field_class_name = field_class->name;
-        const char* field_name = field->name;
-        const char* field_signature = field->signature;
+        int32_t field_class_id = SPVM_API_get_field_class_id(env, field_id);
+        int32_t field_class_name_id = SPVM_API_get_class_name_id(env, field_class_id);
+        const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
+        int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
+        const char* field_name = SPVM_API_get_name(env, field_name_id);
+        int32_t field_signature_id = SPVM_API_get_field_signature_id(env, field_id);
+        const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_field_id = env->get_field_id(env, \"");
@@ -3896,11 +3902,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT:
       {
         int32_t field_id = opcode->operand1;
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-        SPVM_CLASS* field_class = field->class;
-        const char* field_class_name = field_class->name;
-        const char* field_name = field->name;
-        const char* field_signature = field->signature;
+        
+        int32_t field_class_id = SPVM_API_get_field_class_id(env, field_id);
+        int32_t field_class_name_id = SPVM_API_get_class_name_id(env, field_class_id);
+        const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
+        int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
+        const char* field_name = SPVM_API_get_name(env, field_name_id);
+        int32_t field_signature_id = SPVM_API_get_field_signature_id(env, field_id);
+        const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_field_id = env->get_field_id(env, \"");
@@ -3948,11 +3957,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF:
       {
         int32_t field_id = opcode->operand1;
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-        SPVM_CLASS* field_class = field->class;
-        const char* field_class_name = field_class->name;
-        const char* field_name = field->name;
-        const char* field_signature = field->signature;
+        
+        int32_t field_class_id = SPVM_API_get_field_class_id(env, field_id);
+        int32_t field_class_name_id = SPVM_API_get_class_name_id(env, field_class_id);
+        const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
+        int32_t field_name_id = SPVM_API_get_field_name_id(env, field_id);
+        const char* field_name = SPVM_API_get_name(env, field_name_id);
+        int32_t field_signature_id = SPVM_API_get_field_signature_id(env, field_id);
+        const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_field_id = env->get_field_id(env, \"");
