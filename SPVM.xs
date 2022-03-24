@@ -3943,6 +3943,9 @@ build_runtime(...)
   runtime = SPVM_API_runtime_new(env);
   SPVM_API_compiler_build_runtime(compiler, runtime);
 
+  // Prepare runtime
+  SPVM_API_runtime_prepare(runtime);
+
   // Set runtime information
   size_t iv_runtime = PTR2IV(runtime);
   SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
@@ -3995,9 +3998,6 @@ prepare_env(...)
   if (env == NULL) {
     croak("Can't create SPVM env");
   }
-
-  // Prepare runtime
-  SPVM_API_runtime_prepare(runtime);
 
   // Set runtime information
   env->runtime = runtime;
