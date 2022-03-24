@@ -152,11 +152,6 @@ void SPVM_PRECOMPILE_build_head(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STR
 
 void SPVM_PRECOMPILE_build_method_declaration(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
   
-  // Method
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-  SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
-  assert(method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE);
-  
   // Method declaration
   SPVM_STRING_BUFFER_add(string_buffer, "int32_t SPVMPRECOMPILE__");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
@@ -3306,7 +3301,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
         break;
       }
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH: {
-        SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, opcode->operand1);
         int32_t line = opcode->operand2;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
@@ -3323,7 +3317,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
         break;
       }
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
-        SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, opcode->operand1);
         int32_t line = opcode->operand2;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n"
