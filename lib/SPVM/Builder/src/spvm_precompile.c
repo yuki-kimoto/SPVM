@@ -14,7 +14,6 @@
 #include "spvm_hash.h"
 #include "spvm_string_buffer.h"
 #include "spvm_opcode.h"
-#include "spvm_object.h"
 #include "spvm_class.h"
 #include "spvm_class_var.h"
 #include "spvm_method.h"
