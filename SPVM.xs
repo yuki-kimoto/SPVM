@@ -3929,9 +3929,6 @@ build_runtime(...)
   void* runtime = SPVM_API_runtime_new(env);
   SPVM_API_compiler_build_runtime(compiler, runtime);
 
-  // Free compiler
-  env->compiler_free(compiler);
-  
   // Set runtime information
   size_t iv_runtime = PTR2IV(runtime);
   SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
@@ -3941,6 +3938,28 @@ build_runtime(...)
   XSRETURN(0);
 }
 
+SV*
+free_compiler(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
+
+  // Free compiler
+  env->compiler_free(compiler);
+
+  XSRETURN(0);
+}
 
 SV*
 prepare_env(...)
@@ -4086,13 +4105,17 @@ DESTROY(...)
     
     // Cleanup global variables
     if (env->runtime) {
+      // Cleanup global varialbes
       env->cleanup_global_vars(env);
+      
+      // Free runtime
+      SPVM_API_runtime_free(env->runtime);
+      env->runtime = NULL;
     }
     
     env->free_env_raw(env);
   }
   
-
   XSRETURN(0);
 }
 

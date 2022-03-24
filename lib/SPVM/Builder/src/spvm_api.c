@@ -8362,8 +8362,8 @@ SPVM_RUNTIME* SPVM_API_runtime_new(SPVM_ENV* env) {
   return SPVM_RUNTIME_new();
 }
 
-void SPVM_API_runtime_free(SPVM_ENV* env, SPVM_RUNTIME* runtime) {
-  return SPVM_RUNTIME_free(runtime);
+void SPVM_API_runtime_free(SPVM_RUNTIME* runtime) {
+  SPVM_RUNTIME_free(runtime);
 }
 
 int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {

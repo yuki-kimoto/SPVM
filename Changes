@@ -1,4 +1,7 @@
 Revision history for SPVM
+0.9510  2021-03-24
+        [BUG FIX]
+        * Fix the bug that the runtime is not freed.
 0.9509  2021-03-23
         [DEPRECATIONS]
         * oarray type is deprecated. oarray type will be removed at 0.9510.
