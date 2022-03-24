@@ -464,6 +464,6 @@ const char* SPVM_API_string_buffer_get_value(SPVM_STRING_BUFFER* string_buffer);
 int32_t SPVM_API_string_buffer_get_length(SPVM_STRING_BUFFER* string_buffer);
 void SPVM_API_string_buffer_free(SPVM_STRING_BUFFER* string_buffer);
 
-const char* SPVM_API_precompile_create_precompile_source(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name);
+const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name);
 
 #endif

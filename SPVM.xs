@@ -4160,7 +4160,7 @@ create_precompile_source(...)
 
   // Build class source
   
-  SPVM_API_precompile_create_precompile_source(compiler, string_buffer, class_name);
+  SPVM_API_precompile_create_precompile_source(NULL, compiler, string_buffer, class_name);
   
   const char* string_buffer_value = SPVM_API_string_buffer_get_value(string_buffer);
   int32_t string_buffer_length = SPVM_API_string_buffer_get_length(string_buffer);

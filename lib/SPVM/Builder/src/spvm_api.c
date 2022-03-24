@@ -8414,6 +8414,6 @@ void SPVM_API_string_buffer_free(SPVM_STRING_BUFFER* string_buffer) {
   SPVM_STRING_BUFFER_free(string_buffer);
 }
 
-const char* SPVM_API_precompile_create_precompile_source(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
-  SPVM_PRECOMPILE_create_precompile_source(compiler, string_buffer, class_name);
+const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
+  SPVM_PRECOMPILE_create_precompile_source(env, compiler, string_buffer, class_name);
 }
