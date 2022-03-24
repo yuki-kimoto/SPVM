@@ -3060,12 +3060,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
         int32_t var_id = opcode->operand0;
         int32_t decl_method_id = opcode->operand1;
 
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-
-        SPVM_CLASS* decl_method_class = decl_method->class;
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        const char* decl_method_class_name = decl_method_class->name;
+        int32_t decl_method_name_id = SPVM_API_get_method_name_id(env, decl_method_id);
+        const char* decl_method_name = SPVM_API_get_name(env, decl_method_name_id);
+        int32_t decl_method_signature_id = SPVM_API_get_method_signature_id(env, decl_method_id);
+        const char* decl_method_signature = SPVM_API_get_name(env, decl_method_signature_id);
+        int32_t decl_method_class_id = SPVM_API_get_method_class_id(env, decl_method_id);
+        int32_t decl_method_class_name_id = SPVM_API_get_class_name_id(env, decl_method_class_id);
+        const char* decl_method_class_name = SPVM_API_get_name(env, decl_method_class_name_id);
+        int32_t decl_method_has_precompile_flag = SPVM_API_get_method_has_precompile_flag(env, decl_method_id);
+        int32_t decl_method_return_type_id = SPVM_API_get_method_return_type_id(env, decl_method_id);
+        int32_t decl_method_return_type_category = SPVM_API_get_type_category(env, decl_method_return_type_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  // ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
@@ -3075,7 +3079,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
                                               "  {\n");
         
         // Method inline expantion in same class
-        if (decl_method->class->id == method->class->id && decl_method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
+        if (decl_method_class_id == method->class->id && decl_method_has_precompile_flag) {
           
           SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVMPRECOMPILE__");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
@@ -3153,7 +3157,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
         
         // Call method
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
-        switch (decl_method->return_type->category) {
+        switch (decl_method_return_type_category) {
           case SPVM_API_C_TYPE_CATEGORY_VOID: {
             break;
           }
@@ -4581,15 +4585,19 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       }
       case SPVM_OPCODE_C_ID_HAS_IMPLEMENT: {
         int32_t implement_method_id = opcode->operand2;
-        SPVM_METHOD* implement_method = SPVM_LIST_fetch(compiler->methods, implement_method_id);
-        const char* implement_method_name = implement_method->name;
+        int32_t implement_method_name_id = SPVM_API_get_method_name_id(env, implement_method_id);
+        const char* implement_method_name = SPVM_API_get_name(env, implement_method_name_id);
 
         int32_t interface_basic_type_id = opcode->operand3;
         int32_t interface_basic_type_class_id = SPVM_API_get_basic_type_class_id(env, interface_basic_type_id);
 
         SPVM_CLASS* interface_class = SPVM_LIST_fetch(compiler->classes, interface_basic_type_class_id);
-        SPVM_METHOD* interface_method = SPVM_HASH_fetch(interface_class->method_symtable, implement_method_name, strlen(implement_method_name));
-        const char* implement_method_signature = interface_method->signature;
+        
+        int32_t interface_method_id = SPVM_API_get_method_id_without_signature(env, interface_class->name, implement_method_name);
+        int32_t interface_method_signature_id = SPVM_API_get_method_signature_id(env, interface_method_id);
+        const char* interface_method_signature = SPVM_API_get_name(env, interface_method_signature_id);
+
+        const char* implement_method_signature = interface_method_signature;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* object = ");
