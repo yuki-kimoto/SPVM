@@ -16,13 +16,12 @@
 #include "spvm_opcode.h"
 #include "spvm_class.h"
 #include "spvm_method.h"
-#include "spvm_basic_type.h"
 #include "spvm_type.h"
+#include "spvm_basic_type.h"
 #include "spvm_compiler.h"
 
 #include "spvm_runtime.h"
 #include "spvm_runtime_method.h"
-#include "spvm_runtime_basic_type.h"
 
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   
@@ -655,8 +654,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       {
         int32_t check_basic_type_id = opcode->operand2;
         int32_t check_type_dimension = opcode->operand3;
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, check_basic_type_id);
-        const char* basic_type_name = basic_type->name;
+        int32_t basic_type_name_id = SPVM_API_get_basic_type_name_id(env, check_basic_type_id);
+        const char* basic_type_name = SPVM_API_get_name(env, basic_type_name_id);
         int32_t dimension = check_type_dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
@@ -699,8 +698,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       {
         int32_t check_basic_type_id = opcode->operand2;
         int32_t check_type_dimension = opcode->operand3;
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, check_basic_type_id);
-        const char* basic_type_name = basic_type->name;
+        int32_t basic_type_name_id = SPVM_API_get_basic_type_name_id(env, check_basic_type_id);
+        const char* basic_type_name = SPVM_API_get_name(env, basic_type_name_id);
         int32_t dimension = check_type_dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
@@ -740,8 +739,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       {
         int32_t check_basic_type_id = opcode->operand2;
         int32_t check_type_dimension = opcode->operand3;
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, check_basic_type_id);
-        const char* basic_type_name = basic_type->name;
+        int32_t basic_type_name_id = SPVM_API_get_basic_type_name_id(env, check_basic_type_id);
+        const char* basic_type_name = SPVM_API_get_name(env, basic_type_name_id);
         int32_t dimension = check_type_dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
@@ -2078,8 +2077,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         int32_t basic_type_id = opcode->operand1;
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-        const char* basic_type_name = basic_type->name;
+        int32_t basic_type_name_id = SPVM_API_get_basic_type_name_id(env, basic_type_id);
+        const char* basic_type_name = SPVM_API_get_name(env, basic_type_name_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_basic_type_id = env->get_basic_type_id(env, \"");
@@ -2268,8 +2267,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
         int32_t basic_type_id = opcode->operand1;
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-        const char* basic_type_name = basic_type->name;
+        int32_t basic_type_name_id = SPVM_API_get_basic_type_name_id(env, basic_type_id);
+        const char* basic_type_name = SPVM_API_get_name(env, basic_type_name_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
@@ -2316,8 +2315,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       }
       case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
         int32_t basic_type_id = opcode->operand1;
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-        const char* basic_type_name = basic_type->name;
+        int32_t basic_type_name_id = SPVM_API_get_basic_type_name_id(env, basic_type_id);
+        const char* basic_type_name = SPVM_API_get_name(env, basic_type_name_id);
         int32_t element_dimension = opcode->operand3;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
@@ -2365,8 +2364,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       }
       case SPVM_OPCODE_C_ID_NEW_MULNUM_ARRAY: {
         int32_t basic_type_id = opcode->operand1;
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-        const char* basic_type_name = basic_type->name;
+        int32_t basic_type_name_id = SPVM_API_get_basic_type_name_id(env, basic_type_id);
+        const char* basic_type_name = SPVM_API_get_name(env, basic_type_name_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_basic_type_id = env->get_basic_type_id(env, \"");
@@ -2913,8 +2912,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
         int32_t check_basic_type_id = opcode->operand2;
         int32_t check_type_dimension = opcode->operand3;
 
-        SPVM_BASIC_TYPE* cast_basic_type = SPVM_LIST_fetch(compiler->basic_types, check_basic_type_id);
-        const char* cast_basic_type_name = cast_basic_type->name;
+        int32_t cast_basic_type_name_id = SPVM_API_get_basic_type_name_id(env, check_basic_type_id);
+        const char* cast_basic_type_name = SPVM_API_get_name(env, cast_basic_type_name_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_basic_type_id = env->get_basic_type_id(env, \"");
@@ -2959,8 +2958,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       case SPVM_OPCODE_C_ID_CHECK_CALLBACK: {
         int32_t check_basic_type_id = opcode->operand2;
 
-        SPVM_BASIC_TYPE* cast_basic_type = SPVM_LIST_fetch(compiler->basic_types, check_basic_type_id);
-        const char* cast_basic_type_name = cast_basic_type->name;
+        int32_t cast_basic_type_name_id = SPVM_API_get_basic_type_name_id(env, check_basic_type_id);
+        const char* cast_basic_type_name = SPVM_API_get_name(env, cast_basic_type_name_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_basic_type_id = env->get_basic_type_id(env, \"");
@@ -3003,8 +3002,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       case SPVM_OPCODE_C_ID_CHECK_INTERFACE: {
         int32_t check_basic_type_id = opcode->operand2;
 
-        SPVM_BASIC_TYPE* cast_basic_type = SPVM_LIST_fetch(compiler->basic_types, check_basic_type_id);
-        const char* cast_basic_type_name = cast_basic_type->name;
+        int32_t cast_basic_type_name_id = SPVM_API_get_basic_type_name_id(env, check_basic_type_id);
+        const char* cast_basic_type_name = SPVM_API_get_name(env, cast_basic_type_name_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_basic_type_id = env->get_basic_type_id(env, \"");
@@ -4579,6 +4578,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
         
         int32_t interface_basic_type_id = opcode->operand3;
         SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_fetch(compiler->basic_types, interface_basic_type_id);
+
         SPVM_CLASS* interface_class = interface_basic_type->class;
         SPVM_METHOD* interface_method = SPVM_HASH_fetch(interface_class->method_symtable, implement_method_name, strlen(implement_method_name));
         const char* implement_method_signature = interface_method->signature;
