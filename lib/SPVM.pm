@@ -64,7 +64,10 @@ sub import {
       push @$added_class_names, $added_class_name;
     }
     
-    my $address_info = {};
+    # Bind SPVM method to Perl
+    bind_to_perl($BUILDER, $added_class_names);
+    
+    # Set addresses of native methods and precompile methods
     for my $added_class_name (@$added_class_names) {
       next if $added_class_name =~ /::anon/;
       
@@ -74,10 +77,6 @@ sub import {
       # Build native classs - Compile C source codes and link them to SPVM native method
       $BUILDER->build_and_bind_shared_lib($added_class_name, 'native');
     }
-
-    # Bind SPVM method to Perl
-    bind_to_perl($BUILDER, $added_class_names);
-
   }
 }
 
