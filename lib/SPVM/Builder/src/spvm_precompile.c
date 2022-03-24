@@ -3779,32 +3779,32 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
         int32_t field_id = opcode->operand2;
-        SPVM_PRECOMPILE_add_get_field(env, compiler, string_buffer, class, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1, field_id);
+        SPVM_PRECOMPILE_add_get_field(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1, field_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
         int32_t field_id = opcode->operand2;
-        SPVM_PRECOMPILE_add_get_field(env, compiler, string_buffer, class, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1, field_id);
+        SPVM_PRECOMPILE_add_get_field(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1, field_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
         int32_t field_id = opcode->operand2;
-        SPVM_PRECOMPILE_add_get_field(env, compiler, string_buffer, class, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, field_id);
+        SPVM_PRECOMPILE_add_get_field(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, field_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
         int32_t field_id = opcode->operand2;
-        SPVM_PRECOMPILE_add_get_field(env, compiler, string_buffer, class, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, field_id);
+        SPVM_PRECOMPILE_add_get_field(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, field_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
         int32_t field_id = opcode->operand2;
-        SPVM_PRECOMPILE_add_get_field(env, compiler, string_buffer, class, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, field_id);
+        SPVM_PRECOMPILE_add_get_field(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, field_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
         int32_t field_id = opcode->operand2;
-        SPVM_PRECOMPILE_add_get_field(env, compiler, string_buffer, class, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, field_id);
+        SPVM_PRECOMPILE_add_get_field(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, field_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
@@ -3859,32 +3859,32 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
         int32_t field_id = opcode->operand1;
-        SPVM_PRECOMPILE_add_set_field(env, compiler, string_buffer, class, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, field_id, opcode->operand2);
+        SPVM_PRECOMPILE_add_set_field(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, field_id, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
         int32_t field_id = opcode->operand1;
-        SPVM_PRECOMPILE_add_set_field(env, compiler, string_buffer, class, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, field_id, opcode->operand2);
+        SPVM_PRECOMPILE_add_set_field(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, field_id, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
         int32_t field_id = opcode->operand1;
-        SPVM_PRECOMPILE_add_set_field(env, compiler, string_buffer, class, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, field_id, opcode->operand2);
+        SPVM_PRECOMPILE_add_set_field(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, field_id, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
         int32_t field_id = opcode->operand1;
-        SPVM_PRECOMPILE_add_set_field(env, compiler, string_buffer, class, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, field_id, opcode->operand2);
+        SPVM_PRECOMPILE_add_set_field(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, field_id, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
         int32_t field_id = opcode->operand1;
-        SPVM_PRECOMPILE_add_set_field(env, compiler, string_buffer, class, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, field_id, opcode->operand2);
+        SPVM_PRECOMPILE_add_set_field(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, field_id, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
         int32_t field_id = opcode->operand1;
-        SPVM_PRECOMPILE_add_set_field(env, compiler, string_buffer, class, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, field_id, opcode->operand2);
+        SPVM_PRECOMPILE_add_set_field(env, compiler, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, field_id, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT:
@@ -5605,7 +5605,7 @@ void SPVM_PRECOMPILE_add_set_deref(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 }
 
-void SPVM_PRECOMPILE_add_get_field(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, SPVM_CLASS* class, int32_t field_ctype_id, int32_t out_index, int32_t object_index, int32_t field_id) {
+void SPVM_PRECOMPILE_add_get_field(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t field_ctype_id, int32_t out_index, int32_t object_index, int32_t field_id) {
   
   int32_t field_class_id = SPVM_API_get_field_class_id(env, field_id);
   int32_t field_class_name_id = SPVM_API_get_class_name_id(env, field_class_id);
@@ -5659,7 +5659,7 @@ void SPVM_PRECOMPILE_add_get_field(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_
                                         "  }\n");
 }
 
-void SPVM_PRECOMPILE_add_set_field(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, SPVM_CLASS* class, int32_t field_ctype_id, int32_t object_index, int32_t field_id, int32_t in_index) {
+void SPVM_PRECOMPILE_add_set_field(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t field_ctype_id, int32_t object_index, int32_t field_id, int32_t in_index) {
   
   int32_t field_class_id = SPVM_API_get_field_class_id(env, field_id);
   int32_t field_class_name_id = SPVM_API_get_class_name_id(env, field_class_id);
