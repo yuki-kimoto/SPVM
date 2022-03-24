@@ -188,6 +188,9 @@ sub build_shared_lib_dist {
     exit(255);
   }
 
+  # Build runtime information
+  $self->build_runtime;
+
   my $cc_native = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => $category,

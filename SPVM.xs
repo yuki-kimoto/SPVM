@@ -4163,7 +4163,7 @@ create_precompile_source(...)
   void* string_buffer = SPVM_API_string_buffer_new_tmp(allocator, 0);
 
   // Build class source
-
+  
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
   
   env->runtime = runtime;
