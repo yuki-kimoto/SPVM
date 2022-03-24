@@ -54,10 +54,15 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* comp
   {
     int32_t method_index;
     for (method_index = 0; method_index < class_method_ids_length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, class_method_ids_base + method_index);
-      const char* method_name = method->name;
-      const char* method_signature = method->signature;
-      if (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
+      int32_t method_id = class_method_ids_base + method_index;
+
+      int32_t method_name_id = SPVM_API_get_method_name_id(env, method_id);
+      const char* method_name = SPVM_API_get_name(env, method_name_id);
+      int32_t method_signature_id = SPVM_API_get_method_signature_id(env, method_id);
+      const char* method_signature = SPVM_API_get_name(env, method_signature_id);
+      int32_t method_has_precompile_flag = SPVM_API_get_method_has_precompile_flag(env, method_id);
+
+      if (method_has_precompile_flag) {
         SPVM_PRECOMPILE_build_method_declaration(env, compiler, string_buffer, class_name, method_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
       }
@@ -70,9 +75,11 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* comp
   {
     int32_t method_index;
     for (method_index = 0; method_index < class_method_ids_length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, class_method_ids_base + method_index);
-      if (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
-        const char* method_name = method->name;
+      int32_t method_id = class_method_ids_base + method_index;
+      int32_t method_name_id = SPVM_API_get_method_name_id(env, method_id);
+      const char* method_name = SPVM_API_get_name(env, method_name_id);
+      int32_t method_has_precompile_flag = SPVM_API_get_method_has_precompile_flag(env, method_id);
+      if (method_has_precompile_flag) {
         SPVM_PRECOMPILE_build_method_implementation(env, compiler, string_buffer, class_name, method_name);
       }
     }
@@ -82,8 +89,6 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* comp
   // If the class has anon methods, the anon methods is merged to this class
   for (int32_t method_index = 0; method_index < class_method_ids_length; method_index++) {
     int32_t anon_method_id = class_method_ids_base + method_index;
-    SPVM_METHOD* anon_method = SPVM_LIST_fetch(compiler->methods, anon_method_id);
-    
     int32_t anon_method_is_anon = SPVM_API_get_method_is_anon(env, anon_method_id);
     if (anon_method_is_anon) {
       int32_t anon_method_class_id = SPVM_API_get_method_class_id(env, anon_method_id);

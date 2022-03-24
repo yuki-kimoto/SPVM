@@ -27,6 +27,7 @@ struct spvm_runtime_method {
   int8_t is_class_method;
   int8_t is_init;
   int8_t is_anon;
+  int8_t has_precompile_flag;
 };
 
 #endif
