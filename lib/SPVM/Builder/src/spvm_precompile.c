@@ -21,8 +21,9 @@
 #include "spvm_basic_type.h"
 #include "spvm_field.h"
 #include "spvm_type.h"
-#include "spvm_opcode_array.h"
 #include "spvm_compiler.h"
+
+#include "spvm_runtime.h"
 
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   
@@ -158,6 +159,9 @@ void SPVM_PRECOMPILE_build_method_declaration(SPVM_ENV* env, SPVM_COMPILER* comp
 }
 
 void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
   
   // Method
   SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
@@ -263,7 +267,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
   // Convert string
   SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string_buffer[21];\n");
   
-  SPVM_OPCODE* opcodes = compiler->opcode_array->values;
+  SPVM_OPCODE* opcodes = runtime->opcodes;
   int32_t method_opcodes_base = method->opcodes_base;
   int32_t opcodes_length = method->opcodes_length;
   int32_t opcode_index = 0;
