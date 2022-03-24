@@ -23,6 +23,10 @@
 #include "spvm_compiler.h"
 
 #include "spvm_runtime.h"
+#include "spvm_runtime_method.h"
+#include "spvm_runtime_field.h"
+#include "spvm_runtime_class_var.h"
+#include "spvm_runtime_basic_type.h"
 
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   
