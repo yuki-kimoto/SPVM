@@ -7457,6 +7457,18 @@ int32_t SPVM_API_get_class_name_id(SPVM_ENV* env, int32_t class_id) {
   return class_name_id;
 }
 
+int32_t SPVM_API_get_class_is_anon(SPVM_ENV* env, int32_t class_id) {
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
+  
+  assert(class);
+  
+  int32_t class_is_anon = class->is_anon;
+  
+  return class_is_anon;
+}
+
+
 int32_t SPVM_API_get_class_field_ids_base(SPVM_ENV* env, int32_t class_id) {
   
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);

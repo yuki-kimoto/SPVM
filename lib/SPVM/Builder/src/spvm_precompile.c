@@ -24,14 +24,20 @@
 
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
   // Class name
   SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+  
+  int32_t class_id = SPVM_API_get_class_id(env, class_name);
+  int32_t class_is_anon = SPVM_API_get_class_is_anon(env, class_id);
   
   // Head part - include and define
   SPVM_PRECOMPILE_build_head(env, compiler, string_buffer);
   
   // Constant strings
-  if (!class->is_anon) {
+  if (!class_is_anon) {
     SPVM_STRING_BUFFER_add(string_buffer,"static const char* CURRENT_CLASS_FILE = \"");
     SPVM_STRING_BUFFER_add(string_buffer, class->module_file);
     SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
