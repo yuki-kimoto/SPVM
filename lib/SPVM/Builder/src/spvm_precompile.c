@@ -12,8 +12,6 @@
 #include "spvm_string_buffer.h"
 #include "spvm_opcode.h"
 
-#include "spvm_runtime_method.h"
-
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   
   // Runtime
@@ -176,7 +174,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   
   // Method
   int32_t method_id = SPVM_API_get_method_id_without_signature(env, class_name, method_name);
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
   int32_t method_return_type_id = SPVM_API_get_method_return_type_id(env, method_id);
   int32_t method_return_type_category = SPVM_API_get_type_category(env, method_return_type_id);
 
@@ -282,8 +279,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string_buffer[21];\n");
   
   SPVM_OPCODE* opcodes = SPVM_API_runtime_get_opcodes(runtime);
-  int32_t method_opcode_ids_base = method->opcode_ids_base;
-  int32_t opcode_ids_length = method->opcode_ids_length;
+  int32_t method_opcode_ids_base = SPVM_API_get_method_opcode_ids_base(env, method_id);
+  int32_t opcode_ids_length = SPVM_API_get_method_opcode_ids_length(env, method_id);
   int32_t opcode_index = 0;
   
   SPVM_OPCODE* opcode = NULL;
@@ -2069,7 +2066,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
         int32_t original_mortal_stack_top = opcode->operand0;
-        if (method->mortal_stack_length > 0) {
+        if (method_mortal_stack_length > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                                 "    int32_t original_mortal_stack_top = ");
           SPVM_STRING_BUFFER_add_int(string_buffer, original_mortal_stack_top);
@@ -3085,7 +3082,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
                                               "  {\n");
         
         // Method inline expantion in same class
-        if (decl_method_class_id == method->class_id && decl_method_has_precompile_flag) {
+        if (decl_method_class_id == class_id && decl_method_has_precompile_flag) {
           
           SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVMPRECOMPILE__");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
