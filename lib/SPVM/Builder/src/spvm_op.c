@@ -2376,7 +2376,8 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   SPVM_TYPE* type_use = op_type->uv.type;
   SPVM_OP* op_type_use = SPVM_OP_new_op_type(compiler, type_use, op_type->file, op_type->line);
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_type->file, op_type->line);
-  SPVM_OP_build_use(compiler, op_use, op_type_use, NULL, 0);
+  int32_t is_require = 0;
+  SPVM_OP_build_use(compiler, op_use, op_type_use, NULL, is_require);
   
   return op_allow;
 }
@@ -2392,7 +2393,8 @@ SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_implement,
   SPVM_TYPE* type_use = op_type->uv.type;
   SPVM_OP* op_type_use = SPVM_OP_new_op_type(compiler, type_use, op_type->file, op_type->line);
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_type->file, op_type->line);
-  SPVM_OP_build_use(compiler, op_use, op_type_use, NULL, 0);
+  int32_t is_require = 0;
+  SPVM_OP_build_use(compiler, op_use, op_type_use, NULL, is_require);
   
   return op_implement;
 }

@@ -188,18 +188,22 @@ init_block
 use
   : USE basic_type ';'
     {
-      $$ = SPVM_OP_build_use(compiler, $1, $2, NULL, 0);
+      int32_t is_require = 0;
+      SPVM_OP* op_name_class_alias = NULL;
+      $$ = SPVM_OP_build_use(compiler, $1, $2, op_name_class_alias, is_require);
     }
   | USE basic_type AS class_alias_name ';'
     {
-      $$ = SPVM_OP_build_use(compiler, $1, $2, $4, 0);
+      int32_t is_require = 0;
+      $$ = SPVM_OP_build_use(compiler, $1, $2, $4, is_require);
     }
 
 require
   : REQUIRE basic_type
     {
       SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
-      $$ = SPVM_OP_build_use(compiler, op_use, $2, NULL, 1);
+      int32_t is_require = 1;
+      $$ = SPVM_OP_build_use(compiler, op_use, $2, NULL, is_require);
     }
 
 allow
