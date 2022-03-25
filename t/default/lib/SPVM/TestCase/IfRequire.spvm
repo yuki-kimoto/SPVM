@@ -5,10 +5,16 @@ class TestCase::IfRequire {
     # if require success
     {
       my $foo = 0;
+      my $int32_max = 0;
       if (require Fn) {
+        $int32_max = Fn->INT32_MAX;
         $foo = 1;
       }
       unless ($foo == 1) {
+        return 0;
+      }
+      
+      unless ($int32_max == Fn->INT32_MAX) {
         return 0;
       }
     }
