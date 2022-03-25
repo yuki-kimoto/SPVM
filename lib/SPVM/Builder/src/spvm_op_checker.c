@@ -4727,7 +4727,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
         class_name = op_class_current->uv.class->name;
       }
       else {
-        const char* class_name_maybe = call_method->op_invocant->uv.type->basic_type->name;
+        const char* class_name_maybe = call_method->op_invocant->uv.name;
         SPVM_CLASS* class_current = op_class_current->uv.class;
         class_name = SPVM_HASH_fetch(class_current->class_alias_symtable, class_name_maybe, strlen(class_name_maybe));
         if (class_name == NULL) {

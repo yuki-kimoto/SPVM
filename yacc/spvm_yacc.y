@@ -1058,12 +1058,12 @@ call_spvm_method
       SPVM_OP* op_expressions = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
       $$ = SPVM_OP_build_call_method(compiler, op_call_method, $1, $2, op_expressions);
     }
-  | basic_type ARROW method_name '(' opt_expressions  ')'
+  | class_name ARROW method_name '(' opt_expressions  ')'
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_call_method(compiler, op_call_method, $1, $3, $5);
     }
-  | basic_type ARROW method_name
+  | class_name ARROW method_name
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_expressions = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
