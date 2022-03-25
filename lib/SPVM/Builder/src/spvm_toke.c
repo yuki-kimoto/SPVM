@@ -314,7 +314,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_use->file, op_use->line);
                 SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_use->uv.use->op_type->uv.type->basic_type->id, 0, 0);
                 SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
-                type->basic_type->fail_load = 1;
                 
                 SPVM_HASH_insert(compiler->fail_load_class_symtable, class_name, strlen(class_name), (void*)class_name);
                 
