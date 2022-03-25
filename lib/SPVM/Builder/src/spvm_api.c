@@ -7496,9 +7496,9 @@ int32_t SPVM_API_get_class_anon_method_ids_length(SPVM_ENV* env, int32_t class_i
   
   assert(class);
   
-  int32_t class_anon_method_ids_length = class->anon_method_ids_length;
+  int32_t class_anon_method_method_ids_length = class->anon_method_ids_length;
   
-  return class_anon_method_ids_length;
+  return class_anon_method_method_ids_length;
 }
 
 int32_t SPVM_API_get_class_is_anon(SPVM_ENV* env, int32_t class_id) {
@@ -8555,7 +8555,7 @@ int32_t SPVM_API_get_anon_method_method_id(SPVM_ENV* env, int32_t anon_method_id
 
   SPVM_RUNTIME* runtime = env->runtime;
   
-  int32_t anon_method_method_id = runtime->anon_method_ids[anon_method_id];
+  int32_t anon_method_method_id = runtime->anon_method_method_ids[anon_method_id];
   
   return anon_method_method_id;
 }

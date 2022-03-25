@@ -15,7 +15,6 @@
 #include "spvm_string_buffer.h"
 #include "spvm_opcode.h"
 #include "spvm_class.h"
-#include "spvm_method.h"
 #include "spvm_type.h"
 #include "spvm_compiler.h"
 
@@ -87,11 +86,16 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_COMPILER* comp
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
   // If the class has anon methods, the anon methods is merged to this class
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-  for (int32_t i = 0; i < class->anon_methods->length; i++) {
-    SPVM_METHOD* anon_method = SPVM_LIST_fetch(class->anon_methods, i);
-    SPVM_CLASS* anon_method_class = anon_method->class;
-    SPVM_PRECOMPILE_create_precompile_source(env, compiler, string_buffer, anon_method_class->name);
+  int32_t class_anon_method_ids_length = SPVM_API_get_class_anon_method_ids_length(env, class_id);
+  if (class_anon_method_ids_length > 0) {
+    int32_t class_anon_method_ids_base = SPVM_API_get_class_anon_method_ids_base(env, class_id);
+    for (int32_t anon_method_id = class_anon_method_ids_base; anon_method_id < class_anon_method_ids_length; anon_method_id++) {
+      int32_t anon_method_method_id = SPVM_API_get_anon_method_method_id(env, anon_method_id);
+      int32_t anon_method_class_id = SPVM_API_get_method_class_id(env, anon_method_method_id);
+      int32_t anon_method_class_name_id = SPVM_API_get_class_name_id(env, anon_method_class_id);
+      const char* anon_method_class_name = SPVM_API_get_name(env, anon_method_class_name_id);
+      SPVM_PRECOMPILE_create_precompile_source(env, compiler, string_buffer, anon_method_class_name);
+    }
   }
 }
 

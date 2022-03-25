@@ -418,6 +418,13 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   // Runtime classes
   runtime->classes_length = compiler->classes->length;
   runtime->classes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS) * compiler->classes->length);
+  runtime->anon_method_method_ids_length = compiler->anon_methods->length;
+  runtime->anon_method_method_ids = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * (compiler->anon_methods->length + 1));
+  for (int32_t anon_method_id = 0; anon_method_id < compiler->anon_methods->length; anon_method_id++) {
+    SPVM_METHOD* anon_method = SPVM_LIST_fetch(compiler->anon_methods, anon_method_id);
+    int32_t anon_method_id = anon_method->anon_method_id;
+    runtime->anon_method_method_ids[anon_method_id] = anon_method->id;
+  }
   for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
     SPVM_RUNTIME_CLASS* runtime_class = &runtime->classes[class_id];
