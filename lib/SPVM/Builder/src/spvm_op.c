@@ -2365,18 +2365,15 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   return op_use;
 }
 
-SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP* op_name_class) {
   
   SPVM_ALLOW* allow = SPVM_ALLOW_new(compiler);
   op_allow->uv.allow = allow;
   allow->op_allow = op_allow;
-  allow->class_name = op_type->uv.type->basic_type->name;
+  allow->class_name = op_name_class->uv.name;
   
   // add use stack
-  SPVM_TYPE* type_use = op_type->uv.type;
-  SPVM_OP* op_type_use = SPVM_OP_new_op_type(compiler, type_use, op_type->file, op_type->line);
-  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_type->file, op_type->line);
-  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
+  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_allow->file, op_allow->line);
   SPVM_OP* op_name_class_alias = NULL;
   int32_t is_require = 0;
   SPVM_OP_build_use(compiler, op_use, op_name_class, op_name_class_alias, is_require);
@@ -2384,20 +2381,17 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   return op_allow;
 }
 
-SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_implement, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_implement, SPVM_OP* op_name_class) {
   
   SPVM_IMPLEMENT* implement = SPVM_IMPLEMENT_new(compiler);
   op_implement->uv.implement = implement;
   implement->op_implement = op_implement;
-  implement->class_name = op_type->uv.type->basic_type->name;
+  implement->class_name = op_name_class->uv.name;
   
   // add use stack
-  SPVM_TYPE* type_use = op_type->uv.type;
-  SPVM_OP* op_type_use = SPVM_OP_new_op_type(compiler, type_use, op_type->file, op_type->line);
-  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_type->file, op_type->line);
+  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_implement->file, op_implement->line);
   SPVM_OP* op_name_class_alias = NULL;
   int32_t is_require = 0;
-  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
   SPVM_OP_build_use(compiler, op_use, op_name_class, op_name_class_alias, is_require);
   
   return op_implement;

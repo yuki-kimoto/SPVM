@@ -207,13 +207,13 @@ require
     }
 
 allow
-  : ALLOW basic_type ';'
+  : ALLOW class_name ';'
     {
       $$ = SPVM_OP_build_allow(compiler, $1, $2);
     }
 
 implement
-  : IMPLEMENT basic_type ';'
+  : IMPLEMENT class_name ';'
     {
       $$ = SPVM_OP_build_implement(compiler, $1, $2);
     }
