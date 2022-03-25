@@ -294,7 +294,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             // If module not found and that is if (requre Foo) syntax, syntax is ok.
             if (module_not_found && op_use->uv.use->is_require) {
-              op_use->uv.use->load_fail = 1;
               SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_use->file, op_use->line);
               SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_use->uv.use->op_type->uv.type->basic_type->id, 0, 0);
               SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
