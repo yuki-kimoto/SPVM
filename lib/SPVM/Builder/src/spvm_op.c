@@ -2384,7 +2384,6 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
 SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_implement, SPVM_OP* op_type) {
   
   SPVM_IMPLEMENT* implement = SPVM_IMPLEMENT_new(compiler);
-  implement->op_type = op_type;
   op_implement->uv.implement = implement;
   implement->op_implement = op_implement;
   implement->class_name = op_type->uv.type->basic_type->name;

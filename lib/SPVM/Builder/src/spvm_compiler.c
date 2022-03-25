@@ -286,7 +286,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
       }
       case SPVM_OP_C_ID_IMPLEMENT: {
         SPVM_IMPLEMENT* implement = op->uv.implement;
-        implement->op_type = NULL;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, implement);
         break;
       }

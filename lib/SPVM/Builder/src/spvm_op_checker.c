@@ -5180,12 +5180,9 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
 
       SPVM_OP* op_implement = implement->op_implement;
       
-      SPVM_OP* op_type_implement = implement->op_type;
-      SPVM_TYPE* implement_type = op_type_implement->uv.type;
+      const char* implement_class_name = implement->class_name;
       
-      SPVM_BASIC_TYPE* implement_basic_type = implement_type->basic_type;
-      
-      SPVM_CLASS* implement_class = implement_basic_type->class;
+      SPVM_CLASS* implement_class = SPVM_HASH_fetch(compiler->class_symtable, implement_class_name, strlen(implement_class_name));
       
       if (implement_class->category != SPVM_CLASS_C_CATEGORY_INTERFACE) {
         SPVM_COMPILER_error(compiler, "The operand of the implement statment must be the interface class at %s line %d", implement_class->name, op_implement->file, op_implement->line);
