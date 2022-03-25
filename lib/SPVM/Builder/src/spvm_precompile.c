@@ -177,7 +177,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   // Method
   int32_t method_id = SPVM_API_get_method_id_without_signature(env, class_name, method_name);
   SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-  int32_t method_return_type_category = SPVM_API_get_type_category(env, method->return_type_id);
+  int32_t method_return_type_id = SPVM_API_get_method_return_type_id(env, method_id);
+  int32_t method_return_type_category = SPVM_API_get_type_category(env, method_return_type_id);
 
   // Method declaration
   SPVM_PRECOMPILE_build_method_declaration(env, string_buffer, class_name, method_name);
@@ -203,76 +204,77 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   int32_t stack_index = 0;
 
   // object variable declarations
-  int32_t call_stack_object_vars_legnth = method->call_stack_object_vars_legnth;
-  if (call_stack_object_vars_legnth > 0) {
+  int32_t call_stack_object_vars_length = SPVM_API_get_method_call_stack_object_vars_length(env, method_id);
+  if (call_stack_object_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  void* object_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_object_vars_legnth);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_object_vars_length);
     SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
   }
 
   // ref variable declarations
-  int32_t call_stack_ref_vars_legnth = method->call_stack_ref_vars_legnth;
-  if (call_stack_ref_vars_legnth > 0) {
+  int32_t call_stack_ref_vars_length = SPVM_API_get_method_call_stack_ref_vars_length(env, method_id);
+  if (call_stack_ref_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  void* ref_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_ref_vars_legnth);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_ref_vars_length);
     SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
   }
 
   // double variable declarations
-  int32_t call_stack_double_vars_legnth = method->call_stack_double_vars_legnth;
-  if (call_stack_double_vars_legnth > 0) {
+  int32_t call_stack_double_vars_length = SPVM_API_get_method_call_stack_double_vars_length(env, method_id);
+  if (call_stack_double_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  double double_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_double_vars_legnth);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_double_vars_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // float variable declarations
-  int32_t call_stack_float_vars_legnth = method->call_stack_float_vars_legnth;
-  if (call_stack_float_vars_legnth > 0) {
+  int32_t call_stack_float_vars_length = SPVM_API_get_method_call_stack_float_vars_length(env, method_id);
+  if (call_stack_float_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  float float_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_float_vars_legnth);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_float_vars_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // long variable declarations
-  int32_t call_stack_long_vars_legnth = method->call_stack_long_vars_legnth;
-  if (call_stack_long_vars_legnth > 0) {
+  int32_t call_stack_long_vars_length = SPVM_API_get_method_call_stack_long_vars_length(env, method_id);
+  if (call_stack_long_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int64_t long_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_long_vars_legnth);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_long_vars_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // int variable declarations
-  int32_t call_stack_int_vars_legnth = method->call_stack_int_vars_legnth;
-  if (call_stack_int_vars_legnth > 0) {
+  int32_t call_stack_int_vars_length = SPVM_API_get_method_call_stack_int_vars_length(env, method_id);
+  if (call_stack_int_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t int_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_int_vars_legnth);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_int_vars_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // Exception
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
-
-  if (method->mortal_stack_length > 0) {
+  
+  int32_t method_mortal_stack_length = SPVM_API_get_method_mortal_stack_length(env, method_id);
+  if (method_mortal_stack_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, method->mortal_stack_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, method_mortal_stack_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
   }
   
   // short variable declarations
-  int32_t call_stack_short_vars_legnth = method->call_stack_short_vars_legnth;
-  if (call_stack_short_vars_legnth > 0) {
+  int32_t call_stack_short_vars_length = SPVM_API_get_method_call_stack_short_vars_length(env, method_id);
+  if (call_stack_short_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int16_t short_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_short_vars_legnth);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_short_vars_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // byte variable declarations
-  int32_t call_stack_byte_vars_legnth = method->call_stack_byte_vars_legnth;
-  if (call_stack_byte_vars_legnth > 0) {
+  int32_t call_stack_byte_vars_length = SPVM_API_get_method_call_stack_byte_vars_length(env, method_id);
+  if (call_stack_byte_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int8_t byte_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_byte_vars_legnth);
+    SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_byte_vars_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 

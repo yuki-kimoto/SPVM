@@ -3008,7 +3008,7 @@ The length of the string can be got using a L<string length operator|"String Len
   
   # Get the length of the string
   my $message = "Hello"+
-  my $length = legnth $message;
+  my $length = length $message;
 
 =head1 Undefined Value
 

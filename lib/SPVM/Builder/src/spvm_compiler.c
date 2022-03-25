@@ -569,14 +569,14 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_method->is_init = method->is_init;
     runtime_method->is_anon = method->flag & SPVM_METHOD_C_FLAG_ANON;
     runtime_method->has_precompile_flag = method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE;
-    runtime_method->call_stack_byte_vars_legnth  = method->call_stack_byte_vars_legnth;
-    runtime_method->call_stack_short_vars_legnth  = method->call_stack_short_vars_legnth;
-    runtime_method->call_stack_int_vars_legnth  = method->call_stack_int_vars_legnth;
-    runtime_method->call_stack_long_vars_legnth  = method->call_stack_long_vars_legnth;
-    runtime_method->call_stack_float_vars_legnth  = method->call_stack_float_vars_legnth;
-    runtime_method->call_stack_double_vars_legnth  = method->call_stack_double_vars_legnth;
-    runtime_method->call_stack_object_vars_legnth = method->call_stack_object_vars_legnth;
-    runtime_method->call_stack_ref_vars_legnth = method->call_stack_ref_vars_legnth;
+    runtime_method->call_stack_byte_vars_length  = method->call_stack_byte_vars_length;
+    runtime_method->call_stack_short_vars_length  = method->call_stack_short_vars_length;
+    runtime_method->call_stack_int_vars_length  = method->call_stack_int_vars_length;
+    runtime_method->call_stack_long_vars_length  = method->call_stack_long_vars_length;
+    runtime_method->call_stack_float_vars_length  = method->call_stack_float_vars_length;
+    runtime_method->call_stack_double_vars_length  = method->call_stack_double_vars_length;
+    runtime_method->call_stack_object_vars_length = method->call_stack_object_vars_length;
+    runtime_method->call_stack_ref_vars_length = method->call_stack_ref_vars_length;
     runtime_method->mortal_stack_length  = method->mortal_stack_length;
     runtime_method->return_type_id = method->return_type->id;
 

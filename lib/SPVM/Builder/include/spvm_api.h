@@ -490,4 +490,14 @@ void SPVM_API_allocator_free(SPVM_ALLOCATOR* allocator);
 SPVM_OPCODE* SPVM_API_runtime_get_opcodes(SPVM_RUNTIME* runtime);
 int32_t SPVM_API_runtime_get_opcodes_length(SPVM_RUNTIME* runtime);
 
+int32_t SPVM_API_get_method_call_stack_byte_vars_length(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_method_call_stack_short_vars_length(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_method_call_stack_int_vars_length(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_method_call_stack_long_vars_length(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_method_call_stack_float_vars_length(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_method_call_stack_double_vars_length(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_method_call_stack_object_vars_length(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_method_call_stack_ref_vars_length(SPVM_ENV* env, int32_t method_id);
+int32_t SPVM_API_get_method_mortal_stack_length(SPVM_ENV* env, int32_t method_id);
+
 #endif

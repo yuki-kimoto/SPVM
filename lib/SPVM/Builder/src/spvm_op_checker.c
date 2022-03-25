@@ -4249,14 +4249,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
               }
               
-              method->call_stack_byte_vars_legnth = call_stack_byte_vars->length;
-              method->call_stack_short_vars_legnth = call_stack_short_vars->length;
-              method->call_stack_int_vars_legnth = call_stack_int_vars->length;
-              method->call_stack_long_vars_legnth = call_stack_long_vars->length;
-              method->call_stack_float_vars_legnth = call_stack_float_vars->length;
-              method->call_stack_double_vars_legnth = call_stack_double_vars->length;
-              method->call_stack_object_vars_legnth = call_stack_object_vars->length;
-              method->call_stack_ref_vars_legnth = call_stack_ref_vars->length;
+              method->call_stack_byte_vars_length = call_stack_byte_vars->length;
+              method->call_stack_short_vars_length = call_stack_short_vars->length;
+              method->call_stack_int_vars_length = call_stack_int_vars->length;
+              method->call_stack_long_vars_length = call_stack_long_vars->length;
+              method->call_stack_float_vars_length = call_stack_float_vars->length;
+              method->call_stack_double_vars_length = call_stack_double_vars->length;
+              method->call_stack_object_vars_length = call_stack_object_vars->length;
+              method->call_stack_ref_vars_length = call_stack_ref_vars->length;
 
               SPVM_LIST_free(tmp_my_stack);
               SPVM_LIST_free(no_tmp_my_stack);
