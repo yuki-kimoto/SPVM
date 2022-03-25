@@ -15,7 +15,6 @@
 #include "spvm_string_buffer.h"
 #include "spvm_opcode.h"
 #include "spvm_class.h"
-#include "spvm_type.h"
 #include "spvm_compiler.h"
 
 #include "spvm_runtime.h"
