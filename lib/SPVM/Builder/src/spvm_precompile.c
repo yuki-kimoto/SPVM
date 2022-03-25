@@ -9,14 +9,9 @@
 
 #include "spvm_native.h"
 #include "spvm_api.h"
-
-#include "spvm_list.h"
-#include "spvm_hash.h"
 #include "spvm_string_buffer.h"
 #include "spvm_opcode.h"
-#include "spvm_compiler.h"
 
-#include "spvm_runtime.h"
 #include "spvm_runtime_method.h"
 
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
@@ -284,7 +279,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   // Convert string
   SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string_buffer[21];\n");
   
-  SPVM_OPCODE* opcodes = runtime->opcodes;
+  SPVM_OPCODE* opcodes = SPVM_API_runtime_get_opcodes(runtime);
   int32_t method_opcodes_base = method->opcodes_base;
   int32_t opcodes_length = method->opcodes_length;
   int32_t opcode_index = 0;

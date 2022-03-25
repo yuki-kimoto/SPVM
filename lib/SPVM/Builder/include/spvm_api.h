@@ -487,4 +487,7 @@ int32_t SPVM_API_get_anon_method_method_id(SPVM_ENV* env, int32_t anon_method_id
 SPVM_ALLOCATOR* SPVM_API_allocator_new();
 void SPVM_API_allocator_free(SPVM_ALLOCATOR* allocator);
 
+SPVM_OPCODE* SPVM_API_runtime_get_opcodes(SPVM_RUNTIME* runtime);
+int32_t SPVM_API_runtime_get_opcodes_length(SPVM_RUNTIME* runtime);
+
 #endif
