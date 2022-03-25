@@ -139,7 +139,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
         SPVM_OP* op_block_false = op_cur->last;
         
         // Execute false block
-        const char* use_class_name = use->op_type->uv.type->basic_type->name;
+        const char* use_class_name = use->class_name;
         const char* fail_load_class_name = SPVM_HASH_fetch(compiler->fail_load_class_symtable, use_class_name, strlen(use_class_name));
         if (fail_load_class_name) {
           SPVM_OP_cut_op(compiler, op_block_false);

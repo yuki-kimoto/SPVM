@@ -1889,8 +1889,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         // Class alias
         const char* class_alias_name = op_use->uv.use->class_alias_name;
         if (class_alias_name) {
-          SPVM_OP* op_type = op_use->uv.use->op_type;
-          const char* use_class_name = op_type->uv.type->basic_type->name;
+          const char* use_class_name = op_use->uv.use->class_name;
           const char* use_class_name_exists = SPVM_HASH_fetch(class->class_alias_symtable, class_alias_name, strlen(class_alias_name));
           if (use_class_name_exists) {
             SPVM_COMPILER_error(compiler, "Class alias name \"%s\" is already used at %s line %d", class_alias_name, op_decl->file, op_decl->line);
@@ -2348,7 +2347,6 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   
   SPVM_USE* use = op_use->uv.use;
   use->op_use = op_use;
-  use->op_type = op_type;
   use->is_require = is_require;
   use->class_name = op_type->uv.type->basic_type->name;
   

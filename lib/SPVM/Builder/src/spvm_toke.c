@@ -167,7 +167,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else if (op_use_stack->length > 0) {
           SPVM_OP* op_use = SPVM_LIST_shift(op_use_stack);
           
-          const char* class_name = op_use->uv.use->op_type->uv.type->basic_type->name;
+          const char* class_name = op_use->uv.use->class_name;
 
           const char* used_class_name = (const char*)SPVM_HASH_fetch(compiler->used_class_symtable, class_name, strlen(class_name));
 

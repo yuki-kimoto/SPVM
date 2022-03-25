@@ -5,7 +5,6 @@
 
 struct spvm_use {
   SPVM_OP* op_use;
-  SPVM_OP* op_type;
   const char* class_name;
   const char* class_alias_name;
   int32_t is_require;
