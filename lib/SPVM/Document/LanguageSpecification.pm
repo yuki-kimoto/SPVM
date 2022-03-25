@@ -1653,7 +1653,7 @@ B<Examples of class definitions:>
   
   }
 
-Direct children of the class block must be L<use|"Load Module">, L<our|"Class Variable">,
+Direct children of the class block must be L<use|"Load Modules">, L<our|"Class Variable">,
 L<has|"Field Definition">, L<enum|"Enumeration Definition">, L<method|"Method Definition">, L<allow|"Allow Class Access">,
 L<implement|"implement Statement"> and L<INIT block|"INIT Block"> can be defined.
 
@@ -1996,18 +1996,18 @@ Change "::" to "/". Add ".spvm" at the end.
   SPVM/Foo/Bar.spvm
   SPVM/Foo/Bar/Baz.spvm
 
-=head2 Load Module
+=head2 Load Modules
 
-Use B<use> keyword to load a Module.
-
+The C<use> syntax loads a Module.
+  
+  # Load a module
   use Foo;
-  use Foo::Bar;
+
+If the module does not exist, a compilation error will occur.
 
 Modules are loaded at compile-time.
 
-If the Module does not exist, a compilation error will occur.
-
-use Keyword must be defined directly under L<"Class Definition">.
+C<use> syntax must be defined directly under L<"Class Definition">.
 
   class Foo {
     use Foo;
@@ -2015,14 +2015,25 @@ use Keyword must be defined directly under L<"Class Definition">.
 
 =head2 Class Alias
 
-Define class aliases using B<as> syntax with B<use>
+C<alias> syntax create an alias name for a class name.
+  
+  # Create alias
+  alias Foo::Bar as FB;
 
-  use Foo::Bar as FB;
-
-FB is used as Foo::Bar alias in class method calls.
+FB is used as Foo::Bar alias in L<class method calls|Class Method Call>.
 
   # This means Foo::Bar->sum(1, 2);
   FB->sum(1, 2);
+
+C<alias> syntax must be defined directly under L<"Class Definition">.
+
+  class Foo {
+    alias Foo::Bar as FB;
+  }
+
+You can create an alias at the same time as loading a module by C<use>.
+  
+  use Foo::Bar as FB;
 
 =head2 Automatically Loaded Module
 
@@ -3350,7 +3361,7 @@ B<Set Local Variable Expression> is a Expression to set L<"Local Variable"> Valu
 
   $var = RIGHT_OPERAND
 
-The Assignment must satisfy L<"Type Compatibility">.
+The Assignment must satisfy the type compatibility.
 
 Set Local Variable Expression returns the value after setting.
 
@@ -3396,7 +3407,7 @@ B<Set Class Variable Expression> is a Expression to set L<"Class Variable"> Valu
 
   $CLASS_VARIABLE_NAME = RIGHT_OPERAND
 
-If the assignment does not satisfy L<"Type Compatibility">, a compilation error occurs.
+If the assignment does not satisfy the type compatibility, a compilation error occurs.
 
 Set Class Variable Expression returns the value after setting.
 
@@ -3482,7 +3493,7 @@ B<Set Field Expression> is a Expression to set L<"Field"> Value.
 
 Invocant Expression is L<"Class Type">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Set Multi Numeric Field Value">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
 
-If the assignment does not satisfy L<"Type Compatibility"> of the type of Field, a compilation error occurs.
+If the assignment does not satisfy the type compatibility of the type of Field, a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs.
 
@@ -3532,7 +3543,7 @@ If the field names does not found in the L<"Class">, a compilation error occurs.
 
 Set Multi Numeric Field Value Expression returns the value of Field after setting. 
 
-The Assignment must satisfy L<"Type Compatibility">.
+The Assignment must satisfy the type compatibility.
 
 Return Value Type is the type of Field.
 
@@ -3573,7 +3584,7 @@ If the field names does not found in the L<"Class">, a compilation error occurs
 
 Set Multi Numeric Field Value via Dereference Expression returns the value of Field after setting.
 
-The Assignment must satisfy L<"Type Compatibility">.
+The Assignment must satisfy the type compatibility.
 
 Return Value Type is the type of Field.
 
@@ -3620,7 +3631,7 @@ Array Expression must be L<"Array Types">.
 
 Index Expression must be L<"int Type"> or the type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
 
-The Assignment must satisfy L<"Type Compatibility">.
+The Assignment must satisfy the type compatibility.
 
 Set Array Element Expression returns the value of the element after setting.
 
@@ -3733,7 +3744,7 @@ Array Initialization returns an Array that has the length of the number of eleme
 
 The type of Array is the type of Expression1 converted to Array Types. If no element is specified, it will be an Array Types of L<"Any Object Type">.
 
-If Expression2 or later does not satisfy L<"Type Compatibility">, a a compilation error will occur.
+If Expression2 or later does not satisfy the type compatibility, a a compilation error will occur.
 
 B<Examples:>
 
@@ -3759,21 +3770,37 @@ B<Examples:>
   # Key values
   my $key_values = {foo => 1, bar => "Hello"};
 
-=head2 Method Call
+=head2 Method Calls
 
-Methods defined by L<"Method Definition"> can be called from program. There are three types of method calls. B<Class Method Call> and B<Instance Method Call>.
+Method calls are L<"Class Method Call"> and L<"Instance Method Call">.
 
-Defined method can be called by Class Method Call except a case that the first argument is L<"self Type">.
+=head3 Class Method Call
 
-  ClassName->MethodName(ARGS1, ARGS2, ARGS3, ..., ARGSn);
+A method defined as the L<class method|"Class Method"> can be called using the class method call.
 
-The arguments max count is 255.
+  ClassName->MethodName(ARGS1, ARGS2, ...);
 
-If the number of arguments does not match the number of arguments defined in the method Definition, a compilation error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, a compilation error occurs.
+If the number of arguments does not correct, a compilation error occurs.
 
-B<Class Method Call Example>
+If the types of arguments have no type compatible, a compilation error occurs.
+
+B<Examples of class method call:>
 
   my $ret = Foo->bar(1, 2, 3);
+
+=head3 Instance Method Call
+
+A method defined as the L<instance method|"Instance Method"> can be called using the instance method call.
+
+  Object->MethodName(ARGS1, ARGS2, ...);
+
+If the number of arguments does not correct, a compilation error occurs.
+
+If the types of arguments have no type compatible, a compilation error occurs.
+
+B<Examples of instance method call:>
+  
+  $object->bar(5, 3. 6);
 
 =head2 Current Class
 
@@ -4711,7 +4738,7 @@ In Assignment Operator, the The left operand is evaluated after the right operan
 
 =head2 Special Assignment Operator
 
-Special Assignment Operator is a L<"Assignment Operator">L<"Type Compatibility">を満たさない場合は,a compilation error occurs
+Special Assignment Operator is a L<"Assignment Operator">the type compatibility ,a compilation error occurs
 
 B<List of Special Assignment Operators>
 
