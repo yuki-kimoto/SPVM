@@ -14,7 +14,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Class variable relative name
 {
   my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
-  ok(SPVM::TestCase::ClassVar->class_var_rel_name());
+  ok(SPVM::TestCase::ClassVar->class_var_rel_name);
   my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($start_memory_blocks_count, $end_memory_blocks_count);
 }
@@ -22,10 +22,15 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Class variable
 {
   my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
-  ok(SPVM::TestCase::ClassVar->class_var());
-  ok(SPVM::TestCase::ClassVar->class_var_other_class());
+  ok(SPVM::TestCase::ClassVar->class_var);
+  ok(SPVM::TestCase::ClassVar->class_var_other_class);
   my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($start_memory_blocks_count, $end_memory_blocks_count);
+}
+
+# Accessor
+{
+  ok(SPVM::TestCase::ClassVar->accessor);
 }
 
 # All object is freed

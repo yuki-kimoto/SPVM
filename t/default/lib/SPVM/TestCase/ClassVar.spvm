@@ -11,6 +11,8 @@ class TestCase::ClassVar {
   our $CLASS_VAR_INT2 : int;
   our $CLASS_VAR_LONG2 : long;
   our $CLASS_VAR_MINIMAL2 : TestCase::Minimal;
+  
+  our $ACCESSOR : rw int;
 
   static method var_brace : int () {
     
@@ -65,4 +67,19 @@ class TestCase::ClassVar {
     }
     return 0;
   }
+
+  static method accessor : int () {
+    
+    TestCase::ClassVar->SET_ACCESSOR(3);
+    unless ($TestCase::ClassVar::ACCESSOR == 3) {
+      return 0;
+    }
+    
+    unless (TestCase::ClassVar->ACCESSOR == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
 }

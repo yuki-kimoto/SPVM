@@ -2771,7 +2771,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   // [After]
                   // $Class::FOO = $value
                   
-
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
                   SPVM_OP* op_args = op_cur->last;
