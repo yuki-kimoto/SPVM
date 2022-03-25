@@ -201,11 +201,6 @@ require
       SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_use(compiler, op_use, $2, NULL, 1);
     }
-  | REQUIRE basic_type AS class_alias_name
-    {
-      SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
-      $$ = SPVM_OP_build_use(compiler, op_use, $2, $4, 1);
-    }
 
 allow
   : ALLOW basic_type ';'
