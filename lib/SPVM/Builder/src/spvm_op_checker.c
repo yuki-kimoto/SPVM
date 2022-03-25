@@ -2691,6 +2691,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                   }
                   
+                  SPVM_OP* op_list_args = op_cur->first;
+                  SPVM_OP* op_invocant = SPVM_OP_sibling(compiler, op_list_args->first);
+                  assert(op_invocant);
+                  
                   if (do_inline_expansion) {
                     const char* field_name = call_method->method->accessor_original_name;
 
