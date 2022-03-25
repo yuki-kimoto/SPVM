@@ -410,6 +410,10 @@ SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const ch
   
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   
+  SPVM_STRING* name_string = SPVM_STRING_new(compiler, name, strlen(name));
+  
+  name = name_string->value;
+  
   op_name->uv.name = name;
   
   return op_name;
