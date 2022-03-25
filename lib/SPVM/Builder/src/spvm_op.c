@@ -1790,7 +1790,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       // If class name is different from the class name corresponding to the module file, compile error occur.
       if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
         // If class fail load by if (require xxx) syntax, that is ok
-        if (!op_type->uv.type->basic_type->fail_load) {
+        const char* fail_load_class_name = SPVM_HASH_fetch(compiler->fail_load_class_symtable, class_name, strlen(class_name));
+        if (!fail_load_class_name) {
           SPVM_COMPILER_error(compiler, "Wrong class name \"%s\". The class name must be \"%s\" at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
           return op_class;
         }
