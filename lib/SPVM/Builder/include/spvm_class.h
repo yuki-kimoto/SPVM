@@ -40,7 +40,6 @@ struct spvm_class {
   SPVM_LIST* anon_methods;
   int32_t fields_byte_size;
   int8_t category;
-  int8_t fail_load;
   int8_t has_precompile_descriptor;
   SPVM_LIST* class_vars;
   SPVM_TYPE* type;
