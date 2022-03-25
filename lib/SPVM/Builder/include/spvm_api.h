@@ -484,5 +484,7 @@ int32_t SPVM_API_get_class_anon_method_ids_base(SPVM_ENV* env, int32_t class_id)
 int32_t SPVM_API_get_class_anon_method_ids_length(SPVM_ENV* env, int32_t class_id);
 
 int32_t SPVM_API_get_anon_method_method_id(SPVM_ENV* env, int32_t anon_method_id);
+SPVM_ALLOCATOR* SPVM_API_allocator_new();
+void SPVM_API_allocator_free(SPVM_ALLOCATOR* allocator);
 
 #endif

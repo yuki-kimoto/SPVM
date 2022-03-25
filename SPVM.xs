@@ -4149,17 +4149,13 @@ create_precompile_source(...)
   SV* sv_builder = sv_builder_ptr ? *sv_builder_ptr : &PL_sv_undef;
   HV* hv_builder = (HV*)SvRV(sv_builder);
   
-  // Compiler
-  SV** sv_compiler_ptr = hv_fetch(hv_builder, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
-
   // Runtime
   SV** sv_runtime_ptr = hv_fetch(hv_builder, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
   
-  void* allocator = SPVM_API_compiler_get_allocator(compiler);
+  // New allocator
+  void* allocator = SPVM_API_allocator_new();
   
   // New string buffer
   void* string_buffer = SPVM_API_string_buffer_new_tmp(allocator, 0);
@@ -4175,6 +4171,9 @@ create_precompile_source(...)
   
   // Free string buffer
   SPVM_API_string_buffer_free(string_buffer);
+  
+  // Free allocator
+  SPVM_API_allocator_free(allocator);
 
   XPUSHs(sv_precompile_source);
   XSRETURN(1);
