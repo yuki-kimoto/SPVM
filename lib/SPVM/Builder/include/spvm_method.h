@@ -39,8 +39,8 @@ struct spvm_method {
   int32_t id;
   int32_t rel_id;
   int32_t tmp_vars_length;
-  int32_t opcodes_base;
-  int32_t opcodes_length;
+  int32_t opcode_ids_base;
+  int32_t opcode_ids_length;
   int32_t flag;
   int32_t call_stack_byte_vars_length;
   int32_t call_stack_short_vars_length;

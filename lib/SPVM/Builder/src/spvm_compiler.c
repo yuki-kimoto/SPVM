@@ -394,7 +394,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   SPVM_ALLOCATOR* allocator = runtime->allocator;
 
   runtime->opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
-  runtime->opcodes_length = compiler->opcode_array->length;
+  runtime->opcode_ids_length = compiler->opcode_array->length;
   memcpy(runtime->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
   
   // String buffers
@@ -560,8 +560,8 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
     SPVM_RUNTIME_METHOD* runtime_method = &runtime->methods[method_id];
 
-    runtime_method->opcodes_base = method->opcodes_base;
-    runtime_method->opcodes_length = method->opcodes_length;
+    runtime_method->opcode_ids_base = method->opcode_ids_base;
+    runtime_method->opcode_ids_length = method->opcode_ids_length;
     runtime_method->id = method->id;
     runtime_method->class_id = method->class->id;
     runtime_method->flag = method->flag;
@@ -633,7 +633,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
 #ifdef SPVM_DEBUG_RUNTIME
   fprintf(stderr, "[RUNTIME MEMORY SIZE]\n");
-  fprintf(stderr, "opcodes size: %d bytes\n", (int32_t)(sizeof(SPVM_OPCODE) * runtime->opcodes_length));
+  fprintf(stderr, "opcodes size: %d bytes\n", (int32_t)(sizeof(SPVM_OPCODE) * runtime->opcode_ids_length));
   fprintf(stderr, "string_buffer size: %d bytes\n", (int32_t)(runtime->string_buffer_length));
   fprintf(stderr, "strings size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_STRING) * runtime->strings_length));
   fprintf(stderr, "classes size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CLASS) * runtime->classes_length));

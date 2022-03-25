@@ -15,7 +15,7 @@ struct spvm_runtime {
   SPVM_OPCODE* opcodes;
 
   // The length of operation codes
-  int32_t opcodes_length;
+  int32_t opcode_ids_length;
 
   // String buffer
   const char* string_buffer;

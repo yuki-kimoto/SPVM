@@ -1359,7 +1359,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   int32_t exception_flag = 0;
 
   // Operation code base
-  int32_t method_opcodes_base = method->opcodes_base;
+  int32_t method_opcode_ids_base = method->opcode_ids_base;
 
   // Call method argument stack top
   int32_t stack_index = 0;
@@ -1477,7 +1477,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
 
   // Execute operation codes
   while (1) {
-    SPVM_OPCODE* opcode = &(opcodes[method_opcodes_base + opcode_rel_index]);
+    SPVM_OPCODE* opcode = &(opcodes[method_opcode_ids_base + opcode_rel_index]);
     
     int32_t opcode_id = opcode->id;
     
@@ -4626,11 +4626,11 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
 
         if (case_infos_length > 0) {
           // min
-          SPVM_OPCODE* opcode_case_info_min = &(opcodes[method_opcodes_base + opcode_rel_index + 1 + 0]);
+          SPVM_OPCODE* opcode_case_info_min = &(opcodes[method_opcode_ids_base + opcode_rel_index + 1 + 0]);
           int32_t min = opcode_case_info_min->operand1;
           
           // max
-          SPVM_OPCODE* opcode_case_info_max = &(opcodes[method_opcodes_base + opcode_rel_index + 1 + case_infos_length - 1]);
+          SPVM_OPCODE* opcode_case_info_max = &(opcodes[method_opcode_ids_base + opcode_rel_index + 1 + case_infos_length - 1]);
           int32_t max = opcode_case_info_max->operand1;
           
           if (int_vars[opcode->operand0] >= min && int_vars[opcode->operand0] <= max) {
@@ -4644,7 +4644,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
                 break;
               }
               int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-              SPVM_OPCODE* opcode_case_cur_half = &(opcodes[method_opcodes_base + opcode_rel_index + 1 + cur_half_pos]);
+              SPVM_OPCODE* opcode_case_cur_half = &(opcodes[method_opcode_ids_base + opcode_rel_index + 1 + cur_half_pos]);
               int32_t cur_half = opcode_case_cur_half->operand1;
               
               if (int_vars[opcode->operand0] > cur_half) {
@@ -7229,6 +7229,28 @@ int32_t SPVM_API_get_method_class_id(SPVM_ENV* env, int32_t method_id) {
   return class_id;
 }
 
+int32_t SPVM_API_get_method_opcode_ids_base(SPVM_ENV* env, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+
+  assert(method);
+
+  int32_t opcode_ids_base = method->opcode_ids_base;
+  
+  return opcode_ids_base;
+}
+
+int32_t SPVM_API_get_method_opcode_ids_length(SPVM_ENV* env, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+
+  assert(method);
+
+  int32_t opcode_ids_length = method->opcode_ids_length;
+  
+  return opcode_ids_length;
+}
+
 SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, int32_t field_id) {
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -8621,9 +8643,9 @@ SPVM_OPCODE* SPVM_API_runtime_get_opcodes(SPVM_RUNTIME* runtime) {
   return runtime->opcodes;
 }
 
-int32_t SPVM_API_runtime_get_opcodes_length(SPVM_RUNTIME* runtime) {
+int32_t SPVM_API_runtime_get_opcode_ids_length(SPVM_RUNTIME* runtime) {
   
-  return runtime->opcodes_length;
+  return runtime->opcode_ids_length;
 }
 
 void SPVM_API_runtime_free(SPVM_RUNTIME* runtime) {

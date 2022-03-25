@@ -282,20 +282,20 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string_buffer[21];\n");
   
   SPVM_OPCODE* opcodes = SPVM_API_runtime_get_opcodes(runtime);
-  int32_t method_opcodes_base = method->opcodes_base;
-  int32_t opcodes_length = method->opcodes_length;
+  int32_t method_opcode_ids_base = method->opcode_ids_base;
+  int32_t opcode_ids_length = method->opcode_ids_length;
   int32_t opcode_index = 0;
   
   SPVM_OPCODE* opcode = NULL;
 
-  while (opcode_index < opcodes_length) {
+  while (opcode_index < opcode_ids_length) {
 
     // Line label
     SPVM_STRING_BUFFER_add(string_buffer, "L");
     SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index);
     SPVM_STRING_BUFFER_add(string_buffer, ": ");
     
-    opcode = &(opcodes[method_opcodes_base + opcode_index]);
+    opcode = &(opcodes[method_opcode_ids_base + opcode_index]);
 
     int32_t opcode_id = opcode->id;
 
@@ -3623,7 +3623,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         SPVM_PRECOMPILE_add_operand(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
         for (int32_t case_index = 0; case_index < case_infos_length; case_index++) {
-          SPVM_OPCODE* opcode_case_info = &(opcodes[method_opcodes_base + opcode_index + 1 + case_index]);
+          SPVM_OPCODE* opcode_case_info = &(opcodes[method_opcode_ids_base + opcode_index + 1 + case_index]);
 
           int32_t match = opcode_case_info->operand1;
           int32_t opcode_rel_index = opcode_case_info->operand2;
