@@ -2372,6 +2372,7 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   allow->op_type = op_type;
   op_allow->uv.allow = allow;
   allow->op_allow = op_allow;
+  allow->class_name = op_type->uv.type->basic_type->name;
   
   // add use stack
   SPVM_TYPE* type_use = op_type->uv.type;
@@ -2388,6 +2389,7 @@ SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_implement,
   implement->op_type = op_type;
   op_implement->uv.implement = implement;
   implement->op_implement = op_implement;
+  implement->class_name = op_type->uv.type->basic_type->name;
   
   // add use stack
   SPVM_TYPE* type_use = op_type->uv.type;
