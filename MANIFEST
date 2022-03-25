@@ -705,7 +705,6 @@ t/default/fat_camma.t
 t/default/field.t
 t/default/for.t
 t/default/if.t
-t/default/if_require.t
 t/default/increment.t
 t/default/inline.t
 t/default/interface.t
@@ -998,6 +997,7 @@ t/default/ref.t
 t/default/refcnt.t
 t/default/refop.t
 t/default/remainder.t
+t/default/require.t
 t/default/return.t
 t/default/seqop.t
 t/default/special_assign.t
