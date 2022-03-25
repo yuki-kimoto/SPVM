@@ -318,8 +318,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 
                 SPVM_HASH_insert(compiler->fail_load_class_symtable, class_name, strlen(class_name), (void*)class_name);
                 
-                SPVM_OP_build_class(compiler, op_class, op_type, NULL, NULL);
-                
                 continue;
               }
             }

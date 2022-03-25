@@ -4651,7 +4651,10 @@ void SPVM_OP_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
       SPVM_HASH* class_symtable = compiler->class_symtable;
       SPVM_CLASS* found_class = SPVM_HASH_fetch(class_symtable, basic_type_name, strlen(basic_type_name));
       if (!found_class) {
-        SPVM_COMPILER_error(compiler, "Unknown class \"%s\" at %s line %d", basic_type_name, op_type->file, op_type->line);
+        const char* fail_load_class_name = SPVM_HASH_fetch(compiler->fail_load_class_symtable, basic_type_name, strlen(basic_type_name));
+        if (!fail_load_class_name) {
+          SPVM_COMPILER_error(compiler, "Unknown class \"%s\" at %s line %d", basic_type_name, op_type->file, op_type->line);
+        }
         return;
       }
     }
