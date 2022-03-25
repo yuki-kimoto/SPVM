@@ -205,10 +205,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
             // Byte, Short, Int, Long, Float, Double, Bool is already existsregistered in module source symtable
             const char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
-            if (found_module_source) {
-
-            }
-            else {
+            if (!found_module_source) {
               // Search module file
               FILE* fh = NULL;
               int32_t module_dirs_length = compiler->module_dirs->length;
@@ -283,28 +280,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             const char* src = NULL;
             int32_t file_size = 0;
-            int32_t module_not_found = 0;
             if (found_module_source) {
               src = found_module_source;
               file_size = strlen(src);
-            }
-            else {
-              module_not_found = 1;
-            }
-            
-            // If module not found and that is if (requre Foo) syntax, syntax is ok.
-            if (module_not_found && op_use->uv.use->is_require) {
-              SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_use->file, op_use->line);
-              SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_use->uv.use->op_type->uv.type->basic_type->id, 0, 0);
-              SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
-              type->basic_type->fail_load = 1;
-              
-              SPVM_OP_build_class(compiler, op_class, op_type, NULL, NULL);
-              
-              continue;
-            }
-            else {
-              
+
               // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
               compiler->cur_src = (char*)src;
               compiler->cur_rel_file = cur_rel_file;
@@ -329,6 +308,20 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->line_start_ptr = compiler->cur_src;
               compiler->cur_line = 1;
             }
+            else {
+              // If module not found and that is if (requre Foo) syntax, syntax is ok.
+              if (op_use->uv.use->is_require) {
+                SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_use->file, op_use->line);
+                SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_use->uv.use->op_type->uv.type->basic_type->id, 0, 0);
+                SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
+                type->basic_type->fail_load = 1;
+                
+                SPVM_OP_build_class(compiler, op_class, op_type, NULL, NULL);
+                
+                continue;
+              }
+            }
+            
             break;
           }
         }
