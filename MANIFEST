@@ -676,6 +676,7 @@ t/default/__CLASS__.t
 t/default/__FILE__.t
 t/default/__LINE__.t
 t/default/add.t
+t/default/alias.t
 t/default/allow.t
 t/default/array.t
 t/default/array_big.t
@@ -717,6 +718,7 @@ t/default/lib/SPVM/foo.spvm
 t/default/lib/SPVM/MinimalMethod.spvm
 t/default/lib/SPVM/TestCase.spvm
 t/default/lib/SPVM/TestCase/Add.spvm
+t/default/lib/SPVM/TestCase/Alias.spvm
 t/default/lib/SPVM/TestCase/Allow.spvm
 t/default/lib/SPVM/TestCase/Allow/PrivateData.spvm
 t/default/lib/SPVM/TestCase/Array.spvm

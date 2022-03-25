@@ -1755,7 +1755,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             switch (symbol_name[0]) {
               // Keyword
               case 'a' : {
-                if (strcmp(symbol_name, "allow") == 0) {
+                if (strcmp(symbol_name, "alias") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ALIAS);
+                  is_keyword = 1;
+                  keyword_term = ALIAS;
+                }
+                else if (strcmp(symbol_name, "allow") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ALLOW);
                   is_keyword = 1;
                   keyword_term = ALLOW;

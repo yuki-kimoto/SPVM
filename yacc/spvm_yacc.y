@@ -19,7 +19,7 @@
   #include "spvm_string.h"
 %}
 
-%token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS MUTABLE
+%token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
 %token <opval> DESCRIPTOR MAKE_READ_ONLY IMPLEMENT
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
@@ -31,7 +31,7 @@
 %type <opval> opt_classes classes class class_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> method anon_method opt_args args arg has use require our
+%type <opval> method anon_method opt_args args arg has use require alias our
 %type <opval> opt_descriptors descriptors
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -167,6 +167,7 @@ declaration
   | allow
   | implement
   | init_block
+  | alias
 
 init_block
   : INIT block
@@ -204,6 +205,13 @@ require
       SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
       int32_t is_require = 1;
       $$ = SPVM_OP_build_use(compiler, op_use, $2, NULL, is_require);
+    }
+
+alias
+  : ALIAS class_name AS class_alias_name ';'
+    {
+      SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_alias(compiler, op_use, $2, $4);
     }
 
 allow

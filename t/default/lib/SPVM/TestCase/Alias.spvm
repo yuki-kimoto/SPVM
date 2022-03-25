@@ -1,0 +1,33 @@
+class TestCase::Alias {
+  # use alias
+  use TestCase::Minimal as Mi;
+  
+  # require alias
+  alias TestCase::Simple as Si;
+
+  # not exists alias 
+  alias NotExist::XXXXXXXXXXXX as No;
+  
+  static method alias : int () {
+    
+    # use alias
+    {
+      my $minimal = Mi->new;
+      $minimal->set_x(3);
+      unless ($minimal->x == 3) {
+        return 0;
+      }
+    }
+    
+    # require alias
+    if (require TestCase::Simple) {
+      my $simple = Si->new;
+      $simple->set_x(3);
+      unless ($simple->x == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

@@ -250,6 +250,7 @@ enum {
   SPVM_OP_C_ID_HAS_IMPLEMENT,
   SPVM_OP_C_ID_ELEMENT,
   SPVM_OP_C_ID_OARRAY,
+  SPVM_OP_C_ID_ALIAS,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -514,5 +515,7 @@ SPVM_OP* SPVM_OP_new_op_call_method(SPVM_COMPILER* compiler, const char* file, i
 SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child);
 
 SPVM_OP* SPVM_OP_build_any_object_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_element);
+
+SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_class, SPVM_OP* op_name_class_alias);
 
 #endif

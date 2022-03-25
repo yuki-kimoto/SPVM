@@ -250,6 +250,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "HAS_IMPLEMENT",
     "ELEMENT",
     "OARRAY",
+    "ALIAS",
   };
   
   return id_names;
@@ -1888,13 +1889,21 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         // Class alias
         const char* class_alias_name = op_use->uv.use->class_alias_name;
         if (class_alias_name) {
-          const char* use_class_name = op_use->uv.use->class_name;
-          const char* use_class_name_exists = SPVM_HASH_fetch(class->class_alias_symtable, class_alias_name, strlen(class_alias_name));
-          if (use_class_name_exists) {
-            SPVM_COMPILER_error(compiler, "Class alias name \"%s\" is already used at %s line %d", class_alias_name, op_decl->file, op_decl->line);
+    
+          // Class name must start with upper case, otherwise compiler error occur.
+          // (Invalid example) Foo::bar
+          if (islower(class_alias_name[0])) {
+            SPVM_COMPILER_error(compiler, "Class alias name \"%s\" must start with upper case at %s line %d", class_alias_name, op_decl->file, op_decl->line);
           }
           else {
-            SPVM_HASH_insert(class->class_alias_symtable, class_alias_name, strlen(class_alias_name), (void*)use_class_name);
+            const char* use_class_name = op_use->uv.use->class_name;
+            const char* use_class_name_exists = SPVM_HASH_fetch(class->class_alias_symtable, class_alias_name, strlen(class_alias_name));
+            if (use_class_name_exists) {
+              SPVM_COMPILER_error(compiler, "Class alias name \"%s\" is already used at %s line %d", class_alias_name, op_decl->file, op_decl->line);
+            }
+            else {
+              SPVM_HASH_insert(class->class_alias_symtable, class_alias_name, strlen(class_alias_name), (void*)use_class_name);
+            }
           }
         }
       }
@@ -2351,16 +2360,21 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   
   if (op_name_class_alias) {
     const char* class_alias_name = op_name_class_alias->uv.name;
-    
-    // Class name must start with upper case, otherwise compiler error occur.
-    // (Invalid example) Foo::bar
-    if (islower(class_alias_name[0])) {
-      SPVM_COMPILER_error(compiler, "Class alias name \"%s\" must start with upper case at %s line %d", class_alias_name, op_name_class_alias->file, op_name_class_alias->line);
-    }
     use->class_alias_name = class_alias_name;
   }
 
   SPVM_LIST_push(compiler->op_use_stack, op_use);
+  
+  return op_use;
+}
+
+SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_class, SPVM_OP* op_name_class_alias) {
+  
+  SPVM_USE* use = op_use->uv.use;
+  use->op_use = op_use;
+  use->class_name = op_name_class->uv.name;
+  const char* class_alias_name = op_name_class_alias->uv.name;
+  use->class_alias_name = class_alias_name;
   
   return op_use;
 }
