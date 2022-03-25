@@ -270,8 +270,7 @@ int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_class_current, S
   else {
     for (int32_t i = 0; i < allows->length; i++) {
       SPVM_ALLOW* allow = SPVM_LIST_fetch(allows, i);
-      SPVM_OP* op_type = allow->op_type;
-      const char* allow_basic_type_name = op_type->uv.type->basic_type->name;
+      const char* allow_basic_type_name = allow->class_name;
       if (strcmp(current_class_name, allow_basic_type_name) == 0) {
         is_allowed = 1;
         break;
@@ -2369,7 +2368,6 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
 SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP* op_type) {
   
   SPVM_ALLOW* allow = SPVM_ALLOW_new(compiler);
-  allow->op_type = op_type;
   op_allow->uv.allow = allow;
   allow->op_allow = op_allow;
   allow->class_name = op_type->uv.type->basic_type->name;

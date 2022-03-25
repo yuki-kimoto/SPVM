@@ -281,7 +281,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
       }
       case SPVM_OP_C_ID_ALLOW: {
         SPVM_ALLOW* allow = op->uv.allow;
-        allow->op_type = NULL;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, allow);
         break;
       }

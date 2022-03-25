@@ -5,7 +5,6 @@
 
 struct spvm_allow {
   SPVM_OP* op_allow;
-  SPVM_OP* op_type;
   const char* class_name;
 };
 
