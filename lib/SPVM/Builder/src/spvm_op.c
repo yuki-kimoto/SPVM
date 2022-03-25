@@ -2347,8 +2347,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_name_class_alias, int32_t is_require) {
   
   SPVM_USE* use = op_use->uv.use;
+  use->op_use = op_use;
   use->op_type = op_type;
   use->is_require = is_require;
+  use->class_name = op_type->uv.type->basic_type->name;
   
   if (op_name_class_alias) {
     const char* class_alias_name = op_name_class_alias->uv.name;
