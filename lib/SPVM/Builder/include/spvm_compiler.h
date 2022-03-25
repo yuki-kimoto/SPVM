@@ -102,6 +102,9 @@ struct spvm_compiler {
   
   // Used module symtable
   SPVM_HASH* used_class_symtable;
+
+  // Fail load class symtable
+  SPVM_HASH* fail_load_class_symtable;
   
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
