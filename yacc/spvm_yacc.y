@@ -43,7 +43,7 @@
 %type <opval> new array_init
 %type <opval> my_var var implement
 %type <opval> expression opt_expressions expressions opt_expression case_statements
-%type <opval> field_name method_name is_read_only
+%type <opval> field_name method_name class_alias_name is_read_only
 %type <opval> type qualified_type basic_type array_type any_object_array_type oarray_type array_type_with_length ref_type  qualified_type_or_void
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -190,7 +190,7 @@ use
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2, NULL, 0);
     }
-  | USE basic_type AS NAME ';'
+  | USE basic_type AS class_alias_name ';'
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2, $4, 0);
     }
@@ -201,7 +201,7 @@ require
       SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_use(compiler, op_use, $2, NULL, 1);
     }
-  | REQUIRE basic_type AS basic_type';'
+  | REQUIRE basic_type AS class_alias_name
     {
       SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_use(compiler, op_use, $2, $4, 1);
@@ -1289,6 +1289,9 @@ field_name
   : NAME
 
 method_name
+  : NAME
+
+class_alias_name
   : NAME
 
 %%
