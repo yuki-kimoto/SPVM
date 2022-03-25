@@ -14,7 +14,6 @@
 #include "spvm_hash.h"
 #include "spvm_string_buffer.h"
 #include "spvm_opcode.h"
-#include "spvm_class.h"
 #include "spvm_compiler.h"
 
 #include "spvm_runtime.h"
@@ -174,11 +173,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
+  // Class
+  int32_t class_id = SPVM_API_get_class_id(env, class_name);
+  int32_t class_module_file_id = SPVM_API_get_class_module_file_id(env, class_id);
+  const char* class_module_file = SPVM_API_get_name(env, class_module_file_id);
+  int32_t class_is_anon = SPVM_API_get_class_is_anon(env, class_id);
+  
   // Method
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-  
   int32_t method_id = SPVM_API_get_method_id_without_signature(env, class_name, method_name);
-  
   SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
   int32_t method_return_type_category = SPVM_API_get_type_category(env, method->return_type_id);
 
@@ -188,9 +190,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
 
-  if (class->is_anon) {
+  if (class_is_anon) {
     SPVM_STRING_BUFFER_add(string_buffer,"    const char* CURRENT_CLASS_NAME = \"");
-    SPVM_STRING_BUFFER_add(string_buffer, class->name);
+    SPVM_STRING_BUFFER_add(string_buffer, class_name);
     SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   }
 
@@ -3370,7 +3372,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        const char* file = class->module_file;
+        const char* file = class_module_file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* object = ");
@@ -4597,9 +4599,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_COMPILER* c
         int32_t interface_basic_type_id = opcode->operand3;
         int32_t interface_basic_type_class_id = SPVM_API_get_basic_type_class_id(env, interface_basic_type_id);
 
-        SPVM_CLASS* interface_class = SPVM_LIST_fetch(compiler->classes, interface_basic_type_class_id);
+        int32_t interface_class_id = SPVM_API_get_basic_type_class_id(env, interface_basic_type_class_id);
+        int32_t interface_class_name_id = SPVM_API_get_class_name_id(env, interface_class_id);
+        const char* interface_class_name = SPVM_API_get_name(env, interface_class_name_id);
         
-        int32_t interface_method_id = SPVM_API_get_method_id_without_signature(env, interface_class->name, implement_method_name);
+        int32_t interface_method_id = SPVM_API_get_method_id_without_signature(env, interface_class_name, implement_method_name);
         int32_t interface_method_signature_id = SPVM_API_get_method_signature_id(env, interface_method_id);
         const char* interface_method_signature = SPVM_API_get_name(env, interface_method_signature_id);
 
