@@ -392,19 +392,19 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
   SPVM_ALLOCATOR* allocator = runtime->allocator;
 
-  runtime->opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
+  runtime->opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_OPCODE) * (compiler->opcode_array->length + 1));
   runtime->opcode_ids_length = compiler->opcode_array->length;
   memcpy(runtime->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
   
   // String buffers
   runtime->string_buffer_length = compiler->string_buffer->length;
-  runtime->string_buffer = (const char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, compiler->string_buffer->length);
+  runtime->string_buffer = (const char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, compiler->string_buffer->length + 1);
   memcpy((char*)runtime->string_buffer, compiler->string_buffer->value, compiler->string_buffer->length);
 
   
   // Strings
   runtime->strings_length = compiler->strings->length;
-  runtime->strings = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_STRING) * compiler->strings->length);
+  runtime->strings = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_STRING) * (compiler->strings->length + 1));
   for (int32_t string_id = 0; string_id < compiler->strings->length; string_id++) {
     SPVM_STRING* string = SPVM_LIST_fetch(compiler->strings, string_id);
     SPVM_RUNTIME_STRING* runtime_string = &runtime->strings[string_id];
@@ -416,7 +416,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
   // Runtime classes
   runtime->classes_length = compiler->classes->length;
-  runtime->classes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS) * compiler->classes->length);
+  runtime->classes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS) * (compiler->classes->length + 1));
   runtime->anon_method_method_ids_length = compiler->anon_methods->length;
   runtime->anon_method_method_ids = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * (compiler->anon_methods->length + 1));
   for (int32_t anon_method_id = 0; anon_method_id < compiler->anon_methods->length; anon_method_id++) {
@@ -504,7 +504,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
   // Runtime basic types
   runtime->basic_types_length = compiler->basic_types->length;
-  runtime->basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * compiler->basic_types->length);
+  runtime->basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * (compiler->basic_types->length + 1));
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
@@ -522,7 +522,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
   // Runtime types
   runtime->types_length = compiler->types->length;
-  runtime->types = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_TYPE) * compiler->types->length);
+  runtime->types = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_TYPE) * (compiler->types->length + 1));
   for (int32_t type_id = 0; type_id < compiler->types->length; type_id++) {
     SPVM_TYPE* type = SPVM_LIST_fetch(compiler->types, type_id);
     SPVM_RUNTIME_TYPE* runtime_type = &runtime->types[type_id];
@@ -536,7 +536,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
   // Runtime class variables
   runtime->class_vars_length = compiler->class_vars->length;
-  runtime->class_vars = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS_VAR) * compiler->class_vars->length);
+  runtime->class_vars = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS_VAR) * (compiler->class_vars->length + 1));
   for (int32_t class_var_id = 0; class_var_id < compiler->class_vars->length; class_var_id++) {
     SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(compiler->class_vars, class_var_id);
     SPVM_RUNTIME_CLASS_VAR* runtime_class_var = &runtime->class_vars[class_var_id];
@@ -554,7 +554,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
   // Runtime methods
   runtime->methods_length = compiler->methods->length;
-  runtime->methods = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_METHOD) * compiler->methods->length);
+  runtime->methods = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_METHOD) * (compiler->methods->length + 1));
   for (int32_t method_id = 0; method_id < compiler->methods->length; method_id++) {
     SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
     SPVM_RUNTIME_METHOD* runtime_method = &runtime->methods[method_id];
@@ -603,7 +603,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
   // Runtime method argument type ids
   runtime->arg_type_ids_length = compiler->args->length;
-  runtime->arg_type_ids = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * compiler->args->length);
+  runtime->arg_type_ids = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * (compiler->args->length + 1));
   for (int32_t arg_id = 0; arg_id < compiler->args->length; arg_id++) {
     SPVM_MY* arg_my = SPVM_LIST_fetch(compiler->args, arg_id);
     int32_t arg_type_id = arg_my->type->id;
@@ -612,7 +612,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
   // Runtime fields
   runtime->fields_length = compiler->fields->length;
-  runtime->fields = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_FIELD) * compiler->fields->length);
+  runtime->fields = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_FIELD) * (compiler->fields->length + 1));
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
     SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
     SPVM_RUNTIME_FIELD* runtime_field = &runtime->fields[field_id];
