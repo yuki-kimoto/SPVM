@@ -752,13 +752,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
         is_deeply($list->length, 1);
       }
       {
-        my $list = SPVM::List->new([]);
-        $list->push(SPVM::Int->new(1));
+        my $list = SPVM::StringList->new([]);
+        $list->push("abc");
         is_deeply($list->length, 1);
       }
       {
-        my $list = SPVM::StringList->new([]);
-        $list->push("abc");
+        my $list = SPVM::List->new(SPVM::new_object_array("Int[]", []));
+        $list->push(SPVM::Int->new(1));
         is_deeply($list->length, 1);
       }
     }
@@ -770,7 +770,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
         is_deeply($list->length, 0);
       }
       {
-        my $list = SPVM::List->new([]);
+        my $list = SPVM::List->new(SPVM::new_object_array("Int[]", []));
         is_deeply($list->length, 0);
       }
     }
@@ -779,11 +779,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       # Pass list
       {
-        my $list = SPVM::List->new([SPVM::Int->new(1), SPVM::Double->new(2.5), undef]);
+        my $list = SPVM::List->new(SPVM::new_object_array("Int[]", [SPVM::Int->new(1), SPVM::Int->new(5), undef]));
         my $x = $list->get(0);
         
         is($list->get(0)->value, 1);
-        is($list->get(1)->value, 2.5);
+        is($list->get(1)->value, 5);
         ok(!defined $list->get(2));
       }
     }
@@ -1036,7 +1036,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     {
       # SPVM::Hash
-      my $opt = SPVM::Hash->new([]);
+      my $opt = SPVM::Hash->new(SPVM::new_object_array("object[]", []));
       $opt->set_int(count => 5);
       my $count = $opt->get_int("count");
       
@@ -1046,14 +1046,14 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     # Empty Hash new
     {
       {
-        my $hash = SPVM::Hash->new([]);
+        my $hash = SPVM::Hash->new(SPVM::new_object_array("object[]", []));
         is_deeply($hash->count, 0);
       }
     }
 
     # Pass hash
     {
-      my $hash = SPVM::Hash->new([]);
+      my $hash = SPVM::Hash->new(SPVM::new_object_array("object[]", []));
       $hash->set_int(x => 1);
       $hash->set_double(y => 2.5);
       is($hash->get("x")->value, 1);
@@ -1064,7 +1064,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # Get hash key - any object
   {
     my $biases = SPVM::new_float_array([1, 2, 3]);
-    my $hash = SPVM::Hash->new([]);
+    my $hash = SPVM::Hash->new(SPVM::new_object_array("object[]", []));
     $hash->set(biases => $biases);
     $hash->set("int" => SPVM::Int->new(4));
     my $get_biases = $hash->get("biases");

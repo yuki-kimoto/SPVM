@@ -2,8 +2,19 @@ Revision history for SPVM
 0.9510  2021-03-24
         [CHANGE]
         * Add alias syntax
+        
         [BUG FIX]
         * Fix the bug that the runtime is not freed.
+        
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Remove implicte type convertion Perl array reference to SPVM object and element[]
+          This is a bug fix because the right convesion is impossible,
+          but the following code raise an exception, and the code must be rewirtten.
+          [Before]
+          my $list = SPVM::List->new([]);
+          [After]
+          my $list = SPVM::List->new(SPVM::new_object_array("Int[]", []));
+
 0.9509  2021-03-23
         [DEPRECATIONS]
         * oarray type is deprecated. oarray type will be removed at 0.9510.

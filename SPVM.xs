@@ -688,45 +688,6 @@ call_spvm_method(...)
                 case SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT:
                 case SPVM_API_C_BASIC_TYPE_ID_ELEMENT:
                 {
-                  // New array
-                  void* array = env->new_object_array(env, SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT, length);
-
-                  for (int32_t i = 0; i < length; i++) {
-                    SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-                    SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-                    if (SvOK(sv_value)) {
-                      
-                      // Convert non-ref scalar to byte[]
-                      if (!SvROK(sv_value)) {
-                        // Copy
-                        SV* sv_value_copy = sv_2mortal(newSVsv(sv_value));
-                        
-                        // Encode to UTF-8
-                        sv_utf8_encode(sv_value_copy);
-                        
-                        int32_t length = sv_len(sv_value_copy);
-                        const char* chars = SvPV_nolen(sv_value_copy);
-                        
-                        void* string = env->new_string_raw(env, chars, length);
-                        env->inc_ref_count(env, string);
-                        
-                        sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::Array");
-                      }
-                      
-                      if (!sv_derived_from(sv_value, "SPVM::BlessedObject")) {
-                        croak("Element of %dth argument of %s->%s must inherit SPVM::BlessedObject object at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-                      }
-                      
-                      env->set_elem_object(env, array, i, SPVM_XS_UTIL_get_object(sv_value));
-                    }
-                    else {
-                      env->set_elem_object(env, array, i, NULL);
-                    }
-                  }
-                  
-                  // New sv array
-                  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-                  sv_value = sv_array;
                   break;
                 }
                 default: {
