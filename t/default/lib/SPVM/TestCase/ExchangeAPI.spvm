@@ -1319,4 +1319,19 @@ class TestCase::ExchangeAPI {
     
     return 0;
   }
+  
+  static method arg_array_of_any_object : int ($objects : object[]) {
+    my $int_object = (Int)$objects->[0];
+    my $double_object = (Double)$objects->[1];
+    
+    unless ($int_object->value == 1) {
+      return 0;
+    }
+    
+    unless ($double_object->value == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
 }

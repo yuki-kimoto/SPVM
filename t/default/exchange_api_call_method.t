@@ -787,6 +787,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
         ok(!defined $list->get(2));
       }
     }
+    
+    # Argument - object[] array of any object
+    {
+      my $args = SPVM::new_object_array('object[]', [SPVM::Int->new(1), SPVM::Double->new(3)]);
+      ok(SPVM::TestCase::ExchangeAPI->arg_array_of_any_object($args));
+    }
   }
 }
 

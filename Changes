@@ -5,6 +5,7 @@ Revision history for SPVM
         
         [BUG FIX]
         * Fix the bug that the runtime is not freed.
+        * Fix the bug that SPVM::new_object_array can't recieve object[] type correctly.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove implicte type convertion Perl array reference to SPVM object and element[]

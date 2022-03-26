@@ -720,6 +720,9 @@ call_spvm_method(...)
                 croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
               }
             }
+            else if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT) {
+              // OK
+            }
             else {
               if (!(object_basic_type_id == arg_basic_type_id && object_type_dimension == arg_type_dimension)) {
                 croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
@@ -3104,7 +3107,10 @@ _new_object_array(...)
     else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject::Class")) {
       SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
       
-      if (SPVM_API_object_get_basic_type_id(object) == array_basic_type_id && SPVM_API_object_get_type_dimension(object) == element_type_dimension) {
+      if (basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT) {
+        env->set_elem_object(env, array, index, object);
+      }
+      else if (SPVM_API_object_get_basic_type_id(object) == array_basic_type_id && SPVM_API_object_get_type_dimension(object) == element_type_dimension) {
         env->set_elem_object(env, array, index, object);
       }
       else {
