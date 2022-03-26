@@ -27,21 +27,15 @@ int32_t SPVM_ALLOCATOR_get_memory_blocks_count(SPVM_ALLOCATOR* allocator) {
 void* SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size_t byte_size) {
   
   if (byte_size < 1) {
-    fprintf(stderr, "Failed to allocate memory. Size must be more than 0(%s)\n", __FILE__);
-    abort();
+    return NULL;
   }
   
   if ((size_t)byte_size > SIZE_MAX) {
-    fprintf(stderr, "Failed to allocate memory. Size is too big(%s)\n", __FILE__);
-    abort();
+    return NULL;
   }
   
+  // Alloc memory block
   void* block = calloc(1, (size_t)byte_size);
-  
-  if (block == NULL) {
-    fprintf(stderr, "Failed to allocate memory. malloc function return NULL(%s)\n", __FILE__);
-    abort();
-  }
   
   return block;
 }
