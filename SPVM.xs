@@ -712,13 +712,16 @@ call_spvm_method(...)
           if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
             
+            int32_t object_basic_type_id = SPVM_API_object_get_basic_type_id(object);
+            int32_t object_type_dimension = SPVM_API_object_get_type_dimension(object);
+            
             if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ELEMENT) {
-              if (SPVM_API_object_get_type_dimension(object) == 0) {
+              if (object_type_dimension == 0) {
                 croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
               }
             }
             else {
-              if (!(SPVM_API_object_get_basic_type_id(object) == arg_basic_type_id && SPVM_API_object_get_type_dimension(object) == arg_type_dimension)) {
+              if (!(object_basic_type_id == arg_basic_type_id && object_type_dimension == arg_type_dimension)) {
                 croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
               }
             }
