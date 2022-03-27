@@ -1434,8 +1434,10 @@ array_to_elems(...)
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   if (is_array_type) {
     int32_t element_type_dimension = dimension - 1;
+    
+    int32_t array_is_mulnum_array = SPVM_API_object_get_type_is_mulnum_array(array);
 
-    if (SPVM_API_object_get_type_category(array) == SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY) {
+    if (array_is_mulnum_array) {
       
       for (int32_t index = 0; index < length; index++) {
         int32_t class_id = SPVM_API_get_basic_type_class_id(env, SPVM_API_object_get_basic_type_id(array));
@@ -1637,7 +1639,9 @@ array_to_bin(...)
   if (is_array_type) {
     int32_t element_type_dimension = dimension - 1;
 
-    if (SPVM_API_object_get_type_category(array) == SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY) {
+    int32_t array_is_mulnum_array = SPVM_API_object_get_type_is_mulnum_array(array);
+
+    if (array_is_mulnum_array) {
       int32_t class_id = SPVM_API_get_basic_type_class_id(env, basic_type_id);
       int32_t class_field_ids_length = SPVM_API_get_class_field_ids_length(env, class_id);
       int32_t class_field_ids_base = SPVM_API_get_class_field_ids_base(env, class_id);
