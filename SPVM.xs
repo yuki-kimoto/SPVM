@@ -690,7 +690,9 @@ call_spvm_method(...)
                   break;
                 }
                 default: {
-                  if (arg_type_category == SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY) {
+                  int32_t arg_type_is_mulnum_array = SPVM_API_get_type_is_mulnum_array(env, arg_type_id);
+                  
+                  if (arg_type_is_mulnum_array) {
                     SV* sv_error = NULL;
                     const char* arg_basic_type_name = SPVM_API_get_basic_type_name(env, arg_basic_type_id);
                     SPVM_OBJECT* array = SPVM_XS_UTIL_new_mulnum_array(env, arg_basic_type_name, sv_value, &sv_error);

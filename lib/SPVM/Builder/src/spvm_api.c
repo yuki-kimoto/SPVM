@@ -7550,6 +7550,17 @@ int32_t SPVM_API_get_type_width(SPVM_ENV* env, int32_t type_id) {
   return type_width;
 }
 
+int32_t SPVM_API_get_type_is_mulnum_array(SPVM_ENV* env, int32_t type_id) {
+  
+  SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);
+  
+  assert(type);
+  
+  int32_t is_mulnum_array = type->category & SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY;
+  
+  return is_mulnum_array;
+}
+
 int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id) {
   
   SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, field_id);
