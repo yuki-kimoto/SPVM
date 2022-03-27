@@ -555,7 +555,6 @@ call_spvm_method(...)
       case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:
       case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
       case SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
       {
         // Perl undef to SPVM undef
         if (!SvOK(sv_value)) {
@@ -1134,7 +1133,6 @@ call_spvm_method(...)
     case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
     case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
     case SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY:
-    case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
     case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:
     {
       excetpion_flag = env->call_spvm_method(env, method_id, args_stack);

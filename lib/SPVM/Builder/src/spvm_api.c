@@ -1222,7 +1222,6 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
       case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-      case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
       {
         SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
@@ -1283,7 +1282,6 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-        case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
         {
           if (*(void**)&stack[0] != NULL) {
@@ -1305,7 +1303,6 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-        case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
         {
           if (*(void**)&stack[0] != NULL) {
@@ -4192,7 +4189,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
           case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
           case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-          case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
           case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
           {
             if (!exception_flag) {
@@ -4325,7 +4321,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
             case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
             case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-            case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
             case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
             {
               if (!exception_flag) {
@@ -5403,7 +5398,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-      case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
       {
         if (*(void**)&stack[0] != NULL) {
@@ -5476,7 +5470,7 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   int32_t is_object_array;
   if (object) {
-    is_object_array = object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY || object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY;
+    is_object_array = object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY;
   }
   else {
     is_object_array = 0;
@@ -6702,7 +6696,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   // If reference count is zero, free address.
   if (object->ref_count == 1) {
     // Free elements of object array
-    if (object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY || object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY) {
+    if (object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY) {
       int32_t length = object->length;
       for (int32_t index = 0; index < length; index++) {
         SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[index]);

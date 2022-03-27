@@ -3217,7 +3217,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
           case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
           case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
           case SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY:
-          case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
           case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:
           {
             SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(&");
@@ -4633,7 +4632,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
     case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
     case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:
     case SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY:
-    case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
     case SPVM_API_C_TYPE_CATEGORY_STRING:
     {
       SPVM_STRING_BUFFER_add(string_buffer, "    if (stack[0].oval != NULL) { SPVM_API_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");

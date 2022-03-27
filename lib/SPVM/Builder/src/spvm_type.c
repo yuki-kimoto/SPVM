@@ -31,7 +31,6 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
     "NUMERIC_ARRAY"
     "MULNUM_ARRAY"
     "OBJECT_ARRAY"
-    "ANY_OBJECT_ARRAY"
     "MULNUM_BYTE"
     "MULNUM_SHORT"
     "MULNUM_INT"
@@ -182,9 +181,6 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
     }
     else if (SPVM_TYPE_is_mulnum_array_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY;
-    }
-    else if (SPVM_TYPE_is_any_object_array_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY;
     }
     else if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY;
