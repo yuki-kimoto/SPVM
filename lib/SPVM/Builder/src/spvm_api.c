@@ -4205,62 +4205,75 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             }
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE: {
-            if (!exception_flag) {
-              int32_t fields_length = opcode->operand3;
-              for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                byte_vars[opcode->operand0 + field_index] = *(int8_t*)&stack[field_index];
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_BYTE:
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_SHORT:
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_INT:
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_LONG:
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_FLOAT:
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM_DOUBLE:
+          {
+            switch(call_spvm_method_return_type->category) {
+              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE: {
+                if (!exception_flag) {
+                  int32_t fields_length = opcode->operand3;
+                  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                    byte_vars[opcode->operand0 + field_index] = *(int8_t*)&stack[field_index];
+                  }
+                }
+                break;
               }
-            }
-            break;
-          }
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT: {
-            if (!exception_flag) {
-              int32_t fields_length = opcode->operand3;
-              for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                short_vars[opcode->operand0 + field_index] = *(int16_t*)&stack[field_index];
+              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT: {
+                if (!exception_flag) {
+                  int32_t fields_length = opcode->operand3;
+                  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                    short_vars[opcode->operand0 + field_index] = *(int16_t*)&stack[field_index];
+                  }
+                }
+                break;
               }
-            }
-            break;
-          }
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT: {
-            if (!exception_flag) {
-              int32_t fields_length = opcode->operand3;
-              for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                int_vars[opcode->operand0 + field_index] = *(int32_t*)&stack[field_index];
+              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT: {
+                if (!exception_flag) {
+                  int32_t fields_length = opcode->operand3;
+                  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                    int_vars[opcode->operand0 + field_index] = *(int32_t*)&stack[field_index];
+                  }
+                }
+                break;
               }
-            }
-            break;
-          }
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_LONG: {
-            if (!exception_flag) {
-              int32_t fields_length = opcode->operand3;
-              for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                long_vars[opcode->operand0 + field_index] = *(int64_t*)&stack[field_index];
+              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_LONG: {
+                if (!exception_flag) {
+                  int32_t fields_length = opcode->operand3;
+                  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                    long_vars[opcode->operand0 + field_index] = *(int64_t*)&stack[field_index];
+                  }
+                }
+                break;
               }
-            }
-            break;
-          }
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT: {
-            if (!exception_flag) {
-              int32_t fields_length = opcode->operand3;
-              for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                float_vars[opcode->operand0 + field_index] = *(float*)&stack[field_index];
+              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT: {
+                if (!exception_flag) {
+                  int32_t fields_length = opcode->operand3;
+                  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                    float_vars[opcode->operand0 + field_index] = *(float*)&stack[field_index];
+                  }
+                }
+                break;
               }
-            }
-            break;
-          }
-          case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE: {
-            if (!exception_flag) {
-              int32_t fields_length = opcode->operand3;
-              for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                double_vars[opcode->operand0 + field_index] = *(double*)&stack[field_index];
+              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE: {
+                if (!exception_flag) {
+                  int32_t fields_length = opcode->operand3;
+                  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                    double_vars[opcode->operand0 + field_index] = *(double*)&stack[field_index];
+                  }
+                }
+                break;
+              }
+              default: {
+                assert(0);
               }
             }
             break;
           }
         }
-        
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE:
