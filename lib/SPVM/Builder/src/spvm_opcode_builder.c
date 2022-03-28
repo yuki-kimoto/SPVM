@@ -294,12 +294,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 stack_index++;
                 break;
               }
-              case SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE:
-              case SPVM_TYPE_C_TYPE_CATEGORY_REF_SHORT:
-              case SPVM_TYPE_C_TYPE_CATEGORY_REF_INT:
-              case SPVM_TYPE_C_TYPE_CATEGORY_REF_LONG:
-              case SPVM_TYPE_C_TYPE_CATEGORY_REF_FLOAT:
-              case SPVM_TYPE_C_TYPE_CATEGORY_REF_DOUBLE:
+              case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_REF:
               case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE:
               case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_SHORT:
               case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_INT:

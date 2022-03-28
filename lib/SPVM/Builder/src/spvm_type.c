@@ -32,12 +32,7 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
     "MULNUM_LONG"
     "MULNUM_FLOAT"
     "MULNUM_DOUBLE"
-    "REF_BYTE"
-    "REF_SHORT"
-    "REF_INT"
-    "REF_LONG"
-    "REF_FLOAT"
-    "REF_DOUBLE"
+    "NUMERIC_REF"
     "REF_MULNUM_BYTE"
     "REF_MULNUM_SHORT"
     "REF_MULNUM_INT"
@@ -157,28 +152,14 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
   }
   else if (SPVM_TYPE_is_ref_type(compiler, basic_type_id, dimension, flag)) {
     switch (basic_type_id) {
-      case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_SHORT;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_INT: {
-        type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_INT;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_LONG: {
-        type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_LONG;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_FLOAT;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_DOUBLE;
+      case SPVM_BASIC_TYPE_C_ID_BYTE:
+      case SPVM_BASIC_TYPE_C_ID_SHORT:
+      case SPVM_BASIC_TYPE_C_ID_INT:
+      case SPVM_BASIC_TYPE_C_ID_LONG:
+      case SPVM_BASIC_TYPE_C_ID_FLOAT:
+      case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+      {
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_REF;
         break;
       }
       default: {
