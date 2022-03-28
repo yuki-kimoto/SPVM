@@ -1435,7 +1435,7 @@ array_to_elems(...)
   if (is_array_type) {
     int32_t element_type_dimension = dimension - 1;
     
-    int32_t array_is_mulnum_array = SPVM_API_object_get_type_is_mulnum_array(array);
+    int32_t array_is_mulnum_array = env->is_mulnum_array(env, array);
 
     if (array_is_mulnum_array) {
       
@@ -1639,7 +1639,7 @@ array_to_bin(...)
   if (is_array_type) {
     int32_t element_type_dimension = dimension - 1;
 
-    int32_t array_is_mulnum_array = SPVM_API_object_get_type_is_mulnum_array(array);
+    int32_t array_is_mulnum_array = env->is_mulnum_array(env, array);
 
     if (array_is_mulnum_array) {
       int32_t class_id = SPVM_API_get_basic_type_class_id(env, basic_type_id);

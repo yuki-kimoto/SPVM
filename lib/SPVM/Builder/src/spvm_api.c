@@ -7762,13 +7762,6 @@ int32_t SPVM_API_object_get_type_category(SPVM_OBJECT* object) {
   return object->type_category;
 }
 
-int32_t SPVM_API_object_get_type_is_mulnum_array(SPVM_OBJECT* object) {
-  
-  assert(object);
-  
-  return object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY;
-}
-
 int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
