@@ -3240,8 +3240,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
           case SPVM_API_C_TYPE_CATEGORY_MULNUM_FLOAT:
           case SPVM_API_C_TYPE_CATEGORY_MULNUM_DOUBLE:
           {
-            switch (decl_method_return_type_category) {
-              case SPVM_API_C_TYPE_CATEGORY_MULNUM_BYTE: {
+            int32_t decl_method_return_class_id = SPVM_API_get_basic_type_class_id(env, decl_method_return_basic_type_id);
+            int32_t decl_method_return_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, decl_method_return_class_id);
+            int32_t decl_method_return_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, decl_method_return_class_id);
+            int32_t decl_method_return_class_field_type_id = SPVM_API_get_field_type_id(env, decl_method_return_class_field_ids_base);
+            int32_t decl_method_return_class_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, decl_method_return_class_field_type_id);
+            assert(decl_method_return_class_field_type_basic_type_id >= 0);
+            
+            switch (decl_method_return_class_field_type_basic_type_id) {
+              case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
                 int32_t decl_method_return_type_width = opcode->operand3;
                 for (int32_t field_index = 0; field_index < decl_method_return_type_width; field_index++) {
                   SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3252,7 +3259,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
                 }
                 break;
               }
-              case SPVM_API_C_TYPE_CATEGORY_MULNUM_SHORT: {
+              case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
                 int32_t decl_method_return_type_width = opcode->operand3;
                 for (int32_t field_index = 0; field_index < decl_method_return_type_width; field_index++) {
                   SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3263,7 +3270,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
                 }
                 break;
               }
-              case SPVM_API_C_TYPE_CATEGORY_MULNUM_INT: {
+              case SPVM_API_C_BASIC_TYPE_ID_INT: {
                 int32_t decl_method_return_type_width = opcode->operand3;
                 for (int32_t field_index = 0; field_index < decl_method_return_type_width; field_index++) {
                   SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3274,7 +3281,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
                 }
                 break;
               }
-              case SPVM_API_C_TYPE_CATEGORY_MULNUM_LONG: {
+              case SPVM_API_C_BASIC_TYPE_ID_LONG: {
                 int32_t decl_method_return_type_width = opcode->operand3;
                 for (int32_t field_index = 0; field_index < decl_method_return_type_width; field_index++) {
                   SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3285,7 +3292,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
                 }
                 break;
               }
-              case SPVM_API_C_TYPE_CATEGORY_MULNUM_FLOAT: {
+              case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
                 int32_t decl_method_return_type_width = opcode->operand3;
                 for (int32_t field_index = 0; field_index < decl_method_return_type_width; field_index++) {
                   SPVM_STRING_BUFFER_add(string_buffer, "      ");
@@ -3296,7 +3303,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
                 }
                 break;
               }
-              case SPVM_API_C_TYPE_CATEGORY_MULNUM_DOUBLE: {
+              case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
                 int32_t decl_method_return_type_width = opcode->operand3;
                 for (int32_t field_index = 0; field_index < decl_method_return_type_width; field_index++) {
                   SPVM_STRING_BUFFER_add(string_buffer, "      ");
