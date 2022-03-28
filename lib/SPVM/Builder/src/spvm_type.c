@@ -1334,6 +1334,31 @@ int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int3
   return width;
 }
 
+int32_t SPVM_TYPE_get_mulnum_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  
+  int32_t mulnum_basic_type_id;
+  if (SPVM_TYPE_is_multi_numeric_type(compiler, basic_type_id, dimension, flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, basic_type_id, dimension, flag)) {
+    
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+    assert(basic_type);
+    
+    SPVM_CLASS* class = basic_type->class;
+    
+    assert(class->fields->length > 0);
+    
+    SPVM_FIELD* mulnum_field = SPVM_LIST_fetch(class->fields, 0);
+    
+    SPVM_TYPE* mulnum_field_type = mulnum_field->type;
+    
+    mulnum_basic_type_id = mulnum_field_type->basic_type->id;
+  }
+  else {
+    assert(0);
+  }
+  
+  return mulnum_basic_type_id;
+}
+
 int32_t SPVM_TYPE_get_elem_byte_size(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   assert(!(flag & SPVM_TYPE_C_FLAG_REF));
