@@ -905,6 +905,53 @@ int32_t SPVM_TYPE_is_numeric_ref_type(SPVM_COMPILER* compiler, int32_t basic_typ
   }
 }
 
+int32_t SPVM_TYPE_is_mulnum_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)compiler;
+  
+  int32_t is_mulnum_ref;
+  if (SPVM_TYPE_is_ref_type(compiler, basic_type_id, dimension, flag)) {
+    switch (basic_type_id) {
+      case SPVM_BASIC_TYPE_C_ID_BYTE:
+      case SPVM_BASIC_TYPE_C_ID_SHORT:
+      case SPVM_BASIC_TYPE_C_ID_INT:
+      case SPVM_BASIC_TYPE_C_ID_LONG:
+      case SPVM_BASIC_TYPE_C_ID_FLOAT:
+      case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+      {
+        is_mulnum_ref = 0;
+        break;
+      }
+      default: {
+        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+        SPVM_CLASS* value_class = basic_type->class;
+        SPVM_FIELD* mulnum_field = SPVM_LIST_fetch(value_class->fields, 0);
+        SPVM_TYPE* mulnum_field_type = mulnum_field->type;
+
+        switch (mulnum_field_type->basic_type->id) {
+          case SPVM_BASIC_TYPE_C_ID_BYTE:
+          case SPVM_BASIC_TYPE_C_ID_SHORT:
+          case SPVM_BASIC_TYPE_C_ID_INT:
+          case SPVM_BASIC_TYPE_C_ID_LONG:
+          case SPVM_BASIC_TYPE_C_ID_FLOAT:
+          case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+          {
+            is_mulnum_ref = 1;
+          }
+          default: {
+            assert(0);
+          }
+        }
+        break;
+      }
+    }
+  }
+  else {
+    is_mulnum_ref = 0;
+  }
+  
+  return is_mulnum_ref;
+}
+
 int32_t SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
