@@ -1353,7 +1353,7 @@ int32_t SPVM_TYPE_get_mulnum_basic_type_id(SPVM_COMPILER* compiler, int32_t basi
     mulnum_basic_type_id = mulnum_field_type->basic_type->id;
   }
   else {
-    assert(0);
+    mulnum_basic_type_id = -1;
   }
   
   return mulnum_basic_type_id;
