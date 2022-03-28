@@ -431,7 +431,7 @@ void SPVM_DUMPER_dump_my(SPVM_COMPILER* compiler, SPVM_MY* my) {
     else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       printf("ref");
     }
-    else if (SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+    else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       SPVM_CLASS* value_class =  type->basic_type->class;
       
       SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);

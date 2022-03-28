@@ -1212,7 +1212,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (SPVM_TYPE_is_numeric_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
                 compile_time_check = 1;
               }
-              else if (SPVM_TYPE_is_multi_numeric_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
+              else if (SPVM_TYPE_is_mulnum_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
                 compile_time_check = 1;
               }
               else if (SPVM_TYPE_is_any_object_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
@@ -2276,7 +2276,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_OP* op_var = op_cur->first;
               SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_var);
-              if (!(SPVM_TYPE_is_numeric_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_multi_numeric_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
+              if (!(SPVM_TYPE_is_numeric_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_mulnum_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
                 SPVM_COMPILER_error(compiler, "Refernece target must be numeric type or multi numeric type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
@@ -2287,7 +2287,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_var = op_cur->first;
               SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_var);
               
-              if (!(SPVM_TYPE_is_numeric_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_multi_numeric_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
+              if (!(SPVM_TYPE_is_numeric_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
                 SPVM_COMPILER_error(compiler, "Dereference target must be numeric reference type or value reference type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
@@ -2949,10 +2949,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 if (SPVM_TYPE_is_class_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
                   is_valid_invoker_type = 1;
                 }
-                else if (SPVM_TYPE_is_multi_numeric_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
+                else if (SPVM_TYPE_is_mulnum_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
                   is_valid_invoker_type = 1;
                 }
-                else if (SPVM_TYPE_is_multi_numeric_ref_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
+                else if (SPVM_TYPE_is_mulnum_ref_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
                   is_valid_invoker_type = 1;
                 }
                 else {
@@ -3015,7 +3015,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 SPVM_TYPE* array_element_type = SPVM_OP_get_type(compiler, op_array_access);
                 
-                int32_t is_basic_type_mulnum_t = SPVM_TYPE_basic_type_is_multi_numeric_type(compiler, array_element_type->basic_type->id, array_element_type->dimension, array_element_type->flag);
+                int32_t is_basic_type_mulnum_t = SPVM_TYPE_basic_type_is_mulnum_type(compiler, array_element_type->basic_type->id, array_element_type->dimension, array_element_type->flag);
                 if (is_basic_type_mulnum_t) {
                   if (array_element_type->dimension != 0) {
                     SPVM_COMPILER_error(compiler, "mulnum_t array field access must be 1-dimension array at %s line %d", op_cur->file, op_cur->line);
@@ -3225,7 +3225,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 is_valid = 0;
               }
               // Dist type is multi numeric type
-              else if (SPVM_TYPE_is_multi_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+              else if (SPVM_TYPE_is_mulnum_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                 is_valid = 0;
               }
               // Dist type is object type
@@ -3833,7 +3833,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_VAR: {
                         if (op_cur->uv.var->is_declaration) {
                           SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                          int32_t type_is_mulnum_t = SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag);
+                          int32_t type_is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag);
                           
                           if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag) && !type_is_mulnum_t) {
                             SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
@@ -3928,7 +3928,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                             SPVM_OP_CHECKER_free_mem_id(compiler, call_stack_ref_vars, my);
                           }
-                          else if (SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                          else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                             SPVM_CLASS* value_class =  type->basic_type->class;
                             
                             SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
@@ -4024,7 +4024,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                               SPVM_OP_CHECKER_free_mem_id(compiler, call_stack_ref_vars, my);
                             }
-                            else if (SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                            else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                               SPVM_CLASS* value_class =  type->basic_type->class;
                               
                               SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
@@ -4129,7 +4129,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                             mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_ref_vars, my);
                           }
-                          else if (SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                          else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                             SPVM_CLASS* value_class =  type->basic_type->class;
                             
                             SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
@@ -4403,8 +4403,8 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     }
   }
   // Dist type is multi numeric type
-  else if (SPVM_TYPE_is_multi_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-    if (SPVM_TYPE_is_multi_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+  else if (SPVM_TYPE_is_mulnum_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+    if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
       if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
         can_assign = 1;
       }
@@ -4655,7 +4655,7 @@ void SPVM_OP_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
     
     // Reference type must be numeric refernce type or value reference type
     if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_multi_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+      if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
         SPVM_COMPILER_error(compiler, "Reference type must be numeric refernce type or mulnum_t reference type \"%s\"\\ at %s line %d", basic_type_name, op_type->file, op_type->line);
         return;
       }
@@ -5020,7 +5020,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     for (int32_t class_var_index = 0; class_var_index < class->class_vars->length; class_var_index++) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(class->class_vars, class_var_index);
       SPVM_TYPE* class_var_type = SPVM_OP_get_type(compiler, class_var->op_class_var);
-      int32_t is_mulnum_t = SPVM_TYPE_is_multi_numeric_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
+      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
       
       // valut_t can't become class variable
       if (is_mulnum_t) {
@@ -5044,7 +5044,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
 
       // valut_t can't become field
-      int32_t is_mulnum_t = SPVM_TYPE_is_multi_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
+      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
       if (is_mulnum_t) {
         SPVM_COMPILER_error(compiler, "mulnum_t type can't become field at %s line %d", field->op_field->file, field->op_field->line);
         return;
@@ -5072,10 +5072,10 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
 
         SPVM_TYPE* arg_type = arg_my->type;
         
-        int32_t is_arg_type_is_multi_numeric_type = SPVM_TYPE_is_multi_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-        int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_multi_numeric_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        int32_t is_arg_type_is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_mulnum_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
-        if (is_arg_type_is_multi_numeric_type || is_arg_type_is_value_ref_type) {
+        if (is_arg_type_is_mulnum_type || is_arg_type_is_value_ref_type) {
           args_width += arg_type->basic_type->class->fields->length;
         }
         else {

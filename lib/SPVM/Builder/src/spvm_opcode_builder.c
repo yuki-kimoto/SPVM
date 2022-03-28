@@ -553,7 +553,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       // Initialized not initialized variable
                       if (!op_cur->uv.var->is_initialized && !op_cur->uv.var->my->is_arg) {
                         // Multi numeric type
-                        if (SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                        if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           SPVM_CLASS* value_class = type->basic_type->class;
                           assert(class);
                           
@@ -806,7 +806,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
-                          else if (SPVM_TYPE_is_multi_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                          else if (SPVM_TYPE_is_mulnum_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
                             SPVM_CLASS* value_class = type_dist->basic_type->class;
                             assert(value_class);
                             
@@ -1057,7 +1057,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   
                                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                                 }
-                                else if (SPVM_TYPE_is_multi_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
+                                else if (SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
 
                                   SPVM_CLASS* value_class = arg_type->basic_type->class;
                                   assert(class);
@@ -1226,7 +1226,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                             }
                             // Multi numeric type
-                            else if (SPVM_TYPE_is_multi_numeric_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
+                            else if (SPVM_TYPE_is_mulnum_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
 
                               SPVM_CLASS* value_class = call_method_return_type->basic_type->class;
                               assert(class);
@@ -1321,7 +1321,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                             }
                             // Multi numeric type
-                            else if (SPVM_TYPE_is_multi_numeric_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
+                            else if (SPVM_TYPE_is_mulnum_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
 
                               SPVM_CLASS* value_class = call_method_return_type->basic_type->class;
                               assert(class);
@@ -1538,7 +1538,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_term_invocant);
 
                             // Value field dereference access
-                            if (SPVM_TYPE_is_multi_numeric_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                            if (SPVM_TYPE_is_mulnum_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
                               SPVM_FIELD* field = field_access->field;
                               
                               SPVM_OPCODE opcode;
@@ -1583,7 +1583,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                             }
                             // Value field access
-                            else if (SPVM_TYPE_is_multi_numeric_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                            else if (SPVM_TYPE_is_mulnum_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
                               SPVM_OPCODE opcode;
                               memset(&opcode, 0, sizeof(SPVM_OPCODE));
                               
@@ -1849,7 +1849,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_DEREF : {
                           SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
                           
-                          if (SPVM_TYPE_is_multi_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                          if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_FIELD* first_field = SPVM_LIST_fetch(src_type->basic_type->class->fields, 0);
                           
                             SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -1951,7 +1951,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                           int32_t mem_id_in;
                           SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src->first);
-                          if (SPVM_TYPE_is_multi_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                          if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_CLASS* value_class = src_type->basic_type->class;
                             assert(class);
                             
@@ -3521,7 +3521,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                         case SPVM_OP_C_ID_VAR : {
                           // Multi numeric type
-                          if (SPVM_TYPE_is_multi_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                          if (SPVM_TYPE_is_mulnum_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
                             SPVM_CLASS* value_class = type_dist->basic_type->class;
                             assert(class);
                             
@@ -4359,7 +4359,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_OBJECT);
                                 mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                               }
-                              else if (SPVM_TYPE_is_multi_numeric_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
+                              else if (SPVM_TYPE_is_mulnum_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
                                 SPVM_CLASS* value_class = return_type->basic_type->class;
                                 assert(class);
                                 
@@ -4816,7 +4816,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_term_invocant);
                       
-                      if (SPVM_TYPE_is_multi_numeric_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                      if (SPVM_TYPE_is_mulnum_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
                         SPVM_FIELD* field = field_access->field;
                         
                         SPVM_OPCODE opcode;
@@ -4860,7 +4860,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
-                      else if (SPVM_TYPE_is_multi_numeric_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                      else if (SPVM_TYPE_is_mulnum_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
