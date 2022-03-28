@@ -94,9 +94,9 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
     
     SPVM_FIELD* mulnum_field = SPVM_LIST_fetch(value_class->fields, 0);
     
-    SPVM_TYPE* field_type = mulnum_field->type;
+    SPVM_TYPE* mulnum_field_type = mulnum_field->type;
 
-    switch (field_type->basic_type->id) {
+    switch (mulnum_field_type->basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
         type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE;
         break;
@@ -185,9 +185,9 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
         SPVM_CLASS* value_class = basic_type->class;
         SPVM_FIELD* mulnum_field = SPVM_LIST_fetch(value_class->fields, 0);
-        SPVM_TYPE* field_type = mulnum_field->type;
+        SPVM_TYPE* mulnum_field_type = mulnum_field->type;
 
-        switch (field_type->basic_type->id) {
+        switch (mulnum_field_type->basic_type->id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
             type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE;
             break;
@@ -1353,18 +1353,18 @@ int32_t SPVM_TYPE_get_elem_byte_size(SPVM_COMPILER* compiler, int32_t basic_type
     
     int32_t width = class->fields->length;
     SPVM_FIELD* mulnum_field = (SPVM_FIELD*)SPVM_LIST_fetch(class->fields, 0);
-    int32_t field_basic_type_id = mulnum_field->type->basic_type->id;
+    int32_t mulnum_field_basic_type_id = mulnum_field->type->basic_type->id;
     
-    if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+    if (mulnum_field_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
       elem_byte_size = 1 * width;
     }
-    else if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+    else if (mulnum_field_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
       elem_byte_size = 2 * width;
     }
-    else if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT || field_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+    else if (mulnum_field_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT || mulnum_field_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
       elem_byte_size = 4 * width;
     }
-    else if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG || field_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+    else if (mulnum_field_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG || mulnum_field_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
       elem_byte_size = 8 * width;
     }
     else {
