@@ -4143,44 +4143,53 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         exception_flag = env->call_spvm_method(env, call_method_id, stack);
         
         SPVM_RUNTIME_TYPE* call_spvm_method_return_type = SPVM_API_get_type(env, call_spvm_method->return_type_id);
+        int32_t call_spvm_method_return_basic_type_id = call_spvm_method_return_type->basic_type_id;
 
         switch (call_spvm_method_return_type->category) {
           case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
             break;
           }
-          case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
-            if (!exception_flag) {
-              byte_vars[opcode->operand0] = *(int8_t*)&stack[0];
-            }
-            break;
-          }
-          case SPVM_TYPE_C_TYPE_CATEGORY_SHORT: {
-            if (!exception_flag) {
-              short_vars[opcode->operand0] = *(int16_t*)&stack[0];
-            }
-            break;
-          }
-          case SPVM_TYPE_C_TYPE_CATEGORY_INT: {
-            if (!exception_flag) {
-              int_vars[opcode->operand0] = *(int32_t*)&stack[0];
-            }
-            break;
-          }
-          case SPVM_TYPE_C_TYPE_CATEGORY_LONG: {
-            if (!exception_flag) {
-              long_vars[opcode->operand0] = *(int64_t*)&stack[0];
-            }
-            break;
-          }
-          case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT: {
-            if (!exception_flag) {
-              float_vars[opcode->operand0] = *(float*)&stack[0];
-            }
-            break;
-          }
-          case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE: {
-            if (!exception_flag) {
-              double_vars[opcode->operand0] = *(double*)&stack[0];
+          case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC: {
+            switch (call_spvm_method_return_basic_type_id) {
+              case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
+                if (!exception_flag) {
+                  byte_vars[opcode->operand0] = *(int8_t*)&stack[0];
+                }
+                break;
+              }
+              case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
+                if (!exception_flag) {
+                  short_vars[opcode->operand0] = *(int16_t*)&stack[0];
+                }
+                break;
+              }
+              case SPVM_API_C_BASIC_TYPE_ID_INT: {
+                if (!exception_flag) {
+                  int_vars[opcode->operand0] = *(int32_t*)&stack[0];
+                }
+                break;
+              }
+              case SPVM_API_C_BASIC_TYPE_ID_LONG: {
+                if (!exception_flag) {
+                  long_vars[opcode->operand0] = *(int64_t*)&stack[0];
+                }
+                break;
+              }
+              case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
+                if (!exception_flag) {
+                  float_vars[opcode->operand0] = *(float*)&stack[0];
+                }
+                break;
+              }
+              case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
+                if (!exception_flag) {
+                  double_vars[opcode->operand0] = *(double*)&stack[0];
+                }
+                break;
+              }
+              default: {
+                assert(0);
+              }
             }
             break;
           }
@@ -4276,43 +4285,52 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           exception_flag = env->call_spvm_method(env, call_method_id, stack);
           
           SPVM_RUNTIME_TYPE* decl_method_return_type = SPVM_API_get_type(env, decl_method->return_type_id);
+          int32_t decl_method_return_basic_type_id = decl_method_return_type->basic_type_id;
           switch (decl_method_return_type->category) {
             case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
               break;
             }
-            case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
-              if (!exception_flag) {
-                byte_vars[opcode->operand0] = *(int8_t*)&stack[0];
-              }
-              break;
-            }
-            case SPVM_TYPE_C_TYPE_CATEGORY_SHORT: {
-              if (!exception_flag) {
-                short_vars[opcode->operand0] = *(int16_t*)&stack[0];
-              }
-              break;
-            }
-            case SPVM_TYPE_C_TYPE_CATEGORY_INT: {
-              if (!exception_flag) {
-                int_vars[opcode->operand0] = *(int32_t*)&stack[0];
-              }
-              break;
-            }
-            case SPVM_TYPE_C_TYPE_CATEGORY_LONG: {
-              if (!exception_flag) {
-                long_vars[opcode->operand0] = *(int64_t*)&stack[0];
-              }
-              break;
-            }
-            case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT: {
-              if (!exception_flag) {
-                float_vars[opcode->operand0] = *(float*)&stack[0];
-              }
-              break;
-            }
-            case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE: {
-              if (!exception_flag) {
-                double_vars[opcode->operand0] = *(double*)&stack[0];
+            case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC: {
+              switch (decl_method_return_basic_type_id) {
+                case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
+                  if (!exception_flag) {
+                    byte_vars[opcode->operand0] = *(int8_t*)&stack[0];
+                  }
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
+                  if (!exception_flag) {
+                    short_vars[opcode->operand0] = *(int16_t*)&stack[0];
+                  }
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_INT: {
+                  if (!exception_flag) {
+                    int_vars[opcode->operand0] = *(int32_t*)&stack[0];
+                  }
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_LONG: {
+                  if (!exception_flag) {
+                    long_vars[opcode->operand0] = *(int64_t*)&stack[0];
+                  }
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
+                  if (!exception_flag) {
+                    float_vars[opcode->operand0] = *(float*)&stack[0];
+                  }
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
+                  if (!exception_flag) {
+                    double_vars[opcode->operand0] = *(double*)&stack[0];
+                  }
+                  break;
+                }
+                default: {
+                  assert(0);
+                }
               }
               break;
             }

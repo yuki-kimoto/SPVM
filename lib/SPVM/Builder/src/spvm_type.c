@@ -19,12 +19,7 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
   static const char* const id_names[] = {
     "UNKNOWN"
     "VOID"
-    "BYTE"
-    "SHORT"
-    "INT"
-    "LONG"
-    "FLOAT"
-    "DOUBLE"
+    "NUMERIC"
     "STRING"
     "CLASS"
     "ANY_OBJECT"
@@ -91,44 +86,15 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING;
   }
   else if (SPVM_TYPE_is_numeric_type(compiler, basic_type_id, dimension, flag)) {
-    switch (basic_type_id) {
-      case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        type_category = SPVM_TYPE_C_TYPE_CATEGORY_BYTE;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        type_category = SPVM_TYPE_C_TYPE_CATEGORY_SHORT;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_INT: {
-        type_category = SPVM_TYPE_C_TYPE_CATEGORY_INT;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_LONG: {
-        type_category = SPVM_TYPE_C_TYPE_CATEGORY_LONG;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        type_category = SPVM_TYPE_C_TYPE_CATEGORY_FLOAT;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        type_category = SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE;
-        break;
-      }
-      default: {
-        assert(0);
-        break;
-      }
-    }
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC;
   }
   else if (SPVM_TYPE_is_multi_numeric_type(compiler, basic_type_id, dimension, flag)) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     SPVM_CLASS* value_class = basic_type->class;
     
-    SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
+    SPVM_FIELD* mulnum_field = SPVM_LIST_fetch(value_class->fields, 0);
     
-    SPVM_TYPE* field_type = first_field->type;
+    SPVM_TYPE* field_type = mulnum_field->type;
 
     switch (field_type->basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
@@ -218,10 +184,8 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
       default: {
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
         SPVM_CLASS* value_class = basic_type->class;
-        
-        SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
-        
-        SPVM_TYPE* field_type = first_field->type;
+        SPVM_FIELD* mulnum_field = SPVM_LIST_fetch(value_class->fields, 0);
+        SPVM_TYPE* field_type = mulnum_field->type;
 
         switch (field_type->basic_type->id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
@@ -1388,8 +1352,8 @@ int32_t SPVM_TYPE_get_elem_byte_size(SPVM_COMPILER* compiler, int32_t basic_type
     SPVM_CLASS* class = basic_type->class;
     
     int32_t width = class->fields->length;
-    SPVM_FIELD* first_field = (SPVM_FIELD*)SPVM_LIST_fetch(class->fields, 0);
-    int32_t field_basic_type_id = first_field->type->basic_type->id;
+    SPVM_FIELD* mulnum_field = (SPVM_FIELD*)SPVM_LIST_fetch(class->fields, 0);
+    int32_t field_basic_type_id = mulnum_field->type->basic_type->id;
     
     if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
       elem_byte_size = 1 * width;
