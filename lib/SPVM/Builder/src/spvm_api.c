@@ -7561,6 +7561,32 @@ int32_t SPVM_API_get_type_is_mulnum_array(SPVM_ENV* env, int32_t type_id) {
   return is_mulnum_array;
 }
 
+int32_t SPVM_API_get_type_can_assign_to_any_object(SPVM_ENV* env, int32_t type_id) {
+  
+  SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);
+  
+  assert(type);
+  
+  int32_t is_object;
+  switch (type->category) {
+    case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
+    case SPVM_API_C_TYPE_CATEGORY_CLASS:
+    case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
+    case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:
+    case SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY:
+    case SPVM_API_C_TYPE_CATEGORY_STRING:
+    {
+      is_object = 1;
+      break;
+    }
+    default: {
+      is_object = 0;
+    }
+  }
+  
+  return is_object;
+}
+
 int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id) {
   
   SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, field_id);
