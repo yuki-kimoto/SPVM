@@ -1044,18 +1044,13 @@ call_spvm_method(...)
       int32_t method_return_class_id = SPVM_API_get_basic_type_class_id(env, method_return_basic_type_id);
       int32_t method_return_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, method_return_class_id);
       int32_t method_return_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, method_return_class_id);
-      
       int32_t method_return_mulnum_field_id = method_return_class_field_ids_base;
       int32_t method_return_mulnum_field_type_id = SPVM_API_get_field_type_id(env, method_return_mulnum_field_id);
+      int32_t method_return_mulnum_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, method_return_mulnum_field_type_id);
       
       HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
       for (int32_t field_index = 0; field_index < method_return_class_field_ids_length; field_index++) {
-        int32_t mulnum_field_id = method_return_class_field_ids_base + field_index;
-        int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-        const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-        
         SV* sv_field_value = NULL;
-        int32_t method_return_mulnum_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, method_return_mulnum_field_type_id);
         switch (method_return_mulnum_field_type_basic_type_id) {
           case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
             sv_field_value = sv_2mortal(newSViv(args_stack[field_index].bval));
@@ -1081,10 +1076,14 @@ call_spvm_method(...)
             sv_field_value = sv_2mortal(newSVnv(args_stack[field_index].dval));
             break;
           }
-          default:
+          default: {
             assert(0);
+          }
         }
         
+        int32_t mulnum_field_id = method_return_class_field_ids_base + field_index;
+        int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+        const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
         (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
         sv_return_value = sv_2mortal(newRV_inc((SV*)hv_value));
       }
