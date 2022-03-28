@@ -374,11 +374,10 @@ call_spvm_method(...)
       }
       // Perl hash reference to SPVM byte multi numeric type
       case SPVM_API_C_TYPE_CATEGORY_MULNUM_BYTE: {
+        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
         if (sv_derived_from(sv_value, "HASH")) {
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-
           HV* hv_value = (HV*)SvRV(sv_value);
           for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
             int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
@@ -406,10 +405,10 @@ call_spvm_method(...)
       }
       // Perl hash reference to SPVM short multi numeric type
       case SPVM_API_C_TYPE_CATEGORY_MULNUM_SHORT: {
+        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
         if (sv_derived_from(sv_value, "HASH")) {
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
           HV* hv_value = (HV*)SvRV(sv_value);
           for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
             int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
@@ -436,10 +435,10 @@ call_spvm_method(...)
       }
       // Perl hash reference to SPVM int multi numeric type
       case SPVM_API_C_TYPE_CATEGORY_MULNUM_INT: {
+        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
         if (sv_derived_from(sv_value, "HASH")) {
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
           HV* hv_value = (HV*)SvRV(sv_value);
           for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
             int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
@@ -466,10 +465,10 @@ call_spvm_method(...)
       }
       // Perl hash reference to SPVM long multi numeric type
       case SPVM_API_C_TYPE_CATEGORY_MULNUM_LONG: {
+        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
         if (sv_derived_from(sv_value, "HASH")) {
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
           HV* hv_value = (HV*)SvRV(sv_value);
           for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
             int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
@@ -496,10 +495,10 @@ call_spvm_method(...)
       }
       // Perl hash reference to SPVM float multi numeric type
       case SPVM_API_C_TYPE_CATEGORY_MULNUM_FLOAT: {
+        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
         if (sv_derived_from(sv_value, "HASH")) {
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
           HV* hv_value = (HV*)SvRV(sv_value);
           for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
             int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
@@ -526,10 +525,10 @@ call_spvm_method(...)
       }
       // Perl hash reference to SPVM double multi numeric type
       case SPVM_API_C_TYPE_CATEGORY_MULNUM_DOUBLE: {
+        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
         if (sv_derived_from(sv_value, "HASH")) {
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
           HV* hv_value = (HV*)SvRV(sv_value);
           for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
             int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
