@@ -3373,7 +3373,7 @@ If the class variable does not found, a compilation error occurs.
 
 If the class variable is C<private> and it is accessed outside of the class, a compilation error occurs.
 
-B<Examples of Getting Class Variable:>
+B<Examples of getting class variable:>
 
   class Foo {
     our $VAR : int;
