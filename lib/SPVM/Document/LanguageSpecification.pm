@@ -1776,7 +1776,7 @@ If more than one of "callback_t", "mulnum_t", "pointer_t" are specified, a compi
 
 =head2 Destructor
 
-If the class is L<"Class Type">, the class can define the destructor.
+If the class is a L<class type|"Class Types">, the class can has the destructor.
 
 A destructor is a special L<method|"Method"> called when the object is destroyed.
 
@@ -1806,55 +1806,30 @@ B<Examples of destructors:>
 
 =head2 Callback
 
-Callback is a L<class|"Class"> that is designed to receive a callback method.
-
-A callback type is a L<"Class Type"> with L<"Class Descriptors"> "callback_t".
+A callback can be defined using the L<class descriptor|"Class Descriptors"> C<callback_t>.
 
   class Comparator: callback_t {
     method : int ($x1 : object, $x2 : object);
   }
 
-A callback type must have only one L<"Method Definition">. The method must be L<"Instance Method">.
+The type of the callback is L<"Callback Type">.
 
-Method names of the callback type must be anonymouse.
+A callback must have only one L<method definition|"Method Definition">. The method must be a L<instance method|"Instance Method">.
 
-L<"Field Definition"> and L<"Class Variable Definition"> can't be defined.
+The callback can't have the L<method block|"Method Block">.
 
-A L<private class descriptor|"Class Descriptors"> is specifed.
+The method name of the callback must be an empty string C<"">.
 
-If the object has the same method declaration of the callback type, it can be assinged to the callback type.
+The callback can't have L<field definitions|"Field Definition"> and L<class variable definition|"Class Variable Definition">.
 
-  # the definiton of a callback type
-  class Comparator: callback_t {
-    method : int ($x1 : object, $x2 : object);
-  }
-  
-  # The definition of a class
-  class SomeComparator {
-    static method new: int () {
-      return new SomeComparator;
-    }
-  
-    method : int ($x1 : object, $x2 : object) {
-  
-    }
-  }
-  
-  # The object can be assign to the callback type
-  my $comparator: Comparator = SomeComparator->new;
+If the definition of the callback is invalid, a compilation error will occur.
 
-If the object is created by the syntax of L<"Create Callback"> and the object has the same method declaration of the callback type,
-it can be assinged to the callback type.
+If the object is created by the syntax of L<"Create Callback"> can be assigned to the callback that the types of arguments and return type are same.
 
-  # The definition of a callback type
-  class Comparator: callback_t {
-    method : int ($x1 : object, $x2 : object);
-  }
-  
   # Create a callback and it is assigned to a callback type
   my $comparator : Comparator = method : int ($x1 : object, $x2 : object) {
     
-  }
+  };
 
 =head2 Interface
 
@@ -1923,7 +1898,7 @@ The class have a L<interface|"Interface"> specified by a C<implement> statement 
     }
   }
 
-C<implement> statements can be defined in the class that is L<class types|"Class Type">.
+C<implement> statements can be defined in the class that is L<class types|"Class Types">.
 
 Not that C<implement> statement doesn't force the implementation of all methods of the interface class. 
 
@@ -3472,7 +3447,7 @@ B<Get Field Expression> is a Expression to get L<"Field"> Value.
 
   INVOCANT_EXPRESSION->{FIELD_NAME}
 
-Invocant Expression is L<"Class Type">. If Expression is L<"Multi Numeric Types"> Value, The Field Access is L<"Get Multi Numeric Field Value">. If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise a compilation error occurs.
+Invocant Expression is L<"Class Types">. If Expression is L<"Multi Numeric Types"> Value, The Field Access is L<"Get Multi Numeric Field Value">. If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise a compilation error occurs.
 
 If the field names does not found in the <a href="#language-class">Class">, a compilation error occurs
 
@@ -3491,7 +3466,7 @@ B<Set Field Expression> is a Expression to set L<"Field"> Value.
 
   INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_OPERAND
 
-Invocant Expression is L<"Class Type">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Set Multi Numeric Field Value">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
+Invocant Expression is L<"Class Types">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Set Multi Numeric Field Value">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
 
 If the assignment does not satisfy the type compatibility of the type of Field, a compilation error occurs.
 
@@ -3516,7 +3491,7 @@ B<Get Multi Numeric Field Value Expression> is a Expression to get Field Value o
 
   INVOCANT_EXPRESSION->{FIELD_NAME}
 
-Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Get Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Get Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
   
 If the field names does not found in the L<"Class">, a compilation error occurs
 
@@ -3537,7 +3512,7 @@ Set Multi Numeric Field Value Expression is a Expression to set Field Value of L
 
 <
 
-Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Type">, the Field Access is L<"Set Field">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<"Set Field">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs.
 
@@ -3558,7 +3533,7 @@ B<Get Multi Numeric Field Value via Dereference Expression> is a Expression to g
 
   INVOCANT_EXPRESSION->{FIELD_NAME}
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, the Field Access is , L<"Get Field">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Get Multi Numeric Field Value">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Types">, the Field Access is , L<"Get Field">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Get Multi Numeric Field Value">, otherwise a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs
 
@@ -3578,7 +3553,7 @@ Set Multi Numeric Field Value Expression via Dereference is a Expression to set 
 
   INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_OPERAND
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Type">, L<"Set Field">. If Invocant Expression is L<"Multi Numeric Types">, L<"Set Multi Numeric Field Value">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Types">, L<"Set Field">. If Invocant Expression is L<"Multi Numeric Types">, L<"Set Multi Numeric Field Value">, otherwise a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs
 
@@ -3660,7 +3635,7 @@ B<Create Object Expression> is a Expression to create Object using B<new> operat
 
   my $object = new CLASS_NAME;
 
-L<"Class"> that is specified by L<"Class Names"> must be L<"Class Type">.
+L<"Class"> that is specified by L<"Class Names"> must be L<"Class Types">.
 
 Fields of the Object are initialized by L<"Type Initial Value">.
 
@@ -4621,7 +4596,7 @@ isa Operator has three behaviors, depending on Right Type.
 
 1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the type of The left operand is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
 
-2. If the Right Type is L<"Class Type">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error occurs.
+2. If the Right Type is L<"Class Types">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error occurs.
 
 3. If the Right Type is L<"Callback Type">, isa Operator checks whether the type of The left operand satisfy the Callback Type at Run Time. If The left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error occurs.
 
@@ -4977,7 +4952,7 @@ isweak Operator is an Operator that checks whether Field is</a>L<"Weaken Referen
 
   isweak VARIABLE->{FIELD_NAME};
 
-The Type of object Expression must be L<"Class Type">. otherwise a compilation error occurs.
+The Type of object Expression must be L<"Class Types">. otherwise a compilation error occurs.
 
 Field names must be a existed field names, otherwise a compilation error occurs.
 
@@ -5001,7 +4976,7 @@ The C<has_implement> operator checks the existence of the method implementation.
 
   has_implement OPERAND->METHOD_NAME
 
-The operand must the object that has a L<class type|"Class Type"> or a L<interface type|"Interface Type">, otherwise a compilation error occurs.
+The operand must the object that has a L<class type|"Class Types"> or a L<interface type|"Interface Type">, otherwise a compilation error occurs.
 
 The method name must be a L<method name|"Method Names">, otherwise a compilation error occurs.
 
@@ -5466,7 +5441,7 @@ A weaken Statement is a Statement that sets L<"Weaken Reference"> for the Field.
 
   weaken VARIABLE->{FIELD_NAME};
 
-The Type of the object Expression must be L<"Class Type">, otherwise a compilation error occurs.
+The Type of the object Expression must be L<"Class Types">, otherwise a compilation error occurs.
 
 Field names must be an existing field names, otherwise a compilation error occurs.
 
@@ -5512,7 +5487,7 @@ unweaken Statement is a Statement that cancels L<"Weaken Reference"> for Field.
 
   unweaken VARIABLE->{FIELD_NAME};
 
-The Type of the object Expression must be L<"Class Type">, otherwise a compilation error occurs.
+The Type of the object Expression must be L<"Class Types">, otherwise a compilation error occurs.
 
 Field names must be an existing Field names, otherwise a compilation error occurs.
 
@@ -5767,9 +5742,11 @@ C<float> type is a L<"Floating Point Types"> that represents a single precision(
 
 C<double> type is a L<"Floating Point Types"> that represents a double precision(64bit) floating point. This is the same type as C<double> type of C language.
 
-=head2 Class Type
+=head2 Class Types
 
-The class type is the type that can create the object using a L<new operator|"Create Object">. Class types are the L<class|"Class"> that doesn't have class descriptors C<mulnum_t>, C<interface_t>, and C<callback_t>, and the class that has a C<pointer_t> L<class descriptor|"Class Descriptors">.
+The class type is the type that can create the object using a L<new operator|"Create Object">.
+
+  new ClassType;
 
   # Class types
   class Foo {
@@ -5780,6 +5757,8 @@ The class type is the type that can create the object using a L<new operator|"Cr
   
   }
 
+Class types are the L<class|"Class"> that doesn't have class descriptors C<mulnum_t>, C<interface_t>, and C<callback_t>, and the class that has a C<pointer_t> L<class descriptor|"Class Descriptors">.
+
 =head2 Pointer Type
 
 The pointer type is the type that has a C<pointer_t> L<class descriptor|"Class Descriptors">.
@@ -5789,11 +5768,11 @@ The pointer type is the type that has a C<pointer_t> L<class descriptor|"Class D
   
   }
 
-A pointer type is a L<class type|"Class Type">
+A pointer type is a L<class type|"Class Types">
 
 =head2 Object Types
 
-Object types are L<"Class Type">, L<"Callback Type">, L<"Array Types">, L<"string Type">, L<"Any Object Type">.
+Object types are L<"Class Types">, L<"Callback Type">, L<"Array Types">, L<"string Type">, L<"Any Object Type">.
 
 The value of a object type can be assigned to a any object type.
 
@@ -5884,7 +5863,7 @@ The callback type is a type that is defined using a C<class> keyword and a L<cla
 
 See also L<"Callback">.
 
-Note that callback types are not L<class types|"Class Types"> although they are defined by C<class> keyword.
+Note that callback types are not L<class types|"Class Typess"> although they are defined by C<class> keyword.
 
 =head2 Interface Type
 
@@ -5899,7 +5878,7 @@ The interface type is a type that is defined using a C<class> keyword and a L<cl
 
 See also L<"Interface">.
 
-Note that interface types are not L<class types|"Class Types"> although they are defined by C<class> keyword.
+Note that interface types are not L<class types|"Class Typess"> although they are defined by C<class> keyword.
 
 =head2 Any Object Type
 
@@ -5915,7 +5894,7 @@ You can methodstitute the value of "Object Types" for Any Object Type.
 
 =head2 self Type
 
-self Type represents the Class Type to which it belongs, and indicates that the argument is Invocant.
+self Type represents the Class Types to which it belongs, and indicates that the argument is Invocant.
 
   self
 
@@ -5929,7 +5908,7 @@ B<void Type> is a special Type that can only be used in the return type of L<"Me
 
 =head2 Basic Type
 
-A Type that does not have dimensions is called a Basic Type. L<"Numeric Types">, L<"Class Type">, <a href = "#language-type- any-object ">Any Object Type">, L<"string Type"> is a Basic Type.
+A Type that does not have dimensions is called a Basic Type. L<"Numeric Types">, L<"Class Types">, <a href = "#language-type- any-object ">Any Object Type">, L<"string Type"> is a Basic Type.
 
 =head2 Array Types
 
@@ -6676,7 +6655,7 @@ The object is released from memory when the Reference Count reaches 0.
 
 If the object is an Array that has Object Type values ​​as elements, the Reference Count of all Array elements that are not Undefined Value is decremented by 1 before Garbage Collection
 
-When an object is a Class Type and has a field of Object Type, the Reference Count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by 1 before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by 1.
+When an object is a Class Types and has a field of Object Type, the Reference Count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by 1 before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by 1.
 
 When the object has Back references of Weaken Reference, Undefined Value is assigned to all Fields registered as back References and all back References are deleted.
 
