@@ -2308,47 +2308,48 @@ B<Field Definition Example:>
 
 =head2 Field Access
 
-Field Access is an operation to access Field to get or set a value.
+The field access is an expression to get or set the field.
 
   INVOCANT->{FIELD_NAME}
 
-Field Access has three different meanings.
+The field access has three different meanings.
 
-B<1. Class Based Object Field Access>
+=head3 Field Access of the Class
 
-Class Based Object Field Access is Field Access from object which is create by L<"new"> keyword.
+The field access of the L<class|"Class">.
 
   my $point = new Point;
   $point->{x} = 1;
+  my $x = $point->{x};
 
-See L<"Getting Field"> to get field of Class Based Object.
+See L<"Getting Field"> to get the field of the L<class|"Class">.
 
-See L<"Setting Field"> to set field of Class Based Object.
+See L<"Setting Field"> to set the field of the L<class|"Class">.
 
-B<2. Multi Numeric Field Access>
+=head3 Field Access of the Multi Numeric Type
 
-Multi Numeric Field Access is Field Access from the value of L<"Multi Numeric Types">. The value of L<"Multi Numeric Types"> is allocated Callstack of Method.
+The field access of the L<multi numeric type|"Multi Numeric Types">.
 
   my $z : Complex_2d;
-  $z->{x} = 1;
-  $z->{y} = 3;
+  $z->{re} = 1;
+  my $re = $z->{re};
 
-See L<"Getting Multi Numeric Field Value"> to get field of the value of L<"Multi Numeric Types">.
+See L<"Getting Multi Numeric Field"> to get the field of the L<multi numeric type|"Multi Numeric Types">.
 
-See L<"Setting Multi Numeric Field Value"> to set field of the value of L<"Multi Numeric Types">.
+See L<"Setting Multi Numeric Field"> to set the field of L<multi numeric type|"Multi Numeric Types">.
 
-B<3. Dereference Multi Numeric Field>
+=head3 Field Access of the Multi Numeric Reference via Derefernce
 
-Dereference Multi Numeric Field is Field access from Reference of the value of L<"Multi Numeric Types">.
+The field access of the L<multi numeric reference|"Multi Numeric Reference Type"> via derefernce.
 
   my $z : Complex_2d;
   my $z_ref = \$z;
-  $z_ref->{x} = 1;
-  $z_ref->{y} = 3;
+  $z_ref->{re} = 1;
+  my $re = $z_ref->{re};
 
-See L<"Getting Multi Numeric Field Value via Dereference"> to get Multi Numeric Field via Dereference.
+See L<"Getting Multi Numeric Field via Dereference"> to get the field of the L<multi numeric reference|"Multi Numeric Reference Type"> via dereference.
 
-See L<"Setting Multi Numeric Field Value via Dereference"> to set Multi Numeric Field via Dereference.
+See L<"Setting Multi Numeric Field via Dereference"> to set the field of the L<multi numeric reference|"Multi Numeric Reference Type"> via dereference.
 
 =head1 Method
 
@@ -3229,9 +3230,9 @@ B<Multi Numeric Types Field Access> is an operation to access Multi Numeric Type
 
   MULTI_NUMERIC_TYPE_VALUE->{FIELD_NAME}
 
-See L<"Getting Multi Numeric Field Value"> to get Multi Numeric Types Field Value.
+See L<"Getting Multi Numeric Field"> to get Multi Numeric Types Field.
 
-See L<"Setting Multi Numeric Field Value"> to set Multi Numeric Types Field Value.
+See L<"Setting Multi Numeric Field"> to set Multi Numeric Types Field.
 
 =head1 Multi Numeric Array
 
@@ -3312,12 +3313,12 @@ Dereference is an operation to get and set the value pointed by Reference.
   # Dereference Multi Numeric Types Reference to set the pointed value
   $$point_ref = $point2;
 
-If the target of Reference Type is L<"Multi Numeric Types">, the setting and getting of Multi Numeric Types Field Value can be done by Arrow Operator.
+If the target of Reference Type is L<"Multi Numeric Types">, the setting and getting of Multi Numeric Types Field can be done by Arrow Operator.
 
-  # If the target of Reference Type is Multi Numeric Types, get Multi Numeric Types Field Value
+  # If the target of Reference Type is Multi Numeric Types, get Multi Numeric Types Field
   my $x = $point_ref->{x};
   
-  # If the Target of Reference Type is Multi Numeric Types, set Multi Numeric Types Field Value
+  # If the Target of Reference Type is Multi Numeric Types, set Multi Numeric Types Field
   $point_ref->{x} = 1;
 
 =head1 Expressions
@@ -3453,7 +3454,7 @@ The syntax of B<Getting Field> is a syntax to get the value of a L<field|"Field"
 
 The type of invocant must be a L<class type|"Class Types">, a L<multi numeric type|"Multi Numeric Types">, or a L<multi mumeric reference type|"Multi Numeric Reference Type">.
 
-If Expression is L<"Multi Numeric Types"> Value, The Field Access is L<"Getting Multi Numeric Field Value">.
+If Expression is L<"Multi Numeric Types"> Value, The Field Access is L<"Getting Multi Numeric Field">.
 
 If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise a compilation error occurs.
 
@@ -3474,7 +3475,7 @@ B<Setting Field Expression> is a Expression to set L<"Field"> Value.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
-Invocant Expression is L<"Class Types">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Setting Multi Numeric Field Value">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Setting Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
+Invocant Expression is L<"Class Types">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Setting Multi Numeric Field">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Setting Multi Numeric Field via Dereference">, otherwise a compilation error occurs.
 
 If the assignment does not satisfy the type compatibility of the type of Field, a compilation error occurs.
 
@@ -3493,85 +3494,85 @@ B<Setting Field Example:>
   my $point = Point->new;
   $point->{x} = 1;
 
-=head2 Getting Multi Numeric Field Value
+=head2 Getting Multi Numeric Field
 
-B<Getting Multi Numeric Field Value Expression> is a Expression to get Field Value of L<"Multi Numeric Value">.
+B<Getting Multi Numeric Field Expression> is a Expression to get Field of L<"Multi Numeric Value">.
 
   INVOCANT->{FIELD_NAME}
 
-Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Getting Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Getting Multi Numeric Field via Dereference">, otherwise a compilation error occurs.
   
 If the field names does not found in the L<"Class">, a compilation error occurs
 
-Getting Multi Numeric Field Value Expression returns the field value in the Multi Numeric Value.
+Getting Multi Numeric Field Expression returns the field value in the Multi Numeric Value.
 
 Retrun Type is The L<"Types"> of the Field.
 
-B<Getting Multi Numeric Field Value Example:>
+B<Getting Multi Numeric Field Example:>
 
   my $z : Complex_2d;
   my $re = $z->{x};
 
-=head2 Setting Multi Numeric Field Value
+=head2 Setting Multi Numeric Field
 
-Setting Multi Numeric Field Value Expression is a Expression to set Field Value of L<"Multi Numeric Value"> using L<"Assignment Operator">.
+Setting Multi Numeric Field Expression is a Expression to set Field of L<"Multi Numeric Value"> using L<"Assignment Operator">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
 <
 
-Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<"Setting Field">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Setting Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<"Setting Field">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Setting Multi Numeric Field via Dereference">, otherwise a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs.
 
-Setting Multi Numeric Field Value Expression returns the value of Field after setting. 
+Setting Multi Numeric Field Expression returns the value of Field after setting. 
 
 The Assignment must satisfy the type compatibility.
 
 Return Value Type is the type of Field.
 
-B<Setting Multi Numeric Field Value Example:>
+B<Setting Multi Numeric Field Example:>
 
   my $z : Complex_2d;
   $z->{x} = 2.5;
 
-=head2 Getting Multi Numeric Field Value via Dereference
+=head2 Getting Multi Numeric Field via Dereference
 
-B<Getting Multi Numeric Field Value via Dereference Expression> is a Expression to get Field Value of L<"Multi Numeric Value"> via L<"Dereference">.
+B<Getting Multi Numeric Field via Dereference Expression> is a Expression to get Field of L<"Multi Numeric Value"> via L<"Dereference">.
 
   INVOCANT->{FIELD_NAME}
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Types">, the Field Access is , L<"Getting Field">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Getting Multi Numeric Field Value">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Types">, the Field Access is , L<"Getting Field">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Getting Multi Numeric Field">, otherwise a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs
 
-Getting Multi Numeric Field Value via Dereference Expression returns the field value in the Multi Numeric Value.
+Getting Multi Numeric Field via Dereference Expression returns the field value in the Multi Numeric Value.
 
 Retrun Type is The L<"Types"> of the Field.
 
-B<Getting Multi Numeric Field Value via Dereference Example:>
+B<Getting Multi Numeric Field via Dereference Example:>
 
   my $z : Complex_2d;
   my $z_ref = \$z;
   my $re = $z_ref->{x};
 
-=head2 Setting Multi Numeric Field Value via Dereference
+=head2 Setting Multi Numeric Field via Dereference
 
-Setting Multi Numeric Field Value Expression via Dereference is a Expression to set Field Value of L<"Multi Numeric Value"> via L<"Dereference"> using L<"Assignment Operator">.
+Setting Multi Numeric Field Expression via Dereference is a Expression to set Field of L<"Multi Numeric Value"> via L<"Dereference"> using L<"Assignment Operator">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Types">, L<"Setting Field">. If Invocant Expression is L<"Multi Numeric Types">, L<"Setting Multi Numeric Field Value">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Types">, L<"Setting Field">. If Invocant Expression is L<"Multi Numeric Types">, L<"Setting Multi Numeric Field">, otherwise a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs
 
-Setting Multi Numeric Field Value via Dereference Expression returns the value of Field after setting.
+Setting Multi Numeric Field via Dereference Expression returns the value of Field after setting.
 
 The Assignment must satisfy the type compatibility.
 
 Return Value Type is the type of Field.
 
-B<Setting Multi Numeric Field Value via Dereference Example:>
+B<Setting Multi Numeric Field via Dereference Example:>
 
   my $z : Complex_2d;
   my $z_ref = \$z;
