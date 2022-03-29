@@ -5253,7 +5253,7 @@ The while Statement is internally enclosed by an invisible L<"Simple Block">.
     $i++;
   }
   
-  # 展開後
+  # After expansion
   my $num = 5;
   {
     while (my $num = 3) {
