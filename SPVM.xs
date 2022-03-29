@@ -297,41 +297,6 @@ call_spvm_method(...)
         }
         break;
       }
-      // Perl scalar to SPVM string
-      case SPVM_API_C_TYPE_CATEGORY_STRING: {
-        // Perl undef to SPVM undef
-        if (!SvOK(sv_value)) {
-          args_stack[args_stack_index].oval = NULL;
-        }
-        else {
-          // Perl non-ref scalar to SPVM string
-          // If Perl value is non-ref scalar, the value is converted to SPVM::BlessedObject::String object
-          if (!SvROK(sv_value)) {
-            // Convert Perl decoded string to loose UTF-8 bytes.
-            SV* sv_value_copy = sv_2mortal(newSVsv(sv_value));
-            sv_utf8_encode(sv_value_copy);
-            const char* chars = SvPV_nolen(sv_value_copy);
-            int32_t length = SvCUR(sv_value_copy);
-            void* string = env->new_string(env, chars, length);
-            
-            SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
-            
-            sv_value = sv_string;
-          }
-          
-          // Perl SPVM::BlessedObject::String to SPVM string
-          if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
-            SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-            
-            args_stack[args_stack_index].oval = object;
-          }
-          else {
-            croak("%dth argument of %s->%s must be a non-ref scalar or a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-          }
-        }
-        args_stack_index++;
-        break;
-      }
       // Perl SPVM::BlessedObject::Class to SPVM class
       case SPVM_API_C_TYPE_CATEGORY_BASIC_OBJECT:
       {
@@ -339,16 +304,44 @@ call_spvm_method(...)
           args_stack[args_stack_index].oval = NULL;
         }
         else {
-          if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
-            SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-            assert(arg_type_dimension == 0);
-            if (SPVM_API_object_get_basic_type_id(object) != arg_basic_type_id) {
-              croak("%dth argument of %s->%s must be %s class line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+          if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_STRING) {
+            // Perl non-ref scalar to SPVM string
+            // If Perl value is non-ref scalar, the value is converted to SPVM::BlessedObject::String object
+            if (!SvROK(sv_value)) {
+              // Convert Perl decoded string to loose UTF-8 bytes.
+              SV* sv_value_copy = sv_2mortal(newSVsv(sv_value));
+              sv_utf8_encode(sv_value_copy);
+              const char* chars = SvPV_nolen(sv_value_copy);
+              int32_t length = SvCUR(sv_value_copy);
+              void* string = env->new_string(env, chars, length);
+              
+              SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
+              
+              sv_value = sv_string;
             }
-            args_stack[args_stack_index].oval = object;
+            
+            // Perl SPVM::BlessedObject::String to SPVM string
+            if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
+              SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+              
+              args_stack[args_stack_index].oval = object;
+            }
+            else {
+              croak("%dth argument of %s->%s must be a non-ref scalar or a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+            }
           }
           else {
-            croak("%dth argument of %s->%s must be a SPVM::BlessedObject::Class object at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+            if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
+              SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+              assert(arg_type_dimension == 0);
+              if (SPVM_API_object_get_basic_type_id(object) != arg_basic_type_id) {
+                croak("%dth argument of %s->%s must be %s class line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+              }
+              args_stack[args_stack_index].oval = object;
+            }
+            else {
+              croak("%dth argument of %s->%s must be a SPVM::BlessedObject::Class object at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+            }
           }
         }
         args_stack_index++;

@@ -20,7 +20,6 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
     "UNKNOWN"
     "VOID"
     "NUMERIC"
-    "STRING"
     "BASIC_OBJECT"
     "ANY_OBJECT"
     "NUMERIC_ARRAY"
@@ -68,7 +67,7 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
   
   int32_t type_category;
   if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING;
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
   }
   else if (SPVM_TYPE_is_numeric_type(compiler, basic_type_id, dimension, flag)) {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC;
