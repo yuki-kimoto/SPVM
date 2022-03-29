@@ -544,24 +544,24 @@ call_spvm_method(...)
       case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT:
       case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE:
       {
+        args_have_ref = 1;
+        HV* hv_value = NULL;
+        if (SvOK(sv_value)) {
+          if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
+            SV* hv_value_ref = SvRV(sv_value);
+            if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
+              hv_value = (HV*)SvRV(hv_value_ref);
+            }
+          }
+        }
+        if (hv_value == NULL) {
+          croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+        }
+        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
         switch(arg_type_category) {
           case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
-            args_have_ref = 1;
-            HV* hv_value = NULL;
-            if (SvOK(sv_value)) {
-              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-                SV* hv_value_ref = SvRV(sv_value);
-                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-                  hv_value = (HV*)SvRV(hv_value_ref);
-                }
-              }
-            }
-            if (hv_value == NULL) {
-              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-            }
-            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
             for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
               int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
               int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
@@ -586,22 +586,6 @@ call_spvm_method(...)
             break;
           }
           case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
-            args_have_ref = 1;
-            HV* hv_value = NULL;
-            if (SvOK(sv_value)) {
-              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-                SV* hv_value_ref = SvRV(sv_value);
-                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-                  hv_value = (HV*)SvRV(hv_value_ref);
-                }
-              }
-            }
-            if (hv_value == NULL) {
-              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-            }
-            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
             for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
               int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
               int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
@@ -625,22 +609,6 @@ call_spvm_method(...)
             break;
           }
           case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_INT: {
-            args_have_ref = 1;
-            HV* hv_value = NULL;
-            if (SvOK(sv_value)) {
-              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-                SV* hv_value_ref = SvRV(sv_value);
-                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-                  hv_value = (HV*)SvRV(hv_value_ref);
-                }
-              }
-            }
-            if (hv_value == NULL) {
-              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-            }
-            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
             for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
               int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
               int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
@@ -664,22 +632,6 @@ call_spvm_method(...)
             break;
           }
           case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
-            args_have_ref = 1;
-            HV* hv_value = NULL;
-            if (SvOK(sv_value)) {
-              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-                SV* hv_value_ref = SvRV(sv_value);
-                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-                  hv_value = (HV*)SvRV(hv_value_ref);
-                }
-              }
-            }
-            if (hv_value == NULL) {
-              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-            }
-            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
             for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
               int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
               int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
@@ -703,22 +655,6 @@ call_spvm_method(...)
             break;
           }
           case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
-            args_have_ref = 1;
-            HV* hv_value = NULL;
-            if (SvOK(sv_value)) {
-              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-                SV* hv_value_ref = SvRV(sv_value);
-                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-                  hv_value = (HV*)SvRV(hv_value_ref);
-                }
-              }
-            }
-            if (hv_value == NULL) {
-              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-            }
-            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
             for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
               int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
               int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
@@ -742,22 +678,6 @@ call_spvm_method(...)
             break;
           }
           case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
-            args_have_ref = 1;
-            HV* hv_value = NULL;
-            if (SvOK(sv_value)) {
-              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-                SV* hv_value_ref = SvRV(sv_value);
-                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-                  hv_value = (HV*)SvRV(hv_value_ref);
-                }
-              }
-            }
-            if (hv_value == NULL) {
-              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-            }
-            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
             for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
               int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
               int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
