@@ -342,7 +342,7 @@ POD starts from the line beginning with C<=>, followed by any string that consis
 
 POD ends from the line beginning with C<=cut>, and ending with L<"Line Terminators">.
 
-B<POD Examples:>
+B<Examples of POD:>
 
   =pod
 
@@ -386,7 +386,7 @@ If Integer Literal is assigned to a L<"byte Type"> variable or passed to L<"byte
 
 If Integer Literal is assigned to a L<"short Type"> variable or passed to L<"short Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"short Type">, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is performed and the value converted to L<"short Type"> value. If it exceeds the range, a compilation error will occur.
 
-B<Integer Literal Example:>
+B<Examples of Integer Literal:>
 
   123
   +123
@@ -406,7 +406,7 @@ It is followed by one or more consecutive characters "0" to "9", "a" to "f", or 
 
 Other rules are same as Decimal Representation of Integer Literal
 
-B<Hexadecimal Representation of Integer Literal Example:>
+B<Examples of Hexadecimal Representation of Integer Literal:>
 
   0x3b4f
   -0x3F1A
@@ -423,7 +423,7 @@ It is followed by one or more consecutive characters "0" to "7".
 
 Other rules are same as Decimal Representation of Integer Literal
 
-B<Octal Representation of Integer Literal Example:>
+B<Examples of Octal Representation of Integer Literal:>
 
   0755
   -0644
@@ -438,7 +438,7 @@ Binary Representation of Integer Literal starts with "0b" or "0B".
 
 It is followed by one or more consecutive characters "0" or "1".
 
-B<Binary Representation of Integer Literal Example:>
+B<Examples of Binary Representation of Integer Literal:>
 
   0b0101
   -0b1010
@@ -485,7 +485,7 @@ If Floating Point Literal is L<"float Type">, the Floating Point Literal is conv
 
 If Floating Point Literal is L<"double Type">, the Floating Point Literal is converted to double value using C standard "strtod" function. If the conversion fails, a compilation error occurs.
 
-B<Floating Point Literal Example:>
+B<Examples of Floating Point Literal:>
 
   1.32
   -1.32
@@ -607,7 +607,7 @@ L<"Types"> of Charater Literal is L<"byte Type">.
 
 =end html
 
-B<Charater Literal Example:>
+B<Examples of Charater Literal:>
 
 B<Charater Literal> represents one character of ASCII.
 
@@ -2158,7 +2158,7 @@ Write Acessor of Class Variable has one argument and the type is same as the typ
 
 Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Class Variable Accessors.
 
-B<Class Variable Definition Example:>
+B<Examples of Class Variable Definition:>
 
   class Foo {
     our $NUM1 : byte;
@@ -2290,7 +2290,7 @@ Write Acessor of Class Variable has two arguments. First argument is L<"self Typ
 
 Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Field Accessors.
 
-B<Field Definition Example:>
+B<Examples of Field Definition:>
 
   class Foo {
     has num1 : byte;
@@ -2541,7 +2541,7 @@ Signature is a string that follow the following rule sequence of Method Retrun V
 
 It the method is a instance method, the part of signature of the first argument is "self".
 
-B<Signature Example:>
+B<Examples of Signature:>
 
   # Method Definition
   static method foo : int ($num1 : double, $num2 : long[])
@@ -3349,7 +3349,7 @@ The setting local variable is an L<expression|"Expressions"> to set the value of
 
   $var = VALUE
 
-The assignment of the value must satisfy the L<type assignability|Type Assignability>.
+The assignment of the value must satisfy the L<type assignability|Type Assignability>, otherwise a compilation error occurs.
 
 The return value is the value after the assignment.
 
@@ -3361,19 +3361,19 @@ See the L<scope|"Scope"> to know the L<garbage collection|"Garbage Collection"> 
 
 =head2 Getting Class Variable
 
-B<Getting Class Variable Expression> is an L<expression|"Expressions"> to get L<"Class Variable"> Value.
+The getting class variable is an L<expression|"Expressions"> to get the value of the L<class variable|"Class Variable">.
 
   $CLASS_NAME::CLASS_VARIABLE_NAME
 
-"CLASS_NAME::" can be omitted when the Class Variable belongs to own L<"Class">.
+C<CLASS_NAME::> can be omitted if the class variable belongs to the current L<class|"Class">.
 
   $CLASS_VARIABLE_NAME
 
-If you try to get the value of a Class Variable that is not defined, a compilation error occurs.
+If the class variable does not found, a compilation error occurs.
 
-If you try to access a private Class Variable from outside the Class, a compilation error occurs.
+If the class variable is C<private> and it is accessed outside of the class, a compilation error occurs.
 
-B<Getting Class Variable Example:>
+B<Examples of Getting Class Variable:>
 
   class Foo {
     our $VAR : int;
@@ -3406,7 +3406,7 @@ If the right operand is L<"Object Types">, Reference Count of the object is incr
 
 If an object has already been assigned to Class Variable before the assignment, the reference count of that object is decremented by 1.
 
-B<Setting Class Variable Example:>
+B<Examples of Setting Class Variable:>
 
   class Foo {
     our $VAR : int;
@@ -3425,7 +3425,7 @@ B<Setting Class Variable Expression> is an L<expression|"Expressions"> to get th
 
 Setting Class Variable Expression returns the value of L<"string Type">.
 
-B<Setting Class Variable Example:>
+B<Examples of Setting Class Variable:>
 
   eval {
     foo();
@@ -3449,7 +3449,7 @@ The Reference Count of the right operand is incremented by 1.
 
 If an object has already been assigned to Exception Variable before the assignment, the reference count of that object is decremented by 1.
 
-B<Setting Exception Variable Example:>
+B<Examples of Setting Exception Variable:>
 
   $@ = "Error";
 
@@ -3486,7 +3486,7 @@ If the type of assigned value is a L<basic object type|"Object Types">, Referenc
 
 If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by 1.
 
-B<Setting Field Example:>
+B<Examples of Setting Field:>
 
   my $point = Point->new;
   $point->{x} = 1;
@@ -3505,7 +3505,7 @@ Getting Multi Numeric Field Expression returns the field value in the Multi Nume
 
 Retrun Type is The L<"Types"> of the Field.
 
-B<Getting Multi Numeric Field Example:>
+B<Examples of Getting Multi Numeric Field:>
 
   my $z : Complex_2d;
   my $re = $z->{x};
@@ -3526,7 +3526,7 @@ The assignment must satisfy the L<type assignability|Type Assignability>.
 
 Return Value Type is the type of Field.
 
-B<Setting Multi Numeric Field Example:>
+B<Examples of Setting Multi Numeric Field:>
 
   my $z : Complex_2d;
   $z->{x} = 2.5;
@@ -3545,7 +3545,7 @@ Getting Multi Numeric Field via Dereference Expression returns the field value i
 
 Retrun Type is The L<"Types"> of the Field.
 
-B<Getting Multi Numeric Field via Dereference Example:>
+B<Examples of Getting Multi Numeric Field via Dereference:>
 
   my $z : Complex_2d;
   my $z_ref = \$z;
@@ -3567,7 +3567,7 @@ The assignment must satisfy the L<type assignability|Type Assignability>.
 
 Return Value Type is the type of Field.
 
-B<Setting Multi Numeric Field via Dereference Example:>
+B<Examples of Setting Multi Numeric Field via Dereference:>
 
   my $z : Complex_2d;
   my $z_ref = \$z;
@@ -3589,7 +3589,7 @@ If Array Expression is L<"Undefined Value">, a Runtime Exception occurs.
 
 If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
-B<Getting Array Element Example:>
+B<Examples of Getting Array Element:>
 
   my $nums = new int[3];
   my $num = $nums->[1];
@@ -3622,7 +3622,7 @@ If the right operand is L<"Object Types">, Reference Count of the object is incr
 
 If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by 1.
 
-B<Setting Array Element Example:>
+B<Examples of Setting Array Element:>
 
   my $nums = new int[3];
   $nums->[1] = 3;
@@ -3645,7 +3645,7 @@ Fields of the Object are initialized by L<"Type Initial Value">.
 
 Created Object Reference count is 0 at first. If the Object is assigned to some Variable by L<"Assignment Operator">, The Reference Count is incremented by 1. If implicite assignment is not done, Temporary Variable is created, the object is assigned to the Temporary Variable.
 
-B<Create Object Example:>
+B<Examples of Create Object:>
 
   my $object = new Foo;
 
@@ -3682,7 +3682,7 @@ All Element is gurantied to be continued on Memory.
 
 Array is L<"Array Types">. This is also L<"Object Types">.
 
-B<Create Array Example:>
+B<Examples of Create ArrayExamples of :>
 
   my $nums = new int[3];
   my $objects = new Foo[3];
@@ -3884,7 +3884,7 @@ B<Getting Current class names> is an L<expression|"Expressions"> to get the curr
 
   __CLASS__
 
-B<Getting Current class names Example:>
+B<Examples of Getting Current class namesExamples of :>
 
   class Foo::Bar {
     static method baz : void () {
@@ -3901,7 +3901,7 @@ B<Getting Current File Name> is an L<expression|"Expressions"> to get the curren
 
 Current File Name means the relative path from the base path of the module file. For example, if the Module Loaded Path is "/mypath" and the Module name is "Foo::Bar", the absolute path is "/mypath/SPVM/Foo/Bar.spvm" and the relative path is "SPVM/Foo/Bar.spvm". "SPVM/Foo/Bar.spvm" is Current File Name.
 
-B<Getting Current File Name Example:>
+B<Examples of Getting Current File Name:>
 
   # SPVM/Foo/Bar.spvm
   class Foo::Bar {
@@ -3923,7 +3923,7 @@ B<Getting Current Line Number> is an L<expression|"Expressions"> to get the curr
 
   __LINE__
 
-B<Getting Current Line Number Example:>
+B<Examples of Getting Current Line Number:>
 
   class Foo::Bar {
     static method baz : void () {
