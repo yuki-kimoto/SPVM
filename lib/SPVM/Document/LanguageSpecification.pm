@@ -2192,9 +2192,9 @@ This initial value can be changed by using L<"INIT Block">.
 
 Class Variable Access is an operation to access Class Variable to get or set a value.
 
-See L<"Get Class Variable"> for how to get the value of Class Variable.
+See L<"Getting Class Variable"> for how to get the value of Class Variable.
 
-See L<"Set Class Variable"> for the setting of the value of Class Variable.
+See L<"Setting Class Variable"> for the setting of the value of Class Variable.
 
 =head1 Field
 
@@ -2310,7 +2310,7 @@ B<Field Definition Example:>
 
 Field Access is an operation to access Field to get or set a value.
 
-  EXPRESSION->{FIELD_NAME}
+  INVOCANT->{FIELD_NAME}
 
 Field Access has three different meanings.
 
@@ -2321,9 +2321,9 @@ Class Based Object Field Access is Field Access from object which is create by L
   my $point = new Point;
   $point->{x} = 1;
 
-See L<"Get Field"> to get field of Class Based Object.
+See L<"Getting Field"> to get field of Class Based Object.
 
-See L<"Set Field"> to set field of Class Based Object.
+See L<"Setting Field"> to set field of Class Based Object.
 
 B<2. Multi Numeric Field Access>
 
@@ -2333,9 +2333,9 @@ Multi Numeric Field Access is Field Access from the value of L<"Multi Numeric Ty
   $z->{x} = 1;
   $z->{y} = 3;
 
-See L<"Get Multi Numeric Field Value"> to get field of the value of L<"Multi Numeric Types">.
+See L<"Getting Multi Numeric Field Value"> to get field of the value of L<"Multi Numeric Types">.
 
-See L<"Set Multi Numeric Field Value"> to set field of the value of L<"Multi Numeric Types">.
+See L<"Setting Multi Numeric Field Value"> to set field of the value of L<"Multi Numeric Types">.
 
 B<3. Dereference Multi Numeric Field>
 
@@ -2346,9 +2346,9 @@ Dereference Multi Numeric Field is Field access from Reference of the value of L
   $z_ref->{x} = 1;
   $z_ref->{y} = 3;
 
-See L<"Get Multi Numeric Field Value via Dereference"> to get Multi Numeric Field via Dereference.
+See L<"Getting Multi Numeric Field Value via Dereference"> to get Multi Numeric Field via Dereference.
 
-See L<"Set Multi Numeric Field Value via Dereference"> to set Multi Numeric Field via Dereference.
+See L<"Setting Multi Numeric Field Value via Dereference"> to set Multi Numeric Field via Dereference.
 
 =head1 Method
 
@@ -2814,9 +2814,9 @@ Local Variable is initialized by L<"Type Initial Value">.
 
 Local Variable Access is an operation to access Local Variable to get or set the value.
 
-See L<"Get Local Variable"> to get Local Variable value.
+See L<"Getting Local Variable"> to get Local Variable value.
 
-L<"Set Local Variable"> to get Local Variable value.
+L<"Setting Local Variable"> to get Local Variable value.
 
 If L<"Class Variable"> with the same name as the Local Variable exists, Program uses the variable as Local Variable, not L<"Class Variable">.
 
@@ -2996,7 +2996,7 @@ The created string is one more last byte that value is C<\0> on the internal mem
 
 The length of the string can be got using a L<string length operator|"String Length Operator">
   
-  # Get the length of the string
+  # Getting the length of the string
   my $message = "Hello"+
   my $length = length $message;
 
@@ -3090,9 +3090,9 @@ Array Access is an operation to access the element of Array to get or set the va
 
   ARRAY->[INDEX]
 
-See L<"Get Array Element"> to get the element value of Array.
+See L<"Getting Array Element"> to get the element value of Array.
 
-See L<"Set Array Element"> to set the element value of Array.
+See L<"Setting Array Element"> to set the element value of Array.
 
 =head1 Multi Numeric Value
 
@@ -3229,9 +3229,9 @@ B<Multi Numeric Types Field Access> is an operation to access Multi Numeric Type
 
   MULTI_NUMERIC_TYPE_VALUE->{FIELD_NAME}
 
-See L<"Get Multi Numeric Field Value"> to get Multi Numeric Types Field Value.
+See L<"Getting Multi Numeric Field Value"> to get Multi Numeric Types Field Value.
 
-See L<"Set Multi Numeric Field Value"> to set Multi Numeric Types Field Value.
+See L<"Setting Multi Numeric Field Value"> to set Multi Numeric Types Field Value.
 
 =head1 Multi Numeric Array
 
@@ -3257,9 +3257,9 @@ Multi Numeric Array Access is an operation to access Multi Numeric Array to get 
 
   Array->[INDEX]
 
-See L<"Get Array Element"> to get Array Element Value.
+See L<"Getting Array Element"> to get Array Element Value.
 
-See L<"Set Array Element"> to get Array Element Value.
+See L<"Setting Array Element"> to get Array Element Value.
 
 =head1 Reference
 
@@ -3324,25 +3324,25 @@ If the target of Reference Type is L<"Multi Numeric Types">, the setting and get
 
 Expressions are a syntax part that can be evaluated as a value.
 
-These are L<"Operators">, L<"Undefined Value">, L<"Literals">, L<"Get Local Variable">, L<"Set Local Variable">,
-L<"Get Class Variable">, L<"Get Class Variable">, L<"Set Class Variable">, L<"Get Exception Variable">, L<"Set Exception Variable">,
-L<"Get Field">, L<"Set Field">, L<"Get Array Element">, L<"Set Array Element"> and L<"Method Call">.
+These are L<"Operators">, L<"Undefined Value">, L<"Literals">, L<"Getting Local Variable">, L<"Setting Local Variable">,
+L<"Getting Class Variable">, L<"Getting Class Variable">, L<"Setting Class Variable">, L<"Getting Exception Variable">, L<"Setting Exception Variable">,
+L<"Getting Field">, L<"Setting Field">, L<"Getting Array Element">, L<"Setting Array Element"> and L<"Method Call">.
 
-=head2 Get Local Variable
+=head2 Getting Local Variable
 
-B<Get Local Variable> is a Expression to get L<"Local Variable"> Value.
+B<Getting Local Variable> is a Expression to get L<"Local Variable"> Value.
 
   $var
 
-=head2 Set Local Variable
+=head2 Setting Local Variable
 
-B<Set Local Variable Expression> is a Expression to set L<"Local Variable"> Value using L<"Assignment Operator">.
+B<Setting Local Variable Expression> is a Expression to set L<"Local Variable"> Value using L<"Assignment Operator">.
 
   $var = RIGHT_OPERAND
 
 The Assignment must satisfy the type compatibility.
 
-Set Local Variable Expression returns the value after setting.
+Setting Local Variable Expression returns the value after setting.
 
 If the right operand is L<"Object Types">, Reference Count of the object is incremented by 1.
 
@@ -3350,9 +3350,9 @@ If an object has already been assigned to $var before the assignment, the Refere
 
 See L<"Scope"> to know Garbage Collection of Local Variable.
 
-=head2 Get Class Variable
+=head2 Getting Class Variable
 
-B<Get Class Variable Expression> is a Expression to get L<"Class Variable"> Value.
+B<Getting Class Variable Expression> is a Expression to get L<"Class Variable"> Value.
 
   $CLASS_NAME::CLASS_VARIABLE_NAME
 
@@ -3364,7 +3364,7 @@ If you try to get the value of a Class Variable that is not defined, a compilati
 
 If you try to access a private Class Variable from outside the Class, a compilation error occurs.
 
-B<Get Class Variable Example:>
+B<Getting Class Variable Example:>
 
   class Foo {
     our $VAR : int;
@@ -3375,9 +3375,9 @@ B<Get Class Variable Example:>
     }
   }
 
-=head2 Set Class Variable
+=head2 Setting Class Variable
 
-B<Set Class Variable Expression> is a Expression to set L<"Class Variable"> Value using L<"Assignment Operator">.
+B<Setting Class Variable Expression> is a Expression to set L<"Class Variable"> Value using L<"Assignment Operator">.
 .
 
   $CLASS_NAME::CLASS_VARIABLE_NAME = RIGHT_OPERAND
@@ -3388,7 +3388,7 @@ B<Set Class Variable Expression> is a Expression to set L<"Class Variable"> Valu
 
 If the assignment does not satisfy the type compatibility, a compilation error occurs.
 
-Set Class Variable Expression returns the value after setting.
+Setting Class Variable Expression returns the value after setting.
 
 If you try to get the value of a Class Variable that is not defined, a compilation error occurs.
 
@@ -3398,7 +3398,7 @@ If the right operand is L<"Object Types">, Reference Count of the object is incr
 
 If an object has already been assigned to Class Variable before the assignment, the Reference Count of that object is decremented by 1.
 
-B<Set Class Variable Example:>
+B<Setting Class Variable Example:>
 
   class Foo {
     our $VAR : int;
@@ -3409,15 +3409,15 @@ B<Set Class Variable Example:>
     }
   }
 
-=head2 Get Exception Variable
+=head2 Getting Exception Variable
 
-B<Set Class Variable Expression> is a Expression to get the value of L<"Exception Variable">.
+B<Setting Class Variable Expression> is a Expression to get the value of L<"Exception Variable">.
 
   $@
 
-Set Class Variable Expression returns the value of L<"string Type">.
+Setting Class Variable Expression returns the value of L<"string Type">.
 
-B<Set Class Variable Example:>
+B<Setting Class Variable Example:>
 
   eval {
     foo();
@@ -3427,9 +3427,9 @@ B<Set Class Variable Example:>
   
   }
 
-=head2 Set Exception Variable
+=head2 Setting Exception Variable
 
-B<Set Exception Variable Expression> is a Expression to set the value of L<"Exception Variable"> using L<"Assignment Operator">.
+B<Setting Exception Variable Expression> is a Expression to set the value of L<"Exception Variable"> using L<"Assignment Operator">.
 
   $@ = RIGHT_OPERAND
 
@@ -3441,42 +3441,46 @@ The Reference Count of the right operand is incremented by 1.
 
 If an object has already been assigned to Exception Variable before the assignment, the Reference Count of that object is decremented by 1.
 
-B<Set Exception Variable Example:>
+B<Setting Exception Variable Example:>
 
   $@ = "Error";
 
-=head2 Get Field
+=head2 Getting Field
 
-B<Get Field Expression> is a Expression to get L<"Field"> Value.
+The syntax of B<Getting Field> is a syntax to get the value of a L<field|"Field">.
 
-  INVOCANT_EXPRESSION->{FIELD_NAME}
+  INVOCANT->{FIELD_NAME}
 
-Invocant Expression is L<"Class Types">. If Expression is L<"Multi Numeric Types"> Value, The Field Access is L<"Get Multi Numeric Field Value">. If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise a compilation error occurs.
+The type of invocant must be a L<class type|"Class Types">, a L<multi numeric type|"Multi Numeric Types">, or a L<multi mumeric reference type|"Multi Numeric Reference Type">.
+
+If Expression is L<"Multi Numeric Types"> Value, The Field Access is L<"Getting Multi Numeric Field Value">.
+
+If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise a compilation error occurs.
 
 If the field names does not found in the <a href="#language-class">Class">, a compilation error occurs
 
-Get Field Expression returns the value of the Field stored in the object.
+Getting Field Expression returns the value of the Field stored in the object.
 
 Retrun Type is The L<"Types"> of the Field.
 
-B<Get Field Example:>
+B<Examples of Getting Field:>
 
   my $point = Point->new;
   my $x = $point->{x};
 
-=head2 Set Field
+=head2 Setting Field
 
-B<Set Field Expression> is a Expression to set L<"Field"> Value.
+B<Setting Field Expression> is a Expression to set L<"Field"> Value.
 
-  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_OPERAND
+  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
-Invocant Expression is L<"Class Types">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Set Multi Numeric Field Value">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
+Invocant Expression is L<"Class Types">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Setting Multi Numeric Field Value">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Setting Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
 
 If the assignment does not satisfy the type compatibility of the type of Field, a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs.
 
-Set Field Expression returns the value of Field after setting. 
+Setting Field Expression returns the value of Field after setting. 
 
 Return Value Type is the type of Field.
 
@@ -3484,98 +3488,98 @@ If the right operand is L<"Object Types">, Reference Count of the object is incr
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
-B<Set Field Example:>
+B<Setting Field Example:>
 
   my $point = Point->new;
   $point->{x} = 1;
 
-=head2 Get Multi Numeric Field Value
+=head2 Getting Multi Numeric Field Value
 
-B<Get Multi Numeric Field Value Expression> is a Expression to get Field Value of L<"Multi Numeric Value">.
+B<Getting Multi Numeric Field Value Expression> is a Expression to get Field Value of L<"Multi Numeric Value">.
 
-  INVOCANT_EXPRESSION->{FIELD_NAME}
+  INVOCANT->{FIELD_NAME}
 
-Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Get Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Getting Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
   
 If the field names does not found in the L<"Class">, a compilation error occurs
 
-Get Multi Numeric Field Value Expression returns the field value in the Multi Numeric Value.
+Getting Multi Numeric Field Value Expression returns the field value in the Multi Numeric Value.
 
 Retrun Type is The L<"Types"> of the Field.
 
-B<Get Multi Numeric Field Value Example:>
+B<Getting Multi Numeric Field Value Example:>
 
   my $z : Complex_2d;
   my $re = $z->{x};
 
-=head2 Set Multi Numeric Field Value
+=head2 Setting Multi Numeric Field Value
 
-Set Multi Numeric Field Value Expression is a Expression to set Field Value of L<"Multi Numeric Value"> using L<"Assignment Operator">.
+Setting Multi Numeric Field Value Expression is a Expression to set Field Value of L<"Multi Numeric Value"> using L<"Assignment Operator">.
 
-  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_OPERAND
+  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
 <
 
-Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<"Set Field">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Set Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<"Setting Field">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Setting Multi Numeric Field Value via Dereference">, otherwise a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs.
 
-Set Multi Numeric Field Value Expression returns the value of Field after setting. 
+Setting Multi Numeric Field Value Expression returns the value of Field after setting. 
 
 The Assignment must satisfy the type compatibility.
 
 Return Value Type is the type of Field.
 
-B<Set Multi Numeric Field Value Example:>
+B<Setting Multi Numeric Field Value Example:>
 
   my $z : Complex_2d;
   $z->{x} = 2.5;
 
-=head2 Get Multi Numeric Field Value via Dereference
+=head2 Getting Multi Numeric Field Value via Dereference
 
-B<Get Multi Numeric Field Value via Dereference Expression> is a Expression to get Field Value of L<"Multi Numeric Value"> via L<"Dereference">.
+B<Getting Multi Numeric Field Value via Dereference Expression> is a Expression to get Field Value of L<"Multi Numeric Value"> via L<"Dereference">.
 
-  INVOCANT_EXPRESSION->{FIELD_NAME}
+  INVOCANT->{FIELD_NAME}
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Types">, the Field Access is , L<"Get Field">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Get Multi Numeric Field Value">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Types">, the Field Access is , L<"Getting Field">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Getting Multi Numeric Field Value">, otherwise a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs
 
-Get Multi Numeric Field Value via Dereference Expression returns the field value in the Multi Numeric Value.
+Getting Multi Numeric Field Value via Dereference Expression returns the field value in the Multi Numeric Value.
 
 Retrun Type is The L<"Types"> of the Field.
 
-B<Get Multi Numeric Field Value via Dereference Example:>
+B<Getting Multi Numeric Field Value via Dereference Example:>
 
   my $z : Complex_2d;
   my $z_ref = \$z;
   my $re = $z_ref->{x};
 
-=head2 Set Multi Numeric Field Value via Dereference
+=head2 Setting Multi Numeric Field Value via Dereference
 
-Set Multi Numeric Field Value Expression via Dereference is a Expression to set Field Value of L<"Multi Numeric Value"> via L<"Dereference"> using L<"Assignment Operator">.
+Setting Multi Numeric Field Value Expression via Dereference is a Expression to set Field Value of L<"Multi Numeric Value"> via L<"Dereference"> using L<"Assignment Operator">.
 
-  INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_OPERAND
+  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Types">, L<"Set Field">. If Invocant Expression is L<"Multi Numeric Types">, L<"Set Multi Numeric Field Value">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Types">, L<"Setting Field">. If Invocant Expression is L<"Multi Numeric Types">, L<"Setting Multi Numeric Field Value">, otherwise a compilation error occurs.
 
 If the field names does not found in the L<"Class">, a compilation error occurs
 
-Set Multi Numeric Field Value via Dereference Expression returns the value of Field after setting.
+Setting Multi Numeric Field Value via Dereference Expression returns the value of Field after setting.
 
 The Assignment must satisfy the type compatibility.
 
 Return Value Type is the type of Field.
 
-B<Set Multi Numeric Field Value via Dereference Example:>
+B<Setting Multi Numeric Field Value via Dereference Example:>
 
   my $z : Complex_2d;
   my $z_ref = \$z;
   $z_ref->{x} = 2.5;
 
-=head2 Get Array Element
+=head2 Getting Array Element
 
-B<Get Array Element Expression> is a Expression to get a Element Value of L<"Array">.
+B<Getting Array Element Expression> is a Expression to get a Element Value of L<"Array">.
 
   ARRAY_EXPRESSION->[INDEX_EXPRESSION]
 
@@ -3583,13 +3587,13 @@ Array Expression must be L<"Array Types">.
 
 Index Expression must be L<"int Type"> or the type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
 
-Get Array Element Expression returns the Element Value of the Index.
+Getting Array Element Expression returns the Element Value of the Index.
 
 If Array Expression is L<"Undefined Value">, a Runtime Exception occurs.
 
 If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
-B<Get Array Element Example:>
+B<Getting Array Element Example:>
 
   my $nums = new int[3];
   my $num = $nums->[1];
@@ -3600,9 +3604,9 @@ B<Get Array Element Example:>
   my $objects : element[] = $points;
   my $object = (Point)$objects->[1];
 
-=head2 Set Array Element
+=head2 Setting Array Element
 
-Set Array Element Expression is a Expression to set a Element Value of a Array using L<"Assignment Operator">.
+Setting Array Element Expression is a Expression to set a Element Value of a Array using L<"Assignment Operator">.
 
   ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_OPERAND
 
@@ -3612,7 +3616,7 @@ Index Expression must be L<"int Type"> or the type that become L<"int Type"> by 
 
 The Assignment must satisfy the type compatibility.
 
-Set Array Element Expression returns the value of the element after setting.
+Setting Array Element Expression returns the value of the element after setting.
 
 If Array Expression is L<"Undefined Value">, a Runtime Exception occurs.
 
@@ -3622,7 +3626,7 @@ If the right operand is L<"Object Types">, Reference Count of the object is incr
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
-B<Set Array Element Example:>
+B<Setting Array Element Example:>
 
   my $nums = new int[3];
   $nums->[1] = 3;
@@ -3833,7 +3837,7 @@ An Example that calls a Method from the object created by Create Callback.
   
   my $ret = $cb_obj->(1, 2);
 
-=head2 Get value by Dereference
+=head2 Getting value by Dereference
 
 Obtaining a value by Dereference is an operation to obtain the actual value from Reference. It was designed to realize the C joint operator "*".
 
@@ -3878,13 +3882,13 @@ Setting a value with Dereference returns the set value. This is L<"Expressions">
   
   $$z_ref = $z2;
 
-=head2 Get Current Class Names
+=head2 Getting Current Class Names
 
-B<Get Current class names> is a Expression to get the current class name by __CLASS__ L<"Keyword">.
+B<Getting Current class names> is a Expression to get the current class name by __CLASS__ L<"Keyword">.
 
   __CLASS__
 
-B<Get Current class names Example:>
+B<Getting Current class names Example:>
 
   class Foo::Bar {
     static method baz : void () {
@@ -3893,15 +3897,15 @@ B<Get Current class names Example:>
     }
   }
 
-=head2 Get Current File Name
+=head2 Getting Current File Name
 
-B<Get Current File Name> is a Expression to get the current file name by __LINE__ L<"Keyword">.
+B<Getting Current File Name> is a Expression to get the current file name by __LINE__ L<"Keyword">.
 
   __FILE__
 
 Current File Name means the relative path from the base path of the module file. For example, if the Module Loaded Path is "/mypath" and the Module name is "Foo::Bar", the absolute path is "/mypath/SPVM/Foo/Bar.spvm" and the relative path is "SPVM/Foo/Bar.spvm". "SPVM/Foo/Bar.spvm" is Current File Name.
 
-B<Get Current File Name Example:>
+B<Getting Current File Name Example:>
 
   # SPVM/Foo/Bar.spvm
   class Foo::Bar {
@@ -3917,13 +3921,13 @@ B<Get Current File Name Example:>
     }
   }
 
-=head2 Get Current Line Number
+=head2 Getting Current Line Number
 
-B<Get Current Line Number> is a Expression to get the current line number of the current file by __LINE__ L<"Keyword">.
+B<Getting Current Line Number> is a Expression to get the current line number of the current file by __LINE__ L<"Keyword">.
 
   __LINE__
 
-B<Get Current Line Number Example:>
+B<Getting Current Line Number Example:>
 
   class Foo::Bar {
     static method baz : void () {
@@ -4841,11 +4845,11 @@ Array Length Operator returns L<"Expressions">
 
 B<Examples of array length operators:>
   
-  # Get the length of the array.
+  # Getting the length of the array.
   my $nums = new byte[10];
   my $length = @$nums;
 
-  # Get the length of the array with a scalar operator. This is exactly same as the avobe
+  # Getting the length of the array with a scalar operator. This is exactly same as the avobe
   my $nums = new byte[10];
   my $length = scalar @$nums;
   
@@ -4922,11 +4926,11 @@ Note that the returned length is byte size, not the count of the characters of t
 
 B<Examples of string length operators:>
   
-  # Get the string length. The result is 5
+  # Getting the string length. The result is 5
   my $message = "Hello";
   my $length = length $message;
   
-  # Get the string length of UTF-8. The result is 9, not 3
+  # Getting the string length of UTF-8. The result is 9, not 3
   my $message = "あいう";
   my $length = length $message;
 
@@ -4940,7 +4944,7 @@ The operand must be an L<"Array Length Operator">, otherwise a compilation error
 
 B<Examples of scalar operators:>
   
-  # Get the array length 
+  # Getting the array length 
   my $nums = new int[3];
   foo(scalar @$nums);
 
@@ -5457,7 +5461,7 @@ If the value stored in the Field at runtime is not L<"Undefined Value">, then th
 
 1. Decrement the Reference Count of the object stored in Field by 1.
 
-2. Set the Weaken Reference flag in Field.
+2. Setting the Weaken Reference flag in Field.
 
 3. Add Field to the back reference of the object saved in Field.
 
@@ -6053,15 +6057,15 @@ You can get the array length using the L<array length operator|"Array Length Ope
 
   my $array : element[] = new Int[3];
   
-  # Get the length of the element of Any Object-Array Type
+  # Getting the length of the element of Any Object-Array Type
   my $length = @$array;
 
-You can get and set the element using the L<get array element|"Get Array Element"> syntax and the L<set array element|"Set Array Element">.
+You can get and set the element using the L<get array element|"Getting Array Element"> syntax and the L<set array element|"Setting Array Element">.
  
-  # Get the element of any object-array
+  # Getting the element of any object-array
   my $num = (Int)$array->[0];
   
-  # Set the element of any object-array
+  # Setting the element of any object-array
   $array->[0] = Int->new(5);
 
 When setting the element of any object-array, the element type is checked. If the dimension of the element is not the dimension of the array - C<1>, an L<exception|"Exception"> is thrown.
@@ -6649,9 +6653,9 @@ B<Exception Variable> is a global variable that is represented by "B<$@>"
 
   $@
 
-See L<"Set Class Variable"> to get Exception Variable Value.
+See L<"Setting Class Variable"> to get Exception Variable Value.
 
-See L<"Set Exception Variable"> to set Exception Variable Value.
+See L<"Setting Exception Variable"> to set Exception Variable Value.
 
 =head1 Garbage Collection
 
