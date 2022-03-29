@@ -3460,7 +3460,7 @@ The getting field is an L<expression|"Expressions"> to get the L<field|"Field"> 
 
   INVOCANT->{FIELD_NAME}
 
-The type of invocant is a L<class type|"Class Types">.
+The type of invocant is a L<class type|"Class Type">.
 
 The retrun type is the L<type|"Types"> of the Field.
 
@@ -3475,7 +3475,7 @@ The setting field is an L<expression|"Expressions"> to set the L<field|"Field"> 
 
   INVOCANT->{FIELD_NAME} = VALUE
 
-The type of invocant is a L<class type|"Class Types">.
+The type of invocant is a L<class type|"Class Type">.
 
 If the assignment does not satisfy the L<type assignability|Type Assignability>, a compilation error occurs.
 
@@ -4588,7 +4588,7 @@ isa Operator has three behaviors, depending on Right Type.
 
 1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the type of The left operand is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
 
-2. If the Right Type is L<"Class Types">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error occurs.
+2. If the Right Type is L<"Class Type">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error occurs.
 
 3. If the Right Type is L<"Callback Type">, isa Operator checks whether the type of The left operand satisfy the Callback Type at Run Time. If The left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error occurs.
 
@@ -4944,7 +4944,7 @@ isweak Operator is an Operator that checks whether Field is</a>L<"Weaken Referen
 
   isweak VARIABLE->{FIELD_NAME};
 
-The Type of object Expression must be L<"Class Types">. otherwise a compilation error occurs.
+The Type of object Expression must be L<"Class Type">. otherwise a compilation error occurs.
 
 Field names must be a existed field names, otherwise a compilation error occurs.
 
@@ -4968,7 +4968,7 @@ The C<has_implement> operator checks the existence of the method implementation.
 
   has_implement OPERAND->METHOD_NAME
 
-The operand must the object that has a L<class type|"Class Types"> or a L<interface type|"Interface Type">, otherwise a compilation error occurs.
+The operand must the object that has a L<class type|"Class Type"> or a L<interface type|"Interface Type">, otherwise a compilation error occurs.
 
 The method name must be a L<method name|"Method Names">, otherwise a compilation error occurs.
 
@@ -5433,7 +5433,7 @@ A weaken Statement is a Statement that sets L<"Weaken Reference"> for the Field.
 
   weaken VARIABLE->{FIELD_NAME};
 
-The Type of the object Expression must be L<"Class Types">, otherwise a compilation error occurs.
+The Type of the object Expression must be L<"Class Type">, otherwise a compilation error occurs.
 
 Field names must be an existing field names, otherwise a compilation error occurs.
 
@@ -5479,7 +5479,7 @@ unweaken Statement is a Statement that cancels L<"Weaken Reference"> for Field.
 
   unweaken VARIABLE->{FIELD_NAME};
 
-The Type of the object Expression must be L<"Class Types">, otherwise a compilation error occurs.
+The Type of the object Expression must be L<"Class Type">, otherwise a compilation error occurs.
 
 Field names must be an existing Field names, otherwise a compilation error occurs.
 
@@ -5734,37 +5734,26 @@ C<float> type is a L<"Floating Point Types"> that represents a single precision(
 
 C<double> type is a L<"Floating Point Types"> that represents a double precision(64bit) floating point. This is the same type as C<double> type of C language.
 
-=head2 Class Types
+=head2 Class Type
 
 The class type is the type that can create the object using a L<new operator|"new Operator">.
 
   new ClassType;
 
-  # Class types
-  class Foo {
-  
-  }
-  
-  class Foo: pointer_t {
-  
-  }
-
-Class types are the L<class|"Class"> that doesn't have class descriptors C<mulnum_t>, C<interface_t>, and C<callback_t>, and the class that has a C<pointer_t> L<class descriptor|"Class Descriptors">.
-
 =head2 Pointer Type
 
-The pointer type is the type that has a C<pointer_t> L<class descriptor|"Class Descriptors">.
+The pointer type is the type that has a L<class descriptor|"Class Descriptors"> C<pointer_t>.
 
   # Pointer Type
   class Foo: pointer_t {
   
   }
 
-A pointer type is a L<class type|"Class Types">
+A pointer type is a L<class type|"Class Type">.
 
 =head2 Basic Object Types
 
-Basic object types are the L<class type|"Class Types">, the L<callback type|"Callback Type">, the L<array type|"Array Types">, the L<string type|"string Type">, and the L<any object type|"Any Object Type">.
+Basic object types are the L<class type|"Class Type">, the L<callback type|"Callback Type">, the L<array type|"Array Types">, the L<string type|"string Type">, and the L<any object type|"Any Object Type">.
 
 =head2 Object Types
 
@@ -5858,7 +5847,7 @@ The callback type is a type that is defined using a C<class> keyword and a L<cla
 
 See also L<"Callback">.
 
-Note that callback types are not L<class types|"Class Typess"> although they are defined by C<class> keyword.
+Note that callback types are not L<class types|"Class Types"> although they are defined by C<class> keyword.
 
 =head2 Interface Type
 
@@ -5873,7 +5862,7 @@ The interface type is a type that is defined using a C<class> keyword and a L<cl
 
 See also L<"Interface">.
 
-Note that interface types are not L<class types|"Class Typess"> although they are defined by C<class> keyword.
+Note that interface types are not L<class types|"Class Types"> although they are defined by C<class> keyword.
 
 =head2 Any Object Type
 
@@ -5889,7 +5878,7 @@ You can methodstitute the value of "Object Types" for Any Object Type.
 
 =head2 self Type
 
-self Type represents the Class Types to which it belongs, and indicates that the argument is Invocant.
+self Type represents the Class Type to which it belongs, and indicates that the argument is Invocant.
 
   self
 
@@ -5903,7 +5892,7 @@ B<void Type> is a special Type that can only be used in the return type of L<"Me
 
 =head2 Basic Type
 
-A Type that does not have dimensions is called a Basic Type. L<"Numeric Types">, L<"Class Types">, <a href = "#language-type- any-object ">Any Object Type">, L<"string Type"> is a Basic Type.
+A Type that does not have dimensions is called a Basic Type. L<"Numeric Types">, L<"Class Type">, <a href = "#language-type- any-object ">Any Object Type">, L<"string Type"> is a Basic Type.
 
 =head2 Array Types
 
@@ -6987,7 +6976,7 @@ The object is released from memory when the reference count reaches 0.
 
 If the object is an Array that has Object Type values ​​as elements, the reference count of all Array elements that are not Undefined Value is decremented by C<1> before Garbage Collection
 
-When an object is a Class Types and has a field of Object Type, the reference count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by C<1> before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by C<1>.
+When an object is a L<class type|"Class Type"> and has a field of Object Type, the reference count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by C<1> before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by C<1>.
 
 When the object has Back references of Weaken Reference, Undefined Value is assigned to all Fields registered as back References and all back References are deleted.
 
