@@ -1835,7 +1835,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_POINTER_T: {
-          class->category = SPVM_CLASS_C_CATEGORY_CLASS;
+          class->category = SPVM_CLASS_C_CATEGORY_BASIC_OBJECT;
           class->flag |= SPVM_CLASS_C_FLAG_POINTER;
           category_descriptors_count++;
           break;
@@ -1913,7 +1913,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       // implement declarations
       else if (op_decl->id == SPVM_OP_C_ID_IMPLEMENT) {
-        if (class->category != SPVM_CLASS_C_CATEGORY_CLASS) {
+        if (class->category != SPVM_CLASS_C_CATEGORY_BASIC_OBJECT) {
           SPVM_COMPILER_error(compiler, "Non-noramal classes can't have \"implement\" statements at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->implements, op_decl->uv.implement);

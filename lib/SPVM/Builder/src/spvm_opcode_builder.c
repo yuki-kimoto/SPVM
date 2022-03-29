@@ -272,7 +272,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
-              case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
+              case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
               case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
               case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
               case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:

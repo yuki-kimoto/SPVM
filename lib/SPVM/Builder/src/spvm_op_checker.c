@@ -4845,7 +4845,7 @@ void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_OP_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* class) {
-  if (class->category != SPVM_CLASS_C_CATEGORY_CLASS) {
+  if (class->category != SPVM_CLASS_C_CATEGORY_BASIC_OBJECT) {
     return;
   }
   

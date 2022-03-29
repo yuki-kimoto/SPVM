@@ -84,13 +84,13 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT;
     }
     else if (SPVM_TYPE_is_class_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
     }
     else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
     }
     else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
     }
     else if (SPVM_TYPE_is_numeric_array_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY;
@@ -921,7 +921,7 @@ int32_t SPVM_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
     SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
     // Class
     if (class) {
-      if (class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
+      if (class->category == SPVM_CLASS_C_CATEGORY_BASIC_OBJECT) {
         is_class_type = 1;
       }
       else {

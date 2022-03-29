@@ -333,7 +333,7 @@ call_spvm_method(...)
         break;
       }
       // Perl SPVM::BlessedObject::Class to SPVM class
-      case SPVM_API_C_TYPE_CATEGORY_CLASS:
+      case SPVM_API_C_TYPE_CATEGORY_BASIC_OBJECT:
       {
         if (!SvOK(sv_value)) {
           args_stack[args_stack_index].oval = NULL;
