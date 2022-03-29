@@ -1804,11 +1804,31 @@ B<Examples of destructors:>
     }
   }
 
-=head2 Callback
+=head2 Allow Class Access
+
+By default, private Methods, Fields, and Class Variables cannot be accessed from outside the Class.
+
+Also, Private Class cannot L<"Create Object"> from outside of Class.
+
+If the class allow other class, the other class can access private Methods, Fields, and Class Variables, and can L<"Create Object"> of the class.
+
+  allow CLASS_NAME;
+
+allow must be defined directory under L<"Class Definition">.
+
+  class Foo {
+    allow Bar;
+  }
+
+In this example, Bar can access the private Method, Field, and Class Variable of Foo can be accessed and can Create Object of Foo.
+
+Specifying the module of B<allow> also loads the module by L<"use"> at the same time.
+
+=head1 Callback
 
 Explains callbacks.
 
-=head3 Callback Definition
+=head2 Callback Definition
 
 A callback can be defined using the L<class descriptor|"Class Descriptors"> C<callback_t>.
 
@@ -1835,11 +1855,11 @@ If the object is created by the syntax of L<"Create Callback"> can be assigned t
     
   };
 
-=head2 Interface
+=head1 Interface
 
 Explains interfaces.
 
-=head3 Interface Definision
+=head2 Interface Definision
 
 A interface is defined using a L<"class descriptor|"Class Descriptors"> C<interface_t>.
 
@@ -1922,26 +1942,6 @@ Not that C<implement> statement doesn't force the implementation of methods of t
 If the method implementation is not found, an exception is thrown at runtime.
 
 The existence of the method implementation can be checked by the L<has_implement|"has_implement Operator"> operator.
-
-=head2 Allow Class Access
-
-By default, private Methods, Fields, and Class Variables cannot be accessed from outside the Class.
-
-Also, Private Class cannot L<"Create Object"> from outside of Class.
-
-If the class allow other class, the other class can access private Methods, Fields, and Class Variables, and can L<"Create Object"> of the class.
-
-  allow CLASS_NAME;
-
-allow must be defined directory under L<"Class Definition">.
-
-  class Foo {
-    allow Bar;
-  }
-
-In this example, Bar can access the private Method, Field, and Class Variable of Foo can be accessed and can Create Object of Foo.
-
-Specifying the module of B<allow> also loads the module by L<"use"> at the same time.
 
 =head1 Module
 
