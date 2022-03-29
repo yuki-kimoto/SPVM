@@ -537,240 +537,250 @@ call_spvm_method(...)
         }
         break;
       }
-      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
-        args_have_ref = 1;
-        HV* hv_value = NULL;
-        if (SvOK(sv_value)) {
-          if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-            SV* hv_value_ref = SvRV(sv_value);
-            if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              hv_value = (HV*)SvRV(hv_value_ref);
+      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_BYTE:
+      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_SHORT:
+      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_INT:
+      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_LONG:
+      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT:
+      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE:
+      {
+        switch(arg_type_category) {
+          case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
+            args_have_ref = 1;
+            HV* hv_value = NULL;
+            if (SvOK(sv_value)) {
+              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
+                SV* hv_value_ref = SvRV(sv_value);
+                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
+                  hv_value = (HV*)SvRV(hv_value_ref);
+                }
+              }
             }
-          }
-        }
-        if (hv_value == NULL) {
-          croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-        }
-        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-        for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-          int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-          int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-          const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-          SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
-          SV* sv_field_value;
-          if (sv_field_value_ptr) {
-            sv_field_value = *sv_field_value_ptr;
-          }
-          else {
-            int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
-          }
-          int8_t value = (int8_t)SvIV(sv_field_value);
-          ((int8_t*)&ref_stack[ref_stack_index])[field_index] = value;
-        }
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
-        ref_stack_indexes[args_index] = ref_stack_index;
-        ref_stack_index += arg_class_field_ids_length;
-        args_stack_index++;
-        
-        break;
-      }
-      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
-        args_have_ref = 1;
-        HV* hv_value = NULL;
-        if (SvOK(sv_value)) {
-          if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-            SV* hv_value_ref = SvRV(sv_value);
-            if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              hv_value = (HV*)SvRV(hv_value_ref);
+            if (hv_value == NULL) {
+              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
             }
-          }
-        }
-        if (hv_value == NULL) {
-          croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-        }
-        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-        for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-          int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-          int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-          const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-          SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
-          SV* sv_field_value;
-          if (sv_field_value_ptr) {
-            sv_field_value = *sv_field_value_ptr;
-          }
-          else {
-            int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
-          }
-          int16_t value = (int16_t)SvIV(sv_field_value);
-          ((int16_t*)&ref_stack[ref_stack_index])[field_index] = value;
-        }
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
-        ref_stack_indexes[args_index] = ref_stack_index;
-        ref_stack_index += arg_class_field_ids_length;
-        args_stack_index++;
-        break;
-      }
-      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_INT: {
-        args_have_ref = 1;
-        HV* hv_value = NULL;
-        if (SvOK(sv_value)) {
-          if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-            SV* hv_value_ref = SvRV(sv_value);
-            if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              hv_value = (HV*)SvRV(hv_value_ref);
+            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+            for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+              int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+              int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+              const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+              SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
+              SV* sv_field_value;
+              if (sv_field_value_ptr) {
+                sv_field_value = *sv_field_value_ptr;
+              }
+              else {
+                int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+                croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
+              }
+              int8_t value = (int8_t)SvIV(sv_field_value);
+              ((int8_t*)&ref_stack[ref_stack_index])[field_index] = value;
             }
+            args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+            ref_stack_indexes[args_index] = ref_stack_index;
+            ref_stack_index += arg_class_field_ids_length;
+            args_stack_index++;
+            
+            break;
           }
-        }
-        if (hv_value == NULL) {
-          croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-        }
-        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-        for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-          int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-          int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-          const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-          SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
-          SV* sv_field_value;
-          if (sv_field_value_ptr) {
-            sv_field_value = *sv_field_value_ptr;
-          }
-          else {
-            int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
-          }
-          int32_t value = (int32_t)SvIV(sv_field_value);
-          ((int32_t*)&ref_stack[ref_stack_index])[field_index] = value;
-        }
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
-        ref_stack_indexes[args_index] = ref_stack_index;
-        ref_stack_index += arg_class_field_ids_length;
-        args_stack_index++;
-        break;
-      }
-      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
-        args_have_ref = 1;
-        HV* hv_value = NULL;
-        if (SvOK(sv_value)) {
-          if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-            SV* hv_value_ref = SvRV(sv_value);
-            if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              hv_value = (HV*)SvRV(hv_value_ref);
+          case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
+            args_have_ref = 1;
+            HV* hv_value = NULL;
+            if (SvOK(sv_value)) {
+              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
+                SV* hv_value_ref = SvRV(sv_value);
+                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
+                  hv_value = (HV*)SvRV(hv_value_ref);
+                }
+              }
             }
-          }
-        }
-        if (hv_value == NULL) {
-          croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-        }
-        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-        for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-          int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-          int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-          const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-          SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
-          SV* sv_field_value;
-          if (sv_field_value_ptr) {
-            sv_field_value = *sv_field_value_ptr;
-          }
-          else {
-            int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
-          }
-          int64_t value = (int64_t)SvIV(sv_field_value);
-          ((int64_t*)&ref_stack[ref_stack_index])[field_index] = value;
-        }
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
-        ref_stack_indexes[args_index] = ref_stack_index;
-        ref_stack_index += arg_class_field_ids_length;
-        args_stack_index++;
-        break;
-      }
-      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
-        args_have_ref = 1;
-        HV* hv_value = NULL;
-        if (SvOK(sv_value)) {
-          if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-            SV* hv_value_ref = SvRV(sv_value);
-            if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              hv_value = (HV*)SvRV(hv_value_ref);
+            if (hv_value == NULL) {
+              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
             }
-          }
-        }
-        if (hv_value == NULL) {
-          croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-        }
-        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-        for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-          int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-          int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-          const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-          SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
-          SV* sv_field_value;
-          if (sv_field_value_ptr) {
-            sv_field_value = *sv_field_value_ptr;
-          }
-          else {
-            int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
-          }
-          float value = (float)SvNV(sv_field_value);
-          ((float*)&ref_stack[ref_stack_index])[field_index] = value;
-        }
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
-        ref_stack_indexes[args_index] = ref_stack_index;
-        ref_stack_index += arg_class_field_ids_length;
-        args_stack_index++;
-        break;
-      }
-      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
-        args_have_ref = 1;
-        HV* hv_value = NULL;
-        if (SvOK(sv_value)) {
-          if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-            SV* hv_value_ref = SvRV(sv_value);
-            if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              hv_value = (HV*)SvRV(hv_value_ref);
+            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+            for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+              int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+              int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+              const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+              SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
+              SV* sv_field_value;
+              if (sv_field_value_ptr) {
+                sv_field_value = *sv_field_value_ptr;
+              }
+              else {
+                int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+                croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
+              }
+              int16_t value = (int16_t)SvIV(sv_field_value);
+              ((int16_t*)&ref_stack[ref_stack_index])[field_index] = value;
             }
+            args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+            ref_stack_indexes[args_index] = ref_stack_index;
+            ref_stack_index += arg_class_field_ids_length;
+            args_stack_index++;
+            break;
+          }
+          case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_INT: {
+            args_have_ref = 1;
+            HV* hv_value = NULL;
+            if (SvOK(sv_value)) {
+              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
+                SV* hv_value_ref = SvRV(sv_value);
+                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
+                  hv_value = (HV*)SvRV(hv_value_ref);
+                }
+              }
+            }
+            if (hv_value == NULL) {
+              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+            }
+            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+            for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+              int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+              int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+              const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+              SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
+              SV* sv_field_value;
+              if (sv_field_value_ptr) {
+                sv_field_value = *sv_field_value_ptr;
+              }
+              else {
+                int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+                croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
+              }
+              int32_t value = (int32_t)SvIV(sv_field_value);
+              ((int32_t*)&ref_stack[ref_stack_index])[field_index] = value;
+            }
+            args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+            ref_stack_indexes[args_index] = ref_stack_index;
+            ref_stack_index += arg_class_field_ids_length;
+            args_stack_index++;
+            break;
+          }
+          case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
+            args_have_ref = 1;
+            HV* hv_value = NULL;
+            if (SvOK(sv_value)) {
+              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
+                SV* hv_value_ref = SvRV(sv_value);
+                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
+                  hv_value = (HV*)SvRV(hv_value_ref);
+                }
+              }
+            }
+            if (hv_value == NULL) {
+              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+            }
+            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+            for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+              int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+              int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+              const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+              SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
+              SV* sv_field_value;
+              if (sv_field_value_ptr) {
+                sv_field_value = *sv_field_value_ptr;
+              }
+              else {
+                int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+                croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
+              }
+              int64_t value = (int64_t)SvIV(sv_field_value);
+              ((int64_t*)&ref_stack[ref_stack_index])[field_index] = value;
+            }
+            args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+            ref_stack_indexes[args_index] = ref_stack_index;
+            ref_stack_index += arg_class_field_ids_length;
+            args_stack_index++;
+            break;
+          }
+          case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
+            args_have_ref = 1;
+            HV* hv_value = NULL;
+            if (SvOK(sv_value)) {
+              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
+                SV* hv_value_ref = SvRV(sv_value);
+                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
+                  hv_value = (HV*)SvRV(hv_value_ref);
+                }
+              }
+            }
+            if (hv_value == NULL) {
+              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+            }
+            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+            for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+              int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+              int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+              const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+              SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
+              SV* sv_field_value;
+              if (sv_field_value_ptr) {
+                sv_field_value = *sv_field_value_ptr;
+              }
+              else {
+                int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+                croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
+              }
+              float value = (float)SvNV(sv_field_value);
+              ((float*)&ref_stack[ref_stack_index])[field_index] = value;
+            }
+            args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+            ref_stack_indexes[args_index] = ref_stack_index;
+            ref_stack_index += arg_class_field_ids_length;
+            args_stack_index++;
+            break;
+          }
+          case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
+            args_have_ref = 1;
+            HV* hv_value = NULL;
+            if (SvOK(sv_value)) {
+              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
+                SV* hv_value_ref = SvRV(sv_value);
+                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
+                  hv_value = (HV*)SvRV(hv_value_ref);
+                }
+              }
+            }
+            if (hv_value == NULL) {
+              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+            }
+            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+            for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+              int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+              int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+              const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+              SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
+              SV* sv_field_value;
+              if (sv_field_value_ptr) {
+                sv_field_value = *sv_field_value_ptr;
+              }
+              else {
+                int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+                croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
+              }
+              double value = (double)SvNV(sv_field_value);
+              ((double*)&ref_stack[ref_stack_index])[field_index] = value;
+            }
+            args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+            ref_stack_indexes[args_index] = ref_stack_index;
+            ref_stack_index += arg_class_field_ids_length;
+            args_stack_index++;
+            break;
           }
         }
-        if (hv_value == NULL) {
-          croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-        }
-        int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-        int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-        int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-        for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-          int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-          int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-          const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-          SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
-          SV* sv_field_value;
-          if (sv_field_value_ptr) {
-            sv_field_value = *sv_field_value_ptr;
-          }
-          else {
-            int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
-            croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
-          }
-          double value = (double)SvNV(sv_field_value);
-          ((double*)&ref_stack[ref_stack_index])[field_index] = value;
-        }
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
-        ref_stack_indexes[args_index] = ref_stack_index;
-        ref_stack_index += arg_class_field_ids_length;
-        args_stack_index++;
-        break;
       }
       default: {
         if (arg_type_dimension > 0) {
