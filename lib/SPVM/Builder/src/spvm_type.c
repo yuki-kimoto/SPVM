@@ -65,8 +65,8 @@ int32_t SPVM_TYPE_is_embedded_class_name(SPVM_COMPILER* compiler, const char* ty
 int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   int32_t type_category;
-  if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
+  if (SPVM_TYPE_is_void_type(compiler, basic_type_id, dimension, flag)) {
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_VOID;
   }
   else if (SPVM_TYPE_is_numeric_type(compiler, basic_type_id, dimension, flag)) {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC;
@@ -74,43 +74,23 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
   else if (SPVM_TYPE_is_mulnum_type(compiler, basic_type_id, dimension, flag)) {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM;
   }
-  else if (SPVM_TYPE_is_object_type(compiler, basic_type_id, dimension, flag)) {
-    if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY;
-    }
-    else if (SPVM_TYPE_is_any_object_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
-    }
-    else if (SPVM_TYPE_is_class_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
-    }
-    else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
-    }
-    else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
-    }
-    else if (SPVM_TYPE_is_numeric_array_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY;
-    }
-    else if (SPVM_TYPE_is_mulnum_array_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY;
-    }
-    else if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY;
-    }
-    else {
-      assert(0);
-    }
+  else if (SPVM_TYPE_is_basic_object_type(compiler, basic_type_id, dimension, flag)) {
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
+  }
+  else if (SPVM_TYPE_is_numeric_array_type(compiler, basic_type_id, dimension, flag)) {
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY;
+  }
+  else if (SPVM_TYPE_is_mulnum_array_type(compiler, basic_type_id, dimension, flag)) {
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY;
+  }
+  else if (SPVM_TYPE_is_object_array_type(compiler, basic_type_id, dimension, flag)) {
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY;
   }
   else if (SPVM_TYPE_is_numeric_ref_type(compiler, basic_type_id, dimension, flag)) {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_REF;
   }
   else if (SPVM_TYPE_is_mulnum_ref_type(compiler, basic_type_id, dimension, flag)) {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_REF;
-  }
-  else if (SPVM_TYPE_is_void_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_VOID;
   }
   else {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_UNKNOWN;
