@@ -3057,33 +3057,31 @@ Identifiers other than L<"Class Variable Names"> and L<"Local Variable Names"> p
 
 =head1 Array
 
-=head2 Array Summary
+The array is the data structure for multiple values.
 
-Array is a data structure for continuous multiple values.
-
-There are the following types of Array.
+There are the following types of array.
 
 =begin html
 
 <ul>
   <li>
-    Numeric Types Array
+    Numeric Array
  </li>
   <li>
-    Object Type Array
+    Object Array
  </li>
   <li>
-    Multi Numeric Types Array
+    Multi Numeric Array
  </li>
 </ul>
 
 =end html
 
-Numeric Types Array is an array that element type is L<"Numeric Types">.
+The numeric array is the array that the type of the element is the L<numeric type|"Numeric Types">.
 
-Numeric Types Array is an array that element type is L<"Object Types">.
+The object array is the array that the type of the element is the L<object type|"Object Types">.
 
-Numeric Types Array is an array that element type is L<"Multi Numeric Types">.
+The multi numeric array is the array that the type of the element is the L<multi numeric type|"Multi Numeric Types">.
 
 See L<"Creating Array"> to create Array.
 
