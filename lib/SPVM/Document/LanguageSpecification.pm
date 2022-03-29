@@ -3355,7 +3355,7 @@ The return value is the value after the assignment.
 
 If the type of the assigned value is an L<object type|"Object Types">, the reference count of the object is incremented by C<1>.
 
-If an object has already been assigned to $var before the assignment, the reference count of that object is decremented by C<1>.
+If an object has already been assigned to $var before the assignment, the reference count of the object is decremented by C<1>.
 
 See the L<scope|"Scope"> to know the L<garbage collection|"Garbage Collection"> of local variables.
 
@@ -3392,21 +3392,23 @@ B<Setting Class Variable Expression> is an L<expression|"Expressions"> to set L<
 
 "CLASS_NAME::" can be omitted when the Class Variable belongs to own L<"Class">.
 
-  $CLASS_VARIABLE_NAME = RIGHT_OPERAND
+  $CLASS_VARIABLE_NAME = VALUE
 
 If the assignment does not satisfy the L<type assignability|Type Assignability>, a compilation error occurs.
 
-Setting Class Variable Expression returns the value after setting.
+The return value is the value after the setting.
 
-If you try to get the value of a Class Variable that is not defined, a compilation error occurs.
+The return type is the type of the class variable.
 
-If you try to access a private Class Variable from outside the Class, a compilation error occurs.
+If the class variable does not found, a compilation error occurs.
 
-If the right operand is L<"Object Types">, Reference Count of the object is incremented by 1.
+If the class variable is C<private> and it is accessed outside of the class, a compilation error occurs.
 
-If an object has already been assigned to Class Variable before the assignment, the reference count of that object is decremented by 1.
+If the type of the assigned value is an L<object type|"Object Types">, the reference count of the object is incremented by C<1>.
 
-B<Examples of Setting Class Variable:>
+If an object has already been assigned to $CLASS_VARIABLE_NAME before the assignment, the reference count of the object is decremented by C<1>.
+
+B<Examples of setting class variable:>
 
   class Foo {
     our $VAR : int;
