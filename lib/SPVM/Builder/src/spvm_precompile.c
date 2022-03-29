@@ -3233,12 +3233,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
             SPVM_STRING_BUFFER_add(string_buffer, ", stack[0].oval);\n");
             break;
           }
-          case SPVM_API_C_TYPE_CATEGORY_MULNUM_BYTE:
-          case SPVM_API_C_TYPE_CATEGORY_MULNUM_SHORT:
-          case SPVM_API_C_TYPE_CATEGORY_MULNUM_INT:
-          case SPVM_API_C_TYPE_CATEGORY_MULNUM_LONG:
-          case SPVM_API_C_TYPE_CATEGORY_MULNUM_FLOAT:
-          case SPVM_API_C_TYPE_CATEGORY_MULNUM_DOUBLE:
+          case SPVM_API_C_TYPE_CATEGORY_MULNUM:
           {
             int32_t decl_method_return_class_id = SPVM_API_get_basic_type_class_id(env, decl_method_return_basic_type_id);
             int32_t decl_method_return_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, decl_method_return_class_id);

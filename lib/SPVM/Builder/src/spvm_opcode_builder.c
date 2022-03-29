@@ -232,12 +232,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 }
                 break;
               }
-              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE:
-              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT:
-              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT:
-              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_LONG:
-              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT:
-              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE:
+              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM:
               {
                 SPVM_CLASS* arg_class = arg_basic_type->class;
                 SPVM_FIELD* arg_mulnum_field = SPVM_LIST_fetch(arg_class->fields, 0);
