@@ -827,25 +827,27 @@ int32_t SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_type_i
 int32_t SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (SPVM_TYPE_is_ref_type(compiler, basic_type_id, dimension, flag)) {
-    return 0;
-  }
-  else if (SPVM_TYPE_is_mulnum_type(compiler, basic_type_id, dimension, flag)) {
-    return 0;
-  }
-  else if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
+  if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
     return 1;
   }
-  else if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
+  else if (SPVM_TYPE_is_basic_object_type(compiler, basic_type_id, dimension, flag)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+int32_t SPVM_TYPE_is_basic_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)compiler;
+  
+  if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
     return 1;
   }
   else if (SPVM_TYPE_is_class_type(compiler, basic_type_id, dimension, flag)) {
     return 1;
   }
   else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, dimension, flag)) {
-    return 1;
-  }
-  else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
     return 1;
   }
   else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
