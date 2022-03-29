@@ -21,7 +21,7 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
     "VOID"
     "NUMERIC"
     "STRING"
-    "CLASS"
+    "BASIC_OBJECT"
     "ANY_OBJECT"
     "NUMERIC_ARRAY"
     "MULNUM_ARRAY"
