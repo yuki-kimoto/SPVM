@@ -578,11 +578,6 @@ call_spvm_method(...)
               int8_t value = (int8_t)SvIV(sv_field_value);
               ((int8_t*)&ref_stack[ref_stack_index])[field_index] = value;
             }
-            args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
-            ref_stack_indexes[args_index] = ref_stack_index;
-            ref_stack_index += arg_class_field_ids_length;
-            args_stack_index++;
-            
             break;
           }
           case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
@@ -602,10 +597,6 @@ call_spvm_method(...)
               int16_t value = (int16_t)SvIV(sv_field_value);
               ((int16_t*)&ref_stack[ref_stack_index])[field_index] = value;
             }
-            args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
-            ref_stack_indexes[args_index] = ref_stack_index;
-            ref_stack_index += arg_class_field_ids_length;
-            args_stack_index++;
             break;
           }
           case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_INT: {
@@ -625,10 +616,6 @@ call_spvm_method(...)
               int32_t value = (int32_t)SvIV(sv_field_value);
               ((int32_t*)&ref_stack[ref_stack_index])[field_index] = value;
             }
-            args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
-            ref_stack_indexes[args_index] = ref_stack_index;
-            ref_stack_index += arg_class_field_ids_length;
-            args_stack_index++;
             break;
           }
           case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
@@ -648,10 +635,6 @@ call_spvm_method(...)
               int64_t value = (int64_t)SvIV(sv_field_value);
               ((int64_t*)&ref_stack[ref_stack_index])[field_index] = value;
             }
-            args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
-            ref_stack_indexes[args_index] = ref_stack_index;
-            ref_stack_index += arg_class_field_ids_length;
-            args_stack_index++;
             break;
           }
           case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
@@ -671,10 +654,6 @@ call_spvm_method(...)
               float value = (float)SvNV(sv_field_value);
               ((float*)&ref_stack[ref_stack_index])[field_index] = value;
             }
-            args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
-            ref_stack_indexes[args_index] = ref_stack_index;
-            ref_stack_index += arg_class_field_ids_length;
-            args_stack_index++;
             break;
           }
           case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
@@ -694,13 +673,14 @@ call_spvm_method(...)
               double value = (double)SvNV(sv_field_value);
               ((double*)&ref_stack[ref_stack_index])[field_index] = value;
             }
-            args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
-            ref_stack_indexes[args_index] = ref_stack_index;
-            ref_stack_index += arg_class_field_ids_length;
-            args_stack_index++;
             break;
           }
         }
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index += arg_class_field_ids_length;
+        args_stack_index++;
+        break;
       }
       default: {
         if (arg_type_dimension > 0) {
