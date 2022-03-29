@@ -3085,9 +3085,7 @@ Numeric Types Array is an array that element type is L<"Object Types">.
 
 Numeric Types Array is an array that element type is L<"Multi Numeric Types">.
 
-=head2 Create Array
-
-See L<"Create Array"> to create Array.
+See L<"Creating Array"> to create Array.
 
 =head2 Array Access
 
@@ -3636,7 +3634,11 @@ B<Examples of Setting Array Element:>
 
 =head2 new Operator
 
-The C<new> operator is an L<expression|"Expressions"> to create an object.
+The C<new> operator is an L<expression|"Expressions"> to create an object or an array.
+
+=head2 Creating Object
+
+The creating object is an L<expression|"Expressions"> to create an object using the C<new> keyword.
 
   new CLASS_NAME;
 
@@ -3650,59 +3652,49 @@ B<Examples of creating object:>
 
   my $object = new Foo;
 
-=head2 Create Array
+=head2 Creating Array
 
-B<Create Array Expression> is an L<expression|"Expressions"> to create Array with B<new> Keyword.
+The creating array is an L<expression|"Expressions"> to create an array using the C<new> keyword.
 
-  new Type[ELEMENTS_COUNT_EXPRESSION]
+  new BasicType[LENGTH]
 
-Type must be L<"Numeric Types">, L<"Object Types">, L<"Multi Numeric Types">.
+The type must be a L<basic type|"Basic Type">.
 
-Elements Count Expression must be L<"int Type"> or the type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
+The type of length must be the L<int type|"int Type"> or the type that become L<int type|"int Type"> after the L<unary numeric widening type conversion|"Unary Numeric Widening Type Conversion">.
 
-If Index Expression is lower than 0, a Runtime Exception occurs.
+If the length is lower than C<0>, an exception is thrown.
 
-Created Array Length is the value of Elements Count Expression.
+All elements of the array are initialized by L<the rule of type initial value|"Type Initial Value">.
 
-All Array Element is initialized by L<"Type Initial Value">.
+The type of created array is the L<array type|"Array Types">.
 
-All Element is gurantied to be continued on Memory.
-
-Array is L<"Array Types">. This is also L<"Object Types">.
-
-B<Examples of Create ArrayExamples of :>
+B<Examples of creating array:>
 
   my $nums = new int[3];
   my $objects = new Foo[3];
   my $objects = new object[3];
   my $values = new Complex_2d[3]
 
-Created Array has the following information.
+=head3 Multi Dimensional Array
 
-=begin html
+Multi dimensional arrays can be created.
 
-<ul>
-  <li>Reference Count</li>
-  <li>Basic Type ID</li>
-  <li>Type Dimension(the value is 1)</li>
-  <li>Array Length</li>
-</ul>
+  new BasicType[][LENGTH]
+  new BasicType[][]...[LENGTH]
 
-=end html
+B<Examples of creating multi dimentional array:>
 
-Multi-Dimention Array is created by the following syntax.
-
-  # 2 Dimention Array (3 elements of int[] Type)
+  # 2 dimentional int array
   my $nums = new int[][3];
   
-  # 3 Dimention Array (3 elements of int[][] Type)
+  # 3 dimentional int array
   my $nums = new int[][][3];
 
-The max of Dimention of Multi-Dimention Array is 255.
+The max dimention is C<255>.
 
 =head2 Array Initialization
 
-SPVM has a syntax for Array Initialization to simplify Create Array. Expression is not required.
+SPVM has a syntax for Array Initialization to simplify Creating Array. Expression is not required.
 
   []
   [Expression1, Expression2, Expression3]
@@ -3773,7 +3765,7 @@ B<Examples of instance method call:>
 
 B<&> before method name means the current class. You can call method using "&" keyword instead of the current class name.
 
-B<Current Class Example>
+B<Examples of Current Class:>
 
   class Foo {
     
@@ -3802,7 +3794,7 @@ Instance Method Call returns Return Value if Return Value is other than L<"void 
 
 Instance Method Call is L<"Expressions">.
 
-B<Instance Method Call Example>
+B<Examples of Instance Method Call:>
 
   my $point = new Point;
   $point->set_x(3);
@@ -3872,7 +3864,7 @@ B<Getting Current class names> is an L<expression|"Expressions"> to get the curr
 
   __CLASS__
 
-B<Examples of Getting Current class namesExamples of :>
+B<Examples of Getting Current class names:>
 
   class Foo::Bar {
     static method baz : void () {
@@ -4778,7 +4770,7 @@ For example, for add assignment Operator, it is expanded as follows:
   # After unwinding
   $x = (byte)($x + 1)
 
-B<Special Assignment Operator Example>
+B<Examples of Special Assignment Operator:>
 
 Special Assignment Operator Example
 
@@ -4805,7 +4797,7 @@ If the variable is not numeric type or Multi Numeric Types, a compilation error 
 
 Reference Operator returns expression. The type returned is L<"Reference Type">.
 
-    B<Reference Operator Example>
+B<Examples of Reference Operator:>
 
   my $num : int;
   my $num_ref : int* = \$num;
@@ -5224,7 +5216,7 @@ The C<while> statement is a L<statement|"Statements"> for repeating.
 
 L<"Expressions"> can be described in the condition Expression. L<"Bool Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
 
-B<While Statement Example>
+B<Examples of While Statement:>
 
 An example of a while Statement.
 
@@ -5955,7 +5947,7 @@ B<Numeric Array Types list>
 
 Data represented by Numeric Array Types must have elements whose size is L<"Numeric Types">, and must be consecutive by the number of Array Length.
 
-All elements of Numeric Array Types are initialized by L<"Type Initial Value"> when Create Array is performed.
+All elements of Numeric Array Types are initialized by L<"Type Initial Value"> when the L<creating array|"Creating Array"> is performed.
 
 =head2 byte[] Type
 
@@ -5990,13 +5982,13 @@ B<Examples of object array types:>
 
 The data represented by Object Array Types must have elements of size of L<"Object Types"> and consecutive by the number of Array Length.
 
-All elements of Object Array Types are initialized by L<"Type Initial Value"> when Create Array is performed.
+All elements of Object Array Types are initialized by L<"Type Initial Value"> when the L<creating array|"Creating Array"> is performed.
 
 =head2 Multi Numeric Array Types
 
 Multi Numeric Array Types means L<"Array Types that has the value of <a href="#language-type-multi-numeric">Multi Numeric Types"> as an element.</a>.
 
-B<Multi Numeric Array Types Example>
+B<Examples of Multi Numeric Array Types:>
 
 =begin html
 
@@ -6013,7 +6005,7 @@ B<Multi Numeric Array Types Example>
 
 Data represented by Multi Numeric Array Types must have elements whose size is L<"Multi Numeric Types"> and must be contiguous with the number of Array Length ..
 
-All elements of Multi Numeric Array Types are initialized by L<"Type Initial Value"> when Create Array is performed.
+All elements of Multi Numeric Array Types are initialized by L<"Type Initial Value"> when the L<creating array|"Creating Array"> is performed.
 
 =head2 Any Object-Array Type
 
@@ -6998,7 +6990,7 @@ When Create Callback is performed, L<"Class Definition"> is performed internally
 
 Method defined by Create Callback must be L<"Method">. It must also be a Method with no name.
 
-B<Create Callback Example>
+B<Examples of Create Callback:>
 
   my $comparator = method : int ($x1 : object, $x2 : object) {
   
