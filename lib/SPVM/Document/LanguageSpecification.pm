@@ -2312,7 +2312,11 @@ The field access is an expression to get or set the field.
 
   INVOCANT->{FIELD_NAME}
 
-The field access has three different meanings.
+The field access has three different syntax.
+
+If the invocant is different from the following three field access, a compilation error occurs.
+
+If the field name does not found, a compilation error occurs
 
 =head3 Field Access of the Class
 
@@ -3341,7 +3345,7 @@ B<Setting Local Variable Expression> is a Expression to set L<"Local Variable"> 
 
   $var = RIGHT_OPERAND
 
-The Assignment must satisfy the type compatibility.
+The assignment must satisfy the L<type assignability|Type Assignability>.
 
 Setting Local Variable Expression returns the value after setting.
 
@@ -3387,7 +3391,7 @@ B<Setting Class Variable Expression> is a Expression to set L<"Class Variable"> 
 
   $CLASS_VARIABLE_NAME = RIGHT_OPERAND
 
-If the assignment does not satisfy the type compatibility, a compilation error occurs.
+If the assignment does not satisfy the L<type assignability|Type Assignability>, a compilation error occurs.
 
 Setting Class Variable Expression returns the value after setting.
 
@@ -3448,21 +3452,13 @@ B<Setting Exception Variable Example:>
 
 =head2 Getting Field
 
-The syntax of B<Getting Field> is a syntax to get the value of a L<field|"Field">.
+The getting field is a syntax to get the L<field|"Field"> of the object. This is one syntax of the L<field access|"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
-The type of invocant must be a L<class type|"Class Types">, a L<multi numeric type|"Multi Numeric Types">, or a L<multi mumeric reference type|"Multi Numeric Reference Type">.
+The type of invocant is a L<class type|"Class Types">.
 
-If Expression is L<"Multi Numeric Types"> Value, The Field Access is L<"Getting Multi Numeric Field">.
-
-If Expression is L<"Multi Numeric Reference Type"> Value, The Field Access is, otherwise a compilation error occurs.
-
-If the field names does not found in the <a href="#language-class">Class">, a compilation error occurs
-
-Getting Field Expression returns the value of the Field stored in the object.
-
-Retrun Type is The L<"Types"> of the Field.
+The retrun type is the L<type|"Types"> of the Field.
 
 B<Examples of Getting Field:>
 
@@ -3471,21 +3467,19 @@ B<Examples of Getting Field:>
 
 =head2 Setting Field
 
-B<Setting Field Expression> is a Expression to set L<"Field"> Value.
+The setting field is a syntax to set the L<field|"Field"> of the object. This is one syntax of the L<field access|"Field Access">.
 
-  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
+  INVOCANT->{FIELD_NAME} = VALUE
 
-Invocant Expression is L<"Class Types">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is ,L<"Setting Multi Numeric Field">. If Invocant Expression is L<"Multi Numeric Reference Type">, the Field Access is L<"Setting Multi Numeric Field via Dereference">, otherwise a compilation error occurs.
+The type of invocant is a L<class type|"Class Types">.
 
-If the assignment does not satisfy the type compatibility of the type of Field, a compilation error occurs.
+If the assignment does not satisfy the L<type assignability|Type Assignability>, a compilation error occurs.
 
-If the field names does not found in the L<"Class">, a compilation error occurs.
+The return value is the value after the setting. 
 
-Setting Field Expression returns the value of Field after setting. 
+The return type is the type of the field.
 
-Return Value Type is the type of Field.
-
-If the right operand is L<"Object Types">, Reference Count of the object is incremented by 1.
+If the type of assigned value is a L<basic object type|"Object Types">, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
 
@@ -3496,7 +3490,7 @@ B<Setting Field Example:>
 
 =head2 Getting Multi Numeric Field
 
-B<Getting Multi Numeric Field Expression> is a Expression to get Field of L<"Multi Numeric Value">.
+B<Getting Multi Numeric Field Expression> is a Expression to get Field of L<"Multi Numeric Value">. This is one syntax of the L<field access|"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
@@ -3515,11 +3509,9 @@ B<Getting Multi Numeric Field Example:>
 
 =head2 Setting Multi Numeric Field
 
-Setting Multi Numeric Field Expression is a Expression to set Field of L<"Multi Numeric Value"> using L<"Assignment Operator">.
+Setting Multi Numeric Field Expression is a Expression to set Field of L<"Multi Numeric Value"> using L<"Assignment Operator">. This is one syntax of the L<field access|"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
-
-<
 
 Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<"Setting Field">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Setting Multi Numeric Field via Dereference">, otherwise a compilation error occurs.
 
@@ -3527,7 +3519,7 @@ If the field names does not found in the L<"Class">, a compilation error occurs.
 
 Setting Multi Numeric Field Expression returns the value of Field after setting. 
 
-The Assignment must satisfy the type compatibility.
+The assignment must satisfy the L<type assignability|Type Assignability>.
 
 Return Value Type is the type of Field.
 
@@ -3538,7 +3530,7 @@ B<Setting Multi Numeric Field Example:>
 
 =head2 Getting Multi Numeric Field via Dereference
 
-B<Getting Multi Numeric Field via Dereference Expression> is a Expression to get Field of L<"Multi Numeric Value"> via L<"Dereference">.
+B<Getting Multi Numeric Field via Dereference Expression> is a Expression to get Field of L<"Multi Numeric Value"> via L<"Dereference">. This is one syntax of the L<field access|"Field Access">
 
   INVOCANT->{FIELD_NAME}
 
@@ -3558,7 +3550,7 @@ B<Getting Multi Numeric Field via Dereference Example:>
 
 =head2 Setting Multi Numeric Field via Dereference
 
-Setting Multi Numeric Field Expression via Dereference is a Expression to set Field of L<"Multi Numeric Value"> via L<"Dereference"> using L<"Assignment Operator">.
+Setting Multi Numeric Field Expression via Dereference is a Expression to set Field of L<"Multi Numeric Value"> via L<"Dereference"> using L<"Assignment Operator">. This is one syntax of the L<field access|"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
@@ -3568,7 +3560,7 @@ If the field names does not found in the L<"Class">, a compilation error occurs
 
 Setting Multi Numeric Field via Dereference Expression returns the value of Field after setting.
 
-The Assignment must satisfy the type compatibility.
+The assignment must satisfy the L<type assignability|Type Assignability>.
 
 Return Value Type is the type of Field.
 
@@ -3615,7 +3607,7 @@ Array Expression must be L<"Array Types">.
 
 Index Expression must be L<"int Type"> or the type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
 
-The Assignment must satisfy the type compatibility.
+The assignment must satisfy the L<type assignability|Type Assignability>.
 
 Setting Array Element Expression returns the value of the element after setting.
 
@@ -3728,7 +3720,7 @@ Array Initialization returns an Array that has the length of the number of eleme
 
 The type of Array is the type of Expression1 converted to Array Types. If no element is specified, it will be an Array Types of L<"Any Object Type">.
 
-If Expression2 or later does not satisfy the type compatibility, a a compilation error will occur.
+If Expression2 or later does not satisfy the L<type assignability|Type Assignability>, a a compilation error will occur.
 
 B<Examples:>
 
@@ -4722,7 +4714,7 @@ In Assignment Operator, the The left operand is evaluated after the right operan
 
 =head2 Special Assignment Operator
 
-Special Assignment Operator is a L<"Assignment Operator">the type compatibility ,a compilation error occurs
+Special Assignment Operator is a L<"Assignment Operator">the L<type assignability|Type Assignability> ,a compilation error occurs
 
 B<List of Special Assignment Operators>
 
@@ -5779,14 +5771,17 @@ The pointer type is the type that has a C<pointer_t> L<class descriptor|"Class D
 
 A pointer type is a L<class type|"Class Types">
 
+=head2 Basic Object Types
+
+Basic object types are the L<class type|"Class Types">, the L<callback type|"Callback Type">, the L<array type|"Array Types">, the L<string type|"string Type">, and the L<any object type|"Any Object Type">.
+
 =head2 Object Types
 
-Object types are L<"Class Types">, L<"Callback Type">, L<"Array Types">, L<"string Type">, L<"Any Object Type">.
+Object types are the L<basic object types|"Basic Object Types"> and the L<array types|"Array Types">.
 
-The value of a object type can be assigned to a any object type.
+A object type can be assigned to a L<any object type|"Any Object Type">.
 
   my $object: object = new Foo;
-  my $object: object = new Foo [];
   my $object: object = "abc";
 
 =head2 Numeric Object Type
@@ -6150,6 +6145,345 @@ Omitting L<"Types"> when L<"Local Variable Declaration"> by Type Inference can. 
   
   # Foo
   my $foo = new Foo;
+
+=head1 Type Assignability
+
+I will rewrite the following code to a table.
+
+  SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
+    SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
+    
+    // Dist type is numeric type
+    int32_t can_assign = 0;
+    int32_t narrowing_convertion_error = 0;
+    int32_t need_implicite_convertion = 0;
+    if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+      // Soruce type is numeric type
+      if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+        // Dist type is same as source type
+        if (dist_type->basic_type->id == src_type->basic_type->id) {
+          can_assign = 1;
+        }
+        // Dist type is more wide than source type
+        else if (dist_type->basic_type->id > src_type->basic_type->id) {
+          can_assign = 1;
+          need_implicite_convertion = 1;
+        }
+        // Dist type is narrow than source type
+        else if (dist_type->basic_type->id < src_type->basic_type->id) {
+          int32_t can_narrowing_convertion = 0;
+          if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
+            SPVM_CONSTANT* constant = op_src->uv.constant;
+            assert(constant->type->dimension == 0);
+            if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT || constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+              int64_t constant_value;
+              if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+                constant_value = constant->value.ival;
+              }
+              else if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+                constant_value = constant->value.lval;
+              }
+              else {
+                assert(0);
+              }
+              
+              if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                if (constant_value >= INT8_MIN && constant_value <= INT8_MAX) {
+                  can_narrowing_convertion = 1;
+                }
+                else {
+                  can_narrowing_convertion = 0;
+                }
+              }
+              else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+                if (constant_value >= INT16_MIN && constant_value <= INT16_MAX) {
+                  can_narrowing_convertion = 1;
+                }
+                else {
+                  can_narrowing_convertion = 0;
+                }
+              }
+              else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+                if (constant_value >= INT32_MIN && constant_value <= INT32_MAX) {
+                  can_narrowing_convertion = 1;
+                }
+                else {
+                  can_narrowing_convertion = 0;
+                }
+              }
+              else {
+                assert(0);
+              }
+            }
+            else {
+              can_narrowing_convertion = 0;
+            }
+          }
+          else {
+            can_assign = 0;
+          }
+          
+          if (can_narrowing_convertion) {
+            need_implicite_convertion = 1;
+            can_assign = 1;
+          }
+          else {
+            narrowing_convertion_error = 1;
+            can_assign = 0;
+          }
+        }
+      }
+      else if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+        if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          can_assign = 1;
+          need_implicite_convertion = 1;
+        }
+        else if (SPVM_TYPE_is_numeric_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          if (src_type->basic_type->id == dist_type->basic_type->id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
+            can_assign = 1;
+            need_implicite_convertion = 1;
+          }
+          else {
+            can_assign = 0;
+          }
+        }
+        else {
+          can_assign = 0;
+        }
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    // Dist type is referece type
+    else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+      if (SPVM_TYPE_is_ref_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+        if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
+          can_assign = 1;
+        }
+        else {
+          can_assign = 0;
+        }
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    // Dist type is multi numeric type
+    else if (SPVM_TYPE_is_mulnum_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+      if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+        if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
+          can_assign = 1;
+        }
+        else {
+          can_assign = 0;
+        }
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    // Dist type is object type
+    else if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+      // Dist type is any object array type
+      if (SPVM_TYPE_is_any_object_array_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+        if (SPVM_TYPE_is_object_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          can_assign = 1;
+        }
+        else if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          can_assign = 1;
+        }
+        else {
+          can_assign = 0;
+        }
+      }
+      // Dist type is string type
+      else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+        // Source type is number
+        if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          can_assign = 1;
+          need_implicite_convertion = 1;
+        }
+        // Source type is string
+        else if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          can_assign = 1;
+        }
+        // Source type is byte array
+        else if (SPVM_TYPE_is_byte_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          can_assign = 0;
+        }
+        else if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          can_assign = 1;
+        }
+        else {
+          can_assign = 0;
+        }
+      }
+      // Dist type is any object type
+      else if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+        // Source type is object type
+        if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          can_assign = 1;
+        }
+        // Source type is numeric type
+        else if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          can_assign = 1;
+          need_implicite_convertion = 1;
+        }
+        // Source type is undef type
+        else if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          can_assign = 1;
+        }
+        else {
+          can_assign = 0;
+        }
+      }
+      // Dist type is numeric object type
+      else if (SPVM_TYPE_is_numeric_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+        if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          if (dist_type->basic_type->id == src_type->basic_type->id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
+            can_assign = 1;
+            need_implicite_convertion = 1;
+          }
+          else {
+            can_assign = 0;
+          }
+        }
+        else if (SPVM_TYPE_is_numeric_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          if (src_type->basic_type->id == dist_type->basic_type->id) {
+            can_assign = 1;
+          }
+          else {
+            can_assign = 0;
+          }
+        }
+        else if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          can_assign = 1;
+        }
+        else {
+          can_assign = 0;
+        }
+      }
+      // Dist type is object type without string type and any object type and numeric object type
+      else {
+        // Source type is object type
+        if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          if (dist_type->dimension > 0){
+            if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
+              can_assign = 1;
+            }
+            else {
+              can_assign = 0;
+            }
+          }
+          // Dist type is class or callback
+          else if (dist_type->dimension == 0){
+            // Dist type is class
+            if (SPVM_TYPE_is_class_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+              if (SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                if (dist_type->basic_type->id == src_type->basic_type->id) {
+                  can_assign = 1;
+                }
+                else {
+                  can_assign = 0;
+                }
+              }
+              else {
+                can_assign = 0;
+              }
+            }
+            // Dist type is callback
+            else if (SPVM_TYPE_is_callback_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+              
+              // Source type is class, callback or interface
+              if (
+                SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+                || SPVM_TYPE_is_callback_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+                || SPVM_TYPE_is_interface_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+              )
+              {
+                can_assign = SPVM_TYPE_has_callback(
+                  compiler,
+                  src_type->basic_type->id, src_type->dimension, src_type->flag,
+                  dist_type->basic_type->id, dist_type->dimension, dist_type->flag
+                );
+              }
+              else {
+                can_assign = 0;
+              }
+            }
+            // Dist type is interface
+            else if (SPVM_TYPE_is_interface_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+              // Source type is class, callback, or interface
+              if (
+                SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+                || SPVM_TYPE_is_callback_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+                || SPVM_TYPE_is_interface_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+              )
+              {
+                can_assign = SPVM_TYPE_has_interface(
+                  compiler,
+                  src_type->basic_type->id, src_type->dimension, src_type->flag,
+                  dist_type->basic_type->id, dist_type->dimension, dist_type->flag
+                );
+              }
+              else {
+                can_assign = 0;
+              }
+            }
+            else {
+              assert(0);
+            }
+          }
+          else {
+            assert(0);
+          }
+        }
+        // Source type is undef type
+        else if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+          can_assign = 1;
+        }
+        else {
+          can_assign = 0;
+        }
+      }
+    }
+    else {
+      SPVM_COMPILER_error(compiler, "Can't assign to empty type in %s, at %s line %d", place, file, line);
+      return NULL;
+    }
+    
+    // Mutable check
+    if(dist_type->flag & SPVM_TYPE_C_FLAG_MUTABLE && !(src_type->flag & SPVM_TYPE_C_FLAG_MUTABLE)) {
+      SPVM_COMPILER_error(compiler, "Can't assign a non-mutable to a mutable type in %s, at %s line %d", place, file, line);
+    }
+      
+    if (!can_assign) {
+      if (narrowing_convertion_error) {
+        SPVM_COMPILER_error(compiler, "Can't apply narrowing convertion in %s at %s line %d", place, file, line);
+        return NULL;
+      }
+      else {
+        const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag);
+        const char* dist_type_name = SPVM_TYPE_new_type_name(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
+        SPVM_COMPILER_error(compiler, "Can't convert %s to %s by implicite type convertion in %s at %s line %d", src_type_name, dist_type_name, place, file, line);
+        return NULL;
+      }
+    }
+    
+    if (need_implicite_convertion) {
+      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_src);
+      
+      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, file, line);
+      SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, dist_type, file, line);
+      SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_src, NULL);
+      
+      SPVM_OP_replace_op(compiler, op_stab, op_convert);
+      return op_convert;
+    }
+    
+    return op_src;
+  }
 
 =head1 Type Conversions
 
