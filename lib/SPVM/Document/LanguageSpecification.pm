@@ -1808,9 +1808,9 @@ B<Examples of destructors:>
 
 By default, private Methods, Fields, and Class Variables cannot be accessed from outside the Class.
 
-Also, Private Class cannot L<"Creating Object"> from outside of Class.
+Also, Private Class cannot L<"new Operator"> from outside of Class.
 
-If the class allow other class, the other class can access private Methods, Fields, and Class Variables, and can L<"Creating Object"> of the class.
+If the class allow other class, the other class can access private Methods, Fields, and Class Variables, and can L<"new Operator"> of the class.
 
   allow CLASS_NAME;
 
@@ -1820,7 +1820,7 @@ allow must be defined directory under L<"Class Definition">.
     allow Bar;
   }
 
-In this example, Bar can access the private Method, Field, and Class Variable of Foo can be accessed and can Creating Object of Foo.
+In this example, Bar can access the private Method, Field, and Class Variable of Foo can be accessed and can new Operator of Foo.
 
 Specifying the module of B<allow> also loads the module by L<"use"> at the same time.
 
@@ -3634,13 +3634,13 @@ B<Examples of Setting Array Element:>
   my $objects : element[] = $points;
   $objects->[2] = Point->new(3, 5);
 
-=head2 Creating Object
+=head2 new Operator
 
-The creating object is an L<expression|"Expressions"> to create an object using the C<new> operator.
+The C<new> operator is an L<expression|"Expressions"> to create an object.
 
   new CLASS_NAME;
 
-The class name must be the name of a L<class|"Class"> defined by the L<class definition|"Class Definition">.
+The class name must be the name of the L<class|"Class"> defined by the L<class definition|"Class Definition">.
 
 The fields of the created object are initialized by L<the rule of type initial value|"Type Initial Value">.
 
@@ -3792,7 +3792,7 @@ B<Current Class Example>
 
 Instance Method Call is a method to call Method which is L<"Method">. In L<"Method Definition">, the first argument is L<"self Type"> If the argument of> is specified, it becomes Method.
 
-Instance Method Call can be done with the following syntax using the object created by L<"Creating Object">.
+Instance Method Call can be done with the following syntax using the object created by L<"new Operator">.
 
   OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
@@ -5736,7 +5736,7 @@ C<double> type is a L<"Floating Point Types"> that represents a double precision
 
 =head2 Class Types
 
-The class type is the type that can create the object using a L<new operator|"Creating Object">.
+The class type is the type that can create the object using a L<new operator|"new Operator">.
 
   new ClassType;
 
