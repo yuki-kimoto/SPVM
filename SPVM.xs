@@ -1040,7 +1040,8 @@ call_spvm_method(...)
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
                 int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
                 const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-                SV* sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_index])[field_index]));
+                SV* sv_field_value;
+                sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_index])[field_index]));
                 (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
               }
               break;
@@ -1050,7 +1051,8 @@ call_spvm_method(...)
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
                 int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
                 const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-                SV* sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_index])[field_index]));
+                SV* sv_field_value;
+                sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_index])[field_index]));
                 (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
               }
               break;
@@ -1060,7 +1062,8 @@ call_spvm_method(...)
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
                 int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
                 const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-                SV* sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_index])[field_index]));
+                SV* sv_field_value;
+                sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_index])[field_index]));
                 (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
               }
               break;
@@ -1070,7 +1073,8 @@ call_spvm_method(...)
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
                 int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
                 const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-                SV* sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_index])[field_index]));
+                SV* sv_field_value;
+                sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_index])[field_index]));
                 (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
               }
               break;
@@ -1080,7 +1084,8 @@ call_spvm_method(...)
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
                 int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
                 const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-                SV* sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_index])[field_index]));
+                SV* sv_field_value;
+                sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_index])[field_index]));
                 (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
               }
               break;
@@ -1090,7 +1095,8 @@ call_spvm_method(...)
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
                 int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
                 const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-                SV* sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_index])[field_index]));
+                SV* sv_field_value;
+                sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_index])[field_index]));
                 (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
               }
               break;
