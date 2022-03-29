@@ -1808,9 +1808,9 @@ B<Examples of destructors:>
 
 By default, private Methods, Fields, and Class Variables cannot be accessed from outside the Class.
 
-Also, Private Class cannot L<"Create Object"> from outside of Class.
+Also, Private Class cannot L<"Creating Object"> from outside of Class.
 
-If the class allow other class, the other class can access private Methods, Fields, and Class Variables, and can L<"Create Object"> of the class.
+If the class allow other class, the other class can access private Methods, Fields, and Class Variables, and can L<"Creating Object"> of the class.
 
   allow CLASS_NAME;
 
@@ -1820,7 +1820,7 @@ allow must be defined directory under L<"Class Definition">.
     allow Bar;
   }
 
-In this example, Bar can access the private Method, Field, and Class Variable of Foo can be accessed and can Create Object of Foo.
+In this example, Bar can access the private Method, Field, and Class Variable of Foo can be accessed and can Creating Object of Foo.
 
 Specifying the module of B<allow> also loads the module by L<"use"> at the same time.
 
@@ -2842,7 +2842,7 @@ B<Scope> is a range surrounded by L<"Scope Blocks">.
 
 Local Variable Declaration registers the Local Variable that is L<"Object Types"> with Mortal Variable in run-time. 
 
-If the object is not L<"undef">, The Reference Count is added by 1.
+If the object is not L<"undef">, The reference count is added by C<1>.
 
   {
     # $num become Mortal Variable in run-time
@@ -3386,7 +3386,7 @@ B<Examples of getting class variable:>
 
 =head2 Setting Class Variable
 
-B<Setting Class Variable Expression> is an L<expression|"Expressions"> to set L<"Class Variable"> Value using L<"Assignment Operator">.
+B<Setting Class Variable Expression> is an L<expression|"Expressions"> to set L<"Class Variable"> Value using the L<assignment operator|"Assignment Operator">.
 
   $CLASS_NAME::CLASS_VARIABLE_NAME = VALUE
 
@@ -3421,37 +3421,36 @@ B<Examples of setting class variable:>
 
 =head2 Getting Exception Variable
 
-B<Setting Class Variable Expression> is an L<expression|"Expressions"> to get the value of L<"Exception Variable">.
+The setting exception variable is an L<expression|"Expressions"> to get the value of the L<exception variable|"Exception Variable">.
 
   $@
 
-Setting Class Variable Expression returns the value of L<"string Type">.
+The return value is the value of L<exception variable|"Exception Variable">.
 
-B<Examples of Setting Class Variable:>
+The type of return value is the L<string type|"string Type">.
 
-  eval {
-    foo();
-  };
+B<Examples of getting exception variable:>
   
-  if (my $message = $@) {
-  
-  }
+  # Getting the exception variable
+  my $message = $@;
 
 =head2 Setting Exception Variable
 
-B<Setting Exception Variable Expression> is an L<expression|"Expressions"> to set the value of L<"Exception Variable"> using L<"Assignment Operator">.
+The setting exception variable is an L<expression|"Expressions"> to set the value of L<"Exception Variable"> using the L<assignment operator|"Assignment Operator">.
 
   $@ = VALUE
 
-the right operand must be L<"string Type">.
+The type of the assigned value must be L<"string Type">.
 
-Returns the value of Exception Variable after setting. This is L<"string Type">.
+The return value is the value after the setting.
 
-The Reference Count of the right operand is incremented by 1.
+The type of return value is the L<string type|"string Type">.
 
-If an object has already been assigned to Exception Variable before the assignment, the reference count of that object is decremented by 1.
+The reference count of the assigned value is incremented by C<1>.
 
-B<Examples of Setting Exception Variable:>
+If an string has already been assigned to the exception variable before the assignment, the reference count of the string is decremented by C<1>.
+
+B<Examples of setting exception variable:>
 
   $@ = "Error";
 
@@ -3484,9 +3483,9 @@ The return value is the value after the setting.
 
 The return type is the type of the field.
 
-If the type of assigned value is a L<basic object type|"Object Types">, Reference Count of the object is incremented by 1.
+If the type of assigned value is a L<basic object type|"Object Types">, Reference Count of the object is incremented by C<1>.
 
-If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by 1.
+If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by C<1>.
 
 B<Examples of Setting Field:>
 
@@ -3499,7 +3498,7 @@ B<Getting Multi Numeric Field Expression> is an L<expression|"Expressions"> to g
 
   INVOCANT->{FIELD_NAME}
 
-Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<". If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type">, the Field Access is L<"Getting Multi Numeric Field via Dereference">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Types">.
   
 If the field names does not found in the L<"Class">, a compilation error occurs
 
@@ -3518,7 +3517,7 @@ Setting Multi Numeric Field Expression is an L<expression|"Expressions"> to set 
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
-Invocant Expression is L<"Multi Numeric Types">. If Invocant Expression is L<"Class Types">, the Field Access is L<"Setting Field">. Invocant Expression is L<"Multi Numeric Reference Type">, L<"Setting Multi Numeric Field via Dereference">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Types">.
 
 If the field names does not found in the L<"Class">, a compilation error occurs.
 
@@ -3539,7 +3538,7 @@ B<Getting Multi Numeric Field via Dereference Expression> is an L<expression|"Ex
 
   INVOCANT->{FIELD_NAME}
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Types">, the Field Access is , L<"Getting Field">. If Invocant Expression is L<"Multi Numeric Types">, the Field Access is L<"Getting Multi Numeric Field">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Reference Type">.
 
 If the field names does not found in the L<"Class">, a compilation error occurs
 
@@ -3559,7 +3558,7 @@ Setting Multi Numeric Field Expression via Dereference is an L<expression|"Expre
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
-Invocant Expression is L<"Multi Numeric Reference Type">. If Invocant Expression is L<"Class Types">, L<"Setting Field">. If Invocant Expression is L<"Multi Numeric Types">, L<"Setting Multi Numeric Field">, otherwise a compilation error occurs.
+Invocant Expression is L<"Multi Numeric Reference Type">.
 
 If the field names does not found in the L<"Class">, a compilation error occurs
 
@@ -3620,9 +3619,9 @@ If Array Expression is L<"Undefined Value">, a Runtime Exception occurs.
 
 If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
-If the right operand is L<"Object Types">, Reference Count of the object is incremented by 1.
+If the right operand is L<"Object Types">, Reference Count of the object is incremented by C<1>.
 
-If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by 1.
+If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by C<1>.
 
 B<Examples of Setting Array Element:>
 
@@ -3635,34 +3634,21 @@ B<Examples of Setting Array Element:>
   my $objects : element[] = $points;
   $objects->[2] = Point->new(3, 5);
 
-=head2 Create Object
+=head2 Creating Object
 
-B<Create Object Expression> is an L<expression|"Expressions"> to create Object using B<new> operator.
+The creating object is an L<expression|"Expressions"> to create an object using the C<new> operator.
 
-  my $object = new CLASS_NAME;
+  new CLASS_NAME;
 
-L<"Class"> that is specified by L<"Class Names"> must be L<"Class Types">.
+The class name must be the name of a L<class|"Class"> defined by the L<class definition|"Class Definition">.
 
-Fields of the Object are initialized by L<"Type Initial Value">.
+The fields of the created object are initialized by L<the rule of type initial value|"Type Initial Value">.
 
-Created Object Reference count is 0 at first. If the Object is assigned to some Variable by L<"Assignment Operator">, The Reference Count is incremented by 1. If implicite assignment is not done, Temporary Variable is created, the object is assigned to the Temporary Variable.
+The reference count of the created object is C<0>. If the object is assigned to a local variable, a class variable, or a field by L<"Assignment Operator">, the reference count is incremented by C<1>.
 
-B<Examples of Create Object:>
+B<Examples of creating object:>
 
   my $object = new Foo;
-
-Create Object has the following information.
-
-=begin html
-
-<ul>
-  <li>Reference Count</li>
-  <li>Back references of L<"Weaken Reference"></li>
-  <li>Basic Type ID</li>
-  <li>Type Dimension(Always 0)</li>
-</ul>
-
-=end html
 
 =head2 Create Array
 
@@ -3806,7 +3792,7 @@ B<Current Class Example>
 
 Instance Method Call is a method to call Method which is L<"Method">. In L<"Method Definition">, the first argument is L<"self Type"> If the argument of> is specified, it becomes Method.
 
-Instance Method Call can be done with the following syntax using the object created by L<"Create Object">.
+Instance Method Call can be done with the following syntax using the object created by L<"Creating Object">.
 
   OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
@@ -5457,7 +5443,7 @@ If the value stored in the Field at execution time is L<"Undefined Value">, the 
 
 If the value stored in the Field at runtime is not L<"Undefined Value">, then the following is done:
 
-1. Decrement the reference count of the object stored in Field by 1.
+1. Decrement the reference count of the object stored in Field by C<1>.
 
 2. Setting the Weaken Reference flag in Field.
 
@@ -5503,7 +5489,7 @@ If the value stored in the Field at execution time is L<"Undefined Value">, the 
 
 If the value stored in the Field at runtime is not L<"Undefined Value">, then the following is done:
 
-1. Increase the reference count of the object stored in the Field by 1.
+1. Increase the reference count of the object stored in the Field by C<1>.
 
 2. Clear the Weaken Reference flag of Field.
 
@@ -5750,7 +5736,7 @@ C<double> type is a L<"Floating Point Types"> that represents a double precision
 
 =head2 Class Types
 
-The class type is the type that can create the object using a L<new operator|"Create Object">.
+The class type is the type that can create the object using a L<new operator|"Creating Object">.
 
   new ClassType;
 
@@ -6999,9 +6985,9 @@ See L<"Setting Exception Variable"> to set Exception Variable Value.
 
 The object is released from memory when the reference count reaches 0.
 
-If the object is an Array that has Object Type values ​​as elements, the reference count of all Array elements that are not Undefined Value is decremented by 1 before Garbage Collection
+If the object is an Array that has Object Type values ​​as elements, the reference count of all Array elements that are not Undefined Value is decremented by C<1> before Garbage Collection
 
-When an object is a Class Types and has a field of Object Type, the reference count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by 1 before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by 1.
+When an object is a Class Types and has a field of Object Type, the reference count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by C<1> before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by C<1>.
 
 When the object has Back references of Weaken Reference, Undefined Value is assigned to all Fields registered as back References and all back References are deleted.
 
@@ -7119,7 +7105,7 @@ If there is no weaken statement, the reference count of $foo and the reference c
 
 When a weaken statement is executed, $foo has a Reference Count of 2 and $bar has a Reference Count of 1.
 
-When the Scope ends, the reference count of $bar is decremented by 1 and becomes 0, so it is released correctly.
+When the Scope ends, the reference count of $bar is decremented by C<1> and becomes 0, so it is released correctly.
 
 Even if there are 3 circular references, you can release them correctly by setting Weaken Reference in 1 Field.
 
