@@ -1776,7 +1776,11 @@ If more than one of "callback_t", "mulnum_t", "pointer_t" are specified, a compi
 
 =head2 Destructor
 
-If the class is a L<class type|"Class Types">, the class can has the destructor.
+If a L<class|"Class"> can has the destructor.
+
+  method DESTROY : void () {
+  
+  }
 
 A destructor is a special L<method|"Method"> called when the object is destroyed.
 
@@ -1785,10 +1789,6 @@ A destructor name must be C<DESTROY>.
 A destructor retrun type must be L<void type|"void Type">, otherwise a compilation error occurs.
 
 A destructor must be a L<instance method|"Instance Method"> that don't have the arguments, otherwise a compilation error occurs.
-
-  method DESTROY : void () {
-  
-  }
 
 If a L<"Exception"> occurs in the destructor, the exception is not thrown, and prints the message to STDERR.
 
