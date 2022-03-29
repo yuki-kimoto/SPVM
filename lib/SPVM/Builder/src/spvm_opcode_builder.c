@@ -286,12 +286,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 break;
               }
               case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_REF:
-              case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE:
-              case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_SHORT:
-              case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_INT:
-              case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_LONG:
-              case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_FLOAT:
-              case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE:
+              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_REF:
               {
                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_REF);
                 opcode.operand1 = arg->mem_id;

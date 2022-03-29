@@ -537,12 +537,7 @@ call_spvm_method(...)
         }
         break;
       }
-      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_BYTE:
-      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_SHORT:
-      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_INT:
-      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_LONG:
-      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT:
-      case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE:
+      case SPVM_API_C_TYPE_CATEGORY_MULNUM_REF:
       {
         args_have_ref = 1;
         HV* hv_value = NULL;
@@ -1021,12 +1016,7 @@ call_spvm_method(...)
           }
           break;
         }
-        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_BYTE:
-        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_SHORT:
-        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_INT:
-        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_LONG:
-        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT:
-        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE:
+        case SPVM_API_C_TYPE_CATEGORY_MULNUM_REF:
         {
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
