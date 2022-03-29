@@ -1028,15 +1028,14 @@ call_spvm_method(...)
         case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT:
         case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE:
         {
+          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
+          int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
           switch(arg_type_category) {
             case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
-              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-              int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-
-              int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
               for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
                 int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
@@ -1047,12 +1046,6 @@ call_spvm_method(...)
               break;
             }
             case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
-              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-              int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-              int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
               for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
                 int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
@@ -1063,12 +1056,6 @@ call_spvm_method(...)
               break;
             }
             case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_INT: {
-              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-              int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-              int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
               for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
                 int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
@@ -1079,12 +1066,6 @@ call_spvm_method(...)
               break;
             }
             case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
-              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-              int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-              int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
               for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
                 int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
@@ -1095,12 +1076,6 @@ call_spvm_method(...)
               break;
             }
             case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
-              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-              int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-              int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
               for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
                 int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
@@ -1111,12 +1086,6 @@ call_spvm_method(...)
               break;
             }
             case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
-              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-              int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-              int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
               for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
                 int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
