@@ -1806,6 +1806,10 @@ B<Examples of destructors:>
 
 =head2 Callback
 
+Explains the callback.
+
+=head3 Callback Definition
+
 A callback can be defined using the L<class descriptor|"Class Descriptors"> C<callback_t>.
 
   class Comparator: callback_t {
