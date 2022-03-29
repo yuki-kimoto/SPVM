@@ -1806,7 +1806,7 @@ B<Examples of destructors:>
 
 =head2 Callback
 
-Explains the callback.
+Explains callbacks.
 
 =head3 Callback Definition
 
@@ -1837,11 +1837,11 @@ If the object is created by the syntax of L<"Create Callback"> can be assigned t
 
 =head2 Interface
 
-Interface is a type that is designed for class abstructions.
+Explains interfaces.
 
 =head3 Interface Definision
 
-A interface type is defined using a L<"class descriptor|"Class Descriptors"> "interface_t".
+A interface is defined using a L<"class descriptor|"Class Descriptors"> C<interface_t>.
 
   class Asset: interface_t {
     method add_chunk : void ($chunk : string);
@@ -1850,7 +1850,9 @@ A interface type is defined using a L<"class descriptor|"Class Descriptors"> "in
     method is_file : int ();
   }
 
-The object that the class has the interface can be assign to the interface type.
+The type of the interface is L<"Interface Type">.
+
+The object that implements the interface using L<implement stataments|"implement Statement"> can be assign to the interface.
 
   class Asset::Memory {
     implement Asset;
@@ -1866,7 +1868,7 @@ The object that the class has the interface can be assign to the interface type.
 
 =head2 implement Statement
 
-The class have a L<interface|"Interface"> specified by a C<implement> statement is expected to implement the all methods of the interface class.
+The L<class|"Class"> that implements L<interfaces|"Interface"> is expected to implement the methods of the interface.
 
   class Asset::Memory {
     implement Asset;
@@ -1902,11 +1904,7 @@ The class have a L<interface|"Interface"> specified by a C<implement> statement 
     }
   }
 
-C<implement> statements can be defined in the class that is L<class types|"Class Types">.
-
-Not that C<implement> statement doesn't force the implementation of all methods of the interface class. 
-
-The class does not necessarily have all the methods declared in the interface.
+Not that C<implement> statement doesn't force the implementation of methods of the interface.
 
   class Asset::File {
     implement Asset;
@@ -1918,10 +1916,12 @@ The class does not necessarily have all the methods declared in the interface.
       # ...
     }
     
-    # OK although size and is_file method is not defined
+    # It is OK although size and is_file method is not defined
   }
 
-The existence of a the method implementation can be checked by the L<has_implement|"has_implement Operator"> operator.
+If the method implementation is not found, an exception is thrown at runtime.
+
+The existence of the method implementation can be checked by the L<has_implement|"has_implement Operator"> operator.
 
 =head2 Allow Class Access
 
