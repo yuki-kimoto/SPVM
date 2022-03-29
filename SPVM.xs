@@ -330,6 +330,15 @@ call_spvm_method(...)
               croak("%dth argument of %s->%s must be a non-ref scalar or a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
             }
           }
+          else if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT) {
+            if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
+              SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+              args_stack[args_stack_index].oval = object;
+            }
+            else {
+              croak("%dth argument of %s->%s must be a SPVM::BlessedObject at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+            }
+          }
           else {
             if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
               SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
@@ -342,24 +351,6 @@ call_spvm_method(...)
             else {
               croak("%dth argument of %s->%s must be a SPVM::BlessedObject::Class object at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
             }
-          }
-        }
-        args_stack_index++;
-        break;
-      }
-      // Perl SPVM::BlessedObject to SPVM any object
-      case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
-      {
-        if (!SvOK(sv_value)) {
-          args_stack[args_stack_index].oval = NULL;
-        }
-        else {
-          if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
-            SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-            args_stack[args_stack_index].oval = object;
-          }
-          else {
-            croak("%dth argument of %s->%s must be a SPVM::BlessedObject at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
           }
         }
         args_stack_index++;

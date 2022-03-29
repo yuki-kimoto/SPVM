@@ -1217,7 +1217,6 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
     int32_t class_var_type_category = class_var_type->category;
 
     switch (class_var_type_category) {
-      case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
       case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
       case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
@@ -1276,7 +1275,6 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
     if (!exception_flag) {
       SPVM_RUNTIME_TYPE* method_return_type = SPVM_API_get_type(env, method->return_type_id);
       switch (method_return_type->category) {
-        case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
@@ -1296,7 +1294,6 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
     if (!exception_flag) {
       SPVM_RUNTIME_TYPE* method_return_type = SPVM_API_get_type(env, method->return_type_id);
       switch (method_return_type->category) {
-        case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
@@ -4191,7 +4188,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             break;
           }
           case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
-          case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
           case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
           case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
           case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
@@ -4346,7 +4342,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
               break;
             }
             case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
-            case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
             case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
             case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
             case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
@@ -5436,7 +5431,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   if (!exception_flag) {
     SPVM_RUNTIME_TYPE* method_return_type = SPVM_API_get_type(env, method->return_type_id);
     switch (method_return_type->category) {
-      case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
       case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
       case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
@@ -7611,7 +7605,6 @@ int32_t SPVM_API_get_type_can_assign_to_any_object(SPVM_ENV* env, int32_t type_i
   
   int32_t is_object;
   switch (type->category) {
-    case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
     case SPVM_API_C_TYPE_CATEGORY_BASIC_OBJECT:
     case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
     case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:

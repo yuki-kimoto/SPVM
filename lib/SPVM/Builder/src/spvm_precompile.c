@@ -3222,7 +3222,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
             break;
           }
           case SPVM_API_C_TYPE_CATEGORY_BASIC_OBJECT:
-          case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
           case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
           case SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY:
           case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:

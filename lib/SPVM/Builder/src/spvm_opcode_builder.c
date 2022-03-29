@@ -271,7 +271,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 stack_index += type_width;
                 break;
               }
-              case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
               case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
               case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
               case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
