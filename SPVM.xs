@@ -1021,102 +1021,115 @@ call_spvm_method(...)
           }
           break;
         }
-        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
-          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_BYTE:
+        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_SHORT:
+        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_INT:
+        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_LONG:
+        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT:
+        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE:
+        {
+          switch(arg_type_category) {
+            case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
+              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+              int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
 
-          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-          int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-            int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-            int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-            const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-            SV* sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_index])[field_index]));
-            (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
+              int32_t arg_mulnum_field_id = arg_class_field_ids_base;
+              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
+              for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+                int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+                int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+                const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+                SV* sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_index])[field_index]));
+                (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
+              }
+              break;
+            }
+            case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
+              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+              int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+              int32_t arg_mulnum_field_id = arg_class_field_ids_base;
+              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
+              for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+                int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+                int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+                const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+                SV* sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_index])[field_index]));
+                (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
+              }
+              break;
+            }
+            case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_INT: {
+              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+              int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+              int32_t arg_mulnum_field_id = arg_class_field_ids_base;
+              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
+              for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+                int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+                int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+                const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+                SV* sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_index])[field_index]));
+                (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
+              }
+              break;
+            }
+            case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
+              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+              int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+              int32_t arg_mulnum_field_id = arg_class_field_ids_base;
+              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
+              for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+                int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+                int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+                const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+                SV* sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_index])[field_index]));
+                (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
+              }
+              break;
+            }
+            case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
+              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+              int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+              int32_t arg_mulnum_field_id = arg_class_field_ids_base;
+              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
+              for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+                int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+                int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+                const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+                SV* sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_index])[field_index]));
+                (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
+              }
+              break;
+            }
+            case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
+              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+              int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+              int32_t arg_mulnum_field_id = arg_class_field_ids_base;
+              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
+              for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+                int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+                int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+                const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+                SV* sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_index])[field_index]));
+                (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
+              }
+              break;
+            }
+            default: {
+              assert(0);
+            }
           }
-          break;
-        }
-        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
-          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-          int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-            int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-            int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-            const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-            SV* sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_index])[field_index]));
-            (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
-          }
-          break;
-        }
-        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_INT: {
-          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-          int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-            int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-            int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-            const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-            SV* sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_index])[field_index]));
-            (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
-          }
-          break;
-        }
-        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
-          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-          int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-            int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-            int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-            const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-            SV* sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_index])[field_index]));
-            (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
-          }
-          break;
-        }
-        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
-          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-          int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-            int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-            int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-            const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-            SV* sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_index])[field_index]));
-            (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
-          }
-          break;
-        }
-        case SPVM_API_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
-          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-          int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-            int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-            int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-            const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-            SV* sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_index])[field_index]));
-            (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
-          }
-          break;
         }
       }
     }
