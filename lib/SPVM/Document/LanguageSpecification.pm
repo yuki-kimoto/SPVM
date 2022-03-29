@@ -6118,7 +6118,100 @@ Omitting L<"Types"> when L<"Local Variable Declaration"> by Type Inference can. 
 
 =head1 Type Assignability
 
-I will rewrite the following code to a table.
+Explains the type assignability.
+
+=head2 Type Assignability of Numeric to Numeric
+
+If the L<nemric type order|"Numeric Types Order"> of the left operand is greater than or equal to the L<nemric type order|"Numeric Types Order"> of the right operand, the assignment is valid.
+
+If the L<nemric type order|"Numeric Types Order"> of the left operand is greater than the L<nemric type order|"Numeric Types Order"> of the right operand, the L<unary numeric widening type conversion|"Unary Numeric Widening Type Conversion"> is performed.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>byte</td><td>byte</td><td>None</td>
+    <td>Yes</td><td>short</td><td>short</td><td>None</td>
+    <td>Yes</td><td>int</td><td>int</td><td>None</td>
+    <td>Yes</td><td>long</td><td>long</td><td>None</td>
+    <td>Yes</td><td>float</td><td>float</td><td>None</td>
+    <td>Yes</td><td>double</td><td>double</td><td>None</td>
+    <td>Yes</td><td>short</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>int</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>long</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>float</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>double</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>int</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>long</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>float</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>double</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>long</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>float</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>double</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>float</td><td>long</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>double</td><td>long</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Yes</td><td>double</td><td>float</td><td>Unary Numeric Widening Type Conversion</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+  
+  # int to int
+  my $num : int = 3;
+  
+  # byte to int
+  my $num : int = (byte)5;
+  
+  # double to double
+  my $num : double = 4.5;
+  
+  # float to double
+  my $num : double = 4.5f;
+
+
+If the L<nemric type order|"Numeric Types Order"> of the left operand is lower than the L<nemric type order|"Numeric Types Order"> of the right operand, the assignment is conditional valid.
+
+The condition is that the right operand is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of the left operand.
+
+If the condition is ture, the L<numeric narrowing type conversion|"Numeric Narrowing Type Conversion"> is performed.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Conditinal Yes</td><td>byte</td><td>short</td><td>Numeric Narrowing Type Conversion</td>
+    <td>Conditinal Yes</td><td>byte</td><td>int</td><td>Numeric Narrowing Type Conversion</td>
+    <td>Conditinal Yes</td><td>byte</td><td>long</td><td>byte</td><td>Numeric Narrowing Type Conversion</td>
+    <td>No</td><td>byte</td><td>float</td><td>None</td>
+    <td>No</td><td>byte</td><td>double</td><td>None</td>
+    <td>Conditinal Yes</td><td>short</td><td>int</td><td>Numeric Narrowing Type Conversion</td>
+    <td>Conditinal Yes</td><td>short</td><td>long</td><td>Numeric Narrowing Type Conversion</td>
+    <td>No</td><td>short</td><td>float</td><td>None</td>
+    <td>No</td><td>short</td><td>double</td><td>None</td>
+    <td>Conditinal Yes</td><td>int</td><td>long</td><td>Numeric Narrowing Type Conversion</td>
+    <td>No</td><td>int</td><td>float</td><td>None</td>
+    <td>No</td><td>int</td><td>double</td><td>None</td>
+    <td>No</td><td>long</td><td>float</td><td>None</td>
+    <td>No</td><td>long</td><td>double</td><td>None</td>
+    <td>No</td><td>float</td><td>double</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+  
+  # int to byte
+  my $num : byte = 127;
+
 
   SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
     SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
