@@ -2308,7 +2308,7 @@ B<Field Definition Example:>
 
 =head2 Field Access
 
-The field access is an expression to get or set the field.
+The field access is an L<expression|"Expressions"> to get or set the field.
 
   INVOCANT->{FIELD_NAME}
 
@@ -2851,7 +2851,7 @@ If the object is not L<"undef">, The Reference Count is added by 1.
 
 At the end of Scope, the object that is registered as Mortal Variable, Reference Count is reduced by 1 except the object is not L<"undef">.
 
-If the Reference Count become 0, the object released.
+If the reference count become 0, the object released.
 
 =head2 Block
 
@@ -3327,37 +3327,41 @@ If the target of Reference Type is L<"Multi Numeric Types">, the setting and get
 
 =head1 Expressions
 
-Expressions are a syntax part that can be evaluated as a value.
-
-These are L<"Operators">, L<"Undefined Value">, L<"Literals">, L<"Getting Local Variable">, L<"Setting Local Variable">,
+Expressions are L<"Operators">, L<"Undefined Value">, L<"Literals">, L<"Getting Local Variable">, L<"Setting Local Variable">,
 L<"Getting Class Variable">, L<"Getting Class Variable">, L<"Setting Class Variable">, L<"Getting Exception Variable">, L<"Setting Exception Variable">,
-L<"Getting Field">, L<"Setting Field">, L<"Getting Array Element">, L<"Setting Array Element"> and L<"Method Call">.
+L<"Getting Field">, L<"Setting Field">, L<"Getting Multi Numeric Field">, L<"Setting Multi Numeric Field">, L<"Getting Multi Numeric Field via Dereference">, L<"Setting Multi Numeric Field via Dereference">, <"Getting Array Element">, L<"Setting Array Element"> and L<"Method Call">.
+
+A expression returns a value.
 
 =head2 Getting Local Variable
 
-B<Getting Local Variable> is a Expression to get L<"Local Variable"> Value.
+The getting local variable is an L<expression|"Expressions"> to get the value of the L<local variable|"Local Variable">.
 
   $var
 
+The return value is the value of the local variable.
+
+The return type is the type of the local variable.
+
 =head2 Setting Local Variable
 
-B<Setting Local Variable Expression> is a Expression to set L<"Local Variable"> Value using L<"Assignment Operator">.
+The setting local variable is an L<expression|"Expressions"> to set the value of L<"Local Variable"> using the L<assignment operator|"Assignment Operator">.
 
-  $var = RIGHT_OPERAND
+  $var = VALUE
 
-The assignment must satisfy the L<type assignability|Type Assignability>.
+The assignment of the value must satisfy the L<type assignability|Type Assignability>.
 
-Setting Local Variable Expression returns the value after setting.
+The return value is the value after the assignment.
 
-If the right operand is L<"Object Types">, Reference Count of the object is incremented by 1.
+If the type of the assigned value is an L<object type|"Object Types">, the reference count of the object is incremented by C<1>.
 
-If an object has already been assigned to $var before the assignment, the Reference Count of that object is decremented by 1.
+If an object has already been assigned to $var before the assignment, the reference count of that object is decremented by C<1>.
 
-See L<"Scope"> to know Garbage Collection of Local Variable.
+See the L<scope|"Scope"> to know the L<garbage collection|"Garbage Collection"> of local variables.
 
 =head2 Getting Class Variable
 
-B<Getting Class Variable Expression> is a Expression to get L<"Class Variable"> Value.
+B<Getting Class Variable Expression> is an L<expression|"Expressions"> to get L<"Class Variable"> Value.
 
   $CLASS_NAME::CLASS_VARIABLE_NAME
 
@@ -3382,10 +3386,9 @@ B<Getting Class Variable Example:>
 
 =head2 Setting Class Variable
 
-B<Setting Class Variable Expression> is a Expression to set L<"Class Variable"> Value using L<"Assignment Operator">.
-.
+B<Setting Class Variable Expression> is an L<expression|"Expressions"> to set L<"Class Variable"> Value using L<"Assignment Operator">.
 
-  $CLASS_NAME::CLASS_VARIABLE_NAME = RIGHT_OPERAND
+  $CLASS_NAME::CLASS_VARIABLE_NAME = VALUE
 
 "CLASS_NAME::" can be omitted when the Class Variable belongs to own L<"Class">.
 
@@ -3401,7 +3404,7 @@ If you try to access a private Class Variable from outside the Class, a compilat
 
 If the right operand is L<"Object Types">, Reference Count of the object is incremented by 1.
 
-If an object has already been assigned to Class Variable before the assignment, the Reference Count of that object is decremented by 1.
+If an object has already been assigned to Class Variable before the assignment, the reference count of that object is decremented by 1.
 
 B<Setting Class Variable Example:>
 
@@ -3416,7 +3419,7 @@ B<Setting Class Variable Example:>
 
 =head2 Getting Exception Variable
 
-B<Setting Class Variable Expression> is a Expression to get the value of L<"Exception Variable">.
+B<Setting Class Variable Expression> is an L<expression|"Expressions"> to get the value of L<"Exception Variable">.
 
   $@
 
@@ -3434,9 +3437,9 @@ B<Setting Class Variable Example:>
 
 =head2 Setting Exception Variable
 
-B<Setting Exception Variable Expression> is a Expression to set the value of L<"Exception Variable"> using L<"Assignment Operator">.
+B<Setting Exception Variable Expression> is an L<expression|"Expressions"> to set the value of L<"Exception Variable"> using L<"Assignment Operator">.
 
-  $@ = RIGHT_OPERAND
+  $@ = VALUE
 
 the right operand must be L<"string Type">.
 
@@ -3444,7 +3447,7 @@ Returns the value of Exception Variable after setting. This is L<"string Type">.
 
 The Reference Count of the right operand is incremented by 1.
 
-If an object has already been assigned to Exception Variable before the assignment, the Reference Count of that object is decremented by 1.
+If an object has already been assigned to Exception Variable before the assignment, the reference count of that object is decremented by 1.
 
 B<Setting Exception Variable Example:>
 
@@ -3452,7 +3455,7 @@ B<Setting Exception Variable Example:>
 
 =head2 Getting Field
 
-The getting field is a syntax to get the L<field|"Field"> of the object. This is one syntax of the L<field access|"Field Access">.
+The getting field is an L<expression|"Expressions"> to get the L<field|"Field"> of the object. This is one syntax of the L<field access|"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
@@ -3460,14 +3463,14 @@ The type of invocant is a L<class type|"Class Types">.
 
 The retrun type is the L<type|"Types"> of the Field.
 
-B<Examples of Getting Field:>
+B<Examples of getting field:>
 
   my $point = Point->new;
   my $x = $point->{x};
 
 =head2 Setting Field
 
-The setting field is a syntax to set the L<field|"Field"> of the object. This is one syntax of the L<field access|"Field Access">.
+The setting field is an L<expression|"Expressions"> to set the L<field|"Field"> of the object. This is one syntax of the L<field access|"Field Access">.
 
   INVOCANT->{FIELD_NAME} = VALUE
 
@@ -3481,7 +3484,7 @@ The return type is the type of the field.
 
 If the type of assigned value is a L<basic object type|"Object Types">, Reference Count of the object is incremented by 1.
 
-If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
+If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by 1.
 
 B<Setting Field Example:>
 
@@ -3490,7 +3493,7 @@ B<Setting Field Example:>
 
 =head2 Getting Multi Numeric Field
 
-B<Getting Multi Numeric Field Expression> is a Expression to get Field of L<"Multi Numeric Value">. This is one syntax of the L<field access|"Field Access">.
+B<Getting Multi Numeric Field Expression> is an L<expression|"Expressions"> to get Field of L<"Multi Numeric Value">. This is one syntax of the L<field access|"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
@@ -3509,7 +3512,7 @@ B<Getting Multi Numeric Field Example:>
 
 =head2 Setting Multi Numeric Field
 
-Setting Multi Numeric Field Expression is a Expression to set Field of L<"Multi Numeric Value"> using L<"Assignment Operator">. This is one syntax of the L<field access|"Field Access">.
+Setting Multi Numeric Field Expression is an L<expression|"Expressions"> to set Field of L<"Multi Numeric Value"> using L<"Assignment Operator">. This is one syntax of the L<field access|"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
@@ -3530,7 +3533,7 @@ B<Setting Multi Numeric Field Example:>
 
 =head2 Getting Multi Numeric Field via Dereference
 
-B<Getting Multi Numeric Field via Dereference Expression> is a Expression to get Field of L<"Multi Numeric Value"> via L<"Dereference">. This is one syntax of the L<field access|"Field Access">
+B<Getting Multi Numeric Field via Dereference Expression> is an L<expression|"Expressions"> to get Field of L<"Multi Numeric Value"> via L<"Dereference">. This is one syntax of the L<field access|"Field Access">
 
   INVOCANT->{FIELD_NAME}
 
@@ -3550,7 +3553,7 @@ B<Getting Multi Numeric Field via Dereference Example:>
 
 =head2 Setting Multi Numeric Field via Dereference
 
-Setting Multi Numeric Field Expression via Dereference is a Expression to set Field of L<"Multi Numeric Value"> via L<"Dereference"> using L<"Assignment Operator">. This is one syntax of the L<field access|"Field Access">.
+Setting Multi Numeric Field Expression via Dereference is an L<expression|"Expressions"> to set Field of L<"Multi Numeric Value"> via L<"Dereference"> using L<"Assignment Operator">. This is one syntax of the L<field access|"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
@@ -3572,7 +3575,7 @@ B<Setting Multi Numeric Field via Dereference Example:>
 
 =head2 Getting Array Element
 
-B<Getting Array Element Expression> is a Expression to get a Element Value of L<"Array">.
+B<Getting Array Element Expression> is an L<expression|"Expressions"> to get a Element Value of L<"Array">.
 
   ARRAY_EXPRESSION->[INDEX_EXPRESSION]
 
@@ -3599,7 +3602,7 @@ B<Getting Array Element Example:>
 
 =head2 Setting Array Element
 
-Setting Array Element Expression is a Expression to set a Element Value of a Array using L<"Assignment Operator">.
+Setting Array Element Expression is an L<expression|"Expressions"> to set a Element Value of a Array using L<"Assignment Operator">.
 
   ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_OPERAND
 
@@ -3617,7 +3620,7 @@ If Index Expression is lower than 0 or more than the max index of the Array, a R
 
 If the right operand is L<"Object Types">, Reference Count of the object is incremented by 1.
 
-If an object has already been assigned to Field before the assignment, the Reference Count of that object is decremented by 1.
+If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by 1.
 
 B<Setting Array Element Example:>
 
@@ -3632,7 +3635,7 @@ B<Setting Array Element Example:>
 
 =head2 Create Object
 
-B<Create Object Expression> is a Expression to create Object using B<new> operator.
+B<Create Object Expression> is an L<expression|"Expressions"> to create Object using B<new> operator.
 
   my $object = new CLASS_NAME;
 
@@ -3661,7 +3664,7 @@ Create Object has the following information.
 
 =head2 Create Array
 
-B<Create Array Expression> is a Expression to create Array with B<new> Keyword.
+B<Create Array Expression> is an L<expression|"Expressions"> to create Array with B<new> Keyword.
 
   new Type[ELEMENTS_COUNT_EXPRESSION]
 
@@ -3877,7 +3880,7 @@ Setting a value with Dereference returns the set value. This is L<"Expressions">
 
 =head2 Getting Current Class Names
 
-B<Getting Current class names> is a Expression to get the current class name by __CLASS__ L<"Keyword">.
+B<Getting Current class names> is an L<expression|"Expressions"> to get the current class name by __CLASS__ L<"Keyword">.
 
   __CLASS__
 
@@ -3892,7 +3895,7 @@ B<Getting Current class names Example:>
 
 =head2 Getting Current File Name
 
-B<Getting Current File Name> is a Expression to get the current file name by __LINE__ L<"Keyword">.
+B<Getting Current File Name> is an L<expression|"Expressions"> to get the current file name by __LINE__ L<"Keyword">.
 
   __FILE__
 
@@ -3916,7 +3919,7 @@ B<Getting Current File Name Example:>
 
 =head2 Getting Current Line Number
 
-B<Getting Current Line Number> is a Expression to get the current line number of the current file by __LINE__ L<"Keyword">.
+B<Getting Current Line Number> is an L<expression|"Expressions"> to get the current line number of the current file by __LINE__ L<"Keyword">.
 
   __LINE__
 
@@ -5452,7 +5455,7 @@ If the value stored in the Field at execution time is L<"Undefined Value">, the 
 
 If the value stored in the Field at runtime is not L<"Undefined Value">, then the following is done:
 
-1. Decrement the Reference Count of the object stored in Field by 1.
+1. Decrement the reference count of the object stored in Field by 1.
 
 2. Setting the Weaken Reference flag in Field.
 
@@ -5460,7 +5463,7 @@ If the value stored in the Field at runtime is not L<"Undefined Value">, then th
 
 Note that the Weaken Reference flag is set on the Field itself, not on the object stored in the Field.
 
-If the Reference Count of the object saved in Field becomes 0, the Weaken Reference is not created and the object saved in Field is released.
+If the reference count of the object saved in Field becomes 0, the Weaken Reference is not created and the object saved in Field is released.
 
 Back Reference is the data of the object saved in Field, and is added to know the Field with the Weaken Reference flag set. There may be more than one.
 
@@ -5498,7 +5501,7 @@ If the value stored in the Field at execution time is L<"Undefined Value">, the 
 
 If the value stored in the Field at runtime is not L<"Undefined Value">, then the following is done:
 
-1. Increase the Reference Count of the object stored in the Field by 1.
+1. Increase the reference count of the object stored in the Field by 1.
 
 2. Clear the Weaken Reference flag of Field.
 
@@ -6498,8 +6501,6 @@ L<"int Type"> value is converted to L<"long Type"> Become.
 
   my $num = (long)3;
 
-ype Cast returns L<"Expressions">.
-
 If the source Type and the specified Type are the same, the value is simply copied.
 
   my $num : int = (int)4;
@@ -6994,11 +6995,11 @@ See L<"Setting Exception Variable"> to set Exception Variable Value.
 
 =head1 Garbage Collection
 
-The object is released from memory when the Reference Count reaches 0.
+The object is released from memory when the reference count reaches 0.
 
-If the object is an Array that has Object Type values ​​as elements, the Reference Count of all Array elements that are not Undefined Value is decremented by 1 before Garbage Collection
+If the object is an Array that has Object Type values ​​as elements, the reference count of all Array elements that are not Undefined Value is decremented by 1 before Garbage Collection
 
-When an object is a Class Types and has a field of Object Type, the Reference Count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by 1 before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by 1.
+When an object is a Class Types and has a field of Object Type, the reference count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by 1 before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by 1.
 
 When the object has Back references of Weaken Reference, Undefined Value is assigned to all Fields registered as back References and all back References are deleted.
 
@@ -7080,9 +7081,9 @@ Capture is a syntax for writing such a long description short.
 
 =head1 Weaken Reference
 
-Weaken Reference is a reference that does not increase the Reference Count. Weaken Reference can be used to solve the problem of circular references.
+Weaken Reference is a reference that does not increase the reference count. Weaken Reference can be used to solve the problem of circular references.
 
-SPVM has GC of Reference Count Type. In the GC of Reference Count Type, the object is automatically released when the Reference Count becomes 0, but when the circular reference occurs, the Reference Count does not become 0 and the object is automatically released. not.
+SPVM has GC of Reference Count Type. In the GC of Reference Count Type, the object is automatically released when the reference count becomes 0, but when the circular reference occurs, the reference count does not become 0 and the object is automatically released. not.
 
 This is an Example when the Field of the object is circularly referenced.
 
@@ -7094,7 +7095,7 @@ This is an Example when the Field of the object is circularly referenced.
     $bar->{foo} = $foo;
   }
 
-In this case, both objects are not released when the Scope ends. This is because a circular reference has occurred and the Reference Count does not become 0.
+In this case, both objects are not released when the Scope ends. This is because a circular reference has occurred and the reference count does not become 0.
 
 Weaken Reference is a function to correctly destroy objects when a circular reference occurs in a programming language that has a Reference Count GC.
 
@@ -7116,7 +7117,7 @@ If there is no weaken statement, the reference count of $foo and the reference c
 
 When a weaken statement is executed, $foo has a Reference Count of 2 and $bar has a Reference Count of 1.
 
-When the Scope ends, the Reference Count of $bar is decremented by 1 and becomes 0, so it is released correctly.
+When the Scope ends, the reference count of $bar is decremented by 1 and becomes 0, so it is released correctly.
 
 Even if there are 3 circular references, you can release them correctly by setting Weaken Reference in 1 Field.
 
