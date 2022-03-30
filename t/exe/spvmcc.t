@@ -43,7 +43,7 @@ rmtree "$build_dir/work";
     
     # Check -B option
     {
-      ok(-f "$build_dir/work/exe/myexe");
+      ok(-f "$build_dir/work/exe/myexe$Config{exe_ext}");
     }
   }
 
