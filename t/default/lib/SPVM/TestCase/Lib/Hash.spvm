@@ -27,7 +27,7 @@ class TestCase::Lib::Hash {
       }
     }
     
-    # object array
+    # int values
     {
       my $hash = Hash->new({foo => 1, bar => 3L});
       my $keys = $hash->keys;
@@ -54,7 +54,7 @@ class TestCase::Lib::Hash {
       }
     }
 
-    # string array
+    # string values
     {
       my $hash = Hash->new({foo => "4px", bar => "5px"});
       my $keys = $hash->keys;
@@ -73,12 +73,32 @@ class TestCase::Lib::Hash {
         }
       }
     }
+
+    # string and int values
+    {
+      my $hash = Hash->new({foo => "4px", bar => 3});
+      my $keys = $hash->keys;
+      unless (@$keys == 2) {
+        return 0;
+      }
+      
+      {
+        my $foo = $hash->get_string("foo");
+        unless ($foo && $foo eq "4px") {
+          return 0;
+        }
+        my $bar = $hash->get_int("bar");
+        unless ($bar && $bar == 3) {
+          return 0;
+        }
+      }
+    }
     
     # Exception
     {
       # odd number array
       {
-        eval { Hash->new([foo => "4px", "bar"]); };
+        eval { Hash->new([(object)foo => "4px", "bar"]); };
         unless ($@) {
           return 0;
         }

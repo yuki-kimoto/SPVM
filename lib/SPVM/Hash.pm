@@ -32,7 +32,7 @@ L<Hash|SPVM::Hash> is Hash Data Structure. This is generally called associative 
 
 =head2 new
 
-    static method new : Hash ($key_values : oarray)
+  static method new : Hash ($key_values : object[]) {
 
 Create a new L<Hash|SPVM::Hash> object with key value pairs.
 

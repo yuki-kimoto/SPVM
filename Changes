@@ -16,6 +16,12 @@ Revision history for SPVM
           my $list = SPVM::List->new([]);
           [After]
           my $list = SPVM::List->new(SPVM::new_object_array("Int[]", []));
+        * The type of argument of Hash->new is changed. Sorry, this is merely my bad mistake. The type of value of hash is any object type.
+          [Before]
+          static method new : Hash ($key_values : element[]);
+          
+          [After]
+          static method new : Hash ($key_values : object[]);
 
 0.9509  2021-03-23
         [DEPRECATIONS]
