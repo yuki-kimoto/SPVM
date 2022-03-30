@@ -1,8 +1,10 @@
 use strict;
 use warnings;
 
-use Test::More tests => 1;
+use Test::More;
 
-use_ok('SPVM');
+use SPVM;
+
+ok(1);
 
 done_testing;
