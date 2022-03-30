@@ -2,6 +2,7 @@ Revision history for SPVM
 0.9510  2021-03-24
         [CHANGE]
         * Add alias syntax
+        * Improve the error messages of object-to-numeric type conversion
         
         [BUG FIX]
         * Fix the bug that the runtime is not freed.
