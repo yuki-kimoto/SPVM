@@ -1,5 +1,7 @@
 package SPVM;
 
+our $VERSION = '0.9509_01';
+
 use 5.008007;
 use strict;
 use warnings;
@@ -18,9 +20,10 @@ use SPVM::ExchangeAPI;
 
 use Carp 'confess';
 
-our $VERSION = '0.9509_01';
-
+# INIT and CHECK block can't be used because SPVM supports dynamic module loading.
+# For the reason, this variable is needed.
 my $SPVM_INITED;
+
 my $BUILDER;
 
 require XSLoader;
