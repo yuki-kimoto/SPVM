@@ -23,6 +23,7 @@ Revision history for SPVM
           
           [After]
           static method new : Hash ($key_values : object[]);
+        * Remove oarray type that is deprecated at 0.9509.
 
 0.9509  2021-03-23
         [DEPRECATIONS]
