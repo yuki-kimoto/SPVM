@@ -13,6 +13,8 @@ use SPVM 'TestCase::NativeAPI';
 use SPVM 'TestCase::NativeAPI2';
 use SPVM 'TestCase::Pointer';
 
+my $build_dir = $ENV{SPVM_BUILD_DIR};
+
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
@@ -217,7 +219,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 }
 
 # Check not creating no needed object file
-ok(!-f "$FindBin::Bin/.spvm_build/work/object/SPVM/CORE.o");
+ok(!-f "$build_dir/work/object/SPVM/CORE.o");
 
 # get_instance_method_id_static
 {
