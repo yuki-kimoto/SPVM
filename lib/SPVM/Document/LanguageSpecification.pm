@@ -6035,7 +6035,6 @@ You can get and set the element using the L<get array element|"Getting Array Ele
   $array->[0] = Int->new(5);
 
 When setting the element of any object-array, the element type is checked. If the dimension of the element is not the dimension of the array - C<1>, an L<exception|"Exception"> is thrown.
-C<oarray> is alias for C<element[]>. C<oarray> will be removed at 0.9510.
 
 =head2 string Type
 

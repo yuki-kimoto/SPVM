@@ -63,7 +63,7 @@ L<List|SPVM::List> is dynamic object array.
 
 =head2 new
 
-    static method new : List ($objects : oarray)
+    static method new : List ($objects : element[])
 
 Create a new L<List|SPVM::List> object with specific C<object> array.
 
@@ -73,7 +73,7 @@ If array is undef, 0-length internal array is created.
 
 =head2 new_len
 
-    static method new_len : List ($proto_array : oarray, $length : int)
+    static method new_len : List ($proto_array : element[], $length : int)
 
 Create a new L<List|SPVM::List> object with prototype array and array length. Prototype array is used to decide the array type of internal values.
 
@@ -132,7 +132,7 @@ Set the value with index.
 
 =head2 set_array
 
-  method set_array : void ($array : oarray)
+  method set_array : void ($array : element[])
 
 Set a array. Each elements of the array is copied to the correspoinding index of the array this list has. Note that this copy is address copy.
 
@@ -142,7 +142,7 @@ The length of argument array must be same as the length of current list array, o
 
 =head2 to_array
 
-  method to_array : oarray ()
+  method to_array : element[] ()
 
 Convert L<List|SPVM::List> to object array.
 
