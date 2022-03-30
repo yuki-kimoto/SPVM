@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9510  2021-03-24
+0.9510  2021-03-30
         [CHANGE]
         * Add alias syntax
         * Improve the error messages of object-to-numeric type conversion
@@ -7,6 +7,7 @@ Revision history for SPVM
         [BUG FIX]
         * Fix the bug that the runtime is not freed.
         * Fix the bug that SPVM::new_object_array can't recieve object[] type correctly.
+        * Fix the bug that Exchange API call_spvm_method can recieve from object[] to element[].
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove implicte type convertion Perl array reference to SPVM object and element[]

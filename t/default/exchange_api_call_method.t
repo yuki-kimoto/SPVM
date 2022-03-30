@@ -787,6 +787,15 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
         ok(!defined $list->get(2));
       }
     }
+
+    # Argument - Pass list
+    {
+      # Pass list
+      eval {
+        SPVM::List->new(SPVM::new_object_array("object[]", []));
+      };
+      ok($@);
+    }
     
     # Argument - object[] array of any object
     {
