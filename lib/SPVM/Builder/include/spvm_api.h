@@ -481,5 +481,6 @@ int32_t SPVM_API_get_method_mortal_stack_length(SPVM_ENV* env, int32_t method_id
 
 int32_t SPVM_API_get_method_opcode_ids_base(SPVM_ENV* env, int32_t method_id);
 int32_t SPVM_API_get_method_opcode_ids_length(SPVM_ENV* env, int32_t method_id);
+void SPVM_API_free_env_prepared(SPVM_ENV* env);
 
 #endif

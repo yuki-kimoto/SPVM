@@ -8788,3 +8788,16 @@ SPVM_ALLOCATOR* SPVM_API_allocator_new() {
 void SPVM_API_allocator_free(SPVM_ALLOCATOR* allocator) {
   SPVM_ALLOCATOR_free(allocator);
 }
+
+void SPVM_API_free_env_prepared(SPVM_ENV* env) {
+
+  // Cleanup global variables
+  env->cleanup_global_vars(env);
+
+  // Free runtime
+  SPVM_API_runtime_free(env->runtime);
+  env->runtime = NULL;
+  
+  // Free env
+  env->free_env_raw(env);
+}

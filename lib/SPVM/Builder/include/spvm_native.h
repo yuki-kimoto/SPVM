@@ -319,5 +319,6 @@ struct spvm_env {
 };
 
 SPVM_ENV* SPVM_NATIVE_new_env_raw();
+SPVM_ENV* SPVM_NATIVE_new_env_prepared();
 
 #endif
