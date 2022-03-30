@@ -163,6 +163,7 @@ sub new {
   
   # Build directory
   my $build_dir = delete $self->{build_dir};
+  
   unless (defined $build_dir) {
     $build_dir = '.spvm_build';
   }
@@ -432,9 +433,65 @@ EOS
       }
     }
     
-    $boot_source .= <<'EOS';
+    $boot_source .= <<"EOS";
 
 int32_t main(int32_t argc, const char *argv[]) {
+
+  SPVM_ENV* env = SPVM_NATIVE_new_env_prepared();
+
+  // Class name
+  const char* class_name = "$class_name";
+  
+  // Class
+  int32_t method_id = env->get_class_method_id(env, class_name, "main", "int(string,string[])");
+  
+  if (method_id < 0) {
+    fprintf(stderr, "Can't find %s->main method", class_name);
+    return -1;
+  }
+  
+  // Enter scope
+  int32_t scope_id = env->enter_scope(env);
+  
+  // Starting file name
+  void* cmd_start_file_obj = env->new_string(env, argv[0], strlen(argv[0]));
+  
+  // new byte[][args_length] object
+  int32_t arg_type_basic_id = env->get_basic_type_id(env, "byte");
+  void* cmd_args_obj = env->new_muldim_array(env, arg_type_basic_id, 1, argc - 1);
+  
+  // Set command line arguments
+  for (int32_t arg_index = 1; arg_index < argc; arg_index++) {
+    void* cmd_arg_obj = env->new_string(env, argv[arg_index], strlen(argv[arg_index]));
+    env->set_elem_object(env, cmd_args_obj, arg_index - 1, cmd_arg_obj);
+  }
+  
+  SPVM_VALUE stack[255];
+  stack[0].oval = cmd_start_file_obj;
+  stack[1].oval = cmd_args_obj;
+  
+  // Run
+  int32_t exception_flag = env->call_spvm_method(env, method_id, stack);
+  
+  int32_t status;
+  if (exception_flag) {
+    env->print_stderr(env, env->exception_object);
+    printf("\\n");
+    status = 255;
+  }
+  else {
+    status = stack[0].ival;
+  }
+  
+  // Leave scope
+  env->leave_scope(env, scope_id);
+
+  SPVM_API_free_env_prepared(env);
+
+  return status;
+}
+
+SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
 EOS
 
     $boot_source .= <<"EOS";
@@ -543,53 +600,7 @@ EOS
   
   env->call_init_blocks(env);
   
-  // Class
-  int32_t method_id = env->get_class_method_id(env, class_name, "main", "int(string,string[])");
-  
-  if (method_id < 0) {
-    fprintf(stderr, "Can't find the definition of valid %s->main method:.\n    static method main : int ($start_file : string, $args : string[]) { ... } \n", class_name);
-    return -1;
-  }
-  
-  // Enter scope
-  int32_t scope_id = env->enter_scope(env);
-  
-  // Starting file name
-  void* cmd_start_file_obj = env->new_string(env, argv[0], strlen(argv[0]));
-  
-  // new byte[][args_length] object
-  int32_t arg_type_basic_id = env->get_basic_type_id(env, "byte");
-  void* cmd_args_obj = env->new_muldim_array(env, arg_type_basic_id, 1, argc - 1);
-  
-  // Set command line arguments
-  for (int32_t arg_index = 1; arg_index < argc; arg_index++) {
-    void* cmd_arg_obj = env->new_string(env, argv[arg_index], strlen(argv[arg_index]));
-    env->set_elem_object(env, cmd_args_obj, arg_index - 1, cmd_arg_obj);
-  }
-  
-  SPVM_VALUE stack[255];
-  stack[0].oval = cmd_start_file_obj;
-  stack[1].oval = cmd_args_obj;
-  
-  // Run
-  int32_t exception_flag = env->call_spvm_method(env, method_id, stack);
-  
-  int32_t status;
-  if (exception_flag) {
-    env->print_stderr(env, env->exception_object);
-    printf("\n");
-    status = 255;
-  }
-  else {
-    status = stack[0].ival;
-  }
-  
-  // Leave scope
-  env->leave_scope(env, scope_id);
-
-  SPVM_API_free_env_prepared(env);
-
-  return status;
+  return env;
 }
 EOS
 
