@@ -6120,7 +6120,13 @@ Omitting L<"Types"> when L<"Local Variable Declaration"> by Type Inference can. 
 
 Explains the type assignability.
 
-=head2 Type Assignability of Numeric to Numeric
+The assignment is invalid, a compilation error occurs.
+
+=head2 Type Assignability of to-Numeric
+
+Explains the type assignability of to-Numeric
+
+=head3 Type Assignability of Numeric-to-Numeric
 
 If the L<nemric type order|"Numeric Types Order"> of the left operand is greater than or equal to the L<nemric type order|"Numeric Types Order"> of the right operand, the assignment is valid.
 
@@ -6173,7 +6179,6 @@ B<Examples:>
   # float to double
   my $num : double = 4.5f;
 
-
 If the L<nemric type order|"Numeric Types Order"> of the left operand is lower than the L<nemric type order|"Numeric Types Order"> of the right operand, the assignment is conditional valid.
 
 The condition is that the right operand is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of the left operand.
@@ -6212,112 +6217,64 @@ B<Examples:>
   # int to byte
   my $num : byte = 127;
 
+=head3 Type Assignability of Object-to-Numeric
 
-  SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
-    SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
-    
-    // Dist type is numeric type
-    int32_t can_assign = 0;
-    int32_t narrowing_convertion_error = 0;
-    int32_t need_implicite_convertion = 0;
-    if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-      // Soruce type is numeric type
-      if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-        // Dist type is same as source type
-        if (dist_type->basic_type->id == src_type->basic_type->id) {
-          can_assign = 1;
-        }
-        // Dist type is more wide than source type
-        else if (dist_type->basic_type->id > src_type->basic_type->id) {
-          can_assign = 1;
-          need_implicite_convertion = 1;
-        }
-        // Dist type is narrow than source type
-        else if (dist_type->basic_type->id < src_type->basic_type->id) {
-          int32_t can_narrowing_convertion = 0;
-          if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
-            SPVM_CONSTANT* constant = op_src->uv.constant;
-            assert(constant->type->dimension == 0);
-            if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT || constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-              int64_t constant_value;
-              if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                constant_value = constant->value.ival;
-              }
-              else if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-                constant_value = constant->value.lval;
-              }
-              else {
-                assert(0);
-              }
-              
-              if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                if (constant_value >= INT8_MIN && constant_value <= INT8_MAX) {
-                  can_narrowing_convertion = 1;
-                }
-                else {
-                  can_narrowing_convertion = 0;
-                }
-              }
-              else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-                if (constant_value >= INT16_MIN && constant_value <= INT16_MAX) {
-                  can_narrowing_convertion = 1;
-                }
-                else {
-                  can_narrowing_convertion = 0;
-                }
-              }
-              else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                if (constant_value >= INT32_MIN && constant_value <= INT32_MAX) {
-                  can_narrowing_convertion = 1;
-                }
-                else {
-                  can_narrowing_convertion = 0;
-                }
-              }
-              else {
-                assert(0);
-              }
-            }
-            else {
-              can_narrowing_convertion = 0;
-            }
-          }
-          else {
-            can_assign = 0;
-          }
-          
-          if (can_narrowing_convertion) {
-            need_implicite_convertion = 1;
-            can_assign = 1;
-          }
-          else {
-            narrowing_convertion_error = 1;
-            can_assign = 0;
-          }
-        }
-      }
-      else if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-        if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-          can_assign = 1;
-          need_implicite_convertion = 1;
-        }
-        else if (SPVM_TYPE_is_numeric_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-          if (src_type->basic_type->id == dist_type->basic_type->id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
-            can_assign = 1;
-            need_implicite_convertion = 1;
-          }
-          else {
-            can_assign = 0;
-          }
-        }
-        else {
-          can_assign = 0;
-        }
-      }
-      else {
-        can_assign = 0;
-      }
-    }
+If the type of the left operand is a L<numeric type|Numeric Types> and the type of the right operand is a L<any object type|"Any Object Type"> C<object>, the assignment is valid.
+
+The L<unboxing type conversion|"Unboxing Type Conversion"> corresponding to the numeric type is performed.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>byte</td><td>object</td><td>Unboxing Type Conversion</td>
+    <td>Yes</td><td>short</td><td>object</td><td>Unboxing Type Conversion</td>
+    <td>Yes</td><td>int</td><td>object</td><td>Unboxing Type Conversion</td>
+    <td>Yes</td><td>long</td><td>object</td><td>Unboxing Type Conversion</td>
+    <td>Yes</td><td>float</td><td>object</td><td>Unboxing Type Conversion</td>
+    <td>Yes</td><td>double</td><td>object</td><td>Unboxing Type Conversion</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $int_obj = (object)Int->new(3);
+  my $int : int = $int_obj;
+
+If the type of the left operand is a L<numeric type|Numeric Types> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|"Numeric Object Type">, the assignment is valid.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td>
+    <td>Yes</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td>
+    <td>Yes</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td>
+    <td>Yes</td><td>long</td><td>Long</td><td>Unboxing Type Conversion</td>
+    <td>Yes</td><td>float</td><td>Float</td><td>Unboxing Type Conversion</td>
+    <td>Yes</td><td>double</td><td>Double</td><td>Unboxing Type Conversion</td>
+  </tr>
+</table>
+
+B<Examples:>
+
+  my $int_obj = Int->new(3);
+  my $int : int = $int_obj;
+
+=head3 Type Assignability of Others-to-Numeric
+
+If the type of the left operand is a L<numeric type|Numeric Types> and the type of the right operand is other than the types described above, the assignment is invalid.
+
+=end html
+
     // Dist type is referece type
     else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
       if (SPVM_TYPE_is_ref_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
