@@ -10,6 +10,8 @@ use Time::HiRes 'sleep';
 
 use FindBin;
 
+my $build_dir = $ENV{SPVM_BUILD_DIR};
+
 # Wait 2 seconds because the time in 1 secend is not detected.
 my $wait_time = 1.1;
 
@@ -46,12 +48,12 @@ system($compile_native_api_prgoram) == 0 or die;
 {
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI.o";
+  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
   my $precompile_object_file;
   my $start_precompile_object_file_mtime;
-  $precompile_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI.precompile.o";
+  $precompile_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.precompile.o";
   if ($ENV{SPVM_TEST_PRECOMPILE}) {
    ok(-f $precompile_object_file);
    $start_precompile_object_file_mtime = (stat $precompile_object_file)[9];
@@ -59,12 +61,12 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   my $precompile_shared_lib_file;
   my $start_precompile_shared_lib_file_mtime;
-   $precompile_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{dlext}";
+   $precompile_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{dlext}";
    if ($ENV{SPVM_TEST_PRECOMPILE}) {
      ok(-f $precompile_shared_lib_file);
      $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
@@ -95,12 +97,12 @@ system($compile_native_api_prgoram) == 0 or die;
 {
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI.o";
+  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update config file
@@ -122,12 +124,12 @@ system($compile_native_api_prgoram) == 0 or die;
 {
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI.o";
+  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
   my $precompile_object_file;
   my $start_precompile_object_file_mtime;
-  $precompile_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI.precompile.o";
+  $precompile_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.precompile.o";
   if ($ENV{SPVM_TEST_PRECOMPILE}) {
    ok(-f $precompile_object_file);
    $start_precompile_object_file_mtime = (stat $precompile_object_file)[9];
@@ -135,12 +137,12 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   my $precompile_shared_lib_file;
   my $start_precompile_shared_lib_file_mtime;
-   $precompile_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{dlext}";
+   $precompile_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{dlext}";
    if ($ENV{SPVM_TEST_PRECOMPILE}) {
      ok(-f $precompile_shared_lib_file);
      $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
@@ -175,12 +177,12 @@ system($compile_native_api_prgoram) == 0 or die;
 {
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI2.o";
+  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
@@ -202,12 +204,12 @@ system($compile_native_api_prgoram) == 0 or die;
 {
   my $native_src_object_file;
   my $start_native_src_object_file_mtime;
-  $native_src_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
+  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
@@ -230,17 +232,17 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI2.o";
+  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
   my $native_src_object_file;
   my $start_native_src_object_file_mtime;
-  $native_src_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
+  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
@@ -267,17 +269,17 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI2.o";
+  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
   my $native_src_object_file;
   my $start_native_src_object_file_mtime;
-  $native_src_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
+  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
@@ -303,17 +305,17 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI2.o";
+  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
   my $native_src_object_file;
   my $start_native_src_object_file_mtime;
-  $native_src_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
+  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
