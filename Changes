@@ -8,6 +8,7 @@ Revision history for SPVM
         * Fix the bug that the runtime is not freed.
         * Fix the bug that SPVM::new_object_array can't recieve object[] type correctly.
         * Fix the bug that Exchange API call_spvm_method can recieve from object[] to element[].
+        * Fix the bug that spvmcc "-B|--build-dir" option is ignored.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove implicte type convertion Perl array reference to SPVM object and element[]

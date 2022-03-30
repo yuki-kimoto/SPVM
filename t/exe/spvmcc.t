@@ -6,7 +6,7 @@ use Data::Dumper;
 use File::Basename 'basename';
 use FindBin;
 use Config;
-use File::Path 'mkpath';
+use File::Path 'mkpath', 'rmtree';
 use File::Spec;
 
 use SPVM::Builder;
@@ -19,6 +19,8 @@ use lib "$FindBin::Bin/exe/lib";
 my $build_dir = 't/exe/.spvm_build';
 my @build_dir_parts = split('/', $build_dir);
 my $exe_dir = "$build_dir/work/exe";
+
+rmtree "$build_dir/work";
 
 {
   mkpath $exe_dir;
@@ -38,11 +40,16 @@ my $exe_dir = "$build_dir/work/exe";
     chomp $output;
     my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2";
     is($output, $output_expect);
+    
+    # Check -B option
+    {
+      ok(-f "$build_dir/work/exe/myexe");
+    }
   }
 
   # Compile and link cached
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe -c t/exe/myexe.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe -c t/exe/myexe.config MyExe);
     my $spvmcc_output = `$spvmcc_cmd`;
     ok(length $spvmcc_output == 0);
   }

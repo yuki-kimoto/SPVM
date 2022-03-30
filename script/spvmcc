@@ -35,6 +35,7 @@ else {
   push @module_dirs, map { "$_/SPVM" } @INC;
   
   my $build_exe = SPVM::Builder::Exe->new(
+    build_dir => $build_dir,
     module_dirs => \@module_dirs,
     output_file => $output_file,
     class_name => $class_name,
