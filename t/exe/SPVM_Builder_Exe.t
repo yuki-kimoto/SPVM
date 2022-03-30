@@ -21,7 +21,7 @@ my $file = 't/' . basename $0;
 use FindBin;
 
 {
-  my $exe_dir = 't/.spvm_build/work/exe';
+  my $exe_dir = 't/exe/.spvm_build/work/exe';
   mkpath $exe_dir;
   
   my $class_name = 'MyExe';
@@ -62,7 +62,7 @@ use FindBin;
 
 # Exe name contain sub directory
 {
-  my $exe_dir = 't/.spvm_build/work/exe';
+  my $exe_dir = 't/exe/.spvm_build/work/exe';
   mkpath $exe_dir;
   
   my $class_name = 'MyExe::Foo::Bar';
