@@ -365,6 +365,10 @@ lib/SPVM/Builder/Generator/Lib.pm
 lib/SPVM/Builder/include/spvm_allocator.h
 lib/SPVM/Builder/include/spvm_allow.h
 lib/SPVM/Builder/include/spvm_api.h
+lib/SPVM/Builder/include/spvm_api_allocator.h
+lib/SPVM/Builder/include/spvm_api_compiler.h
+lib/SPVM/Builder/include/spvm_api_runtime.h
+lib/SPVM/Builder/include/spvm_api_string_buffer.h
 lib/SPVM/Builder/include/spvm_array_field_access.h
 lib/SPVM/Builder/include/spvm_basic_type.h
 lib/SPVM/Builder/include/spvm_block.h
@@ -419,6 +423,10 @@ lib/SPVM/Builder/ObjectFileInfo.pm
 lib/SPVM/Builder/src/spvm_allocator.c
 lib/SPVM/Builder/src/spvm_allow.c
 lib/SPVM/Builder/src/spvm_api.c
+lib/SPVM/Builder/src/spvm_api_allocator.c
+lib/SPVM/Builder/src/spvm_api_compiler.c
+lib/SPVM/Builder/src/spvm_api_runtime.c
+lib/SPVM/Builder/src/spvm_api_string_buffer.c
 lib/SPVM/Builder/src/spvm_array_field_access.c
 lib/SPVM/Builder/src/spvm_basic_type.c
 lib/SPVM/Builder/src/spvm_block.c
@@ -842,6 +850,7 @@ t/default/lib/SPVM/TestCase/CompileError/Type/MutableNoStringCaseInt.spvm
 t/default/lib/SPVM/TestCase/CompileError/Type/MutableNoStringCaseStringArray.spvm
 t/default/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
+t/default/lib/SPVM/TestCase/CompileError/TypeComment/NotExistType.spvm
 t/default/lib/SPVM/TestCase/CompileError/UnaryMinus/NotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/UnaryPlus/NotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/Use/AliasDuplication.spvm
@@ -971,6 +980,7 @@ t/default/lib/SPVM/TestCase/Subtract.spvm
 t/default/lib/SPVM/TestCase/Switch.spvm
 t/default/lib/SPVM/TestCase/SymbolName_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.spvm
 t/default/lib/SPVM/TestCase/Term.spvm
+t/default/lib/SPVM/TestCase/TypeComment.spvm
 t/default/lib/SPVM/TestCase/UnaryMinus.spvm
 t/default/lib/SPVM/TestCase/UnaryPlus.spvm
 t/default/lib/SPVM/TestCase/Unless.spvm
@@ -1029,6 +1039,7 @@ t/default/subtract.t
 t/default/switch.t
 t/default/symbol_name.t
 t/default/term.t
+t/default/type_comment.t
 t/default/unary_minus.t
 t/default/unary_plus.t
 t/default/unless.t
