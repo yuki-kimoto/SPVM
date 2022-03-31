@@ -2,22 +2,21 @@ class TestCase::TypeComment {
   use List;
   use TestCase::Minimal;
   
-  has minimals : List<TestCase::Minimal>;
+  has minimals : List of TestCase::Minimal;
 
-  our $MINIMALS : List<TestCase::Minimal>;
+  our $MINIMALS : List of TestCase::Minimal;
   
-  static method pass_throw_minimals : List<TestCase::Minimal> ($minimals : List<TestCase::Minimal>) {
+  static method pass_throw_minimals : List of TestCase::Minimal ($minimals : List of TestCase::Minimal) {
     
-    my $minimals_local : List<TestCase::Minimal> = $minimals;
+    my $minimals_local : List of TestCase::Minimal = $minimals;
     
     return $minimals_local;
   }
   
   static method basic : int () {
-    my $minimals = List->new(new TestCase::Minimal[0], 3);
     my $minimal = TestCase::Minimal->new;
     $minimal->set_x(1);
-    $minimals->set(0, $minimal);
+    my $minimals = List->new([$minimal]);
     
     my $minimals2 = &pass_throw_minimals($minimals);
     
