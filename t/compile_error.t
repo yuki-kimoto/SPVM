@@ -286,4 +286,9 @@ sub print_error_messages {
   compile_not_ok('TestCase::CompileError::Syntax::LineNumber', qr/our.*\b8:3\b/i);
 }
 
+# Type comment
+{
+  compile_not_ok('TestCase::CompileError::TypeComment::NotExistType', qr/NotExists::XXXX/);
+}
+
 done_testing;
