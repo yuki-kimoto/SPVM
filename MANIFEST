@@ -930,6 +930,8 @@ t/default/lib/SPVM/TestCase/Minimal.spvm
 t/default/lib/SPVM/TestCase/ModuleContainsMultiClass.spvm
 t/default/lib/SPVM/TestCase/ModuleContainsMultiClass/FloatMatrix.spvm
 t/default/lib/SPVM/TestCase/ModuleContainsMultiPackage.spvm
+t/default/lib/SPVM/TestCase/Mulnum.spvm
+t/default/lib/SPVM/TestCase/MulnumArray.spvm
 t/default/lib/SPVM/TestCase/Multiply.spvm
 t/default/lib/SPVM/TestCase/NativeAPI.c
 t/default/lib/SPVM/TestCase/NativeAPI.config
@@ -984,8 +986,6 @@ t/default/lib/SPVM/TestCase/TypeComment.spvm
 t/default/lib/SPVM/TestCase/UnaryMinus.spvm
 t/default/lib/SPVM/TestCase/UnaryPlus.spvm
 t/default/lib/SPVM/TestCase/Unless.spvm
-t/default/lib/SPVM/TestCase/Value.spvm
-t/default/lib/SPVM/TestCase/ValueArray.spvm
 t/default/lib/SPVM/TestCase/Warn.spvm
 t/default/lib/SPVM/TestCase/Weaken.spvm
 t/default/lib/SPVM/TestCase/While.spvm
@@ -996,6 +996,8 @@ t/default/literal_string.t
 t/default/literal_undef.t
 t/default/logical_operator.t
 t/default/method.t
+t/default/mulnum.t
+t/default/mulnum_array.t
 t/default/multiply.t
 t/default/native_api.t
 t/default/native_api_cached.t
@@ -1043,8 +1045,6 @@ t/default/type_comment.t
 t/default/unary_minus.t
 t/default/unary_plus.t
 t/default/unless.t
-t/default/value.t
-t/default/value_array.t
 t/default/warn.t
 t/default/weaken.t
 t/default/while.t
