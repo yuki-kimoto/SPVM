@@ -2062,7 +2062,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 'o' : {
-                if (strcmp(symbol_name, "our") == 0) {
+                if (strcmp(symbol_name, "of") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_OF);
+                  is_keyword = 1;
+                  keyword_term = OF;
+                }
+                else if (strcmp(symbol_name, "our") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CLASS_VAR);
                   is_keyword = 1;
                   keyword_term = OUR;

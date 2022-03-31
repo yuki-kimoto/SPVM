@@ -251,6 +251,7 @@ enum {
   SPVM_OP_C_ID_ELEMENT,
   SPVM_OP_C_ID_OARRAY,
   SPVM_OP_C_ID_ALIAS,
+  SPVM_OP_C_ID_OF,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);

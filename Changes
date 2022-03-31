@@ -3,7 +3,8 @@ Revision history for SPVM
         [CHANGE]
         * Add alias syntax
         * Improve the error messages of object-to-numeric type conversion
-        
+        * Add type comment syntax
+          
         [BUG FIX]
         * Fix the bug that the runtime is not freed.
         * Fix the bug that SPVM::new_object_array can't recieve object[] type correctly.

@@ -1,0 +1,32 @@
+class TestCase::TypeComment {
+  use List;
+  use TestCase::Minimal;
+  
+  has minimals : List<TestCase::Minimal>;
+
+  our $MINIMALS : List<TestCase::Minimal>;
+  
+  static method pass_throw_minimals : List<TestCase::Minimal> ($minimals : List<TestCase::Minimal>) {
+    
+    my $minimals_local : List<TestCase::Minimal> = $minimals;
+    
+    return $minimals_local;
+  }
+  
+  static method basic : int () {
+    my $minimals = List->new(new TestCase::Minimal[0], 3);
+    my $minimal = TestCase::Minimal->new;
+    $minimal->set_x(1);
+    $minimals->set(0, $minimal);
+    
+    my $minimals2 = &pass_throw_minimals($minimals);
+    
+    my $minimal2 = (TestCase::Minimal)$minimals2->get(0);
+    
+    unless ($minimal2->x == 1) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
