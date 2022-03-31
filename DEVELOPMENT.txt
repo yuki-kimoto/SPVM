@@ -106,7 +106,7 @@ DEVELOPERS NOTE
   
     Get all keywords
     
-      perl -n -e 'if (/strcmp\s*\(\s*keyword\s*,\s*"(.+?)"/) { print "$1\n" } ' lib/SPVM/Builder/src/spvm_toke.c
+      perl -n -e 'if (/strcmp\s*\(\s*symbol_name\s*,\s*"(.+?)"/) { print "$1\n" } ' lib/SPVM/Builder/src/spvm_toke.c
     
     Get the definition of syntax parsing
     
