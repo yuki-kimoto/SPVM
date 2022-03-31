@@ -290,11 +290,32 @@ struct spvm_env {
   int32_t (*is_object_array)(SPVM_ENV* env, void* object);
   int32_t (*get_method_id_without_signature)(SPVM_ENV* env, const char* class_name, const char* method_name);
   const char* (*get_constant_string_value)(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
-  void* (*new_allocator)(SPVM_ENV* env);
-  void* (*new_string_buffer)(SPVM_ENV* env);
-  void* (*new_compiler)(SPVM_ENV* env);
-  void* (*new_runtime)(SPVM_ENV* env);  void* (*compiler_new)();
-
+  void* (*compiler_new)();
+  void (*compiler_free)(void* compiler);
+  void (*compiler_set_start_line)(void* compiler, int32_t start_line);
+  int32_t (*compiler_get_start_line)(void* compiler);
+  void (*compiler_set_start_file)(void* compiler, const char* start_file);
+  const char* (*compiler_get_start_file)(void* compiler);
+  void (*compiler_add_module_dir)(void* compiler, const char* module_dir);
+  int32_t (*compiler_get_module_dirs_length )(void* compiler);
+  const char* (*compiler_get_module_dir )(void* compiler, int32_t module_dir_id);
+  int32_t (*compiler_compile_spvm)(void* compiler, const char* class_name);
+  int32_t (*compiler_get_error_messages_length)(void* compiler);
+  const char* (*compiler_get_error_message)(void* compiler, int32_t index);
+  int32_t (*compiler_get_class_id)(void* compiler, const char* class_name);
+  int32_t (*compiler_get_classes_length)(void* compiler);
+  const char* (*compiler_get_class_name)(void* compiler, int32_t class_id);
+  int32_t (*compiler_is_anon_class)(void* compiler, int32_t class_id);
+  int32_t (*compiler_get_methods_length)(void* compiler, int32_t class_id);
+  int32_t (*compiler_get_method_id)(void* compiler, int32_t class_id, int32_t method_index_of_class);
+  int32_t (*compiler_get_method_id_by_name)(void* compiler, const char* class_name, const char* method_name);
+  const char* (*compiler_get_method_name)(void* compiler, int32_t method_id);
+  const char* (*compiler_get_method_signature)(void* compiler, int32_t method_id);
+  int32_t (*compiler_is_anon_method)(void* compiler, int32_t method_id);
+  int32_t (*compiler_is_init_block_method)(void* compiler, int32_t method_id);
+  int32_t (*compiler_is_native_method)(void* compiler, int32_t method_id);
+  int32_t (*compiler_is_precompile_method)(void* compiler, int32_t method_id);
+  void (*compiler_build_runtime)(void* compiler, void* runtime);
 };
 
 struct spvm_env_allocator {
