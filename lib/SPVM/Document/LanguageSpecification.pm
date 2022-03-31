@@ -3376,7 +3376,7 @@ The setting local variable is an L<expression|"Expressions"> to set the value of
 
   $var = VALUE
 
-The assignment of the value must satisfy the L<type assignability|Type Assignability>, otherwise a compilation error occurs.
+The assignment of the value must satisfy the L<type assignability|"Type Assignability">, otherwise a compilation error occurs.
 
 The return value is the value after the assignment.
 
@@ -3421,7 +3421,7 @@ B<Setting Class Variable Expression> is an L<expression|"Expressions"> to set L<
 
   $CLASS_VARIABLE_NAME = VALUE
 
-If the assignment does not satisfy the L<type assignability|Type Assignability>, a compilation error occurs.
+If the assignment does not satisfy the L<type assignability|"Type Assignability">, a compilation error occurs.
 
 The return value is the value after the setting.
 
@@ -3504,7 +3504,7 @@ The setting field is an L<expression|"Expressions"> to set the L<field|"Field"> 
 
 The type of invocant is a L<class type|"Class Type">.
 
-If the assignment does not satisfy the L<type assignability|Type Assignability>, a compilation error occurs.
+If the assignment does not satisfy the L<type assignability|"Type Assignability">, a compilation error occurs.
 
 The return value is the value after the setting. 
 
@@ -3550,7 +3550,7 @@ If the field names does not found in the L<"Class">, a compilation error occurs.
 
 Setting Multi Numeric Field Expression returns the value of Field after setting. 
 
-The assignment must satisfy the L<type assignability|Type Assignability>.
+The assignment must satisfy the L<type assignability|"Type Assignability">.
 
 Return Value Type is the type of Field.
 
@@ -3591,7 +3591,7 @@ If the field names does not found in the L<"Class">, a compilation error occurs
 
 Setting Multi Numeric Field via Dereference Expression returns the value of Field after setting.
 
-The assignment must satisfy the L<type assignability|Type Assignability>.
+The assignment must satisfy the L<type assignability|"Type Assignability">.
 
 Return Value Type is the type of Field.
 
@@ -3638,7 +3638,7 @@ Array Expression must be L<"Array Types">.
 
 Index Expression must be L<"int Type"> or the type that become L<"int Type"> by L<"Unary Numeric Widening Type Conversion">.
 
-The assignment must satisfy the L<type assignability|Type Assignability>.
+The assignment must satisfy the L<type assignability|"Type Assignability">.
 
 Setting Array Element Expression returns the value of the element after setting.
 
@@ -3732,7 +3732,7 @@ Array Initialization returns an Array that has the length of the number of eleme
 
 The type of Array is the type of Expression1 converted to Array Types. If no element is specified, it will be an Array Types of L<"Any Object Type">.
 
-If Expression2 or later does not satisfy the L<type assignability|Type Assignability>, a a compilation error will occur.
+If Expression2 or later does not satisfy the L<type assignability|"Type Assignability">, a a compilation error will occur.
 
 B<Examples:>
 
@@ -4726,7 +4726,7 @@ In Assignment Operator, the The left operand is evaluated after the right operan
 
 =head2 Special Assignment Operator
 
-Special Assignment Operator is a L<"Assignment Operator">the L<type assignability|Type Assignability> ,a compilation error occurs
+Special Assignment Operator is a L<"Assignment Operator">the L<type assignability|"Type Assignability"> ,a compilation error occurs
 
 B<List of Special Assignment Operators>
 
