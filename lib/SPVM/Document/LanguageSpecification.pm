@@ -6125,6 +6125,10 @@ If the Reference Type is used at an Invalid location, a compilation error occurs
 
 See L<"Reference"> for a detailed explanation of Reference.
 
+=head2 Reference Types
+
+Reference Types are L<Numeric Reference Type> and L<Multi Numeric Reference Type>.
+
 =head2 Numeric Reference Type
 
 Numeric Reference Type means L<"Numeric Types"> for L<"Reference Type">. Says.
@@ -6249,7 +6253,7 @@ B<Examples:>
 
 =head3 Type Assignability of Object-to-Numeric
 
-If the type of the left operand is a L<numeric type|Numeric Types> and the type of the right operand is a L<any object type|"Any Object Type"> C<object>, the assignment is valid.
+If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is a L<any object type|"Any Object Type"> C<object>, the assignment is valid.
 
 The L<unboxing type conversion|"Unboxing Type Conversion"> corresponding to the numeric type is performed.
 
@@ -6276,7 +6280,7 @@ B<Examples:>
   my $int_obj = (object)Int->new(3);
   my $int : int = $int_obj;
 
-If the type of the left operand is a L<numeric type|Numeric Types> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|"Numeric Object Type">, the assignment is valid.
+If the type of the left operand is a L<numeric type|"Numeric Types"> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|"Numeric Object Type">, the assignment is valid.
 
 =begin html
 
@@ -6301,24 +6305,26 @@ B<Examples:>
 
 =head3 Type Assignability of Others-to-Numeric
 
-If the type of the left operand is a L<numeric type|Numeric Types> and the type of the right operand is other than the types described above, the assignment is invalid.
+If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is other than the types described above, the assignment is invalid.
+
+=head2 Type Assignability of Reference-to-Refernece
+
+If the type of the left operand is a L<reference type|"Reference Types"> and the type of the right operand is the same type of the left operand, the assignment is valid.
+
+If not, the assignment is invalid.
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>&X</td><td>&X</td><td>None</td>
+    <td>No</td><td>&Y</td><td>&X</td><td>None</td>
+  </tr>
+</table>
 
 =end html
 
-    // Dist type is referece type
-    else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-      if (SPVM_TYPE_is_ref_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-        if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
-          can_assign = 1;
-        }
-        else {
-          can_assign = 0;
-        }
-      }
-      else {
-        can_assign = 0;
-      }
-    }
     // Dist type is multi numeric type
     else if (SPVM_TYPE_is_mulnum_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
       if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {

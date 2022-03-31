@@ -4402,20 +4402,6 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
       can_assign = 0;
     }
   }
-  // Dist type is multi numeric type
-  else if (SPVM_TYPE_is_mulnum_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-    if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-      if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
-        can_assign = 1;
-      }
-      else {
-        can_assign = 0;
-      }
-    }
-    else {
-      can_assign = 0;
-    }
-  }
   // Dist type is object type
   else if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
     // Dist type is any object array type
