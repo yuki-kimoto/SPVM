@@ -1,5 +1,6 @@
+#include "spvm_native.h"
+
 #include "spvm_allocator.h"
-#include "spvm_env_allocator.h"
 #include "spvm_api_allocator.h"
 
 SPVM_ENV_ALLOCATOR* SPVM_API_ALLOCATOR_new_env_raw() {
