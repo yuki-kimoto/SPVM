@@ -181,6 +181,7 @@ B<Examples of invalid local variable names:>
 
 The list of keywords.
 
+  alias
   allow
   as
   break
@@ -196,6 +197,7 @@ The list of keywords.
   divul
   double
   dump
+  element
   elsif
   else
   enum
@@ -230,6 +232,7 @@ The list of keywords.
   next
   new
   new_string_len
+  of
   our
   object
   print
@@ -843,18 +846,18 @@ The SPVM language is assumed to be parsed by yacc/bison.
 
 Show the definition of syntax parsing that is written by yacc/bison. The definition of the precidence of operators is contained in this difinition.
 
-  %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS MUTABLE
+  %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
   %token <opval> DESCRIPTOR MAKE_READ_ONLY IMPLEMENT
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
-  %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
-  %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
+  %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
+  %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF
   %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
   %type <opval> opt_classes classes class class_block
   %type <opval> opt_declarations declarations declaration
   %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-  %type <opval> method anon_method opt_args args arg has use require our
+  %type <opval> method anon_method opt_args args arg has use require alias our
   %type <opval> opt_descriptors descriptors
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -866,8 +869,10 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   %type <opval> new array_init
   %type <opval> my_var var implement
   %type <opval> expression opt_expressions expressions opt_expression case_statements
-  %type <opval> field_name method_name is_read_only
-  %type <opval> type qualified_type basic_type array_type array_type_with_length ref_type  qualified_type_or_void
+  %type <opval> field_name method_name class_name class_alias_name is_read_only
+  %type <opval> type qualified_type basic_type array_type any_object_array_type
+  %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
+  
   %right <opval> ASSIGN SPECIAL_ASSIGN
   %left <opval> LOGICAL_OR
   %left <opval> LOGICAL_AND
@@ -914,28 +919,31 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
     : has
     | method
     | enumeration
-    | our ';'
+    | our
     | use
     | allow
     | implement
     | init_block
+    | alias
 
   init_block
     : INIT block
 
   use
-    : USE basic_type ';'
-    | USE basic_type AS basic_type';'
+    : USE class_name ';'
+    | USE class_name AS class_alias_name ';'
 
   require
-    : REQUIRE basic_type
-    | REQUIRE basic_type AS basic_type';'
+    : REQUIRE class_name
+
+  alias
+    : ALIAS class_name AS class_alias_name ';'
 
   allow
-    : ALLOW basic_type ';'
+    : ALLOW class_name ';'
 
   implement
-    : IMPLEMENT basic_type ';'
+    : IMPLEMENT class_name ';'
 
   enumeration
     : opt_descriptors ENUM enumeration_block
@@ -957,20 +965,20 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
     | method_name ASSIGN CONSTANT
 
   our
-    : OUR VAR_NAME ':' opt_descriptors qualified_type
+    : OUR VAR_NAME ':' opt_descriptors qualified_type opt_type_comment ';'
 
   has
-    : HAS field_name ':' opt_descriptors qualified_type ';'
+    : HAS field_name ':' opt_descriptors qualified_type opt_type_comment ';'
 
   method
-    : opt_descriptors METHOD method_name ':' qualified_type_or_void '(' opt_args opt_vaarg')' block
-    | opt_descriptors METHOD method_name ':' qualified_type_or_void '(' opt_args opt_vaarg')' ';'
-    | opt_descriptors METHOD ':' qualified_type_or_void '(' opt_args opt_vaarg')' block
-    | opt_descriptors METHOD ':' qualified_type_or_void '(' opt_args opt_vaarg ')' ';'
+    : opt_descriptors METHOD method_name ':' return_type '(' opt_args opt_vaarg')' block
+    | opt_descriptors METHOD method_name ':' return_type '(' opt_args opt_vaarg')' ';'
+    | opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg')' block
+    | opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg ')' ';'
 
   anon_method
-    : opt_descriptors METHOD ':' qualified_type_or_void '(' opt_args opt_vaarg')' block
-    | '[' args ']' opt_descriptors METHOD ':' qualified_type_or_void '(' opt_args opt_vaarg')' block
+    : opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg')' block
+    | '[' args ']' opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg')' block
 
   opt_args
     : /* Empty */
@@ -982,7 +990,7 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
     | arg
 
   arg
-    : var ':' qualified_type
+    : var ':' qualified_type opt_type_comment
 
   opt_vaarg
     : /* Empty */
@@ -1207,8 +1215,8 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   call_spvm_method
     : CURRENT_CLASS NAME '(' opt_expressions  ')'
     | CURRENT_CLASS NAME
-    | basic_type ARROW method_name '(' opt_expressions  ')'
-    | basic_type ARROW method_name
+    | class_name ARROW method_name '(' opt_expressions  ')'
+    | class_name ARROW method_name
     | expression ARROW method_name '(' opt_expressions ')'
     | expression ARROW method_name
     | expression ARROW '(' opt_expressions ')'
@@ -1237,7 +1245,7 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
     | SCALAR '@' '{' expression '}'
 
   my_var
-    : MY var ':' qualified_type
+    : MY var ':' qualified_type opt_type_comment
     | MY var
 
   var
@@ -1250,6 +1258,7 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   type
     : basic_type
     | array_type
+    | any_object_array_type
     | ref_type
 
   basic_type
@@ -1270,13 +1279,23 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
     : basic_type '[' ']'
     | array_type '[' ']'
 
+  any_object_array_type
+    : ELEMENT '[' ']'
+
   array_type_with_length
     : basic_type '[' expression ']'
     | array_type '[' expression ']'
 
-  qualified_type_or_void
-    : qualified_type
+  return_type
+    : qualified_type opt_type_comment
     | VOID
+
+  opt_type_comment
+    : /* Empty */
+    | type_comment
+
+  type_comment
+    : OF type
 
   field_name
     : NAME
@@ -1284,11 +1303,20 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   method_name
     : NAME
 
+  class_name
+    : NAME
+
+  class_alias_name
+    : NAME
+
 The following is a correspondence table between tokens in yacc/bison and keywords and operators in SPVM.
 
 =begin html
 
 <table>
+  <tr>
+    <td>ALIAS</td><td>alias</td>
+  </tr>
   <tr>
     <td>ALLOW</td><td>allow</td>
   </tr>
@@ -1474,6 +1502,9 @@ The following is a correspondence table between tokens in yacc/bison and keyword
   </tr>
   <tr>
     <td>NEW_STRING_LEN</td><td>new_string_len</td>
+  </tr>
+  <tr>
+    <td>OF</td><td>of</td>
   </tr>
   <tr>
     <td>NEXT</td><td>next</td>
