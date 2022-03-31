@@ -6466,6 +6466,13 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
 SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length) {
   (void)env;
   
+  if (element_dimension < 1) {
+    return NULL;
+  }
+  else if (basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT) {
+    return NULL;
+  }
+  
   int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(void*) * ((int64_t)length + 1);
   
   // Create object
