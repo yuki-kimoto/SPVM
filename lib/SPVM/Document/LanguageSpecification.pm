@@ -6307,7 +6307,7 @@ B<Examples:>
 
 If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is other than the types described above, the assignment is invalid.
 
-=head2 Type Assignability of Reference-to-Refernece
+=head2 Type Assignability of Reference-to-Referenece
 
 If the type of the left operand is a L<reference type|"Reference Types"> and the type of the right operand is the same type of the left operand, the assignment is valid.
 
@@ -6320,6 +6320,22 @@ If not, the assignment is invalid.
   <tr>
     <td>Yes</td><td>&X</td><td>&X</td><td>None</td>
     <td>No</td><td>&Y</td><td>&X</td><td>None</td>
+  </tr>
+</table>
+
+=head2 Type Assignability of MultiNumeric-to-MultiNumeric
+
+If the type of the left operand is a L<multi numeric type|"Multi Numeric Types"> and the type of the right operand is the same type of the left operand, the assignment is valid.
+
+If not, the assignment is invalid.
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>X</td><td>X</td><td>None</td>
+    <td>No</td><td>Y</td><td>X</td><td>None</td>
   </tr>
 </table>
 
