@@ -4705,6 +4705,11 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     SPVM_TYPE* type = SPVM_LIST_fetch(types, i);
     type->category = SPVM_TYPE_get_type_category(compiler, type->basic_type->id, type->dimension, type->flag);
     type->width = SPVM_TYPE_get_width(compiler, type->basic_type->id, type->dimension, type->flag);
+    
+    if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT && type->dimension > 1) {
+      const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
+      SPVM_COMPILER_error(compiler, "Multi dimensional array of any object is forbidden at %s line %d");
+    }
   }
 }
 

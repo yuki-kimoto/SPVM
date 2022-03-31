@@ -1,0 +1,10 @@
+class TestCase::CompileError::Type::MultiDimensionalAnyObject {
+  static method main : int ($start_file : string, $args : string[]) {
+    
+    my $foo : object[][];
+    
+    return 0;
+  }
+  
+  
+}

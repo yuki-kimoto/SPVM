@@ -250,6 +250,7 @@ sub print_error_messages {
 {
   compile_not_ok('TestCase::CompileError::Type::MutableNoStringCaseStringArray');
   compile_not_ok('TestCase::CompileError::Type::MutableNoStringCaseInt');
+  compile_not_ok('TestCase::CompileError::Type::MultiDimensionalAnyObject', qr/Multi dimensional array of any object/i);
 }
 
 # Divide - Compile Error
