@@ -40,6 +40,5 @@ void SPVM_API_COMPILER_free(SPVM_ENV_COMPILER* env_compiler);
 const char* SPVM_API_COMPILER_get_module_source(SPVM_ENV_COMPILER* env_compiler, const char* class_name);
 int32_t SPVM_API_COMPILER_get_error_messages_length(SPVM_ENV_COMPILER* env_compiler);
 const char* SPVM_API_COMPILER_get_error_message(SPVM_ENV_COMPILER* env_compiler, int32_t index);
-SPVM_ALLOCATOR* SPVM_API_COMPILER_get_allocator(SPVM_ENV_COMPILER* env_compiler);
 
 #endif

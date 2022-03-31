@@ -8708,10 +8708,6 @@ int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
   return class_id;
 }
 
-SPVM_ALLOCATOR* SPVM_API_compiler_get_allocator(SPVM_COMPILER* compiler) {
-  return compiler->allocator;
-}
-
 int32_t SPVM_API_get_arg_type_id(SPVM_ENV* env, int32_t arg_id) {
 
   SPVM_RUNTIME* runtime = env->runtime;

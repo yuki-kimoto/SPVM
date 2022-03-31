@@ -434,8 +434,6 @@ int32_t SPVM_API_object_get_basic_type_id(SPVM_OBJECT* object);
 int32_t SPVM_API_object_get_type_dimension(SPVM_OBJECT* object);
 int32_t SPVM_API_object_get_type_category(SPVM_OBJECT* object);
 
-SPVM_ALLOCATOR* SPVM_API_compiler_get_allocator(SPVM_COMPILER* compiler);
-
 int32_t SPVM_API_get_arg_type_id(SPVM_ENV* env, int32_t arg_id);
 
 SPVM_STRING_BUFFER* SPVM_API_string_buffer_new_tmp(SPVM_ALLOCATOR* allocator, int32_t capacity);
