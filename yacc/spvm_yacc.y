@@ -382,7 +382,7 @@ args
   | arg
 
 arg
-  : var ':' qualified_type
+  : var ':' qualified_type opt_type_comment
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL);
     }

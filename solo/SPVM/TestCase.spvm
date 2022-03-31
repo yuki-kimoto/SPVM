@@ -46,6 +46,8 @@ SPVM::Test - SPVM test module
   
   our $BEGIN_INIT : int;
   
+  our $TYPE_COMMENT : byte of byte;
+  
   INIT {
     $BEGIN_INIT = 7;
   }
@@ -59,8 +61,9 @@ SPVM::Test - SPVM test module
   has x_float : public float;
   has x_double : public double;
   has private_field : public int;
-  
   has x_rw : public rw int;
+  
+  has type_comemnt : byte of byte;
   
   static method BYTE_MAX : byte () { return (byte)127; }
   static method BYTE_MIN : byte () { return (byte)-128; }
@@ -86,8 +89,17 @@ SPVM::Test - SPVM test module
   static method INT64_MAX : long () { return 9223372036854775807L; }
   static method UINT32_MAX : int () { return 0xFFFFFFFF; }
   static method UINT64_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
+  
+  static method type_comment_method : int of int ($foo : int of int) {
+    
+  }
 
   static method main : int ($start_file : string, $args : string[]) {
+    # Type comment
+    {
+      my $type_comment : int of int;
+    }
+    
     {
       my $minimal = TestCase::Minimal->new;
       my $interface : TestCase::CommonInterface = $minimal;
