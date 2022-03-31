@@ -6957,6 +6957,26 @@ Type qualifiers qualify the type.
 
   QUALIFIER TYPE
 
+=head1 Type Comment
+
+The type comment syntax is supported. The type comment can be written after C<of> keyword.
+
+  TYPE of TYPE
+
+The type comment can be used the type of the L<field decralation|"Field Definition">, the L<class variable definition|"Class Variable Definition">, the L<local variable declaration|"Local Variable Declaration">, and the return value and the types of arguments of the L<method definition|"Method Definition">.
+
+  has points : List of Point;
+  
+  our $POINTS : List of Point;
+  
+  my $points : List of Point;
+  
+  static method foo : List of Point ($arg : List of Point) { ... }
+
+If the type specified as the type comment is not found, a compilation error occurs.
+
+Type comments have no meanings at runtime.
+
 =head2 mutable Type Qualifier
 
 The C<mutable> type qualifier is used to allow to set the character of the string.
