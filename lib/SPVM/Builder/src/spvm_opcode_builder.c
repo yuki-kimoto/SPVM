@@ -182,7 +182,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             memset(&opcode, 0, sizeof(SPVM_OPCODE));
             int32_t type_width = arg_type->width;
             switch (arg_type->category) {
-              case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC: {
+              case SPVM_TYPE_C_CATEGORY_NUMERIC: {
                 switch (arg_basic_type->id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_BYTE);
@@ -232,7 +232,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 }
                 break;
               }
-              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM:
+              case SPVM_TYPE_C_CATEGORY_MULNUM:
               {
                 SPVM_CLASS* arg_class = arg_basic_type->class;
                 SPVM_FIELD* arg_mulnum_field = SPVM_LIST_get(arg_class->fields, 0);
@@ -271,19 +271,19 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 stack_index += type_width;
                 break;
               }
-              case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
-              case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
-              case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
-              case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
-              case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
-              case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
-              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
-              case SPVM_TYPE_C_TYPE_CATEGORY_STRING_ARRAY:
-              case SPVM_TYPE_C_TYPE_CATEGORY_CLASS_ARRAY:
-              case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE_ARRAY:
-              case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK_ARRAY:
-              case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
-              case SPVM_TYPE_C_TYPE_CATEGORY_MULDIM_ARRAY:
+              case SPVM_TYPE_C_CATEGORY_STRING:
+              case SPVM_TYPE_C_CATEGORY_CLASS:
+              case SPVM_TYPE_C_CATEGORY_INTERFACE:
+              case SPVM_TYPE_C_CATEGORY_CALLBACK:
+              case SPVM_TYPE_C_CATEGORY_ANY_OBJECT:
+              case SPVM_TYPE_C_CATEGORY_NUMERIC_ARRAY:
+              case SPVM_TYPE_C_CATEGORY_MULNUM_ARRAY:
+              case SPVM_TYPE_C_CATEGORY_STRING_ARRAY:
+              case SPVM_TYPE_C_CATEGORY_CLASS_ARRAY:
+              case SPVM_TYPE_C_CATEGORY_INTERFACE_ARRAY:
+              case SPVM_TYPE_C_CATEGORY_CALLBACK_ARRAY:
+              case SPVM_TYPE_C_CATEGORY_ANY_OBJECT_ARRAY:
+              case SPVM_TYPE_C_CATEGORY_MULDIM_ARRAY:
               {
                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
                 opcode.operand1 = arg->mem_id;
@@ -292,8 +292,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 stack_index++;
                 break;
               }
-              case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_REF:
-              case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_REF:
+              case SPVM_TYPE_C_CATEGORY_NUMERIC_REF:
+              case SPVM_TYPE_C_CATEGORY_MULNUM_REF:
               {
                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_REF);
                 opcode.operand1 = arg->mem_id;
@@ -4782,9 +4782,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           else {
                             int32_t is_check_type;
                             switch (array_type->category) {
-                              case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE_ARRAY:
-                              case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK_ARRAY:
-                              case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
+                              case SPVM_TYPE_C_CATEGORY_INTERFACE_ARRAY:
+                              case SPVM_TYPE_C_CATEGORY_CALLBACK_ARRAY:
+                              case SPVM_TYPE_C_CATEGORY_ANY_OBJECT_ARRAY:
                               {
                                 is_check_type = 1;
                                 break;

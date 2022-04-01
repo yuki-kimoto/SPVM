@@ -77,67 +77,67 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
   
   int32_t type_category;
   if (SPVM_TYPE_is_void_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_VOID;
+    type_category = SPVM_TYPE_C_CATEGORY_VOID;
   }
   else if (SPVM_TYPE_is_numeric_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC;
+    type_category = SPVM_TYPE_C_CATEGORY_NUMERIC;
   }
   else if (SPVM_TYPE_is_mulnum_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM;
+    type_category = SPVM_TYPE_C_CATEGORY_MULNUM;
   }
   else if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING;
+    type_category = SPVM_TYPE_C_CATEGORY_STRING;
   }
   else if (SPVM_TYPE_is_class_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
+    type_category = SPVM_TYPE_C_CATEGORY_CLASS;
   }
   else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE;
+    type_category = SPVM_TYPE_C_CATEGORY_INTERFACE;
   }
   else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK;
+    type_category = SPVM_TYPE_C_CATEGORY_CALLBACK;
   }
   else if (SPVM_TYPE_is_any_object_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT;
+    type_category = SPVM_TYPE_C_CATEGORY_ANY_OBJECT;
   }
   else if (SPVM_TYPE_is_numeric_array_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY;
+    type_category = SPVM_TYPE_C_CATEGORY_NUMERIC_ARRAY;
   }
   else if (SPVM_TYPE_is_mulnum_array_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY;
+    type_category = SPVM_TYPE_C_CATEGORY_MULNUM_ARRAY;
   }
   else if (SPVM_TYPE_is_string_array_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING_ARRAY;
+    type_category = SPVM_TYPE_C_CATEGORY_STRING_ARRAY;
   }
   else if (SPVM_TYPE_is_any_object_array_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY;
+    type_category = SPVM_TYPE_C_CATEGORY_ANY_OBJECT_ARRAY;
   }
   else if (SPVM_TYPE_is_class_array_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS_ARRAY;
+    type_category = SPVM_TYPE_C_CATEGORY_CLASS_ARRAY;
   }
   else if (SPVM_TYPE_is_interface_array_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE_ARRAY;
+    type_category = SPVM_TYPE_C_CATEGORY_INTERFACE_ARRAY;
   }
   else if (SPVM_TYPE_is_callback_array_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK_ARRAY;
+    type_category = SPVM_TYPE_C_CATEGORY_CALLBACK_ARRAY;
   }
   else if (SPVM_TYPE_is_muldim_array_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULDIM_ARRAY;
+    type_category = SPVM_TYPE_C_CATEGORY_MULDIM_ARRAY;
   }
   else if (SPVM_TYPE_is_numeric_ref_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_REF;
+    type_category = SPVM_TYPE_C_CATEGORY_NUMERIC_REF;
   }
   else if (SPVM_TYPE_is_mulnum_ref_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_REF;
+    type_category = SPVM_TYPE_C_CATEGORY_MULNUM_REF;
   }
   else if (SPVM_TYPE_is_undef_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_UNDEF;
+    type_category = SPVM_TYPE_C_CATEGORY_UNDEF;
   }
   else if (SPVM_TYPE_is_unknown_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_UNKNOWN;
+    type_category = SPVM_TYPE_C_CATEGORY_UNKNOWN;
   }
   else if (SPVM_TYPE_is_fail_load_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_FAIL_LOAD;
+    type_category = SPVM_TYPE_C_CATEGORY_FAIL_LOAD;
   }
   else {
     assert(0);
