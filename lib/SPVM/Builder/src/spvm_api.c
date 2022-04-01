@@ -5566,7 +5566,22 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   int32_t is_object_array;
   if (object) {
-    is_object_array = object->type_category == SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY;
+    switch (object->type_category) {
+      case SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY:
+      case SPVM_API_C_TYPE_CATEGORY_STRING_ARRAY:
+      case SPVM_API_C_TYPE_CATEGORY_CLASS_ARRAY:
+      case SPVM_API_C_TYPE_CATEGORY_INTERFACE_ARRAY:
+      case SPVM_API_C_TYPE_CATEGORY_CALLBACK_ARRAY:
+      case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
+      case SPVM_API_C_TYPE_CATEGORY_MULDIM_ARRAY:
+      {
+        is_object_array = 1;
+        break;
+      }
+      default: {
+        is_object_array = 0;
+      }
+    }
   }
   else {
     is_object_array = 0;
