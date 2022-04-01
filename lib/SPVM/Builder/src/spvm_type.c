@@ -23,7 +23,6 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
     "VOID"
     "NUMERIC"
     "MULNUM"
-    "BASIC_OBJECT"
     "NUMERIC_ARRAY"
     "MULNUM_ARRAY"
     "OBJECT_ARRAY"
