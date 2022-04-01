@@ -23,21 +23,21 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
     "VOID"
     "NUMERIC"
     "MULNUM"
-    "NUMERIC_ARRAY"
-    "MULNUM_ARRAY"
-    "NUMERIC_REF"
-    "MULNUM_REF"
     "STRING",
     "CLASS",
     "INTERFACE",
     "CALLBACK",
     "ANY_OBEJCT",
+    "NUMERIC_ARRAY"
+    "MULNUM_ARRAY"
     "STRING_ARRAY",
     "CLASS_ARRAY",
     "INTERFACE_ARRAY",
     "CALLBACK_ARRAY",
     "ANY_OBEJCT_ARRAY",
     "MULDIM_ARRAY",
+    "NUMERIC_REF"
+    "MULNUM_REF"
   };
   
   return id_names;
