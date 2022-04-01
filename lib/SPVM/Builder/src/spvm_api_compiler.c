@@ -20,7 +20,7 @@ int32_t SPVM_API_COMPILER_get_next_method_id_flag(SPVM_ENV_COMPILER* env_compile
   
   int32_t found_index = -1;
   for (int32_t method_index = start_index; method_index < methods->length; method_index++) {
-    SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
+    SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
     
     if (!method) {
       break;
@@ -56,7 +56,7 @@ int32_t SPVM_API_COMPILER_get_class_id(SPVM_ENV_COMPILER* env_compiler, const ch
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
   
   int32_t class_id;
   if (class) {
@@ -82,7 +82,7 @@ const char* SPVM_API_COMPILER_get_class_name(SPVM_ENV_COMPILER* env_compiler, in
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
+  SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_id);
   
   assert(class);
   
@@ -95,7 +95,7 @@ const char* SPVM_API_COMPILER_get_class_module_file(SPVM_ENV_COMPILER* env_compi
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
+  SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_id);
   
   assert(class);
   
@@ -108,7 +108,7 @@ int32_t SPVM_API_COMPILER_get_method_class_id(SPVM_ENV_COMPILER* env_compiler, i
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
   int32_t method_class_id;
   if (method) {
     method_class_id = method->class->id;
@@ -124,7 +124,7 @@ int32_t SPVM_API_COMPILER_is_anon_class(SPVM_ENV_COMPILER* env_compiler, int32_t
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
+  SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_id);
   
   return class->is_anon;
 }
@@ -133,7 +133,7 @@ int32_t SPVM_API_COMPILER_get_methods_length(SPVM_ENV_COMPILER* env_compiler, in
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
+  SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_id);
   
   int32_t methods_length = class->methods->length;
   
@@ -144,11 +144,11 @@ int32_t SPVM_API_COMPILER_get_method_id(SPVM_ENV_COMPILER* env_compiler, int32_t
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
+  SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_id);
   
   int32_t method_id;
   if (class) {
-    SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, method_index_of_class);
+    SPVM_METHOD* method = SPVM_LIST_get(class->methods, method_index_of_class);
     if (method) {
       method_id = method->id;
     }
@@ -167,11 +167,11 @@ int32_t SPVM_API_COMPILER_get_method_id_by_name(SPVM_ENV_COMPILER* env_compiler,
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
   
   int32_t method_id;
   if (class) {
-    SPVM_METHOD* method_symtable = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
+    SPVM_METHOD* method_symtable = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
     if (method_symtable) {
       method_id = method_symtable->id;
     }
@@ -190,7 +190,7 @@ const char* SPVM_API_COMPILER_get_method_name(SPVM_ENV_COMPILER* env_compiler, i
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
   
   return method->name;
 }
@@ -199,7 +199,7 @@ int32_t SPVM_API_COMPILER_is_anon_method(SPVM_ENV_COMPILER* env_compiler, int32_
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
   
   return method->flag & SPVM_METHOD_C_FLAG_ANON;
 }
@@ -208,7 +208,7 @@ int32_t SPVM_API_COMPILER_is_init_block_method(SPVM_ENV_COMPILER* env_compiler, 
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
   
   return method->is_init;
 }
@@ -217,7 +217,7 @@ int32_t SPVM_API_COMPILER_is_native_method(SPVM_ENV_COMPILER* env_compiler, int3
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
   
   return method->flag & SPVM_METHOD_C_FLAG_NATIVE;
 }
@@ -226,7 +226,7 @@ int32_t SPVM_API_COMPILER_is_precompile_method(SPVM_ENV_COMPILER* env_compiler, 
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
   
   return method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE;
 }
@@ -235,7 +235,7 @@ const char* SPVM_API_COMPILER_get_method_signature(SPVM_ENV_COMPILER* env_compil
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
   
   return method->signature;
 }
@@ -244,7 +244,7 @@ void* SPVM_API_COMPILER_get_native_method_address(SPVM_ENV_COMPILER* env_compile
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
   
   void* native_method_address = method->native_address;
   
@@ -255,7 +255,7 @@ void* SPVM_API_COMPILER_get_precompile_method_address(SPVM_ENV_COMPILER* env_com
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
   
   void* precompile_method_address = method->precompile_address;
   
@@ -266,7 +266,7 @@ void SPVM_API_COMPILER_set_native_method_address(SPVM_ENV_COMPILER* env_compiler
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
   
   method->native_address = address;
 }
@@ -275,7 +275,7 @@ void SPVM_API_COMPILER_set_precompile_method_address(SPVM_ENV_COMPILER* env_comp
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
   
   method->precompile_address = address;
 }
@@ -284,7 +284,7 @@ const char* SPVM_API_COMPILER_get_method_abs_name(SPVM_ENV_COMPILER* env_compile
 
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
+  SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
   
   const char* method_abs_name = method->abs_name;
   
@@ -349,7 +349,7 @@ const char* SPVM_API_COMPILER_get_module_dir (SPVM_ENV* env, SPVM_ENV_COMPILER* 
   
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  const char* module_dir = SPVM_LIST_fetch(compiler->module_dirs, module_dir_id);
+  const char* module_dir = SPVM_LIST_get(compiler->module_dirs, module_dir_id);
   
   return module_dir;
 }
@@ -381,7 +381,7 @@ const char* SPVM_API_COMPILER_get_module_source(SPVM_ENV_COMPILER* env_compiler,
   
   SPVM_COMPILER* compiler = env_compiler->compiler;
   
-  const char* module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
+  const char* module_source = SPVM_HASH_get(compiler->module_source_symtable, class_name, strlen(class_name));
   
   return module_source;
 }

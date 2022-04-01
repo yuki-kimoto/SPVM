@@ -29,7 +29,7 @@ void SPVM_RUNTIME_prepare(SPVM_RUNTIME* runtime) {
   for (int32_t string_id = 0; string_id < runtime->strings_length; string_id++) {
     SPVM_RUNTIME_STRING* runtime_string = &runtime->strings[string_id];
     runtime_string->value = &runtime->string_buffer[runtime_string->string_buffer_id];
-    SPVM_HASH_insert(runtime->string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
+    SPVM_HASH_set(runtime->string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
   }
 
   // Runtime basic type symtable
@@ -38,7 +38,7 @@ void SPVM_RUNTIME_prepare(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
     SPVM_RUNTIME_STRING* basic_type_name_string = (SPVM_RUNTIME_STRING*)&runtime->strings[runtime_basic_type->name_id];
     const char* runtime_basic_type_name = (const char*)&runtime->string_buffer[basic_type_name_string->string_buffer_id];
-    SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
+    SPVM_HASH_set(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
   }
 
   // Runtime class symtable
@@ -47,7 +47,7 @@ void SPVM_RUNTIME_prepare(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_CLASS* runtime_class = &runtime->classes[class_id];
     SPVM_RUNTIME_STRING* class_name_string = (SPVM_RUNTIME_STRING*)&runtime->strings[runtime_class->name_id];
     const char* runtime_class_name = (const char*)&runtime->string_buffer[class_name_string->string_buffer_id];
-    SPVM_HASH_insert(runtime->class_symtable, runtime_class_name, strlen(runtime_class_name), runtime_class);
+    SPVM_HASH_set(runtime->class_symtable, runtime_class_name, strlen(runtime_class_name), runtime_class);
   }
 }
 

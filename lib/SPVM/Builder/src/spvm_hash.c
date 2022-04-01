@@ -86,7 +86,7 @@ SPVM_HASH* SPVM_HASH_new_hash_permanent(SPVM_ALLOCATOR* allocator, int32_t capac
   return hash;
 }
 
-void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* value) {
+void SPVM_HASH_set(SPVM_HASH* hash, const char* key, int32_t length, void* value) {
   
   assert(hash);
   assert(key);
@@ -99,15 +99,15 @@ void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* va
     SPVM_HASH_rehash(hash, new_table_capacity);
   }
   
-  SPVM_HASH_insert_norehash(hash, key, length, value);
+  SPVM_HASH_set_norehash(hash, key, length, value);
 }
 
-void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length) {
+void* SPVM_HASH_get(SPVM_HASH* hash, const char* key, int32_t length) {
   int32_t exists = 0;
-  return SPVM_HASH_fetch_with_exists(hash, key, length, &exists);
+  return SPVM_HASH_get_with_exists(hash, key, length, &exists);
 }
 
-void* SPVM_HASH_fetch_with_exists(SPVM_HASH* hash, const char* key, int32_t length, int32_t* exists) {
+void* SPVM_HASH_get_with_exists(SPVM_HASH* hash, const char* key, int32_t length, int32_t* exists) {
 
   assert(hash);
   assert(length >= 0);
@@ -306,7 +306,7 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
       
       void* value = hash->entries[i].value;
       
-      SPVM_HASH_insert_norehash(new_hash, key, key_length, value);
+      SPVM_HASH_set_norehash(new_hash, key, key_length, value);
     }
   }
   
@@ -344,7 +344,7 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   }
 }
 
-void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length, void* value) {
+void SPVM_HASH_set_norehash(SPVM_HASH* hash, const char* key, int32_t length, void* value) {
   
   assert(hash);
   assert(key);

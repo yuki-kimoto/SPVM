@@ -174,7 +174,7 @@ void SPVM_DUMPER_dump_classes(SPVM_COMPILER* compiler, SPVM_LIST* classes) {
     int32_t i;
     for (i = 0; i < classes->length; i++) {
       printf("class[%" PRId32 "]\n", i);
-      SPVM_CLASS* class = SPVM_LIST_fetch(classes, i);
+      SPVM_CLASS* class = SPVM_LIST_get(classes, i);
       
       if (class->op_name) {
         printf("  name => \"%s\"\n", class->op_name->uv.name);
@@ -194,7 +194,7 @@ void SPVM_DUMPER_dump_classes(SPVM_COMPILER* compiler, SPVM_LIST* classes) {
       {
         int32_t j;
         for (j = 0; j < fields->length; j++) {
-          SPVM_FIELD* field = SPVM_LIST_fetch(fields, j);
+          SPVM_FIELD* field = SPVM_LIST_get(fields, j);
           printf("    field%" PRId32 "\n", j);
           SPVM_DUMPER_dump_field(compiler, field);
         }
@@ -202,7 +202,7 @@ void SPVM_DUMPER_dump_classes(SPVM_COMPILER* compiler, SPVM_LIST* classes) {
       {
         int32_t j;
         for (j = 0; j < class->methods->length; j++) {
-          SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, j);
+          SPVM_METHOD* method = SPVM_LIST_get(class->methods, j);
           printf("  sub[%" PRId32 "]\n", j);
           SPVM_DUMPER_dump_method(compiler, method);
         }
@@ -216,7 +216,7 @@ void SPVM_DUMPER_dump_classes_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* c
     int32_t i;
     for (i = 0; i < classes->length; i++) {
       printf("class[%" PRId32 "]\n", i);
-      SPVM_CLASS* class = SPVM_LIST_fetch(classes, i);
+      SPVM_CLASS* class = SPVM_LIST_get(classes, i);
       
       if (class->op_name) {
         printf("  name => \"%s\"\n", class->op_name->uv.name);
@@ -233,7 +233,7 @@ void SPVM_DUMPER_dump_classes_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* c
       {
         int32_t j;
         for (j = 0; j < class->methods->length; j++) {
-          SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, j);
+          SPVM_METHOD* method = SPVM_LIST_get(class->methods, j);
           printf("  sub[%" PRId32 "]\n", j);
           SPVM_DUMPER_dump_method_opcode_array(compiler, method);
         }
@@ -249,7 +249,7 @@ void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_type
     int32_t i;
     for (i = 0; i < basic_types->length; i++) {
       printf("basic_type[%" PRId32 "]\n", i);
-      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(basic_types, i);
+      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_types, i);
       printf("    name => %s\n", basic_type->name);
     }
   }
@@ -320,7 +320,7 @@ void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
       {
         int32_t i;
         for (i = 0; i < mys->length; i++) {
-          SPVM_MY* my = SPVM_LIST_fetch(method->mys, i);
+          SPVM_MY* my = SPVM_LIST_get(method->mys, i);
           printf("        mys[%" PRId32 "] ", i);
           SPVM_DUMPER_dump_my(compiler, my);
         }
@@ -348,7 +348,7 @@ void SPVM_DUMPER_dump_method_opcode_array(SPVM_COMPILER* compiler, SPVM_METHOD* 
       {
         int32_t i;
         for (i = 0; i < mys->length; i++) {
-          SPVM_MY* my = SPVM_LIST_fetch(method->mys, i);
+          SPVM_MY* my = SPVM_LIST_get(method->mys, i);
           printf("        mys[%" PRId32 "] ", i);
           SPVM_DUMPER_dump_my(compiler, my);
         }
@@ -434,7 +434,7 @@ void SPVM_DUMPER_dump_my(SPVM_COMPILER* compiler, SPVM_MY* my) {
     else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       SPVM_CLASS* value_class =  type->basic_type->class;
       
-      SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
+      SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
       assert(first_field);
       
       SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);

@@ -169,13 +169,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           const char* class_name = op_use->uv.use->class_name;
 
-          const char* used_class_name = (const char*)SPVM_HASH_fetch(compiler->used_class_symtable, class_name, strlen(class_name));
+          const char* used_class_name = (const char*)SPVM_HASH_get(compiler->used_class_symtable, class_name, strlen(class_name));
 
           if (used_class_name) {
             continue;
           }
           else {
-            SPVM_HASH_insert(compiler->used_class_symtable, class_name, strlen(class_name), (void*)class_name);
+            SPVM_HASH_set(compiler->used_class_symtable, class_name, strlen(class_name), (void*)class_name);
             
             // Create moudle relative file name from class name by changing :: to / and add ".spvm"
             int32_t cur_rel_file_length = (int32_t)(strlen(class_name) + 6);
@@ -204,13 +204,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t do_directry_module_search;
 
             // Byte, Short, Int, Long, Float, Double, Bool is already existsregistered in module source symtable
-            const char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
+            const char* found_module_source = SPVM_HASH_get(compiler->module_source_symtable, class_name, strlen(class_name));
             if (!found_module_source) {
               // Search module file
               FILE* fh = NULL;
               int32_t module_dirs_length = compiler->module_dirs->length;
               for (int32_t i = 0; i < module_dirs_length; i++) {
-                const char* module_dir = (const char*) SPVM_LIST_fetch(compiler->module_dirs, i);
+                const char* module_dir = (const char*) SPVM_LIST_get(compiler->module_dirs, i);
                 
                 // File name
                 int32_t file_name_length = (int32_t)(strlen(module_dir) + 1 + strlen(cur_rel_file));
@@ -238,13 +238,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (!op_use->uv.use->is_require) {
                   int32_t moduler_dirs_str_length = 0;
                   for (int32_t i = 0; i < module_dirs_length; i++) {
-                    const char* module_dir = (const char*) SPVM_LIST_fetch(compiler->module_dirs, i);
+                    const char* module_dir = (const char*) SPVM_LIST_get(compiler->module_dirs, i);
                     moduler_dirs_str_length += 1 + strlen(module_dir);
                   }
                   char* moduler_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, moduler_dirs_str_length + 1);
                   int32_t moduler_dirs_str_offset = 0;
                   for (int32_t i = 0; i < module_dirs_length; i++) {
-                    const char* module_dir = (const char*) SPVM_LIST_fetch(compiler->module_dirs, i);
+                    const char* module_dir = (const char*) SPVM_LIST_get(compiler->module_dirs, i);
                     sprintf(moduler_dirs_str + moduler_dirs_str_offset, " %s", module_dir);
                     moduler_dirs_str_offset += 1 + strlen(module_dir);
                   }
@@ -274,7 +274,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 src[file_size] = '\0';
                 
                 found_module_source = src;
-                SPVM_HASH_insert(compiler->module_source_symtable, class_name, strlen(class_name), src);
+                SPVM_HASH_set(compiler->module_source_symtable, class_name, strlen(class_name), src);
               }
             }
             
@@ -311,7 +311,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             else {
               // If module not found and the module is used in require syntax, compilation errors don't occur.
               if (op_use->uv.use->is_require) {
-                SPVM_HASH_insert(compiler->fail_load_class_symtable, class_name, strlen(class_name), (void*)class_name);
+                SPVM_HASH_set(compiler->fail_load_class_symtable, class_name, strlen(class_name), (void*)class_name);
                 continue;
               }
             }

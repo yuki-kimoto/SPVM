@@ -123,7 +123,7 @@ void SPVM_LIST_push(SPVM_LIST* list, void* value) {
   list->length++;
 }
 
-void* SPVM_LIST_fetch(SPVM_LIST* list, int32_t index) {
+void* SPVM_LIST_get(SPVM_LIST* list, int32_t index) {
   assert(list);
   assert(index >= 0);
   assert(index < list->length);
@@ -132,7 +132,7 @@ void* SPVM_LIST_fetch(SPVM_LIST* list, int32_t index) {
   return *(void**)&list->values[index];
 }
 
-void SPVM_LIST_store(SPVM_LIST* list, int32_t index, void* value) {
+void SPVM_LIST_set(SPVM_LIST* list, int32_t index, void* value) {
   
   assert(list);
   assert(index >= 0);

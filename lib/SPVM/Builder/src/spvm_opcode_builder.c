@@ -89,12 +89,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   {
     int32_t class_index;
     for (class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-      SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
+      SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
       SPVM_LIST* methods = class->methods;
       {
         int32_t method_index;
         for (method_index = 0; method_index < methods->length; method_index++) {
-          SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
+          SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
           
           // Check sub information
           assert(method->id > -1);
@@ -174,7 +174,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           // Copy arguments to variables
           int32_t stack_index = 0;
           for (int32_t args_index = 0; args_index < method->args_length; args_index++) {
-            SPVM_MY* arg = SPVM_LIST_fetch(method->mys, args_index);
+            SPVM_MY* arg = SPVM_LIST_get(method->mys, args_index);
             SPVM_TYPE* arg_type = arg->type;
             SPVM_BASIC_TYPE* arg_basic_type = arg_type->basic_type;
             
@@ -235,7 +235,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM:
               {
                 SPVM_CLASS* arg_class = arg_basic_type->class;
-                SPVM_FIELD* arg_mulnum_field = SPVM_LIST_fetch(arg_class->fields, 0);
+                SPVM_FIELD* arg_mulnum_field = SPVM_LIST_get(arg_class->fields, 0);
                 SPVM_TYPE* arg_mulnum_field_type = arg_mulnum_field->type;
                 SPVM_BASIC_TYPE* arg_mulnum_field_basic_type = arg_mulnum_field_type->basic_type;
                 
@@ -358,7 +358,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_ID_CASE: {
                 if (switch_info_stack->length > 0) {
-                  SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
+                  SPVM_SWITCH_INFO* switch_info = SPVM_LIST_get(switch_info_stack, switch_info_stack->length - 1);
                   int32_t opcode_rel_index = opcode_array->length - method_opcode_ids_base;
                   op_cur->uv.case_info->opcode_rel_index = opcode_rel_index;
                 }
@@ -366,7 +366,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_ID_DEFAULT: {
                 if (switch_info_stack->length > 0) {
-                  SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
+                  SPVM_SWITCH_INFO* switch_info = SPVM_LIST_get(switch_info_stack, switch_info_stack->length - 1);
                   switch_info->default_opcode_rel_index = opcode_array->length - method_opcode_ids_base;
                 }
                 break;
@@ -491,7 +491,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Leave scope
                     int32_t mortal_top = (intptr_t)SPVM_LIST_pop(mortal_top_stack);
 
-                    SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
+                    SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
                     
                     if (op_block_current->uv.block->have_object_var_decl) {
                       while (mortal_stack->length > mortal_top) {
@@ -530,7 +530,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         mortal_stack_top_max++;
                         
-                        SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
+                        SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
                         op_block_current->uv.block->have_object_var_decl = 1;
                       }
                       
@@ -541,7 +541,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_CLASS* value_class = type->basic_type->class;
                           assert(class);
                           
-                          SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
+                          SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
                           assert(first_field);
                           
                           SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -794,7 +794,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_CLASS* value_class = type_dist->basic_type->class;
                             assert(value_class);
                             
-                            SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
+                            SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
                             assert(first_field);
                             
                             SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -1004,7 +1004,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           const char* call_method_method_name = call_method->method->name;
                           SPVM_CLASS* call_method_method_class = call_method->method->class;
                           
-                          SPVM_METHOD* method_call_method = SPVM_HASH_fetch(call_method_method_class->method_symtable, call_method_method_name, strlen(call_method_method_name));
+                          SPVM_METHOD* method_call_method = SPVM_HASH_get(call_method_method_class->method_symtable, call_method_method_name, strlen(call_method_method_name));
                           
                           int32_t first_arg_mem_id = -1;
                           SPVM_OP* op_term_args = op_assign_src->last;
@@ -1014,7 +1014,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           {
                             int32_t arg_index;
                             for (arg_index = 0; arg_index < method_call_method->args_length; arg_index++) {
-                              SPVM_MY* arg_my = SPVM_LIST_fetch(args, arg_index);
+                              SPVM_MY* arg_my = SPVM_LIST_get(args, arg_index);
                               
                               // Argument type
                               SPVM_TYPE* arg_type = arg_my->type;
@@ -1046,7 +1046,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   SPVM_CLASS* value_class = arg_type->basic_type->class;
                                   assert(class);
                                   
-                                  SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
+                                  SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
                                   assert(first_field);
                                   
                                   SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -1215,7 +1215,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_CLASS* value_class = call_method_return_type->basic_type->class;
                               assert(class);
                               
-                              SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
+                              SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
                               assert(first_field);
                               
                               SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -1310,7 +1310,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_CLASS* value_class = call_method_return_type->basic_type->class;
                               assert(class);
                               
-                              SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
+                              SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
                               assert(first_field);
                               
                               SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -1677,7 +1677,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           if (SPVM_TYPE_is_mulnum_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
                             SPVM_CLASS* class = array_type->basic_type->class;
-                            SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
+                            SPVM_FIELD* first_field = SPVM_LIST_get(class->fields, 0);
                             
                             SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
                             
@@ -1834,7 +1834,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
                           
                           if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                            SPVM_FIELD* first_field = SPVM_LIST_fetch(src_type->basic_type->class->fields, 0);
+                            SPVM_FIELD* first_field = SPVM_LIST_get(src_type->basic_type->class->fields, 0);
                           
                             SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
 
@@ -1939,7 +1939,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_CLASS* value_class = src_type->basic_type->class;
                             assert(class);
                             
-                            SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
+                            SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
                             assert(first_field);
                             
                             SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -2668,7 +2668,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             
                             const char* constant_string_value = constant->value.oval;
                             int32_t constant_string_length = constant->string_length;
-                            SPVM_STRING* constant_string = SPVM_HASH_fetch(compiler->string_symtable, constant_string_value, constant_string_length);
+                            SPVM_STRING* constant_string = SPVM_HASH_get(compiler->string_symtable, constant_string_value, constant_string_length);
                             assert(constant_string);
                             
                             opcode.operand0 = mem_id_out;
@@ -3509,7 +3509,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_CLASS* value_class = type_dist->basic_type->class;
                             assert(class);
                             
-                            SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
+                            SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
                             assert(first_field);
                             
                             SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -4147,7 +4147,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OP* op_name_implement_method = op_assign_src->last;
 
                           const char* implement_method_name = op_name_implement_method->uv.name;
-                          SPVM_METHOD* implement_method = SPVM_HASH_fetch(interface_class->method_symtable, implement_method_name, strlen(implement_method_name));
+                          SPVM_METHOD* implement_method = SPVM_HASH_get(interface_class->method_symtable, implement_method_name, strlen(implement_method_name));
                           
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -4165,7 +4165,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_SWITCH_CONDITION: {
                           assert(switch_info_stack->length > 0);
                           
-                          SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);;
+                          SPVM_SWITCH_INFO* switch_info = SPVM_LIST_get(switch_info_stack, switch_info_stack->length - 1);;
 
                           int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                           
@@ -4181,7 +4181,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           // Match values and branchs
                           for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
-                            SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
+                            SPVM_CASE_INFO* case_info = SPVM_LIST_get(switch_info->case_infos, i);
                             
                             // Branch
                             SPVM_CASE_INFO* branch_opcode_rel_index_case_info = switch_info->case_infos->values[i];
@@ -4219,7 +4219,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_LIST* case_infos = switch_info->case_infos;
                           for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
                             SPVM_OPCODE* opcode_case_info = (SPVM_OPCODE*)&opcode_array->values[opcode_id + 1 + i];
-                            SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(case_infos, i);
+                            SPVM_CASE_INFO* case_info = SPVM_LIST_get(case_infos, i);
                             opcode_case_info->operand1 = case_info->condition_value;
                             opcode_case_info->operand2 = case_info->opcode_rel_index;
                           }
@@ -4347,7 +4347,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_CLASS* value_class = return_type->basic_type->class;
                                 assert(class);
                                 
-                                SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
+                                SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
                                 assert(first_field);
                                 
                                 SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -4454,7 +4454,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                         case SPVM_OP_C_ID_LOOP_INCREMENT: {
                           // Set loop first GOTO opcode
-                          int32_t loop_first_goto_opcode_rel_index = (intptr_t)SPVM_LIST_fetch(loop_first_goto_opcode_rel_index_stack, loop_first_goto_opcode_rel_index_stack->length - 1);
+                          int32_t loop_first_goto_opcode_rel_index = (intptr_t)SPVM_LIST_get(loop_first_goto_opcode_rel_index_stack, loop_first_goto_opcode_rel_index_stack->length - 1);
                           
                           SPVM_OPCODE* loop_first_goto = (opcode_array->values + method_opcode_ids_base + loop_first_goto_opcode_rel_index);
                           int32_t loop_first_goto_jump_opcode_rel_index = opcode_array->length - method_opcode_ids_base;
@@ -4667,7 +4667,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       else if (SPVM_TYPE_is_mulnum_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
                         SPVM_CLASS* class = array_type->basic_type->class;
-                        SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
+                        SPVM_FIELD* first_field = SPVM_LIST_get(class->fields, 0);
                       
                         SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
 
