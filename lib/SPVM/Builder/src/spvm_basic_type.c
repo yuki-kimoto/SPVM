@@ -32,6 +32,25 @@ const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void) {
   return id_names;
 }
 
+const char* const* SPVM_BASIC_TYPE_C_CATEGORY_NAMES(void) {
+
+  static const char* const id_names[] = {
+    "unknown"
+    "fail_load",
+    "undef"
+    "void"
+    "numeric"
+    "mulnum"
+    "string",
+    "class",
+    "interface",
+    "callback",
+    "any_obejct",
+  };
+  
+  return id_names;
+}
+
 SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_BASIC_TYPE));
   
@@ -40,4 +59,8 @@ SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
 
 const char* SPVM_BASIC_TYPE_get_basic_type_name(int32_t basic_type_id) {
   return (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type_id];
+}
+
+const char* SPVM_BASIC_TYPE_get_basic_type_category_name(int32_t basic_type_id) {
+  return (SPVM_BASIC_TYPE_C_CATEGORY_NAMES())[basic_type_id];
 }

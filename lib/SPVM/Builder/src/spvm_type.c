@@ -17,27 +17,27 @@
 const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
 
   static const char* const id_names[] = {
-    "UNKNOWN"
-    "FAIL_LOAD",
-    "UNDEF"
-    "VOID"
-    "NUMERIC"
-    "MULNUM"
-    "STRING",
-    "CLASS",
-    "INTERFACE",
-    "CALLBACK",
-    "ANY_OBEJCT",
-    "NUMERIC_ARRAY"
-    "MULNUM_ARRAY"
-    "STRING_ARRAY",
-    "CLASS_ARRAY",
-    "INTERFACE_ARRAY",
-    "CALLBACK_ARRAY",
-    "ANY_OBEJCT_ARRAY",
-    "MULDIM_ARRAY",
-    "NUMERIC_REF"
-    "MULNUM_REF"
+    "unknown"
+    "fail_load",
+    "undef"
+    "void"
+    "numeric"
+    "mulnum"
+    "string",
+    "class",
+    "interface",
+    "callback",
+    "any_obejct",
+    "numeric_array"
+    "mulnum_array"
+    "string_array",
+    "class_array",
+    "interface_array",
+    "callback_array",
+    "any_obejct_array",
+    "muldim_array",
+    "numeric_ref"
+    "mulnum_ref"
   };
   
   return id_names;
