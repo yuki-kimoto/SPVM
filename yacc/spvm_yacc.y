@@ -23,7 +23,7 @@
 %token <opval> DESCRIPTOR MAKE_READ_ONLY IMPLEMENT
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
-%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
+%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
 %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF
 %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
@@ -1234,11 +1234,6 @@ basic_type
       $$ = op_type;
     }
   | OBJECT
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
-      $$ = op_type;
-    }
-  | ELEMENT
     {
       SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
       $$ = op_type;
