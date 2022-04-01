@@ -18,6 +18,7 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
 
   static const char* const id_names[] = {
     "UNKNOWN"
+    "UNDEF"
     "VOID"
     "NUMERIC"
     "MULNUM"
