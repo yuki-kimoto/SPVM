@@ -1101,7 +1101,7 @@ int32_t SPVM_TYPE_is_string_array_type(SPVM_COMPILER* compiler, int32_t basic_ty
     is_string_array_type = 0;
   }
   
-  return dimension > 0 && !(flag & SPVM_TYPE_C_FLAG_REF);
+  return is_string_array_type;
 }
 
 int32_t SPVM_TYPE_is_class_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
@@ -1121,7 +1121,7 @@ int32_t SPVM_TYPE_is_class_array_type(SPVM_COMPILER* compiler, int32_t basic_typ
     is_class_array_type = 0;
   }
   
-  return dimension > 0 && !(flag & SPVM_TYPE_C_FLAG_REF);
+  return is_class_array_type;
 }
 
 int32_t SPVM_TYPE_is_interface_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
@@ -1141,7 +1141,7 @@ int32_t SPVM_TYPE_is_interface_array_type(SPVM_COMPILER* compiler, int32_t basic
     is_interface_array_type = 0;
   }
   
-  return dimension > 0 && !(flag & SPVM_TYPE_C_FLAG_REF);
+  return is_interface_array_type;
 }
 
 int32_t SPVM_TYPE_is_callback_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
@@ -1161,7 +1161,7 @@ int32_t SPVM_TYPE_is_callback_array_type(SPVM_COMPILER* compiler, int32_t basic_
     is_callback_array_type = 0;
   }
   
-  return dimension > 0 && !(flag & SPVM_TYPE_C_FLAG_REF);
+  return is_callback_array_type;
 }
 
 int32_t SPVM_TYPE_is_muldim_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
