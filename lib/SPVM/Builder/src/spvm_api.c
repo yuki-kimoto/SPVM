@@ -1221,6 +1221,7 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
       case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
       case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
       case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
+      case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
       case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
@@ -1282,6 +1283,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
         case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
         case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
         case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
+        case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
@@ -1304,6 +1306,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
         case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
         case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
         case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
+        case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
@@ -4200,6 +4203,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
           case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
           case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
+          case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
           case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
           case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
           case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
@@ -4357,6 +4361,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
             case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
             case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
+            case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
             case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
             case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
             case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
@@ -5450,6 +5455,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
       case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
       case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
+      case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
       case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
@@ -6768,7 +6774,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       }
     }
     // Free class object
-    else if ((object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT || object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_CLASS  || object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE || object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK) && !SPVM_API_is_string(env, object)) {
+    else if ((object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT || object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_CLASS) && !SPVM_API_is_string(env, object)) {
       
       // Class
       SPVM_RUNTIME* runtime = env->runtime;
@@ -7634,6 +7640,7 @@ int32_t SPVM_API_get_type_can_assign_to_any_object(SPVM_ENV* env, int32_t type_i
     case SPVM_API_C_TYPE_CATEGORY_CLASS:
     case SPVM_API_C_TYPE_CATEGORY_INTERFACE:
     case SPVM_API_C_TYPE_CATEGORY_CALLBACK:
+    case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
     case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
     case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:
     case SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY:
