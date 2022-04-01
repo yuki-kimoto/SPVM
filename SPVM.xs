@@ -765,7 +765,6 @@ call_spvm_method(...)
         args_stack_index++;
         break;
       }
-      case SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY:
       case SPVM_API_C_TYPE_CATEGORY_STRING_ARRAY:
       case SPVM_API_C_TYPE_CATEGORY_CLASS_ARRAY:
       case SPVM_API_C_TYPE_CATEGORY_INTERFACE_ARRAY:
