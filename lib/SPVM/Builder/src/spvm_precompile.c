@@ -1477,22 +1477,22 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE:
+      case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_BYTE:
         SPVM_PRECOMPILE_add_array_fetch(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_FETCH_SHORT:
+      case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_SHORT:
         SPVM_PRECOMPILE_add_array_fetch(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_FETCH_INT:
+      case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_INT:
         SPVM_PRECOMPILE_add_array_fetch(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_FETCH_LONG:
+      case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_LONG:
         SPVM_PRECOMPILE_add_array_fetch(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_FETCH_FLOAT:
+      case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_FLOAT:
         SPVM_PRECOMPILE_add_array_fetch(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_FETCH_DOUBLE:
+      case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_DOUBLE:
         SPVM_PRECOMPILE_add_array_fetch(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_BYTE: {
@@ -1525,7 +1525,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         SPVM_PRECOMPILE_add_mulnum_array_fetch(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2, fields_length);
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT:
+      case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_OBJECT:
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* array = ");
         SPVM_PRECOMPILE_add_operand(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
