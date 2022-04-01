@@ -13,7 +13,7 @@ void SPVM_OP_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* 
 void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler);
 void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler);
 
-SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line);
+SPVM_OP* SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line);
 void SPVM_OP_CHECKER_apply_numeric_to_string_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_term);
 void SPVM_OP_CHECKER_apply_unary_numeric_widening_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_unary);
 void SPVM_OP_CHECKER_apply_binary_numeric_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last);

@@ -1719,7 +1719,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Check if source can be assigned to dist
               // If needed, numeric conversion op is added
               dist_type = SPVM_OP_get_type(compiler, op_term_dist);
-              SPVM_OP_CHECKER_check_assign(compiler, dist_type, op_term_src, "assign operator", op_cur->file, op_cur->line);
+              SPVM_OP_CHECKER_can_assign(compiler, dist_type, op_term_src, "assign operator", op_cur->file, op_cur->line);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1752,7 +1752,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else {
                 if (op_term) {
                   // Automatical numeric conversion
-                  SPVM_OP_CHECKER_check_assign(compiler, method->return_type, op_term, "return statement", op_cur->file, op_cur->line);
+                  SPVM_OP_CHECKER_can_assign(compiler, method->return_type, op_term, "return statement", op_cur->file, op_cur->line);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -2606,7 +2606,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   char place[50];
                   sprintf(place, "%dth argument", call_method_args_count);
                   
-                  op_term = SPVM_OP_CHECKER_check_assign(compiler, arg_my_type, op_term, place, op_cur->file, op_cur->line);
+                  op_term = SPVM_OP_CHECKER_can_assign(compiler, arg_my_type, op_term, place, op_cur->file, op_cur->line);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -4286,7 +4286,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 #endif
 }
 
-SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
   SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
   
   // Dist type is numeric type
