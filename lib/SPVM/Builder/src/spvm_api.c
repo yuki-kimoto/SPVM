@@ -2740,26 +2740,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           else {
             void** element_address = &((void**)((intptr_t)array + object_header_byte_size))[index];
             void* object = *(void**)&object_vars[opcode->operand2];
-            int32_t is_valid;
-            if (object == NULL) {
-              is_valid = 1;
-            }
-            else {
-              int32_t array_basic_type_id = *(int32_t*)((intptr_t)array + (intptr_t)env->object_basic_type_id_offset);
-              int32_t array_type_dimension = *(uint8_t*)((intptr_t)array + (intptr_t)env->object_type_dimension_offset);
-              int32_t element_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
-              int32_t element_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-              if (array_basic_type_id == element_basic_type_id && array_type_dimension == element_type_dimension + 1) {
-                is_valid = 1;
-              }
-              else if (array_basic_type_id == (intptr_t)env->any_object_basic_type_id && array_type_dimension == element_type_dimension + 1) {
-                is_valid = 1;
-              }
-              else {
-                is_valid = 0;
-              }
-            }
-            if (is_valid) {
+            int32_t can_assign = SPVM_API_can_assign_array_element(env, array, object);
+            if (can_assign) {
               SPVM_API_OBJECT_ASSIGN(element_address, object);
             }
             else {
@@ -8889,4 +8871,30 @@ void SPVM_API_free_env_prepared(SPVM_ENV* env) {
   
   // Free env
   env->free_env_raw(env);
+}
+
+int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPVM_OBJECT* element) {
+  
+  int32_t can_assign;
+  
+  if (element == NULL) {
+    can_assign = 1;
+  }
+  else {
+    int32_t array_basic_type_id = *(int32_t*)((intptr_t)array + (intptr_t)env->object_basic_type_id_offset);
+    int32_t array_type_dimension = *(uint8_t*)((intptr_t)array + (intptr_t)env->object_type_dimension_offset);
+    int32_t element_basic_type_id = *(int32_t*)((intptr_t)element + (intptr_t)env->object_basic_type_id_offset);
+    int32_t element_type_dimension = *(uint8_t*)((intptr_t)element + (intptr_t)env->object_type_dimension_offset);
+    if (array_basic_type_id == element_basic_type_id && array_type_dimension == element_type_dimension + 1) {
+      can_assign = 1;
+    }
+    else if (array_basic_type_id == (intptr_t)env->any_object_basic_type_id && array_type_dimension == element_type_dimension + 1) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  
+  return can_assign;
 }
