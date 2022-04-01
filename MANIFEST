@@ -846,6 +846,7 @@ t/default/lib/SPVM/TestCase/CompileError/Subtract/LeftIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/Subtract/RightIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/Switch/NoLastBreak.spvm
 t/default/lib/SPVM/TestCase/CompileError/Syntax/LineNumber.spvm
+t/default/lib/SPVM/TestCase/CompileError/Type/MultiDimensionalAnyObject.spvm
 t/default/lib/SPVM/TestCase/CompileError/Type/MutableNoStringCaseInt.spvm
 t/default/lib/SPVM/TestCase/CompileError/Type/MutableNoStringCaseStringArray.spvm
 t/default/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
