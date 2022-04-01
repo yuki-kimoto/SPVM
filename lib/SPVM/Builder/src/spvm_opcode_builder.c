@@ -4780,7 +4780,22 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
                           }
                           else {
-                            if (array_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
+                            int32_t is_check_type;
+                            switch (array_type->category) {
+                              case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE_ARRAY:
+                              case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK_ARRAY:
+                              case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
+                              {
+                                is_check_type = 1;
+                                break;
+                              }
+                              default: {
+                                is_check_type = 0;
+                                break;
+                              }
+                            }
+                            
+                            if (is_check_type) {
                               assert(array_type->dimension == 1);
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE);
                             }
