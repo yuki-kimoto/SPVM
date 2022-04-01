@@ -5957,7 +5957,7 @@ SPVM_OBJECT* SPVM_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJEC
 
   string3->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
   string3->type_dimension = 0;
-  string3->type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
+  string3->type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
 
   const char* string1_bytes = SPVM_API_get_chars(env, string1);
   const char* string2_bytes = SPVM_API_get_chars(env, string2);
@@ -6254,7 +6254,7 @@ SPVM_OBJECT* SPVM_API_new_string_nolen_raw(SPVM_ENV* env, const char* bytes) {
   
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
   object->type_dimension = 0;
-  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
+  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
   
   if (bytes != NULL && length > 0) {
     memcpy((void*)((intptr_t)object + env->object_header_byte_size), (char*)bytes, length);
@@ -6280,7 +6280,7 @@ SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t l
   
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
   object->type_dimension = 0;
-  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
+  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
 
   if (bytes != NULL && length > 0) {
     memcpy((void*)((intptr_t)object + env->object_header_byte_size), (char*)bytes, length);
@@ -6605,7 +6605,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_id) {
   object->length = fields_length;
 
   // Object type id
-  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
+  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
   
   // Has destructor
   if (class->method_destructor_id >= 0) {
@@ -6649,7 +6649,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void
   object->length = 0;
 
   // Object type id
-  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT;
+  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
   
   // Has destructor
   if (SPVM_API_get_method(env, class->method_destructor_id)) {
