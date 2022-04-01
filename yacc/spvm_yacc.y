@@ -44,7 +44,7 @@
 %type <opval> my_var var implement
 %type <opval> expression opt_expressions expressions opt_expression case_statements
 %type <opval> field_name method_name class_name class_alias_name is_read_only
-%type <opval> type qualified_type basic_type array_type any_object_array_type 
+%type <opval> type qualified_type basic_type array_type
 %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -1190,7 +1190,6 @@ qualified_type
 type
   : basic_type
   | array_type
-  | any_object_array_type
   | ref_type
 
 basic_type
@@ -1237,7 +1236,11 @@ basic_type
   | OBJECT
     {
       SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
-      
+      $$ = op_type;
+    }
+  | ELEMENT
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
       $$ = op_type;
     }
   | STRING
@@ -1261,12 +1264,6 @@ array_type
   | array_type '[' ']'
     {
       $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
-    }
-
-any_object_array_type
-  : ELEMENT '[' ']'
-    {
-      $$ = SPVM_OP_build_any_object_array_type(compiler, $1);
     }
 
 array_type_with_length

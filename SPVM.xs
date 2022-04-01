@@ -817,7 +817,7 @@ call_spvm_method(...)
               can_assign = 1;
             }
             else {
-              if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ELEMENT && arg_type_dimension == 1) {
+              if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT && arg_type_dimension == 1) {
                 if (object_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT && object_type_dimension == 1) {
                   can_assign = 0;
                 }

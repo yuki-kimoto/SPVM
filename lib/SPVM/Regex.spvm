@@ -688,6 +688,7 @@ class Regex : precompile {
         $replace = (string)$replace_object;
       }
       elsif ($replace_object isa object[]) {
+        
         my $replace_objects = (object[])$replace_object;
         
         my $replace_buffer = StringBuffer->new;
