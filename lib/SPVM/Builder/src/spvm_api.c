@@ -6494,6 +6494,26 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
     return NULL;
   }
   
+  int32_t type_category;
+  if (basic_type->type_category == SPVM_API_C_TYPE_CATEGORY_STRING) {
+    type_category = SPVM_API_C_TYPE_CATEGORY_STRING_ARRAY;
+  }
+  else if (basic_type->type_category == SPVM_API_C_TYPE_CATEGORY_CLASS) {
+    type_category = SPVM_API_C_TYPE_CATEGORY_CLASS_ARRAY;
+  }
+  else if (basic_type->type_category == SPVM_API_C_TYPE_CATEGORY_INTERFACE) {
+    type_category = SPVM_API_C_TYPE_CATEGORY_INTERFACE_ARRAY;
+  }
+  else if (basic_type->type_category == SPVM_API_C_TYPE_CATEGORY_CALLBACK) {
+    type_category = SPVM_API_C_TYPE_CATEGORY_CALLBACK_ARRAY;
+  }
+  else if (basic_type->type_category == SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT) {
+    type_category = SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY;
+  }
+  else {
+    return NULL;
+  }
+  
   int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(void*) * ((int64_t)length + 1);
   
   // Create object
@@ -6508,19 +6528,10 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
 
   object->basic_type_id = basic_type->id;
   object->type_dimension = 1;
+  object->type_category = type_category;
 
   // Set array length
   object->length = length;
-  
-  if (basic_type->id == SPVM_API_C_BASIC_TYPE_ID_STRING) {
-    object->type_category = SPVM_API_C_TYPE_CATEGORY_STRING_ARRAY;
-  }
-  else if (basic_type->id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT) {
-    object->type_category = SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY;
-  }
-  else {
-    object->type_category = SPVM_API_C_TYPE_CATEGORY_CLASS_ARRAY;
-  }
   
   return object;
 }
