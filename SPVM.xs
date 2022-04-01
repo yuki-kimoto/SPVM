@@ -302,7 +302,7 @@ call_spvm_method(...)
       case SPVM_API_C_TYPE_CATEGORY_CLASS:
       case SPVM_API_C_TYPE_CATEGORY_INTERFACE:
       case SPVM_API_C_TYPE_CATEGORY_CALLBACK:
-      case SPVM_API_C_TYPE_CATEGORY_ANY_OBEJCT:
+      case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
       {
         if (!SvOK(sv_value)) {
           args_stack[args_stack_index].oval = NULL;
