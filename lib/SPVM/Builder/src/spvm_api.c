@@ -5662,16 +5662,30 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
   // Object must be not null
   assert(object);
   
-  int32_t class_basic_type_id = object->basic_type_id;
-  int32_t class_type_dimension = object->type_dimension;
+  int32_t object_basic_type_id = object->basic_type_id;
+  int32_t object_type_dimension = object->type_dimension;
   
+  int32_t has_callback = SPVM_API_has_callback_by_id(env, object_basic_type_id, object_type_dimension, callback_basic_type_id, 0);
+  
+  return has_callback;
+}
+
+int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t callback_basic_type_id, int32_t callback_type_dimension) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = env->runtime;
+
   int32_t has_callback;
   
-  if (class_type_dimension > 0) {
+  if (object_type_dimension > 0) {
     return 0;
   }
 
-  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_get_basic_type(env, class_basic_type_id);
+  if (callback_type_dimension > 0) {
+    return 0;
+  }
+
+  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_get_basic_type(env, object_basic_type_id);
   SPVM_RUNTIME_BASIC_TYPE* callback_basic_type = SPVM_API_get_basic_type(env, callback_basic_type_id);
   
   if (class_basic_type->class_id < 0) {
