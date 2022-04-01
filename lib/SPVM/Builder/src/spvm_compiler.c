@@ -509,6 +509,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
     
     runtime_basic_type->id = basic_type->id;
+    runtime_basic_type->type_category = basic_type->type_category;
     if (basic_type->class) {
       runtime_basic_type->class_id = basic_type->class->id;
     }
