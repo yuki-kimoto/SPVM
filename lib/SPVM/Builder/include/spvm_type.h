@@ -12,6 +12,7 @@ enum {
 
 enum {
   SPVM_TYPE_C_TYPE_CATEGORY_UNKNOWN,
+  SPVM_TYPE_C_TYPE_CATEGORY_FAIL_LOAD,
   SPVM_TYPE_C_TYPE_CATEGORY_UNDEF,
   SPVM_TYPE_C_TYPE_CATEGORY_VOID,
   SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC,
@@ -152,5 +153,7 @@ int32_t SPVM_TYPE_get_mulnum_basic_type_id(SPVM_COMPILER* compiler, int32_t basi
 int32_t SPVM_TYPE_is_basic_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
 int32_t SPVM_TYPE_is_unknown_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
+
+int32_t SPVM_TYPE_is_fail_load_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
 #endif
