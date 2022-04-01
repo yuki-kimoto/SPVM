@@ -102,8 +102,14 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
   else if (SPVM_TYPE_is_mulnum_ref_type(compiler, basic_type_id, dimension, flag)) {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_REF;
   }
-  else {
+  else if (SPVM_TYPE_is_undef_type(compiler, basic_type_id, dimension, flag)) {
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_UNDEF;
+  }
+  else if (SPVM_TYPE_is_unknown_type(compiler, basic_type_id, dimension, flag)) {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_UNKNOWN;
+  }
+  else {
+    assert(0);
   }
   
   return type_category;
@@ -1114,6 +1120,17 @@ int32_t SPVM_TYPE_is_undef_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
   (void)compiler;
   
   if (dimension == 0 && basic_type_id == SPVM_BASIC_TYPE_C_ID_UNDEF && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+int32_t SPVM_TYPE_is_unknown_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)compiler;
+  
+  if (dimension == 0 && basic_type_id == SPVM_BASIC_TYPE_C_ID_UNKNOWN && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
