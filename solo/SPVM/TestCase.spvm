@@ -498,8 +498,8 @@ SPVM::Test - SPVM test module
       my $minimals = new TestCase::Minimal[3];
       $minimals->[0] = TestCase::Minimal->new;
       $minimals->[0]{x} = 1;
-      my $nums : element[] = $minimals;
-      my $nums2 : element[] = $nums;
+      my $nums : object[] = $minimals;
+      my $nums2 : object[] = $nums;
       my $len = @$nums;
       warn "$len";
       # my $nums3 : TestCase::Minimal[] = $nums;
@@ -2184,7 +2184,7 @@ SPVM::Test - SPVM test module
     return 0;
   }
 
-  static method sort_objectect : void ($values : element[], $comparator : TestCase::Comparator) {
+  static method sort_objectect : void ($values : object[], $comparator : TestCase::Comparator) {
 
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){

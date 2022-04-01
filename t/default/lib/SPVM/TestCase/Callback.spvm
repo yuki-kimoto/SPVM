@@ -44,7 +44,7 @@ class TestCase::Callback {
     return 1;
   }
   
-  static method sort_objects : void ($values : element[], $comparator : Comparator::Object) {
+  static method sort_objects : void ($values : object[], $comparator : Comparator::Object) {
 
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){

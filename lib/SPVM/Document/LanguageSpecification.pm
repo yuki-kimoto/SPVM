@@ -197,7 +197,6 @@ The list of keywords.
   divul
   double
   dump
-  element
   elsif
   else
   enum
@@ -850,7 +849,7 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   %token <opval> DESCRIPTOR MAKE_READ_ONLY IMPLEMENT
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
-  %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
+  %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
   %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF
   %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
@@ -870,7 +869,7 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   %type <opval> my_var var implement
   %type <opval> expression opt_expressions expressions opt_expression case_statements
   %type <opval> field_name method_name class_name class_alias_name is_read_only
-  %type <opval> type qualified_type basic_type array_type any_object_array_type
+  %type <opval> type qualified_type basic_type array_type
   %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
   
   %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -1258,7 +1257,6 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   type
     : basic_type
     | array_type
-    | any_object_array_type
     | ref_type
 
   basic_type
@@ -1278,9 +1276,6 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   array_type
     : basic_type '[' ']'
     | array_type '[' ']'
-
-  any_object_array_type
-    : ELEMENT '[' ']'
 
   array_type_with_length
     : basic_type '[' expression ']'
@@ -3625,7 +3620,7 @@ B<Examples of Getting Array Element:>
   my $points = new Point[3];
   my $point = $points->[1];
   
-  my $objects : element[] = $points;
+  my $objects : object[] = $points;
   my $object = (Point)$objects->[1];
 
 =head2 Setting Array Element
@@ -3658,7 +3653,7 @@ B<Examples of Setting Array Element:>
   my $points = new Point[3];
   $points->[1] = Point->new(1, 2);
   
-  my $objects : element[] = $points;
+  my $objects : object[] = $points;
   $objects->[2] = Point->new(3, 5);
 
 =head2 new Operator
@@ -6038,21 +6033,19 @@ All elements of Multi Numeric Array Types are initialized by L<"Type Initial Val
 
 =head2 Any Object-Array Type
 
-The any object-array type C<element[]> is the type that any L<object array type|"Object Array Types"> can be assigned.
+The any object-array type C<object[]> is the type that any L<object array type|"Object Array Types"> can be assigned.
 
   # Any object-array Type
-  my $array : element[] = new Point[3];
-  my $array : element[] = new object[3];
+  my $array : object[] = new Point[3];
+  my $array : object[] = new object[3];
 
 If a invalid type is assigned, a compilation error occurs.
-
-Note that the C<element[]> type is different from the C<object[]> type. An L<object array type|"Object Array Types"> can't be assinged to the C<object[]> type.
 
 Any Object-Array Type is an L<array type|"Array Types">.
 
 You can get the array length using the L<array length operator|"Array Length Operator">.
 
-  my $array : element[] = new Int[3];
+  my $array : object[] = new Int[3];
   
   # Getting the length of the element of Any Object-Array Type
   my $length = @$array;

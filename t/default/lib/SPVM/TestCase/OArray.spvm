@@ -1,10 +1,10 @@
 class TestCase::OArray {
   static method basic : int () {
     
-    # element[] - assign numeric object
+    # object[] - assign numeric object
     {
-      # element[] can be assigned Int[] object
-      my $obj_nums : element[] = [Int->new(1), Int->new(2), Int->new(3)];
+      # object[] can be assigned Int[] object
+      my $obj_nums : object[] = [Int->new(1), Int->new(2), Int->new(3)];
       
       # Can get element
       my $obj_num0 = (Int)$obj_nums->[0];
@@ -60,7 +60,7 @@ class TestCase::OArray {
       
       # Can assign undef
       {
-        my $obj_elems : element[] = undef;
+        my $obj_elems : object[] = undef;
         unless ($obj_elems == undef) {
           return 0;
         }

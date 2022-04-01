@@ -1,5 +1,5 @@
 class TestCase::GenericList<T> {
-  has values : element[];
+  has values : object[];
   has length : int;
   has capacity : int;
 

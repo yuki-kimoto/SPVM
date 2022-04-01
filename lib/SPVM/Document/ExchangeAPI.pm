@@ -278,7 +278,7 @@ You can also create multidimensional array.
 
   my $object1 = SPVM::new_int_array([1, 2, 3]);
   my $object2 = SPVM::new_int_array([4, 5, 6]);
-  my $element[] = SPVM::new_object_array("int[][]",[$object1, $object2]);
+  my $objects = SPVM::new_object_array("int[][]",[$object1, $object2]);
 
 =head2 SPVM::new_mulnum_array
 

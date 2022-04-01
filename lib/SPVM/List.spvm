@@ -1,14 +1,14 @@
 class List : precompile {
   use Fn;
   
-  has values   : element[];
+  has values   : object[];
   has capacity : int;
   has length   : ro int;
 
   private enum {
     DEFAULT_CAPACITY = 16,
   }
-  static method new : List ($objects : element[]) {
+  static method new : List ($objects : object[]) {
     my $self = new List;
     
     my $length : int;
@@ -43,7 +43,7 @@ class List : precompile {
     return $self;
   }
 
-  static method new_len : List ($proto_array : element[], $length : int) {
+  static method new_len : List ($proto_array : object[], $length : int) {
     unless ($proto_array) {
       die "First argument must not be undef";
     }
@@ -187,7 +187,7 @@ class List : precompile {
     $self->{values}[$index] = $value;
   }
 
-  method set_array : void ($array : element[]) {
+  method set_array : void ($array : object[]) {
     unless ($array) {
       die "Array must be defined";
     }
@@ -265,7 +265,7 @@ class List : precompile {
     $self->{length} = $new_length;
   }
   
-  method to_array : element[] () {
+  method to_array : object[] () {
     my $length = $self->{length};
     my $objects = Fn->new_array_proto($self->{values}, $length);
     for (my $i = 0; $i < $length; $i++) {

@@ -452,7 +452,7 @@ Offset + length must not be in the array range, othrewise an exception occurs.
 
 =head2 copy_array_range_object
 
-  static method copy_array_range_object : element[] ($elems : element[], $offset : int, $length : int)
+  static method copy_array_range_object : object[] ($elems : object[], $offset : int, $length : int)
 
 Slice elements in the object array with the start offset and the length.
 
@@ -574,7 +574,7 @@ If byte array is undef, return undef.
 
 =head2 dump_array_object
 
-  static method dump_array_object : string ($objects : element[], $stringer : Stringer)
+  static method dump_array_object : string ($objects : object[], $stringer : Stringer)
   
 Convert the elements in the object array to string by a C<SPVM::Stringer> callback implementation and join them with "," and surround it with "[" and "]", and return it.
 
@@ -680,7 +680,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
 =head2 equals_array_object
 
-  static method static method equals_array_object : int ($objs1 : element[], $objs2 : element[], $equality_checker : EqualityChecker)
+  static method static method equals_array_object : int ($objs1 : object[], $objs2 : object[], $equality_checker : EqualityChecker)
 
 Check equality of two objects. You must sepecify a L<EqualityChecker|SPVM::EqualityChecker> object to check the equality of each element.
 
@@ -1131,7 +1131,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 new_array_proto
 
-  static method new_array_proto : element[] ($proto_array : element[], $length : int)
+  static method new_array_proto : object[] ($proto_array : object[], $length : int)
 
 Create a new generic object array as the same type as the given array.
 
@@ -1258,7 +1258,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
 =head2 sort_object
 
-    static method sort_object : void ($objs : element[], $offset : int, $length : int, $comparator : Comparator::Object)
+    static method sort_object : void ($objs : object[], $offset : int, $length : int, $comparator : Comparator::Object)
 
 Sort object array itself with a offset, a length, and a L<Comparator::Object|SPVM::Comparator::Object> comparator.
 

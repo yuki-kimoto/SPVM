@@ -86,7 +86,7 @@ class TestCase::ExchangeAPI {
     return undef;
   }
 
-  static method return_any_object_array : element[] () {
+  static method return_any_object_array : object[] () {
     
     my $minimal = new TestCase::Minimal[2];
     $minimal->[0] = new TestCase::Minimal;
@@ -222,7 +222,7 @@ class TestCase::ExchangeAPI {
     return 1;
   }
   
-  static method any_object_array : element[] ($any_object_array : element[]) {
+  static method any_object_array : object[] ($any_object_array : object[]) {
     
     my $bytes = (Byte[])$any_object_array;
     
