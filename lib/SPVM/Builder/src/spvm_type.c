@@ -30,9 +30,11 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
     "CLASS",
     "INTERFACE",
     "CALLBACK",
+    "ANY_OBEJCT",
     "CLASS_ARRAY",
     "INTERFACE_ARRAY",
     "CALLBACK_ARRAY",
+    "ANY_OBEJCT_ARRAY",
     "MULDIM_ARRAY",
   };
   
