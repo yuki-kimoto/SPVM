@@ -275,6 +275,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
               case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
               case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
+              case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
+              case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
+              case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
+              case SPVM_TYPE_C_TYPE_CATEGORY_CLASS_ARRAY:
+              case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE_ARRAY:
+              case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK_ARRAY:
+              case SPVM_TYPE_C_TYPE_CATEGORY_MULDIM_ARRAY:
               {
                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
                 opcode.operand1 = arg->mem_id;

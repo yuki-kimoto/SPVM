@@ -299,6 +299,9 @@ call_spvm_method(...)
       }
       // Perl SPVM::BlessedObject::Class to SPVM class
       case SPVM_API_C_TYPE_CATEGORY_BASIC_OBJECT:
+      case SPVM_API_C_TYPE_CATEGORY_CLASS:
+      case SPVM_API_C_TYPE_CATEGORY_INTERFACE:
+      case SPVM_API_C_TYPE_CATEGORY_CALLBACK:
       {
         if (!SvOK(sv_value)) {
           args_stack[args_stack_index].oval = NULL;
@@ -762,6 +765,10 @@ call_spvm_method(...)
         break;
       }
       case SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY:
+      case SPVM_API_C_TYPE_CATEGORY_CLASS_ARRAY:
+      case SPVM_API_C_TYPE_CATEGORY_INTERFACE_ARRAY:
+      case SPVM_API_C_TYPE_CATEGORY_CALLBACK_ARRAY:
+      case SPVM_API_C_TYPE_CATEGORY_MULDIM_ARRAY:
       {
         // Perl undef to SPVM undef
         if (!SvOK(sv_value)) {
