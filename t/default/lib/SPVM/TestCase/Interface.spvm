@@ -151,6 +151,24 @@ class TestCase::Interface {
   method interface_shared1 : string ($num : int) {
     return "shared1 $num";
   }
-  
+
   # method interface_shared2 : string ($num : int);
+
+  static method interface_array : int () {
+    
+    # Interface array
+    {
+      my $minimal = TestCase::Minimal->new;
+      my $simple = TestCase::Simple->new;
+      my $list = List->new([]);
+      
+      my $stringables = new Stringable[3];
+      $stringables->[0] = $minimal;
+      $stringables->[1] = $simple;
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }
