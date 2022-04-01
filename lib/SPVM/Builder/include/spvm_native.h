@@ -316,6 +316,7 @@ struct spvm_env {
   int32_t (*compiler_is_native_method)(void* compiler, int32_t method_id);
   int32_t (*compiler_is_precompile_method)(void* compiler, int32_t method_id);
   void (*compiler_build_runtime)(void* compiler, void* runtime);
+  int32_t (*can_assign_array_element)(SPVM_ENV* env, void* array, void* element);
 };
 
 struct spvm_env_allocator {

@@ -316,6 +316,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_compiler_is_native_method,
     SPVM_API_compiler_is_precompile_method,
     SPVM_API_compiler_build_runtime,
+    SPVM_API_can_assign_array_element,
 };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -2740,7 +2741,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           else {
             void** element_address = &((void**)((intptr_t)array + object_header_byte_size))[index];
             void* object = *(void**)&object_vars[opcode->operand2];
-            int32_t can_assign = SPVM_API_can_assign_array_element(env, array, object);
+            int32_t can_assign = env->can_assign_array_element(env, array, object);
             if (can_assign) {
               SPVM_API_OBJECT_ASSIGN(element_address, object);
             }
