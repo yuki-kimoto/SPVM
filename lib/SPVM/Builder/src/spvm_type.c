@@ -14,7 +14,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_method.h"
 
-const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
+const char* const* SPVM_TYPE_C_CATEGORY_NAMES(void) {
 
   static const char* const id_names[] = {
     "unknown"
