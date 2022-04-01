@@ -298,7 +298,6 @@ call_spvm_method(...)
         break;
       }
       // Perl SPVM::BlessedObject::Class to SPVM class
-      case SPVM_API_C_TYPE_CATEGORY_BASIC_OBJECT:
       case SPVM_API_C_TYPE_CATEGORY_STRING:
       case SPVM_API_C_TYPE_CATEGORY_CLASS:
       case SPVM_API_C_TYPE_CATEGORY_INTERFACE:

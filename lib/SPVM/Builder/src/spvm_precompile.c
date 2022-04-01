@@ -3221,7 +3221,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
             }
             break;
           }
-          case SPVM_API_C_TYPE_CATEGORY_BASIC_OBJECT:
           case SPVM_API_C_TYPE_CATEGORY_STRING:
           case SPVM_API_C_TYPE_CATEGORY_CLASS:
           case SPVM_API_C_TYPE_CATEGORY_INTERFACE:
