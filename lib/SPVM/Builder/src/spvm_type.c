@@ -908,7 +908,7 @@ int32_t SPVM_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
     SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
     // Class
     if (class) {
-      if (class->category == SPVM_CLASS_C_CATEGORY_BASIC_OBJECT) {
+      if (class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
         is_class_type = 1;
       }
       else {
