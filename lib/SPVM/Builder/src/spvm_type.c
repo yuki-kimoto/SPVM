@@ -109,6 +109,9 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
   else if (SPVM_TYPE_is_string_array_type(compiler, basic_type_id, dimension, flag)) {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING_ARRAY;
   }
+  else if (SPVM_TYPE_is_any_object_array_type(compiler, basic_type_id, dimension, flag)) {
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY;
+  }
   else if (SPVM_TYPE_is_class_array_type(compiler, basic_type_id, dimension, flag)) {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS_ARRAY;
   }
@@ -117,9 +120,6 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
   }
   else if (SPVM_TYPE_is_callback_array_type(compiler, basic_type_id, dimension, flag)) {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK_ARRAY;
-  }
-  else if (SPVM_TYPE_is_any_object_array_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY;
   }
   else if (SPVM_TYPE_is_muldim_array_type(compiler, basic_type_id, dimension, flag)) {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULDIM_ARRAY;

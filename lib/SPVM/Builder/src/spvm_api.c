@@ -6515,6 +6515,9 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   if (basic_type->id == SPVM_API_C_BASIC_TYPE_ID_STRING) {
     object->type_category = SPVM_API_C_TYPE_CATEGORY_STRING_ARRAY;
   }
+  else if (basic_type->id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT) {
+    object->type_category = SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY;
+  }
   else {
     object->type_category = SPVM_API_C_TYPE_CATEGORY_CLASS_ARRAY;
   }
@@ -8877,22 +8880,43 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
   
   int32_t can_assign;
   
+  assert(array);
+  
   if (element == NULL) {
     can_assign = 1;
   }
   else {
-    int32_t array_basic_type_id = *(int32_t*)((intptr_t)array + (intptr_t)env->object_basic_type_id_offset);
-    int32_t array_type_dimension = *(uint8_t*)((intptr_t)array + (intptr_t)env->object_type_dimension_offset);
-    int32_t element_basic_type_id = *(int32_t*)((intptr_t)element + (intptr_t)env->object_basic_type_id_offset);
-    int32_t element_type_dimension = *(uint8_t*)((intptr_t)element + (intptr_t)env->object_type_dimension_offset);
-    if (array_basic_type_id == element_basic_type_id && array_type_dimension == element_type_dimension + 1) {
-      can_assign = 1;
-    }
-    else if (array_basic_type_id == (intptr_t)env->any_object_basic_type_id && array_type_dimension == element_type_dimension + 1) {
-      can_assign = 1;
-    }
-    else {
-      can_assign = 0;
+    int32_t array_basic_type_id = array->basic_type_id;
+    int32_t array_type_dimension = array->type_dimension;
+    int32_t array_type_category = array->type_category;
+
+    int32_t element_basic_type_id = element->basic_type_id;
+    int32_t element_type_dimension = element->type_dimension;
+    
+    switch (array_type_category) {
+      case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
+      {
+        can_assign = 1;
+        break;
+      }
+      case SPVM_API_C_TYPE_CATEGORY_INTERFACE_ARRAY:
+      {
+        can_assign = 0;
+        break;
+      }
+      case SPVM_API_C_TYPE_CATEGORY_CALLBACK_ARRAY:
+      {
+        can_assign = 0;
+        break;
+      }
+      default: {
+        if (array_basic_type_id == element_basic_type_id && array_type_dimension == element_type_dimension + 1) {
+          can_assign = 1;
+        }
+        else {
+          can_assign = 0;
+        }
+      }
     }
   }
   
