@@ -4679,7 +4679,6 @@ void SPVM_OP_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
         if (!fail_load_class_name) {
           SPVM_COMPILER_error(compiler, "Unknown class \"%s\" at %s line %d", basic_type_name, op_type->file, op_type->line);
         }
-        return;
       }
     }
     
@@ -4687,14 +4686,17 @@ void SPVM_OP_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
     if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
         SPVM_COMPILER_error(compiler, "Reference type must be numeric refernce type or mulnum_t reference type \"%s\"\\ at %s line %d", basic_type_name, op_type->file, op_type->line);
-        return;
       }
     }
     
     // mutable only allow string type
     if (type->flag & SPVM_TYPE_C_FLAG_MUTABLE && !(type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING && type->dimension == 0)) {
       SPVM_COMPILER_error(compiler, "The mutable type qualifier can use only string type at %s line %d", op_type->file, op_type->line);
-      return;
+    }
+
+    if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT && type->dimension > 1) {
+      const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
+      SPVM_COMPILER_error(compiler, "Multi dimensional array of any object is forbidden at %s line %d", op_type->file, op_type->line);
     }
   }
 }
@@ -4708,11 +4710,6 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     SPVM_TYPE* type = SPVM_LIST_fetch(types, i);
     type->category = SPVM_TYPE_get_type_category(compiler, type->basic_type->id, type->dimension, type->flag);
     type->width = SPVM_TYPE_get_width(compiler, type->basic_type->id, type->dimension, type->flag);
-    
-    if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT && type->dimension > 1) {
-      const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-      SPVM_COMPILER_error(compiler, "Multi dimensional array of any object is forbidden at %s line %d");
-    }
   }
 }
 
