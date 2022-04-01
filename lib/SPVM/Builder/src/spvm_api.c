@@ -6537,7 +6537,12 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   // Set array length
   object->length = length;
   
-  object->type_category = SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY;
+  if (basic_type->id == SPVM_API_C_BASIC_TYPE_ID_STRING) {
+    object->type_category = SPVM_API_C_TYPE_CATEGORY_STRING_ARRAY;
+  }
+  else {
+    object->type_category = SPVM_API_C_TYPE_CATEGORY_CLASS_ARRAY;
+  }
   
   return object;
 }
@@ -6566,7 +6571,7 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   // Set array length
   object->length = length;
   
-  object->type_category = SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY;
+  object->type_category = SPVM_API_C_TYPE_CATEGORY_MULDIM_ARRAY;
   
   return object;
 }
