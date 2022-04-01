@@ -3832,7 +3832,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         if (length >= 0) {
           void* object = env->new_object_array_raw(env, basic_type_id, length);
           if (object == NULL) {
-            void* exception = env->new_string_nolen_raw(env, "Can't allocate memory for object array");
+            void* exception = env->new_string_nolen_raw(env, "Can't create the object array");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -6498,6 +6498,12 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   
   SPVM_RUNTIME* runtime = env->runtime;
 
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_id);
+  
+  if (!basic_type) {
+    return NULL;
+  }
+  
   int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(void*) * ((int64_t)length + 1);
   
   // Create object
@@ -6509,8 +6515,6 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   for (int32_t index = 0; index < length; index++) {
     SPVM_OBJECT* get_field_object = ((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[index];
   }
-
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_id);
 
   object->basic_type_id = basic_type->id;
   object->type_dimension = 1;
@@ -6799,7 +6803,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   // If reference count is zero, free address.
   if (object->ref_count == 1) {
     // Free elements of object array
-    if (object->type_category == SPVM_API_C_TYPE_CATEGORY_OBJECT_ARRAY) {
+    if (SPVM_API_is_object_array(env, object)) {
       int32_t length = object->length;
       for (int32_t index = 0; index < length; index++) {
         SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[index]);
