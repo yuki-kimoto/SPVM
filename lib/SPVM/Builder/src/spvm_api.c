@@ -1218,6 +1218,7 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
 
     switch (class_var_type_category) {
       case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
+      case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
       case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
       case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
       case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
@@ -1280,6 +1281,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
       SPVM_RUNTIME_TYPE* method_return_type = SPVM_API_get_type(env, method->return_type_id);
       switch (method_return_type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
+        case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
         case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
         case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
         case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
@@ -1303,6 +1305,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
       SPVM_RUNTIME_TYPE* method_return_type = SPVM_API_get_type(env, method->return_type_id);
       switch (method_return_type->category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
+        case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
         case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
         case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
         case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
@@ -4200,6 +4203,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             break;
           }
           case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
+          case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
           case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
           case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
           case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
@@ -4358,6 +4362,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
               break;
             }
             case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
+            case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
             case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
             case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
             case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
@@ -5452,6 +5457,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
     SPVM_RUNTIME_TYPE* method_return_type = SPVM_API_get_type(env, method->return_type_id);
     switch (method_return_type->category) {
       case SPVM_TYPE_C_TYPE_CATEGORY_BASIC_OBJECT:
+      case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
       case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
       case SPVM_TYPE_C_TYPE_CATEGORY_INTERFACE:
       case SPVM_TYPE_C_TYPE_CATEGORY_CALLBACK:
@@ -5963,7 +5969,7 @@ SPVM_OBJECT* SPVM_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJEC
 
   string3->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
   string3->type_dimension = 0;
-  string3->type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
+  string3->type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING;
 
   const char* string1_bytes = SPVM_API_get_chars(env, string1);
   const char* string2_bytes = SPVM_API_get_chars(env, string2);
@@ -6260,7 +6266,7 @@ SPVM_OBJECT* SPVM_API_new_string_nolen_raw(SPVM_ENV* env, const char* bytes) {
   
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
   object->type_dimension = 0;
-  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
+  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING;
   
   if (bytes != NULL && length > 0) {
     memcpy((void*)((intptr_t)object + env->object_header_byte_size), (char*)bytes, length);
@@ -6286,7 +6292,7 @@ SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t l
   
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
   object->type_dimension = 0;
-  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
+  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING;
 
   if (bytes != NULL && length > 0) {
     memcpy((void*)((intptr_t)object + env->object_header_byte_size), (char*)bytes, length);
@@ -7637,6 +7643,7 @@ int32_t SPVM_API_get_type_can_assign_to_any_object(SPVM_ENV* env, int32_t type_i
   int32_t is_object;
   switch (type->category) {
     case SPVM_API_C_TYPE_CATEGORY_BASIC_OBJECT:
+    case SPVM_API_C_TYPE_CATEGORY_STRING:
     case SPVM_API_C_TYPE_CATEGORY_CLASS:
     case SPVM_API_C_TYPE_CATEGORY_INTERFACE:
     case SPVM_API_C_TYPE_CATEGORY_CALLBACK:

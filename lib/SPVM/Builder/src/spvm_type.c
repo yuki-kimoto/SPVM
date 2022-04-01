@@ -88,7 +88,7 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM;
   }
   else if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING;
   }
   else if (SPVM_TYPE_is_class_type(compiler, basic_type_id, dimension, flag)) {
     type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
