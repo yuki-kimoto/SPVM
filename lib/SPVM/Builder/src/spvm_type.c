@@ -29,10 +29,12 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
     "OBJECT_ARRAY"
     "NUMERIC_REF"
     "MULNUM_REF"
+    "STRING",
     "CLASS",
     "INTERFACE",
     "CALLBACK",
     "ANY_OBEJCT",
+    "STRING_ARRAY",
     "CLASS_ARRAY",
     "INTERFACE_ARRAY",
     "CALLBACK_ARRAY",
