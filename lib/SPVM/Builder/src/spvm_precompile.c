@@ -1587,25 +1587,25 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         SPVM_PRECOMPILE_add_mulnum_array_field_fetch(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2, fields_length, field_index);
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_BYTE:
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_BYTE:
         SPVM_PRECOMPILE_add_array_store(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_SHORT:
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_SHORT:
         SPVM_PRECOMPILE_add_array_store(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_INT:
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_INT:
         SPVM_PRECOMPILE_add_array_store(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_LONG:
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_LONG:
         SPVM_PRECOMPILE_add_array_store(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_FLOAT:
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_FLOAT:
         SPVM_PRECOMPILE_add_array_store(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_DOUBLE:
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_DOUBLE:
         SPVM_PRECOMPILE_add_array_store(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT:
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_OBJECT:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* array = ");
@@ -1637,7 +1637,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT_CHECK_TYPE:
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* array = ");
@@ -1693,7 +1693,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_UNDEF:
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_UNDEF:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* array = ");

@@ -2553,7 +2553,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_BYTE: {
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_BYTE: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
@@ -2573,7 +2573,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_SHORT: {
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_SHORT: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
@@ -2593,7 +2593,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_INT: {
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_INT: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
@@ -2613,7 +2613,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_LONG: {
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_LONG: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
@@ -2633,7 +2633,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_FLOAT: {
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_FLOAT: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
@@ -2653,7 +2653,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_DOUBLE: {
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_DOUBLE: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
@@ -2673,7 +2673,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT: {
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_OBJECT: {
         
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
@@ -2695,7 +2695,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT_CHECK_TYPE: {
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE: {
         
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
@@ -2744,7 +2744,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_UNDEF: {
+      case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_UNDEF: {
         
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
