@@ -4285,7 +4285,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   }
 #endif
 }
-
 SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
   SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
   
@@ -4301,11 +4300,13 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
   if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
     src_constant = op_src->uv.constant;
   }
+
+  int32_t narrowing_conversion_error = 0;
+  int32_t need_implicite_conversion = 0;
+  int32_t mutable_invalid = 0;
   
   // Dist type is numeric type
   int32_t can_assign = 0;
-  int32_t narrowing_conversion_error = 0;
-  int32_t need_implicite_conversion = 0;
   if (SPVM_TYPE_is_numeric_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     // Soruce type is numeric type
     if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
@@ -4727,7 +4728,6 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
   }
   
   // Mutable check
-  int32_t mutable_invalid = 0;
   if(dist_type_flag & SPVM_TYPE_C_FLAG_MUTABLE && !(src_type_flag & SPVM_TYPE_C_FLAG_MUTABLE)) {
     can_assign = 0;
     mutable_invalid = 1;
