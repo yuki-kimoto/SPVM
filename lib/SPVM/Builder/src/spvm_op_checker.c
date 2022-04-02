@@ -4289,9 +4289,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
   SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
   
-  SPVM_CONSTANT* constant = NULL;
+  SPVM_CONSTANT* src_constant = NULL;
   if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
-    constant = op_src->uv.constant;
+    src_constant = op_src->uv.constant;
   }
   
   // Dist type is numeric type
@@ -4313,22 +4313,22 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
       // Dist type is narrow than source type
       else if (dist_type->basic_type->id < src_type->basic_type->id) {
         int32_t can_narrowing_conversion = 0;
-        if (constant) {
-          assert(constant->type->dimension == 0);
-          if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT || constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-            int64_t constant_value;
-            if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-              constant_value = constant->value.ival;
+        if (src_constant) {
+          assert(src_constant->type->dimension == 0);
+          if (src_constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT || src_constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+            int64_t src_constant_value;
+            if (src_constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+              src_constant_value = src_constant->value.ival;
             }
-            else if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-              constant_value = constant->value.lval;
+            else if (src_constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+              src_constant_value = src_constant->value.lval;
             }
             else {
               assert(0);
             }
             
             if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-              if (constant_value >= INT8_MIN && constant_value <= INT8_MAX) {
+              if (src_constant_value >= INT8_MIN && src_constant_value <= INT8_MAX) {
                 can_narrowing_conversion = 1;
               }
               else {
@@ -4336,7 +4336,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
               }
             }
             else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-              if (constant_value >= INT16_MIN && constant_value <= INT16_MAX) {
+              if (src_constant_value >= INT16_MIN && src_constant_value <= INT16_MAX) {
                 can_narrowing_conversion = 1;
               }
               else {
@@ -4344,7 +4344,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
               }
             }
             else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-              if (constant_value >= INT32_MIN && constant_value <= INT32_MAX) {
+              if (src_constant_value >= INT32_MIN && src_constant_value <= INT32_MAX) {
                 can_narrowing_conversion = 1;
               }
               else {
