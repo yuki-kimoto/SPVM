@@ -4715,11 +4715,16 @@ SPVM_OP* SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_typ
   }
   
   // Mutable check
+  int32_t mutable_invalid = 0;
   if(dist_type->flag & SPVM_TYPE_C_FLAG_MUTABLE && !(src_type->flag & SPVM_TYPE_C_FLAG_MUTABLE)) {
-    SPVM_COMPILER_error(compiler, "Can't assign a non-mutable to a mutable type in %s, at %s line %d", place, file, line);
+    can_assign = 0;
+    mutable_invalid = 1;
   }
     
   if (!can_assign) {
+    if (mutable_invalid) {
+      SPVM_COMPILER_error(compiler, "Can't assign a non-mutable to a mutable type in %s, at %s line %d", place, file, line);
+    }
     if (narrowing_conversion_error) {
       SPVM_COMPILER_error(compiler, "Can't apply narrowing conversion in %s at %s line %d", place, file, line);
       return NULL;
