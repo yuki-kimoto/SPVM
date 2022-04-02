@@ -13,6 +13,7 @@
 #include "spvm_field.h"
 #include "spvm_basic_type.h"
 #include "spvm_method.h"
+#include "spvm_constant.h"
 
 const char* const* SPVM_TYPE_C_CATEGORY_NAMES(void) {
 
@@ -1445,4 +1446,441 @@ int32_t SPVM_TYPE_get_elem_byte_size(SPVM_COMPILER* compiler, int32_t basic_type
   }
   
   return elem_byte_size;
+}
+
+int32_t SPVM_TYPE_can_assign(
+  SPVM_COMPILER* compiler,
+  int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
+  int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
+  SPVM_CONSTANT* src_constant, int32_t* need_implicite_conversion, int32_t* narrowing_conversion_error, int32_t* mutable_invalid)
+{
+  // Dist type is numeric type
+  int32_t can_assign = 0;
+  if (SPVM_TYPE_is_numeric_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Soruce type is numeric type
+    if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      // Dist type is same as source type
+      if (dist_type_basic_type_id == src_type_basic_type_id) {
+        can_assign = 1;
+      }
+      // Dist type is more wide than source type
+      else if (dist_type_basic_type_id > src_type_basic_type_id) {
+        can_assign = 1;
+        *need_implicite_conversion = 1;
+      }
+      // Dist type is narrow than source type
+      else if (dist_type_basic_type_id < src_type_basic_type_id) {
+        int32_t can_narrowing_conversion = 0;
+        if (src_constant) {
+          assert(src_type_dimension == 0);
+          if (src_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT || src_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
+            int64_t src_constant_value;
+            if (src_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
+              src_constant_value = src_constant->value.ival;
+            }
+            else if (src_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
+              src_constant_value = src_constant->value.lval;
+            }
+            else {
+              assert(0);
+            }
+            
+            if (dist_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+              if (src_constant_value >= INT8_MIN && src_constant_value <= INT8_MAX) {
+                can_narrowing_conversion = 1;
+              }
+              else {
+                can_narrowing_conversion = 0;
+              }
+            }
+            else if (dist_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+              if (src_constant_value >= INT16_MIN && src_constant_value <= INT16_MAX) {
+                can_narrowing_conversion = 1;
+              }
+              else {
+                can_narrowing_conversion = 0;
+              }
+            }
+            else if (dist_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
+              if (src_constant_value >= INT32_MIN && src_constant_value <= INT32_MAX) {
+                can_narrowing_conversion = 1;
+              }
+              else {
+                can_narrowing_conversion = 0;
+              }
+            }
+            else {
+              assert(0);
+            }
+          }
+          else {
+            can_narrowing_conversion = 0;
+          }
+        }
+        else {
+          can_assign = 0;
+        }
+        
+        if (can_narrowing_conversion) {
+          *need_implicite_conversion = 1;
+          can_assign = 1;
+        }
+        else {
+          *narrowing_conversion_error = 1;
+          can_assign = 0;
+        }
+      }
+    }
+    else if (SPVM_TYPE_is_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+        can_assign = 1;
+        *need_implicite_conversion = 1;
+      }
+      else if (SPVM_TYPE_is_numeric_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+        if (src_type_basic_type_id == dist_type_basic_type_id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
+          can_assign = 1;
+          *need_implicite_conversion = 1;
+        }
+        else {
+          can_assign = 0;
+        }
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is referece type
+  else if (SPVM_TYPE_is_ref_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    if (SPVM_TYPE_is_ref_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+        can_assign = 1;
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is multi numeric type
+  else if (SPVM_TYPE_is_mulnum_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    if (SPVM_TYPE_is_mulnum_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+        can_assign = 1;
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is numeric array type
+  else if (SPVM_TYPE_is_numeric_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    if (SPVM_TYPE_is_numeric_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+        can_assign = 1;
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is mulnum array type
+  else if (SPVM_TYPE_is_mulnum_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    if (SPVM_TYPE_is_mulnum_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+        can_assign = 1;
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is any object type
+  else if (SPVM_TYPE_is_any_object_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is object type
+    if (SPVM_TYPE_is_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    // Source type is numeric type
+    else if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+      *need_implicite_conversion = 1;
+    }
+    // Source type is undef type
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is string type
+  else if (SPVM_TYPE_is_string_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is string
+    if (SPVM_TYPE_is_string_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    // Source type is number
+    else if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+      *need_implicite_conversion = 1;
+    }
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is numeric object type
+  else if (SPVM_TYPE_is_numeric_object_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (dist_type_basic_type_id == src_type_basic_type_id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
+        can_assign = 1;
+        *need_implicite_conversion = 1;
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    else if (SPVM_TYPE_is_numeric_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (src_type_basic_type_id == dist_type_basic_type_id) {
+        can_assign = 1;
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is class
+  else if (SPVM_TYPE_is_class_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    if (SPVM_TYPE_is_class_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (dist_type_basic_type_id == src_type_basic_type_id) {
+        can_assign = 1;
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is callback
+  else if (SPVM_TYPE_is_callback_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    
+    // Source type is class, callback or interface
+    if (
+      SPVM_TYPE_is_class_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)
+      || SPVM_TYPE_is_callback_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)
+      || SPVM_TYPE_is_interface_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)
+    )
+    {
+      can_assign = SPVM_TYPE_has_callback(
+        compiler,
+        src_type_basic_type_id, src_type_dimension, src_type_flag,
+        dist_type_basic_type_id, dist_type_dimension, dist_type_flag
+      );
+    }
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is interface
+  else if (SPVM_TYPE_is_interface_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is class, callback, or interface
+    if (
+      SPVM_TYPE_is_class_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)
+      || SPVM_TYPE_is_callback_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)
+      || SPVM_TYPE_is_interface_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)
+    )
+    {
+      can_assign = SPVM_TYPE_has_interface(
+        compiler,
+        src_type_basic_type_id, src_type_dimension, src_type_flag,
+        dist_type_basic_type_id, dist_type_dimension, dist_type_flag
+      );
+    }
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is string array type
+  else if (SPVM_TYPE_is_string_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is string
+    if (SPVM_TYPE_is_string_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    // Source type is undef type
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is class array type
+  else if (SPVM_TYPE_is_class_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is class
+    if (SPVM_TYPE_is_class_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+        can_assign = 1;
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    // Source type is undef type
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is interface array type
+  else if (SPVM_TYPE_is_interface_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is interface array
+    if (SPVM_TYPE_is_interface_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+        can_assign = 1;
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    // Source type is class array 
+    else if (SPVM_TYPE_is_class_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+        can_assign = SPVM_TYPE_has_interface(
+          compiler,
+          src_type_basic_type_id, 0, 0,
+          dist_type_basic_type_id, 0, 0
+        );
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    // Source type is undef type
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is callback array type
+  else if (SPVM_TYPE_is_callback_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is callback array
+    if (SPVM_TYPE_is_callback_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+        can_assign = 1;
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    // Source type is class
+    else if (SPVM_TYPE_is_class_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+        can_assign = SPVM_TYPE_has_callback(
+          compiler,
+          src_type_basic_type_id, 0, 0,
+          dist_type_basic_type_id, 0, 0
+        );
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    // Source type is undef type
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is any object array(object[])
+  else if (SPVM_TYPE_is_any_object_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    
+    if (SPVM_TYPE_is_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  // Dist type is muldim array type
+  else if (SPVM_TYPE_is_muldim_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is muldim
+    if (SPVM_TYPE_is_muldim_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+        can_assign = 1;
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    // Source type is undef type
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
+    else {
+      can_assign = 0;
+    }
+  }
+  else if (SPVM_TYPE_is_undef_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    can_assign = 0;
+  }
+  else {
+    assert(0);
+  }
+  
+  // Mutable check
+  if(dist_type_flag & SPVM_TYPE_C_FLAG_MUTABLE && !(src_type_flag & SPVM_TYPE_C_FLAG_MUTABLE)) {
+    can_assign = 0;
+    *mutable_invalid = 1;
+  }
+  
+  return can_assign;
 }

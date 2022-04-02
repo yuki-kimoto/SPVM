@@ -164,4 +164,11 @@ int32_t SPVM_TYPE_is_fail_load_type(SPVM_COMPILER* compiler, int32_t basic_type_
 
 int32_t SPVM_TYPE_is_string_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
+int32_t SPVM_TYPE_can_assign(
+  SPVM_COMPILER* compiler,
+  int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
+  int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
+  SPVM_CONSTANT* src_constant, int32_t* need_implicite_conversion, int32_t* narrowing_conversion_error, int32_t* mutable_invalid
+);
+
 #endif
