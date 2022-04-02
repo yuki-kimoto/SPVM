@@ -14,7 +14,7 @@ class TestCase::Minimal : public {
     return new TestCase::Minimal;
   }
   
-  static method newp : TestCase::Minimal ($x : int, $y : int) {
+  static method new_xy : TestCase::Minimal ($x : int, $y : int) {
     
     my $minimal = new TestCase::Minimal;
     $minimal->{x} = $x;
