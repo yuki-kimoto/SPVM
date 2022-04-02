@@ -3250,12 +3250,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   assert(0);
                                 }
                               }
-                              else if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-                                // MOVE_OBJECT
-                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_dist_term);
-                                mem_id_in = SPVM_OP_get_mem_id(compiler, op_src_term);
-                              }
                               // CHECK_CALLBACK
                               else if (SPVM_TYPE_is_callback_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CHECK_CALLBACK);
@@ -3270,13 +3264,44 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 mem_id_in = SPVM_OP_get_mem_id(compiler, op_src_term);
                                 opcode.operand2 = op_dist_type->uv.type->basic_type->id;
                               }
-                              // CHECK_OBJECT_TYPE
                               else {
-                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE);
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_dist_term);
-                                mem_id_in = SPVM_OP_get_mem_id(compiler, op_src_term);
-                                opcode.operand2 = op_dist_type->uv.type->basic_type->id;
-                                opcode.operand3 = op_dist_type->uv.type->dimension;
+                                int32_t dist_type_basic_type_id = op_dist_type->uv.type->basic_type->id;
+                                int32_t dist_type_dimension = op_dist_type->uv.type->dimension;
+                                int32_t dist_type_flag = op_dist_type->uv.type->flag;
+                                
+                                int32_t src_type_basic_type_id = src_type->basic_type->id;
+                                int32_t src_type_dimension = src_type->dimension;
+                                int32_t src_type_flag = src_type->flag;
+
+                                int32_t need_implicite_conversion = 0;
+                                int32_t narrowing_conversion_error = 0;
+                                int32_t mutable_invalid = 0;
+                                
+                                int32_t can_assign = SPVM_TYPE_can_assign(
+                                  compiler,
+                                  dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
+                                  src_type_basic_type_id, src_type_dimension, src_type_flag,
+                                  NULL, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid
+                                );
+                                
+                                assert(need_implicite_conversion == 0);
+                                assert(narrowing_conversion_error == 0);
+                                assert(mutable_invalid == 0);
+                                
+                                if (can_assign) {
+                                  // MOVE_OBJECT
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_dist_term);
+                                  mem_id_in = SPVM_OP_get_mem_id(compiler, op_src_term);
+                                }
+                                else {
+                                  // CHECK_OBJECT_TYPE
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE);
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_dist_term);
+                                  mem_id_in = SPVM_OP_get_mem_id(compiler, op_src_term);
+                                  opcode.operand2 = op_dist_type->uv.type->basic_type->id;
+                                  opcode.operand3 = op_dist_type->uv.type->dimension;
+                                }
                               }
                               
                               opcode.operand0 = mem_id_out;
