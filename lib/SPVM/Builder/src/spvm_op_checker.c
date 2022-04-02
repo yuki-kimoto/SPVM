@@ -4289,6 +4289,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
   SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
   
+  int32_t dist_basic_type_id = dist_type->basic_type->id;
+  int32_t dist_type_dimension = dist_type->dimension;
+  int32_t dist_type_flag = dist_type->flag;
+  
+  int32_t src_basic_type_id = src_type->basic_type->id;
+  int32_t src_type_dimension = src_type->dimension;
+  int32_t src_type_flag = src_type->flag;
+
   SPVM_CONSTANT* src_constant = NULL;
   if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
     src_constant = op_src->uv.constant;
