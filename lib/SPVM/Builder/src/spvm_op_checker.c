@@ -4289,6 +4289,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 SPVM_OP* SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
   SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
   
+  SPVM_CONSTANT* constant = NULL;
+  if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
+    constant = op_src->uv.constant;
+  }
+  
   // Dist type is numeric type
   int32_t can_assign = 0;
   int32_t narrowing_conversion_error = 0;
@@ -4308,8 +4313,7 @@ SPVM_OP* SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_typ
       // Dist type is narrow than source type
       else if (dist_type->basic_type->id < src_type->basic_type->id) {
         int32_t can_narrowing_conversion = 0;
-        if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
-          SPVM_CONSTANT* constant = op_src->uv.constant;
+        if (constant) {
           assert(constant->type->dimension == 0);
           if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT || constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
             int64_t constant_value;
