@@ -4285,26 +4285,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   }
 #endif
 }
-SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
-  SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
-  
-  int32_t dist_type_basic_type_id = dist_type->basic_type->id;
-  int32_t dist_type_dimension = dist_type->dimension;
-  int32_t dist_type_flag = dist_type->flag;
-  
-  int32_t src_type_basic_type_id = src_type->basic_type->id;
-  int32_t src_type_dimension = src_type->dimension;
-  int32_t src_type_flag = src_type->flag;
 
-  SPVM_CONSTANT* src_constant = NULL;
-  if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
-    src_constant = op_src->uv.constant;
-  }
-
-  int32_t narrowing_conversion_error = 0;
-  int32_t need_implicite_conversion = 0;
-  int32_t mutable_invalid = 0;
-  
+int32_t SPVM_OP_CHECKER_can_assign(
+  SPVM_COMPILER* compiler,
+  int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
+  int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
+  SPVM_CONSTANT* src_constant, int32_t* need_implicite_conversion, int32_t* narrowing_conversion_error, int32_t* mutable_invalid)
+{
   // Dist type is numeric type
   int32_t can_assign = 0;
   if (SPVM_TYPE_is_numeric_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
@@ -4317,13 +4304,13 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
       // Dist type is more wide than source type
       else if (dist_type_basic_type_id > src_type_basic_type_id) {
         can_assign = 1;
-        need_implicite_conversion = 1;
+        *need_implicite_conversion = 1;
       }
       // Dist type is narrow than source type
       else if (dist_type_basic_type_id < src_type_basic_type_id) {
         int32_t can_narrowing_conversion = 0;
         if (src_constant) {
-          assert(src_type->dimension == 0);
+          assert(src_type_dimension == 0);
           if (src_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT || src_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
             int64_t src_constant_value;
             if (src_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
@@ -4373,11 +4360,11 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
         }
         
         if (can_narrowing_conversion) {
-          need_implicite_conversion = 1;
+          *need_implicite_conversion = 1;
           can_assign = 1;
         }
         else {
-          narrowing_conversion_error = 1;
+          *narrowing_conversion_error = 1;
           can_assign = 0;
         }
       }
@@ -4385,12 +4372,12 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     else if (SPVM_TYPE_is_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         can_assign = 1;
-        need_implicite_conversion = 1;
+        *need_implicite_conversion = 1;
       }
       else if (SPVM_TYPE_is_numeric_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         if (src_type_basic_type_id == dist_type_basic_type_id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
           can_assign = 1;
-          need_implicite_conversion = 1;
+          *need_implicite_conversion = 1;
         }
         else {
           can_assign = 0;
@@ -4475,7 +4462,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     // Source type is numeric type
     else if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_assign = 1;
-      need_implicite_conversion = 1;
+      *need_implicite_conversion = 1;
     }
     // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
@@ -4494,7 +4481,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     // Source type is number
     else if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_assign = 1;
-      need_implicite_conversion = 1;
+      *need_implicite_conversion = 1;
     }
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_assign = 1;
@@ -4508,7 +4495,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       if (dist_type_basic_type_id == src_type_basic_type_id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
         can_assign = 1;
-        need_implicite_conversion = 1;
+        *need_implicite_conversion = 1;
       }
       else {
         can_assign = 0;
@@ -4730,8 +4717,38 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
   // Mutable check
   if(dist_type_flag & SPVM_TYPE_C_FLAG_MUTABLE && !(src_type_flag & SPVM_TYPE_C_FLAG_MUTABLE)) {
     can_assign = 0;
-    mutable_invalid = 1;
+    *mutable_invalid = 1;
   }
+  
+  return can_assign;
+}
+
+SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
+  SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
+  
+  int32_t dist_type_basic_type_id = dist_type->basic_type->id;
+  int32_t dist_type_dimension = dist_type->dimension;
+  int32_t dist_type_flag = dist_type->flag;
+  
+  int32_t src_type_basic_type_id = src_type->basic_type->id;
+  int32_t src_type_dimension = src_type->dimension;
+  int32_t src_type_flag = src_type->flag;
+
+  SPVM_CONSTANT* src_constant = NULL;
+  if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
+    src_constant = op_src->uv.constant;
+  }
+
+  int32_t need_implicite_conversion = 0;
+  int32_t narrowing_conversion_error = 0;
+  int32_t mutable_invalid = 0;
+  
+  int32_t can_assign = SPVM_OP_CHECKER_can_assign(
+    compiler,
+    dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
+    src_type_basic_type_id, src_type_dimension, src_type_flag,
+    src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid
+  );
     
   if (!can_assign) {
     if (mutable_invalid) {
