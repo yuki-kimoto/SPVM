@@ -4,6 +4,8 @@ Revision history for SPVM
         * Add alias syntax
         * Improve the error messages of object-to-numeric type conversion
         * Add type comment syntax
+        * Support cast from class array to interface array
+        * Support cats from class array to callback array
           
         [BUG FIX]
         * Fix the bug that the runtime is not freed.

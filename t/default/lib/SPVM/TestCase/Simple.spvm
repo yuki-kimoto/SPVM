@@ -29,7 +29,16 @@ class TestCase::Simple : public {
   static method new : TestCase::Simple () {
     return new TestCase::Simple;
   }
-  
+
+  static method new_xy : TestCase::Simple ($x : int, $y : int) {
+    
+    my $simple = new TestCase::Simple;
+    $simple->{x} = $x;
+    $simple->{y} = $y;
+    
+    return $simple;
+  }
+
   static method import_method1 : int () {
     return 1;
   }

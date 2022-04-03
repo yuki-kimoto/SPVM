@@ -154,17 +154,58 @@ class TestCase::Interface {
 
   # method interface_shared2 : string ($num : int);
 
+  static method join_stringables : string ($stringables : Stringable[]) {
+    my $string = "";
+    
+    for (my $i = 0; $i < @$stringables; $i++) {
+      my $stringable = $stringables->[$i];
+      $string .= $stringable->to_string;
+    }
+    
+    return $string;
+  }
+  
   static method interface_array : int () {
     
     # Interface array
     {
-      my $minimal = TestCase::Minimal->new;
-      my $simple = TestCase::Simple->new;
+      my $minimal = TestCase::Minimal->new_xy(1, 2);
+      my $simple = TestCase::Simple->new_xy(3, 4);
       my $list = List->new([]);
       
-      my $stringables = new Stringable[3];
+      my $stringables = new Stringable[2];
       $stringables->[0] = $minimal;
       $stringables->[1] = $simple;
+      
+      my $string = &join_stringables($stringables);
+      
+      unless ($string eq "(1,2)(3,4):Simple") {
+        return 0;
+      }
+    }
+    # Interface array cast
+    {
+      my $minimals = [TestCase::Minimal->new_xy(1, 2), TestCase::Minimal->new_xy(3, 4)];
+      
+      my $stringables = (Stringable[])$minimals;
+
+      my $string = &join_stringables($stringables);
+      
+      unless ($string eq "(1,2)(3,4)") {
+        return 0;
+      }
+
+      my $minimal0 = TestCase::Minimal->new;
+      $stringables->[0] = $minimal0;
+      
+      eval {
+        my $simple1 = TestCase::Simple->new;
+        $stringables->[1] = $simple1;
+      };
+      
+      unless ($@) {
+        return 0;
+      }
     }
     
     $@ = undef;
