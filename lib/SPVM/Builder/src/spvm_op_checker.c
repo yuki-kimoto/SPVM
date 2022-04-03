@@ -4406,8 +4406,8 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     type->category = SPVM_TYPE_get_type_category(compiler, type->basic_type->id, type->dimension, type->flag);
     type->width = SPVM_TYPE_get_width(compiler, type->basic_type->id, type->dimension, type->flag);
     
-    if (type->basic_type->type_category == 0) {
-      type->basic_type->type_category = SPVM_TYPE_get_type_category(compiler, type->basic_type->id, 0, 0);
+    if (type->basic_type->category == 0) {
+      type->basic_type->category = SPVM_TYPE_get_type_category(compiler, type->basic_type->id, 0, 0);
     }
   }
 }

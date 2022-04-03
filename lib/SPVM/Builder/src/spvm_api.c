@@ -6524,19 +6524,19 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   }
   
   int32_t type_category;
-  if (basic_type->type_category == SPVM_API_C_TYPE_CATEGORY_STRING) {
+  if (basic_type->category == SPVM_API_C_TYPE_CATEGORY_STRING) {
     type_category = SPVM_API_C_TYPE_CATEGORY_STRING_ARRAY;
   }
-  else if (basic_type->type_category == SPVM_API_C_TYPE_CATEGORY_CLASS) {
+  else if (basic_type->category == SPVM_API_C_TYPE_CATEGORY_CLASS) {
     type_category = SPVM_API_C_TYPE_CATEGORY_CLASS_ARRAY;
   }
-  else if (basic_type->type_category == SPVM_API_C_TYPE_CATEGORY_INTERFACE) {
+  else if (basic_type->category == SPVM_API_C_TYPE_CATEGORY_INTERFACE) {
     type_category = SPVM_API_C_TYPE_CATEGORY_INTERFACE_ARRAY;
   }
-  else if (basic_type->type_category == SPVM_API_C_TYPE_CATEGORY_CALLBACK) {
+  else if (basic_type->category == SPVM_API_C_TYPE_CATEGORY_CALLBACK) {
     type_category = SPVM_API_C_TYPE_CATEGORY_CALLBACK_ARRAY;
   }
-  else if (basic_type->type_category == SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT) {
+  else if (basic_type->category == SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT) {
     type_category = SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY;
   }
   else {

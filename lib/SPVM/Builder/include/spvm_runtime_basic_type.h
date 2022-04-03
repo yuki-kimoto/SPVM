@@ -7,7 +7,7 @@ struct spvm_runtime_basic_type {
   int32_t name_id;
   int32_t class_id;
   int32_t id;
-  int32_t type_category;
+  int32_t category;
 };
 
 #endif
