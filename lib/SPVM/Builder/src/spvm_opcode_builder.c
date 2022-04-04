@@ -4704,6 +4704,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_term_index = op_array_access->last;
 
                       SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_term_array);
+                      int32_t array_type_dimension = array_type->dimension;
+                      int32_t array_basic_type_id = array_type->basic_type->id;
+                      int32_t array_basic_type_category = array_type->basic_type->category;
 
                       if (SPVM_TYPE_is_any_object_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
                         SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
