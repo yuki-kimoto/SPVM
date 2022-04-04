@@ -971,54 +971,50 @@ call_spvm_method(...)
   int32_t method_return_basic_type_id = SPVM_API_get_type_basic_type_id(env, method_return_type_id);
   int32_t method_return_type_dimension = SPVM_API_get_type_dimension(env, method_return_type_id);
   int32_t method_return_basic_type_category = SPVM_API_get_basic_type_category(env, method_return_basic_type_id);
-
+  
+  // Call method
+  int32_t excetpion_flag = excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
+  
+  // Create Perl return value
   SV* sv_return_value = NULL;
-  int32_t excetpion_flag = 0;
   if (method_return_type_dimension == 0) {
     switch (method_return_basic_type_category) {
       case SPVM_API_C_BASIC_TYPE_CATEGORY_VOID: {
-        excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
         break;
       }
       case SPVM_API_C_TYPE_CATEGORY_NUMERIC: {
         switch (method_return_basic_type_id) {
           case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
-            excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
             if (!excetpion_flag) {
               sv_return_value = sv_2mortal(newSViv(args_stack[0].bval));
             }
             break;
           }
           case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
-            excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
             if (!excetpion_flag) {
               sv_return_value = sv_2mortal(newSViv(args_stack[0].sval));
             }
             break;
           }
           case SPVM_API_C_BASIC_TYPE_ID_INT: {
-            excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
             if (!excetpion_flag) {
               sv_return_value = sv_2mortal(newSViv(args_stack[0].ival));
             }
             break;
           }
           case SPVM_API_C_BASIC_TYPE_ID_LONG: {
-            excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
             if (!excetpion_flag) {
               sv_return_value = sv_2mortal(newSViv(args_stack[0].lval));
             }
             break;
           }
           case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
-            excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
             if (!excetpion_flag) {
               sv_return_value = sv_2mortal(newSVnv(args_stack[0].fval));
             }
             break;
           }
           case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
-            excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
             if (!excetpion_flag) {
               sv_return_value = sv_2mortal(newSVnv(args_stack[0].dval));
             }
@@ -1032,8 +1028,6 @@ call_spvm_method(...)
       }
       case SPVM_API_C_BASIC_TYPE_CATEGORY_MULNUM:
       {
-        excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
-        
         int32_t method_return_class_id = SPVM_API_get_basic_type_class_id(env, method_return_basic_type_id);
         int32_t method_return_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, method_return_class_id);
         int32_t method_return_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, method_return_class_id);
@@ -1085,8 +1079,6 @@ call_spvm_method(...)
       default: {
         int32_t method_return_type_can_assign_to_any_object = SPVM_API_get_type_can_assign_to_any_object(env, method_return_type_id);
         if (method_return_type_can_assign_to_any_object) {
-          excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
-          
           if (!excetpion_flag) {
             SPVM_OBJECT* return_value = (SPVM_OBJECT*)args_stack[0].oval;
             sv_return_value = NULL;
@@ -1127,8 +1119,6 @@ call_spvm_method(...)
   else if (method_return_type_dimension == 1) {
     int32_t method_return_type_can_assign_to_any_object = SPVM_API_get_type_can_assign_to_any_object(env, method_return_type_id);
     if (method_return_type_can_assign_to_any_object) {
-      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
-      
       if (!excetpion_flag) {
         SPVM_OBJECT* return_value = (SPVM_OBJECT*)args_stack[0].oval;
         sv_return_value = NULL;
@@ -1167,8 +1157,6 @@ call_spvm_method(...)
   else if (method_return_type_dimension > 1) {
     int32_t method_return_type_can_assign_to_any_object = SPVM_API_get_type_can_assign_to_any_object(env, method_return_type_id);
     if (method_return_type_can_assign_to_any_object) {
-      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
-      
       if (!excetpion_flag) {
         SPVM_OBJECT* return_value = (SPVM_OBJECT*)args_stack[0].oval;
         sv_return_value = NULL;
