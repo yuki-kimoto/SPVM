@@ -5543,26 +5543,40 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   int32_t is_object_array;
   if (object) {
-    switch (object->type_category) {
-      case SPVM_API_C_TYPE_CATEGORY_STRING_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_CLASS_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_INTERFACE_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_CALLBACK_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_MULDIM_ARRAY:
-      {
-        is_object_array = 1;
-        break;
+    int32_t object_type_dimension = object->type_dimension;
+    if (object_type_dimension == 0) {
+      is_object_array = 0;
+    }
+    else if (object_type_dimension == 1) {
+      int32_t object_basic_type_id = object->basic_type_id;
+      int32_t object_basic_type_category = SPVM_API_get_basic_type_category(env, object_basic_type_id);
+      
+      switch (object_basic_type_category) {
+        case SPVM_API_C_BASIC_TYPE_CATEGORY_STRING:
+        case SPVM_API_C_BASIC_TYPE_CATEGORY_CLASS:
+        case SPVM_API_C_BASIC_TYPE_CATEGORY_INTERFACE:
+        case SPVM_API_C_BASIC_TYPE_CATEGORY_CALLBACK:
+        case SPVM_API_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
+        {
+          is_object_array = 1;
+          break;
+        }
+        default: {
+          is_object_array = 0;
+        }
       }
-      default: {
-        is_object_array = 0;
-      }
+    }
+    else if (object_type_dimension > 1) {
+      is_object_array = 1;
+    }
+    else {
+      assert(0);
     }
   }
   else {
     is_object_array = 0;
   }
-  
+
   return is_object_array;
 }
 
