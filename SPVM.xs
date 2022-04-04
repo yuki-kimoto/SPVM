@@ -1124,7 +1124,7 @@ call_spvm_method(...)
       }
     }
   }
-  else if (method_return_type_dimension > 0) {
+  else if (method_return_type_dimension == 1) {
     int32_t method_return_type_can_assign_to_any_object = SPVM_API_get_type_can_assign_to_any_object(env, method_return_type_id);
     if (method_return_type_can_assign_to_any_object) {
       excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
@@ -1153,6 +1153,31 @@ call_spvm_method(...)
               sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_perl_class_name));
             }
           }
+        }
+        // undef
+        else {
+          sv_return_value = &PL_sv_undef;
+        }
+      }
+    }
+    else {
+      assert(0);
+    }
+  }
+  else if (method_return_type_dimension > 1) {
+    int32_t method_return_type_can_assign_to_any_object = SPVM_API_get_type_can_assign_to_any_object(env, method_return_type_id);
+    if (method_return_type_can_assign_to_any_object) {
+      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
+      
+      if (!excetpion_flag) {
+        SPVM_OBJECT* return_value = (SPVM_OBJECT*)args_stack[0].oval;
+        sv_return_value = NULL;
+        if (return_value != NULL) {
+          env->inc_ref_count(env, return_value);
+          int32_t return_value_basic_type_id = SPVM_API_object_get_basic_type_id(return_value);
+          SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
+          sv_catpv(sv_perl_class_name, SPVM_API_get_basic_type_name(env, return_value_basic_type_id));
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_perl_class_name));
         }
         // undef
         else {
