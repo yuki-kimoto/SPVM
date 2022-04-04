@@ -858,7 +858,21 @@ call_spvm_method(...)
         break;
       }
       default: {
-        if (arg_type_dimension > 1) {
+        if (arg_type_dimension == 0) {
+          switch (arg_type_category) {
+            default: {
+              assert(0);
+            }
+          }
+        }
+        else if (arg_type_dimension == 1) {
+          switch (arg_type_category) {
+            default: {
+              assert(0);
+            }
+          }
+        }
+        else if (arg_type_dimension > 1) {
           // Perl undef to SPVM undef
           if (!SvOK(sv_value)) {
             args_stack[args_stack_index].oval = NULL;
