@@ -770,7 +770,6 @@ call_spvm_method(...)
       case SPVM_API_C_TYPE_CATEGORY_INTERFACE_ARRAY:
       case SPVM_API_C_TYPE_CATEGORY_CALLBACK_ARRAY:
       case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_MULDIM_ARRAY:
       {
         // Perl undef to SPVM undef
         if (!SvOK(sv_value)) {
@@ -857,7 +856,94 @@ call_spvm_method(...)
         break;
       }
       default: {
-        assert(0);
+        if (arg_type_dimension > 1) {
+          // Perl undef to SPVM undef
+          if (!SvOK(sv_value)) {
+            args_stack[args_stack_index].oval = NULL;
+          }
+          else {
+            // Perl array referecne of argument to SPVM array
+            if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
+              // String array
+              if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_STRING && arg_type_dimension == 1) {
+                SV* sv_elems = sv_value;
+                AV* av_elems = (AV*)SvRV(sv_elems);
+                int32_t length = av_len(av_elems) + 1;
+                void* array = env->new_object_array(env, SPVM_API_C_BASIC_TYPE_ID_STRING, length);
+                for (int32_t i = 0; i < length; i++) {
+                  SV** sv_elem_ptr = av_fetch(av_elems, i, 0);
+                  SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
+                  if (!SvOK(sv_elem)) {
+                    env->set_elem_object(env, array, i, NULL);
+                  }
+                  else {
+                    if (!SvROK(sv_elem)) {
+                      SV* sv_elem_copy = sv_2mortal(newSVsv(sv_elem));
+                      sv_utf8_encode(sv_elem_copy);
+                      const char* chars = SvPV_nolen(sv_elem_copy);
+                      int32_t length = SvCUR(sv_elem_copy);
+                      void* string = env->new_string(env, chars, length);
+                      SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
+                      sv_elem = sv_string;
+                    }
+                    if (sv_isobject(sv_elem) && sv_derived_from(sv_elem, "SPVM::BlessedObject::String")) {
+                      SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_elem);
+                      env->set_elem_object(env, array, i, object);
+                    }
+                    else {
+                      croak("%dth argument of %s->%s must be inherit SPVM::BlessedObject::String at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                    }
+                  }
+                }
+                SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+                sv_value = sv_array;
+              }
+            }
+            
+            if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
+              SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+              
+              int32_t object_basic_type_id = SPVM_API_object_get_basic_type_id(object);
+              int32_t object_type_dimension = SPVM_API_object_get_type_dimension(object);
+              
+              int32_t can_assign;
+              if (object_basic_type_id == arg_basic_type_id && object_type_dimension == arg_type_dimension) {
+                can_assign = 1;
+              }
+              else {
+                if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT && arg_type_dimension == 1) {
+                  if (object_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT && object_type_dimension == 1) {
+                    can_assign = 0;
+                  }
+                  else {
+                    can_assign = 1;
+                  }
+                }
+                else if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT && arg_type_dimension == 1) {
+                  can_assign = 1;
+                }
+                else {
+                  can_assign = 0;
+                }
+              }
+              
+              if (!can_assign) {
+                croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+              }
+              
+              args_stack[args_stack_index].oval = object;
+            }
+            else {
+              croak("%dth argument of %s->%s must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+            }
+          }
+          
+          args_stack_index++;
+          break;
+        }
+        else {
+          assert(0);
+        }
       }
     }
   }

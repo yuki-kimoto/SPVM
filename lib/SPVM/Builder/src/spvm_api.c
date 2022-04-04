@@ -7717,6 +7717,17 @@ int32_t SPVM_API_get_type_is_mulnum_array(SPVM_ENV* env, int32_t type_id) {
   return is_mulnum_array;
 }
 
+int32_t SPVM_API_get_type_is_ref(SPVM_ENV* env, int32_t type_id) {
+  
+  SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);
+  
+  assert(type);
+  
+  int32_t is_ref = type->flag & SPVM_TYPE_C_FLAG_REF;
+  
+  return is_ref;
+}
+
 int32_t SPVM_API_get_type_can_assign_to_any_object(SPVM_ENV* env, int32_t type_id) {
   
   SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);
