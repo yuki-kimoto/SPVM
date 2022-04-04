@@ -976,112 +976,6 @@ call_spvm_method(...)
   SV* sv_return_value = NULL;
   int32_t excetpion_flag = 0;
   switch (method_return_type_category) {
-    case SPVM_API_C_TYPE_CATEGORY_VOID: {
-      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
-      break;
-    }
-    case SPVM_API_C_TYPE_CATEGORY_NUMERIC: {
-      switch (method_return_basic_type_id) {
-        case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
-          excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
-          if (!excetpion_flag) {
-            sv_return_value = sv_2mortal(newSViv(args_stack[0].bval));
-          }
-          break;
-        }
-        case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
-          excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
-          if (!excetpion_flag) {
-            sv_return_value = sv_2mortal(newSViv(args_stack[0].sval));
-          }
-          break;
-        }
-        case SPVM_API_C_BASIC_TYPE_ID_INT: {
-          excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
-          if (!excetpion_flag) {
-            sv_return_value = sv_2mortal(newSViv(args_stack[0].ival));
-          }
-          break;
-        }
-        case SPVM_API_C_BASIC_TYPE_ID_LONG: {
-          excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
-          if (!excetpion_flag) {
-            sv_return_value = sv_2mortal(newSViv(args_stack[0].lval));
-          }
-          break;
-        }
-        case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
-          excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
-          if (!excetpion_flag) {
-            sv_return_value = sv_2mortal(newSVnv(args_stack[0].fval));
-          }
-          break;
-        }
-        case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
-          excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
-          if (!excetpion_flag) {
-            sv_return_value = sv_2mortal(newSVnv(args_stack[0].dval));
-          }
-          break;
-        }
-        default: {
-          assert(0);
-        }
-      }
-      break;
-    }
-    case SPVM_API_C_TYPE_CATEGORY_MULNUM:
-    {
-      excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
-      
-      int32_t method_return_class_id = SPVM_API_get_basic_type_class_id(env, method_return_basic_type_id);
-      int32_t method_return_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, method_return_class_id);
-      int32_t method_return_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, method_return_class_id);
-      int32_t method_return_mulnum_field_id = method_return_class_field_ids_base;
-      int32_t method_return_mulnum_field_type_id = SPVM_API_get_field_type_id(env, method_return_mulnum_field_id);
-      int32_t method_return_mulnum_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, method_return_mulnum_field_type_id);
-      
-      HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-      for (int32_t field_index = 0; field_index < method_return_class_field_ids_length; field_index++) {
-        SV* sv_field_value = NULL;
-        switch (method_return_mulnum_field_type_basic_type_id) {
-          case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
-            sv_field_value = sv_2mortal(newSViv(args_stack[field_index].bval));
-            break;
-          }
-          case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
-            sv_field_value = sv_2mortal(newSViv(args_stack[field_index].sval));
-            break;
-          }
-          case SPVM_API_C_BASIC_TYPE_ID_INT: {
-            sv_field_value = sv_2mortal(newSViv(args_stack[field_index].ival));
-            break;
-          }
-          case SPVM_API_C_BASIC_TYPE_ID_LONG: {
-            sv_field_value = sv_2mortal(newSViv(args_stack[field_index].lval));
-            break;
-          }
-          case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
-            sv_field_value = sv_2mortal(newSVnv(args_stack[field_index].fval));
-            break;
-          }
-          case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
-            sv_field_value = sv_2mortal(newSVnv(args_stack[field_index].dval));
-            break;
-          }
-          default: {
-            assert(0);
-          }
-        }
-        
-        int32_t mulnum_field_id = method_return_class_field_ids_base + field_index;
-        int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-        const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-        (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
-        sv_return_value = sv_2mortal(newRV_inc((SV*)hv_value));
-      }
-      break;
-    }
     default: {
 
       int32_t method_return_type_can_assign_to_any_object = SPVM_API_get_type_can_assign_to_any_object(env, method_return_type_id);
@@ -1123,6 +1017,112 @@ call_spvm_method(...)
       else {
         if (method_return_type_dimension == 0) {
           switch (method_return_basic_type_category) {
+            case SPVM_API_C_BASIC_TYPE_CATEGORY_VOID: {
+              excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
+              break;
+            }
+            case SPVM_API_C_TYPE_CATEGORY_NUMERIC: {
+              switch (method_return_basic_type_id) {
+                case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
+                  excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
+                  if (!excetpion_flag) {
+                    sv_return_value = sv_2mortal(newSViv(args_stack[0].bval));
+                  }
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
+                  excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
+                  if (!excetpion_flag) {
+                    sv_return_value = sv_2mortal(newSViv(args_stack[0].sval));
+                  }
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_INT: {
+                  excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
+                  if (!excetpion_flag) {
+                    sv_return_value = sv_2mortal(newSViv(args_stack[0].ival));
+                  }
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_LONG: {
+                  excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
+                  if (!excetpion_flag) {
+                    sv_return_value = sv_2mortal(newSViv(args_stack[0].lval));
+                  }
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
+                  excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
+                  if (!excetpion_flag) {
+                    sv_return_value = sv_2mortal(newSVnv(args_stack[0].fval));
+                  }
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
+                  excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
+                  if (!excetpion_flag) {
+                    sv_return_value = sv_2mortal(newSVnv(args_stack[0].dval));
+                  }
+                  break;
+                }
+                default: {
+                  assert(0);
+                }
+              }
+              break;
+            }
+            case SPVM_API_C_BASIC_TYPE_CATEGORY_MULNUM:
+            {
+              excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
+              
+              int32_t method_return_class_id = SPVM_API_get_basic_type_class_id(env, method_return_basic_type_id);
+              int32_t method_return_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, method_return_class_id);
+              int32_t method_return_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, method_return_class_id);
+              int32_t method_return_mulnum_field_id = method_return_class_field_ids_base;
+              int32_t method_return_mulnum_field_type_id = SPVM_API_get_field_type_id(env, method_return_mulnum_field_id);
+              int32_t method_return_mulnum_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, method_return_mulnum_field_type_id);
+              
+              HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
+              for (int32_t field_index = 0; field_index < method_return_class_field_ids_length; field_index++) {
+                SV* sv_field_value = NULL;
+                switch (method_return_mulnum_field_type_basic_type_id) {
+                  case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
+                    sv_field_value = sv_2mortal(newSViv(args_stack[field_index].bval));
+                    break;
+                  }
+                  case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
+                    sv_field_value = sv_2mortal(newSViv(args_stack[field_index].sval));
+                    break;
+                  }
+                  case SPVM_API_C_BASIC_TYPE_ID_INT: {
+                    sv_field_value = sv_2mortal(newSViv(args_stack[field_index].ival));
+                    break;
+                  }
+                  case SPVM_API_C_BASIC_TYPE_ID_LONG: {
+                    sv_field_value = sv_2mortal(newSViv(args_stack[field_index].lval));
+                    break;
+                  }
+                  case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
+                    sv_field_value = sv_2mortal(newSVnv(args_stack[field_index].fval));
+                    break;
+                  }
+                  case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
+                    sv_field_value = sv_2mortal(newSVnv(args_stack[field_index].dval));
+                    break;
+                  }
+                  default: {
+                    assert(0);
+                  }
+                }
+                
+                int32_t mulnum_field_id = method_return_class_field_ids_base + field_index;
+                int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+                const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+                (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
+                sv_return_value = sv_2mortal(newRV_inc((SV*)hv_value));
+              }
+              break;
+            }
             default: {
               assert(0);
             }
