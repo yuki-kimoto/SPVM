@@ -176,7 +176,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           for (int32_t args_index = 0; args_index < method->args_length; args_index++) {
             SPVM_MY* arg = SPVM_LIST_get(method->mys, args_index);
             SPVM_TYPE* arg_type = arg->type;
+            int32_t arg_type_dimension = arg->type->dimension;
             SPVM_BASIC_TYPE* arg_basic_type = arg_type->basic_type;
+            int32_t arg_type_is_ref = SPVM_TYPE_is_ref_type(compiler, arg_basic_type->id, arg_type_dimension, arg_type->flag);
+            int32_t arg_basic_type_category = arg_type->basic_type->category;
             
             SPVM_OPCODE opcode;
             memset(&opcode, 0, sizeof(SPVM_OPCODE));
