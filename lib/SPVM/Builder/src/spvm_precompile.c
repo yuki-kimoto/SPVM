@@ -3146,19 +3146,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         // Call method
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
         switch (decl_method_return_type_category) {
-          case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
-          case SPVM_API_C_TYPE_CATEGORY_STRING_ARRAY:
-          case SPVM_API_C_TYPE_CATEGORY_CLASS_ARRAY:
-          case SPVM_API_C_TYPE_CATEGORY_INTERFACE_ARRAY:
-          case SPVM_API_C_TYPE_CATEGORY_CALLBACK_ARRAY:
-          case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
-          case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:
-          {
-            SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(&");
-            SPVM_PRECOMPILE_add_operand(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, var_id);
-            SPVM_STRING_BUFFER_add(string_buffer, ", stack[0].oval);\n");
-            break;
-          }
           default: {
             if (decl_method_return_type_dimension == 0) {
               switch (decl_method_return_basic_type_category) {
@@ -3319,14 +3306,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
                 }
               }
             }
-            else if (decl_method_return_type_dimension == 1) {
-              switch (decl_method_return_basic_type_category) {
-                default: {
-                  assert(0);
-                }
-              }
-            }
-            else if (decl_method_return_type_dimension > 1) {
+            else if (decl_method_return_type_dimension > 0) {
               SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(&");
               SPVM_PRECOMPILE_add_operand(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, var_id);
               SPVM_STRING_BUFFER_add(string_buffer, ", stack[0].oval);\n");
