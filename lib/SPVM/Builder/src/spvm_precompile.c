@@ -3157,7 +3157,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
           case SPVM_API_C_TYPE_CATEGORY_INTERFACE_ARRAY:
           case SPVM_API_C_TYPE_CATEGORY_CALLBACK_ARRAY:
           case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
-          case SPVM_API_C_TYPE_CATEGORY_MULDIM_ARRAY:
           case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:
           {
             SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(&");
@@ -3322,11 +3321,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
               }
             }
             else if (decl_method_return_type_dimension > 1) {
-              switch (decl_method_return_basic_type_category) {
-                default: {
-                  assert(0);
-                }
-              }
+              SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(&");
+              SPVM_PRECOMPILE_add_operand(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, var_id);
+              SPVM_STRING_BUFFER_add(string_buffer, ", stack[0].oval);\n");
             }
             else {
               assert(0);
