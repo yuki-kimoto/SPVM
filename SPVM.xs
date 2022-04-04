@@ -1104,9 +1104,9 @@ call_spvm_method(...)
           else {
             sv_return_value = &PL_sv_undef;
           }
+          break;
         }
         default: {
-          warn("AAAAAAAAAAAA %d", method_return_basic_type_category);
           assert(0);
         }
       }
