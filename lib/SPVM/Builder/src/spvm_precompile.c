@@ -4644,7 +4644,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
-  int32_t method_return_type_can_assign_to_any_object = SPVM_API_get_type_can_assign_to_any_object(env, method_return_type_id);
+  int32_t method_return_type_can_assign_to_any_object = SPVM_API_get_type_is_object(env, method_return_type_id);
   if (method_return_type_can_assign_to_any_object) {
     SPVM_STRING_BUFFER_add(string_buffer, "    if (stack[0].oval != NULL) { SPVM_API_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");
   }

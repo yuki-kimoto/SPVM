@@ -7717,7 +7717,7 @@ int32_t SPVM_API_get_type_is_ref(SPVM_ENV* env, int32_t type_id) {
   return is_ref;
 }
 
-int32_t SPVM_API_get_type_can_assign_to_any_object(SPVM_ENV* env, int32_t type_id) {
+int32_t SPVM_API_get_type_is_object(SPVM_ENV* env, int32_t type_id) {
   
   SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);
   int32_t type_dimension = type->dimension;
