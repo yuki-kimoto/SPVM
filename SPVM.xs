@@ -245,6 +245,7 @@ call_spvm_method(...)
     int32_t arg_basic_type_category = SPVM_API_get_basic_type_category(env, arg_basic_type_id);
     int32_t arg_type_dimension = SPVM_API_get_type_dimension(env, arg_type_id);
     int32_t arg_type_category = SPVM_API_get_type_category(env, arg_type_id);
+    int32_t arg_type_is_ref = SPVM_API_get_type_is_ref(env, arg_type_id);
     
     // Process argument corresponding to the type category
     switch (arg_type_category) {
