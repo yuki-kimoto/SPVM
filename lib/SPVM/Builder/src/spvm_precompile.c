@@ -3056,6 +3056,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         int32_t decl_method_return_type_id = SPVM_API_get_method_return_type_id(env, decl_method_id);
         int32_t decl_method_return_type_category = SPVM_API_get_type_category(env, decl_method_return_type_id);
         int32_t decl_method_return_basic_type_id = SPVM_API_get_type_basic_type_id(env, decl_method_return_type_id);
+        int32_t decl_method_return_basic_type_category = SPVM_API_get_basic_type_category(env, decl_method_return_basic_type_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  // ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
