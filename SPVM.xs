@@ -971,6 +971,7 @@ call_spvm_method(...)
   int32_t method_return_basic_type_id = SPVM_API_get_type_basic_type_id(env, method_return_type_id);
   int32_t method_return_type_dimension = SPVM_API_get_type_dimension(env, method_return_type_id);
   int32_t method_return_type_category = SPVM_API_get_type_category(env, method_return_type_id);
+  int32_t method_return_basic_type_category = SPVM_API_get_basic_type_category(env, method_return_basic_type_id);
 
   SV* sv_return_value = NULL;
   int32_t excetpion_flag = 0;
