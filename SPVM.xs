@@ -242,6 +242,7 @@ call_spvm_method(...)
     int32_t arg_id = method_arg_ids_base + args_index;
     int32_t arg_type_id = SPVM_API_get_arg_type_id(env, arg_id);
     int32_t arg_basic_type_id = SPVM_API_get_type_basic_type_id(env, arg_type_id);
+    int32_t arg_basic_type_category = SPVM_API_get_basic_type_category(env, arg_basic_type_id);
     int32_t arg_type_dimension = SPVM_API_get_type_dimension(env, arg_type_id);
     int32_t arg_type_category = SPVM_API_get_type_category(env, arg_type_id);
     
