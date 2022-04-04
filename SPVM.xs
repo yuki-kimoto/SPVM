@@ -1136,97 +1136,101 @@ call_spvm_method(...)
       // Convert to runtime type
       int32_t arg_basic_type_id = SPVM_API_get_type_basic_type_id(env, arg_type_id);
       int32_t arg_type_dimension = SPVM_API_get_type_dimension(env, arg_type_id);
-      int32_t arg_type_category = SPVM_API_get_type_category(env, arg_type_id);
       int32_t arg_type_is_ref = SPVM_API_get_type_is_ref(env, arg_type_id);
       int32_t arg_basic_type_category = SPVM_API_get_basic_type_category(env, arg_basic_type_id);
       
-      int32_t ref_stack_index = ref_stack_indexes[args_index];
-      switch (arg_type_category) {
-        case SPVM_API_C_TYPE_CATEGORY_NUMERIC_REF: {
-          switch (arg_basic_type_id) {
-            case SPVM_API_C_BASIC_TYPE_ID_BYTE : {
-              SV* sv_value_deref = SvRV(sv_value);
-              sv_setiv(sv_value_deref, ref_stack[ref_stack_index].bval);
-              break;
-            }
-            case SPVM_API_C_BASIC_TYPE_ID_SHORT : {
-              SV* sv_value_deref = SvRV(sv_value);
-              sv_setiv(sv_value_deref, ref_stack[ref_stack_index].sval);
-              break;
-            }
-            case SPVM_API_C_BASIC_TYPE_ID_INT : {
-              SV* sv_value_deref = SvRV(sv_value);
-              sv_setiv(sv_value_deref, ref_stack[ref_stack_index].ival);
-              break;
-            }
-            case SPVM_API_C_BASIC_TYPE_ID_LONG : {
-              SV* sv_value_deref = SvRV(sv_value);
-              sv_setiv(sv_value_deref, ref_stack[ref_stack_index].lval);
-              break;
-            }
-            case SPVM_API_C_BASIC_TYPE_ID_FLOAT : {
-              SV* sv_value_deref = SvRV(sv_value);
-              sv_setnv(sv_value_deref, ref_stack[ref_stack_index].fval);
-              break;
-            }
-            case SPVM_API_C_BASIC_TYPE_ID_DOUBLE : {
-              SV* sv_value_deref = SvRV(sv_value);
-              sv_setnv(sv_value_deref, ref_stack[ref_stack_index].dval);
-              break;
-            }
-            default: {
-              assert(0);
-            }
-          }
-          break;
-        }
-        case SPVM_API_C_TYPE_CATEGORY_MULNUM_REF:
-        {
-          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-          int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
-          int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-          int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
-          int32_t arg_class_field_type_id = SPVM_API_get_field_type_id(env, arg_class_field_ids_base);
-          int32_t arg_class_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, arg_class_field_type_id);
-          int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-          int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
-          for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
-            int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-            int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
-            const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
-            SV* sv_field_value;
-            switch (arg_class_field_type_basic_type_id) {
-              case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
-                sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_index])[field_index]));
+      if (arg_type_is_ref) {
+        int32_t ref_stack_index = ref_stack_indexes[args_index];
+        switch (arg_basic_type_category) {
+          case SPVM_API_C_BASIC_TYPE_CATEGORY_NUMERIC: {
+            switch (arg_basic_type_id) {
+              case SPVM_API_C_BASIC_TYPE_ID_BYTE : {
+                SV* sv_value_deref = SvRV(sv_value);
+                sv_setiv(sv_value_deref, ref_stack[ref_stack_index].bval);
                 break;
               }
-              case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
-                sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_index])[field_index]));
+              case SPVM_API_C_BASIC_TYPE_ID_SHORT : {
+                SV* sv_value_deref = SvRV(sv_value);
+                sv_setiv(sv_value_deref, ref_stack[ref_stack_index].sval);
                 break;
               }
-              case SPVM_API_C_BASIC_TYPE_ID_INT: {
-                sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_index])[field_index]));
+              case SPVM_API_C_BASIC_TYPE_ID_INT : {
+                SV* sv_value_deref = SvRV(sv_value);
+                sv_setiv(sv_value_deref, ref_stack[ref_stack_index].ival);
                 break;
               }
-              case SPVM_API_C_BASIC_TYPE_ID_LONG: {
-                sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_index])[field_index]));
+              case SPVM_API_C_BASIC_TYPE_ID_LONG : {
+                SV* sv_value_deref = SvRV(sv_value);
+                sv_setiv(sv_value_deref, ref_stack[ref_stack_index].lval);
                 break;
               }
-              case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
-                sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_index])[field_index]));
+              case SPVM_API_C_BASIC_TYPE_ID_FLOAT : {
+                SV* sv_value_deref = SvRV(sv_value);
+                sv_setnv(sv_value_deref, ref_stack[ref_stack_index].fval);
                 break;
               }
-              case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
-                sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_index])[field_index]));
+              case SPVM_API_C_BASIC_TYPE_ID_DOUBLE : {
+                SV* sv_value_deref = SvRV(sv_value);
+                sv_setnv(sv_value_deref, ref_stack[ref_stack_index].dval);
                 break;
               }
               default: {
                 assert(0);
               }
             }
-            (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
+            break;
+          }
+          case SPVM_API_C_BASIC_TYPE_CATEGORY_MULNUM:
+          {
+            HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+            int32_t arg_class_id = SPVM_API_get_basic_type_class_id(env, arg_basic_type_id);
+            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
+            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+            int32_t arg_class_field_type_id = SPVM_API_get_field_type_id(env, arg_class_field_ids_base);
+            int32_t arg_class_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, arg_class_field_type_id);
+            int32_t arg_mulnum_field_id = arg_class_field_ids_base;
+            int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
+            for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
+              int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
+              int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+              const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
+              SV* sv_field_value;
+              switch (arg_class_field_type_basic_type_id) {
+                case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
+                  sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_index])[field_index]));
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
+                  sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_index])[field_index]));
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_INT: {
+                  sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_index])[field_index]));
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_LONG: {
+                  sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_index])[field_index]));
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
+                  sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_index])[field_index]));
+                  break;
+                }
+                case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
+                  sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_index])[field_index]));
+                  break;
+                }
+                default: {
+                  assert(0);
+                }
+              }
+              (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
+            }
           }
         }
+      }
+      else {
+        assert(0);
       }
     }
   }
