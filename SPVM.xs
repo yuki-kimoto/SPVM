@@ -1240,7 +1240,7 @@ call_spvm_method(...)
   // Success
   else {
     int32_t return_count;
-    if (method_return_type_category == SPVM_API_C_TYPE_CATEGORY_VOID) {
+    if (method_return_type_dimension == 0 && method_return_basic_type_category == SPVM_API_C_BASIC_TYPE_CATEGORY_VOID) {
       return_count = 0;
     }
     else {
