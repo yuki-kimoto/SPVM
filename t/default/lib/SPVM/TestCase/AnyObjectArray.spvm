@@ -1,4 +1,4 @@
-class TestCase::OArray {
+class TestCase::AnyObjectArray {
   static method basic : int () {
     
     # object[] - assign numeric object

@@ -686,6 +686,7 @@ t/default/__LINE__.t
 t/default/add.t
 t/default/alias.t
 t/default/allow.t
+t/default/any_object_array.t
 t/default/array.t
 t/default/array_big.t
 t/default/array_middle.t
@@ -729,6 +730,7 @@ t/default/lib/SPVM/TestCase/Add.spvm
 t/default/lib/SPVM/TestCase/Alias.spvm
 t/default/lib/SPVM/TestCase/Allow.spvm
 t/default/lib/SPVM/TestCase/Allow/PrivateData.spvm
+t/default/lib/SPVM/TestCase/AnyObjectArray.spvm
 t/default/lib/SPVM/TestCase/Array.spvm
 t/default/lib/SPVM/TestCase/ArrayBigSize.spvm
 t/default/lib/SPVM/TestCase/ArrayMiddleSize.spvm
@@ -956,7 +958,6 @@ t/default/lib/SPVM/TestCase/NativeAPICpp.native/include/mylib.hpp
 t/default/lib/SPVM/TestCase/NativeAPICpp.native/src/mylib.cpp
 t/default/lib/SPVM/TestCase/NativeAPICpp.spvm
 t/default/lib/SPVM/TestCase/NumericOperator.spvm
-t/default/lib/SPVM/TestCase/OArray.spvm
 t/default/lib/SPVM/TestCase/Object.spvm
 t/default/lib/SPVM/TestCase/OnlyField.spvm
 t/default/lib/SPVM/TestCase/Point_3b.spvm
@@ -1005,7 +1006,6 @@ t/default/native_api.t
 t/default/native_api_cached.t
 t/default/native_api_cpp.t
 t/default/numeric_operator.t
-t/default/oarray.t
 t/default/object.t
 t/default/precedence.t
 t/default/print.t

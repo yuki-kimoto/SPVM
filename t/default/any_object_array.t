@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::OArray';
+use SPVM 'TestCase::AnyObjectArray';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # isa
 {
-  ok(SPVM::TestCase::OArray->basic());
+  ok(SPVM::TestCase::AnyObjectArray->basic());
 }
 
 # All object is freed
