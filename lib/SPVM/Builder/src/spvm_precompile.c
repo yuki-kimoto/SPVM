@@ -3245,6 +3245,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
                 assert(0);
               }
             }
+            break;
           }
           default: {
             if (decl_method_return_type_dimension == 0) {
