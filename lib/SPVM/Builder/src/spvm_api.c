@@ -6854,7 +6854,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   // If reference count is zero, free address.
   if (object->ref_count == 1) {
-    // Free elements of object array
+    // Free object array
     if (SPVM_API_is_object_array(env, object)) {
       int32_t length = object->length;
       for (int32_t index = 0; index < length; index++) {
@@ -6865,55 +6865,58 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         }
       }
     }
-    // Free class object
-    else if (object->type_category == SPVM_API_C_TYPE_CATEGORY_CLASS && !SPVM_API_is_string(env, object)) {
-      
-      // Class
-      SPVM_RUNTIME* runtime = env->runtime;
-      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, object->basic_type_id);
-      SPVM_RUNTIME_CLASS* class;
-      if (!SPVM_API_get_class(env, basic_type->class_id)) {
-        class = NULL;
-      }
-      else {
-        class = SPVM_API_get_class(env, basic_type->class_id);
-      }
-      
-      int32_t is_pointer = 0;
-      if (class) {
-        if (class->flag & SPVM_CLASS_C_FLAG_POINTER) {
-          is_pointer = 1;
+    // Free object
+    else {
+      int32_t object_basic_type_id = object->basic_type_id;
+      int32_t object_basic_type_category = SPVM_API_get_basic_type_category(env, object_basic_type_id);
+      if (object_basic_type_category == SPVM_API_C_BASIC_TYPE_CATEGORY_CLASS) {
+        // Class
+        SPVM_RUNTIME* runtime = env->runtime;
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, object->basic_type_id);
+        SPVM_RUNTIME_CLASS* class;
+        if (!SPVM_API_get_class(env, basic_type->class_id)) {
+          class = NULL;
         }
-      }
-      
-      // Call destructor
-      if (object->flag & SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR) {
-        SPVM_VALUE args[1];
-        args[0].oval = object;
-        int32_t exception_flag = SPVM_API_call_spvm_method(env, class->method_destructor_id, args);
-        
-        // Exception in destructor is changed to warning
-        if (exception_flag) {
-          void* exception = env->get_exception(env);
-          const char* exception_chars = env->get_chars(env, exception);
-          fprintf(stderr, "(in cleanup) %s\n", exception_chars);
+        else {
+          class = SPVM_API_get_class(env, basic_type->class_id);
         }
         
-        assert(object->ref_count > 0);
-      }
-      
-      // Free object fields
-      int32_t object_fields_offset = class->object_fields_offset;
-      int32_t object_fields_length = class->object_fields_length;
-      for (int32_t index = 0; index < object_fields_length; index++) {
-        SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + object_fields_offset))[index]);
-        if (*get_field_object_address != NULL) {
-          // If object is weak, unweaken
-          if (SPVM_API_isweak(env, get_field_object_address)) {
-            SPVM_API_unweaken(env, get_field_object_address);
+        int32_t is_pointer = 0;
+        if (class) {
+          if (class->flag & SPVM_CLASS_C_FLAG_POINTER) {
+            is_pointer = 1;
+          }
+        }
+        
+        // Call destructor
+        if (object->flag & SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR) {
+          SPVM_VALUE args[1];
+          args[0].oval = object;
+          int32_t exception_flag = SPVM_API_call_spvm_method(env, class->method_destructor_id, args);
+          
+          // Exception in destructor is changed to warning
+          if (exception_flag) {
+            void* exception = env->get_exception(env);
+            const char* exception_chars = env->get_chars(env, exception);
+            fprintf(stderr, "(in cleanup) %s\n", exception_chars);
           }
           
-          SPVM_API_dec_ref_count(env, *get_field_object_address);
+          assert(object->ref_count > 0);
+        }
+        
+        // Free object fields
+        int32_t object_fields_offset = class->object_fields_offset;
+        int32_t object_fields_length = class->object_fields_length;
+        for (int32_t index = 0; index < object_fields_length; index++) {
+          SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + object_fields_offset))[index]);
+          if (*get_field_object_address != NULL) {
+            // If object is weak, unweaken
+            if (SPVM_API_isweak(env, get_field_object_address)) {
+              SPVM_API_unweaken(env, get_field_object_address);
+            }
+            
+            SPVM_API_dec_ref_count(env, *get_field_object_address);
+          }
         }
       }
     }
