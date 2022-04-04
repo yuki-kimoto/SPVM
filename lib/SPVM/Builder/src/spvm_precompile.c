@@ -3308,6 +3308,17 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
                   }
                   break;
                 }
+                case SPVM_API_C_TYPE_CATEGORY_STRING:
+                case SPVM_API_C_TYPE_CATEGORY_CLASS:
+                case SPVM_API_C_TYPE_CATEGORY_INTERFACE:
+                case SPVM_API_C_TYPE_CATEGORY_CALLBACK:
+                case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
+                {
+                  SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(&");
+                  SPVM_PRECOMPILE_add_operand(env, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, var_id);
+                  SPVM_STRING_BUFFER_add(string_buffer, ", stack[0].oval);\n");
+                  break;
+                }
                 default: {
                   assert(0);
                 }
