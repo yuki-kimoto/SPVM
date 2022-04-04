@@ -1083,6 +1083,7 @@ call_spvm_method(...)
       break;
     }
     default: {
+
       int32_t method_return_type_can_assign_to_any_object = SPVM_API_get_type_can_assign_to_any_object(env, method_return_type_id);
       if (method_return_type_can_assign_to_any_object) {
         excetpion_flag = env->call_spvm_method(env, method_id, args_stack);
@@ -1120,7 +1121,30 @@ call_spvm_method(...)
         break;
       }
       else {
-        assert(0);
+        if (method_return_type_dimension == 0) {
+          switch (method_return_basic_type_category) {
+            default: {
+              assert(0);
+            }
+          }
+        }
+        else if (method_return_type_dimension == 1) {
+          switch (method_return_basic_type_category) {
+            default: {
+              assert(0);
+            }
+          }
+        }
+        else if (method_return_type_dimension > 1) {
+          switch (method_return_basic_type_category) {
+            default: {
+              assert(0);
+            }
+          }
+        }
+        else {
+          assert(0);
+        }
       }
     }
   }
