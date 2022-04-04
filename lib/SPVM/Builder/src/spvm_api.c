@@ -7629,6 +7629,17 @@ int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
   }
 }
 
+int32_t SPVM_API_get_basic_type_category(SPVM_ENV* env, int32_t basic_type_id) {
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_id);
+  
+  assert(basic_type);
+  
+  int32_t basic_type_category = basic_type->category;
+  
+  return basic_type_category;
+}
+
 int32_t SPVM_API_get_basic_type_name_id(SPVM_ENV* env, int32_t basic_type_id) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_id);
