@@ -3054,6 +3054,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         const char* decl_method_class_name = SPVM_API_get_name(env, decl_method_class_name_id);
         int32_t decl_method_has_precompile_flag = SPVM_API_get_method_has_precompile_flag(env, decl_method_id);
         int32_t decl_method_return_type_id = SPVM_API_get_method_return_type_id(env, decl_method_id);
+        int32_t decl_method_return_type_dimension = SPVM_API_get_type_dimension(env, decl_method_return_type_id);
         int32_t decl_method_return_type_category = SPVM_API_get_type_category(env, decl_method_return_type_id);
         int32_t decl_method_return_basic_type_id = SPVM_API_get_type_basic_type_id(env, decl_method_return_type_id);
         int32_t decl_method_return_basic_type_category = SPVM_API_get_basic_type_category(env, decl_method_return_basic_type_id);
