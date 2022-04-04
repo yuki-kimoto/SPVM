@@ -3305,6 +3305,32 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
               }
             }
           }
+          default: {
+            if (decl_method_return_type_dimension == 0) {
+              switch (decl_method_return_basic_type_category) {
+                default: {
+                  assert(0);
+                }
+              }
+            }
+            else if (decl_method_return_type_dimension == 1) {
+              switch (decl_method_return_basic_type_category) {
+                default: {
+                  assert(0);
+                }
+              }
+            }
+            else if (decl_method_return_type_dimension > 1) {
+              switch (decl_method_return_basic_type_category) {
+                default: {
+                  assert(0);
+                }
+              }
+            }
+            else {
+              assert(0);
+            }
+          }
         }
 
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
