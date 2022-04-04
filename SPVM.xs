@@ -605,9 +605,18 @@ call_spvm_method(...)
       }
       default: {
         if (arg_type_dimension == 0) {
-          switch (arg_type_category) {
-            default: {
-              assert(0);
+          if (arg_type_is_ref) {
+            switch (arg_type_category) {
+              default: {
+                assert(0);
+              }
+            }
+          }
+          else {
+            switch (arg_type_category) {
+              default: {
+                assert(0);
+              }
             }
           }
         }
