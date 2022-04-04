@@ -526,7 +526,6 @@ call_spvm_method(...)
               else {
                 if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
                   SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-                  assert(arg_type_dimension == 0);
                   if (SPVM_API_object_get_basic_type_id(object) != arg_basic_type_id) {
                     croak("%dth argument of %s->%s must be %s class line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
                   }
@@ -724,7 +723,7 @@ call_spvm_method(...)
               int32_t object_basic_type_id = SPVM_API_object_get_basic_type_id(object);
               int32_t object_type_dimension = SPVM_API_object_get_type_dimension(object);
               
-              if (!(object_basic_type_id == arg_basic_type_id && object_type_dimension == arg_type_dimension)) {
+              if (!(object_basic_type_id == arg_basic_type_id)) {
                 croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
               }
               
@@ -751,7 +750,6 @@ call_spvm_method(...)
               SV* sv_elems = sv_value;
               AV* av_elems = (AV*)SvRV(sv_elems);
               int32_t length = av_len(av_elems) + 1;
-              assert(arg_type_dimension == 1);
               
               SV* sv_error = NULL;
               const char* arg_basic_type_name = SPVM_API_get_basic_type_name(env, arg_basic_type_id);
@@ -796,7 +794,7 @@ call_spvm_method(...)
             // Perl array referecne of argument to SPVM array
             if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
               // String array
-              if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_STRING && arg_type_dimension == 1) {
+              if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_STRING) {
                 SV* sv_elems = sv_value;
                 AV* av_elems = (AV*)SvRV(sv_elems);
                 int32_t length = av_len(av_elems) + 1;
@@ -842,7 +840,7 @@ call_spvm_method(...)
                 can_assign = 1;
               }
               else {
-                if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT && arg_type_dimension == 1) {
+                if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT) {
                   if (object_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT && object_type_dimension == 1) {
                     can_assign = 0;
                   }
@@ -850,7 +848,7 @@ call_spvm_method(...)
                     can_assign = 1;
                   }
                 }
-                else if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT && arg_type_dimension == 1) {
+                else if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT) {
                   can_assign = 1;
                 }
                 else {
@@ -886,7 +884,7 @@ call_spvm_method(...)
         // Perl array referecne of argument to SPVM array
         if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
           // String array
-          if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_STRING && arg_type_dimension == 1) {
+          if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_STRING) {
             SV* sv_elems = sv_value;
             AV* av_elems = (AV*)SvRV(sv_elems);
             int32_t length = av_len(av_elems) + 1;
@@ -932,7 +930,7 @@ call_spvm_method(...)
             can_assign = 1;
           }
           else {
-            if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT && arg_type_dimension == 1) {
+            if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT) {
               if (object_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT && object_type_dimension == 1) {
                 can_assign = 0;
               }
@@ -940,7 +938,7 @@ call_spvm_method(...)
                 can_assign = 1;
               }
             }
-            else if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT && arg_type_dimension == 1) {
+            else if (arg_basic_type_id == SPVM_API_C_BASIC_TYPE_ID_ANY_OBJECT) {
               can_assign = 1;
             }
             else {
