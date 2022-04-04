@@ -188,8 +188,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             if (arg_type_dimension == 0) {
               if (arg_type_is_ref) {
                 switch (arg_basic_type_category) {
-                  case SPVM_TYPE_C_CATEGORY_NUMERIC:
-                  case SPVM_TYPE_C_CATEGORY_MULNUM:
+                  case SPVM_BASIC_TYPE_C_CATEGORY_NUMERIC:
+                  case SPVM_BASIC_TYPE_C_CATEGORY_MULNUM:
                   {
                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_REF);
                     opcode.operand1 = arg->mem_id;
@@ -205,7 +205,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               }
               else {
                 switch (arg_basic_type_category) {
-                  case SPVM_TYPE_C_CATEGORY_NUMERIC: {
+                  case SPVM_BASIC_TYPE_C_CATEGORY_NUMERIC: {
                     switch (arg_basic_type->id) {
                       case SPVM_BASIC_TYPE_C_ID_BYTE: {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_BYTE);
@@ -255,7 +255,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     break;
                   }
-                  case SPVM_TYPE_C_CATEGORY_MULNUM:
+                  case SPVM_BASIC_TYPE_C_CATEGORY_MULNUM:
                   {
                     SPVM_CLASS* arg_class = arg_basic_type->class;
                     SPVM_FIELD* arg_mulnum_field = SPVM_LIST_get(arg_class->fields, 0);
@@ -294,11 +294,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     stack_index += type_width;
                     break;
                   }
-                  case SPVM_TYPE_C_CATEGORY_STRING:
-                  case SPVM_TYPE_C_CATEGORY_CLASS:
-                  case SPVM_TYPE_C_CATEGORY_INTERFACE:
-                  case SPVM_TYPE_C_CATEGORY_CALLBACK:
-                  case SPVM_TYPE_C_CATEGORY_ANY_OBJECT:
+                  case SPVM_BASIC_TYPE_C_CATEGORY_STRING:
+                  case SPVM_BASIC_TYPE_C_CATEGORY_CLASS:
+                  case SPVM_BASIC_TYPE_C_CATEGORY_INTERFACE:
+                  case SPVM_BASIC_TYPE_C_CATEGORY_CALLBACK:
+                  case SPVM_BASIC_TYPE_C_CATEGORY_ANY_OBJECT:
                   {
                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
                     opcode.operand1 = arg->mem_id;
@@ -315,13 +315,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             }
             else if (arg_type_dimension == 1) {
               switch (arg_basic_type_category) {
-                case SPVM_TYPE_C_CATEGORY_NUMERIC:
-                case SPVM_TYPE_C_CATEGORY_MULNUM:
-                case SPVM_TYPE_C_CATEGORY_STRING:
-                case SPVM_TYPE_C_CATEGORY_CLASS:
-                case SPVM_TYPE_C_CATEGORY_INTERFACE:
-                case SPVM_TYPE_C_CATEGORY_CALLBACK:
-                case SPVM_TYPE_C_CATEGORY_ANY_OBJECT:
+                case SPVM_BASIC_TYPE_C_CATEGORY_NUMERIC:
+                case SPVM_BASIC_TYPE_C_CATEGORY_MULNUM:
+                case SPVM_BASIC_TYPE_C_CATEGORY_STRING:
+                case SPVM_BASIC_TYPE_C_CATEGORY_CLASS:
+                case SPVM_BASIC_TYPE_C_CATEGORY_INTERFACE:
+                case SPVM_BASIC_TYPE_C_CATEGORY_CALLBACK:
+                case SPVM_BASIC_TYPE_C_CATEGORY_ANY_OBJECT:
                 {
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
                   opcode.operand1 = arg->mem_id;
