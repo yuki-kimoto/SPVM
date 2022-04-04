@@ -7731,6 +7731,8 @@ int32_t SPVM_API_get_type_is_ref(SPVM_ENV* env, int32_t type_id) {
 int32_t SPVM_API_get_type_can_assign_to_any_object(SPVM_ENV* env, int32_t type_id) {
   
   SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);
+  int32_t basic_type_id = type->basic_type_id;
+  int32_t basic_type_category = SPVM_API_get_basic_type_category(env, basic_type_id);
   
   assert(type);
   
