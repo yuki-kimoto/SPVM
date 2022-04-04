@@ -305,8 +305,32 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 stack_index++;
                 break;
               }
-              default:
-                assert(0);
+              default: {
+                if (arg_type_dimension == 0) {
+                  switch (arg_basic_type_category) {
+                    default: {
+                      assert(0);
+                    }
+                  }
+                }
+                else if (arg_type_dimension == 1) {
+                  switch (arg_basic_type_category) {
+                    default: {
+                      assert(0);
+                    }
+                  }
+                }
+                else if (arg_type_dimension == 2) {
+                  switch (arg_basic_type_category) {
+                    default: {
+                      assert(0);
+                    }
+                  }
+                }
+                else {
+                  assert(0);
+                }
+              }
             }
             
             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
