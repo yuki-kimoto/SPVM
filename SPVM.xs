@@ -990,7 +990,7 @@ call_spvm_method(...)
         case SPVM_API_C_BASIC_TYPE_CATEGORY_VOID: {
           break;
         }
-        case SPVM_API_C_TYPE_CATEGORY_NUMERIC: {
+        case SPVM_API_C_BASIC_TYPE_CATEGORY_NUMERIC: {
           switch (method_return_basic_type_id) {
             case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
               sv_return_value = sv_2mortal(newSViv(args_stack[0].bval));
@@ -1072,11 +1072,11 @@ call_spvm_method(...)
           }
           break;
         }
-        case SPVM_API_C_TYPE_CATEGORY_STRING:
-        case SPVM_API_C_TYPE_CATEGORY_CLASS:
-        case SPVM_API_C_TYPE_CATEGORY_INTERFACE:
-        case SPVM_API_C_TYPE_CATEGORY_CALLBACK:
-        case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
+        case SPVM_API_C_BASIC_TYPE_CATEGORY_STRING:
+        case SPVM_API_C_BASIC_TYPE_CATEGORY_CLASS:
+        case SPVM_API_C_BASIC_TYPE_CATEGORY_INTERFACE:
+        case SPVM_API_C_BASIC_TYPE_CATEGORY_CALLBACK:
+        case SPVM_API_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
         {
           SPVM_OBJECT* return_value = (SPVM_OBJECT*)args_stack[0].oval;
           sv_return_value = NULL;
