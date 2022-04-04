@@ -7730,11 +7730,11 @@ int32_t SPVM_API_get_type_is_object(SPVM_ENV* env, int32_t type_id) {
   
   if (type_dimension == 0) {
     switch (basic_type_category) {
-      case SPVM_API_C_TYPE_CATEGORY_STRING:
-      case SPVM_API_C_TYPE_CATEGORY_CLASS:
-      case SPVM_API_C_TYPE_CATEGORY_INTERFACE:
-      case SPVM_API_C_TYPE_CATEGORY_CALLBACK:
-      case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
+      case SPVM_API_C_BASIC_TYPE_CATEGORY_STRING:
+      case SPVM_API_C_BASIC_TYPE_CATEGORY_CLASS:
+      case SPVM_API_C_BASIC_TYPE_CATEGORY_INTERFACE:
+      case SPVM_API_C_BASIC_TYPE_CATEGORY_CALLBACK:
+      case SPVM_API_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
       {
         is_object = 1;
         break;
