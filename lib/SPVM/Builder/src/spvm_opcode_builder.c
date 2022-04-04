@@ -4849,17 +4849,19 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else {
                             int32_t is_check_type;
-                            switch (array_type->category) {
-                              case SPVM_TYPE_C_CATEGORY_INTERFACE_ARRAY:
-                              case SPVM_TYPE_C_CATEGORY_CALLBACK_ARRAY:
-                              case SPVM_TYPE_C_CATEGORY_ANY_OBJECT_ARRAY:
-                              {
-                                is_check_type = 1;
-                                break;
-                              }
-                              default: {
-                                is_check_type = 0;
-                                break;
+                            if (array_type_dimension == 1) {
+                              switch (array_basic_type_category) {
+                                case SPVM_BASIC_TYPE_C_CATEGORY_INTERFACE:
+                                case SPVM_BASIC_TYPE_C_CATEGORY_CALLBACK:
+                                case SPVM_BASIC_TYPE_C_CATEGORY_ANY_OBJECT:
+                                {
+                                  is_check_type = 1;
+                                  break;
+                                }
+                                default: {
+                                  is_check_type = 0;
+                                  break;
+                                }
                               }
                             }
                             
