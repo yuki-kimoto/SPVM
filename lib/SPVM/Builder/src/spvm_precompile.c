@@ -3146,11 +3146,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         // Call method
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
         switch (decl_method_return_type_category) {
-          case SPVM_API_C_TYPE_CATEGORY_STRING:
-          case SPVM_API_C_TYPE_CATEGORY_CLASS:
-          case SPVM_API_C_TYPE_CATEGORY_INTERFACE:
-          case SPVM_API_C_TYPE_CATEGORY_CALLBACK:
-          case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
           case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
           case SPVM_API_C_TYPE_CATEGORY_STRING_ARRAY:
           case SPVM_API_C_TYPE_CATEGORY_CLASS_ARRAY:
