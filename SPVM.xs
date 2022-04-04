@@ -1106,6 +1106,7 @@ call_spvm_method(...)
           }
         }
         default: {
+          warn("AAAAAAAAAAAA %d", method_return_basic_type_category);
           assert(0);
         }
       }
