@@ -1068,33 +1068,6 @@ int32_t SPVM_TYPE_is_mulnum_array_type(SPVM_COMPILER* compiler, int32_t basic_ty
   return is_mulnum_array_type;
 }
 
-int32_t SPVM_TYPE_basic_type_is_mulnum_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
-  (void)compiler;
-  (void)dimension;
-
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-  
-  int32_t is_basic_type_mulnum_t;
-  const char* basic_type_name = basic_type->name;
-  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
-  
-  // Class
-  if (class) {
-    if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-      is_basic_type_mulnum_t = 1;
-    }
-    else {
-      is_basic_type_mulnum_t = 0;
-    }
-  }
-  // Numeric type
-  else {
-    is_basic_type_mulnum_t = 0;
-  }
-  
-  return is_basic_type_mulnum_t;
-}
-
 int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   int32_t is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, basic_type_id, dimension, flag);
