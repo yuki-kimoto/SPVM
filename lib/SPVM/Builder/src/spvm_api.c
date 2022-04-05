@@ -5581,15 +5581,38 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object) {
 }
 
 int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_OBJECT* object) {
-  
+
   int32_t is_mulnum_array;
   if (object) {
-    is_mulnum_array = object->type_category == SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY;
+    int32_t object_type_dimension = object->type_dimension;
+    if (object_type_dimension == 0) {
+      is_mulnum_array = 0;
+    }
+    else if (object_type_dimension == 1) {
+      int32_t object_basic_type_id = object->basic_type_id;
+      int32_t object_basic_type_category = SPVM_API_get_basic_type_category(env, object_basic_type_id);
+      switch (object_basic_type_category) {
+        case SPVM_API_C_BASIC_TYPE_CATEGORY_MULNUM:
+        {
+          is_mulnum_array = 1;
+          break;
+        }
+        default: {
+          is_mulnum_array = 0;
+        }
+      }
+    }
+    else if (object_type_dimension > 1) {
+      is_mulnum_array = 0;
+    }
+    else {
+      assert(0);
+    }
   }
   else {
     is_mulnum_array = 0;
   }
-  
+
   return is_mulnum_array;
 }
 
