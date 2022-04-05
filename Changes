@@ -1,4 +1,7 @@
 Revision history for SPVM
+0.9510_01  2021-04-05
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Internally used Native APIs object_type_category_offset become always NULL.
 0.9509_02  2021-04-04
         [CHANGE]
         * Add alias syntax

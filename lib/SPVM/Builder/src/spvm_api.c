@@ -103,7 +103,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_type_dimension_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, type_category), // object_type_category_offset
+    (void*)NULL, // object_type_category_offset(unused)
     (void*)(intptr_t)offsetof(SPVM_OBJECT, flag), // object_flag_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT, // byte_object_basic_type_id
@@ -7842,13 +7842,6 @@ int32_t SPVM_API_object_get_type_dimension(SPVM_OBJECT* object) {
   return object->type_dimension;
 }
 
-int32_t SPVM_API_object_get_type_category(SPVM_OBJECT* object) {
-  
-  assert(object);
-  
-  return object->type_category;
-}
-
 int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
@@ -8195,7 +8188,6 @@ SPVM_OBJECT* SPVM_API_new_array_proto_raw(SPVM_ENV* env, SPVM_OBJECT* array, int
 
   new_array->basic_type_id = array->basic_type_id;
   new_array->type_dimension = array->type_dimension;
-  new_array->type_category = array->type_category;
   new_array->length = length;
   
   return new_array;
@@ -8863,7 +8855,6 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
   else {
     int32_t array_basic_type_id = array->basic_type_id;
     int32_t array_type_dimension = array->type_dimension;
-    int32_t array_type_category = array->type_category;
     int32_t array_basic_type_category = SPVM_API_get_basic_type_category(env, array_basic_type_id);
 
     int32_t element_basic_type_id = element->basic_type_id;

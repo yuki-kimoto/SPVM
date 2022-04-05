@@ -892,6 +892,8 @@ Offset of type dimension in object structure. This is used internally.
 
 Offset of runtime type category in object structure. This is used internally.
 
+This value is always C<NULL>, because SPVM 0.9511+, this value is any more used.
+
 =head2 object_flag_offset
 
   void* object_flag_offset;

@@ -455,7 +455,6 @@ const char* SPVM_API_get_module_source(SPVM_COMPILER* compiler, const char* clas
 
 int32_t SPVM_API_object_get_basic_type_id(SPVM_OBJECT* object);
 int32_t SPVM_API_object_get_type_dimension(SPVM_OBJECT* object);
-int32_t SPVM_API_object_get_type_category(SPVM_OBJECT* object);
 
 int32_t SPVM_API_get_arg_type_id(SPVM_ENV* env, int32_t arg_id);
 
