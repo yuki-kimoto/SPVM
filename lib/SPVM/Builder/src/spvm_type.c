@@ -791,7 +791,7 @@ int32_t SPVM_TYPE_is_basic_object_type(SPVM_COMPILER* compiler, int32_t basic_ty
   }
 }
 
-int32_t SPVM_TYPE_is_object_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+int32_t SPVM_TYPE_is_basic_object_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
   if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
@@ -964,7 +964,7 @@ int32_t SPVM_TYPE_is_string_array_type(SPVM_COMPILER* compiler, int32_t basic_ty
   (void)compiler;
   
   int32_t is_string_array_type;
-  if (SPVM_TYPE_is_object_array_type(compiler, basic_type_id, dimension, flag)) {
+  if (SPVM_TYPE_is_basic_object_array_type(compiler, basic_type_id, dimension, flag)) {
     int32_t element_dimension = dimension - 1;
     if (SPVM_TYPE_is_string_type(compiler, basic_type_id, element_dimension, flag)) {
       is_string_array_type = 1;
@@ -984,7 +984,7 @@ int32_t SPVM_TYPE_is_class_array_type(SPVM_COMPILER* compiler, int32_t basic_typ
   (void)compiler;
   
   int32_t is_class_array_type;
-  if (SPVM_TYPE_is_object_array_type(compiler, basic_type_id, dimension, flag)) {
+  if (SPVM_TYPE_is_basic_object_array_type(compiler, basic_type_id, dimension, flag)) {
     int32_t element_dimension = dimension - 1;
     if (SPVM_TYPE_is_class_type(compiler, basic_type_id, element_dimension, flag)) {
       is_class_array_type = 1;
@@ -1004,7 +1004,7 @@ int32_t SPVM_TYPE_is_interface_array_type(SPVM_COMPILER* compiler, int32_t basic
   (void)compiler;
   
   int32_t is_interface_array_type;
-  if (SPVM_TYPE_is_object_array_type(compiler, basic_type_id, dimension, flag)) {
+  if (SPVM_TYPE_is_basic_object_array_type(compiler, basic_type_id, dimension, flag)) {
     int32_t element_dimension = dimension - 1;
     if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, element_dimension, flag)) {
       is_interface_array_type = 1;
@@ -1024,7 +1024,7 @@ int32_t SPVM_TYPE_is_callback_array_type(SPVM_COMPILER* compiler, int32_t basic_
   (void)compiler;
   
   int32_t is_callback_array_type;
-  if (SPVM_TYPE_is_object_array_type(compiler, basic_type_id, dimension, flag)) {
+  if (SPVM_TYPE_is_basic_object_array_type(compiler, basic_type_id, dimension, flag)) {
     int32_t element_dimension = dimension - 1;
     if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, element_dimension, flag)) {
       is_callback_array_type = 1;
@@ -1313,7 +1313,7 @@ int32_t SPVM_TYPE_get_elem_byte_size(SPVM_COMPILER* compiler, int32_t basic_type
       assert(0);
     }
   }
-  else if (SPVM_TYPE_is_object_array_type(compiler, basic_type_id, dimension, flag)) {
+  else if (SPVM_TYPE_is_basic_object_array_type(compiler, basic_type_id, dimension, flag)) {
     elem_byte_size = sizeof(void*);
   }
   else {
@@ -1651,7 +1651,7 @@ int32_t SPVM_TYPE_can_assign(
   // Dist type is interface array type
   else if (SPVM_TYPE_is_interface_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     // Source type is interface array
-    if (SPVM_TYPE_is_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+    if (SPVM_TYPE_is_basic_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_assign = SPVM_TYPE_has_interface(
         compiler,
         src_type_basic_type_id, dist_type_dimension - 1, 0,
@@ -1669,7 +1669,7 @@ int32_t SPVM_TYPE_can_assign(
   // Dist type is callback array type
   else if (SPVM_TYPE_is_callback_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     // Source type is callback array
-    if (SPVM_TYPE_is_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+    if (SPVM_TYPE_is_basic_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_assign = SPVM_TYPE_has_callback(
         compiler,
         src_type_basic_type_id, dist_type_dimension - 1, 0,
@@ -1687,7 +1687,7 @@ int32_t SPVM_TYPE_can_assign(
   // Dist type is any object array(object[])
   else if (SPVM_TYPE_is_any_object_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     
-    if (SPVM_TYPE_is_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+    if (SPVM_TYPE_is_basic_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_assign = 1;
     }
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
