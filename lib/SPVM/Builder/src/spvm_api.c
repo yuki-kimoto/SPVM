@@ -4113,39 +4113,27 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
               case SPVM_API_C_BASIC_TYPE_CATEGORY_NUMERIC: {
                 switch (call_spvm_method_return_basic_type_id) {
                   case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
-                    if (!exception_flag) {
-                      byte_vars[opcode->operand0] = *(int8_t*)&stack[0];
-                    }
+                    byte_vars[opcode->operand0] = *(int8_t*)&stack[0];
                     break;
                   }
                   case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
-                    if (!exception_flag) {
-                      short_vars[opcode->operand0] = *(int16_t*)&stack[0];
-                    }
+                    short_vars[opcode->operand0] = *(int16_t*)&stack[0];
                     break;
                   }
                   case SPVM_API_C_BASIC_TYPE_ID_INT: {
-                    if (!exception_flag) {
-                      int_vars[opcode->operand0] = *(int32_t*)&stack[0];
-                    }
+                    int_vars[opcode->operand0] = *(int32_t*)&stack[0];
                     break;
                   }
                   case SPVM_API_C_BASIC_TYPE_ID_LONG: {
-                    if (!exception_flag) {
-                      long_vars[opcode->operand0] = *(int64_t*)&stack[0];
-                    }
+                    long_vars[opcode->operand0] = *(int64_t*)&stack[0];
                     break;
                   }
                   case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
-                    if (!exception_flag) {
-                      float_vars[opcode->operand0] = *(float*)&stack[0];
-                    }
+                    float_vars[opcode->operand0] = *(float*)&stack[0];
                     break;
                   }
                   case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
-                    if (!exception_flag) {
-                      double_vars[opcode->operand0] = *(double*)&stack[0];
-                    }
+                    double_vars[opcode->operand0] = *(double*)&stack[0];
                     break;
                   }
                   default: {
@@ -4160,9 +4148,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
               case SPVM_API_C_BASIC_TYPE_CATEGORY_CALLBACK:
               case SPVM_API_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
               {
-                if (!exception_flag) {
-                  SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], stack[0].oval);
-                }
+                SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], stack[0].oval);
                 break;
               }
               case SPVM_API_C_BASIC_TYPE_CATEGORY_MULNUM:
@@ -4176,56 +4162,44 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
                 
                 switch(method_return_mulnum_field_type_basic_type_id) {
                   case SPVM_API_C_BASIC_TYPE_ID_BYTE: {
-                    if (!exception_flag) {
-                      int32_t fields_length = opcode->operand3;
-                      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                        byte_vars[opcode->operand0 + field_index] = *(int8_t*)&stack[field_index];
-                      }
+                    int32_t fields_length = opcode->operand3;
+                    for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                      byte_vars[opcode->operand0 + field_index] = *(int8_t*)&stack[field_index];
                     }
                     break;
                   }
                   case SPVM_API_C_BASIC_TYPE_ID_SHORT: {
-                    if (!exception_flag) {
-                      int32_t fields_length = opcode->operand3;
-                      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                        short_vars[opcode->operand0 + field_index] = *(int16_t*)&stack[field_index];
-                      }
+                    int32_t fields_length = opcode->operand3;
+                    for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                      short_vars[opcode->operand0 + field_index] = *(int16_t*)&stack[field_index];
                     }
                     break;
                   }
                   case SPVM_API_C_BASIC_TYPE_ID_INT: {
-                    if (!exception_flag) {
-                      int32_t fields_length = opcode->operand3;
-                      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                        int_vars[opcode->operand0 + field_index] = *(int32_t*)&stack[field_index];
-                      }
+                    int32_t fields_length = opcode->operand3;
+                    for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                      int_vars[opcode->operand0 + field_index] = *(int32_t*)&stack[field_index];
                     }
                     break;
                   }
                   case SPVM_API_C_BASIC_TYPE_ID_LONG: {
-                    if (!exception_flag) {
-                      int32_t fields_length = opcode->operand3;
-                      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                        long_vars[opcode->operand0 + field_index] = *(int64_t*)&stack[field_index];
-                      }
+                    int32_t fields_length = opcode->operand3;
+                    for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                      long_vars[opcode->operand0 + field_index] = *(int64_t*)&stack[field_index];
                     }
                     break;
                   }
                   case SPVM_API_C_BASIC_TYPE_ID_FLOAT: {
-                    if (!exception_flag) {
-                      int32_t fields_length = opcode->operand3;
-                      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                        float_vars[opcode->operand0 + field_index] = *(float*)&stack[field_index];
-                      }
+                    int32_t fields_length = opcode->operand3;
+                    for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                      float_vars[opcode->operand0 + field_index] = *(float*)&stack[field_index];
                     }
                     break;
                   }
                   case SPVM_API_C_BASIC_TYPE_ID_DOUBLE: {
-                    if (!exception_flag) {
-                      int32_t fields_length = opcode->operand3;
-                      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                        double_vars[opcode->operand0 + field_index] = *(double*)&stack[field_index];
-                      }
+                    int32_t fields_length = opcode->operand3;
+                    for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                      double_vars[opcode->operand0 + field_index] = *(double*)&stack[field_index];
                     }
                     break;
                   }
@@ -4241,9 +4215,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             }
           }
           else if (call_spvm_method_return_type_dimension > 0) {
-            if (!exception_flag) {
-              SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], stack[0].oval);
-            }
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], stack[0].oval);
           }
           else {
             assert(0);
