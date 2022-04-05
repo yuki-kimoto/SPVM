@@ -11,7 +11,7 @@ struct spvm_runtime_type {
   int32_t dimension;
   int32_t flag;
   int32_t width;
-  int32_t mulnum_basic_type_id;
+  int32_t mulnum_field_basic_type_id;
 };
 
 #endif

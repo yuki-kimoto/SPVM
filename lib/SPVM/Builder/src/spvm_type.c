@@ -1091,9 +1091,9 @@ int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int3
   return width;
 }
 
-int32_t SPVM_TYPE_get_mulnum_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+int32_t SPVM_TYPE_get_mulnum_field_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
-  int32_t mulnum_basic_type_id;
+  int32_t mulnum_field_basic_type_id;
   if (SPVM_TYPE_is_mulnum_type(compiler, basic_type_id, dimension, flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, basic_type_id, dimension, flag)) {
     
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
@@ -1107,13 +1107,13 @@ int32_t SPVM_TYPE_get_mulnum_basic_type_id(SPVM_COMPILER* compiler, int32_t basi
     
     SPVM_TYPE* mulnum_field_type = mulnum_field->type;
     
-    mulnum_basic_type_id = mulnum_field_type->basic_type->id;
+    mulnum_field_basic_type_id = mulnum_field_type->basic_type->id;
   }
   else {
-    mulnum_basic_type_id = -1;
+    mulnum_field_basic_type_id = -1;
   }
   
-  return mulnum_basic_type_id;
+  return mulnum_field_basic_type_id;
 }
 
 int32_t SPVM_TYPE_get_elem_byte_size(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
