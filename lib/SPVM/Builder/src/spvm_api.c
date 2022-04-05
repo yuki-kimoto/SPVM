@@ -5736,8 +5736,8 @@ int32_t SPVM_API_has_interface_by_id(SPVM_ENV* env, int32_t object_basic_type_id
   }
   
   for (int32_t i = 0; i < class->interface_class_ids_length; i++) {
-    int32_t must_implement_class_id = class->interface_class_ids_base + i;
-    if (must_implement_class_id == interface->id) {
+    int32_t must_interface_class_id = class->interface_class_ids_base + i;
+    if (must_interface_class_id == interface->id) {
       return 1;
     }
   }
