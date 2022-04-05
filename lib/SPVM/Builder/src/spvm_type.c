@@ -15,35 +15,6 @@
 #include "spvm_method.h"
 #include "spvm_constant.h"
 
-const char* const* SPVM_TYPE_C_CATEGORY_NAMES(void) {
-
-  static const char* const id_names[] = {
-    "unknown"
-    "fail_load",
-    "undef"
-    "void"
-    "numeric"
-    "mulnum"
-    "string",
-    "class",
-    "interface",
-    "callback",
-    "any_obejct",
-    "numeric_array"
-    "mulnum_array"
-    "string_array",
-    "class_array",
-    "interface_array",
-    "callback_array",
-    "any_obejct_array",
-    "muldim_array",
-    "numeric_ref"
-    "mulnum_ref"
-  };
-  
-  return id_names;
-}
-
 int32_t SPVM_TYPE_is_embedded_class_name(SPVM_COMPILER* compiler, const char* type_name) {
   int32_t is_embedded_class_name;
   if (strcmp(type_name, "Bool") == 0) {
