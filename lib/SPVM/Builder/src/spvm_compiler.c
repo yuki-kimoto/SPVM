@@ -115,7 +115,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 void SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
    SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
    basic_type->id = basic_type_id;
-   const char* basic_type_name_tmp = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
+   const char* basic_type_name_tmp = (SPVM_NATIVE_C_BASIC_TYPE_ID_NAMES())[basic_type->id];
    SPVM_STRING* basic_type_name_string = SPVM_STRING_new(compiler, basic_type_name_tmp, strlen(basic_type_name_tmp));
    basic_type->name = basic_type_name_string->value;
    SPVM_LIST_push(compiler->basic_types, basic_type);
@@ -124,24 +124,24 @@ void SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, int32_t basic_type_id
 
 void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
   // Add basic_types
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_UNKNOWN);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_UNDEF);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_VOID);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_BYTE);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_SHORT);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_INT);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_LONG);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_FLOAT);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_DOUBLE);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_STRING);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_INT_OBJECT);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_LONG_OBJECT);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT);
-  SPVM_COMPILER_add_basic_type(compiler, SPVM_BASIC_TYPE_C_ID_BOOL_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_VOID);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_INT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_INT_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT);
+  SPVM_COMPILER_add_basic_type(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT);
 }
 
 int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler) {

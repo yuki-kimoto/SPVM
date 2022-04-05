@@ -1552,27 +1552,27 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op->first);
       assert(term_type->dimension == 0);
       switch (term_type->basic_type->id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
           type = SPVM_TYPE_new_byte_ref_type(compiler);
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
           type = SPVM_TYPE_new_short_ref_type(compiler);
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
           type = SPVM_TYPE_new_int_ref_type(compiler);
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
           type = SPVM_TYPE_new_long_ref_type(compiler);
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
           type = SPVM_TYPE_new_float_ref_type(compiler);
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
           type = SPVM_TYPE_new_double_ref_type(compiler);
           break;
         }
@@ -1587,27 +1587,27 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op->first);
       assert(term_type->dimension == 0);
       switch (term_type->basic_type->id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
           type = SPVM_TYPE_new_byte_type(compiler);
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
           type = SPVM_TYPE_new_short_type(compiler);
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
           type = SPVM_TYPE_new_int_type(compiler);
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
           type = SPVM_TYPE_new_long_type(compiler);
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
           type = SPVM_TYPE_new_float_type(compiler);
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
           type = SPVM_TYPE_new_double_type(compiler);
           break;
         }
@@ -2668,7 +2668,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     method->flag |= SPVM_METHOD_C_FLAG_DESTRUCTOR;
     
     // DESTROY return type must be void
-    if (!(method->return_type->dimension == 0 && method->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
+    if (!(method->return_type->dimension == 0 && method->return_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_VOID)) {
       SPVM_COMPILER_error(compiler, "DESTROY return type must be void at %s line %d", op_block->file, op_block->line);
     }
   }
@@ -2747,7 +2747,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
     
     SPVM_CONSTANT* constant = op_constant->uv.constant;
     
-    if (constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+    if (constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
       compiler->current_enum_value = constant->value.ival;
     }
     else {

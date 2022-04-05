@@ -45,29 +45,29 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     if (op_cur->id == SPVM_OP_C_ID_CONSTANT) {
       SPVM_CONSTANT* constant = op_cur->uv.constant;
       if (constant->type->dimension == 0) {
-        printf(" %s", (SPVM_BASIC_TYPE_C_ID_NAMES())[constant->type->basic_type->id]);
+        printf(" %s", (SPVM_NATIVE_C_BASIC_TYPE_ID_NAMES())[constant->type->basic_type->id]);
         switch (constant->type->basic_type->id) {
-          case SPVM_BASIC_TYPE_C_ID_BYTE:
+          case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE:
             printf(" %" PRId8, constant->value.bval);
             break;
-          case SPVM_BASIC_TYPE_C_ID_SHORT:
+          case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT:
             printf(" %" PRId16, constant->value.sval);
             break;
-          case SPVM_BASIC_TYPE_C_ID_INT:
+          case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
             printf(" %" PRId32, constant->value.ival);
             break;
-          case SPVM_BASIC_TYPE_C_ID_LONG:
+          case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
             printf(" %" PRId64, constant->value.lval);
             break;
-          case SPVM_BASIC_TYPE_C_ID_FLOAT:
+          case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
             printf(" %f", constant->value.fval);
             break;
-          case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+          case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
             printf(" %f", constant->value.dval);
             break;
         }
       }
-      else if (constant->type->dimension == 1 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+      else if (constant->type->dimension == 1 && constant->type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
         printf(" string \"%s\"\n", (char*)constant->value.oval);
         break;
       }
@@ -276,28 +276,28 @@ void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant)
   
   if (constant->type->dimension == 0) {
     switch(constant->type->basic_type->id) {
-      case SPVM_BASIC_TYPE_C_ID_BYTE:
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE:
         printf("      int %" PRId8 "\n", constant->value.bval);
         break;
-      case SPVM_BASIC_TYPE_C_ID_SHORT:
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT:
         printf("      int %" PRId16 "\n", constant->value.sval);
         break;
-      case SPVM_BASIC_TYPE_C_ID_INT:
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
         printf("      int %" PRId32 "\n", constant->value.ival);
         break;
-      case SPVM_BASIC_TYPE_C_ID_LONG:
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
         printf("      long %" PRId64 "\n", constant->value.lval);
         break;
-      case SPVM_BASIC_TYPE_C_ID_FLOAT:
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
         printf("      float %f\n", constant->value.fval);
         break;
-      case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
         printf("      double %f\n", constant->value.dval);
         break;
     }
   }
   else if (constant->type->dimension == 1) {
-    if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+    if (constant->type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
       printf("      String \"%s\"\n", (char*)constant->value.oval);
     }
   }
@@ -399,27 +399,27 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
     if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, var_decl->op_var_decl);
       switch(numeric_type->basic_type->id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
           printf("byte");
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
           printf("short");
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
           printf("int");
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
           printf("long");
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
           printf("float");
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
           printf("double");
           break;
         }
@@ -441,27 +441,27 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
       assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
       
       switch (field_type->basic_type->id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
           printf("byte");
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
           printf("short");
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
           printf("int");
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
           printf("long");
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
           printf("float");
           break;
         }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
           printf("double");
           break;
         }

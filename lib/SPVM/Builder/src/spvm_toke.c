@@ -1566,14 +1566,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           SPVM_VALUE num;
           
           // float
-          if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+          if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
             num.dval = strtof(num_str, &end);
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid float literal at %s line %d", compiler->cur_file, compiler->cur_line);
             }
           }
           // double
-          else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
             
             num.dval = strtod(num_str, &end);
             if (*end != '\0') {
@@ -1581,7 +1581,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           // int
-          else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
             errno = 0;
             int32_t out_of_range = 0;
             int32_t invalid = 0;
@@ -1627,7 +1627,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           // long
-          else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
             errno = 0;
             int32_t out_of_range = 0;
             int32_t invalid = 0;
@@ -1680,16 +1680,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
           // Constant op
           SPVM_OP* op_constant;
-          if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+          if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
             op_constant = SPVM_OP_new_op_constant_float(compiler, (float)num.dval, compiler->cur_file, compiler->cur_line);
           }
-          else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
             op_constant = SPVM_OP_new_op_constant_double(compiler, num.dval, compiler->cur_file, compiler->cur_line);
           }
-          else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
             op_constant = SPVM_OP_new_op_constant_int(compiler, num.lval, compiler->cur_file, compiler->cur_line);
           }
-          else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
             op_constant = SPVM_OP_new_op_constant_long(compiler, num.lval, compiler->cur_file, compiler->cur_line);
           }
           

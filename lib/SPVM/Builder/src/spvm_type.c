@@ -267,7 +267,7 @@ int32_t SPVM_TYPE_is_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id, in
 SPVM_TYPE* SPVM_TYPE_new_void_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_VOID);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_VOID);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -278,7 +278,7 @@ SPVM_TYPE* SPVM_TYPE_new_void_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_any_object_array_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT);
   int32_t type_dimension = 1;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -289,7 +289,7 @@ SPVM_TYPE* SPVM_TYPE_new_any_object_array_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_undef_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_UNDEF);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -300,7 +300,7 @@ SPVM_TYPE* SPVM_TYPE_new_undef_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_byte_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BYTE);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -312,7 +312,7 @@ SPVM_TYPE* SPVM_TYPE_new_short_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
 
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_SHORT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -323,7 +323,7 @@ SPVM_TYPE* SPVM_TYPE_new_short_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_int_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_INT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -335,7 +335,7 @@ SPVM_TYPE* SPVM_TYPE_new_long_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
 
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_LONG);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -346,7 +346,7 @@ SPVM_TYPE* SPVM_TYPE_new_long_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_float_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -357,7 +357,7 @@ SPVM_TYPE* SPVM_TYPE_new_float_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_double_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -368,7 +368,7 @@ SPVM_TYPE* SPVM_TYPE_new_double_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_string_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_STRING);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -379,7 +379,7 @@ SPVM_TYPE* SPVM_TYPE_new_string_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -390,7 +390,7 @@ SPVM_TYPE* SPVM_TYPE_new_object_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_byte_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -401,7 +401,7 @@ SPVM_TYPE* SPVM_TYPE_new_byte_object_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_short_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -412,7 +412,7 @@ SPVM_TYPE* SPVM_TYPE_new_short_object_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_int_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT_OBJECT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_INT_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -423,7 +423,7 @@ SPVM_TYPE* SPVM_TYPE_new_int_object_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_long_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_LONG_OBJECT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -434,7 +434,7 @@ SPVM_TYPE* SPVM_TYPE_new_long_object_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_float_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -445,7 +445,7 @@ SPVM_TYPE* SPVM_TYPE_new_float_object_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_double_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -456,7 +456,7 @@ SPVM_TYPE* SPVM_TYPE_new_double_object_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_bool_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BOOL_OBJECT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -467,7 +467,7 @@ SPVM_TYPE* SPVM_TYPE_new_bool_object_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_byte_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BYTE);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE);
   int32_t type_dimension = 0;
   int32_t type_flag = SPVM_TYPE_C_FLAG_REF;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -478,7 +478,7 @@ SPVM_TYPE* SPVM_TYPE_new_byte_ref_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_short_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_SHORT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT);
   int32_t type_dimension = 0;
   int32_t type_flag = SPVM_TYPE_C_FLAG_REF;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -489,7 +489,7 @@ SPVM_TYPE* SPVM_TYPE_new_short_ref_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_int_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_INT);
   int32_t type_dimension = 0;
   int32_t type_flag = SPVM_TYPE_C_FLAG_REF;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -500,7 +500,7 @@ SPVM_TYPE* SPVM_TYPE_new_int_ref_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_long_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_LONG);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG);
   int32_t type_dimension = 0;
   int32_t type_flag = SPVM_TYPE_C_FLAG_REF;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -511,7 +511,7 @@ SPVM_TYPE* SPVM_TYPE_new_long_ref_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_float_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT);
   int32_t type_dimension = 0;
   int32_t type_flag = SPVM_TYPE_C_FLAG_REF;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -522,7 +522,7 @@ SPVM_TYPE* SPVM_TYPE_new_float_ref_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_double_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE);
   int32_t type_dimension = 0;
   int32_t type_flag = SPVM_TYPE_C_FLAG_REF;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -533,7 +533,7 @@ SPVM_TYPE* SPVM_TYPE_new_double_ref_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_any_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -544,7 +544,7 @@ SPVM_TYPE* SPVM_TYPE_new_any_object_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_element_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -555,7 +555,7 @@ SPVM_TYPE* SPVM_TYPE_new_element_type(SPVM_COMPILER* compiler) {
 int32_t SPVM_TYPE_is_byte_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -566,7 +566,7 @@ int32_t SPVM_TYPE_is_byte_type(SPVM_COMPILER* compiler, int32_t basic_type_id, i
 int32_t SPVM_TYPE_is_void_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_VOID) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -577,7 +577,7 @@ int32_t SPVM_TYPE_is_void_type(SPVM_COMPILER* compiler, int32_t basic_type_id, i
 int32_t SPVM_TYPE_is_short_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -588,7 +588,7 @@ int32_t SPVM_TYPE_is_short_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
 int32_t SPVM_TYPE_is_int_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -599,7 +599,7 @@ int32_t SPVM_TYPE_is_int_type(SPVM_COMPILER* compiler, int32_t basic_type_id, in
 int32_t SPVM_TYPE_is_long_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -610,7 +610,7 @@ int32_t SPVM_TYPE_is_long_type(SPVM_COMPILER* compiler, int32_t basic_type_id, i
 int32_t SPVM_TYPE_is_float_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -621,7 +621,7 @@ int32_t SPVM_TYPE_is_float_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
 int32_t SPVM_TYPE_is_double_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -632,7 +632,7 @@ int32_t SPVM_TYPE_is_double_type(SPVM_COMPILER* compiler, int32_t basic_type_id,
 int32_t SPVM_TYPE_is_numeric_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && basic_type_id <= SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -643,7 +643,7 @@ int32_t SPVM_TYPE_is_numeric_type(SPVM_COMPILER* compiler, int32_t basic_type_id
 int32_t SPVM_TYPE_is_numeric_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_OBJECT && basic_type_id <= SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -654,7 +654,7 @@ int32_t SPVM_TYPE_is_numeric_object_type(SPVM_COMPILER* compiler, int32_t basic_
 int32_t SPVM_TYPE_is_byte_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -665,7 +665,7 @@ int32_t SPVM_TYPE_is_byte_object_type(SPVM_COMPILER* compiler, int32_t basic_typ
 int32_t SPVM_TYPE_is_short_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -676,7 +676,7 @@ int32_t SPVM_TYPE_is_short_object_type(SPVM_COMPILER* compiler, int32_t basic_ty
 int32_t SPVM_TYPE_is_int_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_INT_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -687,7 +687,7 @@ int32_t SPVM_TYPE_is_int_object_type(SPVM_COMPILER* compiler, int32_t basic_type
 int32_t SPVM_TYPE_is_long_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -698,7 +698,7 @@ int32_t SPVM_TYPE_is_long_object_type(SPVM_COMPILER* compiler, int32_t basic_typ
 int32_t SPVM_TYPE_is_float_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -709,7 +709,7 @@ int32_t SPVM_TYPE_is_float_object_type(SPVM_COMPILER* compiler, int32_t basic_ty
 int32_t SPVM_TYPE_is_double_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -720,7 +720,7 @@ int32_t SPVM_TYPE_is_double_object_type(SPVM_COMPILER* compiler, int32_t basic_t
 int32_t SPVM_TYPE_is_bool_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_BASIC_TYPE_C_ID_BOOL_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -731,7 +731,7 @@ int32_t SPVM_TYPE_is_bool_object_type(SPVM_COMPILER* compiler, int32_t basic_typ
 int32_t SPVM_TYPE_is_numeric_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) && (flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && basic_type_id <= SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) && (flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -742,7 +742,7 @@ int32_t SPVM_TYPE_is_numeric_ref_type(SPVM_COMPILER* compiler, int32_t basic_typ
 int32_t SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_LONG) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && basic_type_id <= SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -833,7 +833,7 @@ int32_t SPVM_TYPE_is_object_array_type(SPVM_COMPILER* compiler, int32_t basic_ty
 int32_t SPVM_TYPE_is_any_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  return dimension == 0 && basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT && !(flag & SPVM_TYPE_C_FLAG_REF);
+  return dimension == 0 && basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && !(flag & SPVM_TYPE_C_FLAG_REF);
 }
 
 int32_t SPVM_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
@@ -954,13 +954,13 @@ int32_t SPVM_TYPE_is_interface_type(SPVM_COMPILER* compiler, int32_t basic_type_
 int32_t SPVM_TYPE_is_string_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  return dimension == 0 && basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING && !(flag & SPVM_TYPE_C_FLAG_REF);
+  return dimension == 0 && basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && !(flag & SPVM_TYPE_C_FLAG_REF);
 }
 
 int32_t SPVM_TYPE_is_byte_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  return dimension == 1 && basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && !(flag & SPVM_TYPE_C_FLAG_REF);
+  return dimension == 1 && basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && !(flag & SPVM_TYPE_C_FLAG_REF);
 }
 
 int32_t SPVM_TYPE_is_string_or_byte_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
@@ -1072,7 +1072,7 @@ int32_t SPVM_TYPE_is_muldim_array_type(SPVM_COMPILER* compiler, int32_t basic_ty
 int32_t SPVM_TYPE_is_any_object_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT && dimension == 1 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && dimension == 1 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -1083,7 +1083,7 @@ int32_t SPVM_TYPE_is_any_object_array_type(SPVM_COMPILER* compiler, int32_t basi
 int32_t SPVM_TYPE_is_numeric_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 1 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF))
+  if (dimension == 1 && (basic_type_id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && basic_type_id <= SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF))
   {
     return 1;
   }
@@ -1095,7 +1095,7 @@ int32_t SPVM_TYPE_is_numeric_array_type(SPVM_COMPILER* compiler, int32_t basic_t
 int32_t SPVM_TYPE_is_undef_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && basic_type_id == SPVM_BASIC_TYPE_C_ID_UNDEF && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -1106,7 +1106,7 @@ int32_t SPVM_TYPE_is_undef_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
 int32_t SPVM_TYPE_is_unknown_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && basic_type_id == SPVM_BASIC_TYPE_C_ID_UNKNOWN && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -1291,16 +1291,16 @@ int32_t SPVM_TYPE_get_elem_byte_size(SPVM_COMPILER* compiler, int32_t basic_type
     elem_byte_size = 1;
   }
   else if (SPVM_TYPE_is_numeric_array_type(compiler, basic_type_id, dimension, flag)) {
-    if (basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+    if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
       elem_byte_size = 1;
     }
-    else if (basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+    else if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT) {
       elem_byte_size = 2;
     }
-    else if (basic_type_id == SPVM_BASIC_TYPE_C_ID_INT || basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+    else if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT || basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
       elem_byte_size = 4;
     }
-    else if (basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG || basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+    else if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG || basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
       elem_byte_size = 8;
     }
     else {
@@ -1320,16 +1320,16 @@ int32_t SPVM_TYPE_get_elem_byte_size(SPVM_COMPILER* compiler, int32_t basic_type
     SPVM_FIELD* mulnum_field = (SPVM_FIELD*)SPVM_LIST_get(class->fields, 0);
     int32_t mulnum_field_basic_type_id = mulnum_field->type->basic_type->id;
     
-    if (mulnum_field_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+    if (mulnum_field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
       elem_byte_size = 1 * width;
     }
-    else if (mulnum_field_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+    else if (mulnum_field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT) {
       elem_byte_size = 2 * width;
     }
-    else if (mulnum_field_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT || mulnum_field_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+    else if (mulnum_field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT || mulnum_field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
       elem_byte_size = 4 * width;
     }
-    else if (mulnum_field_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG || mulnum_field_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+    else if (mulnum_field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG || mulnum_field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
       elem_byte_size = 8 * width;
     }
     else {
@@ -1371,19 +1371,19 @@ int32_t SPVM_TYPE_can_assign(
         int32_t can_narrowing_conversion = 0;
         if (src_constant) {
           assert(src_type_dimension == 0);
-          if (src_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT || src_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
+          if (src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT || src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
             int64_t src_constant_value;
-            if (src_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
+            if (src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
               src_constant_value = src_constant->value.ival;
             }
-            else if (src_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
+            else if (src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
               src_constant_value = src_constant->value.lval;
             }
             else {
               assert(0);
             }
             
-            if (dist_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+            if (dist_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
               if (src_constant_value >= INT8_MIN && src_constant_value <= INT8_MAX) {
                 can_narrowing_conversion = 1;
               }
@@ -1391,7 +1391,7 @@ int32_t SPVM_TYPE_can_assign(
                 can_narrowing_conversion = 0;
               }
             }
-            else if (dist_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+            else if (dist_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT) {
               if (src_constant_value >= INT16_MIN && src_constant_value <= INT16_MAX) {
                 can_narrowing_conversion = 1;
               }
@@ -1399,7 +1399,7 @@ int32_t SPVM_TYPE_can_assign(
                 can_narrowing_conversion = 0;
               }
             }
-            else if (dist_type_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
+            else if (dist_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
               if (src_constant_value >= INT32_MIN && src_constant_value <= INT32_MAX) {
                 can_narrowing_conversion = 1;
               }
