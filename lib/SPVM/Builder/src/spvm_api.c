@@ -4104,7 +4104,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t call_spvm_method_return_basic_type_id = call_spvm_method_return_type->basic_type_id;
 
         int32_t call_spvm_method_return_type_dimension = call_spvm_method_return_type->dimension;
-        int32_t call_spvm_method_return_basic_type_bategory = SPVM_API_get_basic_type_category(env, call_spvm_method_return_type->basic_type_id);
+        int32_t call_spvm_method_return_basic_type_category = SPVM_API_get_basic_type_category(env, call_spvm_method_return_type->basic_type_id);
 
         switch (call_spvm_method_return_type->category) {
           case SPVM_API_C_TYPE_CATEGORY_VOID: {
@@ -4242,6 +4242,32 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
               }
             }
             break;
+          }
+          default: {
+            if (call_spvm_method_return_type_dimension == 0) {
+              switch (call_spvm_method_return_basic_type_category) {
+                default: {
+                  assert(0);
+                }
+              }
+            }
+            else if (call_spvm_method_return_type_dimension == 1) {
+              switch (call_spvm_method_return_basic_type_category) {
+                default: {
+                  assert(0);
+                }
+              }
+            }
+            else if (call_spvm_method_return_type_dimension > 1) {
+              switch (call_spvm_method_return_basic_type_category) {
+                default: {
+                  assert(0);
+                }
+              }
+            }
+            else {
+              assert(0);
+            }
           }
         }
         break;
