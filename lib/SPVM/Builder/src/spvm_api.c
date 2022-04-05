@@ -1217,8 +1217,9 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
     SPVM_RUNTIME_TYPE* class_var_type = SPVM_API_get_type(env, class_var->type_id);
     int32_t class_var_type_category = class_var_type->category;
 
-    int32_t class_var_type_is_object = SPVM_API_get_type_is_object(env, class_var_type->id);
+    int32_t class_var_type_is_object2 = SPVM_API_get_type_is_object(env, class_var_type->id);
     
+    int32_t class_var_type_is_object;
     switch (class_var_type_category) {
       case SPVM_API_C_TYPE_CATEGORY_STRING:
       case SPVM_API_C_TYPE_CATEGORY_CLASS:
@@ -1234,11 +1235,18 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
       case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
       case SPVM_API_C_TYPE_CATEGORY_MULDIM_ARRAY:
       {
-        SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
-        if (object) {
-          SPVM_API_dec_ref_count(env, object);
-        }
-        assert(class_var_type_is_object == 1);
+        class_var_type_is_object = 1;
+        break;
+      }
+      default: {
+        class_var_type_is_object = 0;
+      }
+    }
+    
+    if (class_var_type_is_object) {
+      SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
+      if (object) {
+        SPVM_API_dec_ref_count(env, object);
       }
     }
   }
