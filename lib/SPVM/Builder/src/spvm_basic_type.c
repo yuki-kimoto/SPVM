@@ -39,7 +39,7 @@ const char* const* SPVM_BASIC_TYPE_C_CATEGORY_NAMES(void) {
 
   static const char* const id_names[] = {
     "unknown"
-    "fail_load",
+    "not_found_class",
     "undef"
     "void"
     "numeric"
@@ -99,8 +99,8 @@ int32_t SPVM_BASIC_TYPE_get_category(SPVM_COMPILER* compiler, int32_t basic_type
   else if (SPVM_BASIC_TYPE_is_unknown_type(compiler, basic_type_id)) {
     category = SPVM_BASIC_TYPE_C_CATEGORY_UNKNOWN;
   }
-  else if (SPVM_BASIC_TYPE_is_fail_load_type(compiler, basic_type_id)) {
-    category = SPVM_BASIC_TYPE_C_CATEGORY_FAIL_LOAD;
+  else if (SPVM_BASIC_TYPE_is_not_found_class_type(compiler, basic_type_id)) {
+    category = SPVM_BASIC_TYPE_C_CATEGORY_NOT_FOUND_CLASS;
   }
   else {
     assert(0);
@@ -269,22 +269,22 @@ int32_t SPVM_BASIC_TYPE_is_unknown_type(SPVM_COMPILER* compiler, int32_t basic_t
 }
 
 
-int32_t SPVM_BASIC_TYPE_is_fail_load_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
+int32_t SPVM_BASIC_TYPE_is_not_found_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
   
-  int32_t is_fail_load_type;
+  int32_t is_not_found_class_type;
   const char* basic_type_name = basic_type->name;
-  SPVM_CLASS* class = SPVM_HASH_get(compiler->fail_load_class_symtable, basic_type_name, strlen(basic_type_name));
+  SPVM_CLASS* class = SPVM_HASH_get(compiler->not_found_class_class_symtable, basic_type_name, strlen(basic_type_name));
   // Class
   if (class) {
-    is_fail_load_type = 1;
+    is_not_found_class_type = 1;
   }
   // Numeric type
   else {
-    is_fail_load_type = 0;
+    is_not_found_class_type = 0;
   }
 
-  return is_fail_load_type;
+  return is_not_found_class_type;
 }

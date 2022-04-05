@@ -33,7 +33,7 @@ enum {
 
 enum {
   SPVM_BASIC_TYPE_C_CATEGORY_UNKNOWN,
-  SPVM_BASIC_TYPE_C_CATEGORY_FAIL_LOAD,
+  SPVM_BASIC_TYPE_C_CATEGORY_NOT_FOUND_CLASS,
   SPVM_BASIC_TYPE_C_CATEGORY_UNDEF,
   SPVM_BASIC_TYPE_C_CATEGORY_VOID,
   SPVM_BASIC_TYPE_C_CATEGORY_NUMERIC,
@@ -67,7 +67,7 @@ int32_t SPVM_BASIC_TYPE_is_callback_type(SPVM_COMPILER* compiler, int32_t basic_
 int32_t SPVM_BASIC_TYPE_is_any_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id);
 int32_t SPVM_BASIC_TYPE_is_undef_type(SPVM_COMPILER* compiler, int32_t basic_type_id);
 int32_t SPVM_BASIC_TYPE_is_unknown_type(SPVM_COMPILER* compiler, int32_t basic_type_id);
-int32_t SPVM_BASIC_TYPE_is_fail_load_type(SPVM_COMPILER* compiler, int32_t basic_type_id);
+int32_t SPVM_BASIC_TYPE_is_not_found_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id);
 
 int32_t SPVM_BASIC_TYPE_get_category(SPVM_COMPILER* compiler, int32_t basic_type_id);
 

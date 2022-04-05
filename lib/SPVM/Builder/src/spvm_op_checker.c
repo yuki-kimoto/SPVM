@@ -140,8 +140,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
         
         // Execute false block
         const char* use_class_name = use->class_name;
-        const char* fail_load_class_name = SPVM_HASH_get(compiler->fail_load_class_symtable, use_class_name, strlen(use_class_name));
-        if (fail_load_class_name) {
+        const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_class_symtable, use_class_name, strlen(use_class_name));
+        if (not_found_class_class_name) {
           SPVM_OP_cut_op(compiler, op_block_false);
           SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
           SPVM_OP_replace_op(compiler, op_stab, op_block_false);
@@ -4370,8 +4370,8 @@ void SPVM_OP_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
       SPVM_HASH* class_symtable = compiler->class_symtable;
       SPVM_CLASS* found_class = SPVM_HASH_get(class_symtable, basic_type_name, strlen(basic_type_name));
       if (!found_class) {
-        const char* fail_load_class_name = SPVM_HASH_get(compiler->fail_load_class_symtable, basic_type_name, strlen(basic_type_name));
-        if (!fail_load_class_name) {
+        const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_class_symtable, basic_type_name, strlen(basic_type_name));
+        if (!not_found_class_class_name) {
           SPVM_COMPILER_error(compiler, "Unknown class \"%s\" at %s line %d", basic_type_name, op_type->file, op_type->line);
         }
       }

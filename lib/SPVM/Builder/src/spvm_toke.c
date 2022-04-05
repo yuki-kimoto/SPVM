@@ -311,7 +311,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             else {
               // If module not found and the module is used in require syntax, compilation errors don't occur.
               if (op_use->uv.use->is_require) {
-                SPVM_HASH_set(compiler->fail_load_class_symtable, class_name, strlen(class_name), (void*)class_name);
+                SPVM_HASH_set(compiler->not_found_class_class_symtable, class_name, strlen(class_name), (void*)class_name);
                 continue;
               }
             }
