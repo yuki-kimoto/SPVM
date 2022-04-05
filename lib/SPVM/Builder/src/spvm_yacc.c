@@ -619,7 +619,7 @@ static const char *const yytname[] =
   "binary_op", "comparison_op", "isa", "logical_op", "assign", "new",
   "array_init", "convert", "array_access", "call_spvm_method",
   "field_access", "weaken_field", "unweaken_field", "isweak_field",
-  "has_implement", "array_length", "my_var", "var", "qualified_type",
+  "has_implement", "array_length", "var_decl", "var", "qualified_type",
   "type", "basic_type", "ref_type", "array_type", "array_type_with_length",
   "return_type", "opt_type_comment", "type_comment", "field_name",
   "method_name", "class_name", "class_alias_name", YY_NULLPTR
@@ -2977,7 +2977,7 @@ yyreduce:
       SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), (yyvsp[0].opval));
       
       // if is wraped with block to allow the following syntax
-      //  if (my $var = 3) { ... }
+      //  if (var_decl $var = 3) { ... }
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, (yyvsp[-5].opval)->file, (yyvsp[-5].opval)->line);
       SPVM_OP_insert_child(compiler, op_block, op_block->last, op_if);
       
@@ -2992,7 +2992,7 @@ yyreduce:
       SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), (yyvsp[0].opval));
       
       // if is wraped with block to allow the following syntax
-      //  if (my $var = 3) { ... }
+      //  if (var_decl $var = 3) { ... }
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, (yyvsp[-5].opval)->file, (yyvsp[-5].opval)->line);
       SPVM_OP_insert_child(compiler, op_block, op_block->last, op_if);
       
