@@ -16,7 +16,7 @@
 #include "spvm_list.h"
 #include "spvm_method.h"
 #include "spvm_var.h"
-#include "spvm_my.h"
+#include "spvm_var_decl.h"
 #include "spvm_allocator.h"
 #include "spvm_class.h"
 #include "spvm_field_access.h"
@@ -174,7 +174,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           // Copy arguments to variables
           int32_t stack_index = 0;
           for (int32_t args_index = 0; args_index < method->args_length; args_index++) {
-            SPVM_MY* arg = SPVM_LIST_get(method->mys, args_index);
+            SPVM_VAR_DECL* arg = SPVM_LIST_get(method->var_decls, args_index);
             SPVM_TYPE* arg_type = arg->type;
             int32_t arg_type_dimension = arg->type->dimension;
             SPVM_BASIC_TYPE* arg_basic_type = arg_type->basic_type;
@@ -562,9 +562,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_ID_VAR: {
                     if (op_cur->uv.var->is_declaration) {
                       
-                      SPVM_MY* my = op_cur->uv.var->my;
+                      SPVM_VAR_DECL* var_decl = op_cur->uv.var->var_decl;
                       
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, my->op_my);
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, var_decl->op_var_decl);
                       if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                         
                         SPVM_OPCODE opcode;
@@ -584,7 +584,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       
                       // Initialized not initialized variable
-                      if (!op_cur->uv.var->is_initialized && !op_cur->uv.var->my->is_arg) {
+                      if (!op_cur->uv.var->is_initialized && !op_cur->uv.var->var_decl->is_arg) {
                         // Multi numeric type
                         if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           SPVM_CLASS* value_class = type->basic_type->class;
@@ -715,7 +715,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* type_dist = SPVM_OP_get_type(compiler, op_assign_dist);
 
                       // Push object temporary variable stack
-                      if (op_assign_dist->uv.var->my->is_tmp) {
+                      if (op_assign_dist->uv.var->var_decl->is_tmp) {
                         if (SPVM_TYPE_is_object_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
                           SPVM_LIST_push(object_op_var_tmp_stack, op_assign_dist);
                         }
@@ -1059,14 +1059,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OP* op_term_args = op_assign_src->last;
                           SPVM_OP* op_term_arg = op_term_args->first;
 
-                          SPVM_LIST* args = method_call_method->mys;
+                          SPVM_LIST* args = method_call_method->var_decls;
                           {
                             int32_t arg_index;
                             for (arg_index = 0; arg_index < method_call_method->args_length; arg_index++) {
-                              SPVM_MY* arg_my = SPVM_LIST_get(args, arg_index);
+                              SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(args, arg_index);
                               
                               // Argument type
-                              SPVM_TYPE* arg_type = arg_my->type;
+                              SPVM_TYPE* arg_type = arg_var_decl->type;
 
                               // Term argment type
                               op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);

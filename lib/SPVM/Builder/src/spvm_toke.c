@@ -20,7 +20,7 @@
 #include "spvm_type.h"
 #include "spvm_use.h"
 #include "spvm_basic_type.h"
-#include "spvm_my.h"
+#include "spvm_var_decl.h"
 #include "spvm_string_buffer.h"
 #include "spvm_method.h"
 #include "spvm_class.h"
@@ -1999,8 +1999,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_term = MAKE_READ_ONLY;
                 }
                 else if (strcmp(symbol_name, "my") == 0) {
-                  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_my;
+                  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_var_decl;
                   is_keyword = 1;
                   keyword_term = MY;
                 }

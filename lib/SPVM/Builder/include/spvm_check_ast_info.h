@@ -13,8 +13,8 @@ struct spvm_check_ast_info {
   // My stack
   SPVM_LIST* my_stack;
   
-  // Block my base stack
-  SPVM_LIST* block_my_base_stack;
+  // Block var_decl base stack
+  SPVM_LIST* block_var_decl_base_stack;
   
   // Switch stack
   SPVM_LIST* op_switch_stack;

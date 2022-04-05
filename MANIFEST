@@ -388,7 +388,6 @@ lib/SPVM/Builder/include/spvm_hash.h
 lib/SPVM/Builder/include/spvm_implement.h
 lib/SPVM/Builder/include/spvm_list.h
 lib/SPVM/Builder/include/spvm_method.h
-lib/SPVM/Builder/include/spvm_my.h
 lib/SPVM/Builder/include/spvm_native.h
 lib/SPVM/Builder/include/spvm_object.h
 lib/SPVM/Builder/include/spvm_op.h
@@ -415,6 +414,7 @@ lib/SPVM/Builder/include/spvm_type.h
 lib/SPVM/Builder/include/spvm_typedecl.h
 lib/SPVM/Builder/include/spvm_use.h
 lib/SPVM/Builder/include/spvm_var.h
+lib/SPVM/Builder/include/spvm_var_decl.h
 lib/SPVM/Builder/include/spvm_weaken_backref.h
 lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
@@ -445,7 +445,6 @@ lib/SPVM/Builder/src/spvm_hash.c
 lib/SPVM/Builder/src/spvm_implement.c
 lib/SPVM/Builder/src/spvm_list.c
 lib/SPVM/Builder/src/spvm_method.c
-lib/SPVM/Builder/src/spvm_my.c
 lib/SPVM/Builder/src/spvm_native.c
 lib/SPVM/Builder/src/spvm_op.c
 lib/SPVM/Builder/src/spvm_op_checker.c
@@ -461,6 +460,7 @@ lib/SPVM/Builder/src/spvm_toke.c
 lib/SPVM/Builder/src/spvm_type.c
 lib/SPVM/Builder/src/spvm_use.c
 lib/SPVM/Builder/src/spvm_var.c
+lib/SPVM/Builder/src/spvm_var_decl.c
 lib/SPVM/Builder/src/spvm_yacc.c
 lib/SPVM/Builder/src/spvm_yacc_util.c
 lib/SPVM/Builder/Util.pm

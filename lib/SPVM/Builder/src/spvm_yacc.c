@@ -3840,7 +3840,7 @@ yyreduce:
   case 221:
 #line 1170 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_my(compiler, (yyvsp[-4].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_var_decl(compiler, (yyvsp[-4].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), NULL);
     }
 #line 3846 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -3848,7 +3848,7 @@ yyreduce:
   case 222:
 #line 1174 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_my(compiler, (yyvsp[-1].opval), (yyvsp[0].opval), NULL, NULL);
+      (yyval.opval) = SPVM_OP_build_var_decl(compiler, (yyvsp[-1].opval), (yyvsp[0].opval), NULL, NULL);
     }
 #line 3854 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

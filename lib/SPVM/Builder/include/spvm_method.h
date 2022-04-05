@@ -27,7 +27,7 @@ struct spvm_method {
   SPVM_OP* op_name;
   SPVM_OP* op_block;
   SPVM_TYPE* return_type;
-  SPVM_LIST* mys;
+  SPVM_LIST* var_decls;
   SPVM_LIST* captures;
   const char* abs_name;
   SPVM_CLASS* class;

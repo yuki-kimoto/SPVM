@@ -206,9 +206,9 @@ typedef struct spvm_type_part SPVM_TYPE_PART;
 struct spvm_var;
 typedef struct spvm_var SPVM_VAR;
 
-// spvm_my.h
-struct spvm_my;
-typedef struct spvm_my SPVM_MY;
+// spvm_var_decl.h
+struct spvm_var_decl;
+typedef struct spvm_var_decl SPVM_VAR_DECL;
 
 // spvm_constant.h
 struct spvm_constant;

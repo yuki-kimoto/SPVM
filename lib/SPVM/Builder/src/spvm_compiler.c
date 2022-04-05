@@ -25,7 +25,7 @@
 #include "spvm_op_checker.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_object.h"
-#include "spvm_my.h"
+#include "spvm_var_decl.h"
 #include "spvm_string_buffer.h"
 #include "spvm_allow.h"
 #include "spvm_implement.h"
@@ -329,18 +329,18 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         SPVM_VAR* var = op->uv.var;
         var->op_name = NULL;
         var->name = NULL;
-        var->my = NULL;
+        var->var_decl = NULL;
         var->call_method = NULL;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var);
         break;
       }
       case SPVM_OP_C_ID_MY: {
-        SPVM_MY* my = op->uv.my;
-        if (!my->is_eternal) {
-          my->op_my = NULL;
-          my->type = NULL;
-          my->var = NULL;
-          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, my);
+        SPVM_VAR_DECL* var_decl = op->uv.var_decl;
+        if (!var_decl->is_eternal) {
+          var_decl->op_var_decl = NULL;
+          var_decl->type = NULL;
+          var_decl->var = NULL;
+          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var_decl);
         }
         break;
       }
@@ -587,7 +587,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
     runtime_method->arg_ids_length = method->args_length;
     if (method->args_length > 0) {
-      SPVM_MY* arg = SPVM_LIST_get(method->mys, 0);
+      SPVM_VAR_DECL* arg = SPVM_LIST_get(method->var_decls, 0);
       runtime_method->arg_ids_base = arg->arg_id;
     }
     else {
@@ -605,8 +605,8 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   runtime->arg_type_ids_length = compiler->args->length;
   runtime->arg_type_ids = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * (compiler->args->length + 1));
   for (int32_t arg_id = 0; arg_id < compiler->args->length; arg_id++) {
-    SPVM_MY* arg_my = SPVM_LIST_get(compiler->args, arg_id);
-    int32_t arg_type_id = arg_my->type->id;
+    SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(compiler->args, arg_id);
+    int32_t arg_type_id = arg_var_decl->type->id;
     runtime->arg_type_ids[arg_id] = arg_type_id;
   }
 
@@ -723,8 +723,8 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
         length += 4;
       }
       else {
-        SPVM_MY* arg_my_method = SPVM_LIST_get(method->mys, arg_index);
-        SPVM_TYPE* type_arg_method = arg_my_method->type;
+        SPVM_VAR_DECL* arg_var_decl_method = SPVM_LIST_get(method->var_decls, arg_index);
+        SPVM_TYPE* type_arg_method = arg_var_decl_method->type;
         
         // Ref
         if (SPVM_TYPE_is_ref_type(compiler, type_arg_method->basic_type->id, type_arg_method->dimension, type_arg_method->flag)) {
@@ -774,8 +774,8 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
         bufptr += 4;
       }
       else {
-        SPVM_MY* arg_my_method = SPVM_LIST_get(method->mys, arg_index);
-        SPVM_TYPE* type_arg_method = arg_my_method->type;
+        SPVM_VAR_DECL* arg_var_decl_method = SPVM_LIST_get(method->var_decls, arg_index);
+        SPVM_TYPE* type_arg_method = arg_var_decl_method->type;
         
         // Ref
         if (SPVM_TYPE_is_ref_type(compiler, type_arg_method->basic_type->id, type_arg_method->dimension, type_arg_method->flag)) {

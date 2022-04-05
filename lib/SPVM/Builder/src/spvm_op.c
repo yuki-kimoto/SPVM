@@ -12,7 +12,7 @@
 #include "spvm_method.h"
 #include "spvm_constant.h"
 #include "spvm_field.h"
-#include "spvm_my.h"
+#include "spvm_var_decl.h"
 #include "spvm_var.h"
 #include "spvm_type.h"
 #include "spvm_class.h"
@@ -295,24 +295,24 @@ SPVM_OP* SPVM_OP_new_op_assign_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand
   return op_assign;
 }
 
-SPVM_OP* SPVM_OP_new_op_my(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
-  SPVM_MY* my = SPVM_MY_new(compiler);
+SPVM_OP* SPVM_OP_new_op_var_decl(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_OP* op_var_decl = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
+  SPVM_VAR_DECL* var_decl = SPVM_VAR_DECL_new(compiler);
   
-  op_my->uv.my = my;
-  my->op_my = op_my;
+  op_var_decl->uv.var_decl = var_decl;
+  var_decl->op_var_decl = op_var_decl;
   
-  return op_my;
+  return op_var_decl;
 }
 
-SPVM_OP* SPVM_OP_new_op_my_eternal(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
-  SPVM_MY* my = SPVM_MY_new_eternal(compiler);
+SPVM_OP* SPVM_OP_new_op_var_decl_eternal(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_OP* op_var_decl = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
+  SPVM_VAR_DECL* var_decl = SPVM_VAR_DECL_new_eternal(compiler);
   
-  op_my->uv.my = my;
-  my->op_my = op_my;
+  op_var_decl->uv.var_decl = var_decl;
+  var_decl->op_var_decl = op_var_decl;
   
-  return op_my;
+  return op_var_decl;
 }
 
 SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
@@ -452,7 +452,7 @@ SPVM_OP* SPVM_OP_new_op_var_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_
   SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name);
   SPVM_VAR* var = op_var->uv.var;
   
-  var->my = original_op_var->uv.var->my;
+  var->var_decl = original_op_var->uv.var->var_decl;
   
   return op_var;
 }
@@ -1331,7 +1331,7 @@ int32_t SPVM_OP_get_mem_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
     default: {
       SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
       
-      return op_var->uv.var->my->mem_id;
+      return op_var->uv.var->var_decl->mem_id;
     }
   }
   
@@ -1486,7 +1486,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_VAR: {
       SPVM_VAR* var = op->uv.var;
-      type = var->my->type;
+      type = var->var_decl->type;
       break;
     }
     case SPVM_OP_C_ID_CLASS_VAR_ACCESS: {
@@ -1514,8 +1514,8 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_MY: {
       
-      SPVM_MY* my = op->uv.my;
-      type = my->type;
+      SPVM_VAR_DECL* var_decl = op->uv.var_decl;
+      type = var_decl->type;
       break;
     }
     case SPVM_OP_C_ID_CALL_METHOD: {
@@ -2135,16 +2135,16 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         // Captures is added to field
         SPVM_LIST* captures = op_decl->uv.method->captures;
         for (int32_t i = 0; i < captures->length; i++) {
-          SPVM_MY* capture_my = SPVM_LIST_get(captures, i);
+          SPVM_VAR_DECL* capture_var_decl = SPVM_LIST_get(captures, i);
           
-          SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, capture_my->op_my->file, capture_my->op_my->line);
-          SPVM_STRING* field_name_string = SPVM_STRING_new(compiler, capture_my->var->name + 1, strlen(capture_my->var->name) - 1);
+          SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, capture_var_decl->op_var_decl->file, capture_var_decl->op_var_decl->line);
+          SPVM_STRING* field_name_string = SPVM_STRING_new(compiler, capture_var_decl->var->name + 1, strlen(capture_var_decl->var->name) - 1);
           
-          SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, field_name_string->value, capture_my->op_my->file, capture_my->op_my->line);
+          SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, field_name_string->value, capture_var_decl->op_var_decl->file, capture_var_decl->op_var_decl->line);
           
-          SPVM_TYPE* type_new_capture_my = SPVM_TYPE_new(compiler, capture_my->type->basic_type->id, capture_my->type->dimension, capture_my->type->flag);
-          SPVM_OP* op_type_new_capture_my = SPVM_OP_new_op_type(compiler, type_new_capture_my, capture_my->op_my->file, capture_my->op_my->line);
-          SPVM_OP_build_has(compiler, op_field, op_name_field, NULL, op_type_new_capture_my);
+          SPVM_TYPE* type_new_capture_var_decl = SPVM_TYPE_new(compiler, capture_var_decl->type->basic_type->id, capture_var_decl->type->dimension, capture_var_decl->type->flag);
+          SPVM_OP* op_type_new_capture_var_decl = SPVM_OP_new_op_type(compiler, type_new_capture_var_decl, capture_var_decl->op_var_decl->file, capture_var_decl->op_var_decl->line);
+          SPVM_OP_build_has(compiler, op_field, op_name_field, NULL, op_type_new_capture_var_decl);
           SPVM_LIST_push(class->fields, op_field->uv.field);
           op_field->uv.field->is_captured = 1;
         }
@@ -2226,17 +2226,17 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         // Set first argument type if not set
         if (method->args_length > 0) {
-          SPVM_MY* arg_my_first = SPVM_LIST_get(method->mys, 0);
+          SPVM_VAR_DECL* arg_var_decl_first = SPVM_LIST_get(method->var_decls, 0);
           SPVM_OP* op_arg_first_type = NULL;
           if (!method->is_class_method) {
             SPVM_TYPE* arg_invocant_type = op_type->uv.type;
             op_arg_first_type = SPVM_OP_new_op_type(compiler, arg_invocant_type, method->op_method->file, method->op_method->line);
-            arg_my_first->type = op_arg_first_type->uv.type;
+            arg_var_decl_first->type = op_arg_first_type->uv.type;
             assert(arg_invocant_type->basic_type);
           }
           else {
-            SPVM_OP* op_type_new_arg_my_first = SPVM_OP_new_op_type(compiler, arg_my_first->type, arg_my_first->op_my->file, arg_my_first->op_my->line);
-            op_arg_first_type = op_type_new_arg_my_first;
+            SPVM_OP* op_type_new_arg_var_decl_first = SPVM_OP_new_op_type(compiler, arg_var_decl_first->type, arg_var_decl_first->op_var_decl->file, arg_var_decl_first->op_var_decl->line);
+            op_arg_first_type = op_type_new_arg_var_decl_first;
             assert(op_arg_first_type->uv.type->basic_type);
           }
         }
@@ -2651,14 +2651,14 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   if (op_captures) {
     SPVM_OP* op_capture = op_captures->first;
     while ((op_capture = SPVM_OP_sibling(compiler, op_capture))) {
-      SPVM_LIST_push(method->captures, op_capture->uv.var->my);
+      SPVM_LIST_push(method->captures, op_capture->uv.var->var_decl);
     }
   }
   
   // Variable declarations of arguments
   SPVM_OP* op_arg = op_args->first;
   while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-    SPVM_LIST_push(method->mys, op_arg->uv.var->my);
+    SPVM_LIST_push(method->var_decls, op_arg->uv.var->var_decl);
   }
 
   // return type
@@ -2681,13 +2681,13 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     {
       int32_t i;
       for (i = method->args_length - 1; i >= 0; i--) {
-        SPVM_MY* arg_my = SPVM_LIST_get(method->mys, i);
-        assert(arg_my);
-        SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, arg_my->var->name, arg_my->op_my->file, arg_my->op_my->line);
+        SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, i);
+        assert(arg_var_decl);
+        SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, arg_var_decl->var->name, arg_var_decl->op_var_decl->file, arg_var_decl->op_var_decl->line);
         SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-        op_var->uv.var->my = arg_my;
+        op_var->uv.var->var_decl = arg_var_decl;
         op_var->uv.var->is_declaration = 1;
-        op_var->uv.var->my = arg_my;
+        op_var->uv.var->var_decl = arg_var_decl;
 
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
       }
@@ -2699,9 +2699,9 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
       op_name->uv.name = name;
       SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
-      SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, op_list_statement->file, op_list_statement->last->line + 1);
+      SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op_list_statement->file, op_list_statement->line);
-      op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type, NULL);
+      op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
       SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
     }
 
@@ -2718,9 +2718,9 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
         SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
         op_name->uv.name = name;
         SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
-        SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, op_list_statement->file, op_list_statement->last->line + 1);
+        SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
         SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, return_type, op_list_statement->file, op_list_statement->last->line + 1);
-        op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type, NULL);
+        op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var);
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
       }
@@ -2842,32 +2842,32 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
 
 SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_descriptors) {
   
-  SPVM_OP* op_my = SPVM_OP_new_op_my_eternal(compiler, op_var->file, op_var->line);
+  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl_eternal(compiler, op_var->file, op_var->line);
 
-  op_my->uv.my->is_arg = 1;
+  op_var_decl->uv.var_decl->is_arg = 1;
   
-  op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type, op_descriptors);
+  op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, op_descriptors);
   
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_descriptors) {
+SPVM_OP* SPVM_OP_build_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_var_decl, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_descriptors) {
   
   // Declaration
   op_var->uv.var->is_declaration = 1;
   
-  // Create my var information
-  SPVM_MY* my = op_my->uv.my;
+  // Create var_decl var information
+  SPVM_VAR_DECL* var_decl = op_var_decl->uv.var_decl;
   if (op_type) {
-    my->type = op_type->uv.type;
+    var_decl->type = op_type->uv.type;
   }
   
   // Name OP
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
   op_name->uv.name = op_var->uv.var->name;
-  my->var = op_var->uv.var;
+  var_decl->var = op_var->uv.var;
 
-  op_var->uv.var->my = my;
+  op_var->uv.var->var_decl = var_decl;
 
   return op_var;
 }

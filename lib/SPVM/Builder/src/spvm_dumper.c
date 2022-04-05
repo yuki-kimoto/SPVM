@@ -12,7 +12,7 @@
 #include "spvm_constant.h"
 #include "spvm_field.h"
 #include "spvm_method.h"
-#include "spvm_my.h"
+#include "spvm_var_decl.h"
 #include "spvm_var.h"
 #include "spvm_op.h"
 #include "spvm_type.h"
@@ -80,11 +80,11 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     else if (id == SPVM_OP_C_ID_VAR) {
       SPVM_VAR* var = op_cur->uv.var;
       printf(" \"%s\"", var->name);
-      if (var->my) {
-        printf(" (my->id:%d) declaration : %d", var->my->id, op_cur->uv.var->is_declaration);
+      if (var->var_decl) {
+        printf(" (var_decl->id:%d) declaration : %d", var->var_decl->id, op_cur->uv.var->is_declaration);
       }
       else {
-        printf(" (my->id:not yet resolved)");
+        printf(" (var_decl->id:not yet resolved)");
       }
     }
     else if (id == SPVM_OP_C_ID_CLASS_VAR_ACCESS) {
@@ -315,14 +315,14 @@ void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
     printf("      is_enum => %d\n", (method->flag & SPVM_METHOD_C_FLAG_ENUM) ? 1 : 0);
     printf("      have_native_desc => %d\n", (method->flag & SPVM_METHOD_C_FLAG_NATIVE) ? 1 : 0);
     if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
-      printf("      mys\n");
-      SPVM_LIST* mys = method->mys;
+      printf("      var_decls\n");
+      SPVM_LIST* var_decls = method->var_decls;
       {
         int32_t i;
-        for (i = 0; i < mys->length; i++) {
-          SPVM_MY* my = SPVM_LIST_get(method->mys, i);
-          printf("        mys[%" PRId32 "] ", i);
-          SPVM_DUMPER_dump_my(compiler, my);
+        for (i = 0; i < var_decls->length; i++) {
+          SPVM_VAR_DECL* var_decl = SPVM_LIST_get(method->var_decls, i);
+          printf("        var_decls[%" PRId32 "] ", i);
+          SPVM_DUMPER_dump_var_decl(compiler, var_decl);
         }
       }
       
@@ -343,14 +343,14 @@ void SPVM_DUMPER_dump_method_opcode_array(SPVM_COMPILER* compiler, SPVM_METHOD* 
     
     printf("      name => \"%s\"\n", method->op_name->uv.name);
     if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
-      printf("      mys\n");
-      SPVM_LIST* mys = method->mys;
+      printf("      var_decls\n");
+      SPVM_LIST* var_decls = method->var_decls;
       {
         int32_t i;
-        for (i = 0; i < mys->length; i++) {
-          SPVM_MY* my = SPVM_LIST_get(method->mys, i);
-          printf("        mys[%" PRId32 "] ", i);
-          SPVM_DUMPER_dump_my(compiler, my);
+        for (i = 0; i < var_decls->length; i++) {
+          SPVM_VAR_DECL* var_decl = SPVM_LIST_get(method->var_decls, i);
+          printf("        var_decls[%" PRId32 "] ", i);
+          SPVM_DUMPER_dump_var_decl(compiler, var_decl);
         }
       }
       
@@ -383,21 +383,21 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
 }
 
 
-void SPVM_DUMPER_dump_my(SPVM_COMPILER* compiler, SPVM_MY* my) {
+void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl) {
   (void)compiler;
 
-  if (my) {
+  if (var_decl) {
     printf("\n");
-    printf("          name => %s\n", my->var->name);
+    printf("          name => %s\n", var_decl->var->name);
     printf("          type => ");
-    SPVM_TYPE* type = my->type;
+    SPVM_TYPE* type = var_decl->type;
     printf("%s", SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag));
     printf("\n");
-    printf("          id => %d\n", my->id);
+    printf("          id => %d\n", var_decl->id);
     printf("          mem_id => ");
     
     if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, my->op_my);
+      SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, var_decl->op_var_decl);
       switch(numeric_type->basic_type->id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
           printf("byte");
@@ -470,7 +470,7 @@ void SPVM_DUMPER_dump_my(SPVM_COMPILER* compiler, SPVM_MY* my) {
       }
     }
     
-    printf(" %d\n", my->mem_id);
+    printf(" %d\n", var_decl->mem_id);
   }
   else {
     printf("          (Unexpected)\n");

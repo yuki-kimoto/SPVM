@@ -285,11 +285,11 @@ same function or variable in your project.
     mess_nocontext()          NEED_mess_nocontext          NEED_mess_nocontext_GLOBAL
     mess_sv()                 NEED_mess_sv                 NEED_mess_sv_GLOBAL
     mg_findext()              NEED_mg_findext              NEED_mg_findext_GLOBAL
-    my_snprintf()             NEED_my_snprintf             NEED_my_snprintf_GLOBAL
-    my_sprintf()              NEED_my_sprintf              NEED_my_sprintf_GLOBAL
-    my_strlcat()              NEED_my_strlcat              NEED_my_strlcat_GLOBAL
-    my_strlcpy()              NEED_my_strlcpy              NEED_my_strlcpy_GLOBAL
-    my_strnlen()              NEED_my_strnlen              NEED_my_strnlen_GLOBAL
+    my_snprintf()             NEED_var_decl_snprintf             NEED_var_decl_snprintf_GLOBAL
+    my_sprintf()              NEED_var_decl_sprintf              NEED_var_decl_sprintf_GLOBAL
+    my_strlcat()              NEED_var_decl_strlcat              NEED_var_decl_strlcat_GLOBAL
+    my_strlcpy()              NEED_var_decl_strlcpy              NEED_var_decl_strlcpy_GLOBAL
+    my_strnlen()              NEED_var_decl_strnlen              NEED_var_decl_strnlen_GLOBAL
     newCONSTSUB()             NEED_newCONSTSUB             NEED_newCONSTSUB_GLOBAL
     newSVpvn_share()          NEED_newSVpvn_share          NEED_newSVpvn_share_GLOBAL
     PL_parser                 NEED_PL_parser               NEED_PL_parser_GLOBAL
@@ -450,10 +450,10 @@ sub format_version
   # Given an input version that is acceptable to parse_version(), return a
   # string of the standard representation of it.
 
-  my($r,$v,$s) = parse_version(shift);
+  var_decl($r,$v,$s) = parse_version(shift);
 
   if ($r < 5 || ($r == 5 && $v < 6)) {
-    my $ver = sprintf "%d.%03d", $r, $v;
+    var_decl $ver = sprintf "%d.%03d", $r, $v;
     $s > 0 and $ver .= sprintf "_%02d", $s;
 
     return $ver;
@@ -467,10 +467,10 @@ sub parse_version
   # Returns a triplet, (revision, major, minor) from the input, treated as a
   # string, which can be in any of several typical formats.
 
-  my $ver = shift;
+  var_decl $ver = shift;
   $ver = "" unless defined $ver;
 
-  my($r,$v,$s);
+  var_decl($r,$v,$s);
 
   if (   ($r, $v, $s) = $ver =~ /^([0-9]+)([0-9]{3})([0-9]{3})$/ # 5029010, from the file
                                                       # names in our
@@ -503,7 +503,7 @@ sub parse_version
     return ($r, $v, $s);
   }
 
-  my $mesg = "";
+  var_decl $mesg = "";
   $mesg = ".  (In 5.00x_yz, x must be 1-5.)" if $ver =~ /_/;
   die "Invalid version number format: '$ver'$mesg\n";
 }
@@ -525,7 +525,7 @@ sub format_version_line
 {
     # Returns a floating point representation of the input version
 
-    my $version = int_parse_version(shift);
+    var_decl $version = int_parse_version(shift);
     $version =~ s/ ^  ( $r_pat ) \B /$1./x;
     return $version;
 }
@@ -543,10 +543,10 @@ BEGIN {
 }
 
 sub _dictionary_order { # Sort caselessly, ignoring punct
-    my ($valid_a, $valid_b) = @_;
+    var_decl ($valid_a, $valid_b) = @_;
 
-    my ($lc_a, $lc_b);
-    my ($squeezed_a, $squeezed_b);
+    var_decl ($lc_a, $lc_b);
+    var_decl ($squeezed_a, $squeezed_b);
 
     $valid_a = '' unless defined $valid_a;
     $valid_b = '' unless defined $valid_b;
@@ -573,9 +573,9 @@ sub sort_api_lines  # Sort lines of the form flags|return|name|args...
                     # by 'name'
 {
     $a =~ / ^ [^|]* \| [^|]* \| ( [^|]* ) /x; # 3rd field '|' is sep
-    my $a_name = $1;
+    var_decl $a_name = $1;
     $b =~ / ^ [^|]* \| [^|]* \| ( [^|]* ) /x;
-    my $b_name = $1;
+    var_decl $b_name = $1;
     return dictionary_order($a_name, $b_name);
 }
 
@@ -897,7 +897,7 @@ _append_range_to_invlist|5.013010||Viu
 append_utf8_from_native_byte|5.019004||cVniu
 apply|5.003007||Viu
 apply_attrs|5.006000||Viu
-apply_attrs_my|5.007003||Viu
+apply_attrs_var_decl|5.007003||Viu
 apply_attrs_string|5.006001|5.006001|xu
 ARCHLIB|5.003007|5.003007|Vn
 ARCHLIB_EXP|5.003007|5.003007|Vn
@@ -2665,7 +2665,7 @@ find_byclass|5.006000||Viu
 find_default_stash|5.019004||Viu
 find_first_differing_byte_pos|5.031007||Vniu
 find_hash_subscript|5.009004||Viu
-find_in_my_stash|5.006001||Viu
+find_in_var_decl_stash|5.006001||Viu
 find_lexical_cv|5.019001||Viu
 find_next_masked|5.027009||Vniu
 find_runcv|5.008001|5.008001|
@@ -3925,7 +3925,7 @@ INT64_MIN|5.007002||Viu
 INT_64_T|5.011000||Viu
 INTMAX_C|5.003007|5.003007|
 INT_PAT_MODS|5.009005||Viu
-intro_my|5.004000|5.004000|
+intro_var_decl|5.004000|5.004000|
 INTSIZE|5.003007|5.003007|Vn
 intuit_method|5.005000||Viu
 intuit_more|5.003007||Viu
@@ -4570,7 +4570,7 @@ KEY_msgctl|5.003007||Viu
 KEY_msgget|5.003007||Viu
 KEY_msgrcv|5.003007||Viu
 KEY_msgsnd|5.003007||Viu
-KEY_my|5.003007||Viu
+KEY_var_decl|5.003007||Viu
 KEY_ne|5.003007||Viu
 KEY_next|5.003007||Viu
 KEY_no|5.003007||Viu
@@ -6431,8 +6431,8 @@ PERL_MULTICONCAT_IX_PLAIN_PV|5.027006||Viu
 PERL_MULTICONCAT_IX_UTF8_LEN|5.027006||Viu
 PERL_MULTICONCAT_IX_UTF8_PV|5.027006||Viu
 PERL_MULTICONCAT_MAXARG|5.027006||Viu
-Perl_my_mkostemp|5.027008||Viu
-Perl_my_mkstemp|5.027004||Viu
+Perl_var_decl_mkostemp|5.027008||Viu
+Perl_var_decl_mkstemp|5.027004||Viu
 PERL_MY_SNPRINTF_GUARDED|5.009004||Viu
 PERL_MY_SNPRINTF_POST_GUARD|5.021002||Viu
 PERL_MY_VSNPRINTF_GUARDED|5.009004||Viu
@@ -7063,8 +7063,8 @@ PL_in_clean_objs|5.005000||Viu
 PL_in_eval|5.005000||Viu
 PL_initav|5.005000||Viu
 PL_in_load_module|5.008001||Viu
-PL_in_my||5.003007|ponu
-PL_in_my_stash||5.005000|ponu
+PL_in_var_decl||5.003007|ponu
+PL_in_var_decl_stash||5.005000|ponu
 PL_inplace|5.005000||Viu
 PL_in_some_fold|5.029007||Viu
 PL_internal_random_state|5.027004||Viu
@@ -7121,8 +7121,8 @@ PL_minus_p|5.005000||Viu
 PL_modcount|5.005000||Viu
 PL_modglobal|5.005000|5.005000|
 PL_multideref_pc|5.021007||Viu
-PL_my_cxt_list|5.009003||Viu
-PL_my_cxt_size|5.009003||Viu
+PL_var_decl_cxt_list|5.009003||Viu
+PL_var_decl_cxt_size|5.009003||Viu
 PL_na|5.004005|5.003007|p
 PL_nomemok|5.005000||Viu
 PL_no_modify||5.003007|ponu
@@ -10273,7 +10273,7 @@ ZeroD|5.009002|5.003007|p
 );
 
 if (exists $opt{'list-unsupported'}) {
-  my $f;
+  var_decl $f;
   for $f (sort dictionary_order keys %API) {
     next if $API{$f}{core_only};
     next if $API{$f}{beyond_depr};
@@ -10281,7 +10281,7 @@ if (exists $opt{'list-unsupported'}) {
     next if $API{$f}{experimental};
     next unless $API{$f}{todo};
     next if int_parse_version($API{$f}{todo}) <= $int_min_perl;
-    my $repeat = 40 - length($f);
+    var_decl $repeat = 40 - length($f);
     $repeat = 0 if $repeat < 0;
     print "$f ", '.'x $repeat, " ", format_version($API{$f}{todo}), "\n";
   }
@@ -10297,7 +10297,7 @@ my($hint, $define, $function);
 sub find_api
 {
   BEGIN { 'warnings'->unimport('uninitialized') if "$]" > '5.006' }
-  my $code = shift;
+  var_decl $code = shift;
   $code =~ s{
     / (?: \*[^*]*\*+(?:[^$ccs][^*]*\*+)* / | /[^\r\n]*)
   | "[^"\\]*(?:\\.[^"\\]*)*"
@@ -10309,7 +10309,7 @@ while (<DATA>) {
   if ($hint) {
 
     # Here, we are in the middle of accumulating a hint or warning.
-    my $end_of_hint = 0;
+    var_decl $end_of_hint = 0;
 
     # A line containing a comment end marker closes the hint.  Remove that
     # marker for processing below.
@@ -10319,7 +10319,7 @@ while (<DATA>) {
     }
 
     # Set $h to the hash of which type.
-    my $h = $hint->[0] eq 'Hint' ? \%hints : \%warnings;
+    var_decl $h = $hint->[0] eq 'Hint' ? \%hints : \%warnings;
 
     # Ignore any leading and trailing white space, and an optional star comment
     # continuation marker, then place the meat of the line into $1
@@ -10367,7 +10367,7 @@ while (<DATA>) {
     else {  # Otherwise this line ends the definition, make foo depend on bar
             # (and what bar depends on) if its not one of ppp's own constructs
       if (exists $API{$define->[0]} && $define->[1] !~ /^DPPP_\(/) {
-        my @n = find_api($define->[1]);
+        var_decl @n = find_api($define->[1]);
         push @{$depends{$define->[0]}}, @n if @n
       }
       undef $define;
@@ -10381,7 +10381,7 @@ while (<DATA>) {
   if ($function) {
     if (/^}/) {
       if (exists $API{$function->[0]}) {
-        my @n = find_api($function->[1]);
+        var_decl @n = find_api($function->[1]);
         push @{$depends{$function->[0]}}, @n if @n
       }
       undef $function;
@@ -10413,8 +10413,8 @@ while (<DATA>) {
   # create a list of the elements on the rhs, and make that list apply to each
   # element in the lhs, which becomes a key in \%depends.
   if (m{^\s*$rccs\s+(\w+(\s*,\s*\w+)*)\s+depends\s+on\s+(\w+(\s*,\s*\w+)*)\s+$rcce\s*$}) {
-    my @deps = map { s/\s+//g; $_ } split /,/, $3;
-    my $d;
+    var_decl @deps = map { s/\s+//g; $_ } split /,/, $3;
+    var_decl $d;
     for $d (map { s/\s+//g; $_ } split /,/, $1) {
       push @{$depends{$d}}, @deps;
     }
@@ -10424,22 +10424,22 @@ while (<DATA>) {
 }
 
 for (values %depends) {
-  my %seen;
+  var_decl %seen;
   $_ = [sort dictionary_order grep !$seen{$_}++, @$_];
 }
 
 if (exists $opt{'api-info'}) {
-  my $f;
-  my $count = 0;
-  my $match = $opt{'api-info'} =~ m!^/(.*)/$! ? $1 : "^\Q$opt{'api-info'}\E\$";
+  var_decl $f;
+  var_decl $count = 0;
+  var_decl $match = $opt{'api-info'} =~ m!^/(.*)/$! ? $1 : "^\Q$opt{'api-info'}\E\$";
 
   # Sort the names, and split into two classes; one for things that are part of
   # the API; a second for things that aren't.
-  my @ok_to_use;
-  my @shouldnt_use;
+  var_decl @ok_to_use;
+  var_decl @shouldnt_use;
   for $f (sort dictionary_order keys %API) {
     next unless $f =~ /$match/;
-    my $base = int_parse_version($API{$f}{base}) if $API{$f}{base};
+    var_decl $base = int_parse_version($API{$f}{base}) if $API{$f}{base};
     if ($base && ! $API{$f}{inaccessible} && ! $API{$f}{core_only}) {
         push @ok_to_use, $f;
     }
@@ -10456,15 +10456,15 @@ if (exists $opt{'api-info'}) {
 
   for $f (@ok_to_use) {
     print "\n=== $f ===\n";
-    my $info = 0;
-    my $base;
+    var_decl $info = 0;
+    var_decl $base;
     $base = int_parse_version($API{$f}{base}) if $API{$f}{base};
-    my $todo;
+    var_decl $todo;
     $todo = int_parse_version($API{$f}{todo}) if $API{$f}{todo};
 
     # Output information
     if ($base) {
-        my $with_or= "";
+        var_decl $with_or= "";
         if (    $base <= $int_min_perl
             || (   (! $API{$f}{provided} && ! $todo)
                 || ($todo && $todo >= $base)))
@@ -10472,7 +10472,7 @@ if (exists $opt{'api-info'}) {
             $with_or= " with or";
         }
 
-        my $Supported = ($API{$f}{undocumented}) ? 'Available' : 'Supported';
+        var_decl $Supported = ($API{$f}{undocumented}) ? 'Available' : 'Supported';
         print "\n$Supported at least since perl-",
               format_version($base), ",$with_or without $ppport.";
         if ($API{$f}{unverified}) {
@@ -10487,7 +10487,7 @@ if (exists $opt{'api-info'}) {
         print "\nThis is only supported by $ppport, and NOT by perl versions going forward.\n" unless $base;
         if ($todo) {
             if (! $base || $todo < $base) {
-                my $additionally = "";
+                var_decl $additionally = "";
                 $additionally .= " additionally" if $base;
                 print "$ppport$additionally provides support at least back to perl-",
                     format_version($todo),
@@ -10496,7 +10496,7 @@ if (exists $opt{'api-info'}) {
         }
         elsif (! $base || $base > $int_min_perl) {
             if (exists $depends{$f}) {
-                my $max = 0;
+                var_decl $max = 0;
                 for (@{$depends{$f}}) {
                     $max = int_parse_version($API{$_}{todo}) if $API{$_}{todo} && $API{$_}{todo} > $max;
                     # XXX What to assume unspecified values are?  This effectively makes them MIN_PERL
@@ -10533,7 +10533,7 @@ if (exists $opt{'api-info'}) {
     }
 
     if ($base || ! $API{$f}{ppport_fnc}) {
-      my $email = "Send email to perl5-porters\@perl.org if you need to have this functionality.\n";
+      var_decl $email = "Send email to perl5-porters\@perl.org if you need to have this functionality.\n";
       if ($API{$f}{inaccessible}) {
         print "\nThis is not part of the public API, and may not even be accessible to XS code.\n";
         $info++;
@@ -10584,15 +10584,15 @@ if (exists $opt{'api-info'}) {
 }
 
 if (exists $opt{'list-provided'}) {
-  my $f;
+  var_decl $f;
   for $f (sort dictionary_order keys %API) {
     next unless $API{$f}{provided};
-    my @flags;
+    var_decl @flags;
     push @flags, 'explicit' if exists $need{$f};
     push @flags, 'depend'   if exists $depends{$f};
     push @flags, 'hint'     if exists $hints{$f};
     push @flags, 'warning'  if exists $warnings{$f};
-    my $flags = @flags ? '  ['.join(', ', @flags).']' : '';
+    var_decl $flags = @flags ? '  ['.join(', ', @flags).']' : '';
     print "$f$flags\n";
   }
   exit 0;
@@ -10603,7 +10603,7 @@ my @srcext = qw( .xs .c .h .cc .cpp -c.inc -xs.inc );
 my $srcext = join '|', map { quotemeta $_ } @srcext;
 
 if (@ARGV) {
-  my %seen;
+  var_decl %seen;
   for (@ARGV) {
     if (-e) {
       if (-f) {
@@ -10612,7 +10612,7 @@ if (@ARGV) {
       else { warn "'$_' is not a file.\n" }
     }
     else {
-      my @new = grep { -f } glob $_
+      var_decl @new = grep { -f } glob $_
           or warn "'$_' does not exist.\n";
       push @files, grep { !$seen{$_}++ } @new;
     }
@@ -10632,10 +10632,10 @@ else {
 }
 
 if (!@ARGV || $opt{filter}) {
-  my(@in, @out);
-  my %xsc = map { /(.*)\.xs$/ ? ("$1.c" => 1, "$1.cc" => 1) : () } @files;
+  var_decl(@in, @out);
+  var_decl %xsc = map { /(.*)\.xs$/ ? ("$1.c" => 1, "$1.cc" => 1) : () } @files;
   for (@files) {
-    my $out = exists $xsc{$_} || /\b\Q$ppport\E$/i || !/($srcext)$/i;
+    var_decl $out = exists $xsc{$_} || /\b\Q$ppport\E$/i || !/($srcext)$/i;
     push @{ $out ? \@out : \@in }, $_;
   }
   if (@ARGV && @out) {
@@ -10659,13 +10659,13 @@ for $filename (@files) {
 
   info("Scanning $filename ...");
 
-  my $c = do { local $/; <IN> };
+  var_decl $c = do { local $/; <IN> };
   close IN;
 
-  my %file = (orig => $c, changes => 0);
+  var_decl %file = (orig => $c, changes => 0);
 
   # Temporarily remove C/XS comments and strings from the code
-  my @ccom;
+  var_decl @ccom;
 
   $c =~ s{
     ( ^$HS*\#$HS*include\b[^\r\n]+\b(?:\Q$ppport\E|XSUB\.h)\b[^\r\n]*
@@ -10681,10 +10681,10 @@ for $filename (@files) {
   $file{code} = $c;
   $file{has_inc_ppport} = $c =~ /^$HS*#$HS*include[^\r\n]+\b\Q$ppport\E\b/m;
 
-  my $func;
+  var_decl $func;
 
   for $func (keys %API) {
-    my $match = $func;
+    var_decl $match = $func;
     $match .= "|$revreplace{$func}" if exists $revreplace{$func};
     if ($c =~ /\b(?:Perl_)?($match)\b/) {
       $file{uses_replace}{$1}++ if exists $revreplace{$func} && $1 eq $revreplace{$func};
@@ -10695,7 +10695,7 @@ for $filename (@files) {
             || int_parse_version($API{$func}{base}) > $opt{'compat-version'})
         {
           $file{uses}{$func}++;
-          my @deps = rec_depend($func);
+          var_decl @deps = rec_depend($func);
           if (@deps) {
             $file{uses_deps}{$func} = \@deps;
             for (@deps) {
@@ -10737,12 +10737,12 @@ for $filename (@files) {
 my $need;
 for $need (keys %{$global{needs}}) {
   if (@{$global{needs}{$need}} > 1) {
-    my @targets = @{$global{needs}{$need}};
-    my @t = grep $files{$_}{needed_global}{$need}, @targets;
+    var_decl @targets = @{$global{needs}{$need}};
+    var_decl @t = grep $files{$_}{needed_global}{$need}, @targets;
     @targets = @t if @t;
     @t = grep /\.xs$/i, @targets;
     @targets = @t if @t;
-    my $target = shift @targets;
+    var_decl $target = shift @targets;
     $files{$target}{needs}{$need} = 'global';
     for (@{$global{needs}{$need}}) {
       $files{$_}{needs}{$need} = 'extern' if $_ ne $target;
@@ -10755,15 +10755,15 @@ for $filename (@files) {
 
   info("=== Analyzing $filename ===");
 
-  my %file = %{$files{$filename}};
-  my $func;
-  my $c = $file{code};
-  my $warnings = 0;
+  var_decl %file = %{$files{$filename}};
+  var_decl $func;
+  var_decl $c = $file{code};
+  var_decl $warnings = 0;
 
   for $func (sort dictionary_order keys %{$file{uses_Perl}}) {
     if ($API{$func}{varargs}) {
       unless ($API{$func}{noTHXarg}) {
-        my $changes = ($c =~ s{\b(Perl_$func\s*\(\s*)(?!aTHX_?)(\)|[^\s)]*\))}
+        var_decl $changes = ($c =~ s{\b(Perl_$func\s*\(\s*)(?!aTHX_?)(\)|[^\s)]*\))}
                               { $1 . ($2 eq ')' ? 'aTHX' : 'aTHX_ ') . $2 }ge);
         if ($changes) {
           warning("Doesn't pass interpreter argument aTHX to Perl_$func");
@@ -10805,7 +10805,7 @@ for $filename (@files) {
   }
 
   for $func (sort dictionary_order keys %{$file{needed_static}}) {
-    my $message = '';
+    var_decl $message = '';
     if (not exists $file{uses}{$func}) {
       $message = "No need to define NEED_$func if $func is never used";
     }
@@ -10819,7 +10819,7 @@ for $filename (@files) {
   }
 
   for $func (sort dictionary_order keys %{$file{needed_global}}) {
-    my $message = '';
+    var_decl $message = '';
     if (not exists $global{uses}{$func}) {
       $message = "No need to define NEED_${func}_GLOBAL if $func is never used";
     }
@@ -10840,12 +10840,12 @@ for $filename (@files) {
   $file{needs_inc_ppport} = keys %{$file{uses}};
 
   if ($file{needs_inc_ppport}) {
-    my $pp = '';
+    var_decl $pp = '';
 
     for $func (sort dictionary_order keys %{$file{needs}}) {
-      my $type = $file{needs}{$func};
+      var_decl $type = $file{needs}{$func};
       next if $type eq 'extern';
-      my $suffix = $type eq 'global' ? '_GLOBAL' : '';
+      var_decl $suffix = $type eq 'global' ? '_GLOBAL' : '';
       unless (exists $file{"needed_$type"}{$func}) {
         if ($type eq 'global') {
           diag("Files [@{$global{needs}{$func}}] need $func, adding global request");
@@ -10882,9 +10882,9 @@ for $filename (@files) {
   }
 
   # put back in our C comments
-  my $ix;
-  my $cppc = 0;
-  my @ccom = @{$file{ccom}};
+  var_decl $ix;
+  var_decl $cppc = 0;
+  var_decl @ccom = @{$file{ccom}};
   for $ix (0 .. $#ccom) {
     if (!$opt{cplusplus} && $ccom[$ix] =~ s!^//!!) {
       $cppc++;
@@ -10896,17 +10896,17 @@ for $filename (@files) {
   }
 
   if ($cppc) {
-    my $s = $cppc != 1 ? 's' : '';
+    var_decl $s = $cppc != 1 ? 's' : '';
     warning("Uses $cppc C++ style comment$s, which is not portable");
   }
 
-  my $s = $warnings != 1 ? 's' : '';
-  my $warn = $warnings ? " ($warnings warning$s)" : '';
+  var_decl $s = $warnings != 1 ? 's' : '';
+  var_decl $warn = $warnings ? " ($warnings warning$s)" : '';
   info("Analysis completed$warn");
 
   if ($file{changes}) {
     if (exists $opt{copy}) {
-      my $newfile = "$filename$opt{copy}";
+      var_decl $newfile = "$filename$opt{copy}";
       if (-e $newfile) {
         error("'$newfile' already exists, refusing to write copy of '$filename'");
       }
@@ -10944,7 +10944,7 @@ fallback:
       }
     }
     else {
-      my $s = $file{changes} == 1 ? '' : 's';
+      var_decl $s = $file{changes} == 1 ? '' : 's';
       info("$file{changes} potentially required change$s detected");
     }
   }
@@ -10963,8 +10963,8 @@ sub try_use { eval "use @_;"; return $@ eq '' }
 sub mydiff
 {
   local *F = shift;
-  my($file, $str) = @_;
-  my $diff;
+  var_decl($file, $str) = @_;
+  var_decl $diff;
 
   if (exists $opt{diff}) {
     $diff = run_diff($opt{diff}, $file, $str);
@@ -10996,10 +10996,10 @@ HEADER
 
 sub run_diff
 {
-  my($prog, $file, $str) = @_;
-  my $tmp = 'dppptemp';
-  my $suf = 'aaa';
-  my $diff = '';
+  var_decl($prog, $file, $str) = @_;
+  var_decl $tmp = 'dppptemp';
+  var_decl $suf = 'aaa';
+  var_decl $diff = '';
   local *F;
 
   while (-e "$tmp.$suf") { $suf++ }
@@ -11030,11 +11030,11 @@ sub run_diff
 
 sub rec_depend
 {
-  my($func, $seen) = @_;
+  var_decl($func, $seen) = @_;
   return () unless exists $depends{$func};
   $seen = {%{$seen||{}}};
   return () if $seen->{$func}++;
-  my %s;
+  var_decl %s;
   grep !$s{$_}++, map { ($_, rec_depend($_, $seen)) } @{$depends{$func}};
 }
 
@@ -11066,16 +11066,16 @@ my %given_warnings;
 sub hint
 {
   $opt{quiet} and return;
-  my $func = shift;
-  my $rv = 0;
+  var_decl $func = shift;
+  var_decl $rv = 0;
   if (exists $warnings{$func} && !$given_warnings{$func}++) {
-    my $warn = $warnings{$func};
+    var_decl $warn = $warnings{$func};
     $warn =~ s!^!*** !mg;
     print "*** WARNING: $func\n", $warn;
     $rv++;
   }
   if ($opt{hints} && exists $hints{$func} && !$given_hints{$func}++) {
-    my $hint = $hints{$func};
+    var_decl $hint = $hints{$func};
     $hint =~ s/^/   /mg;
     print "   --- hint for $func ---\n", $hint;
   }
@@ -11084,8 +11084,8 @@ sub hint
 
 sub usage
 {
-  my($usage) = do { local(@ARGV,$/)=($0); <> } =~ /^=head\d$HS+SYNOPSIS\s*^(.*?)\s*^=/ms;
-  my %M = ( 'I' => '*' );
+  var_decl($usage) = do { local(@ARGV,$/)=($0); <> } =~ /^=head\d$HS+SYNOPSIS\s*^(.*?)\s*^=/ms;
+  var_decl %M = ( 'I' => '*' );
   $usage =~ s/^\s*perl\s+\S+/$^X $0/;
   $usage =~ s/([A-Z])<([^>]+)>/$M{$1}$2$M{$1}/g;
 
@@ -11102,8 +11102,8 @@ ENDUSAGE
 
 sub strip
 {
-  my $self = do { local(@ARGV,$/)=($0); <> };
-  my($copy) = $self =~ /^=head\d\s+COPYRIGHT\s*^(.*?)^=\w+/ms;
+  var_decl $self = do { local(@ARGV,$/)=($0); <> };
+  var_decl($copy) = $self =~ /^=head\d\s+COPYRIGHT\s*^(.*?)^=\w+/ms;
   $copy =~ s/^(?=\S+)/    /gms;
   $self =~ s/^$HS+Do NOT edit.*?(?=^-)/$copy/ms;
   $self =~ s/^SKIP.*(?=^__DATA__)/SKIP
@@ -11129,7 +11129,7 @@ please try to regenerate this file using:
 
 END
 /ms;
-  my($pl, $c) = $self =~ /(.*^__DATA__)(.*)/ms;
+  var_decl($pl, $c) = $self =~ /(.*^__DATA__)(.*)/ms;
   $c =~ s{
     / (?: \*[^*]*\*+(?:[^$ccs][^*]*\*+)* / | /[^\r\n]*)
   | ( "[^"\\]*(?:\\.[^"\\]*)*"
@@ -11761,7 +11761,7 @@ extern U32 DPPP_(my_PL_signals);
 #  define PL_expect                 expect
 #  define PL_hexdigit               hexdigit
 #  define PL_hints                  hints
-#  define PL_in_my                  in_my
+#  define PL_in_var_decl                  in_var_decl
 #  define PL_laststatval            laststatval
 #  define PL_lex_state              lex_state
 #  define PL_lex_stuff              lex_stuff
@@ -11798,7 +11798,7 @@ extern U32 DPPP_(my_PL_signals);
 
 #if (PERL_BCDVERSION >= 0x5009005)
 # ifdef DPPP_PL_parser_NO_DUMMY
-#  define D_PPP_my_PL_parser_var(var) ((PL_parser ? PL_parser : \
+#  define D_PPP_var_decl_PL_parser_var(var) ((PL_parser ? PL_parser : \
                 (croak("panic: PL_parser == NULL in %s:%d", \
                        __FILE__, __LINE__), (yy_parser *) NULL))->var)
 # else
@@ -11808,7 +11808,7 @@ extern U32 DPPP_(my_PL_signals);
 #   define D_PPP_parser_dummy_warning(var) \
              warn("warning: dummy PL_" #var " used in %s:%d", __FILE__, __LINE__),
 #  endif
-#  define D_PPP_my_PL_parser_var(var) ((PL_parser ? PL_parser : \
+#  define D_PPP_var_decl_PL_parser_var(var) ((PL_parser ? PL_parser : \
                 (D_PPP_parser_dummy_warning(var) &DPPP_(dummy_PL_parser)))->var)
 #if defined(NEED_PL_parser)
 static yy_parser DPPP_(dummy_PL_parser);
@@ -11835,19 +11835,19 @@ extern yy_parser DPPP_(dummy_PL_parser);
  * this variable will croak with a panic message.
  */
 
-# define PL_expect         D_PPP_my_PL_parser_var(expect)
-# define PL_copline        D_PPP_my_PL_parser_var(copline)
-# define PL_rsfp           D_PPP_my_PL_parser_var(rsfp)
-# define PL_rsfp_filters   D_PPP_my_PL_parser_var(rsfp_filters)
-# define PL_linestr        D_PPP_my_PL_parser_var(linestr)
-# define PL_bufptr         D_PPP_my_PL_parser_var(bufptr)
-# define PL_bufend         D_PPP_my_PL_parser_var(bufend)
-# define PL_lex_state      D_PPP_my_PL_parser_var(lex_state)
-# define PL_lex_stuff      D_PPP_my_PL_parser_var(lex_stuff)
-# define PL_tokenbuf       D_PPP_my_PL_parser_var(tokenbuf)
-# define PL_in_my          D_PPP_my_PL_parser_var(in_my)
-# define PL_in_my_stash    D_PPP_my_PL_parser_var(in_my_stash)
-# define PL_error_count    D_PPP_my_PL_parser_var(error_count)
+# define PL_expect         D_PPP_var_decl_PL_parser_var(expect)
+# define PL_copline        D_PPP_var_decl_PL_parser_var(copline)
+# define PL_rsfp           D_PPP_var_decl_PL_parser_var(rsfp)
+# define PL_rsfp_filters   D_PPP_var_decl_PL_parser_var(rsfp_filters)
+# define PL_linestr        D_PPP_var_decl_PL_parser_var(linestr)
+# define PL_bufptr         D_PPP_var_decl_PL_parser_var(bufptr)
+# define PL_bufend         D_PPP_var_decl_PL_parser_var(bufend)
+# define PL_lex_state      D_PPP_var_decl_PL_parser_var(lex_state)
+# define PL_lex_stuff      D_PPP_var_decl_PL_parser_var(lex_stuff)
+# define PL_tokenbuf       D_PPP_var_decl_PL_parser_var(tokenbuf)
+# define PL_in_var_decl          D_PPP_var_decl_PL_parser_var(in_var_decl)
+# define PL_in_var_decl_stash    D_PPP_var_decl_PL_parser_var(in_var_decl_stash)
+# define PL_error_count    D_PPP_var_decl_PL_parser_var(error_count)
 
 
 #else
@@ -14573,21 +14573,21 @@ DPPP_(my_ck_warner_d)(pTHX_ U32 err, const char *pat, ...)
 #endif
 
 #if !defined(my_strnlen)
-#if defined(NEED_my_strnlen)
-static Size_t DPPP_(my_my_strnlen)(const char * str, Size_t maxlen);
+#if defined(NEED_var_decl_strnlen)
+static Size_t DPPP_(my_var_decl_strnlen)(const char * str, Size_t maxlen);
 static
 #else
-extern Size_t DPPP_(my_my_strnlen)(const char * str, Size_t maxlen);
+extern Size_t DPPP_(my_var_decl_strnlen)(const char * str, Size_t maxlen);
 #endif
 
-#if defined(NEED_my_strnlen) || defined(NEED_my_strnlen_GLOBAL)
+#if defined(NEED_var_decl_strnlen) || defined(NEED_var_decl_strnlen_GLOBAL)
 
-#define my_strnlen DPPP_(my_my_strnlen)
-#define Perl_my_strnlen DPPP_(my_my_strnlen)
+#define my_strnlen DPPP_(my_var_decl_strnlen)
+#define Perl_var_decl_strnlen DPPP_(my_var_decl_strnlen)
 
 
 Size_t
-DPPP_(my_my_strnlen)(const char *str, Size_t maxlen)
+DPPP_(my_var_decl_strnlen)(const char *str, Size_t maxlen)
 {
     const char *p = str;
 
@@ -16843,21 +16843,21 @@ DPPP_(my_grok_oct)(pTHX_ const char *start, STRLEN *len_p, I32 *flags, NV *resul
 #endif
 
 #if !defined(my_snprintf)
-#if defined(NEED_my_snprintf)
-static int DPPP_(my_my_snprintf)(char * buffer, const Size_t len, const char * format, ...);
+#if defined(NEED_var_decl_snprintf)
+static int DPPP_(my_var_decl_snprintf)(char * buffer, const Size_t len, const char * format, ...);
 static
 #else
-extern int DPPP_(my_my_snprintf)(char * buffer, const Size_t len, const char * format, ...);
+extern int DPPP_(my_var_decl_snprintf)(char * buffer, const Size_t len, const char * format, ...);
 #endif
 
-#if defined(NEED_my_snprintf) || defined(NEED_my_snprintf_GLOBAL)
+#if defined(NEED_var_decl_snprintf) || defined(NEED_var_decl_snprintf_GLOBAL)
 
-#define my_snprintf DPPP_(my_my_snprintf)
-#define Perl_my_snprintf DPPP_(my_my_snprintf)
+#define my_snprintf DPPP_(my_var_decl_snprintf)
+#define Perl_var_decl_snprintf DPPP_(my_var_decl_snprintf)
 
 
 int
-DPPP_(my_my_snprintf)(char *buffer, const Size_t len, const char *format, ...)
+DPPP_(my_var_decl_snprintf)(char *buffer, const Size_t len, const char *format, ...)
 {
     dTHX;
     int retval;
@@ -16878,16 +16878,16 @@ DPPP_(my_my_snprintf)(char *buffer, const Size_t len, const char *format, ...)
 #endif
 
 #if !defined(my_sprintf)
-#if defined(NEED_my_sprintf)
-static int DPPP_(my_my_sprintf)(char * buffer, const char * pat, ...);
+#if defined(NEED_var_decl_sprintf)
+static int DPPP_(my_var_decl_sprintf)(char * buffer, const char * pat, ...);
 static
 #else
-extern int DPPP_(my_my_sprintf)(char * buffer, const char * pat, ...);
+extern int DPPP_(my_var_decl_sprintf)(char * buffer, const char * pat, ...);
 #endif
 
-#if defined(NEED_my_sprintf) || defined(NEED_my_sprintf_GLOBAL)
+#if defined(NEED_var_decl_sprintf) || defined(NEED_var_decl_sprintf_GLOBAL)
 
-#define my_sprintf DPPP_(my_my_sprintf)
+#define my_sprintf DPPP_(my_var_decl_sprintf)
 
 
 /* Warning: my_sprintf
@@ -16897,7 +16897,7 @@ extern int DPPP_(my_my_sprintf)(char * buffer, const char * pat, ...);
 /* Replace my_sprintf with my_snprintf */
 
 int
-DPPP_(my_my_sprintf)(char *buffer, const char* pat, ...)
+DPPP_(my_var_decl_sprintf)(char *buffer, const char* pat, ...)
 {
     va_list args;
     va_start(args, pat);
@@ -16926,21 +16926,21 @@ DPPP_(my_my_sprintf)(char *buffer, const char* pat, ...)
 #endif
 
 #if !defined(my_strlcat)
-#if defined(NEED_my_strlcat)
-static Size_t DPPP_(my_my_strlcat)(char * dst, const char * src, Size_t size);
+#if defined(NEED_var_decl_strlcat)
+static Size_t DPPP_(my_var_decl_strlcat)(char * dst, const char * src, Size_t size);
 static
 #else
-extern Size_t DPPP_(my_my_strlcat)(char * dst, const char * src, Size_t size);
+extern Size_t DPPP_(my_var_decl_strlcat)(char * dst, const char * src, Size_t size);
 #endif
 
-#if defined(NEED_my_strlcat) || defined(NEED_my_strlcat_GLOBAL)
+#if defined(NEED_var_decl_strlcat) || defined(NEED_var_decl_strlcat_GLOBAL)
 
-#define my_strlcat DPPP_(my_my_strlcat)
-#define Perl_my_strlcat DPPP_(my_my_strlcat)
+#define my_strlcat DPPP_(my_var_decl_strlcat)
+#define Perl_var_decl_strlcat DPPP_(my_var_decl_strlcat)
 
 
 Size_t
-DPPP_(my_my_strlcat)(char *dst, const char *src, Size_t size)
+DPPP_(my_var_decl_strlcat)(char *dst, const char *src, Size_t size)
 {
     Size_t used, length, copy;
 
@@ -16957,21 +16957,21 @@ DPPP_(my_my_strlcat)(char *dst, const char *src, Size_t size)
 #endif
 
 #if !defined(my_strlcpy)
-#if defined(NEED_my_strlcpy)
-static Size_t DPPP_(my_my_strlcpy)(char * dst, const char * src, Size_t size);
+#if defined(NEED_var_decl_strlcpy)
+static Size_t DPPP_(my_var_decl_strlcpy)(char * dst, const char * src, Size_t size);
 static
 #else
-extern Size_t DPPP_(my_my_strlcpy)(char * dst, const char * src, Size_t size);
+extern Size_t DPPP_(my_var_decl_strlcpy)(char * dst, const char * src, Size_t size);
 #endif
 
-#if defined(NEED_my_strlcpy) || defined(NEED_my_strlcpy_GLOBAL)
+#if defined(NEED_var_decl_strlcpy) || defined(NEED_var_decl_strlcpy_GLOBAL)
 
-#define my_strlcpy DPPP_(my_my_strlcpy)
-#define Perl_my_strlcpy DPPP_(my_my_strlcpy)
+#define my_strlcpy DPPP_(my_var_decl_strlcpy)
+#define Perl_var_decl_strlcpy DPPP_(my_var_decl_strlcpy)
 
 
 Size_t
-DPPP_(my_my_strlcpy)(char *dst, const char *src, Size_t size)
+DPPP_(my_var_decl_strlcpy)(char *dst, const char *src, Size_t size)
 {
     Size_t length, copy;
 

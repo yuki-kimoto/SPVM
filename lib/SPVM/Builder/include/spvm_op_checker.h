@@ -18,7 +18,7 @@ void SPVM_OP_CHECKER_apply_numeric_to_string_conversion(SPVM_COMPILER* compiler,
 void SPVM_OP_CHECKER_apply_unary_numeric_widening_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_unary);
 void SPVM_OP_CHECKER_apply_binary_numeric_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last);
 
-void SPVM_OP_CHECKER_resolve_my_mem_ids(SPVM_COMPILER* compiler, SPVM_METHOD* method);
+void SPVM_OP_CHECKER_resolve_var_decl_mem_ids(SPVM_COMPILER* compiler, SPVM_METHOD* method);
 
 SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_METHOD* method, SPVM_TYPE* type, const char* file, int32_t line);
 
