@@ -5458,6 +5458,9 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   // Decrement ref count of return value
   if (!exception_flag) {
     SPVM_RUNTIME_TYPE* method_return_type = SPVM_API_get_type(env, method->return_type_id);
+    
+    int32_t method_return_type_is_object = SPVM_API_get_type_is_object(env, method->return_type_id);
+    
     switch (method_return_type->category) {
       case SPVM_API_C_TYPE_CATEGORY_STRING:
       case SPVM_API_C_TYPE_CATEGORY_CLASS:
