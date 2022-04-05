@@ -34,7 +34,7 @@ sub need_generate {
     for my $spvm_builder_module_file_name (@$spvm_builder_module_file_names) {
       my $module_file = "$builder_loaded_dir/$spvm_builder_module_file_name";
       unless (-f $module_file) {
-        confess 'Unexpected';
+        confess "Can't find $module_file";
       }
       push @spvm_core_files, $module_file;
     }
@@ -44,7 +44,7 @@ sub need_generate {
     for my $spvm_core_header_file_name (@$spvm_core_header_file_names) {
       my $spvm_core_header_file = "$builder_loaded_dir/SPVM/Builder/include/$spvm_core_header_file_name";
       unless (-f $spvm_core_header_file) {
-        confess 'Unexpected';
+        confess "Can't find $spvm_core_header_file";
       }
       push @spvm_core_files, $spvm_core_header_file;
     }
@@ -54,7 +54,7 @@ sub need_generate {
     for my $spvm_core_source_file_name (@$spvm_core_source_file_names) {
       my $spvm_core_source_file = "$builder_loaded_dir/SPVM/Builder/src/$spvm_core_source_file_name";
       unless (-f $spvm_core_source_file) {
-        confess 'Unexpected';
+        confess "Can't find $spvm_core_source_file";
       }
       push @spvm_core_files, $spvm_core_source_file;
     }
@@ -369,7 +369,7 @@ sub get_spvm_core_source_file_names {
     spvm_class.c
     spvm_class_var_access.c
     spvm_class_var.c
-    spvm_implement.c
+    spvm_interface.c
     spvm_compiler.c
     spvm_constant.c
     spvm_precompile.c
@@ -426,7 +426,7 @@ sub get_spvm_core_header_file_names {
     spvm_field_access.h
     spvm_field.h
     spvm_hash.h
-    spvm_implement.h
+    spvm_interface.h
     spvm_list.h
     spvm_method.h
     spvm_var_decl.h

@@ -335,7 +335,7 @@ struct spvm_op {
     SPVM_DESCRIPTOR* descriptor;
     SPVM_USE* use;
     SPVM_ALLOW* allow;
-    SPVM_IMPLEMENT* implement;
+    SPVM_INTERFACE* interface;
     SPVM_CLASS_VAR_ACCESS* class_var_access;
     SPVM_ARRAY_FIELD_ACCESS* array_field_access;
     SPVM_FIELD_ACCESS* field_access;
@@ -499,8 +499,8 @@ int32_t SPVM_OP_get_list_elements_count(SPVM_COMPILER* compiler, SPVM_OP* op_lis
 SPVM_OP* SPVM_OP_new_op_true(SPVM_COMPILER* compiler, SPVM_OP* op);
 SPVM_OP* SPVM_OP_new_op_false(SPVM_COMPILER* compiler, SPVM_OP* op);
 
-SPVM_OP* SPVM_OP_build_is_read_only(SPVM_COMPILER* compiler, SPVM_OP* op_has_implement, SPVM_OP* op_term);
-SPVM_OP* SPVM_OP_build_has_implement(SPVM_COMPILER* compiler, SPVM_OP* op_has_implement, SPVM_OP* op_var, SPVM_OP* op_name);
+SPVM_OP* SPVM_OP_build_is_read_only(SPVM_COMPILER* compiler, SPVM_OP* op_has_interface, SPVM_OP* op_term);
+SPVM_OP* SPVM_OP_build_has_implement(SPVM_COMPILER* compiler, SPVM_OP* op_has_interface, SPVM_OP* op_var, SPVM_OP* op_name);
 
 const char* SPVM_OP_get_op_name(int32_t op_id);
 

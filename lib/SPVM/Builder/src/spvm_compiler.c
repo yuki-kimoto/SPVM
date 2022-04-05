@@ -28,7 +28,7 @@
 #include "spvm_var_decl.h"
 #include "spvm_string_buffer.h"
 #include "spvm_allow.h"
-#include "spvm_implement.h"
+#include "spvm_interface.h"
 #include "spvm_class_var_access.h"
 #include "spvm_constant.h"
 #include "spvm_array_field_access.h"
@@ -285,8 +285,8 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         break;
       }
       case SPVM_OP_C_ID_IMPLEMENT: {
-        SPVM_IMPLEMENT* implement = op->uv.implement;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, implement);
+        SPVM_INTERFACE* interface = op->uv.interface;
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, interface);
         break;
       }
       case SPVM_OP_C_ID_CLASS_VAR_ACCESS: {

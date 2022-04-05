@@ -34,7 +34,7 @@
 #include "spvm_array_field_access.h"
 #include "spvm_string_buffer.h"
 #include "spvm_allow.h"
-#include "spvm_implement.h"
+#include "spvm_interface.h"
 #include "spvm_string.h"
 
 
@@ -1912,12 +1912,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_ALLOW) {
         SPVM_LIST_push(class->allows, op_decl->uv.allow);
       }
-      // implement declarations
+      // interface declarations
       else if (op_decl->id == SPVM_OP_C_ID_IMPLEMENT) {
         if (class->category != SPVM_CLASS_C_CATEGORY_CLASS) {
           SPVM_COMPILER_error(compiler, "Non-noramal classes can't have \"implement\" statements at %s line %d", op_decl->file, op_decl->line);
         }
-        SPVM_LIST_push(class->implements, op_decl->uv.implement);
+        SPVM_LIST_push(class->interfaces, op_decl->uv.interface);
       }
       // Class var declarations
       else if (op_decl->id == SPVM_OP_C_ID_CLASS_VAR) {
@@ -2396,20 +2396,20 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   return op_allow;
 }
 
-SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_implement, SPVM_OP* op_name_class) {
+SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface, SPVM_OP* op_name_class) {
   
-  SPVM_IMPLEMENT* implement = SPVM_IMPLEMENT_new(compiler);
-  op_implement->uv.implement = implement;
-  implement->op_implement = op_implement;
-  implement->class_name = op_name_class->uv.name;
+  SPVM_INTERFACE* interface = SPVM_INTERFACE_new(compiler);
+  op_interface->uv.interface = interface;
+  interface->op_interface = op_interface;
+  interface->class_name = op_name_class->uv.name;
   
   // add use stack
-  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_implement->file, op_implement->line);
+  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_interface->file, op_interface->line);
   SPVM_OP* op_name_class_alias = NULL;
   int32_t is_require = 0;
   SPVM_OP_build_use(compiler, op_use, op_name_class, op_name_class_alias, is_require);
   
-  return op_implement;
+  return op_interface;
 }
 
 SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_OP* op_name, SPVM_OP* op_descriptors, SPVM_OP* op_type) {

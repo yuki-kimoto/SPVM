@@ -34,7 +34,7 @@ struct spvm_class {
   SPVM_METHOD* method_destructor;
   const char* module_rel_file;
   SPVM_LIST* allows;
-  SPVM_LIST* implements;
+  SPVM_LIST* interfaces;
   SPVM_LIST* interface_classes;
   SPVM_HASH* interface_class_symtable;
   SPVM_LIST* anon_methods;

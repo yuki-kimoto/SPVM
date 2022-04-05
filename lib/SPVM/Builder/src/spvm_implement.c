@@ -1,9 +1,9 @@
-#include "spvm_implement.h"
+#include "spvm_interface.h"
 #include "spvm_allocator.h"
 #include "spvm_compiler.h"
 
-SPVM_IMPLEMENT* SPVM_IMPLEMENT_new(SPVM_COMPILER* compiler) {
-  SPVM_IMPLEMENT* implement = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, sizeof(SPVM_IMPLEMENT));
+SPVM_INTERFACE* SPVM_INTERFACE_new(SPVM_COMPILER* compiler) {
+  SPVM_INTERFACE* interface = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, sizeof(SPVM_INTERFACE));
   
-  return implement;
+  return interface;
 }

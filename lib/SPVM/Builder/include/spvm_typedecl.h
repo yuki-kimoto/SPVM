@@ -56,9 +56,9 @@ typedef struct spvm_runtime SPVM_RUNTIME;
 struct spvm_string;
 typedef struct spvm_string SPVM_STRING;
 
-// spvm_implement.h
-struct spvm_implement;
-typedef struct spvm_implement SPVM_IMPLEMENT;
+// spvm_interface.h
+struct spvm_interface;
+typedef struct spvm_interface SPVM_INTERFACE;
 
 // spvm_hash.h
 struct spvm_hash;

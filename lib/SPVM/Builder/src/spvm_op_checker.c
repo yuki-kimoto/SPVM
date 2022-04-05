@@ -31,7 +31,7 @@
 #include "spvm_check_ast_info.h"
 #include "spvm_string_buffer.h"
 #include "spvm_use.h"
-#include "spvm_implement.h"
+#include "spvm_interface.h"
 #include "spvm_string.h"
 
 void SPVM_OP_CHECKER_free_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_VAR_DECL* var_decl) {
@@ -4889,22 +4889,22 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
   }
   
-  // classes must be implement the interface classes 
+  // classes must be interface the interface classes 
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
     
     // Add the interfaces to the class
-    for (int32_t i = 0; i < class->implements->length; i++) {
-      SPVM_IMPLEMENT* implement =  SPVM_LIST_get(class->implements, i);
+    for (int32_t i = 0; i < class->interfaces->length; i++) {
+      SPVM_INTERFACE* interface =  SPVM_LIST_get(class->interfaces, i);
 
-      SPVM_OP* op_implement = implement->op_implement;
+      SPVM_OP* op_interface = interface->op_interface;
       
-      const char* interface_class_name = implement->class_name;
+      const char* interface_class_name = interface->class_name;
       
       SPVM_CLASS* interface_class = SPVM_HASH_get(compiler->class_symtable, interface_class_name, strlen(interface_class_name));
       
       if (interface_class->category != SPVM_CLASS_C_CATEGORY_INTERFACE) {
-        SPVM_COMPILER_error(compiler, "The operand of the implement statment must be the interface class at %s line %d", interface_class->name, op_implement->file, op_implement->line);
+        SPVM_COMPILER_error(compiler, "The operand of the interface statment must be the interface class at %s line %d", interface_class->name, op_interface->file, op_interface->line);
         return;
       }
       

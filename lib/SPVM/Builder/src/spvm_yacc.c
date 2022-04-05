@@ -2277,7 +2277,7 @@ yyreduce:
   /* yyn is the number of a rule to reduce with.  */
   yylen = yyr2[yyn];
 
-  /* If YYLEN is nonzero, implement the default value of the action:
+  /* If YYLEN is nonzero, interface the default value of the action:
      '$$ = $1'.
 
      Otherwise, the following line sets YYVAL to garbage.
