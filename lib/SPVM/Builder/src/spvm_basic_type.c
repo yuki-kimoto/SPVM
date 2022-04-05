@@ -299,3 +299,14 @@ int32_t SPVM_BASIC_TYPE_is_numeric_object_type(SPVM_COMPILER* compiler, int32_t 
     return 0;
   }
 }
+
+int32_t SPVM_BASIC_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
+  (void)compiler;
+  
+  if (basic_type_id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && basic_type_id <= SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
