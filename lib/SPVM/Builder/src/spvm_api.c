@@ -1214,35 +1214,8 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
   // Free objects of class variables
   for (int32_t class_var_id = 0; class_var_id < runtime->class_vars_length; class_var_id++) {
     SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class_var_id);
-    SPVM_RUNTIME_TYPE* class_var_type = SPVM_API_get_type(env, class_var->type_id);
-    int32_t class_var_type_category = class_var_type->category;
 
-    int32_t class_var_type_is_object2 = SPVM_API_get_type_is_object(env, class_var_type->id);
-    
-    int32_t class_var_type_is_object;
-    switch (class_var_type_category) {
-      case SPVM_API_C_TYPE_CATEGORY_STRING:
-      case SPVM_API_C_TYPE_CATEGORY_CLASS:
-      case SPVM_API_C_TYPE_CATEGORY_INTERFACE:
-      case SPVM_API_C_TYPE_CATEGORY_CALLBACK:
-      case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT:
-      case SPVM_API_C_TYPE_CATEGORY_NUMERIC_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_MULNUM_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_STRING_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_CLASS_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_INTERFACE_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_CALLBACK_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_ANY_OBJECT_ARRAY:
-      case SPVM_API_C_TYPE_CATEGORY_MULDIM_ARRAY:
-      {
-        class_var_type_is_object = 1;
-        break;
-      }
-      default: {
-        class_var_type_is_object = 0;
-      }
-    }
-    
+    int32_t class_var_type_is_object = SPVM_API_get_type_is_object(env, class_var->type_id);
     if (class_var_type_is_object) {
       SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
       if (object) {
