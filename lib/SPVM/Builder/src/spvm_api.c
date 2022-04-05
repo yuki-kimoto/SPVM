@@ -7604,17 +7604,6 @@ int32_t SPVM_API_get_type_dimension(SPVM_ENV* env, int32_t type_id) {
   return type_dimension;
 }
 
-int32_t SPVM_API_get_type_category(SPVM_ENV* env, int32_t type_id) {
-  
-  SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);
-  
-  assert(type);
-  
-  int32_t type_category = type->category;
-  
-  return type_category;
-}
-
 int32_t SPVM_API_get_type_width(SPVM_ENV* env, int32_t type_id) {
   
   SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);

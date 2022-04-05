@@ -10,7 +10,6 @@ struct spvm_runtime_type {
   int32_t basic_type_id;
   int32_t dimension;
   int32_t flag;
-  int32_t category;
   int32_t width;
   int32_t mulnum_basic_type_id;
 };

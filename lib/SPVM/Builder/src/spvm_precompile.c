@@ -175,7 +175,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   // Method
   int32_t method_id = SPVM_API_get_method_id_without_signature(env, class_name, method_name);
   int32_t method_return_type_id = SPVM_API_get_method_return_type_id(env, method_id);
-  int32_t method_return_type_category = SPVM_API_get_type_category(env, method_return_type_id);
 
   // Method declaration
   SPVM_PRECOMPILE_build_method_declaration(env, string_buffer, class_name, method_name);

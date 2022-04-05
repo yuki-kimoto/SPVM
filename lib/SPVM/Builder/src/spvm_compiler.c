@@ -530,7 +530,6 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_type->basic_type_id = type->basic_type->id;
     runtime_type->dimension = type->dimension;
     runtime_type->flag = type->flag;
-    runtime_type->category = type->category;
     runtime_type->width = type->width;
     runtime_type->mulnum_basic_type_id = SPVM_TYPE_get_mulnum_basic_type_id(compiler, type->basic_type->id, type->dimension, type->flag);
   }
