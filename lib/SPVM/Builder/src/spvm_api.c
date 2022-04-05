@@ -1217,6 +1217,8 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
     SPVM_RUNTIME_TYPE* class_var_type = SPVM_API_get_type(env, class_var->type_id);
     int32_t class_var_type_category = class_var_type->category;
 
+    int32_t class_var_type_is_object = SPVM_API_get_type_is_object(env, class_var_type->id);
+    
     switch (class_var_type_category) {
       case SPVM_API_C_TYPE_CATEGORY_STRING:
       case SPVM_API_C_TYPE_CATEGORY_CLASS:
@@ -1236,6 +1238,7 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
         if (object) {
           SPVM_API_dec_ref_count(env, object);
         }
+        assert(class_var_type_is_object == 1);
       }
     }
   }
