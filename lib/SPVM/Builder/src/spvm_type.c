@@ -993,13 +993,17 @@ int32_t SPVM_TYPE_is_any_object_array_type(SPVM_COMPILER* compiler, int32_t basi
 int32_t SPVM_TYPE_is_numeric_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 1 && (basic_type_id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && basic_type_id <= SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF))
-  {
-    return 1;
+  int32_t is_numeric_array_type;
+  int32_t basic_type_is_numeric_type = SPVM_BASIC_TYPE_is_numeric_type(compiler, basic_type_id);
+  if (dimension == 1 && basic_type_is_numeric_type && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+    is_numeric_array_type = 1;
   }
+  // Array
   else {
-    return 0;
+    is_numeric_array_type = 0;
   }
+  
+  return is_numeric_array_type;
 }
 
 int32_t SPVM_TYPE_is_undef_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
