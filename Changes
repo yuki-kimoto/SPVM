@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9509_02  2021-04-04
+0.9510  2021-04-05
         [CHANGE]
         * Add alias syntax
         * Improve the error messages of object-to-numeric type conversion
