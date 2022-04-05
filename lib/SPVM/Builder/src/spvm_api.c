@@ -4103,6 +4103,9 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         SPVM_RUNTIME_TYPE* call_spvm_method_return_type = SPVM_API_get_type(env, call_spvm_method->return_type_id);
         int32_t call_spvm_method_return_basic_type_id = call_spvm_method_return_type->basic_type_id;
 
+        int32_t call_spvm_method_return_type_dimension = call_spvm_method_return_type->dimension;
+        int32_t call_spvm_method_return_basic_type_bategory = SPVM_API_get_basic_type_category(env, call_spvm_method_return_type->basic_type_id);
+
         switch (call_spvm_method_return_type->category) {
           case SPVM_API_C_TYPE_CATEGORY_VOID: {
             break;
