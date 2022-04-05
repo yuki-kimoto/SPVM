@@ -3015,7 +3015,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 SPVM_TYPE* array_element_type = SPVM_OP_get_type(compiler, op_array_access);
                 
-                int32_t is_basic_type_mulnum_t = SPVM_TYPE_basic_type_is_mulnum_type(compiler, array_element_type->basic_type->id, array_element_type->dimension, array_element_type->flag);
+                int32_t is_basic_type_mulnum_t = SPVM_BASIC_TYPE_is_mulnum_type(compiler, array_element_type->basic_type->id);
                 if (is_basic_type_mulnum_t) {
                   if (array_element_type->dimension != 0) {
                     SPVM_COMPILER_error(compiler, "mulnum_t array field access must be 1-dimension array at %s line %d", op_cur->file, op_cur->line);
