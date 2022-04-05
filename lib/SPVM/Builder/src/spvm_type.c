@@ -913,15 +913,11 @@ int32_t SPVM_TYPE_is_string_array_type(SPVM_COMPILER* compiler, int32_t basic_ty
   (void)compiler;
   
   int32_t is_string_array_type;
-  if (SPVM_TYPE_is_basic_object_array_type(compiler, basic_type_id, dimension, flag)) {
-    int32_t element_dimension = dimension - 1;
-    if (SPVM_TYPE_is_string_type(compiler, basic_type_id, element_dimension, flag)) {
-      is_string_array_type = 1;
-    }
-    else {
-      is_string_array_type = 0;
-    }
+  int32_t basic_type_is_string_type = SPVM_BASIC_TYPE_is_string_type(compiler, basic_type_id);
+  if (dimension == 1 && basic_type_is_string_type && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+    is_string_array_type = 1;
   }
+  // Array
   else {
     is_string_array_type = 0;
   }
