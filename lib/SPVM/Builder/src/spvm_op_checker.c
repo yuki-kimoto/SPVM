@@ -4403,7 +4403,6 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
   // Check type names
   for (int32_t i = 0; i < types->length; i++) {
     SPVM_TYPE* type = SPVM_LIST_get(types, i);
-    type->category = SPVM_TYPE_get_type_category(compiler, type->basic_type->id, type->dimension, type->flag);
     type->width = SPVM_TYPE_get_width(compiler, type->basic_type->id, type->dimension, type->flag);
     
     if (type->basic_type->category == 0) {
@@ -4781,9 +4780,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       
-      // Set runtime type
-      field->type_category = SPVM_TYPE_get_type_category(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
-
       // Create field signature
       const char* field_signature = SPVM_COMPILER_create_field_signature(compiler, field);
       field->signature = field_signature;
