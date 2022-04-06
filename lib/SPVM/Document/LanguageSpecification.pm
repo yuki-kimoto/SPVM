@@ -6342,9 +6342,13 @@ B<Examples:>
 
 =head2 Type Assignability of to-String
 
-If the type of the left operand is the L<string type|"string Type"> and the type of the right operand is the L<string type|"string Type">, a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
+If the type of the left operand is the L<string type|"string Type"> without the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"string Type">, the assignment is valid.
 
-If not, the assignment is invalid.
+If the type of the left operand is the L<string type|"string Type"> with the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"string Type"> with the L<mutable type qualifier|"mutable Type Qualifier">, the assignment is valid.
+
+If the type of the left operand is the L<string type|"string Type"> with the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"string Type"> without the L<mutable type qualifier|"mutable Type Qualifier">, the assignment is invalid.
+
+If the type of the left operand is the L<string type|"string Type"> and the type of the right operand is a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
 
 If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Numeric-to-string type conversion|"Numeric-to-string Type Conversion"> is performed.
 
@@ -6355,6 +6359,10 @@ If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Num
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
+    <td>Yes</td><td>string</td><td>string</td><td>None</td>
+    <td>Yes</td><td>string</td><td>mutable string</td><td>None</td>
+    <td>Yes</td><td>mutable string</td><td>mutable string</td><td>None</td>
+    <td>No</td><td>mutable string</td><td>string</td><td>None</td>
     <td>Yes</td><td>string</td><td>string</td><td>None</td>
     <td>Yes</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-string type conversion</td>
     <td>Yes</td><td>string</td><td>undef</td><td>None</td>
@@ -6529,6 +6537,19 @@ B<Examples:>
   my $nums : Complex_2d[] = new Complex_2d[3];
   my $nums : Complex_2d[] = undef;
 
+=head2 Type Assignability of to-StringArray
+
+=head2 Type Assignability of to-ClassArray
+
+=head2 Type Assignability of to-InterfaceArray
+
+=head2 Type Assignability of to-CallbackArray
+
+=head2 Type Assignability of to-AnyObjectArray
+
+=head2 Type Assignability of to-MultiDimensionalArray
+
+=head2 Type Assignability of to-Undefined
 
 (Not Completed)
 
