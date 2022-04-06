@@ -6363,6 +6363,32 @@ B<Examples:>
   my $nums : int[] = new int[3];
   my $nums : int[] = undef;
 
+=head2 Type Assignability of To-MultiNumericArray
+
+If the type of the left operand is a L<numeric type|"Multi Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignment is valid.
+
+If not, the assignment is invalid.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td>
+    <td>Yes</td><td>MULNUM_X[]</td><td>undef</td><td>None</td>
+    <td>No</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $nums : Complex_2d[] = new Complex_2d[3];
+  my $nums : Complex_2d[] = undef;
+
 (Not Completed)
 
 =head1 Type Conversions
