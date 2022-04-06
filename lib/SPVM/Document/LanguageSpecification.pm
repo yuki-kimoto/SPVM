@@ -6495,6 +6495,30 @@ B<Examples:>
   my $num_object : Int = 3;
   my $num_object : Int = undef;
 
+=head2 Type Assignability of to-Class
+
+If the type of the left operand is a L<class type|"Class Type"> and the type of the right operand is the same type, or the L<undef type|"Undefined Type">, the assignment is valid.
+
+If not, the assignment is invalid.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td>
+    <td>Yes</td><td>CLASS</td><td>undef</td><td>None</td>
+    <td>No</td><td>CLASS</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+B<Examples:>
+
+  my $point : Point = Point->new;
+  my $point : Point = undef;
+
 (Not Completed)
 
 =head1 Type Conversions
