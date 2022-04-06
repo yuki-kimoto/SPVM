@@ -6163,15 +6163,15 @@ Omitting L<"Types"> when L<"Local Variable Declaration"> by Type Inference can. 
 
 =head1 Type Assignability
 
-Explains the type assignability.
+Explains the type assignability at compile time.
 
 The assignment is invalid, a compilation error occurs.
 
-=head2 Type Assignability of to-Numeric
+=head2 Type Assignability to Numeric
 
 Explains the type assignability of to-Numeric.
 
-=head3 Type Assignability of Numeric-to-Numeric
+=head3 Type Assignability from Numeric to Numeric
 
 If the L<nemric type order|"Numeric Types Order"> of the left operand is greater than or equal to the L<nemric type order|"Numeric Types Order"> of the right operand, the assignment is valid.
 
@@ -6262,7 +6262,7 @@ B<Examples:>
   # int to byte
   my $num : byte = 127;
 
-=head3 Type Assignability of NumericObject-to-Numeric
+=head3 Type Assignability from NumericObject to Numeric
 
 If the type of the left operand is a L<numeric type|"Numeric Types"> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|"Numeric Object Type">, the assignment is valid.
 
@@ -6290,7 +6290,7 @@ B<Examples:>
 
   my $double : double = Double->new(3.5);
 
-=head3 Type Assignability of AnyObject-to-Numeric
+=head3 Type Assignability from AnyObject to Numeric
 
 If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is a L<any object type|"Any Object Type"> C<object>, the assignment is valid.
 
@@ -6315,11 +6315,11 @@ B<Examples:>
 
   my $double : double = (object)Double->new(3.5);
 
-=head3 Type Assignability of Others-to-Numeric
+=head3 Type Assignability from Others to Numeric
 
 If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is other than the types described above, the assignment is invalid.
 
-=head2 Type Assignability of to-MultiNumeric
+=head2 Type Assignability to MultiNumeric
 
 If the type of the left operand is a L<multi numeric type|"Multi Numeric Types"> and the type of the right operand is the same type of the left operand, the assignment is valid.
 
@@ -6340,7 +6340,7 @@ B<Examples:>
   my $z1 : Complex_2d;
   my $z2 : Complex_2d = $z1;
 
-=head2 Type Assignability of to-String
+=head2 Type Assignability to String
 
 If the type of the left operand is the L<string type|"String Type"> without the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"String Type">, the assignment is valid.
 
@@ -6378,7 +6378,7 @@ B<Examples:>
   my $num_string : string = 3;
   my $string : string = undef;
 
-=head2 Type Assignability of to-NumericObject
+=head2 Type Assignability to NumericObject
 
 If the type of the left operand is a L<numeric object type|"Numeric Object Types"> and the type of the right operand is the same type of the left operand, a L<numeric type|"Numeric Types"> that is corresponding to the numeric object type, or the L<undef type|"Undefined Type">, the assignment is valid.
 
@@ -6406,7 +6406,7 @@ B<Examples:>
   my $num_object : Int = 3;
   my $num_object : Int = undef;
 
-=head2 Type Assignability of to-Class
+=head2 Type Assignability to Class
 
 If the type of the left operand is a L<class type|"Class Type"> and the type of the right operand is the same type, or the L<undef type|"Undefined Type">, the assignment is valid.
 
@@ -6430,11 +6430,11 @@ B<Examples:>
   my $point : Point = Point->new;
   my $point : Point = undef;
 
-=head2 Type Assignability of to-Interface
+=head2 Type Assignability to Interface
 
-=head2 Type Assignability of to-Callback
+=head2 Type Assignability to Callback
 
-=head2 Type Assignability of to-AnyObject
+=head2 Type Assignability to AnyObject
 
 If the type of the left operand is the L<any object type|"Any Object Type"> and the type of the right operand is an L<object type|"Object Types">, a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
 
@@ -6464,7 +6464,9 @@ B<Examples:>
   my $num_object : object = 3;
   my $object : object = undef;
 
-=head2 Type Assignability of to-Referenece
+=head2 Type Assignability to Undefined
+
+=head2 Type Assignability to Referenece
 
 If the type of the left operand is a L<reference type|"Reference Types"> and the type of the right operand is the same type of the left operand, the assignment is valid.
 
@@ -6480,7 +6482,7 @@ If not, the assignment is invalid.
   </tr>
 </table>
 
-=head2 Type Assignability of to-NumericArray
+=head2 Type Assignability to NumericArray
 
 If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignment is valid.
 
@@ -6511,7 +6513,7 @@ B<Examples:>
   my $nums : int[] = new int[3];
   my $nums : int[] = undef;
 
-=head2 Type Assignability of to-MultiNumericArray
+=head2 Type Assignability to MultiNumericArray
 
 If the type of the left operand is a L<numeric type|"Multi Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignment is valid.
 
@@ -6537,19 +6539,17 @@ B<Examples:>
   my $nums : Complex_2d[] = new Complex_2d[3];
   my $nums : Complex_2d[] = undef;
 
-=head2 Type Assignability of to-StringArray
+=head2 Type Assignability to StringArray
 
-=head2 Type Assignability of to-ClassArray
+=head2 Type Assignability to ClassArray
 
-=head2 Type Assignability of to-InterfaceArray
+=head2 Type Assignability to InterfaceArray
 
-=head2 Type Assignability of to-CallbackArray
+=head2 Type Assignability to CallbackArray
 
-=head2 Type Assignability of to-AnyObjectArray
+=head2 Type Assignability to AnyObjectArray
 
-=head2 Type Assignability of to-MultiDimensionalArray
-
-=head2 Type Assignability of to-Undefined
+=head2 Type Assignability to MultiDimensionalArray
 
 (Not Completed)
 
