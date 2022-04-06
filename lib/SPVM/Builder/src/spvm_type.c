@@ -1361,7 +1361,12 @@ int32_t SPVM_TYPE_can_assign(
           can_assign = 1;
         }
         else {
-          can_assign = 0;
+          if (SPVM_BASIC_TYPE_is_interface_type(compiler, dist_type_basic_type_id)) {
+            can_assign = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
+          }
+          else {
+            can_assign = 0;
+          }
         }
       }
       else {
