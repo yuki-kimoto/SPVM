@@ -122,6 +122,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Convert->convert_any_object_to_double);
 }
 
+# Convert to string
+{
+  ok(SPVM::TestCase::Convert->convert_postfix);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

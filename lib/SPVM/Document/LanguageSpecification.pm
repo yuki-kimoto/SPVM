@@ -6529,6 +6529,9 @@ Type Cast is Type Conversion that is explicitly described.
 
   # Type Cast
   (TYPE)EXPRESSION
+  
+  # Postfix Type Cast
+  EXPRESSION->(TYPE)
 
 L<"int Type"> value is converted to L<"long Type"> Become.
 

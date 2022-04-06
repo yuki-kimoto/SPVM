@@ -785,4 +785,22 @@ class TestCase::Convert {
     }
     return 0;
   }
+
+  static method convert_postfix : int () {
+    
+    my $num = 3;
+    
+    my $string = $num->(string);
+    
+    unless ($string isa string) {
+      return 0;
+    }
+    
+    unless ($string eq "3") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
 }

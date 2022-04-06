@@ -3,6 +3,14 @@ Revision history for SPVM
         [CHANGE]
         * Support cast from class muldim array to interface muldim array
         * Support cast from class muldim array to callback muldim array
+        * Add postfix type cast syntax
+          
+          $num->(string)
+          
+          This is same as
+          
+          (string)$num;
+        
         [NON BACKWORD COMPATIBLE CHANGES]
         * Internally used Native APIs object_type_category_offset become always NULL.
 0.9510  2021-04-05
