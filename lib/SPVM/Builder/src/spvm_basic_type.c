@@ -320,7 +320,7 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_bas
   SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(compiler->basic_types, interface_basic_type_id);
   SPVM_CLASS* interface = interface_basic_type->class;
 
-  SPVM_CLASS* found_interface = SPVM_HASH_get(class->interface_class_symtable, interface->name, strlen(interface->name));
+  SPVM_CLASS* found_interface = SPVM_HASH_get(class->interface_symtable, interface->name, strlen(interface->name));
   if (found_interface) {
     return 1;
   }

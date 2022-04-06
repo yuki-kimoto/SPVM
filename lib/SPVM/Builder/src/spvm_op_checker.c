@@ -4908,10 +4908,10 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       
-      SPVM_CLASS* found_interface_class = SPVM_HASH_get(class->interface_class_symtable, interface_class->name, strlen(interface_class->name));
+      SPVM_CLASS* found_interface_class = SPVM_HASH_get(class->interface_symtable, interface_class->name, strlen(interface_class->name));
       if (!found_interface_class) {
         SPVM_LIST_push(class->interface_classes, interface_class);
-        SPVM_HASH_set(class->interface_class_symtable, interface_class->name, strlen(interface_class->name), interface_class);
+        SPVM_HASH_set(class->interface_symtable, interface_class->name, strlen(interface_class->name), interface_class);
       }
     }
 

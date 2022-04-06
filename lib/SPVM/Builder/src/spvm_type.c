@@ -109,7 +109,7 @@ int32_t SPVM_TYPE_has_interface(
     return 1;
   }
   
-  SPVM_CLASS* found_interface_class = SPVM_HASH_get(class->interface_class_symtable, interface->name, strlen(interface->name));
+  SPVM_CLASS* found_interface_class = SPVM_HASH_get(class->interface_symtable, interface->name, strlen(interface->name));
   if (found_interface_class) {
     return 1;
   }
