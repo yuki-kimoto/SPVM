@@ -5780,19 +5780,21 @@ A object type can be assigned to a L<any object type|"Any Object Type">.
   my $object: object = new Foo;
   my $object: object = "abc";
 
-=head2 Numeric Object Type
+=head2 Numeric Object Types
 
-B<Numeric Object Type> are the following six.
+A numeric object type is the L<object type|"Object Types"> that is corresponding to the L<numeric type|"Numeric Types">.
+
+The list of numeric object types:
 
 =begin html
 
 <table>
   <tr>
     <th>
-      <b>Type</b>
+      <b>Numeric Object Types</b>
    </th>
     <th>
-      Description
+      Corresponding Numeric Types
    </th>
   </tr>
   <tr>
@@ -5800,7 +5802,7 @@ B<Numeric Object Type> are the following six.
       Byte
     </td>
     <td>
-      Numeric Object Type with L<"byte Type"> data
+      byte
     </td>
   </tr>
   <tr>
@@ -5808,7 +5810,7 @@ B<Numeric Object Type> are the following six.
       Short
     </td>
     <td>
-      Numeric Object Type with L<"short Type"> data
+      short
     </td>
   </tr>
   <tr>
@@ -5816,7 +5818,7 @@ B<Numeric Object Type> are the following six.
       Int
     </td>
     <td>
-      Numeric Object Type with L<"<a href="#language-type-int">int Type"></a> data
+      int
     </td>
   </tr>
   <tr>
@@ -5824,7 +5826,7 @@ B<Numeric Object Type> are the following six.
       Long
     </td>
     <td>
-      Numeric Object Type with L<"long Type"> data
+      long
     </td>
   </tr>
   <tr>
@@ -5832,7 +5834,7 @@ B<Numeric Object Type> are the following six.
       Float
     </td>
     <td>
-      Numeric Object Type with L<"float Type"> data
+      float
     </td>
   </tr>
   <tr>
@@ -5840,14 +5842,30 @@ B<Numeric Object Type> are the following six.
       Double
     </td>
     <td>
-    Numeric Object Type with L<"double Type"> data
+      double
     </td>
   </tr>
 </table>
 
 =end html
 
-For the conversion between L<"Numeric Types"> and B<Numeric Object Type>, see L<"Type Conversions">.
+The document of numeric object types:
+
+=begin html
+
+<ul>
+  <li><a href="https://metacpan.org/pod/SPVM::Byte">Byte</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Short">Short</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Int">Int</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Long">Long</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Float">Float</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Double">Double</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Bool">Bool</a></li>
+</ul>
+
+=end html
+
+See also L<"Boxing Type Conversion"> and L<"Unboxing Type Conversion">.
 
 =head2 Undefined Type
 
@@ -6448,6 +6466,28 @@ B<Examples:>
   my $string : string = "abc";
   my $num_string : string = 3;
   my $string : string = undef;
+
+=head2 Type Assignability of to-NumericObject
+
+If the type of the left operand is a L<numeric object type|"Numeric Object Types"> and the type of the right operand is the L<string type|"string Type">, a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
+
+If not, the assignment is invalid.
+
+If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Numeric-to-string type conversion|"Numeric-to-string Type Conversion"> is performed.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>string</td><td>string</td><td>None</td>
+    <td>Yes</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-string Type Conversion</td>
+    <td>Yes</td><td>string</td><td>undef</td><td>None</td>
+    <td>No</td><td>string</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
 
 (Not Completed)
 
