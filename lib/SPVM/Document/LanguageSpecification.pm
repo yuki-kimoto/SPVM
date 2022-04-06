@@ -6080,19 +6080,19 @@ When setting the element of any object-array, the element type is checked. If th
 
 =head2 String Type
 
-C<string> type is a L<"Types"> that represents a L<"String">.
+The C<string> type is a L<type|"Types"> for the L<"String">.
 
   string
 
-C<string> type can be qualified L<"mutable Type Qualifier">.
+C<string> type can be qualified by L<"mutable Type Qualifier">.
 
   mutable string
 
 B<Examples:>
   
   # string type
-  my $message : string;
-  my $message : mutable string;
+  my $message : string = "Hello";
+  my $message : mutable string = new_string_len 256;
 
 =head2 Multi Numeric Types
 
@@ -6165,7 +6165,7 @@ Omitting L<"Types"> when L<"Local Variable Declaration"> by Type Inference can. 
 
 Explains the type assignability at compile time.
 
-The assignment is invalid, a compilation error occurs.
+The assignability is false, a compilation error occurs.
 
 =head2 Type Assignability to Numeric
 
@@ -6173,7 +6173,7 @@ Explains the type assignability of to-Numeric.
 
 =head3 Type Assignability from Numeric to Numeric
 
-If the L<nemric type order|"Numeric Types Order"> of the left operand is greater than or equal to the L<nemric type order|"Numeric Types Order"> of the right operand, the assignment is valid.
+If the L<nemric type order|"Numeric Types Order"> of the left operand is greater than or equal to the L<nemric type order|"Numeric Types Order"> of the right operand, the assignability is true.
 
 If the L<nemric type order|"Numeric Types Order"> of the left operand is greater than the L<nemric type order|"Numeric Types Order"> of the right operand, the L<unary numeric widening type conversion|"Unary Numeric Widening Type Conversion"> is performed.
 
@@ -6184,27 +6184,27 @@ If the L<nemric type order|"Numeric Types Order"> of the left operand is greater
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>byte</td><td>byte</td><td>None</td>
-    <td>Yes</td><td>short</td><td>short</td><td>None</td>
-    <td>Yes</td><td>int</td><td>int</td><td>None</td>
-    <td>Yes</td><td>long</td><td>long</td><td>None</td>
-    <td>Yes</td><td>float</td><td>float</td><td>None</td>
-    <td>Yes</td><td>double</td><td>double</td><td>None</td>
-    <td>Yes</td><td>short</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>int</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>long</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>float</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>double</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>int</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>long</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>float</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>double</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>long</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>float</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>double</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>float</td><td>long</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>double</td><td>long</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Yes</td><td>double</td><td>float</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>byte</td><td>byte</td><td>None</td>
+    <td>Ture</td><td>short</td><td>short</td><td>None</td>
+    <td>Ture</td><td>int</td><td>int</td><td>None</td>
+    <td>Ture</td><td>long</td><td>long</td><td>None</td>
+    <td>Ture</td><td>float</td><td>float</td><td>None</td>
+    <td>Ture</td><td>double</td><td>double</td><td>None</td>
+    <td>Ture</td><td>short</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>int</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>long</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>float</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>double</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>int</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>long</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>float</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>double</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>long</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>float</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>double</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>float</td><td>long</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>double</td><td>long</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>Ture</td><td>double</td><td>float</td><td>Unary Numeric Widening Type Conversion</td>
   </tr>
 </table>
 
@@ -6237,21 +6237,21 @@ If the condition is ture, the L<numeric narrowing type conversion|"Numeric Narro
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Conditinal Yes</td><td>byte</td><td>short</td><td>Numeric Narrowing Type Conversion</td>
-    <td>Conditinal Yes</td><td>byte</td><td>int</td><td>Numeric Narrowing Type Conversion</td>
-    <td>Conditinal Yes</td><td>byte</td><td>long</td><td>byte</td><td>Numeric Narrowing Type Conversion</td>
-    <td>No</td><td>byte</td><td>float</td><td>None</td>
-    <td>No</td><td>byte</td><td>double</td><td>None</td>
-    <td>Conditinal Yes</td><td>short</td><td>int</td><td>Numeric Narrowing Type Conversion</td>
-    <td>Conditinal Yes</td><td>short</td><td>long</td><td>Numeric Narrowing Type Conversion</td>
-    <td>No</td><td>short</td><td>float</td><td>None</td>
-    <td>No</td><td>short</td><td>double</td><td>None</td>
-    <td>Conditinal Yes</td><td>int</td><td>long</td><td>Numeric Narrowing Type Conversion</td>
-    <td>No</td><td>int</td><td>float</td><td>None</td>
-    <td>No</td><td>int</td><td>double</td><td>None</td>
-    <td>No</td><td>long</td><td>float</td><td>None</td>
-    <td>No</td><td>long</td><td>double</td><td>None</td>
-    <td>No</td><td>float</td><td>double</td><td>None</td>
+    <td>Conditinal Ture</td><td>byte</td><td>short</td><td>Numeric Narrowing Type Conversion</td>
+    <td>Conditinal Ture</td><td>byte</td><td>int</td><td>Numeric Narrowing Type Conversion</td>
+    <td>Conditinal Ture</td><td>byte</td><td>long</td><td>byte</td><td>Numeric Narrowing Type Conversion</td>
+    <td>False</td><td>byte</td><td>float</td><td>None</td>
+    <td>False</td><td>byte</td><td>double</td><td>None</td>
+    <td>Conditinal Ture</td><td>short</td><td>int</td><td>Numeric Narrowing Type Conversion</td>
+    <td>Conditinal Ture</td><td>short</td><td>long</td><td>Numeric Narrowing Type Conversion</td>
+    <td>False</td><td>short</td><td>float</td><td>None</td>
+    <td>False</td><td>short</td><td>double</td><td>None</td>
+    <td>Conditinal Ture</td><td>int</td><td>long</td><td>Numeric Narrowing Type Conversion</td>
+    <td>False</td><td>int</td><td>float</td><td>None</td>
+    <td>False</td><td>int</td><td>double</td><td>None</td>
+    <td>False</td><td>long</td><td>float</td><td>None</td>
+    <td>False</td><td>long</td><td>double</td><td>None</td>
+    <td>False</td><td>float</td><td>double</td><td>None</td>
   </tr>
 </table>
 
@@ -6264,7 +6264,7 @@ B<Examples:>
 
 =head3 Type Assignability from NumericObject to Numeric
 
-If the type of the left operand is a L<numeric type|"Numeric Types"> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|"Numeric Object Type">, the assignment is valid.
+If the type of the left operand is a L<numeric type|"Numeric Types"> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|"Numeric Object Type">, the assignability is true.
 
 =begin html
 
@@ -6273,12 +6273,12 @@ If the type of the left operand is a L<numeric type|"Numeric Types"> correspondi
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td>
-    <td>Yes</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td>
-    <td>Yes</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td>
-    <td>Yes</td><td>long</td><td>Long</td><td>Unboxing Type Conversion</td>
-    <td>Yes</td><td>float</td><td>Float</td><td>Unboxing Type Conversion</td>
-    <td>Yes</td><td>double</td><td>Double</td><td>Unboxing Type Conversion</td>
+    <td>Ture</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td>
+    <td>Ture</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td>
+    <td>Ture</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td>
+    <td>Ture</td><td>long</td><td>Long</td><td>Unboxing Type Conversion</td>
+    <td>Ture</td><td>float</td><td>Float</td><td>Unboxing Type Conversion</td>
+    <td>Ture</td><td>double</td><td>Double</td><td>Unboxing Type Conversion</td>
   </tr>
 </table>
 
@@ -6292,7 +6292,7 @@ B<Examples:>
 
 =head3 Type Assignability from AnyObject to Numeric
 
-If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is a L<any object type|"Any Object Type"> C<object>, the assignment is valid.
+If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is a L<any object type|"Any Object Type"> C<object>, the assignability is true.
 
 The L<unboxing type conversion|"Unboxing Type Conversion"> corresponding to the numeric type is performed.
 
@@ -6303,7 +6303,7 @@ The L<unboxing type conversion|"Unboxing Type Conversion"> corresponding to the 
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td>
+    <td>Ture</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td>
   </tr>
 </table>
 
@@ -6317,21 +6317,21 @@ B<Examples:>
 
 =head3 Type Assignability from Others to Numeric
 
-If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is other than the types described above, the assignment is invalid.
+If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is other than the types described above, the assignability is false.
 
 =head2 Type Assignability to MultiNumeric
 
-If the type of the left operand is a L<multi numeric type|"Multi Numeric Types"> and the type of the right operand is the same type of the left operand, the assignment is valid.
+If the type of the left operand is a L<multi numeric type|"Multi Numeric Types"> and the type of the right operand is the same type of the left operand, the assignability is true.
 
-If not, the assignment is invalid.
+If not, the assignability is false.
 
 <table>
   <tr>
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td>
-    <td>No</td><td>MULNUM_X</td><td>OTHER</td><td>None</td>
+    <td>Ture</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td>
+    <td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
 
@@ -6342,13 +6342,13 @@ B<Examples:>
 
 =head2 Type Assignability to String
 
-If the type of the left operand is the L<string type|"String Type"> without the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"String Type">, the assignment is valid.
+If the type of the left operand is the L<string type|"String Type"> without the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"String Type">, the assignability is true.
 
-If the type of the left operand is the L<string type|"String Type"> with the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"String Type"> with the L<mutable type qualifier|"mutable Type Qualifier">, the assignment is valid.
+If the type of the left operand is the L<string type|"String Type"> with the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"String Type"> with the L<mutable type qualifier|"mutable Type Qualifier">, the assignability is true.
 
-If the type of the left operand is the L<string type|"String Type"> with the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"String Type"> without the L<mutable type qualifier|"mutable Type Qualifier">, the assignment is invalid.
+If the type of the left operand is the L<string type|"String Type"> with the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"String Type"> without the L<mutable type qualifier|"mutable Type Qualifier">, the assignability is false.
 
-If the type of the left operand is the L<string type|"String Type"> and the type of the right operand is a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
+If the type of the left operand is the L<string type|"String Type"> and the type of the right operand is a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignability is true.
 
 If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Numeric-to-String type conversion|"Numeric-to-String Type Conversion"> is performed.
 
@@ -6359,14 +6359,14 @@ If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Num
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>string</td><td>string</td><td>None</td>
-    <td>Yes</td><td>string</td><td>mutable string</td><td>None</td>
-    <td>Yes</td><td>mutable string</td><td>mutable string</td><td>None</td>
-    <td>No</td><td>mutable string</td><td>string</td><td>None</td>
-    <td>Yes</td><td>string</td><td>string</td><td>None</td>
-    <td>Yes</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String type conversion</td>
-    <td>Yes</td><td>string</td><td>undef</td><td>None</td>
-    <td>No</td><td>string</td><td>OTHER</td><td>None</td>
+    <td>Ture</td><td>string</td><td>string</td><td>None</td>
+    <td>Ture</td><td>string</td><td>mutable string</td><td>None</td>
+    <td>Ture</td><td>mutable string</td><td>mutable string</td><td>None</td>
+    <td>False</td><td>mutable string</td><td>string</td><td>None</td>
+    <td>Ture</td><td>string</td><td>string</td><td>None</td>
+    <td>Ture</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String type conversion</td>
+    <td>Ture</td><td>string</td><td>undef</td><td>None</td>
+    <td>False</td><td>string</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
 
@@ -6380,9 +6380,9 @@ B<Examples:>
 
 =head2 Type Assignability to NumericObject
 
-If the type of the left operand is a L<numeric object type|"Numeric Object Types"> and the type of the right operand is the same type of the left operand, a L<numeric type|"Numeric Types"> that is corresponding to the numeric object type, or the L<undef type|"Undefined Type">, the assignment is valid.
+If the type of the left operand is a L<numeric object type|"Numeric Object Types"> and the type of the right operand is the same type of the left operand, a L<numeric type|"Numeric Types"> that is corresponding to the numeric object type, or the L<undef type|"Undefined Type">, the assignability is true.
 
-If not, the assignment is invalid.
+If not, the assignability is false.
 
 If the type of the right operand is a L<numeric type|"Numeric Types">, the L<boxing type conversion|"Boxing Type Conversion"> is performed.
 
@@ -6393,10 +6393,10 @@ If the type of the right operand is a L<numeric type|"Numeric Types">, the L<box
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td>
-    <td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
-    <td>Yes</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td>
-    <td>No</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td>
+    <td>Ture</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td>
+    <td>Ture</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
+    <td>Ture</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td>
+    <td>False</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
 
@@ -6408,9 +6408,9 @@ B<Examples:>
 
 =head2 Type Assignability to Class
 
-If the type of the left operand is a L<class type|"Class Type"> and the type of the right operand is the same type, or the L<undef type|"Undefined Type">, the assignment is valid.
+If the type of the left operand is a L<class type|"Class Type"> and the type of the right operand is the same type, or the L<undef type|"Undefined Type">, the assignability is true.
 
-If not, the assignment is invalid.
+If not, the assignability is false.
 
 =begin html
 
@@ -6419,9 +6419,9 @@ If not, the assignment is invalid.
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td>
-    <td>Yes</td><td>CLASS</td><td>undef</td><td>None</td>
-    <td>No</td><td>CLASS</td><td>OTHER</td><td>None</td>
+    <td>Ture</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td>
+    <td>Ture</td><td>CLASS</td><td>undef</td><td>None</td>
+    <td>False</td><td>CLASS</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
 
@@ -6436,9 +6436,9 @@ B<Examples:>
 
 =head2 Type Assignability to AnyObject
 
-If the type of the left operand is the L<any object type|"Any Object Type"> and the type of the right operand is an L<object type|"Object Types">, a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
+If the type of the left operand is the L<any object type|"Any Object Type"> and the type of the right operand is an L<object type|"Object Types">, a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignability is true.
 
-If not, the assignment is invalid.
+If not, the assignability is false.
 
 If the type of the right operand is a L<numeric type|"Numeric Types">, the L<boxing type conversion|"Boxing Type Conversion"> is performed.
 
@@ -6449,10 +6449,10 @@ If the type of the right operand is a L<numeric type|"Numeric Types">, the L<box
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>object</td><td>OBJECT_X</td><td>None</td>
-    <td>Yes</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
-    <td>Yes</td><td>object</td><td>undef</td><td>None</td>
-    <td>No</td><td>object</td><td>OTHER</td><td>None</td>
+    <td>Ture</td><td>object</td><td>OBJECT_X</td><td>None</td>
+    <td>Ture</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
+    <td>Ture</td><td>object</td><td>undef</td><td>None</td>
+    <td>False</td><td>object</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
 
@@ -6468,25 +6468,25 @@ B<Examples:>
 
 =head2 Type Assignability to Referenece
 
-If the type of the left operand is a L<reference type|"Reference Types"> and the type of the right operand is the same type of the left operand, the assignment is valid.
+If the type of the left operand is a L<reference type|"Reference Types"> and the type of the right operand is the same type of the left operand, the assignability is true.
 
-If not, the assignment is invalid.
+If not, the assignability is false.
 
 <table>
   <tr>
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>REF_X</td><td>REF_X</td><td>None</td>
-    <td>No</td><td>REF_X</td><td>OTHER</td><td>None</td>
+    <td>Ture</td><td>REF_X</td><td>REF_X</td><td>None</td>
+    <td>False</td><td>REF_X</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
 
 =head2 Type Assignability to NumericArray
 
-If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignment is valid.
+If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignability is true.
 
-If not, the assignment is invalid.
+If not, the assignability is false.
 
 =begin html
 
@@ -6495,14 +6495,14 @@ If not, the assignment is invalid.
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>byte[]</td><td>byte[]</td><td>None</td>
-    <td>Yes</td><td>short[]</td><td>short[]</td><td>None</td>
-    <td>Yes</td><td>int[]</td><td>int[]</td><td>None</td>
-    <td>Yes</td><td>long[]</td><td>long[]</td><td>None</td>
-    <td>Yes</td><td>float[]</td><td>float[]</td><td>None</td>
-    <td>Yes</td><td>double[]</td><td>double[]</td><td>None</td>
-    <td>Yes</td><td>NUMERIC[]</td><td>undef</td><td>None</td>
-    <td>No</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td>
+    <td>Ture</td><td>byte[]</td><td>byte[]</td><td>None</td>
+    <td>Ture</td><td>short[]</td><td>short[]</td><td>None</td>
+    <td>Ture</td><td>int[]</td><td>int[]</td><td>None</td>
+    <td>Ture</td><td>long[]</td><td>long[]</td><td>None</td>
+    <td>Ture</td><td>float[]</td><td>float[]</td><td>None</td>
+    <td>Ture</td><td>double[]</td><td>double[]</td><td>None</td>
+    <td>Ture</td><td>NUMERIC[]</td><td>undef</td><td>None</td>
+    <td>False</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
 
@@ -6515,9 +6515,9 @@ B<Examples:>
 
 =head2 Type Assignability to MultiNumericArray
 
-If the type of the left operand is a L<numeric type|"Multi Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignment is valid.
+If the type of the left operand is a L<numeric type|"Multi Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignability is true.
 
-If not, the assignment is invalid.
+If not, the assignability is false.
 
 =begin html
 
@@ -6526,9 +6526,9 @@ If not, the assignment is invalid.
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td>
-    <td>Yes</td><td>MULNUM_X[]</td><td>undef</td><td>None</td>
-    <td>No</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td>
+    <td>Ture</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td>
+    <td>Ture</td><td>MULNUM_X[]</td><td>undef</td><td>None</td>
+    <td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
 
