@@ -8884,7 +8884,21 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
         can_assign = 1;
       }
       else {
-        can_assign = 0;
+        switch (array_basic_type_category) {
+          case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
+          {
+            can_assign = SPVM_API_has_interface_by_id(env, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
+            break;
+          }
+          case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
+          {
+            can_assign = SPVM_API_has_callback_by_id(env, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
+            break;
+          }
+          default: {
+            can_assign = 0;
+          }
+        }
       }
     }
   }
