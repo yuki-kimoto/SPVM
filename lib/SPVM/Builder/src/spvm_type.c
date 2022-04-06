@@ -1233,6 +1233,9 @@ int32_t SPVM_TYPE_can_assign(
       can_assign = 0;
     }
   }
+  else if (SPVM_TYPE_is_undef_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    can_assign = 0;
+  }
   // Dist type is referece type
   else if (SPVM_TYPE_is_ref_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     if (SPVM_TYPE_is_ref_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
@@ -1390,9 +1393,6 @@ int32_t SPVM_TYPE_can_assign(
     else {
       can_assign = 0;
     }
-  }
-  else if (SPVM_TYPE_is_undef_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
-    can_assign = 0;
   }
   else {
     assert(0);
