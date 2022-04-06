@@ -224,6 +224,13 @@ class TestCase::Interface {
       unless ($stringable_muldim->[0][0]->to_string eq "(1,2)") {
         return 0;
       }
+      
+      eval {
+        $stringable_muldim->[0] = new Stringable[3];
+      };
+      unless ($@) {
+        return 0;
+      }
     }
 
     # Interface array
@@ -236,6 +243,8 @@ class TestCase::Interface {
         return 0;
       }
     }
+    
+    $@ = undef;
     
     return 1;
   }
