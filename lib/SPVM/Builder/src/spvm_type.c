@@ -15,36 +15,6 @@
 #include "spvm_method.h"
 #include "spvm_constant.h"
 
-int32_t SPVM_TYPE_is_embedded_class_name(SPVM_COMPILER* compiler, const char* type_name) {
-  int32_t is_embedded_class_name;
-  if (strcmp(type_name, "Bool") == 0) {
-    is_embedded_class_name = 1;
-  }
-  else if (strcmp(type_name, "Byte") == 0) {
-    is_embedded_class_name = 1;
-  }
-  else if (strcmp(type_name, "Short") == 0) {
-    is_embedded_class_name = 1;
-  }
-  else if (strcmp(type_name, "Int") == 0) {
-    is_embedded_class_name = 1;
-  }
-  else if (strcmp(type_name, "Long") == 0) {
-    is_embedded_class_name = 1;
-  }
-  else if (strcmp(type_name, "Float") == 0) {
-    is_embedded_class_name = 1;
-  }
-  else if (strcmp(type_name, "Double") == 0) {
-    is_embedded_class_name = 1;
-  }
-  else {
-    is_embedded_class_name = 0;
-  }
-  
-  return is_embedded_class_name;
-}
-
 int32_t SPVM_TYPE_has_callback(
   SPVM_COMPILER* compiler,
   int32_t class_basic_type_id, int32_t class_type_dimension, int32_t class_type_flag,
