@@ -1106,7 +1106,14 @@ int32_t SPVM_TYPE_can_assign(
   else if (SPVM_TYPE_is_string_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     // Source type is string
     if (SPVM_TYPE_is_string_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      can_assign = 1;
+      // Mutable check
+      if(dist_type_flag & SPVM_TYPE_C_FLAG_MUTABLE && !(src_type_flag & SPVM_TYPE_C_FLAG_MUTABLE)) {
+        can_assign = 0;
+        *mutable_invalid = 1;
+      }
+      else {
+        can_assign = 1;
+      }
     }
     // Source type is number
     else if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
@@ -1389,12 +1396,6 @@ int32_t SPVM_TYPE_can_assign(
   }
   else {
     assert(0);
-  }
-  
-  // Mutable check
-  if(dist_type_flag & SPVM_TYPE_C_FLAG_MUTABLE && !(src_type_flag & SPVM_TYPE_C_FLAG_MUTABLE)) {
-    can_assign = 0;
-    *mutable_invalid = 1;
   }
   
   return can_assign;
