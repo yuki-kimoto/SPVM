@@ -1420,13 +1420,11 @@ int32_t SPVM_TYPE_can_assign(
   }
   // Dist type is interface array type
   else if (SPVM_TYPE_is_interface_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
-    // Source type is interface array
-    if (SPVM_TYPE_is_basic_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      can_assign = SPVM_TYPE_has_interface(
-        compiler,
-        src_type_basic_type_id, dist_type_dimension - 1, 0,
-        dist_type_basic_type_id, src_type_dimension - 1, 0
-      );
+    if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+      can_assign = 1;
+    }
+    else if (SPVM_TYPE_is_basic_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
     }
     // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
