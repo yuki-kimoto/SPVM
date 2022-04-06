@@ -1313,11 +1313,7 @@ int32_t SPVM_TYPE_can_assign(
       }
       else {
         if (SPVM_TYPE_is_class_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-          can_assign = SPVM_TYPE_has_callback(
-            compiler,
-            src_type_basic_type_id, src_type_dimension, src_type_flag,
-            dist_type_basic_type_id, dist_type_dimension, dist_type_flag
-          );
+          can_assign = SPVM_BASIC_TYPE_has_callback(compiler, src_type_basic_type_id, dist_type_basic_type_id);
         }
         else {
           can_assign = 0;
