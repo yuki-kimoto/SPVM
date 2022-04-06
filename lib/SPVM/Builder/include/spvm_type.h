@@ -19,12 +19,6 @@ struct spvm_type {
   SPVM_BASIC_TYPE* basic_type;
 };
 
-int32_t SPVM_TYPE_has_callback(
-  SPVM_COMPILER* compiler,
-  int32_t class_basic_type_id, int32_t class_type_dimension, int32_t class_type_flag,
-  int32_t callback_basic_type_id, int32_t callback_type_dimension, int32_t callback_type_flag
-);
-
 const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
 SPVM_TYPE* SPVM_TYPE_new_void_type(SPVM_COMPILER* compiler);
