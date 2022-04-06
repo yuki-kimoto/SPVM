@@ -6262,34 +6262,7 @@ B<Examples:>
   # int to byte
   my $num : byte = 127;
 
-=head3 Type Assignability of Object-to-Numeric
-
-If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is a L<any object type|"Any Object Type"> C<object>, the assignment is valid.
-
-The L<unboxing type conversion|"Unboxing Type Conversion"> corresponding to the numeric type is performed.
-
-=begin html
-
-<table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>Yes</td><td>byte</td><td>object</td><td>Unboxing Type Conversion</td>
-    <td>Yes</td><td>short</td><td>object</td><td>Unboxing Type Conversion</td>
-    <td>Yes</td><td>int</td><td>object</td><td>Unboxing Type Conversion</td>
-    <td>Yes</td><td>long</td><td>object</td><td>Unboxing Type Conversion</td>
-    <td>Yes</td><td>float</td><td>object</td><td>Unboxing Type Conversion</td>
-    <td>Yes</td><td>double</td><td>object</td><td>Unboxing Type Conversion</td>
-  </tr>
-</table>
-
-=end html
-
-B<Examples:>
-
-  my $int_obj = (object)Int->new(3);
-  my $int : int = $int_obj;
+=head3 Type Assignability of NumericObject-to-Numeric
 
 If the type of the left operand is a L<numeric type|"Numeric Types"> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|"Numeric Object Type">, the assignment is valid.
 
@@ -6309,32 +6282,44 @@ If the type of the left operand is a L<numeric type|"Numeric Types"> correspondi
   </tr>
 </table>
 
+=end html
+
 B<Examples:>
 
-  my $int_obj = Int->new(3);
-  my $int : int = $int_obj;
+  my $int : int = Int->new(3);
 
-=head3 Type Assignability of Others-to-Numeric
+  my $double : double = Double->new(3.5);
 
-If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is other than the types described above, the assignment is invalid.
+=head3 Type Assignability of AnyObject-to-Numeric
 
-=head2 Type Assignability of Reference-to-Referenece
+If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is a L<any object type|"Any Object Type"> C<object>, the assignment is valid.
 
-If the type of the left operand is a L<reference type|"Reference Types"> and the type of the right operand is the same type of the left operand, the assignment is valid.
+The L<unboxing type conversion|"Unboxing Type Conversion"> corresponding to the numeric type is performed.
 
-If not, the assignment is invalid.
+=begin html
 
 <table>
   <tr>
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>&X</td><td>&X</td><td>None</td>
-    <td>No</td><td>&Y</td><td>&X</td><td>None</td>
+    <td>Yes</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td>
   </tr>
 </table>
 
-=head2 Type Assignability of MultiNumeric-to-MultiNumeric
+=end html
+
+B<Examples:>
+
+  my $int : int = (object)Int->new(3);
+
+  my $double : double = (object)Double->new(3.5);
+
+=head3 Type Assignability of Others-to-Numeric
+
+If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is other than the types described above, the assignment is invalid.
+
+=head2 Type Assignability of to-MultiNumeric
 
 If the type of the left operand is a L<multi numeric type|"Multi Numeric Types"> and the type of the right operand is the same type of the left operand, the assignment is valid.
 
@@ -6345,97 +6330,15 @@ If not, the assignment is invalid.
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>X</td><td>X</td><td>None</td>
-    <td>No</td><td>Y</td><td>X</td><td>None</td>
+    <td>Yes</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td>
+    <td>No</td><td>MULNUM_X</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
-
-=head2 Type Assignability of to-NumericArray
-
-If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignment is valid.
-
-If not, the assignment is invalid.
-
-=begin html
-
-<table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>Yes</td><td>byte[]</td><td>byte[]</td><td>None</td>
-    <td>Yes</td><td>short[]</td><td>short[]</td><td>None</td>
-    <td>Yes</td><td>int[]</td><td>int[]</td><td>None</td>
-    <td>Yes</td><td>long[]</td><td>long[]</td><td>None</td>
-    <td>Yes</td><td>float[]</td><td>float[]</td><td>None</td>
-    <td>Yes</td><td>double[]</td><td>double[]</td><td>None</td>
-    <td>Yes</td><td>NUMERIC[]</td><td>undef</td><td>None</td>
-    <td>No</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td>
-  </tr>
-</table>
-
-=end html
 
 B<Examples:>
 
-  my $nums : int[] = new int[3];
-  my $nums : int[] = undef;
-
-=head2 Type Assignability of to-MultiNumericArray
-
-If the type of the left operand is a L<numeric type|"Multi Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignment is valid.
-
-If not, the assignment is invalid.
-
-=begin html
-
-<table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>Yes</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td>
-    <td>Yes</td><td>MULNUM_X[]</td><td>undef</td><td>None</td>
-    <td>No</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td>
-  </tr>
-</table>
-
-=end html
-
-B<Examples:>
-
-  my $nums : Complex_2d[] = new Complex_2d[3];
-  my $nums : Complex_2d[] = undef;
-
-=head2 Type Assignability of to-AnyObject
-
-If the type of the left operand is the L<any object type|"Any Object Type"> and the type of the right operand is an L<object type|"Object Types">, a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
-
-If not, the assignment is invalid.
-
-If the type of the right operand is a L<numeric type|"Numeric Types">, the L<boxing type conversion|"Boxing Type Conversion"> is performed.
-
-=begin html
-
-<table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>Yes</td><td>object</td><td>OBJECT_X</td><td>None</td>
-    <td>Yes</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
-    <td>Yes</td><td>object</td><td>undef</td><td>None</td>
-    <td>No</td><td>object</td><td>OTHER</td><td>None</td>
-  </tr>
-</table>
-
-=end html
-
-B<Examples:>
-
-  my $object : object = Point->new;
-  my $num_object : object = 3;
-  my $object : object = undef;
+  my $z1 : Complex_2d;
+  my $z2 : Complex_2d = $z1;
 
 =head2 Type Assignability of to-String
 
@@ -6518,6 +6421,114 @@ B<Examples:>
 
   my $point : Point = Point->new;
   my $point : Point = undef;
+
+=head2 Type Assignability of to-Interface
+
+=head2 Type Assignability of to-Callback
+
+=head2 Type Assignability of to-AnyObject
+
+If the type of the left operand is the L<any object type|"Any Object Type"> and the type of the right operand is an L<object type|"Object Types">, a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
+
+If not, the assignment is invalid.
+
+If the type of the right operand is a L<numeric type|"Numeric Types">, the L<boxing type conversion|"Boxing Type Conversion"> is performed.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>object</td><td>OBJECT_X</td><td>None</td>
+    <td>Yes</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
+    <td>Yes</td><td>object</td><td>undef</td><td>None</td>
+    <td>No</td><td>object</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $object : object = Point->new;
+  my $num_object : object = 3;
+  my $object : object = undef;
+
+=head2 Type Assignability of to-Referenece
+
+If the type of the left operand is a L<reference type|"Reference Types"> and the type of the right operand is the same type of the left operand, the assignment is valid.
+
+If not, the assignment is invalid.
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>REF_X</td><td>REF_X</td><td>None</td>
+    <td>No</td><td>REF_X</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=head2 Type Assignability of to-NumericArray
+
+If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignment is valid.
+
+If not, the assignment is invalid.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>byte[]</td><td>byte[]</td><td>None</td>
+    <td>Yes</td><td>short[]</td><td>short[]</td><td>None</td>
+    <td>Yes</td><td>int[]</td><td>int[]</td><td>None</td>
+    <td>Yes</td><td>long[]</td><td>long[]</td><td>None</td>
+    <td>Yes</td><td>float[]</td><td>float[]</td><td>None</td>
+    <td>Yes</td><td>double[]</td><td>double[]</td><td>None</td>
+    <td>Yes</td><td>NUMERIC[]</td><td>undef</td><td>None</td>
+    <td>No</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $nums : int[] = new int[3];
+  my $nums : int[] = undef;
+
+=head2 Type Assignability of to-MultiNumericArray
+
+If the type of the left operand is a L<numeric type|"Multi Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignment is valid.
+
+If not, the assignment is invalid.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td>
+    <td>Yes</td><td>MULNUM_X[]</td><td>undef</td><td>None</td>
+    <td>No</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $nums : Complex_2d[] = new Complex_2d[3];
+  my $nums : Complex_2d[] = undef;
+
 
 (Not Completed)
 
