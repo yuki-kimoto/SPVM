@@ -8,6 +8,7 @@
 #include "spvm_class.h"
 #include "spvm_list.h"
 #include "spvm_hash.h"
+#include "spvm_method.h"
 
 const char* const* SPVM_NATIVE_C_BASIC_TYPE_ID_NAMES(void) {
 
@@ -323,6 +324,39 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_bas
   SPVM_CLASS* found_interface = SPVM_HASH_get(class->interface_symtable, interface->name, strlen(interface->name));
   if (found_interface) {
     return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+int32_t SPVM_BASIC_TYPE_has_callback(SPVM_COMPILER* compiler, int32_t class_basic_type_id, int32_t callback_basic_type_id) {
+  (void)compiler;
+  
+  SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, class_basic_type_id);
+  SPVM_CLASS* class = class_basic_type->class;
+
+  SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_get(compiler->basic_types, callback_basic_type_id);
+  SPVM_CLASS* callback = callback_basic_type->class;
+
+  assert(callback->methods->length == 1);
+  SPVM_METHOD* method_callback = SPVM_LIST_get(callback->methods, 0);
+
+  SPVM_METHOD* method_class = NULL;
+  if (class->methods->length == 1) {
+    method_class = SPVM_LIST_get(class->methods, 0);
+  }
+  else {
+    method_class = SPVM_HASH_get(class->method_symtable, method_callback->name, strlen(method_callback->name));
+  }
+
+  if (method_class) {
+    if (strcmp(method_class->signature, method_callback->signature) == 0) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
   else {
     return 0;
