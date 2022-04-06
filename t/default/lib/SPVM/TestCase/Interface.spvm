@@ -212,4 +212,31 @@ class TestCase::Interface {
     
     return 1;
   }
+
+  static method interface_muldim_array : int () {
+    
+    # Interface array
+    {
+      my $stringable_muldim : Stringable[][] = new TestCase::Minimal[][3];
+      $stringable_muldim->[0] = new TestCase::Minimal[3];
+      $stringable_muldim->[0][0] = TestCase::Minimal->new_xy(1, 2);
+      
+      unless ($stringable_muldim->[0][0]->to_string eq "(1,2)") {
+        return 0;
+      }
+    }
+
+    # Interface array
+    {
+      my $stringable_muldim = new Stringable[][3];
+      $stringable_muldim->[0] = new Stringable[3];
+      $stringable_muldim->[0][0] = TestCase::Minimal->new_xy(1, 2);
+      
+      unless ($stringable_muldim->[0][0]->to_string eq "(1,2)") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }
