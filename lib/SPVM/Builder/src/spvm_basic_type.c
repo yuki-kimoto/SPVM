@@ -310,3 +310,21 @@ int32_t SPVM_BASIC_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_
     return 0;
   }
 }
+
+int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_basic_type_id, int32_t interface_basic_type_id) {
+  (void)compiler;
+
+  SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, class_basic_type_id);
+  SPVM_CLASS* class = class_basic_type->class;
+
+  SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(compiler->basic_types, interface_basic_type_id);
+  SPVM_CLASS* interface = interface_basic_type->class;
+
+  SPVM_CLASS* found_interface = SPVM_HASH_get(class->interface_class_symtable, interface->name, strlen(interface->name));
+  if (found_interface) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
