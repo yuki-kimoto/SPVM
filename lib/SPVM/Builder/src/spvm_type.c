@@ -47,30 +47,24 @@ int32_t SPVM_TYPE_has_callback(
   assert(callback->methods->length == 1);
   SPVM_METHOD* method_callback = SPVM_LIST_get(callback->methods, 0);
 
-  // Class which have only anon sub
+  SPVM_METHOD* method_class = NULL;
   if (class->methods->length == 1) {
-    SPVM_METHOD* found_method = SPVM_LIST_get(class->methods, 0);
-    
-    if (strcmp(method_callback->signature, found_method->signature) == 0) {
+    method_class = SPVM_LIST_get(class->methods, 0);
+  }
+  else {
+    method_class = SPVM_HASH_get(class->method_symtable, method_callback->name, strlen(method_callback->name));
+  }
+
+  if (method_class) {
+    if (strcmp(method_class->signature, method_callback->signature) == 0) {
       return 1;
     }
     else {
       return 0;
     }
   }
-  // Normal class
   else {
-    SPVM_METHOD* found_method = SPVM_HASH_get(class->method_symtable, method_callback->name, strlen(method_callback->name));
-    if (!found_method) {
-      return 0;
-    }
-    
-    if (strcmp(method_callback->signature, found_method->signature) == 0) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
+    return 0;
   }
 }
 
