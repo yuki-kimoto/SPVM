@@ -43,11 +43,12 @@ int32_t SPVM_TYPE_has_callback(
   
   SPVM_CLASS* class = class_basic_type->class;
   SPVM_CLASS* callback = callback_basic_type->class;
-  
+
+  assert(callback->methods->length == 1);
+
   // Class which have only anon sub
   if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
     assert(class->methods->length == 1);
-    assert(callback->methods->length == 1);
     SPVM_METHOD* method_callback = SPVM_LIST_get(callback->methods, 0);
     SPVM_METHOD* found_method = SPVM_LIST_get(class->methods, 0);
     
@@ -60,7 +61,6 @@ int32_t SPVM_TYPE_has_callback(
   }
   // Normal class
   else {
-    assert(callback->methods->length == 1);
     SPVM_METHOD* method_callback = SPVM_LIST_get(callback->methods, 0);
     
     SPVM_METHOD* found_method = SPVM_HASH_get(class->method_symtable, method_callback->name, strlen(method_callback->name));
