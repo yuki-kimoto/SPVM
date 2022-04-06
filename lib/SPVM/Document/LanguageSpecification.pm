@@ -633,7 +633,7 @@ B<Charater Literal> represents one character of ASCII.
 
 The string literal is a L<literal|"Literals"> to represents a string in source codes.
 
-The return type is a L<string type|"string Type">.
+The return type is a L<string type|"String Type">.
 
 A string literal is written by the characters of UTF-8.
 
@@ -2993,7 +2993,7 @@ A C<switch> block is a scope block.
 
 =head1 String
 
-SPVM has the L<string type|"string Type">. A string is created by L<"String Literal"> L<"String Creation Operator"> or L<"Type Convertion"> to the string type.
+SPVM has the L<string type|"String Type">. A string is created by L<"String Literal"> L<"String Creation Operator"> or L<"Type Convertion"> to the string type.
   
   # Create a string using a string literal
   my $string = "Hello";
@@ -3449,7 +3449,7 @@ The setting exception variable is an L<expression|"Expressions"> to get the valu
 
 The return value is the value of L<exception variable|"Exception Variable">.
 
-The type of return value is the L<string type|"string Type">.
+The type of return value is the L<string type|"String Type">.
 
 B<Examples of getting exception variable:>
   
@@ -3462,11 +3462,11 @@ The setting exception variable is an L<expression|"Expressions"> to set the valu
 
   $@ = VALUE
 
-The type of the assigned value must be L<"string Type">.
+The type of the assigned value must be L<"String Type">.
 
 The return value is the value after the setting.
 
-The type of return value is the L<string type|"string Type">.
+The type of return value is the L<string type|"String Type">.
 
 The reference count of the assigned value is incremented by C<1>.
 
@@ -4521,7 +4521,7 @@ B<String Comparison Operator> is a L<"Comparison Operator"> that compares the by
 
   LEFT_OPERAND STRING_COMPARISON_OPERATOR RIGHT_OPERAND
 
-The left operand and the right operand must be L<"string Type"> or byte[] type.
+The left operand and the right operand must be L<"String Type"> or byte[] type.
 
 A list of String Comparison Operators.
 
@@ -4691,11 +4691,11 @@ String concatenation operator C<.> is a L<binary operator|"Binary Operators"> to
 
   LEFT_OPERAND . RIGHT_OPERAND
 
-The left operand and the right operand must be a L<string type|"string Type">, L<"byte[] Type">, or L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be a L<string type|"String Type">, L<"byte[] Type">, or L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
 
-If the type of the operand is numeric type, a L<numeric to string type conversion|"Numeric to string Type Conversion"> is performed.
+If the type of the operand is numeric type, a L<numeric to string type conversion|"Numeric to String Type Conversion"> is performed.
 
-The type of return value is a L<string type|"string Type">.
+The type of return value is a L<string type|"String Type">.
 
 A string concatenation operator returns the result to concat two operands.
 
@@ -4865,7 +4865,7 @@ The operand must be an L<expression|"Expressions"> that type is a L<"Integral Ty
 
 The string creation operator returns the string that is created with the lenght.
 
-The return type is a L<string type|"string Type">.
+The return type is a L<string type|"String Type">.
 
 B<Examples of string creation operators:>
   
@@ -4880,7 +4880,7 @@ The C<copy> operator is an L<Unary Operator|"Unary Operators"> to copy the objec
 
 The operand must be an L<expression|"Expressions"> that type is a L<object type|"object Type">, otherwise a compilation error occurs.
 
-If the type of operand is none of a L<string type|"string Type">, a L<numeric type|"Numerci Types">, a L<multi numeric type|"Multi Numeric Types">,
+If the type of operand is none of a L<string type|"String Type">, a L<numeric type|"Numerci Types">, a L<multi numeric type|"Multi Numeric Types">,
 An L<exception|"Exception"> is thorwn.
 
 The C<copy> operator returns the copied object.
@@ -4900,7 +4900,7 @@ The C<is_read_only> is an L<Unary Operator|"Unary Operators"> to check if the L<
 
   is_read_only OPERAND
 
-The operand must be a L<string type|"string Type">, otherwise a compilation error occurs.
+The operand must be a L<string type|"String Type">, otherwise a compilation error occurs.
 
 If the string is read-only, the C<is_read_only> operator returns C<1>, otherwise returns C<0>.
 
@@ -4918,7 +4918,7 @@ The string length operator is an L<Unary Operator|"Unary Operators"> to get the 
 
   length OPERAND
 
-The operand must be an L<expression|"Expressions"> that type is a L<"string Type">, otherwise a compilation error occurs.
+The operand must be an L<expression|"Expressions"> that type is a L<"String Type">, otherwise a compilation error occurs.
 
 The string length operator returns a L<"int Type"> value that is the length of the L<"String">.
 
@@ -5380,7 +5380,7 @@ The C<warn> statement is a L<statement|"Statements"> to print a warning string t
 
   warn OPERNAD;
 
-The operand must be L<"string Type">.
+The operand must be L<"String Type">.
 
 If the end character of the string is C<\n>, C<warn> statement prints the string itself.
 
@@ -5396,7 +5396,7 @@ The C<die> statement is a L<statement|"Statements"> to throw an L<"Exception">.
 
   die OPERAND;
 
-The operand must be a L<string type|"string Type">, otherwise a compilation error occurs.
+The operand must be a L<string type|"String Type">, otherwise a compilation error occurs.
 
 The exception thrown by C<die> statement can be cached by an L<eval block|"Exception Catching">
 and can be checked by the L<exception variable|"Exception Variable"> C<$@>.
@@ -5420,7 +5420,7 @@ The C<print> statement is a L<statement|"Statements"> to print a L<string|"Strin
 
   print OPERAND;
 
-The oeprand must be a L<string type|"string Type">.
+The oeprand must be a L<string type|"String Type">.
 
 If the value of the operand is an L<undef|"Undefined Value">, print nothing.
 
@@ -5430,9 +5430,9 @@ The C<make_read_only> statement is a L<statement|"Statements"> to make the L<str
 
   make_read_only OPERAND;
 
-The oeprand must be a L<string type|"string Type">.
+The oeprand must be a L<string type|"String Type">.
 
-Read-only strings can't be cast to L<string type|"string Type"> qualified by L<mutable|"mutable Type Qualifier">.
+Read-only strings can't be cast to L<string type|"String Type"> qualified by L<mutable|"mutable Type Qualifier">.
 
   # A string
   my $string = new_string_len 3;
@@ -5769,7 +5769,7 @@ A pointer type is a L<class type|"Class Type">.
 
 =head2 Basic Object Types
 
-Basic object types are the L<class type|"Class Type">, the L<callback type|"Callback Type">, the L<array type|"Array Types">, the L<string type|"string Type">, and the L<any object type|"Any Object Type">.
+Basic object types are the L<class type|"Class Type">, the L<callback type|"Callback Type">, the L<array type|"Array Types">, the L<string type|"String Type">, and the L<any object type|"Any Object Type">.
 
 =head2 Object Types
 
@@ -5926,7 +5926,7 @@ B<void Type> is a special Type that can only be used in the return type of L<"Me
 
 =head2 Basic Type
 
-A Type that does not have dimensions is called a Basic Type. L<"Numeric Types">, L<"Class Type">, <a href = "#language-type- any-object ">Any Object Type">, L<"string Type"> is a Basic Type.
+A Type that does not have dimensions is called a Basic Type. L<"Numeric Types">, L<"Class Type">, <a href = "#language-type- any-object ">Any Object Type">, L<"String Type"> is a Basic Type.
 
 =head2 Array Types
 
@@ -6078,7 +6078,7 @@ You can get and set the element using the L<get array element|"Getting Array Ele
 
 When setting the element of any object-array, the element type is checked. If the dimension of the element is not the dimension of the array - C<1>, an L<exception|"Exception"> is thrown.
 
-=head2 string Type
+=head2 String Type
 
 C<string> type is a L<"Types"> that represents a L<"String">.
 
@@ -6342,15 +6342,15 @@ B<Examples:>
 
 =head2 Type Assignability of to-String
 
-If the type of the left operand is the L<string type|"string Type"> without the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"string Type">, the assignment is valid.
+If the type of the left operand is the L<string type|"String Type"> without the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"String Type">, the assignment is valid.
 
-If the type of the left operand is the L<string type|"string Type"> with the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"string Type"> with the L<mutable type qualifier|"mutable Type Qualifier">, the assignment is valid.
+If the type of the left operand is the L<string type|"String Type"> with the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"String Type"> with the L<mutable type qualifier|"mutable Type Qualifier">, the assignment is valid.
 
-If the type of the left operand is the L<string type|"string Type"> with the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"string Type"> without the L<mutable type qualifier|"mutable Type Qualifier">, the assignment is invalid.
+If the type of the left operand is the L<string type|"String Type"> with the L<mutable type qualifier|"mutable Type Qualifier"> and the type of the right operand is the L<string type|"String Type"> without the L<mutable type qualifier|"mutable Type Qualifier">, the assignment is invalid.
 
-If the type of the left operand is the L<string type|"string Type"> and the type of the right operand is a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
+If the type of the left operand is the L<string type|"String Type"> and the type of the right operand is a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
 
-If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Numeric-to-string type conversion|"Numeric-to-string Type Conversion"> is performed.
+If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Numeric-to-String type conversion|"Numeric-to-String Type Conversion"> is performed.
 
 =begin html
 
@@ -6364,7 +6364,7 @@ If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Num
     <td>Yes</td><td>mutable string</td><td>mutable string</td><td>None</td>
     <td>No</td><td>mutable string</td><td>string</td><td>None</td>
     <td>Yes</td><td>string</td><td>string</td><td>None</td>
-    <td>Yes</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-string type conversion</td>
+    <td>Yes</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String type conversion</td>
     <td>Yes</td><td>string</td><td>undef</td><td>None</td>
     <td>No</td><td>string</td><td>OTHER</td><td>None</td>
   </tr>
@@ -6670,7 +6670,7 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
   </tr>
   <tr>
     <td>
-      <b>string Type</b>
+      <b>String Type</b>
     </td>
     <td>
       <b>Numeric Types</b>
@@ -6745,11 +6745,11 @@ If the source Type is Numeric Object Type and the destination Type is the corres
   my $num_obj = Int->new(3);
   my $num : int = $num_obj;
 
-=head3 Numeric Type to string Type Conversion
+=head3 Numeric Type to String Type Conversion
 
-If the source Type is Numeric Types and the destination Type is L<"string Type">, L<"Numeric-to-string Type Conversion"> is performed. In the following case, the numerical value "123" is converted to String "" 123 "" and assigned.
+If the source Type is Numeric Types and the destination Type is L<"String Type">, L<"Numeric-to-String Type Conversion"> is performed. In the following case, the numerical value "123" is converted to String "" 123 "" and assigned.
 
-  # Implicit Boxing Type Conversion to string Type
+  # Implicit Boxing Type Conversion to String Type
   my $num = 123;
   my $str : string = $num;
 
@@ -6836,11 +6836,11 @@ Numeric Narrowing Type Conversion is a conversion rule applied when converting f
 
 Numeric Widening Type Conversion is a conversion rule applied when converting from a small type to a large type in L<"Numeric Types">.
 
-=head2 Numeric-to-string Type Conversion
+=head2 Numeric-to-String Type Conversion
 
-The numeric-to-string type conversion is a L<type conversion|"Type Conversions"> from a L<numeric type|"Numeric Types"> to the L<string type|"string Type">.
+The numeric-to-String type conversion is a L<type conversion|"Type Conversions"> from a L<numeric type|"Numeric Types"> to the L<string type|"String Type">.
 
-  # Numeric-to-string type conversion
+  # Numeric-to-String type conversion
   my $byte = (byte)1;
   my $short = (short)2;
   my $int = 3;
@@ -6868,7 +6868,7 @@ The numeric-to-string type conversion is a L<type conversion|"Type Conversions">
 
 =head2 string to byte[] Type Conversion
 
-string to byte[] type conversion is a L<"Type Conversions"> from L<"string Type"> to L<"byte[] Type">.
+string to byte[] type conversion is a L<"Type Conversions"> from L<"String Type"> to L<"byte[] Type">.
 
   # string to byte[] Type Conversion
   my $string : string = "Hello";
@@ -6876,9 +6876,9 @@ string to byte[] type conversion is a L<"Type Conversions"> from L<"string Type"
 
 A new byte[] object is created and all characters in the string are copied to the elements of byte[] object.
 
-=head2 byte[] to string Type Conversion
+=head2 byte[] to String Type Conversion
 
-byte[] to string type conversion is a L<"Type Conversions"> from L<"byte[] type"> to L<"string Type">.
+byte[] to string type conversion is a L<"Type Conversions"> from L<"byte[] type"> to L<"String Type">.
 
   # byte[] to string type conversion
   my $bytes : byte[] = new byte[3];
