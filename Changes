@@ -1,5 +1,8 @@
 Revision history for SPVM
-0.9510_01  2021-04-05
+0.9510_01  2021-04-06
+        [CHANGE]
+        * Support cast from class muldim array to interface muldim array
+        * Support cast from class muldim array to callback muldim array
         [NON BACKWORD COMPATIBLE CHANGES]
         * Internally used Native APIs object_type_category_offset become always NULL.
 0.9510  2021-04-05
@@ -8,7 +11,7 @@ Revision history for SPVM
         * Improve the error messages of object-to-numeric type conversion
         * Add type comment syntax
         * Support cast from class array to interface array
-        * Support cats from class array to callback array
+        * Support cast from class array to callback array
           
         [BUG FIX]
         * Fix the bug that the runtime is not freed.
