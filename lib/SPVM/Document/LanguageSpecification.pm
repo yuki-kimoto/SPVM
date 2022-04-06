@@ -6151,7 +6151,7 @@ The assignment is invalid, a compilation error occurs.
 
 =head2 Type Assignability of to-Numeric
 
-Explains the type assignability of to-Numeric
+Explains the type assignability of to-Numeric.
 
 =head3 Type Assignability of Numeric-to-Numeric
 
@@ -6379,6 +6379,35 @@ If not, the assignment is invalid.
     <td>Yes</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td>
     <td>Yes</td><td>MULNUM_X[]</td><td>undef</td><td>None</td>
     <td>No</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $nums : Complex_2d[] = new Complex_2d[3];
+  my $nums : Complex_2d[] = undef;
+
+=head2 Type Assignability of To-AnyObject
+
+If the type of the left operand is the L<any object type|"Any Object Type"> and the type of the right operand is an L<object type|"Object Types">, a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
+
+If not, the assignment is invalid.
+
+If the type of the right operand is a L<numeric type|"Numeric Types">, the L<boxing type conversion|"Boxing Type Conversion"> is performed.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>object</td><td>OBJECT_X</td><td>None</td>
+    <td>Yes</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
+    <td>Yes</td><td>object</td><td>undef</td><td>None</td>
+    <td>No</td><td>object</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
 
