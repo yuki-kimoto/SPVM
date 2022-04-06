@@ -1868,7 +1868,7 @@ A callback must have only one L<method definition|"Method Definition">. The meth
 
 The callback can't have the L<method block|"Method Block">.
 
-The method name of the callback must be an empty string C<"">.
+The method name of the callback must be an empty string C<">.
 
 The callback can't have L<field definitions|"Field Definition"> and L<class variable definition|"Class Variable Definition">.
 
@@ -6332,7 +6332,7 @@ If not, the assignment is invalid.
   </tr>
 </table>
 
-=head2 Type Assignability of To-NumericArray
+=head2 Type Assignability of to-NumericArray
 
 If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignment is valid.
 
@@ -6363,7 +6363,7 @@ B<Examples:>
   my $nums : int[] = new int[3];
   my $nums : int[] = undef;
 
-=head2 Type Assignability of To-MultiNumericArray
+=head2 Type Assignability of to-MultiNumericArray
 
 If the type of the left operand is a L<numeric type|"Multi Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignment is valid.
 
@@ -6389,7 +6389,7 @@ B<Examples:>
   my $nums : Complex_2d[] = new Complex_2d[3];
   my $nums : Complex_2d[] = undef;
 
-=head2 Type Assignability of To-AnyObject
+=head2 Type Assignability of to-AnyObject
 
 If the type of the left operand is the L<any object type|"Any Object Type"> and the type of the right operand is an L<object type|"Object Types">, a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
 
@@ -6415,8 +6415,39 @@ If the type of the right operand is a L<numeric type|"Numeric Types">, the L<box
 
 B<Examples:>
 
-  my $nums : Complex_2d[] = new Complex_2d[3];
-  my $nums : Complex_2d[] = undef;
+  my $object : object = Point->new;
+  my $num_object : object = 3;
+  my $object : object = undef;
+
+=head2 Type Assignability of to-String
+
+If the type of the left operand is the L<string type|"string Type"> and the type of the right operand is the L<string type|"string Type">, a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
+
+If not, the assignment is invalid.
+
+If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Numeric-to-string type conversion|"Numeric-to-string Type Conversion"> is performed.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>string</td><td>string</td><td>None</td>
+    <td>Yes</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-string Type Conversion</td>
+    <td>Yes</td><td>string</td><td>undef</td><td>None</td>
+    <td>No</td><td>string</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $string : string = "abc";
+  my $num_string : string = 3;
+  my $string : string = undef;
 
 (Not Completed)
 
@@ -6609,9 +6640,9 @@ If the source Type is Numeric Object Type and the destination Type is the corres
   my $num_obj = Int->new(3);
   my $num : int = $num_obj;
 
-=head3 Implicit Numeric Type to string Type Conversion
+=head3 Numeric Type to string Type Conversion
 
-If the source Type is Numeric Types and the destination Type is L<"string Type">, <a href = "#language-type-convertion-numeric-to-string ">Numeric-to-string Type Conversion</a> is performed. In the following case, the numerical value "123" is converted to String "" 123 "" and assigned.
+If the source Type is Numeric Types and the destination Type is L<"string Type">, L<"Numeric-to-string Type Conversion"> is performed. In the following case, the numerical value "123" is converted to String "" 123 "" and assigned.
 
   # Implicit Boxing Type Conversion to string Type
   my $num = 123;
@@ -6700,11 +6731,11 @@ Numeric Narrowing Type Conversion is a conversion rule applied when converting f
 
 Numeric Widening Type Conversion is a conversion rule applied when converting from a small type to a large type in L<"Numeric Types">.
 
-=head2 Numeric to string Type Conversion
+=head2 Numeric-to-string Type Conversion
 
-The numerci to string type conversion is a L<type conversion|"Type Conversions"> from a L<numeric type|"Numeric Types"> to a L<string type|"string Type"">.
+The numeric-to-string type conversion is a L<type conversion|"Type Conversions"> from a L<numeric type|"Numeric Types"> to the L<string type|"string Type">.
 
-  # Numeric to string type conversion
+  # Numeric-to-string type conversion
   my $byte = (byte)1;
   my $short = (short)2;
   my $int = 3;
