@@ -6332,6 +6332,37 @@ If not, the assignment is invalid.
   </tr>
 </table>
 
+=head2 Type Assignability of To-NumericArray
+
+If the type of the left operand is a L<numeric type|"Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|"Undefined Type">, the assignment is valid.
+
+If not, the assignment is invalid.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Yes</td><td>byte[]</td><td>byte[]</td><td>None</td>
+    <td>Yes</td><td>short[]</td><td>short[]</td><td>None</td>
+    <td>Yes</td><td>int[]</td><td>int[]</td><td>None</td>
+    <td>Yes</td><td>long[]</td><td>long[]</td><td>None</td>
+    <td>Yes</td><td>float[]</td><td>float[]</td><td>None</td>
+    <td>Yes</td><td>double[]</td><td>double[]</td><td>None</td>
+    <td>Yes</td><td>NUMERIC[]</td><td>undef</td><td>None</td>
+    <td>No</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $nums : int[] = new int[3];
+  my $nums : int[] = undef;
+
 (Not Completed)
 
 =head1 Type Conversions
