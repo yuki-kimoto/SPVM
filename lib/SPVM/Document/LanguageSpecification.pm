@@ -6453,7 +6453,7 @@ If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Num
   </tr>
   <tr>
     <td>Yes</td><td>string</td><td>string</td><td>None</td>
-    <td>Yes</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-string Type Conversion</td>
+    <td>Yes</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-string type conversion</td>
     <td>Yes</td><td>string</td><td>undef</td><td>None</td>
     <td>No</td><td>string</td><td>OTHER</td><td>None</td>
   </tr>
@@ -6469,11 +6469,11 @@ B<Examples:>
 
 =head2 Type Assignability of to-NumericObject
 
-If the type of the left operand is a L<numeric object type|"Numeric Object Types"> and the type of the right operand is the L<string type|"string Type">, a L<numeric type|"Numeric Types"> or the L<undef type|"Undefined Type">, the assignment is valid.
+If the type of the left operand is a L<numeric object type|"Numeric Object Types"> and the type of the right operand is the same type of the left operand, a L<numeric type|"Numeric Types"> that is corresponding to the numeric object type, or the L<undef type|"Undefined Type">, the assignment is valid.
 
 If not, the assignment is invalid.
 
-If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Numeric-to-string type conversion|"Numeric-to-string Type Conversion"> is performed.
+If the type of the right operand is a L<numeric type|"Numeric Types">, the L<boxing type conversion|"Boxing Type Conversion"> is performed.
 
 =begin html
 
@@ -6482,12 +6482,18 @@ If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Num
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Yes</td><td>string</td><td>string</td><td>None</td>
-    <td>Yes</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-string Type Conversion</td>
-    <td>Yes</td><td>string</td><td>undef</td><td>None</td>
-    <td>No</td><td>string</td><td>OTHER</td><td>None</td>
+    <td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td>
+    <td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
+    <td>Yes</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td>
+    <td>No</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
+
+B<Examples:>
+
+  my $num_object : Int = Int->new(3);
+  my $num_object : Int = 3;
+  my $num_object : Int = undef;
 
 (Not Completed)
 
