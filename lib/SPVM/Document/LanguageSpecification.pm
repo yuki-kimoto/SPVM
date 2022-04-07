@@ -2118,6 +2118,24 @@ In the other hand, the else block exists, so a warning is issued.
     warn "Warning: Can't load Foo";
   }
 
+=head2 Default Loaded Modules
+
+The following modules are loaded by default. These modules are deeply related to the features of SPVM language itself, such as L<type conversions|"Type Conversions">.
+
+=begin html
+
+<ul>
+  <li><a href="https://metacpan.org/pod/SPVM::Byte">Byte</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Short">Short</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Int">Int</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Long">Long</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Float">Float</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Double">Double</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Bool">Bool</a></li>
+</ul>
+
+=end html
+
 =head1 Class Variable
 
 =head2 Class Variable Definition
@@ -6335,6 +6353,8 @@ If the type of the left operand is a L<multi numeric type|"Multi Numeric Types">
 
 If not, the assignability is false.
 
+=begin html
+
 <table>
   <tr>
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
@@ -6344,6 +6364,8 @@ If not, the assignability is false.
     <td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
+
+=end html
 
 B<Examples:>
 
@@ -6547,6 +6569,8 @@ If the type of the left operand is a L<reference type|"Reference Types"> and the
 
 If not, the assignability is false.
 
+=begin html
+
 <table>
   <tr>
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
@@ -6556,6 +6580,8 @@ If not, the assignability is false.
     <td>False</td><td>REF_X</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
+
+=end html
 
 =head2 Type Assignability to NumericArray
 
@@ -7292,20 +7318,3 @@ Even if there are 3 circular references, you can release them correctly by setti
 
 As a syntax related to Weaken Reference, Weaken Reference can be released L<"weaken Statement">, and it can be confirmed whether Field is Weaken Reference <a href = "#language- There is an operator-isweak ">isweak Operator</a>.
 
-=head1 Default Loaded Modules
-
-SPVM loads the following modules just after the program start. These modules are deeply relataed to SPVM language, such as L<type conversions|"Type Conversions">.
-
-=begin html
-
-<ul>
-  <li><a href="https://metacpan.org/pod/SPVM::Byte">Byte</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Short">Short</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Int">Int</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Long">Long</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Float">Float</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Double">Double</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Bool">Bool</a></li>
-</ul>
-
-=end html
