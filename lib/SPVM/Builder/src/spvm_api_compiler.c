@@ -1,7 +1,18 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <assert.h>
+
 #include "spvm_native.h"
 
 #include "spvm_compiler.h"
 #include "spvm_api_compiler.h"
+#include "spvm_list.h"
+#include "spvm_hash.h"
+#include "spvm_method.h"
+#include "spvm_class.h"
+#include "spvm_string_buffer.h"
+#include "spvm_allocator.h"
 
 // flag
 // 0 : all
