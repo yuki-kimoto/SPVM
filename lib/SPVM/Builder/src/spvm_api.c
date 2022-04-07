@@ -37,10 +37,10 @@
 #include "spvm_runtime_string.h"
 #include "spvm_runtime_type.h"
 #include "spvm_precompile.h"
-
-
-
-
+#include "spvm_api_compiler.h"
+#include "spvm_api_string_buffer.h"
+#include "spvm_api_allocator.h"
+#include "spvm_api_runtime.h"
 
 
 
