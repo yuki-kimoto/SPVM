@@ -4008,7 +4008,7 @@ create_precompile_source(...)
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
   
   // New allocator
-  void* allocator = SPVM_API_allocator_new();
+  void* allocator = SPVM_API_ALLOCATOR_new();
   
   // New string buffer
   void* string_buffer = SPVM_API_STRING_BUFFER_new_tmp(allocator, 0);
@@ -4026,7 +4026,7 @@ create_precompile_source(...)
   SPVM_API_STRING_BUFFER_free(string_buffer);
   
   // Free allocator
-  SPVM_API_allocator_free(allocator);
+  SPVM_API_ALLOCATOR_free(allocator);
 
   XPUSHs(sv_precompile_source);
   XSRETURN(1);
