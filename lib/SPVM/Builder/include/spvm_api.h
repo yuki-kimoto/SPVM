@@ -285,47 +285,14 @@ int32_t SPVM_API_get_no_symbol_cache_flag(SPVM_ENV* env);
 void SPVM_API_fprint(SPVM_ENV* env, FILE* fh, SPVM_OBJECT* string);
 void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_OBJECT* string);
 
-SPVM_COMPILER* SPVM_API_compiler_new();
-
-void SPVM_API_compiler_set_start_line(SPVM_COMPILER* compiler, int32_t start_line);
-int32_t SPVM_API_compiler_get_start_line(SPVM_COMPILER* compiler);
-void SPVM_API_compiler_set_start_file(SPVM_COMPILER* compiler, const char* start_file);
-const char* SPVM_API_compiler_get_start_file(SPVM_COMPILER* compiler);
-void SPVM_API_compiler_add_module_dir(SPVM_COMPILER* compiler, const char* module_dir);
-int32_t SPVM_API_compiler_get_module_dirs_length (SPVM_ENV* env, SPVM_COMPILER* compiler);
-const char* SPVM_API_compiler_get_module_dir (SPVM_ENV* env, SPVM_COMPILER* compiler, int32_t module_dir_id);
-int32_t SPVM_API_compiler_compile_spvm(SPVM_COMPILER* compiler, const char* class_name);
-void SPVM_API_compiler_free(SPVM_COMPILER* compiler);
 int32_t SPVM_API_init_env(SPVM_ENV* env);
 void SPVM_API_call_init_blocks(SPVM_ENV* env);
 void SPVM_API_cleanup_global_vars(SPVM_ENV* env);
 
 SPVM_ENV* SPVM_API_new_env_raw();
 
-int32_t SPVM_API_compiler_get_error_messages_length(SPVM_COMPILER* compiler);
-const char* SPVM_API_compiler_get_error_message(SPVM_COMPILER* compiler, int32_t index);
-
-int32_t SPVM_API_compiler_get_classes_length(SPVM_COMPILER* compiler);
-const char* SPVM_API_compiler_get_class_name(SPVM_COMPILER* compiler, int32_t class_id);
-int32_t SPVM_API_compiler_is_anon_class(SPVM_COMPILER* compiler, int32_t class_id);
-int32_t SPVM_API_compiler_get_methods_length(SPVM_COMPILER* compiler, int32_t class_id);
-int32_t SPVM_API_compiler_get_method_id(SPVM_COMPILER* compiler, int32_t class_id, int32_t method_index_of_class);
-int32_t SPVM_API_compiler_get_method_id_by_name(SPVM_COMPILER* compiler, const char* class_name, const char* method_name);
-const char* SPVM_API_compiler_get_method_name(SPVM_COMPILER* compiler, int32_t method_id);
-int32_t SPVM_API_compiler_is_anon_method(SPVM_COMPILER* compiler, int32_t method_id);
-int32_t SPVM_API_compiler_is_init_block_method(SPVM_COMPILER* compiler, int32_t method_id);
-int32_t SPVM_API_compiler_is_native_method(SPVM_COMPILER* compiler, int32_t method_id);
-int32_t SPVM_API_compiler_is_precompile_method(SPVM_COMPILER* compiler, int32_t method_id);
-void* SPVM_API_compiler_get_native_method_address(SPVM_COMPILER* compiler, int32_t method_id);
-void* SPVM_API_compiler_get_precompile_method_address(SPVM_COMPILER* compiler, int32_t method_id);
-void SPVM_API_compiler_set_native_method_address(SPVM_COMPILER* compiler, int32_t method_id, void* address);
-void SPVM_API_compiler_set_precompile_method_address(SPVM_COMPILER* compiler, int32_t method_id, void* address);
-const char* SPVM_API_compiler_get_method_signature(SPVM_COMPILER* compiler, int32_t method_id);
-
 SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env);
 void SPVM_API_free_env(SPVM_ENV* env);
-
-int32_t SPVM_API_compiler_get_class_id(SPVM_COMPILER* compiler, const char* class_name);
 
 const char* SPVM_API_get_constant_string_value(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
 
@@ -356,18 +323,12 @@ const char* SPVM_API_get_name(SPVM_ENV* env, int32_t string_id);
 
 SPVM_RUNTIME* SPVM_API_runtime_new(SPVM_ENV* env);
 void SPVM_API_runtime_free(SPVM_RUNTIME* runtime);
-
-void SPVM_API_compiler_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime);
-
 void SPVM_API_runtime_prepare(SPVM_RUNTIME* runtime);
 
-int32_t SPVM_API_compiler_get_method_class_id(SPVM_COMPILER* compiler, int32_t method_id);
 int32_t SPVM_API_get_method_arg_ids_length(SPVM_ENV* env, int32_t method_id);
 int32_t SPVM_API_get_method_is_class_method(SPVM_ENV* env, int32_t method_id);
 int32_t SPVM_API_get_method_arg_ids_base(SPVM_ENV* env, int32_t method_id);
 int32_t SPVM_API_get_method_return_type_id(SPVM_ENV* env, int32_t method_id);
-
-const char* SPVM_API_compiler_get_class_module_file(SPVM_COMPILER* compiler, int32_t class_id);
 
 int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name);
 
@@ -390,8 +351,6 @@ int32_t SPVM_API_get_class_field_ids_length(SPVM_ENV* env, int32_t class_id);
 int32_t SPVM_API_get_class_method_ids_base(SPVM_ENV* env, int32_t class_id);
 int32_t SPVM_API_get_class_method_ids_length(SPVM_ENV* env, int32_t class_id);
 int32_t SPVM_API_get_class_class_var_ids_base(SPVM_ENV* env, int32_t class_id);
-
-const char* SPVM_API_get_module_source(SPVM_COMPILER* compiler, const char* class_name);
 
 int32_t SPVM_API_object_get_basic_type_id(SPVM_OBJECT* object);
 int32_t SPVM_API_object_get_type_dimension(SPVM_OBJECT* object);
