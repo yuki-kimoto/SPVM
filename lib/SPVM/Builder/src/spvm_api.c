@@ -8740,6 +8740,11 @@ SPVM_RUNTIME* SPVM_API_runtime_new(SPVM_ENV* env) {
   return SPVM_RUNTIME_new();
 }
 
+SPVM_OPCODE* SPVM_API_runtime_get_opcodes(SPVM_RUNTIME* runtime) {
+  
+  return runtime->opcodes;
+}
+
 void SPVM_API_runtime_free(SPVM_RUNTIME* runtime) {
   SPVM_RUNTIME_free(runtime);
 }

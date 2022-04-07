@@ -277,7 +277,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   // Convert string
   SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string_buffer[21];\n");
   
-  SPVM_OPCODE* opcodes = SPVM_API_get_runtime_opcodes(env);
+  SPVM_OPCODE* opcodes = SPVM_API_runtime_get_opcodes(runtime);
   int32_t method_opcode_ids_base = SPVM_API_get_method_opcode_ids_base(env, method_id);
   int32_t opcode_ids_length = SPVM_API_get_method_opcode_ids_length(env, method_id);
   int32_t opcode_index = 0;
