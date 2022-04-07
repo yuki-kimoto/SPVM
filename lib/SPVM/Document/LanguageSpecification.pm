@@ -4984,7 +4984,7 @@ The C<has_implement> operator checks the existence of the method implementation.
 
   has_implement OPERAND->METHOD_NAME
 
-The operand must the object that has a L<class type|"Class Type"> or a L<interface type|"Interface Type">, otherwise a compilation error occurs.
+The operand must the object that has a L<class type|"Class Type"> or an L<interface type|"Interface Type">, otherwise a compilation error occurs.
 
 The method name must be a L<method name|"Method Names">, otherwise a compilation error occurs.
 
@@ -6431,6 +6431,32 @@ B<Examples:>
   my $point : Point = undef;
 
 =head2 Type Assignability to Interface
+
+If the type of the left operand is an L<interface type|"Interface Type"> and the type of the right operand is the same type, or the L<undef type|"Undefined Type">, the assignability is true.
+
+If the type of the left operand is an L<interface type|"Interface Type"> and the type of the right operand is a L<class type|"Class Type"> and the class has the same interface of the left operand, the assignability is true.
+
+If not, the assignability is false.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>Ture</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td>
+    <td>Conditinal Ture</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td>
+    <td>Ture</td><td>CLASS</td><td>undef</td><td>None</td>
+    <td>False</td><td>CLASS</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+B<Examples:>
+  
+  # Point has Stringable interface
+  my $stringable : Stringable = Point->new_xy(1, 2);
+  my $stringable : Stringable = undef;
 
 =head2 Type Assignability to Callback
 
