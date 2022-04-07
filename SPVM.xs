@@ -4011,19 +4011,19 @@ create_precompile_source(...)
   void* allocator = SPVM_API_allocator_new();
   
   // New string buffer
-  void* string_buffer = SPVM_API_string_buffer_new_tmp(allocator, 0);
+  void* string_buffer = SPVM_API_STRING_BUFFER_new_tmp(allocator, 0);
 
   // Create precompile source
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
   env->runtime = runtime;
   SPVM_API_precompile_create_precompile_source(env, string_buffer, class_name);
   env->free_env_raw(env);
-  const char* string_buffer_value = SPVM_API_string_buffer_get_value(string_buffer);
-  int32_t string_buffer_length = SPVM_API_string_buffer_get_length(string_buffer);
+  const char* string_buffer_value = SPVM_API_STRING_BUFFER_get_value(string_buffer);
+  int32_t string_buffer_length = SPVM_API_STRING_BUFFER_get_length(string_buffer);
   SV* sv_precompile_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
   
   // Free string buffer
-  SPVM_API_string_buffer_free(string_buffer);
+  SPVM_API_STRING_BUFFER_free(string_buffer);
   
   // Free allocator
   SPVM_API_allocator_free(allocator);
