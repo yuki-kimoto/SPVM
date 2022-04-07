@@ -44,7 +44,7 @@ Underscore C<_> cannot be continued twice.
 
 A class name must be corresponding to the relative name of the module file. If the class name is "Foo::Bar::Baz", the relative name of the module file must be "Foo/Bar/Baz.spvm".
 
-If class names are invalid, a compilation error occurs.
+If class names are invalid, a compilation error will occur.
 
 B<Examples of valid class names:>
 
@@ -70,7 +70,7 @@ The first character must not a number.
 
 Underscore(C<_>) cannot be continued twice.
 
-If method names are invalid, a compilation error occurs.
+If method names are invalid, a compilation error will occur.
 
 B<Examples of valid method names:>
 
@@ -103,7 +103,7 @@ The first character must not number.
   
 Underscore(C<_>) cannot be continued twice.
 
-If field names are invalid, a compilation error occurs.
+If field names are invalid, a compilation error will occur.
 
 B<Examples of valid field names:>
 
@@ -136,7 +136,7 @@ C<::> cannot be continued twice. Last characters cannot end with C<::>.
 
 Underscore(C<_>) cannot be continued twice.
 
-If class variable names are invalid, a compilation error occurs.
+If class variable names are invalid, a compilation error will occur.
 
 B<Examples of valid class variable names:>
 
@@ -161,7 +161,7 @@ The followed character must not start with a number.
 
 Underscore(C<_>) cannot be continued twice.
 
-If local variable names are invalid, a compilation error occurs.
+If local variable names are invalid, a compilation error will occur.
 
 B<Examples of valid local variable names:>
 
@@ -376,11 +376,11 @@ Can be prefixed with "+" or "-".
 
 L<"Types"> of Integer Literal is L<"int Type"> by default.
 
-If Integer Literal exceeds the range of numbers that can be represented by L<"int Type">, a compilation error occurs.
+If Integer Literal exceeds the range of numbers that can be represented by L<"int Type">, a compilation error will occur.
 
 By suffixing "L" or "l" at the end, that represents L<"long Type"> Integer Literal.
 
-If L<"long Type"> Integer Literal  exceeds the range of numbers that can be represented by L<"long Type">,  If it exceeds the range, a compilation error occurs.
+If L<"long Type"> Integer Literal  exceeds the range of numbers that can be represented by L<"long Type">,  If it exceeds the range, a compilation error will occur.
 
 "_" can be used as a separator. Separator has no meaning.
 
@@ -483,9 +483,9 @@ If Suffix Part is "d" or "D", the L<"Types"> of Floating Point Literal is L<"dou
 
 If Suffix Part is omitted, the L<"Types"> of Floating Point Literal is L<"double Type">.
 
-If Floating Point Literal is L<"float Type">, the Floating Point Literal is converted to float value using C standard "strtof" function. If the conversion fails, a compilation error occurs.
+If Floating Point Literal is L<"float Type">, the Floating Point Literal is converted to float value using C standard "strtof" function. If the conversion fails, a compilation error will occur.
 
-If Floating Point Literal is L<"double Type">, the Floating Point Literal is converted to double value using C standard "strtod" function. If the conversion fails, a compilation error occurs.
+If Floating Point Literal is L<"double Type">, the Floating Point Literal is converted to double value using C standard "strtod" function. If the conversion fails, a compilation error will occur.
 
 B<Examples of Floating Point Literal:>
 
@@ -1707,9 +1707,9 @@ L<implement|"implement Statement"> and L<INIT block|"INIT Block"> can be defined
     }
   }
 
-If more than one class in a module file, a compilation error occurs.
+If more than one class in a module file, a compilation error will occur.
 
-If the class name is different from the name that the module file C</> is replaced with C<::> and added C<.spvm> to the end, a compilation error occurs.
+If the class name is different from the name that the module file C</> is replaced with C<::> and added C<.spvm> to the end, a compilation error will occur.
 
   # Valid class name for "Foo/Bar/Baz.spvm"
   class Foo::Bar::Baz {
@@ -1796,9 +1796,9 @@ The list of class descriptors.
 
 =end html
 
-If both "public" and "private" are specifed, a compilation error occurs.
+If both "public" and "private" are specifed, a compilation error will occur.
 
-If more than one of "callback_t", "mulnum_t", "pointer_t" are specified, a compilation error occurs.
+If more than one of "callback_t", "mulnum_t", "pointer_t" are specified, a compilation error will occur.
 
 =head2 Destructor
 
@@ -1812,9 +1812,9 @@ A destructor is a special L<method|"Method"> called when the object is destroyed
 
 A destructor name must be C<DESTROY>.
 
-A destructor retrun type must be L<void type|"void Type">, otherwise a compilation error occurs.
+A destructor retrun type must be L<void type|"void Type">, otherwise a compilation error will occur.
 
-A destructor must be a L<instance method|"Instance Method"> that don't have the arguments, otherwise a compilation error occurs.
+A destructor must be an L<instance method|"Instance Method"> that don't have the arguments, otherwise a compilation error will occur.
 
 If a L<"Exception"> occurs in the destructor, the exception is not thrown, and prints the message to STDERR.
 
@@ -1850,42 +1850,11 @@ In this example, Bar can access the private Method, Field, and Class Variable of
 
 Specifying the module of B<allow> also loads the module by L<"use"> at the same time.
 
-=head1 Callback
-
-Explains callbacks.
-
-=head2 Callback Definition
-
-A callback can be defined using the L<class descriptor|"Class Descriptors"> C<callback_t>.
-
-  class Comparator: callback_t {
-    method : int ($x1 : object, $x2 : object);
-  }
-
-The type of the callback is L<"Callback Type">.
-
-A callback must have only one L<method definition|"Method Definition">. The method must be a L<instance method|"Instance Method">.
-
-The callback can't have the L<method block|"Method Block">.
-
-The method name of the callback must be an empty string C<">.
-
-The callback can't have L<field definitions|"Field Definition"> and L<class variable definition|"Class Variable Definition">.
-
-If the definition of the callback is invalid, a compilation error will occur.
-
-If the object is created by the syntax of L<"Create Callback"> can be assigned to the callback that the types of arguments and return type are same.
-
-  # Create a callback and it is assigned to a callback type
-  my $comparator : Comparator = method : int ($x1 : object, $x2 : object) {
-    
-  };
-
 =head1 Interface
 
 Explains interfaces.
 
-=head2 Interface Definision
+=head2 Interface Type Definition
 
 A interface is defined using a L<"class descriptor|"Class Descriptors"> C<interface_t>.
 
@@ -1968,6 +1937,43 @@ Not that C<implement> statement doesn't force the implementation of methods of t
 If the method implementation is not found, an exception is thrown at runtime.
 
 The existence of the method implementation can be checked by the L<has_implement|"has_implement Operator"> operator.
+
+=head1 Callback
+
+Explains callbacks.
+
+=head2 Callback Type Definition
+
+A L<callback type|"Callback Type"> can be defined using the L<class descriptor|"Class Descriptors"> C<callback_t>.
+  
+  # Define a callback type
+  class Comparator: callback_t {
+    method : int ($x1 : object, $x2 : object);
+  }
+
+A callback must have only one L<method definition|"Method Definition">. The method must be an L<instance method|"Instance Method">.
+
+The method can't have the L<method block|"Method Block">.
+
+The method name must be an empty string C<"">.
+
+A callback type can't have L<field definitions|"Field Definition"> and L<class variable definitions|"Class Variable Definition">.
+
+If the callback type definition is invalid, a compilation error will occur.
+
+A callback can be create using the syntax of L<"Create Callback">. A callback is an object of a L<class type|"Class Type">.
+
+A callback that have the same method defined in the callback type can be assign to the callback type.
+
+  # Create a callback and the callback is assigned to a callback type
+  my $comparator : Comparator = method : int ($x1 : object, $x2 : object) {
+    my $point1 = (Point)$x1;
+    my $point2 = (Point)$x2;
+    
+    return $point1->x <=> $point2->x;
+  };
+
+See also L<Comparator|SPVM::Comparator>.
 
 =head1 Module
 
@@ -2078,7 +2084,7 @@ if require Statement can be followed by else Statement.
 
 Note that elsif Statement cannot be followed.
 
-Let's look at an example. if Foo does not exist, no a compilation error occurs and it is assumed that there is no if block
+Let's look at an example. if Foo does not exist, no a compilation error will occur and it is assumed that there is no if block
 
 Therefore, "$foo = new Foo;" does not result in a compilation error because it is assumed that there is no if block.
 
@@ -2106,9 +2112,9 @@ Class Variable must be defined directly under L<"Class Definition">.
 
 Class Variable Definition must specify L<"Types">. The Type must be L<"Numeric Types"> or L<"Object Types">.
 
-Class variable mames must follows the rule specified in L<"Class Variable Names">, and must not contain "::", otherwise a compilation error occurs.
+Class variable mames must follows the rule specified in L<"Class Variable Names">, and must not contain "::", otherwise a compilation error will occur.
 
-If more than one Class Variable with the same name is defined, a compilation error occurs.
+If more than one Class Variable with the same name is defined, a compilation error will occur.
 
 Class Variable Descriptor can be specified together in Class Variable definition.
 
@@ -2174,9 +2180,9 @@ List of Class Variable Descriptors.
 
 =end html
 
-If both "public" and "private" Descriptors are specified, a compilation error occurs.
+If both "public" and "private" Descriptors are specified, a compilation error will occur.
 
-If more than one of "ro", "wo", and "rw" are specified at the same time, a compilation error occurs
+If more than one of "ro", "wo", and "rw" are specified at the same time, a compilation error will occur
 
 Read Accessor of Class Variable has no arguments and the return type is same as the type of Class Variable.
 
@@ -2238,9 +2244,9 @@ Field Definition must be specify L<"Types">. The Type must be L<"Numeric Types">
 
 Field names must follows the rule specified in L<"Field Names">.
 
-Field Type must be L<"Numeric Types"> or L<"Object Types">, otherwise a compilation error occurs.
+Field Type must be L<"Numeric Types"> or L<"Object Types">, otherwise a compilation error will occur.
 
-If more than one field names Variable with the same name is defined, a compilation error occurs.
+If more than one field names Variable with the same name is defined, a compilation error will occur.
 
 Field Descriptor can be specified together in Field Definition.
 
@@ -2306,9 +2312,9 @@ List of Field Descriptors.
 
 =end html
 
-If both "public" and "private" Descriptors are specified, a compilation error occurs.
+If both "public" and "private" Descriptors are specified, a compilation error will occur.
 
-If more than one of "ro", "wo", and "rw" are specified at the same time, a compilation error occurs
+If more than one of "ro", "wo", and "rw" are specified at the same time, a compilation error will occur
 
 Read Accessor of Field has one argument that is L<"self Type"> and the return type is same as the type of Field.
 
@@ -2340,9 +2346,9 @@ The field access is an L<expression|"Expressions"> to get or set the field.
 
 The field access has three different syntax.
 
-If the invocant is different from the following three field access, a compilation error occurs.
+If the invocant is different from the following three field access, a compilation error will occur.
 
-If the field name does not found, a compilation error occurs
+If the field name does not found, a compilation error will occur
 
 =head3 Field Access of the Class
 
@@ -2405,9 +2411,9 @@ The argument names must be follow the rule of L<"Local Variable Names">.
 
 The minimal length of arguments is C<0>. The max length of arguments is C<255>.
 
-The types of the arguments must be L<"Numeric Types">, L<"Multi Numeric Types">, L<"Object Types">, or L<"Reference Type">, otherwise a compilation error occurs.
+The types of the arguments must be L<"Numeric Types">, L<"Multi Numeric Types">, L<"Object Types">, or L<"Reference Type">, otherwise a compilation error will occur.
 
-The type of the return value must be L<"void Type">, L<"Numeric Types">, L<"Multi Numeric Types"> or L<"Object Types">, otherwise a compilation error occurs.
+The type of the return value must be L<"void Type">, L<"Numeric Types">, L<"Multi Numeric Types"> or L<"Object Types">, otherwise a compilation error will occur.
 
 Defined methods can be called using L<"Method Call"> syntax.
 
@@ -2649,7 +2655,7 @@ The value of L<"int Type"> can be set in the enum element.
 
 In the above case, "FLAG1" is "0", "FALG2" is "4", and "FLAG3" is "5".
 
-If Enum Definition is invalid, a compilation error occurs.
+If Enum Definition is invalid, a compilation error will occur.
 
 =head2 Enumeration Descriptor
 
@@ -2694,7 +2700,7 @@ List of Enumeration Descriptor
 
 =end html
 
-If both "public" and "private" Descriptors are specified, a compilation error occurs.
+If both "public" and "private" Descriptors are specified, a compilation error will occur.
 
 =head2 Enumeration Call
 
@@ -3371,7 +3377,7 @@ The setting local variable is an L<expression|"Expressions"> to set the value of
 
   $var = VALUE
 
-The assignment of the value must satisfy the L<type assignability|"Type Assignability">, otherwise a compilation error occurs.
+The assignment of the value must satisfy the L<type assignability|"Type Assignability">, otherwise a compilation error will occur.
 
 The return value is the value after the assignment.
 
@@ -3391,9 +3397,9 @@ C<CLASS_NAME::> can be omitted if the class variable belongs to the current L<cl
 
   $CLASS_VARIABLE_NAME
 
-If the class variable does not found, a compilation error occurs.
+If the class variable does not found, a compilation error will occur.
 
-If the class variable is C<private> and it is accessed outside of the class, a compilation error occurs.
+If the class variable is C<private> and it is accessed outside of the class, a compilation error will occur.
 
 B<Examples of getting class variable:>
 
@@ -3416,15 +3422,15 @@ B<Setting Class Variable Expression> is an L<expression|"Expressions"> to set L<
 
   $CLASS_VARIABLE_NAME = VALUE
 
-If the assignment does not satisfy the L<type assignability|"Type Assignability">, a compilation error occurs.
+If the assignment does not satisfy the L<type assignability|"Type Assignability">, a compilation error will occur.
 
 The return value is the value after the setting.
 
 The return type is the type of the class variable.
 
-If the class variable does not found, a compilation error occurs.
+If the class variable does not found, a compilation error will occur.
 
-If the class variable is C<private> and it is accessed outside of the class, a compilation error occurs.
+If the class variable is C<private> and it is accessed outside of the class, a compilation error will occur.
 
 If the type of the assigned value is an L<object type|"Object Types">, the reference count of the object is incremented by C<1>.
 
@@ -3499,7 +3505,7 @@ The setting field is an L<expression|"Expressions"> to set the L<field|"Field"> 
 
 The type of invocant is a L<class type|"Class Type">.
 
-If the assignment does not satisfy the L<type assignability|"Type Assignability">, a compilation error occurs.
+If the assignment does not satisfy the L<type assignability|"Type Assignability">, a compilation error will occur.
 
 The return value is the value after the setting. 
 
@@ -3522,7 +3528,7 @@ B<Getting Multi Numeric Field Expression> is an L<expression|"Expressions"> to g
 
 Invocant Expression is L<"Multi Numeric Types">.
   
-If the field names does not found in the L<"Class">, a compilation error occurs
+If the field names does not found in the L<"Class">, a compilation error will occur
 
 Getting Multi Numeric Field Expression returns the field value in the Multi Numeric Value.
 
@@ -3541,7 +3547,7 @@ Setting Multi Numeric Field Expression is an L<expression|"Expressions"> to set 
 
 Invocant Expression is L<"Multi Numeric Types">.
 
-If the field names does not found in the L<"Class">, a compilation error occurs.
+If the field names does not found in the L<"Class">, a compilation error will occur.
 
 Setting Multi Numeric Field Expression returns the value of Field after setting. 
 
@@ -3562,7 +3568,7 @@ B<Getting Multi Numeric Field via Dereference Expression> is an L<expression|"Ex
 
 Invocant Expression is L<"Multi Numeric Reference Type">.
 
-If the field names does not found in the L<"Class">, a compilation error occurs
+If the field names does not found in the L<"Class">, a compilation error will occur
 
 Getting Multi Numeric Field via Dereference Expression returns the field value in the Multi Numeric Value.
 
@@ -3582,7 +3588,7 @@ Setting Multi Numeric Field Expression via Dereference is an L<expression|"Expre
 
 Invocant Expression is L<"Multi Numeric Reference Type">.
 
-If the field names does not found in the L<"Class">, a compilation error occurs
+If the field names does not found in the L<"Class">, a compilation error will occur
 
 Setting Multi Numeric Field via Dereference Expression returns the value of Field after setting.
 
@@ -3763,9 +3769,9 @@ A method defined as the L<class method|"Class Method"> can be called using the c
 
   ClassName->MethodName(ARGS1, ARGS2, ...);
 
-If the number of arguments does not correct, a compilation error occurs.
+If the number of arguments does not correct, a compilation error will occur.
 
-If the types of arguments have no type compatible, a compilation error occurs.
+If the types of arguments have no type compatible, a compilation error will occur.
 
 B<Examples of class method call:>
 
@@ -3777,9 +3783,9 @@ A method defined as the L<instance method|"Instance Method"> can be called using
 
   Object->MethodName(ARGS1, ARGS2, ...);
 
-If the number of arguments does not correct, a compilation error occurs.
+If the number of arguments does not correct, a compilation error will occur.
 
-If the types of arguments have no type compatible, a compilation error occurs.
+If the types of arguments have no type compatible, a compilation error will occur.
 
 B<Examples of instance method call:>
   
@@ -3812,7 +3818,7 @@ Instance Method Call can be done with the following syntax using the object crea
 
   OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
-Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the method Definition, a compilation error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, a compilation error occurs
+Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the method Definition, a compilation error will occur The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, a compilation error will occur
 
 Instance Method Call returns Return Value if Return Value is other than L<"void Type">.
 
@@ -3843,7 +3849,7 @@ Obtaining a value by Dereference is an operation to obtain the actual value from
 
   $VARIABLE
 
-The variable Type must be Reference Type, otherwise a compilation error occurs.
+The variable Type must be Reference Type, otherwise a compilation error will occur.
 
 The value obtained by Dereference returns L<"Expressions">.
 
@@ -3863,9 +3869,9 @@ Setting a value with Dereference is an operation to set the actual value from Re
 
   $VARIABLE = Expression
 
-The variable Type must be Reference Type, otherwise a compilation error occurs.
+The variable Type must be Reference Type, otherwise a compilation error will occur.
 
-The Type of Expression must match the type of the variable when dereferenced, otherwise a compilation error occurs.
+The Type of Expression must match the type of the variable when dereferenced, otherwise a compilation error will occur.
 
 Setting a value with Dereference returns the set value. This is L<"Expressions">.
 
@@ -3988,7 +3994,7 @@ The unary plus operator C<+> is an L<Unary Operator|"Unary Operators"> to return
 
   +OPERAND
 
-The operand must be an L<expression|"Expressions"> that type is a L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
+The operand must be an L<expression|"Expressions"> that type is a L<numeric type|"Numeric Types">, otherwise a compilation error will occur.
 
 L<"Unary Numeric Widening Type Conversion"> applys to the operand.
 
@@ -4007,7 +4013,7 @@ The unary minus operator C<-> is an L<Unary Operator|"Unary Operators"> to retur
 
   -OPERAND
 
-The operand must be an L<expression|"Expressions"> that type is a L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
+The operand must be an L<expression|"Expressions"> that type is a L<numeric type|"Numeric Types">, otherwise a compilation error will occur.
 
 L<"Unary Numeric Widening Type Conversion"> applys to the operand.
 
@@ -4028,7 +4034,7 @@ The addition operator C<+> is a L<binary operator|"Binary Operators"> to calcura
 
   LEFT_OPERAND + RIGHT_OPERAND
 
-The left operand and the right operand must be a L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be a L<numeric type|"Numeric Types">, otherwise a compilation error will occur.
 
 L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
@@ -4044,7 +4050,7 @@ The subtraction operator C<-> is a L<binary operator|"Binary Operators"> to calc
 
   LEFT_OPERAND - RIGHT_OPERAND
 
-The left operand and the right operand must be a L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be a L<numeric type|"Numeric Types">, otherwise a compilation error will occur.
 
 L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
@@ -4060,7 +4066,7 @@ The multiplication operator is a L<binary operator|"Binary Operators"> to calcur
 
   LEFT_OPERAND * RIGHT_OPERAND
 
-The left operand and the right operand must be a L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be a L<numeric type|"Numeric Types">, otherwise a compilation error will occur.
 
 L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
@@ -4076,7 +4082,7 @@ The division operator C</> is a L<binary operator|"Binary Operators"> to culcura
 
   LEFT_OPERAND / RIGHT_OPERAND
 
-The left operand and the right operand must be L<"Numeric Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be L<"Numeric Types">, otherwise a compilation error will occur.
 
 L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
@@ -4094,7 +4100,7 @@ The division unsigned int operator C<divui> is a L<binary operator|"Binary Opera
 
   LEFT_OPERAND divui RIGHT_OPERAND
 
-The left operand and the right operand must be an L<int type|"int Type">, otherwise a compilation error occurs.
+The left operand and the right operand must be an L<int type|"int Type">, otherwise a compilation error will occur.
 
 The division unsigned int operator performs the operation that exactly same as the following operation in C language.
 
@@ -4110,7 +4116,7 @@ The division unsigned long operator C<divul> is a L<binary operator|"Binary Oper
 
   LEFT_OPERAND divul RIGHT_OPERAND
 
-The left operand and the right operand must be an L<long type|"long Type">, otherwise a compilation error occurs.
+The left operand and the right operand must be an L<long type|"long Type">, otherwise a compilation error will occur.
 
 The division unsigned long operator performs the operation that exactly same as the following operation in C language.
 
@@ -4126,7 +4132,7 @@ The remainder operator C<%> is a L<binary operator|"Binary Operators"> to calcur
 
   LEFT_OPERAND % RIGHT_OPERAND
 
-The left operand and the right operand must be an L<integral type|"Integral Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be an L<integral type|"Integral Types">, otherwise a compilation error will occur.
 
 L<"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
 
@@ -4144,7 +4150,7 @@ The remainder unsigned int operator C<remui> is a L<binary operator|"Binary Oper
 
   LEFT_OPERAND remui RIGHT_OPERAND
 
-The left operand and the right operand must be a L<int type|"int Type">, otherwise a compilation error occurs.
+The left operand and the right operand must be a L<int type|"int Type">, otherwise a compilation error will occur.
 
 The remainder unsigned int operator performs the operation that exactly same as the following operation in C language.
 
@@ -4160,7 +4166,7 @@ The remainder unsigned long operator C<remul> is a L<binary operator|"Binary Ope
 
   LEFT_OPERAND remul RIGHT_OPERAND
 
-The left operand and the right operand must be a L<long type|"long Type">, otherwise a compilation error occurs.
+The left operand and the right operand must be a L<long type|"long Type">, otherwise a compilation error will occur.
 
 The remainder unsigned long operator performs the operation that exactly same as the following operation in C language.
 
@@ -4188,7 +4194,7 @@ B<Increment Operator> is an Operator that adds 1 to the value. the meaning of In
   ARRAY_ACCESS++
   DEREFERENCE++
 
-The operand of Increment Operator must L<"Local Variable">, L<"Class Variable">, <a href = "#language-field-access">Field Access</a>, L<"Array Access">, L<"Dereference">, otherwise a compilation error occurs.
+The operand of Increment Operator must L<"Local Variable">, L<"Class Variable">, <a href = "#language-field-access">Field Access</a>, L<"Array Access">, L<"Dereference">, otherwise a compilation error will occur.
 
 The Type of operand of Increment Operator must be L<"Numeric Types">, otherwise a compilation error will occur.
 
@@ -4234,7 +4240,7 @@ B<Decrement Operator> is an Operator that subtracts 1 to the value. the meaning 
   ARRAY_ACCESS--
   DEREFERENCE--
 
-The operand of Decrement Operator must L<"Local Variable">, L<"Class Variable">, <a href = "#language-field-access">Field Access</a>, L<"Array Access">, L<"Dereference">, otherwise a compilation error occurs.
+The operand of Decrement Operator must L<"Local Variable">, L<"Class Variable">, <a href = "#language-field-access">Field Access</a>, L<"Array Access">, L<"Dereference">, otherwise a compilation error will occur.
 
 The Type of operand of Decrement Operator must be L<"Numeric Types">, otherwise a compilation error will occur.
 
@@ -4272,7 +4278,7 @@ Bit AND is L<"Binary Operators"> represented by "&".
 
   LEFT_OPERAND & RIGHT_OPERAND
 
-The left operand and the right operand must be L<"Integral Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be L<"Integral Types">, otherwise a compilation error will occur.
 
 L<"Binary Numeric Widening Type Conversion"> is performed on The left operand and the right operand.
 
@@ -4288,7 +4294,7 @@ Bit OR is L<"Binary Operators"> represented by "|".
 
   LEFT_OPERAND | RIGHT_OPERAND
 
-The left operand and the right operand must be L<"Integral Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be L<"Integral Types">, otherwise a compilation error will occur.
 
 L<"Binary Numeric Widening Type Conversion"> is performed on The left operand and the right operand.
 
@@ -4304,7 +4310,7 @@ The bit NOT operator C<~> is a L<unary operator|"Unary Operators"> to get the va
 
   ~OPERAND
 
-The operand must be an L<expression|"Expressions"> that type is an L<integral type|"Integral Types">, otherwise a compilation error occurs.
+The operand must be an L<expression|"Expressions"> that type is an L<integral type|"Integral Types">, otherwise a compilation error will occur.
 
 L<"Unary Numeric Widening Type Conversion"> is performed to the operand.
 
@@ -4329,11 +4335,11 @@ The left shift operator C<E<lt>E<lt>> is a L<binary operator|"Binary Operators">
 
   LEFT_OPERAND << RIGHT_OPERAND
 
-The left operand must be L<"Integral Types">, otherwise a compilation error occurs.
+The left operand must be L<"Integral Types">, otherwise a compilation error will occur.
 
 L<"Unary Numeric Widening Type Conversion"> is performed to the left operand.
 
-The right operand must be L<"Integral Types"> except for the L<long type|"long Type">, otherwise a compilation error occurs.
+The right operand must be L<"Integral Types"> except for the L<long type|"long Type">, otherwise a compilation error will occur.
 
 L<"Unary Numeric Widening Type Conversion"> is performed to the right operand.
 
@@ -4349,11 +4355,11 @@ The arithmetic right shift operator C<E<gt>E<gt>> is a L<binary operator|"Binary
 
   LEFT_OPERAND >> RIGHT_OPERAND
 
-The left operand must be L<"Integral Types">, otherwise a compilation error occurs.
+The left operand must be L<"Integral Types">, otherwise a compilation error will occur.
 
 L<"Unary Numeric Widening Type Conversion"> is performed to the left operand.
 
-The right operand must be L<"Integral Types"> except for the L<long type|"long Type">, otherwise a compilation error occurs.
+The right operand must be L<"Integral Types"> except for the L<long type|"long Type">, otherwise a compilation error will occur.
 
 L<"Unary Numeric Widening Type Conversion"> is performed to the right operand.
 
@@ -4369,11 +4375,11 @@ The logical right shift operator C<E<gt>E<gt>E<gt>>is a L<binary operator|"Binar
 
   LEFT_OPERAND >>> RIGHT_OPERAND
 
-The left operand must be L<"Integral Types">, otherwise a compilation error occurs.
+The left operand must be L<"Integral Types">, otherwise a compilation error will occur.
 
 L<"Unary Numeric Widening Type Conversion"> is performed to the left operand.
 
-The right operand must be L<"Integral Types"> except for the L<long type|"long Type">, otherwise a compilation error occurs.
+The right operand must be L<"Integral Types"> except for the L<long type|"long Type">, otherwise a compilation error will occur.
 
 L<"Unary Numeric Widening Type Conversion"> is performed to the right operand.
 
@@ -4492,7 +4498,7 @@ A list of Numeric Comparison Operators.
 
 =end html
 
-The Types of The left operand and the right operand Comparable Types, otherwise a compilation error occurs.
+The Types of The left operand and the right operand Comparable Types, otherwise a compilation error will occur.
 
 In Numeric Types Comparison, L<"Binary Numeric Widening Type Conversion"> is performed for The left operand and the right operand.
 
@@ -4604,9 +4610,9 @@ isa Operator has three behaviors, depending on Right Type.
 
 1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the type of The left operand is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
 
-2. If the Right Type is L<"Class Type">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error occurs.
+2. If the Right Type is L<"Class Type">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error will occur.
 
-3. If the Right Type is L<"Callback Type">, isa Operator checks whether the type of The left operand satisfy the Callback Type at Run Time. If The left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error occurs.
+3. If the Right Type is L<"Callback Type">, isa Operator checks whether the type of The left operand satisfy the Callback Type at Run Time. If The left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error will occur.
 
 =head2 ref Operator
 
@@ -4691,7 +4697,7 @@ String concatenation operator C<.> is a L<binary operator|"Binary Operators"> to
 
   LEFT_OPERAND . RIGHT_OPERAND
 
-The left operand and the right operand must be a L<string type|"String Type">, L<"byte[] Type">, or L<numeric type|"Numeric Types">, otherwise a compilation error occurs.
+The left operand and the right operand must be a L<string type|"String Type">, L<"byte[] Type">, or L<numeric type|"Numeric Types">, otherwise a compilation error will occur.
 
 If the type of the operand is numeric type, a L<numeric to string type conversion|"Numeric to String Type Conversion"> is performed.
 
@@ -4721,7 +4727,7 @@ In Assignment Operator, the The left operand is evaluated after the right operan
 
 =head2 Special Assignment Operator
 
-Special Assignment Operator is a L<"Assignment Operator">the L<type assignability|"Type Assignability"> ,a compilation error occurs
+Special Assignment Operator is a L<"Assignment Operator">the L<type assignability|"Type Assignability"> ,a compilation error will occur
 
 B<List of Special Assignment Operators>
 
@@ -4817,7 +4823,7 @@ The Reference Operator is an Operator that retrieves the address of a variable f
 
   \VARIABLE
 
-If the variable is not numeric type or Multi Numeric Types, a compilation error occurs
+If the variable is not numeric type or Multi Numeric Types, a compilation error will occur
 
 Reference Operator returns expression. The type returned is L<"Reference Type">.
 
@@ -4837,7 +4843,7 @@ The array length operator is an L<Unary Operator|"Unary Operators"> to get the l
 
   @OPERAND
 
-The operand must be a L<Expression|"Expressions"> that type is an L<"Array Types">, otherwise a compilation error occurs.
+The operand must be a L<Expression|"Expressions"> that type is an L<"Array Types">, otherwise a compilation error will occur.
 
 The array length operator returns a L<"int Type"> value that is the length of the L<"Array">.
 
@@ -4861,7 +4867,7 @@ The string creation operator C<new_string_len> is an L<Unary Operator|"Unary Ope
 
   new_string_len OPERAND
 
-The operand must be an L<expression|"Expressions"> that type is a L<"Integral Type"> except for a L<long type|"long Type">, otherwise a compilation error occurs.
+The operand must be an L<expression|"Expressions"> that type is a L<"Integral Type"> except for a L<long type|"long Type">, otherwise a compilation error will occur.
 
 The string creation operator returns the string that is created with the lenght.
 
@@ -4878,7 +4884,7 @@ The C<copy> operator is an L<Unary Operator|"Unary Operators"> to copy the objec
 
   copy OPERAND
 
-The operand must be an L<expression|"Expressions"> that type is a L<object type|"object Type">, otherwise a compilation error occurs.
+The operand must be an L<expression|"Expressions"> that type is a L<object type|"object Type">, otherwise a compilation error will occur.
 
 If the type of operand is none of a L<string type|"String Type">, a L<numeric type|"Numerci Types">, a L<multi numeric type|"Multi Numeric Types">,
 An L<exception|"Exception"> is thorwn.
@@ -4900,7 +4906,7 @@ The C<is_read_only> is an L<Unary Operator|"Unary Operators"> to check if the L<
 
   is_read_only OPERAND
 
-The operand must be a L<string type|"String Type">, otherwise a compilation error occurs.
+The operand must be a L<string type|"String Type">, otherwise a compilation error will occur.
 
 If the string is read-only, the C<is_read_only> operator returns C<1>, otherwise returns C<0>.
 
@@ -4918,7 +4924,7 @@ The string length operator is an L<Unary Operator|"Unary Operators"> to get the 
 
   length OPERAND
 
-The operand must be an L<expression|"Expressions"> that type is a L<"String Type">, otherwise a compilation error occurs.
+The operand must be an L<expression|"Expressions"> that type is a L<"String Type">, otherwise a compilation error will occur.
 
 The string length operator returns a L<"int Type"> value that is the length of the L<"String">.
 
@@ -4940,7 +4946,7 @@ The C<scalar> operator is an L<Operator|"Operators"> that returns the value of t
 
   scalar OPERAND
 
-The operand must be an L<"Array Length Operator">, otherwise a compilation error occurs.
+The operand must be an L<"Array Length Operator">, otherwise a compilation error will occur.
 
 B<Examples of scalar operators:>
   
@@ -4960,11 +4966,11 @@ isweak Operator is an Operator that checks whether Field is</a>L<"Weaken Referen
 
   isweak VARIABLE->{FIELD_NAME};
 
-The Type of object Expression must be L<"Class Type">. otherwise a compilation error occurs.
+The Type of object Expression must be L<"Class Type">. otherwise a compilation error will occur.
 
-Field names must be a existed field names, otherwise a compilation error occurs.
+Field names must be a existed field names, otherwise a compilation error will occur.
 
-The Type of the value stored in field must be <a href="#language-type-object">Object Type">, otherwise a compilation error occurs.
+The Type of the value stored in field must be <a href="#language-type-object">Object Type">, otherwise a compilation error will occur.
 
 If the value stored in field at Run Time is</a> L<"Undefined Value, it returns false. This is <a href="#language-expression">Expression">
 
@@ -4984,9 +4990,9 @@ The C<has_implement> operator checks the existence of the method implementation.
 
   has_implement OPERAND->METHOD_NAME
 
-The operand must the object that has a L<class type|"Class Type"> or an L<interface type|"Interface Type">, otherwise a compilation error occurs.
+The operand must the object that has a L<class type|"Class Type"> or an L<interface type|"Interface Type">, otherwise a compilation error will occur.
 
-The method name must be a L<method name|"Method Names">, otherwise a compilation error occurs.
+The method name must be a L<method name|"Method Names">, otherwise a compilation error will occur.
 
 The return type is L<int type|"int Type">.
 
@@ -5152,7 +5158,7 @@ As the condition Expression, L<"Expressions"> can be specified. L<"Bool Type Con
 
 The constants specified in case Statement are L<"byte Type"> or L<"int Type"> constants. must be. For a constant of L<"byte Type">, type conversion to L<"int Type"> at compile time. Will be done. The value of enumType and Constant Method of L<"int Type"> are constants of L<"int Type">. As it is expanded at the time of syntax analysis, it can be used.
 
-The constants specified in the case statement must not overlap. If there are duplicates, a compilation error occurs
+The constants specified in the case statement must not overlap. If there are duplicates, a compilation error will occur
 
 If the value specified in the condition Expression matches the value specified in the case statement, jump to the position of that case statement.
 
@@ -5346,9 +5352,9 @@ If there is a Return Value, L<"Expressions"> can be specified.
 
   return EXPRESSION;
 
-If the Return Value Type in L<"Method Definition"> is L<"void Type">, Expression Must not exist, otherwise a compilation error occurs.
+If the Return Value Type in L<"Method Definition"> is L<"void Type">, Expression Must not exist, otherwise a compilation error will occur.
 
-L<"Method Definition">, if the Return Value Type is other than L<"void Type">, Expression Must match the type of, otherwise a compilation error occurs.
+L<"Method Definition">, if the Return Value Type is other than L<"void Type">, Expression Must match the type of, otherwise a compilation error will occur.
 
 =head2 next Statement
 
@@ -5396,7 +5402,7 @@ The C<die> statement is a L<statement|"Statements"> to throw an L<"Exception">.
 
   die OPERAND;
 
-The operand must be a L<string type|"String Type">, otherwise a compilation error occurs.
+The operand must be a L<string type|"String Type">, otherwise a compilation error will occur.
 
 The exception thrown by C<die> statement can be cached by an L<eval block|"Exception Catching">
 and can be checked by the L<exception variable|"Exception Variable"> C<$@>.
@@ -5449,11 +5455,11 @@ A weaken Statement is a Statement that sets L<"Weaken Reference"> for the Field.
 
   weaken VARIABLE->{FIELD_NAME};
 
-The Type of the object Expression must be L<"Class Type">, otherwise a compilation error occurs.
+The Type of the object Expression must be L<"Class Type">, otherwise a compilation error will occur.
 
-Field names must be an existing field names, otherwise a compilation error occurs.
+Field names must be an existing field names, otherwise a compilation error will occur.
 
-The Type of the value saved in Field must be L<"Object Types">, otherwise a compilation error occurs.
+The Type of the value saved in Field must be L<"Object Types">, otherwise a compilation error will occur.
 
 If the value stored in the Field at execution time is L<"Undefined Value">, the weak Statement does nothing.
 
@@ -5495,11 +5501,11 @@ unweaken Statement is a Statement that cancels L<"Weaken Reference"> for Field.
 
   unweaken VARIABLE->{FIELD_NAME};
 
-The Type of the object Expression must be L<"Class Type">, otherwise a compilation error occurs.
+The Type of the object Expression must be L<"Class Type">, otherwise a compilation error will occur.
 
-Field names must be an existing Field names, otherwise a compilation error occurs.
+Field names must be an existing Field names, otherwise a compilation error will occur.
 
-The Type of the value saved in Field must be L<"Object Types">, otherwise a compilation error occurs.
+The Type of the value saved in Field must be L<"Object Types">, otherwise a compilation error will occur.
 
 If the value stored in the Field at execution time is L<"Undefined Value">, the unweaken Statement does nothing.
 
@@ -6057,7 +6063,7 @@ The any object-array type C<object[]> is the type that any L<object array type|"
   my $array : object[] = new Point[3];
   my $array : object[] = new object[3];
 
-If a invalid type is assigned, a compilation error occurs.
+If a invalid type is assigned, a compilation error will occur.
 
 Any Object-Array Type is an L<array type|"Array Types">.
 
@@ -6120,9 +6126,9 @@ Reference Type is a Type that can store the address of a variable. Add "*" after
 
 Only the address of the Local Variable acquired by L<"Reference Operator"> can be assigned to the value of Reference Type.
 
-If only Local Variable Declaration of Reference Type is performed, a compilation error occurs
+If only Local Variable Declaration of Reference Type is performed, a compilation error will occur
 
-Reference Type can be used as Type of L<"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error occurs
+Reference Type can be used as Type of L<"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error will occur
 
 Reference Type can be used as Type of argument in L<"Method Definition">.
 
@@ -6132,7 +6138,7 @@ Reference Type cannot be used as the type of Field in L<"Class Definition">.
 
 Reference Type cannot be used as the type of Class Variable in L<"Class Definition">.
 
-If the Reference Type is used at an Invalid location, a compilation error occurs
+If the Reference Type is used at an Invalid location, a compilation error will occur
 
 See L<"Reference"> for a detailed explanation of Reference.
 
@@ -6165,7 +6171,7 @@ Omitting L<"Types"> when L<"Local Variable Declaration"> by Type Inference can. 
 
 Explains the type assignability at compile time.
 
-The assignability is false, a compilation error occurs.
+The assignability is false, a compilation error will occur.
 
 =head2 Type Assignability to Numeric
 
@@ -6184,27 +6190,27 @@ If the L<nemric type order|"Numeric Types Order"> of the left operand is greater
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Ture</td><td>byte</td><td>byte</td><td>None</td>
-    <td>Ture</td><td>short</td><td>short</td><td>None</td>
-    <td>Ture</td><td>int</td><td>int</td><td>None</td>
-    <td>Ture</td><td>long</td><td>long</td><td>None</td>
-    <td>Ture</td><td>float</td><td>float</td><td>None</td>
-    <td>Ture</td><td>double</td><td>double</td><td>None</td>
-    <td>Ture</td><td>short</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>int</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>long</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>float</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>double</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>int</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>long</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>float</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>double</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>long</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>float</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>double</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>float</td><td>long</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>double</td><td>long</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>Ture</td><td>double</td><td>float</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>byte</td><td>byte</td><td>None</td>
+    <td>True</td><td>short</td><td>short</td><td>None</td>
+    <td>True</td><td>int</td><td>int</td><td>None</td>
+    <td>True</td><td>long</td><td>long</td><td>None</td>
+    <td>True</td><td>float</td><td>float</td><td>None</td>
+    <td>True</td><td>double</td><td>double</td><td>None</td>
+    <td>True</td><td>short</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>int</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>long</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>float</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>double</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>int</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>long</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>float</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>double</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>long</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>float</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>double</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>float</td><td>long</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>double</td><td>long</td><td>Unary Numeric Widening Type Conversion</td>
+    <td>True</td><td>double</td><td>float</td><td>Unary Numeric Widening Type Conversion</td>
   </tr>
 </table>
 
@@ -6237,16 +6243,16 @@ If the condition is ture, the L<numeric narrowing type conversion|"Numeric Narro
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Conditinal Ture</td><td>byte</td><td>short</td><td>Numeric Narrowing Type Conversion</td>
-    <td>Conditinal Ture</td><td>byte</td><td>int</td><td>Numeric Narrowing Type Conversion</td>
-    <td>Conditinal Ture</td><td>byte</td><td>long</td><td>byte</td><td>Numeric Narrowing Type Conversion</td>
+    <td>Conditinal True</td><td>byte</td><td>short</td><td>Numeric Narrowing Type Conversion</td>
+    <td>Conditinal True</td><td>byte</td><td>int</td><td>Numeric Narrowing Type Conversion</td>
+    <td>Conditinal True</td><td>byte</td><td>long</td><td>byte</td><td>Numeric Narrowing Type Conversion</td>
     <td>False</td><td>byte</td><td>float</td><td>None</td>
     <td>False</td><td>byte</td><td>double</td><td>None</td>
-    <td>Conditinal Ture</td><td>short</td><td>int</td><td>Numeric Narrowing Type Conversion</td>
-    <td>Conditinal Ture</td><td>short</td><td>long</td><td>Numeric Narrowing Type Conversion</td>
+    <td>Conditinal True</td><td>short</td><td>int</td><td>Numeric Narrowing Type Conversion</td>
+    <td>Conditinal True</td><td>short</td><td>long</td><td>Numeric Narrowing Type Conversion</td>
     <td>False</td><td>short</td><td>float</td><td>None</td>
     <td>False</td><td>short</td><td>double</td><td>None</td>
-    <td>Conditinal Ture</td><td>int</td><td>long</td><td>Numeric Narrowing Type Conversion</td>
+    <td>Conditinal True</td><td>int</td><td>long</td><td>Numeric Narrowing Type Conversion</td>
     <td>False</td><td>int</td><td>float</td><td>None</td>
     <td>False</td><td>int</td><td>double</td><td>None</td>
     <td>False</td><td>long</td><td>float</td><td>None</td>
@@ -6273,12 +6279,12 @@ If the type of the left operand is a L<numeric type|"Numeric Types"> correspondi
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Ture</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td>
-    <td>Ture</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td>
-    <td>Ture</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td>
-    <td>Ture</td><td>long</td><td>Long</td><td>Unboxing Type Conversion</td>
-    <td>Ture</td><td>float</td><td>Float</td><td>Unboxing Type Conversion</td>
-    <td>Ture</td><td>double</td><td>Double</td><td>Unboxing Type Conversion</td>
+    <td>True</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td>
+    <td>True</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td>
+    <td>True</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td>
+    <td>True</td><td>long</td><td>Long</td><td>Unboxing Type Conversion</td>
+    <td>True</td><td>float</td><td>Float</td><td>Unboxing Type Conversion</td>
+    <td>True</td><td>double</td><td>Double</td><td>Unboxing Type Conversion</td>
   </tr>
 </table>
 
@@ -6303,7 +6309,7 @@ The L<unboxing type conversion|"Unboxing Type Conversion"> corresponding to the 
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Ture</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td>
+    <td>True</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td>
   </tr>
 </table>
 
@@ -6330,7 +6336,7 @@ If not, the assignability is false.
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Ture</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td>
+    <td>True</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td>
     <td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
@@ -6359,13 +6365,13 @@ If the type of the right operand is a L<numeric type|"Numeric Types">, the L<Num
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Ture</td><td>string</td><td>string</td><td>None</td>
-    <td>Ture</td><td>string</td><td>mutable string</td><td>None</td>
-    <td>Ture</td><td>mutable string</td><td>mutable string</td><td>None</td>
+    <td>True</td><td>string</td><td>string</td><td>None</td>
+    <td>True</td><td>string</td><td>mutable string</td><td>None</td>
+    <td>True</td><td>mutable string</td><td>mutable string</td><td>None</td>
     <td>False</td><td>mutable string</td><td>string</td><td>None</td>
-    <td>Ture</td><td>string</td><td>string</td><td>None</td>
-    <td>Ture</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String type conversion</td>
-    <td>Ture</td><td>string</td><td>undef</td><td>None</td>
+    <td>True</td><td>string</td><td>string</td><td>None</td>
+    <td>True</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String type conversion</td>
+    <td>True</td><td>string</td><td>undef</td><td>None</td>
     <td>False</td><td>string</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
@@ -6393,9 +6399,9 @@ If the type of the right operand is a L<numeric type|"Numeric Types">, the L<box
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Ture</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td>
-    <td>Ture</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
-    <td>Ture</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td>
+    <td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td>
+    <td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
+    <td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td>
     <td>False</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
@@ -6421,8 +6427,8 @@ If not, the assignability is false.
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Ture</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td>
-    <td>Ture</td><td>CLASS</td><td>undef</td><td>None</td>
+    <td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td>
+    <td>True</td><td>CLASS</td><td>undef</td><td>None</td>
     <td>False</td><td>CLASS</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
@@ -6449,10 +6455,10 @@ If not, the assignability is false.
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Ture</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td>
-    <td>Ture</td><td>CLASS</td><td>undef</td><td>None</td>
-    <td>Conditinal Ture</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td>
-    <td>False</td><td>CLASS</td><td>OTHER</td><td>None</td>
+    <td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td>
+    <td>Conditinal True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td>
+    <td>True</td><td>INTERFACE</td><td>undef</td><td>None</td>
+    <td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
 
@@ -6465,6 +6471,39 @@ B<Examples:>
   my $stringable : Stringable = undef;
 
 =head2 Type Assignability to Callback
+
+If the type of the left operand is a L<callback type|"Callback Type"> and the type of the right operand is the same type, or the L<undef type|"Undefined Type">, the assignability is true.
+
+If the type of the left operand is a L<callback type|"Callback Type"> and the type of the right operand is a L<class type|"Class Type"> and the class has the same callback method defined in the L<callback type definition|"Callback Type Definition"> of the left operand, the assignability is true.
+
+If not, the assignability is false.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>None</td>
+    <td>Conditinal True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>None</td>
+    <td>True</td><td>CALLBACK</td><td>undef</td><td>None</td>
+    <td>False</td><td>CALLBACK</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+  
+  # Create a callback and the callback is assigned to a callback type
+  my $comparator : Comparator = method : int ($x1 : object, $x2 : object) {
+    my $point1 = (Point)$x1;
+    my $point2 = (Point)$x2;
+    
+    return $point1->x <=> $point2->x;
+  };
+  my $comparator : Comparator = undef;
 
 =head2 Type Assignability to AnyObject
 
@@ -6481,9 +6520,9 @@ If the type of the right operand is a L<numeric type|"Numeric Types">, the L<box
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Ture</td><td>object</td><td>OBJECT_X</td><td>None</td>
-    <td>Ture</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
-    <td>Ture</td><td>object</td><td>undef</td><td>None</td>
+    <td>True</td><td>object</td><td>OBJECT_X</td><td>None</td>
+    <td>True</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
+    <td>True</td><td>object</td><td>undef</td><td>None</td>
     <td>False</td><td>object</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
@@ -6509,7 +6548,7 @@ If not, the assignability is false.
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Ture</td><td>REF_X</td><td>REF_X</td><td>None</td>
+    <td>True</td><td>REF_X</td><td>REF_X</td><td>None</td>
     <td>False</td><td>REF_X</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
@@ -6527,13 +6566,13 @@ If not, the assignability is false.
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Ture</td><td>byte[]</td><td>byte[]</td><td>None</td>
-    <td>Ture</td><td>short[]</td><td>short[]</td><td>None</td>
-    <td>Ture</td><td>int[]</td><td>int[]</td><td>None</td>
-    <td>Ture</td><td>long[]</td><td>long[]</td><td>None</td>
-    <td>Ture</td><td>float[]</td><td>float[]</td><td>None</td>
-    <td>Ture</td><td>double[]</td><td>double[]</td><td>None</td>
-    <td>Ture</td><td>NUMERIC[]</td><td>undef</td><td>None</td>
+    <td>True</td><td>byte[]</td><td>byte[]</td><td>None</td>
+    <td>True</td><td>short[]</td><td>short[]</td><td>None</td>
+    <td>True</td><td>int[]</td><td>int[]</td><td>None</td>
+    <td>True</td><td>long[]</td><td>long[]</td><td>None</td>
+    <td>True</td><td>float[]</td><td>float[]</td><td>None</td>
+    <td>True</td><td>double[]</td><td>double[]</td><td>None</td>
+    <td>True</td><td>NUMERIC[]</td><td>undef</td><td>None</td>
     <td>False</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
@@ -6558,8 +6597,8 @@ If not, the assignability is false.
     <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
   </tr>
   <tr>
-    <td>Ture</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td>
-    <td>Ture</td><td>MULNUM_X[]</td><td>undef</td><td>None</td>
+    <td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td>
+    <td>True</td><td>MULNUM_X[]</td><td>undef</td><td>None</td>
     <td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
@@ -6607,7 +6646,7 @@ If the source Type and the specified Type are the same, the value is simply copi
 
 B<List of Type Conversion in Type Cast>
 
-It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this table is performed, a compilation error occurs.
+It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this table is performed, a compilation error will occur.
 
 =begin html
 
@@ -6971,7 +7010,7 @@ B<Right side of Logical NOT Operator>
 
   !CONDITION
 
-Expression specified by Bool Type Conversion is L<"Numeric Types"> or L<"Object Types"> or It must be L<"Undefined Type">, otherwise a compilation error occurs.
+Expression specified by Bool Type Conversion is L<"Numeric Types"> or L<"Object Types"> or It must be L<"Undefined Type">, otherwise a compilation error will occur.
 
 Return Value of Bool Type Conversion is Expression of L<"int Type">.
 
@@ -7057,7 +7096,7 @@ The type comment can be used the type of the L<field decralation|"Field Definiti
   
   static method foo : List of Point ($arg : List of Point) { ... }
 
-If the type specified as the type comment is not found, a compilation error occurs.
+If the type specified as the type comment is not found, a compilation error will occur.
 
 Type comments have no meanings at runtime.
 
