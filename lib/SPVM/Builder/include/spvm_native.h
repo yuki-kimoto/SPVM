@@ -8,6 +8,9 @@
 struct spvm_env;
 typedef struct spvm_env SPVM_ENV;
 
+struct spvm_env_api;
+typedef struct spvm_env_api SPVM_ENV_API;
+
 struct spvm_env_compiler;
 typedef struct spvm_env SPVM_ENV_COMPILER;
 
@@ -37,9 +40,6 @@ union spvm_value {
   float* fref;
   double* dref;
 };
-
-
-
 
 
 
@@ -319,6 +319,13 @@ struct spvm_env {
   int32_t (*can_assign_array_element)(SPVM_ENV* env, void* array, void* element);
 };
 
+struct spvm_env_api {
+  SPVM_ENV_ALLOCATOR* allcator;
+  SPVM_ENV_STRING_BUFFER* string_buffer;
+  SPVM_ENV_COMPILER* compiler;
+  SPVM_ENV_RUNTIME* runtime;
+};
+
 struct spvm_env_allocator {
   void* (*new_allocator)();
   void (*free_allocator)(SPVM_ENV_ALLOCATOR* compiler);
@@ -326,7 +333,7 @@ struct spvm_env_allocator {
 
 struct spvm_env_string_buffer {
   void* (*new_string_buffer)();
-  void (*free_string_buffer)(SPVM_ENV_STRING_BUFFER* compiler);
+  void (*free_string_buffer)(SPVM_ENV_STRING_BUFFER* string_buffer);
 };
 
 struct spvm_env_compiler {
@@ -336,7 +343,7 @@ struct spvm_env_compiler {
 
 struct spvm_env_runtime {
   void* (*new_runtime)();
-  void (*free_runtime)(SPVM_ENV_RUNTIME* compiler);
+  void (*free_runtime)(SPVM_ENV_RUNTIME* runtime);
 };
 
 SPVM_ENV* SPVM_NATIVE_new_env_raw();
