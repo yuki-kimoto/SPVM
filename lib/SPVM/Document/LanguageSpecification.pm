@@ -6400,6 +6400,8 @@ If the type of the right operand is a L<numeric type|"Numeric Types">, the L<box
   </tr>
 </table>
 
+=end html
+
 B<Examples:>
 
   my $num_object : Int = Int->new(3);
@@ -6425,6 +6427,8 @@ If not, the assignability is false.
   </tr>
 </table>
 
+=end html
+
 B<Examples:>
 
   my $point : Point = Point->new;
@@ -6446,11 +6450,13 @@ If not, the assignability is false.
   </tr>
   <tr>
     <td>Ture</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td>
-    <td>Conditinal Ture</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td>
     <td>Ture</td><td>CLASS</td><td>undef</td><td>None</td>
+    <td>Conditinal Ture</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td>
     <td>False</td><td>CLASS</td><td>OTHER</td><td>None</td>
   </tr>
 </table>
+
+=end html
 
 B<Examples:>
   
