@@ -8398,11 +8398,6 @@ void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id) {
   return precompile_method_address;
 }
 
-void SPVM_API_runtime_prepare(SPVM_RUNTIME* runtime) {
-
-  SPVM_RUNTIME_prepare(runtime);
-}
-
 const char* SPVM_API_get_basic_type_name(SPVM_ENV* env, int32_t basic_type_id) {
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -8413,24 +8408,6 @@ const char* SPVM_API_get_basic_type_name(SPVM_ENV* env, int32_t basic_type_id) {
   const char* basic_type_name = (const char*)&runtime->string_buffer[basic_type_name_string->string_buffer_id];
   
   return basic_type_name;
-}
-
-SPVM_RUNTIME* SPVM_API_runtime_new(SPVM_ENV* env) {
-  return SPVM_RUNTIME_new();
-}
-
-SPVM_OPCODE* SPVM_API_runtime_get_opcodes(SPVM_RUNTIME* runtime) {
-  
-  return runtime->opcodes;
-}
-
-int32_t SPVM_API_runtime_get_opcode_ids_length(SPVM_RUNTIME* runtime) {
-  
-  return runtime->opcode_ids_length;
-}
-
-void SPVM_API_runtime_free(SPVM_RUNTIME* runtime) {
-  SPVM_RUNTIME_free(runtime);
 }
 
 int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
@@ -8507,7 +8484,7 @@ void SPVM_API_free_env_prepared(SPVM_ENV* env) {
   env->cleanup_global_vars(env);
 
   // Free runtime
-  SPVM_API_runtime_free(env->runtime);
+  SPVM_API_RUNTIME_free(env->runtime);
   env->runtime = NULL;
   
   // Free env

@@ -321,10 +321,6 @@ SPVM_RUNTIME_CLASS* SPVM_API_get_class(SPVM_ENV* env, int32_t class_id);
 
 const char* SPVM_API_get_name(SPVM_ENV* env, int32_t string_id);
 
-SPVM_RUNTIME* SPVM_API_runtime_new(SPVM_ENV* env);
-void SPVM_API_runtime_free(SPVM_RUNTIME* runtime);
-void SPVM_API_runtime_prepare(SPVM_RUNTIME* runtime);
-
 int32_t SPVM_API_get_method_arg_ids_length(SPVM_ENV* env, int32_t method_id);
 int32_t SPVM_API_get_method_is_class_method(SPVM_ENV* env, int32_t method_id);
 int32_t SPVM_API_get_method_arg_ids_base(SPVM_ENV* env, int32_t method_id);
@@ -384,9 +380,6 @@ int32_t SPVM_API_get_class_anon_method_ids_length(SPVM_ENV* env, int32_t class_i
 int32_t SPVM_API_get_anon_method_method_id(SPVM_ENV* env, int32_t anon_method_id);
 SPVM_ALLOCATOR* SPVM_API_allocator_new();
 void SPVM_API_allocator_free(SPVM_ALLOCATOR* allocator);
-
-SPVM_OPCODE* SPVM_API_runtime_get_opcodes(SPVM_RUNTIME* runtime);
-int32_t SPVM_API_runtime_get_opcode_ids_length(SPVM_RUNTIME* runtime);
 
 int32_t SPVM_API_get_method_call_stack_byte_vars_length(SPVM_ENV* env, int32_t method_id);
 int32_t SPVM_API_get_method_call_stack_short_vars_length(SPVM_ENV* env, int32_t method_id);
