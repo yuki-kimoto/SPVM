@@ -317,7 +317,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_compiler_is_precompile_method,
     SPVM_API_compiler_build_runtime,
     SPVM_API_can_assign_array_element,
-};
+  };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
