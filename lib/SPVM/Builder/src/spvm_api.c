@@ -8909,14 +8909,6 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
   return can_assign;
 }
 
-void SPVM_API_prepare_runtime(SPVM_ENV* env) {
-  (void)env;
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  SPVM_RUNTIME_prepare(runtime);
-}
-
 SPVM_OPCODE* SPVM_API_get_runtime_opcodes(SPVM_ENV* env) {
   (void)env;
   
