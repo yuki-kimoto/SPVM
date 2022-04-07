@@ -837,6 +837,26 @@ The trailing $is not treated as the start of Variable Expansion. It is treated a
 
   "AAA$"
 
+=head1 Fat Comma
+
+Fat Comma is a L<"Separators"> represented by "B<=>>".
+
+  =>
+
+Fat Comma is an alias for Comma "B<,>". Wherever you can use "B<,>" you can use Fat Comma instead.
+
+  # Comma
+  ["a", "b", "c", "d"]
+  
+  # Use Fat Comma instead of Comma
+  ["a" => "b", "c" => "d"]
+
+Identifiers other than L<"Class Variable Names"> and L<"Local Variable Names"> placed on the Left of Fat Comma are treated as L<"String Literal">.
+
+  # Identifiers placed on the Left of Fat Comma are treated as String Literal
+  # a is "a", c is "c"
+  [a => "b", c => "d"]
+
 =head1 Syntax Parsing
 
 The SPVM language is assumed to be parsed by yacc/bison.
@@ -3067,26 +3087,6 @@ B<Examples of undefined values:>
     
   }
   
-=head1 Fat Comma
-
-Fat Comma is a L<"Separators"> represented by "B<=>>".
-
-  =>
-
-Fat Comma is an alias for Comma "B<,>". Wherever you can use "B<,>" you can use Fat Comma instead.
-
-  # Comma
-  ["a", "b", "c", "d"]
-  
-  # Use Fat Comma instead of Comma
-  ["a" => "b", "c" => "d"]
-
-Identifiers other than L<"Class Variable Names"> and L<"Local Variable Names"> placed on the Left of Fat Comma are treated as L<"String Literal">.
-
-  # Identifiers placed on the Left of Fat Comma are treated as String Literal
-  # a is "a", c is "c"
-  [a => "b", c => "d"]
-
 =head1 Array
 
 The array is the data structure for multiple values.
