@@ -1850,37 +1850,6 @@ In this example, Bar can access the private Method, Field, and Class Variable of
 
 Specifying the module of B<allow> also loads the module by L<"use"> at the same time.
 
-=head1 Interface
-
-Explains interfaces.
-
-=head2 Interface Type Definition
-
-A interface is defined using a L<"class descriptor|"Class Descriptors"> C<interface_t>.
-
-  class Asset: interface_t {
-    method add_chunk : void ($chunk : string);
-    method contains : int ($substring : string);
-    method size : int ();
-    method is_file : int ();
-  }
-
-The type of the interface is L<"Interface Type">.
-
-The object that implements the interface using L<implement stataments|"implement Statement"> can be assign to the interface.
-
-  class Asset::Memory {
-    implement Asset;
-  }
-
-  class Asset::File {
-    implement Asset;
-  }
-  
-  my $asset : Asset = Asset::Memory->new;
-  
-  my $asset : Asset = Asset::File->new;
-
 =head2 implement Statement
 
 The L<class|"Class"> that implements L<interfaces|"Interface"> is expected to implement the methods of the interface.
@@ -1937,6 +1906,37 @@ Not that C<implement> statement doesn't force the implementation of methods of t
 If the method implementation is not found, an exception is thrown at runtime.
 
 The existence of the method implementation can be checked by the L<has_implement|"has_implement Operator"> operator.
+
+=head1 Interface
+
+Explains interfaces.
+
+=head2 Interface Type Definition
+
+A interface is defined using a L<"class descriptor|"Class Descriptors"> C<interface_t>.
+
+  class Asset: interface_t {
+    method add_chunk : void ($chunk : string);
+    method contains : int ($substring : string);
+    method size : int ();
+    method is_file : int ();
+  }
+
+The type of the interface is L<"Interface Type">.
+
+The object that implements the interface using L<implement stataments|"implement Statement"> can be assign to the interface.
+
+  class Asset::Memory {
+    implement Asset;
+  }
+
+  class Asset::File {
+    implement Asset;
+  }
+  
+  my $asset : Asset = Asset::Memory->new;
+  
+  my $asset : Asset = Asset::File->new;
 
 =head1 Callback
 
