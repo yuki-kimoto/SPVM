@@ -394,6 +394,9 @@ sub create_bootstrap_source {
 #include "spvm_native.h"
 #include "spvm_api.h"
 #include "spvm_api_compiler.h"
+#include "spvm_api_runtime.h"
+#include "spvm_api_allocator.h"
+#include "spvm_api_string_buffer.h"
 
 // This will be removed in the near feature release
 #include "spvm_compiler.h"
