@@ -115,6 +115,14 @@ DEVELOPERS NOTE
     Get SPVM::Builder module files
     
       find lib | grep Builder | grep '\.pm' | perl -p -e 's|lib/||'
+
+    Get SPVM source files
+    
+      find lib | grep Builder | grep -P '\.c$' | perl -p -e 's|lib/SPVM/Builder/src/||'
+
+    Get SPVM header files
+    
+      find lib | grep Builder | grep -P '\.h$' | perl -p -e 's|lib/SPVM/Builder/include/||'
     
     Create compile error test module
     
