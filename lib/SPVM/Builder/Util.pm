@@ -360,7 +360,11 @@ sub get_spvm_core_source_file_names {
   my @spvm_core_source_file_names = qw(
     spvm_allocator.c
     spvm_allow.c
+    spvm_api_allocator.c
     spvm_api.c
+    spvm_api_compiler.c
+    spvm_api_runtime.c
+    spvm_api_string_buffer.c
     spvm_array_field_access.c
     spvm_basic_type.c
     spvm_block.c
@@ -369,32 +373,32 @@ sub get_spvm_core_source_file_names {
     spvm_class.c
     spvm_class_var_access.c
     spvm_class_var.c
-    spvm_interface.c
     spvm_compiler.c
     spvm_constant.c
-    spvm_precompile.c
     spvm_descriptor.c
     spvm_dumper.c
     spvm_field_access.c
     spvm_field.c
     spvm_hash.c
+    spvm_interface.c
     spvm_list.c
     spvm_method.c
-    spvm_var_decl.c
     spvm_native.c
     spvm_op.c
     spvm_op_checker.c
     spvm_opcode_array.c
     spvm_opcode_builder.c
     spvm_opcode.c
+    spvm_precompile.c
     spvm_runtime.c
-    spvm_string.c
     spvm_string_buffer.c
+    spvm_string.c
     spvm_switch_info.c
     spvm_toke.c
     spvm_type.c
     spvm_use.c
     spvm_var.c
+    spvm_var_decl.c
     spvm_yacc.c
     spvm_yacc_util.c
   );
@@ -408,7 +412,11 @@ sub get_spvm_core_header_file_names {
   my @spvm_core_header_file_names = qw(
     spvm_allocator.h
     spvm_allow.h
+    spvm_api_allocator.h
+    spvm_api_compiler.h
     spvm_api.h
+    spvm_api_runtime.h
+    spvm_api_string_buffer.h
     spvm_array_field_access.h
     spvm_basic_type.h
     spvm_block.h
@@ -420,7 +428,6 @@ sub get_spvm_core_header_file_names {
     spvm_class_var.h
     spvm_compiler.h
     spvm_constant.h
-    spvm_precompile.h
     spvm_descriptor.h
     spvm_dumper.h
     spvm_field_access.h
@@ -429,7 +436,6 @@ sub get_spvm_core_header_file_names {
     spvm_interface.h
     spvm_list.h
     spvm_method.h
-    spvm_var_decl.h
     spvm_native.h
     spvm_object.h
     spvm_op_checker.h
@@ -437,6 +443,8 @@ sub get_spvm_core_header_file_names {
     spvm_opcode_builder.h
     spvm_opcode.h
     spvm_op.h
+    spvm_precompile.h
+    spvm_public_api.h
     spvm_runtime_basic_type.h
     spvm_runtime_class.h
     spvm_runtime_class_var.h
@@ -446,13 +454,14 @@ sub get_spvm_core_header_file_names {
     spvm_runtime_method.h
     spvm_runtime_string.h
     spvm_runtime_type.h
-    spvm_string.h
     spvm_string_buffer.h
+    spvm_string.h
     spvm_switch_info.h
     spvm_toke.h
     spvm_typedecl.h
     spvm_type.h
     spvm_use.h
+    spvm_var_decl.h
     spvm_var.h
     spvm_weaken_backref.h
     spvm_yacc.h
