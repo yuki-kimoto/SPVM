@@ -4,6 +4,12 @@
 #include "spvm_runtime.h"
 #include "spvm_api_runtime.h"
 
+SPVM_RUNTIME* SPVM_API_RUNTIME_new() {
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
+  
+  return runtime;
+}
+
 void SPVM_API_RUNTIME_prepare(SPVM_RUNTIME* runtime) {
 
   SPVM_RUNTIME_prepare(runtime);

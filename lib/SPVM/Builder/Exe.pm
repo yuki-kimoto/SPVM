@@ -541,7 +541,7 @@ EOS
   }
 
   // Build runtime information
-  void* runtime = SPVM_API_runtime_new(env);
+  void* runtime = SPVM_API_RUNTIME_new(env);
   SPVM_API_COMPILER_build_runtime(compiler, runtime);
 
 EOS
@@ -552,7 +552,7 @@ EOS
   SPVM_API_COMPILER_free(compiler);
 
   // Prepare runtime
-  SPVM_API_runtime_prepare(runtime);
+  SPVM_API_RUNTIME_prepare(runtime);
 
   // Set runtime information
   env->runtime = runtime;
