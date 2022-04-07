@@ -837,7 +837,7 @@ The trailing $is not treated as the start of Variable Expansion. It is treated a
 
   "AAA$"
 
-=head1 Fat Comma
+=head2 Fat Comma
 
 Fat Comma is a L<"Separators"> represented by "B<=>>".
 
