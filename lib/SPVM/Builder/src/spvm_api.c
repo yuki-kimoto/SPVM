@@ -8450,16 +8450,6 @@ const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_STR
 }
 
 
-SPVM_ALLOCATOR* SPVM_API_allocator_new() {
-  SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new(allocator);
-  
-  return allocator;
-}
-
-void SPVM_API_allocator_free(SPVM_ALLOCATOR* allocator) {
-  SPVM_ALLOCATOR_free(allocator);
-}
-
 void SPVM_API_free_env_prepared(SPVM_ENV* env) {
 
   // Cleanup global variables
