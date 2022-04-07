@@ -5616,6 +5616,10 @@ A list of Type Initial Value. All Bit columns in the data are set to 0.
 
 Numeric Types are L<"Integral Types"> and L<"Floating Point Types">.
 
+=head3 Numeric Types Order
+
+L<"Numeric Types"> has the type order. The order is "byte", "short", "int", "long", "float", "double" from the smallest.
+
 =head2 Integral Types
 
 Integral types are the following four types.
@@ -6855,15 +6859,9 @@ Numeric types have an order.
 
 =begin html
 
-<ul>
-  <li>L<"Numeric Types Order"></li>
-</ul>
+See also L<numeric types order|"Numeric Types Order">.
 
 =end html
-
-=head2 Numeric Types Order
-
-L<"Numeric Types"> has the order of Type. The order of Type is "byte", "short", "int", "long", "float", "double" from the smallest.
 
 =head2 Unary Numeric Widening Type Conversion
 
@@ -7080,6 +7078,18 @@ Type qualifiers qualify the type.
 
   QUALIFIER TYPE
 
+=head2 mutable Type Qualifier
+
+The C<mutable> type qualifier is used to allow to set the character of the string.
+
+  my $string : mutable string;
+
+B<Examples:>
+  
+  # Mutable string
+  my $message = (mutable string)"abc";
+  $message->[0] = 'd';
+
 =head1 Type Comment
 
 The type comment syntax is supported. The type comment can be written after C<of> keyword.
@@ -7099,18 +7109,6 @@ The type comment can be used the type of the L<field decralation|"Field Definiti
 If the type specified as the type comment is not found, a compilation error will occur.
 
 Type comments have no meanings at runtime.
-
-=head2 mutable Type Qualifier
-
-The C<mutable> type qualifier is used to allow to set the character of the string.
-
-  my $string : mutable string;
-
-B<Examples:>
-  
-  # Mutable string
-  my $message = (mutable string)"abc";
-  $message->[0] = 'd';
 
 =head1 Exception
 
