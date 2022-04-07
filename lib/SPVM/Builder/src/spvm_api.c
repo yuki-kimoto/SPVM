@@ -8445,24 +8445,6 @@ int32_t SPVM_API_get_anon_method_method_id(SPVM_ENV* env, int32_t anon_method_id
   return anon_method_method_id;
 }
 
-SPVM_STRING_BUFFER* SPVM_API_string_buffer_new_tmp(SPVM_ALLOCATOR* allocator, int32_t capacity) {
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new_tmp(allocator, capacity);
-  
-  return string_buffer;
-}
-
-const char* SPVM_API_string_buffer_get_value(SPVM_STRING_BUFFER* string_buffer) {
-  return string_buffer->value;
-}
-
-int32_t SPVM_API_string_buffer_get_length(SPVM_STRING_BUFFER* string_buffer) {
-  return string_buffer->length;
-}
-
-void SPVM_API_string_buffer_free(SPVM_STRING_BUFFER* string_buffer) {
-  SPVM_STRING_BUFFER_free(string_buffer);
-}
-
 const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   SPVM_PRECOMPILE_create_precompile_source(env, string_buffer, class_name);
 }
