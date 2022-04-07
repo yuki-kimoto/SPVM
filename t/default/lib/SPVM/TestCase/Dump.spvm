@@ -200,4 +200,18 @@ class TestCase::Dump {
     
     return $dump;
   }
+
+  static method dump_object_reuse_weaken : string () {
+    my $object = new TestCase::DumpTest1;
+    $object->{object_value} = $object;
+    weaken $object->{object_value};
+    
+    my $array = [(object)$object, $object, $object];
+
+    my $dump = dump $array;
+    
+    $object->{object_value} = undef;
+    
+    return $dump;
+  }
 }

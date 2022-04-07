@@ -597,15 +597,18 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
         SPVM_STRING_BUFFER_add(string_buffer, "[]");
       }
       
-      sprintf(tmp_buffer, "(%p)", object);
+      // If the object is weaken, this get the real address
+      sprintf(tmp_buffer, "(%p)", (void*)((intptr_t)object & ~1));
       SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
     }
     else {
 
-      sprintf(tmp_buffer, "%p", object);
+      // If the object is weaken, this get the real address
+      sprintf(tmp_buffer, "%p", (void*)((intptr_t)object & ~1));
       int32_t exists = (int32_t)(intptr_t)SPVM_HASH_get(address_symtable, tmp_buffer, strlen(tmp_buffer));
       if (exists) {
-        sprintf(tmp_buffer, "REUSE_OBJECT(%p)", object);
+        // If the object is weaken, this get the real address
+        sprintf(tmp_buffer, "REUSE_OBJECT(%p)", (void*)((intptr_t)object & ~1));
         SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
       }
       else {

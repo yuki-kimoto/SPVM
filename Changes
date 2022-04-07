@@ -10,6 +10,8 @@ Revision history for SPVM
           This is same as
           
           (string)$num;
+        [BUG FIX]
+        * Fix the bug that dump weaken objects.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Internally used Native APIs object_type_category_offset become always NULL.

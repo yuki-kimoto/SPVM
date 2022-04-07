@@ -53,6 +53,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
   like(SPVM::TestCase::Dump->dump_object_reuse, qr/object_value\s*=>\s*REUSE_OBJECT/);
   like(SPVM::TestCase::Dump->dump_object_reuse, qr/REUSE_OBJECT\([^\)]*\)\s*,/);
+
+  like(SPVM::TestCase::Dump->dump_object_reuse_weaken, qr/object_value\s*=>\s*REUSE_OBJECT/);
+  like(SPVM::TestCase::Dump->dump_object_reuse_weaken, qr/REUSE_OBJECT\([^\)]*\)\s*,/);
 }
 
 # All object is freed
