@@ -97,7 +97,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
       int32_t class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, class_id);
       
       int32_t mulnum_field_id = class_field_ids_base;
-      int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
+      int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env->runtime, mulnum_field_id);
 
       void* elems = (void*)env->get_elems_int(env, array);
       
@@ -115,7 +115,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
 
       for (int32_t field_index = 0; field_index < class_field_ids_length; field_index++) {
         int32_t mulnum_field_id = class_field_ids_base + field_index;
-        int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+        int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env->runtime, mulnum_field_id);
         
         const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
         
@@ -366,12 +366,12 @@ call_spvm_method(...)
             int32_t arg_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, arg_class_id);
             int32_t arg_class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, arg_class_id);
-            int32_t arg_class_field_type_id = SPVM_API_get_field_type_id(env, arg_class_field_ids_base);
+            int32_t arg_class_field_type_id = SPVM_API_get_field_type_id(env->runtime, arg_class_field_ids_base);
             int32_t arg_class_field_type_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, arg_class_field_type_id);
             assert(arg_class_field_type_basic_type_id >= 0);
             for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
               int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-              int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+              int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env->runtime, mulnum_field_id);
               const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
               SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
               SV* sv_field_value;
@@ -548,7 +548,7 @@ call_spvm_method(...)
             int32_t arg_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, arg_class_id);
             int32_t arg_class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, arg_class_id);
-            int32_t arg_class_field_type_id = SPVM_API_get_field_type_id(env, arg_class_field_ids_base);
+            int32_t arg_class_field_type_id = SPVM_API_get_field_type_id(env->runtime, arg_class_field_ids_base);
             int32_t arg_class_field_type_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, arg_class_field_type_id);
             assert(arg_class_field_type_basic_type_id >= 0);
             
@@ -557,7 +557,7 @@ call_spvm_method(...)
               HV* hv_value = (HV*)SvRV(sv_value);
               for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-                int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+                int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env->runtime, mulnum_field_id);
 
                 const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
                 SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
@@ -1030,7 +1030,7 @@ call_spvm_method(...)
           int32_t method_return_class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, method_return_class_id);
           int32_t method_return_class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, method_return_class_id);
           int32_t method_return_mulnum_field_id = method_return_class_field_ids_base;
-          int32_t method_return_mulnum_field_type_id = SPVM_API_get_field_type_id(env, method_return_mulnum_field_id);
+          int32_t method_return_mulnum_field_type_id = SPVM_API_get_field_type_id(env->runtime, method_return_mulnum_field_id);
           int32_t method_return_mulnum_field_type_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, method_return_mulnum_field_type_id);
           
           HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
@@ -1067,7 +1067,7 @@ call_spvm_method(...)
             }
             
             int32_t mulnum_field_id = method_return_class_field_ids_base + field_index;
-            int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+            int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env->runtime, mulnum_field_id);
             const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
             (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
             sv_return_value = sv_2mortal(newRV_inc((SV*)hv_value));
@@ -1222,13 +1222,13 @@ call_spvm_method(...)
               int32_t arg_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, arg_basic_type_id);
               int32_t arg_class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, arg_class_id);
               int32_t arg_class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, arg_class_id);
-              int32_t arg_class_field_type_id = SPVM_API_get_field_type_id(env, arg_class_field_ids_base);
+              int32_t arg_class_field_type_id = SPVM_API_get_field_type_id(env->runtime, arg_class_field_ids_base);
               int32_t arg_class_field_type_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, arg_class_field_type_id);
               int32_t arg_mulnum_field_id = arg_class_field_ids_base;
-              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env, arg_mulnum_field_id);
+              int32_t arg_mulnum_field_name_id = SPVM_API_get_field_name_id(env->runtime, arg_mulnum_field_id);
               for (int32_t field_index = 0; field_index < arg_class_field_ids_length; field_index++) {
                 int32_t mulnum_field_id = arg_class_field_ids_base + field_index;
-                int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+                int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env->runtime, mulnum_field_id);
                 const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
                 SV* sv_field_value;
                 switch (arg_class_field_type_basic_type_id) {
@@ -1327,7 +1327,7 @@ array_to_elems(...)
         int32_t class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, class_id);
         
         int32_t mulnum_field_id = class_field_ids_base;
-        int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
+        int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env->runtime, mulnum_field_id);
 
         void* elems = (void*)env->get_elems_int(env, array);
         
@@ -1335,7 +1335,7 @@ array_to_elems(...)
         int32_t field_length = class_field_ids_length;
         for (int32_t field_index = 0; field_index < class_field_ids_length; field_index++) {
           int32_t mulnum_field_id = class_field_ids_base + field_index;
-          int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env, mulnum_field_id);
+          int32_t mulnum_field_name_id = SPVM_API_get_field_name_id(env->runtime, mulnum_field_id);
 
           const char* mulnum_field_name = SPVM_API_get_constant_string_value(env, mulnum_field_name_id, NULL);
 
@@ -1530,7 +1530,7 @@ array_to_bin(...)
       int32_t class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, class_id);
 
       int32_t mulnum_field_id = class_field_ids_base;
-      int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
+      int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env->runtime, mulnum_field_id);
 
       int32_t field_length = class_field_ids_length;
 
@@ -3148,7 +3148,7 @@ _new_mulnum_array_from_bin(...)
   int32_t class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, class_id);
   
   int32_t mulnum_field_id = class_field_ids_base;
-  int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
+  int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env->runtime, mulnum_field_id);
 
   int32_t field_length = class_field_ids_length;
 
