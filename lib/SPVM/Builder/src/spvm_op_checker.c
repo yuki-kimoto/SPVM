@@ -3134,13 +3134,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             }
             case SPVM_OP_C_ID_WEAKEN_FIELD: {
               SPVM_OP* op_field_access = op_cur->first;
-              
               SPVM_FIELD* field = op_field_access->uv.field_access->field;
-              
               SPVM_TYPE* type = field->type;
-              
               if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_COMPILER_error(compiler, "weaken is only used for object field \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The type of the field targeted by the weaken operator must be a object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               
@@ -3148,27 +3145,23 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             }
             case SPVM_OP_C_ID_UNWEAKEN_FIELD: {
               SPVM_OP* op_field_access = op_cur->first;
-              
               SPVM_FIELD* field = op_field_access->uv.field_access->field;
-              
               SPVM_TYPE* type = field->type;
-              
               if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_COMPILER_error(compiler, "unweaken is only used for object field \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The type of the field targeted by the unweaken operator must be a object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               
               break;
             }
             case SPVM_OP_C_ID_ISWEAK_FIELD: {
+              warn("AAAAAAAAA");
+              
               SPVM_OP* op_field_access = op_cur->first;
-              
               SPVM_FIELD* field = op_field_access->uv.field_access->field;
-              
               SPVM_TYPE* type = field->type;
-              
               if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_COMPILER_error(compiler, "isweak is only used for object field \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The type of the field targeted by the isweak operator must be a object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               
