@@ -22,7 +22,6 @@
 #include "spvm_api.h"
 #include "spvm_object.h"
 #include "spvm_native.h"
-#include "spvm_string.h"
 
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class.h"
