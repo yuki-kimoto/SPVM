@@ -7844,6 +7844,23 @@ int32_t SPVM_API_get_field_signature_id(SPVM_ENV* env, int32_t field_id) {
   return signature_id;
 }
 
+int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
+
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  SPVM_RUNTIME_CLASS* class = SPVM_HASH_get(runtime->class_symtable, class_name, strlen(class_name));
+
+  int32_t class_id;
+  if (class) {
+    class_id = class->id;
+  }
+  else {
+    class_id = -1;
+  }
+
+  return class_id;
+}
+
 int32_t SPVM_API_get_class_name_id(SPVM_ENV* env, int32_t class_id) {
   
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
@@ -8527,23 +8544,6 @@ void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id) {
   void* precompile_method_address = runtime->method_precompile_addresses[method->id];
   
   return precompile_method_address;
-}
-
-int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
-
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  SPVM_RUNTIME_CLASS* class = SPVM_HASH_get(runtime->class_symtable, class_name, strlen(class_name));
-
-  int32_t class_id;
-  if (class) {
-    class_id = class->id;
-  }
-  else {
-    class_id = -1;
-  }
-
-  return class_id;
 }
 
 int32_t SPVM_API_get_arg_type_id(SPVM_ENV* env, int32_t arg_id) {
