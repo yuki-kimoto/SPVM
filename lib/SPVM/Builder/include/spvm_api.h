@@ -364,8 +364,6 @@ int32_t SPVM_API_get_method_call_stack_ref_vars_length(SPVM_ENV* env, int32_t me
 int32_t SPVM_API_get_method_mortal_stack_length(SPVM_ENV* env, int32_t method_id);
 int32_t SPVM_API_get_method_opcode_ids_base(SPVM_ENV* env, int32_t method_id);
 int32_t SPVM_API_get_method_opcode_ids_length(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_object_get_basic_type_id(SPVM_OBJECT* object);
-int32_t SPVM_API_object_get_type_dimension( SPVM_OBJECT* object);
 int32_t SPVM_API_get_arg_type_id(SPVM_ENV* env, int32_t arg_id);
 int32_t SPVM_API_get_anon_method_method_id(SPVM_ENV* env, int32_t anon_method_id);
 SPVM_OPCODE* SPVM_API_get_runtime_opcodes(SPVM_ENV* env);

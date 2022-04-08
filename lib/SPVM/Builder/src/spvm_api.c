@@ -7953,20 +7953,6 @@ int32_t SPVM_API_get_class_class_var_ids_length(SPVM_ENV* env, int32_t class_id)
   return class_class_var_ids_length;
 }
 
-int32_t SPVM_API_object_get_basic_type_id(SPVM_OBJECT* object) {
-  
-  assert(object);
-  
-  return object->basic_type_id;
-}
-
-int32_t SPVM_API_object_get_type_dimension(SPVM_OBJECT* object) {
-  
-  assert(object);
-  
-  return object->type_dimension;
-}
-
 int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
