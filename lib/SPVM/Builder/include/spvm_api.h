@@ -342,7 +342,6 @@ int32_t SPVM_API_get_class_anon_method_ids_base(SPVM_ENV* env, int32_t class_id)
 int32_t SPVM_API_get_class_anon_method_ids_length(SPVM_ENV* env, int32_t class_id);
 int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id);
 int32_t SPVM_API_get_field_name_id(SPVM_ENV* env, int32_t field_id);
-int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id);
 int32_t SPVM_API_get_field_signature_id(SPVM_ENV* env, int32_t field_id);
 int32_t SPVM_API_get_field_class_id(SPVM_ENV* env, int32_t field_id);
 int32_t SPVM_API_get_method_arg_ids_length(SPVM_ENV* env, int32_t method_id);
