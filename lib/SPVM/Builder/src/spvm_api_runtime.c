@@ -490,3 +490,239 @@ int32_t SPVM_API_RUNTIME_get_field_signature_id(SPVM_RUNTIME* runtime, int32_t f
   return signature_id;
 }
 
+SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  if (method_id < 0) {
+    return NULL;
+  }
+  
+  if (method_id >= runtime->methods_length) {
+    return NULL;
+  }
+
+  SPVM_RUNTIME_METHOD* method = &runtime->methods[method_id];
+  
+  return method;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_class_id(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+
+  assert(method);
+
+  int32_t class_id = method->class_id;
+  
+  return class_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_opcode_ids_base(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+
+  assert(method);
+
+  int32_t opcode_ids_base = method->opcode_ids_base;
+  
+  return opcode_ids_base;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_opcode_ids_length(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+
+  assert(method);
+
+  int32_t opcode_ids_length = method->opcode_ids_length;
+  
+  return opcode_ids_length;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_name_id(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+
+  assert(method);
+
+  int32_t name_id = method->name_id;
+  
+  return name_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_is_anon(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+
+  assert(method);
+
+  int32_t is_anon = method->is_anon;
+  
+  return is_anon;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_has_precompile_flag(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+
+  assert(method);
+
+  int32_t has_precompile_flag = method->has_precompile_flag;
+  
+  return has_precompile_flag;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_signature_id(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+
+  assert(method);
+
+  int32_t signature_id = method->signature_id;
+  
+  return signature_id;
+}
+
+
+int32_t SPVM_API_RUNTIME_get_method_arg_ids_length(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+
+  assert(method);
+
+  int32_t arg_ids_length = method->arg_ids_length;
+  
+  return arg_ids_length;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_arg_ids_base(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+
+  assert(method);
+
+  int32_t arg_ids_base = method->arg_ids_base;
+  
+  return arg_ids_base;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_is_class_method(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t is_class_method = method->is_class_method;
+  
+  return is_class_method;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_return_type_id(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t return_type_id = method->return_type_id;
+  
+  return return_type_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_call_stack_byte_vars_length(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t call_stack_byte_vars_length = method->call_stack_byte_vars_length;
+  
+  return call_stack_byte_vars_length;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_call_stack_short_vars_length(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t call_stack_short_vars_length = method->call_stack_short_vars_length;
+  
+  return call_stack_short_vars_length;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_call_stack_int_vars_length(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t call_stack_int_vars_length = method->call_stack_int_vars_length;
+  
+  return call_stack_int_vars_length;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_call_stack_long_vars_length(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t call_stack_long_vars_length = method->call_stack_long_vars_length;
+  
+  return call_stack_long_vars_length;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_call_stack_float_vars_length(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t call_stack_float_vars_length = method->call_stack_float_vars_length;
+  
+  return call_stack_float_vars_length;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_call_stack_double_vars_length(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t call_stack_double_vars_length = method->call_stack_double_vars_length;
+  
+  return call_stack_double_vars_length;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_call_stack_object_vars_length(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t call_stack_object_vars_length = method->call_stack_object_vars_length;
+  
+  return call_stack_object_vars_length;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_call_stack_ref_vars_length(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t call_stack_ref_vars_length = method->call_stack_ref_vars_length;
+  
+  return call_stack_ref_vars_length;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_mortal_stack_length(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t mortal_stack_length = method->mortal_stack_length;
+  
+  return mortal_stack_length;
+}
+
