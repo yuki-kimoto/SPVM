@@ -93,8 +93,8 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
     if (sv_derived_from(sv_element, "HASH")) {
       
       int32_t class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, basic_type_id);
-      int32_t class_field_ids_length = SPVM_API_get_class_field_ids_length(env, class_id);
-      int32_t class_field_ids_base = SPVM_API_get_class_field_ids_base(env, class_id);
+      int32_t class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, class_id);
+      int32_t class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, class_id);
       
       int32_t mulnum_field_id = class_field_ids_base;
       int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
@@ -364,8 +364,8 @@ call_spvm_method(...)
               croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
             }
             int32_t arg_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, arg_basic_type_id);
-            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+            int32_t arg_class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, arg_class_id);
+            int32_t arg_class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, arg_class_id);
             int32_t arg_class_field_type_id = SPVM_API_get_field_type_id(env, arg_class_field_ids_base);
             int32_t arg_class_field_type_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, arg_class_field_type_id);
             assert(arg_class_field_type_basic_type_id >= 0);
@@ -379,7 +379,7 @@ call_spvm_method(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+                int32_t arg_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, arg_class_id);
                 croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
               }
               switch(arg_class_field_type_basic_type_id) {
@@ -546,8 +546,8 @@ call_spvm_method(...)
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
           {
             int32_t arg_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, arg_basic_type_id);
-            int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-            int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+            int32_t arg_class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, arg_class_id);
+            int32_t arg_class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, arg_class_id);
             int32_t arg_class_field_type_id = SPVM_API_get_field_type_id(env, arg_class_field_ids_base);
             int32_t arg_class_field_type_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, arg_class_field_type_id);
             assert(arg_class_field_type_basic_type_id >= 0);
@@ -566,7 +566,7 @@ call_spvm_method(...)
                   sv_field_value = *sv_field_value_ptr;
                 }
                 else {
-                  int32_t arg_class_name_id = SPVM_API_get_class_name_id(env, arg_class_id);
+                  int32_t arg_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, arg_class_id);
                   croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, SPVM_API_get_constant_string_value(env, arg_class_name_id, NULL), MFILE, __LINE__);
                 }
                 
@@ -1027,8 +1027,8 @@ call_spvm_method(...)
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
         {
           int32_t method_return_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, method_return_basic_type_id);
-          int32_t method_return_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, method_return_class_id);
-          int32_t method_return_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, method_return_class_id);
+          int32_t method_return_class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, method_return_class_id);
+          int32_t method_return_class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, method_return_class_id);
           int32_t method_return_mulnum_field_id = method_return_class_field_ids_base;
           int32_t method_return_mulnum_field_type_id = SPVM_API_get_field_type_id(env, method_return_mulnum_field_id);
           int32_t method_return_mulnum_field_type_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, method_return_mulnum_field_type_id);
@@ -1220,8 +1220,8 @@ call_spvm_method(...)
             {
               HV* hv_value = (HV*)SvRV(SvRV(sv_value));
               int32_t arg_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, arg_basic_type_id);
-              int32_t arg_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, arg_class_id);
-              int32_t arg_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, arg_class_id);
+              int32_t arg_class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, arg_class_id);
+              int32_t arg_class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, arg_class_id);
               int32_t arg_class_field_type_id = SPVM_API_get_field_type_id(env, arg_class_field_ids_base);
               int32_t arg_class_field_type_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, arg_class_field_type_id);
               int32_t arg_mulnum_field_id = arg_class_field_ids_base;
@@ -1323,8 +1323,8 @@ array_to_elems(...)
       
       for (int32_t index = 0; index < length; index++) {
         int32_t class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, SPVM_API_get_object_basic_type_id(env, array));
-        int32_t class_field_ids_length = SPVM_API_get_class_field_ids_length(env, class_id);
-        int32_t class_field_ids_base = SPVM_API_get_class_field_ids_base(env, class_id);
+        int32_t class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, class_id);
+        int32_t class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, class_id);
         
         int32_t mulnum_field_id = class_field_ids_base;
         int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
@@ -1526,8 +1526,8 @@ array_to_bin(...)
 
     if (array_is_mulnum_array) {
       int32_t class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, basic_type_id);
-      int32_t class_field_ids_length = SPVM_API_get_class_field_ids_length(env, class_id);
-      int32_t class_field_ids_base = SPVM_API_get_class_field_ids_base(env, class_id);
+      int32_t class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, class_id);
+      int32_t class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, class_id);
 
       int32_t mulnum_field_id = class_field_ids_base;
       int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
@@ -3144,8 +3144,8 @@ _new_mulnum_array_from_bin(...)
   }
 
   int32_t class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, basic_type_id);
-  int32_t class_field_ids_length = SPVM_API_get_class_field_ids_length(env, class_id);
-  int32_t class_field_ids_base = SPVM_API_get_class_field_ids_base(env, class_id);
+  int32_t class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, class_id);
+  int32_t class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, class_id);
   
   int32_t mulnum_field_id = class_field_ids_base;
   int32_t mulnum_field_type_id = SPVM_API_get_field_type_id(env, mulnum_field_id);
