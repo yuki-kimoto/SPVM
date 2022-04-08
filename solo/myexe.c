@@ -62,7 +62,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Leave scope
   env->leave_scope(env, scope_id);
   
-  SPVM_API_free_env_prepared(env);
+  env->free_env_prepared(env);
   
   return status;
 }
