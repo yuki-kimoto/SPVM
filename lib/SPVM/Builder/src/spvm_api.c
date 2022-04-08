@@ -10,7 +10,6 @@
 #include "spvm_list.h"
 #include "spvm_hash.h"
 
-#include "spvm_compiler.h"
 #include "spvm_allocator.h"
 
 #include "spvm_opcode_array.h"
@@ -8451,7 +8450,7 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
   // New raw env
   SPVM_ENV* new_env = SPVM_API_new_env_raw(NULL);
   
-  // Set the compiler
+  // Set the runtime
   new_env->runtime = env->runtime;
   
   // Initialize env
