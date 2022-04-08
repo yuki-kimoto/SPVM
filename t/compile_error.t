@@ -22,6 +22,9 @@ sub compile_not_ok {
     my $builder = SPVM::Builder->new;
     my $success = $builder->compile_spvm($class_name, $file, $line);
     ok($success == 0);
+    unless ($success == 0) {
+      warn "  at $file line $line\n";
+    }
     my $error_messages = $builder->get_error_messages;
     my $first_error_message = $error_messages->[0];
     if ($error_message_re) {
