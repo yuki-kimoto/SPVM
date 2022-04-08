@@ -143,6 +143,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_COMPILER_build_runtime,
     SPVM_API_COMPILER_get_class_module_file,
     SPVM_API_COMPILER_get_module_source,
+    SPVM_API_COMPILER_get_method_class_id,
   };
   SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));

@@ -368,6 +368,7 @@ struct spvm_env_compiler {
   void (*build_runtime)(void* compiler, void* runtime);
   const char* (*get_class_module_file)(void* compiler, int32_t class_id);
   const char* (*get_module_source)(void* compiler, const char* class_name);
+  int32_t (*get_method_class_id)(void* compiler, int32_t method_id);
 };
 
 struct spvm_env_runtime {
