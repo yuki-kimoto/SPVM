@@ -509,7 +509,7 @@ EOS
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
   
   // Create compiler
-  SPVM_COMPILER* compiler = SPVM_API_COMPILER_new();
+  SPVM_COMPILER* compiler = SPVM_API_COMPILER_new_compiler();
 
   SPVM_API_COMPILER_set_start_file(compiler, class_name);
 
@@ -541,7 +541,7 @@ EOS
   }
 
   // Build runtime information
-  void* runtime = SPVM_API_RUNTIME_new(env);
+  void* runtime = SPVM_API_RUNTIME_new_runtime(env);
   SPVM_API_COMPILER_build_runtime(compiler, runtime);
 
 EOS
@@ -549,7 +549,7 @@ EOS
     $boot_source .= <<'EOS';
     
   // Free compiler
-  SPVM_API_COMPILER_free(compiler);
+  SPVM_API_COMPILER_free_compiler(compiler);
 
   // Prepare runtime
   SPVM_API_RUNTIME_prepare(runtime);
