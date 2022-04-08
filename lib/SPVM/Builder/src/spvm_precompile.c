@@ -47,11 +47,11 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER*
     for (method_index = 0; method_index < class_method_ids_length; method_index++) {
       int32_t method_id = class_method_ids_base + method_index;
 
-      int32_t method_name_id = SPVM_API_get_method_name_id(env, method_id);
+      int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(env->runtime, method_id);
       const char* method_name = SPVM_API_get_name(env, method_name_id);
-      int32_t method_signature_id = SPVM_API_get_method_signature_id(env, method_id);
+      int32_t method_signature_id = SPVM_API_RUNTIME_get_method_signature_id(env->runtime, method_id);
       const char* method_signature = SPVM_API_get_name(env, method_signature_id);
-      int32_t method_has_precompile_flag = SPVM_API_get_method_has_precompile_flag(env, method_id);
+      int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_has_precompile_flag(env->runtime, method_id);
 
       if (method_has_precompile_flag) {
         SPVM_PRECOMPILE_build_method_declaration(env, string_buffer, class_name, method_name);
@@ -67,9 +67,9 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER*
     int32_t method_index;
     for (method_index = 0; method_index < class_method_ids_length; method_index++) {
       int32_t method_id = class_method_ids_base + method_index;
-      int32_t method_name_id = SPVM_API_get_method_name_id(env, method_id);
+      int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(env->runtime, method_id);
       const char* method_name = SPVM_API_get_name(env, method_name_id);
-      int32_t method_has_precompile_flag = SPVM_API_get_method_has_precompile_flag(env, method_id);
+      int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_has_precompile_flag(env->runtime, method_id);
       if (method_has_precompile_flag) {
         SPVM_PRECOMPILE_build_method_implementation(env, string_buffer, class_name, method_name);
       }
@@ -83,7 +83,7 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER*
     int32_t class_anon_method_ids_base = SPVM_API_RUNTIME_get_class_anon_method_ids_base(env->runtime, class_id);
     for (int32_t anon_method_id = class_anon_method_ids_base; anon_method_id < class_anon_method_ids_length; anon_method_id++) {
       int32_t anon_method_method_id = SPVM_API_get_anon_method_method_id(env, anon_method_id);
-      int32_t anon_method_class_id = SPVM_API_get_method_class_id(env, anon_method_method_id);
+      int32_t anon_method_class_id = SPVM_API_RUNTIME_get_method_class_id(env->runtime, anon_method_method_id);
       int32_t anon_method_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, anon_method_class_id);
       const char* anon_method_class_name = SPVM_API_get_name(env, anon_method_class_name_id);
       SPVM_PRECOMPILE_create_precompile_source(env, string_buffer, anon_method_class_name);
@@ -174,8 +174,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   int32_t class_is_anon = SPVM_API_RUNTIME_get_class_is_anon(env->runtime, class_id);
   
   // Method
-  int32_t method_id = SPVM_API_get_method_id_without_signature(env, class_name, method_name);
-  int32_t method_return_type_id = SPVM_API_get_method_return_type_id(env, method_id);
+  int32_t method_id = SPVM_API_RUNTIME_get_method_id_without_signature(env->runtime, class_name, method_name);
+  int32_t method_return_type_id = SPVM_API_RUNTIME_get_method_return_type_id(env->runtime, method_id);
 
   // Method declaration
   SPVM_PRECOMPILE_build_method_declaration(env, string_buffer, class_name, method_name);
@@ -201,7 +201,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   int32_t stack_index = 0;
 
   // object variable declarations
-  int32_t call_stack_object_vars_length = SPVM_API_get_method_call_stack_object_vars_length(env, method_id);
+  int32_t call_stack_object_vars_length = SPVM_API_RUNTIME_get_method_call_stack_object_vars_length(env->runtime, method_id);
   if (call_stack_object_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  void* object_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_object_vars_length);
@@ -209,7 +209,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   }
 
   // ref variable declarations
-  int32_t call_stack_ref_vars_length = SPVM_API_get_method_call_stack_ref_vars_length(env, method_id);
+  int32_t call_stack_ref_vars_length = SPVM_API_RUNTIME_get_method_call_stack_ref_vars_length(env->runtime, method_id);
   if (call_stack_ref_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  void* ref_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_ref_vars_length);
@@ -217,7 +217,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   }
 
   // double variable declarations
-  int32_t call_stack_double_vars_length = SPVM_API_get_method_call_stack_double_vars_length(env, method_id);
+  int32_t call_stack_double_vars_length = SPVM_API_RUNTIME_get_method_call_stack_double_vars_length(env->runtime, method_id);
   if (call_stack_double_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  double double_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_double_vars_length);
@@ -225,7 +225,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   }
 
   // float variable declarations
-  int32_t call_stack_float_vars_length = SPVM_API_get_method_call_stack_float_vars_length(env, method_id);
+  int32_t call_stack_float_vars_length = SPVM_API_RUNTIME_get_method_call_stack_float_vars_length(env->runtime, method_id);
   if (call_stack_float_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  float float_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_float_vars_length);
@@ -233,7 +233,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   }
 
   // long variable declarations
-  int32_t call_stack_long_vars_length = SPVM_API_get_method_call_stack_long_vars_length(env, method_id);
+  int32_t call_stack_long_vars_length = SPVM_API_RUNTIME_get_method_call_stack_long_vars_length(env->runtime, method_id);
   if (call_stack_long_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int64_t long_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_long_vars_length);
@@ -241,7 +241,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   }
 
   // int variable declarations
-  int32_t call_stack_int_vars_length = SPVM_API_get_method_call_stack_int_vars_length(env, method_id);
+  int32_t call_stack_int_vars_length = SPVM_API_RUNTIME_get_method_call_stack_int_vars_length(env->runtime, method_id);
   if (call_stack_int_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t int_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_int_vars_length);
@@ -251,7 +251,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   // Exception
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
   
-  int32_t method_mortal_stack_length = SPVM_API_get_method_mortal_stack_length(env, method_id);
+  int32_t method_mortal_stack_length = SPVM_API_RUNTIME_get_method_mortal_stack_length(env->runtime, method_id);
   if (method_mortal_stack_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack[");
     SPVM_STRING_BUFFER_add_int(string_buffer, method_mortal_stack_length);
@@ -260,7 +260,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   }
   
   // short variable declarations
-  int32_t call_stack_short_vars_length = SPVM_API_get_method_call_stack_short_vars_length(env, method_id);
+  int32_t call_stack_short_vars_length = SPVM_API_RUNTIME_get_method_call_stack_short_vars_length(env->runtime, method_id);
   if (call_stack_short_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int16_t short_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_short_vars_length);
@@ -268,7 +268,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   }
 
   // byte variable declarations
-  int32_t call_stack_byte_vars_length = SPVM_API_get_method_call_stack_byte_vars_length(env, method_id);
+  int32_t call_stack_byte_vars_length = SPVM_API_RUNTIME_get_method_call_stack_byte_vars_length(env->runtime, method_id);
   if (call_stack_byte_vars_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int8_t byte_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, call_stack_byte_vars_length);
@@ -279,8 +279,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string_buffer[21];\n");
   
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
-  int32_t method_opcode_ids_base = SPVM_API_get_method_opcode_ids_base(env, method_id);
-  int32_t opcode_ids_length = SPVM_API_get_method_opcode_ids_length(env, method_id);
+  int32_t method_opcode_ids_base = SPVM_API_RUNTIME_get_method_opcode_ids_base(env->runtime, method_id);
+  int32_t opcode_ids_length = SPVM_API_RUNTIME_get_method_opcode_ids_length(env->runtime, method_id);
   int32_t opcode_index = 0;
   
   SPVM_OPCODE* opcode = NULL;
@@ -2470,12 +2470,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
         int32_t field_id = opcode->operand1;
         
-        int32_t field_class_id = SPVM_API_get_field_class_id(env->runtime, field_id);
+        int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(env->runtime, field_id);
         int32_t field_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, field_class_id);
         const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
-        int32_t field_name_id = SPVM_API_get_field_name_id(env->runtime, field_id);
+        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(env->runtime, field_id);
         const char* field_name = SPVM_API_get_name(env, field_name_id);
-        int32_t field_signature_id = SPVM_API_get_field_signature_id(env->runtime, field_id);
+        int32_t field_signature_id = SPVM_API_RUNTIME_get_field_signature_id(env->runtime, field_id);
         const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
@@ -2521,12 +2521,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
         int32_t field_id = opcode->operand1;
         
-        int32_t field_class_id = SPVM_API_get_field_class_id(env->runtime, field_id);
+        int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(env->runtime, field_id);
         int32_t field_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, field_class_id);
         const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
-        int32_t field_name_id = SPVM_API_get_field_name_id(env->runtime, field_id);
+        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(env->runtime, field_id);
         const char* field_name = SPVM_API_get_name(env, field_name_id);
-        int32_t field_signature_id = SPVM_API_get_field_signature_id(env->runtime, field_id);
+        int32_t field_signature_id = SPVM_API_RUNTIME_get_field_signature_id(env->runtime, field_id);
         const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
@@ -2570,12 +2570,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
         int32_t field_id = opcode->operand2;
         
-        int32_t field_class_id = SPVM_API_get_field_class_id(env->runtime, field_id);
+        int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(env->runtime, field_id);
         int32_t field_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, field_class_id);
         const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
-        int32_t field_name_id = SPVM_API_get_field_name_id(env->runtime, field_id);
+        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(env->runtime, field_id);
         const char* field_name = SPVM_API_get_name(env, field_name_id);
-        int32_t field_signature_id = SPVM_API_get_field_signature_id(env->runtime, field_id);
+        int32_t field_signature_id = SPVM_API_RUNTIME_get_field_signature_id(env->runtime, field_id);
         const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
@@ -3045,15 +3045,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         int32_t var_id = opcode->operand0;
         int32_t decl_method_id = opcode->operand1;
 
-        int32_t decl_method_name_id = SPVM_API_get_method_name_id(env, decl_method_id);
+        int32_t decl_method_name_id = SPVM_API_RUNTIME_get_method_name_id(env->runtime, decl_method_id);
         const char* decl_method_name = SPVM_API_get_name(env, decl_method_name_id);
-        int32_t decl_method_signature_id = SPVM_API_get_method_signature_id(env, decl_method_id);
+        int32_t decl_method_signature_id = SPVM_API_RUNTIME_get_method_signature_id(env->runtime, decl_method_id);
         const char* decl_method_signature = SPVM_API_get_name(env, decl_method_signature_id);
-        int32_t decl_method_class_id = SPVM_API_get_method_class_id(env, decl_method_id);
+        int32_t decl_method_class_id = SPVM_API_RUNTIME_get_method_class_id(env->runtime, decl_method_id);
         int32_t decl_method_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, decl_method_class_id);
         const char* decl_method_class_name = SPVM_API_get_name(env, decl_method_class_name_id);
-        int32_t decl_method_has_precompile_flag = SPVM_API_get_method_has_precompile_flag(env, decl_method_id);
-        int32_t decl_method_return_type_id = SPVM_API_get_method_return_type_id(env, decl_method_id);
+        int32_t decl_method_has_precompile_flag = SPVM_API_RUNTIME_get_method_has_precompile_flag(env->runtime, decl_method_id);
+        int32_t decl_method_return_type_id = SPVM_API_RUNTIME_get_method_return_type_id(env->runtime, decl_method_id);
         int32_t decl_method_return_type_dimension = SPVM_API_RUNTIME_get_type_dimension(env->runtime, decl_method_return_type_id);
         int32_t decl_method_return_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, decl_method_return_type_id);
         int32_t decl_method_return_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(env->runtime, decl_method_return_basic_type_id);
@@ -3210,7 +3210,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
               int32_t decl_method_return_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, decl_method_return_basic_type_id);
               int32_t decl_method_return_class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, decl_method_return_class_id);
               int32_t decl_method_return_class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, decl_method_return_class_id);
-              int32_t decl_method_return_class_field_type_id = SPVM_API_get_field_type_id(env->runtime, decl_method_return_class_field_ids_base);
+              int32_t decl_method_return_class_field_type_id = SPVM_API_RUNTIME_get_field_type_id(env->runtime, decl_method_return_class_field_ids_base);
               int32_t decl_method_return_class_field_type_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, decl_method_return_class_field_type_id);
               assert(decl_method_return_class_field_type_basic_type_id >= 0);
               
@@ -3829,12 +3829,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
         int32_t field_id = opcode->operand2;
         
-        int32_t field_class_id = SPVM_API_get_field_class_id(env->runtime, field_id);
+        int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(env->runtime, field_id);
         int32_t field_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, field_class_id);
         const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
-        int32_t field_name_id = SPVM_API_get_field_name_id(env->runtime, field_id);
+        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(env->runtime, field_id);
         const char* field_name = SPVM_API_get_name(env, field_name_id);
-        int32_t field_signature_id = SPVM_API_get_field_signature_id(env->runtime, field_id);
+        int32_t field_signature_id = SPVM_API_RUNTIME_get_field_signature_id(env->runtime, field_id);
         const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -3910,12 +3910,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       {
         int32_t field_id = opcode->operand1;
         
-        int32_t field_class_id = SPVM_API_get_field_class_id(env->runtime, field_id);
+        int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(env->runtime, field_id);
         int32_t field_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, field_class_id);
         const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
-        int32_t field_name_id = SPVM_API_get_field_name_id(env->runtime, field_id);
+        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(env->runtime, field_id);
         const char* field_name = SPVM_API_get_name(env, field_name_id);
-        int32_t field_signature_id = SPVM_API_get_field_signature_id(env->runtime, field_id);
+        int32_t field_signature_id = SPVM_API_RUNTIME_get_field_signature_id(env->runtime, field_id);
         const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
@@ -3965,12 +3965,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       {
         int32_t field_id = opcode->operand1;
         
-        int32_t field_class_id = SPVM_API_get_field_class_id(env->runtime, field_id);
+        int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(env->runtime, field_id);
         int32_t field_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, field_class_id);
         const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
-        int32_t field_name_id = SPVM_API_get_field_name_id(env->runtime, field_id);
+        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(env->runtime, field_id);
         const char* field_name = SPVM_API_get_name(env, field_name_id);
-        int32_t field_signature_id = SPVM_API_get_field_signature_id(env->runtime, field_id);
+        int32_t field_signature_id = SPVM_API_RUNTIME_get_field_signature_id(env->runtime, field_id);
         const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
@@ -4604,7 +4604,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       }
       case SPVM_OPCODE_C_ID_HAS_IMPLEMENT: {
         int32_t implement_method_id = opcode->operand2;
-        int32_t implement_method_name_id = SPVM_API_get_method_name_id(env, implement_method_id);
+        int32_t implement_method_name_id = SPVM_API_RUNTIME_get_method_name_id(env->runtime, implement_method_id);
         const char* implement_method_name = SPVM_API_get_name(env, implement_method_name_id);
 
         int32_t interface_basic_type_id = opcode->operand3;
@@ -4614,8 +4614,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         int32_t interface_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, interface_class_id);
         const char* interface_class_name = SPVM_API_get_name(env, interface_class_name_id);
         
-        int32_t interface_method_id = SPVM_API_get_method_id_without_signature(env, interface_class_name, implement_method_name);
-        int32_t interface_method_signature_id = SPVM_API_get_method_signature_id(env, interface_method_id);
+        int32_t interface_method_id = SPVM_API_RUNTIME_get_method_id_without_signature(env->runtime, interface_class_name, implement_method_name);
+        int32_t interface_method_signature_id = SPVM_API_RUNTIME_get_method_signature_id(env->runtime, interface_method_id);
         const char* interface_method_signature = SPVM_API_get_name(env, interface_method_signature_id);
 
         const char* implement_method_signature = interface_method_signature;
@@ -5623,12 +5623,12 @@ void SPVM_PRECOMPILE_add_set_deref(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buf
 
 void SPVM_PRECOMPILE_add_get_field(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t field_ctype_id, int32_t out_index, int32_t object_index, int32_t field_id) {
   
-  int32_t field_class_id = SPVM_API_get_field_class_id(env->runtime, field_id);
+  int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(env->runtime, field_id);
   int32_t field_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, field_class_id);
   const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
-  int32_t field_name_id = SPVM_API_get_field_name_id(env->runtime, field_id);
+  int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(env->runtime, field_id);
   const char* field_name = SPVM_API_get_name(env, field_name_id);
-  int32_t field_signature_id = SPVM_API_get_field_signature_id(env->runtime, field_id);
+  int32_t field_signature_id = SPVM_API_RUNTIME_get_field_signature_id(env->runtime, field_id);
   const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
@@ -5677,12 +5677,12 @@ void SPVM_PRECOMPILE_add_get_field(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buf
 
 void SPVM_PRECOMPILE_add_set_field(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t field_ctype_id, int32_t object_index, int32_t field_id, int32_t in_index) {
   
-  int32_t field_class_id = SPVM_API_get_field_class_id(env->runtime, field_id);
+  int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(env->runtime, field_id);
   int32_t field_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, field_class_id);
   const char* field_class_name = SPVM_API_get_name(env, field_class_name_id);
-  int32_t field_name_id = SPVM_API_get_field_name_id(env->runtime, field_id);
+  int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(env->runtime, field_id);
   const char* field_name = SPVM_API_get_name(env, field_name_id);
-  int32_t field_signature_id = SPVM_API_get_field_signature_id(env->runtime, field_id);
+  int32_t field_signature_id = SPVM_API_RUNTIME_get_field_signature_id(env->runtime, field_id);
   const char* field_signature = SPVM_API_get_name(env, field_signature_id);
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
