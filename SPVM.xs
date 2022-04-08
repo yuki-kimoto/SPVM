@@ -3552,7 +3552,7 @@ get_anon_class_names_by_parent_class_name(...)
     int32_t is_anon_method = env->api->compiler->is_anon_method(compiler, method_id);
     
     if (is_anon_method) {
-      int32_t anon_class_id = SPVM_API_COMPILER_get_method_class_id(compiler, method_id);
+      int32_t anon_class_id = env->api->compiler->get_method_class_id(compiler, method_id);
       const char* anon_class_name = env->api->compiler->get_class_name(compiler, anon_class_id);
       SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
       av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));
@@ -3722,7 +3722,7 @@ get_module_file(...)
   SV* sv_module_file;
 
   if (class_id >= 0) {
-    module_file = SPVM_API_COMPILER_get_class_module_file(compiler, class_id);
+    module_file = env->api->compiler->get_class_module_file(compiler, class_id);
     sv_module_file = sv_2mortal(newSVpv(module_file, 0));
   }
   else {
@@ -3757,7 +3757,7 @@ get_module_source(...)
 
   // Copy class load path to builder
   SV* sv_module_source;
-  const char* module_source = SPVM_API_COMPILER_get_module_source(compiler, class_name);
+  const char* module_source = env->api->compiler->get_module_source(compiler, class_name);
   if (module_source) {
     sv_module_source = sv_2mortal(newSVpv(module_source, 0));
   }
