@@ -218,8 +218,8 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, int32_t class_var_id, SPVM_OBJ
 SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object);
 SPVM_OBJECT* SPVM_API_get_type_name(SPVM_ENV* env, SPVM_OBJECT* object);
 
-int32_t SPVM_API_object_type_dimension(SPVM_ENV* env, SPVM_OBJECT* object);
-int32_t SPVM_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object);
+int32_t SPVM_API_get_object_type_dimension(SPVM_ENV* env, SPVM_OBJECT* object);
+int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object);
 
 const char* SPVM_API_get_chars(SPVM_ENV* env, SPVM_OBJECT* string);
 

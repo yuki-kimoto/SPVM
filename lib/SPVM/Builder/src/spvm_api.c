@@ -278,8 +278,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_remove_mortal,
     SPVM_API_is_type,
     SPVM_API_has_callback,
-    SPVM_API_object_basic_type_id,
-    SPVM_API_object_type_dimension,
+    SPVM_API_get_object_basic_type_id,
+    SPVM_API_get_object_type_dimension,
     SPVM_API_weaken,
     SPVM_API_isweak,
     SPVM_API_unweaken,
@@ -6796,12 +6796,12 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void
   return object;
 }
 
-int32_t SPVM_API_object_type_dimension(SPVM_ENV* env, SPVM_OBJECT* object) {
-  return object->type_dimension;
+int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object) {
+  return object->basic_type_id;
 }
 
-int32_t SPVM_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object) {
-  return object->basic_type_id;
+int32_t SPVM_API_get_object_type_dimension(SPVM_ENV* env, SPVM_OBJECT* object) {
+  return object->type_dimension;
 }
 
 int32_t SPVM_API_length(SPVM_ENV* env, SPVM_OBJECT* object) {
