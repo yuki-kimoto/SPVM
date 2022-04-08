@@ -366,6 +366,8 @@ struct spvm_env_compiler {
   int32_t (*is_native_method)(void* compiler, int32_t method_id);
   int32_t (*is_precompile_method)(void* compiler, int32_t method_id);
   void (*build_runtime)(void* compiler, void* runtime);
+  const char* (*get_class_module_file)(void* compiler, int32_t class_id);
+  const char* (*get_module_source)(void* compiler, const char* class_name);
 };
 
 struct spvm_env_runtime {
