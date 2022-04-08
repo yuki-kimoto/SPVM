@@ -7381,17 +7381,6 @@ int32_t SPVM_API_get_class_var_class_id(SPVM_ENV* env, int32_t class_var_id) {
   return class_id;
 }
 
-int32_t SPVM_API_get_field_class_id(SPVM_ENV* env, int32_t field_id) {
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, field_id);
-
-  assert(field);
-
-  int32_t class_id = field->class_id;
-  
-  return class_id;
-}
-
 int32_t SPVM_API_get_method_class_id(SPVM_ENV* env, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
@@ -7423,23 +7412,6 @@ int32_t SPVM_API_get_method_opcode_ids_length(SPVM_ENV* env, int32_t method_id) 
   int32_t opcode_ids_length = method->opcode_ids_length;
   
   return opcode_ids_length;
-}
-
-SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, int32_t field_id) {
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  if (field_id < 0) {
-    return NULL;
-  }
-  
-  if (field_id >= runtime->fields_length) {
-    return NULL;
-  }
-
-  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
-  
-  return field;
 }
 
 SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, int32_t method_id) {
@@ -7805,6 +7777,34 @@ int32_t SPVM_API_get_type_is_object(SPVM_ENV* env, int32_t type_id) {
   }
   
   return is_object;
+}
+
+SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, int32_t field_id) {
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  if (field_id < 0) {
+    return NULL;
+  }
+  
+  if (field_id >= runtime->fields_length) {
+    return NULL;
+  }
+
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+  
+  return field;
+}
+
+int32_t SPVM_API_get_field_class_id(SPVM_ENV* env, int32_t field_id) {
+  
+  SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, field_id);
+
+  assert(field);
+
+  int32_t class_id = field->class_id;
+  
+  return class_id;
 }
 
 int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id) {
