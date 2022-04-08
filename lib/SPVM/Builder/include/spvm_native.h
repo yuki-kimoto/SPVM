@@ -329,12 +329,14 @@ struct spvm_env_api {
 
 struct spvm_env_allocator {
   void* (*new_allocator)();
-  void (*free_allocator)(SPVM_ENV_ALLOCATOR* compiler);
+  void (*free_allocator)(void* allocator);
 };
 
 struct spvm_env_string_buffer {
-  void* (*new_string_buffer)();
-  void (*free_string_buffer)(SPVM_ENV_STRING_BUFFER* string_buffer);
+  void* (*new_string_buffer_tmp)();
+  void (*free_string_buffer)(void* string_buffer);
+  const char* (*get_value)(void* string_buffer);
+  int32_t (*get_length)(void* string_buffer);
 };
 
 struct spvm_env_compiler {
@@ -368,7 +370,10 @@ struct spvm_env_compiler {
 
 struct spvm_env_runtime {
   void* (*new_runtime)();
-  void (*free_runtime)(SPVM_ENV_RUNTIME* runtime);
+  void (*free_runtime)(void* runtime);
+  void (*prepare)(void* runtime);
+  int32_t* (*get_opcodes)(void* runtime);
+  int32_t (*get_opcode_ids_length)(void* runtime);
 };
 
 SPVM_ENV* SPVM_NATIVE_new_env_raw();

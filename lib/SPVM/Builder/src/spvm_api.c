@@ -107,6 +107,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
   void* env_string_buffer_init[]  = {
     SPVM_API_STRING_BUFFER_new_string_buffer_tmp,
     SPVM_API_STRING_BUFFER_free_string_buffer,
+    SPVM_API_STRING_BUFFER_get_value,
+    SPVM_API_STRING_BUFFER_get_length,
   };
   SPVM_ENV_STRING_BUFFER* env_string_buffer = calloc(1, sizeof(env_string_buffer_init));
   memcpy(env_string_buffer, env_string_buffer_init, sizeof(env_string_buffer_init));
@@ -147,6 +149,9 @@ SPVM_ENV* SPVM_API_new_env_raw() {
   void* env_runtime_init[]  = {
     SPVM_API_RUNTIME_new_runtime,
     SPVM_API_RUNTIME_free_runtime,
+    SPVM_API_RUNTIME_prepare,
+    SPVM_API_RUNTIME_get_opcodes,
+    SPVM_API_RUNTIME_get_opcode_ids_length,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
