@@ -339,7 +339,31 @@ struct spvm_env_string_buffer {
 
 struct spvm_env_compiler {
   void* (*new_compiler)();
-  void (*free_compiler)(SPVM_ENV_COMPILER* compiler);
+  void (*free_compiler)(void* compiler);
+  void (*set_start_line)(void* compiler, int32_t start_line);
+  int32_t (*get_start_line)(void* compiler);
+  void (*set_start_file)(void* compiler, const char* start_file);
+  const char* (*get_start_file)(void* compiler);
+  void (*add_module_dir)(void* compiler, const char* module_dir);
+  int32_t (*get_module_dirs_length )(void* compiler);
+  const char* (*get_module_dir )(void* compiler, int32_t module_dir_id);
+  int32_t (*compile_spvm)(void* compiler, const char* class_name);
+  int32_t (*get_error_messages_length)(void* compiler);
+  const char* (*get_error_message)(void* compiler, int32_t index);
+  int32_t (*get_class_id)(void* compiler, const char* class_name);
+  int32_t (*get_classes_length)(void* compiler);
+  const char* (*get_class_name)(void* compiler, int32_t class_id);
+  int32_t (*is_anon_class)(void* compiler, int32_t class_id);
+  int32_t (*get_methods_length)(void* compiler, int32_t class_id);
+  int32_t (*get_method_id)(void* compiler, int32_t class_id, int32_t method_index_of_class);
+  int32_t (*get_method_id_by_name)(void* compiler, const char* class_name, const char* method_name);
+  const char* (*get_method_name)(void* compiler, int32_t method_id);
+  const char* (*get_method_signature)(void* compiler, int32_t method_id);
+  int32_t (*is_anon_method)(void* compiler, int32_t method_id);
+  int32_t (*is_init_block_method)(void* compiler, int32_t method_id);
+  int32_t (*is_native_method)(void* compiler, int32_t method_id);
+  int32_t (*is_precompile_method)(void* compiler, int32_t method_id);
+  void (*build_runtime)(void* compiler, void* runtime);
 };
 
 struct spvm_env_runtime {
