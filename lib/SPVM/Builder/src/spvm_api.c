@@ -7696,6 +7696,18 @@ int32_t SPVM_API_get_basic_type_category(SPVM_ENV* env, int32_t basic_type_id) {
   return basic_type_category;
 }
 
+const char* SPVM_API_get_basic_type_name(SPVM_ENV* env, int32_t basic_type_id) {
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = (SPVM_RUNTIME_BASIC_TYPE*)SPVM_API_get_basic_type(env, basic_type_id);
+  
+  SPVM_RUNTIME_STRING* basic_type_name_string = (SPVM_RUNTIME_STRING*)&runtime->strings[basic_type->name_id];
+
+  const char* basic_type_name = (const char*)&runtime->string_buffer[basic_type_name_string->string_buffer_id];
+  
+  return basic_type_name;
+}
+
 int32_t SPVM_API_get_basic_type_name_id(SPVM_ENV* env, int32_t basic_type_id) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_id);
@@ -8515,18 +8527,6 @@ void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id) {
   void* precompile_method_address = runtime->method_precompile_addresses[method->id];
   
   return precompile_method_address;
-}
-
-const char* SPVM_API_get_basic_type_name(SPVM_ENV* env, int32_t basic_type_id) {
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = (SPVM_RUNTIME_BASIC_TYPE*)SPVM_API_get_basic_type(env, basic_type_id);
-  
-  SPVM_RUNTIME_STRING* basic_type_name_string = (SPVM_RUNTIME_STRING*)&runtime->strings[basic_type->name_id];
-
-  const char* basic_type_name = (const char*)&runtime->string_buffer[basic_type_name_string->string_buffer_id];
-  
-  return basic_type_name;
 }
 
 int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
