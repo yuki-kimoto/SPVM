@@ -12,16 +12,16 @@ struct spvm_env_api;
 typedef struct spvm_env_api SPVM_ENV_API;
 
 struct spvm_env_compiler;
-typedef struct spvm_env SPVM_ENV_COMPILER;
+typedef struct spvm_env_compiler SPVM_ENV_COMPILER;
 
 struct spvm_env_runtime;
-typedef struct spvm_env SPVM_ENV_RUNTIME;
+typedef struct spvm_env_runtime SPVM_ENV_RUNTIME;
 
 struct spvm_env_string_buffer;
-typedef struct spvm_env SPVM_ENV_STRING_BUFFER;
+typedef struct spvm_env_string_buffer SPVM_ENV_STRING_BUFFER;
 
 struct spvm_env_allocator;
-typedef struct spvm_env SPVM_ENV_ALLOCATOR;
+typedef struct spvm_env_allocator SPVM_ENV_ALLOCATOR;
 
 typedef union spvm_value SPVM_VALUE;
 
