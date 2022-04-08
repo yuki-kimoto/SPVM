@@ -3796,16 +3796,16 @@ build_runtime(...)
   }
   
   if (runtime) {
-    SPVM_API_RUNTIME_free_runtime(runtime);
+    env->api->runtime->free_runtime(runtime);
     runtime = NULL;
   }
 
   // Build runtime information
-  runtime = SPVM_API_RUNTIME_new_runtime(env);
+  runtime = env->api->runtime->new_runtime(env);
   env->api->compiler->build_runtime(compiler, runtime);
 
   // Prepare runtime
-  SPVM_API_RUNTIME_prepare(runtime);
+  env->api->runtime->prepare(runtime);
 
   // Set runtime information
   size_t iv_runtime = PTR2IV(runtime);
@@ -3984,7 +3984,7 @@ DESTROY(...)
       env->cleanup_global_vars(env);
       
       // Free runtime
-      SPVM_API_RUNTIME_free_runtime(env->runtime);
+      env->api->runtime->free_runtime(env->runtime);
       env->runtime = NULL;
     }
     
