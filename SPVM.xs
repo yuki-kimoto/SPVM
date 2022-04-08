@@ -4014,12 +4014,13 @@ create_precompile_source(...)
   SV** sv_runtime_ptr = hv_fetch(hv_builder, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-  
-  // New allocator
-  void* allocator = SPVM_API_ALLOCATOR_new_allocator();
-  
+
   // Create precompile source
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
+  
+  // New allocator
+  void* allocator = env->api->allocator->new_allocator();
+  
   env->runtime = runtime;
 
   // New string buffer
@@ -4032,13 +4033,13 @@ create_precompile_source(...)
 
   // Free string buffer
   env->api->string_buffer->free_string_buffer(string_buffer);
-  
+
+  // Free allocator
+  env->api->allocator->free_allocator(allocator);
+
   // Free env
   env->free_env_raw(env);
   
-  // Free allocator
-  SPVM_API_ALLOCATOR_free_allocator(allocator);
-
   XPUSHs(sv_precompile_source);
   XSRETURN(1);
 }
