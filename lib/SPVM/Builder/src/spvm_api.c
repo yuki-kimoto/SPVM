@@ -95,6 +95,48 @@
 
 SPVM_ENV* SPVM_API_new_env_raw() {
 
+  // Env Allocator
+  void* env_allocator_init[]  = {
+    SPVM_API_ALLOCATOR_new,
+    SPVM_API_ALLOCATOR_free,
+  };
+  SPVM_ENV_ALLOCATOR* env_allocator = calloc(1, sizeof(env_allocator_init));
+  memcpy(env_allocator, env_allocator_init, sizeof(env_allocator_init));
+
+  // Env String Buffer
+  void* env_string_buffer_init[]  = {
+    SPVM_API_STRING_BUFFER_new_tmp,
+    SPVM_API_STRING_BUFFER_free,
+  };
+  SPVM_ENV_STRING_BUFFER* env_string_buffer = calloc(1, sizeof(env_string_buffer_init));
+  memcpy(env_string_buffer, env_string_buffer_init, sizeof(env_string_buffer_init));
+
+  // Env Compiler
+  void* env_compiler_init[]  = {
+    SPVM_API_COMPILER_new,
+    SPVM_API_COMPILER_free,
+  };
+  SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
+  memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
+
+  // Env Runtime
+  void* env_runtime_init[]  = {
+    SPVM_API_RUNTIME_new,
+    SPVM_API_RUNTIME_free,
+  };
+  SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
+  memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
+
+  // Env API
+  void* env_api_init[]  = {
+    env_allocator,
+    env_string_buffer,
+    env_compiler,
+    env_runtime,
+  };
+  SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
+  memcpy(env_api, env_api_init, sizeof(env_api_init));
+
   // The impelements of Native APIs
   void* env_init[]  = {
     NULL, // class_vars_heap
@@ -317,13 +359,13 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_COMPILER_is_precompile_method,
     SPVM_API_COMPILER_build_runtime,
     SPVM_API_can_assign_array_element,
+    env_api,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
     return NULL;
   }
-  
   memcpy(env, env_init, sizeof(env_init));
 
   return env;
@@ -1241,6 +1283,13 @@ void SPVM_API_free_env_raw(SPVM_ENV* env) {
     free(env->native_mortal_stack);
     env->native_mortal_stack = NULL;
   }
+  
+  // Free env api
+  free(env->api->allocator);
+  free(env->api->string_buffer);
+  free(env->api->compiler);
+  free(env->api->runtime);
+  free(env->api);
   
   // Free env
   free(env);
