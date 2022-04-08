@@ -244,7 +244,7 @@ call_spvm_method(...)
     SV* sv_value = ST(spvm_args_base + args_index);
     
     int32_t arg_id = method_arg_ids_base + args_index;
-    int32_t arg_type_id = SPVM_API_get_arg_type_id(env, arg_id);
+    int32_t arg_type_id = SPVM_API_RUNTIME_get_arg_type_id(env->runtime, arg_id);
     int32_t arg_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, arg_type_id);
     int32_t arg_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(env->runtime, arg_basic_type_id);
     int32_t arg_type_dimension = SPVM_API_RUNTIME_get_type_dimension(env->runtime, arg_type_id);
@@ -1167,7 +1167,7 @@ call_spvm_method(...)
         SV* sv_value = ST(spvm_args_base + args_index);
         
         int32_t arg_id = method_arg_ids_base + args_index;
-        int32_t arg_type_id = SPVM_API_get_arg_type_id(env, arg_id);
+        int32_t arg_type_id = SPVM_API_RUNTIME_get_arg_type_id(env->runtime, arg_id);
         
         // Convert to runtime type
         int32_t arg_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, arg_type_id);

@@ -82,7 +82,7 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER*
   if (class_anon_method_ids_length > 0) {
     int32_t class_anon_method_ids_base = SPVM_API_RUNTIME_get_class_anon_method_ids_base(env->runtime, class_id);
     for (int32_t anon_method_id = class_anon_method_ids_base; anon_method_id < class_anon_method_ids_length; anon_method_id++) {
-      int32_t anon_method_method_id = SPVM_API_get_anon_method_method_id(env, anon_method_id);
+      int32_t anon_method_method_id = SPVM_API_RUNTIME_get_anon_method_method_id(env->runtime, anon_method_id);
       int32_t anon_method_class_id = SPVM_API_RUNTIME_get_method_class_id(env->runtime, anon_method_method_id);
       int32_t anon_method_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, anon_method_class_id);
       const char* anon_method_class_name = SPVM_API_get_name(env, anon_method_class_name_id);
