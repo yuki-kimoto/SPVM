@@ -1,0 +1,8 @@
+class TestCase::CompileError::Weaken::WeakenInvocantNotClassType {
+  use TestCase::Minimal;
+  
+  static method main : int () {
+    my $num = (object)new TestCase::Minimal;
+    weaken $num->{x};
+  }
+}

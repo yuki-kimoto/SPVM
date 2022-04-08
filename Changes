@@ -10,6 +10,7 @@ Revision history for SPVM
           This is same as
           
           (string)$num;
+        * Improve field access error message.
         [BUG FIX]
         * Fix the bug that dump weaken objects.
         
