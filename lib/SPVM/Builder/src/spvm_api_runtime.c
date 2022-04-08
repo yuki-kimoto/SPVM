@@ -382,3 +382,51 @@ SPVM_RUNTIME_CLASS* SPVM_API_RUNTIME_get_class(SPVM_RUNTIME* runtime, int32_t cl
   
   return class;
 }
+
+int32_t SPVM_API_RUNTIME_get_class_var_name_id(SPVM_RUNTIME* runtime, int32_t class_var_id) {
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
+
+  assert(class_var);
+
+  int32_t name_id = class_var->name_id;
+  
+  return name_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_class_var_signature_id(SPVM_RUNTIME* runtime, int32_t class_var_id) {
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
+
+  assert(class_var);
+
+  int32_t signature_id = class_var->signature_id;
+  
+  return signature_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_class_var_class_id(SPVM_RUNTIME* runtime, int32_t class_var_id) {
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
+
+  assert(class_var);
+
+  int32_t class_id = class_var->class_id;
+  
+  return class_id;
+}
+
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var(SPVM_RUNTIME* runtime, int32_t class_var_id) {
+  
+  if (class_var_id < 0) {
+    return NULL;
+  }
+  
+  if (class_var_id >= runtime->class_vars_length) {
+    return NULL;
+  }
+
+  SPVM_RUNTIME_CLASS_VAR* class_var = &runtime->class_vars[class_var_id];
+  
+  return class_var;
+}
