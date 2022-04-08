@@ -25,7 +25,7 @@ void* SPVM_API_COMPILER_get_precompile_method_address(SPVM_COMPILER* compiler, i
 void SPVM_API_COMPILER_set_native_method_address(SPVM_COMPILER* compiler, int32_t method_id, void* address);
 void SPVM_API_COMPILER_set_precompile_method_address(SPVM_COMPILER* compiler, int32_t method_id, void* address);
 const char* SPVM_API_COMPILER_get_method_abs_name(SPVM_COMPILER* compiler, int32_t method_id);
-SPVM_COMPILER* SPVM_API_COMPILER_new();
+SPVM_COMPILER* SPVM_API_COMPILER_new_compiler();
 void SPVM_API_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line);
 int32_t SPVM_API_COMPILER_get_start_line(SPVM_COMPILER* compiler);
 void SPVM_API_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file);
@@ -35,7 +35,7 @@ int32_t SPVM_API_COMPILER_get_module_dirs_length (SPVM_COMPILER* compiler);
 const char* SPVM_API_COMPILER_get_module_dir (SPVM_COMPILER* compiler, int32_t module_dir_id);
 int32_t SPVM_API_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name);
 void SPVM_API_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime);
-void SPVM_API_COMPILER_free(SPVM_COMPILER* compiler);
+void SPVM_API_COMPILER_free_compiler(SPVM_COMPILER* compiler);
 const char* SPVM_API_COMPILER_get_module_source(SPVM_COMPILER* compiler, const char* class_name);
 int32_t SPVM_API_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);

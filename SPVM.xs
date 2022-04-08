@@ -3380,7 +3380,7 @@ create_compiler(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Create compiler
-  void* compiler = SPVM_API_COMPILER_new();
+  void* compiler = SPVM_API_COMPILER_new_compiler();
 
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
@@ -3788,12 +3788,12 @@ build_runtime(...)
   }
   
   if (runtime) {
-    SPVM_API_RUNTIME_free(runtime);
+    SPVM_API_RUNTIME_free_runtime(runtime);
     runtime = NULL;
   }
 
   // Build runtime information
-  runtime = SPVM_API_RUNTIME_new(env);
+  runtime = SPVM_API_RUNTIME_new_runtime(env);
   SPVM_API_COMPILER_build_runtime(compiler, runtime);
 
   // Prepare runtime
@@ -3826,7 +3826,7 @@ free_compiler(...)
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
   // Free compiler
-  SPVM_API_COMPILER_free(compiler);
+  SPVM_API_COMPILER_free_compiler(compiler);
 
   XSRETURN(0);
 }
@@ -3976,7 +3976,7 @@ DESTROY(...)
       env->cleanup_global_vars(env);
       
       // Free runtime
-      SPVM_API_RUNTIME_free(env->runtime);
+      SPVM_API_RUNTIME_free_runtime(env->runtime);
       env->runtime = NULL;
     }
     
@@ -4008,10 +4008,10 @@ create_precompile_source(...)
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
   
   // New allocator
-  void* allocator = SPVM_API_ALLOCATOR_new();
+  void* allocator = SPVM_API_ALLOCATOR_new_allocator();
   
   // New string buffer
-  void* string_buffer = SPVM_API_STRING_BUFFER_new_tmp(allocator, 0);
+  void* string_buffer = SPVM_API_STRING_BUFFER_new_string_buffer_tmp(allocator, 0);
 
   // Create precompile source
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
@@ -4023,10 +4023,10 @@ create_precompile_source(...)
   SV* sv_precompile_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
   
   // Free string buffer
-  SPVM_API_STRING_BUFFER_free(string_buffer);
+  SPVM_API_STRING_BUFFER_free_string_buffer(string_buffer);
   
   // Free allocator
-  SPVM_API_ALLOCATOR_free(allocator);
+  SPVM_API_ALLOCATOR_free_allocator(allocator);
 
   XPUSHs(sv_precompile_source);
   XSRETURN(1);

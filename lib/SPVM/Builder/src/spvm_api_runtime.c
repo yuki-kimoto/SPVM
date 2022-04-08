@@ -4,7 +4,7 @@
 #include "spvm_runtime.h"
 #include "spvm_api_runtime.h"
 
-SPVM_RUNTIME* SPVM_API_RUNTIME_new() {
+SPVM_RUNTIME* SPVM_API_RUNTIME_new_runtime() {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
   
   return runtime;
@@ -25,7 +25,7 @@ int32_t SPVM_API_RUNTIME_get_opcode_ids_length(SPVM_RUNTIME* runtime) {
   return runtime->opcode_ids_length;
 }
 
-void SPVM_API_RUNTIME_free(SPVM_RUNTIME* runtime) {
+void SPVM_API_RUNTIME_free_runtime(SPVM_RUNTIME* runtime) {
 
   SPVM_RUNTIME_free(runtime);
 }

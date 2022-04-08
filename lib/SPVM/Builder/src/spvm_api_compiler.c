@@ -222,7 +222,7 @@ const char* SPVM_API_COMPILER_get_method_abs_name(SPVM_COMPILER* compiler, int32
   return method_abs_name;
 }
 
-SPVM_COMPILER* SPVM_API_COMPILER_new() {
+SPVM_COMPILER* SPVM_API_COMPILER_new_compiler() {
   
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   return compiler;
@@ -271,7 +271,7 @@ void SPVM_API_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runt
   SPVM_COMPILER_build_runtime(compiler, runtime);
 }
 
-void SPVM_API_COMPILER_free(SPVM_COMPILER* compiler) {
+void SPVM_API_COMPILER_free_compiler(SPVM_COMPILER* compiler) {
   
   SPVM_COMPILER_free(compiler);
 }

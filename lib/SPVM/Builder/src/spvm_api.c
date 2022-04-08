@@ -97,32 +97,32 @@ SPVM_ENV* SPVM_API_new_env_raw() {
 
   // Env Allocator
   void* env_allocator_init[]  = {
-    SPVM_API_ALLOCATOR_new,
-    SPVM_API_ALLOCATOR_free,
+    SPVM_API_ALLOCATOR_new_allocator,
+    SPVM_API_ALLOCATOR_free_allocator,
   };
   SPVM_ENV_ALLOCATOR* env_allocator = calloc(1, sizeof(env_allocator_init));
   memcpy(env_allocator, env_allocator_init, sizeof(env_allocator_init));
 
   // Env String Buffer
   void* env_string_buffer_init[]  = {
-    SPVM_API_STRING_BUFFER_new_tmp,
-    SPVM_API_STRING_BUFFER_free,
+    SPVM_API_STRING_BUFFER_new_string_buffer_tmp,
+    SPVM_API_STRING_BUFFER_free_string_buffer,
   };
   SPVM_ENV_STRING_BUFFER* env_string_buffer = calloc(1, sizeof(env_string_buffer_init));
   memcpy(env_string_buffer, env_string_buffer_init, sizeof(env_string_buffer_init));
 
   // Env Compiler
   void* env_compiler_init[]  = {
-    SPVM_API_COMPILER_new,
-    SPVM_API_COMPILER_free,
+    SPVM_API_COMPILER_new_compiler,
+    SPVM_API_COMPILER_free_compiler,
   };
   SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
 
   // Env Runtime
   void* env_runtime_init[]  = {
-    SPVM_API_RUNTIME_new,
-    SPVM_API_RUNTIME_free,
+    SPVM_API_RUNTIME_new_runtime,
+    SPVM_API_RUNTIME_free_runtime,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -332,8 +332,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_is_object_array,
     SPVM_API_get_method_id_without_signature,
     SPVM_API_get_constant_string_value,
-    SPVM_API_COMPILER_new,
-    SPVM_API_COMPILER_free,
+    SPVM_API_COMPILER_new_compiler,
+    SPVM_API_COMPILER_free_compiler,
     SPVM_API_COMPILER_set_start_line,
     SPVM_API_COMPILER_get_start_line,
     SPVM_API_COMPILER_set_start_file,
@@ -8505,7 +8505,7 @@ void SPVM_API_free_env_prepared(SPVM_ENV* env) {
   env->cleanup_global_vars(env);
 
   // Free runtime
-  SPVM_API_RUNTIME_free(env->runtime);
+  SPVM_API_RUNTIME_free_runtime(env->runtime);
   env->runtime = NULL;
   
   // Free env

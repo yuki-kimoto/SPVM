@@ -75,7 +75,7 @@ SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
   
   // Create compiler
-  void* compiler = SPVM_API_COMPILER_new();
+  void* compiler = SPVM_API_COMPILER_new_compiler();
   
   // compiler->debug = 1;
   
@@ -99,10 +99,10 @@ SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
   }
 
   // Build runtime information
-  void* runtime = SPVM_API_RUNTIME_new(env);
+  void* runtime = SPVM_API_RUNTIME_new_runtime(env);
   SPVM_API_COMPILER_build_runtime(compiler, runtime);
   
-  SPVM_API_COMPILER_free(compiler);
+  SPVM_API_COMPILER_free_compiler(compiler);
   
   // Prepare runtime
   SPVM_API_RUNTIME_prepare(runtime);
