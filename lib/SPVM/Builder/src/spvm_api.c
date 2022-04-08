@@ -7381,6 +7381,23 @@ int32_t SPVM_API_get_class_var_class_id(SPVM_ENV* env, int32_t class_var_id) {
   return class_id;
 }
 
+SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, int32_t method_id) {
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  if (method_id < 0) {
+    return NULL;
+  }
+  
+  if (method_id >= runtime->methods_length) {
+    return NULL;
+  }
+
+  SPVM_RUNTIME_METHOD* method = &runtime->methods[method_id];
+  
+  return method;
+}
+
 int32_t SPVM_API_get_method_class_id(SPVM_ENV* env, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
@@ -7412,23 +7429,6 @@ int32_t SPVM_API_get_method_opcode_ids_length(SPVM_ENV* env, int32_t method_id) 
   int32_t opcode_ids_length = method->opcode_ids_length;
   
   return opcode_ids_length;
-}
-
-SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, int32_t method_id) {
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  if (method_id < 0) {
-    return NULL;
-  }
-  
-  if (method_id >= runtime->methods_length) {
-    return NULL;
-  }
-
-  SPVM_RUNTIME_METHOD* method = &runtime->methods[method_id];
-  
-  return method;
 }
 
 int32_t SPVM_API_get_method_name_id(SPVM_ENV* env, int32_t method_id) {
