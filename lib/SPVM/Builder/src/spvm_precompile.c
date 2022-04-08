@@ -4070,12 +4070,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       {
         int32_t class_var_id = opcode->operand1;
         
-        int32_t class_var_class_id = SPVM_API_get_class_var_class_id(env, class_var_id);
+        int32_t class_var_class_id = SPVM_API_RUNTIME_get_class_var_class_id(env->runtime, class_var_id);
         int32_t class_var_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, class_var_class_id);
         const char* class_var_class_name = SPVM_API_get_name(env, class_var_class_name_id);
-        int32_t class_var_name_id = SPVM_API_get_class_var_name_id(env, class_var_id);
+        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(env->runtime, class_var_id);
         const char* class_var_name = SPVM_API_get_name(env, class_var_name_id);
-        int32_t class_var_signature_id = SPVM_API_get_class_var_signature_id(env, class_var_id);
+        int32_t class_var_signature_id = SPVM_API_RUNTIME_get_class_var_signature_id(env->runtime, class_var_id);
         const char* class_var_signature = SPVM_API_get_name(env, class_var_signature_id);
 
         int32_t class_var_access_ctype_id;
@@ -4134,12 +4134,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_OBJECT: {
         int32_t class_var_id = opcode->operand1;
         
-        int32_t class_var_class_id = SPVM_API_get_class_var_class_id(env, class_var_id);
+        int32_t class_var_class_id = SPVM_API_RUNTIME_get_class_var_class_id(env->runtime, class_var_id);
         int32_t class_var_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, class_var_class_id);
         const char* class_var_class_name = SPVM_API_get_name(env, class_var_class_name_id);
-        int32_t class_var_name_id = SPVM_API_get_class_var_name_id(env, class_var_id);
+        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(env->runtime, class_var_id);
         const char* class_var_name = SPVM_API_get_name(env, class_var_name_id);
-        int32_t class_var_signature_id = SPVM_API_get_class_var_signature_id(env, class_var_id);
+        int32_t class_var_signature_id = SPVM_API_RUNTIME_get_class_var_signature_id(env->runtime, class_var_id);
         const char* class_var_signature = SPVM_API_get_name(env, class_var_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
@@ -4177,12 +4177,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       {
         int32_t class_var_id = opcode->operand0;
         
-        int32_t class_var_class_id = SPVM_API_get_class_var_class_id(env, class_var_id);
+        int32_t class_var_class_id = SPVM_API_RUNTIME_get_class_var_class_id(env->runtime, class_var_id);
         int32_t class_var_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, class_var_class_id);
         const char* class_var_class_name = SPVM_API_get_name(env, class_var_class_name_id);
-        int32_t class_var_name_id = SPVM_API_get_class_var_name_id(env, class_var_id);
+        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(env->runtime, class_var_id);
         const char* class_var_name = SPVM_API_get_name(env, class_var_name_id);
-        int32_t class_var_signature_id = SPVM_API_get_class_var_signature_id(env, class_var_id);
+        int32_t class_var_signature_id = SPVM_API_RUNTIME_get_class_var_signature_id(env->runtime, class_var_id);
         const char* class_var_signature = SPVM_API_get_name(env, class_var_signature_id);
 
         int32_t class_var_access_ctype_id;
@@ -4242,12 +4242,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT: {
         int32_t class_var_id = opcode->operand0;
         
-        int32_t class_var_class_id = SPVM_API_get_class_var_class_id(env, class_var_id);
+        int32_t class_var_class_id = SPVM_API_RUNTIME_get_class_var_class_id(env->runtime, class_var_id);
         int32_t class_var_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, class_var_class_id);
         const char* class_var_class_name = SPVM_API_get_name(env, class_var_class_name_id);
-        int32_t class_var_name_id = SPVM_API_get_class_var_name_id(env, class_var_id);
+        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(env->runtime, class_var_id);
         const char* class_var_name = SPVM_API_get_name(env, class_var_name_id);
-        int32_t class_var_signature_id = SPVM_API_get_class_var_signature_id(env, class_var_id);
+        int32_t class_var_signature_id = SPVM_API_RUNTIME_get_class_var_signature_id(env->runtime, class_var_id);
         const char* class_var_signature = SPVM_API_get_name(env, class_var_signature_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
@@ -4283,12 +4283,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
         int32_t class_var_id = opcode->operand0;
         
-        int32_t class_var_class_id = SPVM_API_get_class_var_class_id(env, class_var_id);
+        int32_t class_var_class_id = SPVM_API_RUNTIME_get_class_var_class_id(env->runtime, class_var_id);
         int32_t class_var_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, class_var_class_id);
         const char* class_var_class_name = SPVM_API_get_name(env, class_var_class_name_id);
-        int32_t class_var_name_id = SPVM_API_get_class_var_name_id(env, class_var_id);
+        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(env->runtime, class_var_id);
         const char* class_var_name = SPVM_API_get_name(env, class_var_name_id);
-        int32_t class_var_signature_id = SPVM_API_get_class_var_signature_id(env, class_var_id);
+        int32_t class_var_signature_id = SPVM_API_RUNTIME_get_class_var_signature_id(env->runtime, class_var_id);
         const char* class_var_signature = SPVM_API_get_name(env, class_var_signature_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
