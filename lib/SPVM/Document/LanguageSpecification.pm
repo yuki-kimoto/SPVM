@@ -384,9 +384,9 @@ If L<"long Type"> Integer Literal  exceeds the range of numbers that can be repr
 
 "_" can be used as a separator. Separator has no meaning.
 
-If Integer Literal is assigned to a L<"byte Type"> variable or passed to L<"byte Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"byte Type">, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is performed and the value converted to L<"byte Type"> value. If it exceeds the range, a compilation error will occur.
+If Integer Literal is assigned to a L<"byte Type"> variable or passed to L<"byte Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"byte Type">, the L<numeric narrowing type conversion|"Numeric Narrowing Type Conversion"> is performed and the value converted to L<"byte Type"> value. If it exceeds the range, a compilation error will occur.
 
-If Integer Literal is assigned to a L<"short Type"> variable or passed to L<"short Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"short Type">, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is performed and the value converted to L<"short Type"> value. If it exceeds the range, a compilation error will occur.
+If Integer Literal is assigned to a L<"short Type"> variable or passed to L<"short Type"> Method Argument, and does not exceed the range of numbers that can be represented by L<"short Type">, the L<numeric narrowing type conversion|"Numeric Narrowing Type Conversion"> is performed and the value converted to L<"short Type"> value. If it exceeds the range, a compilation error will occur.
 
 B<Examples of Integer Literal:>
 
@@ -861,9 +861,9 @@ Identifiers other than L<"Class Variable Names"> and L<"Local Variable Names"> p
 
 The SPVM language is assumed to be parsed by yacc/bison.
 
-=head2 The Definition of Syntax Parsing
+=head2 Syntax Parsing Definition
 
-Show the definition of syntax parsing that is written by yacc/bison. The definition of the precidence of operators is contained in this difinition.
+The definition of syntax parsing of SPVM language. This is written by yacc/bison syntax.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
   %token <opval> DESCRIPTOR MAKE_READ_ONLY IMPLEMENT
@@ -1324,7 +1324,9 @@ Show the definition of syntax parsing that is written by yacc/bison. The definit
   class_alias_name
     : NAME
 
-The following is a correspondence table between tokens in yacc/bison and keywords and operators in SPVM.
+=head2 Syntax Parsing Tokens
+
+The list of syntax parsing tokens:
 
 =begin html
 
@@ -1660,6 +1662,36 @@ The following is a correspondence table between tokens in yacc/bison and keyword
     <td>WO</td><td>wo</td>
   </tr>
 </table>
+
+=head2 Operator Precidence
+
+The definition of the precidence of operators. This is written by yacc/bison syntax.
+
+The bottom is the highest precidence and the top is the lowest precidence.
+  
+  %right <opval> ASSIGN SPECIAL_ASSIGN
+  %left <opval> LOGICAL_OR
+  %left <opval> LOGICAL_AND
+  %left <opval> BIT_OR BIT_XOR
+  %left <opval> BIT_AND
+  %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
+  %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA NUMERIC_CMP STRING_CMP
+  %left <opval> SHIFT
+  %left <opval> '+' '-' '.'
+  %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPLEMENT
+  %nonassoc <opval> INC DEC
+  %left <opval> ARROW
+
+See also L<syntax parsing tokens|"Syntax Parsing Tokens"> to know real operators.
+
+The operator precidence can be increased using C<()>.
+
+  #  a * b is calculated at first
+  a * b + c
+  
+  # b + c is calculated at first
+  a * (b + c)
 
 =end html
 
@@ -4048,7 +4080,7 @@ B<Examples of unary minus operators:>
 
 =head2 Addition Operator
 
-The addition operator C<+> is a L<binary operator|"Binary Operators"> to calcurate the result of the addition of two numbers.
+The addition operator C<+> is a L<binary operator|"Binary Operators"> to calculate the result of the addition of two numbers.
 
   LEFT_OPERAND + RIGHT_OPERAND
 
@@ -4064,7 +4096,7 @@ The return type of the addition operator is the type that L<"Binary Numeric Wide
 
 =head2 Subtraction Operator
 
-The subtraction operator C<-> is a L<binary operator|"Binary Operators"> to calcurate the result of the subtraction of two numbers.
+The subtraction operator C<-> is a L<binary operator|"Binary Operators"> to calculate the result of the subtraction of two numbers.
 
   LEFT_OPERAND - RIGHT_OPERAND
 
@@ -4080,7 +4112,7 @@ The return type of the subtraction operator is the type that L<"Binary Numeric W
 
 =head2 Multiplication Operator
 
-The multiplication operator is a L<binary operator|"Binary Operators"> to calcurate the result of multiplication of two numbers.
+The multiplication operator is a L<binary operator|"Binary Operators"> to calculate the result of multiplication of two numbers.
 
   LEFT_OPERAND * RIGHT_OPERAND
 
@@ -4146,7 +4178,7 @@ If the value of the right operand is C<0>, an L<exception|"Exception"> is thrown
 
 =head2 Remainder Operator
 
-The remainder operator C<%> is a L<binary operator|"Binary Operators"> to calcurate a remainder of two numbers.
+The remainder operator C<%> is a L<binary operator|"Binary Operators"> to calculate a remainder of two numbers.
 
   LEFT_OPERAND % RIGHT_OPERAND
 
@@ -4164,7 +4196,7 @@ If the right operand is C<0>, the remainder operator throw an L<exception|"Excep
 
 =head2 Remainder Unsigned Int Operator
 
-The remainder unsigned int operator C<remui> is a L<binary operator|"Binary Operators"> to calcurate a unsigned int remainder of two numbers.
+The remainder unsigned int operator C<remui> is a L<binary operator|"Binary Operators"> to calculate a unsigned int remainder of two numbers.
 
   LEFT_OPERAND remui RIGHT_OPERAND
 
@@ -4180,7 +4212,7 @@ If the value of the right operand is C<0>, an L<exception|"Exception"> is thrown
 
 =head2 Remainder Unsigned Long Operator
 
-The remainder unsigned long operator C<remul> is a L<binary operator|"Binary Operators"> to calcurate a unsigned long remainder of two numbers.
+The remainder unsigned long operator C<remul> is a L<binary operator|"Binary Operators"> to calculate a unsigned long remainder of two numbers.
 
   LEFT_OPERAND remul RIGHT_OPERAND
 
@@ -4196,7 +4228,7 @@ If the value of the right operand is C<0>, an L<exception|"Exception"> is thrown
 
 =head2 Increment Operator
 
-B<Increment Operator> is an Operator that adds 1 to the value. the meaning of Increment Operator is different depending on whether the Increment Operator is placed Pre or Post.
+B<Increment Operator> is an operator that adds 1 to the value. the meaning of Increment Operator is different depending on whether the Increment Operator is placed Pre or Post.
 
   # Pre Increment Operator
   ++LEXICAL_VARIABLE
@@ -4242,7 +4274,7 @@ For example, Post Increment of L<"byte Type"> value is equivalent to the followi
 
 =head2 Decrement Operator
 
-B<Decrement Operator> is an Operator that subtracts 1 to the value. the meaning of Decrement Operator is different depending on whether the Decrement Operator is placed Pre or Post.
+B<Decrement Operator> is an operator that subtracts 1 to the value. the meaning of Decrement Operator is different depending on whether the Decrement Operator is placed Pre or Post.
 
   # Pre Decrement Operator
   --LEXICAL_VARIABLE
@@ -4288,7 +4320,7 @@ For example, Post Decrement of L<"byte Type"> value is equivalent to the followi
 
 =head2 Bit Operator
 
-Bit Operator is an Operator that performs Bit operation. L<"Bit AND Operator">, <a href = "#language-operator-bit-or">Bit OR Operator</a>, L<"Bit NOT Operator">.
+Bit Operator is an operator that performs Bit operation. L<"Bit AND Operator">, <a href = "#language-operator-bit-or">Bit OR Operator</a>, L<"Bit NOT Operator">.
 
 =head2 Bit AND Operator
 
@@ -4413,7 +4445,7 @@ The operation result of logical right shift Operator is the same as the followin
 
 =head2 Comparison Operator
 
-Comparison Operator is an Operator that is placed between The left operand and the right operand to compare the size, and return True/False Value.
+Comparison Operator is an operator that is placed between The left operand and the right operand to compare the size, and return True/False Value.
 
   LEFT_OPERAND COMPARISON_OPERATOR RIGHT_OPERAND
 
@@ -4837,7 +4869,7 @@ Special Assignment Operator Example
 
 =head2 Reference Operator
 
-The Reference Operator is an Operator that retrieves the address of a variable for L<"Numeric Types"> or L<"Multi Numeric Types">. Designed to achieve c address Operator "*".
+The Reference Operator is an operator that retrieves the address of a variable for L<"Numeric Types"> or L<"Multi Numeric Types">. Designed to achieve c address Operator "*".
 
   \VARIABLE
 
@@ -4980,7 +5012,7 @@ Note that the sclara operator exists only to reduce the confusion.
 
 =head2 isweak Operator
 
-isweak Operator is an Operator that checks whether Field is</a>L<"Weaken Reference.">
+The C<isweak> operator checks whether the field is L<weak reference|"Weak Reference.">
 
   isweak VARIABLE->{FIELD_NAME};
 
@@ -4993,14 +5025,6 @@ The Type of the value stored in field must be <a href="#language-type-object">Ob
 If the value stored in field at Run Time is</a> L<"Undefined Value, it returns false. This is <a href="#language-expression">Expression">
 
 isweak Operator returns L<"Expressions">
-
-Operator Precidence can be a top priority by using "()".
-
-  #  a * b is the first
-  a * b + c
-  
-  # b + c is the first
-  a * (b + c)
 
 =head2 has_implement Operator
 
@@ -5469,7 +5493,7 @@ Read-only strings can't be cast to L<string type|"String Type"> qualified by L<m
 
 =head2 weaken Statement
 
-A weaken Statement is a Statement that sets L<"Weaken Reference"> for the Field.
+A weaken Statement is a Statement that sets L<"Weak Reference"> for the Field.
 
   weaken VARIABLE->{FIELD_NAME};
 
@@ -5485,15 +5509,15 @@ If the value stored in the Field at runtime is not L<"Undefined Value">, then th
 
 1. Decrement the reference count of the object stored in Field by C<1>.
 
-2. Setting the Weaken Reference flag in Field.
+2. Setting the Weak Reference flag in Field.
 
 3. Add Field to the back reference of the object saved in Field.
 
-Note that the Weaken Reference flag is set on the Field itself, not on the object stored in the Field.
+Note that the Weak Reference flag is set on the Field itself, not on the object stored in the Field.
 
-If the reference count of the object saved in Field becomes 0, the Weaken Reference is not created and the object saved in Field is released.
+If the reference count of the object saved in Field becomes 0, the Weak Reference is not created and the object saved in Field is released.
 
-Back Reference is the data of the object saved in Field, and is added to know the Field with the Weaken Reference flag set. There may be more than one.
+Back Reference is the data of the object saved in Field, and is added to know the Field with the Weak Reference flag set. There may be more than one.
 
   # There are multiple back references
   my $foo = new Foo;
@@ -5509,13 +5533,13 @@ Back Reference is the data of the object saved in Field, and is added to know th
   weaken $bar->{foo};
   weaken $baz->{foo};
 
-In the above example, "$bar->{foo}" and "$baz->{foo}" have the Weaken Reference flag set. The object represented by $foo has the back References "$bar->{foo}" and "$baz->{foo}".
+In the above example, "$bar->{foo}" and "$baz->{foo}" have the Weak Reference flag set. The object represented by $foo has the back References "$bar->{foo}" and "$baz->{foo}".
 
 The information of the back Reference is necessary because when the L<"Garbage Collection"> is performed, it is necessary to assign the Undefined Value to the Field pointed to by the back Reference.
 
 =head2 unweaken Statement
 
-unweaken Statement is a Statement that cancels L<"Weaken Reference"> for Field.
+unweaken Statement is a Statement that cancels L<"Weak Reference"> for Field.
 
   unweaken VARIABLE->{FIELD_NAME};
 
@@ -5531,7 +5555,7 @@ If the value stored in the Field at runtime is not L<"Undefined Value">, then th
 
 1. Increase the reference count of the object stored in the Field by C<1>.
 
-2. Clear the Weaken Reference flag of Field.
+2. Clear the Weak Reference flag of Field.
 
 3. Delete the Field from the back reference of the object stored in the Field.
 
@@ -7182,9 +7206,9 @@ The object is released from memory when the reference count reaches 0.
 
 If the object is an Array that has Object Type values ​​as elements, the reference count of all Array elements that are not Undefined Value is decremented by C<1> before Garbage Collection
 
-When an object is a L<class type|"Class Type"> and has a field of Object Type, the reference count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by C<1> before Garbage Collection. If Weaken Reference is set to the object saved in Field, Weaken Reference is released before Reference Count is decremented by C<1>.
+When an object is a L<class type|"Class Type"> and has a field of Object Type, the reference count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by C<1> before Garbage Collection. If Weak Reference is set to the object saved in Field, Weak Reference is released before Reference Count is decremented by C<1>.
 
-When the object has Back references of Weaken Reference, Undefined Value is assigned to all Fields registered as back References and all back References are deleted.
+When the object has Back references of Weak Reference, Undefined Value is assigned to all Fields registered as back References and all back References are deleted.
 
 The above process is done recursively.
 
@@ -7262,9 +7286,9 @@ If you write Create Callback and Capture without using syntax sugar, it will be 
 
 Capture is a syntax for writing such a long description short.
 
-=head1 Weaken Reference
+=head1 Weak Reference
 
-Weaken Reference is a reference that does not increase the reference count. Weaken Reference can be used to solve the problem of circular references.
+Weak Reference is a reference that does not increase the reference count. Weak Reference can be used to solve the problem of circular references.
 
 SPVM has GC of Reference Count Type. In the GC of Reference Count Type, the object is automatically released when the reference count becomes 0, but when the circular reference occurs, the reference count does not become 0 and the object is automatically released. not.
 
@@ -7280,9 +7304,9 @@ This is an Example when the Field of the object is circularly referenced.
 
 In this case, both objects are not released when the Scope ends. This is because a circular reference has occurred and the reference count does not become 0.
 
-Weaken Reference is a function to correctly destroy objects when a circular reference occurs in a programming language that has a Reference Count GC.
+Weak Reference is a function to correctly destroy objects when a circular reference occurs in a programming language that has a Reference Count GC.
 
-In such a case, it is possible to release correctly by setting one Field to Weaken Reference using L<"weaken Statement">.
+In such a case, it is possible to release correctly by setting one Field to Weak Reference using L<"weaken Statement">.
 
   {
     my $foo = new Foo;
@@ -7302,7 +7326,7 @@ When a weaken statement is executed, $foo has a Reference Count of 2 and $bar ha
 
 When the Scope ends, the reference count of $bar is decremented by C<1> and becomes 0, so it is released correctly.
 
-Even if there are 3 circular references, you can release them correctly by setting Weaken Reference in 1 Field.
+Even if there are 3 circular references, you can release them correctly by setting Weak Reference in 1 Field.
 
   {
     my $foo = new Foo;
@@ -7316,5 +7340,5 @@ Even if there are 3 circular references, you can release them correctly by setti
     weaken $foo->{bar};
   }
 
-As a syntax related to Weaken Reference, Weaken Reference can be released L<"weaken Statement">, and it can be confirmed whether Field is Weaken Reference <a href = "#language- There is an operator-isweak ">isweak Operator</a>.
+As a syntax related to Weak Reference, Weak Reference can be released L<"weaken Statement">, and it can be confirmed whether Field is Weak Reference <a href = "#language- There is an operator-isweak ">isweak Operator</a>.
 
