@@ -7868,10 +7868,6 @@ void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id) {
   return precompile_method_address;
 }
 
-const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
-  SPVM_PRECOMPILE_create_precompile_source(env, string_buffer, class_name);
-}
-
 int32_t SPVM_API_has_interface_by_id(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t interface_basic_type_id, int32_t interface_type_dimension) {
   (void)env;
 
@@ -7913,4 +7909,8 @@ int32_t SPVM_API_has_interface_by_id(SPVM_ENV* env, int32_t object_basic_type_id
   }
 
   return 0;
+}
+
+const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
+  SPVM_PRECOMPILE_create_precompile_source(env, string_buffer, class_name);
 }
