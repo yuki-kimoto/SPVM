@@ -359,7 +359,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_set_precompile_method_address,
     SPVM_API_is_object_array,
     SPVM_API_RUNTIME_get_method_id_without_signature,
-    SPVM_API_get_constant_string_value,
+    SPVM_API_RUNTIME_get_constant_string_value,
     SPVM_API_COMPILER_new_compiler,
     SPVM_API_COMPILER_free_compiler,
     SPVM_API_COMPILER_set_start_line,
@@ -3962,7 +3962,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t string_id = opcode->operand1;
         int32_t constant_string_length;
-        const char* constant_string = env->get_constant_string_value(env, string_id, &constant_string_length);
+        const char* constant_string = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, string_id, &constant_string_length);
         void* string = env->new_string_raw(env, constant_string, constant_string_length);
         if (string == NULL) {
           void* exception = env->new_string_nolen_raw(env, "Can't allocate memory for string");
@@ -7774,20 +7774,6 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   allocator= NULL;
   
   env->free_env_raw(env);
-}
-
-const char* SPVM_API_get_constant_string_value(SPVM_ENV* env, int32_t string_id, int32_t* string_length) {
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  SPVM_RUNTIME_STRING* constant_string = &runtime->strings[string_id];
-  
-  const char* constant_string_value = constant_string->value;
-  
-  if (string_length) {
-    *string_length = constant_string->length;
-  }
-  
-  return constant_string_value;
 }
 
 void SPVM_API_set_native_method_address(SPVM_ENV* env, int32_t method_id, void* address) {

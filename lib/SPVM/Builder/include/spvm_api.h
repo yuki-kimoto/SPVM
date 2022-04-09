@@ -294,8 +294,6 @@ SPVM_ENV* SPVM_API_new_env_raw();
 SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env);
 void SPVM_API_free_env(SPVM_ENV* env);
 
-const char* SPVM_API_get_constant_string_value(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
-
 void SPVM_API_set_native_method_address(SPVM_ENV* env, int32_t method_id, void* address);
 void SPVM_API_set_precompile_method_address(SPVM_ENV* env, int32_t method_id, void* address);
 void* SPVM_API_get_native_method_address(SPVM_ENV* env, int32_t method_id);
