@@ -7273,39 +7273,6 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type_with_name(SPVM_ENV* env,  const
   return basic_type;
 }
 
-int32_t SPVM_API_get_class_var_name_id(SPVM_ENV* env, int32_t class_var_id) {
-  
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(env->runtime, class_var_id);
-
-  assert(class_var);
-
-  int32_t name_id = class_var->name_id;
-  
-  return name_id;
-}
-
-int32_t SPVM_API_get_class_var_signature_id(SPVM_ENV* env, int32_t class_var_id) {
-  
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(env->runtime, class_var_id);
-
-  assert(class_var);
-
-  int32_t signature_id = class_var->signature_id;
-  
-  return signature_id;
-}
-
-int32_t SPVM_API_get_class_var_class_id(SPVM_ENV* env, int32_t class_var_id) {
-  
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(env->runtime, class_var_id);
-
-  assert(class_var);
-
-  int32_t class_id = class_var->class_id;
-  
-  return class_id;
-}
-
 int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
   (void)env;
   
