@@ -30,7 +30,7 @@
 #include "spvm_runtime.h"
 #include "spvm_runtime_manager.h"
 #include "spvm_runtime_method.h"
-#include "spvm_runtime_string.h"
+#include "spvm_runtime_constant_string.h"
 #include "spvm_runtime_type.h"
 #include "spvm_precompile.h"
 #include "spvm_api_compiler.h"
@@ -3932,9 +3932,9 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t string_id = opcode->operand1;
+        int32_t constant_string_id = opcode->operand1;
         int32_t constant_string_length;
-        const char* constant_string = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, string_id, &constant_string_length);
+        const char* constant_string = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, constant_string_id, &constant_string_length);
         void* string = env->new_string_raw(env, constant_string, constant_string_length);
         if (string == NULL) {
           void* exception = env->new_string_nolen_raw(env, "Can't allocate memory for string");

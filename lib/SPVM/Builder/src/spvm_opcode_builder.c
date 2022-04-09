@@ -2717,7 +2717,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             
                             const char* constant_string_value = constant->value.oval;
                             int32_t constant_string_length = constant->string_length;
-                            SPVM_STRING* constant_string = SPVM_HASH_get(compiler->string_symtable, constant_string_value, constant_string_length);
+                            SPVM_STRING* constant_string = SPVM_HASH_get(compiler->constant_string_symtable, constant_string_value, constant_string_length);
                             assert(constant_string);
                             
                             opcode.operand0 = mem_id_out;

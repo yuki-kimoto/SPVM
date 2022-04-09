@@ -21,7 +21,7 @@ SPVM runtime native APIs are the public APIs to use compile SPVM modules.
 
 =head2 get_constant_string_value
 
-  const char* (*get_constant_string_value)(void* runtime, int32_t string_id, int32_t* string_length);
+  const char* (*get_constant_string_value)(void* runtime, int32_t constant_string_id, int32_t* string_length);
 
 Get the value and length of the string with the string ID. 
 

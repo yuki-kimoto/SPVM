@@ -24,7 +24,7 @@ struct spvm_runtime {
   int32_t string_buffer_length;
 
   // Strings
-  SPVM_RUNTIME_STRING* strings;
+  SPVM_RUNTIME_CONSTANT_STRING* strings;
 
   // The length of strings
   int32_t strings_length;
@@ -84,7 +84,7 @@ struct spvm_runtime {
   int32_t fields_length;
   
   // String symtable
-  SPVM_HASH* string_symtable;
+  SPVM_HASH* constant_string_symtable;
 
   // Runtime Basic type symbol table
   SPVM_HASH* basic_type_symtable;

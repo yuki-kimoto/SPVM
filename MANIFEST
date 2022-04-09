@@ -401,10 +401,10 @@ lib/SPVM/Builder/include/spvm_runtime.h
 lib/SPVM/Builder/include/spvm_runtime_basic_type.h
 lib/SPVM/Builder/include/spvm_runtime_class.h
 lib/SPVM/Builder/include/spvm_runtime_class_var.h
+lib/SPVM/Builder/include/spvm_runtime_constant_string.h
 lib/SPVM/Builder/include/spvm_runtime_field.h
 lib/SPVM/Builder/include/spvm_runtime_manager.h
 lib/SPVM/Builder/include/spvm_runtime_method.h
-lib/SPVM/Builder/include/spvm_runtime_string.h
 lib/SPVM/Builder/include/spvm_runtime_type.h
 lib/SPVM/Builder/include/spvm_string.h
 lib/SPVM/Builder/include/spvm_string_buffer.h
@@ -498,6 +498,8 @@ lib/SPVM/Document/ExchangeAPI.pm
 lib/SPVM/Document/LanguageSpecification.pm
 lib/SPVM/Document/Modules.pm
 lib/SPVM/Document/NativeAPI.pm
+lib/SPVM/Document/NativeAPI/Compiler.pm
+lib/SPVM/Document/NativeAPI/Runtime.pm
 lib/SPVM/Document/Tutorial.pm
 lib/SPVM/Document/Tutorial/Complex.pm
 lib/SPVM/Double.pm

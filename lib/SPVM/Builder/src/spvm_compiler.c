@@ -44,7 +44,7 @@
 #include "spvm_runtime.h"
 #include "spvm_runtime_manager.h"
 #include "spvm_runtime_method.h"
-#include "spvm_runtime_string.h"
+#include "spvm_runtime_constant_string.h"
 #include "spvm_runtime_type.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
@@ -57,7 +57,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->bufptr = "";
 
   compiler->strings = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
-  compiler->string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
+  compiler->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
   compiler->string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
  
   // Eternal information
@@ -175,7 +175,7 @@ void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* class_name, const ch
 
 const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_string_symtable, const char* name) {
   
-  SPVM_RUNTIME_STRING* string = SPVM_HASH_get(runtime_string_symtable, name, strlen(name));
+  SPVM_RUNTIME_CONSTANT_STRING* string = SPVM_HASH_get(runtime_string_symtable, name, strlen(name));
   
   const char* new_name = string->value;
   
@@ -403,10 +403,10 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   
   // Strings
   runtime->strings_length = compiler->strings->length;
-  runtime->strings = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_STRING) * (compiler->strings->length + 1));
-  for (int32_t string_id = 0; string_id < compiler->strings->length; string_id++) {
-    SPVM_STRING* string = SPVM_LIST_get(compiler->strings, string_id);
-    SPVM_RUNTIME_STRING* runtime_string = &runtime->strings[string_id];
+  runtime->strings = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CONSTANT_STRING) * (compiler->strings->length + 1));
+  for (int32_t constant_string_id = 0; constant_string_id < compiler->strings->length; constant_string_id++) {
+    SPVM_STRING* string = SPVM_LIST_get(compiler->strings, constant_string_id);
+    SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->strings[constant_string_id];
     
     runtime_string->id = string->id;
     runtime_string->length = string->length;
@@ -430,7 +430,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_class->type_id = class->type->id;
     runtime_class->id = class->id;
     if (class->module_file) {
-      SPVM_STRING* class_module_file_string = SPVM_HASH_get(compiler->string_symtable, class->module_file, strlen(class->module_file));
+      SPVM_STRING* class_module_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->module_file, strlen(class->module_file));
       runtime_class->module_file_id = class_module_file_string->id;
     }
     else {
@@ -442,7 +442,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_class->has_init_block = class->has_init_block;
     runtime_class->is_anon = class->is_anon;
 
-    SPVM_STRING* class_string = SPVM_HASH_get(compiler->string_symtable, class->name, strlen(class->name));
+    SPVM_STRING* class_string = SPVM_HASH_get(compiler->constant_string_symtable, class->name, strlen(class->name));
     runtime_class->name_id = class_string->id;
     
     if (class->method_destructor) {
@@ -497,7 +497,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
       runtime_class->anon_method_ids_base = -1;
     }
 
-    SPVM_RUNTIME_STRING* class_name_string = (SPVM_RUNTIME_STRING*)&runtime->strings[runtime_class->name_id];
+    SPVM_RUNTIME_CONSTANT_STRING* class_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->strings[runtime_class->name_id];
     const char* runtime_class_name = (const char*)&runtime->string_buffer[class_name_string->string_buffer_id];
   }
 
@@ -516,7 +516,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     else {
       runtime_basic_type->class_id = -1;
     }
-    SPVM_STRING* basic_type_string = SPVM_HASH_get(compiler->string_symtable, basic_type->name, strlen(basic_type->name));
+    SPVM_STRING* basic_type_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->name, strlen(basic_type->name));
     runtime_basic_type->name_id = basic_type_string->id;
   }
 
@@ -545,10 +545,10 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_class_var->type_id = class_var->type->id;
     runtime_class_var->class_id = class_var->class->id;
 
-    SPVM_STRING* class_var_name_string = SPVM_HASH_get(compiler->string_symtable, class_var->name, strlen(class_var->name));
+    SPVM_STRING* class_var_name_string = SPVM_HASH_get(compiler->constant_string_symtable, class_var->name, strlen(class_var->name));
     runtime_class_var->name_id = class_var_name_string->id;
 
-    SPVM_STRING* class_var_signature_string = SPVM_HASH_get(compiler->string_symtable, class_var->signature, strlen(class_var->signature));
+    SPVM_STRING* class_var_signature_string = SPVM_HASH_get(compiler->constant_string_symtable, class_var->signature, strlen(class_var->signature));
     runtime_class_var->signature_id = class_var_signature_string->id;
   }
 
@@ -579,10 +579,10 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_method->mortal_stack_length  = method->mortal_stack_length;
     runtime_method->return_type_id = method->return_type->id;
 
-    SPVM_STRING* method_name_string = SPVM_HASH_get(compiler->string_symtable, method->name, strlen(method->name));
+    SPVM_STRING* method_name_string = SPVM_HASH_get(compiler->constant_string_symtable, method->name, strlen(method->name));
     runtime_method->name_id = method_name_string->id;
 
-    SPVM_STRING* method_signature_string = SPVM_HASH_get(compiler->string_symtable, method->signature, strlen(method->signature));
+    SPVM_STRING* method_signature_string = SPVM_HASH_get(compiler->constant_string_symtable, method->signature, strlen(method->signature));
     runtime_method->signature_id = method_signature_string->id;
 
     runtime_method->arg_ids_length = method->args_length;
@@ -623,10 +623,10 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_field->type_id = field->type->id;
     runtime_field->class_id = field->class->id;
     
-    SPVM_STRING* field_name_string = SPVM_HASH_get(compiler->string_symtable, field->name, strlen(field->name));
+    SPVM_STRING* field_name_string = SPVM_HASH_get(compiler->constant_string_symtable, field->name, strlen(field->name));
     runtime_field->name_id = field_name_string->id;
 
-    SPVM_STRING* field_signature_string = SPVM_HASH_get(compiler->string_symtable, field->signature, strlen(field->signature));
+    SPVM_STRING* field_signature_string = SPVM_HASH_get(compiler->constant_string_symtable, field->signature, strlen(field->signature));
     runtime_field->signature_id = field_signature_string->id;
   }
 
@@ -634,7 +634,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   fprintf(stderr, "[RUNTIME MEMORY SIZE]\n");
   fprintf(stderr, "opcodes size: %d bytes\n", (int32_t)(sizeof(SPVM_OPCODE) * runtime->opcode_ids_length));
   fprintf(stderr, "string_buffer size: %d bytes\n", (int32_t)(runtime->string_buffer_length));
-  fprintf(stderr, "strings size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_STRING) * runtime->strings_length));
+  fprintf(stderr, "strings size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CONSTANT_STRING) * runtime->strings_length));
   fprintf(stderr, "classes size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CLASS) * runtime->classes_length));
   fprintf(stderr, "basic_types size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_BASIC_TYPE) * runtime->basic_types_length));
   fprintf(stderr, "types size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_TYPE) * runtime->types_length));
