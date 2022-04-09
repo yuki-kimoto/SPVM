@@ -303,16 +303,12 @@ void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id);
 
 int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object);
 
-const char* SPVM_API_get_basic_type_name(SPVM_ENV* env, int32_t basic_type_id);
 const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name);
 int32_t SPVM_API_has_interface_by_id(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t interface_basic_type_id, int32_t interface_type_dimension);
 int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t callback_basic_type_id, int32_t callback_type_dimension);
 int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPVM_OBJECT* element);
 
 const char* SPVM_API_get_name(SPVM_ENV* env, int32_t string_id);
-int32_t SPVM_API_get_basic_type_name_id(SPVM_ENV* env, int32_t basic_type_id);
-int32_t SPVM_API_get_basic_type_class_id(SPVM_ENV* env, int32_t basic_type_id);
-int32_t SPVM_API_get_basic_type_category(SPVM_ENV* env, int32_t basic_type_id);
 int32_t SPVM_API_get_type_basic_type_id(SPVM_ENV* env, int32_t type_id);
 int32_t SPVM_API_get_type_dimension(SPVM_ENV* env, int32_t type_id);
 int32_t SPVM_API_get_type_width(SPVM_ENV* env, int32_t type_id);
