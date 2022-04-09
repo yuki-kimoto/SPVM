@@ -2407,7 +2407,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         int32_t string_id = opcode->operand1;
         
         int32_t constant_string_length;
-        const char* constant_string_value = SPVM_API_get_constant_string_value(env, string_id, &constant_string_length);
+        const char* constant_string_value = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, string_id, &constant_string_length);
 
         SPVM_STRING_BUFFER_add(string_buffer,
           "  {\n"
