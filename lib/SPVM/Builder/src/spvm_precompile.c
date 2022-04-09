@@ -19,7 +19,7 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER*
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Class
-  int32_t class_id = SPVM_API_RUNTIME_get_class_id(env->runtime, class_name);
+  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(env->runtime, class_name);
   int32_t class_is_anon = SPVM_API_RUNTIME_get_class_is_anon(env->runtime, class_id);
   int32_t class_module_file_id = SPVM_API_RUNTIME_get_class_module_file_id(env->runtime, class_id);
   const char* class_module_file = SPVM_API_RUNTIME_get_name(env->runtime, class_module_file_id);
@@ -168,7 +168,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Class
-  int32_t class_id = SPVM_API_RUNTIME_get_class_id(env->runtime, class_name);
+  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(env->runtime, class_name);
   int32_t class_module_file_id = SPVM_API_RUNTIME_get_class_module_file_id(env->runtime, class_id);
   const char* class_module_file = SPVM_API_RUNTIME_get_name(env->runtime, class_module_file_id);
   int32_t class_is_anon = SPVM_API_RUNTIME_get_class_is_anon(env->runtime, class_id);

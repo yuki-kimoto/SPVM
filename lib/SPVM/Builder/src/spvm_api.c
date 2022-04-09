@@ -161,7 +161,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_RUNTIME_get_type_width,
     SPVM_API_RUNTIME_get_type_is_object,
     SPVM_API_RUNTIME_get_type_is_ref,
-    SPVM_API_RUNTIME_get_class_id,
+    SPVM_API_RUNTIME_get_class_id_by_name,
     SPVM_API_RUNTIME_get_class_name_id,
     SPVM_API_RUNTIME_get_class_field_ids_base,
     SPVM_API_RUNTIME_get_class_field_ids_length,
