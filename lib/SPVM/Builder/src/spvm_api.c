@@ -4289,7 +4289,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
                 int32_t method_return_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, method_return_class_id);
                 int32_t method_return_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, method_return_class_id);
                 int32_t method_return_mulnum_field_id = method_return_class_field_ids_base;
-                int32_t method_return_mulnum_field_type_id = SPVM_API_get_field_type_id(env, method_return_mulnum_field_id);
+                int32_t method_return_mulnum_field_type_id = SPVM_API_RUNTIME_get_field_type_id(env->runtime, method_return_mulnum_field_id);
                 int32_t method_return_mulnum_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, method_return_mulnum_field_type_id);
                 
                 switch(method_return_mulnum_field_type_basic_type_id) {
@@ -4434,7 +4434,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
                   int32_t method_return_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, method_return_class_id);
                   int32_t method_return_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, method_return_class_id);
                   int32_t method_return_mulnum_field_id = method_return_class_field_ids_base;
-                  int32_t method_return_mulnum_field_type_id = SPVM_API_get_field_type_id(env, method_return_mulnum_field_id);
+                  int32_t method_return_mulnum_field_type_id = SPVM_API_RUNTIME_get_field_type_id(env->runtime, method_return_mulnum_field_id);
                   int32_t method_return_mulnum_field_type_basic_type_id = SPVM_API_get_type_basic_type_id(env, method_return_mulnum_field_type_id);
                   
                   switch(method_return_mulnum_field_type_basic_type_id) {
@@ -7447,50 +7447,6 @@ int32_t SPVM_API_get_type_is_object(SPVM_ENV* env, int32_t type_id) {
   }
   
   return is_object;
-}
-
-int32_t SPVM_API_get_field_class_id(SPVM_ENV* env, int32_t field_id) {
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_id);
-
-  assert(field);
-
-  int32_t class_id = field->class_id;
-  
-  return class_id;
-}
-
-int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id) {
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_id);
-  
-  assert(field);
-  
-  int32_t field_type_id = field->type_id;
-  
-  return field_type_id;
-}
-
-int32_t SPVM_API_get_field_name_id(SPVM_ENV* env, int32_t field_id) {
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_id);
-  
-  assert(field);
-  
-  int32_t field_name_id = field->name_id;
-  
-  return field_name_id;
-}
-
-int32_t SPVM_API_get_field_signature_id(SPVM_ENV* env, int32_t field_id) {
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_id);
-
-  assert(field);
-
-  int32_t signature_id = field->signature_id;
-  
-  return signature_id;
 }
 
 int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
