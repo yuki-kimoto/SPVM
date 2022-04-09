@@ -195,7 +195,7 @@ call_spvm_method(...)
   const char* method_name = SvPV_nolen(sv_method_name);
   
   // Method not found
-  int32_t method_id = SPVM_API_RUNTIME_get_method_id_without_signature(env->runtime, class_name, method_name);
+  int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   if (method_id < 0) {
     croak("%s->%s method not found at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
@@ -3914,7 +3914,7 @@ set_native_method_address(...)
   const char* method_name = SvPV_nolen(sv_method_name);
   
   // Method id
-  int32_t method_id = SPVM_API_RUNTIME_get_method_id_without_signature(env->runtime, class_name, method_name);
+  int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
@@ -3952,7 +3952,7 @@ set_precompile_method_address(...)
   const char* method_name = SvPV_nolen(sv_method_name);
   
   // Method id
-  int32_t method_id = SPVM_API_RUNTIME_get_method_id_without_signature(env->runtime, class_name, method_name);
+  int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   
   // Native address
   void* precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));

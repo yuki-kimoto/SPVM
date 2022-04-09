@@ -511,7 +511,7 @@ int32_t SPVM_API_RUNTIME_get_field_signature_id(SPVM_RUNTIME* runtime, int32_t f
   return signature_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_id_without_signature(SPVM_RUNTIME* runtime, const char* class_name, const char* method_name) {
+int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char* class_name, const char* method_name) {
   (void)runtime;
   
   // Method ID

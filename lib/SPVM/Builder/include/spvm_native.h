@@ -401,7 +401,7 @@ struct spvm_env_runtime {
   void* (*get_precompile_method_address)(SPVM_ENV*, int32_t method_id);
   void (*set_native_method_address)(void* runtime, int32_t method_id, void* address);
   void (*set_precompile_method_address)(void* runtime, int32_t method_id, void* address);
-  int32_t (*get_method_id_without_signature)(void* runtime, const char* class_name, const char* method_name);
+  int32_t (*get_method_id_by_name)(void* runtime, const char* class_name, const char* method_name);
   const char* (*get_constant_string_value)(void* runtime, int32_t string_id, int32_t* string_length);
 };
 

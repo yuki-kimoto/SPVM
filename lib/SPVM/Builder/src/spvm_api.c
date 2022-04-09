@@ -206,7 +206,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_RUNTIME_get_precompile_method_address,
     SPVM_API_RUNTIME_set_native_method_address,
     SPVM_API_RUNTIME_set_precompile_method_address,
-    SPVM_API_RUNTIME_get_method_id_without_signature,
+    SPVM_API_RUNTIME_get_method_id_by_name,
     SPVM_API_RUNTIME_get_constant_string_value,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));

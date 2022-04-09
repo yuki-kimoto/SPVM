@@ -174,7 +174,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
   int32_t class_is_anon = SPVM_API_RUNTIME_get_class_is_anon(env->runtime, class_id);
   
   // Method
-  int32_t method_id = SPVM_API_RUNTIME_get_method_id_without_signature(env->runtime, class_name, method_name);
+  int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   int32_t method_return_type_id = SPVM_API_RUNTIME_get_method_return_type_id(env->runtime, method_id);
 
   // Method declaration
@@ -4614,7 +4614,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_ENV* env, SPVM_STRING_BUFF
         int32_t interface_class_name_id = SPVM_API_RUNTIME_get_class_name_id(env->runtime, interface_class_id);
         const char* interface_class_name = SPVM_API_RUNTIME_get_name(env->runtime, interface_class_name_id);
         
-        int32_t interface_method_id = SPVM_API_RUNTIME_get_method_id_without_signature(env->runtime, interface_class_name, implement_method_name);
+        int32_t interface_method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, interface_class_name, implement_method_name);
         int32_t interface_method_signature_id = SPVM_API_RUNTIME_get_method_signature_id(env->runtime, interface_method_id);
         const char* interface_method_signature = SPVM_API_RUNTIME_get_name(env->runtime, interface_method_signature_id);
 

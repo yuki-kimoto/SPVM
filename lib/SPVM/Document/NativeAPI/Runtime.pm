@@ -45,15 +45,15 @@ Set the native method address.
 
 Set the precompile method address.
 
-=head2 get_method_id_without_signature
+=head2 get_method_id_by_name
 
-  int32_t (*get_method_id_without_signature)(void* runtime, const char* class_name, const char* method_name);
+  int32_t (*get_method_id_by_name)(void* runtime, const char* class_name, const char* method_name);
 
 Get the method ID by the class name and method name. If the method does not exists, a negative value is returned.
 
-=head2 get_method_id_without_signature
+=head2 get_method_id_by_name
 
-  int32_t (*get_method_id_without_signature)(void* runtime, const char* class_name, const char* method_name);
+  int32_t (*get_method_id_by_name)(void* runtime, const char* class_name, const char* method_name);
 
 Get the method ID by the class name and method name. If the method does not exists, a negative value is returned.
 
