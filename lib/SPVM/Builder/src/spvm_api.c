@@ -6854,7 +6854,7 @@ int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
     return -1;
   }
 
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_with_name(env->runtime, basic_type_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(env->runtime, basic_type_name);
   if (basic_type) {
     int32_t basic_type_id = basic_type->id;
     return basic_type_id;
@@ -6886,7 +6886,7 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* class_name, const char*
   (void)env;
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_with_name(env->runtime, class_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(env->runtime, class_name);
   if (!basic_type) {
     return -1;
   }
@@ -6919,7 +6919,7 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const c
   (void)env;
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_with_name(env->runtime, class_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(env->runtime, class_name);
   
   // Class name
   SPVM_RUNTIME_CLASS* class;
@@ -7041,7 +7041,7 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
   int32_t method_id = -1;
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_with_name(env->runtime, class_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(env->runtime, class_name);
   if (basic_type) {
     
     // Class
@@ -7074,7 +7074,7 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_
   int32_t method_id = -1;
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_with_name(env->runtime, class_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(env->runtime, class_name);
   if (basic_type) {
     
     // Class
