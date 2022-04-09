@@ -11,12 +11,28 @@ Revision history for SPVM
           
           (string)$num;
         * Improve field access error message.
+        * Move compiler native APIs from env->compier_xxx to env->api->compiler->xxx.
+          // Compiler API
+          void* compiler_api = env->api->compiler;
+          
+          // New compiler
+          void* compiler = compiler_api->new_compiler();
+          
+          // Compile SPVM
+          int32_t status = compiler_api->compile_spvm(compiler, "MyClass");
+          
+          // Free compiler
+          compiler_api->free_compiler(compiler);
+        * Add SPVM::Document::NativeAPI::Compiler document.
+        
         [BUG FIX]
         * Fix the bug that dump weaken objects.
         * Fix the bug of isweak operator compile checking.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Internally used Native APIs object_type_category_offset become always NULL.
+        * Remove native APIs from env->compier_xxx. This APIs is moved to compiler native APIs.
+        
 0.9510  2021-04-05
         [CHANGE]
         * Add alias syntax

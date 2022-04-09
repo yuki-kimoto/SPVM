@@ -2879,6 +2879,10 @@ If the method is a precompile method, return C<1>, otherwise return C<0>.
 
 Build runtime information.
 
+=head1 Compiler Native API
+
+L<SPVM::Document::NativeAPI::Compiler>
+
 =head1 Utilities
 
 Utilities.
