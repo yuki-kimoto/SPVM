@@ -435,8 +435,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_method_mortal_stack_length,
     SPVM_API_get_method_opcode_ids_base,
     SPVM_API_get_method_opcode_ids_length,
-    SPVM_API_get_arg_type_id,
-    SPVM_API_get_anon_method_method_id,
+    SPVM_API_RUNTIME_get_arg_type_id,
+    SPVM_API_RUNTIME_get_anon_method_method_id,
     SPVM_API_RUNTIME_get_opcodes,
     SPVM_API_RUNTIME_get_opcode_ids_length,
     SPVM_API_free_env_prepared,
@@ -8542,24 +8542,6 @@ void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id) {
   return precompile_method_address;
 }
 
-int32_t SPVM_API_get_arg_type_id(SPVM_ENV* env, int32_t arg_id) {
-
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  int32_t arg_type_id = runtime->arg_type_ids[arg_id];
-  
-  return arg_type_id;
-}
-
-int32_t SPVM_API_get_anon_method_method_id(SPVM_ENV* env, int32_t anon_method_id) {
-
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  int32_t anon_method_method_id = runtime->anon_method_method_ids[anon_method_id];
-  
-  return anon_method_method_id;
-}
-
 const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   SPVM_PRECOMPILE_create_precompile_source(env, string_buffer, class_name);
 }
@@ -8652,18 +8634,3 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
   return can_assign;
 }
 
-SPVM_OPCODE* SPVM_API_get_runtime_opcodes(SPVM_ENV* env) {
-  (void)env;
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  return runtime->opcodes;
-}
-
-int32_t SPVM_API_get_runtime_opcode_ids_length(SPVM_ENV* env) {
-  (void)env;
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  return runtime->opcode_ids_length;
-}
