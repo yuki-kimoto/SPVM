@@ -575,7 +575,7 @@ EOS
     const char* method_name = "$precompile_method_name";
     int32_t method_id = SPVM_API_RUNTIME_get_method_id_without_signature(env->runtime, class_name, method_name);
     void* precompile_address = SPVMPRECOMPILE__${class_cname}__$precompile_method_name;
-    env->set_precompile_method_address(env, method_id, precompile_address);
+    SPVM_RUNTIME_API_set_precompile_method_address(env->runtime, method_id, precompile_address);
   }
 EOS
       }
@@ -594,7 +594,7 @@ EOS
     const char* method_name = "$native_method_name";
     int32_t method_id = SPVM_API_RUNTIME_get_method_id_without_signature(env->runtime, class_name, method_name);
     void* native_address = SPVM__${class_cname}__$native_method_name;
-    env->set_native_method_address(env, method_id, native_address);
+    SPVM_RUNTIME_API_set_native_method_address(env->runtime, method_id, native_address);
   }
 EOS
       }
