@@ -35,7 +35,7 @@
 #include "spvm_field_access.h"
 #include "spvm_call_method.h"
 #include "spvm_var.h"
-#include "spvm_string.h"
+#include "spvm_constant_string.h"
 
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class.h"
@@ -116,7 +116,7 @@ void SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, int32_t basic_type_id
    SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
    basic_type->id = basic_type_id;
    const char* basic_type_name_tmp = (SPVM_NATIVE_C_BASIC_TYPE_ID_NAMES())[basic_type->id];
-   SPVM_STRING* basic_type_name_string = SPVM_STRING_new(compiler, basic_type_name_tmp, strlen(basic_type_name_tmp));
+   SPVM_CONSTANT_STRING* basic_type_name_string = SPVM_STRING_new(compiler, basic_type_name_tmp, strlen(basic_type_name_tmp));
    basic_type->name = basic_type_name_string->value;
    SPVM_LIST_push(compiler->basic_types, basic_type);
    SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
@@ -184,7 +184,7 @@ const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_string_symtable, c
 
 int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name) {
   
-  SPVM_STRING* class_name_string = SPVM_STRING_new(compiler, class_name, strlen(class_name));
+  SPVM_CONSTANT_STRING* class_name_string = SPVM_STRING_new(compiler, class_name, strlen(class_name));
   class_name = class_name_string->value;
 
   compiler->cur_class_base = compiler->classes->length;
@@ -405,7 +405,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   runtime->strings_length = compiler->strings->length;
   runtime->strings = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CONSTANT_STRING) * (compiler->strings->length + 1));
   for (int32_t constant_string_id = 0; constant_string_id < compiler->strings->length; constant_string_id++) {
-    SPVM_STRING* string = SPVM_LIST_get(compiler->strings, constant_string_id);
+    SPVM_CONSTANT_STRING* string = SPVM_LIST_get(compiler->strings, constant_string_id);
     SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->strings[constant_string_id];
     
     runtime_string->id = string->id;
@@ -430,7 +430,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_class->type_id = class->type->id;
     runtime_class->id = class->id;
     if (class->module_file) {
-      SPVM_STRING* class_module_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->module_file, strlen(class->module_file));
+      SPVM_CONSTANT_STRING* class_module_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->module_file, strlen(class->module_file));
       runtime_class->module_file_id = class_module_file_string->id;
     }
     else {
@@ -442,7 +442,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_class->has_init_block = class->has_init_block;
     runtime_class->is_anon = class->is_anon;
 
-    SPVM_STRING* class_string = SPVM_HASH_get(compiler->constant_string_symtable, class->name, strlen(class->name));
+    SPVM_CONSTANT_STRING* class_string = SPVM_HASH_get(compiler->constant_string_symtable, class->name, strlen(class->name));
     runtime_class->name_id = class_string->id;
     
     if (class->method_destructor) {
@@ -516,7 +516,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     else {
       runtime_basic_type->class_id = -1;
     }
-    SPVM_STRING* basic_type_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->name, strlen(basic_type->name));
+    SPVM_CONSTANT_STRING* basic_type_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->name, strlen(basic_type->name));
     runtime_basic_type->name_id = basic_type_string->id;
   }
 
@@ -545,10 +545,10 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_class_var->type_id = class_var->type->id;
     runtime_class_var->class_id = class_var->class->id;
 
-    SPVM_STRING* class_var_name_string = SPVM_HASH_get(compiler->constant_string_symtable, class_var->name, strlen(class_var->name));
+    SPVM_CONSTANT_STRING* class_var_name_string = SPVM_HASH_get(compiler->constant_string_symtable, class_var->name, strlen(class_var->name));
     runtime_class_var->name_id = class_var_name_string->id;
 
-    SPVM_STRING* class_var_signature_string = SPVM_HASH_get(compiler->constant_string_symtable, class_var->signature, strlen(class_var->signature));
+    SPVM_CONSTANT_STRING* class_var_signature_string = SPVM_HASH_get(compiler->constant_string_symtable, class_var->signature, strlen(class_var->signature));
     runtime_class_var->signature_id = class_var_signature_string->id;
   }
 
@@ -579,10 +579,10 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_method->mortal_stack_length  = method->mortal_stack_length;
     runtime_method->return_type_id = method->return_type->id;
 
-    SPVM_STRING* method_name_string = SPVM_HASH_get(compiler->constant_string_symtable, method->name, strlen(method->name));
+    SPVM_CONSTANT_STRING* method_name_string = SPVM_HASH_get(compiler->constant_string_symtable, method->name, strlen(method->name));
     runtime_method->name_id = method_name_string->id;
 
-    SPVM_STRING* method_signature_string = SPVM_HASH_get(compiler->constant_string_symtable, method->signature, strlen(method->signature));
+    SPVM_CONSTANT_STRING* method_signature_string = SPVM_HASH_get(compiler->constant_string_symtable, method->signature, strlen(method->signature));
     runtime_method->signature_id = method_signature_string->id;
 
     runtime_method->arg_ids_length = method->args_length;
@@ -623,10 +623,10 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_field->type_id = field->type->id;
     runtime_field->class_id = field->class->id;
     
-    SPVM_STRING* field_name_string = SPVM_HASH_get(compiler->constant_string_symtable, field->name, strlen(field->name));
+    SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(compiler->constant_string_symtable, field->name, strlen(field->name));
     runtime_field->name_id = field_name_string->id;
 
-    SPVM_STRING* field_signature_string = SPVM_HASH_get(compiler->constant_string_symtable, field->signature, strlen(field->signature));
+    SPVM_CONSTANT_STRING* field_signature_string = SPVM_HASH_get(compiler->constant_string_symtable, field->signature, strlen(field->signature));
     runtime_field->signature_id = field_signature_string->id;
   }
 
@@ -806,7 +806,7 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
     bufptr += 1;
   }
   
-  SPVM_STRING* method_signature_string = SPVM_STRING_new(compiler, method_signature_tmp, strlen(method_signature_tmp));
+  SPVM_CONSTANT_STRING* method_signature_string = SPVM_STRING_new(compiler, method_signature_tmp, strlen(method_signature_tmp));
   const char* method_signature = method_signature_string->value;
   
   return method_signature;
@@ -842,7 +842,7 @@ const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_F
     }
   }
 
-  SPVM_STRING* field_signature_string = SPVM_STRING_new(compiler, field_signature_tmp, strlen(field_signature_tmp));
+  SPVM_CONSTANT_STRING* field_signature_string = SPVM_STRING_new(compiler, field_signature_tmp, strlen(field_signature_tmp));
   const char* field_signature = field_signature_string->value;
 
   return field_signature;
@@ -878,7 +878,7 @@ const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SP
     }
   }
 
-  SPVM_STRING* class_var_signature_string = SPVM_STRING_new(compiler, class_var_signature_tmp, strlen(class_var_signature_tmp));
+  SPVM_CONSTANT_STRING* class_var_signature_string = SPVM_STRING_new(compiler, class_var_signature_tmp, strlen(class_var_signature_tmp));
   const char* class_var_signature = class_var_signature_string->value;
 
   return class_var_signature;

@@ -392,7 +392,7 @@ sub get_spvm_core_source_file_names {
     spvm_precompile.c
     spvm_runtime.c
     spvm_string_buffer.c
-    spvm_string.c
+    spvm_constant_string.c
     spvm_switch_info.c
     spvm_toke.c
     spvm_type.c
@@ -455,7 +455,7 @@ sub get_spvm_core_header_file_names {
     spvm_runtime_constant_string.h
     spvm_runtime_type.h
     spvm_string_buffer.h
-    spvm_string.h
+    spvm_constant_string.h
     spvm_switch_info.h
     spvm_toke.h
     spvm_typedecl.h

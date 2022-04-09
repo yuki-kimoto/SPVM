@@ -83,7 +83,7 @@
   #include "spvm_list.h"
   #include "spvm_class.h"
   #include "spvm_descriptor.h"
-  #include "spvm_string.h"
+  #include "spvm_constant_string.h"
 
 #line 89 "spvm_yacc.tab.c" /* yacc.c:339  */
 
@@ -2440,7 +2440,7 @@ yyreduce:
 #line 175 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     { 
       SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, compiler->cur_file, compiler->cur_line);
-      SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, "INIT", strlen("INIT"));
+      SPVM_CONSTANT_STRING* method_name_string = SPVM_STRING_new(compiler, "INIT", strlen("INIT"));
       const char* method_name = method_name_string->value;
       SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "INIT", compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);

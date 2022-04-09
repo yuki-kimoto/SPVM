@@ -3,13 +3,13 @@
 
 #include "spvm_typedecl.h"
 
-struct spvm_string {
+struct spvm_constant_string {
   const char* value;
   int32_t length;
   int32_t id;
   int32_t string_buffer_id;
 };
 
-SPVM_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t length);
+SPVM_CONSTANT_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t length);
 
 #endif
