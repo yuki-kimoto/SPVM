@@ -525,7 +525,7 @@ int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char
     SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
     if (class) {
       // Method
-      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_runtime_method_from_runtime_class(runtime, class->id, method_name);
+      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_name);
       if (method) {
         method_id = method->id;
       }
@@ -535,7 +535,7 @@ int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char
   return method_id;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_runtime_method_from_runtime_class(SPVM_RUNTIME* runtime, int32_t class_id, const char* search_method_name) {
+SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(SPVM_RUNTIME* runtime, int32_t class_id, const char* search_method_name) {
   
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
   
@@ -924,7 +924,7 @@ int32_t SPVM_API_RUNTIME_has_callback_by_id(SPVM_RUNTIME* runtime, int32_t objec
     SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(runtime, callback->method_ids_base + 0);
     
     const char* method_callback_name =  SPVM_API_RUNTIME_get_constant_string_value(runtime, method_callback->name_id, NULL);
-    SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_runtime_method_from_runtime_class(runtime, class->id, method_callback_name);
+    SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_callback_name);
     if (!found_method) {
       return 0;
     }
