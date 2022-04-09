@@ -309,17 +309,6 @@ int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id,
 int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPVM_OBJECT* element);
 
 const char* SPVM_API_get_name(SPVM_ENV* env, int32_t string_id);
-int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name);
-int32_t SPVM_API_get_class_name_id(SPVM_ENV* env, int32_t class_id);
-int32_t SPVM_API_get_class_field_ids_base(SPVM_ENV* env, int32_t class_id);
-int32_t SPVM_API_get_class_field_ids_length(SPVM_ENV* env, int32_t class_id);
-int32_t SPVM_API_get_class_method_ids_base(SPVM_ENV* env, int32_t class_id);
-int32_t SPVM_API_get_class_method_ids_length(SPVM_ENV* env, int32_t class_id);
-int32_t SPVM_API_get_class_class_var_ids_base(SPVM_ENV* env, int32_t class_id);
-int32_t SPVM_API_get_class_is_anon(SPVM_ENV* env, int32_t class_id);
-int32_t SPVM_API_get_class_module_file_id(SPVM_ENV* env, int32_t class_id);
-int32_t SPVM_API_get_class_anon_method_ids_base(SPVM_ENV* env, int32_t class_id);
-int32_t SPVM_API_get_class_anon_method_ids_length(SPVM_ENV* env, int32_t class_id);
 void SPVM_API_free_env_prepared(SPVM_ENV* env);
 
 

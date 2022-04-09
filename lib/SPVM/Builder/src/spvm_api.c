@@ -4286,8 +4286,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
               {
                 int32_t method_return_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, call_spvm_method_return_basic_type_id);
-                int32_t method_return_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, method_return_class_id);
-                int32_t method_return_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, method_return_class_id);
+                int32_t method_return_class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, method_return_class_id);
+                int32_t method_return_class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, method_return_class_id);
                 int32_t method_return_mulnum_field_id = method_return_class_field_ids_base;
                 int32_t method_return_mulnum_field_type_id = SPVM_API_RUNTIME_get_field_type_id(env->runtime, method_return_mulnum_field_id);
                 int32_t method_return_mulnum_field_type_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, method_return_mulnum_field_type_id);
@@ -4431,8 +4431,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
                 {
                   int32_t method_return_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(env->runtime, call_spvm_method_return_basic_type_id);
-                  int32_t method_return_class_field_ids_length = SPVM_API_get_class_field_ids_length(env, method_return_class_id);
-                  int32_t method_return_class_field_ids_base = SPVM_API_get_class_field_ids_base(env, method_return_class_id);
+                  int32_t method_return_class_field_ids_length = SPVM_API_RUNTIME_get_class_field_ids_length(env->runtime, method_return_class_id);
+                  int32_t method_return_class_field_ids_base = SPVM_API_RUNTIME_get_class_field_ids_base(env->runtime, method_return_class_id);
                   int32_t method_return_mulnum_field_id = method_return_class_field_ids_base;
                   int32_t method_return_mulnum_field_type_id = SPVM_API_RUNTIME_get_field_type_id(env->runtime, method_return_mulnum_field_id);
                   int32_t method_return_mulnum_field_type_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(env->runtime, method_return_mulnum_field_type_id);
@@ -7279,144 +7279,6 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
   }
 
   return method_id;
-}
-
-int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
-
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  SPVM_RUNTIME_CLASS* class = SPVM_HASH_get(runtime->class_symtable, class_name, strlen(class_name));
-
-  int32_t class_id;
-  if (class) {
-    class_id = class->id;
-  }
-  else {
-    class_id = -1;
-  }
-
-  return class_id;
-}
-
-int32_t SPVM_API_get_class_name_id(SPVM_ENV* env, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_name_id = class->name_id;
-  
-  return class_name_id;
-}
-
-int32_t SPVM_API_get_class_anon_method_ids_base(SPVM_ENV* env, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_anon_method_ids_base = class->anon_method_ids_base;
-  
-  return class_anon_method_ids_base;
-}
-
-int32_t SPVM_API_get_class_anon_method_ids_length(SPVM_ENV* env, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_anon_method_method_ids_length = class->anon_method_ids_length;
-  
-  return class_anon_method_method_ids_length;
-}
-
-int32_t SPVM_API_get_class_is_anon(SPVM_ENV* env, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_is_anon = class->is_anon;
-  
-  return class_is_anon;
-}
-
-int32_t SPVM_API_get_class_module_file_id(SPVM_ENV* env, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_module_file_id = class->module_file_id;
-  
-  return class_module_file_id;
-}
-
-int32_t SPVM_API_get_class_field_ids_base(SPVM_ENV* env, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_field_ids_base = class->field_ids_base;
-  
-  return class_field_ids_base;
-}
-
-int32_t SPVM_API_get_class_field_ids_length(SPVM_ENV* env, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_field_ids_length = class->field_ids_length;
-  
-  return class_field_ids_length;
-}
-
-int32_t SPVM_API_get_class_method_ids_base(SPVM_ENV* env, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_method_ids_base = class->method_ids_base;
-  
-  return class_method_ids_base;
-}
-
-int32_t SPVM_API_get_class_method_ids_length(SPVM_ENV* env, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_method_ids_length = class->method_ids_length;
-  
-  return class_method_ids_length;
-}
-
-int32_t SPVM_API_get_class_class_var_ids_base(SPVM_ENV* env, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_class_var_ids_base = class->class_var_ids_base;
-  
-  return class_class_var_ids_base;
-}
-
-int32_t SPVM_API_get_class_class_var_ids_length(SPVM_ENV* env, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_class_var_ids_length = class->class_var_ids_length;
-  
-  return class_class_var_ids_length;
 }
 
 int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
