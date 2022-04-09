@@ -597,7 +597,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
 
             int32_t field_basic_type_id = field_type->basic_type_id;
 
-            const char* field_name = SPVM_API_get_constant_string_value(env, field->name_id, NULL);
+            const char* field_name = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, field->name_id, NULL);
             SPVM_STRING_BUFFER_add(string_buffer, field_name);
             SPVM_STRING_BUFFER_add(string_buffer, " => ");
 
@@ -756,7 +756,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
           int32_t field_basic_type_id = field_type->basic_type_id;
           int32_t field_type_dimension = field_type->dimension;
           int32_t field_offset = field->offset;
-          const char* field_name = SPVM_API_get_constant_string_value(env, field->name_id, NULL);
+          const char* field_name = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, field->name_id, NULL);
           
           SPVM_STRING_BUFFER_add(string_buffer, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " => ");
@@ -4360,15 +4360,15 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t decl_method_id = opcode->operand1;
         SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(env->runtime, decl_method_id);
         void* object = stack[0].oval;
-        const char* decl_method_name = SPVM_API_get_constant_string_value(env, decl_method->name_id, NULL);
-        const char* decl_method_signature = SPVM_API_get_constant_string_value(env, decl_method->signature_id, NULL);
+        const char* decl_method_name = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, decl_method->name_id, NULL);
+        const char* decl_method_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, decl_method->signature_id, NULL);
         int32_t call_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
 
         stack_index = 0;
         if (call_method_id < 0) {
           memset(tmp_buffer, sizeof(tmp_buffer), 0);
           SPVM_RUNTIME_CLASS* decl_method_class = SPVM_API_RUNTIME_get_class(env->runtime, decl_method->class_id);
-          snprintf(tmp_buffer, 255, "Can't find the \"%s\" method with the signature \"%s\" that is declared in \"%s\"", decl_method_name, decl_method_signature, SPVM_API_get_constant_string_value(env, decl_method_class->name_id, NULL));
+          snprintf(tmp_buffer, 255, "Can't find the \"%s\" method with the signature \"%s\" that is declared in \"%s\"", decl_method_name, decl_method_signature, SPVM_API_RUNTIME_get_constant_string_value(env->runtime, decl_method_class->name_id, NULL));
           void* exception = env->new_string_nolen_raw(env, tmp_buffer);
           env->set_exception(env, exception);
           exception_flag = 1;
@@ -4510,10 +4510,10 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
           int32_t line = opcode->operand2;
           
-          const char* method_name = SPVM_API_get_constant_string_value(env, method->name_id, NULL);
+          const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method->name_id, NULL);
           SPVM_RUNTIME_CLASS* method_class = SPVM_API_RUNTIME_get_class(env->runtime, method->class_id);
-          const char* class_name = SPVM_API_get_constant_string_value(env, method_class->name_id, NULL);
-          const char* file = SPVM_API_get_constant_string_value(env, method_class->module_file_id, NULL);
+          const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_class->name_id, NULL);
+          const char* file = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_class->module_file_id, NULL);
           
           // Exception stack trace
           env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), class_name, method_name, file, line));
@@ -4530,10 +4530,10 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
           int32_t line = opcode->operand2;
           
-          const char* method_name = SPVM_API_get_constant_string_value(env, method->name_id, NULL);
+          const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method->name_id, NULL);
           SPVM_RUNTIME_CLASS* method_class = SPVM_API_RUNTIME_get_class(env->runtime, method->class_id);
-          const char* class_name = SPVM_API_get_constant_string_value(env, method_class->name_id, NULL);
-          const char* file = SPVM_API_get_constant_string_value(env, class->module_file_id, NULL);
+          const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_class->name_id, NULL);
+          const char* file = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, class->module_file_id, NULL);
 
           // Exception stack trace
           env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), class_name, method_name, file, line));
@@ -4567,7 +4567,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        const char* file = SPVM_API_get_constant_string_value(env, class->module_file_id, NULL);
+        const char* file = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, class->module_file_id, NULL);
         
         void* object = object_vars[opcode->operand0];
         
@@ -5085,13 +5085,13 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_HAS_IMPLEMENT: {
         int32_t implement_method_id = opcode->operand2;
         SPVM_RUNTIME_METHOD* implement_method = SPVM_API_RUNTIME_get_method(env->runtime, implement_method_id);
-        const char* implement_method_name = SPVM_API_get_constant_string_value(env, implement_method->name_id, NULL);
+        const char* implement_method_name = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, implement_method->name_id, NULL);
         
         int32_t interface_basic_type_id = opcode->operand3;
         SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, interface_basic_type_id);
         SPVM_RUNTIME_CLASS* interface_class = SPVM_API_RUNTIME_get_class(env->runtime, interface_basic_type->class_id);
         SPVM_RUNTIME_METHOD* interface_method = SPVM_API_get_runtime_method_from_runtime_class(env, interface_class->id, implement_method_name);
-        const char* implement_method_signature = SPVM_API_get_constant_string_value(env, implement_method->signature_id, NULL);
+        const char* implement_method_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, implement_method->signature_id, NULL);
         
         void* object = *(void**)&object_vars[opcode->operand1];
         
@@ -5801,8 +5801,8 @@ int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id,
     SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method(env->runtime, class->method_ids_base + 0);
     SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(env->runtime, callback->method_ids_base + 0);
     
-    const char* method_callback_signature = SPVM_API_get_constant_string_value(env, method_callback->signature_id, NULL);
-    const char* found_method_signature = SPVM_API_get_constant_string_value(env, found_method->signature_id, NULL);
+    const char* method_callback_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_callback->signature_id, NULL);
+    const char* found_method_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, found_method->signature_id, NULL);
     if (strcmp(method_callback_signature, found_method_signature) == 0) {
       return 1;
     }
@@ -5815,14 +5815,14 @@ int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id,
     assert(callback->method_ids_length == 1);
     SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(env->runtime, callback->method_ids_base + 0);
     
-    const char* method_callback_name =  SPVM_API_get_constant_string_value(env, method_callback->name_id, NULL);
+    const char* method_callback_name =  SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_callback->name_id, NULL);
     SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_callback_name);
     if (!found_method) {
       return 0;
     }
     
-    const char* method_callback_signature = SPVM_API_get_constant_string_value(env, method_callback->signature_id, NULL);
-    const char* found_method_signature = SPVM_API_get_constant_string_value(env, found_method->signature_id, NULL);
+    const char* method_callback_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_callback->signature_id, NULL);
+    const char* found_method_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, found_method->signature_id, NULL);
     if (strcmp(method_callback_signature, found_method_signature) == 0) {
       return 1;
     }
@@ -7043,7 +7043,7 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* class_name, const char*
   }
 
   // Signature
-  const char* field_signature = SPVM_API_get_constant_string_value(env, field->signature_id, NULL);
+  const char* field_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, field->signature_id, NULL);
   if (strcmp(signature, field_signature) != 0) {
     return -1;
   }
@@ -7077,7 +7077,7 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const c
     return -1;
   }
   
-  const char* class_var_signature = SPVM_API_get_constant_string_value(env, class_var->signature_id, NULL);
+  const char* class_var_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, class_var->signature_id, NULL);
   
   // Signature
   if (strcmp(signature, class_var_signature) != 0) {
@@ -7193,7 +7193,7 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
         // Class method
         if (method->is_class_method) {
           // Signature
-          const char* method_signature = SPVM_API_get_constant_string_value(env, method->signature_id, NULL);
+          const char* method_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method->signature_id, NULL);
           if (strcmp(signature, method_signature) == 0) {
             method_id = method->id;
           }
@@ -7225,7 +7225,7 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_
         // Instance method
         if (!method->is_class_method) {
           // Signature
-          const char* method_signature = SPVM_API_get_constant_string_value(env, method->signature_id, NULL);
+          const char* method_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method->signature_id, NULL);
           if (strcmp(signature, method_signature) == 0) {
             method_id = method->id;
           }
@@ -7270,7 +7270,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
       // Instance method
       if (!method->is_class_method) {
         // Signature
-        const char* method_signature = SPVM_API_get_constant_string_value(env, method->signature_id, NULL);
+        const char* method_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method->signature_id, NULL);
         if (strcmp(signature, method_signature) == 0) {
           method_id = method->id;
         }
