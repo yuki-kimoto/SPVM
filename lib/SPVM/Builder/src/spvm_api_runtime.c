@@ -10,6 +10,7 @@
 #include "spvm_native.h"
 
 #include "spvm_type.h"
+#include "spvm_class.h"
 
 #include "spvm_list.h"
 #include "spvm_hash.h"
@@ -801,4 +802,142 @@ int32_t SPVM_API_RUNTIME_get_anon_method_method_id(SPVM_RUNTIME* runtime, int32_
   int32_t anon_method_method_id = runtime->anon_method_method_ids[anon_method_id];
   
   return anon_method_method_id;
+}
+
+void SPVM_API_RUNTIME_set_native_method_address(SPVM_RUNTIME* runtime, int32_t method_id, void* address) {
+
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  runtime->method_native_addresses[method->id] = address;
+}
+
+void SPVM_API_RUNTIME_set_precompile_method_address(SPVM_RUNTIME* runtime, int32_t method_id, void* address) {
+
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  runtime->method_precompile_addresses[method->id] = address;
+}
+
+void* SPVM_API_RUNTIME_get_native_method_address(SPVM_RUNTIME* runtime, int32_t method_id) {
+
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  void* native_method_address = runtime->method_native_addresses[method->id];
+  
+  return native_method_address;
+}
+
+void* SPVM_API_RUNTIME_get_precompile_method_address(SPVM_RUNTIME* runtime, int32_t method_id) {
+
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  void* precompile_method_address = runtime->method_precompile_addresses[method->id];
+  
+  return precompile_method_address;
+}
+
+int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t interface_basic_type_id, int32_t interface_type_dimension) {
+
+  int32_t has_interface;
+  
+  if (object_type_dimension > 0) {
+    return 0;
+  }
+  
+  if (interface_type_dimension > 0) {
+    return 0;
+  }
+
+  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, interface_basic_type_id);
+  
+  if (class_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  if (interface_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_basic_type->class_id);
+  SPVM_RUNTIME_CLASS* interface = SPVM_API_RUNTIME_get_class(runtime, interface_basic_type->class_id);
+  
+  if (class->id, interface->id) {
+    return 1;
+  }
+  
+  for (int32_t i = 0; i < class->interface_class_ids_length; i++) {
+    int32_t must_interface_class_id = class->interface_class_ids_base + i;
+    if (must_interface_class_id == interface->id) {
+      return 1;
+    }
+  }
+
+  return 0;
+}
+
+int32_t SPVM_API_RUNTIME_has_callback_by_id(SPVM_RUNTIME* runtime, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t callback_basic_type_id, int32_t callback_type_dimension) {
+
+  int32_t has_callback;
+  
+  if (object_type_dimension > 0) {
+    return 0;
+  }
+
+  if (callback_type_dimension > 0) {
+    return 0;
+  }
+
+  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* callback_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, callback_basic_type_id);
+  
+  if (class_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  if (callback_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_basic_type->class_id);
+  SPVM_RUNTIME_CLASS* callback = SPVM_API_RUNTIME_get_class(runtime, callback_basic_type->class_id);
+  
+  // Class which have only anon sub
+  if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
+    assert(class->method_ids_length == 1);
+    assert(callback->method_ids_length == 1);
+    SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method(runtime, class->method_ids_base + 0);
+    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(runtime, callback->method_ids_base + 0);
+    
+    const char* method_callback_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_callback->signature_id, NULL);
+    const char* found_method_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, found_method->signature_id, NULL);
+    if (strcmp(method_callback_signature, found_method_signature) == 0) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  // Normal class
+  else {
+    assert(callback->method_ids_length == 1);
+    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(runtime, callback->method_ids_base + 0);
+    
+    const char* method_callback_name =  SPVM_API_RUNTIME_get_constant_string_value(runtime, method_callback->name_id, NULL);
+    SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_runtime_method_from_runtime_class(runtime, class->id, method_callback_name);
+    if (!found_method) {
+      return 0;
+    }
+    
+    const char* method_callback_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_callback->signature_id, NULL);
+    const char* found_method_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, found_method->signature_id, NULL);
+    if (strcmp(method_callback_signature, found_method_signature) == 0) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
+  return has_callback;
 }
