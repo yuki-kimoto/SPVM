@@ -301,8 +301,6 @@ void SPVM_API_set_precompile_method_address(SPVM_ENV* env, int32_t method_id, vo
 void* SPVM_API_get_native_method_address(SPVM_ENV* env, int32_t method_id);
 void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id);
 
-int32_t SPVM_API_get_method_id_without_signature(SPVM_ENV* env, const char* class_name, const char* method_name);
-
 int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object);
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env,  int32_t basic_type_id);
@@ -344,26 +342,6 @@ int32_t SPVM_API_get_field_type_id(SPVM_ENV* env, int32_t field_id);
 int32_t SPVM_API_get_field_name_id(SPVM_ENV* env, int32_t field_id);
 int32_t SPVM_API_get_field_signature_id(SPVM_ENV* env, int32_t field_id);
 int32_t SPVM_API_get_field_class_id(SPVM_ENV* env, int32_t field_id);
-int32_t SPVM_API_get_method_arg_ids_length(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_is_class_method(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_arg_ids_base(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_return_type_id(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_name_id(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_signature_id(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_class_id(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_is_anon(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_has_precompile_flag(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_call_stack_byte_vars_length(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_call_stack_short_vars_length(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_call_stack_int_vars_length(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_call_stack_long_vars_length(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_call_stack_float_vars_length(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_call_stack_double_vars_length(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_call_stack_object_vars_length(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_call_stack_ref_vars_length(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_mortal_stack_length(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_opcode_ids_base(SPVM_ENV* env, int32_t method_id);
-int32_t SPVM_API_get_method_opcode_ids_length(SPVM_ENV* env, int32_t method_id);
 void SPVM_API_free_env_prepared(SPVM_ENV* env);
 
 

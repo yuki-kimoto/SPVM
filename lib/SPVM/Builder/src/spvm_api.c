@@ -358,7 +358,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_set_native_method_address,
     SPVM_API_set_precompile_method_address,
     SPVM_API_is_object_array,
-    SPVM_API_get_method_id_without_signature,
+    SPVM_API_RUNTIME_get_method_id_without_signature,
     SPVM_API_get_constant_string_value,
     SPVM_API_COMPILER_new_compiler,
     SPVM_API_COMPILER_free_compiler,
@@ -1383,7 +1383,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Method
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
   
   int32_t exception_flag;
   
@@ -1452,7 +1452,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Runtime method
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
   
   // Runtime class
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, method->class_id);
@@ -4232,7 +4232,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         exception_flag = env->call_spvm_method(env, call_method_id, stack);
 
         if (!exception_flag) {
-          SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_get_method(env, call_method_id);
+          SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_RUNTIME_get_method(env->runtime, call_method_id);
           SPVM_RUNTIME_TYPE* call_spvm_method_return_type = SPVM_API_get_type(env, call_spvm_method->return_type_id);
           int32_t call_spvm_method_return_basic_type_id = call_spvm_method_return_type->basic_type_id;
           int32_t call_spvm_method_return_type_dimension = call_spvm_method_return_type->dimension;
@@ -4358,7 +4358,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE:
       {
         int32_t decl_method_id = opcode->operand1;
-        SPVM_RUNTIME_METHOD* decl_method = SPVM_API_get_method(env, decl_method_id);
+        SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(env->runtime, decl_method_id);
         void* object = stack[0].oval;
         const char* decl_method_name = SPVM_API_get_constant_string_value(env, decl_method->name_id, NULL);
         const char* decl_method_signature = SPVM_API_get_constant_string_value(env, decl_method->signature_id, NULL);
@@ -4377,7 +4377,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           exception_flag = env->call_spvm_method(env, call_method_id, stack);
           
           if (!exception_flag) {
-            SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_get_method(env, call_method_id);
+            SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_RUNTIME_get_method(env->runtime, call_method_id);
             SPVM_RUNTIME_TYPE* call_spvm_method_return_type = SPVM_API_get_type(env, call_spvm_method->return_type_id);
             int32_t call_spvm_method_return_basic_type_id = call_spvm_method_return_type->basic_type_id;
             int32_t call_spvm_method_return_type_dimension = call_spvm_method_return_type->dimension;
@@ -4507,7 +4507,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           
           int32_t method_index = opcode->operand1;
           int32_t method_id = class->method_ids_base + method_index;
-          SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+          SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
           int32_t line = opcode->operand2;
           
           const char* method_name = SPVM_API_get_constant_string_value(env, method->name_id, NULL);
@@ -4527,7 +4527,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         if (exception_flag) {
           int32_t method_index = opcode->operand1;
           int32_t method_id = class->method_ids_base + method_index;
-          SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+          SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
           int32_t line = opcode->operand2;
           
           const char* method_name = SPVM_API_get_constant_string_value(env, method->name_id, NULL);
@@ -5084,7 +5084,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_HAS_IMPLEMENT: {
         int32_t implement_method_id = opcode->operand2;
-        SPVM_RUNTIME_METHOD* implement_method = SPVM_API_get_method(env, implement_method_id);
+        SPVM_RUNTIME_METHOD* implement_method = SPVM_API_RUNTIME_get_method(env->runtime, implement_method_id);
         const char* implement_method_name = SPVM_API_get_constant_string_value(env, implement_method->name_id, NULL);
         
         int32_t interface_basic_type_id = opcode->operand3;
@@ -5798,8 +5798,8 @@ int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id,
   if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
     assert(class->method_ids_length == 1);
     assert(callback->method_ids_length == 1);
-    SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_method(env, class->method_ids_base + 0);
-    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_get_method(env, callback->method_ids_base + 0);
+    SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method(env->runtime, class->method_ids_base + 0);
+    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(env->runtime, callback->method_ids_base + 0);
     
     const char* method_callback_signature = SPVM_API_get_constant_string_value(env, method_callback->signature_id, NULL);
     const char* found_method_signature = SPVM_API_get_constant_string_value(env, found_method->signature_id, NULL);
@@ -5813,7 +5813,7 @@ int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id,
   // Normal class
   else {
     assert(callback->method_ids_length == 1);
-    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_get_method(env, callback->method_ids_base + 0);
+    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(env->runtime, callback->method_ids_base + 0);
     
     const char* method_callback_name =  SPVM_API_get_constant_string_value(env, method_callback->name_id, NULL);
     SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_callback_name);
@@ -6785,7 +6785,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void
   object->length = 0;
 
   // Has destructor
-  if (SPVM_API_get_method(env, class->method_destructor_id)) {
+  if (SPVM_API_RUNTIME_get_method(env->runtime, class->method_destructor_id)) {
     object->flag |= SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR;
   }
   
@@ -7077,7 +7077,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_runtime_class(SPVM_ENV* en
   SPVM_RUNTIME_METHOD* found_method = NULL;
   if (class->method_ids_length > 0) {
     for (int32_t method_id = class->method_ids_base; method_id <  class->method_ids_base + class->method_ids_length; method_id++) {
-      SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
       const char* method_name = SPVM_API_get_name(env, method->name_id);
       if (strcmp(method_name, search_method_name) == 0) {
         found_method = method;
@@ -7149,7 +7149,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_index(SPVM_ENV* env, int32
   SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, class_id);
   if (class) {
     int32_t method_id = class->method_ids_base +  method_index;
-    method = SPVM_API_get_method(env, method_id);
+    method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
   }
   
   return method;
@@ -7243,7 +7243,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
     if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
       // Method name
       int32_t method_id = class->method_ids_base;
-      method = SPVM_API_get_method(env, method_id);
+      method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
     }
     // Normal instance method
     else {
@@ -7355,268 +7355,6 @@ int32_t SPVM_API_get_class_var_class_id(SPVM_ENV* env, int32_t class_var_id) {
   int32_t class_id = class_var->class_id;
   
   return class_id;
-}
-
-int32_t SPVM_API_get_method_id_without_signature(SPVM_ENV* env, const char* class_name, const char* method_name) {
-  (void)env;
-  
-  // Method ID
-  int32_t method_id = -1;
-  
-  // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_with_name(env, class_name);
-  if (basic_type) {
-    
-    // Class
-    SPVM_RUNTIME_CLASS* class = SPVM_API_get_class(env, basic_type->class_id);
-    if (class) {
-      // Method
-      SPVM_RUNTIME_METHOD* method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_name);
-      if (method) {
-        method_id = method->id;
-      }
-    }
-  }
-  
-  return method_id;
-}
-
-SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, int32_t method_id) {
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  if (method_id < 0) {
-    return NULL;
-  }
-  
-  if (method_id >= runtime->methods_length) {
-    return NULL;
-  }
-
-  SPVM_RUNTIME_METHOD* method = &runtime->methods[method_id];
-  
-  return method;
-}
-
-int32_t SPVM_API_get_method_class_id(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-
-  assert(method);
-
-  int32_t class_id = method->class_id;
-  
-  return class_id;
-}
-
-int32_t SPVM_API_get_method_opcode_ids_base(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-
-  assert(method);
-
-  int32_t opcode_ids_base = method->opcode_ids_base;
-  
-  return opcode_ids_base;
-}
-
-int32_t SPVM_API_get_method_opcode_ids_length(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-
-  assert(method);
-
-  int32_t opcode_ids_length = method->opcode_ids_length;
-  
-  return opcode_ids_length;
-}
-
-int32_t SPVM_API_get_method_name_id(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-
-  assert(method);
-
-  int32_t name_id = method->name_id;
-  
-  return name_id;
-}
-
-int32_t SPVM_API_get_method_is_anon(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-
-  assert(method);
-
-  int32_t is_anon = method->is_anon;
-  
-  return is_anon;
-}
-
-int32_t SPVM_API_get_method_has_precompile_flag(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-
-  assert(method);
-
-  int32_t has_precompile_flag = method->has_precompile_flag;
-  
-  return has_precompile_flag;
-}
-
-int32_t SPVM_API_get_method_signature_id(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-
-  assert(method);
-
-  int32_t signature_id = method->signature_id;
-  
-  return signature_id;
-}
-
-
-int32_t SPVM_API_get_method_arg_ids_length(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-
-  assert(method);
-
-  int32_t arg_ids_length = method->arg_ids_length;
-  
-  return arg_ids_length;
-}
-
-int32_t SPVM_API_get_method_arg_ids_base(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-
-  assert(method);
-
-  int32_t arg_ids_base = method->arg_ids_base;
-  
-  return arg_ids_base;
-}
-
-int32_t SPVM_API_get_method_is_class_method(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-  
-  assert(method);
-  
-  int32_t is_class_method = method->is_class_method;
-  
-  return is_class_method;
-}
-
-int32_t SPVM_API_get_method_return_type_id(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-  
-  assert(method);
-  
-  int32_t return_type_id = method->return_type_id;
-  
-  return return_type_id;
-}
-
-int32_t SPVM_API_get_method_call_stack_byte_vars_length(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-  
-  assert(method);
-  
-  int32_t call_stack_byte_vars_length = method->call_stack_byte_vars_length;
-  
-  return call_stack_byte_vars_length;
-}
-
-int32_t SPVM_API_get_method_call_stack_short_vars_length(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-  
-  assert(method);
-  
-  int32_t call_stack_short_vars_length = method->call_stack_short_vars_length;
-  
-  return call_stack_short_vars_length;
-}
-
-int32_t SPVM_API_get_method_call_stack_int_vars_length(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-  
-  assert(method);
-  
-  int32_t call_stack_int_vars_length = method->call_stack_int_vars_length;
-  
-  return call_stack_int_vars_length;
-}
-
-int32_t SPVM_API_get_method_call_stack_long_vars_length(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-  
-  assert(method);
-  
-  int32_t call_stack_long_vars_length = method->call_stack_long_vars_length;
-  
-  return call_stack_long_vars_length;
-}
-
-int32_t SPVM_API_get_method_call_stack_float_vars_length(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-  
-  assert(method);
-  
-  int32_t call_stack_float_vars_length = method->call_stack_float_vars_length;
-  
-  return call_stack_float_vars_length;
-}
-
-int32_t SPVM_API_get_method_call_stack_double_vars_length(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-  
-  assert(method);
-  
-  int32_t call_stack_double_vars_length = method->call_stack_double_vars_length;
-  
-  return call_stack_double_vars_length;
-}
-
-int32_t SPVM_API_get_method_call_stack_object_vars_length(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-  
-  assert(method);
-  
-  int32_t call_stack_object_vars_length = method->call_stack_object_vars_length;
-  
-  return call_stack_object_vars_length;
-}
-
-int32_t SPVM_API_get_method_call_stack_ref_vars_length(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-  
-  assert(method);
-  
-  int32_t call_stack_ref_vars_length = method->call_stack_ref_vars_length;
-  
-  return call_stack_ref_vars_length;
-}
-
-int32_t SPVM_API_get_method_mortal_stack_length(SPVM_ENV* env, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
-  
-  assert(method);
-  
-  int32_t mortal_stack_length = method->mortal_stack_length;
-  
-  return mortal_stack_length;
 }
 
 int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
@@ -8500,7 +8238,7 @@ void SPVM_API_set_native_method_address(SPVM_ENV* env, int32_t method_id, void* 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
   
   runtime->method_native_addresses[method->id] = address;
 }
@@ -8511,7 +8249,7 @@ void SPVM_API_set_precompile_method_address(SPVM_ENV* env, int32_t method_id, vo
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
   
   runtime->method_precompile_addresses[method->id] = address;
 }
@@ -8522,7 +8260,7 @@ void* SPVM_API_get_native_method_address(SPVM_ENV* env, int32_t method_id) {
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
   
   void* native_method_address = runtime->method_native_addresses[method->id];
   
@@ -8535,7 +8273,7 @@ void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id) {
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, method_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
   
   void* precompile_method_address = runtime->method_precompile_addresses[method->id];
   
