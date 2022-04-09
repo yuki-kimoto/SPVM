@@ -524,18 +524,13 @@ int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char
   // Method ID
   int32_t method_id = -1;
   
-  // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, class_name);
-  if (basic_type) {
-    
-    // Class
-    SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
-    if (class) {
-      // Method
-      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_name);
-      if (method) {
-        method_id = method->id;
-      }
+  // Class
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class_by_name(runtime, class_name);
+  if (class) {
+    // Method
+    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_name);
+    if (method) {
+      method_id = method->id;
     }
   }
   
