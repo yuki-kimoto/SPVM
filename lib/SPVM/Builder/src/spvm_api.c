@@ -437,8 +437,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_method_opcode_ids_length,
     SPVM_API_get_arg_type_id,
     SPVM_API_get_anon_method_method_id,
-    SPVM_API_get_runtime_opcodes,
-    SPVM_API_get_runtime_opcode_ids_length,
+    SPVM_API_RUNTIME_get_opcodes,
+    SPVM_API_RUNTIME_get_opcode_ids_length,
     SPVM_API_free_env_prepared,
   };
   
