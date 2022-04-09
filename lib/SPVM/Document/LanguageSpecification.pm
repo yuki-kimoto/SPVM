@@ -5018,14 +5018,21 @@ The C<isweak> operator checks whether the L<field|"Field"> is L<weak reference|"
 
 The type of the object must be the L<class type|"Class Type">. If not, a compilation error will occur.
 
-If the field name doesn't found, a compilation error will occur.
+If the field name is not found, a compilation error will occur.
 
-The type of the field targetted by the isweak operator is not an L<object type|"Object Types">, a compilation error will occur.
+The type of the field targetted by the C<isweak> operator is not an L<object type|"Object Types">, a compilation error will occur.
 
-If the field is weaken, the isweak operator returns C<1>. If not, returns C<0>.
+If the field is weaken, the C<isweak> operator returns C<1>. If not, returns C<0>.
 
-The return type of the isweak operator is the L<int type|"int Type">.
+The return type of the C<isweak> operator is the L<int type|"int Type">.
 
+See L<"Weak Reference"> to know the behavior of the C<isweak> operator.
+
+B<Examples:>
+
+  # isweak
+  my $isweak = isweak $object->{point};
+  
 =head2 has_implement Operator
 
 The C<has_implement> operator checks the existence of the method implementation.
@@ -5493,72 +5500,42 @@ Read-only strings can't be cast to L<string type|"String Type"> qualified by L<m
 
 =head2 weaken Statement
 
-A weaken Statement is a Statement that sets L<"Weak Reference"> for the Field.
+The C<weaken> statement is a L<statement|"Statements"> to create a L<weak reference|"Weak Reference">.
 
   weaken OBJECT->{FIELD_NAME};
 
-The type of the object Expression must be L<"Class Type">, otherwise a compilation error will occur.
+The type of the object must be the L<class type|"Class Type">. If not, a compilation error will occur.
 
-Field names must be an existing field names, otherwise a compilation error will occur.
+If the field name is not found, a compilation error will occur.
 
-The type of the value saved in Field must be L<"Object Types">, otherwise a compilation error will occur.
+The type of the field targetted by the C<weaken> statement is not an L<object type|"Object Types">, a compilation error will occur.
 
-If the value stored in the Field at execution time is L<"Undefined Value">, the weak Statement does nothing.
+See L<"Weak Reference"> to know the behavior of the C<weaken> statement.
 
-If the value stored in the Field at runtime is not L<"Undefined Value">, then the following is done:
+B<Examples:>
 
-1. Decrement the reference count of the object stored in Field by C<1>.
-
-2. Setting the Weak Reference flag in Field.
-
-3. Add Field to the back reference of the object saved in Field.
-
-Note that the Weak Reference flag is set on the Field itself, not on the object stored in the Field.
-
-If the reference count of the object saved in Field becomes 0, the Weak Reference is not created and the object saved in Field is released.
-
-Back Reference is the data of the object saved in Field, and is added to know the Field with the Weak Reference flag set. There may be more than one.
-
-  # There are multiple back references
-  my $foo = new Foo;
-  my $bar = new Bar;
-  my $baz = new Baz;
+  # weaken
+  weaken $object->{point};
   
-  $foo->{bar} = $bar;
-  $foo->{baz} = $baz;
-  
-  $bar->{foo} = $foo;
-  $baz->{foo} = $foo;
-  
-  weaken $bar->{foo};
-  weaken $baz->{foo};
-
-In the above example, "$bar->{foo}" and "$baz->{foo}" have the Weak Reference flag set. The object represented by $foo has the back References "$bar->{foo}" and "$baz->{foo}".
-
-The information of the back Reference is necessary because when the L<"Garbage Collection"> is performed, it is necessary to assign the Undefined Value to the Field pointed to by the back Reference.
-
 =head2 unweaken Statement
 
-unweaken Statement is a Statement that cancels L<"Weak Reference"> for Field.
+The C<unweaken> statement is a L<statement|"Statements"> to unweakens a L<weak reference|"Weak Reference">.
 
   unweaken OBJECT->{FIELD_NAME};
 
-The type of the object Expression must be L<"Class Type">, otherwise a compilation error will occur.
+The type of the object must be the L<class type|"Class Type">. If not, a compilation error will occur.
 
-Field names must be an existing Field names, otherwise a compilation error will occur.
+If the field name is not found, a compilation error will occur.
 
-The type of the value saved in Field must be L<"Object Types">, otherwise a compilation error will occur.
+The type of the field targetted by the C<unweaken> statement is not an L<object type|"Object Types">, a compilation error will occur.
 
-If the value stored in the Field at execution time is L<"Undefined Value">, the unweaken Statement does nothing.
+See L<"Weak Reference"> to know the behavior of the C<unweaken> statement.
 
-If the value stored in the Field at runtime is not L<"Undefined Value">, then the following is done:
+B<Examples:>
 
-1. Increase the reference count of the object stored in the Field by C<1>.
-
-2. Clear the Weak Reference flag of Field.
-
-3. Delete the Field from the back reference of the object stored in the Field.
-
+  # unweaken
+  unweaken $object->{point};
+  
 =head1 Types
 
 =head2 The Summary of Types
