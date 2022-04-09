@@ -73,6 +73,21 @@ const char* SPVM_API_RUNTIME_get_constant_string_value(SPVM_RUNTIME* runtime, in
   return constant_string_value;
 }
 
+int32_t SPVM_API_RUNTIME_get_constant_string_id(SPVM_RUNTIME* runtime, const char* string) {
+
+  SPVM_RUNTIME_STRING* constant_string = SPVM_HASH_get(runtime->string_symtable, string, strlen(string));
+
+  int32_t constant_string_id;
+  if (constant_string) {
+    constant_string_id = constant_string->id;
+  }
+  else {
+    constant_string_id = -1;
+  }
+
+  return constant_string_id;
+}
+
 int32_t SPVM_API_RUNTIME_get_basic_type_id(SPVM_RUNTIME* runtime, const char* basic_type_name) {
   (void)runtime;
   
