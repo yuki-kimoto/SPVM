@@ -7273,57 +7273,6 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type_with_name(SPVM_ENV* env,  const
   return basic_type;
 }
 
-SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env,  int32_t basic_type_id) {
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  if (basic_type_id < 0) {
-    return NULL;
-  }
-  
-  if (basic_type_id >= runtime->basic_types_length) {
-    return NULL;
-  }
-
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
-  
-  return basic_type;
-}
-
-SPVM_RUNTIME_CLASS* SPVM_API_get_class(SPVM_ENV* env,  int32_t class_id) {
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  if (class_id < 0) {
-    return NULL;
-  }
-  
-  if (class_id >= runtime->classes_length) {
-    return NULL;
-  }
-
-  SPVM_RUNTIME_CLASS* class = &runtime->classes[class_id];
-  
-  return class;
-}
-
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, int32_t class_var_id) {
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  if (class_var_id < 0) {
-    return NULL;
-  }
-  
-  if (class_var_id >= runtime->class_vars_length) {
-    return NULL;
-  }
-
-  SPVM_RUNTIME_CLASS_VAR* class_var = &runtime->class_vars[class_var_id];
-  
-  return class_var;
-}
-
 int32_t SPVM_API_get_class_var_name_id(SPVM_ENV* env, int32_t class_var_id) {
   
   SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(env->runtime, class_var_id);
@@ -7419,23 +7368,6 @@ int32_t SPVM_API_get_basic_type_class_id(SPVM_ENV* env, int32_t basic_type_id) {
   return basic_type_class_id;
 }
 
-SPVM_RUNTIME_TYPE* SPVM_API_get_type(SPVM_ENV* env, int32_t type_id) {
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  if (type_id < 0) {
-    return NULL;
-  }
-  
-  if (type_id >= runtime->types_length) {
-    return NULL;
-  }
-
-  SPVM_RUNTIME_TYPE* type = &runtime->types[type_id];
-  
-  return type;
-}
-
 int32_t SPVM_API_get_type_basic_type_id(SPVM_ENV* env, int32_t type_id) {
   
   SPVM_RUNTIME_TYPE* type =SPVM_API_RUNTIME_get_type(env->runtime, type_id);
@@ -7515,23 +7447,6 @@ int32_t SPVM_API_get_type_is_object(SPVM_ENV* env, int32_t type_id) {
   }
   
   return is_object;
-}
-
-SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, int32_t field_id) {
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  if (field_id < 0) {
-    return NULL;
-  }
-  
-  if (field_id >= runtime->fields_length) {
-    return NULL;
-  }
-
-  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
-  
-  return field;
 }
 
 int32_t SPVM_API_get_field_class_id(SPVM_ENV* env, int32_t field_id) {
