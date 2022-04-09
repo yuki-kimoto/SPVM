@@ -7095,7 +7095,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_runtime_class(SPVM_ENV* en
   if (class->method_ids_length > 0) {
     for (int32_t method_id = class->method_ids_base; method_id <  class->method_ids_base + class->method_ids_length; method_id++) {
       SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
-      const char* method_name = SPVM_API_get_name(env, method->name_id);
+      const char* method_name = SPVM_API_RUNTIME_get_name(env->runtime, method->name_id);
       if (strcmp(method_name, search_method_name) == 0) {
         found_method = method;
         break;
@@ -7114,7 +7114,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_runtime_field_from_runtime_class(SPVM_ENV* env,
   if (class->field_ids_length > 0) {
     for (int32_t field_id = class->field_ids_base; field_id <  class->field_ids_base + class->field_ids_length; field_id++) {
       SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_id);
-      const char* field_name = SPVM_API_get_name(env, field->name_id);
+      const char* field_name = SPVM_API_RUNTIME_get_name(env->runtime, field->name_id);
       if (strcmp(field_name, search_field_name) == 0) {
         found_field = field;
         break;
@@ -7133,7 +7133,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_runtime_class_var_from_runtime_class(SPVM_E
   if (class->class_var_ids_length > 0) {
     for (int32_t class_var_id = class->class_var_ids_base; class_var_id <  class->class_var_ids_base + class->class_var_ids_length; class_var_id++) {
       SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(env->runtime, class_var_id);
-      const char* class_var_name = SPVM_API_get_name(env, class_var->name_id);
+      const char* class_var_name = SPVM_API_RUNTIME_get_name(env->runtime, class_var->name_id);
       if (strcmp(class_var_name, search_class_var_name) == 0) {
         found_class_var = class_var;
         break;
