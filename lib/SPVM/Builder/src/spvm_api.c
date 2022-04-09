@@ -5760,7 +5760,7 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
   int32_t object_basic_type_id = object->basic_type_id;
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t has_callback = SPVM_API_has_callback_by_id(env, object_basic_type_id, object_type_dimension, callback_basic_type_id, 0);
+  int32_t has_callback = SPVM_API_RUNTIME_has_callback_by_id(env->runtime, object_basic_type_id, object_type_dimension, callback_basic_type_id, 0);
   
   return has_callback;
 }
@@ -5776,7 +5776,7 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t inter
   int32_t object_basic_type_id = object->basic_type_id;
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t has_interface = SPVM_API_has_interface_by_id(env, object_basic_type_id, object_type_dimension, interface_basic_type_id, 0);
+  int32_t has_interface = SPVM_API_RUNTIME_has_interface_by_id(env->runtime, object_basic_type_id, object_type_dimension, interface_basic_type_id, 0);
   
   return has_interface;
 }
@@ -7710,12 +7710,12 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
           }
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
           {
-            can_assign = SPVM_API_has_interface_by_id(env, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
+            can_assign = SPVM_API_RUNTIME_has_interface_by_id(env->runtime, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
             break;
           }
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
           {
-            can_assign = SPVM_API_has_callback_by_id(env, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
+            can_assign = SPVM_API_RUNTIME_has_callback_by_id(env->runtime, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
             break;
           }
           default: {
@@ -7732,12 +7732,12 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
         switch (array_basic_type_category) {
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
           {
-            can_assign = SPVM_API_has_interface_by_id(env, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
+            can_assign = SPVM_API_RUNTIME_has_interface_by_id(env->runtime, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
             break;
           }
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
           {
-            can_assign = SPVM_API_has_callback_by_id(env, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
+            can_assign = SPVM_API_RUNTIME_has_callback_by_id(env->runtime, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
             break;
           }
           default: {
