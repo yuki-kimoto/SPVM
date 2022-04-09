@@ -366,6 +366,7 @@ struct spvm_env_runtime {
   int32_t (*get_class_var_name_id)(void* runtime, int32_t class_var_id);
   int32_t (*get_class_var_signature_id)(void* runtime, int32_t class_var_id);
   int32_t (*get_class_var_class_id)(void* runtime, int32_t class_var_id);
+  int32_t (*get_class_var_id_by_name)(void* runtime, const char* class_name, const char* class_var_name);
   int32_t (*get_class_is_anon)(void* runtime, int32_t class_id);
   int32_t (*get_class_module_file_id)(void* runtime, int32_t class_id);
   int32_t (*get_class_anon_method_ids_base)(void* runtime, int32_t class_id);
@@ -374,6 +375,7 @@ struct spvm_env_runtime {
   int32_t (*get_field_type_id)(void* runtime, int32_t field_id);
   int32_t (*get_field_signature_id)(void* runtime, int32_t field_id);
   int32_t (*get_field_class_id)(void* runtime, int32_t field_id);
+  int32_t (*get_field_id_by_name)(void* runtime, const char* class_name, const char* field_name);
   int32_t (*get_method_arg_ids_length)(void* runtime, int32_t method_id);
   int32_t (*get_method_is_class_method)(void* runtime, int32_t method_id);
   int32_t (*get_method_arg_ids_base)(void* runtime, int32_t method_id);
