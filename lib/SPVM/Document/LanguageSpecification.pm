@@ -3868,7 +3868,7 @@ Instance Method Call can be done with the following syntax using the object crea
 
   OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
-Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the method Definition, a compilation error will occur The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, a compilation error will occur
+Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the method Definition, a compilation error will occur The type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, a compilation error will occur
 
 Instance Method Call returns Return Value if Return Value is other than L<"void Type">.
 
@@ -3921,7 +3921,7 @@ Setting a value with Dereference is an operation to set the actual value from Re
 
 The variable Type must be Reference Type, otherwise a compilation error will occur.
 
-The Type of Expression must match the type of the variable when dereferenced, otherwise a compilation error will occur.
+The type of Expression must match the type of the variable when dereferenced, otherwise a compilation error will occur.
 
 Setting a value with Dereference returns the set value. This is L<"Expressions">.
 
@@ -4246,7 +4246,7 @@ B<Increment Operator> is an operator that adds 1 to the value. the meaning of In
 
 The operand of Increment Operator must L<"Local Variable">, L<"Class Variable">, <a href = "#language-field-access">Field Access</a>, L<"Array Access">, L<"Dereference">, otherwise a compilation error will occur.
 
-The Type of operand of Increment Operator must be L<"Numeric Types">, otherwise a compilation error will occur.
+The type of operand of Increment Operator must be L<"Numeric Types">, otherwise a compilation error will occur.
 
 =head3 Pre Increment Operator
 
@@ -4292,7 +4292,7 @@ B<Decrement Operator> is an operator that subtracts 1 to the value. the meaning 
 
 The operand of Decrement Operator must L<"Local Variable">, L<"Class Variable">, <a href = "#language-field-access">Field Access</a>, L<"Array Access">, L<"Dereference">, otherwise a compilation error will occur.
 
-The Type of operand of Decrement Operator must be L<"Numeric Types">, otherwise a compilation error will occur.
+The type of operand of Decrement Operator must be L<"Numeric Types">, otherwise a compilation error will occur.
 
 =head3 Pre Decrement Operator
 
@@ -4336,7 +4336,7 @@ the operation result of Bit AND Operator performs the operation that exactly sam
 
   x & y;
 
-The Type of Return Value of Bit AND Operator is the type after L<"Binary Numeric Widening Type"> is performed.
+The type of Return Value of Bit AND Operator is the type after L<"Binary Numeric Widening Type"> is performed.
 
 =head2 Bit OR Operator
 
@@ -4352,7 +4352,7 @@ the operation result of Bit OR Operator performs the operation that exactly same
 
   x | y;
 
-The Type of Return Value of Bit OR Operator is the type that is L<"Binary Numeric Widening Type Converted">.
+The type of Return Value of Bit OR Operator is the type that is L<"Binary Numeric Widening Type Converted">.
 
 =head2 Bit NOT Operator
 
@@ -4569,7 +4569,7 @@ For Numeric Types Operation(==, !=, >, >=, <, <=), L<"int Type"> Operation, L<"l
 
 And Object Type Operation(==, !=) is defined.
 
-The Type of Return Value of the Numeric Comparison Operator is L<"int Type">.
+The type of Return Value of the Numeric Comparison Operator is L<"int Type">.
 
 =head2 String Comparison Operator
 
@@ -4648,7 +4648,7 @@ A list of String Comparison Operators.
 
 =end html
 
-The Type of Return Value of the String Comparison Operator is L<"int Type">. If the condition is met, returns 1, otherwise 0.
+The type of Return Value of the String Comparison Operator is L<"int Type">. If the condition is met, returns 1, otherwise 0.
 
 =head2 isa Operator
 
@@ -4660,9 +4660,9 @@ isa Operator has three behaviors, depending on Right Type.
 
 1. If Right Type is L<"Numeric Types">, L<"Multi Numeric Types">, L<"Any Object Type">, L<"Reference Type">, isa operator checks whether the type of The left operand is same as Right Type. This check is done at compile time and isa operator is replaced by L<"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
 
-2. If the Right Type is L<"Class Type">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error will occur.
+2. If the Right Type is L<"Class Type">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L<"int Type"> 1 is return, otherwise 0. The type of The left operand must be L<"Object Types">, otherwise a compilation error will occur.
 
-3. If the Right Type is L<"Callback Type">, isa Operator checks whether the type of The left operand satisfy the Callback Type at Run Time. If The left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The Type of The left operand must be L<"Object Types">, otherwise a compilation error will occur.
+3. If the Right Type is L<"Callback Type">, isa Operator checks whether the type of The left operand satisfy the Callback Type at Run Time. If The left operand satisfies the Callback Type, returns L<"int Type"> 1, otherwise 0. The type of The left operand must be L<"Object Types">, otherwise a compilation error will occur.
 
 =head2 ref Operator
 
@@ -5012,19 +5012,19 @@ Note that the sclara operator exists only to reduce the confusion.
 
 =head2 isweak Operator
 
-The C<isweak> operator checks whether the field is L<weak reference|"Weak Reference.">
+The C<isweak> operator checks whether the L<field|"Field"> is L<weak reference|"Weak Reference.">
 
-  isweak VARIABLE->{FIELD_NAME};
+  isweak OBJECT->{FIELD_NAME};
 
-The Type of object Expression must be L<"Class Type">. otherwise a compilation error will occur.
+The type of the object must be the L<class type|"Class Type">. If not, a compilation error will occur.
 
-Field names must be a existed field names, otherwise a compilation error will occur.
+If the field name doesn't found, a compilation error will occur.
 
-The Type of the value stored in field must be <a href="#language-type-object">Object Type">, otherwise a compilation error will occur.
+The type of the field targetted by the isweak operator is not an L<object type|"Object Types">, a compilation error will occur.
 
-If the value stored in field at Run Time is</a> L<"Undefined Value, it returns false. This is <a href="#language-expression">Expression">
+If the field is weaken, the isweak operator returns C<1>. If not, returns C<0>.
 
-isweak Operator returns L<"Expressions">
+The return type of the isweak operator is the L<int type|"int Type">.
 
 =head2 has_implement Operator
 
@@ -5495,13 +5495,13 @@ Read-only strings can't be cast to L<string type|"String Type"> qualified by L<m
 
 A weaken Statement is a Statement that sets L<"Weak Reference"> for the Field.
 
-  weaken VARIABLE->{FIELD_NAME};
+  weaken OBJECT->{FIELD_NAME};
 
-The Type of the object Expression must be L<"Class Type">, otherwise a compilation error will occur.
+The type of the object Expression must be L<"Class Type">, otherwise a compilation error will occur.
 
 Field names must be an existing field names, otherwise a compilation error will occur.
 
-The Type of the value saved in Field must be L<"Object Types">, otherwise a compilation error will occur.
+The type of the value saved in Field must be L<"Object Types">, otherwise a compilation error will occur.
 
 If the value stored in the Field at execution time is L<"Undefined Value">, the weak Statement does nothing.
 
@@ -5541,13 +5541,13 @@ The information of the back Reference is necessary because when the L<"Garbage C
 
 unweaken Statement is a Statement that cancels L<"Weak Reference"> for Field.
 
-  unweaken VARIABLE->{FIELD_NAME};
+  unweaken OBJECT->{FIELD_NAME};
 
-The Type of the object Expression must be L<"Class Type">, otherwise a compilation error will occur.
+The type of the object Expression must be L<"Class Type">, otherwise a compilation error will occur.
 
 Field names must be an existing Field names, otherwise a compilation error will occur.
 
-The Type of the value saved in Field must be L<"Object Types">, otherwise a compilation error will occur.
+The type of the value saved in Field must be L<"Object Types">, otherwise a compilation error will occur.
 
 If the value stored in the Field at execution time is L<"Undefined Value">, the unweaken Statement does nothing.
 
