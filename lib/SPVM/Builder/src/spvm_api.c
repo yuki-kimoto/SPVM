@@ -202,6 +202,12 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_RUNTIME_get_anon_method_method_id,
     SPVM_API_RUNTIME_get_opcodes,
     SPVM_API_RUNTIME_get_opcode_ids_length,
+    SPVM_API_RUNTIME_get_native_method_address,
+    SPVM_API_RUNTIME_get_precompile_method_address,
+    SPVM_API_RUNTIME_set_native_method_address,
+    SPVM_API_RUNTIME_set_precompile_method_address,
+    SPVM_API_RUNTIME_get_method_id_without_signature,
+    SPVM_API_RUNTIME_get_constant_string_value,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -404,13 +410,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
     SPVM_API_cleanup_global_vars,
-    SPVM_API_RUNTIME_get_native_method_address,
-    SPVM_API_RUNTIME_get_precompile_method_address,
-    SPVM_API_RUNTIME_set_native_method_address,
-    SPVM_API_RUNTIME_set_precompile_method_address,
     SPVM_API_is_object_array,
-    SPVM_API_RUNTIME_get_method_id_without_signature,
-    SPVM_API_RUNTIME_get_constant_string_value,
     SPVM_API_can_assign_array_element,
     env_api,
     SPVM_API_free_env_prepared,

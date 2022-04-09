@@ -23,7 +23,26 @@ Revision history for SPVM
           
           // Free compiler
           compiler_api->free_compiler(compiler);
+        * Move the following native APIs to env->api->runtime->xxx.
+          
+          get_precompile_method_address
+          set_native_method_address
+          set_precompile_method_address
+          get_method_id_without_signature
+          get_method_id_without_signature
+          get_constant_string_value
+
+          // Runtime API
+          void* runtime_api = env->api->runtime;
+          
+          // New runtime
+          void* runtime = runtime_api->new_runtime();
+          
+          // Free runtime
+          runtime_api->free_runtime(runtime);
+
         * Add SPVM::Document::NativeAPI::Compiler document.
+        * Add SPVM::Document::NativeAPI::Runtime document.
         
         [BUG FIX]
         * Fix the bug that dump weaken objects.
@@ -32,6 +51,14 @@ Revision history for SPVM
         [NON BACKWORD COMPATIBLE CHANGES]
         * Internally used Native APIs object_type_category_offset become always NULL.
         * Remove native APIs from env->compier_xxx. This APIs is moved to compiler native APIs.
+        * Remove the following native APIs
+          get_precompile_method_address
+          set_native_method_address
+          set_precompile_method_address
+          get_method_id_without_signature
+          get_method_id_without_signature
+          get_constant_string_value
+        * Native API "is_object_array" ID becomes 186
         
 0.9510  2021-04-05
         [CHANGE]

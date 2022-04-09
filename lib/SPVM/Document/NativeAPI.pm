@@ -812,39 +812,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   183 init_env,
   184 call_init_blocks,
   185 cleanup_global_vars,
-  186 get_native_method_address,
-  187 get_precompile_method_address,
-  188 set_native_method_address,
-  189 set_precompile_method_address,
-  190 is_object_array,
-  191 get_method_id_without_signature,
-  192 get_constant_string_value,
-  193 compiler_new,
-  194 compiler_free,
-  195 compiler_set_start_line,
-  196 compiler_get_start_line,
-  197 compiler_set_start_file,
-  198 compiler_get_start_file,
-  199 compiler_add_module_dir,
-  200 compiler_get_module_dirs_length,
-  201 compiler_get_module_dir,
-  202 compiler_compile_spvm,
-  203 compiler_get_error_messages_length,
-  204 compiler_get_error_message,
-  205 compiler_get_class_id,
-  206 compiler_get_classes_length,
-  207 compiler_get_class_name,
-  208 compiler_is_anon_class,
-  209 compiler_get_methods_length,
-  210 compiler_get_method_id,
-  211 compiler_get_method_id_by_name,
-  212 compiler_get_method_name,
-  213 compiler_get_method_signature,
-  214 compiler_is_anon_method,
-  215 compiler_is_init_block_method,
-  216 compiler_is_native_method,
-  217 compiler_is_precompile_method,
-  218 compiler_build_runtime,
+  186 is_object_array,
 
 =head1 List of Native APIs
 
@@ -2667,30 +2635,6 @@ Call C<INIT> blocks.
 
 Cleanup gloval variable, such as class variables and the exception variable.
 
-=head2 get_native_method_address
-  
-  void* (*get_native_method_address)(SPVM_ENV* env, int32_t method_id);
-
-Get the native method address.
-
-=head2 get_precompile_method_address
-  
-  void* (*get_precompile_method_address)(SPVM_ENV* env, int32_t method_id);
-
-Get the precompile method address.
-
-=head2 set_native_method_address
-  
-  void (*set_native_method_address)(SPVM_ENV* env, int32_t method_id, void* address);
-
-Set the native method address.
-
-=head2 set_precompile_method_address
-  
-  void (*set_precompile_method_address)(SPVM_ENV* env, int32_t method_id, void* address);
-
-Set the precompile method address.
-
 =head2 is_object_array
 
   int32_t (*is_object_array)(SPVM_ENV* env, void* object);
@@ -2699,27 +2643,13 @@ If the object is a object array, returns C<1>, otherwise returns C<0>.
 
 If the object is C<NULL>, returns C<0>.
 
-=head2 get_method_id_without_signature
-
-  int32_t (*get_method_id_without_signature)(SPVM_ENV* env, const char* class_name, const char* method_name);
-
-Get the method ID by the class name and method name. If the method does not exists, a negative value is returned.
-
-=head2 get_method_id_without_signature
-
-  int32_t (*get_method_id_without_signature)(SPVM_ENV* env, const char* class_name, const char* method_name);
-
-Get the method ID by the class name and method name. If the method does not exists, a negative value is returned.
-
-=head2 get_constant_string_value
-
-  const char* (*get_constant_string_value)(SPVM_ENV* env, int32_t string_id, int32_t* string_length);
-
-Get the value and length of the string with the string ID. 
-
 =head1 Compiler Native API
 
 L<SPVM::Document::NativeAPI::Compiler>
+
+=head1 Runtime Native API
+
+L<SPVM::Document::NativeAPI::Runtime>
 
 =head1 Utilities
 

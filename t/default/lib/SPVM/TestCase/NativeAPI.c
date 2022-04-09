@@ -201,13 +201,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->init_env != &env_array[183]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->call_init_blocks != &env_array[184]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->cleanup_global_vars != &env_array[185]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_native_method_address != &env_array[186]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_precompile_method_address != &env_array[187]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_native_method_address != &env_array[188]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_precompile_method_address != &env_array[189]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->is_object_array != &env_array[190]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_method_id_without_signature != &env_array[191]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_constant_string_value != &env_array[192]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->is_object_array != &env_array[186]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 
