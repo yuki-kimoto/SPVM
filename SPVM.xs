@@ -756,7 +756,7 @@ call_spvm_method(...)
               int32_t length = av_len(av_elems) + 1;
               
               SV* sv_error = NULL;
-              const char* arg_basic_type_name = SPVM_API_get_name(env, SPVM_API_RUNTIME_get_basic_type_name_id(env->runtime, arg_basic_type_id));
+              const char* arg_basic_type_name = SPVM_API_RUNTIME_get_name(env->runtime, SPVM_API_RUNTIME_get_basic_type_name_id(env->runtime, arg_basic_type_id));
               SPVM_OBJECT* array = SPVM_XS_UTIL_new_mulnum_array(env, arg_basic_type_name, sv_value, &sv_error);
               if (sv_error) {
                 croak_sv(sv_error);
@@ -1099,7 +1099,7 @@ call_spvm_method(...)
               // Object
               else {
                 SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-                sv_catpv(sv_perl_class_name, SPVM_API_get_name(env, SPVM_API_RUNTIME_get_basic_type_name_id(env->runtime, return_value_basic_type_id)));
+                sv_catpv(sv_perl_class_name, SPVM_API_RUNTIME_get_name(env->runtime, SPVM_API_RUNTIME_get_basic_type_name_id(env->runtime, return_value_basic_type_id)));
                 sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_perl_class_name));
               }
             }
@@ -1135,7 +1135,7 @@ call_spvm_method(...)
           // Object
           else {
             SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-            sv_catpv(sv_perl_class_name, SPVM_API_get_name(env, SPVM_API_RUNTIME_get_basic_type_name_id(env->runtime, return_value_basic_type_id)));
+            sv_catpv(sv_perl_class_name, SPVM_API_RUNTIME_get_name(env->runtime, SPVM_API_RUNTIME_get_basic_type_name_id(env->runtime, return_value_basic_type_id)));
             sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_perl_class_name));
           }
         }
@@ -1152,7 +1152,7 @@ call_spvm_method(...)
         env->inc_ref_count(env, return_value);
         int32_t return_value_basic_type_id = SPVM_API_get_object_basic_type_id(env, return_value);
         SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-        sv_catpv(sv_perl_class_name, SPVM_API_get_name(env, SPVM_API_RUNTIME_get_basic_type_name_id(env->runtime, return_value_basic_type_id)));
+        sv_catpv(sv_perl_class_name, SPVM_API_RUNTIME_get_name(env->runtime, SPVM_API_RUNTIME_get_basic_type_name_id(env->runtime, return_value_basic_type_id)));
         sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_perl_class_name));
       }
       // undef
@@ -1415,7 +1415,7 @@ array_to_elems(...)
             }
             else {
               SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-              sv_catpv(sv_perl_class_name, SPVM_API_get_name(env, SPVM_API_RUNTIME_get_basic_type_name_id(env->runtime, SPVM_API_get_object_basic_type_id(env, array))));
+              sv_catpv(sv_perl_class_name, SPVM_API_RUNTIME_get_name(env->runtime, SPVM_API_RUNTIME_get_basic_type_name_id(env->runtime, SPVM_API_get_object_basic_type_id(env, array))));
               sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_perl_class_name));
             }
             av_push(av_values, SvREFCNT_inc(sv_value));
@@ -1916,7 +1916,7 @@ array_get(...)
     
     if (element_dimension == 0) {
       SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-      sv_catpv(sv_perl_class_name, SPVM_API_get_name(env, SPVM_API_RUNTIME_get_basic_type_name_id(env->runtime, SPVM_API_get_object_basic_type_id(env, array))));
+      sv_catpv(sv_perl_class_name, SPVM_API_RUNTIME_get_name(env->runtime, SPVM_API_RUNTIME_get_basic_type_name_id(env->runtime, SPVM_API_get_object_basic_type_id(env, array))));
       sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_perl_class_name));
     }
     else if (element_dimension > 0) {

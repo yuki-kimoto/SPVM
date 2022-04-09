@@ -7790,13 +7790,6 @@ const char* SPVM_API_get_constant_string_value(SPVM_ENV* env, int32_t string_id,
   return constant_string_value;
 }
 
-const char* SPVM_API_get_name(SPVM_ENV* env, int32_t string_id) {
-  
-  const char* name = SPVM_API_get_constant_string_value(env, string_id, NULL);
-  
-  return name;
-}
-
 void SPVM_API_set_native_method_address(SPVM_ENV* env, int32_t method_id, void* address) {
   (void)env;
   

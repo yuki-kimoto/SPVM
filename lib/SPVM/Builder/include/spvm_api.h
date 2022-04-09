@@ -308,7 +308,6 @@ int32_t SPVM_API_has_interface_by_id(SPVM_ENV* env, int32_t object_basic_type_id
 int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t callback_basic_type_id, int32_t callback_type_dimension);
 int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPVM_OBJECT* element);
 
-const char* SPVM_API_get_name(SPVM_ENV* env, int32_t string_id);
 void SPVM_API_free_env_prepared(SPVM_ENV* env);
 
 
