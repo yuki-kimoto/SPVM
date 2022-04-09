@@ -294,19 +294,20 @@ SPVM_ENV* SPVM_API_new_env_raw();
 SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env);
 void SPVM_API_free_env(SPVM_ENV* env);
 
+int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object);
+
+void SPVM_API_free_env_prepared(SPVM_ENV* env);
+
+int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPVM_OBJECT* element);
+
 void SPVM_API_set_native_method_address(SPVM_ENV* env, int32_t method_id, void* address);
 void SPVM_API_set_precompile_method_address(SPVM_ENV* env, int32_t method_id, void* address);
 void* SPVM_API_get_native_method_address(SPVM_ENV* env, int32_t method_id);
 void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id);
 
-int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object);
-
-const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name);
 int32_t SPVM_API_has_interface_by_id(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t interface_basic_type_id, int32_t interface_type_dimension);
 int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t callback_basic_type_id, int32_t callback_type_dimension);
-int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPVM_OBJECT* element);
 
-void SPVM_API_free_env_prepared(SPVM_ENV* env);
-
+const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name);
 
 #endif
