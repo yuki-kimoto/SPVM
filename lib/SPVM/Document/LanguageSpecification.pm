@@ -1959,6 +1959,12 @@ If the method implementation is not found, an exception is thrown at runtime.
 
 The existence of the method implementation can be checked by the L<has_implement|"has_implement Operator"> operator.
 
+=head2 Anon Class
+
+The anon class is the class that is defined by the L<creating callback|"Creating Callback"> syntax.
+
+A anon class has its unique name.
+
 =head1 Interface
 
 Explains interfaces.
@@ -2007,13 +2013,11 @@ A callback must have only one L<method definition|"Method Definition">. The meth
 
 The method can't have the L<method block|"Method Block">.
 
-The method name must be an empty string C<"">.
-
 A callback type can't have L<field definitions|"Field Definition"> and L<class variable definitions|"Class Variable Definition">.
 
 If the callback type definition is invalid, a compilation error will occur.
 
-A callback can be create using the syntax of L<"Create Callback">. A callback is an object of a L<class type|"Class Type">.
+A callback can be create using the syntax of L<"Creating Callback">. A callback is an object of a L<class type|"Class Type">.
 
 A callback that have the same method defined in the callback type can be assign to the callback type.
 
@@ -3879,7 +3883,7 @@ B<Examples of Instance Method Call:>
   my $point = new Point;
   $point->set_x(3);
 
-Since the object created by L<"Create Callback"> is a normal object, you can call Method.
+Since the object created by L<"Creating Callback"> is a normal object, you can call Method.
 
   OBJECT_EXPRESSION->(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 
@@ -3991,6 +3995,80 @@ B<Examples of Getting Current Line Number:>
       my $line = __LINE__;
     }
   }
+
+=head2 Creating Callback
+
+The creating callback is an L<expression|"Expressions"> to define the implementation of L<callback|"Callback"> and create a L<callback|"Callback">.
+
+  method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ...) {
+  
+  }
+
+The creating callback returns the object its type is an L<anon class|"Anon Class">.
+
+The created callback can be assign to a L<callback type|"Callback Type"> that has a same L<signature|"Signature"> of the method defined by the creating callback.
+
+B<Examples of Create Callback:>
+
+  my $comparator : Comparator = method : int ($x1 : object, $x2 : object) {
+    my $point1 = (Point)$x1;
+    my $point2 = (Point)$x2;
+    
+    return $point1->x <=> $point2->x;
+  };
+
+See also L<Comparator|SPVM::Comparator>.
+
+=head3 Capture
+
+In Create Callback, you can use the syntax called Capture to use the variables defined outside the method defined by Create Callback inside the method defined by Create Callback.
+
+  # Capture
+  [VariableName1 : Type1, VariableName2 : Type2] method MethodNames : int ($x1 : object, $x2 : object) {
+  
+  };
+
+Capture Example.
+
+  my $foo = 1;
+  my $bar = 5L;
+  
+  my $comparator = [$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
+  
+    print "$foo\n";
+    print "$bar\n";
+  };
+  
+
+The variable name used in Capture must be the one with "$" added at the beginning of L<"Field Names">.
+
+The Capture is actually defined as a field of Class. Capture is a field definition and value setting syntax sugar.
+
+If L<"Local Variable"> with the same name as the Capture variable exists in the Scope, access the Local Variable.
+
+If there is a L<"Class Variable"> with the same name as the Capture variable, access the Capture variable.
+
+If you write Create Callback and Capture without using syntax sugar, it will be as follows.
+
+  class ComapartorImpl {
+    has foo : int;
+    has bar : long;
+  
+    method : int ($x1 : object, $x2 : object) {
+      print $self->{foo} . "\n";
+      print $self->{bar} . "\n";
+    }
+  }
+
+  my $foo = 1;
+  my $bar = 5L;
+  
+  my $comparator = new ComparatorImpl;
+  
+  $comparator->{foo} = $foo;
+  $comparator->{bar} = $bar;
+
+Capture is a syntax for writing such a long description short.
 
 =head1 Operators
 
@@ -7189,80 +7267,6 @@ When the object has Back references of Weak Reference, Undefined Value is assign
 
 The above process is done recursively.
 
-=head2 Create Callback
-
-Create Callback is a Syntax that creates an object that conforms to Callback Type by using a special syntax for the purpose of Callback.
-
-  method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ARGSN : TYPEn) {
-  
-  }
-
-When Create Callback is performed, L<"Class Definition"> is performed internally, an object based on that Class is generated, and <a href = " Returned as # language-expression ">Expression</a>. It is possible to assign to a variable like the following.
-
-  my $cb_obj = method : TYPE (ARGS1 : TYPE1, ARGS2 : TYPE2, ..., ARGSn : TYPEn) {
-  
-  };
-
-Method defined by Create Callback must be L<"Method">. It must also be a Method with no name.
-
-B<Examples of Create Callback:>
-
-  my $comparator = method : int ($x1 : object, $x2 : object) {
-  
-  }
-
-You can call Method because the object created by Create Callback is a normal object. For the call to Create Callback, see L<"Method Call">.
-
-=head2 Capture
-
-In Create Callback, you can use the syntax called Capture to use the variables defined outside the method defined by Create Callback inside the method defined by Create Callback.
-
-  # Capture
-  [VariableName1 : Type1, VariableName2 : Type2] method MethodNames : int ($x1 : object, $x2 : object) {
-  
-  };
-
-Capture Example.
-
-  my $foo = 1;
-  my $bar = 5L;
-  
-  my $comparator = [$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
-  
-    print "$foo\n";
-    print "$bar\n";
-  }
-
-The variable name used in Capture must be the one with "$" added at the beginning of L<"Field Names">.
-
-The Capture is actually defined as a field of Class. Capture is a field definition and value setting syntax sugar.
-
-If L<"Local Variable"> with the same name as the Capture variable exists in the Scope, access the Local Variable.
-
-If there is a L<"Class Variable"> with the same name as the Capture variable, access the Capture variable.
-
-If you write Create Callback and Capture without using syntax sugar, it will be as follows.
-
-  class ComapartorImpl {
-    has foo : int;
-    has bar : long;
-  
-    method : int ($x1 : object, $x2 : object) {
-      print $self->{foo} . "\n";
-      print $self->{bar} . "\n";
-    }
-  }
-
-  my $foo = 1;
-  my $bar = 5L;
-  
-  my $comparator = new ComparatorImpl;
-  
-  $comparator->{foo} = $foo;
-  $comparator->{bar} = $bar;
-
-Capture is a syntax for writing such a long description short.
-
 =head1 Weak Reference
 
 Weak Reference is a reference that does not increase the reference count. Weak Reference can be used to solve the problem of circular references.
@@ -7317,5 +7321,5 @@ Even if there are 3 circular references, you can release them correctly by setti
     weaken $foo->{bar};
   }
 
-As a syntax related to Weak Reference, Weak Reference can be released L<"weaken Statement">, and it can be confirmed whether Field is Weak Reference <a href = "#language- There is an operator-isweak ">isweak Operator</a>.
+As a syntax related to Weak Reference, Weak Reference can be released L<"weaken Statement">, and it can be confirmed whether Field is Weak Reference the L<isweak operator|"isweak Operator">.
 

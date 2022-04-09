@@ -192,7 +192,7 @@ SPVM::Fn - SPVM Starndard Functions
   $minimals->[2] = TestCase::Minimal->new;
   $minimals->[2]{x} = 2;
   $minimals->[2]{y} = 9;
-  Fn->sort_object$minimals, 0, scalar @$minimals, method : int ($object1 : object, $object2 : object) {
+  Fn->sort_object($minimals, 0, scalar @$minimals, method : int ($object1 : object, $object2 : object) {
     my $minimal1 = (TestCase::Minimal)$object1;
     my $minimal2 = (TestCase::Minimal)$object2;
     
