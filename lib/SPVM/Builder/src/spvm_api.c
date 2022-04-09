@@ -5834,49 +5834,6 @@ int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id,
   return has_callback;
 }
 
-int32_t SPVM_API_has_interface_by_id(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t interface_basic_type_id, int32_t interface_type_dimension) {
-  (void)env;
-
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  int32_t has_interface;
-  
-  if (object_type_dimension > 0) {
-    return 0;
-  }
-  
-  if (interface_type_dimension > 0) {
-    return 0;
-  }
-
-  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id);
-  SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, interface_basic_type_id);
-  
-  if (class_basic_type->class_id < 0) {
-    return 0;
-  }
-  
-  if (interface_basic_type->class_id < 0) {
-    return 0;
-  }
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_basic_type->class_id);
-  SPVM_RUNTIME_CLASS* interface = SPVM_API_RUNTIME_get_class(env->runtime, interface_basic_type->class_id);
-  
-  if (class->id, interface->id) {
-    return 1;
-  }
-  
-  for (int32_t i = 0; i < class->interface_class_ids_length; i++) {
-    int32_t must_interface_class_id = class->interface_class_ids_base + i;
-    if (must_interface_class_id == interface->id) {
-      return 1;
-    }
-  }
-
-  return 0;
-}
-
 int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t interface_basic_type_id) {
   (void)env;
 
@@ -7776,59 +7733,6 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   env->free_env_raw(env);
 }
 
-void SPVM_API_set_native_method_address(SPVM_ENV* env, int32_t method_id, void* address) {
-  (void)env;
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
-  
-  runtime->method_native_addresses[method->id] = address;
-}
-
-void SPVM_API_set_precompile_method_address(SPVM_ENV* env, int32_t method_id, void* address) {
-  (void)env;
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
-  
-  runtime->method_precompile_addresses[method->id] = address;
-}
-
-void* SPVM_API_get_native_method_address(SPVM_ENV* env, int32_t method_id) {
-  (void)env;
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
-  
-  void* native_method_address = runtime->method_native_addresses[method->id];
-  
-  return native_method_address;
-}
-
-void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id) {
-  (void)env;
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
-  
-  void* precompile_method_address = runtime->method_precompile_addresses[method->id];
-  
-  return precompile_method_address;
-}
-
-const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
-  SPVM_PRECOMPILE_create_precompile_source(env, string_buffer, class_name);
-}
-
-
 void SPVM_API_free_env_prepared(SPVM_ENV* env) {
 
   // Cleanup global variables
@@ -7916,3 +7820,97 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
   return can_assign;
 }
 
+void SPVM_API_set_native_method_address(SPVM_ENV* env, int32_t method_id, void* address) {
+  (void)env;
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
+  
+  runtime->method_native_addresses[method->id] = address;
+}
+
+void SPVM_API_set_precompile_method_address(SPVM_ENV* env, int32_t method_id, void* address) {
+  (void)env;
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
+  
+  runtime->method_precompile_addresses[method->id] = address;
+}
+
+void* SPVM_API_get_native_method_address(SPVM_ENV* env, int32_t method_id) {
+  (void)env;
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
+  
+  void* native_method_address = runtime->method_native_addresses[method->id];
+  
+  return native_method_address;
+}
+
+void* SPVM_API_get_precompile_method_address(SPVM_ENV* env, int32_t method_id) {
+  (void)env;
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
+  
+  void* precompile_method_address = runtime->method_precompile_addresses[method->id];
+  
+  return precompile_method_address;
+}
+
+const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
+  SPVM_PRECOMPILE_create_precompile_source(env, string_buffer, class_name);
+}
+
+int32_t SPVM_API_has_interface_by_id(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t interface_basic_type_id, int32_t interface_type_dimension) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  int32_t has_interface;
+  
+  if (object_type_dimension > 0) {
+    return 0;
+  }
+  
+  if (interface_type_dimension > 0) {
+    return 0;
+  }
+
+  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, interface_basic_type_id);
+  
+  if (class_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  if (interface_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_basic_type->class_id);
+  SPVM_RUNTIME_CLASS* interface = SPVM_API_RUNTIME_get_class(env->runtime, interface_basic_type->class_id);
+  
+  if (class->id, interface->id) {
+    return 1;
+  }
+  
+  for (int32_t i = 0; i < class->interface_class_ids_length; i++) {
+    int32_t must_interface_class_id = class->interface_class_ids_base + i;
+    if (must_interface_class_id == interface->id) {
+      return 1;
+    }
+  }
+
+  return 0;
+}
