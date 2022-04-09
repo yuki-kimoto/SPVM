@@ -5765,75 +5765,6 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
   return has_callback;
 }
 
-int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t callback_basic_type_id, int32_t callback_type_dimension) {
-  (void)env;
-
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  int32_t has_callback;
-  
-  if (object_type_dimension > 0) {
-    return 0;
-  }
-
-  if (callback_type_dimension > 0) {
-    return 0;
-  }
-
-  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id);
-  SPVM_RUNTIME_BASIC_TYPE* callback_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, callback_basic_type_id);
-  
-  if (class_basic_type->class_id < 0) {
-    return 0;
-  }
-  
-  if (callback_basic_type->class_id < 0) {
-    return 0;
-  }
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_basic_type->class_id);
-  SPVM_RUNTIME_CLASS* callback = SPVM_API_RUNTIME_get_class(env->runtime, callback_basic_type->class_id);
-  
-  // Class which have only anon sub
-  if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
-    assert(class->method_ids_length == 1);
-    assert(callback->method_ids_length == 1);
-    SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method(env->runtime, class->method_ids_base + 0);
-    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(env->runtime, callback->method_ids_base + 0);
-    
-    const char* method_callback_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_callback->signature_id, NULL);
-    const char* found_method_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, found_method->signature_id, NULL);
-    if (strcmp(method_callback_signature, found_method_signature) == 0) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  // Normal class
-  else {
-    assert(callback->method_ids_length == 1);
-    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(env->runtime, callback->method_ids_base + 0);
-    
-    const char* method_callback_name =  SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_callback->name_id, NULL);
-    SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_callback_name);
-    if (!found_method) {
-      return 0;
-    }
-    
-    const char* method_callback_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_callback->signature_id, NULL);
-    const char* found_method_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, found_method->signature_id, NULL);
-    if (strcmp(method_callback_signature, found_method_signature) == 0) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  return has_callback;
-}
-
 int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t interface_basic_type_id) {
   (void)env;
 
@@ -7909,6 +7840,75 @@ int32_t SPVM_API_has_interface_by_id(SPVM_ENV* env, int32_t object_basic_type_id
   }
 
   return 0;
+}
+
+int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t callback_basic_type_id, int32_t callback_type_dimension) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  int32_t has_callback;
+  
+  if (object_type_dimension > 0) {
+    return 0;
+  }
+
+  if (callback_type_dimension > 0) {
+    return 0;
+  }
+
+  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* callback_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, callback_basic_type_id);
+  
+  if (class_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  if (callback_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_basic_type->class_id);
+  SPVM_RUNTIME_CLASS* callback = SPVM_API_RUNTIME_get_class(env->runtime, callback_basic_type->class_id);
+  
+  // Class which have only anon sub
+  if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
+    assert(class->method_ids_length == 1);
+    assert(callback->method_ids_length == 1);
+    SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method(env->runtime, class->method_ids_base + 0);
+    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(env->runtime, callback->method_ids_base + 0);
+    
+    const char* method_callback_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_callback->signature_id, NULL);
+    const char* found_method_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, found_method->signature_id, NULL);
+    if (strcmp(method_callback_signature, found_method_signature) == 0) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  // Normal class
+  else {
+    assert(callback->method_ids_length == 1);
+    SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(env->runtime, callback->method_ids_base + 0);
+    
+    const char* method_callback_name =  SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_callback->name_id, NULL);
+    SPVM_RUNTIME_METHOD* found_method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_callback_name);
+    if (!found_method) {
+      return 0;
+    }
+    
+    const char* method_callback_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_callback->signature_id, NULL);
+    const char* found_method_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, found_method->signature_id, NULL);
+    if (strcmp(method_callback_signature, found_method_signature) == 0) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
+  return has_callback;
 }
 
 const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
