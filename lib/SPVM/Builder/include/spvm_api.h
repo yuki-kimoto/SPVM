@@ -309,11 +309,6 @@ int32_t SPVM_API_has_callback_by_id(SPVM_ENV* env, int32_t object_basic_type_id,
 int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPVM_OBJECT* element);
 
 const char* SPVM_API_get_name(SPVM_ENV* env, int32_t string_id);
-int32_t SPVM_API_get_type_basic_type_id(SPVM_ENV* env, int32_t type_id);
-int32_t SPVM_API_get_type_dimension(SPVM_ENV* env, int32_t type_id);
-int32_t SPVM_API_get_type_width(SPVM_ENV* env, int32_t type_id);
-int32_t SPVM_API_get_type_is_object(SPVM_ENV* env, int32_t type_id);
-int32_t SPVM_API_get_type_is_ref(SPVM_ENV* env, int32_t type_id);
 int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name);
 int32_t SPVM_API_get_class_name_id(SPVM_ENV* env, int32_t class_id);
 int32_t SPVM_API_get_class_field_ids_base(SPVM_ENV* env, int32_t class_id);
