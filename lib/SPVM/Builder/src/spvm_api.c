@@ -1338,7 +1338,7 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env) {
   
   // Free objects of class variables
   for (int32_t class_var_id = 0; class_var_id < runtime->class_vars_length; class_var_id++) {
-    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class_var_id);
+    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(env->runtime, class_var_id);
 
     int32_t class_var_type_is_object = SPVM_API_get_type_is_object(env, class_var->type_id);
     if (class_var_type_is_object) {
@@ -7115,7 +7115,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_runtime_class_var_from_runtime_class(SPVM_E
   SPVM_RUNTIME_CLASS_VAR* found_class_var = NULL;
   if (class->class_var_ids_length > 0) {
     for (int32_t class_var_id = class->class_var_ids_base; class_var_id <  class->class_var_ids_base + class->class_var_ids_length; class_var_id++) {
-      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class_var_id);
+      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(env->runtime, class_var_id);
       const char* class_var_name = SPVM_API_get_name(env, class_var->name_id);
       if (strcmp(class_var_name, search_class_var_name) == 0) {
         found_class_var = class_var;
@@ -7326,7 +7326,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, int32_t class_var_
 
 int32_t SPVM_API_get_class_var_name_id(SPVM_ENV* env, int32_t class_var_id) {
   
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class_var_id);
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(env->runtime, class_var_id);
 
   assert(class_var);
 
@@ -7337,7 +7337,7 @@ int32_t SPVM_API_get_class_var_name_id(SPVM_ENV* env, int32_t class_var_id) {
 
 int32_t SPVM_API_get_class_var_signature_id(SPVM_ENV* env, int32_t class_var_id) {
   
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class_var_id);
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(env->runtime, class_var_id);
 
   assert(class_var);
 
@@ -7348,7 +7348,7 @@ int32_t SPVM_API_get_class_var_signature_id(SPVM_ENV* env, int32_t class_var_id)
 
 int32_t SPVM_API_get_class_var_class_id(SPVM_ENV* env, int32_t class_var_id) {
   
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class_var_id);
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(env->runtime, class_var_id);
 
   assert(class_var);
 
