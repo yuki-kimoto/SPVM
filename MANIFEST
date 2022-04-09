@@ -425,6 +425,7 @@ lib/SPVM/Builder/src/spvm_allow.c
 lib/SPVM/Builder/src/spvm_api.c
 lib/SPVM/Builder/src/spvm_api_allocator.c
 lib/SPVM/Builder/src/spvm_api_compiler.c
+lib/SPVM/Builder/src/spvm_api_precompile.c
 lib/SPVM/Builder/src/spvm_api_runtime.c
 lib/SPVM/Builder/src/spvm_api_string_buffer.c
 lib/SPVM/Builder/src/spvm_array_field_access.c
@@ -862,8 +863,9 @@ t/default/lib/SPVM/TestCase/CompileError/Use/AliasStartsLowerCase.spvm
 t/default/lib/SPVM/TestCase/CompileError/Use/ImportMethodNotFound.spvm
 t/default/lib/SPVM/TestCase/CompileError/Value/Fields17.spvm
 t/default/lib/SPVM/TestCase/CompileError/Value/FieldsZero.spvm
-t/default/lib/SPVM/TestCase/CompileError/Weaken/ArrayNotObject.spvm
-t/default/lib/SPVM/TestCase/CompileError/Weaken/HashNotObject.spvm
+t/default/lib/SPVM/TestCase/CompileError/Weaken/IsweakFieldNotObjectType.spvm
+t/default/lib/SPVM/TestCase/CompileError/Weaken/UnweakenFieldNotObjectType.spvm
+t/default/lib/SPVM/TestCase/CompileError/Weaken/WeakenFieldNotObjectType.spvm
 t/default/lib/SPVM/TestCase/Concat.spvm
 t/default/lib/SPVM/TestCase/Constant.spvm
 t/default/lib/SPVM/TestCase/Convert.spvm

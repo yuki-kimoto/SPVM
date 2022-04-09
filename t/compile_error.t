@@ -195,11 +195,7 @@ sub print_error_messages {
   compile_not_ok('TestCase::CompileError::String::CharacterAssign');
   compile_not_ok('TestCase::CompileError::String::AssignNonMutableToMutable');
 }
-# Weaken
-{
-  compile_not_ok('TestCase::CompileError::Weaken::HashNotObject');
-  compile_not_ok('TestCase::CompileError::Weaken::ArrayNotObject');
-}
+
 # Comparison operator
 {
   compile_not_ok('TestCase::CompileError::ComparisonOperator::GtNotNumeric');
@@ -294,6 +290,13 @@ sub print_error_messages {
 # Type comment
 {
   compile_not_ok('TestCase::CompileError::TypeComment::NotExistType', qr/NotExists::XXXX/);
+}
+
+# Weaken
+{
+  compile_not_ok('TestCase::CompileError::Weaken::IsweakFieldNotObjectType', qr/isweak.*object/);
+  compile_not_ok('TestCase::CompileError::Weaken::UnweakenFieldNotObjectType', qr/unweaken.*object/);
+  compile_not_ok('TestCase::CompileError::Weaken::WeakenFieldNotObjectType', qr/weaken.*object/);
 }
 
 done_testing;

@@ -13,6 +13,7 @@ Revision history for SPVM
         * Improve field access error message.
         [BUG FIX]
         * Fix the bug that dump weaken objects.
+        * Fix the bug of isweak operator compile checking.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Internally used Native APIs object_type_category_offset become always NULL.

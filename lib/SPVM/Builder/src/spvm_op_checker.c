@@ -2980,6 +2980,28 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_COMPILER_error(compiler, "Unknown field %s->{%s} at %s line %d", invoker_type_name, op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
+              
+              // weaken operator
+              if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN) {
+                if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The type of the field targeted by the weaken operator must be a object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              // unweaken operator
+              else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN) {
+                if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The type of the field targeted by the unweaken operator must be a object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              // isweak operator
+              else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK) {
+                if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The type of the field targeted by the isweak operator must be a object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+              }
 
               // Access control
               int32_t is_private;
@@ -3128,41 +3150,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     return;
                   }
                 }
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_WEAKEN_FIELD: {
-              SPVM_OP* op_field_access = op_cur->first;
-              SPVM_FIELD* field = op_field_access->uv.field_access->field;
-              SPVM_TYPE* type = field->type;
-              if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_COMPILER_error(compiler, "The type of the field targeted by the weaken operator must be a object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_UNWEAKEN_FIELD: {
-              SPVM_OP* op_field_access = op_cur->first;
-              SPVM_FIELD* field = op_field_access->uv.field_access->field;
-              SPVM_TYPE* type = field->type;
-              if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_COMPILER_error(compiler, "The type of the field targeted by the unweaken operator must be a object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_ISWEAK_FIELD: {
-              warn("AAAAAAAAA");
-              
-              SPVM_OP* op_field_access = op_cur->first;
-              SPVM_FIELD* field = op_field_access->uv.field_access->field;
-              SPVM_TYPE* type = field->type;
-              if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_COMPILER_error(compiler, "The type of the field targeted by the isweak operator must be a object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
               }
               
               break;

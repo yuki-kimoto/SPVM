@@ -1,4 +1,4 @@
-class TestCase::CompileError::Weaken::HashNotObject {
+class TestCase::CompileError::Weaken::WeakenFieldNotObjectType {
   use TestCase::Minimal;
   
   static method main : int () {
