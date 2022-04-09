@@ -152,6 +152,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_RUNTIME_get_opcodes,
     SPVM_API_RUNTIME_get_opcode_ids_length,
     SPVM_API_RUNTIME_get_name,
+    SPVM_API_RUNTIME_get_constant_string_value,
     SPVM_API_RUNTIME_get_basic_type_name_id,
     SPVM_API_RUNTIME_get_basic_type_class_id,
     SPVM_API_RUNTIME_get_basic_type_category,
@@ -198,16 +199,13 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_RUNTIME_get_method_mortal_stack_length,
     SPVM_API_RUNTIME_get_method_opcode_ids_base,
     SPVM_API_RUNTIME_get_method_opcode_ids_length,
+    SPVM_API_RUNTIME_get_method_id_by_name,
     SPVM_API_RUNTIME_get_arg_type_id,
     SPVM_API_RUNTIME_get_anon_method_method_id,
-    SPVM_API_RUNTIME_get_opcodes,
-    SPVM_API_RUNTIME_get_opcode_ids_length,
     SPVM_API_RUNTIME_get_native_method_address,
     SPVM_API_RUNTIME_get_precompile_method_address,
     SPVM_API_RUNTIME_set_native_method_address,
     SPVM_API_RUNTIME_set_precompile_method_address,
-    SPVM_API_RUNTIME_get_method_id_by_name,
-    SPVM_API_RUNTIME_get_constant_string_value,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));

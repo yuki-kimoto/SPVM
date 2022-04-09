@@ -347,6 +347,7 @@ struct spvm_env_runtime {
   int32_t* (*get_opcodes)(void* runtime);
   int32_t (*get_opcode_ids_length)(void* runtime);
   const char* (*get_name)(void* runtime, int32_t string_id);
+  const char* (*get_constant_string_value)(void* runtime, int32_t string_id, int32_t* string_length);
   int32_t (*get_basic_type_name_id)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_class_id)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_category)(void* runtime, int32_t basic_type_id);
@@ -393,16 +394,13 @@ struct spvm_env_runtime {
   int32_t (*get_method_mortal_stack_length)(void* runtime, int32_t method_id);
   int32_t (*get_method_opcode_ids_base)(void* runtime, int32_t method_id);
   int32_t (*get_method_opcode_ids_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_id_by_name)(void* runtime, const char* class_name, const char* method_name);
   int32_t (*get_arg_type_id)(void* runtime, int32_t arg_id);
   int32_t (*get_anon_method_method_id)(void* runtime, int32_t anon_method_id);
-  int32_t* (*get_runtime_opcodes)(void* runtime);
-  int32_t (*get_runtime_opcode_ids_length)(void* runtime);
   void* (*get_native_method_address)(void* runtime, int32_t method_id);
   void* (*get_precompile_method_address)(SPVM_ENV*, int32_t method_id);
   void (*set_native_method_address)(void* runtime, int32_t method_id, void* address);
   void (*set_precompile_method_address)(void* runtime, int32_t method_id, void* address);
-  int32_t (*get_method_id_by_name)(void* runtime, const char* class_name, const char* method_name);
-  const char* (*get_constant_string_value)(void* runtime, int32_t string_id, int32_t* string_length);
 };
 
 SPVM_ENV* SPVM_NATIVE_new_env_raw();
