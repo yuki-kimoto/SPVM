@@ -593,7 +593,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
             
             SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, class->field_ids_base + field_index);
             
-            SPVM_RUNTIME_TYPE* field_type = SPVM_API_get_type(env, field->type_id);
+            SPVM_RUNTIME_TYPE* field_type =SPVM_API_RUNTIME_get_type(env->runtime, field->type_id);
 
             int32_t field_basic_type_id = field_type->basic_type_id;
 
@@ -751,7 +751,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
 
           SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, class->field_ids_base + field_index);
           
-          SPVM_RUNTIME_TYPE* field_type = SPVM_API_get_type(env, field->type_id);
+          SPVM_RUNTIME_TYPE* field_type =SPVM_API_RUNTIME_get_type(env->runtime, field->type_id);
           
           int32_t field_basic_type_id = field_type->basic_type_id;
           int32_t field_type_dimension = field_type->dimension;
@@ -4233,7 +4233,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
 
         if (!exception_flag) {
           SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_RUNTIME_get_method(env->runtime, call_method_id);
-          SPVM_RUNTIME_TYPE* call_spvm_method_return_type = SPVM_API_get_type(env, call_spvm_method->return_type_id);
+          SPVM_RUNTIME_TYPE* call_spvm_method_return_type =SPVM_API_RUNTIME_get_type(env->runtime, call_spvm_method->return_type_id);
           int32_t call_spvm_method_return_basic_type_id = call_spvm_method_return_type->basic_type_id;
           int32_t call_spvm_method_return_type_dimension = call_spvm_method_return_type->dimension;
           int32_t call_spvm_method_return_basic_type_category = SPVM_API_get_basic_type_category(env, call_spvm_method_return_type->basic_type_id);
@@ -4378,7 +4378,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           
           if (!exception_flag) {
             SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_RUNTIME_get_method(env->runtime, call_method_id);
-            SPVM_RUNTIME_TYPE* call_spvm_method_return_type = SPVM_API_get_type(env, call_spvm_method->return_type_id);
+            SPVM_RUNTIME_TYPE* call_spvm_method_return_type =SPVM_API_RUNTIME_get_type(env->runtime, call_spvm_method->return_type_id);
             int32_t call_spvm_method_return_basic_type_id = call_spvm_method_return_type->basic_type_id;
             int32_t call_spvm_method_return_type_dimension = call_spvm_method_return_type->dimension;
             int32_t call_spvm_method_return_basic_type_category = SPVM_API_get_basic_type_category(env, call_spvm_method_return_type->basic_type_id);
@@ -5721,7 +5721,7 @@ int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array) {
       SPVM_RUNTIME_FIELD* first_field = SPVM_API_RUNTIME_get_field(env->runtime, class->field_ids_base + 0);
       int32_t first_field_type_id = first_field->type_id;
       assert(first_field_type_id > -1);
-      SPVM_RUNTIME_TYPE* first_field_type = SPVM_API_get_type(env, first_field_type_id);
+      SPVM_RUNTIME_TYPE* first_field_type =SPVM_API_RUNTIME_get_type(env->runtime, first_field_type_id);
       
       int32_t field_basic_type_id = first_field_type->basic_type_id;
       
@@ -6665,7 +6665,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   int32_t fields_length = class->field_ids_length;
   SPVM_RUNTIME_FIELD* field_first = SPVM_API_RUNTIME_get_field(env->runtime, class->field_ids_base + 0);
 
-  SPVM_RUNTIME_TYPE* first_field_type = SPVM_API_get_type(env, field_first->type_id);
+  SPVM_RUNTIME_TYPE* first_field_type =SPVM_API_RUNTIME_get_type(env->runtime, field_first->type_id);
 
   int32_t field_basic_type_id = first_field_type->basic_type_id;
 
@@ -7438,7 +7438,7 @@ SPVM_RUNTIME_TYPE* SPVM_API_get_type(SPVM_ENV* env, int32_t type_id) {
 
 int32_t SPVM_API_get_type_basic_type_id(SPVM_ENV* env, int32_t type_id) {
   
-  SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);
+  SPVM_RUNTIME_TYPE* type =SPVM_API_RUNTIME_get_type(env->runtime, type_id);
   
   assert(type);
   
@@ -7449,7 +7449,7 @@ int32_t SPVM_API_get_type_basic_type_id(SPVM_ENV* env, int32_t type_id) {
 
 int32_t SPVM_API_get_type_dimension(SPVM_ENV* env, int32_t type_id) {
   
-  SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);
+  SPVM_RUNTIME_TYPE* type =SPVM_API_RUNTIME_get_type(env->runtime, type_id);
   
   assert(type);
   
@@ -7460,7 +7460,7 @@ int32_t SPVM_API_get_type_dimension(SPVM_ENV* env, int32_t type_id) {
 
 int32_t SPVM_API_get_type_width(SPVM_ENV* env, int32_t type_id) {
   
-  SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);
+  SPVM_RUNTIME_TYPE* type =SPVM_API_RUNTIME_get_type(env->runtime, type_id);
   
   assert(type);
   
@@ -7471,7 +7471,7 @@ int32_t SPVM_API_get_type_width(SPVM_ENV* env, int32_t type_id) {
 
 int32_t SPVM_API_get_type_is_ref(SPVM_ENV* env, int32_t type_id) {
   
-  SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);
+  SPVM_RUNTIME_TYPE* type =SPVM_API_RUNTIME_get_type(env->runtime, type_id);
   
   assert(type);
   
@@ -7482,7 +7482,7 @@ int32_t SPVM_API_get_type_is_ref(SPVM_ENV* env, int32_t type_id) {
 
 int32_t SPVM_API_get_type_is_object(SPVM_ENV* env, int32_t type_id) {
   
-  SPVM_RUNTIME_TYPE* type = SPVM_API_get_type(env, type_id);
+  SPVM_RUNTIME_TYPE* type =SPVM_API_RUNTIME_get_type(env->runtime, type_id);
   int32_t type_dimension = type->dimension;
   int32_t basic_type_id = type->basic_type_id;
   int32_t basic_type_category = SPVM_API_get_basic_type_category(env, basic_type_id);
