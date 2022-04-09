@@ -253,6 +253,13 @@ int32_t SPVM_API_RUNTIME_get_type_is_object(SPVM_RUNTIME* runtime, int32_t type_
   return is_object;
 }
 
+SPVM_RUNTIME_CLASS* SPVM_API_RUNTIME_get_class_by_name(SPVM_RUNTIME* runtime, const char* class_name) {
+
+  SPVM_RUNTIME_CLASS* class = (SPVM_RUNTIME_CLASS*)SPVM_HASH_get(runtime->class_symtable, class_name, strlen(class_name));
+  
+  return class;
+}
+
 int32_t SPVM_API_RUNTIME_get_class_id(SPVM_RUNTIME* runtime, const char* class_name) {
 
   SPVM_RUNTIME_CLASS* class = SPVM_HASH_get(runtime->class_symtable, class_name, strlen(class_name));
