@@ -723,13 +723,14 @@ int32_t SPVM_API_RUNTIME_get_method_is_anon(SPVM_RUNTIME* runtime, int32_t metho
   return is_anon;
 }
 
-int32_t SPVM_API_RUNTIME_is_native(SPVM_RUNTIME* runtime, int32_t method_id) {
+int32_t SPVM_API_RUNTIME_get_method_is_native(SPVM_RUNTIME* runtime, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
   return method->flag & SPVM_METHOD_C_FLAG_NATIVE;
 }
 
-int32_t SPVM_API_RUNTIME_is_precompile(SPVM_RUNTIME* runtime, int32_t method_id) {
+int32_t SPVM_API_RUNTIME_get_method_is_precompile(SPVM_RUNTIME* runtime, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
   return method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE;

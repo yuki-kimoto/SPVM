@@ -3489,6 +3489,11 @@ get_method_names(...)
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
   
+  // Runtime
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  
   int32_t class_id = env->api->compiler->get_class_id(compiler, class_name);
   int32_t methods_length = env->api->compiler->get_methods_length(compiler, class_id);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
@@ -3497,10 +3502,10 @@ get_method_names(...)
     SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
     int32_t is_push = 0;
     if (SvOK(sv_category)) {
-      if(strEQ(SvPV_nolen(sv_category), "native") && env->api->compiler->is_native_method(compiler, method_id)) {
+      if(strEQ(SvPV_nolen(sv_category), "native") && SPVM_API_RUNTIME_get_method_is_native(runtime, method_id)) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
-      else if (strEQ(SvPV_nolen(sv_category), "precompile") && env->api->compiler->is_precompile_method(compiler, method_id)) {
+      else if (strEQ(SvPV_nolen(sv_category), "precompile") && SPVM_API_RUNTIME_get_method_is_precompile(runtime, method_id)) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
     }
