@@ -54,6 +54,11 @@ int32_t SPVM_API_RUNTIME_get_opcodes_length(SPVM_RUNTIME* runtime) {
   return runtime->opcodes_length;
 }
 
+int32_t SPVM_API_RUNTIME_get_classes_length(SPVM_RUNTIME* runtime) {
+  
+  return runtime->classes_length;
+}
+
 const char* SPVM_API_RUNTIME_get_name(SPVM_RUNTIME* runtime, int32_t constant_string_id) {
   
   const char* name = SPVM_API_RUNTIME_get_constant_string_value(runtime, constant_string_id, NULL);
