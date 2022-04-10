@@ -5,10 +5,10 @@
 
 // Runtime method information
 struct spvm_runtime_method {
-  int32_t arg_ids_base;
-  int32_t arg_ids_length;
-  int32_t opcode_ids_base;
-  int32_t opcode_ids_length;
+  int32_t args_base_id;
+  int32_t args_length;
+  int32_t opcodes_base_id;
+  int32_t opcodes_length;
   int32_t id;
   int32_t name_id;
   int32_t signature_id;

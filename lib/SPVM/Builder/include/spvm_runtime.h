@@ -15,7 +15,7 @@ struct spvm_runtime {
   SPVM_OPCODE* opcodes;
 
   // The length of operation codes
-  int32_t opcode_ids_length;
+  int32_t opcodes_length;
 
   // String buffer
   const char* string_buffer;
@@ -63,13 +63,13 @@ struct spvm_runtime {
   int32_t* arg_type_ids;
 
   // The length of methods
-  int32_t arg_type_ids_length;
+  int32_t arg_types_length;
 
   // Anon nethod ids
   int32_t* anon_method_method_ids;
 
   // The length of anon method ids
-  int32_t anon_method_method_ids_length;
+  int32_t anon_method_methods_length;
 
   // Class variables
   SPVM_RUNTIME_CLASS_VAR* class_vars;
