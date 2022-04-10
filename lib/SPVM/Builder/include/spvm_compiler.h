@@ -98,7 +98,7 @@ struct spvm_compiler {
   SPVM_HASH* constant_string_symtable;
 
   // String Buffer
-  SPVM_STRING_BUFFER* string_buffer;
+  SPVM_STRING_BUFFER* constant_strings_buffer;
   
   // Used module symtable
   SPVM_HASH* used_class_symtable;

@@ -58,7 +58,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   compiler->constant_strings = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
   compiler->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
-  compiler->string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  compiler->constant_strings_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
  
   // Eternal information
   compiler->module_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
@@ -396,9 +396,9 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   memcpy(runtime->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
   
   // String buffers
-  runtime->string_buffer_length = compiler->string_buffer->length;
-  runtime->string_buffer = (const char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, compiler->string_buffer->length + 1);
-  memcpy((char*)runtime->string_buffer, compiler->string_buffer->value, compiler->string_buffer->length);
+  runtime->constant_strings_buffer_length = compiler->constant_strings_buffer->length;
+  runtime->constant_strings_buffer = (const char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, compiler->constant_strings_buffer->length + 1);
+  memcpy((char*)runtime->constant_strings_buffer, compiler->constant_strings_buffer->value, compiler->constant_strings_buffer->length);
 
   
   // Strings
@@ -498,7 +498,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     }
 
     SPVM_RUNTIME_CONSTANT_STRING* class_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->constant_strings[runtime_class->name_id];
-    const char* runtime_class_name = (const char*)&runtime->string_buffer[class_name_string->string_buffer_id];
+    const char* runtime_class_name = (const char*)&runtime->constant_strings_buffer[class_name_string->string_buffer_id];
   }
 
   // Runtime basic types
@@ -633,7 +633,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 #ifdef SPVM_DEBUG_RUNTIME
   fprintf(stderr, "[RUNTIME MEMORY SIZE]\n");
   fprintf(stderr, "opcodes size: %d bytes\n", (int32_t)(sizeof(SPVM_OPCODE) * runtime->opcodes_length));
-  fprintf(stderr, "string_buffer size: %d bytes\n", (int32_t)(runtime->string_buffer_length));
+  fprintf(stderr, "string_buffer size: %d bytes\n", (int32_t)(runtime->constant_strings_buffer_length));
   fprintf(stderr, "strings size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CONSTANT_STRING) * runtime->constant_strings_length));
   fprintf(stderr, "classes size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CLASS) * runtime->classes_length));
   fprintf(stderr, "basic_types size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_BASIC_TYPE) * runtime->basic_types_length));

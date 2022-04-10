@@ -18,10 +18,10 @@ struct spvm_runtime {
   int32_t opcodes_length;
 
   // String buffer
-  const char* string_buffer;
+  const char* constant_strings_buffer;
 
   // String buffer length
-  int32_t string_buffer_length;
+  int32_t constant_strings_buffer_length;
 
   // Strings
   SPVM_RUNTIME_CONSTANT_STRING* constant_strings;
