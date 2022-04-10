@@ -58,7 +58,10 @@ sub import {
       $BUILDER->print_error_messages(*STDERR);
       exit(255);
     }
-    
+
+    # Build runtime information
+    $BUILDER->build_runtime;
+
     # Class names added at this compilation
     my $added_class_names = [];
     my $class_names = $BUILDER->get_class_names;
@@ -70,9 +73,6 @@ sub import {
     # Bind SPVM method to Perl
     bind_to_perl($BUILDER, $added_class_names);
 
-    # Build runtime information
-    $BUILDER->build_runtime;
-    
     # Set addresses of native methods and precompile methods
     for my $added_class_name (@$added_class_names) {
       next if $added_class_name =~ /::anon/;
