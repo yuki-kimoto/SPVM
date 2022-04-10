@@ -289,25 +289,6 @@ struct spvm_env {
   void (*free_env_prepared)(SPVM_ENV* env);
 };
 
-struct spvm_env_api {
-  SPVM_ENV_ALLOCATOR* allocator;
-  SPVM_ENV_STRING_BUFFER* string_buffer;
-  SPVM_ENV_COMPILER* compiler;
-  SPVM_ENV_RUNTIME* runtime;
-};
-
-struct spvm_env_allocator {
-  void* (*new_allocator)();
-  void (*free_allocator)(void* allocator);
-};
-
-struct spvm_env_string_buffer {
-  void* (*new_string_buffer_tmp)();
-  void (*free_string_buffer)(void* string_buffer);
-  const char* (*get_value)(void* string_buffer);
-  int32_t (*get_length)(void* string_buffer);
-};
-
 struct spvm_env_compiler {
   void* (*new_compiler)();
   void (*free_compiler)(void* compiler);
@@ -444,6 +425,25 @@ enum {
   SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE,
   SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK,
   SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT,
+};
+
+struct spvm_env_allocator {
+  void* (*new_allocator)();
+  void (*free_allocator)(void* allocator);
+};
+
+struct spvm_env_string_buffer {
+  void* (*new_string_buffer_tmp)();
+  void (*free_string_buffer)(void* string_buffer);
+  const char* (*get_value)(void* string_buffer);
+  int32_t (*get_length)(void* string_buffer);
+};
+
+struct spvm_env_api {
+  SPVM_ENV_ALLOCATOR* allocator;
+  SPVM_ENV_STRING_BUFFER* string_buffer;
+  SPVM_ENV_COMPILER* compiler;
+  SPVM_ENV_RUNTIME* runtime;
 };
 
 #endif
