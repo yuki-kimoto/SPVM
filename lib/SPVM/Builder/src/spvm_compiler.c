@@ -116,7 +116,7 @@ void SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, int32_t basic_type_id
    SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
    basic_type->id = basic_type_id;
    const char* basic_type_name_tmp = (SPVM_NATIVE_C_BASIC_TYPE_ID_NAMES())[basic_type->id];
-   SPVM_CONSTANT_STRING* basic_type_name_string = SPVM_STRING_new(compiler, basic_type_name_tmp, strlen(basic_type_name_tmp));
+   SPVM_CONSTANT_STRING* basic_type_name_string = SPVM_CONSTANT_STRING_new(compiler, basic_type_name_tmp, strlen(basic_type_name_tmp));
    basic_type->name = basic_type_name_string->value;
    SPVM_LIST_push(compiler->basic_types, basic_type);
    SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
@@ -184,7 +184,7 @@ const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_string_symtable, c
 
 int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name) {
   
-  SPVM_CONSTANT_STRING* class_name_string = SPVM_STRING_new(compiler, class_name, strlen(class_name));
+  SPVM_CONSTANT_STRING* class_name_string = SPVM_CONSTANT_STRING_new(compiler, class_name, strlen(class_name));
   class_name = class_name_string->value;
 
   compiler->cur_class_base = compiler->classes->length;
@@ -806,7 +806,7 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
     bufptr += 1;
   }
   
-  SPVM_CONSTANT_STRING* method_signature_string = SPVM_STRING_new(compiler, method_signature_tmp, strlen(method_signature_tmp));
+  SPVM_CONSTANT_STRING* method_signature_string = SPVM_CONSTANT_STRING_new(compiler, method_signature_tmp, strlen(method_signature_tmp));
   const char* method_signature = method_signature_string->value;
   
   return method_signature;
@@ -842,7 +842,7 @@ const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_F
     }
   }
 
-  SPVM_CONSTANT_STRING* field_signature_string = SPVM_STRING_new(compiler, field_signature_tmp, strlen(field_signature_tmp));
+  SPVM_CONSTANT_STRING* field_signature_string = SPVM_CONSTANT_STRING_new(compiler, field_signature_tmp, strlen(field_signature_tmp));
   const char* field_signature = field_signature_string->value;
 
   return field_signature;
@@ -878,7 +878,7 @@ const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SP
     }
   }
 
-  SPVM_CONSTANT_STRING* class_var_signature_string = SPVM_STRING_new(compiler, class_var_signature_tmp, strlen(class_var_signature_tmp));
+  SPVM_CONSTANT_STRING* class_var_signature_string = SPVM_CONSTANT_STRING_new(compiler, class_var_signature_tmp, strlen(class_var_signature_tmp));
   const char* class_var_signature = class_var_signature_string->value;
 
   return class_var_signature;

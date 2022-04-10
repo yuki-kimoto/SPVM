@@ -5,7 +5,7 @@
 #include "spvm_hash.h"
 #include "spvm_string_buffer.h"
 
-SPVM_CONSTANT_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t length) {
+SPVM_CONSTANT_STRING* SPVM_CONSTANT_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t length) {
   
   SPVM_CONSTANT_STRING* found_string = SPVM_HASH_get(compiler->constant_string_symtable, value, length);
   if (found_string) {

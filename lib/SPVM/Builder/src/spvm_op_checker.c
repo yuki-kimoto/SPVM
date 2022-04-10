@@ -980,7 +980,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 memcpy(concat_string_tmp + string1_length, string2, string2_length);
                 int32_t concant_string_length = string1_length + string2_length;
                 
-                SPVM_CONSTANT_STRING* concat_string_string = SPVM_STRING_new(compiler, concat_string_tmp, concant_string_length);
+                SPVM_CONSTANT_STRING* concat_string_string = SPVM_CONSTANT_STRING_new(compiler, concat_string_tmp, concant_string_length);
                 const char* concat_string = concat_string_string->value;
                 
                 SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, concat_string_tmp);
@@ -2750,7 +2750,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   memcpy(class_var_name_tmp + 1 + strlen(class_name), "::", 2);
                   memcpy(class_var_name_tmp + 1 + strlen(class_name) + 2, class_var_base_name + 1, strlen(class_var_base_name) - 1);
                   
-                  SPVM_CONSTANT_STRING* class_var_name_string = SPVM_STRING_new(compiler, class_var_name_tmp, strlen(class_var_name_tmp));
+                  SPVM_CONSTANT_STRING* class_var_name_string = SPVM_CONSTANT_STRING_new(compiler, class_var_name_tmp, strlen(class_var_name_tmp));
                   const char* class_var_name = class_var_name_string->value;
                   
                   SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op_cur->file, op_cur->line);
@@ -2787,7 +2787,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   memcpy(class_var_name_tmp + 1, class_name, strlen(class_name));
                   memcpy(class_var_name_tmp + 1 + strlen(class_name), "::", 2);
                   memcpy(class_var_name_tmp + 1 + strlen(class_name) + 2, class_var_base_name + 1, strlen(class_var_base_name) - 1);
-                  SPVM_CONSTANT_STRING* class_var_name_string = SPVM_STRING_new(compiler, class_var_name_tmp, strlen(class_var_name_tmp));
+                  SPVM_CONSTANT_STRING* class_var_name_string = SPVM_CONSTANT_STRING_new(compiler, class_var_name_tmp, strlen(class_var_name_tmp));
                   const char* class_var_name = class_var_name_string->value;
                   
                   SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op_cur->file, op_cur->line);

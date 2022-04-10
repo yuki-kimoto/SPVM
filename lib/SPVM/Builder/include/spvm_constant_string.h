@@ -10,6 +10,6 @@ struct spvm_constant_string {
   int32_t string_buffer_id;
 };
 
-SPVM_CONSTANT_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t length);
+SPVM_CONSTANT_STRING* SPVM_CONSTANT_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t length);
 
 #endif
