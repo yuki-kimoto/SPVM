@@ -56,7 +56,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->bufptr = "";
 
-  compiler->strings = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
+  compiler->constant_strings = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
   compiler->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
   compiler->string_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
  
@@ -402,11 +402,11 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
   
   // Strings
-  runtime->strings_length = compiler->strings->length;
-  runtime->strings = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CONSTANT_STRING) * (compiler->strings->length + 1));
-  for (int32_t constant_string_id = 0; constant_string_id < compiler->strings->length; constant_string_id++) {
-    SPVM_CONSTANT_STRING* string = SPVM_LIST_get(compiler->strings, constant_string_id);
-    SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->strings[constant_string_id];
+  runtime->constant_strings_length = compiler->constant_strings->length;
+  runtime->constant_strings = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CONSTANT_STRING) * (compiler->constant_strings->length + 1));
+  for (int32_t constant_string_id = 0; constant_string_id < compiler->constant_strings->length; constant_string_id++) {
+    SPVM_CONSTANT_STRING* string = SPVM_LIST_get(compiler->constant_strings, constant_string_id);
+    SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->constant_strings[constant_string_id];
     
     runtime_string->id = string->id;
     runtime_string->length = string->length;
@@ -497,7 +497,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
       runtime_class->anon_methods_base_id = -1;
     }
 
-    SPVM_RUNTIME_CONSTANT_STRING* class_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->strings[runtime_class->name_id];
+    SPVM_RUNTIME_CONSTANT_STRING* class_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->constant_strings[runtime_class->name_id];
     const char* runtime_class_name = (const char*)&runtime->string_buffer[class_name_string->string_buffer_id];
   }
 
@@ -634,7 +634,7 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   fprintf(stderr, "[RUNTIME MEMORY SIZE]\n");
   fprintf(stderr, "opcodes size: %d bytes\n", (int32_t)(sizeof(SPVM_OPCODE) * runtime->opcodes_length));
   fprintf(stderr, "string_buffer size: %d bytes\n", (int32_t)(runtime->string_buffer_length));
-  fprintf(stderr, "strings size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CONSTANT_STRING) * runtime->strings_length));
+  fprintf(stderr, "strings size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CONSTANT_STRING) * runtime->constant_strings_length));
   fprintf(stderr, "classes size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CLASS) * runtime->classes_length));
   fprintf(stderr, "basic_types size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_BASIC_TYPE) * runtime->basic_types_length));
   fprintf(stderr, "types size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_TYPE) * runtime->types_length));

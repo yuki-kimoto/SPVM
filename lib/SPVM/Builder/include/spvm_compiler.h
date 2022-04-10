@@ -92,7 +92,7 @@ struct spvm_compiler {
   SPVM_LIST* error_messages;
   
   // Strings - string literals and symbol names
-  SPVM_LIST* strings;
+  SPVM_LIST* constant_strings;
   
   // String symtable
   SPVM_HASH* constant_string_symtable;

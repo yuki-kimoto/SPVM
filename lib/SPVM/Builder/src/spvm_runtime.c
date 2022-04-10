@@ -26,8 +26,8 @@ void SPVM_RUNTIME_prepare(SPVM_RUNTIME* runtime) {
 
   // Runtime string symtable
   runtime->constant_string_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
-  for (int32_t constant_string_id = 0; constant_string_id < runtime->strings_length; constant_string_id++) {
-    SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->strings[constant_string_id];
+  for (int32_t constant_string_id = 0; constant_string_id < runtime->constant_strings_length; constant_string_id++) {
+    SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->constant_strings[constant_string_id];
     runtime_string->value = &runtime->string_buffer[runtime_string->string_buffer_id];
     SPVM_HASH_set(runtime->constant_string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
   }
@@ -36,7 +36,7 @@ void SPVM_RUNTIME_prepare(SPVM_RUNTIME* runtime) {
   runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, runtime->basic_types_length);
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
-    SPVM_RUNTIME_CONSTANT_STRING* basic_type_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->strings[runtime_basic_type->name_id];
+    SPVM_RUNTIME_CONSTANT_STRING* basic_type_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->constant_strings[runtime_basic_type->name_id];
     const char* runtime_basic_type_name = (const char*)&runtime->string_buffer[basic_type_name_string->string_buffer_id];
     SPVM_HASH_set(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
   }
@@ -45,7 +45,7 @@ void SPVM_RUNTIME_prepare(SPVM_RUNTIME* runtime) {
   runtime->class_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t class_id = 0; class_id < runtime->classes_length; class_id++) {
     SPVM_RUNTIME_CLASS* runtime_class = &runtime->classes[class_id];
-    SPVM_RUNTIME_CONSTANT_STRING* class_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->strings[runtime_class->name_id];
+    SPVM_RUNTIME_CONSTANT_STRING* class_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->constant_strings[runtime_class->name_id];
     const char* runtime_class_name = (const char*)&runtime->string_buffer[class_name_string->string_buffer_id];
     SPVM_HASH_set(runtime->class_symtable, runtime_class_name, strlen(runtime_class_name), runtime_class);
   }

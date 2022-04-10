@@ -24,10 +24,10 @@ struct spvm_runtime {
   int32_t string_buffer_length;
 
   // Strings
-  SPVM_RUNTIME_CONSTANT_STRING* strings;
+  SPVM_RUNTIME_CONSTANT_STRING* constant_strings;
 
   // The length of strings
-  int32_t strings_length;
+  int32_t constant_strings_length;
   
   // Basic types
   SPVM_RUNTIME_BASIC_TYPE* basic_types;

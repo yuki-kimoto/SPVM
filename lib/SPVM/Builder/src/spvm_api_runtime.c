@@ -63,7 +63,7 @@ const char* SPVM_API_RUNTIME_get_name(SPVM_RUNTIME* runtime, int32_t constant_st
 
 const char* SPVM_API_RUNTIME_get_constant_string_value(SPVM_RUNTIME* runtime, int32_t constant_string_id, int32_t* string_length) {
   
-  SPVM_RUNTIME_CONSTANT_STRING* constant_string = &runtime->strings[constant_string_id];
+  SPVM_RUNTIME_CONSTANT_STRING* constant_string = &runtime->constant_strings[constant_string_id];
   
   const char* constant_string_value = constant_string->value;
   
@@ -122,7 +122,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_name(SPVM_RUNTIME* runtime, int32_t 
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = (SPVM_RUNTIME_BASIC_TYPE*)SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
-  SPVM_RUNTIME_CONSTANT_STRING* basic_type_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->strings[basic_type->name_id];
+  SPVM_RUNTIME_CONSTANT_STRING* basic_type_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->constant_strings[basic_type->name_id];
 
   const char* basic_type_name = (const char*)&runtime->string_buffer[basic_type_name_string->string_buffer_id];
   
