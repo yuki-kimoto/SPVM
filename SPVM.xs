@@ -76,7 +76,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
-  int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id(env->runtime, basic_type_name);
+  int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
   
   if (basic_type_id < 0) {
     *sv_error = sv_2mortal(newSVpvf("Not found %s at %s line %d\n", basic_type_name, MFILE, __LINE__));
@@ -2901,7 +2901,7 @@ new_string_array_len(...)
   // Element type id
   const char* basic_type_name = "string";
   
-  int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id(env->runtime, basic_type_name);
+  int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
   
   // New array
   void* array = env->new_object_array(env, basic_type_id, length);
@@ -2935,7 +2935,7 @@ new_object_array_len(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id(env->runtime, basic_type_name);
+  int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
   assert(basic_type_id >= 0);
   
   // New array
@@ -2974,7 +2974,7 @@ _new_object_array(...)
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
- int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id(env->runtime, basic_type_name);
+ int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
   assert(basic_type_id >= 0);
   
   // New array
@@ -3046,7 +3046,7 @@ _new_muldim_array(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
- int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id(env->runtime, basic_type_name);
+ int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
   assert(basic_type_id >= 0);
   
   // New array
@@ -3137,7 +3137,7 @@ _new_mulnum_array_from_bin(...)
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
-  int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id(env->runtime, basic_type_name);
+  int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
   
   if (basic_type_id < 0) {
     croak("Can't load %s at %s line %d\n", basic_type_name, MFILE, __LINE__);

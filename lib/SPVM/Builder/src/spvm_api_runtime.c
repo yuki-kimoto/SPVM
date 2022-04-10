@@ -88,7 +88,7 @@ int32_t SPVM_API_RUNTIME_get_constant_string_id(SPVM_RUNTIME* runtime, const cha
   return constant_string_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_id(SPVM_RUNTIME* runtime, const char* basic_type_name) {
+int32_t SPVM_API_RUNTIME_get_basic_type_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name) {
   (void)runtime;
   
   if (basic_type_name == NULL) {
