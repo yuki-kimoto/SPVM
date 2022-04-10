@@ -363,10 +363,12 @@ struct spvm_env_runtime {
   int32_t (*get_method_id_by_name)(void* runtime, const char* class_name, const char* method_name);
   int32_t (*get_method_name_id)(void* runtime, int32_t method_id);
   int32_t (*get_method_signature_id)(void* runtime, int32_t method_id);
+  int32_t (*get_method_return_type_id)(void* runtime, int32_t method_id);
   int32_t (*get_method_class_id)(void* runtime, int32_t method_id);
   int32_t (*get_method_is_class_method)(void* runtime, int32_t method_id);
-  int32_t (*get_method_return_type_id)(void* runtime, int32_t method_id);
   int32_t (*get_method_is_anon)(void* runtime, int32_t method_id);
+  int32_t (*get_method_is_native)(void* runtime, int32_t method_id);
+  int32_t (*get_method_is_precompile)(void* runtime, int32_t method_id);
   int32_t (*get_method_has_precompile_flag)(void* runtime, int32_t method_id);
   int32_t (*get_method_call_stack_byte_vars_length)(void* runtime, int32_t method_id);
   int32_t (*get_method_call_stack_short_vars_length)(void* runtime, int32_t method_id);
