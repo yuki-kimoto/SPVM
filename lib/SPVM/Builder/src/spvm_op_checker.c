@@ -810,13 +810,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left operand must be string type
+              // Left operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The left operand of eq operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Right operand must be string type
+              // Right operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The right operand of eq operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
@@ -828,13 +828,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left operand must be string type
+              // Left operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The left operand of ne operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Right operand must be string type
+              // Right operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The right operand of ne operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
@@ -846,13 +846,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left operand must be string type
+              // Left operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The left operand of gt operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Right operand must be string type
+              // Right operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The right operand of gt operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
@@ -864,13 +864,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left operand must be string type
+              // Left operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The left operand of ge operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Right operand must be string type
+              // Right operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The right operand of ge operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
@@ -882,13 +882,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left operand must be string type
+              // Left operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The left operand of lt operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Right operand must be string type
+              // Right operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The right operand of lt operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
@@ -900,13 +900,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left operand must be string type
+              // Left operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The left operand of le operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Right operand must be string type
+              // Right operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The right operand of le operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
@@ -918,13 +918,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left operand must be string type
+              // Left operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The left operand of cmp operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Right operand must be string type
+              // Right operand must be the string type
               if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The right operand of cmp operator must be a string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
@@ -1279,9 +1279,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             case SPVM_OP_C_ID_STRING_LENGTH: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
-              // First must be string type
+              // First must be the string type
               if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "length argument must be string type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "length argument must be the string type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1815,7 +1815,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Operand must be numeric type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Operand of ~ operator must be a integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Operand of ~ operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
@@ -1929,13 +1929,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left operand must be numeric type
               if (!SPVM_TYPE_is_int_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The left operand of the \"divui\" operator must be a int type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The left operand of the \"divui\" operator must be the int type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right operand must be numeric type
               if (!SPVM_TYPE_is_int_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The right operand of the \"divui\" operator must be a int type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right operand of the \"divui\" operator must be the int type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1965,13 +1965,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left operand must be integral type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The left operand of the %% operator must be a integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The left operand of the %% operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right operand must be integral type
               if (!SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The right operand of the %% operator must be a integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right operand of the %% operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1989,13 +1989,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left operand must be numeric type
               if (!SPVM_TYPE_is_int_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The left operand of the \"remui\" operator must be a int type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The left operand of the \"remui\" operator must be the int type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right operand must be numeric type
               if (!SPVM_TYPE_is_int_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The right operand of the \"remui\" operator must be a int type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right operand of the \"remui\" operator must be the int type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2025,13 +2025,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left operand must be integral type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The left operand of the & operator must be a integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The left operand of the & operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right operand must be integral type
               if (!SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The right operand of the & operator must be a integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right operand of the & operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2048,13 +2048,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left operand must be integral type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The left operand of the | operator must be a integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The left operand of the | operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right operand must be integral type
               if (!SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The right operand of the | operator must be a integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right operand of the | operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2077,7 +2077,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               else {
-                SPVM_COMPILER_error(compiler, "The left operand of the << operator must be a integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The left operand of the << operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2089,12 +2089,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
-                  SPVM_COMPILER_error(compiler, "The right operand of the << operator must be a int type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The right operand of the << operator must be the int type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
               else {
-                SPVM_COMPILER_error(compiler, "The right operand of the << operator must be a int type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right operand of the << operator must be the int type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2112,7 +2112,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               else {
-                SPVM_COMPILER_error(compiler, "The left operand of the >> operator must be a integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The left operand of the >> operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2124,12 +2124,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
-                  SPVM_COMPILER_error(compiler, "The right operand of the >> operator must be a int type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The right operand of the >> operator must be the int type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
               else {
-                SPVM_COMPILER_error(compiler, "The right operand of the >> operator must be a int type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right operand of the >> operator must be the int type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2147,7 +2147,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               else {
-                SPVM_COMPILER_error(compiler, "The left operand of the >>> operator must be a integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The left operand of the >>> operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2159,12 +2159,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
-                  SPVM_COMPILER_error(compiler, "The right operand of the >>> operator must be a int type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The right operand of the >>> operator must be the int type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
               else {
-                SPVM_COMPILER_error(compiler, "The right operand of the >>> operator must be a int type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right operand of the >>> operator must be the int type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2183,7 +2183,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               first_type = SPVM_OP_get_type(compiler, op_cur->first);
 
               if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the die statement must be string type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the die statement must be the string type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;
@@ -2201,7 +2201,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
               if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the warn statement must be a string type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the warn statement must be the string type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;
@@ -2219,7 +2219,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
               if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the print statement must be a string type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the print statement must be the string type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;
@@ -2230,7 +2230,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
               if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the make_read_only statement must be a string type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the make_read_only statement must be the string type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;
@@ -2241,7 +2241,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
               if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the is_read_only operator must be a string type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the is_read_only operator must be the string type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;

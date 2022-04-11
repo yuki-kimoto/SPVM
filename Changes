@@ -43,7 +43,7 @@ Revision history for SPVM
 
         * Add SPVM::Document::NativeAPI::Compiler document.
         * Add SPVM::Document::NativeAPI::Runtime document.
-        
+        * Improve English syntax of error messages.
         [BUG FIX]
         * Fix the bug that dump weaken objects.
         * Fix the bug of isweak operator compile checking.
