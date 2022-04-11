@@ -3482,10 +3482,6 @@ get_method_names(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
-
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
   
@@ -3494,8 +3490,8 @@ get_method_names(...)
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
   
-  int32_t class_id = env->api->compiler->get_class_id(compiler, class_name);
-  int32_t methods_length = env->api->compiler->get_methods_length(compiler, class_id);
+  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, class_name);
+  int32_t methods_length = SPVM_API_RUNTIME_get_class_methods_length(runtime, class_id);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_index(runtime, class_id, method_index);
     const char* method_name = SPVM_API_RUNTIME_get_name(runtime, SPVM_API_RUNTIME_get_method_name_id(runtime, method_id));
