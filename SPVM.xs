@@ -3685,20 +3685,19 @@ get_classes_length(...)
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
   // Runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
   
+  int32_t classes_length;
   if (SvOK(sv_runtime)) {
     void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+    classes_length = SPVM_API_RUNTIME_get_classes_length(runtime);
   }
-  
-  int32_t classes_length = env->api->compiler->get_classes_length(compiler);
+  else {
+    classes_length = 0;
+  }
   SV* sv_classes_length = sv_2mortal(newSViv(classes_length));
   
   XPUSHs(sv_classes_length);
