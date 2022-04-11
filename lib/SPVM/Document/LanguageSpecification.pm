@@ -2562,7 +2562,7 @@ An instance method can be called from the object.
 
 =head2 Method Descriptors
 
-List of Method Descriptors.
+Method descriptors are the descriptors that is used in a L<method definition|"Method Definition">.
 
 =begin html
 
@@ -2580,7 +2580,7 @@ List of Method Descriptors.
       <b>native</b>
     </td>
     <td>
-      This Method is L<"Native Method">. 
+      This method is a <a href="#Native-Method">native method</a>.
     </td>
   </tr>
 </table>
@@ -2589,9 +2589,15 @@ List of Method Descriptors.
 
 =head2 Native Method
 
-Native Method is Method that call function written in Native Language(C, C++, etc).
+Native methods are the L<methods|"Method"> that is written by native languages such as C, C++.
 
-See <a href="/native-api.html">SPVM Native API</a> Native Method.
+A native method is defined by the C<native> L<method descriptor|"Method Descriptors">.
+
+  native sum : int ($num1 : int, $num2 : int);
+
+A native method doesn't have its L<method block|"Method Block">.
+
+See also the L<SPVM Native API|SPVM::Document::NativeAPI> to implement native methods.
 
 =head2 Precompiled Method
 
