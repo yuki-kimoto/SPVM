@@ -558,7 +558,7 @@ int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char
   return method_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_class_var_id(SPVM_RUNTIME* runtime, int32_t class_id, int32_t class_var_index) {
+int32_t SPVM_API_RUNTIME_get_class_var_id_by_index(SPVM_RUNTIME* runtime, int32_t class_id, int32_t class_var_index) {
   
   int32_t class_var_id = -1;
   
@@ -597,7 +597,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_id_by_name(SPVM_RUNTIME* runtime, const c
   return class_var_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_id(SPVM_RUNTIME* runtime, int32_t class_id, int32_t field_index) {
+int32_t SPVM_API_RUNTIME_get_field_id_by_index(SPVM_RUNTIME* runtime, int32_t class_id, int32_t field_index) {
   
   int32_t field_id = -1;
   
@@ -655,7 +655,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(SPV
   return found_method;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_id(SPVM_RUNTIME* runtime, int32_t class_id, int32_t method_index) {
+int32_t SPVM_API_RUNTIME_get_method_id_by_index(SPVM_RUNTIME* runtime, int32_t class_id, int32_t method_index) {
   
   int32_t method_id = -1;
   

@@ -351,15 +351,18 @@ struct spvm_env_runtime {
   int32_t (*get_class_class_vars_length)(void* runtime, int32_t class_id);
   int32_t (*get_class_anon_methods_base_id)(void* runtime, int32_t class_id);
   int32_t (*get_class_anon_methods_length)(void* runtime, int32_t class_id);
+  int32_t (*get_class_var_id)(void* runtime, int32_t class_id, int32_t class_var_index);
   int32_t (*get_class_var_id_by_name)(void* runtime, const char* class_name, const char* class_var_name);
   int32_t (*get_class_var_name_id)(void* runtime, int32_t class_var_id);
   int32_t (*get_class_var_signature_id)(void* runtime, int32_t class_var_id);
   int32_t (*get_class_var_class_id)(void* runtime, int32_t class_var_id);
+  int32_t (*get_field_id)(void* runtime, int32_t class_id, int32_t field_index);
   int32_t (*get_field_id_by_name)(void* runtime, const char* class_name, const char* field_name);
   int32_t (*get_field_name_id)(void* runtime, int32_t field_id);
   int32_t (*get_field_type_id)(void* runtime, int32_t field_id);
   int32_t (*get_field_signature_id)(void* runtime, int32_t field_id);
   int32_t (*get_field_class_id)(void* runtime, int32_t field_id);
+  int32_t (*get_method_id)(void* runtime, int32_t class_id, int32_t method_index);
   int32_t (*get_method_id_by_name)(void* runtime, const char* class_name, const char* method_name);
   int32_t (*get_method_name_id)(void* runtime, int32_t method_id);
   int32_t (*get_method_signature_id)(void* runtime, int32_t method_id);
