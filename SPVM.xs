@@ -3579,10 +3579,6 @@ get_class_names_exclude_anon(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
-
   // Runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
@@ -3591,11 +3587,11 @@ get_class_names_exclude_anon(...)
   AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
 
-  int32_t classes_legnth = env->api->compiler->get_classes_length(compiler);
+  int32_t classes_legnth = SPVM_API_RUNTIME_get_classes_length(runtime);
 
   for (int32_t class_id = 0; class_id < classes_legnth; class_id++) {
-    const char* class_name = env->api->compiler->get_class_name(compiler, class_id);
-    int32_t is_anon_class = env->api->compiler->is_anon_class(compiler, class_id);
+    const char* class_name = SPVM_API_RUNTIME_get_name(runtime, SPVM_API_RUNTIME_get_class_name_id(runtime, class_id));
+    int32_t is_anon_class = SPVM_API_RUNTIME_get_class_is_anon(runtime, class_id);
     if (!is_anon_class) {
       SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
       av_push(av_class_names, SvREFCNT_inc(sv_class_name));
@@ -3621,10 +3617,6 @@ get_class_names(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
-
   // Runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
@@ -3633,9 +3625,9 @@ get_class_names(...)
   AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
   
-  int32_t classes_legnth = env->api->compiler->get_classes_length(compiler);
+  int32_t classes_legnth = SPVM_API_RUNTIME_get_classes_length(runtime);
   for (int32_t class_id = 0; class_id < classes_legnth; class_id++) {
-    const char* class_name = env->api->compiler->get_class_name(compiler, class_id);
+    const char* class_name = SPVM_API_RUNTIME_get_name(runtime, SPVM_API_RUNTIME_get_class_name_id(runtime, class_id));
     SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
     av_push(av_class_names, SvREFCNT_inc(sv_class_name));
   }
