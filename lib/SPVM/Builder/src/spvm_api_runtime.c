@@ -558,6 +558,26 @@ int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char
   return method_id;
 }
 
+int32_t SPVM_API_RUNTIME_get_class_var_id(SPVM_RUNTIME* runtime, int32_t class_id, int32_t class_var_index) {
+  
+  int32_t class_var_id = -1;
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  if (class) {
+    if (class_var_index >= 0 && class_var_index < class->class_vars_length) {
+      class_var_id = class->class_vars_base_id + class_var_index;
+    }
+    else {
+      class_var_id = -1;
+    }
+  }
+  else {
+    class_var_id = -1;
+  }
+  
+  return class_var_id;
+}
+
 int32_t SPVM_API_RUNTIME_get_class_var_id_by_name(SPVM_RUNTIME* runtime, const char* class_name, const char* class_var_name) {
   (void)runtime;
   
