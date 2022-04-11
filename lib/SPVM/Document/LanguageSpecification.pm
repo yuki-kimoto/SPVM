@@ -3870,39 +3870,6 @@ B<Examples of Current Class:>
     
   }
 
-=head2 Instance Method Call
-
-Instance Method Call is a method to call Method which is L<"Method">. In L<"Method Definition">, the first argument is L<"self Type"> If the argument of> is specified, it becomes Method.
-
-Instance Method Call can be done with the following syntax using the object created by L<"new Operator">.
-
-  OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
-
-Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the method Definition, a compilation error will occur The type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, a compilation error will occur
-
-Instance Method Call returns Return Value if Return Value is other than L<"void Type">.
-
-Instance Method Call is L<"Expressions">.
-
-B<Examples of Instance Method Call:>
-
-  my $point = new Point;
-  $point->set_x(3);
-
-Since the object created by L<"Creating Callback"> is a normal object, you can call Method.
-
-  OBJECT_EXPRESSION->(ARGS1, ARGS2, ARGS3, ..., ARGSn);
-
-B<Example that calls Method from the object created with Create Callback>
-
-An Example that calls a Method from the object created by Create Callback.
-
-  my $cb_obj = method : int ($num1 : int, $num2 : int) {
-    return $num1 + $num2;
-  };
-  
-  my $ret = $cb_obj->(1, 2);
-
 =head2 Getting value by Dereference
 
 Obtaining a value by Dereference is an operation to obtain the actual value from Reference. It was designed to realize the C joint operator "*".
@@ -6022,14 +5989,6 @@ You can methodstitute the value of "Object Types" for Any Object Type.
   my $object: object = new Foo;
   my $object: object = "abc";
   my $object: object = new Foo [3];
-
-=head2 self Type
-
-self Type represents the Class Type to which it belongs, and indicates that the argument is Invocant.
-
-  self
-
-It can only be used as the type of the first argument in L<"Method Definition">.
 
 =head2 void Type
 
