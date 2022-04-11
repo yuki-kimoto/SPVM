@@ -615,6 +615,26 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(SPV
   return found_method;
 }
 
+int32_t SPVM_API_RUNTIME_get_method_id(SPVM_RUNTIME* runtime, int32_t class_id, int32_t method_index) {
+  
+  int32_t method_id = -1;
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  if (class) {
+    if (method_index >= 0 && method_index < class->methods_length) {
+      method_id = class->methods_base_id + method_index;
+    }
+    else {
+      method_id = -1;
+    }
+  }
+  else {
+    method_id = -1;
+  }
+  
+  return method_id;
+}
+
 SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_class_id_and_field_name(SPVM_RUNTIME* runtime, int32_t class_id, const char* search_field_name) {
   
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
