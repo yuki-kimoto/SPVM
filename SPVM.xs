@@ -3717,26 +3717,24 @@ get_module_file(...)
 
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
-
+  
+  // Env
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(void*, SvIV(SvRV(sv_env)));
-
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
-
+  
+  // Runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
 
   // Copy class load path to builder
-  int32_t class_id = env->api->compiler->get_class_id(compiler, class_name);
+  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, class_name);
   const char* module_file;
   SV* sv_module_file;
 
   if (class_id >= 0) {
-    module_file = env->api->compiler->get_class_module_file(compiler, class_id);
+    module_file = SPVM_API_RUNTIME_get_name(runtime, SPVM_API_RUNTIME_get_class_module_file_id(runtime, class_id));
     sv_module_file = sv_2mortal(newSVpv(module_file, 0));
   }
   else {
