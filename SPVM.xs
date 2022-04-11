@@ -3534,11 +3534,6 @@ get_anon_class_names_by_parent_class_name(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  // Compiler
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
-
   // Runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
@@ -3548,18 +3543,18 @@ get_anon_class_names_by_parent_class_name(...)
   SV* sv_anon_class_names = sv_2mortal(newRV_inc((SV*)av_anon_class_names));
   
   // Copy class load path to builder
-  int32_t class_id = env->api->compiler->get_class_id(compiler, class_name);
+  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, class_name);
 
-  int32_t methods_length = env->api->compiler->get_methods_length(compiler, class_id);
+  int32_t methods_length = SPVM_API_RUNTIME_get_class_methods_length(runtime, class_id);
 
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    int32_t method_id = env->api->compiler->get_method_id(compiler, class_id, method_index);
-    int32_t is_anon_method = env->api->compiler->is_anon_method(compiler, method_id);
+    int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_index(runtime, class_id, method_index);
+    int32_t is_anon_method = SPVM_API_RUNTIME_get_method_is_anon(runtime, method_id);
     
     if (is_anon_method) {
-      int32_t anon_class_id = env->api->compiler->get_method_class_id(compiler, method_id);
-      const char* anon_class_name = env->api->compiler->get_class_name(compiler, anon_class_id);
+      int32_t anon_class_id = SPVM_API_RUNTIME_get_method_class_id(runtime, method_id);
+      const char* anon_class_name = SPVM_API_RUNTIME_get_name(runtime, SPVM_API_RUNTIME_get_class_name_id(runtime, anon_class_id));
       SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
       av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));
     }
