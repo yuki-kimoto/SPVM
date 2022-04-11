@@ -3740,6 +3740,10 @@ get_module_file(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+
   // Copy class load path to builder
   int32_t class_id = env->api->compiler->get_class_id(compiler, class_name);
   const char* module_file;
@@ -3778,6 +3782,11 @@ get_module_source(...)
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
+
+  // Runtime
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
 
   // Copy class load path to builder
   SV* sv_module_source;
