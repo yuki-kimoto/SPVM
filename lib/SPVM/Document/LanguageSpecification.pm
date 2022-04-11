@@ -2625,20 +2625,6 @@ Note that SPVM does not perform constant convolution optimization, so if a const
   # This is not Constant Method.  Inline Expansion is not performed
   static method foo : int () { return 5 + 3; }
 
-=head2 Method
-
-Method is Method that has L<"self Type"> as its first argument.
-
-  method METHOD_NAME : TYPE  (ARGUMENT2 : TYPE2, ARGUMENT3 : TYPE3, ARGUMENTN : TYPEn) {
-  
-  }
-
-L<"self Type"> must be first argument.
-
-Method can be called from the object created by L<"new">. See L<"Method Call"> for Method Call.
-
-$self is called Invocant.
-
 =head2 Signature
 
 Signature is a string that follow the following rule sequence of Method Retrun Value and arguments arranged according to the following rules. Arguments do not need to exist. There cannot be spaces between them.
