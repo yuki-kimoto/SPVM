@@ -577,6 +577,26 @@ int32_t SPVM_API_RUNTIME_get_class_var_id_by_name(SPVM_RUNTIME* runtime, const c
   return class_var_id;
 }
 
+int32_t SPVM_API_RUNTIME_get_field_id(SPVM_RUNTIME* runtime, int32_t class_id, int32_t field_index) {
+  
+  int32_t field_id = -1;
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  if (class) {
+    if (field_index >= 0 && field_index < class->fields_length) {
+      field_id = class->fields_base_id + field_index;
+    }
+    else {
+      field_id = -1;
+    }
+  }
+  else {
+    field_id = -1;
+  }
+  
+  return field_id;
+}
+
 int32_t SPVM_API_RUNTIME_get_field_id_by_name(SPVM_RUNTIME* runtime, const char* class_name, const char* field_name) {
   (void)runtime;
   
