@@ -3703,6 +3703,14 @@ get_classes_length(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
+  // Runtime
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  
+  if (SvOK(sv_runtime)) {
+    void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  }
+  
   int32_t classes_length = env->api->compiler->get_classes_length(compiler);
   SV* sv_classes_length = sv_2mortal(newSViv(classes_length));
   
