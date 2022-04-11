@@ -3497,7 +3497,7 @@ get_method_names(...)
   int32_t class_id = env->api->compiler->get_class_id(compiler, class_name);
   int32_t methods_length = env->api->compiler->get_methods_length(compiler, class_id);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    int32_t method_id = env->api->compiler->get_method_id(compiler, class_id, method_index);
+    int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_index(runtime, class_id, method_index);
     const char* method_name = SPVM_API_RUNTIME_get_name(runtime, SPVM_API_RUNTIME_get_method_name_id(runtime, method_id));
     SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
     int32_t is_push = 0;
