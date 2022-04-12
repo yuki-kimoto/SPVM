@@ -775,7 +775,7 @@ The bool literal is a L<literal|"Literals"> to represent a bool value in source 
 
 =head3 true
 
-C<true> is the alias for L<The TRUE method of the Bool module|SPVM::Bool/"TRUE">.
+C<true> is the alias for the L<TRUE|SPVM::Bool/"TRUE"> method of L<Bool|SPVM::Bool>.
 
   true
 
@@ -786,7 +786,7 @@ B<Examples of true:>
 
 =head3 false
 
-C<false> is the alias for L<The FALSE method of the Bool module|SPVM::Bool/"FALSE">.
+C<false> is the alias for L<FALSE|SPVM::Bool/"FALSE"> method of L<Bool|SPVM::Bool>.
 
   false
 
@@ -5122,7 +5122,7 @@ The condition L<"Bool Type Conversion"> is executed and Block is executed if the
 
 If you want to write more than one condition, you can continue with "elsif Statement". The condition determination is performed from above, and each Expression is L<"Bool Type Conversion"> is executed, and a corresponding Block is executed if the value is non-zero.
 
-  if (CONDITON) {
+  if (CONDITION) {
   
   }
   elsif(CONDITION) {
@@ -5219,6 +5219,20 @@ When a variable is declared in the conditional part of if Statement, it must be 
         }
       }
     }
+  }
+
+=head2 unless Statement
+
+The C<unless> statement is a L<statement|"Statements"> for conditional branches. 
+
+  unless (CONDITION) {
+    
+  }
+
+This is the same as the following L<if Statement|/"if Statement">.
+
+  if (!CONDITION) {
+    
   }
 
 =head2 switch Statement
@@ -5951,7 +5965,7 @@ See also L<"Boxing Type Conversion"> and L<"Unboxing Type Conversion">.
 
 =head2 Undefined Type
 
-The undefined type is the type of L<undef|"Undefined Value">.
+The undefined type is the type of L<undef|"Undefined Value"> value.
 
 =head2 Callback Type
 
@@ -7040,108 +7054,109 @@ Unboxing Type Conversion is an operation to convert the value of Numeric Object 
 
 =head2 Bool Type Conversion
 
-Bool Type Conversion is a conversion applied in the conditional part of if Statement, etc. for True/False Value judgment.
+The bool type conversion is a L<type conversion|/"Type Conversions"> that is performed in operands of conditional branches.
 
-B<Where Bool Type Conversion takes place>
-
-B<Inside the if statement braces>
+The operand of the L<if statement|/"if Statement">:
 
   if (CONDITION) {
   
   }
 
-B<In unless statement brackets>
+The operand of the L<unless statement|/"unless Statement">:
 
   unless (CONDITION) {
   
   }
 
-B<The second in the parentheses for>
+The second operand of the L<for statement|/"for Statement">:
 
   for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
   
   }
 
-B<in parentheses while>
+The operand of the L<while statement|/"while Statement">:
 
   while (CONDITION) {
   
   }
 
-B<Left and Right of Logical AND Operator>
+The left and right operand of the L<logical AND operator|/"Logical AND Operator">:
 
   CONDITION && CONDITION
 
-B<Left and Right of Logical OR Operator>
+The left and right operand of the L<logical OR operator|/"Logical OR Operator">:
 
   CONDITION || CONDITION
 
-B<Right side of Logical NOT Operator>
+The operand of the L<logical NOT operator|/"Logical NOT Operator">:
 
   !CONDITION
 
-Expression specified by Bool Type Conversion is L<"Numeric Types"> or L<"Object Types"> or It must be L<"Undefined Type">, otherwise a compilation error will occur.
+The type of the operand of the bool type conversion must be a L<numeric type|/"Numeric Types"> or an L<object type|/"Object Types"> or the L<undef type|/"Undefined Type">. If not, a compilation error will occur.
 
-Return Value of Bool Type Conversion is Expression of L<"int Type">.
+The return type of the bool type conversion is the L<int type|"int Type">.
 
-If Expression is L<"Undefined Value">, 0 is returned.
+If the operand is the L<undef|/"Undefined Value"> value, C<0> is returned.
 
-If Expression is Bool->FALSE, 0 is returned. This is special case of the object of Bool class. false keywords means Bool->FALSE.
+If the operand is L<true|/"true">(the C<TRUE> method of L<Bool|SPVM::Bool>), C<1> is returned.
 
-If Expression is Bool->TRUE, 1 is returned.  This is special case of the object of Bool class. true keywords means Bool->TRUE.
+If the operand is L<false|/"false">(the C<FALSE> method of L<Bool|SPVM::Bool>), C<0> is returned.
 
-When Expression is L<"Numeric Types">, L<"Unary Numeric Widening Type Conversion"> is done.
+If the type of the operand is a L<numeric type|/"Numeric Types">, the L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion"> is performed.
 
-If Expression is L<"int Type">, that value is returned.
+And the following operation is performed.
 
-Expression is L<"long Type">, L<"float Type">, <a href = "#language- If it is type-double ">double Type</a>, Object Type, the operation that exactly same as the following operation in C language is performed and the result is returned.
+  !!OPERAND
 
-  !!x
+If the type of the operand is an L<object type|/"Object Types"> except for the L<Bool|SPVM::Bool> type, and if the object is not L<undef|"Undefined Value"> value, C<1> is returned. If the object is L<undef|"Undefined Value"> value, C<0> is returned.
 
-If Expression is Object Type, 0 is returned if it is Undefined Value, 1 otherwise.
-
-B<Bool Type Conversion Examples>
+B<Examples:>
 
   if (1) {
-    # run
+    # ok
   }
   
   if (0) {
-    # not run
+    # not ok
   }
   
   if (1.5) {
-    # run
+    # ok
   }
   
   if (0.0) {
-    # not run
+    # not ok
   }
   
   if (true) {
-    # run
+    # ok
   }
   
   if (Bool->TRUE) {
-    # run
+    # ok
   }
   
   if (false) {
-    # not run
+    # not ok
   }
   
   if (Bool->FALSE) {
-    # not run
+    # not ok
   }
   
   my $object = SPVM::Int->new(1);
   
   if ($object) {
-    # run
+    # ok
+  }
+  
+  $object = undef;
+  if ($object) {
+    # not ok
   }
   
   if (undef) {
-    # not run
+    # not ok
   }
 
 =head1 Type Qualifiers
