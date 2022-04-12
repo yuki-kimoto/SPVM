@@ -308,16 +308,6 @@ struct spvm_env_compiler {
   int32_t (*get_classes_length)(void* compiler);
   const char* (*get_class_name)(void* compiler, int32_t class_id);
   int32_t (*is_anon_class)(void* compiler, int32_t class_id);
-  int32_t (*get_methods_length)(void* compiler, int32_t class_id);
-  int32_t (*get_method_id)(void* compiler, int32_t class_id, int32_t method_index_of_class);
-  int32_t (*get_method_id_by_name)(void* compiler, const char* class_name, const char* method_name);
-  const char* (*get_method_name)(void* compiler, int32_t method_id);
-  const char* (*get_method_signature)(void* compiler, int32_t method_id);
-  int32_t (*is_anon_method)(void* compiler, int32_t method_id);
-  int32_t (*is_init_block_method)(void* compiler, int32_t method_id);
-  int32_t (*is_native_method)(void* compiler, int32_t method_id);
-  int32_t (*is_precompile_method)(void* compiler, int32_t method_id);
-  const char* (*get_class_module_file)(void* compiler, int32_t class_id);
 };
 
 struct spvm_env_runtime {

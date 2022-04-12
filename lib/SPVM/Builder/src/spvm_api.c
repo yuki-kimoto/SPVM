@@ -129,16 +129,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_COMPILER_get_classes_length,
     SPVM_API_COMPILER_get_class_name,
     SPVM_API_COMPILER_is_anon_class,
-    SPVM_API_COMPILER_get_methods_length,
-    SPVM_API_COMPILER_get_method_id,
-    SPVM_API_COMPILER_get_method_id_by_name,
-    SPVM_API_COMPILER_get_method_name,
-    SPVM_API_COMPILER_get_method_signature,
-    SPVM_API_COMPILER_is_anon_method,
-    SPVM_API_COMPILER_is_init_block_method,
-    SPVM_API_COMPILER_is_native_method,
-    SPVM_API_COMPILER_is_precompile_method,
-    SPVM_API_COMPILER_get_class_module_file,
   };
   SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
