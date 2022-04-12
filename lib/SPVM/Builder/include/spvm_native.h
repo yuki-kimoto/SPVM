@@ -377,6 +377,13 @@ struct spvm_env_runtime {
   void (*set_native_method_address)(void* runtime, int32_t method_id, void* address);
   void* (*get_precompile_method_address)(SPVM_ENV*, int32_t method_id);
   void (*set_precompile_method_address)(void* runtime, int32_t method_id, void* address);
+  void* object_header_byte_size;
+  void* object_weaken_backref_head_offset;
+  void* object_ref_count_offset;
+  void* object_basic_type_id_offset;
+  void* object_type_dimension_offset;
+  void* object_flag_offset;
+  void* object_length_offset;
 };
 
 SPVM_ENV* SPVM_NATIVE_new_env_raw();
