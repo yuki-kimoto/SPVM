@@ -404,7 +404,6 @@ lib/SPVM/Builder/include/spvm_runtime_class.h
 lib/SPVM/Builder/include/spvm_runtime_class_var.h
 lib/SPVM/Builder/include/spvm_runtime_constant_string.h
 lib/SPVM/Builder/include/spvm_runtime_field.h
-lib/SPVM/Builder/include/spvm_runtime_manager.h
 lib/SPVM/Builder/include/spvm_runtime_method.h
 lib/SPVM/Builder/include/spvm_runtime_type.h
 lib/SPVM/Builder/include/spvm_string_buffer.h

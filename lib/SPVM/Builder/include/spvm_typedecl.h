@@ -8,10 +8,6 @@
 struct spvm_precompile;
 typedef struct spvm_precompile SPVM_PRECOMPILE;
 
-// spvm_runtime_manager.h
-struct spvm_runtime_manager;
-typedef struct spvm_runtime_manager SPVM_RUNTIME_MANAGER;
-
 // spvm_runtime_basic_type.h
 struct spvm_runtime_basic_type;
 typedef struct spvm_runtime_basic_type SPVM_RUNTIME_BASIC_TYPE;
