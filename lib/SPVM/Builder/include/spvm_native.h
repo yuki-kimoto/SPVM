@@ -304,10 +304,6 @@ struct spvm_env_compiler {
   const char* (*get_error_message)(void* compiler, int32_t index);
   void (*build_runtime)(void* compiler, void* runtime);
   const char* (*get_module_source)(void* compiler, const char* class_name);
-  int32_t (*get_class_id)(void* compiler, const char* class_name);
-  int32_t (*get_classes_length)(void* compiler);
-  const char* (*get_class_name)(void* compiler, int32_t class_id);
-  int32_t (*is_anon_class)(void* compiler, int32_t class_id);
 };
 
 struct spvm_env_runtime {
