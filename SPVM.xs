@@ -4043,7 +4043,7 @@ create_precompile_source(...)
   // New string buffer
   void* string_buffer = env->api->string_buffer->new_string_buffer_tmp(allocator, 0);
 
-  SPVM_API_precompile_create_precompile_source(env, string_buffer, class_name);
+  SPVM_API_precompile_create_precompile_source(env->runtime, string_buffer, class_name);
   const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
   SV* sv_precompile_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
