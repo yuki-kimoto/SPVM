@@ -8,22 +8,6 @@
 struct spvm_precompile;
 typedef struct spvm_precompile SPVM_PRECOMPILE;
 
-// spvm_runtime_class_vars_of_class.h
-struct spvm_runtime_class_vars_of_class;
-typedef struct spvm_runtime_class_vars_of_class SPVM_RUNTIME_CLASS_VARS_OF_CLASS;
-
-// spvm_runtime_fields_of_class.h
-struct spvm_runtime_fields_of_class;
-typedef struct spvm_runtime_fields_of_class SPVM_RUNTIME_FIELDS_OF_CLASS;
-
-// spvm_runtime_methods_of_class.h
-struct spvm_runtime_methods_of_class;
-typedef struct spvm_runtime_methods_of_class SPVM_RUNTIME_METHODS_OF_CLASS;
-
-// spvm_runtime_class_var.h
-struct spvm_runtime_class_var;
-typedef struct spvm_runtime_class_var SPVM_RUNTIME_CLASS_VAR;
-
 // spvm_runtime_manager.h
 struct spvm_runtime_manager;
 typedef struct spvm_runtime_manager SPVM_RUNTIME_MANAGER;
@@ -48,13 +32,13 @@ typedef struct spvm_runtime_field SPVM_RUNTIME_FIELD;
 struct spvm_runtime_method;
 typedef struct spvm_runtime_method SPVM_RUNTIME_METHOD;
 
+// spvm_runtime_class_var.h
+struct spvm_runtime_class_var;
+typedef struct spvm_runtime_class_var SPVM_RUNTIME_CLASS_VAR;
+
 // spvm_runtime_class.h
 struct spvm_runtime_class;
 typedef struct spvm_runtime_class SPVM_RUNTIME_CLASS;
-
-// spvm_runtime.h
-struct spvm_runtime;
-typedef struct spvm_runtime SPVM_RUNTIME;
 
 // spvm_constant_string.h
 struct spvm_constant_string;
@@ -77,10 +61,6 @@ typedef struct spvm_list SPVM_LIST;
 // spvm_allow.h
 struct spvm_allow;
 typedef struct spvm_allow SPVM_ALLOW;
-
-// spvm_mem.h
-struct spvm_mem;
-typedef struct spvm_mem SPVM_MEM;
 
 // spvm_runtime_weaken_backref.h
 struct spvm_weaken_backref;
@@ -110,10 +90,6 @@ typedef struct spvm_opcode_array SPVM_OPCODE_ARRAY;
 struct spvm_opcode;
 typedef struct spvm_opcode SPVM_OPCODE;
 
-// spvm_undef.h
-struct spvm_undef;
-typedef struct spvm_undef SPVM_UNDEF;
-
 // spvm_string_buffer.h
 struct spvm_string_buffer;
 typedef struct spvm_string_buffer SPVM_STRING_BUFFER;
@@ -129,10 +105,6 @@ typedef struct spvm_class_var SPVM_CLASS_VAR;
 // spvm_call_method.h
 struct spvm_call_method;
 typedef struct spvm_call_method SPVM_CALL_METHOD;
-
-// spvm_method_check_info.h
-struct spvm_method_check_info;
-typedef struct spvm_method_check_info SPVM_METHOD_CHECK_INFO;
 
 // spvm_object.h
 struct spvm_object;
@@ -150,21 +122,9 @@ typedef struct spvm_use SPVM_USE;
 struct spvm_runtime;
 typedef struct spvm_runtime SPVM_RUNTIME;
 
-// spvm_heap.h
-struct spvm_heap;
-typedef struct spvm_heap SPVM_HEAP;
-
 // spvm_compiler.h
 struct spvm_compiler;
 typedef struct spvm_compiler SPVM_COMPILER;
-
-// spvm_vm.h
-struct spvm_vm_stack;
-typedef struct spvm_vm_stack SPVM_VM_STACK;
-
-// spvm_vm.h
-struct spvm_vm;
-typedef struct spvm_vm SPVM_VM;
 
 // spvm_switch.h
 struct spvm_switch_info;
@@ -177,14 +137,6 @@ typedef struct spvm_allocator SPVM_ALLOCATOR;
 // spvm_dumper.h
 struct spvm_dumper;
 typedef struct spvm_dumper SPVM_DUMPER;
-
-// spvm_vmcode.h
-struct spvm_vmcodes;
-typedef struct spvm_vmcodes SPVM_VMCODES;
-
-// spvm_vmcode.h
-struct spvm_vmcode;
-typedef struct spvm_vmcode SPVM_VMCODE;
 
 // spvm_assign.h
 struct spvm_assign;
