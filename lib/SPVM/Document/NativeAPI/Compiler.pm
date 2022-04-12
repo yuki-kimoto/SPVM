@@ -94,29 +94,8 @@ Get the length of the compiler error messages.
 
 Get a compiler error messages with the index.
 
-=head2 get_class_id
-  
-  int32_t (*get_class_id)(void* compiler, const char* class_name);
-
-Get class ID with the class name.
-
-If the class doesn't found, return a negative value.
-
-=head2 get_classes_length
-  
-  int32_t (*get_classes_length)(void* compiler);
-
-Get the length of classes that is compiled by the compiler.
-
-=head2 get_class_name
-  
-  const char* (*get_class_name)(void* compiler, int32_t class_id);
-
-Get the class name with the class id.
-
 =head2 build_runtime
 
-  void* (*build_runtime)(void* compiler);
+  void (*build_runtime)(void* compiler, void* runtime);
 
 Build runtime information.
-
