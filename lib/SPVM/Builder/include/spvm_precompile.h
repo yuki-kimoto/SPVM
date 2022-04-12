@@ -44,6 +44,13 @@ enum {
 
 #define SPVM_PRECOMPILE_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
+// Parser information
+struct spvm_precompile {
+  SPVM_RUNTIME* runtime;
+};
+
+SPVM_PRECOMPILE* SPVM_PRECOMPILE_new();
+void SPVM_PRECOMPILE_free(SPVM_PRECOMPILE* precompile);
 
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* class_name);
 void SPVM_PRECOMPILE_build_head(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer);

@@ -7,11 +7,24 @@
 
 #include "spvm_precompile.h"
 
+#include "spvm_allocator.h"
 #include "spvm_native.h"
 #include "spvm_api.h"
 #include "spvm_api_runtime.h"
 #include "spvm_string_buffer.h"
 #include "spvm_opcode.h"
+
+SPVM_PRECOMPILE* SPVM_PRECOMPILE_new() {
+  SPVM_PRECOMPILE* precompile = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_PRECOMPILE));
+  
+  return precompile;
+}
+
+void SPVM_PRECOMPILE_free(SPVM_PRECOMPILE* precompile) {
+  
+  SPVM_ALLOCATOR_free_memory_block_unmanaged(precompile);
+  precompile = NULL;
+}
 
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   

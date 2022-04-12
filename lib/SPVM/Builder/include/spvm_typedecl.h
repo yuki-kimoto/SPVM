@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stddef.h>
 
+// spvm_precompile.h
+struct spvm_precompile;
+typedef struct spvm_precompile SPVM_PRECOMPILE;
+
 // spvm_runtime_class_vars_of_class.h
 struct spvm_runtime_class_vars_of_class;
 typedef struct spvm_runtime_class_vars_of_class SPVM_RUNTIME_CLASS_VARS_OF_CLASS;
