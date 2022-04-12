@@ -5270,7 +5270,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_BYTE_OBJECT: {
         int8_t value = byte_vars[opcode->operand1];
-        int32_t basic_type_id = (intptr_t)(void*)env->byte_object_basic_type_id;
+        int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_OBJECT;
 
         void* object = env->new_object_raw(env, basic_type_id);
         SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
@@ -5281,7 +5281,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_SHORT_OBJECT: {
         int16_t value = short_vars[opcode->operand1];
-        int32_t basic_type_id = (intptr_t)(void*)env->short_object_basic_type_id;
+        int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_OBJECT;
         void* object = env->new_object_raw(env, basic_type_id);
         SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
         *(int16_t*)&fields[0] = value;
@@ -5291,7 +5291,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_CONVERT_INT_TO_INT_OBJECT: {
         int32_t value = int_vars[opcode->operand1];
-        int32_t basic_type_id = (intptr_t)(void*)env->int_object_basic_type_id;
+        int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_INT_OBJECT;
         void* object = env->new_object_raw(env, basic_type_id);
         SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
         *(int32_t*)&fields[0] = value;
@@ -5301,7 +5301,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_LONG_OBJECT: {
         int64_t value = long_vars[opcode->operand1];
-        int32_t basic_type_id = (intptr_t)(void*)env->long_object_basic_type_id;
+        int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_OBJECT;
         void* object = env->new_object_raw(env, basic_type_id);
         SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
         *(int64_t*)&fields[0] = value;
@@ -5311,7 +5311,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_FLOAT_OBJECT: {
         float value = float_vars[opcode->operand1];
-        int32_t basic_type_id = (intptr_t)(void*)env->float_object_basic_type_id;
+        int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT;
         void* object = env->new_object_raw(env, basic_type_id);
         SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
         *(float*)&fields[0] = value;
@@ -5321,7 +5321,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE_OBJECT: {
         double value = double_vars[opcode->operand1];
-        int32_t basic_type_id = (intptr_t)(void*)env->double_object_basic_type_id;
+        int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT;
         void* object = env->new_object_raw(env, basic_type_id);
         SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
         *(double*)&fields[0] = value;
@@ -5339,7 +5339,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         else {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          if (object_basic_type_id == (intptr_t)(void*)env->byte_object_basic_type_id && object_type_dimension == 0) {
+          if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_OBJECT && object_type_dimension == 0) {
             SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
             byte_vars[opcode->operand0] = *(int8_t*)&fields[0];
           }
@@ -5361,7 +5361,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         else {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          if (object_basic_type_id == (intptr_t)(void*)env->short_object_basic_type_id && object_type_dimension == 0) {
+          if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_OBJECT && object_type_dimension == 0) {
             SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
             short_vars[opcode->operand0] = *(int16_t*)&fields[0];
           }
@@ -5383,7 +5383,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         else {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          if (object_basic_type_id == (intptr_t)(void*)env->int_object_basic_type_id && object_type_dimension == 0) {
+          if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT_OBJECT && object_type_dimension == 0) {
             SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
             int_vars[opcode->operand0] = *(int32_t*)&fields[0];
           }
@@ -5405,7 +5405,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         else {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          if (object_basic_type_id == (intptr_t)(void*)env->long_object_basic_type_id && object_type_dimension == 0) {
+          if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_OBJECT && object_type_dimension == 0) {
             SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
             long_vars[opcode->operand0] = *(int64_t*)&fields[0];
           }
@@ -5427,7 +5427,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         else {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          if (object_basic_type_id == (intptr_t)(void*)env->float_object_basic_type_id && object_type_dimension == 0) {
+          if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT && object_type_dimension == 0) {
             SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
             float_vars[opcode->operand0] = *(float*)&fields[0];
           }
@@ -5450,7 +5450,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         else {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          if (object_basic_type_id == (intptr_t)(void*)env->double_object_basic_type_id && object_type_dimension == 0) {
+          if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT && object_type_dimension == 0) {
             SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
             double_vars[opcode->operand0] = *(double*)&fields[0];
           }
