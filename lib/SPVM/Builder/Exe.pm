@@ -719,7 +719,7 @@ sub create_spvm_module_sources {
     # Source creating callback
     my $create_cb = sub {
       # This source is UTF-8 binary
-      my $module_source = $builder->get_module_source($class_name);
+      my $module_source = $builder->get_module_source_by_name($class_name);
       my $module_source_c_hex = $module_source;
       
       # Escape to Hex C launguage string literal

@@ -276,7 +276,7 @@ void SPVM_API_COMPILER_free_compiler(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_free(compiler);
 }
 
-const char* SPVM_API_COMPILER_get_module_source(SPVM_COMPILER* compiler, const char* class_name) {  
+const char* SPVM_API_COMPILER_get_module_source_by_name(SPVM_COMPILER* compiler, const char* class_name) {  
   const char* module_source = SPVM_HASH_get(compiler->module_source_symtable, class_name, strlen(class_name));
   return module_source;
 }

@@ -3746,7 +3746,7 @@ get_module_file(...)
 }
 
 SV*
-get_module_source(...)
+get_module_source_by_name(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3774,7 +3774,7 @@ get_module_source(...)
 
   // Copy class load path to builder
   SV* sv_module_source;
-  const char* module_source = env->api->compiler->get_module_source(compiler, class_name);
+  const char* module_source = env->api->compiler->get_module_source_by_name(compiler, class_name);
   if (module_source) {
     sv_module_source = sv_2mortal(newSVpv(module_source, 0));
   }
