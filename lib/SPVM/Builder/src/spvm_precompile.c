@@ -26,6 +26,16 @@ void SPVM_PRECOMPILE_free(SPVM_PRECOMPILE* precompile) {
   precompile = NULL;
 }
 
+void SPVM_PRECOMPILE_set_runtime(SPVM_PRECOMPILE* precompile, SPVM_RUNTIME* runtime) {
+  
+  precompile->runtime = runtime;
+}
+
+SPVM_RUNTIME* SPVM_PRECOMPILE_get_runtime(SPVM_PRECOMPILE* precompile) {
+  
+  return precompile->runtime;
+}
+
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   
   // Class
