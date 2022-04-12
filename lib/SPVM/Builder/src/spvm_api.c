@@ -7724,5 +7724,5 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
 }
 
 const char* SPVM_API_precompile_create_precompile_source(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
-  SPVM_PRECOMPILE_create_precompile_source(env, string_buffer, class_name);
+  SPVM_PRECOMPILE_create_precompile_source(env->runtime, string_buffer, class_name);
 }
