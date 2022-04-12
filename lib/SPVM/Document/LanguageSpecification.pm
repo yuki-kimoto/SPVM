@@ -2463,6 +2463,8 @@ See L<"Setting Multi Numeric Field via Dereference"> to set the field of the L<m
 
 =head1 Method
 
+a.
+
 =head2 Method Definition
 
 The C<method> keyword defines a class method or an instance method.
@@ -3008,7 +3010,7 @@ a C<eval> block is a scope block.
   # A eval block
   eval {
   
-  }
+  };
 
 =head2 if Block
 
@@ -5484,28 +5486,42 @@ The buffer of the standard error is flushed after the printing.
 
 =head2 die Statement
 
-The C<die> statement is a L<statement|"Statements"> to throw an L<"Exception">.
+The C<die> statement is a L<statement|"Statements"> to L<throw an exception|"Throwing Exception">.
 
   die OPERAND;
 
-The operand must be a L<string type|"String Type">, otherwise a compilation error will occur.
+The operand must be the L<string type|"String Type">. If not a compilation error will occur.
 
-The exception thrown by C<die> statement can be cached by an L<eval block|"Exception Catching">
-and can be checked by the L<exception variable|"Exception Variable"> C<$@>.
+You can specify the error message to the operand.
 
-B<Examples of die statements:>
+  # Throw an exception
+  die "Error";
+
+The error message is set to the L<exception variable|"Exception Variable"> C<$@>.
+
+If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error code C<255>.
+
+The stack traces constain the class names, the method names, the file names and the line numbers.
+
+  Error
+  from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
+  from TestCase->main at SPVM/TestCase.spvm line 1198
+
+The exception can be catched using an L<eval block|"Exception Catching">.
+
+B<Examples:>
   
   # Catch the exception
   eval {
-    # Throw a exception
+    # Throw an exception
     die "Error";
-  }
+  };
   
   # Check the exception
   if ($@) {
     # ...
   }
-  
+
 =head2 print Statement
 
 The C<print> statement is a L<statement|"Statements"> to print a L<string|"String"> to the standard output.
@@ -5553,7 +5569,7 @@ B<Examples:>
 
   # weaken
   weaken $object->{point};
-  
+
 =head2 unweaken Statement
 
 The C<unweaken> statement is a L<statement|"Statements"> to unweakens a L<weak reference|"Weak Reference">.
@@ -5572,7 +5588,7 @@ B<Examples:>
 
   # unweaken
   unweaken $object->{point};
-  
+
 =head1 Types
 
 =head2 The Summary of Types
@@ -7168,34 +7184,44 @@ Type comments have no meanings at runtime.
 
 =head1 Exception
 
-=head2 Exception overview
+Explains exceptions.
 
-SPVM has a mechanism of Exception. Exception consists of raising L<"Exception"> and catching the exception.
+=head2 Throwing Exception
 
-=head2 Throw Exception
+You can throw an exception using the L<die statement|"die Statement">.
 
-Use L<"die Statement"> to throw L<"Exception">.
+  die OPERAND;
 
-  die EXPRESSION;
+B<Examples:>
 
-When the die statement is executed, the stack trace and the String specified by Expression are displayed, and the program ends. The stack trace includes class names, Method names, File Name and line number. File Name is a relative File Name from the path where Module is loaded.
-
-  Error
-  from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
-  from TestCase->main at SPVM/TestCase.spvm line 1198
+  # Throw an exception
+  die "Error";
 
 =head2 Exception Catching
 
-Exception catching is a function that can stop the program from ending and get an error message when L<"Exception"> is thrown.
-
-Exceptions are caught using eval Block Statement. Please note that the eval Block Statement requires a semicolon at the end.
+You can catch an exception using an L<eval block|"eval Block">.
 
   eval {
-    # Processing that may throw L<"Exception">
+    die "Error";
   };
 
-When L<"Exception"> is caught by the eval Block, the program termination is stopped and L<"is added to <a href="#language-exception-var">Exception Variable">. The message specified in Exception is thrown</a> is methodstituted.
+The L<undef|"Undefined Value"> is set to the L<exception variable|"Exception Variable"> C<$@> at the top of the L<eval block|"eval Block">.
 
+The error message is set to the L<exception variable|"Exception Variable"> C<$@> when the exception is thrown.
+
+B<Examples:>
+  
+  # Catch the exception
+  eval {
+    # Throw an exception
+    die "Error";
+  };
+  
+  # Check the error message
+  if ($@) {
+    # ...
+  }
+  
 =head2 Exception Variable
 
 B<Exception Variable> is a global variable that is represented by "B<$@>"
