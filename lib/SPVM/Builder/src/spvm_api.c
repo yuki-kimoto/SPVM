@@ -123,6 +123,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_COMPILER_compile_spvm,
     SPVM_API_COMPILER_get_error_messages_length,
     SPVM_API_COMPILER_get_error_message,
+    SPVM_API_COMPILER_build_runtime,
     SPVM_API_COMPILER_get_module_source,
     SPVM_API_COMPILER_get_class_id,
     SPVM_API_COMPILER_get_classes_length,
@@ -137,7 +138,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_COMPILER_is_init_block_method,
     SPVM_API_COMPILER_is_native_method,
     SPVM_API_COMPILER_is_precompile_method,
-    SPVM_API_COMPILER_build_runtime,
     SPVM_API_COMPILER_get_class_module_file,
   };
   SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
