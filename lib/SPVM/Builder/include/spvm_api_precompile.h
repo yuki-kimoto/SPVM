@@ -4,6 +4,7 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
+SPVM_ENV_PRECOMPILE* SPVM_API_PRECOMPILE_new_env();
 SPVM_PRECOMPILE* SPVM_API_PRECOMPILE_new_precompile();
 void SPVM_API_PRECOMPILE_free_precompile(SPVM_PRECOMPILE* precompile);
 void SPVM_API_PRECOMPILE_set_runtime(SPVM_PRECOMPILE* precompile, SPVM_RUNTIME* runtime);
