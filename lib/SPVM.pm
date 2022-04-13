@@ -517,9 +517,17 @@ SPVM build directory for precompile and native method.
 
 If SPVM_BUILD_DIR environment variable is not set, SPVM can't compile precompile method and native method, and a exception occur. You see error message "SPVM_BUILD_DIR environment variable must be set ...".
 
+B<bash:>
+
 In bash, you can set SPVM_BUILD_DIR to the following.
 
   export SPVM_BUILD_DIR=~/.spvm_build
+
+B<csh:>
+
+In csh, you can set SPVM_BUILD_DIR to the following.
+
+  setenv SPVM_BUILD_DIR ~/.spvm_build
 
 =head2 SPVM_CC_DEBUG
 
