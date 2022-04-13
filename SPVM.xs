@@ -49,7 +49,7 @@ void* SPVM_XS_UTIL_get_object(SV* sv_data) {
     SV** sv_object_ptr = hv_fetch(hv_data, "object", strlen("object"), 0);
     SV* sv_object = sv_object_ptr ? *sv_object_ptr : &PL_sv_undef;
     size_t iv_object = SvIV(SvRV(sv_object));
-    void* object = INT2PTR(SPVM_OBJECT*, iv_object);
+    void* object = INT2PTR(void*, iv_object);
     
     return object;
   }
@@ -1076,7 +1076,7 @@ call_spvm_method(...)
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
         {
-          void* return_value = (SPVM_OBJECT*)args_stack[0].oval;
+          void* return_value = (void*)args_stack[0].oval;
           sv_return_value = NULL;
           if (return_value != NULL) {
             env->inc_ref_count(env, return_value);
@@ -1112,7 +1112,7 @@ call_spvm_method(...)
       }
     }
     else if (method_return_type_dimension == 1) {
-      void* return_value = (SPVM_OBJECT*)args_stack[0].oval;
+      void* return_value = (void*)args_stack[0].oval;
       sv_return_value = NULL;
       if (return_value != NULL) {
         env->inc_ref_count(env, return_value);
@@ -1142,7 +1142,7 @@ call_spvm_method(...)
       }
     }
     else if (method_return_type_dimension > 1) {
-      void* return_value = (SPVM_OBJECT*)args_stack[0].oval;
+      void* return_value = (void*)args_stack[0].oval;
       sv_return_value = NULL;
       if (return_value != NULL) {
         env->inc_ref_count(env, return_value);
