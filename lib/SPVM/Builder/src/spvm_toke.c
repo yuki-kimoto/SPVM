@@ -209,8 +209,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               // Search module file
               FILE* fh = NULL;
               int32_t module_dirs_length = compiler->module_dirs->length;
+              const char* module_dir = NULL;
               for (int32_t i = 0; i < module_dirs_length; i++) {
-                const char* module_dir = (const char*) SPVM_LIST_get(compiler->module_dirs, i);
+                module_dir = (const char*) SPVM_LIST_get(compiler->module_dirs, i);
                 
                 // File name
                 int32_t file_name_length = (int32_t)(strlen(module_dir) + 1 + strlen(cur_rel_file));
@@ -256,6 +257,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               // Module found
               else {
+                // Add module directory symtable
+                SPVM_CONSTANT_STRING_new(compiler, cur_rel_file, strlen(cur_rel_file));
+                SPVM_CONSTANT_STRING_new(compiler, module_dir, strlen(module_dir));
+                SPVM_HASH_set(compiler->module_dir_symtable, cur_rel_file, strlen(cur_rel_file), (void*)module_dir);
+                
                 // Read file content
                 fseek(fh, 0, SEEK_END);
                 int32_t file_size = (int32_t)ftell(fh);
