@@ -15,7 +15,6 @@
 
 #include "spvm_native.h"
 #include "spvm_api.h"
-#include "spvm_api_compiler.h"
 #include "spvm_api_runtime.h"
 
 static const char* MFILE = "SPVM.xs";
