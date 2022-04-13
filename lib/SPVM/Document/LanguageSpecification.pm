@@ -1772,7 +1772,7 @@ If the class name is different from the name that the module file C</> is replac
   class Foo::Bar::Hello {
     
   }
-  
+
 =head2 Class Descriptors
 
 The list of class descriptors.
@@ -3134,7 +3134,7 @@ B<Examples of undefined values:>
   if ($message == undef) {
     
   }
-  
+
 =head1 Array
 
 The array is the data structure for multiple values.
@@ -5071,7 +5071,7 @@ B<Examples:>
 
   # isweak
   my $isweak = isweak $object->{point};
-  
+
 =head2 has_implement Operator
 
 The C<has_implement> operator checks the existence of the method implementation.
@@ -6116,9 +6116,7 @@ All elements of Object Array Types are initialized by L</"Type Initial Value"> w
 
 =head2 Multi Numeric Array Types
 
-Multi Numeric Array Types means L</"Array Types that has the value of <a href="#language-type-multi-numeric">Multi Numeric Types"> as an element.</a>.
-
-B<Examples of Multi Numeric Array Types:>
+A multi numeric array type is an L<array type|/"Array Types"> that the basic type is a L<multi numeric type|"Multi Numeric Types">.
 
 =begin html
 
@@ -6133,9 +6131,13 @@ B<Examples of Multi Numeric Array Types:>
 
 =end html
 
-Data represented by Multi Numeric Array Types must have elements whose size is L</"Multi Numeric Types"> and must be contiguous with the number of Array Length ..
+The byte size of the element is the total byte size of the fields of the L<multi numeric type|"Multi Numeric Types">.
 
-All elements of Multi Numeric Array Types are initialized by L</"Type Initial Value"> when the L<creating array|/"Creating Array"> is performed.
+For example, The byte size of the element of L<Complex_2d|SPVM::Complex_2d> is 16 bytes (2 * 8 bytes).
+
+The object of the multi numeric array type can be created by the L<new|/"Creating Array"> operator.
+
+  my $complex_nums = new Complex_2d[10];
 
 =head2 Any Object-Array Type
 
@@ -7236,7 +7238,7 @@ B<Examples:>
   if ($@) {
     # ...
   }
-  
+
 =head2 Exception Variable
 
 B<Exception Variable> is a global variable that is represented by "B<$@>"
