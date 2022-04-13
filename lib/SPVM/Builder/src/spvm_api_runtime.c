@@ -102,6 +102,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_prepare,
     SPVM_API_RUNTIME_get_opcodes,
     SPVM_API_RUNTIME_get_opcodes_length,
+    SPVM_API_RUNTIME_get_classes_length,
     SPVM_API_RUNTIME_get_constant_string_id,
     SPVM_API_RUNTIME_get_constant_string_value,
     SPVM_API_RUNTIME_get_name,

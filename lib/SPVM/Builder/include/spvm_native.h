@@ -323,6 +323,7 @@ struct spvm_env_runtime {
   void (*prepare)(void* runtime);
   int32_t* (*get_opcodes)(void* runtime);
   int32_t (*get_opcodes_length)(void* runtime);
+  int32_t (*get_classes_length)(void* runtime);
   int32_t (*get_constant_string_id)(void* runtime, const char* string);
   const char* (*get_constant_string_value)(void* runtime, int32_t constant_string_id, int32_t* string_length);
   const char* (*get_name)(void* runtime, int32_t constant_string_id);
@@ -358,7 +359,7 @@ struct spvm_env_runtime {
   int32_t (*get_field_type_id)(void* runtime, int32_t field_id);
   int32_t (*get_field_signature_id)(void* runtime, int32_t field_id);
   int32_t (*get_field_class_id)(void* runtime, int32_t field_id);
-  int32_t (*get_method_id)(void* runtime, int32_t class_id, int32_t method_index);
+  int32_t (*get_method_id_by_index)(void* runtime, int32_t class_id, int32_t method_index);
   int32_t (*get_method_id_by_name)(void* runtime, const char* class_name, const char* method_name);
   int32_t (*get_method_name_id)(void* runtime, int32_t method_id);
   int32_t (*get_method_signature_id)(void* runtime, int32_t method_id);
