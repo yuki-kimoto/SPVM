@@ -72,7 +72,7 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
       const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
       int32_t method_signature_id = SPVM_API_RUNTIME_get_method_signature_id(runtime, method_id);
       const char* method_signature = SPVM_API_RUNTIME_get_name(runtime, method_signature_id);
-      int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_has_precompile_flag(runtime, method_id);
+      int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, method_id);
 
       if (method_has_precompile_flag) {
         SPVM_PRECOMPILE_build_method_declaration(precompile, string_buffer, class_name, method_name);
@@ -90,7 +90,7 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
       int32_t method_id = class_methods_base_id + method_index;
       int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
       const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
-      int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_has_precompile_flag(runtime, method_id);
+      int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, method_id);
       if (method_has_precompile_flag) {
         SPVM_PRECOMPILE_build_method_implementation(precompile, string_buffer, class_name, method_name);
       }
@@ -3074,7 +3074,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t decl_method_class_id = SPVM_API_RUNTIME_get_method_class_id(runtime, decl_method_id);
         int32_t decl_method_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, decl_method_class_id);
         const char* decl_method_class_name = SPVM_API_RUNTIME_get_name(runtime, decl_method_class_name_id);
-        int32_t decl_method_has_precompile_flag = SPVM_API_RUNTIME_get_method_has_precompile_flag(runtime, decl_method_id);
+        int32_t decl_method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, decl_method_id);
         int32_t decl_method_return_type_id = SPVM_API_RUNTIME_get_method_return_type_id(runtime, decl_method_id);
         int32_t decl_method_return_type_dimension = SPVM_API_RUNTIME_get_type_dimension(runtime, decl_method_return_type_id);
         int32_t decl_method_return_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(runtime, decl_method_return_type_id);

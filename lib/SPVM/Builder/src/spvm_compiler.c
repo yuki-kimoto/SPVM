@@ -566,7 +566,6 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
     runtime_method->is_class_method = method->is_class_method;
     runtime_method->is_init = method->is_init;
     runtime_method->is_anon = method->flag & SPVM_METHOD_C_FLAG_ANON;
-    runtime_method->has_precompile_flag = method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE;
     runtime_method->call_stack_byte_vars_length  = method->call_stack_byte_vars_length;
     runtime_method->call_stack_short_vars_length  = method->call_stack_short_vars_length;
     runtime_method->call_stack_int_vars_length  = method->call_stack_int_vars_length;

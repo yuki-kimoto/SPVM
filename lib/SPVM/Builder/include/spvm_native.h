@@ -96,9 +96,6 @@ union spvm_value {
 
 
 
-
-
-
 struct spvm_env {
   void* class_vars_heap;
   void* object_header_byte_size;
@@ -292,30 +289,12 @@ struct spvm_env {
   void (*free_env_prepared)(SPVM_ENV* env);
 };
 
-struct spvm_env_compiler {
-  void* (*new_compiler)();
-  void (*free_compiler)(void* compiler);
-  void (*set_start_line)(void* compiler, int32_t start_line);
-  int32_t (*get_start_line)(void* compiler);
-  void (*set_start_file)(void* compiler, const char* start_file);
-  const char* (*get_start_file)(void* compiler);
-  void (*add_module_dir)(void* compiler, const char* module_dir);
-  int32_t (*get_module_dirs_length )(void* compiler);
-  const char* (*get_module_dir )(void* compiler, int32_t module_dir_id);
-  int32_t (*compile_spvm)(void* compiler, const char* class_name);
-  int32_t (*get_error_messages_length)(void* compiler);
-  const char* (*get_error_message)(void* compiler, int32_t index);
-  void (*build_runtime)(void* compiler, void* runtime);
-  const char* (*get_module_source_by_name)(void* compiler, const char* class_name);
-};
 
-struct spvm_env_precompile {
-  void* (*new_precompile)();
-  void (*free_precompile)(void* precompile);
-  void (*set_runtime)(void* precompile, void* runtime);
-  void* (*get_runtime)(void* precompile);
-  void (*create_precompile_source)(void* precompile, void* string_buffer, const char* class_name);
-};
+
+
+
+
+
 
 struct spvm_env_runtime {
   void* (*new_runtime)();
@@ -369,7 +348,6 @@ struct spvm_env_runtime {
   int32_t (*get_method_is_anon)(void* runtime, int32_t method_id);
   int32_t (*get_method_is_native)(void* runtime, int32_t method_id);
   int32_t (*get_method_is_precompile)(void* runtime, int32_t method_id);
-  int32_t (*get_method_has_precompile_flag)(void* runtime, int32_t method_id);
   int32_t (*get_method_call_stack_byte_vars_length)(void* runtime, int32_t method_id);
   int32_t (*get_method_call_stack_short_vars_length)(void* runtime, int32_t method_id);
   int32_t (*get_method_call_stack_int_vars_length)(void* runtime, int32_t method_id);
@@ -396,6 +374,31 @@ struct spvm_env_runtime {
   void* object_type_dimension_offset;
   void* object_flag_offset;
   void* object_length_offset;
+};
+
+struct spvm_env_compiler {
+  void* (*new_compiler)();
+  void (*free_compiler)(void* compiler);
+  void (*set_start_line)(void* compiler, int32_t start_line);
+  int32_t (*get_start_line)(void* compiler);
+  void (*set_start_file)(void* compiler, const char* start_file);
+  const char* (*get_start_file)(void* compiler);
+  void (*add_module_dir)(void* compiler, const char* module_dir);
+  int32_t (*get_module_dirs_length )(void* compiler);
+  const char* (*get_module_dir )(void* compiler, int32_t module_dir_id);
+  int32_t (*compile_spvm)(void* compiler, const char* class_name);
+  int32_t (*get_error_messages_length)(void* compiler);
+  const char* (*get_error_message)(void* compiler, int32_t index);
+  void (*build_runtime)(void* compiler, void* runtime);
+  const char* (*get_module_source_by_name)(void* compiler, const char* class_name);
+};
+
+struct spvm_env_precompile {
+  void* (*new_precompile)();
+  void (*free_precompile)(void* precompile);
+  void (*set_runtime)(void* precompile, void* runtime);
+  void* (*get_runtime)(void* precompile);
+  void (*create_precompile_source)(void* precompile, void* string_buffer, const char* class_name);
 };
 
 SPVM_ENV* SPVM_NATIVE_new_env_raw();

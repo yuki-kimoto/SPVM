@@ -146,7 +146,6 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_class_id,
     SPVM_API_RUNTIME_get_method_is_class_method,
     SPVM_API_RUNTIME_get_method_is_anon,
-    SPVM_API_RUNTIME_get_method_has_precompile_flag,
     SPVM_API_RUNTIME_get_method_call_stack_byte_vars_length,
     SPVM_API_RUNTIME_get_method_call_stack_short_vars_length,
     SPVM_API_RUNTIME_get_method_call_stack_int_vars_length,
@@ -946,17 +945,6 @@ int32_t SPVM_API_RUNTIME_get_method_is_precompile(SPVM_RUNTIME* runtime, int32_t
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
   return method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_has_precompile_flag(SPVM_RUNTIME* runtime, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-
-  assert(method);
-
-  int32_t has_precompile_flag = method->has_precompile_flag;
-  
-  return has_precompile_flag;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_signature_id(SPVM_RUNTIME* runtime, int32_t method_id) {
