@@ -5,11 +5,6 @@
 #include <assert.h>
 
 #include "spvm_native.h"
-#include "spvm_api.h"
-#include "spvm_api_compiler.h"
-#include "spvm_api_runtime.h"
-#include "spvm_api_allocator.h"
-#include "spvm_api_string_buffer.h"
 
 int32_t main(int32_t argc, const char *argv[]) {
   
