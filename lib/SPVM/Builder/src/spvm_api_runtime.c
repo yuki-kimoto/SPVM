@@ -146,6 +146,8 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_class_id,
     SPVM_API_RUNTIME_get_method_is_class_method,
     SPVM_API_RUNTIME_get_method_is_anon,
+    SPVM_API_RUNTIME_get_method_is_native,
+    SPVM_API_RUNTIME_get_method_is_precompile,
     SPVM_API_RUNTIME_get_method_call_stack_byte_vars_length,
     SPVM_API_RUNTIME_get_method_call_stack_short_vars_length,
     SPVM_API_RUNTIME_get_method_call_stack_int_vars_length,
