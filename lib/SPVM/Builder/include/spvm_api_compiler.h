@@ -4,6 +4,7 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
+SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env();
 SPVM_COMPILER* SPVM_API_COMPILER_new_compiler();
 void SPVM_API_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line);
 int32_t SPVM_API_COMPILER_get_start_line(SPVM_COMPILER* compiler);

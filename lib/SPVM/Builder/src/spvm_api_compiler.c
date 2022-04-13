@@ -14,6 +14,29 @@
 #include "spvm_string_buffer.h"
 #include "spvm_allocator.h"
 
+SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
+  void* env_compiler_init[]  = {
+    SPVM_API_COMPILER_new_compiler,
+    SPVM_API_COMPILER_free_compiler,
+    SPVM_API_COMPILER_set_start_line,
+    SPVM_API_COMPILER_get_start_line,
+    SPVM_API_COMPILER_set_start_file,
+    SPVM_API_COMPILER_get_start_file,
+    SPVM_API_COMPILER_add_module_dir,
+    SPVM_API_COMPILER_get_module_dirs_length,
+    SPVM_API_COMPILER_get_module_dir,
+    SPVM_API_COMPILER_compile_spvm,
+    SPVM_API_COMPILER_get_error_messages_length,
+    SPVM_API_COMPILER_get_error_message,
+    SPVM_API_COMPILER_build_runtime,
+    SPVM_API_COMPILER_get_module_source_by_name,
+  };
+  SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
+  memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
+  
+  return env_compiler;
+}
+
 SPVM_COMPILER* SPVM_API_COMPILER_new_compiler() {
   
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
