@@ -397,9 +397,6 @@ sub create_bootstrap_source {
 #include "spvm_api_allocator.h"
 #include "spvm_api_string_buffer.h"
 
-// This will be removed in the near feature release
-#include "spvm_compiler.h"
-#include "spvm_hash.h"
 EOS
     
     $boot_source .= "// module source get functions declaration\n";
@@ -521,7 +518,7 @@ EOS
       
       $boot_source .= "  {\n";
       $boot_source .= "    const char* module_source = SPMODSRC__${class_cname}__get_module_source();\n";
-      $boot_source .= qq(    SPVM_HASH_set(compiler->module_source_symtable, "$class_name", strlen("$class_name"), (void*)module_source);\n);
+      $boot_source .= qq(    env->api->compiler->set_module_source_by_name(compiler, "$class_name", module_source);\n);
       $boot_source .= "  }\n";
     }
     $boot_source .= "\n";
