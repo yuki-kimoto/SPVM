@@ -392,7 +392,6 @@ sub create_bootstrap_source {
 #include <assert.h>
 
 #include "spvm_native.h"
-#include "spvm_api.h"
 
 EOS
     
@@ -502,7 +501,7 @@ EOS
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
   
   // Create compiler
-  SPVM_COMPILER* compiler = env->api->compiler->new_compiler();
+  void* compiler = env->api->compiler->new_compiler();
 
   env->api->compiler->set_start_file(compiler, class_name);
 
