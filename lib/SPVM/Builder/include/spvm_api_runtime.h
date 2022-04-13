@@ -4,6 +4,8 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
+SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env();
+
 // Private
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name);

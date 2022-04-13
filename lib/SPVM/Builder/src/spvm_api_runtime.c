@@ -16,6 +16,7 @@
 #include "spvm_list.h"
 #include "spvm_hash.h"
 
+#include "spvm_object.h"
 #include "spvm_opcode.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class.h"
@@ -26,6 +27,157 @@
 #include "spvm_runtime_constant_string.h"
 #include "spvm_runtime_type.h"
 #include "spvm_api_runtime.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
+  
+  void* env_runtime_init[]  = {
+    SPVM_API_RUNTIME_new_runtime,
+    SPVM_API_RUNTIME_free_runtime,
+    SPVM_API_RUNTIME_prepare,
+    SPVM_API_RUNTIME_get_opcodes,
+    SPVM_API_RUNTIME_get_opcodes_length,
+    SPVM_API_RUNTIME_get_constant_string_id,
+    SPVM_API_RUNTIME_get_constant_string_value,
+    SPVM_API_RUNTIME_get_name,
+    SPVM_API_RUNTIME_get_basic_type_id_by_name,
+    SPVM_API_RUNTIME_get_basic_type_name_id,
+    SPVM_API_RUNTIME_get_basic_type_class_id,
+    SPVM_API_RUNTIME_get_basic_type_category,
+    SPVM_API_RUNTIME_get_type_basic_type_id,
+    SPVM_API_RUNTIME_get_type_dimension,
+    SPVM_API_RUNTIME_get_type_width,
+    SPVM_API_RUNTIME_get_type_is_object,
+    SPVM_API_RUNTIME_get_type_is_ref,
+    SPVM_API_RUNTIME_get_class_id_by_name,
+    SPVM_API_RUNTIME_get_class_name_id,
+    SPVM_API_RUNTIME_get_class_module_file_id,
+    SPVM_API_RUNTIME_get_class_is_anon,
+    SPVM_API_RUNTIME_get_class_fields_base_id,
+    SPVM_API_RUNTIME_get_class_fields_length,
+    SPVM_API_RUNTIME_get_class_methods_base_id,
+    SPVM_API_RUNTIME_get_class_methods_length,
+    SPVM_API_RUNTIME_get_class_class_vars_base_id,
+    SPVM_API_RUNTIME_get_class_class_vars_length,
+    SPVM_API_RUNTIME_get_class_anon_methods_base_id,
+    SPVM_API_RUNTIME_get_class_anon_methods_length,
+    SPVM_API_RUNTIME_get_class_var_id_by_index,
+    SPVM_API_RUNTIME_get_class_var_id_by_name,
+    SPVM_API_RUNTIME_get_class_var_name_id,
+    SPVM_API_RUNTIME_get_class_var_signature_id,
+    SPVM_API_RUNTIME_get_class_var_class_id,
+    SPVM_API_RUNTIME_get_field_id_by_index,
+    SPVM_API_RUNTIME_get_field_id_by_name,
+    SPVM_API_RUNTIME_get_field_name_id,
+    SPVM_API_RUNTIME_get_field_type_id,
+    SPVM_API_RUNTIME_get_field_signature_id,
+    SPVM_API_RUNTIME_get_field_class_id,
+    SPVM_API_RUNTIME_get_method_id_by_index,
+    SPVM_API_RUNTIME_get_method_id_by_name,
+    SPVM_API_RUNTIME_get_method_name_id,
+    SPVM_API_RUNTIME_get_method_signature_id,
+    SPVM_API_RUNTIME_get_method_return_type_id,
+    SPVM_API_RUNTIME_get_method_class_id,
+    SPVM_API_RUNTIME_get_method_is_class_method,
+    SPVM_API_RUNTIME_get_method_is_anon,
+    SPVM_API_RUNTIME_get_method_has_precompile_flag,
+    SPVM_API_RUNTIME_get_method_call_stack_byte_vars_length,
+    SPVM_API_RUNTIME_get_method_call_stack_short_vars_length,
+    SPVM_API_RUNTIME_get_method_call_stack_int_vars_length,
+    SPVM_API_RUNTIME_get_method_call_stack_long_vars_length,
+    SPVM_API_RUNTIME_get_method_call_stack_float_vars_length,
+    SPVM_API_RUNTIME_get_method_call_stack_double_vars_length,
+    SPVM_API_RUNTIME_get_method_call_stack_object_vars_length,
+    SPVM_API_RUNTIME_get_method_call_stack_ref_vars_length,
+    SPVM_API_RUNTIME_get_method_mortal_stack_length,
+    SPVM_API_RUNTIME_get_method_opcodes_base_id,
+    SPVM_API_RUNTIME_get_method_opcodes_length,
+    SPVM_API_RUNTIME_get_method_args_base_id,
+    SPVM_API_RUNTIME_get_method_args_length,
+    SPVM_API_RUNTIME_get_arg_type_id,
+    SPVM_API_RUNTIME_get_anon_method_method_id,
+    SPVM_API_RUNTIME_get_native_method_address,
+    SPVM_API_RUNTIME_set_native_method_address,
+    SPVM_API_RUNTIME_get_precompile_method_address,
+    SPVM_API_RUNTIME_set_precompile_method_address,
+    (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, weaken_backref_head), // weaken_backref_head
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_offset
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_type_dimension_offset
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, flag), // object_flag_offset
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
+  };
+  SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
+  memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
+  
+  return env_runtime;
+}
 
 SPVM_RUNTIME* SPVM_API_RUNTIME_new_runtime() {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
