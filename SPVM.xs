@@ -18,7 +18,7 @@
 
 static const char* MFILE = "SPVM.xs";
 
-SV* SPVM_XS_UTIL_new_sv_object(SPVM_ENV* env, SPVM_OBJECT* object, const char* class) {
+SV* SPVM_XS_UTIL_new_sv_object(SPVM_ENV* env, void* object, const char* class) {
   
   // Create object
   size_t iv_object = PTR2IV(object);
@@ -41,7 +41,7 @@ SV* SPVM_XS_UTIL_new_sv_object(SPVM_ENV* env, SPVM_OBJECT* object, const char* c
   return sv_data;
 }
 
-SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_data) {
+void* SPVM_XS_UTIL_get_object(SV* sv_data) {
   
   if (SvOK(sv_data)) {
     HV* hv_data = (HV*)SvRV(sv_data);
@@ -49,7 +49,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_data) {
     SV** sv_object_ptr = hv_fetch(hv_data, "object", strlen("object"), 0);
     SV* sv_object = sv_object_ptr ? *sv_object_ptr : &PL_sv_undef;
     size_t iv_object = SvIV(SvRV(sv_object));
-    SPVM_OBJECT* object = INT2PTR(SPVM_OBJECT*, iv_object);
+    void* object = INT2PTR(SPVM_OBJECT*, iv_object);
     
     return object;
   }
@@ -58,7 +58,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_data) {
   }
 }
 
-SPVM_OBJECT* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type_name, SV* sv_elems, SV** sv_error) {
+void* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type_name, SV* sv_elems, SV** sv_error) {
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
     *sv_error = sv_2mortal(newSVpvf("Argument must be array reference at %s line %d\n", MFILE, __LINE__));
@@ -506,7 +506,7 @@ call_spvm_method(...)
                 
                 // Perl SPVM::BlessedObject::String to SPVM string
                 if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
-                  SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+                  void* object = SPVM_XS_UTIL_get_object(sv_value);
                   
                   args_stack[args_stack_index].oval = object;
                 }
@@ -516,7 +516,7 @@ call_spvm_method(...)
               }
               else if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
                 if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
-                  SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+                  void* object = SPVM_XS_UTIL_get_object(sv_value);
                   args_stack[args_stack_index].oval = object;
                 }
                 else {
@@ -525,7 +525,7 @@ call_spvm_method(...)
               }
               else {
                 if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
-                  SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+                  void* object = SPVM_XS_UTIL_get_object(sv_value);
                   if (SPVM_API_get_object_basic_type_id(env, object) != arg_basic_type_id) {
                     croak("%dth argument of %s->%s must be %s class line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
                   }
@@ -718,7 +718,7 @@ call_spvm_method(...)
             }
             
             if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
-              SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+              void* object = SPVM_XS_UTIL_get_object(sv_value);
               
               int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, object);
               int32_t object_type_dimension = SPVM_API_get_object_type_dimension(env, object);
@@ -753,7 +753,7 @@ call_spvm_method(...)
               
               SV* sv_error = NULL;
               const char* arg_basic_type_name = env->api->runtime->get_name(env->runtime, env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id));
-              SPVM_OBJECT* array = SPVM_XS_UTIL_new_mulnum_array(env, arg_basic_type_name, sv_value, &sv_error);
+              void* array = SPVM_XS_UTIL_new_mulnum_array(env, arg_basic_type_name, sv_value, &sv_error);
               if (sv_error) {
                 croak_sv(sv_error);
               }
@@ -762,7 +762,7 @@ call_spvm_method(...)
             }
             
             if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
-              SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+              void* object = SPVM_XS_UTIL_get_object(sv_value);
               
               int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, object);
               int32_t object_type_dimension = SPVM_API_get_object_type_dimension(env, object);
@@ -816,7 +816,7 @@ call_spvm_method(...)
                       sv_elem = sv_string;
                     }
                     if (sv_isobject(sv_elem) && sv_derived_from(sv_elem, "SPVM::BlessedObject::String")) {
-                      SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_elem);
+                      void* object = SPVM_XS_UTIL_get_object(sv_elem);
                       env->set_elem_object(env, array, i, object);
                     }
                     else {
@@ -830,7 +830,7 @@ call_spvm_method(...)
             }
             
             if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
-              SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+              void* object = SPVM_XS_UTIL_get_object(sv_value);
               
               int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, object);
               int32_t object_type_dimension = SPVM_API_get_object_type_dimension(env, object);
@@ -906,7 +906,7 @@ call_spvm_method(...)
                   sv_elem = sv_string;
                 }
                 if (sv_isobject(sv_elem) && sv_derived_from(sv_elem, "SPVM::BlessedObject::String")) {
-                  SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_elem);
+                  void* object = SPVM_XS_UTIL_get_object(sv_elem);
                   env->set_elem_object(env, array, i, object);
                 }
                 else {
@@ -920,7 +920,7 @@ call_spvm_method(...)
         }
         
         if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
-          SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+          void* object = SPVM_XS_UTIL_get_object(sv_value);
           
           int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, object);
           int32_t object_type_dimension = SPVM_API_get_object_type_dimension(env, object);
@@ -1076,7 +1076,7 @@ call_spvm_method(...)
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
         {
-          SPVM_OBJECT* return_value = (SPVM_OBJECT*)args_stack[0].oval;
+          void* return_value = (SPVM_OBJECT*)args_stack[0].oval;
           sv_return_value = NULL;
           if (return_value != NULL) {
             env->inc_ref_count(env, return_value);
@@ -1112,7 +1112,7 @@ call_spvm_method(...)
       }
     }
     else if (method_return_type_dimension == 1) {
-      SPVM_OBJECT* return_value = (SPVM_OBJECT*)args_stack[0].oval;
+      void* return_value = (SPVM_OBJECT*)args_stack[0].oval;
       sv_return_value = NULL;
       if (return_value != NULL) {
         env->inc_ref_count(env, return_value);
@@ -1142,7 +1142,7 @@ call_spvm_method(...)
       }
     }
     else if (method_return_type_dimension > 1) {
-      SPVM_OBJECT* return_value = (SPVM_OBJECT*)args_stack[0].oval;
+      void* return_value = (SPVM_OBJECT*)args_stack[0].oval;
       sv_return_value = NULL;
       if (return_value != NULL) {
         env->inc_ref_count(env, return_value);
@@ -1300,7 +1300,7 @@ array_to_elems(...)
   }
   
   // Get object
-  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = env->length(env, array);
 
@@ -1398,7 +1398,7 @@ array_to_elems(...)
       else {
         for (int32_t index = 0; index < length; index++) {
           // Index
-          SPVM_OBJECT* value = env->get_elem_object(env, array, index);
+          void* value = env->get_elem_object(env, array, index);
           if (value == NULL) {
             av_push(av_values, &PL_sv_undef);
           }
@@ -1505,7 +1505,7 @@ array_to_bin(...)
   }
 
   // Get object
-  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = env->length(env, array);
 
@@ -1647,7 +1647,7 @@ string_object_to_string(...)
   }
   
   // Get object
-  SPVM_OBJECT* string = SPVM_XS_UTIL_get_object(sv_string);
+  void* string = SPVM_XS_UTIL_get_object(sv_string);
   
   int32_t length = env->length(env, string);
   const char* chars = env->get_chars(env, string);
@@ -1684,7 +1684,7 @@ array_length(...)
   }
   
   // Get object
-  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   int32_t length = env->length(env, array);
 
@@ -1713,7 +1713,7 @@ array_set(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = env->length(env, array);
@@ -1791,7 +1791,7 @@ array_set(...)
       }
       default: {
         // Get object
-        SPVM_OBJECT* value = SPVM_XS_UTIL_get_object(sv_value);
+        void* value = SPVM_XS_UTIL_get_object(sv_value);
         
         env->set_elem_object(env, array, index, value);
       }
@@ -1800,7 +1800,7 @@ array_set(...)
   else if (dimension > 1) {
     
     // Get object
-    SPVM_OBJECT* value = SPVM_XS_UTIL_get_object(sv_value);
+    void* value = SPVM_XS_UTIL_get_object(sv_value);
     
     env->set_elem_object(env, array, index, value);
   }
@@ -1828,7 +1828,7 @@ array_get(...)
   int32_t index = (int32_t)SvIV(sv_index);
 
   // Array
-  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  void* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = env->length(env, array);
@@ -1905,7 +1905,7 @@ array_get(...)
     int32_t element_dimension = SPVM_API_get_object_type_dimension(env, array) - 1;
     
     // Index
-    SPVM_OBJECT* value = env->get_elem_object(env, array, index);
+    void* value = env->get_elem_object(env, array, index);
     if (value != NULL) {
       env->inc_ref_count(env, value);
     }
@@ -1947,7 +1947,7 @@ new_string_array(...)
     int32_t length = av_len(av_elems) + 1;
 
     // New array
-    SPVM_OBJECT* array = env->new_object_array(env, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, length);
+    void* array = env->new_object_array(env, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, length);
 
     for (int32_t i = 0; i < length; i++) {
       SV** sv_str_value_ptr = av_fetch(av_elems, i, 0);
@@ -2974,7 +2974,7 @@ _new_object_array(...)
   assert(basic_type_id >= 0);
   
   // New array
-  SPVM_OBJECT* array = env->new_object_array(env, basic_type_id, length);
+  void* array = env->new_object_array(env, basic_type_id, length);
 
   int32_t array_basic_type_id  = SPVM_API_get_object_basic_type_id(env, array);
   int32_t array_type_dimension = SPVM_API_get_object_type_dimension(env, array);
@@ -2988,7 +2988,7 @@ _new_object_array(...)
       env->set_elem_object(env, array, index, NULL);
     }
     else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject::Class")) {
-      SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
+      void* object = SPVM_XS_UTIL_get_object(sv_element);
       
       if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
         env->set_elem_object(env, array, index, object);
@@ -3046,7 +3046,7 @@ _new_muldim_array(...)
   assert(basic_type_id >= 0);
   
   // New array
-  SPVM_OBJECT* array = env->new_muldim_array(env, basic_type_id, element_type_dimension, length);
+  void* array = env->new_muldim_array(env, basic_type_id, element_type_dimension, length);
   
   int32_t array_basic_type_id = SPVM_API_get_object_basic_type_id(env, array);
 
@@ -3058,7 +3058,7 @@ _new_muldim_array(...)
       env->set_elem_object(env, array, index, NULL);
     }
     else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject")) {
-      SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
+      void* object = SPVM_XS_UTIL_get_object(sv_element);
       
       if (SPVM_API_get_object_basic_type_id(env, object) == array_basic_type_id && SPVM_API_get_object_type_dimension(env, object) == element_type_dimension) {
         env->set_elem_object(env, array, index, object);
@@ -3095,7 +3095,7 @@ _new_mulnum_array(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   SV* sv_error = NULL;
-  SPVM_OBJECT* array = SPVM_XS_UTIL_new_mulnum_array(env, basic_type_name, sv_elems, &sv_error);
+  void* array = SPVM_XS_UTIL_new_mulnum_array(env, basic_type_name, sv_elems, &sv_error);
   
   if (sv_error) {
     croak_sv(sv_error);
@@ -3185,7 +3185,7 @@ _new_mulnum_array_from_bin(...)
   
   int32_t array_length = binary_length / field_length / field_width;
 
-  SPVM_OBJECT* array = env->new_mulnum_array(env, basic_type_id, array_length);
+  void* array = env->new_mulnum_array(env, basic_type_id, array_length);
 
   int32_t dimension = SPVM_API_get_object_type_dimension(env, array);
   
@@ -3285,7 +3285,7 @@ _set_exception(...)
     if (!(sv_isobject(sv_exception) && sv_derived_from(sv_exception, "SPVM::BlessedObject::String"))) {
       croak("The argument must be a SPVM::BlessedObject::String object");
     }
-    SPVM_OBJECT* exception = SPVM_XS_UTIL_get_object(sv_exception);
+    void* exception = SPVM_XS_UTIL_get_object(sv_exception);
     env->set_exception(env, exception);
   }
   else {
