@@ -363,6 +363,7 @@ sub get_spvm_core_source_file_names {
     spvm_api_allocator.c
     spvm_api.c
     spvm_api_compiler.c
+    spvm_api_precompile.c
     spvm_api_runtime.c
     spvm_api_string_buffer.c
     spvm_array_field_access.c
@@ -415,6 +416,7 @@ sub get_spvm_core_header_file_names {
     spvm_api_allocator.h
     spvm_api_compiler.h
     spvm_api.h
+    spvm_api_precompile.h
     spvm_api_runtime.h
     spvm_api_string_buffer.h
     spvm_array_field_access.h

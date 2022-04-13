@@ -36,6 +36,7 @@
 #include "spvm_api_string_buffer.h"
 #include "spvm_api_allocator.h"
 #include "spvm_api_runtime.h"
+#include "spvm_api_precompile.h"
 
 
 
@@ -7723,11 +7724,11 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
 }
 
 const char* SPVM_API_precompile_create_precompile_source(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
-  SPVM_PRECOMPILE* precompile = SPVM_PRECOMPILE_new();
+  SPVM_PRECOMPILE* precompile = SPVM_API_PRECOMPILE_new_precompile();
   
-  SPVM_PRECOMPILE_set_runtime(precompile, runtime);
+  SPVM_API_PRECOMPILE_set_runtime(precompile, runtime);
   
-  SPVM_PRECOMPILE_create_precompile_source(precompile, string_buffer, class_name);
+  SPVM_API_PRECOMPILE_create_precompile_source(precompile, string_buffer, class_name);
   
-  SPVM_PRECOMPILE_free(precompile);
+  SPVM_API_PRECOMPILE_free_precompile(precompile);
 }
