@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "spvm_native.h"
 
 #include "spvm_allocator.h"

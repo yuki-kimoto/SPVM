@@ -95,14 +95,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
   SPVM_ENV_ALLOCATOR* env_allocator = SPVM_API_ALLOCATOR_new_env();
 
   // Env String Buffer
-  void* env_string_buffer_init[]  = {
-    SPVM_API_STRING_BUFFER_new_string_buffer_tmp,
-    SPVM_API_STRING_BUFFER_free_string_buffer,
-    SPVM_API_STRING_BUFFER_get_value,
-    SPVM_API_STRING_BUFFER_get_length,
-  };
-  SPVM_ENV_STRING_BUFFER* env_string_buffer = calloc(1, sizeof(env_string_buffer_init));
-  memcpy(env_string_buffer, env_string_buffer_init, sizeof(env_string_buffer_init));
+  SPVM_ENV_STRING_BUFFER* env_string_buffer = SPVM_API_STRING_BUFFER_new_env();
 
   // Env Compiler
   void* env_compiler_init[]  = {
