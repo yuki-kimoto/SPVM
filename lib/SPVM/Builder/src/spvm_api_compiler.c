@@ -30,6 +30,7 @@ SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
     SPVM_API_COMPILER_get_error_message,
     SPVM_API_COMPILER_build_runtime,
     SPVM_API_COMPILER_get_module_source_by_name,
+    SPVM_API_COMPILER_set_module_source_by_name,
   };
   SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
@@ -102,4 +103,8 @@ const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t
 const char* SPVM_API_COMPILER_get_module_source_by_name(SPVM_COMPILER* compiler, const char* class_name) {  
   const char* module_source = SPVM_HASH_get(compiler->module_source_symtable, class_name, strlen(class_name));
   return module_source;
+}
+
+void SPVM_API_COMPILER_set_module_source_by_name(SPVM_COMPILER* compiler, const char* class_name, const char* module_source) {  
+  SPVM_HASH_set(compiler->module_source_symtable, class_name, strlen(class_name), (void*)module_source);
 }
