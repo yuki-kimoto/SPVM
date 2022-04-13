@@ -394,7 +394,6 @@ sub create_bootstrap_source {
 #include "spvm_native.h"
 #include "spvm_api.h"
 #include "spvm_api_compiler.h"
-#include "spvm_api_runtime.h"
 #include "spvm_api_allocator.h"
 #include "spvm_api_string_buffer.h"
 
@@ -573,9 +572,9 @@ EOS
   { 
     const char* class_name = "$class_name";
     const char* method_name = "$precompile_method_name";
-    int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
+    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
     void* precompile_address = SPVMPRECOMPILE__${class_cname}__$precompile_method_name;
-    SPVM_API_RUNTIME_set_precompile_method_address(env->runtime, method_id, precompile_address);
+    env->api->runtime->set_precompile_method_address(env->runtime, method_id, precompile_address);
   }
 EOS
       }
@@ -592,9 +591,9 @@ EOS
   { 
     const char* class_name = "$class_name";
     const char* method_name = "$native_method_name";
-    int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
+    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
     void* native_address = SPVM__${class_cname}__$native_method_name;
-    SPVM_API_RUNTIME_set_native_method_address(env->runtime, method_id, native_address);
+    env->api->runtime->set_native_method_address(env->runtime, method_id, native_address);
   }
 EOS
       }
