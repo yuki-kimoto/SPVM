@@ -129,6 +129,17 @@ SPVM_ENV* SPVM_API_new_env_raw() {
   SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
 
+  // Env Precompile
+  void* env_precompile_init[]  = {
+    SPVM_API_PRECOMPILE_new_precompile,
+    SPVM_API_PRECOMPILE_free_precompile,
+    SPVM_API_PRECOMPILE_set_runtime,
+    SPVM_API_PRECOMPILE_get_runtime,
+    SPVM_API_PRECOMPILE_create_precompile_source,
+  };
+  SPVM_ENV_PRECOMPILE* env_precompile = calloc(1, sizeof(env_precompile_init));
+  memcpy(env_precompile, env_precompile_init, sizeof(env_precompile_init));
+
   // Env Runtime
   void* env_runtime_init[]  = {
     SPVM_API_RUNTIME_new_runtime,
@@ -215,6 +226,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     env_allocator,
     env_string_buffer,
     env_compiler,
+    env_precompile,
     env_runtime,
   };
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
@@ -1340,6 +1352,7 @@ void SPVM_API_free_env_raw(SPVM_ENV* env) {
   free(env->api->allocator);
   free(env->api->string_buffer);
   free(env->api->compiler);
+  free(env->api->precompile);
   free(env->api->runtime);
   free(env->api);
   
