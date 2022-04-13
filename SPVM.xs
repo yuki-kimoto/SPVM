@@ -19,7 +19,6 @@
 #include "spvm_api_runtime.h"
 #include "spvm_api_allocator.h"
 #include "spvm_api_string_buffer.h"
-#include "spvm_api_precompile.h"
 
 static const char* MFILE = "SPVM.xs";
 
@@ -4042,13 +4041,13 @@ create_precompile_source(...)
   // New string buffer
   void* string_buffer = env->api->string_buffer->new_string_buffer_tmp(allocator, 0);
 
-  SPVM_PRECOMPILE* precompile = SPVM_API_PRECOMPILE_new_precompile();
+  SPVM_PRECOMPILE* precompile = env->api->precompile->new_precompile();
   
-  SPVM_API_PRECOMPILE_set_runtime(precompile, runtime);
+  env->api->precompile->set_runtime(precompile, runtime);
   
-  SPVM_API_PRECOMPILE_create_precompile_source(precompile, string_buffer, class_name);
+  env->api->precompile->create_precompile_source(precompile, string_buffer, class_name);
   
-  SPVM_API_PRECOMPILE_free_precompile(precompile);
+  env->api->precompile->free_precompile(precompile);
 
   const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
