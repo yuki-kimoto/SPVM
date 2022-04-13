@@ -3863,7 +3863,7 @@ prepare_env(...)
 
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(SPVM_RUNTIME*, SvIV(SvRV(sv_runtime)));
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
 
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
