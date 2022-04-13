@@ -4,7 +4,7 @@ package SPVM::Hash::Entry;
 
 =head1 NAME
 
-SPVM::Hash::Entry - Hash::Entry in SPVM | Hash entry
+SPVM::Hash::Entry - Hash entry
 
 =head1 SYNOPSYS
   

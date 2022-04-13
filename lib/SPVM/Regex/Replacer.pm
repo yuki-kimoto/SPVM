@@ -4,7 +4,7 @@ package SPVM::Regex::Replacer;
 
 =head1 NAME
 
-SPVM::Regex::Replacer - Regex::Replacer in SPVM | a callback type for the regex replacement
+SPVM::Regex::Replacer - a callback type for the regex replacement
 
 =head1 SYNOPSYS
   

@@ -4,7 +4,7 @@ package SPVM::DoubleList;
 
 =head1 NAME
 
-SPVM::DoubleList - DoubleList in SPVM | Dynamic double array
+SPVM::DoubleList - Dynamic double array
 
 =head1 SYNOPSYS
   

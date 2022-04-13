@@ -4,7 +4,7 @@ package SPVM::Double;
 
 =head1 NAME
 
-SPVM::Double - Double in SPVM | Double object
+SPVM::Double - Double object
 
 =head1 SYNOPSYS
 

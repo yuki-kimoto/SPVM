@@ -4,7 +4,7 @@ package SPVM::Short;
 
 =head1 NAME
 
-SPVM::Short - Short in SPVM | Short object
+SPVM::Short - Short object
 
 =head1 SYNOPSYS
   

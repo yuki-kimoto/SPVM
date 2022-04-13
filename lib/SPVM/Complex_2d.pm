@@ -1,6 +1,6 @@
 =head1 NAME
 
-SPVM::Complex_2d - Complex_2d in SPVM | double complex type
+SPVM::Complex_2d - double complex type
 
 =head1 SYNOPSYS
 
