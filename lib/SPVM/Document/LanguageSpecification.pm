@@ -2603,13 +2603,15 @@ See also the L<SPVM Native API|SPVM::Document::NativeAPI> to implement native me
 
 =head2 Precompiled Method
 
-If the Class has "precompile" descriptor, the methods of the class become Precompiled Method.
+If the class has the C<precompile> L<class descriptor|/"Class Descriptors">, the methods of the class are precompiled.
 
-Precompiled Method is translated into C source code and converted into machine code.
+The source code of each precompiled method is translated to C source code and is compiled to the machine code such as C<MyMath.o>.
 
-The precompiled methods are C code, so you can get performance of C language.
+And it is linked to a shared library such as C<MyMath.so> on Linux/Unix, C<MyMath.dll> on Windows, or C<MyMath.dylib> on Mac.
 
-Precompiled Method needs Build Directory described in <a href="/native-api.html">SPVM Native API</a>
+And each function in the shared library is bind to the SPVM method.
+
+Precompiled methods need the L<build directory|SPVM/"SPVM_BUILD_DIR"> such as C<~/.spvm_build> to compile and link them.
 
 =head2 Constant Method
 
