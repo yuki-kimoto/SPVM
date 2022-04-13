@@ -1,6 +1,6 @@
 =head1 NAME
 
-SPVM::Complex_2f - Complex_2f in SPVM | float complex type
+SPVM::Complex_2f - float complex type
 
 =head1 SYNOPSYS
 

@@ -4,7 +4,7 @@ package SPVM::ShortList;
 
 =head1 NAME
 
-SPVM::ShortList - ShortList in SPVM | Dynamic short array
+SPVM::ShortList - Dynamic short array
 
 =head1 SYNOPSYS
   

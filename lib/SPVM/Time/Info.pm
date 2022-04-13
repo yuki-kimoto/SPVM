@@ -4,7 +4,7 @@ package SPVM::Time::Info;
 
 =head1 NAME
 
-SPVM::Time::Info - Time::Info in SPVM | Time information
+SPVM::Time::Info - Time information
 
 =head1 SYNOPSYS
   

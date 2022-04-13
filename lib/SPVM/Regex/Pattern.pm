@@ -4,7 +4,7 @@ package SPVM::Regex::Pattern;
 
 =head1 NAME
 
-SPVM::Regex::Pattern - Regex::Pattern in SPVM | Regular expression pattern
+SPVM::Regex::Pattern - Regular expression pattern
 
 =head1 SYNOPSYS
   
