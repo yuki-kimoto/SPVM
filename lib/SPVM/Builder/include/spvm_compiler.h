@@ -147,6 +147,9 @@ struct spvm_compiler {
   
   // module source symtable
   SPVM_HASH* module_source_symtable;
+
+  // module directory symtable
+  SPVM_HASH* module_dir_symtable;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();

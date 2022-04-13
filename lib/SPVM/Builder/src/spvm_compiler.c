@@ -74,6 +74,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->module_source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  compiler->module_dir_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->switch_infos = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->not_found_class_class_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
 
