@@ -4037,7 +4037,7 @@ create_precompile_source(...)
   // New string buffer
   void* string_buffer = env->api->string_buffer->new_string_buffer_tmp(allocator, 0);
 
-  SPVM_PRECOMPILE* precompile = env->api->precompile->new_precompile();
+  void* precompile = env->api->precompile->new_precompile();
   
   env->api->precompile->set_runtime(precompile, runtime);
   
