@@ -367,6 +367,7 @@ lib/SPVM/Builder/include/spvm_allow.h
 lib/SPVM/Builder/include/spvm_api.h
 lib/SPVM/Builder/include/spvm_api_allocator.h
 lib/SPVM/Builder/include/spvm_api_compiler.h
+lib/SPVM/Builder/include/spvm_api_precompile.h
 lib/SPVM/Builder/include/spvm_api_runtime.h
 lib/SPVM/Builder/include/spvm_api_string_buffer.h
 lib/SPVM/Builder/include/spvm_array_field_access.h
