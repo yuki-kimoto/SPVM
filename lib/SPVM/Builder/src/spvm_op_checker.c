@@ -2450,7 +2450,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               else {
                 if (call_method->is_class_method_call) {
-                  SPVM_COMPILER_error(compiler, "Instance methods can't be called as static methods \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Instance methods can't be called as class methods \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                   return;
                 }
               }
