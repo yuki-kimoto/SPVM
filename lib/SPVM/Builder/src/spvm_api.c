@@ -5779,7 +5779,9 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception,
   total_length += strlen(arrow_part);
   total_length += strlen(method_name);
   total_length += strlen(at_part);
-  total_length += strlen(file);
+  total_length += strlen(module_dir);
+  total_length += strlen(module_dir_sep);
+  total_length += strlen(module_rel_file);
 
   const char* line_part = " line ";
   char line_str[20];
