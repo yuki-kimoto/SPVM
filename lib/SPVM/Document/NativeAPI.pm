@@ -2647,9 +2647,21 @@ If the object is C<NULL>, returns C<0>.
 
 L<SPVM::Document::NativeAPI::Compiler>
 
+=head1 Precompile Native API
+
+L<SPVM::Document::NativeAPI::Precompile>
+
 =head1 Runtime Native API
 
 L<SPVM::Document::NativeAPI::Runtime>
+
+=head1 String Buffer Native API
+
+L<SPVM::Document::NativeAPI::StringBuffer>
+
+=head1 Allocator Native API
+
+L<SPVM::Document::NativeAPI::Allocator>
 
 =head1 Utilities
 

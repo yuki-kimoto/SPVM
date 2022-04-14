@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9510_01  2021-04-06
+0.9510_01  2021-04-14
         [CHANGE]
         * Support cast from class muldim array to interface muldim array
         * Support cast from class muldim array to callback muldim array
