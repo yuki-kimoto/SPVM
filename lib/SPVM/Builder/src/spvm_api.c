@@ -5745,6 +5745,23 @@ void SPVM_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_top) {
 
 SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, const char* file, int32_t line) {
   
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class_by_name(env->runtime, class_name);
+  int32_t module_dir_id = class->module_dir_id;
+  int32_t module_rel_file_id = class->module_rel_file_id;
+  
+  const char* module_dir;
+  const char* module_dir_sep;
+  if (module_dir_id >= 0) {
+    module_dir = SPVM_API_RUNTIME_get_name(env->runtime, module_dir_id);
+    module_dir_sep = "/";
+  }
+  else {
+    module_dir = "";
+    module_dir_sep = "";
+  }
+  
+  const char* module_rel_file = SPVM_API_RUNTIME_get_name(env->runtime, module_rel_file_id);
+  
   // stack trace symbols
   const char* new_line_part = "\n    ";
   const char* arrow_part = "->";
