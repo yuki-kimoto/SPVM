@@ -1732,8 +1732,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   SPVM_CLASS* class = SPVM_CLASS_new(compiler);
   
   class->module_dir = compiler->cur_dir;
-  class->module_file = compiler->cur_file;
   class->module_rel_file = compiler->cur_rel_file;
+  class->module_file = compiler->cur_file;
+  
+  if (class->module_dir) {
+    SPVM_CONSTANT_STRING_new(compiler, class->module_dir, strlen(class->module_dir));
+  }
+  SPVM_CONSTANT_STRING_new(compiler, class->module_rel_file, strlen(class->module_rel_file));
+  SPVM_CONSTANT_STRING_new(compiler, class->module_file, strlen(class->module_file));
   
   if (!op_type) {
     // Class is anon

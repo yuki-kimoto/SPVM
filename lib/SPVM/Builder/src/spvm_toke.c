@@ -257,15 +257,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               // Module found
               else {
-                
-                const char* found_module_dir = SPVM_HASH_get(compiler->module_dir_symtable, cur_rel_file, strlen(cur_rel_file));
-                if (!found_module_dir) {
-                  // Add module directory symtable
-                  SPVM_CONSTANT_STRING_new(compiler, cur_rel_file, strlen(cur_rel_file));
-                  SPVM_CONSTANT_STRING_new(compiler, module_dir, strlen(module_dir));
-                  SPVM_HASH_set(compiler->module_dir_symtable, cur_rel_file, strlen(cur_rel_file), (void*)module_dir);
-                }
-                
                 // Read file content
                 fseek(fh, 0, SEEK_END);
                 int32_t file_size = (int32_t)ftell(fh);
