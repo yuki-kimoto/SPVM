@@ -6016,7 +6016,9 @@ B<void Type> is a special Type that can only be used in the return type of L</"M
 
 =head2 Basic Type
 
-A Type that does not have dimensions is called a Basic Type. L</"Numeric Types">, L</"Class Type">, <a href = "#language-type- any-object ">Any Object Type">, L</"String Type"> is a Basic Type.
+The basic types are L<numeric types|/"Numeric Types">, L<multi numeric types|/"Multi Numeric Types">, the L<class type|/"Class Type">, the L<any object type|/"Any Object Type">, and the L<string type|/"String Type">.
+
+Another definition of basic types are the types that is not L<array types|"Array Types"> and can become the element of L<array types|"Array Types">.
 
 =head2 Array Types
 
