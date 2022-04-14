@@ -1243,17 +1243,15 @@ Do the same as C<concat_raw>, and add the created string object to the mortal st
 
 =head2 new_stack_trace_raw
 
-  void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, const char* file, int32_t line);
+  void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, int32_t method_id, int32_t line);
 
-If you specify a byte[] type exception message and a class name, method name, file name and line number, the character string of the class name, method name, file name and line number is added to the end of the byte[] type exception message. The added character string will be returned.
-
-This function does not add objects to the mortal stack, use new_stack_trace to avoid memory leaks for normal use.
+Create a string object that represents a stack trace by adding the file and line the method is called to the end of the exception message.
 
 =head2 new_stack_trace
 
-  void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, const char* file, int32_t line);
+  void* (*new_stack_trace)(SPVM_ENV* env, void* exception, int32_t method_id, int32_t line);
 
-When a byte[] type exception message and a class name, method name, file name and line number are specified, the string of the class name, method name, file name and line number is added to the end of the string type exception message. Returns a new string type object. Add the newly created object to the mortal stack.
+Same as L</"new_stack_trace_raw">, and push the created object to the mortal stack.
 
 =head2 length
 

@@ -9,6 +9,15 @@ Revision history for SPVM
         [After]
         void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, int32_t line);
         void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, int32_t line);
+
+        * new_stack_trace_raw and new_stack_trace receive method id.
+        [Before]
+        void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, int32_t line);
+        void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, int32_t line);
+        
+        [After]
+        void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, int32_t method_id, int32_t line);
+        void* (*new_stack_trace)(SPVM_ENV* env, void* exception, int32_t method_id, int32_t line);
         
 0.9510_01  2021-04-14
         [CHANGE]
