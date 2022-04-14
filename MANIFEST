@@ -534,6 +534,8 @@ lib/SPVM/List.spvm
 lib/SPVM/Long.pm
 lib/SPVM/LongList.pm
 lib/SPVM/LongList.spvm
+lib/SPVM/Point.pm
+lib/SPVM/Point.spvm
 lib/SPVM/Regex.pm
 lib/SPVM/Regex.spvm
 lib/SPVM/Regex/Pattern.pm
