@@ -5800,13 +5800,15 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception,
 
   sprintf(
     (char*)new_exception_bytes + exception_length,
-    "%s%s%s%s%s%s%s%" PRId32,
+    "%s%s%s%s%s%s%s%s%s%" PRId32,
     new_line_part,
     class_name,
     arrow_part,
     method_name,
     at_part,
-    file,
+    module_dir,
+    module_dir_sep,
+    module_rel_file,
     line_part,
     line
   );
