@@ -3,7 +3,7 @@ class TestCase::Callback {
   use TestCase::Callback::Callback;
   use TestCase::Callback::ImplementCallback1;
   use TestCase::Callback::ImplementCallback2;
-  use Comparator::Object;
+  use Comparator;
   
   our $var_prec : int;
   INIT {
@@ -44,7 +44,7 @@ class TestCase::Callback {
     return 1;
   }
   
-  static method sort_objects : void ($values : object[], $comparator : Comparator::Object) {
+  static method sort_objects : void ($values : object[], $comparator : Comparator) {
 
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){

@@ -8,7 +8,7 @@ class Fn : precompile {
   use Comparator::Float;
   use Comparator::Double;
   use Comparator::String;
-  use Comparator::Object;
+  use Comparator;
   use Stringer;
   use Cloner;
   use EqualityChecker;
@@ -1431,7 +1431,7 @@ class Fn : precompile {
     Fn->_sort_long_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_object : void ($objects : object[], $offset : int, $length : int, $comparator : Comparator::Object) {
+  static method sort_object : void ($objects : object[], $offset : int, $length : int, $comparator : Comparator) {
     if ($objects == undef) {
       die "Array must be not undef";
     }
@@ -2438,7 +2438,7 @@ class Fn : precompile {
     Fn->_sort_string_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
 
-  private static method _sort_object_merge : void($a : object[], $b : object[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Object) {
+  private static method _sort_object_merge : void($a : object[], $b : object[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator) {
       my $i = $left;
       my $j = $mid + 1;
       my $k = 0;
@@ -2475,7 +2475,7 @@ class Fn : precompile {
       }
   }
 
-  private static method _sort_object_merge_sort : void($a : object[], $b : object[], $left : int, $right : int, $n : int, $comparator : Comparator::Object){
+  private static method _sort_object_merge_sort : void($a : object[], $b : object[], $left : int, $right : int, $n : int, $comparator : Comparator){
     if ($left >= $right) {
       return;
     }

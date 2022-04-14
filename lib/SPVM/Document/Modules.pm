@@ -34,7 +34,7 @@ The list of SPVM Standard Modules.
 
 =item * L<Comparator::String|SPVM::Comparator::String> - A Callback Type for string Comparation
 
-=item * L<Comparator::Object|SPVM::Comparator::Object> - A Callback Type for object Comparation
+=item * L<Comparator|SPVM::Comparator> - A Callback Type for object Comparation
 
 =item * L<Complex_2d|SPVM::Complex_2d> - double Complex Type
 

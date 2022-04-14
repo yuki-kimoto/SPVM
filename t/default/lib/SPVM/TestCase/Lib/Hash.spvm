@@ -1,11 +1,11 @@
 class TestCase::Lib::Hash {
   use Int;
   use Hash;
-  use Comparator::Object;
+  use Comparator;
   use List;
   use Fn;
   use Fn;
-  use Comparator::Object;
+  use Comparator;
   use Comparator::Int;
 
   static method new : int () {

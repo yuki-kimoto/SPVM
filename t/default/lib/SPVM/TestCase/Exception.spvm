@@ -1,7 +1,7 @@
 class TestCase::Exception {
   use TestCase::Minimal;
   use TestCase;
-  use Comparator::Object;
+  use Comparator;
   
   our $CALLBACK_DIE_LINE  : rw int;
   our $ZERO_DIVIDE_INT_LINE : rw int;
@@ -185,7 +185,7 @@ class TestCase::Exception {
 
   static method exception_callback : int () {
     
-    my $comparator = (Comparator::Object)method : int ($x1 : object, $x2 : object) {
+    my $comparator = (Comparator)method : int ($x1 : object, $x2 : object) {
       TestCase::Exception->SET_CALLBACK_DIE_LINE(__LINE__); die "Comparator Error"; 
     };
     

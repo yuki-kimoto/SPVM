@@ -1258,9 +1258,9 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
 =head2 sort_object
 
-    static method sort_object : void ($objs : object[], $offset : int, $length : int, $comparator : Comparator::Object)
+    static method sort_object : void ($objs : object[], $offset : int, $length : int, $comparator : Comparator)
 
-Sort object array itself with a offset, a length, and a L<Comparator::Object|SPVM::Comparator::Object> comparator.
+Sort object array itself with a offset, a length, and a L<Comparator|SPVM::Comparator> comparator.
 
 Array must be not undef. Otherwise an exception occurs.
 

@@ -1,16 +1,16 @@
-package SPVM::Comparator::Object;
+package SPVM::Comparator;
 
 1;
 
 =head1 NAME
 
-SPVM::Comparator::Object - A Callback Type for Object Comparation
+SPVM::Comparator - A Callback Type for Object Comparation
 
 =head1 SYNOPSYS
   
-  use Comparator::Object;
+  use Comparator;
   
-  my $comparator : Comparator::Object = method : int ($object1 : object, $object2 : object); {
+  my $comparator : Comparator = method : int ($object1 : object, $object2 : object); {
     my $point1 = (Point)$object1;
     my $point2 = (Point)$object2;
     
@@ -31,7 +31,7 @@ SPVM::Comparator::Object - A Callback Type for Object Comparation
 
 =head1 DESCRIPTION
 
-L<Comparator::Object|SPVM::Comparator::Object> is a callback type to compare two objects.
+L<Comparator|SPVM::Comparator> is a callback type to compare two objects.
 
 =head1 CALLBACK METHOD
 

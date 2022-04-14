@@ -6,7 +6,7 @@ class TestCase::Method {
   use TestCase::Point_3l;
   use TestCase::Point_3f;
   use TestCase::Point_3d;
-  use Comparator::Object;
+  use Comparator;
   use TestCase::Simple as TS;
   use Complex_2d;
   use Fn;
@@ -294,7 +294,7 @@ class TestCase::Method {
       return $x1_num + $x2_num;
     };
     
-    my $comparator : Comparator::Object = $cb_obj;
+    my $comparator : Comparator = $cb_obj;
     
     my $total = $comparator->(2, 3);
     

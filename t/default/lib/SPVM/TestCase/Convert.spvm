@@ -1,7 +1,7 @@
 class TestCase::Convert {
   use TestCase::Minimal;
   use TestCase::Callback::Callback;
-  use Comparator::Object;
+  use Comparator;
   use Fn;
 
   static method convert_undef_to_object : int () {
@@ -71,7 +71,7 @@ class TestCase::Convert {
     
     my $object : object = $comparator;
     
-    my $comparator2 = (Comparator::Object)$object;
+    my $comparator2 = (Comparator)$object;
     
     if ($comparator2->(undef, undef) == 5) {
       return 1;
@@ -81,9 +81,9 @@ class TestCase::Convert {
   }
 
   static method convert_to_undef_to_callback : int () {
-    my $comparator : Comparator::Object;
+    my $comparator : Comparator;
     
-    my $comparator2 = (Comparator::Object)$comparator;
+    my $comparator2 = (Comparator)$comparator;
     
     if ($comparator2 == undef) {
       return 1;

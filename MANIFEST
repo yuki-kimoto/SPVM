@@ -473,6 +473,8 @@ lib/SPVM/Cloneable.pm
 lib/SPVM/Cloneable.spvm
 lib/SPVM/Cloner.pm
 lib/SPVM/Cloner.spvm
+lib/SPVM/Comparator.pm
+lib/SPVM/Comparator.spvm
 lib/SPVM/Comparator/Byte.pm
 lib/SPVM/Comparator/Byte.spvm
 lib/SPVM/Comparator/Double.pm
@@ -483,8 +485,6 @@ lib/SPVM/Comparator/Int.pm
 lib/SPVM/Comparator/Int.spvm
 lib/SPVM/Comparator/Long.pm
 lib/SPVM/Comparator/Long.spvm
-lib/SPVM/Comparator/Object.pm
-lib/SPVM/Comparator/Object.spvm
 lib/SPVM/Comparator/Short.pm
 lib/SPVM/Comparator/Short.spvm
 lib/SPVM/Comparator/String.pm

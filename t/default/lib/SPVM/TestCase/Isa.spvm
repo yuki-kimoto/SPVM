@@ -1,7 +1,7 @@
 class TestCase::Isa {
   use TestCase::Minimal;
   use TestCase::Simple;
-  use Comparator::Object;
+  use Comparator;
   use Complex_2d;
   use Complex_2f;
 
@@ -92,9 +92,9 @@ class TestCase::Isa {
     my $comparator = method : int ($object1 : object, $object2 : object) {
       
     };
-    if ($comparator isa Comparator::Object) {
+    if ($comparator isa Comparator) {
       my $object : object = $comparator;
-      if ($object isa Comparator::Object) {
+      if ($object isa Comparator) {
         return 1;
       }
     }
@@ -103,9 +103,9 @@ class TestCase::Isa {
   }
 
   static method isa_not_match_callback_undef : int () {
-    my $comparator : Comparator::Object;
+    my $comparator : Comparator;
     
-    if (!($comparator isa Comparator::Object)) {
+    if (!($comparator isa Comparator)) {
       return 1;
     }
     
@@ -114,7 +114,7 @@ class TestCase::Isa {
 
   static method isa_not_match_callback : int () {
     my $minimal : TestCase::Minimal = TestCase::Minimal->new;
-    if (!($minimal isa Comparator::Object)) {
+    if (!($minimal isa Comparator)) {
       return 1;
     }
     
