@@ -151,8 +151,8 @@ struct spvm_env {
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* pointer);
   void* (*concat_raw)(SPVM_ENV* env, void* string1, void* string2);
   void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
-  void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, const char* file, int32_t line);
-  void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, const char* file, int32_t line);
+  void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, int32_t line);
+  void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, int32_t line);
   int32_t (*length)(SPVM_ENV* env, void* array);
   int8_t* (*get_elems_byte)(SPVM_ENV* env, void* array);
   int16_t* (*get_elems_short)(SPVM_ENV* env, void* array);

@@ -52,10 +52,6 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
   
   // Constant strings
   if (!class_is_anon) {
-    SPVM_STRING_BUFFER_add(string_buffer,"static const char* CURRENT_CLASS_FILE = \"");
-    SPVM_STRING_BUFFER_add(string_buffer, class_module_file);
-    SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-    
     SPVM_STRING_BUFFER_add(string_buffer, "static const char* CURRENT_CLASS_NAME = \"");
     SPVM_STRING_BUFFER_add(string_buffer, class_name);
     SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
@@ -3349,7 +3345,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    exception_flag = 0;\n"
-                                              "    env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), CURRENT_CLASS_NAME, CURRENT_METHOD_NAME, CURRENT_CLASS_FILE, line));\n"
+                                              "    env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), CURRENT_CLASS_NAME, CURRENT_METHOD_NAME, line));\n"
                                               "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -3364,7 +3360,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    int32_t line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), CURRENT_CLASS_NAME, CURRENT_METHOD_NAME, CURRENT_CLASS_FILE, line));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), CURRENT_CLASS_NAME, CURRENT_METHOD_NAME, line));\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"

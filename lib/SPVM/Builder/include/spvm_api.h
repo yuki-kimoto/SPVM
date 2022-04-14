@@ -160,8 +160,8 @@ SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t l
 // Exception
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception);
 SPVM_OBJECT* SPVM_API_exception(SPVM_ENV* env);
-SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, const char* file, int32_t line);
-SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, const char* file, int32_t line);
+SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, int32_t line);
+SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, int32_t line);
 
 // Reference count
 void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);

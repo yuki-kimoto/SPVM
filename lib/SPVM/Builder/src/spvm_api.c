@@ -4361,10 +4361,9 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method->name_id, NULL);
           SPVM_RUNTIME_CLASS* method_class = SPVM_API_RUNTIME_get_class(env->runtime, method->class_id);
           const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_class->name_id, NULL);
-          const char* file = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_class->module_file_id, NULL);
           
           // Exception stack trace
-          env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), class_name, method_name, file, line));
+          env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), class_name, method_name, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -4381,10 +4380,9 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method->name_id, NULL);
           SPVM_RUNTIME_CLASS* method_class = SPVM_API_RUNTIME_get_class(env->runtime, method->class_id);
           const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, method_class->name_id, NULL);
-          const char* file = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, class->module_file_id, NULL);
 
           // Exception stack trace
-          env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), class_name, method_name, file, line));
+          env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), class_name, method_name, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -5743,7 +5741,7 @@ void SPVM_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_top) {
   env->native_mortal_stack_top = (void*)(intptr_t)original_mortal_stack_top;
 }
 
-SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, int32_t line) {
   
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class_by_name(env->runtime, class_name);
   int32_t module_dir_id = class->module_dir_id;
@@ -5818,10 +5816,10 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception,
   return new_exception;
 }
 
-SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, int32_t line) {
   (void)env;
   
-  SPVM_OBJECT* str = SPVM_API_new_stack_trace_raw(env, exception, class_name, method_name, file, line);
+  SPVM_OBJECT* str = SPVM_API_new_stack_trace_raw(env, exception, class_name, method_name, line);
   
   SPVM_API_push_mortal(env, str);
   
