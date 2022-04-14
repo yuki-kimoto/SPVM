@@ -205,11 +205,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
             // Byte, Short, Int, Long, Float, Double, Bool is already existsregistered in module source symtable
             const char* found_module_source = SPVM_HASH_get(compiler->module_source_symtable, class_name, strlen(class_name));
+            const char* module_dir = NULL;
             if (!found_module_source) {
               // Search module file
               FILE* fh = NULL;
               int32_t module_dirs_length = compiler->module_dirs->length;
-              const char* module_dir = NULL;
               for (int32_t i = 0; i < module_dirs_length; i++) {
                 module_dir = (const char*) SPVM_LIST_get(compiler->module_dirs, i);
                 
@@ -257,10 +257,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               // Module found
               else {
-                // Add module directory symtable
-                SPVM_CONSTANT_STRING_new(compiler, cur_rel_file, strlen(cur_rel_file));
-                SPVM_CONSTANT_STRING_new(compiler, module_dir, strlen(module_dir));
-                SPVM_HASH_set(compiler->module_dir_symtable, cur_rel_file, strlen(cur_rel_file), (void*)module_dir);
+                
+                const char* found_module_dir = SPVM_HASH_get(compiler->module_dir_symtable, cur_rel_file, strlen(cur_rel_file));
+                if (!found_module_dir) {
+                  // Add module directory symtable
+                  SPVM_CONSTANT_STRING_new(compiler, cur_rel_file, strlen(cur_rel_file));
+                  SPVM_CONSTANT_STRING_new(compiler, module_dir, strlen(module_dir));
+                  SPVM_HASH_set(compiler->module_dir_symtable, cur_rel_file, strlen(cur_rel_file), (void*)module_dir);
+                }
                 
                 // Read file content
                 fseek(fh, 0, SEEK_END);
@@ -292,6 +296,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
               // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
               compiler->cur_src = (char*)src;
+              compiler->cur_dir = module_dir;
               compiler->cur_rel_file = cur_rel_file;
               compiler->cur_rel_file_class_name = class_name;
               
