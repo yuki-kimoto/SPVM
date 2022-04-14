@@ -26,13 +26,14 @@ struct spvm_class {
   int8_t is_anon;
   const char* name;
   const char* module_file;
+  const char* module_dir;
+  const char* module_rel_file;
   SPVM_OP* op_class;
   SPVM_OP* op_name;
   SPVM_HASH* class_var_symtable;
   SPVM_HASH* class_alias_symtable;
   SPVM_HASH* field_symtable;
   SPVM_METHOD* method_destructor;
-  const char* module_rel_file;
   SPVM_LIST* allows;
   SPVM_LIST* interfaces;
   SPVM_LIST* interface_classes;
