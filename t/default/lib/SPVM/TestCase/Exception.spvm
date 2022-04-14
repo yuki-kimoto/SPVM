@@ -1,6 +1,10 @@
 class TestCase::Exception {
   use TestCase::Minimal;
   use TestCase;
+  use Comparator::Object;
+  
+  our $CALLBACK_DIE_LINE  : rw int;
+  our $ZERO_DIVIDE_INT_LINE : rw int;
   
   static method exception_get_field_object_undef : int () {
     
@@ -176,6 +180,15 @@ class TestCase::Exception {
   }
   # Exception
   static method exception_zero_divide_int : int () {
-    1 / 0;
+    TestCase::Exception->SET_ZERO_DIVIDE_INT_LINE(__LINE__); 1 / 0;
+  }
+
+  static method exception_callback : int () {
+    
+    my $comparator = (Comparator::Object)method : int ($x1 : object, $x2 : object) {
+      TestCase::Exception->SET_CALLBACK_DIE_LINE(__LINE__); die "Comparator Error"; 
+    };
+    
+    $comparator->(undef, undef);
   }
 }

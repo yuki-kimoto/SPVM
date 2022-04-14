@@ -17,11 +17,14 @@ my $file = basename $0;
 # Exception
 {
   eval { SPVM::TestCase::Exception->exception_zero_divide_int() }; my $line = __LINE__;
-  like($@, qr|\Q0 division|);
-  like($@, qr/\Q$file/);
-  like($@, qr/$line/);
-  like($@, qr/179/);
-  like($@, qr|Exception\.spvm|);
+  my $error = $@;
+  my $die_line = SPVM::TestCase::Exception->ZERO_DIVIDE_INT_LINE;
+  ok($die_line > 0);
+  like($error, qr|\Q0 division|);
+  like($error, qr/\Q$file/);
+  like($error, qr/$line/);
+  like($error, qr/$die_line/);
+  like($error, qr|Exception\.spvm|);
 }
 
 # Exception
@@ -90,5 +93,14 @@ ok($@);
   ok(SPVM::TestCase::Exception->exception_get_field_object_undef());
 }
 
+# Exception - callback
+{
+  eval { SPVM::TestCase::Exception->exception_callback() };
+  my $error = $@;
+  my $callback_die_line = SPVM::TestCase::Exception->CALLBACK_DIE_LINE;
+  ok($callback_die_line > 0);
+  like($error, qr/Comparator Error/);
+  like($error, qr|TestCase/Exception\.spvm line $callback_die_line|);
+}
 
 done_testing;
