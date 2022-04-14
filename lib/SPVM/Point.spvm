@@ -1,0 +1,17 @@
+class Point {
+  has x : rw int;
+  has y : rw int;
+  
+  static method new : Point () {
+    return new Point;
+  }
+  
+  static method new_xy : Point ($x : int, $y : int) {
+    my $point = Point->new;
+    
+    $point->set_x($x);
+    $point->set_y($y);
+    
+    return $point;
+  }
+}

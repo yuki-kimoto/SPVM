@@ -28,6 +28,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   my $weights_mat = SPVM::TestCase::ModuleContainsMultiClass->mat_new_zero($outputs_length, $inputs_length);
 }
 
+# Point
+{
+  ok(SPVM::TestCase::Examples->test_point);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

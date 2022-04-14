@@ -1,5 +1,9 @@
 Revision history for SPVM
 0.9511_01  2021-04-14
+        [CHANGE]
+        * Add Point module.
+        * Improve method call error message.
+        
         [NON BACKWORD COMPATIBLE CHANGES]
         * new_stack_trace_raw and new_stack_trace don't need file argument. File name got from class information.
           new_stack_trace_raw and new_stack_trace receive method id.
@@ -11,7 +15,7 @@ Revision history for SPVM
         [After]
         void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, int32_t method_id, int32_t line);
         void* (*new_stack_trace)(SPVM_ENV* env, void* exception, int32_t method_id, int32_t line);
-        * Rename SPVM::Comparator::Object to SPVM::Comparator
+        * Rename SPVM::Comparator::Object module to SPVM::Comparator module.
 0.9510_01  2021-04-14
         [CHANGE]
         * Support cast from class muldim array to interface muldim array
