@@ -498,8 +498,11 @@ lib/SPVM/Document/ExchangeAPI.pm
 lib/SPVM/Document/LanguageSpecification.pm
 lib/SPVM/Document/Modules.pm
 lib/SPVM/Document/NativeAPI.pm
+lib/SPVM/Document/NativeAPI/Allocator.pm
 lib/SPVM/Document/NativeAPI/Compiler.pm
+lib/SPVM/Document/NativeAPI/Precompile.pm
 lib/SPVM/Document/NativeAPI/Runtime.pm
+lib/SPVM/Document/NativeAPI/StringBuffer.pm
 lib/SPVM/Document/Tutorial.pm
 lib/SPVM/Document/Tutorial/Complex.pm
 lib/SPVM/Double.pm
