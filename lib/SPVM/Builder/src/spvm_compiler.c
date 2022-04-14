@@ -433,7 +433,18 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
       runtime_class->module_file_id = class_module_file_string->id;
     }
     else {
-      runtime_class->name_id = -1;
+      runtime_class->module_file_id = -1;
+    }
+
+    SPVM_CONSTANT_STRING* class_module_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->module_rel_file, strlen(class->module_rel_file));
+    runtime_class->module_rel_file_id = class_module_rel_file_string->id;
+
+    if (class->module_dir) {
+      SPVM_CONSTANT_STRING* class_module_dir_string = SPVM_HASH_get(compiler->constant_string_symtable, class->module_dir, strlen(class->module_dir));
+      runtime_class->module_dir_id = class_module_dir_string->id;
+    }
+    else {
+      runtime_class->module_dir_id = -1;
     }
     runtime_class->flag = class->flag;
     runtime_class->object_fields_length = class->object_fields_length;
