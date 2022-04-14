@@ -2,18 +2,11 @@ Revision history for SPVM
 0.9511_01  2021-04-14
         [NON BACKWORD COMPATIBLE CHANGES]
         * new_stack_trace_raw and new_stack_trace don't need file argument. File name got from class information.
+          new_stack_trace_raw and new_stack_trace receive method id.
+        
         [Before]
         void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, const char* file, int32_t line);
         void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, const char* file, int32_t line);
-        
-        [After]
-        void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, int32_t line);
-        void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, int32_t line);
-
-        * new_stack_trace_raw and new_stack_trace receive method id.
-        [Before]
-        void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, int32_t line);
-        void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* class_name, const char* method_name, int32_t line);
         
         [After]
         void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, int32_t method_id, int32_t line);
