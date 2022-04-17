@@ -16,7 +16,7 @@ Revision history for SPVM
         void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, int32_t method_id, int32_t line);
         void* (*new_stack_trace)(SPVM_ENV* env, void* exception, int32_t method_id, int32_t line);
         * Rename SPVM::Comparator::Object module to SPVM::Comparator module.
-0.9510_01  2021-04-14
+0.9511  2021-04-18
         [CHANGE]
         * Support cast from class muldim array to interface muldim array
         * Support cast from class muldim array to callback muldim array
