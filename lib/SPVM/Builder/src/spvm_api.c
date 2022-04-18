@@ -4945,7 +4945,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t interface_basic_type_id = opcode->operand3;
         SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, interface_basic_type_id);
         SPVM_RUNTIME_CLASS* interface_class = SPVM_API_RUNTIME_get_class(env->runtime, interface_basic_type->class_id);
-        SPVM_RUNTIME_METHOD* interface_method = SPVM_API_get_runtime_method_from_runtime_class(env, interface_class->id, implement_method_name);
+        SPVM_RUNTIME_METHOD* interface_method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, interface_class->id, implement_method_name);
         const char* implement_method_signature = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, implement_method->signature_id, NULL);
         
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -6943,6 +6943,8 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_runtime_method_from_index(SPVM_ENV* env, int32
 int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature) {
   (void)env;
   
+  SPVM_RUNTIME* runtime = env->runtime;
+  
   // Method ID
   int32_t method_id = -1;
   
@@ -6955,7 +6957,7 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
     if (class) {
 
       // Method
-      SPVM_RUNTIME_METHOD* method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_name);
+      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_name);
       
       if (method) {
         // Class method
@@ -6976,6 +6978,8 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
 int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature) {
   (void)env;
   
+  SPVM_RUNTIME* runtime = env->runtime;
+  
   // Method ID
   int32_t method_id = -1;
   
@@ -6988,7 +6992,7 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_
     if (class) {
 
       // Method
-      SPVM_RUNTIME_METHOD* method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_name);
+      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_name);
       if (method) {
         // Instance method
         if (!method->is_class_method) {
@@ -7032,7 +7036,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
     }
     // Normal instance method
     else {
-      method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, method_name);
+      method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_name);
     }
     if (method) {
       // Instance method
@@ -7505,7 +7509,7 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env) {
     SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(env->runtime, class_id);
     
     if (class->has_init_block) {
-      SPVM_RUNTIME_METHOD* init_method = SPVM_API_get_runtime_method_from_runtime_class(env, class->id, "INIT");
+      SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, "INIT");
       assert(init_method);
       env->call_spvm_method(env, init_method->id, stack);
     }
