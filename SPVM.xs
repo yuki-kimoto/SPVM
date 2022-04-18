@@ -3729,8 +3729,23 @@ get_module_file(...)
   SV* sv_module_file;
 
   if (class_id >= 0) {
-    module_file = env->api->runtime->get_name(runtime, env->api->runtime->get_class_module_file_id(runtime, class_id));
-    sv_module_file = sv_2mortal(newSVpv(module_file, 0));
+    int32_t module_rel_file_id = env->api->runtime->get_class_module_rel_file_id(runtime, class_id);
+    int32_t module_dir_id = env->api->runtime->get_class_module_dir_id(runtime, class_id);
+    const char* module_dir = NULL;
+    const char* module_dir_sep;
+    if (module_dir_id >= 0) {
+      module_dir_sep = "/";
+      module_dir = env->api->runtime->get_constant_string_value(runtime, module_dir_id, NULL);
+    }
+    else {
+      module_dir_sep = "";
+      module_dir = "";
+    }
+    const char* module_rel_file = env->api->runtime->get_constant_string_value(runtime, module_rel_file_id, NULL);
+
+    sv_module_file = sv_2mortal(newSVpv(module_dir, 0));
+    sv_catpv(sv_module_file, module_dir_sep);
+    sv_catpv(sv_module_file, module_rel_file);
   }
   else {
     sv_module_file = &PL_sv_undef;
