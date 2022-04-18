@@ -6824,6 +6824,8 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* class_name, const char*
 int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* signature) {
   (void)env;
   
+  SPVM_RUNTIME* runtime = env->runtime;
+  
   // Basic type
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(env->runtime, class_name);
   
@@ -6840,7 +6842,7 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const c
   }
 
   // Class variable name
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_get_runtime_class_var_from_runtime_class(env, class->id, class_var_name);
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_class_id_and_class_var_name(runtime, class->id, class_var_name);
   if (!class_var) {
     return -1;
   }
