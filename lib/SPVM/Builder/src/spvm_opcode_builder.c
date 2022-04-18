@@ -58,7 +58,7 @@ void SPVM_OPCODE_BUILDER_push_if_die(
     memset(&opcode, 0, sizeof(SPVM_OPCODE));
     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH);
     
-    opcode.operand1 = method->rel_id;
+    opcode.operand1 = method->id;
     opcode.operand2 = line;
     
     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -71,7 +71,7 @@ void SPVM_OPCODE_BUILDER_push_if_die(
     SPVM_OPCODE opcode;
     memset(&opcode, 0, sizeof(SPVM_OPCODE));
     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN);
-    opcode.operand1 = method->rel_id;
+    opcode.operand1 = method->id;
     opcode.operand2 = line;
     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 

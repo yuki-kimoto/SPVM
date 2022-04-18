@@ -4353,8 +4353,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         if (exception_flag) {
           exception_flag = 0;
           
-          int32_t method_index = opcode->operand1;
-          int32_t method_id = class->methods_base_id + method_index;
+          int32_t method_id = opcode->operand1;
           SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
           int32_t line = opcode->operand2;
           
@@ -4372,8 +4371,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
         
         if (exception_flag) {
-          int32_t method_index = opcode->operand1;
-          int32_t method_id = class->methods_base_id + method_index;
+          int32_t method_id = opcode->operand1;
           SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(env->runtime, method_id);
           int32_t line = opcode->operand2;
           
