@@ -6920,6 +6920,7 @@ int32_t SPVM_API_get_method_id_cache(SPVM_ENV* env, const char* method_cache_nam
             const char* method_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->signature_id, NULL);
             if (strncmp(signature, method_signature, signature_length) == 0 && signature_length == strlen(method_signature)) {
               method_id = method->id;
+              SPVM_HASH_set(runtime->method_cache_symtable, method_cache_name, method_cache_name_length, method);
             }
             else {
               method_id = -1;
