@@ -1016,14 +1016,27 @@ sub link {
     my $link_info_object_files = [map { $_->to_string } @$link_info_object_file_infos];
     my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
     
-    # Create the executable file
-    my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
-    $cbuilder->link_executable(
-      objects => $link_info_object_files,
-      module_name => $link_info_class_name,
-      exe_file => $link_info_output_file,
-      extra_linker_flags => $link_info_ldflags_str,
-    );
+    my $dynamic_lib = $self->dynamic_lib;
+    my $static_lib = $self->static_lib;
+    
+    # Create a dynamic library
+    if ($dynamic_lib) {
+      
+    }
+    # Create a static library
+    elsif ($static_lib) {
+      
+    }
+    # Create an executable file
+    else {
+      my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
+      $cbuilder->link_executable(
+        objects => $link_info_object_files,
+        module_name => $link_info_class_name,
+        exe_file => $link_info_output_file,
+        extra_linker_flags => $link_info_ldflags_str,
+      );
+    }
   }
   
   return $output_file;
