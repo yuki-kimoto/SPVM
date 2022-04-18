@@ -375,6 +375,7 @@ struct spvm_env_runtime {
   void* object_type_dimension_offset;
   void* object_flag_offset;
   void* object_length_offset;
+  int32_t (*get_method_id_cache)(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
 };
 
 struct spvm_env_compiler {

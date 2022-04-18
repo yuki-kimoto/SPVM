@@ -287,6 +287,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_can_assign_array_element,
     env_api,
     SPVM_API_free_env_prepared,
+    SPVM_API_get_method_id_cache,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
