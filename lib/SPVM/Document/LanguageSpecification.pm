@@ -370,7 +370,7 @@ Literals are representations of values in source codes. These are L</"Integer Li
 
 =head3 Decimal Representation of Integer Literal
 
-Decimal Representation of Integer Literal is represented by one or more consecutive characters from "0" to "9".
+Decimal Representation of Integer Literal is represented by one or more consecutive characters from C<0> to C<9>.
 
 Can be prefixed with "+" or "-".
 
@@ -402,9 +402,9 @@ B<Examples of Integer Literal:>
 
 Hexadecimal Representation of Integer Literal is represented by the following rule.
 
-Hexadecimal Representation of Integer Literal starts with "0x" or "0X".
+Hexadecimal Representation of Integer Literal starts with C<0x> or C<0X>.
 
-It is followed by one or more consecutive characters "0" to "9", "a" to "f", or "A" to "F"..
+It is followed by one or more consecutive characters C<0> to C<9>, C<a> to C<f>, or C<A> to C<F>.
 
 Other rules are same as Decimal Representation of Integer Literal
 
@@ -419,9 +419,9 @@ B<Examples of Hexadecimal Representation of Integer Literal:>
 
 Octal Representation of Integer Literal is represented by the following rule.
 
-Octal Representation of Integer Literal starts with "0".
+Octal Representation of Integer Literal starts with C<0>.
 
-It is followed by one or more consecutive characters "0" to "7".
+It is followed by one or more consecutive characters C<0> to C<7>.
 
 Other rules are same as Decimal Representation of Integer Literal
 
@@ -436,9 +436,9 @@ B<Examples of Octal Representation of Integer Literal:>
 
 Binary Representation of Integer Literal is represented by the following rule.
 
-Binary Representation of Integer Literal starts with "0b" or "0B".
+Binary Representation of Integer Literal starts with C<0b> or C<0B>.
 
-It is followed by one or more consecutive characters "0" or "1".
+It is followed by one or more consecutive characters C<0> or C<1>.
 
 B<Examples of Binary Representation of Integer Literal:>
 
@@ -458,11 +458,11 @@ Floating Point Literal is B<Decimal Floating Point Literal> or B<Hexadecimal Flo
 
 B<Sign Part> is represented by "+" or "-". Sign Part is optional.
 
-Numeric Part of Decimal Floating Point Literal starts one or more "0" to "9".
+Numeric Part of Decimal Floating Point Literal starts one or more C<0> to C<9>.
 
-Numeric Part of Hexadecimal Floating Point Literal starts "0x" or "0X", and is followed by "0" to "9", "a" to "f", or "A" to "F".
+Numeric Part of Hexadecimal Floating Point Literal starts C<0x> or C<0X>, and is followed by C<0> to C<9>, C<a> to C<f>, or C<A> to C<F>.
 
-For that the Literal is Floating Point Literal, Numeric Part contains "." or, The Literal have Exponent Part, or have Suffix Part.
+For that the Literal is Floating Point Literal, Numeric Part contains C<.> or, The Literal have Exponent Part, or have Suffix Part.
 
 Numeric part can contain "_". This is just a Numeric Separator and is ignored.
 
@@ -473,13 +473,13 @@ B<Exponent Part> is consist of B<Exponential Notation> and B<Signed Decimal Inte
   # Exponent Part
   [Exponential Notation][Signed Decimal Integer]
 
-Exponential Notation is "e" or "E" for Decimal Floating Point Literal, and "p" or "P" for Hexadecimal Floating Point Literal.
+Exponential Notation is C<e> or C<E> for Decimal Floating Point Literal, and C<p> or C<P> for Hexadecimal Floating Point Literal.
 
 The meaning of Exponent Part is decimal shift for Decimal Floating Point Literal, or binary shift for Hexadecimal Floating Point Literal.
 
-If Suffix Part is "f" or "F", the L</"Types"> of Floating Point Literal is L</"float Type">.
+If Suffix Part is C<f> or C<F>, the L</"Types"> of Floating Point Literal is L</"float Type">.
 
-If Suffix Part is "d" or "D", the L</"Types"> of Floating Point Literal is L</"double Type">.
+If Suffix Part is C<d> or C<D>, the L</"Types"> of Floating Point Literal is L</"double Type">.
 
 If Suffix Part is omitted, the L</"Types"> of Floating Point Literal is L</"double Type">.
 
@@ -2661,9 +2661,11 @@ Signatures are used by L<native APIs|SPVM::Document::NativeAPI>.
 
 =head1 Enumeration
 
+Explains enumeration.
+
 =head2 Enumeration Definition
 
-Enumeration Definition is a syntax to define multiple L</"Constant Methods"> easily.
+The C<enum> keyword defines an enumeration. An enumeration defines constant values.
 
   # Enumeration Definition
   enum {
@@ -2672,19 +2674,13 @@ Enumeration Definition is a syntax to define multiple L</"Constant Methods"> eas
     FLAG3
   }
 
-Enumeration must be defined directly under L</"Class Definition">.
+An enumeration must be defined directly under L</"Class Definition">.
 
-  class Foo {
-    enum {
-      FLAG1,
-      FLAG2,
-      FLAG3
-    }
-  }
+The first value of an enumeration starts with C<0>. The next value is incremented by C<1>, and this is continued in the same way. In this example, C<FLAG1> is C<0>, C<FALG2> is C<1>, and C<FLAG3> is C<2>.
 
-The first value starts with "0". The value is incremented by "1". In this example, "FLAG1" is "0", "FALG2" is "1", and "FLAG3" is "2".
+The type of a value of an enumeration is the L<int type|/"int Type">.
 
-"," can be added after the last element of Enumeration.
+C<,> after the last value can be allowed.
 
   enum {
     FLAG1,
@@ -2692,13 +2688,13 @@ The first value starts with "0". The value is incremented by "1". In this exampl
     FLAG3,
   }
 
-Enumeration is an alias for L</"Constant Method"> that the return type is L</"int Type">. It is equivalent to the following Method Definition:
+A value of an enumeration is implemented as a L<constant method|/"Constant Method">.
 
   static method FLAG1 : int () { return 0; }
   static method FLAG2 : int () { return 1; }
   static method FLAG3 : int () { return 2; }
 
-The value of L</"int Type"> can be set in the enum element.
+The value can be set explicitly.
 
   enum {
     FLAG1,
@@ -2706,13 +2702,23 @@ The value of L</"int Type"> can be set in the enum element.
     FLAG3,
   }
 
-In the above case, "FLAG1" is "0", "FALG2" is "4", and "FLAG3" is "5".
+In the above example, C<FLAG1> is C<0>, C<FALG2> is C<4>, and C<FLAG3> is C<5>.
 
-If Enum Definition is invalid, a compilation error will occur.
+If an enumeration definition is invalid, a compilation error will occur.
 
-=head2 Enumeration Descriptor
+B<Examples:>
 
-Descriptor can be specified for Enumeration.
+  class Foo {
+    enum {
+      FLAG1,
+      FLAG2,
+      FLAG3,
+    }
+  }
+
+=head2 Enumeration Descriptors
+
+Descriptors can be specified to an enumeration definition.
 
   private enum {
     FLAG1,
@@ -2720,17 +2726,17 @@ Descriptor can be specified for Enumeration.
     FLAG3,
   }
 
-List of Enumeration Descriptor
+B<The list of enumeration descriptors:>
 
 =begin html
 
 <table>
   <tr>
     <th>
-      Descriptor
+      Descriptors
    </th>
     <th>
-      Description
+      Descriptions
    </th>
   </tr>
   <tr>
@@ -2738,7 +2744,7 @@ List of Enumeration Descriptor
       <b>public</b>
     </td>
     <td>
-      This Enumeration is public. This Enumeration can be accessed from other Class. This is default setting.
+      This enumeration is public. Each value of this enumeration can be accessed from other class. This is default setting.
     </td>
   </tr>
   <tr>
@@ -2746,40 +2752,40 @@ List of Enumeration Descriptor
       <b>private</b>
     </td>
     <td>
-      This Enumeration is private. This Enumeration can not be accessed from other Class.
+      This enumeration is private. Each value of this enumeration can not be accessed from other class.
     </td>
   </tr>
 </table>
 
 =end html
 
-If both "public" and "private" Descriptors are specified, a compilation error will occur.
+If both "public" and "private" descriptors are specified, a compilation error will occur.
 
 =head2 Enumeration Call
 
-Enumeration is an alias for L</"Constant Method">, so it can be called in exactly the same way as Method call.
+The value of enumeration called as a L<class method call|/"Class Method Call">.
 
   my $flag1 = Foo->FLAG1;
   my $flag2 = Foo->FLAG2;
   my $flag3 = Foo->FLAG3;
 
-In special case, Enumeration Call can be used in L</"case Statement"> of L</"switch Statement">.
+In special cases, a value of an enumeration can be used as the operand of a L<case statement|/"case Statement">.
 
   switch ($num) {
     case Foo->FLAG1: {
-  
+      
       break;
     }
     case Foo->FLAG2: {
-  
+      
       break:
     }
     case Foo->FLAG3: {
-  
+      
       break:
     }
     default: {
-  
+      
     }
   }
 
@@ -5243,7 +5249,7 @@ The C<switch> statement is a L<statement|/"Statements"> for conditional branchin
 
 As the condition Expression, L</"Expressions"> can be specified. L</"Bool Type Conversion"> is executed for the condition Expression.
 
-The constants specified in case Statement are L</"byte Type"> or L</"int Type"> constants. must be. For a constant of L</"byte Type">, type conversion to L</"int Type"> at compile time. Will be done. The value of enumType and Constant Method of L</"int Type"> are constants of L</"int Type">. As it is expanded at the time of syntax analysis, it can be used.
+The constants specified in L</"case Statement"> are L</"byte Type"> or L</"int Type"> constants. must be. For a constant of L</"byte Type">, type conversion to L</"int Type"> at compile time. Will be done. The value of enumType and Constant Method of L</"int Type"> are constants of L</"int Type">. As it is expanded at the time of syntax analysis, it can be used.
 
 The constants specified in the case statement must not overlap. If there are duplicates, a compilation error will occur
 
