@@ -2631,32 +2631,25 @@ Note that SPVM does not perform constant convolution optimization, so if a const
 
 =head2 Signature
 
-Signature is a string that follow the following rule sequence of Method Retrun Value and arguments arranged according to the following rules. Arguments do not need to exist. There cannot be spaces between them.
+A signature is a string that represents the return type and the types of the arguments of a L<method|/"Method">.
 
-1. RETURN_VALUE_TYPE
+  RETURN_TYPE(ARG_TYPE1,ARG_TYPE2,ARG_TYPEn)
 
-2. (
+It the method is an L<instance method|/"Instance Method">, the type representation of the first argument is C<self>.
 
-3. ARGUMENT_TYPE1,ARGUMENT_TYPE2,ARGUMENT_TYPE3
-
-4. )
-
-It the method is a instance method, the part of signature of the first argument is "self".
-
-B<Examples of Signature:>
+B<Examples:>
 
   # Method Definition
   static method foo : int ($num1 : double, $num2 : long[])
   
-  # Signature
+  # The signature
   int(double,long[])
   
   # Method Definition
   static method foo : void ()
   
-  # Signature
+  # The signature
   void()
-  
   
   # Method Definition
   method foo : int ($num1 : double, $num2 : long[])
@@ -2664,7 +2657,7 @@ B<Examples of Signature:>
   # Signature
   int(self,double,long[])
 
-Signature is not used in SPVM programs. Signature is used when calling the SPVM Method from <a href="/native-api.html">SPVM Native API</a>.
+Signatures are used by L<native APIs|SPVM::Document::NativeAPI>.
 
 =head2 Method Callstack
 
