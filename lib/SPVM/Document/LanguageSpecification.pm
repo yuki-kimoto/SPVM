@@ -2659,16 +2659,6 @@ B<Examples:>
 
 Signatures are used by L<native APIs|SPVM::Document::NativeAPI>.
 
-=head2 Method Callstack
-
-Method Callstack is memory area allocated in each method call.
-
-Method Callstack save the folloing information.
-
-1. Memroy area for L</"Local Variable">
-
-2. The places of Mortal Local Variable
-
 =head1 Enumeration
 
 =head2 Enumeration Definition
@@ -3292,7 +3282,7 @@ To use Multi Numeric Types, load a Module using L</"use Statement">.
   use Point_3i;
   use Complex_2d;
 
-Next is L</"Local Variable Declaration">. Local Variable Declaration create continuous area for fields of Multi Numeric Types Value on L</"Method Callstack">. All fields of of Multi Numeric Types Value are initialized by L</"Type Initial Value">.
+Next is L</"Local Variable Declaration">. Local Variable Declaration create continuous area for fields of Multi Numeric Types Value. All fields of of Multi Numeric Types Value are initialized by L</"Type Initial Value">.
 
   my $point : Point_3i;
   my $z : Complex_2d;
