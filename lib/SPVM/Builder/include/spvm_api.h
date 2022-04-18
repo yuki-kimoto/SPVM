@@ -300,6 +300,6 @@ void SPVM_API_free_env_prepared(SPVM_ENV* env);
 
 int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPVM_OBJECT* element);
 
-int32_t SPVM_API_get_method_cache(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
+int32_t SPVM_API_get_method_id_cache(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
 
 #endif
