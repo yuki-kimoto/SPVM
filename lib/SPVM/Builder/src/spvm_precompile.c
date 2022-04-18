@@ -42,8 +42,6 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
   // Class
   int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, class_name);
   int32_t class_is_anon = SPVM_API_RUNTIME_get_class_is_anon(runtime, class_id);
-  int32_t class_module_file_id = SPVM_API_RUNTIME_get_class_module_file_id(runtime, class_id);
-  const char* class_module_file = SPVM_API_RUNTIME_get_name(runtime, class_module_file_id);
   int32_t class_methods_base_id = SPVM_API_RUNTIME_get_class_methods_base_id(runtime, class_id);
   int32_t class_methods_length = SPVM_API_RUNTIME_get_class_methods_length(runtime, class_id);
   
@@ -187,8 +185,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   
   // Class
   int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, class_name);
-  int32_t class_module_file_id = SPVM_API_RUNTIME_get_class_module_file_id(runtime, class_id);
-  const char* class_module_file = SPVM_API_RUNTIME_get_name(runtime, class_module_file_id);
   int32_t class_is_anon = SPVM_API_RUNTIME_get_class_is_anon(runtime, class_id);
   
   // Method
@@ -3402,14 +3398,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        int32_t module_rel_file_id = SPVM_API_RUNTIME_get_class_module_rel_file_id(precompile->runtime, class_id);
-        int32_t module_dir_id = SPVM_API_RUNTIME_get_class_module_dir_id(precompile->runtime, class_id);
-        const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(precompile->runtime, module_rel_file_id, NULL);
+        int32_t module_rel_file_id = SPVM_API_RUNTIME_get_class_module_rel_file_id(runtime, class_id);
+        int32_t module_dir_id = SPVM_API_RUNTIME_get_class_module_dir_id(runtime, class_id);
+        const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, module_rel_file_id, NULL);
         const char* module_dir = NULL;
         const char* module_dir_sep;
         if (module_dir_id >= 0) {
           module_dir_sep = "/";
-          module_dir = SPVM_API_RUNTIME_get_constant_string_value(precompile->runtime, module_dir_id, NULL);
+          module_dir = SPVM_API_RUNTIME_get_constant_string_value(runtime, module_dir_id, NULL);
         }
         else {
           module_dir_sep = "";
