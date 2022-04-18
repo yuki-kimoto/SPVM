@@ -56,7 +56,6 @@ int32_t SPVM_API_RUNTIME_get_class_name_id(SPVM_RUNTIME* runtime, int32_t class_
 int32_t SPVM_API_RUNTIME_get_class_anon_methods_base_id(SPVM_RUNTIME* runtime, int32_t class_id);
 int32_t SPVM_API_RUNTIME_get_class_anon_methods_length(SPVM_RUNTIME* runtime, int32_t class_id);
 int32_t SPVM_API_RUNTIME_get_class_is_anon(SPVM_RUNTIME* runtime, int32_t class_id);
-int32_t SPVM_API_RUNTIME_get_class_module_file_id(SPVM_RUNTIME* runtime, int32_t class_id);
 int32_t SPVM_API_RUNTIME_get_class_module_dir_id(SPVM_RUNTIME* runtime, int32_t class_id);
 int32_t SPVM_API_RUNTIME_get_class_module_rel_file_id(SPVM_RUNTIME* runtime, int32_t class_id);
 int32_t SPVM_API_RUNTIME_get_class_fields_base_id(SPVM_RUNTIME* runtime, int32_t class_id);

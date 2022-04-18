@@ -317,7 +317,8 @@ struct spvm_env_runtime {
   int32_t (*get_type_is_ref)(void* runtime, int32_t type_id);
   int32_t (*get_class_id_by_name)(void* runtime, const char* class_name);
   int32_t (*get_class_name_id)(void* runtime, int32_t class_id);
-  int32_t (*get_class_module_file_id)(void* runtime, int32_t class_id);
+  int32_t (*get_class_module_rel_file_id)(void* runtime, int32_t class_id);
+  int32_t (*get_class_module_dir_id)(void* runtime, int32_t class_id);
   int32_t (*get_class_is_anon)(void* runtime, int32_t class_id);
   int32_t (*get_class_fields_base_id)(void* runtime, int32_t class_id);
   int32_t (*get_class_fields_length)(void* runtime, int32_t class_id);
