@@ -2,6 +2,7 @@ Revision history for SPVM
 0.9511_02  2021-04-18
         [CHANGE]
         * Add --dynamic-lib option to spvmcc. spvmcc can create a dynamic library.
+        * Add --static-lib option to spvmcc. spvmcc can create a static library.
 0.9511_01  2021-04-14
         [CHANGE]
         * Add Point module.

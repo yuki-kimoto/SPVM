@@ -1018,6 +1018,9 @@ sub link {
     
     my $dynamic_lib = $self->dynamic_lib;
     my $static_lib = $self->static_lib;
+    
+    # CBuilder
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
 
     # Create a dynamic library
     if ($dynamic_lib) {
@@ -1028,7 +1031,6 @@ sub link {
         $lib_file .= ".$Config{dlext}";
       }
       
-      my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
       $cbuilder->link(
         objects => $link_info_object_files,
         module_name => $link_info_class_name,
@@ -1038,11 +1040,19 @@ sub link {
     }
     # Create a static library
     elsif ($static_lib) {
-      
+      my $link_info_output_dir = dirname $link_info_output_file;
+      my $link_info_output_file_base = basename $link_info_output_file;
+      my $lib_file = $link_info_output_file;
+      unless ($link_info_output_file_base =~ /\./) {
+        $lib_file .= ".a";
+      }
+    
+      my @object_files = map { "$_" } @$link_info_object_files;
+      my @ar_cmd = ('ar', 'rc', $lib_file, @object_files);
+      $cbuilder->do_system(@ar_cmd);
     }
     # Create an executable file
     else {
-      my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
       $cbuilder->link_executable(
         objects => $link_info_object_files,
         module_name => $link_info_class_name,
