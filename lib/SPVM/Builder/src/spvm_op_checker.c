@@ -34,6 +34,17 @@
 #include "spvm_interface.h"
 #include "spvm_constant_string.h"
 
+int SPVM_OP_CHECKER_method_name_cmp(const void* method1_ptr, const void* method2_ptr) {
+  
+  SPVM_METHOD* method1 = *(SPVM_METHOD**)method1_ptr;
+  SPVM_METHOD* method2 = *(SPVM_METHOD**)method2_ptr;
+  
+  const char* method1_name = method1->name;
+  const char* method2_name = method2->name;
+  
+  return strcmp(method1_name, method2_name);
+}
+
 void SPVM_OP_CHECKER_free_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_VAR_DECL* var_decl) {
   (void)compiler;
   
@@ -4905,9 +4916,16 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
 
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    // Check methods
+    
+    SPVM_LIST* methods = class->methods;
+    
+    // Sort methods by name
+    qsort(methods->values, methods->length, sizeof(SPVM_METHOD*), &SPVM_OP_CHECKER_method_name_cmp);
+    
+    // Create method ids
     for (int32_t i = 0; i < class->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+      
       // Set method precompile flag if class have precompile descriptor
       if (class->has_precompile_descriptor && method->can_precompile) {
         method->flag |= SPVM_METHOD_C_FLAG_PRECOMPILE;
