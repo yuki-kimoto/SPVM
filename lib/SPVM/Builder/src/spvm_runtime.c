@@ -49,6 +49,11 @@ void SPVM_RUNTIME_prepare(SPVM_RUNTIME* runtime) {
     const char* runtime_class_name = (const char*)&runtime->constant_strings_buffer[class_name_string->string_buffer_id];
     SPVM_HASH_set(runtime->class_symtable, runtime_class_name, strlen(runtime_class_name), runtime_class);
   }
+  
+  // Cache symtables
+  runtime->method_cache_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
+  runtime->field_cache_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
+  runtime->class_var_cache_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
 }
 
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
