@@ -17,8 +17,8 @@ SPVM::Builder::Util::getopt
   'O|optimize=s' => \my $optimize,
   'f|force' => \my $force,
   'c|config=s' => \my $config_file,
-  'dynamic-lib' => my $dynamic_lib,
-  'static-lib' => my $static_lib,
+  'dynamic-lib' => \my $dynamic_lib,
+  'static-lib' => \my $static_lib,
 ;
 
 if ($help) {
@@ -35,7 +35,7 @@ else {
   }
   
   push @module_dirs, map { "$_/SPVM" } @INC;
-  
+
   my $build_exe = SPVM::Builder::Exe->new(
     build_dir => $build_dir,
     module_dirs => \@module_dirs,
