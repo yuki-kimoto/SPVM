@@ -4413,8 +4413,19 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        const char* file = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, class->module_file_id, NULL);
-        
+        const char* module_dir = NULL;
+        const char* module_dir_sep;
+        int32_t module_dir_id = class->module_dir_id;
+        if (module_dir_id >= 0) {
+          module_dir_sep = "/";
+          module_dir = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, class->module_dir_id, NULL);
+        }
+        else {
+          module_dir_sep = "";
+          module_dir = "";
+        }
+        const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(env->runtime, class->module_rel_file_id, NULL);
+
         void* object = object_vars[opcode->operand0];
         
         int32_t empty_or_undef = 0;
@@ -4427,7 +4438,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             // Add line and file information if last character is not '\n'
             int32_t add_line_file;
             if (bytes[string_length - 1] != '\n') {
-              fprintf(stderr, " at %s line %d\n", file, line);
+              fprintf(stderr, " at %s%s%s line %d\n", module_dir, module_dir_sep, module_rel_file, line);
             }
           }
           else {
@@ -4439,7 +4450,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         
         if (empty_or_undef) {
-          fprintf(stderr, "Warning: something's wrong at %s line %d\n", file, line);
+          fprintf(stderr, "Warning: something's wrong at %s%s%s line %d\n", module_dir, module_dir_sep, module_rel_file, line);
         }
         
         fflush(stderr);

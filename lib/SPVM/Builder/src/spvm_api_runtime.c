@@ -504,6 +504,28 @@ int32_t SPVM_API_RUNTIME_get_class_module_file_id(SPVM_RUNTIME* runtime, int32_t
   return class_module_file_id;
 }
 
+int32_t SPVM_API_RUNTIME_get_class_module_rel_file_id(SPVM_RUNTIME* runtime, int32_t class_id) {
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  
+  assert(class);
+  
+  int32_t class_module_rel_file_id = class->module_rel_file_id;
+  
+  return class_module_rel_file_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_class_module_dir_id(SPVM_RUNTIME* runtime, int32_t class_id) {
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  
+  assert(class);
+  
+  int32_t class_module_dir_id = class->module_dir_id;
+  
+  return class_module_dir_id;
+}
+
 int32_t SPVM_API_RUNTIME_get_class_fields_base_id(SPVM_RUNTIME* runtime, int32_t class_id) {
   
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);

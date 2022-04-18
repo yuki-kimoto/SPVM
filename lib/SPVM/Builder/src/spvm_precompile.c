@@ -3402,7 +3402,19 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        const char* file = class_module_file;
+        int32_t module_rel_file_id = SPVM_API_RUNTIME_get_class_module_rel_file_id(precompile->runtime, class_id);
+        int32_t module_dir_id = SPVM_API_RUNTIME_get_class_module_dir_id(precompile->runtime, class_id);
+        const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(precompile->runtime, module_rel_file_id, NULL);
+        const char* module_dir = NULL;
+        const char* module_dir_sep;
+        if (module_dir_id >= 0) {
+          module_dir_sep = "/";
+          module_dir = SPVM_API_RUNTIME_get_constant_string_value(precompile->runtime, module_dir_id, NULL);
+        }
+        else {
+          module_dir_sep = "";
+          module_dir = "";
+        }
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* object = ");
@@ -3416,8 +3428,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "        size_t ret = fwrite(bytes, 1, string_length, stderr);\n"
                                               "        int32_t add_line_file;\n"
                                               "        if (bytes[string_length - 1] != '\\n') {\n"
-                                              "          fprintf(stderr, \" at %s line %d\\n\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, file);
+                                              "          fprintf(stderr, \" at %s%s%s line %d\\n\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, module_dir);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, module_dir_sep);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, module_rel_file);
         SPVM_STRING_BUFFER_add(string_buffer, "\", ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
@@ -3431,8 +3447,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "      empty_or_undef = 1;\n"
                                               "    }\n"
                                               "    if (empty_or_undef) {\n"
-                                              "        fprintf(stderr, \"Warning: something's wrong at %s line %d\\n\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, file);
+                                              "        fprintf(stderr, \"Warning: something's wrong at %s%s%s line %d\\n\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, module_dir);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, module_dir_sep);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, module_rel_file);
         SPVM_STRING_BUFFER_add(string_buffer, "\", ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
