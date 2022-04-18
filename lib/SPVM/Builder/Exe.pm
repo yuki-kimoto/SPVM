@@ -1018,10 +1018,23 @@ sub link {
     
     my $dynamic_lib = $self->dynamic_lib;
     my $static_lib = $self->static_lib;
-    
+
     # Create a dynamic library
     if ($dynamic_lib) {
+      my $link_info_output_dir = dirname $link_info_output_file;
+      my $link_info_output_file_base = basename $link_info_output_file;
+      my $lib_file = $link_info_output_file;
+      unless ($link_info_output_file_base =~ /\./) {
+        $lib_file .= ".$Config{dlext}";
+      }
       
+      my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
+      $cbuilder->link(
+        objects => $link_info_object_files,
+        module_name => $link_info_class_name,
+        lib_file => $lib_file,
+        extra_linker_flags => $link_info_ldflags_str,
+      );
     }
     # Create a static library
     elsif ($static_lib) {
