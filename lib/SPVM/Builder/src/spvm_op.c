@@ -2224,8 +2224,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           assert(class->is_anon);
         }
 
-        method->rel_id = i;
-        
         SPVM_OP* op_name_method = method->op_name;
         const char* method_name = op_name_method->uv.name;
 

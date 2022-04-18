@@ -37,7 +37,6 @@ struct spvm_method {
   void* native_address;
   int32_t args_length;
   int32_t id;
-  int32_t rel_id;
   int32_t tmp_vars_length;
   int32_t opcodes_base_id;
   int32_t opcodes_length;
