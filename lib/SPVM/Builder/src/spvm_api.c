@@ -6906,6 +6906,73 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
   return method_id;
 }
 
+int32_t SPVM_API_get_method_cache(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  char* sep_ptr = NULL;
+  
+  int32_t method_id;
+  SPVM_HASH* method_cache_symtable = runtime->method_cache_symtable;
+  SPVM_RUNTIME_METHOD* method = SPVM_HASH_get(runtime->method_cache_symtable, method_cache_name, method_cache_name_length);
+  if (method) {
+    method_id = method->id;
+  }
+  else {
+    const char* class_name = method_cache_name;
+    sep_ptr = index(class_name, '|');
+    int32_t class_name_length = sep_ptr - class_name;
+    if (class_name_length < 1) {
+      method_id = -1;
+    }
+    else {
+      SPVM_RUNTIME_CLASS* class = SPVM_HASH_get(runtime->class_symtable, class_name, class_name_length);
+      if (class) {
+        const char* search_method_name = method_cache_name + class_name_length;
+        sep_ptr = index(search_method_name, '|');
+        int32_t search_method_name_length = sep_ptr - search_method_name;
+        if (search_method_name_length < 1) {
+          method_id = -1;
+        }
+        else {
+          SPVM_RUNTIME_METHOD* found_method = NULL;
+          if (class->methods_length > 0) {
+            for (int32_t method_id = class->methods_base_id; method_id <  class->methods_base_id + class->methods_length; method_id++) {
+              SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+              const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method->name_id);
+              if (strncmp(method_name, search_method_name, search_method_name_length) == 0 && strlen(method_name) == search_method_name_length) {
+                found_method = method;
+                break;
+              }
+            }
+          }
+          
+          if (found_method) {
+            const char* signature = method_cache_name + class_name_length + search_method_name_length;
+            int32_t signature_length = strlen(signature);
+            const char* method_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->signature_id, NULL);
+            if (strncmp(signature, method_signature, signature_length) == 0 && signature_length == strlen(method_signature)) {
+              method_id = method->id;
+            }
+            else {
+              method_id = -1;
+            }
+          }
+          else {
+            method_id = -1;
+          }
+        }
+      }
+      else {
+        method_id = -1;
+      }
+    }
+  }
+  
+  return method_id;
+}
+
 int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature) {
   (void)env;
   
