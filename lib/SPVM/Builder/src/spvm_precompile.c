@@ -4125,6 +4125,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
         int32_t class_var_signature_id = SPVM_API_RUNTIME_get_class_var_signature_id(runtime, class_var_id);
         const char* class_var_signature = SPVM_API_RUNTIME_get_name(runtime, class_var_signature_id);
+        int32_t class_var_cache_name_length = strlen(class_var_class_name) + 1 + strlen(class_var_name) + 1 + strlen(class_var_signature);
 
         int32_t class_var_access_ctype_id;
         switch (opcode_id) {
@@ -4189,6 +4190,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
         int32_t class_var_signature_id = SPVM_API_RUNTIME_get_class_var_signature_id(runtime, class_var_id);
         const char* class_var_signature = SPVM_API_RUNTIME_get_name(runtime, class_var_signature_id);
+        int32_t class_var_cache_name_length = strlen(class_var_class_name) + 1 + strlen(class_var_name) + 1 + strlen(class_var_signature);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
@@ -4232,6 +4234,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
         int32_t class_var_signature_id = SPVM_API_RUNTIME_get_class_var_signature_id(runtime, class_var_id);
         const char* class_var_signature = SPVM_API_RUNTIME_get_name(runtime, class_var_signature_id);
+        int32_t class_var_cache_name_length = strlen(class_var_class_name) + 1 + strlen(class_var_name) + 1 + strlen(class_var_signature);
 
         int32_t class_var_access_ctype_id;
         switch (opcode_id) {
@@ -4297,6 +4300,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
         int32_t class_var_signature_id = SPVM_API_RUNTIME_get_class_var_signature_id(runtime, class_var_id);
         const char* class_var_signature = SPVM_API_RUNTIME_get_name(runtime, class_var_signature_id);
+        int32_t class_var_cache_name_length = strlen(class_var_class_name) + 1 + strlen(class_var_name) + 1 + strlen(class_var_signature);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
@@ -4338,6 +4342,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
         int32_t class_var_signature_id = SPVM_API_RUNTIME_get_class_var_signature_id(runtime, class_var_id);
         const char* class_var_signature = SPVM_API_RUNTIME_get_name(runtime, class_var_signature_id);
+        int32_t class_var_cache_name_length = strlen(class_var_class_name) + 1 + strlen(class_var_name) + 1 + strlen(class_var_signature);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
