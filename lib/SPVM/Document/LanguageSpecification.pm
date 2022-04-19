@@ -370,7 +370,7 @@ Literals are representations of values in source codes. These are L</"Integer Li
 
 =head3 Decimal Representation of Integer Literal
 
-Decimal Representation of Integer Literal is represented by one or more consecutive characters from "0" to "9".
+Decimal Representation of Integer Literal is represented by one or more consecutive characters from C<0> to C<9>.
 
 Can be prefixed with "+" or "-".
 
@@ -402,9 +402,9 @@ B<Examples of Integer Literal:>
 
 Hexadecimal Representation of Integer Literal is represented by the following rule.
 
-Hexadecimal Representation of Integer Literal starts with "0x" or "0X".
+Hexadecimal Representation of Integer Literal starts with C<0x> or C<0X>.
 
-It is followed by one or more consecutive characters "0" to "9", "a" to "f", or "A" to "F"..
+It is followed by one or more consecutive characters C<0> to C<9>, C<a> to C<f>, or C<A> to C<F>.
 
 Other rules are same as Decimal Representation of Integer Literal
 
@@ -419,9 +419,9 @@ B<Examples of Hexadecimal Representation of Integer Literal:>
 
 Octal Representation of Integer Literal is represented by the following rule.
 
-Octal Representation of Integer Literal starts with "0".
+Octal Representation of Integer Literal starts with C<0>.
 
-It is followed by one or more consecutive characters "0" to "7".
+It is followed by one or more consecutive characters C<0> to C<7>.
 
 Other rules are same as Decimal Representation of Integer Literal
 
@@ -436,9 +436,9 @@ B<Examples of Octal Representation of Integer Literal:>
 
 Binary Representation of Integer Literal is represented by the following rule.
 
-Binary Representation of Integer Literal starts with "0b" or "0B".
+Binary Representation of Integer Literal starts with C<0b> or C<0B>.
 
-It is followed by one or more consecutive characters "0" or "1".
+It is followed by one or more consecutive characters C<0> or C<1>.
 
 B<Examples of Binary Representation of Integer Literal:>
 
@@ -458,11 +458,11 @@ Floating Point Literal is B<Decimal Floating Point Literal> or B<Hexadecimal Flo
 
 B<Sign Part> is represented by "+" or "-". Sign Part is optional.
 
-Numeric Part of Decimal Floating Point Literal starts one or more "0" to "9".
+Numeric Part of Decimal Floating Point Literal starts one or more C<0> to C<9>.
 
-Numeric Part of Hexadecimal Floating Point Literal starts "0x" or "0X", and is followed by "0" to "9", "a" to "f", or "A" to "F".
+Numeric Part of Hexadecimal Floating Point Literal starts C<0x> or C<0X>, and is followed by C<0> to C<9>, C<a> to C<f>, or C<A> to C<F>.
 
-For that the Literal is Floating Point Literal, Numeric Part contains "." or, The Literal have Exponent Part, or have Suffix Part.
+For that the Literal is Floating Point Literal, Numeric Part contains C<.> or, The Literal have Exponent Part, or have Suffix Part.
 
 Numeric part can contain "_". This is just a Numeric Separator and is ignored.
 
@@ -473,13 +473,13 @@ B<Exponent Part> is consist of B<Exponential Notation> and B<Signed Decimal Inte
   # Exponent Part
   [Exponential Notation][Signed Decimal Integer]
 
-Exponential Notation is "e" or "E" for Decimal Floating Point Literal, and "p" or "P" for Hexadecimal Floating Point Literal.
+Exponential Notation is C<e> or C<E> for Decimal Floating Point Literal, and C<p> or C<P> for Hexadecimal Floating Point Literal.
 
 The meaning of Exponent Part is decimal shift for Decimal Floating Point Literal, or binary shift for Hexadecimal Floating Point Literal.
 
-If Suffix Part is "f" or "F", the L</"Types"> of Floating Point Literal is L</"float Type">.
+If Suffix Part is C<f> or C<F>, the L</"Types"> of Floating Point Literal is L</"float Type">.
 
-If Suffix Part is "d" or "D", the L</"Types"> of Floating Point Literal is L</"double Type">.
+If Suffix Part is C<d> or C<D>, the L</"Types"> of Floating Point Literal is L</"double Type">.
 
 If Suffix Part is omitted, the L</"Types"> of Floating Point Literal is L</"double Type">.
 
@@ -2260,7 +2260,7 @@ If more than one of "ro", "wo", and "rw" are specified at the same time, a compi
 
 Read Accessor of Class Variable has no arguments and the return type is same as the type of Class Variable.
 
-Write Acessor of Class Variable has one argument and the type is same as the type of Class Variable. The type of return value is L</"void Type">.
+Write Acessor of Class Variable has one argument and the type is same as the type of Class Variable. The return type is L</"void Type">.
 
 Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Class Variable Accessors.
 
@@ -2392,7 +2392,7 @@ If more than one of "ro", "wo", and "rw" are specified at the same time, a compi
 
 Read Accessor of Field has one argument that is L</"self Type"> and the return type is same as the type of Field.
 
-Write Acessor of Class Variable has two arguments. First argument is L</"self Type"> and second argument is same as the type of Field. The type of return value is L</"void Type">.
+Write Acessor of Class Variable has two arguments. First argument is L</"self Type"> and second argument is same as the type of Field. The return type is L</"void Type">.
 
 Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Field Accessors.
 
@@ -2545,7 +2545,7 @@ A class method can be called from the L<class name|/"Class Names">.
 
 If the class method is belong to the current class, a class method can be called using L<&|/"Current Class"> syntax.
   
-  # Call a class method using "&"
+  # Call a class method using C<&>
   my $total = &sum(1, 2);
 
 =head2 Instance Method
@@ -2631,32 +2631,25 @@ Note that SPVM does not perform constant convolution optimization, so if a const
 
 =head2 Signature
 
-Signature is a string that follow the following rule sequence of Method Retrun Value and arguments arranged according to the following rules. Arguments do not need to exist. There cannot be spaces between them.
+A signature is a string that represents the return type and the types of the arguments of a L<method|/"Method">.
 
-1. RETURN_VALUE_TYPE
+  RETURN_TYPE(ARG_TYPE1,ARG_TYPE2,ARG_TYPEn)
 
-2. (
+It the method is an L<instance method|/"Instance Method">, the type representation of the first argument is C<self>.
 
-3. ARGUMENT_TYPE1,ARGUMENT_TYPE2,ARGUMENT_TYPE3
-
-4. )
-
-It the method is a instance method, the part of signature of the first argument is "self".
-
-B<Examples of Signature:>
+B<Examples:>
 
   # Method Definition
   static method foo : int ($num1 : double, $num2 : long[])
   
-  # Signature
+  # The signature
   int(double,long[])
   
   # Method Definition
   static method foo : void ()
   
-  # Signature
+  # The signature
   void()
-  
   
   # Method Definition
   method foo : int ($num1 : double, $num2 : long[])
@@ -2664,23 +2657,15 @@ B<Examples of Signature:>
   # Signature
   int(self,double,long[])
 
-Signature is not used in SPVM programs. Signature is used when calling the SPVM Method from <a href="/native-api.html">SPVM Native API</a>.
-
-=head2 Method Callstack
-
-Method Callstack is memory area allocated in each method call.
-
-Method Callstack save the folloing information.
-
-1. Memroy area for L</"Local Variable">
-
-2. The places of Mortal Local Variable
+Signatures are used by L<native APIs|SPVM::Document::NativeAPI>.
 
 =head1 Enumeration
 
+Explains enumeration.
+
 =head2 Enumeration Definition
 
-Enumeration Definition is a syntax to define multiple L</"Constant Methods"> easily.
+The C<enum> keyword defines an enumeration. An enumeration defines constant values.
 
   # Enumeration Definition
   enum {
@@ -2689,19 +2674,13 @@ Enumeration Definition is a syntax to define multiple L</"Constant Methods"> eas
     FLAG3
   }
 
-Enumeration must be defined directly under L</"Class Definition">.
+An enumeration must be defined directly under L</"Class Definition">.
 
-  class Foo {
-    enum {
-      FLAG1,
-      FLAG2,
-      FLAG3
-    }
-  }
+The first value of an enumeration starts with C<0>. The next value is incremented by C<1>, and this is continued in the same way. In this example, C<FLAG1> is C<0>, C<FALG2> is C<1>, and C<FLAG3> is C<2>.
 
-The first value starts with "0". The value is incremented by "1". In this example, "FLAG1" is "0", "FALG2" is "1", and "FLAG3" is "2".
+The type of a value of an enumeration is the L<int type|/"int Type">.
 
-"," can be added after the last element of Enumeration.
+C<,> after the last value can be allowed.
 
   enum {
     FLAG1,
@@ -2709,13 +2688,13 @@ The first value starts with "0". The value is incremented by "1". In this exampl
     FLAG3,
   }
 
-Enumeration is an alias for L</"Constant Method"> that the return type is L</"int Type">. It is equivalent to the following Method Definition:
+A value of an enumeration is implemented as a L<constant method|/"Constant Method">.
 
   static method FLAG1 : int () { return 0; }
   static method FLAG2 : int () { return 1; }
   static method FLAG3 : int () { return 2; }
 
-The value of L</"int Type"> can be set in the enum element.
+The value can be set explicitly.
 
   enum {
     FLAG1,
@@ -2723,13 +2702,23 @@ The value of L</"int Type"> can be set in the enum element.
     FLAG3,
   }
 
-In the above case, "FLAG1" is "0", "FALG2" is "4", and "FLAG3" is "5".
+In the above example, C<FLAG1> is C<0>, C<FALG2> is C<4>, and C<FLAG3> is C<5>.
 
-If Enum Definition is invalid, a compilation error will occur.
+If an enumeration definition is invalid, a compilation error will occur.
 
-=head2 Enumeration Descriptor
+B<Examples:>
 
-Descriptor can be specified for Enumeration.
+  class Foo {
+    enum {
+      FLAG1,
+      FLAG2,
+      FLAG3,
+    }
+  }
+
+=head2 Enumeration Descriptors
+
+Descriptors can be specified to an enumeration definition.
 
   private enum {
     FLAG1,
@@ -2737,17 +2726,17 @@ Descriptor can be specified for Enumeration.
     FLAG3,
   }
 
-List of Enumeration Descriptor
+B<The list of enumeration descriptors:>
 
 =begin html
 
 <table>
   <tr>
     <th>
-      Descriptor
+      Descriptors
    </th>
     <th>
-      Description
+      Descriptions
    </th>
   </tr>
   <tr>
@@ -2755,7 +2744,7 @@ List of Enumeration Descriptor
       <b>public</b>
     </td>
     <td>
-      This Enumeration is public. This Enumeration can be accessed from other Class. This is default setting.
+      This enumeration is public. Each value of this enumeration can be accessed from other class. This is default setting.
     </td>
   </tr>
   <tr>
@@ -2763,40 +2752,40 @@ List of Enumeration Descriptor
       <b>private</b>
     </td>
     <td>
-      This Enumeration is private. This Enumeration can not be accessed from other Class.
+      This enumeration is private. Each value of this enumeration can not be accessed from other class.
     </td>
   </tr>
 </table>
 
 =end html
 
-If both "public" and "private" Descriptors are specified, a compilation error will occur.
+If both "public" and "private" descriptors are specified, a compilation error will occur.
 
 =head2 Enumeration Call
 
-Enumeration is an alias for L</"Constant Method">, so it can be called in exactly the same way as Method call.
+The value of enumeration called as a L<class method call|/"Class Method Call">.
 
   my $flag1 = Foo->FLAG1;
   my $flag2 = Foo->FLAG2;
   my $flag3 = Foo->FLAG3;
 
-In special case, Enumeration Call can be used in L</"case Statement"> of L</"switch Statement">.
+In special cases, a value of an enumeration can be used as the operand of a L<case statement|/"case Statement">.
 
   switch ($num) {
     case Foo->FLAG1: {
-  
+      
       break;
     }
     case Foo->FLAG2: {
-  
+      
       break:
     }
     case Foo->FLAG3: {
-  
+      
       break:
     }
     default: {
-  
+      
     }
   }
 
@@ -3299,7 +3288,7 @@ To use Multi Numeric Types, load a Module using L</"use Statement">.
   use Point_3i;
   use Complex_2d;
 
-Next is L</"Local Variable Declaration">. Local Variable Declaration create continuous area for fields of Multi Numeric Types Value on L</"Method Callstack">. All fields of of Multi Numeric Types Value are initialized by L</"Type Initial Value">.
+Next is L</"Local Variable Declaration">. Local Variable Declaration create continuous area for fields of Multi Numeric Types Value. All fields of of Multi Numeric Types Value are initialized by L</"Type Initial Value">.
 
   my $point : Point_3i;
   my $z : Complex_2d;
@@ -3505,7 +3494,7 @@ The setting exception variable is an L<expression|/"Expressions"> to get the val
 
 The return value is the value of L<exception variable|/"Exception Variable">.
 
-The type of return value is the L<string type|/"String Type">.
+The return type is the L<string type|/"String Type">.
 
 B<Examples of getting exception variable:>
   
@@ -3522,7 +3511,7 @@ The type of the assigned value must be L</"String Type">.
 
 The return value is the value after the setting.
 
-The type of return value is the L<string type|/"String Type">.
+The return type is the L<string type|/"String Type">.
 
 The reference count of the assigned value is incremented by C<1>.
 
@@ -3843,7 +3832,7 @@ B<Examples of instance method call:>
 
 =head2 Current Class
 
-B<&> before method name means the current class. You can call method using "&" keyword instead of the current class name.
+B<&> before method name means the current class. You can call method using C<&> keyword instead of the current class name.
 
 B<Examples of Current Class:>
 
@@ -4112,7 +4101,7 @@ the unary minus operator performs the following operation of C language.
 
   -x
 
-Return type of a unary minus operator is the type that L</"Unary Numeric Widening Type Conversion"> is performed.
+Return type of an unary minus operator is the type that L</"Unary Numeric Widening Type Conversion"> is performed.
 
 B<Examples of unary minus operators:>
 
@@ -4359,61 +4348,77 @@ For example, Post Decrement of L</"byte Type"> value is equivalent to the follow
 
   (my $tmp = $num, $num = (byte)($num - 1), $tmp)
 
-=head2 Bit Operator
+=head2 Bit Operators
 
-Bit Operator is an operator that performs Bit operation. L</"Bit AND Operator">, <a href = "#language-operator-bit-or">Bit OR Operator</a>, L</"Bit NOT Operator">.
+Bit operators are L<operators|/"Operators"> to perform bit operations.
+
+Bit operators are the L<bit AND operator|/"Bit AND Operator">, the L<bit OR operator|/"Bit OR Operator">, or the L<bit NOT operator|/"Bit NOT Operator">.
 
 =head2 Bit AND Operator
 
-Bit AND is L</"Binary Operators"> represented by "&".
+The bit AND operator C<&> is an L<operator|/"Operators"> to performe a bit AND operation.
 
   LEFT_OPERAND & RIGHT_OPERAND
 
-The left operand and the right operand must be L</"Integral Types">, otherwise a compilation error will occur.
+The left operand and the right operand must be an L<integral type/"Integral Types">. If not, a compilation error will occur.
 
-L</"Binary Numeric Widening Type Conversion"> is performed on The left operand and the right operand.
+A L<binary numeric widening type conversion|/"Binary Numeric Widening Type Conversion"> is performed.
 
-the operation result of Bit AND Operator performs the operation that exactly same as the following operation in C language
+The return value is the same as the follwoing operation of C<C language>.
 
   x & y;
 
-The type of Return Value of Bit AND Operator is the type after L</"Binary Numeric Widening Type"> is performed.
+The return type is the type after the L<binary numeric widening type conversion|/"Binary Numeric Widening Type"> is performed.
 
+B<Examples:>
+  
+  # The bit AND operator
+  my $num1 = 0xff;
+  my $num2 = 0x12;
+  my $result = $num1 & $num2;
+  
 =head2 Bit OR Operator
 
-Bit OR is L</"Binary Operators"> represented by "|/".
+The bit OR operator C<|> is an L<operator|/"Operators"> to performe a bit OR operation.
 
   LEFT_OPERAND | RIGHT_OPERAND
 
-The left operand and the right operand must be L</"Integral Types">, otherwise a compilation error will occur.
+The left operand and the right operand must be an L<integral type/"Integral Types">. If not, a compilation error will occur.
 
-L</"Binary Numeric Widening Type Conversion"> is performed on The left operand and the right operand.
+A L<binary numeric widening type conversion|/"Binary Numeric Widening Type Conversion"> is performed.
 
-the operation result of Bit OR Operator performs the operation that exactly same as the following operation in C language.
+The return value is the same as the follwoing operation of C<C language>.
 
   x | y;
 
-The type of Return Value of Bit OR Operator is the type that is L</"Binary Numeric Widening Type Converted">.
+The return type is the type after the L<binary numeric widening type conversion|/"Binary Numeric Widening Type"> is performed.
+
+B<Examples:>
+  
+  # The bit OR operator
+  my $num1 = 0xff;
+  my $num2 = 0x12;
+  my $result = $num1 | $num2;
 
 =head2 Bit NOT Operator
 
-The bit NOT operator C<~> is a L<unary operator|/"Unary Operators"> to get the value of bit-not operation.
+The bit NOT operator C<~> is an L<unary operator|/"Unary Operators"> to perform the bit NOT operation.
 
   ~OPERAND
 
-The operand must be an L<expression|/"Expressions"> that type is an L<integral type|/"Integral Types">, otherwise a compilation error will occur.
+The type of the operand must is an L<integral type|/"Integral Types">. If not, a compilation error will occur.
 
-L</"Unary Numeric Widening Type Conversion"> is performed to the operand.
+The L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion"> is performed.
 
-The bit NOT operator performs the operation that exactly same as the following operation in C language.
+The return value is the same as the follwoing operation of C<C language>.
 
   ~x
 
-The type of return value is the type that L</"Unary Numeric Widening Type Conversion"> is performed.
+The return type is the type that the L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion"> is performed.
 
-B<Examples of bit NOT operators:>
+B<Examples:>
   
-  # Bit NOT operations
+  # The bit NOT operator
   my $num = ~0xFF0A;
 
 =head2 Shift Operators
@@ -4610,7 +4615,7 @@ For Numeric Types Operation(==, !=, >, >=, <, <=), L</"int Type"> Operation, L</
 
 And Object Type Operation(==, !=) is defined.
 
-The type of Return Value of the Numeric Comparison Operator is L</"int Type">.
+The return type of the Numeric Comparison Operator is L</"int Type">.
 
 =head2 String Comparison Operator
 
@@ -4689,7 +4694,7 @@ A list of String Comparison Operators.
 
 =end html
 
-The type of Return Value of the String Comparison Operator is L</"int Type">. If the condition is met, returns 1, otherwise 0.
+The return type of the String Comparison Operator is L</"int Type">. If the condition is met, returns 1, otherwise 0.
 
 =head2 isa Operator
 
@@ -4792,7 +4797,7 @@ The left operand and the right operand must be a L<string type|/"String Type">, 
 
 If the type of the operand is numeric type, a L<numeric to string type conversion|/"Numeric to String Type Conversion"> is performed.
 
-The type of return value is a L<string type|/"String Type">.
+The return type is a L<string type|/"String Type">.
 
 A string concatenation operator returns the result to concat two operands.
 
@@ -5260,7 +5265,7 @@ The C<switch> statement is a L<statement|/"Statements"> for conditional branchin
 
 As the condition Expression, L</"Expressions"> can be specified. L</"Bool Type Conversion"> is executed for the condition Expression.
 
-The constants specified in case Statement are L</"byte Type"> or L</"int Type"> constants. must be. For a constant of L</"byte Type">, type conversion to L</"int Type"> at compile time. Will be done. The value of enumType and Constant Method of L</"int Type"> are constants of L</"int Type">. As it is expanded at the time of syntax analysis, it can be used.
+The constants specified in L</"case Statement"> are L</"byte Type"> or L</"int Type"> constants. must be. For a constant of L</"byte Type">, type conversion to L</"int Type"> at compile time. Will be done. The value of enumType and Constant Method of L</"int Type"> are constants of L</"int Type">. As it is expanded at the time of syntax analysis, it can be used.
 
 The constants specified in the case statement must not overlap. If there are duplicates, a compilation error will occur
 
