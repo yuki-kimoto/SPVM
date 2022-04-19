@@ -375,6 +375,136 @@ sub compile_source_file {
   return $object_file_info;
 }
 
+sub create_new_env_prepared_func_source {
+  my ($self) = @_;
+
+  # Builder
+  my $builder = $self->builder;
+
+  # Class name
+  my $class_name = $self->class_name;
+
+  # Class names
+  my $class_names_exclude_anon = $builder->get_class_names_exclude_anon;
+
+  my $class_names = $self->builder->get_class_names;
+
+  my $source = '';
+  
+  $source .= <<"EOS";
+SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
+  // Class name
+  const char* class_name = "$class_name";
+EOS
+
+  $source .= <<'EOS';
+
+// Create env
+  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
+
+  // Create compiler
+  void* compiler = env->api->compiler->new_compiler();
+
+  env->api->compiler->set_start_file(compiler, class_name);
+
+  // Set module source_files
+EOS
+  
+  for my $class_name (@$class_names_exclude_anon) {
+    my $class_cname = $class_name;
+    $class_cname =~ s/::/__/g;
+    
+    $source .= "  {\n";
+    $source .= "    const char* module_source = SPMODSRC__${class_cname}__get_module_source();\n";
+    $source .= qq(    env->api->compiler->set_module_source_by_name(compiler, "$class_name", module_source);\n);
+    $source .= "  }\n";
+  }
+  $source .= "\n";
+
+  $source .= <<'EOS';
+
+  int32_t compile_error_code = env->api->compiler->compile_spvm(compiler, class_name);
+
+  if (compile_error_code != 0) {
+    int32_t error_messages_length = env->api->compiler->get_error_messages_length(compiler);
+    for (int32_t i = 0; i < error_messages_length; i++) {
+      const char* error_message = env->api->compiler->get_error_message(compiler, i);
+      fprintf(stderr, "%s\n", error_message);
+    }
+    exit(255);
+  }
+
+  // Build runtime information
+  void* runtime = env->api->runtime->new_runtime(env);
+  env->api->compiler->build_runtime(compiler, runtime);
+
+EOS
+  
+  $source .= <<'EOS';
+  
+  // Free compiler
+  env->api->compiler->free_compiler(compiler);
+
+  // Prepare runtime
+  env->api->runtime->prepare(runtime);
+
+  // Set runtime information
+  env->runtime = runtime;
+
+  // Initialize env
+  env->init_env(env);
+
+EOS
+
+  for my $class_name (@$class_names) {
+    my $class_cname = $class_name;
+    $class_cname =~ s/::/__/g;
+    
+    my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
+    
+    for my $precompile_method_name (@$precompile_method_names) {
+      $source .= <<"EOS";
+  { 
+    const char* class_name = "$class_name";
+    const char* method_name = "$precompile_method_name";
+    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
+    void* precompile_address = SPVMPRECOMPILE__${class_cname}__$precompile_method_name;
+    env->api->runtime->set_precompile_method_address(env->runtime, method_id, precompile_address);
+  }
+EOS
+    }
+  }
+
+  for my $class_name (@$class_names_exclude_anon) {
+    my $class_cname = $class_name;
+    $class_cname =~ s/::/__/g;
+    
+    my $native_method_names = $builder->get_method_names($class_name, 'native');
+    
+    for my $native_method_name (@$native_method_names) {
+      $source .= <<"EOS";
+  { 
+    const char* class_name = "$class_name";
+    const char* method_name = "$native_method_name";
+    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
+    void* native_address = SPVM__${class_cname}__$native_method_name;
+    env->api->runtime->set_native_method_address(env->runtime, method_id, native_address);
+  }
+EOS
+    }
+  }
+
+  $source .= <<'EOS';
+  
+  env->call_init_blocks(env);
+  
+  return env;
+}
+EOS
+  
+  return $source;
+}
+
 sub create_bootstrap_source {
   my ($self) = @_;
   
@@ -509,121 +639,9 @@ int32_t main(int32_t argc, const char *argv[]) {
 
   return status;
 }
-
-SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
 EOS
 
-    $boot_source .= <<"EOS";
-  // Class name
-  const char* class_name = "$class_name";
-EOS
-
-    $boot_source .= <<'EOS';
-
-  // Create env
-  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
-  
-  // Create compiler
-  void* compiler = env->api->compiler->new_compiler();
-
-  env->api->compiler->set_start_file(compiler, class_name);
-
-  // Set module source_files
-EOS
-    
-    for my $class_name (@$class_names_exclude_anon) {
-      my $class_cname = $class_name;
-      $class_cname =~ s/::/__/g;
-      
-      $boot_source .= "  {\n";
-      $boot_source .= "    const char* module_source = SPMODSRC__${class_cname}__get_module_source();\n";
-      $boot_source .= qq(    env->api->compiler->set_module_source_by_name(compiler, "$class_name", module_source);\n);
-      $boot_source .= "  }\n";
-    }
-    $boot_source .= "\n";
-
-    $boot_source .= <<'EOS';
-
-  int32_t compile_error_code = env->api->compiler->compile_spvm(compiler, class_name);
-
-  if (compile_error_code != 0) {
-    int32_t error_messages_length = env->api->compiler->get_error_messages_length(compiler);
-    for (int32_t i = 0; i < error_messages_length; i++) {
-      const char* error_message = env->api->compiler->get_error_message(compiler, i);
-      fprintf(stderr, "%s\n", error_message);
-    }
-    exit(255);
-  }
-
-  // Build runtime information
-  void* runtime = env->api->runtime->new_runtime(env);
-  env->api->compiler->build_runtime(compiler, runtime);
-
-EOS
-    
-    $boot_source .= <<'EOS';
-    
-  // Free compiler
-  env->api->compiler->free_compiler(compiler);
-
-  // Prepare runtime
-  env->api->runtime->prepare(runtime);
-
-  // Set runtime information
-  env->runtime = runtime;
-  
-  // Initialize env
-  env->init_env(env);
-  
-EOS
-
-    for my $class_name (@$class_names) {
-      my $class_cname = $class_name;
-      $class_cname =~ s/::/__/g;
-      
-      my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
-      
-      for my $precompile_method_name (@$precompile_method_names) {
-        $boot_source .= <<"EOS";
-  { 
-    const char* class_name = "$class_name";
-    const char* method_name = "$precompile_method_name";
-    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
-    void* precompile_address = SPVMPRECOMPILE__${class_cname}__$precompile_method_name;
-    env->api->runtime->set_precompile_method_address(env->runtime, method_id, precompile_address);
-  }
-EOS
-      }
-    }
-
-    for my $class_name (@$class_names_exclude_anon) {
-      my $class_cname = $class_name;
-      $class_cname =~ s/::/__/g;
-      
-      my $native_method_names = $builder->get_method_names($class_name, 'native');
-      
-      for my $native_method_name (@$native_method_names) {
-        $boot_source .= <<"EOS";
-  { 
-    const char* class_name = "$class_name";
-    const char* method_name = "$native_method_name";
-    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
-    void* native_address = SPVM__${class_cname}__$native_method_name;
-    env->api->runtime->set_native_method_address(env->runtime, method_id, native_address);
-  }
-EOS
-      }
-    }
-
-    $boot_source .= <<'EOS';
-  
-  env->call_init_blocks(env);
-  
-  return env;
-}
-EOS
-
-    my $build_dir = $self->builder->build_dir;
+    $boot_source .= $self->create_new_env_prepared_func_source;
 
     # Build source directory
     my $build_src_dir = $self->builder->create_build_src_path;
