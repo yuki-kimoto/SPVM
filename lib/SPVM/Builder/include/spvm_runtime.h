@@ -8,6 +8,9 @@ SPVM_RUNTIME* SPVM_RUNTIME_new();
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
 
 struct spvm_runtime {
+  // SPVM 32bit codes
+  int32_t spvm_32bit_codes;
+  
   // Allocator
   SPVM_ALLOCATOR* allocator;
   
