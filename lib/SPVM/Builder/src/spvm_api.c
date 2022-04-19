@@ -291,6 +291,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     env_api,
     SPVM_API_free_env_prepared,
     SPVM_API_get_method_id_cache,
+    SPVM_API_get_field_id_cache,
+    SPVM_API_get_class_var_id_cache,
     allocator, // allocator
   };
   
@@ -6942,6 +6944,140 @@ int32_t SPVM_API_get_method_id_cache(SPVM_ENV* env, const char* method_cache_nam
   }
   
   return method_id;
+}
+
+int32_t SPVM_API_get_field_id_cache(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  char* sep_ptr = NULL;
+  
+  int32_t field_id;
+  SPVM_HASH* field_cache_symtable = runtime->field_cache_symtable;
+  SPVM_RUNTIME_FIELD* field_cache = SPVM_HASH_get(runtime->field_cache_symtable, field_cache_name, field_cache_name_length);
+  if (field_cache) {
+    field_id = field_cache->id;
+  }
+  else {
+    const char* class_name = field_cache_name;
+    sep_ptr = index(class_name, '|');
+    int32_t class_name_length = sep_ptr - class_name;
+    if (class_name_length < 0) {
+      field_id = -1;
+    }
+    else {
+      SPVM_RUNTIME_CLASS* class = SPVM_HASH_get(runtime->class_symtable, class_name, class_name_length);
+      if (class) {
+        const char* search_field_name = field_cache_name + class_name_length + 1;
+        sep_ptr = index(search_field_name, '|');
+        int32_t search_field_name_length = sep_ptr - search_field_name;
+        if (search_field_name_length < 0) {
+          field_id = -1;
+        }
+        else {
+          SPVM_RUNTIME_FIELD* found_field = NULL;
+          if (class->fields_length > 0) {
+            for (int32_t field_id = class->fields_base_id; field_id <  class->fields_base_id + class->fields_length; field_id++) {
+              SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
+              const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field->name_id);
+              if (strncmp(field_name, search_field_name, search_field_name_length) == 0 && strlen(field_name) == search_field_name_length) {
+                found_field = field;
+                break;
+              }
+            }
+          }
+          if (found_field) {
+            const char* signature = search_field_name + search_field_name_length + 1;
+            int32_t signature_length = strlen(signature);
+            const char* field_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, found_field->signature_id, NULL);
+            if (strncmp(signature, field_signature, signature_length) == 0 && signature_length == strlen(field_signature)) {
+              field_id = found_field->id;
+              SPVM_HASH_set(runtime->field_cache_symtable, field_cache_name, field_cache_name_length, found_field);
+            }
+            else {
+              field_id = -1;
+            }
+          }
+          else {
+            field_id = -1;
+          }
+        }
+      }
+      else {
+        field_id = -1;
+      }
+    }
+  }
+  
+  return field_id;
+}
+
+int32_t SPVM_API_get_class_var_id_cache(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  char* sep_ptr = NULL;
+  
+  int32_t class_var_id;
+  SPVM_HASH* class_var_cache_symtable = runtime->class_var_cache_symtable;
+  SPVM_RUNTIME_CLASS_VAR* class_var_cache = SPVM_HASH_get(runtime->class_var_cache_symtable, class_var_cache_name, class_var_cache_name_length);
+  if (class_var_cache) {
+    class_var_id = class_var_cache->id;
+  }
+  else {
+    const char* class_name = class_var_cache_name;
+    sep_ptr = index(class_name, '|');
+    int32_t class_name_length = sep_ptr - class_name;
+    if (class_name_length < 0) {
+      class_var_id = -1;
+    }
+    else {
+      SPVM_RUNTIME_CLASS* class = SPVM_HASH_get(runtime->class_symtable, class_name, class_name_length);
+      if (class) {
+        const char* search_class_var_name = class_var_cache_name + class_name_length + 1;
+        sep_ptr = index(search_class_var_name, '|');
+        int32_t search_class_var_name_length = sep_ptr - search_class_var_name;
+        if (search_class_var_name_length < 0) {
+          class_var_id = -1;
+        }
+        else {
+          SPVM_RUNTIME_CLASS_VAR* found_class_var = NULL;
+          if (class->class_vars_length > 0) {
+            for (int32_t class_var_id = class->class_vars_base_id; class_var_id <  class->class_vars_base_id + class->class_vars_length; class_var_id++) {
+              SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
+              const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var->name_id);
+              if (strncmp(class_var_name, search_class_var_name, search_class_var_name_length) == 0 && strlen(class_var_name) == search_class_var_name_length) {
+                found_class_var = class_var;
+                break;
+              }
+            }
+          }
+          if (found_class_var) {
+            const char* signature = search_class_var_name + search_class_var_name_length + 1;
+            int32_t signature_length = strlen(signature);
+            const char* class_var_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, found_class_var->signature_id, NULL);
+            if (strncmp(signature, class_var_signature, signature_length) == 0 && signature_length == strlen(class_var_signature)) {
+              class_var_id = found_class_var->id;
+              SPVM_HASH_set(runtime->class_var_cache_symtable, class_var_cache_name, class_var_cache_name_length, found_class_var);
+            }
+            else {
+              class_var_id = -1;
+            }
+          }
+          else {
+            class_var_id = -1;
+          }
+        }
+      }
+      else {
+        class_var_id = -1;
+      }
+    }
+  }
+  
+  return class_var_id;
 }
 
 int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature) {

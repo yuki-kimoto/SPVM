@@ -288,6 +288,8 @@ struct spvm_env {
   SPVM_ENV_API* api;
   void (*free_env_prepared)(SPVM_ENV* env);
   int32_t (*get_method_id_cache)(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
+  int32_t (*get_field_id_cache)(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
+  int32_t (*get_class_var_id_cache)(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
   void* allocator;
 };
 
