@@ -95,6 +95,9 @@ SPVM_ENV* SPVM_API_new_env_raw() {
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));
 
+  // Allocator
+  SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
+
   // The impelements of Native APIs
   void* env_init[]  = {
     NULL, // class_vars_heap
@@ -288,7 +291,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     env_api,
     SPVM_API_free_env_prepared,
     SPVM_API_get_method_id_cache,
-    NULL, // allocator
+    allocator, // allocator
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
