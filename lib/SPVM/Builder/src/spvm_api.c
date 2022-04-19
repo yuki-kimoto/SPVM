@@ -6894,7 +6894,7 @@ int32_t SPVM_API_get_method_id_cache(SPVM_ENV* env, const char* method_cache_nam
   }
   else {
     const char* class_name = method_cache_name;
-    sep_ptr = index(class_name, '|');
+    sep_ptr = strchr(class_name, '|');
     int32_t class_name_length = sep_ptr - class_name;
     if (class_name_length < 0) {
       method_id = -1;
@@ -6903,7 +6903,7 @@ int32_t SPVM_API_get_method_id_cache(SPVM_ENV* env, const char* method_cache_nam
       SPVM_RUNTIME_CLASS* class = SPVM_HASH_get(runtime->class_symtable, class_name, class_name_length);
       if (class) {
         const char* search_method_name = method_cache_name + class_name_length + 1;
-        sep_ptr = index(search_method_name, '|');
+        sep_ptr = strchr(search_method_name, '|');
         int32_t search_method_name_length = sep_ptr - search_method_name;
         if (search_method_name_length < 0) {
           method_id = -1;
@@ -6961,7 +6961,7 @@ int32_t SPVM_API_get_field_id_cache(SPVM_ENV* env, const char* field_cache_name,
   }
   else {
     const char* class_name = field_cache_name;
-    sep_ptr = index(class_name, '|');
+    sep_ptr = strchr(class_name, '|');
     int32_t class_name_length = sep_ptr - class_name;
     if (class_name_length < 0) {
       field_id = -1;
@@ -6970,7 +6970,7 @@ int32_t SPVM_API_get_field_id_cache(SPVM_ENV* env, const char* field_cache_name,
       SPVM_RUNTIME_CLASS* class = SPVM_HASH_get(runtime->class_symtable, class_name, class_name_length);
       if (class) {
         const char* search_field_name = field_cache_name + class_name_length + 1;
-        sep_ptr = index(search_field_name, '|');
+        sep_ptr = strchr(search_field_name, '|');
         int32_t search_field_name_length = sep_ptr - search_field_name;
         if (search_field_name_length < 0) {
           field_id = -1;
@@ -7028,7 +7028,7 @@ int32_t SPVM_API_get_class_var_id_cache(SPVM_ENV* env, const char* class_var_cac
   }
   else {
     const char* class_name = class_var_cache_name;
-    sep_ptr = index(class_name, '|');
+    sep_ptr = strchr(class_name, '|');
     int32_t class_name_length = sep_ptr - class_name;
     if (class_name_length < 0) {
       class_var_id = -1;
@@ -7037,7 +7037,7 @@ int32_t SPVM_API_get_class_var_id_cache(SPVM_ENV* env, const char* class_var_cac
       SPVM_RUNTIME_CLASS* class = SPVM_HASH_get(runtime->class_symtable, class_name, class_name_length);
       if (class) {
         const char* search_class_var_name = class_var_cache_name + class_name_length + 1;
-        sep_ptr = index(search_class_var_name, '|');
+        sep_ptr = strchr(search_class_var_name, '|');
         int32_t search_class_var_name_length = sep_ptr - search_class_var_name;
         if (search_class_var_name_length < 0) {
           class_var_id = -1;
