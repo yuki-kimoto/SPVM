@@ -438,7 +438,7 @@ EOS
   return $source;
 }
 
-sub create_main_source {
+sub create_bootstrap_main_func_source {
   my ($self) = @_;
 
   # Builder
@@ -515,7 +515,7 @@ EOS
   return $source;
 }
 
-sub create_new_env_prepared_func_source {
+sub create_bootstrap_new_env_prepared_func_source {
   my ($self) = @_;
 
   # Builder
@@ -680,10 +680,10 @@ sub create_bootstrap_source {
     $bootstrap_source .= $self->create_bootstrap_header_source;
     
     # main function
-    $bootstrap_source .= $self->create_main_source;
+    $bootstrap_source .= $self->create_bootstrap_main_func_source;
     
     # SPVM_NATIVE_new_env_prepared function
-    $bootstrap_source .= $self->create_new_env_prepared_func_source;
+    $bootstrap_source .= $self->create_bootstrap_new_env_prepared_func_source;
 
     # Build source directory
     my $build_src_dir = $self->builder->create_build_src_path;
