@@ -1,3 +1,5 @@
+#define _XOPEN_SOURCE
+
 #include "spvm_native.h"
 
 #include <time.h>
@@ -24,20 +26,25 @@ int32_t SPVM__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t e;
   
   time_t time = (time_t)stack[0].lval;
-  struct tm* resultp = localtime(&time);
+  struct tm resultp;
+#ifdef _WIN32
+  localtime_s(&resultp, &time);
+#else
+  localtime_r(&time, &resultp);
+#endif
 
   void* obj_time_info = env->new_object_by_name(env, "Time::Info", &e, MFILE, __LINE__);
   if (e) { return e; }
 
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "sec", resultp->tm_sec, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "min", resultp->tm_min, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "hour", resultp->tm_hour, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "mday", resultp->tm_mday, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "mon", resultp->tm_mon, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "year", resultp->tm_year, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "wday", resultp->tm_wday, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "yday", resultp->tm_yday, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "isdst", resultp->tm_isdst, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "sec", resultp.tm_sec, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "min", resultp.tm_min, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "hour", resultp.tm_hour, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "mday", resultp.tm_mday, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "mon", resultp.tm_mon, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "year", resultp.tm_year, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "wday", resultp.tm_wday, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "yday", resultp.tm_yday, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "isdst", resultp.tm_isdst, &e, MFILE, __LINE__);
   
   stack[0].oval = obj_time_info;
   
@@ -49,20 +56,25 @@ int32_t SPVM__Time__gmtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t e;
 
   time_t time = (time_t)stack[0].lval;
-  struct tm* resultp = gmtime(&time);
+  struct tm resultp;
+#ifdef _WIN32
+  gmtime_s(&resultp, &time);
+#else
+  gmtime_r(&time, &resultp);
+#endif
 
   void* obj_time_info = env->new_object_by_name(env, "Time::Info", &e, MFILE, __LINE__);
   if (e) { return e; }
 
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "sec", resultp->tm_sec, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "min", resultp->tm_min, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "hour", resultp->tm_hour, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "mday", resultp->tm_mday, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "mon", resultp->tm_mon, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "year", resultp->tm_year, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "wday", resultp->tm_wday, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "yday", resultp->tm_yday, &e, MFILE, __LINE__);
-  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "isdst", resultp->tm_isdst, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "sec", resultp.tm_sec, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "min", resultp.tm_min, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "hour", resultp.tm_hour, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "mday", resultp.tm_mday, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "mon", resultp.tm_mon, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "year", resultp.tm_year, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "wday", resultp.tm_wday, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "yday", resultp.tm_yday, &e, MFILE, __LINE__);
+  env->set_field_int_by_name(env, obj_time_info, "Time::Info", "isdst", resultp.tm_isdst, &e, MFILE, __LINE__);
   
   stack[0].oval = obj_time_info;
   
