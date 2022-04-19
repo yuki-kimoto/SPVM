@@ -95,6 +95,9 @@ SPVM_ENV* SPVM_API_new_env_raw() {
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));
 
+  // Allocator
+  SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
+
   // The impelements of Native APIs
   void* env_init[]  = {
     NULL, // class_vars_heap
@@ -288,6 +291,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     env_api,
     SPVM_API_free_env_prepared,
     SPVM_API_get_method_id_cache,
+    allocator, // allocator
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -1219,6 +1223,9 @@ void SPVM_API_free_env_raw(SPVM_ENV* env) {
   free(env->api->precompile);
   free(env->api->runtime);
   free(env->api);
+  
+  // Free allocator
+  free(env->allocator);
   
   // Free env
   free(env);
@@ -5917,9 +5924,7 @@ SPVM_OBJECT* SPVM_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* s
 int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env) {
   (void)env;
   
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  SPVM_ALLOCATOR* allocator = runtime->allocator;
+  SPVM_ALLOCATOR* allocator = env->allocator;
   
   int32_t memory_blocks_count = SPVM_ALLOCATOR_get_memory_blocks_count(allocator);
   
@@ -7239,16 +7244,13 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
 
 void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size) {
 
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-  
   assert(byte_size > 0);
 
   if ((uint64_t)byte_size > (uint64_t)SIZE_MAX) {
     return NULL;
   }
   
-  void* block = SPVM_ALLOCATOR_alloc_memory_block_tmp(runtime->allocator, (size_t)byte_size);
+  void* block = SPVM_ALLOCATOR_alloc_memory_block_tmp(env->allocator, (size_t)byte_size);
   
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
     SPVM_ALLOCATOR* allocator = runtime->allocator;
@@ -7261,11 +7263,8 @@ void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size) {
 
 void SPVM_API_free_memory_block(SPVM_ENV* env, void* block) {
 
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-
   if (block) {
-    SPVM_ALLOCATOR_free_memory_block_tmp(runtime->allocator, block);
+    SPVM_ALLOCATOR_free_memory_block_tmp(env->allocator, block);
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
     SPVM_ALLOCATOR* allocator = runtime->allocator;
     fprintf(stderr, "[FREE_MEMORY %p (All:%d, Tmp:%d, Perm: %d]\n", block,

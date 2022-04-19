@@ -1817,19 +1817,19 @@ Specifying the address of the object releases the weak reference to the object.
 
   void* (*alloc_memory_block_zero)(SPVM_ENV* env, int64_t byte_size);
 
-If you specify the size in bytes, the memory block is allocated and the pointer of the allocated memory block is returned. If fail to alloc memory, return NULL. If success, all bits in the memory block are initialized with 0 and the memory block count (memory_blocks_count)is incremented by 1.
+If you specify the size in bytes, the memory block is allocated and the pointer of the allocated memory block is returned. If fail to alloc memory, return NULL. If success, all bits in the memory block are initialized with C<0> and the memory block count (memory_blocks_count)is incremented by C<1>.
 
 =head2 free_memory_block
 
   void (*free_memory_block)(SPVM_ENV* env, void* block);
 
-If block is not NULL, free the memory and memory blocks count(memory_blocks_count) is decremented by 1.
+If block is not NULL, free the memory and memory blocks count(memory_blocks_count) is decremented by C<1>.
 
 =head2 get_memory_blocks_count
 
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
 
-Returns the current number of memory blocks.
+Returns the current number of memory blocks of thie environment.
 
 The memory block is increased by 1 when an object is created, when the alloc_memory_block_zero function is called, and when a back reference is added by the weaken function.
 
