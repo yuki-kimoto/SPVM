@@ -375,6 +375,69 @@ sub compile_source_file {
   return $object_file_info;
 }
 
+sub create_bootstrap_header_source {
+  my ($self) = @_;
+
+  # Builder
+  my $builder = $self->builder;
+
+  # Class name
+  my $class_name = $self->class_name;
+
+  # Class names
+  my $class_names = $self->builder->get_class_names;
+  my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
+
+  my $source = '';
+
+  $source .= <<'EOS';
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <inttypes.h>
+#include <assert.h>
+
+#include "spvm_native.h"
+
+EOS
+    
+  $source .= "// module source get functions declaration\n";
+  for my $class_name (@$class_names_without_anon) {
+    my $class_cname = $class_name;
+    $class_cname =~ s/::/__/g;
+    $source .= <<"EOS";
+const char* SPMODSRC__${class_cname}__get_module_source();
+EOS
+  }
+
+  $source .= "// precompile functions declaration\n";
+  for my $class_name (@$class_names) {
+    my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
+    for my $method_name (@$precompile_method_names) {
+      my $class_cname = $class_name;
+      $class_cname =~ s/::/__/g;
+      $source .= <<"EOS";
+int32_t SPVMPRECOMPILE__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
+EOS
+    }
+  }
+
+  $source .= "// native functions declaration\n";
+  for my $class_cname (@$class_names_without_anon) {
+    my $native_method_names = $builder->get_method_names($class_cname, 'native');
+    for my $method_name (@$native_method_names) {
+      my $class_cname = $class_cname;
+      $class_cname =~ s/::/__/g;
+      $source .= <<"EOS";
+int32_t SPVM__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
+EOS
+    }
+  }
+    
+  return $source;
+}
+
 sub create_main_source {
   my ($self) = @_;
 
@@ -604,82 +667,39 @@ sub create_bootstrap_source {
   # Source file - Output
   my $build_src_dir = $self->builder->create_build_src_path;
   my $target_perl_class_name = "SPVM::$class_name";
-  my $boot_base = $target_perl_class_name;
-  $boot_base =~ s|::|/|g;
-  my $boot_source_file = "$build_src_dir/$boot_base.boot.c";
+  my $bootstrap_base = $target_perl_class_name;
+  $bootstrap_base =~ s|::|/|g;
+  my $bootstrap_source_file = "$build_src_dir/$bootstrap_base.boot.c";
 
   # Source creating callback
   my $create_cb = sub {
     
-    my $boot_source = '';
+    my $bootstrap_source = '';
     
-    $boot_source .= <<'EOS';
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <inttypes.h>
-#include <assert.h>
-
-#include "spvm_native.h"
-
-EOS
-    
-    $boot_source .= "// module source get functions declaration\n";
-    for my $class_name (@$class_names_without_anon) {
-      my $class_cname = $class_name;
-      $class_cname =~ s/::/__/g;
-      $boot_source .= <<"EOS";
-const char* SPMODSRC__${class_cname}__get_module_source();
-EOS
-    }
-
-    my $class_names = $self->builder->get_class_names;
-    $boot_source .= "// precompile functions declaration\n";
-    for my $class_name (@$class_names) {
-      my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
-      for my $method_name (@$precompile_method_names) {
-        my $class_cname = $class_name;
-        $class_cname =~ s/::/__/g;
-        $boot_source .= <<"EOS";
-int32_t SPVMPRECOMPILE__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
-EOS
-      }
-    }
-
-    $boot_source .= "// native functions declaration\n";
-    for my $class_cname (@$class_names_without_anon) {
-      my $native_method_names = $builder->get_method_names($class_cname, 'native');
-      for my $method_name (@$native_method_names) {
-        my $class_cname = $class_cname;
-        $class_cname =~ s/::/__/g;
-        $boot_source .= <<"EOS";
-int32_t SPVM__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
-EOS
-      }
-    }
+    # Header
+    $bootstrap_source .= $self->create_bootstrap_header_source;
     
     # main function
-    $boot_source .= $self->create_main_source;
+    $bootstrap_source .= $self->create_main_source;
     
     # SPVM_NATIVE_new_env_prepared function
-    $boot_source .= $self->create_new_env_prepared_func_source;
+    $bootstrap_source .= $self->create_new_env_prepared_func_source;
 
     # Build source directory
     my $build_src_dir = $self->builder->create_build_src_path;
     mkpath $build_src_dir;
-    mkpath dirname $boot_source_file;
+    mkpath dirname $bootstrap_source_file;
     
-    open my $boot_source_fh, '>', $boot_source_file
-      or die "Can't open file $boot_source_file:$!";
+    open my $bootstrap_source_fh, '>', $bootstrap_source_file
+      or die "Can't open file $bootstrap_source_file:$!";
 
-    print $boot_source_fh $boot_source;
+    print $bootstrap_source_fh $bootstrap_source;
   };
   
   # Create source file
   $self->create_source_file({
     input_files => [@$module_files, __FILE__],
-    output_file => $boot_source_file,
+    output_file => $bootstrap_source_file,
     create_cb => $create_cb,
   });
 }
