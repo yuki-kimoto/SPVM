@@ -2494,13 +2494,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_cache_name_length = strlen(field_class_name) + 1 + strlen(field_name) + 1 + strlen(field_signature);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t access_field_id = env->get_field_id(env, \"");
+                                              "    int32_t access_field_id = env->get_field_id_cache(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_field_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
@@ -2546,13 +2548,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_cache_name_length = strlen(field_class_name) + 1 + strlen(field_name) + 1 + strlen(field_signature);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t access_field_id = env->get_field_id(env, \"");
+                                              "    int32_t access_field_id = env->get_field_id_cache(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_field_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
@@ -2596,13 +2600,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_cache_name_length = strlen(field_class_name) + 1 + strlen(field_name) + 1 + strlen(field_signature);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t access_field_id = env->get_field_id(env, \"");
+                                              "    int32_t access_field_id = env->get_field_id_cache(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_field_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
@@ -3871,13 +3877,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_cache_name_length = strlen(field_class_name) + 1 + strlen(field_name) + 1 + strlen(field_signature);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id_cache(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
+
                                               "    if (access_field_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
@@ -3952,14 +3961,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* field_signature = SPVM_API_RUNTIME_get_name(runtime, field_signature_id);
         int32_t field_cache_name_length = strlen(field_class_name) + 1 + strlen(field_name) + 1 + strlen(field_signature);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t access_field_id = env->get_field_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id_cache(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_field_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
@@ -4008,14 +4019,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* field_signature = SPVM_API_RUNTIME_get_name(runtime, field_signature_id);
         int32_t field_cache_name_length = strlen(field_class_name) + 1 + strlen(field_name) + 1 + strlen(field_signature);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t access_field_id = env->get_field_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id_cache(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_field_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
@@ -5763,14 +5776,16 @@ void SPVM_PRECOMPILE_add_get_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   const char* field_signature = SPVM_API_RUNTIME_get_name(runtime, field_signature_id);
   int32_t field_cache_name_length = strlen(field_class_name) + 1 + strlen(field_name) + 1 + strlen(field_signature);
 
-  SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                        "    int32_t access_field_id = env->get_field_id(env, \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id_cache(env, \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "|");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "|");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
-  SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+  SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                         "    if ("
                                         "access_field_id");
   SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
@@ -5820,13 +5835,15 @@ void SPVM_PRECOMPILE_add_set_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   int32_t field_cache_name_length = strlen(field_class_name) + 1 + strlen(field_name) + 1 + strlen(field_signature);
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id(env, \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id_cache(env, \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "|");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "|");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
-  SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+  SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                         "    if ("
                                         "access_field_id"
                                         " < 0) {\n"
