@@ -1224,6 +1224,9 @@ void SPVM_API_free_env_raw(SPVM_ENV* env) {
   free(env->api->runtime);
   free(env->api);
   
+  // Free allocator
+  free(env->allocator);
+  
   // Free env
   free(env);
   env = NULL;
