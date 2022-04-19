@@ -6887,14 +6887,14 @@ int32_t SPVM_API_get_method_id_cache(SPVM_ENV* env, const char* method_cache_nam
   int32_t method_id;
   SPVM_HASH* method_cache_symtable = runtime->method_cache_symtable;
   SPVM_RUNTIME_METHOD* method_cache = SPVM_HASH_get(runtime->method_cache_symtable, method_cache_name, method_cache_name_length);
-  if (0) {
+  if (method_cache) {
     method_id = method_cache->id;
   }
   else {
     const char* class_name = method_cache_name;
     sep_ptr = index(class_name, '|');
     int32_t class_name_length = sep_ptr - class_name;
-    if (class_name_length < 1) {
+    if (class_name_length < 0) {
       method_id = -1;
     }
     else {
@@ -6903,7 +6903,7 @@ int32_t SPVM_API_get_method_id_cache(SPVM_ENV* env, const char* method_cache_nam
         const char* search_method_name = method_cache_name + class_name_length + 1;
         sep_ptr = index(search_method_name, '|');
         int32_t search_method_name_length = sep_ptr - search_method_name;
-        if (search_method_name_length < 1) {
+        if (search_method_name_length < 0) {
           method_id = -1;
         }
         else {
@@ -6924,7 +6924,7 @@ int32_t SPVM_API_get_method_id_cache(SPVM_ENV* env, const char* method_cache_nam
             const char* method_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, found_method->signature_id, NULL);
             if (strncmp(signature, method_signature, signature_length) == 0 && signature_length == strlen(method_signature)) {
               method_id = found_method->id;
-              // SPVM_HASH_set(runtime->method_cache_symtable, method_cache_name, method_cache_name_length, found_method);
+              SPVM_HASH_set(runtime->method_cache_symtable, method_cache_name, method_cache_name_length, found_method);
             }
             else {
               method_id = -1;
