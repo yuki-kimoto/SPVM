@@ -3560,44 +3560,6 @@ get_anon_class_names_by_parent_class_name(...)
 }
 
 SV*
-get_class_names_exclude_anon(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // The environment
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-
-  AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
-
-  int32_t classes_legnth = env->api->runtime->get_classes_length(runtime);
-
-  for (int32_t class_id = 0; class_id < classes_legnth; class_id++) {
-    const char* class_name = env->api->runtime->get_name(runtime, env->api->runtime->get_class_name_id(runtime, class_id));
-    int32_t is_anon_class = env->api->runtime->get_class_is_anon(runtime, class_id);
-    if (!is_anon_class) {
-      SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
-      av_push(av_class_names, SvREFCNT_inc(sv_class_name));
-    }
-  }
-  
-  XPUSHs(sv_class_names);
-  XSRETURN(1);
-}
-
-SV*
 get_class_names(...)
   PPCODE:
 {
