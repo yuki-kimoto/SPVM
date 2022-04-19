@@ -2260,7 +2260,7 @@ If more than one of "ro", "wo", and "rw" are specified at the same time, a compi
 
 Read Accessor of Class Variable has no arguments and the return type is same as the type of Class Variable.
 
-Write Acessor of Class Variable has one argument and the type is same as the type of Class Variable. The type of return value is L</"void Type">.
+Write Acessor of Class Variable has one argument and the type is same as the type of Class Variable. The return type is L</"void Type">.
 
 Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Class Variable Accessors.
 
@@ -2392,7 +2392,7 @@ If more than one of "ro", "wo", and "rw" are specified at the same time, a compi
 
 Read Accessor of Field has one argument that is L</"self Type"> and the return type is same as the type of Field.
 
-Write Acessor of Class Variable has two arguments. First argument is L</"self Type"> and second argument is same as the type of Field. The type of return value is L</"void Type">.
+Write Acessor of Class Variable has two arguments. First argument is L</"self Type"> and second argument is same as the type of Field. The return type is L</"void Type">.
 
 Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Field Accessors.
 
@@ -2545,7 +2545,7 @@ A class method can be called from the L<class name|/"Class Names">.
 
 If the class method is belong to the current class, a class method can be called using L<&|/"Current Class"> syntax.
   
-  # Call a class method using "&"
+  # Call a class method using C<&>
   my $total = &sum(1, 2);
 
 =head2 Instance Method
@@ -3494,7 +3494,7 @@ The setting exception variable is an L<expression|/"Expressions"> to get the val
 
 The return value is the value of L<exception variable|/"Exception Variable">.
 
-The type of return value is the L<string type|/"String Type">.
+The return type is the L<string type|/"String Type">.
 
 B<Examples of getting exception variable:>
   
@@ -3511,7 +3511,7 @@ The type of the assigned value must be L</"String Type">.
 
 The return value is the value after the setting.
 
-The type of return value is the L<string type|/"String Type">.
+The return type is the L<string type|/"String Type">.
 
 The reference count of the assigned value is incremented by C<1>.
 
@@ -3832,7 +3832,7 @@ B<Examples of instance method call:>
 
 =head2 Current Class
 
-B<&> before method name means the current class. You can call method using "&" keyword instead of the current class name.
+B<&> before method name means the current class. You can call method using C<&> keyword instead of the current class name.
 
 B<Examples of Current Class:>
 
@@ -4101,7 +4101,7 @@ the unary minus operator performs the following operation of C language.
 
   -x
 
-Return type of a unary minus operator is the type that L</"Unary Numeric Widening Type Conversion"> is performed.
+Return type of an unary minus operator is the type that L</"Unary Numeric Widening Type Conversion"> is performed.
 
 B<Examples of unary minus operators:>
 
@@ -4348,61 +4348,77 @@ For example, Post Decrement of L</"byte Type"> value is equivalent to the follow
 
   (my $tmp = $num, $num = (byte)($num - 1), $tmp)
 
-=head2 Bit Operator
+=head2 Bit Operators
 
-Bit Operator is an operator that performs Bit operation. L</"Bit AND Operator">, <a href = "#language-operator-bit-or">Bit OR Operator</a>, L</"Bit NOT Operator">.
+Bit operators are L<operators|/"Operators"> to perform bit operations.
+
+Bit operators are the L<bit AND operator|/"Bit AND Operator">, the L<bit OR operator|/"Bit OR Operator">, or the L<bit NOT operator|/"Bit NOT Operator">.
 
 =head2 Bit AND Operator
 
-Bit AND is L</"Binary Operators"> represented by "&".
+The bit AND operator C<&> is an L<operator|/"Operators"> to performe a bit AND operation.
 
   LEFT_OPERAND & RIGHT_OPERAND
 
-The left operand and the right operand must be L</"Integral Types">, otherwise a compilation error will occur.
+The left operand and the right operand must be an L<integral type/"Integral Types">. If not, a compilation error will occur.
 
-L</"Binary Numeric Widening Type Conversion"> is performed on The left operand and the right operand.
+A L<binary numeric widening type conversion|/"Binary Numeric Widening Type Conversion"> is performed.
 
-the operation result of Bit AND Operator performs the operation that exactly same as the following operation in C language
+The return value is the same as the follwoing operation of C<C language>.
 
   x & y;
 
-The type of Return Value of Bit AND Operator is the type after L</"Binary Numeric Widening Type"> is performed.
+The return type is the type after the L<binary numeric widening type conversion|/"Binary Numeric Widening Type"> is performed.
 
+B<Examples:>
+  
+  # The bit AND operator
+  my $num1 = 0xff;
+  my $num2 = 0x12;
+  my $result = $num1 & $num2;
+  
 =head2 Bit OR Operator
 
-Bit OR is L</"Binary Operators"> represented by "|/".
+The bit OR operator C<|> is an L<operator|/"Operators"> to performe a bit OR operation.
 
   LEFT_OPERAND | RIGHT_OPERAND
 
-The left operand and the right operand must be L</"Integral Types">, otherwise a compilation error will occur.
+The left operand and the right operand must be an L<integral type/"Integral Types">. If not, a compilation error will occur.
 
-L</"Binary Numeric Widening Type Conversion"> is performed on The left operand and the right operand.
+A L<binary numeric widening type conversion|/"Binary Numeric Widening Type Conversion"> is performed.
 
-the operation result of Bit OR Operator performs the operation that exactly same as the following operation in C language.
+The return value is the same as the follwoing operation of C<C language>.
 
   x | y;
 
-The type of Return Value of Bit OR Operator is the type that is L</"Binary Numeric Widening Type Converted">.
+The return type is the type after the L<binary numeric widening type conversion|/"Binary Numeric Widening Type"> is performed.
+
+B<Examples:>
+  
+  # The bit OR operator
+  my $num1 = 0xff;
+  my $num2 = 0x12;
+  my $result = $num1 | $num2;
 
 =head2 Bit NOT Operator
 
-The bit NOT operator C<~> is a L<unary operator|/"Unary Operators"> to get the value of bit-not operation.
+The bit NOT operator C<~> is an L<unary operator|/"Unary Operators"> to perform the bit NOT operation.
 
   ~OPERAND
 
-The operand must be an L<expression|/"Expressions"> that type is an L<integral type|/"Integral Types">, otherwise a compilation error will occur.
+The type of the operand must is an L<integral type|/"Integral Types">. If not, a compilation error will occur.
 
-L</"Unary Numeric Widening Type Conversion"> is performed to the operand.
+The L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion"> is performed.
 
-The bit NOT operator performs the operation that exactly same as the following operation in C language.
+The return value is the same as the follwoing operation of C<C language>.
 
   ~x
 
-The type of return value is the type that L</"Unary Numeric Widening Type Conversion"> is performed.
+The return type is the type that the L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion"> is performed.
 
-B<Examples of bit NOT operators:>
+B<Examples:>
   
-  # Bit NOT operations
+  # The bit NOT operator
   my $num = ~0xFF0A;
 
 =head2 Shift Operators
@@ -4599,7 +4615,7 @@ For Numeric Types Operation(==, !=, >, >=, <, <=), L</"int Type"> Operation, L</
 
 And Object Type Operation(==, !=) is defined.
 
-The type of Return Value of the Numeric Comparison Operator is L</"int Type">.
+The return type of the Numeric Comparison Operator is L</"int Type">.
 
 =head2 String Comparison Operator
 
@@ -4678,7 +4694,7 @@ A list of String Comparison Operators.
 
 =end html
 
-The type of Return Value of the String Comparison Operator is L</"int Type">. If the condition is met, returns 1, otherwise 0.
+The return type of the String Comparison Operator is L</"int Type">. If the condition is met, returns 1, otherwise 0.
 
 =head2 isa Operator
 
@@ -4781,7 +4797,7 @@ The left operand and the right operand must be a L<string type|/"String Type">, 
 
 If the type of the operand is numeric type, a L<numeric to string type conversion|/"Numeric to String Type Conversion"> is performed.
 
-The type of return value is a L<string type|/"String Type">.
+The return type is a L<string type|/"String Type">.
 
 A string concatenation operator returns the result to concat two operands.
 
