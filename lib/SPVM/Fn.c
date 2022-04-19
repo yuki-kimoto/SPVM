@@ -59,25 +59,41 @@ int32_t SPVM__Fn__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Fn__srand(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int64_t seed = stack[0].lval;
-  
-  srand((unsigned)seed);
-
-  return 0;
+// https://code.woboq.org/userspace/glibc/stdlib/rand_r.c.html
+static int
+SPVM__Fn__rand_r (uint32_t *seed)
+{
+  uint32_t next = *seed;
+  int result;
+  next *= 1103515245;
+  next += 12345;
+  result = (uint32_t) (next / 65536) % 2048;
+  next *= 1103515245;
+  next += 12345;
+  result <<= 10;
+  result ^= (uint32_t) (next / 65536) % 1024;
+  next *= 1103515245;
+  next += 12345;
+  result <<= 10;
+  result ^= (uint32_t) (next / 65536) % 1024;
+  *seed = next;
+  return result;
 }
 
 int32_t SPVM__Fn__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  stack[0].ival = rand();
+  int32_t* seed_ref = stack[0].iref;
+  
+  int32_t random_value = SPVM__Fn__rand_r(seed_ref);
+
+  stack[0].ival = random_value;
 
   return 0;
 }
 
 int32_t SPVM__Fn__RAND_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  stack[0].ival = RAND_MAX;
+  stack[0].ival = 2147483647;
 
   return 0;
 }

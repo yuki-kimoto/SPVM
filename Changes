@@ -1,4 +1,21 @@
 Revision history for SPVM
+0.9512_01  2021-04-19
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Remove Fn->srand because this method is not thread safe.
+        * Change Fn->crand arguments because this method become thread safe.
+          [Before]
+          static method crand : int ();
+          
+          [After]
+          static method crand : int ($seed : int*);
+
+        * Change Fn->rand arguments because this method become thread safe.
+          [Before]
+          static method rand : double ()
+          
+          [After]
+          static method rand : double ($seed : int*)
+          
 0.9511_01  2021-04-19
         [CHANGE]
         * Add Point module.

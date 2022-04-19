@@ -15,6 +15,7 @@ class TestCase::Lib::Fn3 {
   use EqualityChecker;
   use EqualityChecker::SameObject;
   use Complex_2d;
+  use Time;
 
   static method abs : int () {
     
@@ -93,9 +94,9 @@ class TestCase::Lib::Fn3 {
     my $founds_plus = new int[10];
     my $founds_minus = new int[10];
     my $rand = 0;
+    my $seed = (int)Time->time;
     for (my $i = 0; $i < 100000; $i++) {
-      $rand = Fn->crand();
-
+      $rand = Fn->crand(\$seed);
       my $dig0 = $rand % 10;
       $founds_plus->[$dig0] = 1;
     }
@@ -113,8 +114,9 @@ class TestCase::Lib::Fn3 {
     {
       my $rand = 0.0;
       my $invalid_range = 0;
+      my $seed = (int)Time->time;
       for (my $i = 0; $i < 100000; $i++) {
-        $rand = Fn->rand();
+        $rand = Fn->rand(\$seed);
         
         unless ($rand >= 0 && $rand < 1) {
           $invalid_range = 1;
@@ -132,8 +134,9 @@ class TestCase::Lib::Fn3 {
       my $founds_plus = new int[10];
       my $founds_minus = new int[10];
       my $rand = 0.0;
+      my $seed = (int)Time->time;
       for (my $i = 0; $i < 100000; $i++) {
-        $rand = Fn->rand();
+        $rand = Fn->rand(\$seed);
         
         # 0-9
         my $dig0 = (int)($rand * 10);
@@ -154,31 +157,6 @@ class TestCase::Lib::Fn3 {
       return 1;
     }
 
-    return 1;
-  }
-
-  static method srand : int () {
-    
-    Fn->srand(10);
-    
-    my $rand1 = Fn->crand();
-    my $rand2 = Fn->crand();
-    my $rand3 = Fn->crand();
-    
-    Fn->srand(10);
-    
-    unless (Fn->crand() == $rand1) {
-      return 0;
-    }
-    
-    unless (Fn->crand() == $rand2) {
-      return 0;
-    }
-    
-    unless (Fn->crand() == $rand3) {
-      return 0;
-    }
-    
     return 1;
   }
 

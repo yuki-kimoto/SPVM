@@ -49,17 +49,6 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn3->rand);
 }
 
-# srand
-SKIP: {
-  if ($^O eq 'openbsd') {
-    skip "openbsd srand don't fllow POSIX", 6;
-  }
-  
-  {
-    ok(SPVM::TestCase::Lib::Fn3->srand);
-  }
-}
-
 # RAND_MAX
 {
   ok(SPVM::TestCase::Lib::Fn3->RAND_MAX);

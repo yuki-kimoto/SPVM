@@ -392,7 +392,7 @@ class Fn : precompile {
     return copy $string;
   }
 
-  native static method crand : int ();
+  native static method crand : int ($seed : int*);
 
   static method dump_array_byte : string ($nums : byte[]) {
     
@@ -1256,10 +1256,10 @@ class Fn : precompile {
     return $p;
   }
 
-  static method rand : double () {
+  static method rand : double ($seed : int*) {
     
     # 0 <= random_number < 1
-    my $random_number = (double)Fn->crand() / ((double)Fn->RAND_MAX() + 1);
+    my $random_number = (double)Fn->crand($seed) / ((double)Fn->RAND_MAX() + 1);
     
     return $random_number;
   }
@@ -1939,8 +1939,6 @@ class Fn : precompile {
     my $result = $buffer->to_string;
     return $result;
   }
-
-  native static method srand : void ($seed : long);
 
   static method substr : string ($string : string, $offset : int, $length : int) {
 

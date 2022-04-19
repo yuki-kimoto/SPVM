@@ -17,7 +17,6 @@ SPVM::Fn - SPVM Starndard Functions
   my $int32_max = Fn->INT32_MAX();
   my $int64_max = Fn->INT64_MAX();
   
-  Fn->srand(Time->time());
   my $rand = Fn->rand();
 
   # Cut a newline LF
@@ -518,13 +517,13 @@ If the argument string is undef, return undef.
 
 =head2 crand
 
-  static method crand : int ();
+  static method crand : int ($seed : int*);
 
-Get random number(0 <= rundom_number <= Fn->RAND_MAX). This is same as rand function of C language.
+Get random number(0 <= rundom_number <= Fn->RAND_MAX) with a seed.
 
-The first seed is initialized by epoch time automatically. If you set a seed manually, you can use <srand> class method.
+The seed is updated.
 
-This method is not thread safe because internaly this method use rand function of C language.
+This method is thread safe different from C<rand> function of C<C language>.
 
 =head2 dump_array_byte
 
@@ -1149,13 +1148,13 @@ Calculate the exponentiation.
 
 =head2 rand
 
-  static method rand : double ();
+  static method rand : double ($seed : int*)
 
-Get random number(0 <= random_number < 1). This is same as rand function of Perl language.
+Get random number(0 <= random_number < 1)with a seed.
 
-The first seed is initialized by epoch time automatically. If you set a seed manually, you can use <srand> class method.
+The seed is updated.
 
-This method is not thread safe because internaly this method use rand function of C language.
+This method is thread safe different from C<rand> function of C<C language>.
 
 =head2 rindex
 
@@ -1371,12 +1370,6 @@ Create a formatted string with the format and the embdded values.
   
   # Output
   "3.14"
-
-=head2 srand
-
-  static method srand : void ($seed : long);
-
-Sets random number seed for the C<crand> or C<rand> class method.
 
 =head2 substr
 
