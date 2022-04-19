@@ -4153,13 +4153,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_class_var_id = env->get_class_var_id_cache(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, class_var_cache_name_length);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_class_var_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
@@ -4192,14 +4194,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* class_var_signature = SPVM_API_RUNTIME_get_name(runtime, class_var_signature_id);
         int32_t class_var_cache_name_length = strlen(class_var_class_name) + 1 + strlen(class_var_name) + 1 + strlen(class_var_signature);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_class_var_id = env->get_class_var_id_cache(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, class_var_cache_name_length);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_class_var_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
@@ -4261,13 +4265,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_class_var_id = env->get_class_var_id_cache(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, class_var_cache_name_length);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if ("
                                               "access_class_var_id"
                                               " < 0) {\n"
@@ -4302,14 +4308,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* class_var_signature = SPVM_API_RUNTIME_get_name(runtime, class_var_signature_id);
         int32_t class_var_cache_name_length = strlen(class_var_class_name) + 1 + strlen(class_var_name) + 1 + strlen(class_var_signature);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_class_var_id = env->get_class_var_id_cache(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, class_var_cache_name_length);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if ("
                                               "access_class_var_id"
                                               " < 0) {\n"
@@ -4344,14 +4352,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* class_var_signature = SPVM_API_RUNTIME_get_name(runtime, class_var_signature_id);
         int32_t class_var_cache_name_length = strlen(class_var_class_name) + 1 + strlen(class_var_name) + 1 + strlen(class_var_signature);
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t access_class_var_id = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_class_var_id = env->get_class_var_id_cache(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "|");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, class_var_cache_name_length);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if ("
                                               "access_class_var_id"
                                               " < 0) {\n"
