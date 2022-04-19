@@ -385,9 +385,8 @@ sub create_new_env_prepared_func_source {
   my $class_name = $self->class_name;
 
   # Class names
-  my $class_names_exclude_anon = $builder->get_class_names_exclude_anon;
-
   my $class_names = $self->builder->get_class_names;
+  my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
 
   my $source = '';
   
@@ -410,7 +409,7 @@ EOS
   // Set module source_files
 EOS
   
-  for my $class_name (@$class_names_exclude_anon) {
+  for my $class_name (@$class_names_without_anon) {
     my $class_cname = $class_name;
     $class_cname =~ s/::/__/g;
     
@@ -475,7 +474,7 @@ EOS
     }
   }
 
-  for my $class_name (@$class_names_exclude_anon) {
+  for my $class_name (@$class_names_without_anon) {
     my $class_cname = $class_name;
     $class_cname =~ s/::/__/g;
     
@@ -515,11 +514,12 @@ sub create_bootstrap_source {
   my $class_name = $self->class_name;
   
   # Class names
-  my $class_names_exclude_anon = $builder->get_class_names_exclude_anon;
+  my $class_names = $builder->get_class_names;
+  my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   
   # Module files - Input
   my $module_files = [];
-  for my $class_name (@$class_names_exclude_anon) {
+  for my $class_name (@$class_names_without_anon) {
     my $module_file = $builder->get_module_file($class_name);
     push @$module_files, $module_file;
   }
@@ -549,7 +549,7 @@ sub create_bootstrap_source {
 EOS
     
     $boot_source .= "// module source get functions declaration\n";
-    for my $class_name (@$class_names_exclude_anon) {
+    for my $class_name (@$class_names_without_anon) {
       my $class_cname = $class_name;
       $class_cname =~ s/::/__/g;
       $boot_source .= <<"EOS";
@@ -571,7 +571,7 @@ EOS
     }
 
     $boot_source .= "// native functions declaration\n";
-    for my $class_cname (@$class_names_exclude_anon) {
+    for my $class_cname (@$class_names_without_anon) {
       my $native_method_names = $builder->get_method_names($class_cname, 'native');
       for my $method_name (@$native_method_names) {
         my $class_cname = $class_cname;
@@ -734,9 +734,9 @@ sub create_spvm_module_sources {
   my $builder = $self->builder;
   
   # Compiled class names
-  my $class_names_exclude_anon = $builder->get_class_names_exclude_anon;
-  
-  for my $class_name (@$class_names_exclude_anon) {
+  my $class_names = $builder->get_class_names;
+  my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
+  for my $class_name (@$class_names_without_anon) {
     
     # Moudle file - Input
     my $module_file = $builder->get_module_file($class_name);
@@ -791,9 +791,10 @@ sub compile_spvm_module_sources {
   my $builder = $self->builder;
   
   # Compile module source files
-  my $class_names_exclude_anon = $builder->get_class_names_exclude_anon;
+  my $class_names = $builder->get_class_names;
+  my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   my $object_file_infos = [];
-  for my $class_name (@$class_names_exclude_anon) {
+  for my $class_name (@$class_names_without_anon) {
     my $perl_class_name = "SPVM::$class_name";
     
     # Build source directory
@@ -836,8 +837,9 @@ sub create_precompile_sources {
     force => $self->force,
   );
 
-  my $class_names_exclude_anon = $builder->get_class_names_exclude_anon;
-  for my $class_name (@$class_names_exclude_anon) {
+  my $class_names = $builder->get_class_names;
+  my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
+  for my $class_name (@$class_names_without_anon) {
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     if (@$precompile_method_names) {
       
@@ -872,9 +874,10 @@ sub compile_precompile_sources {
     force => $self->force,
   );
   
-  my $class_names_exclude_anon = $builder->get_class_names_exclude_anon;
+  my $class_names = $builder->get_class_names;
+  my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   my $object_files = [];
-  for my $class_name (@$class_names_exclude_anon) {
+  for my $class_name (@$class_names_without_anon) {
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     if (@$precompile_method_names) {
       my $src_dir = $self->builder->create_build_src_path;
@@ -916,9 +919,10 @@ sub compile_native_sources {
     force => $self->force,
   );
   
-  my $class_names_exclude_anon = $builder->get_class_names_exclude_anon;
+  my $class_names = $builder->get_class_names;
+  my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   my $all_object_files = [];
-  for my $class_name (@$class_names_exclude_anon) {
+  for my $class_name (@$class_names_without_anon) {
 
     my $perl_class_name = "SPVM::$class_name";
     
