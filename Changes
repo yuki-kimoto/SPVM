@@ -3,6 +3,11 @@ Revision history for SPVM
         [CHANGE]
         * Add --dynamic-lib option to spvmcc. spvmcc can create a dynamic library.
         * Add --static-lib option to spvmcc. spvmcc can create a static library.
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Native API "alloc_memory_block_zer" allocs memory for the envrironment, instead of the runtime
+        * Native API "free_memory_block" frees memory for the envrironment, instead of the runtime
+        * Native API "get_memory_blocks_count" gets the count of memory blocks for the envrironment, instead of the runtime
+        
 0.9511_01  2021-04-14
         [CHANGE]
         * Add Point module.
