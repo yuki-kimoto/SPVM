@@ -573,16 +573,20 @@ EOS
     exit(255);
   }
 
-  // Build runtime information
+  // New runtime
   void* runtime = env->api->runtime->new_runtime(env);
-  env->api->compiler->build_runtime(compiler, runtime);
-
-EOS
   
-  $source .= <<'EOS';
+  // Runtime allocator
+  void* runtime_allocator = env->api->runtime->get_allocator(runtime);
+  
+  // Create SPVM 32bit codes
+  int32_t* spvm_32bit_codes = env->api->compiler->create_spvm_32bit_codes(compiler, runtime_allocator);
   
   // Free compiler
   env->api->compiler->free_compiler(compiler);
+  
+  // Build runtime
+  env->api->runtime->build(runtime, spvm_32bit_codes);
 
   // Prepare runtime
   env->api->runtime->prepare(runtime);
