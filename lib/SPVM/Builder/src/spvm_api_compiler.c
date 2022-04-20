@@ -110,9 +110,9 @@ void SPVM_API_COMPILER_set_module_source_by_name(SPVM_COMPILER* compiler, const 
   SPVM_HASH_set(compiler->module_source_symtable, class_name, strlen(class_name), (void*)module_source);
 }
 
-int32_t* SPVM_API_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator, int32_t* spvm_32bit_codes_length_ptr) {
+int32_t* SPVM_API_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator) {
   
-  int32_t* spvm_32bit_codes = SPVM_COMPILER_create_spvm_32bit_codes(compiler, allocator, spvm_32bit_codes_length_ptr);
+  int32_t* spvm_32bit_codes = SPVM_COMPILER_create_spvm_32bit_codes(compiler, allocator);
   
   return spvm_32bit_codes;
 }

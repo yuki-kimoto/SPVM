@@ -175,6 +175,6 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime);
 
 int32_t SPVM_COMPILER_calculate_spvm_32bit_codes_length(SPVM_COMPILER* compiler);
-int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator, int32_t* spvm_32bit_codes_length_ptr);
+int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator);
 
 #endif

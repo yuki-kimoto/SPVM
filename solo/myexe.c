@@ -99,8 +99,8 @@ SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
   // Runtime allocator
   void* runtime_allocator = env->api->runtime->get_allocator(runtime);
   
-  int32_t spvm_32bit_codes_length;
-  int32_t* spvm_32bit_codes = env->api->compiler->create_spvm_32bit_codes(compiler, runtime_allocator, &spvm_32bit_codes_length);
+  // SPVM 32bit codes
+  int32_t* spvm_32bit_codes = env->api->compiler->create_spvm_32bit_codes(compiler, runtime_allocator);
    
   env->api->compiler->build_runtime(compiler, runtime);
   
