@@ -533,9 +533,8 @@ void SPVM_COMPILER_build_runtime_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_
 
   // constant_strings 32bit length
   int32_t constant_strings_32bit_length = (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (compiler->constant_strings->length + 1);
-  *spvm_32bit_codes_ptr = opcodes_32bit_length;
+  *spvm_32bit_codes_ptr = constant_strings_32bit_length;
   spvm_32bit_codes_ptr++;
-
   
   // constant_strings
   int32_t* constant_string_32bit_ptr = spvm_32bit_codes_ptr;
@@ -575,7 +574,7 @@ void SPVM_COMPILER_build_runtime_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_
 
   // classes 32bit length
   int32_t classes_32bit_length = (sizeof(SPVM_RUNTIME_CLASS) / sizeof(int32_t)) * (compiler->classes->length + 1);
-  *spvm_32bit_codes_ptr = opcodes_32bit_length;
+  *spvm_32bit_codes_ptr = classes_32bit_length;
   spvm_32bit_codes_ptr++;
 
   // classes
@@ -667,7 +666,7 @@ void SPVM_COMPILER_build_runtime_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_
 
   // basic_types 32bit length
   int32_t basic_types_32bit_length = (sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t)) * (compiler->basic_types->length + 1);
-  *spvm_32bit_codes_ptr = opcodes_32bit_length;
+  *spvm_32bit_codes_ptr = basic_types_32bit_length;
   spvm_32bit_codes_ptr++;
 
   // basic_types
@@ -697,7 +696,7 @@ void SPVM_COMPILER_build_runtime_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_
 
   // types 32bit length
   int32_t types_32bit_length = (sizeof(SPVM_RUNTIME_TYPE) / sizeof(int32_t)) * (compiler->types->length + 1);
-  *spvm_32bit_codes_ptr = opcodes_32bit_length;
+  *spvm_32bit_codes_ptr = types_32bit_length;
   spvm_32bit_codes_ptr++;
 
   // types
@@ -722,7 +721,7 @@ void SPVM_COMPILER_build_runtime_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_
 
   // class_vars 32bit length
   int32_t class_vars_32bit_length = (sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t)) * (compiler->class_vars->length + 1);
-  *spvm_32bit_codes_ptr = opcodes_32bit_length;
+  *spvm_32bit_codes_ptr = class_vars_32bit_length;
   spvm_32bit_codes_ptr++;
 
   // class_vars
@@ -751,7 +750,7 @@ void SPVM_COMPILER_build_runtime_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_
 
   // methods 32bit length
   int32_t methods_32bit_length = (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * (compiler->methods->length + 1);
-  *spvm_32bit_codes_ptr = opcodes_32bit_length;
+  *spvm_32bit_codes_ptr = methods_32bit_length;
   spvm_32bit_codes_ptr++;
 
   // methods
@@ -822,7 +821,7 @@ void SPVM_COMPILER_build_runtime_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_
 
   // fields 32bit length
   int32_t fields_32bit_length = (sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t)) * (compiler->fields->length + 1);
-  *spvm_32bit_codes_ptr = opcodes_32bit_length;
+  *spvm_32bit_codes_ptr = fields_32bit_length;
   spvm_32bit_codes_ptr++;
 
   // fields
@@ -887,14 +886,24 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   spvm_32bit_codes_ptr++;
 
   // constant_strings 32bit length
+  int32_t constant_strings_32bit_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
   
   // constant_strings
+  runtime->constant_strings = (SPVM_RUNTIME_CONSTANT_STRING*)spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr += constant_strings_32bit_length;
 
   // anon_method_methods length
+  runtime->anon_method_methods_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
 
   // anon_method_methods 32bit length
+  int32_t anon_method_methods_32bit_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
 
   // anon_method_method_ids
+  runtime->anon_method_method_ids = spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr += anon_method_methods_32bit_length;
 
   // classes length
   
@@ -938,17 +947,6 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   
   // fields
   
-  // Strings
-  runtime->constant_strings = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CONSTANT_STRING) * (compiler->constant_strings->length + 1));
-  for (int32_t constant_string_id = 0; constant_string_id < compiler->constant_strings->length; constant_string_id++) {
-    SPVM_CONSTANT_STRING* string = SPVM_LIST_get(compiler->constant_strings, constant_string_id);
-    SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->constant_strings[constant_string_id];
-    
-    runtime_string->id = string->id;
-    runtime_string->length = string->length;
-    runtime_string->string_buffer_id = string->string_buffer_id;
-  }
-
   // Runtime classes
   runtime->classes_length = compiler->classes->length;
   runtime->classes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_CLASS) * (compiler->classes->length + 1));
