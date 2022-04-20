@@ -954,10 +954,16 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   spvm_32bit_codes_ptr += class_vars_32bit_length;
 
   // methods length
-  
+  runtime->methods_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
+
   // methods 32bit length
+  int32_t methods_32bit_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
   
   // methods
+  runtime->methods = (SPVM_RUNTIME_METHOD*)spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr += methods_32bit_length;
 
   // arg_types length
   
