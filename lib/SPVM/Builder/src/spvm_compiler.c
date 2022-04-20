@@ -406,7 +406,7 @@ int32_t SPVM_COMPILER_calculate_runtime_spvm_32bit_codes_length(SPVM_COMPILER* c
   length++;
   
   // constant_strings_buffer
-  length += (compiler->constant_strings_buffer->length / sizeof(int32_t)) * (compiler->constant_strings_buffer->length + 1);
+  length += (compiler->constant_strings_buffer->length / sizeof(int32_t)) + 1;
   
   // constant_strings length
   length++;
@@ -519,7 +519,7 @@ void SPVM_COMPILER_build_runtime_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_
   spvm_32bit_codes_ptr++;
 
   // constant_strings_buffer 32bit length
-  int32_t constant_strings_buffer_32bit_length = (compiler->constant_strings_buffer->length / sizeof(int32_t)) * (compiler->constant_strings_buffer->length + 1);
+  int32_t constant_strings_buffer_32bit_length = (compiler->constant_strings_buffer->length / sizeof(int32_t)) + 1;
   *spvm_32bit_codes_ptr = opcodes_32bit_length;
   spvm_32bit_codes_ptr++;
   
@@ -535,6 +535,7 @@ void SPVM_COMPILER_build_runtime_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_
   int32_t constant_strings_32bit_length = (compiler->constant_strings->length / sizeof(int32_t)) * (compiler->constant_strings->length + 1);
   *spvm_32bit_codes_ptr = opcodes_32bit_length;
   spvm_32bit_codes_ptr++;
+
   
   // constant_strings
   int32_t* constant_string_32bit_ptr = spvm_32bit_codes_ptr;
