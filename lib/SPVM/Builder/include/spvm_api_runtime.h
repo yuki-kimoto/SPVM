@@ -117,5 +117,6 @@ void* SPVM_API_RUNTIME_get_native_method_address(SPVM_RUNTIME* runtime, int32_t 
 void* SPVM_API_RUNTIME_get_precompile_method_address(SPVM_RUNTIME* runtime, int32_t method_id);
 
 SPVM_ALLOCATOR* SPVM_API_RUNTIME_get_allocator(SPVM_RUNTIME* runtime);
+void SPVM_API_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* spvm_32bit_codes);
 
 #endif

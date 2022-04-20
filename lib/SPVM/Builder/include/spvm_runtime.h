@@ -112,4 +112,6 @@ void SPVM_RUNTIME_prepare(SPVM_RUNTIME* runtime);
 
 SPVM_ALLOCATOR* SPVM_RUNTIME_get_allocator(SPVM_RUNTIME* runtime);
 
+void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* spvm_32bit_codes);
+
 #endif

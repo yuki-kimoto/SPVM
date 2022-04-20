@@ -380,6 +380,7 @@ struct spvm_env_runtime {
   void* object_flag_offset;
   void* object_length_offset;
   void* (*get_allocator)(void* runtime);
+  void (*build)(void* runtime, int32_t* spvm_32bit_codes);
 };
 
 struct spvm_env_compiler {
