@@ -857,6 +857,8 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
   SPVM_ALLOCATOR* allocator = runtime->allocator;
 
+  SPVM_COMPILER_build_runtime_spvm_32bit_codes(compiler, runtime);
+
   runtime->opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_OPCODE) * (compiler->opcode_array->length + 1));
   runtime->opcodes_length = compiler->opcode_array->length;
   memcpy(runtime->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
