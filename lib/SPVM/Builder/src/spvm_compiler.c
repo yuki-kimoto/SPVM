@@ -386,7 +386,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   return error_code;
 }
 
-int32_t SPVM_COMPILER_calculate_runtime_spvm_32bit_codes_length(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {
+int32_t SPVM_COMPILER_calculate_runtime_spvm_32bit_codes_length(SPVM_COMPILER* compiler) {
 
   int32_t length = 0;
   
@@ -493,8 +493,13 @@ int32_t SPVM_COMPILER_calculate_runtime_spvm_32bit_codes_length(SPVM_COMPILER* c
 }
 
 void SPVM_COMPILER_build_runtime_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {
-
+  
+  int32_t spvm_32bit_index = 0;
+  
   SPVM_ALLOCATOR* allocator = runtime->allocator;
+  
+  int32_t spvvm_32bit_codes_length = SPVM_COMPILER_calculate_runtime_spvm_32bit_codes_length(compiler);
+  int32_t* spvm_32bit_codes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * spvvm_32bit_codes_length);
 
   runtime->opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_OPCODE) * (compiler->opcode_array->length + 1));
   runtime->opcodes_length = compiler->opcode_array->length;
