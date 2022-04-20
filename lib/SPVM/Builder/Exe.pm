@@ -251,9 +251,6 @@ sub build_exe_file {
   # Build runtime
   $builder->build_runtime;
   
-  # SPVM 32bit codes
-  my $spvm_32bit_codes = $builder->get_spvm_32bit_codes;
-  
   # Config file
   my $module_file = $builder->get_module_file($class_name);
   
@@ -691,6 +688,9 @@ sub create_bootstrap_source {
     
     # SPVM_NATIVE_new_env_prepared function
     $bootstrap_source .= $self->create_bootstrap_new_env_prepared_func_source;
+
+    # SPVM 32bit codes
+    my $spvm_32bit_codes = $builder->get_spvm_32bit_codes;
 
     # Build source directory
     my $build_src_dir = $self->builder->create_build_src_path;
