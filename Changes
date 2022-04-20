@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9511_01  2021-04-19
+0.9512  2021-04-21
         [CHANGE]
         * Add Point module.
         * Improve method call error message.
