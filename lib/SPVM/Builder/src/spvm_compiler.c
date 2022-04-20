@@ -966,10 +966,16 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   spvm_32bit_codes_ptr += methods_32bit_length;
 
   // arg_types length
+  runtime->arg_types_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
   
   // arg_types 32bit length
+  int32_t arg_types_32bit_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
   
   // arg_type_ids
+  runtime->arg_type_ids = spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr += arg_types_32bit_length;
   
   // fields length
 
@@ -982,15 +988,6 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   
   // Method precompile addresses
   runtime->method_precompile_addresses = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(void*) * runtime->methods_length);
-
-  // Runtime method argument type ids
-  runtime->arg_types_length = compiler->args->length;
-  runtime->arg_type_ids = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * (compiler->args->length + 1));
-  for (int32_t arg_id = 0; arg_id < compiler->args->length; arg_id++) {
-    SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(compiler->args, arg_id);
-    int32_t arg_type_id = arg_var_decl->type->id;
-    runtime->arg_type_ids[arg_id] = arg_type_id;
-  }
 
   // Runtime fields
   runtime->fields_length = compiler->fields->length;
