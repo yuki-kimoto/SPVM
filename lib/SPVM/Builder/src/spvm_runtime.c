@@ -20,6 +20,10 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   return runtime;
 }
 
+SPVM_ALLOCATOR* SPVM_RUNTIME_get_allocator(SPVM_RUNTIME* runtime) {
+  return runtime->allocator;
+}
+
 void SPVM_RUNTIME_prepare(SPVM_RUNTIME* runtime) {
 
   SPVM_ALLOCATOR* allocator = runtime->allocator;

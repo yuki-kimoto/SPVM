@@ -379,6 +379,7 @@ struct spvm_env_runtime {
   void* object_type_dimension_offset;
   void* object_flag_offset;
   void* object_length_offset;
+  void* (*get_allocator)(void* runtime);
 };
 
 struct spvm_env_compiler {
