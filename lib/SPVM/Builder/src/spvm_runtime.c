@@ -75,6 +75,10 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* spvm_32bit_codes) {
   
   int32_t* spvm_32bit_codes_ptr = runtime->spvm_32bit_codes;
 
+  // Total length
+  int32_t spvm_32bit_codes_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
+
   // opcodes length
   runtime->opcodes_length = *spvm_32bit_codes_ptr;
   spvm_32bit_codes_ptr++;
