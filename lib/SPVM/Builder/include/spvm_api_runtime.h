@@ -30,6 +30,8 @@ void SPVM_API_RUNTIME_free_runtime(SPVM_RUNTIME* runtime);
 // Runtime information
 SPVM_OPCODE* SPVM_API_RUNTIME_get_opcodes(SPVM_RUNTIME* runtime);
 int32_t SPVM_API_RUNTIME_get_opcodes_length(SPVM_RUNTIME* runtime);
+int32_t* SPVM_API_RUNTIME_get_spvm_32bit_codes(SPVM_RUNTIME* runtime);
+int32_t SPVM_API_RUNTIME_get_spvm_32bit_codes_length(SPVM_RUNTIME* runtime);
 int32_t SPVM_API_RUNTIME_get_classes_length(SPVM_RUNTIME* runtime);
 
 // Basic type

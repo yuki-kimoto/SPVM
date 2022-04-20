@@ -306,6 +306,8 @@ struct spvm_env_runtime {
   void (*prepare)(void* runtime);
   int32_t* (*get_opcodes)(void* runtime);
   int32_t (*get_opcodes_length)(void* runtime);
+  int32_t* (*get_spvm_32bit_codes)(void* runtime);
+  int32_t (*get_spvm_32bit_codes_length)(void* runtime);
   int32_t (*get_classes_length)(void* runtime);
   int32_t (*get_constant_string_id)(void* runtime, const char* string);
   const char* (*get_constant_string_value)(void* runtime, int32_t constant_string_id, int32_t* string_length);
