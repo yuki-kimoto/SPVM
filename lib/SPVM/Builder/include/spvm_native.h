@@ -396,7 +396,6 @@ struct spvm_env_compiler {
   int32_t (*compile_spvm)(void* compiler, const char* class_name);
   int32_t (*get_error_messages_length)(void* compiler);
   const char* (*get_error_message)(void* compiler, int32_t index);
-  void (*build_runtime)(void* compiler, void* runtime);
   const char* (*get_module_source_by_name)(void* compiler, const char* class_name);
   void (*set_module_source_by_name)(void* compiler, const char* class_name, const char* module_source);
   int32_t* (*create_spvm_32bit_codes)(void* compiler, void* allocator);

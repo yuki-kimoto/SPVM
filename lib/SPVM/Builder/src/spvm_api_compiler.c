@@ -28,7 +28,6 @@ SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
     SPVM_API_COMPILER_compile_spvm,
     SPVM_API_COMPILER_get_error_messages_length,
     SPVM_API_COMPILER_get_error_message,
-    SPVM_API_COMPILER_build_runtime,
     SPVM_API_COMPILER_get_module_source_by_name,
     SPVM_API_COMPILER_set_module_source_by_name,
     SPVM_API_COMPILER_create_spvm_32bit_codes,
@@ -87,10 +86,6 @@ int32_t SPVM_API_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* clas
   
   int32_t error_code = SPVM_COMPILER_compile_spvm(compiler, class_name);
   return error_code;
-}
-
-void SPVM_API_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {  
-  SPVM_COMPILER_build_runtime(compiler, runtime);
 }
 
 int32_t SPVM_API_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler) {  
