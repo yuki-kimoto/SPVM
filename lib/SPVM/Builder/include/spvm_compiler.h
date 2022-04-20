@@ -150,6 +150,9 @@ struct spvm_compiler {
   
   // module source symtable
   SPVM_HASH* module_source_symtable;
+  
+  // SPVM 32bit codes
+  int32_t* spvm_32bit_codes;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
@@ -170,5 +173,8 @@ const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t ind
 int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name);
 
 void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime);
+
+int32_t SPVM_COMPILER_calculate_spvm_32bit_codes_length(SPVM_COMPILER* compiler);
+int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator, int32_t* spvm_32bit_codes_length_ptr);
 
 #endif
