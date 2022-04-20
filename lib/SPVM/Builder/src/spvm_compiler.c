@@ -978,36 +978,22 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   spvm_32bit_codes_ptr += arg_types_32bit_length;
   
   // fields length
+  runtime->fields_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
 
   // fields 32bit length
+  int32_t fields_32bit_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
   
   // fields
+  runtime->fields = (SPVM_RUNTIME_FIELD*)spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr += fields_32bit_length;
   
   // Method native addresses
   runtime->method_native_addresses = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(void*) * runtime->methods_length);
   
   // Method precompile addresses
   runtime->method_precompile_addresses = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(void*) * runtime->methods_length);
-
-  // Runtime fields
-  runtime->fields_length = compiler->fields->length;
-  runtime->fields = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_RUNTIME_FIELD) * (compiler->fields->length + 1));
-  for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
-    SPVM_FIELD* field = SPVM_LIST_get(compiler->fields, field_id);
-    SPVM_RUNTIME_FIELD* runtime_field = &runtime->fields[field_id];
-
-    runtime_field->id = field->id;
-    runtime_field->index = field->index;
-    runtime_field->offset = field->offset;
-    runtime_field->type_id = field->type->id;
-    runtime_field->class_id = field->class->id;
-    
-    SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(compiler->constant_string_symtable, field->name, strlen(field->name));
-    runtime_field->name_id = field_name_string->id;
-
-    SPVM_CONSTANT_STRING* field_signature_string = SPVM_HASH_get(compiler->constant_string_symtable, field->signature, strlen(field->signature));
-    runtime_field->signature_id = field_signature_string->id;
-  }
 
 #ifdef SPVM_DEBUG_RUNTIME
   fprintf(stderr, "[RUNTIME MEMORY SIZE]\n");
