@@ -251,6 +251,9 @@ sub build_exe_file {
   # Build runtime
   $builder->build_runtime;
   
+  # SPVM 32bit codes
+  my $spvm_32bit_codes = $builder->get_spvm_32bit_codes;
+  
   # Config file
   my $module_file = $builder->get_module_file($class_name);
   
