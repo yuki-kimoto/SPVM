@@ -515,6 +515,29 @@ EOS
   return $source;
 }
 
+sub create_bootstrap_get_spvm_32bit_codes_func_source {
+  my ($self) = @_;
+
+  # Builder
+  my $builder = $self->builder;
+
+  my $spvm_32bit_codes = $builder->get_spvm_32bit_codes;
+
+  my $source = '';
+  
+  $source .= <<"EOS";
+static int32_t SPVM_BOOTSTRAP_get_spvm_32bit_codes() {
+EOS
+  
+  
+  
+  $source .= <<"EOS";
+}
+EOS
+  
+  return $source;
+}
+
 sub create_bootstrap_new_env_prepared_func_source {
   my ($self) = @_;
 
@@ -685,6 +708,9 @@ sub create_bootstrap_source {
     
     # main function
     $bootstrap_source .= $self->create_bootstrap_main_func_source;
+
+    # get_spvm_32bit_codes function
+    $bootstrap_source .= $self->create_bootstrap_get_spvm_32bit_codes_func_source;
     
     # SPVM_NATIVE_new_env_prepared function
     $bootstrap_source .= $self->create_bootstrap_new_env_prepared_func_source;
