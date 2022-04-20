@@ -499,6 +499,10 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
 
   int32_t* spvm_32bit_codes_ptr = spvm_32bit_codes;
   
+  // Total length
+  *spvm_32bit_codes_ptr = spvm_32bit_codes_length;
+  spvm_32bit_codes_ptr++;
+  
   // opcodes length
   *spvm_32bit_codes_ptr = compiler->opcode_array->length;
   spvm_32bit_codes_ptr++;
@@ -855,12 +859,16 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
 
   SPVM_ALLOCATOR* allocator = runtime->allocator;
   
-  int32_t spvm_32bit_codes_length;
-  int32_t* spvm_32bit_codes = SPVM_COMPILER_create_spvm_32bit_codes(compiler, allocator, &spvm_32bit_codes_length);
+  int32_t spvm_32bit_codes_length_tmp;
+  int32_t* spvm_32bit_codes = SPVM_COMPILER_create_spvm_32bit_codes(compiler, allocator, &spvm_32bit_codes_length_tmp);
   runtime->spvm_32bit_codes = spvm_32bit_codes;
   
   int32_t* spvm_32bit_codes_ptr = runtime->spvm_32bit_codes;
-
+  
+  // Total length
+  int32_t spvm_32bit_codes_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
+  
   // opcodes length
   runtime->opcodes_length = *spvm_32bit_codes_ptr;
   spvm_32bit_codes_ptr++;
