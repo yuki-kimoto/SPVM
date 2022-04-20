@@ -858,10 +858,78 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   
   int32_t* spvm_32bit_codes = runtime->spvm_32bit_codes;
 
-  runtime->opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_OPCODE) * (compiler->opcode_array->length + 1));
-  runtime->opcodes_length = compiler->opcode_array->length;
-  memcpy(runtime->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * compiler->opcode_array->length);
+  // opcodes length
+  runtime->opcodes_length = *spvm_32bit_codes;
+  spvm_32bit_codes++;
   
+  // opcodes 32bit length
+  int32_t opcodes_32bit_length = *spvm_32bit_codes;
+  spvm_32bit_codes++;
+  
+  // opcodes
+  runtime->opcodes = (SPVM_OPCODE*)spvm_32bit_codes;
+  spvm_32bit_codes += opcodes_32bit_length;
+  
+  // constant_strings_buffer length
+
+  // constant_strings_buffer 32bit length
+  
+  // constant_strings_buffer
+  
+  // constant_strings length
+
+  // constant_strings 32bit length
+  
+  // constant_strings
+
+  // anon_method_methods length
+
+  // anon_method_methods 32bit length
+
+  // anon_method_method_ids
+
+  // classes length
+  
+  // classes 32bit length
+  
+  // classes
+
+  // basic_types length
+
+  // basic_types 32bit length
+  
+  // basic_types
+
+  // types length
+
+  // types 32bit length
+  
+  // types
+
+  // class_vars length
+
+  // class_vars 32bit length
+  
+  // class_vars
+
+  // methods length
+  
+  // methods 32bit length
+  
+  // methods
+
+  // arg_types length
+  
+  // arg_types 32bit length
+  
+  // arg_type_ids
+  
+  // fields length
+
+  // fields 32bit length
+  
+  // fields
+
   // String buffers
   runtime->constant_strings_buffer_length = compiler->constant_strings_buffer->length;
   runtime->constant_strings_buffer = (const char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, compiler->constant_strings_buffer->length + 1);
