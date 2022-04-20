@@ -918,10 +918,16 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   spvm_32bit_codes_ptr += classes_32bit_length;
 
   // basic_types length
+  runtime->basic_types_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
 
   // basic_types 32bit length
+  int32_t basic_types_32bit_length = *spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr++;
   
   // basic_types
+  runtime->basic_types = (SPVM_RUNTIME_BASIC_TYPE*)spvm_32bit_codes_ptr;
+  spvm_32bit_codes_ptr += basic_types_32bit_length;
 
   // types length
 
