@@ -871,10 +871,16 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   spvm_32bit_codes += opcodes_32bit_length;
   
   // constant_strings_buffer length
+  runtime->constant_strings_buffer_length = *spvm_32bit_codes;
+  spvm_32bit_codes++;
 
   // constant_strings_buffer 32bit length
+  int32_t constant_strings_buffer_32bit_length = *spvm_32bit_codes;
+  spvm_32bit_codes++;
   
   // constant_strings_buffer
+  runtime->constant_strings_buffer = (const char*)spvm_32bit_codes;
+  spvm_32bit_codes += constant_strings_buffer_32bit_length;
   
   // constant_strings length
 
@@ -929,12 +935,6 @@ void SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime)
   // fields 32bit length
   
   // fields
-
-  // String buffers
-  runtime->constant_strings_buffer_length = compiler->constant_strings_buffer->length;
-  runtime->constant_strings_buffer = (const char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, compiler->constant_strings_buffer->length + 1);
-  memcpy((char*)runtime->constant_strings_buffer, compiler->constant_strings_buffer->value, compiler->constant_strings_buffer->length);
-
   
   // Strings
   runtime->constant_strings_length = compiler->constant_strings->length;
