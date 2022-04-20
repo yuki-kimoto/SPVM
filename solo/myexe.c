@@ -102,10 +102,11 @@ SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
   // SPVM 32bit codes
   int32_t* spvm_32bit_codes = env->api->compiler->create_spvm_32bit_codes(compiler, runtime_allocator);
   
+  // Free compiler
+  env->api->compiler->free_compiler(compiler);
+  
   // Build runtime
   env->api->runtime->build(runtime, spvm_32bit_codes);
-  
-  env->api->compiler->free_compiler(compiler);
   
   // Prepare runtime
   env->api->runtime->prepare(runtime);
