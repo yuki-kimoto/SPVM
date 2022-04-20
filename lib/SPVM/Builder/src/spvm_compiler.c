@@ -657,9 +657,6 @@ void SPVM_COMPILER_build_runtime_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_
       runtime_class->anon_methods_base_id = -1;
     }
 
-    SPVM_RUNTIME_CONSTANT_STRING* class_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->constant_strings[runtime_class->name_id];
-    const char* runtime_class_name = (const char*)&runtime->constant_strings_buffer[class_name_string->string_buffer_id];
-
     class_32bit_ptr += sizeof(SPVM_RUNTIME_CLASS) / sizeof(int32_t);
   }
   spvm_32bit_codes_ptr += classes_32bit_length;
