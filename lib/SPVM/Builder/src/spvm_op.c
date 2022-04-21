@@ -2552,7 +2552,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   
   // Is anon method
   if (is_anon) {
-    method->flag |= SPVM_METHOD_C_FLAG_ANON;
+    method->is_anon = 1;
   }
   
   if (op_name_method == NULL) {

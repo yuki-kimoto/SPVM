@@ -768,7 +768,7 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
     runtime_method->flag = method->flag;
     runtime_method->is_class_method = method->is_class_method;
     runtime_method->is_init = method->is_init;
-    runtime_method->is_anon = method->flag & SPVM_METHOD_C_FLAG_ANON;
+    runtime_method->is_anon = method->is_anon;
     runtime_method->call_stack_byte_vars_length  = method->call_stack_byte_vars_length;
     runtime_method->call_stack_short_vars_length  = method->call_stack_short_vars_length;
     runtime_method->call_stack_int_vars_length  = method->call_stack_int_vars_length;

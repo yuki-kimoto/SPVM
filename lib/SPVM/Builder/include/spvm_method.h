@@ -6,7 +6,6 @@
 enum {
   SPVM_METHOD_C_FLAG_OBJECT_TYPE_RETURN = 16,
   SPVM_METHOD_C_FLAG_MULTI_NUMERIC_TYPE_RETURN = 32,
-  SPVM_METHOD_C_FLAG_ANON = 64,
 };
 
 // Method information
@@ -55,6 +54,7 @@ struct spvm_method {
   int8_t is_enum;
   int8_t is_precompile;
   int8_t is_native;
+  int8_t is_anon;
 };
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);
