@@ -985,13 +985,13 @@ int32_t SPVM_API_RUNTIME_get_method_is_native(SPVM_RUNTIME* runtime, int32_t met
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
   
-  return method->flag & SPVM_METHOD_C_FLAG_NATIVE;
+  return method->is_native;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_is_precompile(SPVM_RUNTIME* runtime, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-  return method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE;
+  return method->is_precompile;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_signature_id(SPVM_RUNTIME* runtime, int32_t method_id) {

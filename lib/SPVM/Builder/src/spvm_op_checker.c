@@ -3510,7 +3510,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
           
           // Check method
-          if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
+          if (!(method->is_native)) {
             SPVM_CHECK_AST_INFO check_ast_info_struct = {0};
             SPVM_CHECK_AST_INFO* check_ast_info = &check_ast_info_struct;
             
@@ -3868,7 +3868,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
           // Fifth tree traversal
           // Resolve var_decl mem ids
-          if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
+          if (!(method->is_native)) {
             {
               SPVM_LIST* tmp_var_decl_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
               SPVM_LIST* no_tmp_var_decl_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -4928,7 +4928,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       // Set method precompile flag if class have precompile descriptor
       if (class->has_precompile_descriptor && method->can_precompile) {
-        method->flag |= SPVM_METHOD_C_FLAG_PRECOMPILE;
+        method->is_precompile = 1;
       }
 
       // Set method id

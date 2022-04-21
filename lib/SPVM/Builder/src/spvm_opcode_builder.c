@@ -102,7 +102,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           assert(method->return_type);
           assert(method->class->module_file);
           
-          if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
+          if (method->is_native) {
             continue;
           }
 

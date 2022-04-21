@@ -1244,7 +1244,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
   int32_t exception_flag;
   
   // Call native method
-  if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
+  if (method->is_native) {
     // Enter scope
     int32_t original_mortal_stack_top = SPVM_API_enter_scope(env);
 

@@ -2257,12 +2257,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           }
           
           // If class is callback, the method must not be native
-          if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
+          if (method->is_native) {
             SPVM_COMPILER_error(compiler, "Methods of callback classes  can't have native descriptors at %s line %d", method->op_method->file, method->op_method->line);
           }
 
           // If class is callback, the method must not be precompile
-          if (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
+          if (method->is_precompile) {
             SPVM_COMPILER_error(compiler, "Methods of callback classes can't have precompile descriptors at %s line %d", method->op_method->file, method->op_method->line);
           }
           
@@ -2278,12 +2278,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           }
           
           // If class is interface, the method must not be native
-          if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
+          if (method->is_native) {
             SPVM_COMPILER_error(compiler, "Methods of interface classes  can't have native descriptors at %s line %d", method->op_method->file, method->op_method->line);
           }
 
           // If class is interface, the method must not be precompile
-          if (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
+          if (method->is_precompile) {
             SPVM_COMPILER_error(compiler, "Methods of interface classes can't have precompile descriptors at %s line %d", method->op_method->file, method->op_method->line);
           }
           
@@ -2293,7 +2293,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           }
         }
         
-        if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
+        if (method->is_native) {
           if (method->op_block) {
             SPVM_COMPILER_error(compiler, "Native methods can't have blocks at %s line %d", method->op_method->file, method->op_method->line);
           }
@@ -2600,7 +2600,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_NATIVE: {
-          method->flag |= SPVM_METHOD_C_FLAG_NATIVE;
+          method->is_native = 1;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_STATIC: {
@@ -2613,7 +2613,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       }
     }
     
-    if ((method->flag & SPVM_METHOD_C_FLAG_NATIVE) && (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE)) {
+    if ((method->is_native) && (method->is_precompile)) {
       SPVM_COMPILER_error(compiler, "native and compile descriptor can't be used together at %s line %d", op_descriptors->file, op_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
@@ -2622,7 +2622,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   }
 
   // Native method can't have block
-  if ((method->flag & SPVM_METHOD_C_FLAG_NATIVE) && op_block) {
+  if ((method->is_native) && op_block) {
     SPVM_COMPILER_error(compiler, "Native method can't have block at %s line %d", op_block->file, op_block->line);
   }
   
