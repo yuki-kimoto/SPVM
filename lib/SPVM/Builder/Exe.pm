@@ -395,15 +395,6 @@ sub create_bootstrap_header_source {
 
 EOS
     
-  $source .= "// module source get functions declaration\n";
-  for my $class_name (@$class_names_without_anon) {
-    my $class_cname = $class_name;
-    $class_cname =~ s/::/__/g;
-    $source .= <<"EOS";
-const char* SPMODSRC__${class_cname}__get_module_source();
-EOS
-  }
-
   $source .= "// precompile functions declaration\n";
   for my $class_name (@$class_names) {
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
