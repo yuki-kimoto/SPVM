@@ -40,6 +40,7 @@ struct spvm_method {
   int8_t is_field_getter;
   int8_t is_simple_constructor;
   int8_t is_constant;
+  int8_t can_precompile;
   int8_t is_class_method;
   int8_t is_init;
   int8_t is_private;
