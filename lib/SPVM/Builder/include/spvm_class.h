@@ -10,10 +10,6 @@ enum {
   SPVM_CLASS_C_CATEGORY_INTERFACE,
 };
 
-enum {
-  SPVM_CLASS_C_FLAG_POINTER = 1,
-};
-
 struct spvm_class {
   SPVM_OP* op_class;
   SPVM_OP* op_name;
@@ -36,7 +32,6 @@ struct spvm_class {
   SPVM_HASH* class_alias_symtable;
   SPVM_METHOD* destructor_method;
   int32_t id;
-  int32_t flag;
   int32_t object_fields_length;
   int32_t object_fields_offset;
   int32_t fields_byte_size;
@@ -45,6 +40,7 @@ struct spvm_class {
   int8_t category;
   int8_t has_precompile_descriptor;
   int8_t is_public;
+  int8_t is_pointer;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);

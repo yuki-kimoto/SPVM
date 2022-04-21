@@ -1164,7 +1164,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_COMPILER_error(compiler, "Can't create the object of a multi numeric type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
-                  else if (class->flag & SPVM_CLASS_C_FLAG_POINTER) {
+                  else if (class->is_pointer) {
                     SPVM_COMPILER_error(compiler, "Can't create the object of a pointer type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }

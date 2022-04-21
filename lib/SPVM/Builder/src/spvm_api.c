@@ -6704,7 +6704,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         
         int32_t is_pointer = 0;
         if (class) {
-          if (class->flag & SPVM_CLASS_C_FLAG_POINTER) {
+          if (class->is_pointer) {
             is_pointer = 1;
           }
         }
