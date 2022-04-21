@@ -602,13 +602,7 @@ EOS
     
     for my $precompile_method_name (@$precompile_method_names) {
       $source .= <<"EOS";
-  { 
-    const char* class_name = "$class_name";
-    const char* method_name = "$precompile_method_name";
-    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
-    void* precompile_address = SPVMPRECOMPILE__${class_cname}__$precompile_method_name;
-    env->api->runtime->set_precompile_method_address(env->runtime, method_id, precompile_address);
-  }
+  SPVM_BOOTSTRAP_set_precompile_method_address(env, "$class_name", "$precompile_method_name", &SPVMPRECOMPILE__${class_cname}__$precompile_method_name);
 EOS
     }
   }
@@ -621,13 +615,7 @@ EOS
     
     for my $native_method_name (@$native_method_names) {
       $source .= <<"EOS";
-  { 
-    const char* class_name = "$class_name";
-    const char* method_name = "$native_method_name";
-    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
-    void* native_address = SPVM__${class_cname}__$native_method_name;
-    env->api->runtime->set_native_method_address(env->runtime, method_id, native_address);
-  }
+  SPVM_BOOTSTRAP_set_native_method_address(env, "$class_name", "$native_method_name", &SPVM__${class_cname}__$native_method_name);
 EOS
     }
   }
