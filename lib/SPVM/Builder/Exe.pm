@@ -557,46 +557,12 @@ sub create_bootstrap_new_env_prepared_func_source {
   
   $source .= <<"EOS";
 SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
-  // Class name
-  const char* class_name = "$class_name";
 EOS
 
   $source .= <<'EOS';
 
-// Create env
+  // Create env
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
-
-  // Create compiler
-  void* compiler = env->api->compiler->new_compiler();
-
-  env->api->compiler->set_start_file(compiler, class_name);
-
-  // Set module source_files
-EOS
-  
-  for my $class_name (@$class_names_without_anon) {
-    my $class_cname = $class_name;
-    $class_cname =~ s/::/__/g;
-    
-    $source .= "  {\n";
-    $source .= "    const char* module_source = SPMODSRC__${class_cname}__get_module_source();\n";
-    $source .= qq(    env->api->compiler->set_module_source_by_name(compiler, "$class_name", module_source);\n);
-    $source .= "  }\n";
-  }
-  $source .= "\n";
-
-  $source .= <<'EOS';
-
-  int32_t compile_error_code = env->api->compiler->compile_spvm(compiler, class_name);
-
-  if (compile_error_code != 0) {
-    int32_t error_messages_length = env->api->compiler->get_error_messages_length(compiler);
-    for (int32_t i = 0; i < error_messages_length; i++) {
-      const char* error_message = env->api->compiler->get_error_message(compiler, i);
-      fprintf(stderr, "%s\n", error_message);
-    }
-    exit(255);
-  }
 
   // New runtime
   void* runtime = env->api->runtime->new_runtime(env);
@@ -606,9 +572,6 @@ EOS
   
   // Create SPVM 32bit codes
   int32_t* spvm_32bit_codes = SPVM_BOOTSTRAP_get_spvm_32bit_codes();
-  
-  // Free compiler
-  env->api->compiler->free_compiler(compiler);
   
   // Build runtime
   env->api->runtime->build(runtime, spvm_32bit_codes);
