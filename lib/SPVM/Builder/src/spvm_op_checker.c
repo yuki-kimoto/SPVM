@@ -4885,12 +4885,12 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
     
     // Add the interfaces to the class
-    for (int32_t i = 0; i < class->interfaces->length; i++) {
-      SPVM_INTERFACE* interface =  SPVM_LIST_get(class->interfaces, i);
+    for (int32_t i = 0; i < class->interface_decls->length; i++) {
+      SPVM_INTERFACE* interface_decl =  SPVM_LIST_get(class->interface_decls, i);
 
-      SPVM_OP* op_interface = interface->op_interface;
+      SPVM_OP* op_interface = interface_decl->op_interface;
       
-      const char* interface_class_name = interface->class_name;
+      const char* interface_class_name = interface_decl->class_name;
       
       SPVM_CLASS* interface_class = SPVM_HASH_get(compiler->class_symtable, interface_class_name, strlen(interface_class_name));
       
