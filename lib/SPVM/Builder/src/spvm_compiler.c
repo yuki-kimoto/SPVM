@@ -765,7 +765,6 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
     runtime_method->opcodes_length = method->opcodes_length;
     runtime_method->id = method->id;
     runtime_method->class_id = method->class->id;
-    runtime_method->flag = method->flag;
     runtime_method->is_class_method = method->is_class_method;
     runtime_method->is_init = method->is_init;
     runtime_method->is_anon = method->is_anon;

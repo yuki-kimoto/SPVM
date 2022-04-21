@@ -3,11 +3,6 @@
 
 #include "spvm_typedecl.h"
 
-enum {
-  SPVM_METHOD_C_FLAG_OBJECT_TYPE_RETURN = 16,
-  SPVM_METHOD_C_FLAG_MULTI_NUMERIC_TYPE_RETURN = 32,
-};
-
 // Method information
 struct spvm_method {
   const char* name;
@@ -28,7 +23,6 @@ struct spvm_method {
   int32_t tmp_vars_length;
   int32_t opcodes_base_id;
   int32_t opcodes_length;
-  int32_t flag;
   int32_t call_stack_byte_vars_length;
   int32_t call_stack_short_vars_length;
   int32_t call_stack_int_vars_length;
