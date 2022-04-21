@@ -517,12 +517,12 @@ sub create_bootstrap_get_spvm_32bit_codes_func_source {
   my $builder = $self->builder;
 
   my $spvm_32bit_codes = $builder->get_spvm_32bit_codes;
-
+  my $spvm_32bit_codes_length = @$spvm_32bit_codes;
   my $source = '';
   
   my $spvm_32bit_codes_str = join(",", @$spvm_32bit_codes);
 
-  $source .= "static int32_t SPVM_BOOTSTRAP_spvm_32bit_codes[] = {$spvm_32bit_codes_str};\n";
+  $source .= "static int32_t SPVM_BOOTSTRAP_spvm_32bit_codes[$spvm_32bit_codes_length] = {$spvm_32bit_codes_str};\n";
 
   $source .= <<"EOS";
 static int32_t* SPVM_BOOTSTRAP_get_spvm_32bit_codes() {
