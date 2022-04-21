@@ -17,8 +17,6 @@ int32_t SPVM_API_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* clas
 void SPVM_API_COMPILER_free_compiler(SPVM_COMPILER* compiler);
 int32_t SPVM_API_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);
-const char* SPVM_API_COMPILER_get_module_source_by_name(SPVM_COMPILER* compiler, const char* class_name);
-void SPVM_API_COMPILER_set_module_source_by_name(SPVM_COMPILER* compiler, const char* class_name, const char* module_source);
 int32_t* SPVM_API_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator);
 
 #endif

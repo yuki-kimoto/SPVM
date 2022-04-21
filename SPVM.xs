@@ -3718,47 +3718,6 @@ get_module_file(...)
 }
 
 SV*
-get_module_source_by_name(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(void*, SvIV(SvRV(sv_env)));
-
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
-
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-
-  // Copy class load path to builder
-  SV* sv_module_source;
-  const char* module_source = env->api->compiler->get_module_source_by_name(compiler, class_name);
-  if (module_source) {
-    sv_module_source = sv_2mortal(newSVpv(module_source, 0));
-  }
-  else {
-    sv_module_source = &PL_sv_undef;
-  }
-
-  XPUSHs(sv_module_source);
-  XSRETURN(1);
-}
-
-SV*
 build_runtime(...)
   PPCODE:
 {
