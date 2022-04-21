@@ -261,13 +261,6 @@ sub build_exe_file {
   my $spvm_core_objects = $self->compile_spvm_core_sources;
   push @$object_files, @$spvm_core_objects;
 
-  # Create SPMV module C source_files
-  $self->create_spvm_module_sources;
-
-  # Compile SPVM compiler and runtime C source files
-  my $spvm_module_objects = $self->compile_spvm_module_sources;
-  push @$object_files, @$spvm_module_objects;
-
   # Create precompile C source_files
   $self->create_precompile_sources;
   
@@ -758,98 +751,6 @@ sub compile_spvm_core_sources {
       source_file => $src_file,
       output_file => $object_file,
     });
-    push @$object_file_infos, $object_file_info;
-  }
-  
-  return $object_file_infos;
-}
-
-sub create_spvm_module_sources {
-  my ($self) = @_;
-  
-  # Builder
-  my $builder = $self->builder;
-  
-  # Compiled class names
-  my $class_names = $builder->get_class_names;
-  my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
-  for my $class_name (@$class_names_without_anon) {
-    
-    # Moudle file - Input
-    my $module_file = $builder->get_module_file($class_name);
-    
-    # Source file - Output
-    my $build_dir = $self->builder->build_dir;
-    my $build_src_dir = $self->builder->create_build_src_path;
-    my $perl_class_name = "SPVM::$class_name";
-    my $module_source_base = $perl_class_name;
-    $module_source_base =~ s|::|/|g;
-    my $module_source_source_file = "$build_src_dir/$module_source_base.modsrc.c";
-    
-    # Source creating callback
-    my $create_cb = sub {
-      # This source is UTF-8 binary
-      my $module_source = $builder->get_module_source_by_name($class_name);
-      my $module_source_c_hex = $module_source;
-      
-      # Escape to Hex C launguage string literal
-      $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
-      
-      # native class name
-      my $class_cname = $class_name;
-      $class_cname =~ s/::/__/g;
-
-      my $get_module_source_source = <<"EOS";
-static const char* module_source = "$module_source_c_hex";
-const char* SPMODSRC__${class_cname}__get_module_source() {
-return module_source;
-}
-EOS
-      mkpath dirname $module_source_source_file;
-      
-      open my $module_source_source_fh, '>', $module_source_source_file
-        or die "Can't open file $module_source_source_file:$!";
-
-      print $module_source_source_fh $get_module_source_source;
-    };
-    
-    # Create source file
-    $self->create_source_file({
-      input_files => [$module_file, __FILE__],
-      output_file => $module_source_source_file,
-      create_cb => $create_cb,
-    });
-  }
-}
-
-sub compile_spvm_module_sources {
-  my ($self) = @_;
-  
-  my $builder = $self->builder;
-  
-  # Compile module source files
-  my $class_names = $builder->get_class_names;
-  my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
-  my $object_file_infos = [];
-  for my $class_name (@$class_names_without_anon) {
-    my $perl_class_name = "SPVM::$class_name";
-    
-    # Build source directory
-    my $build_src_dir = $self->builder->create_build_src_path;
-    
-    # Create source directory
-    my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($perl_class_name);
-    my $source_file = "$build_src_dir/$class_name_rel_file.modsrc.c";
-    mkpath dirname $source_file;
-    
-    # Create object directory
-    my $build_object_dir = $self->builder->create_build_object_path;
-    mkpath $build_object_dir;
-    my $object_file = "$build_object_dir/$class_name_rel_file.modsrc.o";
-    mkpath dirname $object_file;
-    
-    # Compile
-    my $object_file_info = $self->compile_source_file({source_file => $source_file, output_file => $object_file});
     push @$object_file_infos, $object_file_info;
   }
   
