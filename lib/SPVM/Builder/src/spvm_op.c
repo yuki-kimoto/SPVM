@@ -2448,29 +2448,35 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       
       switch (descriptor->id) {
-        case SPVM_DESCRIPTOR_C_ID_PRIVATE:
+        case SPVM_DESCRIPTOR_C_ID_PRIVATE: {
           // Default is private
           access_control_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_PUBLIC:
-          class_var->flag |= SPVM_CLASS_VAR_C_FLAG_PUBLIC;
+        }
+        case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
+          class_var->is_public = 1;
           access_control_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_RW:
+        }
+        case SPVM_DESCRIPTOR_C_ID_RW: {
           class_var->has_setter = 1;
           class_var->has_getter = 1;
           accessor_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_RO:
+        }
+        case SPVM_DESCRIPTOR_C_ID_RO: {
           class_var->has_getter = 1;
           accessor_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_WO:
+        }
+        case SPVM_DESCRIPTOR_C_ID_WO: {
           class_var->has_setter = 1;
           accessor_descriptors_count++;
           break;
-        default:
+        }
+        default: {
           SPVM_COMPILER_error(compiler, "Invalid class variable descriptor in class variable declaration %s at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+        }
       }
       if (accessor_descriptors_count > 1) {
         SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in class variable  declaration at %s line %d", op_class_var->file, op_class_var->line);

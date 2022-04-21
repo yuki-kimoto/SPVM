@@ -3,10 +3,6 @@
 
 #include "spvm_typedecl.h"
 
-enum {
-  SPVM_CLASS_VAR_C_FLAG_PUBLIC = 1,
-};
-
 struct spvm_class_var {
   const char* name;
   const char* signature;
@@ -15,9 +11,9 @@ struct spvm_class_var {
   SPVM_OP* op_class_var;
   SPVM_OP* op_name;
   int32_t id;
-  int32_t flag;
-  int32_t has_setter;
-  int32_t has_getter;
+  int8_t has_setter;
+  int8_t has_getter;
+  int8_t is_public;
 };
 
 SPVM_CLASS_VAR* SPVM_CLASS_VAR_new(SPVM_COMPILER* compiler);

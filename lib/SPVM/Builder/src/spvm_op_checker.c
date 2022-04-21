@@ -2837,7 +2837,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               int32_t is_private;
               // Public flag
-              if (class_var->flag & SPVM_CLASS_VAR_C_FLAG_PUBLIC) {
+              if (class_var->is_public) {
                 is_private = 0;
               }
               // Default is private
