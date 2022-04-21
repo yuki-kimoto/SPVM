@@ -1859,7 +1859,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
-          class->flag |= SPVM_CLASS_C_FLAG_PUBLIC;
+          class->is_public = 1;
           access_control_descriptors_count++;
           break;
         }

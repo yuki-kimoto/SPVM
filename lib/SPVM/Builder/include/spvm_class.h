@@ -12,7 +12,6 @@ enum {
 
 enum {
   SPVM_CLASS_C_FLAG_POINTER = 1,
-  SPVM_CLASS_C_FLAG_PUBLIC = 4,
 };
 
 struct spvm_class {
@@ -45,6 +44,7 @@ struct spvm_class {
   int8_t is_anon;
   int8_t category;
   int8_t has_precompile_descriptor;
+  int8_t is_public;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);
