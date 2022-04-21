@@ -15,7 +15,6 @@
 #include "spvm_opcode_array.h"
 #include "spvm_opcode.h"
 #include "spvm_method.h"
-#include "spvm_type.h"
 #include "spvm_weaken_backref.h"
 #include "spvm_string_buffer.h"
 #include "spvm_api.h"
