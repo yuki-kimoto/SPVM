@@ -434,7 +434,9 @@ int32_t SPVM__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
     }
   }
-    
+
+  $source .= "static int32_t* SPVM_BOOTSTRAP_get_spvm_32bit_codes();\n";
+
   return $source;
 }
 
@@ -525,13 +527,13 @@ sub create_bootstrap_get_spvm_32bit_codes_func_source {
 
   my $source = '';
   
+  my $spvm_32bit_codes_str = join(",", @$spvm_32bit_codes);
+
+  $source .= "static int32_t SPVM_BOOTSTRAP_spvm_32bit_codes[] = {$spvm_32bit_codes_str};\n";
+
   $source .= <<"EOS";
-static int32_t SPVM_BOOTSTRAP_get_spvm_32bit_codes() {
-EOS
-  
-  
-  
-  $source .= <<"EOS";
+static int32_t* SPVM_BOOTSTRAP_get_spvm_32bit_codes() {
+  return SPVM_BOOTSTRAP_spvm_32bit_codes;
 }
 EOS
   
@@ -709,14 +711,11 @@ sub create_bootstrap_source {
     # main function
     $bootstrap_source .= $self->create_bootstrap_main_func_source;
 
-    # get_spvm_32bit_codes function
-    $bootstrap_source .= $self->create_bootstrap_get_spvm_32bit_codes_func_source;
-    
     # SPVM_NATIVE_new_env_prepared function
     $bootstrap_source .= $self->create_bootstrap_new_env_prepared_func_source;
 
-    # SPVM 32bit codes
-    my $spvm_32bit_codes = $builder->get_spvm_32bit_codes;
+    # get_spvm_32bit_codes function
+    $bootstrap_source .= $self->create_bootstrap_get_spvm_32bit_codes_func_source;
 
     # Build source directory
     my $build_src_dir = $self->builder->create_build_src_path;
