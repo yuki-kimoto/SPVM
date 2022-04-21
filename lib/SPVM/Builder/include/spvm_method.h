@@ -12,7 +12,6 @@ enum {
   SPVM_METHOD_C_FLAG_NATIVE = 1,
   SPVM_METHOD_C_FLAG_PRECOMPILE = 2,
   SPVM_METHOD_C_FLAG_ENUM = 4,
-  SPVM_METHOD_C_FLAG_DESTRUCTOR = 8,
   SPVM_METHOD_C_FLAG_OBJECT_TYPE_RETURN = 16,
   SPVM_METHOD_C_FLAG_MULTI_NUMERIC_TYPE_RETURN = 32,
   SPVM_METHOD_C_FLAG_ANON = 64,
@@ -60,6 +59,7 @@ struct spvm_method {
   int8_t is_class_method;
   int8_t is_init;
   int8_t is_private;
+  int8_t is_destructor;
 };
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);

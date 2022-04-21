@@ -2629,7 +2629,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
-              if (call_method->method->flag & SPVM_METHOD_C_FLAG_DESTRUCTOR) {
+              if (call_method->method->is_destructor) {
                 SPVM_COMPILER_error(compiler, "Can't call DESTROY in yourself at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
@@ -3488,7 +3488,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_TYPE* class_type = class->type;
           
           // Destructor must receive own class object
-          if (method->flag & SPVM_METHOD_C_FLAG_DESTRUCTOR) {
+          if (method->is_destructor) {
             // DESTROY argument must be 0
             int32_t error = 0;
             if (method->args_length != 1) {

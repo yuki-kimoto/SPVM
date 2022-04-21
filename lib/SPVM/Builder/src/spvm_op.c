@@ -2314,7 +2314,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             // Bind standard functions
             method->class = class;
             
-            if (method->flag & SPVM_METHOD_C_FLAG_DESTRUCTOR) {
+            if (method->is_destructor) {
               class->destructor_method = method;
             }
             
@@ -2670,7 +2670,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   method->return_type = op_return_type->uv.type;
   
   if (strcmp(method->op_name->uv.name, "DESTROY") == 0) {
-    method->flag |= SPVM_METHOD_C_FLAG_DESTRUCTOR;
+    method->is_destructor = 1;
     
     // DESTROY return type must be void
     if (!(method->return_type->dimension == 0 && method->return_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_VOID)) {
