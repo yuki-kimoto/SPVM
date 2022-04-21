@@ -1830,7 +1830,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   class->name = op_name_class->uv.name;
 
   // Class is callback
-  int32_t category_descriptors_count = 0;
+  int32_t class_descriptors_count = 0;
   int32_t access_control_descriptors_count = 0;
   if (op_list_descriptors) {
     SPVM_OP* op_descriptor = op_list_descriptors->first;
@@ -1839,18 +1839,18 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       switch (descriptor->id) {
         case SPVM_DESCRIPTOR_C_ID_CALLBACK_T: {
           class->category = SPVM_CLASS_C_CATEGORY_CALLBACK;
-          category_descriptors_count++;
+          class_descriptors_count++;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_POINTER_T: {
           class->category = SPVM_CLASS_C_CATEGORY_CLASS;
           class->flag |= SPVM_CLASS_C_FLAG_POINTER;
-          category_descriptors_count++;
+          class_descriptors_count++;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_MULNUM_T: {
           class->category = SPVM_CLASS_C_CATEGORY_MULNUM;
-          category_descriptors_count++;
+          class_descriptors_count++;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_PRIVATE: {
@@ -1869,7 +1869,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         case SPVM_DESCRIPTOR_C_ID_INTERFACE_T: {
           class->category = SPVM_CLASS_C_CATEGORY_INTERFACE;
-          category_descriptors_count++;
+          class_descriptors_count++;
           break;
         }
         default: {
@@ -1877,7 +1877,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
       }
     }
-    if (category_descriptors_count > 1) {
+    if (class_descriptors_count > 1) {
       SPVM_COMPILER_error(compiler, "callback_t, mulnum_t, pointer_t interface_t can be specified only one at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
@@ -2519,7 +2519,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
           access_control_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_PUBLIC:
-          field->flag |= SPVM_FIELD_C_FLAG_PUBLIC;
+          field->is_public = 1;
           access_control_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_RW:

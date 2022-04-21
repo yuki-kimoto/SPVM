@@ -3016,7 +3016,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Access control
               int32_t is_private;
-              if (field->flag & SPVM_FIELD_C_FLAG_PUBLIC) {
+              if (field->is_public) {
                 is_private = 0;
               }
               // Default
