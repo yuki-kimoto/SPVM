@@ -4875,7 +4875,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       if (method->anon_method_defined_class_name) {
         SPVM_CLASS* anon_method_defined_class = SPVM_HASH_get(compiler->class_symtable, method->anon_method_defined_class_name, strlen(method->anon_method_defined_class_name));
         SPVM_LIST_push(anon_method_defined_class->anon_methods, method);
-        class->has_precompile_descriptor = anon_method_defined_class->has_precompile_descriptor;
+        class->is_precompile = anon_method_defined_class->is_precompile;
       }
     }
   }
@@ -4927,7 +4927,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
       
       // Set method precompile flag if class have precompile descriptor
-      if (class->has_precompile_descriptor && method->can_precompile) {
+      if (class->is_precompile && method->can_precompile) {
         method->is_precompile = 1;
       }
 

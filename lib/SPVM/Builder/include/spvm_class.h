@@ -38,7 +38,7 @@ struct spvm_class {
   int8_t has_init_block;
   int8_t is_anon;
   int8_t category;
-  int8_t has_precompile_descriptor;
+  int8_t is_precompile;
   int8_t is_public;
   int8_t is_pointer;
 };

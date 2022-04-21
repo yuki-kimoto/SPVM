@@ -1864,7 +1864,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_PRECOMPILE: {
-          class->has_precompile_descriptor = 1;
+          class->is_precompile = 1;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_INTERFACE_T: {
