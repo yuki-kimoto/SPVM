@@ -605,7 +605,7 @@ EOS
   void* runtime_allocator = env->api->runtime->get_allocator(runtime);
   
   // Create SPVM 32bit codes
-  int32_t* spvm_32bit_codes = env->api->compiler->create_spvm_32bit_codes(compiler, runtime_allocator);
+  int32_t* spvm_32bit_codes = SPVM_BOOTSTRAP_get_spvm_32bit_codes();
   
   // Free compiler
   env->api->compiler->free_compiler(compiler);
