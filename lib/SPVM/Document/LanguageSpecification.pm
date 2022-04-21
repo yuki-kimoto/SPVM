@@ -2564,7 +2564,7 @@ An instance method can be called from the object.
 
 =head2 Method Descriptors
 
-Method descriptors are the descriptors that is used in a L<method definition|/"Method Definition">.
+Method descriptors are descriptors used in a L<method definition|/"Method Definition">.
 
 =begin html
 
@@ -2579,6 +2579,30 @@ Method descriptors are the descriptors that is used in a L<method definition|/"M
   </tr>
   <tr>
     <td>
+      <b>public</b>
+    </td>
+    <td>
+      This method is public. This method can be accessed from other classes. This is default setting.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>private</b>
+    </td>
+    <td>
+      This method is private. This method can not be accessed from other classes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>precompile</b>
+    </td>
+    <td>
+      This method is a <a href="#Precompile-Method">precompile method</a>.
+    </td>
+  </tr>
+  <tr>
+    <td>
       <b>native</b>
     </td>
     <td>
@@ -2586,6 +2610,27 @@ Method descriptors are the descriptors that is used in a L<method definition|/"M
     </td>
   </tr>
 </table>
+
+If C<native> and C<precompile> descriptors can't used together.
+
+C<public> and C<private> descriptors can't be used together.
+
+If the specifed descriptor is not found or the way to specify is invalid, a compilation error will occur.
+
+B<Examples:>
+  
+  # private method
+  private method : int sum ($num1 : int, $num2 : int) {
+    return $num1 + $num2;
+  }
+  
+  # precompile method
+  precompile method : int sum ($num1 : int, $num2 : int) {
+    return $num1 + $num2;
+  }
+  
+  # native method
+  native method : int sum ($num1 : int, $num2 : int);
 
 =end html
 
@@ -2744,7 +2789,7 @@ B<The list of enumeration descriptors:>
       <b>public</b>
     </td>
     <td>
-      This enumeration is public. Each value of this enumeration can be accessed from other class. This is default setting.
+      This enumeration is public. Each value of this enumeration can be accessed from other classes. This is default setting.
     </td>
   </tr>
   <tr>
@@ -2752,7 +2797,7 @@ B<The list of enumeration descriptors:>
       <b>private</b>
     </td>
     <td>
-      This enumeration is private. Each value of this enumeration can not be accessed from other class.
+      This enumeration is private. Each value of this enumeration can not be accessed from other classes.
     </td>
   </tr>
 </table>
@@ -4360,7 +4405,7 @@ The bit AND operator C<&> is an L<operator|/"Operators"> to performe a bit AND o
 
   LEFT_OPERAND & RIGHT_OPERAND
 
-The left operand and the right operand must be an L<integral type/"Integral Types">. If not, a compilation error will occur.
+The left operand and the right operand must be an L<integral type/"Integral Types">, otherwise a compilation error will occur.
 
 A L<binary numeric widening type conversion|/"Binary Numeric Widening Type Conversion"> is performed.
 
@@ -4383,7 +4428,7 @@ The bit OR operator C<|> is an L<operator|/"Operators"> to performe a bit OR ope
 
   LEFT_OPERAND | RIGHT_OPERAND
 
-The left operand and the right operand must be an L<integral type/"Integral Types">. If not, a compilation error will occur.
+The left operand and the right operand must be an L<integral type/"Integral Types">, otherwise a compilation error will occur.
 
 A L<binary numeric widening type conversion|/"Binary Numeric Widening Type Conversion"> is performed.
 
@@ -4406,7 +4451,7 @@ The bit NOT operator C<~> is an L<unary operator|/"Unary Operators"> to perform 
 
   ~OPERAND
 
-The type of the operand must is an L<integral type|/"Integral Types">. If not, a compilation error will occur.
+The type of the operand must is an L<integral type|/"Integral Types">, otherwise a compilation error will occur.
 
 The L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion"> is performed.
 
@@ -5062,13 +5107,13 @@ The C<isweak> operator checks whether the L<field|/"Field"> is L<weak reference|
 
   isweak OBJECT->{FIELD_NAME};
 
-The type of the object must be the L<class type|/"Class Type">. If not, a compilation error will occur.
+The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
 
 If the field name is not found, a compilation error will occur.
 
 The type of the field targetted by the C<isweak> operator is not an L<object type|/"Object Types">, a compilation error will occur.
 
-If the field is weaken, the C<isweak> operator returns C<1>. If not, returns C<0>.
+If the field is weaken, the C<isweak> operator returns C<1>, otherwise returns C<0>.
 
 The return type of the C<isweak> operator is the L<int type|/"int Type">.
 
@@ -5578,7 +5623,7 @@ The C<weaken> statement is a L<statement|/"Statements"> to create a L<weak refer
 
   weaken OBJECT->{FIELD_NAME};
 
-The type of the object must be the L<class type|/"Class Type">. If not, a compilation error will occur.
+The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
 
 If the field name is not found, a compilation error will occur.
 
@@ -5597,7 +5642,7 @@ The C<unweaken> statement is a L<statement|/"Statements"> to unweakens a L<weak 
 
   unweaken OBJECT->{FIELD_NAME};
 
-The type of the object must be the L<class type|/"Class Type">. If not, a compilation error will occur.
+The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
 
 If the field name is not found, a compilation error will occur.
 
@@ -7103,7 +7148,7 @@ The operand of the L<logical NOT operator|/"Logical NOT Operator">:
 
   !CONDITION
 
-The type of the operand of the bool type conversion must be a L<numeric type|/"Numeric Types"> or an L<object type|/"Object Types"> or the L<undef type|/"Undefined Type">. If not, a compilation error will occur.
+The type of the operand of the bool type conversion must be a L<numeric type|/"Numeric Types"> or an L<object type|/"Object Types"> or the L<undef type|/"Undefined Type">, otherwise a compilation error will occur.
 
 The return type of the bool type conversion is the L<int type|/"int Type">.
 

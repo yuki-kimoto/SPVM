@@ -925,4 +925,8 @@ class TestCase::Method {
     
     return $x254;
   }
+  
+  precompile static method precompile_sum : int ($num1 : int, $num2 : int) {
+    return $num1 + $num2;
+  }
 }

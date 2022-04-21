@@ -2599,6 +2599,10 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
           access_control_descriptors_count++;
           break;
         }
+        case SPVM_DESCRIPTOR_C_ID_PRECOMPILE: {
+          method->is_precompile = 1;
+          break;
+        }
         case SPVM_DESCRIPTOR_C_ID_NATIVE: {
           method->is_native = 1;
           break;
@@ -2613,11 +2617,11 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       }
     }
     
-    if ((method->is_native) && (method->is_precompile)) {
-      SPVM_COMPILER_error(compiler, "native and compile descriptor can't be used together at %s line %d", op_descriptors->file, op_descriptors->line);
+    if (method->is_native && method->is_precompile) {
+      SPVM_COMPILER_error(compiler, "native and precompile descriptors can't be used together in method dinition at %s line %d", op_descriptors->file, op_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "public, private can be specifed only one in sub declaration at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "public and private descriptors can't be used together in method difinition at %s line %d", op_method->file, op_method->line);
     }
   }
 
@@ -2821,20 +2825,23 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
         SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
         
         switch (descriptor->id) {
-          case SPVM_DESCRIPTOR_C_ID_PRIVATE:
+          case SPVM_DESCRIPTOR_C_ID_PRIVATE: {
             method->is_private = 1;
             access_control_descriptors_count++;
             break;
-          case SPVM_DESCRIPTOR_C_ID_PUBLIC:
+          }
+          case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
             // Default is public
             access_control_descriptors_count++;
             break;
-          default:
+          }
+          default: {
             SPVM_COMPILER_error(compiler, "Invalid method descriptor \"%s\" at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+          }
         }
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "public, private can be specifed only one in sub declaration at %s line %d", op_method->file, op_method->line);
+        SPVM_COMPILER_error(compiler, "public and private descriptors can't be used together in method difinition at %s line %d", op_method->file, op_method->line);
       }
     }
   }
