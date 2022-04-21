@@ -7,29 +7,30 @@
 #include <inttypes.h>
 #include <stdarg.h>
 
-#include "spvm_list.h"
-#include "spvm_hash.h"
+#include "spvm_api.h"
+#include "spvm_native.h"
 
 #include "spvm_allocator.h"
 
+#include "spvm_list.h"
+#include "spvm_hash.h"
+#include "spvm_string_buffer.h"
+
+#include "spvm_precompile.h"
 #include "spvm_opcode_array.h"
 #include "spvm_opcode.h"
-#include "spvm_method.h"
-#include "spvm_weaken_backref.h"
-#include "spvm_string_buffer.h"
-#include "spvm_api.h"
 #include "spvm_object.h"
-#include "spvm_native.h"
+#include "spvm_weaken_backref.h"
 
+#include "spvm_runtime.h"
+#include "spvm_runtime_constant_string.h"
 #include "spvm_runtime_basic_type.h"
+#include "spvm_runtime_type.h"
 #include "spvm_runtime_class.h"
 #include "spvm_runtime_class_var.h"
 #include "spvm_runtime_field.h"
-#include "spvm_runtime.h"
 #include "spvm_runtime_method.h"
-#include "spvm_runtime_constant_string.h"
-#include "spvm_runtime_type.h"
-#include "spvm_precompile.h"
+
 #include "spvm_api_compiler.h"
 #include "spvm_api_string_buffer.h"
 #include "spvm_api_allocator.h"
