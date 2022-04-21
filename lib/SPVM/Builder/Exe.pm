@@ -430,6 +430,20 @@ EOS
 
   $source .= "static int32_t* SPVM_BOOTSTRAP_get_spvm_32bit_codes();\n";
 
+  $source .= <<"EOS";
+static int32_t* SPVM_BOOTSTRAP_set_native_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* native_address) {
+  int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
+  env->api->runtime->set_native_method_address(env->runtime, method_id, native_address);
+}
+EOS
+
+  $source .= <<"EOS";
+static int32_t* SPVM_BOOTSTRAP_set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address) {
+  int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
+  env->api->runtime->set_precompile_method_address(env->runtime, method_id, precompile_address);
+}
+EOS
+
   return $source;
 }
 
