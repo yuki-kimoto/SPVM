@@ -6528,7 +6528,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_id) {
   object->length = fields_length;
 
   // Has destructor
-  if (class->method_destructor_id >= 0) {
+  if (class->destructor_method_id >= 0) {
     object->flag |= SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR;
   }
   
@@ -6569,7 +6569,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void
   object->length = 0;
 
   // Has destructor
-  if (SPVM_API_RUNTIME_get_method(runtime, class->method_destructor_id)) {
+  if (SPVM_API_RUNTIME_get_method(runtime, class->destructor_method_id)) {
     object->flag |= SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR;
   }
   
@@ -6713,7 +6713,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         if (object->flag & SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR) {
           SPVM_VALUE args[1];
           args[0].oval = object;
-          int32_t exception_flag = SPVM_API_call_spvm_method(env, class->method_destructor_id, args);
+          int32_t exception_flag = SPVM_API_call_spvm_method(env, class->destructor_method_id, args);
           
           // Exception in destructor is changed to warning
           if (exception_flag) {

@@ -2321,7 +2321,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             method->class = class;
             
             if (method->flag & SPVM_METHOD_C_FLAG_DESTRUCTOR) {
-              class->method_destructor = method;
+              class->destructor_method = method;
             }
             
             assert(method->op_method->file);

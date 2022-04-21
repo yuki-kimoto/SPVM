@@ -8,7 +8,7 @@ struct spvm_runtime_class {
   int32_t module_rel_file_id;
   int32_t module_dir_id;
   int32_t id;
-  int32_t method_destructor_id;
+  int32_t destructor_method_id;
   int32_t flag;
   int32_t object_fields_length;
   int32_t object_fields_offset;

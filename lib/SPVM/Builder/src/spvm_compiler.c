@@ -606,11 +606,11 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
     SPVM_CONSTANT_STRING* class_string = SPVM_HASH_get(compiler->constant_string_symtable, class->name, strlen(class->name));
     runtime_class->name_id = class_string->id;
     
-    if (class->method_destructor) {
-      runtime_class->method_destructor_id = class->method_destructor->id;
+    if (class->destructor_method) {
+      runtime_class->destructor_method_id = class->destructor_method->id;
     }
     else {
-      runtime_class->method_destructor_id = -1;
+      runtime_class->destructor_method_id = -1;
     }
     
     runtime_class->methods_length = class->methods->length;
