@@ -1016,7 +1016,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_CLASS* new_class = type->basic_type->class;
                 
                 // Anon sub
-                if (new_class && new_class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
+                if (new_class && new_class->is_anon) {
                   SPVM_OP* op_type = op_cur->first;
                   
                   SPVM_METHOD* anon_method = SPVM_LIST_get(new_class->methods, 0);
@@ -3022,7 +3022,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Default
               else {
                 // If anon method, field is public
-                if (field->class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
+                if (field->class->is_anon) {
                   is_private = 0;
                 }
                 // If multi numeric type, field is public

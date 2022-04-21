@@ -12,7 +12,6 @@ enum {
 
 enum {
   SPVM_CLASS_C_FLAG_POINTER = 1,
-  SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS = 2,
   SPVM_CLASS_C_FLAG_PUBLIC = 4,
 };
 
@@ -38,7 +37,6 @@ struct spvm_class {
   SPVM_HASH* class_alias_symtable;
   SPVM_METHOD* destructor_method;
   int32_t id;
-  int32_t destructor_method_id;
   int32_t flag;
   int32_t object_fields_length;
   int32_t object_fields_offset;

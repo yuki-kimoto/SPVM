@@ -7169,7 +7169,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
     SPVM_RUNTIME_METHOD* method = NULL;
     
     // Anon instance method
-    if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
+    if (class->is_anon) {
       // Method name
       int32_t method_id = class->methods_base_id;
       method = SPVM_API_RUNTIME_get_method(runtime, method_id);

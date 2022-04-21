@@ -2218,12 +2218,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       for (i = 0; i < class->methods->length; i++) {
         SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
         
-        if (method->flag & SPVM_METHOD_C_FLAG_ANON) {
-          class->flag |= SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS;
-          assert(class->methods->length == 1);
-          assert(class->is_anon);
-        }
-
         SPVM_OP* op_name_method = method->op_name;
         const char* method_name = op_name_method->uv.name;
 

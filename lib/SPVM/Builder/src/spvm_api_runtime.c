@@ -1262,7 +1262,7 @@ int32_t SPVM_API_RUNTIME_has_callback_by_id(SPVM_RUNTIME* runtime, int32_t objec
   SPVM_RUNTIME_CLASS* callback = SPVM_API_RUNTIME_get_class(runtime, callback_basic_type->class_id);
   
   // Class which have only anon sub
-  if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
+  if (class->is_anon) {
     assert(class->methods_length == 1);
     assert(callback->methods_length == 1);
     SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method(runtime, class->methods_base_id + 0);
