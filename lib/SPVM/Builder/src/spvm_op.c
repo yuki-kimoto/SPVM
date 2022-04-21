@@ -2590,7 +2590,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       
       switch (descriptor->id) {
         case SPVM_DESCRIPTOR_C_ID_PRIVATE: {
-          method->flag |= SPVM_METHOD_C_FLAG_PRIVATE;
+          method->is_private = 1;
           access_control_descriptors_count++;
           break;
         }
@@ -2822,7 +2822,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
         
         switch (descriptor->id) {
           case SPVM_DESCRIPTOR_C_ID_PRIVATE:
-            method->flag |= SPVM_METHOD_C_FLAG_PRIVATE;
+            method->is_private = 1;
             access_control_descriptors_count++;
             break;
           case SPVM_DESCRIPTOR_C_ID_PUBLIC:
