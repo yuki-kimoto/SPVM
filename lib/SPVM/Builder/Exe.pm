@@ -419,6 +419,10 @@ EOS
     }
   }
 
+  $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env);\n";
+
+  $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env);\n";
+
   $source .= "static int32_t* SPVM_BOOTSTRAP_get_spvm_32bit_codes();\n";
 
   $source .= <<"EOS";
@@ -583,7 +587,33 @@ EOS
   // Initialize env
   env->init_env(env);
 
+  // Set precompile method addresses
+  SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(env);
+  
+  // Set native method addresses
+  SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(env);
+  
+  env->call_init_blocks(env);
+  
+  return env;
+}
 EOS
+  
+  return $source;
+}
+
+sub create_bootstrap_set_precompile_method_addresses_func_source {
+  my ($self) = @_;
+
+  # Builder
+  my $builder = $self->builder;
+
+  # Class names
+  my $class_names = $self->builder->get_class_names;
+
+  my $source = '';
+
+  $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env){\n";
 
   for my $class_name (@$class_names) {
     my $class_cname = $class_name;
@@ -598,7 +628,25 @@ EOS
     }
   }
 
-  for my $class_name (@$class_names_without_anon) {
+  $source .= "}\n";
+  
+  return $source;
+}
+
+sub create_bootstrap_set_native_method_addresses_func_source {
+  my ($self) = @_;
+
+  # Builder
+  my $builder = $self->builder;
+
+  # Class names
+  my $class_names = $self->builder->get_class_names;
+
+  my $source = '';
+
+  $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env){\n";
+
+  for my $class_name (@$class_names) {
     my $class_cname = $class_name;
     $class_cname =~ s/::/__/g;
     
@@ -611,13 +659,7 @@ EOS
     }
   }
 
-  $source .= <<'EOS';
-  
-  env->call_init_blocks(env);
-  
-  return env;
-}
-EOS
+  $source .= "}\n";
   
   return $source;
 }
@@ -662,6 +704,12 @@ sub create_bootstrap_source {
 
     # SPVM_NATIVE_new_env_prepared function
     $bootstrap_source .= $self->create_bootstrap_new_env_prepared_func_source;
+
+    # Set precompile method addresses function
+    $bootstrap_source .= $self->create_bootstrap_set_precompile_method_addresses_func_source;
+
+    # Set native method addresses function
+    $bootstrap_source .= $self->create_bootstrap_set_native_method_addresses_func_source;
 
     # get_spvm_32bit_codes function
     $bootstrap_source .= $self->create_bootstrap_get_spvm_32bit_codes_func_source;
