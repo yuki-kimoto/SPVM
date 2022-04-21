@@ -33,8 +33,7 @@ struct spvm_method {
   SPVM_CLASS* class;
   const char* accessor_original_name;
   const char* anon_method_defined_class_name;
-  void* precompile_address;
-  void* native_address;
+  SPVM_OP* op_inline;
   int32_t args_length;
   int32_t id;
   int32_t tmp_vars_length;
@@ -49,6 +48,7 @@ struct spvm_method {
   int32_t call_stack_double_vars_length;
   int32_t call_stack_object_vars_length;
   int32_t call_stack_ref_vars_length;
+  int32_t mortal_stack_length;
   int32_t anon_method_id;
   int8_t have_vaarg;
   int8_t is_class_var_setter;
@@ -60,8 +60,6 @@ struct spvm_method {
   int8_t can_precompile;
   int8_t is_class_method;
   int8_t is_init;
-  int32_t mortal_stack_length;
-  SPVM_OP* op_inline;
 };
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);
