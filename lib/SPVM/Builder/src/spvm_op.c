@@ -2798,8 +2798,8 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   // Set constant
   op_method->uv.method->op_inline = op_constant;
   
-  // Method is constant
-  op_method->uv.method->flag |= SPVM_METHOD_C_FLAG_ENUM;
+  // Method is enumeration
+  op_method->uv.method->is_enum = 1;
   
   return op_method;
 }

@@ -2637,7 +2637,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Inline expansion
               {
                 // Enum is replaced to constant value
-                if (call_method->method->flag & SPVM_METHOD_C_FLAG_ENUM) {
+                if (call_method->method->is_enum) {
                   // Replace sub to constant
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
