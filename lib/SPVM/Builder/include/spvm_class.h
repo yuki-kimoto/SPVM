@@ -36,7 +36,7 @@ struct spvm_class {
   SPVM_METHOD* method_destructor;
   SPVM_LIST* allows;
   SPVM_LIST* interface_decls;
-  SPVM_LIST* interface_classes;
+  SPVM_LIST* interfaces;
   SPVM_HASH* interface_symtable;
   SPVM_LIST* anon_methods;
   int32_t fields_byte_size;

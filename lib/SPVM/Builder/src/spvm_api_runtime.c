@@ -1225,9 +1225,9 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t obje
     return 1;
   }
   
-  for (int32_t i = 0; i < class->interface_classes_length; i++) {
-    int32_t must_interface_class_id = class->interface_classes_base_id + i;
-    if (must_interface_class_id == interface->id) {
+  for (int32_t i = 0; i < class->interfaces_length; i++) {
+    int32_t must_interface_id = class->interfaces_base_id + i;
+    if (must_interface_id == interface->id) {
       return 1;
     }
   }

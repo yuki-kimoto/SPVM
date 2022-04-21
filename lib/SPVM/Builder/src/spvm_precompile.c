@@ -4673,11 +4673,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t interface_basic_type_id = opcode->operand3;
         int32_t interface_basic_type_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(runtime, interface_basic_type_id);
 
-        int32_t interface_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(runtime, interface_basic_type_class_id);
-        int32_t interface_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, interface_class_id);
-        const char* interface_class_name = SPVM_API_RUNTIME_get_name(runtime, interface_class_name_id);
+        int32_t interface_id = SPVM_API_RUNTIME_get_basic_type_class_id(runtime, interface_basic_type_class_id);
+        int32_t interface_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, interface_id);
+        const char* interface_name = SPVM_API_RUNTIME_get_name(runtime, interface_name_id);
         
-        int32_t interface_method_id = SPVM_API_RUNTIME_get_method_id_by_name(runtime, interface_class_name, implement_method_name);
+        int32_t interface_method_id = SPVM_API_RUNTIME_get_method_id_by_name(runtime, interface_name, implement_method_name);
         int32_t interface_method_signature_id = SPVM_API_RUNTIME_get_method_signature_id(runtime, interface_method_id);
         const char* interface_method_signature = SPVM_API_RUNTIME_get_name(runtime, interface_method_signature_id);
 

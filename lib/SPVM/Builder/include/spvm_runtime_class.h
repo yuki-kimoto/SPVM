@@ -21,8 +21,8 @@ struct spvm_runtime_class {
   int32_t fields_length;
   int32_t class_vars_base_id;
   int32_t class_vars_length;
-  int32_t interface_classes_base_id;
-  int32_t interface_classes_length;
+  int32_t interfaces_base_id;
+  int32_t interfaces_length;
   int8_t has_init_block;
   int8_t is_anon;
 };

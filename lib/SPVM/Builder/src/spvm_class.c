@@ -36,7 +36,7 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   class->method_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   
   // Interfaces
-  class->interface_classes = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  class->interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->interface_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   
   class->allows = SPVM_LIST_new_list_permanent(compiler->allocator, 0);

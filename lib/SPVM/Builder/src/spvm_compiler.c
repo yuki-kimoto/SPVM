@@ -640,13 +640,13 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
       runtime_class->class_vars_base_id = -1;
     }
 
-    runtime_class->interface_classes_length = class->interface_classes->length;
-    if (class->interface_classes->length > 0) {
-      SPVM_CLASS* interface_class = SPVM_LIST_get(class->interface_classes, 0);
-      runtime_class->interface_classes_base_id = interface_class->id;
+    runtime_class->interfaces_length = class->interfaces->length;
+    if (class->interfaces->length > 0) {
+      SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, 0);
+      runtime_class->interfaces_base_id = interface->id;
     }
     else {
-      runtime_class->interface_classes_base_id = -1;
+      runtime_class->interfaces_base_id = -1;
     }
 
     runtime_class->anon_methods_length = class->anon_methods->length;

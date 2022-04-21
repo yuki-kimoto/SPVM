@@ -4216,12 +4216,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           SPVM_TYPE* interface_type = SPVM_OP_get_type(compiler, op_var);
                           SPVM_BASIC_TYPE* interface_basic_type = interface_type->basic_type;
-                          SPVM_CLASS* interface_class = interface_basic_type->class;
+                          SPVM_CLASS* interface = interface_basic_type->class;
                           
                           SPVM_OP* op_name_implement_method = op_assign_src->last;
 
                           const char* implement_method_name = op_name_implement_method->uv.name;
-                          SPVM_METHOD* implement_method = SPVM_HASH_get(interface_class->method_symtable, implement_method_name, strlen(implement_method_name));
+                          SPVM_METHOD* implement_method = SPVM_HASH_get(interface->method_symtable, implement_method_name, strlen(implement_method_name));
                           
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));

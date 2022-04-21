@@ -4890,19 +4890,19 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
 
       SPVM_OP* op_interface = interface_decl->op_interface;
       
-      const char* interface_class_name = interface_decl->class_name;
+      const char* interface_name = interface_decl->class_name;
       
-      SPVM_CLASS* interface_class = SPVM_HASH_get(compiler->class_symtable, interface_class_name, strlen(interface_class_name));
+      SPVM_CLASS* interface = SPVM_HASH_get(compiler->class_symtable, interface_name, strlen(interface_name));
       
-      if (interface_class->category != SPVM_CLASS_C_CATEGORY_INTERFACE) {
-        SPVM_COMPILER_error(compiler, "The operand of the interface statment must be the interface class at %s line %d", interface_class->name, op_interface->file, op_interface->line);
+      if (interface->category != SPVM_CLASS_C_CATEGORY_INTERFACE) {
+        SPVM_COMPILER_error(compiler, "The operand of the interface statment must be the interface class at %s line %d", interface->name, op_interface->file, op_interface->line);
         return;
       }
       
-      SPVM_CLASS* found_interface_class = SPVM_HASH_get(class->interface_symtable, interface_class->name, strlen(interface_class->name));
-      if (!found_interface_class) {
-        SPVM_LIST_push(class->interface_classes, interface_class);
-        SPVM_HASH_set(class->interface_symtable, interface_class->name, strlen(interface_class->name), interface_class);
+      SPVM_CLASS* found_interface = SPVM_HASH_get(class->interface_symtable, interface->name, strlen(interface->name));
+      if (!found_interface) {
+        SPVM_LIST_push(class->interfaces, interface);
+        SPVM_HASH_set(class->interface_symtable, interface->name, strlen(interface->name), interface);
       }
     }
 
