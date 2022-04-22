@@ -79,9 +79,9 @@ rmtree "$build_dir/work";
     is($output, $output_expect);
   }
 
-  # --no-precompile
+  # no_precompile
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --no-precompile -f -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe_precompile -c t/exe/myexe.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe_precompile -c t/exe/myexe.no_precompile.config MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
@@ -101,9 +101,9 @@ rmtree "$build_dir/work";
     unlike($myexe_bootstarp_source_content, qr/SPVMPRECOMPILE/);
   }
 
-  # --no-compiler-api
+  # no_precompile, no_compiler_api
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --no-precompile --no-compiler-api -f -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe_no_compiler_api -c t/exe/myexe.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe_no_compiler_api -c t/exe/myexe.no_precompile_no_compiler_api.config MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 

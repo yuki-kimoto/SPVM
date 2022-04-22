@@ -84,6 +84,28 @@ sub global_optimize_each {
   }
 }
 
+sub no_precompile {
+  my $self = shift;
+  if (@_) {
+    $self->{no_precompile} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{no_precompile};
+  }
+}
+
+sub no_compiler_api {
+  my $self = shift;
+  if (@_) {
+    $self->{no_compiler_api} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{no_compiler_api};
+  }
+}
+
 sub is_exe { 1 }
 
 1;

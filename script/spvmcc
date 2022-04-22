@@ -18,8 +18,6 @@ SPVM::Builder::Util::getopt
   'c|config=s' => \my $config_file,
   'dynamic-lib' => \my $dynamic_lib,
   'static-lib' => \my $static_lib,
-  'no-precompile' => \my $no_precompile,
-  'no-compiler-api' => \my $no_compiler_api,
 ;
 
 if ($help) {
@@ -47,8 +45,6 @@ else {
     config_file => $config_file,
     dynamic_lib => $dynamic_lib,
     static_lib => $static_lib,
-    no_precompile => $no_precompile,
-    no_compiler_api => $no_compiler_api,
   );
   $build_exe->build_exe_file;
 }
@@ -70,11 +66,10 @@ spvmcc - SPVM compiler to create exe file
   Options:
     -h, --help                     Show this message
     -v, --version                  Show the version
-    -o, --output                   Excutable file name
+    -o, --output                   Output file name
     -I, --module-dir <directory>   Add SPVM module searching directory
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Quiet output
-    -O, --optimize <level>         Optimaization level
     -f, --force                    Force compile and link
     -c, --config                   Config file
     --dynamic-lib                  The output file is a dynamic library

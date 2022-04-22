@@ -148,28 +148,6 @@ sub static_lib {
   }
 }
 
-sub no_precompile {
-  my $self = shift;
-  if (@_) {
-    $self->{no_precompile} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{no_precompile};
-  }
-}
-
-sub no_compiler_api {
-  my $self = shift;
-  if (@_) {
-    $self->{no_compiler_api} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{no_compiler_api};
-  }
-}
-
 # Methods
 sub new {
   my $class = shift;
@@ -272,7 +250,7 @@ sub build_exe_file {
   my $spvm_core_objects = $self->compile_spvm_core_sources;
   push @$object_files, @$spvm_core_objects;
   
-  my $no_precompile = $self->no_precompile;
+  my $no_precompile = $config->no_precompile;
 
   unless ($no_precompile) {
     # Create precompile C source_files
@@ -385,6 +363,9 @@ sub compile_source_file {
 sub create_bootstrap_header_source {
   my ($self) = @_;
 
+  # Config
+  my $config = $self->config;
+
   # Builder
   my $builder = $self->builder;
 
@@ -410,7 +391,7 @@ sub create_bootstrap_header_source {
 
 EOS
   
-  my $no_precompile = $self->no_precompile;
+  my $no_precompile = $config->no_precompile;
   
   unless ($no_precompile) {
     $source .= "// precompile functions declaration\n";
@@ -564,6 +545,9 @@ EOS
 sub create_bootstrap_new_env_prepared_func_source {
   my ($self) = @_;
 
+  # Config
+  my $config = $self->config;
+
   # Builder
   my $builder = $self->builder;
 
@@ -576,7 +560,7 @@ sub create_bootstrap_new_env_prepared_func_source {
 
   my $source = '';
   
-  my $no_precompile = $self->no_precompile;
+  my $no_precompile = $config->no_precompile;
   
   my $set_precompile_method_addresses_source = '';
   unless ($no_precompile) {
@@ -692,6 +676,9 @@ EOS
 sub create_bootstrap_source {
   my ($self) = @_;
   
+  # Config
+  my $config = $self->config;
+
   # Builder
   my $builder = $self->builder;
   
@@ -716,7 +703,7 @@ sub create_bootstrap_source {
   $bootstrap_base =~ s|::|/|g;
   my $bootstrap_source_file = "$build_src_dir/$bootstrap_base.boot.c";
   
-  my $no_precompile = $self->no_precompile;
+  my $no_precompile = $config->no_precompile;
 
   # Source creating callback
   my $create_cb = sub {
@@ -787,6 +774,9 @@ sub compile_bootstrap_source {
 sub compile_spvm_core_sources {
   my ($self) = @_;
 
+  # Config
+  my $config = $self->config;
+
   # SPVM::Builder::Config directory
   my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
 
@@ -801,7 +791,7 @@ sub compile_spvm_core_sources {
   my $spvm_core_header_dir = "$spvm_builder_dir/include";
   
   # SPVM runtime source files
-  my $no_compiler_api = $self->no_compiler_api;
+  my $no_compiler_api = $config->no_compiler_api;
   my $spvm_runtime_src_base_names;
   if ($no_compiler_api) {
     $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_common_source_file_names();
@@ -823,7 +813,7 @@ sub compile_spvm_core_sources {
     $object_file =~ s/\.c$//;
     $object_file .= '.o';
 
-    my $no_compiler_api = $self->no_compiler_api;
+    my $no_compiler_api = $config->no_compiler_api;
     my $ccflags = [];
     if ($no_compiler_api) {
       push @$ccflags, '-DSPVM_NO_COMPILER_API';
