@@ -4927,8 +4927,43 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
       
       // Set method precompile flag if class have precompile descriptor
-      if (class->is_precompile && method->can_precompile) {
-        method->is_precompile = 1;
+      if (class->is_precompile) {
+        int32_t can_precompile;
+        if (method->is_class_var_setter) {
+          can_precompile = 0;
+        }
+        else if (method->is_class_var_getter) {
+          can_precompile = 0;
+        }
+        else if (method->is_field_setter) {
+          can_precompile = 0;
+        }
+        else if (method->is_field_getter) {
+          can_precompile = 0;
+        }
+        else if (method->is_simple_constructor) {
+          can_precompile = 0;
+        }
+        else if (method->is_constant) {
+          can_precompile = 0;
+        }
+        else if (method->is_init) {
+          can_precompile = 0;
+        }
+        else if (method->is_enum) {
+          can_precompile = 0;
+        }
+        // native method, methods of callback type or interface type
+        else if (!method->op_block) {
+          can_precompile = 0;
+        }
+        else {
+          can_precompile = 1;
+        }
+        
+        if (can_precompile) {
+          method->is_precompile = 1;
+        }
       }
 
       // Set method id
