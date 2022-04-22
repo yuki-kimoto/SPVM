@@ -2188,145 +2188,139 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     }
 
     // Class variable declarations
-    {
-      int32_t i;
-      for (i = 0; i < class->class_vars->length; i++) {
-        SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, i);
-        const char* class_var_name = class_var->name;
+    for (int32_t i = 0; i < class->class_vars->length; i++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, i);
+      const char* class_var_name = class_var->name;
 
-        SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(class->class_var_symtable, class_var_name, strlen(class_var_name));
+      SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(class->class_var_symtable, class_var_name, strlen(class_var_name));
+      
+      if (found_class_var) {
+        SPVM_COMPILER_error(compiler, "Redeclaration of class variable \"$%s::%s\" at %s line %d", class_name, class_var_name + 1, class_var->op_class_var->file, class_var->op_class_var->line);
+      }
+      else {
+        SPVM_HASH_set(class->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
         
-        if (found_class_var) {
-          SPVM_COMPILER_error(compiler, "Redeclaration of class variable \"$%s::%s\" at %s line %d", class_name, class_var_name + 1, class_var->op_class_var->file, class_var->op_class_var->line);
-        }
-        else {
-          SPVM_HASH_set(class->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
-          
-          // Add op class
-          class_var->class = class;
-        }
+        // Add op class
+        class_var->class = class;
       }
     }
     
     // Method declarations
-    {
-      int32_t i;
-      for (i = 0; i < class->methods->length; i++) {
-        SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
-        
-        SPVM_OP* op_name_method = method->op_name;
-        const char* method_name = op_name_method->uv.name;
+    for (int32_t i = 0; i < class->methods->length; i++) {
+      SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+      
+      SPVM_OP* op_name_method = method->op_name;
+      const char* method_name = op_name_method->uv.name;
 
-        // Method check
-        
-        // Set first argument type if not set
-        if (method->args_length > 0) {
-          SPVM_VAR_DECL* arg_var_decl_first = SPVM_LIST_get(method->var_decls, 0);
-          SPVM_OP* op_arg_first_type = NULL;
-          if (!method->is_class_method) {
-            SPVM_TYPE* arg_invocant_type = op_type->uv.type;
-            op_arg_first_type = SPVM_OP_new_op_type(compiler, arg_invocant_type, method->op_method->file, method->op_method->line);
-            arg_var_decl_first->type = op_arg_first_type->uv.type;
-            assert(arg_invocant_type->basic_type);
-          }
-          else {
-            SPVM_OP* op_type_new_arg_var_decl_first = SPVM_OP_new_op_type(compiler, arg_var_decl_first->type, arg_var_decl_first->op_var_decl->file, arg_var_decl_first->op_var_decl->line);
-            op_arg_first_type = op_type_new_arg_var_decl_first;
-            assert(op_arg_first_type->uv.type->basic_type);
-          }
+      // Method check
+      
+      // Set first argument type if not set
+      if (method->args_length > 0) {
+        SPVM_VAR_DECL* arg_var_decl_first = SPVM_LIST_get(method->var_decls, 0);
+        SPVM_OP* op_arg_first_type = NULL;
+        if (!method->is_class_method) {
+          SPVM_TYPE* arg_invocant_type = op_type->uv.type;
+          op_arg_first_type = SPVM_OP_new_op_type(compiler, arg_invocant_type, method->op_method->file, method->op_method->line);
+          arg_var_decl_first->type = op_arg_first_type->uv.type;
+          assert(arg_invocant_type->basic_type);
         }
-
-        // If Method is anon, sub must be method
-        if (strlen(method_name) == 0 && method->is_class_method) {
-          SPVM_COMPILER_error(compiler, "Anon methods must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
+        else {
+          SPVM_OP* op_type_new_arg_var_decl_first = SPVM_OP_new_op_type(compiler, arg_var_decl_first->type, arg_var_decl_first->op_var_decl->file, arg_var_decl_first->op_var_decl->line);
+          op_arg_first_type = op_type_new_arg_var_decl_first;
+          assert(op_arg_first_type->uv.type->basic_type);
         }
+      }
 
-        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-          // Method having callback_t descriptor must be method
-          if (method->is_class_method) {
-            SPVM_COMPILER_error(compiler, "Methods of callback classes must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
-          }
-          
-          // Method having callback_t descriptor must be anon
-          if (strlen(method_name) != 0) {
-            SPVM_COMPILER_error(compiler, "Methods of callback classes can't have names at %s line %d", method->op_method->file, method->op_method->line);
-          }
-          
-          // If class is callback, the method must not be native
-          if (method->is_native) {
-            SPVM_COMPILER_error(compiler, "Methods of callback classes  can't have native descriptors at %s line %d", method->op_method->file, method->op_method->line);
-          }
+      // If Method is anon, sub must be method
+      if (strlen(method_name) == 0 && method->is_class_method) {
+        SPVM_COMPILER_error(compiler, "Anon methods must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
+      }
 
-          // If class is callback, the method must not be precompile
-          if (method->is_precompile) {
-            SPVM_COMPILER_error(compiler, "Methods of callback classes can't have precompile descriptors at %s line %d", method->op_method->file, method->op_method->line);
-          }
-          
-          // If class is callback, the method must not be precompile
-          if (method->op_block) {
-            SPVM_COMPILER_error(compiler, "Methods of callback classes can't have the blocks at %s line %d", method->op_method->file, method->op_method->line);
-          }
-        }
-        else if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-          // Method having interface_t descriptor must be method
-          if (method->is_class_method) {
-            SPVM_COMPILER_error(compiler, "Methods of interface classes must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
-          }
-          
-          // If class is interface, the method must not be native
-          if (method->is_native) {
-            SPVM_COMPILER_error(compiler, "Methods of interface classes  can't have native descriptors at %s line %d", method->op_method->file, method->op_method->line);
-          }
-
-          // If class is interface, the method must not be precompile
-          if (method->is_precompile) {
-            SPVM_COMPILER_error(compiler, "Methods of interface classes can't have precompile descriptors at %s line %d", method->op_method->file, method->op_method->line);
-          }
-          
-          // If class is interface, the method must not be precompile
-          if (method->op_block) {
-            SPVM_COMPILER_error(compiler, "Methods of interface classes can't have the blocks at %s line %d", method->op_method->file, method->op_method->line);
-          }
+      if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
+        // Method having callback_t descriptor must be method
+        if (method->is_class_method) {
+          SPVM_COMPILER_error(compiler, "Methods of callback classes must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
         }
         
+        // Method having callback_t descriptor must be anon
+        if (strlen(method_name) != 0) {
+          SPVM_COMPILER_error(compiler, "Methods of callback classes can't have names at %s line %d", method->op_method->file, method->op_method->line);
+        }
+        
+        // If class is callback, the method must not be native
         if (method->is_native) {
-          if (method->op_block) {
-            SPVM_COMPILER_error(compiler, "Native methods can't have blocks at %s line %d", method->op_method->file, method->op_method->line);
-          }
+          SPVM_COMPILER_error(compiler, "Methods of callback classes  can't have native descriptors at %s line %d", method->op_method->file, method->op_method->line);
+        }
+
+        // If class is callback, the method must not be precompile
+        if (method->is_precompile) {
+          SPVM_COMPILER_error(compiler, "Methods of callback classes can't have precompile descriptors at %s line %d", method->op_method->file, method->op_method->line);
         }
         
-        SPVM_METHOD* found_method = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
+        // If class is callback, the method must not be precompile
+        if (method->op_block) {
+          SPVM_COMPILER_error(compiler, "Methods of callback classes can't have the blocks at %s line %d", method->op_method->file, method->op_method->line);
+        }
+      }
+      else if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+        // Method having interface_t descriptor must be method
+        if (method->is_class_method) {
+          SPVM_COMPILER_error(compiler, "Methods of interface classes must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
+        }
         
-        if (found_method) {
+        // If class is interface, the method must not be native
+        if (method->is_native) {
+          SPVM_COMPILER_error(compiler, "Methods of interface classes  can't have native descriptors at %s line %d", method->op_method->file, method->op_method->line);
+        }
+
+        // If class is interface, the method must not be precompile
+        if (method->is_precompile) {
+          SPVM_COMPILER_error(compiler, "Methods of interface classes can't have precompile descriptors at %s line %d", method->op_method->file, method->op_method->line);
+        }
+        
+        // If class is interface, the method must not be precompile
+        if (method->op_block) {
+          SPVM_COMPILER_error(compiler, "Methods of interface classes can't have the blocks at %s line %d", method->op_method->file, method->op_method->line);
+        }
+      }
+      
+      if (method->is_native) {
+        if (method->op_block) {
+          SPVM_COMPILER_error(compiler, "Native methods can't have blocks at %s line %d", method->op_method->file, method->op_method->line);
+        }
+      }
+      
+      SPVM_METHOD* found_method = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
+      
+      if (found_method) {
+        SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
+      }
+      // Unknown sub
+      else {
+        const char* found_method_name = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
+        if (found_method_name) {
           SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
         }
-        // Unknown sub
         else {
-          const char* found_method_name = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
-          if (found_method_name) {
-            SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
+          // Bind standard functions
+          method->class = class;
+          
+          if (method->is_destructor) {
+            class->destructor_method = method;
           }
-          else {
-            // Bind standard functions
-            method->class = class;
-            
-            if (method->is_destructor) {
-              class->destructor_method = method;
-            }
-            
-            assert(method->op_method->file);
-            
-            // Method absolute name
-            int32_t method_abs_name_length = strlen(class->name) + 2 + strlen(method->name);
-            char* method_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, method_abs_name_length + 1);
-            memcpy(method_abs_name, class->name, strlen(class->name));
-            memcpy(method_abs_name + strlen(class_name), "->", 2);
-            memcpy(method_abs_name + strlen(class_name) + 2, method_name, strlen(method_name));
-            method->abs_name = method_abs_name;
+          
+          assert(method->op_method->file);
+          
+          // Method absolute name
+          int32_t method_abs_name_length = strlen(class->name) + 2 + strlen(method->name);
+          char* method_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, method_abs_name_length + 1);
+          memcpy(method_abs_name, class->name, strlen(class->name));
+          memcpy(method_abs_name + strlen(class_name), "->", 2);
+          memcpy(method_abs_name + strlen(class_name) + 2, method_name, strlen(method_name));
+          method->abs_name = method_abs_name;
 
-            // Add the method to the method symtable of the class
-            SPVM_HASH_set(class->method_symtable, method->name, strlen(method->name), method);
-          }
+          // Add the method to the method symtable of the class
+          SPVM_HASH_set(class->method_symtable, method->name, strlen(method->name), method);
         }
       }
     }
@@ -2689,19 +2683,16 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_OP* op_list_statement = op_block->first;
 
     // Add variable declarations before the first of the statements
-    {
-      int32_t i;
-      for (i = method->args_length - 1; i >= 0; i--) {
-        SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, i);
-        assert(arg_var_decl);
-        SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, arg_var_decl->var->name, arg_var_decl->op_var_decl->file, arg_var_decl->op_var_decl->line);
-        SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-        op_var->uv.var->var_decl = arg_var_decl;
-        op_var->uv.var->is_declaration = 1;
-        op_var->uv.var->var_decl = arg_var_decl;
+    for (int32_t i = method->args_length - 1; i >= 0; i--) {
+      SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, i);
+      assert(arg_var_decl);
+      SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, arg_var_decl->var->name, arg_var_decl->op_var_decl->file, arg_var_decl->op_var_decl->line);
+      SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+      op_var->uv.var->var_decl = arg_var_decl;
+      op_var->uv.var->is_declaration = 1;
+      op_var->uv.var->var_decl = arg_var_decl;
 
-        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
-      }
+      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
     }
 
     // Add condition_flag variable to first of block
