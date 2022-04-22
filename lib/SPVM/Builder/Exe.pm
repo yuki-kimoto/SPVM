@@ -273,7 +273,7 @@ sub build_exe_file {
   push @$object_files, @$spvm_core_objects;
   
   my $no_precompile = $self->no_precompile;
-  
+
   unless ($no_precompile) {
     # Create precompile C source_files
     $self->create_precompile_sources;
@@ -392,6 +392,7 @@ sub create_bootstrap_header_source {
 
   # Class names
   my $class_names = $self->builder->get_class_names;
+  
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
 
   my $source = '';
