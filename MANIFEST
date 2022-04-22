@@ -1059,7 +1059,6 @@ t/default/unless.t
 t/default/warn.t
 t/default/weaken.t
 t/default/while.t
-t/exe/lib/SPVM/MyExe.config
 t/exe/lib/SPVM/MyExe.spvm
 t/exe/lib/SPVM/MyExe/Foo/Bar.config
 t/exe/lib/SPVM/MyExe/Foo/Bar.spvm
@@ -1077,6 +1076,8 @@ t/exe/lib/SPVM/TestCase/NativeAPI2.native/src/foo.c
 t/exe/lib/SPVM/TestCase/NativeAPI2.native/src/noneed.txt
 t/exe/lib/SPVM/TestCase/NativeAPI2.spvm
 t/exe/myexe.config
+t/exe/myexe.debug.config
+t/exe/myexe.default.config
 t/exe/myexe.pl
 t/exe/SPVM_Builder_Exe.t
 t/exe/spvmcc.t
