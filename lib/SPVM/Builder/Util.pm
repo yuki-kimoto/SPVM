@@ -159,6 +159,18 @@ sub load_config {
   return $config;
 }
 
+sub load_default_config {
+  my ($config_file) = @_;
+  
+  my $default_config_file = $config_file;
+  
+  $default_config_file =~ s/\.[a-zA-Z0-9_]+\.config$/default.config/;
+  
+  my $config = &load_config($default_config_file);
+  
+  return $config;
+}
+
 sub unindent {
   my $str = shift;
   my $min = min map { m/^([ \t]*)/; length $1 || () } split "\n", $str;
