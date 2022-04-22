@@ -38,7 +38,11 @@ sub new {
 sub load_config {
   my ($self, $config_file) = @_;
   
-  return SPVM::Builder::Util::load_config($config_file);
+  my $config = SPVM::Builder::Util::load_config($config_file);
+  
+  push @{$config->dependent_files}, $config_file;
+  
+  return $config;
 }
 
 sub load_mode_config {
