@@ -175,7 +175,7 @@ sub new {
   # Config
   my $config;
   if (defined $config_file) {
-    $config = SPVM::Builder::Util::load_config($config_file);
+    $config = SPVM::Builder::Config::Exe->load_config($config_file);
     unless ($config->is_exe) {
       confess "Config file \"$config_file\" is not the config to create the executable file";
     }
