@@ -179,7 +179,6 @@ sub new {
     unless ($config->is_exe) {
       confess "Config file \"$config_file\" is not the config to create the executable file";
     }
-    push @{$config->dependent_files}, $config_file;
   }
   else {
     $config = SPVM::Builder::Config::Exe->new_gnu99;
@@ -264,11 +263,8 @@ sub create_source_file {
   my $output_file = $opt->{output_file};
   my $create_cb = $opt->{create_cb};
   
-  my $need_generate_input_files = [@$input_files];
-  my $config_file = $self->config_file;
-  if (defined $config_file && -f $config_file) {
-    push @$need_generate_input_files, $config_file;
-  }
+  my $config_dependent_files = $config->dependent_files;
+  my $need_generate_input_files = [@$input_files, @$config_dependent_files];
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $self->force || $config->force,
     output_file => $output_file,
@@ -300,11 +296,8 @@ sub compile_source_file {
     $depend_files = [];
   }
   
-  my $need_generate_input_files = [$source_file, @$depend_files];
-  my $config_file = $self->config_file;
-  if (defined $config_file && -f $config_file) {
-    push @$need_generate_input_files, $config_file;
-  }
+  my $config_dependent_files = $config->dependent_files;
+  my $need_generate_input_files = [$source_file, @$depend_files, @$config_dependent_files];
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $self->force || $config->force,
     output_file => $output_file,
@@ -990,11 +983,8 @@ sub link {
     libpth => '',
   };
   
-  my $need_generate_input_files = [@$object_file_infos];
-  my $config_file = $self->config_file;
-  if (defined $config_file && -f $config_file) {
-    push @$need_generate_input_files, $config_file;
-  }
+  my $config_dependent_files = $config->dependent_files;
+  my $need_generate_input_files = [@$object_file_infos, @$config_dependent_files];
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $self->force || $config->force,
     output_file => $output_file,
