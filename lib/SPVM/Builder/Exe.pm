@@ -125,29 +125,6 @@ sub config_file {
   }
 }
 
-sub dynamic_lib {
-  my $self = shift;
-  if (@_) {
-    $self->{dynamic_lib} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{dynamic_lib};
-  }
-}
-
-
-sub static_lib {
-  my $self = shift;
-  if (@_) {
-    $self->{static_lib} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{static_lib};
-  }
-}
-
 # Methods
 sub new {
   my $class = shift;
@@ -1046,8 +1023,8 @@ sub link {
     my $link_info_object_files = [map { $_->to_string } @$link_info_object_file_infos];
     my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
     
-    my $dynamic_lib = $self->dynamic_lib;
-    my $static_lib = $self->static_lib;
+    my $dynamic_lib = $config->dynamic_lib;
+    my $static_lib = $config->static_lib;
     
     # CBuilder
     my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);

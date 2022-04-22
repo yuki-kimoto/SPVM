@@ -106,6 +106,29 @@ sub no_compiler_api {
   }
 }
 
+sub dynamic_lib {
+  my $self = shift;
+  if (@_) {
+    $self->{dynamic_lib} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{dynamic_lib};
+  }
+}
+
+
+sub static_lib {
+  my $self = shift;
+  if (@_) {
+    $self->{static_lib} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{static_lib};
+  }
+}
+
 sub is_exe { 1 }
 
 1;

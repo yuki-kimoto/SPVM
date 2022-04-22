@@ -3,9 +3,13 @@ Revision history for SPVM
         [CHANGE]
         * Add no_compiler_api to SPVM::Builder::Config::Exe
         * Add no_precompile to SPVM::Builder::Config::Exe
+        * Add dynamic_lib to SPVM::Builder::Config::Exe
+        * Add static_lib to SPVM::Builder::Config::Exe
         
         [NON BACKWORD COMPATIBLE CHANGES]
-        * Remove -O|--optimize option from spvmcc
+        * Remove -O|--optimize option from spvmcc.
+        * Remove --dynamic-lib option from spvmcc.
+        * Remove --static-lib option from spvmcc.
 0.9512_01  2021-04-19
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove Fn->srand because this method is not thread safe.
