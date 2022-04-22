@@ -266,7 +266,7 @@ sub resolve_resources {
   return \@found_resources;
 }
 
-sub get_src_dir_from_class_name {
+sub get_resource_src_dir_from_class_name {
   my ($self, $class_name) = @_;
   
   my $module_file = $self->builder->get_module_file($class_name);
@@ -276,6 +276,16 @@ sub get_src_dir_from_class_name {
   $src_dir =~ s|/\Q$module_rel_file\E$||;
   
   return $src_dir;
+}
+
+sub get_resource_object_dir_from_class_name {
+  my ($self, $class_name) = @_;
+
+  my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
+  
+  my $object_dir = $self->builder->create_build_object_path("$class_rel_dir.resource");
+  
+  return $object_dir;
 }
 
 sub get_config_file_from_class_name {
@@ -324,7 +334,7 @@ sub compile {
   # Object directory
   my $object_dir = $opt->{object_dir};
   unless (defined $object_dir && -d $object_dir) {
-    confess "Temporary directory must be specified for " . $self->category . " build";
+    confess "Temporary directory must exists for " . $self->category . " build";
   }
   
   # Module file
@@ -750,8 +760,9 @@ sub link {
         force => $self->force,
       );
       
-      my $src_dir = $self->get_src_dir_from_class_name($resource);
-      my $object_dir = $self->builder->create_build_object_path;
+      my $src_dir = $self->get_resource_src_dir_from_class_name($resource);
+      my $object_dir = $self->get_resource_object_dir_from_class_name($class_name);
+      mkpath $object_dir;
       
       my $object_files = $builder_cc_resource->compile(
         $resource,
