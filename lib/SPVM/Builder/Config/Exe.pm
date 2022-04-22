@@ -8,6 +8,17 @@ use SPVM::Builder::Util;
 
 use base 'SPVM::Builder::Config';
 
+sub dependent_files {
+  my $self = shift;
+  if (@_) {
+    $self->{dependent_files} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{dependent_files};
+  }
+}
+
 sub new {
   my ($self, %options) = @_;
   
@@ -16,6 +27,10 @@ sub new {
   }
   
   $self = $self->SUPER::new(%options);
+  
+  unless (defined $self->{dependent_files}) {
+    $self->{dependent_files} = [];
+  }
 
   return $self;
 }
