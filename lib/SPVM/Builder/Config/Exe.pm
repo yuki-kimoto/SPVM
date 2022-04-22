@@ -2,6 +2,7 @@ package SPVM::Builder::Config::Exe;
 
 use strict;
 use warnings;
+use Carp 'confess';
 
 use SPVM::Builder::Util;
 
@@ -19,16 +20,25 @@ sub new {
   return $self;
 }
 
-sub load_config { SPVM::Builder::Util::load_config(@_) }
+sub load_config {
+  my ($self, $config_file) = @_;
+  
+  return SPVM::Builder::Util::load_config($config_file);
+}
 
 sub load_default_config {
-  my ($config_file) = @_;
+  my ($self, $config_file) = @_;
   
   my $default_config_file = $config_file;
   
-  $default_config_file =~ s/(\.[a-zA-Z0-9_]+)\.config$/default.config/;
+  $default_config_file =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
+  $default_config_file .= '.default.config';
   
-  my $config = &load_config($default_config_file);
+  unless (-f $default_config_file) {
+    confess "Can't find default config file \"$default_config_file\"";
+  }
+  
+  my $config = $self->load_config($default_config_file);
   
   return $config;
 }
