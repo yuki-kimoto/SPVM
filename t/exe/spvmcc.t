@@ -8,6 +8,7 @@ use FindBin;
 use Config;
 use File::Path 'mkpath', 'rmtree';
 use File::Spec;
+use SPVM::Builder::Util;
 
 use SPVM::Builder;
 
@@ -93,6 +94,11 @@ rmtree "$build_dir/work";
     chomp $output;
     my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2";
     is($output, $output_expect);
+    
+    # No precompile source
+    my $myexe_bootstarp_source_file = "$FindBin::Bin/.spvm_build/work/src/SPVM/MyExe.boot.c";
+    my $myexe_bootstarp_source_content = SPVM::Builder::Util::slurp_binary($myexe_bootstarp_source_file);
+    unlike($myexe_bootstarp_source_content, qr/SPVMPRECOMPILE/);
   }
 }
 
