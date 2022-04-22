@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9512_01  2021-04-21
+0.9513  2021-04-23
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove Fn->srand because this method is not thread safe.
         * Change Fn->crand arguments because this method become thread safe.
