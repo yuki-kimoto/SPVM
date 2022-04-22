@@ -2504,29 +2504,35 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       
       switch (descriptor->id) {
-        case SPVM_DESCRIPTOR_C_ID_PRIVATE:
+        case SPVM_DESCRIPTOR_C_ID_PRIVATE: {
           // Default is private
           access_control_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_PUBLIC:
+        }
+        case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
           field->is_public = 1;
           access_control_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_RW:
+        }
+        case SPVM_DESCRIPTOR_C_ID_RW: {
           field->has_setter = 1;
           field->has_getter = 1;
           accessor_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_RO:
+        }
+        case SPVM_DESCRIPTOR_C_ID_RO: {
           field->has_getter = 1;
           accessor_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_WO:
+        }
+        case SPVM_DESCRIPTOR_C_ID_WO: {
           field->has_setter = 1;
           accessor_descriptors_count++;
           break;
-        default:
+        }
+        default: {
           SPVM_COMPILER_error(compiler, "Invalid field descriptor %s at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+        }
       }
       
       if (accessor_descriptors_count > 1) {
