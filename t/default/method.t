@@ -3,6 +3,7 @@ use TestAuto;
 
 use strict;
 use warnings;
+use Config;
 
 use Test::More;
 
@@ -199,8 +200,17 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # precompile method
 {
-  my $ret = SPVM::TestCase::Method->precompile_sum(2, 3);
-  is($ret, 5);
+  # Check precompile module file
+  {
+    my $precompile_module_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/Method.precompile.$Config{dlext}";
+    ok(-f $precompile_module_file);
+  }
+  
+  # Call precompile method
+  {
+    my $ret = SPVM::TestCase::Method->precompile_sum(2, 3);
+    is($ret, 5);
+  }
 }
 
 # All object is freed
