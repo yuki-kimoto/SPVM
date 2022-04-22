@@ -314,8 +314,7 @@ sub create_source_file {
     push @$need_generate_input_files, $config_file;
   }
   my $need_generate = SPVM::Builder::Util::need_generate({
-    global_force => $self->force,
-    config_force => $config->force,
+    force => $self->force || $config->force,
     output_file => $output_file,
     input_files => $need_generate_input_files,
   });
@@ -350,8 +349,7 @@ sub compile_source_file {
     push @$need_generate_input_files, $config_file;
   }
   my $need_generate = SPVM::Builder::Util::need_generate({
-    global_force => $self->force,
-    config_force => $config->force,
+    force => $self->force || $config->force,
     output_file => $output_file,
     input_files => $need_generate_input_files,
   });
@@ -1017,8 +1015,7 @@ sub link {
     push @$need_generate_input_files, $config_file;
   }
   my $need_generate = SPVM::Builder::Util::need_generate({
-    global_force => $self->force,
-    config_force => $config->force,
+    force => $self->force || $config->force,
     output_file => $output_file,
     input_files => $need_generate_input_files,
   });

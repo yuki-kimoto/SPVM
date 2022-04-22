@@ -17,8 +17,7 @@ use File::Spec;
 sub need_generate {
   my ($opt) = @_;
   
-  my $global_force = $opt->{global_force};
-  my $config_force = $opt->{config_force};
+  my $force = $opt->{force};
   my $input_files = $opt->{input_files};
   my $output_file = $opt->{output_file};
   
@@ -69,10 +68,7 @@ sub need_generate {
   }
 
   my $need_generate;
-  if ($global_force) {
-    $need_generate = 1;
-  }
-  elsif ($config_force) {
+  if ($force) {
     $need_generate = 1;
   }
   else {

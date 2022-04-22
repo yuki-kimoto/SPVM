@@ -494,8 +494,7 @@ sub compile {
       push @$input_files, $module_file;
     }
     $need_generate = SPVM::Builder::Util::need_generate({
-      global_force => $self->force,
-      config_force => $config->force,
+      force => $self->force || $config->force,
       output_file => $object_file,
       input_files => $input_files,
     });
@@ -871,8 +870,7 @@ sub link {
   mkpath dirname $shared_lib_file;
 
   my $need_generate = SPVM::Builder::Util::need_generate({
-    global_force => $self->force,
-    config_force => $config->force,
+    force => $self->force || $config->force,
     output_file => $shared_lib_file,
     input_files => [$config_file, @$all_object_files],
   });
@@ -984,8 +982,7 @@ sub create_precompile_source_file {
   }
 
   my $need_generate = SPVM::Builder::Util::need_generate({
-    global_force => $self->force,
-    config_force => 0,
+    force => $self->force,
     output_file => $source_file,
     input_files => [$module_file, $spvm_precompile_soruce_file],
   });
