@@ -26,19 +26,27 @@ sub load_config {
   return SPVM::Builder::Util::load_config($config_file);
 }
 
-sub load_default_config {
-  my ($self, $config_file) = @_;
+sub load_mode_config {
+  my ($self, $config_file, $mode) = @_;
   
   my $default_config_file = $config_file;
   
   $default_config_file =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
-  $default_config_file .= '.default.config';
+  $default_config_file .= ".$mode.config";
   
   unless (-f $default_config_file) {
     confess "Can't find default config file \"$default_config_file\"";
   }
   
   my $config = $self->load_config($default_config_file);
+  
+  return $config;
+}
+
+sub load_default_config {
+  my ($self, $config_file) = @_;
+  
+  my $config = $self->load_mode_config($config_file, 'default');
   
   return $config;
 }
