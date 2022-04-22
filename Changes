@@ -5,6 +5,7 @@ Revision history for SPVM
         * Add no_precompile to SPVM::Builder::Config::Exe
         * Add dynamic_lib to SPVM::Builder::Config::Exe
         * Add static_lib to SPVM::Builder::Config::Exe
+        * Improve resource system. Don't use ar command.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove -O|--optimize option from spvmcc.
