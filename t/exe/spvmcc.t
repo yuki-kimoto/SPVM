@@ -55,9 +55,9 @@ rmtree "$build_dir/work";
     ok(length $spvmcc_output == 0);
   }
   
-  # -O, -f,  --ccflags, --lddlflags
+  # debug config -O0 -g
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -O "-O0 -g" -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe --config t/exe/myexe.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe --config t/exe/myexe.debug.config MyExe);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/\Q-O0 -g/);
     like($spvmcc_output, qr/-lm\b/);
