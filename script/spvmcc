@@ -19,6 +19,7 @@ SPVM::Builder::Util::getopt
   'c|config=s' => \my $config_file,
   'dynamic-lib' => \my $dynamic_lib,
   'static-lib' => \my $static_lib,
+  'no-precompile' => \my $no_precompile,
 ;
 
 if ($help) {
@@ -47,6 +48,7 @@ else {
     config_file => $config_file,
     dynamic_lib => $dynamic_lib,
     static_lib => $static_lib,
+    no_precompile => $no_precompile,
   );
   $build_exe->build_exe_file;
 }
