@@ -20,6 +20,7 @@ SPVM::Builder::Util::getopt
   'dynamic-lib' => \my $dynamic_lib,
   'static-lib' => \my $static_lib,
   'no-precompile' => \my $no_precompile,
+  'no-compiler-api' => \my $no_compiler_api,
 ;
 
 if ($help) {
@@ -49,6 +50,7 @@ else {
     dynamic_lib => $dynamic_lib,
     static_lib => $static_lib,
     no_precompile => $no_precompile,
+    no_compiler_api => $no_compiler_api,
   );
   $build_exe->build_exe_file;
 }

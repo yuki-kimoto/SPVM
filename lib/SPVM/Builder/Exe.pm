@@ -170,6 +170,17 @@ sub no_precompile {
   }
 }
 
+sub no_compiler_api {
+  my $self = shift;
+  if (@_) {
+    $self->{no_compiler_api} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{no_compiler_api};
+  }
+}
+
 # Methods
 sub new {
   my $class = shift;
@@ -330,6 +341,9 @@ sub compile_source_file {
   # Config
   my $config = $self->config;
   
+  my $opt_ccflags = $opt->{ccflags};
+  $opt_ccflags = [] unless defined $opt_ccflags;
+  
   # Optimize
   my $optimize = $self->optimize;
   if (defined $optimize) {
@@ -374,7 +388,7 @@ sub compile_source_file {
     object_file => $output_file,
     source_file => $source_file,
     cc => $compile_info_cc,
-    ccflags => $compile_info_ccflags,
+    ccflags => [@$compile_info_ccflags, @$opt_ccflags],
     is_exe_config => $config->is_exe,
   );
   
@@ -800,8 +814,14 @@ sub compile_spvm_core_sources {
   my $spvm_core_header_dir = "$spvm_builder_dir/include";
   
   # SPVM runtime source files
-  my $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
-
+  my $no_compiler_api = $self->no_compiler_api;
+  my $spvm_runtime_src_base_names;
+  if ($no_compiler_api) {
+    $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_common_core_source_file_names();
+  }
+  else {
+    $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
+  }
   my @spvm_core_source_files = map { "$spvm_core_source_dir/$_" } @$spvm_runtime_src_base_names;
 
   # Object dir
@@ -815,8 +835,15 @@ sub compile_spvm_core_sources {
     my $object_file = "$object_dir/" . basename($src_file);
     $object_file =~ s/\.c$//;
     $object_file .= '.o';
+
+    my $no_compiler_api = $self->no_compiler_api;
+    my $ccflags = [];
+    if ($no_compiler_api) {
+      push @$ccflags, '-DSPVM_NO_COMPILER_API';
+    }
     
     my $object_file_info = $self->compile_source_file({
+      ccflags => $ccflags,
       source_file => $src_file,
       output_file => $object_file,
     });
