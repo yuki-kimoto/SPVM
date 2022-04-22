@@ -349,6 +349,10 @@ sub compile_source_file {
   if (defined $optimize) {
     $config->optimize($optimize);
   }
+  
+  if (@$opt_ccflags) {
+    $config->add_ccflags(@$opt_ccflags);
+  }
 
   my $source_file = $opt->{source_file};
   my $output_file = $opt->{output_file};
@@ -388,7 +392,7 @@ sub compile_source_file {
     object_file => $output_file,
     source_file => $source_file,
     cc => $compile_info_cc,
-    ccflags => [@$compile_info_ccflags, @$opt_ccflags],
+    ccflags => $compile_info_ccflags,
     is_exe_config => $config->is_exe,
   );
   
@@ -817,7 +821,7 @@ sub compile_spvm_core_sources {
   my $no_compiler_api = $self->no_compiler_api;
   my $spvm_runtime_src_base_names;
   if ($no_compiler_api) {
-    $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_common_core_source_file_names();
+    $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_common_source_file_names();
   }
   else {
     $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
