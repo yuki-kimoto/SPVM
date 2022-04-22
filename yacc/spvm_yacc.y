@@ -183,8 +183,7 @@ init_block
       SPVM_OP* op_descriptor_static = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
       SPVM_OP_insert_child(compiler, op_list_descriptors, op_list_descriptors->first, op_descriptor_static);
 
-      int32_t can_precompile = 0;
-      $$ = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_descriptors, $2, NULL, NULL, 1, 0, can_precompile);
+      $$ = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_descriptors, $2, NULL, NULL, 1, 0);
     }
     
 use
@@ -301,23 +300,19 @@ has
 method
   : opt_descriptors METHOD method_name ':' return_type '(' opt_args opt_vaarg')' block
      {
-       int32_t can_precompile = 1;
-       $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, $10, NULL, $8, 0, 0, can_precompile);
+       $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, $10, NULL, $8, 0, 0);
      }
   | opt_descriptors METHOD method_name ':' return_type '(' opt_args opt_vaarg')' ';'
      {
-       int32_t can_precompile = 0;
-       $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8, 0, 0, can_precompile);
+       $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8, 0, 0);
      }
   | opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg')' block
      {
-       int32_t can_precompile = 1;
-       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0, 0, can_precompile);
+       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0, 0);
      }
   | opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg ')' ';'
      {
-       int32_t can_precompile = 0;
-       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, NULL, NULL, $7, 0, 0, can_precompile);
+       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, NULL, NULL, $7, 0, 0);
      }
 
 anon_method
@@ -325,9 +320,7 @@ anon_method
      {
        int32_t is_init = 0;
        int32_t is_anon = 1;
-       int32_t can_precompile = 1;
-       
-       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, is_init, is_anon, can_precompile);
+       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, is_init, is_anon);
      }
   | '[' args ']' opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg')' block
      {
@@ -342,8 +335,7 @@ anon_method
        
        int32_t is_init = 0;
        int32_t is_anon = 1;
-       int32_t can_precompile = 1;
-       $$ = SPVM_OP_build_method(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, is_init, is_anon, can_precompile);
+       $$ = SPVM_OP_build_method(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, is_init, is_anon);
      }
 
 opt_args
