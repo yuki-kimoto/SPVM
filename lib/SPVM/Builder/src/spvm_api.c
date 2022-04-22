@@ -32,24 +32,11 @@
 #include "spvm_api_string_buffer.h"
 #include "spvm_api_allocator.h"
 #include "spvm_api_runtime.h"
-#include "spvm_api_compiler.h"
-#include "spvm_api_precompile.h"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifndef SPVM_NO_COMPILER_API
+#  include "spvm_api_compiler.h"
+#  include "spvm_api_precompile.h"
+#endif
 
 
 
@@ -72,11 +59,24 @@ SPVM_ENV* SPVM_API_new_env_raw() {
   // Env String Buffer
   SPVM_ENV_STRING_BUFFER* env_string_buffer = SPVM_API_STRING_BUFFER_new_env();
 
+#ifdef SPVM_NO_COMPILER_API
+
+  // Env Compiler
+  SPVM_ENV_COMPILER* env_compiler = NULL;
+
+  // Env Precompile
+  SPVM_ENV_PRECOMPILE* env_precompile = NULL;
+  
+
+#else
+
   // Env Compiler
   SPVM_ENV_COMPILER* env_compiler = SPVM_API_COMPILER_new_env();
 
   // Env Precompile
   SPVM_ENV_PRECOMPILE* env_precompile = SPVM_API_PRECOMPILE_new_env();
+
+#endif
 
   // Env Runtime
   SPVM_ENV_RUNTIME* env_runtime = SPVM_API_RUNTIME_new_env();
