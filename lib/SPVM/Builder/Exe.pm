@@ -81,17 +81,6 @@ sub output_file {
   }
 }
 
-sub optimize {
-  my $self = shift;
-  if (@_) {
-    $self->{optimize} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{optimize};
-  }
-}
-
 sub quiet {
   my $self = shift;
   if (@_) {
@@ -343,12 +332,6 @@ sub compile_source_file {
   
   my $opt_ccflags = $opt->{ccflags};
   $opt_ccflags = [] unless defined $opt_ccflags;
-  
-  # Optimize
-  my $optimize = $self->optimize;
-  if (defined $optimize) {
-    $config->optimize($optimize);
-  }
   
   if (@$opt_ccflags) {
     $config->add_ccflags(@$opt_ccflags);
@@ -908,7 +891,6 @@ sub compile_precompile_sources {
     category => 'precompile',
     builder => $builder,
     quiet => $self->quiet,
-    optimize => $self->optimize,
     force => $self->force,
   );
   
@@ -953,7 +935,6 @@ sub compile_native_sources {
     category => 'native',
     builder => $builder,
     quiet => $self->quiet,
-    optimize => $self->optimize,
     force => $self->force,
   );
   
