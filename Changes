@@ -1,4 +1,11 @@
 Revision history for SPVM
+0.9513_01  2022-04-22
+        [CHANGE]
+        * Add no_compiler_api to SPVM::Builder::Config::Exe
+        * Add no_precompile to SPVM::Builder::Config::Exe
+        
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Remove -O|--optimize option from spvmcc
 0.9512_01  2021-04-19
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove Fn->srand because this method is not thread safe.
@@ -15,8 +22,6 @@ Revision history for SPVM
           
           [After]
           static method rand : double ($seed : int*)
-        [NON BACKWORD COMPATIBLE CHANGES]
-        * Remove -O|--optimize option from spvmcc
           
 0.9512  2021-04-21
         [CHANGE]
