@@ -179,6 +179,7 @@ sub new {
     unless ($config->is_exe) {
       confess "Config file \"$config_file\" is not the config to create the executable file";
     }
+    push @{$config->dependent_files}, $config_file;
   }
   else {
     $config = SPVM::Builder::Config::Exe->new_gnu99;
