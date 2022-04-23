@@ -764,7 +764,7 @@ sub link {
       my $object_dir = $self->get_resource_object_dir_from_class_name($class_name);
       mkpath $object_dir;
       
-      my $object_files = $builder_cc_resource->compile(
+      my $object_file_infos = $builder_cc_resource->compile(
         $resource,
         {
           src_dir => $src_dir,
@@ -772,16 +772,7 @@ sub link {
         }
       );
       
-      for my $object_file (@$object_files) {
-        my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
-          object_file => $object_file,
-          class_name => $resource,
-          is_exe_config => 0,
-          is_resource => 1,
-        );
-        
-        push @$all_object_file_infos, $object_file_info;
-      }
+      push @$all_object_file_infos, @$object_file_infos;
     }
   }
 
@@ -846,6 +837,7 @@ sub link {
           is_exe_config => 0,
           is_lib_file => 1,
         );
+        
         push @$all_object_file_infos, $object_file_info;
       }
     }
@@ -899,9 +891,11 @@ sub link {
     my $link_info_class_name = $link_info->class_name;
     my $link_info_output_file = $link_info->output_file;
     my $link_info_object_file_infos = $link_info->object_file_infos;
-    my $link_info_object_files = [map { $_->to_string } @$link_info_object_file_infos];
-    my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
 
+    my $link_info_object_files = [map { my $tmp = $_->to_string; $tmp } @$link_info_object_file_infos];
+
+    my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
+    
     # Create shared library
     my (undef, @tmp_files) = $cbuilder->link(
       lib_file => $link_info_output_file,
