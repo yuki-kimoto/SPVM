@@ -4303,7 +4303,7 @@ If the value of the right operand is C<0>, an L<exception|/"Exception"> is throw
 
 =head2 Increment Operators
 
-Increment operators are the L<pre-intrement operator|/"Pre-Increment Operator> and L<post-intrement operator|/"Post-Increment Operator>.
+Increment operators are the L<pre-increment operator|/"Pre-Increment Operator"> and L<post-increment operator|/"Post-Increment Operator">.
 
 =head3 Pre-Increment Operator
 
@@ -4373,51 +4373,77 @@ B<Examples:>
   # Post-increment of a dereferenced value
   $$num_ref++;
 
-=head2 Decrement Operator
+=head2 Decrement Operators
 
-B<Decrement Operator> is an operator that subtracts 1 to the value. the meaning of Decrement Operator is different depending on whether the Decrement Operator is placed Pre or Post.
-
-  # Pre-Decrement Operator
-  --LEXICAL_VARIABLE
-  --CLASS_VARIABLE
-  --FIELD_ACCESS
-  --ARRAY_ACCESS
-  --DEREFERENCE
-  
-  # Post-Decrement Operator
-  LEXICAL_VARIABLE--
-  CLASS_VARIABLE--
-  FIELD_ACCESS--
-  ARRAY_ACCESS--
-  DEREFERENCE--
-
-The operand of Decrement Operator must L</"Local Variable">, L</"Class Variable">, <a href = "#language-field-access">Field Access</a>, L</"Array Access">, L</"Dereference">, otherwise a compilation error will occur.
-
-The type of operand of Decrement Operator must be L</"Numeric Types">, otherwise a compilation error will occur.
+Decrement operators are the L<pre-decrement operator|/"Pre-Decrement Operator"> and L<post-decrement operator|/"Post-Decrement Operator">.
 
 =head3 Pre-Decrement Operator
 
-Pre-Decrement Operator subtracts 1 to the operand and returns the value after decrement.
+The pre-decrement operator subtracts C<1> to the value of the operand and returns the value after the decrementation.
+  
+  # Pre-decrement operator
+  --OPERAND
 
-Pre-Decrement Operator is equivalent to the following Expression. After 1 is subtracted to the operand, L</"Type Cast"> is performed with the operand Type and the value is assinged to original operand.
+The type of the operand must be a L<local variable|/"Local Variable">, a L</class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
 
-  (OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND - 1))
+The pre-decrement operator performs the same operation as the following.
 
-For example, Pre-Decrement of L</"byte Type"> value is equivalent to the following Expression:
+  (OPERAND = (TYPE_OF_OPERAND)(OPERAND - 1))
+
+For example, if the type of the operand is the L<byte type|/"byte Type">, the following operation is performed.
 
   ($num = (byte)($num - 1))
 
+B<Examples:>
+  
+  # Pre-decrement of a local variable
+  --$num;
+  
+  # Pre-decrement of a class variable
+  --$NUM;
+  
+  # Pre-decrement of an element of an array
+  --$point->{x};
+  
+  # Pre-decrement of a field
+  --$nums->[0];
+  
+  # Pre-decrement of a dereferenced value
+  --$$num_ref;
+
 =head3 Post-Decrement Operator
 
-Post-Decrement Operator subtract 1 to the operand and returns the value before Decrement.
+The post-decrement operator subtracts C<1> to the value of the operand and returns the value before the decrementation.
+  
+  # Post-decrement operator
+  OPERAND--
 
-Post-Decrement Operator is equivalent to the following Expression using L</"Sequential Operator">. The value of operand is saved in a temporary variable, 1 is subtracted to the operand, L</"Type Cast"> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
+The type of the operand must be a L<local variable|/"Local Variable">, a L</class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
 
-  (my TMP_VARIABLE = OPERAND_OPERAND, OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND - 1), TMP_VARIABLE)
+The post-decrement operator performs the same operation as the following.
 
-For example, Post-Decrement of L</"byte Type"> value is equivalent to the following Expression.
+  (my TMP_VARIABLE = OPERAND, OPERAND = (TYPE_OF_OPERAND)(OPERAND - 1), TMP_VARIABLE)
+
+For example, if the type of the operand is the L<byte type|/"byte Type">, the following operation is performed.
 
   (my $tmp = $num, $num = (byte)($num - 1), $tmp)
+
+B<Examples:>
+  
+  # Post-decrement of a local variable
+  $num--;
+  
+  # Post-decrement of a class variable
+  $NUM--;
+  
+  # Post-decrement of an element of an array
+  $point->{x}--;
+  
+  # Post-decrement of a field
+  $nums->[0]--;
+  
+  # Post-decrement of a dereferenced value
+  $$num_ref--;
 
 =head2 Bit Operators
 
