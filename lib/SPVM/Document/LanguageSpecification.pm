@@ -6213,6 +6213,15 @@ B<Examples:>
   # String array types
   my $strings : string[];
 
+=head2 Class Array Types
+
+Class array types are L</"Array Types"> that the type of the element is the L<class type|/"Class Types">.
+
+B<Examples:>
+
+  # Class array types
+  my $points : Point[];
+
 =head2 Multi-Numeric Array Types
 
 A multi-numeric array type is an L<array type|/"Array Types"> that the basic type is a L<multi-numeric type|"Multi-Numeric Types">.
@@ -6846,6 +6855,30 @@ B<Examples:>
   my $strings : string[] = undef;
 
 =head2 Type Assignability to Class Array
+
+If the type of the left operand is a L<class array type|/"Class Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
+
+If not, the assignability is false.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>None</td>
+    <td>True</td><td>CLASS_X[]</td><td>undef</td><td>None</td>
+    <td>False</td><td>CLASS_X[]</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $points : Point[] = new Point[3];
+  my $points : Point[] = undef;
 
 =head2 Type Assignability to Interface Array
 
