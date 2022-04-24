@@ -6195,30 +6195,23 @@ The C<byte[]> type is an L<array type|/"Array Types"> that the element type is C
 
 Object array types are L</"Array Types"> that the type of the element is an L<object type|/"Object Types">.
 
-B<Examples of object array types:>
+B<Examples:>
 
-=begin html
+  # Object array types
+  my $points : Point[];
+  my $points_of_point : Point[][];
+  my $comparables : Comparable[];
+  my $strings : string[];
+  my $objects : object[];
 
-<ul>
-  <li>
-    Foo[]
- </li>
-  <li>
-    Foo[][]
- </li>
-  <li>
-    Comparable[]
- </li>
-  <li>
-    object[]
- </li>
-</ul>
+=head2 String Array Types
 
-=end html
+String array types are L</"Array Types"> that the type of the element is the L<string type|/"String Types">.
 
-The data represented by Object Array Types must have elements of size of L</"Object Types"> and consecutive by the number of Array Length.
+B<Examples:>
 
-All elements of Object Array Types are initialized by L</"Type Initial Value"> when the L<creating array|/"Creating Array"> is performed.
+  # String array types
+  my $strings : string[];
 
 =head2 Multi-Numeric Array Types
 
@@ -6245,7 +6238,7 @@ The object of the multi-numeric array type can be created by the L<new|/"Creatin
 
   my $complex_nums = new Complex_2d[10];
 
-=head2 Any Object-Array Type
+=head2 Any Object Array Type
 
 The any object-array type C<object[]> is the type that any L<object array type|/"Object Array Types"> can be assigned.
 
@@ -6255,13 +6248,13 @@ The any object-array type C<object[]> is the type that any L<object array type|/
 
 If a invalid type is assigned, a compilation error will occur.
 
-Any Object-Array Type is an L<array type|/"Array Types">.
+Any Object Array Type is an L<array type|/"Array Types">.
 
 You can get the array length using the L<array length operator|/"Array Length Operator">.
 
   my $array : object[] = new Int[3];
   
-  # Getting the length of the element of Any Object-Array Type
+  # Getting the length of the element of Any Object Array Type
   my $length = @$array;
 
 You can get and set the element using the L<get array element|/"Getting Array Element"> syntax and the L<set array element|/"Setting Array Element">.
@@ -6827,6 +6820,30 @@ B<Examples:>
   my $nums : Complex_2d[] = undef;
 
 =head2 Type Assignability to String Array
+
+If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
+
+If not, the assignability is false.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>True</td><td>string[]</td><td>string[]</td><td>None</td>
+    <td>True</td><td>string[]</td><td>undef</td><td>None</td>
+    <td>False</td><td>string[]</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $strings : string[] = ["abc", "def"];
+  my $strings : string[] = undef;
 
 =head2 Type Assignability to Class Array
 
