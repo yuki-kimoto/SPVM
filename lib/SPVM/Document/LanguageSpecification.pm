@@ -4312,7 +4312,7 @@ The pre-increment operator adds C<1> to the value of the operand and returns the
   # Pre-increment operator
   ++OPERAND
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L</class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
 
 The pre-increment operator performs the same operation as the following.
 
@@ -4346,7 +4346,7 @@ The post-increment operator adds C<1> to the value of the operand and returns th
   # Post-increment operator
   OPERAND++
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L</class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
 
 The post-increment operator performs the same operation as the following.
 
@@ -4384,7 +4384,7 @@ The pre-decrement operator subtracts C<1> to the value of the operand and return
   # Pre-decrement operator
   --OPERAND
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L</class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
 
 The pre-decrement operator performs the same operation as the following.
 
@@ -4418,7 +4418,7 @@ The post-decrement operator subtracts C<1> to the value of the operand and retur
   # Post-decrement operator
   OPERAND--
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L</class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
 
 The post-decrement operator performs the same operation as the following.
 
@@ -6150,7 +6150,7 @@ You also use new Operator when creating a multidimensional Array.The following e
 
 my $nums = new int[] [3];
 
-=head2 Numeric Array Types
+=head3 Numeric Array Types
 
 Numeric Array Types means L</"Numeric Types"> with the element L</"Array Types"> It is.
 
@@ -6185,13 +6185,13 @@ Data represented by Numeric Array Types must have elements whose size is L</"Num
 
 All elements of Numeric Array Types are initialized by L</"Type Initial Value"> when the L<creating array|/"Creating Array"> is performed.
 
-=head2 byte[] Type
+=head3 byte[] Type
 
 The C<byte[]> type is an L<array type|/"Array Types"> that the element type is C<byte>.
 
   byte[]
 
-=head2 Object Array Types
+=head3 Object Array Types
 
 Object array types are L</"Array Types"> that the type of the element is an L<object type|/"Object Types">.
 
@@ -6204,7 +6204,7 @@ B<Examples:>
   my $strings : string[];
   my $objects : object[];
 
-=head2 String Array Types
+=head3 String Array Types
 
 String array types are L</"Array Types"> that the type of the element is the L<string type|/"String Types">.
 
@@ -6213,7 +6213,7 @@ B<Examples:>
   # String array types
   my $strings : string[];
 
-=head2 Class Array Types
+=head3 Class Array Types
 
 Class array types are L</"Array Types"> that the type of the element is the L<class type|/"Class Types">.
 
@@ -6222,7 +6222,7 @@ B<Examples:>
   # Class array types
   my $points : Point[];
 
-=head2 Multi-Numeric Array Types
+=head3 Multi-Numeric Array Types
 
 A multi-numeric array type is an L<array type|/"Array Types"> that the basic type is a L<multi-numeric type|"Multi-Numeric Types">.
 
@@ -6247,7 +6247,7 @@ The object of the multi-numeric array type can be created by the L<new|/"Creatin
 
   my $complex_nums = new Complex_2d[10];
 
-=head2 Any Object Array Type
+=head3 Any Object Array Type
 
 The any object-array type C<object[]> is the type that any L<object array type|/"Object Array Types"> can be assigned.
 
