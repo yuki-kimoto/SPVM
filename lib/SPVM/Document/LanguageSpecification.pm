@@ -4301,49 +4301,53 @@ The return type of the remainder unsigned long operator is the L<long type|/"lon
 
 If the value of the right operand is C<0>, an L<exception|/"Exception"> is thrown .
 
-=head2 Increment Operator
+=head2 Increment Operators
 
-B<Increment Operator> is an operator that adds 1 to the value. the meaning of Increment Operator is different depending on whether the Increment Operator is placed Pre or Post.
+Increment operators are the L<pre-intrement operator|/"Pre-Increment Operator> and L<post-intrement operator|/"Post-Increment Operator>.
 
-  # Pre Increment Operator
-  ++LEXICAL_VARIABLE
-  ++CLASS_VARIABLE
-  ++FIELD_ACCESS
-  ++ARRAY_ACCESS
-  ++DEREFERENCE
+=head3 Pre-Increment Operator
+
+The pre-increment operator adds C<1> to the value of the operand and returns the value after the incrementation.
   
-  # Post Increment Operator
-  LEXICAL_VARIABLE++
-  CLASS_VARIABLE++
-  FIELD_ACCESS++
-  ARRAY_ACCESS++
-  DEREFERENCE++
+  # Pre-increment operator
+  ++OPERAND
 
-The operand of Increment Operator must L</"Local Variable">, L</"Class Variable">, <a href = "#language-field-access">Field Access</a>, L</"Array Access">, L</"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L</class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
 
-The type of operand of Increment Operator must be L</"Numeric Types">, otherwise a compilation error will occur.
+The pre-increment operator performs the same operation as the following.
 
-=head3 Pre Increment Operator
+  (OPERAND = (TYPE_OF_OPERAND)(OPERAND + 1))
 
-Pre Increment Operator adds 1 to the operand and returns the value after increment.
-
-Pre Increment Operator is equivalent to the following Expression. After 1 is added to the operand, L</"Type Cast"> is performed with the operand Type and the value is assinged to original operand.
-
-  (OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND + 1))
-
-For example, Pre Increment of L</"byte Type"> value is equivalent to the following Expression:
+For example, if the type of the operand is the L<byte type|/"byte Type">, the following operation is performed.
 
   ($num = (byte)($num + 1))
 
-=head3 Post Increment Operator
+B<Examples:>
+  
+  # Pre-increment of a local variable
+  $num++;
+  
+  # Pre-increment of a class variable
+  $NUM++;
+  
+  # Pre-increment of an element of an array
+  ++$point->{x};
+  
+  # Pre-increment of a field
+  ++$nums->[0];
+  
+  # Pre-increment of a dereferenced value
+  ++$$num_ref;
+  
+=head3 Post-Increment Operator
 
-Post Increment Operator add 1 to the operand and returns the value before Increment.
+Post-Increment Operator add 1 to the operand and returns the value before Increment.
 
-Post Increment Operator is equivalent to the following Expression using L</"Sequential Operator">. The value of operand is saved in a temporary variable, 1 is added to the operand, L</"Type Cast"> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
+Post-Increment Operator is equivalent to the following Expression using L</"Sequential Operator">. The value of operand is saved in a temporary variable, 1 is added to the operand, L</"Type Cast"> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
 
   (my TMP_VARIABLE = OPERAND_OPERAND, OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND + 1), TMP_VARIABLE)
 
-For example, Post Increment of L</"byte Type"> value is equivalent to the following Expression.
+For example, Post-Increment of L</"byte Type"> value is equivalent to the following Expression.
 
   (my $tmp = $num, $num = (byte)($num + 1), $tmp)
 
@@ -4351,14 +4355,14 @@ For example, Post Increment of L</"byte Type"> value is equivalent to the follow
 
 B<Decrement Operator> is an operator that subtracts 1 to the value. the meaning of Decrement Operator is different depending on whether the Decrement Operator is placed Pre or Post.
 
-  # Pre Decrement Operator
+  # Pre-Decrement Operator
   --LEXICAL_VARIABLE
   --CLASS_VARIABLE
   --FIELD_ACCESS
   --ARRAY_ACCESS
   --DEREFERENCE
   
-  # Post Decrement Operator
+  # Post-Decrement Operator
   LEXICAL_VARIABLE--
   CLASS_VARIABLE--
   FIELD_ACCESS--
@@ -4369,27 +4373,27 @@ The operand of Decrement Operator must L</"Local Variable">, L</"Class Variable"
 
 The type of operand of Decrement Operator must be L</"Numeric Types">, otherwise a compilation error will occur.
 
-=head3 Pre Decrement Operator
+=head3 Pre-Decrement Operator
 
-Pre Decrement Operator subtracts 1 to the operand and returns the value after decrement.
+Pre-Decrement Operator subtracts 1 to the operand and returns the value after decrement.
 
-Pre Decrement Operator is equivalent to the following Expression. After 1 is subtracted to the operand, L</"Type Cast"> is performed with the operand Type and the value is assinged to original operand.
+Pre-Decrement Operator is equivalent to the following Expression. After 1 is subtracted to the operand, L</"Type Cast"> is performed with the operand Type and the value is assinged to original operand.
 
   (OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND - 1))
 
-For example, Pre Decrement of L</"byte Type"> value is equivalent to the following Expression:
+For example, Pre-Decrement of L</"byte Type"> value is equivalent to the following Expression:
 
   ($num = (byte)($num - 1))
 
-=head3 Post Decrement Operator
+=head3 Post-Decrement Operator
 
-Post Decrement Operator subtract 1 to the operand and returns the value before Decrement.
+Post-Decrement Operator subtract 1 to the operand and returns the value before Decrement.
 
-Post Decrement Operator is equivalent to the following Expression using L</"Sequential Operator">. The value of operand is saved in a temporary variable, 1 is subtracted to the operand, L</"Type Cast"> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
+Post-Decrement Operator is equivalent to the following Expression using L</"Sequential Operator">. The value of operand is saved in a temporary variable, 1 is subtracted to the operand, L</"Type Cast"> is performed with the operand Type, and the value is assinged to original operand. Then the temporary variable is returned.
 
   (my TMP_VARIABLE = OPERAND_OPERAND, OPERAND_OPERAND = (TYPE)(OPERAND_OPERAND - 1), TMP_VARIABLE)
 
-For example, Post Decrement of L</"byte Type"> value is equivalent to the following Expression.
+For example, Post-Decrement of L</"byte Type"> value is equivalent to the following Expression.
 
   (my $tmp = $num, $num = (byte)($num - 1), $tmp)
 
