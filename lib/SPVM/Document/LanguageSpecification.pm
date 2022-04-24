@@ -1825,7 +1825,7 @@ The list of class descriptors.
       <b>mulnum_t</b>
     </td>
     <td>
-      This class is a <a href="#Multi-Numeric-Types">multi numeric type</a>.
+      This class is a <a href="#Multi-Numeric-Types">multi-numeric type</a>.
     </td>
   </tr>
   <tr>
@@ -2436,30 +2436,30 @@ See L</"Getting Field"> to get the field of the L<class|/"Class">.
 
 See L</"Setting Field"> to set the field of the L<class|/"Class">.
 
-=head3 Field Access of the Multi Numeric Type
+=head3 Field Access of the Multi-Numeric Type
 
-The field access of the L<multi numeric type|/"Multi Numeric Types">.
+The field access of the L<multi-numeric type|/"Multi-Numeric Types">.
 
   my $z : Complex_2d;
   $z->{re} = 1;
   my $re = $z->{re};
 
-See L</"Getting Multi Numeric Field"> to get the field of the L<multi numeric type|/"Multi Numeric Types">.
+See L</"Getting Multi-Numeric Field"> to get the field of the L<multi-numeric type|/"Multi-Numeric Types">.
 
-See L</"Setting Multi Numeric Field"> to set the field of L<multi numeric type|/"Multi Numeric Types">.
+See L</"Setting Multi-Numeric Field"> to set the field of L<multi-numeric type|/"Multi-Numeric Types">.
 
-=head3 Field Access of the Multi Numeric Reference via Derefernce
+=head3 Field Access of the Multi-Numeric Reference via Derefernce
 
-The field access of the L<multi numeric reference|/"Multi Numeric Reference Type"> via derefernce.
+The field access of the L<multi-numeric reference|/"Multi-Numeric Reference Type"> via derefernce.
 
   my $z : Complex_2d;
   my $z_ref = \$z;
   $z_ref->{re} = 1;
   my $re = $z_ref->{re};
 
-See L</"Getting Multi Numeric Field via Dereference"> to get the field of the L<multi numeric reference|/"Multi Numeric Reference Type"> via dereference.
+See L</"Getting Multi-Numeric Field via Dereference"> to get the field of the L<multi-numeric reference|/"Multi-Numeric Reference Type"> via dereference.
 
-See L</"Setting Multi Numeric Field via Dereference"> to set the field of the L<multi numeric reference|/"Multi Numeric Reference Type"> via dereference.
+See L</"Setting Multi-Numeric Field via Dereference"> to set the field of the L<multi-numeric reference|/"Multi-Numeric Reference Type"> via dereference.
 
 =head1 Method
 
@@ -2487,9 +2487,9 @@ The argument names must be follow the rule of L</"Local Variable Names">.
 
 The minimal length of arguments is C<0>. The max length of arguments is C<255>.
 
-The types of the arguments must be L</"Numeric Types">, L</"Multi Numeric Types">, L</"Object Types">, or L</"Reference Type">, otherwise a compilation error will occur.
+The types of the arguments must be L</"Numeric Types">, L</"Multi-Numeric Types">, L</"Object Types">, or L</"Reference Type">, otherwise a compilation error will occur.
 
-The type of the return value must be L</"void Type">, L</"Numeric Types">, L</"Multi Numeric Types"> or L</"Object Types">, otherwise a compilation error will occur.
+The type of the return value must be L</"void Type">, L</"Numeric Types">, L</"Multi-Numeric Types"> or L</"Object Types">, otherwise a compilation error will occur.
 
 Defined methods can be called using L</"Method Call"> syntax.
 
@@ -2892,7 +2892,7 @@ Local Variable is declared using B<my> L</"Keyword">.
 
 The local variable name must be follow the rule of L</"Local Variable Names">.
 
-L</"Types"> must be specified. Type must be L</"Numeric Types">, L</"Object Types">, L</"Multi Numeric Types">, or L</"Reference Type">.
+L</"Types"> must be specified. Type must be L</"Numeric Types">, L</"Object Types">, L</"Multi-Numeric Types">, or L</"Reference Type">.
 
   # Local Variable Declaration Examples
   my $var : int;
@@ -3187,7 +3187,7 @@ There are the following types of array.
     Object Array
  </li>
   <li>
-    Multi Numeric Array
+    Multi-Numeric Array
  </li>
 </ul>
 
@@ -3197,7 +3197,7 @@ The numeric array is the array that the type of the element is the L<numeric typ
 
 The object array is the array that the type of the element is the L<object type|/"Object Types">.
 
-The multi numeric array is the array that the type of the element is the L<multi numeric type|/"Multi Numeric Types">.
+The multi-numeric array is the array that the type of the element is the L<multi-numeric type|/"Multi-Numeric Types">.
 
 See L</"Creating Array"> to create Array.
 
@@ -3211,13 +3211,13 @@ See L</"Getting Array Element"> to get the element value of Array.
 
 See L</"Setting Array Element"> to set the element value of Array.
 
-=head1 Multi Numeric Value
+=head1 Multi-Numeric Value
 
-=head2 Multi Numeric Types Definition
+=head2 Multi-Numeric Types Definition
 
-Multi Numeric type represents continuous numeric values. For example, there are three consecutive 32-bit signed integers, two consecutive double-precision floating point numbers. It isplaned to use 3D points, complex numbers, quaternions, etc.
+Multi-Numeric type represents continuous numeric values. For example, there are three consecutive 32-bit signed integers, two consecutive double-precision floating point numbers. It isplaned to use 3D points, complex numbers, quaternions, etc.
 
-Multi Numeric Types are defined by specifying mulnum_t L</"Class Descriptors"> in L</"Class Definition">.
+Multi-Numeric Types are defined by specifying mulnum_t L</"Class Descriptors"> in L</"Class Definition">.
 
   # Three consecutive 32bit signed integers
   class Point_3i : mulnum_t {
@@ -3232,7 +3232,7 @@ Multi Numeric Types are defined by specifying mulnum_t L</"Class Descriptors"> i
     y : double;
   }
 
-Multi Numeric Types must end with "_", Number of Fields, L</"Multi Numeric Types Suffix">.
+Multi-Numeric Types must end with "_", Number of Fields, L</"Multi-Numeric Types Suffix">.
 
 The suffix must correspond to L</"Numeric Types">.
 
@@ -3240,28 +3240,28 @@ All Fields must be the same L</"Numeric Types">.
 
 The maximum number of Fields is 255.
 
-Multi Numeric Types can be used as L</"Types"> of L</"Local Variable Declaration">.
+Multi-Numeric Types can be used as L</"Types"> of L</"Local Variable Declaration">.
 
-Multi Numeric Types can be used as an argument L</"Types"> in L</"Method Definition"> .
+Multi-Numeric Types can be used as an argument L</"Types"> in L</"Method Definition"> .
 
-Multi Numeric Types can be used as L</"Types"> of Return Value in L</"Method Definition">.
+Multi-Numeric Types can be used as L</"Types"> of Return Value in L</"Method Definition">.
 
-Multi Numeric Types can be used as L</"Basic Type"> of L</"Array Types"> .
+Multi-Numeric Types can be used as L</"Basic Type"> of L</"Array Types"> .
 
   my $points = new Point_3i[5];
 
-Reference can be created for Multi Numeric Types value.
+Reference can be created for Multi-Numeric Types value.
 
   my $point : Point_3i;
   my $point_ref = \$point;
 
-L</"Undefined Value"> cannot be assigned to Multi Numeric Types value.
+L</"Undefined Value"> cannot be assigned to Multi-Numeric Types value.
 
-See L</"Multi Numeric Types Field Access"> to get and set the value of field of Multi Numeric Types Value.
+See L</"Multi-Numeric Types Field Access"> to get and set the value of field of Multi-Numeric Types Value.
 
-=head2 Multi Numeric Types Suffix
+=head2 Multi-Numeric Types Suffix
 
-List of Multi Numeric Types Suffix.
+List of Multi-Numeric Types Suffix.
 
 =begin html
 
@@ -3271,7 +3271,7 @@ List of Multi Numeric Types Suffix.
       <b>Numeric Types</b>
    </th>
     <th>
-      Multi Numeric Types Suffix
+      Multi-Numeric Types Suffix
    </th>
   </tr>
   <tr>
@@ -3326,51 +3326,51 @@ List of Multi Numeric Types Suffix.
 
 =end html
 
-=head2 Multi Numeric Types Usage
+=head2 Multi-Numeric Types Usage
 
-To use Multi Numeric Types, load a Module using L</"use Statement">.
+To use Multi-Numeric Types, load a Module using L</"use Statement">.
 
   use Point_3i;
   use Complex_2d;
 
-Next is L</"Local Variable Declaration">. Local Variable Declaration create continuous area for fields of Multi Numeric Types Value. All fields of of Multi Numeric Types Value are initialized by L</"Type Initial Value">.
+Next is L</"Local Variable Declaration">. Local Variable Declaration create continuous area for fields of Multi-Numeric Types Value. All fields of of Multi-Numeric Types Value are initialized by L</"Type Initial Value">.
 
   my $point : Point_3i;
   my $z : Complex_2d;
 
-Note that Multi Numeric Types value are not object, so cannot create a Object by L</"new"> syntax.
+Note that Multi-Numeric Types value are not object, so cannot create a Object by L</"new"> syntax.
 
-=head2 Multi Numeric Types Field Access
+=head2 Multi-Numeric Types Field Access
 
-B<Multi Numeric Types Field Access> is an operation to access Multi Numeric Types Field to get or set a value.
+B<Multi-Numeric Types Field Access> is an operation to access Multi-Numeric Types Field to get or set a value.
 
   MULTI_NUMERIC_TYPE_VALUE->{FIELD_NAME}
 
-See L</"Getting Multi Numeric Field"> to get Multi Numeric Types Field.
+See L</"Getting Multi-Numeric Field"> to get Multi-Numeric Types Field.
 
-See L</"Setting Multi Numeric Field"> to set Multi Numeric Types Field.
+See L</"Setting Multi-Numeric Field"> to set Multi-Numeric Types Field.
 
-=head1 Multi Numeric Array
+=head1 Multi-Numeric Array
 
-=head2 Multi Numeric Array Summary
+=head2 Multi-Numeric Array Summary
 
-L</"Multi Numeric Value"> can be an element of L</"Array">.
+L</"Multi-Numeric Value"> can be an element of L</"Array">.
 
   my $points = new Point_3i[5];
   
   my $zs = new Complex_2d[5];
 
-Multi Numeric Array has continuous Multi Numeric Values.
+Multi-Numeric Array has continuous Multi-Numeric Values.
 
-The Element Type is L</"Multi Numeric Types">, not L</"Object Types">.
+The Element Type is L</"Multi-Numeric Types">, not L</"Object Types">.
 
 For example, Point_3i[5] is continuous 15 (= 3 * 5) count L</"int Type"> Value.
 
-L</"Types"> of Multi Numeric Array is L</"Array Types">.
+L</"Types"> of Multi-Numeric Array is L</"Array Types">.
 
-=head2 Multi Numeric Array Access
+=head2 Multi-Numeric Array Access
 
-Multi Numeric Array Access is an operation to access Multi Numeric Array to get and set the element value.
+Multi-Numeric Array Access is an operation to access Multi-Numeric Array to get and set the element value.
 
   Array->[INDEX]
 
@@ -3386,18 +3386,18 @@ Reference is data that indicates the location of L</"Local Variable"> in the mem
 
 You can get Reference of Local Variable using L</"Reference Operator">.
 
-L</"Reference Type"> is represented by L</"Numeric Types"> "*" or L</"Multi Numeric Types"> followed by "*".
-Reference types are represented by appending an * after L</"Numeric Types"> or L</"Multi Numeric Types">.
+L</"Reference Type"> is represented by L</"Numeric Types"> "*" or L</"Multi-Numeric Types"> followed by "*".
+Reference types are represented by appending an * after L</"Numeric Types"> or L</"Multi-Numeric Types">.
 
   # Numeric Types Reference
   my $num : int;
   my $num_ref : int* = \$num;
   
-  # Multi Numeric Types Reference
+  # Multi-Numeric Types Reference
   my $point : Point_3d;
   my $point_ref : Point_3d* = \$point;
 
-Target of Reference Operator is Variable of L</"Numeric Types"> or L</"Multi Numeric Types">. L</"Object Types"> Variable or L</"Literals"> can't be target of Reference Operator.
+Target of Reference Operator is Variable of L</"Numeric Types"> or L</"Multi-Numeric Types">. L</"Object Types"> Variable or L</"Literals"> can't be target of Reference Operator.
 
 L</"Reference Type"> can be used in Method Argument.
 
@@ -3423,25 +3423,25 @@ Dereference is an operation to get and set the value pointed by Reference.
   # Dereference Numeric Types Reference to set the pointed value
   $$num_ref = 3;
   
-  # Dereference Multi Numeric Types Reference to get the pointed value
+  # Dereference Multi-Numeric Types Reference to get the pointed value
   my $point2 = $$point_ref;
   
-  # Dereference Multi Numeric Types Reference to set the pointed value
+  # Dereference Multi-Numeric Types Reference to set the pointed value
   $$point_ref = $point2;
 
-If the target of Reference Type is L</"Multi Numeric Types">, the setting and getting of Multi Numeric Types Field can be done by Arrow Operator.
+If the target of Reference Type is L</"Multi-Numeric Types">, the setting and getting of Multi-Numeric Types Field can be done by Arrow Operator.
 
-  # If the target of Reference Type is Multi Numeric Types, get Multi Numeric Types Field
+  # If the target of Reference Type is Multi-Numeric Types, get Multi-Numeric Types Field
   my $x = $point_ref->{x};
   
-  # If the Target of Reference Type is Multi Numeric Types, set Multi Numeric Types Field
+  # If the Target of Reference Type is Multi-Numeric Types, set Multi-Numeric Types Field
   $point_ref->{x} = 1;
 
 =head1 Expressions
 
 Expressions are L</"Operators">, L</"Undefined Value">, L</"Literals">, L</"Getting Local Variable">, L</"Setting Local Variable">,
 L</"Getting Class Variable">, L</"Getting Class Variable">, L</"Setting Class Variable">, L</"Getting Exception Variable">, L</"Setting Exception Variable">,
-L</"Getting Field">, L</"Setting Field">, L</"Getting Multi Numeric Field">, L</"Setting Multi Numeric Field">, L</"Getting Multi Numeric Field via Dereference">, L</"Setting Multi Numeric Field via Dereference">, <"Getting Array Element">, L</"Setting Array Element"> and L</"Method Call">.
+L</"Getting Field">, L</"Setting Field">, L</"Getting Multi-Numeric Field">, L</"Setting Multi-Numeric Field">, L</"Getting Multi-Numeric Field via Dereference">, L</"Setting Multi-Numeric Field via Dereference">, <"Getting Array Element">, L</"Setting Array Element"> and L</"Method Call">.
 
 A expression returns a value.
 
@@ -3604,83 +3604,83 @@ B<Examples of Setting Field:>
   my $point = Point->new;
   $point->{x} = 1;
 
-=head2 Getting Multi Numeric Field
+=head2 Getting Multi-Numeric Field
 
-B<Getting Multi Numeric Field Expression> is an L<expression|/"Expressions"> to get Field of L</"Multi Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
+B<Getting Multi-Numeric Field Expression> is an L<expression|/"Expressions"> to get Field of L</"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
-Invocant Expression is L</"Multi Numeric Types">.
+Invocant Expression is L</"Multi-Numeric Types">.
   
 If the field names does not found in the L</"Class">, a compilation error will occur
 
-Getting Multi Numeric Field Expression returns the field value in the Multi Numeric Value.
+Getting Multi-Numeric Field Expression returns the field value in the Multi-Numeric Value.
 
 Retrun Type is The L</"Types"> of the Field.
 
-B<Examples of Getting Multi Numeric Field:>
+B<Examples of Getting Multi-Numeric Field:>
 
   my $z : Complex_2d;
   my $re = $z->{x};
 
-=head2 Setting Multi Numeric Field
+=head2 Setting Multi-Numeric Field
 
-Setting Multi Numeric Field Expression is an L<expression|/"Expressions"> to set Field of L</"Multi Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+Setting Multi-Numeric Field Expression is an L<expression|/"Expressions"> to set Field of L</"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
-Invocant Expression is L</"Multi Numeric Types">.
+Invocant Expression is L</"Multi-Numeric Types">.
 
 If the field names does not found in the L</"Class">, a compilation error will occur.
 
-Setting Multi Numeric Field Expression returns the value of Field after setting. 
+Setting Multi-Numeric Field Expression returns the value of Field after setting. 
 
 The assignment must satisfy the L<type assignability|/"Type Assignability">.
 
 Return Value Type is the type of Field.
 
-B<Examples of Setting Multi Numeric Field:>
+B<Examples of Setting Multi-Numeric Field:>
 
   my $z : Complex_2d;
   $z->{x} = 2.5;
 
-=head2 Getting Multi Numeric Field via Dereference
+=head2 Getting Multi-Numeric Field via Dereference
 
-B<Getting Multi Numeric Field via Dereference Expression> is an L<expression|/"Expressions"> to get Field of L</"Multi Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
+B<Getting Multi-Numeric Field via Dereference Expression> is an L<expression|/"Expressions"> to get Field of L</"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
 
   INVOCANT->{FIELD_NAME}
 
-Invocant Expression is L</"Multi Numeric Reference Type">.
+Invocant Expression is L</"Multi-Numeric Reference Type">.
 
 If the field names does not found in the L</"Class">, a compilation error will occur
 
-Getting Multi Numeric Field via Dereference Expression returns the field value in the Multi Numeric Value.
+Getting Multi-Numeric Field via Dereference Expression returns the field value in the Multi-Numeric Value.
 
 Retrun Type is The L</"Types"> of the Field.
 
-B<Examples of Getting Multi Numeric Field via Dereference:>
+B<Examples of Getting Multi-Numeric Field via Dereference:>
 
   my $z : Complex_2d;
   my $z_ref = \$z;
   my $re = $z_ref->{x};
 
-=head2 Setting Multi Numeric Field via Dereference
+=head2 Setting Multi-Numeric Field via Dereference
 
-Setting Multi Numeric Field Expression via Dereference is an L<expression|/"Expressions"> to set Field of L</"Multi Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+Setting Multi-Numeric Field Expression via Dereference is an L<expression|/"Expressions"> to set Field of L</"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
-Invocant Expression is L</"Multi Numeric Reference Type">.
+Invocant Expression is L</"Multi-Numeric Reference Type">.
 
 If the field names does not found in the L</"Class">, a compilation error will occur
 
-Setting Multi Numeric Field via Dereference Expression returns the value of Field after setting.
+Setting Multi-Numeric Field via Dereference Expression returns the value of Field after setting.
 
 The assignment must satisfy the L<type assignability|/"Type Assignability">.
 
 Return Value Type is the type of Field.
 
-B<Examples of Setting Multi Numeric Field via Dereference:>
+B<Examples of Setting Multi-Numeric Field via Dereference:>
 
   my $z : Complex_2d;
   my $z_ref = \$z;
@@ -4801,7 +4801,7 @@ B<isa Operator> is a L</"Comparison Operator"> to check whether The left operand
 
 isa Operator has three behaviors, depending on Right Type.
 
-1. If Right Type is L</"Numeric Types">, L</"Multi Numeric Types">, L</"Any Object Type">, L</"Reference Type">, isa operator checks whether the type of The left operand is same as Right Type. This check is done at compile time and isa operator is replaced by L</"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
+1. If Right Type is L</"Numeric Types">, L</"Multi-Numeric Types">, L</"Any Object Type">, L</"Reference Type">, isa operator checks whether the type of The left operand is same as Right Type. This check is done at compile time and isa operator is replaced by L</"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
 
 2. If the Right Type is L</"Class Type">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L</"int Type"> 1 is return, otherwise 0. The type of The left operand must be L</"Object Types">, otherwise a compilation error will occur.
 
@@ -5012,11 +5012,11 @@ Special Assignment Operator Example
 
 =head2 Reference Operator
 
-The Reference Operator is an operator that retrieves the address of a variable for L</"Numeric Types"> or L</"Multi Numeric Types">. Designed to achieve c address Operator "*".
+The Reference Operator is an operator that retrieves the address of a variable for L</"Numeric Types"> or L</"Multi-Numeric Types">. Designed to achieve c address Operator "*".
 
   \VARIABLE
 
-If the variable is not numeric type or Multi Numeric Types, a compilation error will occur
+If the variable is not numeric type or Multi-Numeric Types, a compilation error will occur
 
 Reference Operator returns expression. The type returned is L</"Reference Type">.
 
@@ -5079,7 +5079,7 @@ The C<copy> operator is an L<Unary Operator|/"Unary Operators"> to copy the obje
 
 The operand must be an L<expression|/"Expressions"> that type is a L<object type|/"object Type">, otherwise a compilation error will occur.
 
-If the type of operand is none of a L<string type|/"String Type">, a L<numeric type|/"Numerci Types">, a L<multi numeric type|/"Multi Numeric Types">,
+If the type of operand is none of a L<string type|/"String Type">, a L<numeric type|/"Numerci Types">, a L<multi-numeric type|/"Multi-Numeric Types">,
 An L<exception|/"Exception"> is thorwn.
 
 The C<copy> operator returns the copied object.
@@ -5792,7 +5792,7 @@ A list of Type Initial Value. All Bit columns in the data are set to 0.
   </tr>
   <tr>
     <td>
-      <b>Multi Numeric Types</b>
+      <b>Multi-Numeric Types</b>
     </td>
     <td>
       All Field is 0
@@ -6118,7 +6118,7 @@ B<void Type> is a special Type that can only be used in the return type of L</"M
 
 =head2 Basic Type
 
-The basic types are L<numeric types|/"Numeric Types">, L<multi numeric types|/"Multi Numeric Types">, the L<class type|/"Class Type">, the L<any object type|/"Any Object Type">, and the L<string type|/"String Type">.
+The basic types are L<numeric types|/"Numeric Types">, L<multi-numeric types|/"Multi-Numeric Types">, the L<class type|/"Class Type">, the L<any object type|/"Any Object Type">, and the L<string type|/"String Type">.
 
 Another definition of basic types are the types that is not L<array types|"Array Types"> and can become the element of L<array types|"Array Types">.
 
@@ -6220,9 +6220,9 @@ The data represented by Object Array Types must have elements of size of L</"Obj
 
 All elements of Object Array Types are initialized by L</"Type Initial Value"> when the L<creating array|/"Creating Array"> is performed.
 
-=head2 Multi Numeric Array Types
+=head2 Multi-Numeric Array Types
 
-A multi numeric array type is an L<array type|/"Array Types"> that the basic type is a L<multi numeric type|"Multi Numeric Types">.
+A multi-numeric array type is an L<array type|/"Array Types"> that the basic type is a L<multi-numeric type|"Multi-Numeric Types">.
 
 =begin html
 
@@ -6237,11 +6237,11 @@ A multi numeric array type is an L<array type|/"Array Types"> that the basic typ
 
 =end html
 
-The byte size of the element is the total byte size of the fields of the L<multi numeric type|"Multi Numeric Types">.
+The byte size of the element is the total byte size of the fields of the L<multi-numeric type|"Multi-Numeric Types">.
 
 For example, The byte size of the element of L<Complex_2d|SPVM::Complex_2d> is 16 bytes (2 * 8 bytes).
 
-The object of the multi numeric array type can be created by the L<new|/"Creating Array"> operator.
+The object of the multi-numeric array type can be created by the L<new|/"Creating Array"> operator.
 
   my $complex_nums = new Complex_2d[10];
 
@@ -6290,11 +6290,11 @@ B<Examples:>
   my $message : string = "Hello";
   my $message : mutable string = new_string_len 256;
 
-=head2 Multi Numeric Types
+=head2 Multi-Numeric Types
 
-Multi Numeric Types are a type that can represent continuous numerical values.
+Multi-Numeric Types are a type that can represent continuous numerical values.
 
-Multi Numeric Types can be defined by specifying "mulnum_t" Descriptor in L</"Class Definition">.
+Multi-Numeric Types can be defined by specifying "mulnum_t" Descriptor in L</"Class Definition">.
 
   class Point_3i : mulnum_t {
     has x : int;
@@ -6302,11 +6302,11 @@ Multi Numeric Types can be defined by specifying "mulnum_t" Descriptor in L</"Cl
     has z : int;
   }
 
-See L</"Values ​​"> for a detailed explanation of Multi Numeric Types.
+See L</"Values ​​"> for a detailed explanation of Multi-Numeric Types.
 
 =head2 Reference Type
 
-Reference Type is a Type that can store the address of a variable. Add "*" after L</"Numeric Types"> or L</"Multi Numeric Types"> You can define it.
+Reference Type is a Type that can store the address of a variable. Add "*" after L</"Numeric Types"> or L</"Multi-Numeric Types"> You can define it.
 
   my $num : int;
   my $num_ref : int* = \$num;
@@ -6334,15 +6334,15 @@ See L</"Reference"> for a detailed explanation of Reference.
 
 =head2 Reference Types
 
-Reference Types are L<Numeric Reference Type> and L<Multi Numeric Reference Type>.
+Reference Types are L<Numeric Reference Type> and L<Multi-Numeric Reference Type>.
 
 =head2 Numeric Reference Type
 
 Numeric Reference Type means L</"Numeric Types"> for L</"Reference Type">. Says.
 
-=head2 Multi Numeric Reference Type
+=head2 Multi-Numeric Reference Type
 
-Multi Numeric Reference Type means L</"Reference Type"> for L</"Multi Numeric Types"> variables. > Means.
+Multi-Numeric Reference Type means L</"Reference Type"> for L</"Multi-Numeric Types"> variables. > Means.
 
 =head1 Type Inference
 
@@ -6515,9 +6515,9 @@ B<Examples:>
 
 If the type of the left operand is a L<numeric type|/"Numeric Types"> and the type of the right operand is other than the types described above, the assignability is false.
 
-=head2 Type Assignability to MultiNumeric
+=head2 Type Assignability to Multi-Numeric
 
-If the type of the left operand is a L<multi numeric type|/"Multi Numeric Types"> and the type of the right operand is the same type of the left operand, the assignability is true.
+If the type of the left operand is a L<multi-numeric type|/"Multi-Numeric Types"> and the type of the right operand is the same type of the left operand, the assignability is true.
 
 If not, the assignability is false.
 
@@ -6769,9 +6769,9 @@ If not, the assignability is false.
 
 =end html
 
-=head2 Type Assignability to NumericArray
+=head2 Type Assignability to Numeric Array
 
-If the type of the left operand is a L<numeric type|/"Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is a L<numeric array type|/"Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
 If not, the assignability is false.
 
@@ -6800,9 +6800,9 @@ B<Examples:>
   my $nums : int[] = new int[3];
   my $nums : int[] = undef;
 
-=head2 Type Assignability to MultiNumericArray
+=head2 Type Assignability to Multi-Numeric Array
 
-If the type of the left operand is a L<numeric type|/"Multi Numeric Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
 If not, the assignability is false.
 
@@ -6826,17 +6826,17 @@ B<Examples:>
   my $nums : Complex_2d[] = new Complex_2d[3];
   my $nums : Complex_2d[] = undef;
 
-=head2 Type Assignability to StringArray
+=head2 Type Assignability to String Array
 
-=head2 Type Assignability to ClassArray
+=head2 Type Assignability to Class Array
 
-=head2 Type Assignability to InterfaceArray
+=head2 Type Assignability to Interface Array
 
-=head2 Type Assignability to CallbackArray
+=head2 Type Assignability to Callback Array
 
-=head2 Type Assignability to AnyObjectArray
+=head2 Type Assignability to AnyObject Array
 
-=head2 Type Assignability to MultiDimensionalArray
+=head2 Type Assignability to MultiDimensional Array
 
 (Not Completed)
 
