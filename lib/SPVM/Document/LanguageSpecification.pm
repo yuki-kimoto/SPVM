@@ -6731,6 +6731,24 @@ B<Examples:>
 
 =head2 Type Assignability to Undefined
 
+If the type of the left operand is the L<undefined type|/"Undefined Type">, the assignability is false.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>False</td><td>Undefined Type</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+B<Examples:>
+  
+  # The assignability is false
+  undef = Point->new;
+  
 =head2 Type Assignability to Referenece
 
 If the type of the left operand is a L<reference type|/"Reference Types"> and the type of the right operand is the same type of the left operand, the assignability is true.
