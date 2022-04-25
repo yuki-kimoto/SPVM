@@ -4,10 +4,10 @@ package SPVM::Point;
 
 =head1 NAME
 
-SPVM::Point - Point object
+SPVM::Point - Point
 
 =head1 SYNOPSYS
-  
+
   use Point;
   
   my $point = Point->new;
@@ -18,10 +18,24 @@ SPVM::Point - Point object
   
   my $x = $point->x;
   my $y = $point->y;
+  
+  # (1,2)
+  my $stringable = (Stringable)$point;
+  my $point_string = $stringable->to_string;
 
 =head1 DESCRIPTION
 
-L<Point|SPVM::Point> object represents a point.
+C<Point> is a class for a point.
+
+=head1 INTERFACES
+
+C<Point> class has the following interfaces.
+
+=over 2
+
+=item * L<Stringable|SPVM::Stringable>
+
+=back
 
 =head1 CLASS METHODS
 
@@ -33,7 +47,7 @@ Create a new C<Point> object.
 
 =head2 new_xy
 
-  method new_xy : Point ($x : int, $y : int);
+  method new_xy : Point ($x : int, $y : int)
 
 Create a new C<Point> object with x and y.
 
@@ -62,3 +76,11 @@ Get C<y> field.
   void set_y : int ($y : int)
 
 Set C<y> field.
+
+=head2 to_string
+
+  method to_string : string ();
+
+Convert the C<Point> object to a string as the following.
+
+  (1,2)

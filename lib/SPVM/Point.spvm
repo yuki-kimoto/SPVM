@@ -1,4 +1,6 @@
 class Point {
+  implement Stringable;
+  
   has x : rw int;
   has y : rw int;
   
@@ -13,5 +15,14 @@ class Point {
     $point->set_y($y);
     
     return $point;
+  }
+  
+  method to_string : string () {
+    my $x = $self->x;
+    my $y = $self->y;
+    
+    my $string = "($x,$y)";
+    
+    return $string;
   }
 }
