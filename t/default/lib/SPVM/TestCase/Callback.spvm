@@ -4,6 +4,8 @@ class TestCase::Callback {
   use TestCase::Callback::ImplementCallback1;
   use TestCase::Callback::ImplementCallback2;
   use Comparator;
+  use Stringer;
+  use Point;
   
   our $var_prec : int;
   INIT {
@@ -115,5 +117,44 @@ class TestCase::Callback {
         }
       }
     }
+    
+    
+  }
+
+  static method callback_array : int () {
+
+    {
+      my $stringers : Stringer[] = new Stringer[3];
+    }
+    
+    {
+      my $cb = method : string ($object : object) {
+        my $point = (Point)$object;
+        return $point->to_string;
+      };
+      my $stringers : Stringer[] = [$cb];
+      
+      unless ($stringers->[0]->(Point->new_xy(1, 2)) eq "(1,2)") {
+        return 0;
+      }
+    }
+
+    {
+      my $cb = method : string ($object : object) {
+        my $point = (Point)$object;
+        return $point->to_string;
+      };
+      my $stringers : Stringer[] = [(Stringer)$cb];
+      
+      unless ($stringers->[0]->(Point->new_xy(1, 2)) eq "(1,2)") {
+        return 0;
+      }
+    }
+    
+    {
+      my $stringers : Stringer[] = undef;
+    }
+    
+    return 1;
   }
 }

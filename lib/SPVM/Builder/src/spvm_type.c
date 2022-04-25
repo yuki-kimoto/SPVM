@@ -1322,7 +1322,7 @@ int32_t SPVM_TYPE_can_assign(
     if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
       can_assign = 1;
     }
-    else if (SPVM_TYPE_is_basic_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+    else if (SPVM_TYPE_is_class_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_assign = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
     }
     // Source type is undef type
@@ -1338,7 +1338,7 @@ int32_t SPVM_TYPE_can_assign(
     if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
       can_assign = 1;
     }
-    else if (SPVM_TYPE_is_basic_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+    else if (SPVM_TYPE_is_class_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_assign = SPVM_BASIC_TYPE_has_callback(compiler, src_type_basic_type_id, dist_type_basic_type_id);
     }
     // Source type is undef type
