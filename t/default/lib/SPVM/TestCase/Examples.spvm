@@ -41,6 +41,14 @@ class TestCase::Examples {
       }
     }
     
+    {
+      my $point = Point->new_xy(1, 2);
+      my $stringable = (Stringable)$point;
+      my $point_string = $stringable->to_string;
+      unless ($point_string eq "(1,2)") {
+        return 0;
+      }
+    }
     
     return 1;
   }
