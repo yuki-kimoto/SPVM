@@ -4607,7 +4607,7 @@ A list of Numeric Comparison Operators.
 <table>
   <tr>
     <th>Operator</th>
-    <th>Comparable Type</th>
+    <th>Allowing Type</th>
     <th>Description</th>
   </tr>
   <tr>
@@ -6200,7 +6200,7 @@ B<Examples:>
   # Object array types
   my $points : Point[];
   my $points_of_point : Point[][];
-  my $comparables : Comparable[];
+  my $stringables : Stringable[];
   my $strings : string[];
   my $objects : object[];
 
@@ -6221,6 +6221,15 @@ B<Examples:>
 
   # Class array types
   my $points : Point[];
+
+=head3 Interface Array Types
+
+Interface array types are L</"Array Types"> that the type of the element is the L<interface type|/"Interface Type">.
+
+B<Examples:>
+
+  # Interface array types
+  my $stringables : Stringable[];
 
 =head3 Multi-Numeric Array Types
 
@@ -6881,6 +6890,36 @@ B<Examples:>
   my $points : Point[] = undef;
 
 =head2 Type Assignability to Interface Array
+
+If the type of the left operand is an L<interface array type|/"Interface Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
+
+If the type of the left operand is an L<interface array type|/"Interface Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the assignability is true.
+
+If not, the assignability is false.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td>
+    <td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>None</td>
+    <td>Conditional True</td><td>INTERFACE_X[]</td><td>CLASS_Y[]</td><td>None</td>
+    <td>False</td><td>INTERFACE_X[]</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $stringables : Stringable[] = new Stringable[3];
+
+  my $stringables : Stringable[] = new Point[3];
+  
+  my $stringables : Stringable[] = undef;
 
 =head2 Type Assignability to Callback Array
 
