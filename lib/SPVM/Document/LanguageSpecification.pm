@@ -6231,6 +6231,15 @@ B<Examples:>
   # Interface array types
   my $stringables : Stringable[];
 
+=head3 Callback Array Types
+
+Callback array types are L</"Array Types"> that the type of the element is the L<callback type|/"Callback Type">.
+
+B<Examples:>
+
+  # Callback array types
+  my $stringers : Stringer[];
+
 =head3 Multi-Numeric Array Types
 
 A multi-numeric array type is an L<array type|/"Array Types"> that the basic type is a L<multi-numeric type|"Multi-Numeric Types">.
@@ -6922,6 +6931,46 @@ B<Examples:>
   my $stringables : Stringable[] = undef;
 
 =head2 Type Assignability to Callback Array
+
+If the type of the left operand is an L<Callback array type|/"Callback Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
+
+If the type of the left operand is an L<Callback array type|/"Callback Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the assignability is true.
+
+If not, the assignability is false.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>True</td><td>Callback_X[]</td><td>Callback_X[]</td><td>None</td>
+    <td>True</td><td>Callback_X[]</td><td>undef</td><td>None</td>
+    <td>Conditional True</td><td>Callback_X[]</td><td>CLASS_Y[]</td><td>None</td>
+    <td>False</td><td>Callback_X[]</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $stringers : Stringer[] = new Stringer[3];
+
+  {
+    my $cb = method : string ($object : object) {
+      my $point = (Point)$object;
+      return $point->to_string;
+    };
+    my $stringers : Stringer[] = [$cb];
+    
+    unless ($stringers->[0]->(Point->new_xy(1, 2)) eq "(1,2)") {
+      return 0;
+    }
+  }
+  
+  my $stringers : Stringer[] = undef;
 
 =head2 Type Assignability to AnyObject Array
 
