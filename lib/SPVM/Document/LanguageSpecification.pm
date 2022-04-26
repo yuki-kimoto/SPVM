@@ -6146,7 +6146,7 @@ Use new Operator to create an Array. In the following example, L</"int Type"> Ar
 
 my $nums = new int [3];
 
-You also use new Operator when creating a multidimensional Array.The following example creates an Array of int[] Type with 3 elements.
+You also use new Operator when creating a Multi-Dimensional Array.The following example creates an Array of int[] Type with 3 elements.
 
 my $nums = new int[] [3];
 
@@ -7011,7 +7011,7 @@ B<Examples:>
   my $any_object0 : object[];
   my $any_object : object[] = $any_object0;
 
-=head2 Type Assignability to MultiDimensional Array
+=head2 Type Assignability to Multi-Dimensional Array
 
 (Not Completed)
 
