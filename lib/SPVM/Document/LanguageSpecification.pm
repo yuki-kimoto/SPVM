@@ -6267,11 +6267,12 @@ The object of the multi-numeric array type can be created by the L<new|/"Creatin
 
 =head3 Any Object Array Type
 
-The any object-array type C<object[]> is the type that any L<object array type|/"Object Array Types"> can be assigned.
+The any object array type C<object[]> is the type that any L<object array type|/"Object Array Types"> can be assigned.
 
-  # Any object-array Type
+  # Any object array Type
   my $array : object[] = new Point[3];
   my $array : object[] = new object[3];
+  my $array : object[] = new Point[][3];
 
 If a invalid type is assigned, a compilation error will occur.
 
@@ -6286,13 +6287,13 @@ You can get the array length using the L<array length operator|/"Array Length Op
 
 You can get and set the element using the L<get array element|/"Getting Array Element"> syntax and the L<set array element|/"Setting Array Element">.
  
-  # Getting the element of any object-array
+  # Getting the element of any object array
   my $num = (Int)$array->[0];
   
-  # Setting the element of any object-array
+  # Setting the element of any object array
   $array->[0] = Int->new(5);
 
-When setting the element of any object-array, the element type is checked. If the dimension of the element is not the dimension of the array - C<1>, an L<exception|/"Exception"> is thrown.
+When setting the element of any object array, the element type is checked. If the dimension of the element is not the dimension of the array - C<1>, an L<exception|/"Exception"> is thrown.
 
 =head2 String Type
 
@@ -6506,7 +6507,7 @@ B<Examples:>
 
   my $double : double = Double->new(3.5);
 
-=head3 Type Assignability from AnyObject to Numeric
+=head3 Type Assignability from Any Object to Numeric
 
 If the type of the left operand is a L<numeric type|/"Numeric Types"> and the type of the right operand is a L<any object type|/"Any Object Type"> C<object>, the assignability is true.
 
@@ -6719,7 +6720,7 @@ B<Examples:>
   };
   my $comparator : Comparator = undef;
 
-=head2 Type Assignability to AnyObject
+=head2 Type Assignability to Any Object
 
 If the type of the left operand is the L<any object type|/"Any Object Type"> and the type of the right operand is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"Undefined Type">, the assignability is true.
 
@@ -6972,7 +6973,43 @@ B<Examples:>
   
   my $stringers : Stringer[] = undef;
 
-=head2 Type Assignability to AnyObject Array
+=head2 Type Assignability to Any Object Array
+
+If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the assignability is true.
+
+If not, the assignability is false.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>True</td><td>object[]</td><td>OBJECT_X[]</td><td>None</td>
+    <td>True</td><td>object[]</td><td>undef</td><td>None</td>
+    <td>False</td><td>object[]</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $points : Point[];
+  my $any_object : object[] = $points;
+  
+  my $points_of_point : Point[][];
+  my $any_object : object[] = $points_of_point;
+
+  my $stringables : Stringable[];
+  my $any_object : object[] = $stringables;
+  
+  my $strings : string[];
+  my $any_object : object[] = $strings;
+  
+  my $any_object0 : object[];
+  my $any_object : object[] = $any_object0;
 
 =head2 Type Assignability to MultiDimensional Array
 
