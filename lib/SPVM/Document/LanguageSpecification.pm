@@ -6409,7 +6409,7 @@ If the L<nemric type order|/"Numeric Types Order"> of the left operand is greate
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>byte</td><td>byte</td><td>None</td></tr>
   <tr><td>True</td><td>short</td><td>short</td><td>None</td></tr>
   <tr><td>True</td><td>int</td><td>int</td><td>None</td></tr>
@@ -6458,7 +6458,7 @@ If the condition is ture, the L<numeric narrowing type conversion|/"Numeric Narr
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>Conditinal True</td><td>byte</td><td>short</td><td>Numeric Narrowing Type Conversion</td></tr>
   <tr><td>Conditinal True</td><td>byte</td><td>int</td><td>Numeric Narrowing Type Conversion</td></tr>
   <tr><td>Conditinal True</td><td>byte</td><td>long</td><td>Numeric Narrowing Type Conversion</td></tr>
@@ -6490,7 +6490,7 @@ If the type of the left operand is a L<numeric type|/"Numeric Types"> correspond
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td></tr>
   <tr><td>True</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td></tr>
   <tr><td>True</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td></tr>
@@ -6516,7 +6516,7 @@ The L<unboxing type conversion|/"Unboxing Type Conversion"> corresponding to the
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td></tr>
 </table>
 
@@ -6541,7 +6541,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td></tr>
   <tr><td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -6568,7 +6568,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<Nu
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
   <tr><td>True</td><td>string</td><td>mutable string</td><td>None</td></tr>
   <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>None</td></tr>
@@ -6598,7 +6598,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<bo
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td></tr>
@@ -6622,7 +6622,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>CLASS</td><td>OTHER</td><td>None</td></tr>
@@ -6646,7 +6646,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td></tr>
   <tr><td>Conditinal True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>None</td></tr>
@@ -6672,7 +6672,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>None</td></tr>
   <tr><td>Conditinal True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>None</td></tr>
   <tr><td>True</td><td>CALLBACK</td><td>undef</td><td>None</td></tr>
@@ -6703,7 +6703,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<bo
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>object</td><td>OBJECT_X</td><td>None</td></tr>
   <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
   <tr><td>True</td><td>object</td><td>undef</td><td>None</td></tr>
@@ -6725,7 +6725,7 @@ If the type of the left operand is the L<undefined type|/"Undefined Type">, the 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>False</td><td>Undefined Type</td><td>OTHER</td><td>None</td></tr>
 </table>
 
@@ -6745,7 +6745,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>REF_X</td><td>REF_X</td><td>None</td></tr>
   <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -6761,7 +6761,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>byte[]</td><td>byte[]</td><td>None</td></tr>
   <tr><td>True</td><td>short[]</td><td>short[]</td><td>None</td></tr>
   <tr><td>True</td><td>int[]</td><td>int[]</td><td>None</td></tr>
@@ -6788,7 +6788,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td></tr>
@@ -6810,7 +6810,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>string[]</td><td>string[]</td><td>None</td></tr>
   <tr><td>True</td><td>string[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>string[]</td><td>OTHER</td><td>None</td></tr>
@@ -6832,7 +6832,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>CLASS_X[]</td><td>OTHER</td><td>None</td></tr>
@@ -6856,7 +6856,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
@@ -6884,7 +6884,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>Callback_X[]</td><td>Callback_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>Callback_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>Callback_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
@@ -6916,7 +6916,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>object[]</td><td>OBJECT_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
@@ -6956,7 +6956,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td></tr>
@@ -7114,75 +7114,25 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
 
 =end html
 
-=head2 Implicit Type Conversion
+=head2 Implicite Type Conversion
 
-Implicit type conversion is automatic type conversion performed by SPVM. The following are the places where implicit Type Conversion may occur.
+The implicite type conversion is the L<type conversion|/"Type Conversions"> performed implicitly when a value is assigned using L<assignment operator|/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Calls">, or set a return value using the L<return statement|/"return Statement">.
 
-=begin html
+See L<"Type Assignability"> if you know when implicite type conversion is performed.
 
-<ul>
-  <li>When assigning to a different Type</li>
-  <li>When passing to Method Arguments of different Type</li>
-  <li>When returning a Type different from Return Value</li>
-</ul>
-
-=end html
-
-Implicit Type Conversion occurs when:
-
-=head3 Implicit Widening Type Conversion
-
-If both the source and destination Type are Numeric Types and the destination Type is greater than the source Type, L</"Numeric Widening Type Conversion"> is done.
-
-  # Implicit Widening Type Conversion
-  my $num : long = 123;
-  my $num : double = 12.5f;
-
-=head3 Implicit Narrowing Type Conversion
-
-Both the source and destination Type are Numeric Types, and the destination Type is smaller than the source Type, and the source value can be expressed in the range of Integer Literal and destination Type value. L</"Numeric Narrowing Type Conversion"> is performed.
-
-  # Implicit Narrowing Type Conversion
-  my $num : byte = 123;
-  my $num : short = 134;
-
-=head3 Implicit Numeric Type to Any Object Conversion
-
-If the source Type is Numeric Types and the destination Type is Any Object Type, L</"Boxing Type Conversion"> to the corresponding Numeric Object Type Is done. In the following case, the converted Int Type object is assigned to the generic object.
-
-  # Implicit Boxing Type Conversion to objectType
-  my $num = 123;
-  my $object : object = $num;
-
-=head3 Implicit Numeric Type to Numeric Object Type Conversion
-
-When the source Type is Numeric Types and the destination Type is the corresponding Numeric Object Type, L</"Boxing Type Conversion"> to the corresponding Numeric Object Type a> is done.
-
-  # Implicit Boxing Type Conversion to object Type
-  my $num = 123;
-  my $object : Int = $num;
-
-When the source Type is Any Object Type and the destination Type is Numeric Types, L</"Unboxing Type Conversion"> in the corresponding Numeric Types are displayed. Will be opened. In the following case, an attempt is made to convert the Int Type object to L</"int Type">.
-
-=head3 Implicit Numeric Object Type to Numeric Type Conversion
-
-  # Implicit Unboxing Type Conversion from objectType-
-  my $object : object;
-  my $num : int = $object;
-
-If the source Type is Numeric Object Type and the destination Type is the corresponding Numeric Types, L</"Unboxing Type Conversion"> in the corresponding Numeric Types Is done.
-
-  # Implicit Unboxing Type Conversion from Numeric Object Type
-  my $num_obj = Int->new(3);
-  my $num : int = $num_obj;
-
-=head3 Numeric Type to String Type Conversion
-
-If the source Type is Numeric Types and the destination Type is L</"String Type">, L</"Numeric-to-String Type Conversion"> is performed. In the following case, the numerical value "123" is converted to String "" 123 "" and assigned.
-
-  # Implicit Boxing Type Conversion to String Type
-  my $num = 123;
-  my $str : string = $num;
+B<Examples:>
+  
+  # Implicite int to double type conversion
+  my $num : double = 5;
+  
+  # Implicte double to Double type conversion
+  my $num_object : Double = 5.1;
+  
+  # Implicte Double to double type conversion
+  my $num : double = Double->new(5.1);
+  
+  # Implicte int to string type conversion
+  my $string : string = 4;
 
 =head2 Numeric Types Conversion
 
