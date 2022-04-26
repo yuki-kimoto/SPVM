@@ -267,25 +267,26 @@ sub remove_class_part_from_file {
 sub create_make_rule_native {
   my $class_name = shift;
   
-  create_class_make_rule($class_name, 'native');
+  create_make_rule($class_name, 'native', @_);
 }
 
 sub create_make_rule_precompile {
   my $class_name = shift;
   
-  create_class_make_rule($class_name, 'precompile');
+  create_make_rule($class_name, 'precompile', @_);
 }
 
-sub create_class_make_rule {
-  my ($class_name, $category) = @_;
-
+sub create_make_rule {
+  my ($class_name, $category, $options) = @_;
+  
+  $options ||= {};
   $class_name =~ s/^SPVM:://;
   
   my $module_base_name = $class_name;
   $module_base_name =~ s/^.+:://;
   
-  my $src_dir = 'lib';
-
+  my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
+  
   my $class_rel_file = convert_class_name_to_rel_file($class_name, 'spvm');
   
   my $noext_file = $class_rel_file;
@@ -293,25 +294,25 @@ sub create_class_make_rule {
   
   my $spvm_file = $noext_file;
   $spvm_file .= '.spvm';
-  $spvm_file = "$src_dir/$spvm_file";
+  $spvm_file = "$lib_dir/$spvm_file";
   
   # Dependency files
   my @deps;
   
   # Dependency c source files
-  push @deps, grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/$class_rel_file/*";
+  push @deps, grep { $_ ne '.' && $_ ne '..' } glob "$lib_dir/$class_rel_file/*";
   
   # Dependency module file
   if ($category eq 'native') {
     my $config_file = $noext_file;
     $config_file .= '.config';
-    $config_file = "$src_dir/$config_file";
+    $config_file = "$lib_dir/$config_file";
     my $config = &load_config($config_file);
     
     my $native_file = $noext_file;
     my $native_file_ext = $config->ext;
     $native_file .= ".$native_file_ext";
-    $native_file = "$src_dir/$native_file";
+    $native_file = "$lib_dir/$native_file";
 
     push @deps, $spvm_file, $native_file, $config_file;
   }
