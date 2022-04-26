@@ -10,7 +10,8 @@ Revision history for SPVM
         * Point class has Stringable interface.
         
         [BUG FIX]
-        * Fix the bug that multi-dimensional array can't assing to any object array "object[]"
+        * Fix the bug that multi-dimensional array can't assing to any object array "object[]".
+        * Fix the bug that SPVM::Builder::Util::API::create_make_rule_native can't detect native file extension.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove -O|--optimize option from spvmcc.

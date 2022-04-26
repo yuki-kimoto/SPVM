@@ -10,9 +10,10 @@ use Getopt::Long 'GetOptionsFromArray';
 use List::Util 'min';
 use File::Basename 'dirname';
 use File::Spec;
+use SPVM::Builder::Config;
 
 # SPVM::Builder::Util is used from Makefile.PL
-# so this module must be wrote as pure perl script, not contain XS functions and don't use any other SPVM modules.
+# so this module must be wrote as pure perl script, not contain XS functions.
 
 sub need_generate {
   my ($opt) = @_;
@@ -294,14 +295,6 @@ sub create_class_make_rule {
   $spvm_file .= '.spvm';
   $spvm_file = "$src_dir/$spvm_file";
   
-  my $native_c_file = $noext_file;
-  $native_c_file .= '.c';
-  $native_c_file = "$src_dir/$native_c_file";
-
-  my $config_file = $noext_file;
-  $config_file .= '.config';
-  $config_file = "$src_dir/$config_file";
-
   # Dependency files
   my @deps;
   
@@ -310,7 +303,17 @@ sub create_class_make_rule {
   
   # Dependency module file
   if ($category eq 'native') {
-    push @deps, $spvm_file, $native_c_file, $config_file;
+    my $config_file = $noext_file;
+    $config_file .= '.config';
+    $config_file = "$src_dir/$config_file";
+    my $config = &load_config($config_file);
+    
+    my $native_file = $noext_file;
+    my $native_file_ext = $config->ext;
+    $native_file .= ".$native_file_ext";
+    $native_file = "$src_dir/$native_file";
+
+    push @deps, $spvm_file, $native_file, $config_file;
   }
   elsif ($category eq 'precompile') {
     push @deps, $spvm_file;
