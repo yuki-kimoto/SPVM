@@ -17,8 +17,6 @@ SPVM::Fn - SPVM Starndard Functions
   my $int32_max = Fn->INT32_MAX();
   my $int64_max = Fn->INT64_MAX();
   
-  my $rand = Fn->rand();
-
   # Cut a newline LF
   {
     my $ret = Fn->chompr("abc\n");
@@ -524,6 +522,13 @@ Get random number(0 <= rundom_number <= Fn->RAND_MAX) with a seed.
 The seed is updated.
 
 This method is thread safe different from C<rand> function of C<C language>.
+
+B<Examples:>
+  
+  use Time;
+  my $seed = (int)Time->time;
+  my $crand0 = Fn->crand(\$seed);
+  my $crand1 = Fn->crand(\$seed);
 
 =head2 dump_array_byte
 
@@ -1155,6 +1160,13 @@ Get random number(0 <= random_number < 1)with a seed.
 The seed is updated.
 
 This method is thread safe different from C<rand> function of C<C language>.
+
+B<Examples:>
+
+  use Time;
+  my $seed = (int)Time->time;
+  my $rand0 = Fn->rand(\$seed);
+  my $rand1 = Fn->rand(\$seed);
 
 =head2 rindex
 
