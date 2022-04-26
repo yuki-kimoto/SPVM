@@ -1332,6 +1332,9 @@ The list of syntax parsing tokens:
 
 <table>
   <tr>
+    <th>Tokens</td><th>Keywords or Operators</th>
+  </tr>
+  <tr>
     <td>ALIAS</td><td>alias</td>
   </tr>
   <tr>
@@ -1663,6 +1666,8 @@ The list of syntax parsing tokens:
   </tr>
 </table>
 
+=end html
+
 =head2 Operator Precidence
 
 The definition of the precidence of operators. This is written by yacc/bison syntax.
@@ -1692,8 +1697,6 @@ The operator precidence can be increased using C<()>.
   
   # b + c is calculated at first
   a * (b + c)
-
-=end html
 
 =head1 Class
 
@@ -6765,6 +6768,8 @@ If the type of the left operand is the L<undefined type|/"Undefined Type">, the 
   </tr>
 </table>
 
+=end html
+
 B<Examples:>
   
   # The assignability is false
@@ -7616,3 +7621,10 @@ Even if there are 3 circular references, you can release them correctly by setti
 
 As a syntax related to Weak Reference, Weak Reference can be released L</"weaken Statement">, and it can be confirmed whether Field is Weak Reference the L<isweak operator|/"isweak Operator">.
 
+=head1 SEE ALSO
+
+=head2 Examples
+
+You can see more examples in the following test codes.
+
+L<Examples of SPVM|https://github.com/yuki-kimoto/SPVM/tree/master/t/default/lib/SPVM/TestCase>
