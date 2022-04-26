@@ -6409,32 +6409,28 @@ If the L<nemric type order|/"Numeric Types Order"> of the left operand is greate
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>byte</td><td>byte</td><td>None</td>
-    <td>True</td><td>short</td><td>short</td><td>None</td>
-    <td>True</td><td>int</td><td>int</td><td>None</td>
-    <td>True</td><td>long</td><td>long</td><td>None</td>
-    <td>True</td><td>float</td><td>float</td><td>None</td>
-    <td>True</td><td>double</td><td>double</td><td>None</td>
-    <td>True</td><td>short</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>int</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>long</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>float</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>double</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>int</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>long</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>float</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>double</td><td>short</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>long</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>float</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>double</td><td>int</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>float</td><td>long</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>double</td><td>long</td><td>Unary Numeric Widening Type Conversion</td>
-    <td>True</td><td>double</td><td>float</td><td>Unary Numeric Widening Type Conversion</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>byte</td><td>byte</td><td>None</td></tr>
+  <tr><td>True</td><td>short</td><td>short</td><td>None</td></tr>
+  <tr><td>True</td><td>int</td><td>int</td><td>None</td></tr>
+  <tr><td>True</td><td>long</td><td>long</td><td>None</td></tr>
+  <tr><td>True</td><td>float</td><td>float</td><td>None</td></tr>
+  <tr><td>True</td><td>double</td><td>double</td><td>None</td></tr>
+  <tr><td>True</td><td>short</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>int</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>long</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>float</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>double</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>int</td><td>short</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>long</td><td>short</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>float</td><td>short</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>double</td><td>short</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>long</td><td>int</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>float</td><td>int</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>double</td><td>int</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>float</td><td>long</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>double</td><td>long</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>double</td><td>float</td><td>Unary Numeric Widening Type Conversion</td></tr>
 </table>
 
 =end html
@@ -6462,26 +6458,22 @@ If the condition is ture, the L<numeric narrowing type conversion|/"Numeric Narr
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>Conditinal True</td><td>byte</td><td>short</td><td>Numeric Narrowing Type Conversion</td>
-    <td>Conditinal True</td><td>byte</td><td>int</td><td>Numeric Narrowing Type Conversion</td>
-    <td>Conditinal True</td><td>byte</td><td>long</td><td>byte</td><td>Numeric Narrowing Type Conversion</td>
-    <td>False</td><td>byte</td><td>float</td><td>None</td>
-    <td>False</td><td>byte</td><td>double</td><td>None</td>
-    <td>Conditinal True</td><td>short</td><td>int</td><td>Numeric Narrowing Type Conversion</td>
-    <td>Conditinal True</td><td>short</td><td>long</td><td>Numeric Narrowing Type Conversion</td>
-    <td>False</td><td>short</td><td>float</td><td>None</td>
-    <td>False</td><td>short</td><td>double</td><td>None</td>
-    <td>Conditinal True</td><td>int</td><td>long</td><td>Numeric Narrowing Type Conversion</td>
-    <td>False</td><td>int</td><td>float</td><td>None</td>
-    <td>False</td><td>int</td><td>double</td><td>None</td>
-    <td>False</td><td>long</td><td>float</td><td>None</td>
-    <td>False</td><td>long</td><td>double</td><td>None</td>
-    <td>False</td><td>float</td><td>double</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>Conditinal True</td><td>byte</td><td>short</td><td>Numeric Narrowing Type Conversion</td></tr>
+  <tr><td>Conditinal True</td><td>byte</td><td>int</td><td>Numeric Narrowing Type Conversion</td></tr>
+  <tr><td>Conditinal True</td><td>byte</td><td>long</td><td>Numeric Narrowing Type Conversion</td></tr>
+  <tr><td>False</td><td>byte</td><td>float</td><td>None</td></tr>
+  <tr><td>False</td><td>byte</td><td>double</td><td>None</td></tr>
+  <tr><td>Conditinal True</td><td>short</td><td>int</td><td>Numeric Narrowing Type Conversion</td></tr>
+  <tr><td>Conditinal True</td><td>short</td><td>long</td><td>Numeric Narrowing Type Conversion</td></tr>
+  <tr><td>False</td><td>short</td><td>float</td><td>None</td></tr>
+  <tr><td>False</td><td>short</td><td>double</td><td>None</td></tr>
+  <tr><td>Conditinal True</td><td>int</td><td>long</td><td>Numeric Narrowing Type Conversion</td></tr>
+  <tr><td>False</td><td>int</td><td>float</td><td>None</td></tr>
+  <tr><td>False</td><td>int</td><td>double</td><td>None</td></tr>
+  <tr><td>False</td><td>long</td><td>float</td><td>None</td></tr>
+  <tr><td>False</td><td>long</td><td>double</td><td>None</td></tr>
+  <tr><td>False</td><td>float</td><td>double</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6498,17 +6490,13 @@ If the type of the left operand is a L<numeric type|/"Numeric Types"> correspond
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td>
-    <td>True</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td>
-    <td>True</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td>
-    <td>True</td><td>long</td><td>Long</td><td>Unboxing Type Conversion</td>
-    <td>True</td><td>float</td><td>Float</td><td>Unboxing Type Conversion</td>
-    <td>True</td><td>double</td><td>Double</td><td>Unboxing Type Conversion</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td></tr>
+  <tr><td>True</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td></tr>
+  <tr><td>True</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td></tr>
+  <tr><td>True</td><td>long</td><td>Long</td><td>Unboxing Type Conversion</td></tr>
+  <tr><td>True</td><td>float</td><td>Float</td><td>Unboxing Type Conversion</td></tr>
+  <tr><td>True</td><td>double</td><td>Double</td><td>Unboxing Type Conversion</td></tr>
 </table>
 
 =end html
@@ -6528,12 +6516,8 @@ The L<unboxing type conversion|/"Unboxing Type Conversion"> corresponding to the
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td></tr>
 </table>
 
 =end html
@@ -6557,13 +6541,9 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td>
-    <td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td></tr>
+  <tr><td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6588,19 +6568,15 @@ If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<Nu
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>string</td><td>string</td><td>None</td>
-    <td>True</td><td>string</td><td>mutable string</td><td>None</td>
-    <td>True</td><td>mutable string</td><td>mutable string</td><td>None</td>
-    <td>False</td><td>mutable string</td><td>string</td><td>None</td>
-    <td>True</td><td>string</td><td>string</td><td>None</td>
-    <td>True</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String type conversion</td>
-    <td>True</td><td>string</td><td>undef</td><td>None</td>
-    <td>False</td><td>string</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
+  <tr><td>True</td><td>string</td><td>mutable string</td><td>None</td></tr>
+  <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>None</td></tr>
+  <tr><td>False</td><td>mutable string</td><td>string</td><td>None</td></tr>
+  <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
+  <tr><td>True</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String type conversion</td></tr>
+  <tr><td>True</td><td>string</td><td>undef</td><td>None</td></tr>
+  <tr><td>False</td><td>string</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6622,15 +6598,11 @@ If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<bo
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td>
-    <td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
-    <td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td>
-    <td>False</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td></tr>
+  <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
+  <tr><td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td></tr>
+  <tr><td>False</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6650,14 +6622,10 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td>
-    <td>True</td><td>CLASS</td><td>undef</td><td>None</td>
-    <td>False</td><td>CLASS</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td></tr>
+  <tr><td>True</td><td>CLASS</td><td>undef</td><td>None</td></tr>
+  <tr><td>False</td><td>CLASS</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6678,15 +6646,11 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td>
-    <td>Conditinal True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td>
-    <td>True</td><td>INTERFACE</td><td>undef</td><td>None</td>
-    <td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td></tr>
+  <tr><td>Conditinal True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td></tr>
+  <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>None</td></tr>
+  <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6708,15 +6672,11 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>None</td>
-    <td>Conditinal True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>None</td>
-    <td>True</td><td>CALLBACK</td><td>undef</td><td>None</td>
-    <td>False</td><td>CALLBACK</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>None</td></tr>
+  <tr><td>Conditinal True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>None</td></tr>
+  <tr><td>True</td><td>CALLBACK</td><td>undef</td><td>None</td></tr>
+  <tr><td>False</td><td>CALLBACK</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6743,15 +6703,11 @@ If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<bo
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>object</td><td>OBJECT_X</td><td>None</td>
-    <td>True</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td>
-    <td>True</td><td>object</td><td>undef</td><td>None</td>
-    <td>False</td><td>object</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>object</td><td>OBJECT_X</td><td>None</td></tr>
+  <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
+  <tr><td>True</td><td>object</td><td>undef</td><td>None</td></tr>
+  <tr><td>False</td><td>object</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6769,12 +6725,8 @@ If the type of the left operand is the L<undefined type|/"Undefined Type">, the 
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>False</td><td>Undefined Type</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>False</td><td>Undefined Type</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6793,13 +6745,9 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>REF_X</td><td>REF_X</td><td>None</td>
-    <td>False</td><td>REF_X</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>REF_X</td><td>REF_X</td><td>None</td></tr>
+  <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6813,19 +6761,15 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>byte[]</td><td>byte[]</td><td>None</td>
-    <td>True</td><td>short[]</td><td>short[]</td><td>None</td>
-    <td>True</td><td>int[]</td><td>int[]</td><td>None</td>
-    <td>True</td><td>long[]</td><td>long[]</td><td>None</td>
-    <td>True</td><td>float[]</td><td>float[]</td><td>None</td>
-    <td>True</td><td>double[]</td><td>double[]</td><td>None</td>
-    <td>True</td><td>NUMERIC[]</td><td>undef</td><td>None</td>
-    <td>False</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>byte[]</td><td>byte[]</td><td>None</td></tr>
+  <tr><td>True</td><td>short[]</td><td>short[]</td><td>None</td></tr>
+  <tr><td>True</td><td>int[]</td><td>int[]</td><td>None</td></tr>
+  <tr><td>True</td><td>long[]</td><td>long[]</td><td>None</td></tr>
+  <tr><td>True</td><td>float[]</td><td>float[]</td><td>None</td></tr>
+  <tr><td>True</td><td>double[]</td><td>double[]</td><td>None</td></tr>
+  <tr><td>True</td><td>NUMERIC[]</td><td>undef</td><td>None</td></tr>
+  <tr><td>False</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6844,14 +6788,10 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td>
-    <td>True</td><td>MULNUM_X[]</td><td>undef</td><td>None</td>
-    <td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td></tr>
+  <tr><td>True</td><td>MULNUM_X[]</td><td>undef</td><td>None</td></tr>
+  <tr><td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6870,14 +6810,10 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>string[]</td><td>string[]</td><td>None</td>
-    <td>True</td><td>string[]</td><td>undef</td><td>None</td>
-    <td>False</td><td>string[]</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>string[]</td><td>string[]</td><td>None</td></tr>
+  <tr><td>True</td><td>string[]</td><td>undef</td><td>None</td></tr>
+  <tr><td>False</td><td>string[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6896,14 +6832,10 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>None</td>
-    <td>True</td><td>CLASS_X[]</td><td>undef</td><td>None</td>
-    <td>False</td><td>CLASS_X[]</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>None</td></tr>
+  <tr><td>True</td><td>CLASS_X[]</td><td>undef</td><td>None</td></tr>
+  <tr><td>False</td><td>CLASS_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6924,15 +6856,11 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td>
-    <td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>None</td>
-    <td>Conditional True</td><td>INTERFACE_X[]</td><td>CLASS_Y[]</td><td>None</td>
-    <td>False</td><td>INTERFACE_X[]</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
+  <tr><td>False</td><td>INTERFACE_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6956,15 +6884,11 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>Callback_X[]</td><td>Callback_X[]</td><td>None</td>
-    <td>True</td><td>Callback_X[]</td><td>undef</td><td>None</td>
-    <td>Conditional True</td><td>Callback_X[]</td><td>CLASS_Y[]</td><td>None</td>
-    <td>False</td><td>Callback_X[]</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>Callback_X[]</td><td>Callback_X[]</td><td>None</td></tr>
+  <tr><td>True</td><td>Callback_X[]</td><td>undef</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>Callback_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
+  <tr><td>False</td><td>Callback_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -6992,14 +6916,10 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>object[]</td><td>OBJECT_X[]</td><td>None</td>
-    <td>True</td><td>object[]</td><td>undef</td><td>None</td>
-    <td>False</td><td>object[]</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>object[]</td><td>OBJECT_X[]</td><td>None</td></tr>
+  <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
+  <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7036,16 +6956,12 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr>
-    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
-  </tr>
-  <tr>
-    <td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>None</td>
-    <td>True</td><td>object[]</td><td>undef</td><td>None</td>
-    <td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td>
-    <td>Conditional True</td><td>CALLBACK_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td>
-    <td>False</td><td>object[]</td><td>OTHER</td><td>None</td>
-  </tr>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>None</td></tr>
+  <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>CALLBACK_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td></tr>
+  <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
