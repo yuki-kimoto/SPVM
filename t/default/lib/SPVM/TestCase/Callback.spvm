@@ -155,6 +155,18 @@ class TestCase::Callback {
       my $stringers : Stringer[] = undef;
     }
     
+    # Multi-dimensional array
+    {
+      my $cb = method : string ($object : object) {
+        my $point = (Point)$object;
+        return $point->to_string;
+      };
+      my $stringers_2dim : Stringer[][] = [[$cb]];
+      unless ($stringers_2dim->[0][0]->(Point->new_xy(1, 2)) eq "(1,2)") {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 }
