@@ -8,25 +8,12 @@ SPVM::Unicode - SPVM Unicode Utilities.
 
 =head1 SYNOPSYS
 
-=head2 SPVM
-
   use Unicode;
   
   # Get Unicode codepoints from UTF-8 string with the byte offset and proceed the offset to next UTF-8 character position
   my $string = "あいうえお";
   my $pos = 0;
   while ((my $uchar = Unicode->uchar($string, \$pos)) >= 0) {
-    # ...
-  }
-
-=head2 Perl
-
-  use SPVM 'Unicode';
-  
-  # Get Unicode codepoints from UTF-8 string with the byte offset and proceed the offset to next UTF-8 character position
-  my $string = "あいうえお";
-  my $pos = 0;
-  while ((my $uchar = SPVM::Unicode->uchar($string, \$pos)) >= 0) {
     # ...
   }
 
