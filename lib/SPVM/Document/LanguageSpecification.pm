@@ -6202,7 +6202,7 @@ B<Examples:>
 
   # Object array types
   my $points : Point[];
-  my $points_of_point : Point[][];
+  my $points_2dim : Point[][];
   my $stringables : Stringable[];
   my $strings : string[];
   my $objects : object[];
@@ -6237,6 +6237,15 @@ B<Examples:>
 =head3 Callback Array Types
 
 Callback array types are L</"Array Types"> that the type of the element is the L<callback type|/"Callback Type">.
+
+B<Examples:>
+
+  # Callback array types
+  my $stringers : Stringer[];
+
+=head3 Multi-Dimensional Array Type
+
+The multi-dimensional array type is the L<array type|/"Array Types"> that the type of the element is an L<array type|/"Array Types">.
 
 B<Examples:>
 
@@ -6970,10 +6979,6 @@ B<Examples:>
       return $point->to_string;
     };
     my $stringers : Stringer[] = [$cb];
-    
-    unless ($stringers->[0]->(Point->new_xy(1, 2)) eq "(1,2)") {
-      return 0;
-    }
   }
   
   my $stringers : Stringer[] = undef;
@@ -7001,11 +7006,16 @@ If not, the assignability is false.
 
 B<Examples:>
 
+  my $any_object0 : object[];
+  my $any_object : object[] = $any_object0;
+
   my $points : Point[];
   my $any_object : object[] = $points;
-  
-  my $points_of_point : Point[][];
-  my $any_object : object[] = $points_of_point;
+
+  my $any_object : object[] = undef;
+
+  my $points_2dim : Point[][];
+  my $any_object : object[] = $points_2dim;
 
   my $stringables : Stringable[];
   my $any_object : object[] = $stringables;
@@ -7013,13 +7023,51 @@ B<Examples:>
   my $strings : string[];
   my $any_object : object[] = $strings;
   
-  my $any_object0 : object[];
-  my $any_object : object[] = $any_object0;
-
 =head2 Type Assignability to Multi-Dimensional Array
 
-(Not Completed)
+If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
+If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the assignability is true.
+
+If the L<basic type|/"Basic Type"> of the type of the left operand is an L<callback type|/"Callback Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the callback of the L<basic type|/"Basic Type"> of the type of the left operand , the assignability is true.
+
+If not, the assignability is false.
+
+=begin html
+
+<table>
+  <tr>
+    <th>Assignable</th><th>To</th><th>From</th><th>Implicite Type Conversion</th>
+  </tr>
+  <tr>
+    <td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>None</td>
+    <td>True</td><td>object[]</td><td>undef</td><td>None</td>
+    <td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td>
+    <td>Conditional True</td><td>CALLBACK_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td>
+    <td>False</td><td>object[]</td><td>OTHER</td><td>None</td>
+  </tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $points_2dim : Point[][];
+  my $muldim_array : Point[][] = $points_2dim;
+
+  my $muldim_array : Point[][] = undef;
+
+  my $strings_2dim : String[][];
+  my $muldim_array : Stringable[][] = $strings_2dim;
+
+  {
+    my $cb = method : string ($object : object) {
+      my $point = (Point)$object;
+      return $point->to_string;
+    };
+    my $muldim_array : Stringer[][] = [[$cb]];
+  }
+  
 =head1 Type Conversions
 
 =head2 Type Cast
