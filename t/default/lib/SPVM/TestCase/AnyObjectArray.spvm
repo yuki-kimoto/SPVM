@@ -1,4 +1,6 @@
 class TestCase::AnyObjectArray {
+  use Point;
+  
   static method basic : int () {
     
     # object[] - assign numeric object
@@ -65,6 +67,13 @@ class TestCase::AnyObjectArray {
           return 0;
         }
       }
+    }
+    
+    # Multi-Dimensional Array
+    {
+      my $objects : object[] = new Point[][3];
+      $objects->(Point[][])->[0] = new Point[3];
+      my $point : Point = $objects->(Point[][])->[0][0];
     }
     
     $@ = undef;

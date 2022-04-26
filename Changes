@@ -9,6 +9,9 @@ Revision history for SPVM
         * Add to_string method to Point class.
         * Point class has Stringable interface.
         
+        [BUG FIX]
+        * Fix the bug that multi-dimensional array can't assing to any object array "object[]"
+        
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove -O|--optimize option from spvmcc.
         * Remove --dynamic-lib option from spvmcc.
