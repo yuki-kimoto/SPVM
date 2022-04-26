@@ -146,7 +146,9 @@ DEVELOPERS NOTE
       my $class_name = shift;
       print <<EOS
 sub MY::postamble {
-
+  
+  use SPVM::Builder::Util::API;
+  
   my \$make_rule = "";
   
   # Native compile make rule
