@@ -2159,7 +2159,7 @@ In the other hand, the else block exists, so a warning is issued.
 
 =head2 Default Loaded Modules
 
-The following modules are loaded by default. These modules are deeply related to the features of SPVM language itself, such as L<type conversions|/"Type Conversions">.
+The following modules are loaded by default. These modules are deeply related to the features of SPVM language itself, such as L<type conversion|/"Type Conversion">.
 
 =begin html
 
@@ -6984,7 +6984,7 @@ B<Examples:>
     my $muldim_array : Stringer[][] = [[$cb]];
   }
   
-=head1 Type Conversions
+=head1 Type Conversion
 
 =head2 Type Cast
 
@@ -7116,7 +7116,7 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
 
 =head2 Implicite Type Conversion
 
-The implicite type conversion is the L<type conversion|/"Type Conversions"> performed implicitly when a value is assigned using L<assignment operator|/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Calls">, or set a return value using the L<return statement|/"return Statement">.
+The implicite type conversion is the L<type conversion|/"Type Conversion"> performed implicitly when a value is assigned using L<assignment operator|/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Calls">, or set a return value using the L<return statement|/"return Statement">.
 
 See L<"Type Assignability"> if you know when implicite type conversion is performed.
 
@@ -7213,7 +7213,7 @@ Numeric Widening Type Conversion is a conversion rule applied when converting fr
 
 =head2 Numeric-to-String Type Conversion
 
-The numeric-to-String type conversion is a L<type conversion|/"Type Conversions"> from a L<numeric type|/"Numeric Types"> to the L<string type|/"String Type">.
+The numeric-to-String type conversion is a L<type conversion|/"Type Conversion"> from a L<numeric type|/"Numeric Types"> to the L<string type|/"String Type">.
 
   # Numeric-to-String type conversion
   my $byte = (byte)1;
@@ -7243,7 +7243,7 @@ The numeric-to-String type conversion is a L<type conversion|/"Type Conversions"
 
 =head2 string to byte[] Type Conversion
 
-string to byte[] type conversion is a L</"Type Conversions"> from L</"String Type"> to L</"byte[] Type">.
+string to byte[] type conversion is a L</"Type Conversion"> from L</"String Type"> to L</"byte[] Type">.
 
   # string to byte[] Type Conversion
   my $string : string = "Hello";
@@ -7253,7 +7253,7 @@ A new byte[] object is created and all characters in the string are copied to th
 
 =head2 byte[] to String Type Conversion
 
-byte[] to string type conversion is a L</"Type Conversions"> from L</"byte[] type"> to L</"String Type">.
+byte[] to string type conversion is a L</"Type Conversion"> from L</"byte[] type"> to L</"String Type">.
 
   # byte[] to string type conversion
   my $bytes : byte[] = new byte[3];
@@ -7274,7 +7274,7 @@ Unboxing Type Conversion is an operation to convert the value of Numeric Object 
 
 =head2 Bool Type Conversion
 
-The bool type conversion is a L<type conversion|/"Type Conversions"> that is performed in operands of conditional branches.
+The bool type conversion is a L<type conversion|/"Type Conversion"> that is performed in operands of conditional branches.
 
 The operand of the L<if statement|/"if Statement">:
 
