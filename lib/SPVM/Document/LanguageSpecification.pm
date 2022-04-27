@@ -5219,28 +5219,6 @@ The type cast is the L<operator|/"Operators"> to perform an L<explicite type con
   </tr>
   <tr>
     <td>
-      byte[]
-    </td>
-    <td>
-      string
-    </td>
-    <td>
-      <a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Type Conversion</a>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      string
-    </td>
-    <td>
-      byte[]
-    </td>
-    <td>
-      <a href="#byte[]-to-String-Type-Conversion">byte[]-to-String Type Conversion</a>
-    </td>
-  </tr>
-  <tr>
-    <td>
       byte, short, int, long, float, double
     </td>
     <td>
@@ -5358,6 +5336,28 @@ The type cast is the L<operator|/"Operators"> to perform an L<explicite type con
     </td>
     <td>
       The number is converted to a string using the "%g" format of the C standard sprintf function.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      byte[]
+    </td>
+    <td>
+      string
+    </td>
+    <td>
+      <a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Type Conversion</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      string
+    </td>
+    <td>
+      byte[]
+    </td>
+    <td>
+      <a href="#byte[]-to-String-Type-Conversion">byte[]-to-String Type Conversion</a>
     </td>
   </tr>
 </table>
