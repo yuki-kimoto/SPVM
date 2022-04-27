@@ -40,6 +40,7 @@ Revision history for SPVM
           9  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK
           10 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT
         * Add SPVM Precompile Native APIs. The document is SPVM::Document::NativeAPI::Precompile.
+        * Add SPVM String Buffer Native APIs. The document is SPVM::Document::NativeAPI::StringBuffer.
         
         [BUG FIX]
         * Fix the bug that multi-dimensional array can't assing to any object array "object[]".
