@@ -5193,6 +5193,134 @@ The return type is L<int type|/"int Type">.
 
 If the class of the object has the method implementation, returns C<1>, otherwise returns C<0>.
 
+=head2 Type Cast
+
+Type Cast is Type Conversion that is explicitly described.
+
+  # Type Cast
+  (TYPE)EXPRESSION
+  
+  # Postfix Type Cast
+  EXPRESSION->(TYPE)
+
+L</"int Type"> value is converted to L</"long Type"> Become.
+
+  my $num = (long)3;
+
+If the source Type and the specified Type are the same, the value is simply copied.
+
+  my $num : int = (int)4;
+
+B<List of Type Conversion in Type Cast>
+
+It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this table is performed, a compilation error will occur.
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      <b>The specified Type</b>
+   </th>
+    <th>
+      <b>Source type</b>
+   </th>
+    <th>
+      Content of conversion
+   </th>
+  </tr>
+  <tr>
+    <td>
+      <b>byte[]</b>
+    </td>
+    <td>
+      <b>string</b>
+    </td>
+    <td>
+      The address value is copied.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>string</b>
+    </td>
+    <td>
+      <b>byte[]</b>
+    </td>
+    <td>
+      The address value is copied.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>Numeric Types</b>
+    </td>
+    <td>
+      <b>Numeric Types</b>
+    </td>
+    <td>
+      L</"Numeric Types Conversion"> is performed.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>Numeric Object Type</b>
+    </td>
+    <td>
+      <b>Numeric Types</b>
+    </td>
+    <td>
+      L</"Boxing Type Conversion"> is performed. Numeric Types represented by Numeric Types and Numeric Object Type must be the same. For example, if Numeric Types are int, Numeric Object Type must be Int Type.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>Any Object Type</b>
+    </td>
+    <td>
+      <b>Numeric Types</b>
+    </td>
+    <td>
+      L</"Boxing Type Conversion"> is performed.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>Numeric Types</b>
+    </td>
+    <td>
+      <b>Numeric Object Type</b>
+    </td>
+    <td>
+      L</"Unboxing Type Conversion"> is performed. Numeric Types represented by Numeric Types and Numeric Object Type must be the same. For example, if Numeric Types are int, Numeric Object Type must be Int Type.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>Numeric Types</b>
+    </td>
+    <td>
+      <b>Any Object Type</b>
+    </td>
+    <td>
+      L</"Unboxing Type Conversion"> is performed.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>String Type</b>
+    </td>
+    <td>
+      <b>Numeric Types</b>
+    </td>
+    <td>
+      The number is converted to a string using the "%g" format of the C standard sprintf function.
+    </td>
+  </tr>
+</table>
+
+=end html
+
 =head1 Statements
 
 Statements are the parts of syntax that can be written directly under L</"Scope Blocks">.
@@ -7004,133 +7132,7 @@ B<Examples:>
   
 =head1 Type Conversion
 
-=head2 Type Cast
-
-Type Cast is Type Conversion that is explicitly described.
-
-  # Type Cast
-  (TYPE)EXPRESSION
-  
-  # Postfix Type Cast
-  EXPRESSION->(TYPE)
-
-L</"int Type"> value is converted to L</"long Type"> Become.
-
-  my $num = (long)3;
-
-If the source Type and the specified Type are the same, the value is simply copied.
-
-  my $num : int = (int)4;
-
-B<List of Type Conversion in Type Cast>
-
-It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this table is performed, a compilation error will occur.
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      <b>The specified Type</b>
-   </th>
-    <th>
-      <b>Source type</b>
-   </th>
-    <th>
-      Content of conversion
-   </th>
-  </tr>
-  <tr>
-    <td>
-      <b>byte[]</b>
-    </td>
-    <td>
-      <b>string</b>
-    </td>
-    <td>
-      The address value is copied.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>string</b>
-    </td>
-    <td>
-      <b>byte[]</b>
-    </td>
-    <td>
-      The address value is copied.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>Numeric Types</b>
-    </td>
-    <td>
-      <b>Numeric Types</b>
-    </td>
-    <td>
-      L</"Numeric Types Conversion"> is performed.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>Numeric Object Type</b>
-    </td>
-    <td>
-      <b>Numeric Types</b>
-    </td>
-    <td>
-      L</"Boxing Type Conversion"> is performed. Numeric Types represented by Numeric Types and Numeric Object Type must be the same. For example, if Numeric Types are int, Numeric Object Type must be Int Type.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>Any Object Type</b>
-    </td>
-    <td>
-      <b>Numeric Types</b>
-    </td>
-    <td>
-      L</"Boxing Type Conversion"> is performed.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>Numeric Types</b>
-    </td>
-    <td>
-      <b>Numeric Object Type</b>
-    </td>
-    <td>
-      L</"Unboxing Type Conversion"> is performed. Numeric Types represented by Numeric Types and Numeric Object Type must be the same. For example, if Numeric Types are int, Numeric Object Type must be Int Type.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>Numeric Types</b>
-    </td>
-    <td>
-      <b>Any Object Type</b>
-    </td>
-    <td>
-      L</"Unboxing Type Conversion"> is performed.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>String Type</b>
-    </td>
-    <td>
-      <b>Numeric Types</b>
-    </td>
-    <td>
-      The number is converted to a string using the "%g" format of the C standard sprintf function.
-    </td>
-  </tr>
-</table>
-
-=end html
+Type conversion is explained.
 
 =head2 Explicite Type Conversion
 
