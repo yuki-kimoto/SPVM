@@ -492,9 +492,9 @@ int32_t SPVM_API_RUNTIME_get_class_anon_methods_length(SPVM_RUNTIME* runtime, in
   
   assert(class);
   
-  int32_t class_anon_method_methods_length = class->anon_methods_length;
+  int32_t class_anon_methods_length = class->anon_methods_length;
   
-  return class_anon_method_methods_length;
+  return class_anon_methods_length;
 }
 
 int32_t SPVM_API_RUNTIME_get_class_is_anon(SPVM_RUNTIME* runtime, int32_t class_id) {

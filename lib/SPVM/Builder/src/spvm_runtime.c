@@ -117,16 +117,16 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* spvm_32bit_codes) {
   spvm_32bit_codes_ptr += constant_strings_32bit_length;
 
   // anon_method_methods length
-  runtime->anon_method_methods_length = *spvm_32bit_codes_ptr;
+  runtime->anon_methods_length = *spvm_32bit_codes_ptr;
   spvm_32bit_codes_ptr++;
 
   // anon_method_methods 32bit length
-  int32_t anon_method_methods_32bit_length = *spvm_32bit_codes_ptr;
+  int32_t anon_methods_32bit_length = *spvm_32bit_codes_ptr;
   spvm_32bit_codes_ptr++;
 
   // anon_method_method_ids
   runtime->anon_method_method_ids = spvm_32bit_codes_ptr;
-  spvm_32bit_codes_ptr += anon_method_methods_32bit_length;
+  spvm_32bit_codes_ptr += anon_methods_32bit_length;
 
   // classes length
   runtime->classes_length = *spvm_32bit_codes_ptr;

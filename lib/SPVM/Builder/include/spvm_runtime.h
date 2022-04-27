@@ -70,8 +70,8 @@ struct spvm_runtime {
   // Anon nethod ids
   int32_t* anon_method_method_ids;
 
-  // The length of anon method ids
-  int32_t anon_method_methods_length;
+  // The length of anon methods
+  int32_t anon_methods_length;
 
   // Class variables
   SPVM_RUNTIME_CLASS_VAR* class_vars;
