@@ -296,10 +296,6 @@ struct spvm_env {
 
 
 
-
-
-
-
 struct spvm_env_runtime {
   void* (*new_runtime)();
   void (*free_runtime)(void* runtime);
