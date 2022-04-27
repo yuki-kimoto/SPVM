@@ -5195,101 +5195,144 @@ If the class of the object has the method implementation, returns C<1>, otherwis
 
 =head2 Type Cast
 
-Type Cast is Type Conversion that is explicitly described.
+The type cast is the L<operator|/"Operators"> to perform an L<explicite type conversion|/"Explicite Type Conversion">.
 
   # Type Cast
-  (TYPE)EXPRESSION
+  (TYPE)OPERAND
   
   # Postfix Type Cast
-  EXPRESSION->(TYPE)
-
-L</"int Type"> value is converted to L</"long Type"> Become.
-
-  my $num = (long)3;
-
-If the source Type and the specified Type are the same, the value is simply copied.
-
-  my $num : int = (int)4;
-
-B<List of Type Conversion in Type Cast>
-
-It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this table is performed, a compilation error will occur.
+  OPERAND->(TYPE)
 
 =begin html
 
 <table>
   <tr>
     <th>
-      <b>The specified Type</b>
+      To
    </th>
     <th>
-      <b>Source type</b>
+      From
    </th>
     <th>
-      Content of conversion
-   </th>
+      Type Conversion
+    </th>
   </tr>
   <tr>
     <td>
-      <b>byte[]</b>
+      byte[]
     </td>
     <td>
-      <b>string</b>
+      string
     </td>
     <td>
-      The address value is copied.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>string</b>
-    </td>
-    <td>
-      <b>byte[]</b>
-    </td>
-    <td>
-      The address value is copied.
+      <a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Type Conversion</a>
     </td>
   </tr>
   <tr>
     <td>
-      <b>Numeric Types</b>
+      string
     </td>
     <td>
-      <b>Numeric Types</b>
+      byte[]
     </td>
     <td>
-      L</"Numeric Types Conversion"> is performed.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>Numeric Object Type</b>
-    </td>
-    <td>
-      <b>Numeric Types</b>
-    </td>
-    <td>
-      L</"Boxing Type Conversion"> is performed. Numeric Types represented by Numeric Types and Numeric Object Type must be the same. For example, if Numeric Types are int, Numeric Object Type must be Int Type.
+      <a href="#byte[]-to-String-Type-Conversion">byte[]-to-String Type Conversion</a>
     </td>
   </tr>
   <tr>
     <td>
-      <b>Any Object Type</b>
+      byte, short, int, long, float, double
     </td>
     <td>
-      <b>Numeric Types</b>
+      byte, short, int, long, float, double
     </td>
     <td>
-      L</"Boxing Type Conversion"> is performed.
+      <a href="#Numeric-Type-Conversion">Numeric type conversion</a>
     </td>
   </tr>
   <tr>
     <td>
-      <b>Numeric Types</b>
+      Byte
     </td>
     <td>
-      <b>Numeric Object Type</b>
+      byte
+    </td>
+    <td>
+      <a href="#Boxing-Type-Conversion">Boxing type conversion</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Short
+    </td>
+    <td>
+      short
+    </td>
+    <td>
+      <a href="#Boxing-Type-Conversion">Boxing type conversion</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Int
+    </td>
+    <td>
+      int
+    </td>
+    <td>
+      <a href="#Boxing-Type-Conversion">Boxing type conversion</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Long
+    </td>
+    <td>
+      long
+    </td>
+    <td>
+      <a href="#Boxing-Type-Conversion">Boxing type conversion</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Float
+    </td>
+    <td>
+      float
+    </td>
+    <td>
+      <a href="#Boxing-Type-Conversion">Boxing type conversion</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Double
+    </td>
+    <td>
+      double
+    </td>
+    <td>
+      <a href="#Boxing-Type-Conversion">Boxing type conversion</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      object
+    </td>
+    <td>
+      byte, short, int, long, float, double
+    </td>
+    <td>
+      <a href="#Boxing-Type-Conversion">Boxing type conversion</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Numeric Types
+    </td>
+    <td>
+      Numeric Object Type
     </td>
     <td>
       L</"Unboxing Type Conversion"> is performed. Numeric Types represented by Numeric Types and Numeric Object Type must be the same. For example, if Numeric Types are int, Numeric Object Type must be Int Type.
@@ -5297,10 +5340,10 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
   </tr>
   <tr>
     <td>
-      <b>Numeric Types</b>
+      Numeric Types
     </td>
     <td>
-      <b>Any Object Type</b>
+      Any Object Type
     </td>
     <td>
       L</"Unboxing Type Conversion"> is performed.
@@ -5308,10 +5351,10 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
   </tr>
   <tr>
     <td>
-      <b>String Type</b>
+      String Type
     </td>
     <td>
-      <b>Numeric Types</b>
+      Numeric Types
     </td>
     <td>
       The number is converted to a string using the "%g" format of the C standard sprintf function.
@@ -5320,6 +5363,17 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
 </table>
 
 =end html
+
+B<Examples:>
+  
+  # Explicte long to int type conversion
+  my $num = (int)123L;
+
+  # Explicte byte[] to string type conversion
+  my $num = (string)new byte[3];
+
+  # Explicte string to byte[]
+  my $num = (byte[])"Hello";
 
 =head1 Statements
 
@@ -7146,7 +7200,7 @@ B<Examples:>
   # Explicte byte[] to string type conversion
   my $num = (string)new byte[3];
 
-  # Explicte string to byte[]
+  # Explicte string to byte[] type conversion
   my $num = (byte[])"Hello";
 
 =head2 Implicite Type Conversion
@@ -7169,11 +7223,11 @@ B<Examples:>
   # Implicte int to string type conversion
   my $string : string = 4;
 
-=head2 Numeric Types Conversion
+=head2 Numeric Type Conversion
 
-Numeric Types Conversion is the conversion from L</"Numeric Types"> to L</"Numeric Types">.
+Numeric Type Conversion is the conversion from L</"Numeric Types"> to L</"Numeric Types">.
 
-Numeric Types Conversion performs exactly the same processing as Numeric Types Conversion in the corresponding C language. For example, Type Conversion from int to long in SPVM is the same as the type conversion from int32_t Type to int64_t Type in C language.
+Numeric Type Conversion performs exactly the same processing as Numeric Type Conversion in the corresponding C language. For example, Type Conversion from int to long in SPVM is the same as the type conversion from int32_t Type to int64_t Type in C language.
 
   # SPVM conversion
   my $src : int = 5;
@@ -7276,21 +7330,21 @@ The numeric-to-String type conversion is a L<type conversion|/"Type Conversion">
   # The string is "3.3"
   my $string_double = (string)$double;
 
-=head2 string to byte[] Type Conversion
+=head2 String-to-byte[] Type Conversion
 
-string to byte[] type conversion is a L</"Type Conversion"> from L</"String Type"> to L</"byte[] Type">.
+The String-to-byte[] type conversion is a L</"Type Conversion"> from L</"String Type"> to L</"byte[] Type">.
 
-  # string to byte[] Type Conversion
+  # String-to-byte[] Type Conversion
   my $string : string = "Hello";
   my $bytes : byte[] = (byte[])$string;
 
 A new byte[] object is created and all characters in the string are copied to the elements of byte[] object.
 
-=head2 byte[] to String Type Conversion
+=head2 byte[]-to-String Type Conversion
 
-byte[] to string type conversion is a L</"Type Conversion"> from L</"byte[] type"> to L</"String Type">.
+The byte[]-to-String type conversion is a L</"Type Conversion"> from L</"byte[] type"> to L</"String Type">.
 
-  # byte[] to string type conversion
+  # byte[]-to-String type conversion
   my $bytes : byte[] = new byte[3];
   $bytes->[0] = 'a';
   $bytes->[1] = 'b';
