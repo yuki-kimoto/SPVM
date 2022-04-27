@@ -58,6 +58,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::NativeAPI->check_native_api_indexes);
   ok(SPVM::TestCase::NativeAPI->check_native_api_constant_values);
   ok(SPVM::TestCase::NativeAPI->check_native_api_precompile_indexes);
+  ok(SPVM::TestCase::NativeAPI->check_native_api_compiler_indexes);
   ok(SPVM::TestCase::NativeAPI->check_native_api_string_buffer_indexes);
   ok(SPVM::TestCase::NativeAPI->check_native_api_allocator_indexes);
 }

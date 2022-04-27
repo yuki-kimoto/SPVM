@@ -19,6 +19,8 @@ SPVM Allocator Native APIs are the public APIs to alloc/free memories.
 
 =head1 IDs of Allocator Native APIs
 
+Allocator native APIs have its IDs.
+
   0 new_allocator
   1 free_allocator
 
