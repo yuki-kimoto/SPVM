@@ -94,8 +94,8 @@ Get the length of the compiler error messages.
 
 Get a compiler error messages with the index.
 
-=head2 build_runtime
+=head2 create_spvm_32bit_codes
 
-  void (*build_runtime)(void* compiler, void* runtime);
+  int32_t* (*create_spvm_32bit_codes)(void* compiler, void* allocator);
 
-Build runtime information.
+Create SPVM 32bit codes on the memory allocated by the allocator.
