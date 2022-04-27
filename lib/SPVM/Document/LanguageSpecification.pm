@@ -6390,6 +6390,24 @@ Omitting L</"Types"> when L</"Local Variable Declaration"> by Type Inference can
   # Foo
   my $foo = new Foo;
 
+=head2 Type Qualifiers
+
+Type qualifiers qualify the type.
+
+  QUALIFIER TYPE
+
+=head3 mutable Type Qualifier
+
+The C<mutable> type qualifier is used to allow to set the character of the string.
+
+  my $string : mutable string;
+
+B<Examples:>
+  
+  # Mutable string
+  my $message = (mutable string)"abc";
+  $message->[0] = 'd';
+
 =head1 Type Assignability
 
 Explains the type assignability at compile time.
@@ -7393,24 +7411,6 @@ B<Examples:>
   if (undef) {
     # not ok
   }
-
-=head1 Type Qualifiers
-
-Type qualifiers qualify the type.
-
-  QUALIFIER TYPE
-
-=head2 mutable Type Qualifier
-
-The C<mutable> type qualifier is used to allow to set the character of the string.
-
-  my $string : mutable string;
-
-B<Examples:>
-  
-  # Mutable string
-  my $message = (mutable string)"abc";
-  $message->[0] = 'd';
 
 =head1 Type Comment
 
