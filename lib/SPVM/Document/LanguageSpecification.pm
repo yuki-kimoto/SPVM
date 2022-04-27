@@ -7114,6 +7114,21 @@ It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this 
 
 =end html
 
+=head2 Explicite Type Conversion
+
+The explicite type conversion is the L<type conversion|/"Type Conversion"> performed by a L<type cast|/"Type Cast"> expicitely.
+
+B<Examples:>
+  
+  # Explicte long to int type conversion
+  my $num = (int)123L;
+
+  # Explicte byte[] to string type conversion
+  my $num = (string)new byte[3];
+
+  # Explicte string to byte[]
+  my $num = (byte[])"Hello";
+
 =head2 Implicite Type Conversion
 
 The implicite type conversion is the L<type conversion|/"Type Conversion"> performed implicitly when a value is assigned using L<assignment operator|/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Calls">, or set a return value using the L<return statement|/"return Statement">.
