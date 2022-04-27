@@ -616,6 +616,12 @@ The last is the destructor. Be sure to define a destructor, as the allocated mem
 
 Execute the free_memory_block function to free the memory. Be sure to free the memory allocated by alloc_memory_block_zero with the free_memory_block function. Releases the memory and decrements the memory block count by one.
 
+=head2 Call Native API
+
+Native API can be called from "SPVM_ENV* env" passed as an argument. Note that you have to pass env as the first argument.
+
+  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
+
 =head1 Constant Values
 
 =head2 Constant Values of Basic Type IDs
@@ -652,12 +658,6 @@ Execute the free_memory_block function to free the memory. Be sure to free the m
   8  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE
   9  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK
   10 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT
-
-=head2 Call Native API
-
-Native API can be called from "SPVM_ENV* env" passed as an argument. Note that you have to pass env as the first argument.
-
-  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
 
 =head1 IDs of Native API
 
