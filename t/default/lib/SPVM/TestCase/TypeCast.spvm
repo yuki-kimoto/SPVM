@@ -1,0 +1,23 @@
+class TestCase::TypeCast {
+  static method basic : int () {
+    
+    # numeric to numeric
+    {
+      # byte to short
+      {
+        my $from : byte = 1;
+        my $to = (short)$from;
+        
+        unless ($to isa short) {
+          return 0;
+        }
+        unless ($to == 1) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+}

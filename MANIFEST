@@ -627,6 +627,7 @@ t/default/lib/SPVM/TestCase/Subtract.spvm
 t/default/lib/SPVM/TestCase/Switch.spvm
 t/default/lib/SPVM/TestCase/SymbolName_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.spvm
 t/default/lib/SPVM/TestCase/Term.spvm
+t/default/lib/SPVM/TestCase/TypeCast.spvm
 t/default/lib/SPVM/TestCase/TypeComment.spvm
 t/default/lib/SPVM/TestCase/UnaryMinus.spvm
 t/default/lib/SPVM/TestCase/UnaryPlus.spvm
@@ -685,6 +686,7 @@ t/default/subtract.t
 t/default/switch.t
 t/default/symbol_name.t
 t/default/term.t
+t/default/type_cast.t
 t/default/type_comment.t
 t/default/unary_minus.t
 t/default/unary_plus.t
