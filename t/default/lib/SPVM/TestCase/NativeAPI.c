@@ -2305,3 +2305,19 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_string_buffer_indexes(SPVM_E
 
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__check_native_api_allocator_indexes(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  void** env_array = (void**)env->api->allocator;
+
+  if ((void*)&env->api->allocator->new_allocator != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->allocator->free_allocator != &env_array[1]) { stack[0].ival = 0; return 0; }
+
+  stack[0].ival = 1;
+
+  return 0;
+}

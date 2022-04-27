@@ -23,6 +23,7 @@ class TestCase::NativeAPI {
   native static method check_native_api_indexes : int ();
   native static method check_native_api_precompile_indexes : int ();
   native static method check_native_api_string_buffer_indexes : int ();
+  native static method check_native_api_allocator_indexes : int ();
   native static method check_native_api_constant_values : int ();
 
   static method get_class_var_byte_by_name : int () {
