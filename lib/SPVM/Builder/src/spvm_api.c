@@ -5628,7 +5628,7 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t inter
   int32_t object_type_dimension = object->type_dimension;
   int32_t has_interface;
   if (object->type_dimension > 0) {
-    0;
+    has_interface = 0;
   }
   else {
     int32_t object_basic_type_id = object->basic_type_id;
