@@ -4029,7 +4029,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type in runtime.");
+            void* exception = env->new_string_nolen_raw(env, "Can't perform the type cast to unequal object type.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4050,7 +4050,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, "Can't perform the type cast to the interface type.");
+            void* exception = env->new_string_nolen_raw(env, "Can't perform the type cast to incompatible interface type.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4071,7 +4071,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, "Can't perform the type cast to the callback type.");
+            void* exception = env->new_string_nolen_raw(env, "Can't perform the type cast to incompatible callback type.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
