@@ -342,7 +342,6 @@ t/default/comparison_operator.t
 t/default/compile_native_api.pl
 t/default/concat.t
 t/default/constant.t
-t/default/convert.t
 t/default/copy.t
 t/default/default_loaded_modules.t
 t/default/divide.t
@@ -508,7 +507,6 @@ t/default/lib/SPVM/TestCase/CompileError/Weaken/UnweakenFieldNotObjectType.spvm
 t/default/lib/SPVM/TestCase/CompileError/Weaken/WeakenFieldNotObjectType.spvm
 t/default/lib/SPVM/TestCase/Concat.spvm
 t/default/lib/SPVM/TestCase/Constant.spvm
-t/default/lib/SPVM/TestCase/Convert.spvm
 t/default/lib/SPVM/TestCase/Copy.spvm
 t/default/lib/SPVM/TestCase/Data/Weaken.spvm
 t/default/lib/SPVM/TestCase/Destructor.spvm
@@ -629,6 +627,7 @@ t/default/lib/SPVM/TestCase/SymbolName_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNO
 t/default/lib/SPVM/TestCase/Term.spvm
 t/default/lib/SPVM/TestCase/TypeCast.spvm
 t/default/lib/SPVM/TestCase/TypeComment.spvm
+t/default/lib/SPVM/TestCase/TypeConversion.spvm
 t/default/lib/SPVM/TestCase/UnaryMinus.spvm
 t/default/lib/SPVM/TestCase/UnaryPlus.spvm
 t/default/lib/SPVM/TestCase/Unless.spvm
@@ -688,6 +687,7 @@ t/default/symbol_name.t
 t/default/term.t
 t/default/type_cast.t
 t/default/type_comment.t
+t/default/type_conversion.t
 t/default/unary_minus.t
 t/default/unary_plus.t
 t/default/unless.t

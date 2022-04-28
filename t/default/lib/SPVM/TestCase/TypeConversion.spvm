@@ -1,4 +1,4 @@
-class TestCase::Convert {
+class TestCase::TypeConversion {
   use TestCase::Minimal;
   use TestCase::Callback::Callback;
   use Comparator;
