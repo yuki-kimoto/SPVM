@@ -2973,50 +2973,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_CALLBACK: {
-        int32_t check_basic_type_id = opcode->operand2;
-
-        int32_t cast_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, check_basic_type_id);
-        const char* cast_basic_type_name = SPVM_API_RUNTIME_get_name(runtime, cast_basic_type_name_id);
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t access_basic_type_id = env->get_basic_type_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "    if (access_basic_type_id < 0) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Basic type not found:");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ":Checking callback\");\n"
-                                              "      env->set_exception(env, exception);\n"
-                                              "      exception_flag = 1;\n"
-                                              "    }\n"
-                                              "    if (!exception_flag) {\n"
-                                              "      int32_t callback_basic_type_id = "
-                                              "access_basic_type_id"
-                                              ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* object = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "      if (object != NULL) {\n"
-                                              "        int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n"
-                                              "        if (env->has_callback(env, object, callback_basic_type_id)) {\n"
-                                              "          SPVM_API_OBJECT_ASSIGN(&");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
-                                              "        }\n"
-                                              "        else {\n"
-                                              "          void* exception = env->new_string_nolen_raw(env, \"Can't cast uncompatible type.\");\n"
-                                              "          env->set_exception(env, exception);\n"
-                                              "          exception_flag = 1;\n"
-                                              "        }\n"
-                                              "      }\n"
-                                              "    }\n"
-                                              "  }\n");
-        
-        break;
-      }
       case SPVM_OPCODE_C_ID_CHECK_INTERFACE: {
         int32_t check_basic_type_id = opcode->operand2;
 
@@ -3051,7 +3007,51 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "        }\n"
                                               "        else {\n"
-                                              "          void* exception = env->new_string_nolen_raw(env, \"Can't cast uncompatible type.\");\n"
+                                              "          void* exception = env->new_string_nolen_raw(env, \"Can't perform the type cast to the interface type.\");\n"
+                                              "          env->set_exception(env, exception);\n"
+                                              "          exception_flag = 1;\n"
+                                              "        }\n"
+                                              "      }\n"
+                                              "    }\n"
+                                              "  }\n");
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CHECK_CALLBACK: {
+        int32_t check_basic_type_id = opcode->operand2;
+
+        int32_t cast_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, check_basic_type_id);
+        const char* cast_basic_type_name = SPVM_API_RUNTIME_get_name(runtime, cast_basic_type_name_id);
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t access_basic_type_id = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+                                              "    if (access_basic_type_id < 0) {\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, \"Basic type not found:");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ":Checking callback\");\n"
+                                              "      env->set_exception(env, exception);\n"
+                                              "      exception_flag = 1;\n"
+                                              "    }\n"
+                                              "    if (!exception_flag) {\n"
+                                              "      int32_t callback_basic_type_id = "
+                                              "access_basic_type_id"
+                                              ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* object = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "      if (object != NULL) {\n"
+                                              "        int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n"
+                                              "        if (env->has_callback(env, object, callback_basic_type_id)) {\n"
+                                              "          SPVM_API_OBJECT_ASSIGN(&");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
+                                              "        }\n"
+                                              "        else {\n"
+                                              "          void* exception = env->new_string_nolen_raw(env, \"Can't perform the type cast to the callback type.\");\n"
                                               "          env->set_exception(env, exception);\n"
                                               "          exception_flag = 1;\n"
                                               "        }\n"

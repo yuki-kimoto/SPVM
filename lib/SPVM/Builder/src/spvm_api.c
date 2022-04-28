@@ -4037,27 +4037,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_CALLBACK: {
-        void* object = *(void**)&object_vars[opcode->operand1];
-        
-        if (object != NULL) {
-          int32_t check_basic_type_id = opcode->operand2;
-          
-          int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
-          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          
-          if (env->has_callback(env, object, check_basic_type_id)) {
-            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
-          }
-          else {
-            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible callback type.");
-            env->set_exception(env, exception);
-            exception_flag = 1;
-          }
-        }
-        
-        break;
-      }
       case SPVM_OPCODE_C_ID_CHECK_INTERFACE: {
         void* object = *(void**)&object_vars[opcode->operand1];
         
@@ -4071,7 +4050,28 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible callback type.");
+            void* exception = env->new_string_nolen_raw(env, "Can't perform the type cast to the interface type.");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+        }
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CHECK_CALLBACK: {
+        void* object = *(void**)&object_vars[opcode->operand1];
+        
+        if (object != NULL) {
+          int32_t check_basic_type_id = opcode->operand2;
+          
+          int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
+          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
+          
+          if (env->has_callback(env, object, check_basic_type_id)) {
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
+          }
+          else {
+            void* exception = env->new_string_nolen_raw(env, "Can't perform the type cast to the callback type.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -5617,22 +5617,6 @@ int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array) {
   return elem_byte_size;
 }
 
-int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id) {
-  (void)env;
-
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  // Object must be not null
-  assert(object);
-  
-  int32_t object_basic_type_id = object->basic_type_id;
-  int32_t object_type_dimension = object->type_dimension;
-  
-  int32_t has_callback = SPVM_API_RUNTIME_has_callback_by_id(runtime, object_basic_type_id, object_type_dimension, callback_basic_type_id, 0);
-  
-  return has_callback;
-}
-
 int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t interface_basic_type_id) {
   (void)env;
 
@@ -5641,12 +5625,38 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t inter
   // Object must be not null
   assert(object);
   
-  int32_t object_basic_type_id = object->basic_type_id;
   int32_t object_type_dimension = object->type_dimension;
-  
-  int32_t has_interface = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, object_type_dimension, interface_basic_type_id, 0);
+  int32_t has_interface;
+  if (object->type_dimension > 0) {
+    0;
+  }
+  else {
+    int32_t object_basic_type_id = object->basic_type_id;
+    has_interface = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, interface_basic_type_id);
+  }
   
   return has_interface;
+}
+
+int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  // Object must be not null
+  assert(object);
+  
+  int32_t object_type_dimension = object->type_dimension;
+  int32_t has_callback;
+  if (object->type_dimension > 0) {
+    has_callback = 0;
+  }
+  else {
+    int32_t object_basic_type_id = object->basic_type_id;
+    has_callback = SPVM_API_RUNTIME_has_callback_by_id(runtime, object_basic_type_id, callback_basic_type_id);
+  }
+  
+  return has_callback;
 }
 
 int32_t SPVM_API_enter_scope(SPVM_ENV* env) {
@@ -7716,25 +7726,23 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
     if (array_type_dimension == 0) {
       can_assign = 0;
     }
-    else if (array_type_dimension == 1) {
-      if (array_basic_type_id == element_basic_type_id && array_type_dimension == element_type_dimension + 1) {
+    else if (array_type_dimension == 1 && array_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
+      can_assign = 1;
+    }
+    else if (element_type_dimension + 1 == array_type_dimension) {
+      if (array_basic_type_id == element_basic_type_id) {
         can_assign = 1;
       }
       else {
         switch (array_basic_type_category) {
-          case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
-          {
-            can_assign = 1;
-            break;
-          }
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
           {
-            can_assign = SPVM_API_RUNTIME_has_interface_by_id(runtime, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
+            can_assign = SPVM_API_RUNTIME_has_interface_by_id(runtime, array_basic_type_id, element_basic_type_id);
             break;
           }
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
           {
-            can_assign = SPVM_API_RUNTIME_has_callback_by_id(runtime, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
+            can_assign = SPVM_API_RUNTIME_has_callback_by_id(runtime, array_basic_type_id, element_basic_type_id);
             break;
           }
           default: {
@@ -7743,27 +7751,8 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
         }
       }
     }
-    else if (array_type_dimension > 1) {
-      if (array_basic_type_id == element_basic_type_id && array_type_dimension == element_type_dimension + 1) {
-        can_assign = 1;
-      }
-      else {
-        switch (array_basic_type_category) {
-          case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-          {
-            can_assign = SPVM_API_RUNTIME_has_interface_by_id(runtime, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
-            break;
-          }
-          case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
-          {
-            can_assign = SPVM_API_RUNTIME_has_callback_by_id(runtime, array_basic_type_id, array_type_dimension - 1, element_basic_type_id, element_type_dimension);
-            break;
-          }
-          default: {
-            can_assign = 0;
-          }
-        }
-      }
+    else {
+      can_assign = 0;
     }
   }
   
