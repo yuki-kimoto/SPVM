@@ -2765,10 +2765,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             mem_id_out = SPVM_OP_get_mem_id(compiler, op_dist_term);
                             mem_id_in = SPVM_OP_get_mem_id(compiler, op_src_term);
                             
-                            if (0) {
-                              
+                            int32_t use_new_logic = 0;
+                            if (SPVM_TYPE_is_byte_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
+                              if (SPVM_TYPE_is_byte_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_BYTE);
+                                use_new_logic = 1;
+                              }
                             }
-                            else {
+                            
+                            if (!use_new_logic) {
 
                               if (SPVM_TYPE_is_byte_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
 
