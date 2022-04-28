@@ -24,7 +24,7 @@ class TestCase::Lib::Fn1 {
       eval {
         Fn->sprintf("%d", "str");
       };
-      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
+      unless ($@) {
         warn("got error: $@");
         return 0;
       }
@@ -55,7 +55,7 @@ class TestCase::Lib::Fn1 {
       eval {
         Fn->sprintf("%d", "str");
       };
-      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
+      unless ($@) {
         warn("got error: $@");
         return 0;
       }
@@ -84,7 +84,7 @@ class TestCase::Lib::Fn1 {
       eval {
         Fn->sprintf("%ld", "str");
       };
-      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
+      unless ($@) {
         warn("got error: $@");
         return 0;
       }
@@ -124,7 +124,7 @@ class TestCase::Lib::Fn1 {
       eval {
         Fn->sprintf("%ld", "str");
       };
-      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
+      unless ($@) {
         warn("got error: $@");
         return 0;
       }
@@ -166,7 +166,7 @@ class TestCase::Lib::Fn1 {
       eval {
         Fn->sprintf("%f", "str");
       };
-      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
+      unless ($@) {
         warn("got error: $@");
         return 0;
       }
@@ -194,7 +194,7 @@ class TestCase::Lib::Fn1 {
       eval {
         Fn->sprintf("%c", "str");
       };
-      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
+      unless ($@) {
         warn("got error: $@");
         return 0;
       }
@@ -222,7 +222,7 @@ class TestCase::Lib::Fn1 {
       eval {
         Fn->sprintf("%s", 1);
       };
-      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
+      unless ($@) {
         warn("got error: $@");
         return 0;
       }
@@ -253,7 +253,7 @@ class TestCase::Lib::Fn1 {
       eval {
         Fn->sprintf("%U", "str");
       };
-      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
+      unless ($@) {
         warn("got error: $@");
         return 0;
       }
