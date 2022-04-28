@@ -591,6 +591,10 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
         SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
         assert(class);
 
+        SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+        sprintf(tmp_buffer, " (%p) ", object);
+        SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
+
         SPVM_STRING_BUFFER_add(string_buffer, "{\n");
         
         // Free object fields
@@ -674,10 +678,6 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
         }
         SPVM_STRING_BUFFER_add(string_buffer, "}");
 
-        SPVM_STRING_BUFFER_add(string_buffer, " : ");
-        SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-        sprintf(tmp_buffer, "(%p)", object);
-        SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
       }
     }
   }
