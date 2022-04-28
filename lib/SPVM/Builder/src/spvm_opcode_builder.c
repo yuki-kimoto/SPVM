@@ -3132,6 +3132,51 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 assert(0);
                               }
                             }
+                            // To String
+                            else if (SPVM_TYPE_is_string_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
+                              if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
+                                use_new_logic = 1;
+                              }
+                              else if (SPVM_TYPE_is_byte_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_ARRAY_TO_STRING);
+                                use_new_logic = 1;
+                              }
+                              else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT);
+                                opcode.operand2 = op_cast_type->uv.type->basic_type->id;
+                                opcode.operand3 = op_cast_type->uv.type->dimension;
+                                throw_exception = 1;
+                                use_new_logic = 1;
+                              }
+                              else if (SPVM_TYPE_is_byte_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_TO_STRING);
+                                use_new_logic = 1;
+                              }
+                              else if (SPVM_TYPE_is_short_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_SHORT_TO_STRING);
+                                use_new_logic = 1;
+                              }
+                              else if (SPVM_TYPE_is_int_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_INT_TO_STRING);
+                                use_new_logic = 1;
+                              }
+                              else if (SPVM_TYPE_is_long_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_LONG_TO_STRING);
+                                use_new_logic = 1;
+                              }
+                              else if (SPVM_TYPE_is_float_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_FLOAT_TO_STRING);
+                                use_new_logic = 1;
+                              }
+                              else if (SPVM_TYPE_is_double_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_DOUBLE_TO_STRING);
+                                use_new_logic = 1;
+                              }
+                              else {
+                                assert(0);
+                              }
+                            }
                             
                             if (!use_new_logic) {
 
