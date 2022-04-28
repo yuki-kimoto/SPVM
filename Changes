@@ -44,7 +44,7 @@ Revision history for SPVM
         * Add SPVM Allocator Native APIs. The document is SPVM::Document::NativeAPI::Allocator.
         * Improve SPVM::Document::NativeAPI::Compiler.
         * Improve SPVM::Document::NativeAPI::Runtime.
-        * Improve type case error messages.
+        * Improve type cast error messages.
         [BUG FIX]
         * Fix the bug that multi-dimensional array can't assing to any object array "object[]".
         * Fix the bug that SPVM::Builder::Util::API::create_make_rule_native can't detect native file extension.
