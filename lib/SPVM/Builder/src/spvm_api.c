@@ -284,13 +284,13 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_call_init_blocks,
     SPVM_API_cleanup_global_vars,
     SPVM_API_is_object_array,
-    SPVM_API_can_assign_array_element,
-    env_api,
-    SPVM_API_free_env_prepared,
     SPVM_API_get_method_id_cache,
     SPVM_API_get_field_id_cache,
     SPVM_API_get_class_var_id_cache,
+    SPVM_API_free_env_prepared,
+    env_api,
     allocator, // allocator
+    SPVM_API_can_assign_array_element,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
