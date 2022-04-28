@@ -2730,7 +2730,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           break;
                         }
-                        case SPVM_OP_C_ID_CONVERT : {
+                        case SPVM_OP_C_ID_TYPE_CAST : {
                           
                           SPVM_OP* op_dist_term = op_assign_dist;
                           SPVM_OP* op_src_term = op_assign_src->first;

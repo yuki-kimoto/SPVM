@@ -1249,7 +1249,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
         if (element_index == 0) {
           // Convert to any object type
           SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
-          SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_term_element->file, op_term_element->line);
+          SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_term_element->file, op_term_element->line);
           SPVM_OP* op_dist_type = SPVM_OP_new_op_any_object_type(compiler, op_term_element->file, op_term_element->line);
           SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_term_element, NULL);
           SPVM_OP_replace_op(compiler, op_stab, op_convert);
@@ -1460,7 +1460,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = SPVM_OP_get_type(compiler, op->last);
       break;
     }
-    case SPVM_OP_C_ID_CONVERT: {
+    case SPVM_OP_C_ID_TYPE_CAST: {
       SPVM_OP* op_type = op->last;
       type = SPVM_OP_get_type(compiler, op_type);
       break;
