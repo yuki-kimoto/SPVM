@@ -2739,12 +2739,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src_term);
                           SPVM_TYPE* cast_type = SPVM_OP_get_type(compiler, op_cast_type);
 
-                          SPVM_OPCODE opcode = {0};
-                          
-                          int32_t throw_exception = 0;
-
                           // Source is undef type
                           if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                            SPVM_OPCODE opcode = {0};
                             if (SPVM_TYPE_is_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                               
                               // MOVE_UNDEF
@@ -2760,6 +2757,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
                           }
                           else {
+                            SPVM_OPCODE opcode = {0};
+                            int32_t throw_exception = 0;
+
                             if (SPVM_TYPE_is_byte_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                               int32_t mem_id_out;
                               int32_t mem_id_in;
@@ -3355,11 +3355,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 throw_exception = 1;
                               }
                             }
+                            
+                            if (throw_exception) {
+                              SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, method->op_method, op_cur->line);
+                            }
                           }
                           
-                          if (throw_exception) {
-                            SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, method->op_method, op_cur->line);
-                          }
                           
                           break;
                         }
