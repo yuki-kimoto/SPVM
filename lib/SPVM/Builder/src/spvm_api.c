@@ -4015,7 +4015,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         stack_index += fields_length;
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE: {
+      case SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT: {
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (object != NULL) {
@@ -4037,7 +4037,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_INTERFACE: {
+      case SPVM_OPCODE_C_ID_TYPE_CAST_INTERFACE: {
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (object != NULL) {
@@ -4058,7 +4058,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_CALLBACK: {
+      case SPVM_OPCODE_C_ID_TYPE_CAST_CALLBACK: {
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (object != NULL) {

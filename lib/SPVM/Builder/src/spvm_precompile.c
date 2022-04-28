@@ -2926,7 +2926,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index += fields_length;
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE: {
+      case SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT: {
         int32_t check_basic_type_id = opcode->operand2;
         int32_t check_type_dimension = opcode->operand3;
 
@@ -2973,7 +2973,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_INTERFACE: {
+      case SPVM_OPCODE_C_ID_TYPE_CAST_INTERFACE: {
         int32_t check_basic_type_id = opcode->operand2;
 
         int32_t cast_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, check_basic_type_id);
@@ -3017,7 +3017,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_CALLBACK: {
+      case SPVM_OPCODE_C_ID_TYPE_CAST_CALLBACK: {
         int32_t check_basic_type_id = opcode->operand2;
 
         int32_t cast_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, check_basic_type_id);
