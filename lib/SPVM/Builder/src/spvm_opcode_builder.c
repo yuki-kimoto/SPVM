@@ -2738,11 +2738,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src_term);
                           SPVM_TYPE* cast_type = SPVM_OP_get_type(compiler, op_cast_type);
-                          
+
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
                           if (SPVM_TYPE_is_byte_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                            SPVM_OPCODE opcode;
-                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             int32_t mem_id_out;
                             int32_t mem_id_in;
 
@@ -2806,8 +2806,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           else if (SPVM_TYPE_is_short_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                            SPVM_OPCODE opcode;
-                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             int32_t mem_id_out;
                             int32_t mem_id_in;
                             if (SPVM_TYPE_is_numeric_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
@@ -2870,8 +2868,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           else if (SPVM_TYPE_is_int_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                            SPVM_OPCODE opcode;
-                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             int32_t mem_id_out;
                             int32_t mem_id_in;
                             if (SPVM_TYPE_is_numeric_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
@@ -2934,8 +2930,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           else if (SPVM_TYPE_is_long_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                            SPVM_OPCODE opcode;
-                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             int32_t mem_id_out;
                             int32_t mem_id_in;
                             if (SPVM_TYPE_is_numeric_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
@@ -2998,8 +2992,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           else if (SPVM_TYPE_is_float_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                            SPVM_OPCODE opcode;
-                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             int32_t mem_id_out;
                             int32_t mem_id_in;
                             if (SPVM_TYPE_is_numeric_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
@@ -3062,8 +3054,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           else if (SPVM_TYPE_is_double_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                            SPVM_OPCODE opcode;
-                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             int32_t mem_id_out;
                             int32_t mem_id_in;
                             if (SPVM_TYPE_is_numeric_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
@@ -3126,8 +3116,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           else if (SPVM_TYPE_is_byte_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                            SPVM_OPCODE opcode;
-                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             int32_t mem_id_out;
                             int32_t mem_id_in;
                             if (SPVM_TYPE_is_byte_array_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
@@ -3155,8 +3143,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                            SPVM_OPCODE opcode;
-                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             int32_t mem_id_out;
                             int32_t mem_id_in;
                             if (SPVM_TYPE_is_string_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
@@ -3197,7 +3183,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             
                             // Object convert
                             {
-                              SPVM_OPCODE opcode = {0};
                               int32_t mem_id_out;
                               int32_t mem_id_in;
                               if (SPVM_TYPE_is_byte_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
@@ -3355,7 +3340,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           // Source is undef type
                           else if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             if (SPVM_TYPE_is_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
-                              SPVM_OPCODE opcode = {0};
                               
                               // MOVE_UNDEF
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_UNDEF);
