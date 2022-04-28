@@ -45,9 +45,37 @@ Revision history for SPVM
         * Improve SPVM::Document::NativeAPI::Compiler.
         * Improve SPVM::Document::NativeAPI::Runtime.
         * Improve type cast error messages.
+        * Improve dump output
+          [Before]
+          object_value => {
+            byte_value => 0,
+            short_value => 0,
+            int_value => 0,
+            long_value => 0,
+            float_value => 0,
+            double_value => 0,
+            string_value => undef,
+            int_array => undef,
+            object_value => undef
+          } : TestCase::DumpTest1 (0x564d9ada1570)
+        
+          [After]
+          object_value => TestCase::DumpTest1 (0x564d9ada1570) {
+            byte_value => 0,
+            short_value => 0,
+            int_value => 0,
+            long_value => 0,
+            float_value => 0,
+            double_value => 0,
+            string_value => undef,
+            int_array => undef,
+            object_value => undef
+          }
+        
         [BUG FIX]
         * Fix the bug that multi-dimensional array can't assing to any object array "object[]".
         * Fix the bug that SPVM::Builder::Util::API::create_make_rule_native can't detect native file extension.
+        * Fix the bug that unboxing type conversion doesn't throw the exception.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove -O|--optimize option from spvmcc.
