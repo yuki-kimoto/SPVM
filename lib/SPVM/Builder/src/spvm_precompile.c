@@ -2963,7 +2963,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "        }\n"
                                               "        else {\n"
-                                              "          void* exception = env->new_string_nolen_raw(env, \"Can't perform the type cast to the imcompatible object type.\");\n"
+                                              "          void* exception = env->new_string_nolen_raw(env, \"Can't cast uncompatible type.\");\n"
                                               "          env->set_exception(env, exception);\n"
                                               "          exception_flag = 1;\n"
                                               "        }\n"
