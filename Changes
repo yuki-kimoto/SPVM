@@ -48,6 +48,7 @@ Revision history for SPVM
         [BUG FIX]
         * Fix the bug that multi-dimensional array can't assing to any object array "object[]".
         * Fix the bug that SPVM::Builder::Util::API::create_make_rule_native can't detect native file extension.
+        * Fix the bug that unboxing type conversion doesn't throw the exception.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove -O|--optimize option from spvmcc.

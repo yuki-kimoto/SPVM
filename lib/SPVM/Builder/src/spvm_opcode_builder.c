@@ -2791,6 +2791,19 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_DOUBLE_TO_BYTE);
                                 use_new_logic = 1;
                               }
+                              else if (SPVM_TYPE_is_byte_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_OBJECT_TO_BYTE);
+                                throw_exception = 1;
+                                use_new_logic = 1;
+                              }
+                              else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_OBJECT_TO_BYTE);
+                                throw_exception = 1;
+                                use_new_logic = 1;
+                              }
+                              else {
+                                assert(0);
+                              }
                             }
                             
                             if (!use_new_logic) {
