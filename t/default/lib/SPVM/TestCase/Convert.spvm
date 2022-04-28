@@ -594,8 +594,6 @@ class TestCase::Convert {
     my $byte : byte = Fn->INT8_MIN();
     my $byte_obj = (object)$byte;
     
-    warn dump $byte_obj;
-    
     if ($byte_obj isa Byte) {
       my $byte_obj2 = (Byte)$byte_obj;
       if ($byte_obj2->value == Fn->INT8_MIN()) {
