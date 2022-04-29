@@ -291,6 +291,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     env_api,
     allocator, // allocator
     SPVM_API_can_assign_array_element,
+    SPVM_API_can_assign_object_type_cast,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -4021,7 +4022,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t cast_basic_type_id = opcode->operand2;
         int32_t cast_type_dimension = opcode->operand3;
         
-        int32_t can_assign = SPVM_API_can_assign_object_type_cast(env, cast_basic_type_id, cast_type_dimension, object);
+        int32_t can_assign = env->can_assign_object_type_cast(env, cast_basic_type_id, cast_type_dimension, object);
         if (can_assign) {
           SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
         }

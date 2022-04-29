@@ -3165,8 +3165,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 }
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_INTERFACE);
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
+                                opcode.operand3 = op_cast_type->uv.type->dimension;
                                 throw_exception = 1;
                               }
                               else {
@@ -3192,8 +3193,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 }
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_INTERFACE);
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
+                                opcode.operand3 = op_cast_type->uv.type->dimension;
                                 throw_exception = 1;
                               }
                               else {
@@ -3442,14 +3444,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               }
                               // CHECK_CALLBACK(TODO: This logic is wrong)
                               else if (SPVM_TYPE_is_callback_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
-                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_CALLBACK);
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
+                                opcode.operand3 = op_cast_type->uv.type->dimension;
                                 throw_exception = 1;
                               }
                               // CHECK_INTERFACE(TODO: This logic is wrong)
                               else if (SPVM_TYPE_is_interface_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
-                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_INTERFACE);
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
+                                opcode.operand3 = op_cast_type->uv.type->dimension;
                                 throw_exception = 1;
                               }
                               else {
