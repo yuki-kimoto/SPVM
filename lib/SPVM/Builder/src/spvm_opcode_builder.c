@@ -2966,6 +2966,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 assert(0);
                               }
                             }
+                            // To mulnum
+                            else if (SPVM_TYPE_is_mulnum_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
+                              // Not yet implemented
+                              assert(0);
+                            }
                             // To double
                             else if (SPVM_TYPE_is_double_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                               if (SPVM_TYPE_is_byte_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -3338,6 +3343,23 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 assert(0);
                               }
                             }
+                            // To numeric array
+                            else if (SPVM_TYPE_is_numeric_array_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
+                              if (cast_type->basic_type->id == src_type->basic_type->id) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
+                                use_new_logic = 1;
+                              }
+                              else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT);
+                                opcode.operand2 = op_cast_type->uv.type->basic_type->id;
+                                opcode.operand3 = op_cast_type->uv.type->dimension;
+                                throw_exception = 1;
+                                use_new_logic = 1;
+                              }
+                              else {
+                                assert(0);
+                              }
+                            }
                             // To object[]
                             else if (SPVM_TYPE_is_any_object_array_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                               if (SPVM_TYPE_is_object_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -3346,6 +3368,35 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 // TODO: This logic is wrong because interface array and callback array is not supported
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT);
+                                opcode.operand2 = op_cast_type->uv.type->basic_type->id;
+                                opcode.operand3 = op_cast_type->uv.type->dimension;
+                                throw_exception = 1;
+                                use_new_logic = 1;
+                              }
+                              else {
+                                assert(0);
+                              }
+                            }
+                            // To string array
+                            else if (SPVM_TYPE_is_string_array_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
+                              if (SPVM_TYPE_is_string_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                if (cast_type->basic_type->id == src_type->basic_type->id) {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
+                                  use_new_logic = 1;
+                                }
+                                else {
+                                  assert(0);
+                                }
+                              }
+                              else if (SPVM_TYPE_is_any_object_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT);
+                                opcode.operand2 = op_cast_type->uv.type->basic_type->id;
+                                opcode.operand3 = op_cast_type->uv.type->dimension;
+                                throw_exception = 1;
+                                use_new_logic = 1;
+                              }
+                              else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
                                 opcode.operand3 = op_cast_type->uv.type->dimension;
@@ -3533,7 +3584,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
                             
                             if (!use_new_logic) {
-
                               if (SPVM_TYPE_is_byte_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
 
                                 if (SPVM_TYPE_is_numeric_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
