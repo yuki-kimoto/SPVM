@@ -4034,48 +4034,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_INTERFACE: {
-        void* object = *(void**)&object_vars[opcode->operand1];
-        
-        if (object != NULL) {
-          int32_t cast_basic_type_id = opcode->operand2;
-          
-          int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
-          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          
-          if (env->has_interface(env, object, cast_basic_type_id)) {
-            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
-          }
-          else {
-            void* exception = env->new_string_nolen_raw(env, "Can't perform the type cast to incompatible interface type.");
-            env->set_exception(env, exception);
-            exception_flag = 1;
-          }
-        }
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_CALLBACK: {
-        void* object = *(void**)&object_vars[opcode->operand1];
-        
-        if (object != NULL) {
-          int32_t cast_basic_type_id = opcode->operand2;
-          
-          int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
-          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          
-          if (env->has_callback(env, object, cast_basic_type_id)) {
-            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
-          }
-          else {
-            void* exception = env->new_string_nolen_raw(env, "Can't perform the type cast to incompatible callback type.");
-            env->set_exception(env, exception);
-            exception_flag = 1;
-          }
-        }
-        
-        break;
-      }
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD_BY_ID:
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
       {
