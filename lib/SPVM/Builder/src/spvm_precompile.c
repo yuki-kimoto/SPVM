@@ -1139,127 +1139,127 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_complement(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_SHORT_TO_BYTE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_BYTE: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_INT_TO_BYTE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_BYTE: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_LONG_TO_BYTE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_BYTE: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_FLOAT_TO_BYTE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_BYTE: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_DOUBLE_TO_BYTE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_BYTE: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_TO_SHORT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_SHORT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_INT_TO_SHORT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_SHORT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_LONG_TO_SHORT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_SHORT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_FLOAT_TO_SHORT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_SHORT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_DOUBLE_TO_SHORT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_SHORT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_TO_INT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_INT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_SHORT_TO_INT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_INT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_LONG_TO_INT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_INT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_FLOAT_TO_INT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_INT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_DOUBLE_TO_INT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_INT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_TO_LONG: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_LONG: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_SHORT_TO_LONG: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_LONG: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_INT_TO_LONG: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_LONG: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_FLOAT_TO_LONG: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_LONG: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_DOUBLE_TO_LONG: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_LONG: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_TO_FLOAT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_FLOAT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_SHORT_TO_FLOAT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_FLOAT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_INT_TO_FLOAT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_FLOAT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_LONG_TO_FLOAT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_FLOAT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_DOUBLE_TO_FLOAT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_FLOAT: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_TO_DOUBLE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_DOUBLE: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_SHORT_TO_DOUBLE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_DOUBLE: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_INT_TO_DOUBLE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_DOUBLE: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_LONG_TO_DOUBLE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_DOUBLE: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_FLOAT_TO_DOUBLE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_DOUBLE: {
         SPVM_PRECOMPILE_add_convert(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_STRING_TO_BYTE_ARRAY: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* src_string = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
@@ -1275,7 +1275,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_ARRAY_TO_STRING: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* src_byte_array = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
@@ -1289,41 +1289,41 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_TO_STRING:
-      case SPVM_OPCODE_C_ID_TYPE_CAST_SHORT_TO_STRING:
-      case SPVM_OPCODE_C_ID_TYPE_CAST_INT_TO_STRING:
-      case SPVM_OPCODE_C_ID_TYPE_CAST_LONG_TO_STRING:
-      case SPVM_OPCODE_C_ID_TYPE_CAST_FLOAT_TO_STRING:
-      case SPVM_OPCODE_C_ID_TYPE_CAST_DOUBLE_TO_STRING:
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_STRING:
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_STRING:
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_STRING:
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_STRING:
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_STRING:
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_STRING:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         switch (opcode_id) {
-          case SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_TO_STRING:
+          case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_STRING:
             SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string_buffer, \"%\" PRId8, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
-          case SPVM_OPCODE_C_ID_TYPE_CAST_SHORT_TO_STRING:
+          case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_STRING:
             SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string_buffer, \"%\" PRId16, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
-          case SPVM_OPCODE_C_ID_TYPE_CAST_INT_TO_STRING:
+          case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_STRING:
             SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string_buffer, \"%\" PRId32, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
-          case SPVM_OPCODE_C_ID_TYPE_CAST_LONG_TO_STRING:
+          case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_STRING:
             SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string_buffer, \"%\" PRId64, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
-          case SPVM_OPCODE_C_ID_TYPE_CAST_FLOAT_TO_STRING:
+          case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_STRING:
             SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string_buffer, \"%g\", ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
-          case SPVM_OPCODE_C_ID_TYPE_CAST_DOUBLE_TO_STRING:
+          case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_STRING:
             SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string_buffer, \"%g\", ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
@@ -4310,7 +4310,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_END_METHOD: {
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_TO_BYTE_OBJECT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int8_t value = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1);
@@ -4326,7 +4326,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_SHORT_TO_SHORT_OBJECT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int16_t value = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1);
@@ -4342,7 +4342,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_INT_TO_INT_OBJECT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_INT_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t value = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
@@ -4358,7 +4358,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_LONG_TO_LONG_OBJECT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_LONG_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int64_t value = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
@@ -4374,7 +4374,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_FLOAT_TO_FLOAT_OBJECT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    float value = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
@@ -4390,7 +4390,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_DOUBLE_TO_DOUBLE_OBJECT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    double value = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
@@ -4406,7 +4406,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_BYTE_OBJECT_TO_BYTE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
@@ -4434,7 +4434,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_SHORT_OBJECT_TO_SHORT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
@@ -4462,7 +4462,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_INT_OBJECT_TO_INT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_OBJECT_TO_INT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
@@ -4490,7 +4490,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_LONG_OBJECT_TO_LONG: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_OBJECT_TO_LONG: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
@@ -4518,7 +4518,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_FLOAT_OBJECT_TO_FLOAT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
@@ -4546,7 +4546,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CAST_DOUBLE_OBJECT_TO_DOUBLE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
