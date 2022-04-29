@@ -3479,6 +3479,58 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 assert(0);
                               }
                             }
+                            else if (SPVM_TYPE_is_muldim_array_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
+                              int32_t cast_type_basic_type_id = op_cast_type->uv.type->basic_type->id;
+                              int32_t cast_type_dimension = op_cast_type->uv.type->dimension;
+                              int32_t cast_type_flag = op_cast_type->uv.type->flag;
+                              
+                              int32_t src_type_basic_type_id = src_type->basic_type->id;
+                              int32_t src_type_dimension = src_type->dimension;
+                              int32_t src_type_flag = src_type->flag;
+
+                              int32_t need_implicite_conversion = 0;
+                              int32_t narrowing_conversion_error = 0;
+                              int32_t mutable_invalid = 0;
+                              
+                              int32_t can_assign = SPVM_TYPE_can_assign(
+                                compiler,
+                                cast_type_basic_type_id, cast_type_dimension, cast_type_flag,
+                                src_type_basic_type_id, src_type_dimension, src_type_flag,
+                                NULL, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid
+                              );
+                              
+                              assert(need_implicite_conversion == 0);
+                              assert(narrowing_conversion_error == 0);
+                              assert(mutable_invalid == 0);
+                              
+                              if (can_assign) {
+                                // MOVE_OBJECT
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
+                                use_new_logic = 1;
+                              }
+                              // CHECK_CALLBACK(TODO: This logic is wrong)
+                              else if (SPVM_TYPE_is_callback_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_CALLBACK);
+                                opcode.operand2 = op_cast_type->uv.type->basic_type->id;
+                                throw_exception = 1;
+                                use_new_logic = 1;
+                              }
+                              // CHECK_INTERFACE(TODO: This logic is wrong)
+                              else if (SPVM_TYPE_is_interface_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_INTERFACE);
+                                opcode.operand2 = op_cast_type->uv.type->basic_type->id;
+                                throw_exception = 1;
+                                use_new_logic = 1;
+                              }
+                              else {
+                                // CHECK_OBJECT_TYPE
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT);
+                                opcode.operand2 = op_cast_type->uv.type->basic_type->id;
+                                opcode.operand3 = op_cast_type->uv.type->dimension;
+                                throw_exception = 1;
+                                use_new_logic = 1;
+                              }
+                            }
                             
                             if (!use_new_logic) {
 
