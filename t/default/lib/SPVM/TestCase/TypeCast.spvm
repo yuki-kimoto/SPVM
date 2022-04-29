@@ -84,6 +84,33 @@ class TestCase::TypeCast {
             return 0;
           }
         }
+
+
+        # Byte object to byte
+        {
+          my $from = Byte->new(-1);
+          my $to = (byte)$from;
+          
+          unless ($to isa byte) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+        
+        # any object to byte
+        {
+          my $from : object = Byte->new(-1);
+          my $to = (byte)$from;
+          
+          unless ($to isa byte) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
       }
       
       # To short
@@ -156,6 +183,32 @@ class TestCase::TypeCast {
         # double to short
         {
           my $from : double = -1;
+          my $to = (short)$from;
+          
+          unless ($to isa short) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+        
+        # Short object to short
+        {
+          my $from = Short->new(-1);
+          my $to = (short)$from;
+          
+          unless ($to isa short) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # any object to short
+        {
+          my $from : object = Short->new(-1);
           my $to = (short)$from;
           
           unless ($to isa short) {
@@ -246,6 +299,33 @@ class TestCase::TypeCast {
             return 0;
           }
         }
+
+
+        # Int object to int
+        {
+          my $from = Int->new(-1);
+          my $to = (int)$from;
+          
+          unless ($to isa int) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+        
+        # any object to int
+        {
+          my $from : object = Int->new(-1);
+          my $to = (int)$from;
+          
+          unless ($to isa int) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
       }
       
       # To long
@@ -263,19 +343,6 @@ class TestCase::TypeCast {
           }
         }
 
-        # byte to float
-        {
-          my $from : byte = -1;
-          my $to = (float)$from;
-          
-          unless ($to isa float) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        
         # short to long
         {
           my $from : short = -1;
@@ -289,19 +356,6 @@ class TestCase::TypeCast {
           }
         }
 
-        # short to float
-        {
-          my $from : short = -1;
-          my $to = (float)$from;
-          
-          unless ($to isa float) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        
         # int to long
         {
           my $from : int = -1;
@@ -353,10 +407,62 @@ class TestCase::TypeCast {
             return 0;
           }
         }
+
+        # Long object to long
+        {
+          my $from = Long->new(-1);
+          my $to = (long)$from;
+          
+          unless ($to isa long) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # any object to long
+        {
+          my $from : object = Long->new(-1);
+          my $to = (long)$from;
+          
+          unless ($to isa long) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
       }
       
       # To float
       {
+        # byte to float
+        {
+          my $from : byte = -1;
+          my $to = (float)$from;
+          
+          unless ($to isa float) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+        
+        # short to float
+        {
+          my $from : short = -1;
+          my $to = (float)$from;
+          
+          unless ($to isa float) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+        
         # int to float
         {
           my $from : int = -1;
@@ -408,7 +514,36 @@ class TestCase::TypeCast {
             return 0;
           }
         }
+
+        # Float object to float
+        {
+          my $from = Float->new(-1);
+          my $to = (float)$from;
+          
+          unless ($to isa float) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
         
+        # any object to float
+        {
+          my $from : object = Float->new(-1);
+          my $to = (float)$from;
+          
+          unless ($to isa float) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+      }
+      
+      # To double
+      {
         # byte to double
         {
           my $from : byte = -1;
@@ -434,10 +569,6 @@ class TestCase::TypeCast {
             return 0;
           }
         }
-      }
-      
-      # To double
-      {
         # int to double
         {
           my $from : int = -1;
@@ -489,8 +620,33 @@ class TestCase::TypeCast {
             return 0;
           }
         }
+
+        # Double object to double
+        {
+          my $from = Double->new(-1);
+          my $to = (double)$from;
+          
+          unless ($to isa double) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+        
+        # any object to double
+        {
+          my $from : object = Double->new(-1);
+          my $to = (double)$from;
+          
+          unless ($to isa double) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
       }
-      
     }
 
     return 1;

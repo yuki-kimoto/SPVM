@@ -2925,11 +2925,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 assert(0);
                               }
                             }
-                            // To mulnum
-                            else if (SPVM_TYPE_is_mulnum_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
-                              // Not yet implemented
-                              assert(0);
-                            }
                             // To double
                             else if (SPVM_TYPE_is_double_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                               if (SPVM_TYPE_is_byte_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -2961,6 +2956,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               else {
                                 assert(0);
                               }
+                            }
+                            // To mulnum
+                            else if (SPVM_TYPE_is_mulnum_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
+                              // Not yet implemented
+                              assert(0);
                             }
                             // To Byte object
                             else if (SPVM_TYPE_is_byte_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
