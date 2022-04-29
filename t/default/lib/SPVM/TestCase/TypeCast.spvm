@@ -3,9 +3,9 @@ class TestCase::TypeCast {
   
   static method to_numeric_type : int () {
     
-    # numeric to numeric
+    # To numeric
     {
-      # numeric to numeric - widening or equal
+      # To byte
       {
         # byte to byte
         {
@@ -20,6 +20,74 @@ class TestCase::TypeCast {
           }
         }
 
+        # short to byte
+        {
+          my $from : short = -1;
+          my $to = (byte)$from;
+          
+          unless ($to isa byte) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # int to byte
+        {
+          my $from : int = -1;
+          my $to = (byte)$from;
+          
+          unless ($to isa byte) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # long to byte
+        {
+          my $from : long = -1;
+          my $to = (byte)$from;
+          
+          unless ($to isa byte) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # float to byte
+        {
+          my $from : float = -1;
+          my $to = (byte)$from;
+          
+          unless ($to isa byte) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # double to byte
+        {
+          my $from : double = -1;
+          my $to = (byte)$from;
+          
+          unless ($to isa byte) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+      }
+      
+      # To short
+      {
         # byte to short
         {
           my $from : byte = -1;
@@ -33,6 +101,74 @@ class TestCase::TypeCast {
           }
         }
 
+        # short to short
+        {
+          my $from : short = -1;
+          my $to = (short)$from;
+          
+          unless ($to isa short) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+        
+        # int to short
+        {
+          my $from : int = -1;
+          my $to = (short)$from;
+          
+          unless ($to isa short) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # long to short
+        {
+          my $from : long = -1;
+          my $to = (short)$from;
+          
+          unless ($to isa short) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # float to short
+        {
+          my $from : float = -1;
+          my $to = (short)$from;
+          
+          unless ($to isa short) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # double to short
+        {
+          my $from : double = -1;
+          my $to = (short)$from;
+          
+          unless ($to isa short) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+      }
+      
+      # To int
+      {
         # byte to int
         {
           my $from : byte = -1;
@@ -46,6 +182,74 @@ class TestCase::TypeCast {
           }
         }
 
+        # short to int
+        {
+          my $from : short = -1;
+          my $to = (int)$from;
+          
+          unless ($to isa int) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # int to int
+        {
+          my $from : int = -1;
+          my $to = (int)$from;
+          
+          unless ($to isa int) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # long to int
+        {
+          my $from : long = -1;
+          my $to = (int)$from;
+          
+          unless ($to isa int) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # float to int
+        {
+          my $from : float = -1;
+          my $to = (int)$from;
+          
+          unless ($to isa int) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+        
+        # double to int
+        {
+          my $from : double = -1;
+          my $to = (int)$from;
+          
+          unless ($to isa int) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+      }
+      
+      # To long
+      {
         # byte to long
         {
           my $from : byte = -1;
@@ -72,45 +276,6 @@ class TestCase::TypeCast {
           }
         }
         
-        # byte to double
-        {
-          my $from : byte = -1;
-          my $to = (double)$from;
-          
-          unless ($to isa double) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-
-        # short to short
-        {
-          my $from : short = -1;
-          my $to = (short)$from;
-          
-          unless ($to isa short) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        
-        # short to int
-        {
-          my $from : short = -1;
-          my $to = (int)$from;
-          
-          unless ($to isa int) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-
         # short to long
         {
           my $from : short = -1;
@@ -137,64 +302,12 @@ class TestCase::TypeCast {
           }
         }
         
-        # short to double
-        {
-          my $from : short = -1;
-          my $to = (double)$from;
-          
-          unless ($to isa double) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-
-        # int to int
-        {
-          my $from : int = -1;
-          my $to = (int)$from;
-          
-          unless ($to isa int) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-
         # int to long
         {
           my $from : int = -1;
           my $to = (long)$from;
           
           unless ($to isa long) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-
-        # int to float
-        {
-          my $from : int = -1;
-          my $to = (float)$from;
-          
-          unless ($to isa float) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        
-        # int to double
-        {
-          my $from : int = -1;
-          my $to = (double)$from;
-          
-          unless ($to isa double) {
             return 0;
           }
           unless ($to == -1) {
@@ -215,6 +328,48 @@ class TestCase::TypeCast {
           }
         }
 
+        # float to long
+        {
+          my $from : float = -1;
+          my $to = (long)$from;
+          
+          unless ($to isa long) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # double to long
+        {
+          my $from : double = -1;
+          my $to = (long)$from;
+          
+          unless ($to isa long) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+      }
+      
+      # To float
+      {
+        # int to float
+        {
+          my $from : int = -1;
+          my $to = (float)$from;
+          
+          unless ($to isa float) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+        
         # long to float
         {
           my $from : long = -1;
@@ -228,9 +383,35 @@ class TestCase::TypeCast {
           }
         }
         
-        # long to double
+        # float to float
         {
-          my $from : long = -1;
+          my $from : float = -1;
+          my $to = (float)$from;
+          
+          unless ($to isa float) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # double to float
+        {
+          my $from : double = -1;
+          my $to = (float)$from;
+          
+          unless ($to isa float) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+        
+        # byte to double
+        {
+          my $from : byte = -1;
           my $to = (double)$from;
           
           unless ($to isa double) {
@@ -241,12 +422,41 @@ class TestCase::TypeCast {
           }
         }
 
-        # float to float
+        # short to double
         {
-          my $from : float = -1;
-          my $to = (float)$from;
+          my $from : short = -1;
+          my $to = (double)$from;
           
-          unless ($to isa float) {
+          unless ($to isa double) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+      }
+      
+      # To double
+      {
+        # int to double
+        {
+          my $from : int = -1;
+          my $to = (double)$from;
+          
+          unless ($to isa double) {
+            return 0;
+          }
+          unless ($to == -1) {
+            return 0;
+          }
+        }
+
+        # long to double
+        {
+          my $from : long = -1;
+          my $to = (double)$from;
+          
+          unless ($to isa double) {
             return 0;
           }
           unless ($to == -1) {
@@ -281,189 +491,6 @@ class TestCase::TypeCast {
         }
       }
       
-      # numeric to numeric - narrowing
-      {
-        # double to float
-        {
-          my $from : double = -1;
-          my $to = (float)$from;
-          
-          unless ($to isa float) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # double to long
-        {
-          my $from : double = -1;
-          my $to = (long)$from;
-          
-          unless ($to isa long) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # double to int
-        {
-          my $from : double = -1;
-          my $to = (int)$from;
-          
-          unless ($to isa int) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # double to short
-        {
-          my $from : double = -1;
-          my $to = (short)$from;
-          
-          unless ($to isa short) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # double to byte
-        {
-          my $from : double = -1;
-          my $to = (byte)$from;
-          
-          unless ($to isa byte) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # float to long
-        {
-          my $from : float = -1;
-          my $to = (long)$from;
-          
-          unless ($to isa long) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # float to int
-        {
-          my $from : float = -1;
-          my $to = (int)$from;
-          
-          unless ($to isa int) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # float to short
-        {
-          my $from : float = -1;
-          my $to = (short)$from;
-          
-          unless ($to isa short) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # float to byte
-        {
-          my $from : float = -1;
-          my $to = (byte)$from;
-          
-          unless ($to isa byte) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # long to int
-        {
-          my $from : long = -1;
-          my $to = (int)$from;
-          
-          unless ($to isa int) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # long to short
-        {
-          my $from : long = -1;
-          my $to = (short)$from;
-          
-          unless ($to isa short) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # long to byte
-        {
-          my $from : long = -1;
-          my $to = (byte)$from;
-          
-          unless ($to isa byte) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # int to short
-        {
-          my $from : int = -1;
-          my $to = (short)$from;
-          
-          unless ($to isa short) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # int to byte
-        {
-          my $from : int = -1;
-          my $to = (byte)$from;
-          
-          unless ($to isa byte) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-        # short to byte
-        {
-          my $from : short = -1;
-          my $to = (byte)$from;
-          
-          unless ($to isa byte) {
-            return 0;
-          }
-          unless ($to == -1) {
-            return 0;
-          }
-        }
-      }
     }
 
     return 1;
