@@ -3186,8 +3186,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             // To Class
                             else if (SPVM_TYPE_is_class_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                               if (SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
-                                use_new_logic = 1;
+                                if (cast_type->basic_type->id == src_type->basic_type->id) {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
+                                  use_new_logic = 1;
+                                }
+                                else {
+                                  assert(0);
+                                }
                               }
                               else if (SPVM_TYPE_is_interface_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CAST_EQUAL_OBJECT);
