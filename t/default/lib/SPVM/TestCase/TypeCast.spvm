@@ -1,5 +1,5 @@
 class TestCase::TypeCast {
-  static method basic : int () {
+  static method to_numeric_type : int () {
     
     # numeric to numeric
     {

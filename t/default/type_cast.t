@@ -13,7 +13,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # TypeCast
 {
-  ok(SPVM::TestCase::TypeCast->basic);
+  ok(SPVM::TestCase::TypeCast->to_numeric_type);
 }
 
 

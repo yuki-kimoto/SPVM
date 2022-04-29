@@ -3177,7 +3177,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* cast_type = SPVM_OP_get_type(compiler, op_cast);
               assert(cast_type);
               
-              // Dist type is numeric type
+              // To numeric
               int32_t is_valid = 0;
               if (SPVM_TYPE_is_numeric_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                 // Soruce type is numeric type
@@ -3199,13 +3199,23 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   is_valid = 0;
                 }
               }
-              // Dist type is referece type
-              else if (SPVM_TYPE_is_ref_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
-                is_valid = 0;
-              }
-              // Dist type is multi numeric type
+              // To multi numeric
               else if (SPVM_TYPE_is_mulnum_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
-                is_valid = 0;
+                if (cast_type->basic_type->id == src_type->basic_type->id && cast_type->dimension == src_type->dimension && cast_type->flag == src_type->flag) {
+                  is_valid = 1;
+                }
+                else {
+                  is_valid = 0;
+                }
+              }
+              // To referece
+              else if (SPVM_TYPE_is_ref_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
+                if (cast_type->basic_type->id == src_type->basic_type->id && cast_type->dimension == src_type->dimension && cast_type->flag == src_type->flag) {
+                  is_valid = 1;
+                }
+                else {
+                  is_valid = 0;
+                }
               }
               // Dist type is object type
               else if (SPVM_TYPE_is_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
