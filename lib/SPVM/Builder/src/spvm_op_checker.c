@@ -3169,23 +3169,23 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             case SPVM_OP_C_ID_TYPE_CAST: {
               
               SPVM_OP* op_src = op_cur->first;
-              SPVM_OP* op_dist = op_cur->last;
+              SPVM_OP* op_cast = op_cur->last;
               
               SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
               assert(src_type);
               
-              SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist);
-              assert(dist_type);
+              SPVM_TYPE* cast_type = SPVM_OP_get_type(compiler, op_cast);
+              assert(cast_type);
               
               // Dist type is numeric type
               int32_t is_valid = 0;
-              if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+              if (SPVM_TYPE_is_numeric_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                 // Soruce type is numeric type
                 if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                   is_valid = 1;
                 }
                 else if (SPVM_TYPE_is_numeric_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                  if (dist_type->basic_type->id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT == src_type->basic_type->id) {
+                  if (cast_type->basic_type->id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT == src_type->basic_type->id) {
                     is_valid = 1;
                   }
                   else {
@@ -3200,22 +3200,22 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               // Dist type is referece type
-              else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+              else if (SPVM_TYPE_is_ref_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                 is_valid = 0;
               }
               // Dist type is multi numeric type
-              else if (SPVM_TYPE_is_mulnum_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+              else if (SPVM_TYPE_is_mulnum_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                 is_valid = 0;
               }
               // Dist type is object type
-              else if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+              else if (SPVM_TYPE_is_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                 // Source type is undef
                 if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                   is_valid = 1;
                 }
                 else {
                   // Dist type is any object array type
-                  if (SPVM_TYPE_is_any_object_array_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                  if (SPVM_TYPE_is_any_object_array_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                     if (SPVM_TYPE_is_basic_object_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                       is_valid = 1;
                     }
@@ -3227,7 +3227,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                   }
                   // Dist type is string type
-                  else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                  else if (SPVM_TYPE_is_string_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                     if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                       is_valid = 1;
                     }
@@ -3245,7 +3245,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                   }
                   // Dist type is byte array type
-                  else if (SPVM_TYPE_is_byte_array_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                  else if (SPVM_TYPE_is_byte_array_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                     if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                       is_valid = 1;
                     }
@@ -3260,8 +3260,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                   }
                   // Dist type is numeric array type except for byte array
-                  else if (SPVM_TYPE_is_numeric_array_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-                    if (dist_type->basic_type->id == src_type->basic_type->id) {
+                  else if (SPVM_TYPE_is_numeric_array_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
+                    if (cast_type->basic_type->id == src_type->basic_type->id) {
                       is_valid = 1;
                     }
                     else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -3272,7 +3272,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                   }
                   // Dist type is any object type
-                  else if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                  else if (SPVM_TYPE_is_any_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                     if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                       is_valid = 1;
                     }
@@ -3284,9 +3284,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                   }
                   // Dist type is numeric_object type
-                  else if (SPVM_TYPE_is_numeric_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                  else if (SPVM_TYPE_is_numeric_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                     if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      if (dist_type->basic_type->id == src_type->basic_type->id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
+                      if (cast_type->basic_type->id == src_type->basic_type->id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
                         is_valid = 1;
                       }
                       else {
@@ -3322,8 +3322,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               if (!is_valid) {
                 const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag);
-                const char* dist_type_name = SPVM_TYPE_new_type_name(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-                SPVM_COMPILER_error(compiler, "Can't perform the type cast from %s to %s at %s line %d", src_type_name, dist_type_name, op_src->file, op_src->line);
+                const char* cast_type_name = SPVM_TYPE_new_type_name(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag);
+                SPVM_COMPILER_error(compiler, "Can't perform the type cast from %s to %s at %s line %d", src_type_name, cast_type_name, op_src->file, op_src->line);
                 return;
               }
             }
