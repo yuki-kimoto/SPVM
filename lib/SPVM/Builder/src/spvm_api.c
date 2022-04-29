@@ -7759,3 +7759,114 @@ int32_t SPVM_API_can_assign_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPV
   return can_assign;
 }
 
+int32_t SPVM_API_can_assign_object_type_cast(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_OBJECT* object) {
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  int32_t can_assign;
+  if (object == NULL) {
+    can_assign = 1;
+  }
+  else {
+    int32_t cast_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, cast_basic_type_id);
+
+    int32_t object_basic_type_id = object->basic_type_id;
+    int32_t object_type_dimension = object->type_dimension;
+    int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
+    
+    if (cast_type_dimension == 0) {
+      switch (cast_basic_type_category) {
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
+        {
+          if (cast_basic_type_id == object_basic_type_id && cast_type_dimension == object_type_dimension) {
+            can_assign = 1;
+          }
+          else {
+            can_assign = 0;
+          }
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE: {
+          can_assign = SPVM_API_RUNTIME_has_interface_by_id(runtime, cast_basic_type_id, object_basic_type_id);
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK: {
+          can_assign = SPVM_API_RUNTIME_has_callback_by_id(runtime, cast_basic_type_id, object_basic_type_id);
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT: {
+          assert(object_type_dimension >= 0);
+          can_assign = 1;
+          break;
+        }
+        default: {
+          assert(0);
+        }
+      }
+    }
+    else if (cast_type_dimension == 1) {
+      switch (cast_basic_type_category) {
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
+        {
+          if (cast_basic_type_id == object_basic_type_id && cast_type_dimension == object_type_dimension) {
+            can_assign = 1;
+          }
+          else {
+            can_assign = 0;
+          }
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE: {
+          can_assign = SPVM_API_RUNTIME_has_interface_by_id(runtime, cast_basic_type_id, object_basic_type_id);
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK: {
+          can_assign = SPVM_API_RUNTIME_has_callback_by_id(runtime, cast_basic_type_id, object_basic_type_id);
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT: {
+          if (object_type_dimension >= 1) {
+            can_assign = 1;
+          }
+          else {
+            can_assign = 0;
+          }
+          break;
+        }
+        default: {
+          assert(0);
+        }
+      }
+    }
+    else if (cast_type_dimension > 1) {
+      switch (cast_basic_type_category) {
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
+        {
+          if (cast_basic_type_id == object_basic_type_id && cast_type_dimension == object_type_dimension) {
+            can_assign = 1;
+          }
+          else {
+            can_assign = 0;
+          }
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE: {
+          can_assign = SPVM_API_RUNTIME_has_interface_by_id(runtime, cast_basic_type_id, object_basic_type_id);
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK: {
+          can_assign = SPVM_API_RUNTIME_has_callback_by_id(runtime, cast_basic_type_id, object_basic_type_id);
+          break;
+        }
+        default: {
+          assert(0);
+        }
+      }
+    }
+  }
+  
+  return can_assign;
+}
