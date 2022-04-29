@@ -3326,6 +3326,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_COMPILER_error(compiler, "Can't perform the type cast from %s to %s at %s line %d", src_type_name, cast_type_name, op_src->file, op_src->line);
                 return;
               }
+              
+              // Remove type cast op if not needed
+              if (cast_type->basic_type->id == src_type->basic_type->id && cast_type->dimension == src_type->dimension && cast_type->flag == src_type->flag) {
+                SPVM_OP_cut_op(compiler, op_src);
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                SPVM_OP_replace_op(compiler, op_stab, op_src);
+                op_cur = op_src;
+              }
             }
             break;
           }
