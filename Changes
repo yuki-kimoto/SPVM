@@ -70,6 +70,14 @@ Revision history for SPVM
             int_array => undef,
             object_value => undef
           }
+        * Allow same mulnum type cast
+          my $z_src : Complex_2d;
+          my $z_dist = (Complex_2d)$z_src;
+        * Allow same reference type cast
+            my $num = 3;
+            my $num_ref : int* = \$num;
+            my $num_ref2 = (int*)$num_ref;
+          
         [BUG FIX]
         * Fix the bug that multi-dimensional array can't assing to any object array "object[]".
         * Fix the bug that SPVM::Builder::Util::API::create_make_rule_native can't detect native file extension.

@@ -1,4 +1,6 @@
 class TestCase::TypeCast {
+  use Complex_2d;
+  
   static method to_numeric_type : int () {
     
     # numeric to numeric
@@ -462,6 +464,38 @@ class TestCase::TypeCast {
           }
         }
       }
+    }
+
+    return 1;
+  }
+
+  static method to_mulnum_type : int () {
+    my $z_src : Complex_2d;
+    $z_src->{re} = 1;
+    $z_src->{im} = 2;
+    
+    my $z_dist = (Complex_2d)$z_src;
+    
+    unless ($z_dist->{re} == 1) {
+      return 0;
+    }
+    
+    unless ($z_dist->{im} == 2) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method to_reference_type : int () {
+    my $num = 3;
+    my $num_ref : int* = \$num;
+    my $num_ref2 = (int*)$num_ref;
+    
+    my $num_deref = $$num_ref2;
+    
+    unless ($num_deref == 3) {
+      return 0;
     }
     
     return 1;
