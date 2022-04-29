@@ -2952,7 +2952,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "      void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "      int32_t can_assign = env->can_assign_object_type_cast(env, cast_basic_type_id, cast_type_dimension, object);\n"
+                                              "      int32_t can_assign = env->can_assign(env, cast_basic_type_id, cast_type_dimension, object);\n"
                                               "      if (can_assign) {\n"
                                               "        SPVM_API_OBJECT_ASSIGN(&");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
