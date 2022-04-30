@@ -6753,6 +6753,22 @@ B<Examples:>
   my $z1 : Complex_2d;
   my $z2 : Complex_2d = $z1;
 
+=head2 Type Assignability to Referenece
+
+If the type of the left operand is a L<reference type|/"Reference Types"> and the type of the right operand is the same type of the left operand, the assignability is true.
+
+If not, the assignability is false.
+
+=begin html
+
+<table>
+  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
+  <tr><td>True</td><td>REF_X</td><td>REF_X</td><td>None</td></tr>
+  <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>None</td></tr>
+</table>
+
+=end html
+
 =head2 Type Assignability to String
 
 If the type of the left operand is the L<string type|/"String Type"> without the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type">, the assignability is true.
@@ -6936,22 +6952,6 @@ B<Examples:>
   # The assignability is false
   undef = Point->new;
   
-=head2 Type Assignability to Referenece
-
-If the type of the left operand is a L<reference type|/"Reference Types"> and the type of the right operand is the same type of the left operand, the assignability is true.
-
-If not, the assignability is false.
-
-=begin html
-
-<table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>REF_X</td><td>REF_X</td><td>None</td></tr>
-  <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>None</td></tr>
-</table>
-
-=end html
-
 =head2 Type Assignability to Numeric Array
 
 If the type of the left operand is a L<numeric array type|/"Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
