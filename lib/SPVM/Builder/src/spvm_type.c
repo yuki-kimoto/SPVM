@@ -1756,14 +1756,60 @@ int32_t SPVM_TYPE_check_castability(
       castability = 0;
     }
   }
-  // Cast type is object type
-  else if (SPVM_TYPE_is_object_type(compiler, cast_type_basic_type_id, cast_type_dimension, cast_type_flag)) {
-    // Source type is object type
-    if (SPVM_TYPE_is_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+  // Cast type is multi-dimensional
+  else if (SPVM_TYPE_is_muldim_array_type(compiler, cast_type_basic_type_id, cast_type_dimension, cast_type_flag)) {
+    if (SPVM_TYPE_is_muldim_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (cast_type_dimension == src_type_dimension) {
+        if (cast_type_basic_type_id == src_type_basic_type_id) {
+          castability = 1;
+        }
+        else {
+          if (SPVM_BASIC_TYPE_is_class_type(compiler, cast_type_basic_type_id)) {
+            if (SPVM_BASIC_TYPE_is_interface_type(compiler, src_type_basic_type_id)) {
+              castability = 1;
+            }
+            else if (SPVM_BASIC_TYPE_is_callback_type(compiler, src_type_basic_type_id)) {
+              castability = 1;
+            }
+            else {
+              castability = 0;
+            }
+          }
+          else if (SPVM_BASIC_TYPE_is_interface_type(compiler, cast_type_basic_type_id)) {
+            if (SPVM_BASIC_TYPE_is_class_type(compiler, src_type_basic_type_id)) {
+              castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, cast_type_basic_type_id);
+            }
+            else if (SPVM_BASIC_TYPE_is_interface_type(compiler, src_type_basic_type_id)) {
+              castability = 1;
+            }
+            else {
+              castability = 0;
+            }
+          }
+          else if (SPVM_BASIC_TYPE_is_callback_type(compiler, cast_type_basic_type_id)) {
+            if (SPVM_BASIC_TYPE_is_class_type(compiler, src_type_basic_type_id)) {
+              castability = SPVM_BASIC_TYPE_has_callback(compiler, src_type_basic_type_id, cast_type_basic_type_id);
+            }
+            else if (SPVM_BASIC_TYPE_is_callback_type(compiler, src_type_basic_type_id)) {
+              castability = 1;
+            }
+            else {
+              castability = 0;
+            }
+          }
+          else {
+            castability = 0;
+          }
+        }
+      }
+      else {
+        castability = 0;
+      }
+    }
+    else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
-    // Source type is undef type
-    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+    else if (SPVM_TYPE_is_any_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
