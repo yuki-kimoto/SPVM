@@ -1595,6 +1595,9 @@ int32_t SPVM_TYPE_check_castability(
       castability = 0;
     }
   }
+  else if (SPVM_TYPE_is_undef_type(compiler, cast_type_basic_type_id, cast_type_dimension, cast_type_flag)) {
+    assert(0);
+  }
   // Cast type is object type
   else if (SPVM_TYPE_is_object_type(compiler, cast_type_basic_type_id, cast_type_dimension, cast_type_flag)) {
     // Cast type is any object array type
