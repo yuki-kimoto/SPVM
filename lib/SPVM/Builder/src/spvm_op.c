@@ -2293,13 +2293,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_METHOD* found_method = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
       
       if (found_method) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of the method \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
       }
       // Unknown sub
       else {
         const char* found_method_name = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
         if (found_method_name) {
-          SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "Redeclaration of the method \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
         }
         else {
           // Bind standard functions
