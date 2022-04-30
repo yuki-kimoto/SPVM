@@ -3178,150 +3178,150 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               assert(cast_type);
               
               // To numeric
-              int32_t is_valid = 0;
+              int32_t castability = 0;
               if (SPVM_TYPE_is_numeric_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                 // Soruce type is numeric type
                 if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                  is_valid = 1;
+                  castability = 1;
                 }
                 else if (SPVM_TYPE_is_numeric_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                   if (cast_type->basic_type->id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT == src_type->basic_type->id) {
-                    is_valid = 1;
+                    castability = 1;
                   }
                   else {
-                    is_valid = 0;
+                    castability = 0;
                   }
                 }
                 else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                  is_valid = 1;
+                  castability = 1;
                 }
                 else {
-                  is_valid = 0;
+                  castability = 0;
                 }
               }
               // To multi numeric
               else if (SPVM_TYPE_is_mulnum_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                 if (cast_type->basic_type->id == src_type->basic_type->id && cast_type->dimension == src_type->dimension && cast_type->flag == src_type->flag) {
-                  is_valid = 1;
+                  castability = 1;
                 }
                 else {
-                  is_valid = 0;
+                  castability = 0;
                 }
               }
               // To referece
               else if (SPVM_TYPE_is_ref_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                 if (cast_type->basic_type->id == src_type->basic_type->id && cast_type->dimension == src_type->dimension && cast_type->flag == src_type->flag) {
-                  is_valid = 1;
+                  castability = 1;
                 }
                 else {
-                  is_valid = 0;
+                  castability = 0;
                 }
               }
-              // Dist type is object type
+              // Cast type is object type
               else if (SPVM_TYPE_is_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                 // Source type is undef
                 if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                  is_valid = 1;
+                  castability = 1;
                 }
                 else {
-                  // Dist type is any object array type
+                  // Cast type is any object array type
                   if (SPVM_TYPE_is_any_object_array_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                     if (SPVM_TYPE_is_object_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else {
-                      is_valid = 0;
+                      castability = 0;
                     }
                   }
-                  // Dist type is string type
+                  // Cast type is string type
                   else if (SPVM_TYPE_is_string_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                     if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else if (SPVM_TYPE_is_byte_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else {
-                      is_valid = 0;
+                      castability = 0;
                     }
                   }
-                  // Dist type is byte array type
+                  // Cast type is byte array type
                   else if (SPVM_TYPE_is_byte_array_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                     if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else if (SPVM_TYPE_is_byte_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else {
-                      is_valid = 0;
+                      castability = 0;
                     }
                   }
-                  // Dist type is numeric array type except for byte array
+                  // Cast type is numeric array type except for byte array
                   else if (SPVM_TYPE_is_numeric_array_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                     if (cast_type->basic_type->id == src_type->basic_type->id) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else {
-                      is_valid = 0;
+                      castability = 0;
                     }
                   }
-                  // Dist type is any object type
+                  // Cast type is any object type
                   else if (SPVM_TYPE_is_any_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                     if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else {
-                      is_valid = 0;
+                      castability = 0;
                     }
                   }
-                  // Dist type is numeric_object type
+                  // Cast type is numeric_object type
                   else if (SPVM_TYPE_is_numeric_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                     if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                       if (cast_type->basic_type->id == src_type->basic_type->id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
-                        is_valid = 1;
+                        castability = 1;
                       }
                       else {
-                        is_valid = 0;
+                        castability = 0;
                       }
                     }
                     else if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else {
-                      is_valid = 0;
+                      castability = 0;
                     }
                   }
-                  // Dist type is ohter object types
+                  // Cast type is ohter object types
                   else {
                     // Source type is object type
                     if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     // Source type is undef type
                     else if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                      is_valid = 1;
+                      castability = 1;
                     }
                     else {
-                      is_valid = 0;
+                      castability = 0;
                     }
                   }
                 }
@@ -3330,7 +3330,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 assert(0);
               }
 
-              if (!is_valid) {
+              if (!castability) {
                 const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag);
                 const char* cast_type_name = SPVM_TYPE_new_type_name(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag);
                 SPVM_COMPILER_error(compiler, "Can't perform the type cast from %s to %s at %s line %d", src_type_name, cast_type_name, op_src->file, op_src->line);
