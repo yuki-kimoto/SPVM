@@ -3129,14 +3129,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 throw_exception = 1;
                               }
                               else if (SPVM_TYPE_is_callback_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                                // TODO: This logic is wrong because interface array and callback array is not supported
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_ASSIGN);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
                                 opcode.operand3 = op_cast_type->uv.type->dimension;
                                 throw_exception = 1;
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                                // TODO: This logic is wrong because interface array and callback array is not supported
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_ASSIGN);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
                                 opcode.operand3 = op_cast_type->uv.type->dimension;
@@ -3268,7 +3266,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                                // TODO: This logic is wrong because interface array and callback array is not supported
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_ASSIGN);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
                                 opcode.operand3 = op_cast_type->uv.type->dimension;
@@ -3361,14 +3358,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 }
                               }
                               else if (SPVM_TYPE_is_any_object_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                                // TODO: This logic is wrong because interface array and callback array is not supported
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_ASSIGN);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
                                 opcode.operand3 = op_cast_type->uv.type->dimension;
                                 throw_exception = 1;
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                                // TODO: This logic is wrong because interface array and callback array is not supported
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_ASSIGN);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
                                 opcode.operand3 = op_cast_type->uv.type->dimension;
@@ -3397,14 +3392,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 }
                               }
                               else if (SPVM_TYPE_is_any_object_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                                // TODO: This logic is wrong because callback array and callback array is not supported
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_ASSIGN);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
                                 opcode.operand3 = op_cast_type->uv.type->dimension;
                                 throw_exception = 1;
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                                // TODO: This logic is wrong because callback array and callback array is not supported
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_ASSIGN);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
                                 opcode.operand3 = op_cast_type->uv.type->dimension;
@@ -3442,14 +3435,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 // MOVE_OBJECT
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
                               }
-                              // CHECK_CALLBACK(TODO: This logic is wrong)
+                              // CHECK_CALLBACK
                               else if (SPVM_TYPE_is_callback_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_ASSIGN);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
                                 opcode.operand3 = op_cast_type->uv.type->dimension;
                                 throw_exception = 1;
                               }
-                              // CHECK_INTERFACE(TODO: This logic is wrong)
+                              // CHECK_INTERFACE
                               else if (SPVM_TYPE_is_interface_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_ASSIGN);
                                 opcode.operand2 = op_cast_type->uv.type->basic_type->id;
