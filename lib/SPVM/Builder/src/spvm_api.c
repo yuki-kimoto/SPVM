@@ -7691,6 +7691,8 @@ int32_t SPVM_API_can_assign(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t c
     
     if (cast_type_dimension == 0) {
       switch (cast_basic_type_category) {
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC:
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
         {
