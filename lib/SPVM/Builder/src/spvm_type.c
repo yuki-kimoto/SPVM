@@ -1492,6 +1492,26 @@ int32_t SPVM_TYPE_check_castability(
       castability = 0;
     }
   }
+  // Cast type is numeric_object type
+  else if (SPVM_TYPE_is_numeric_object_type(compiler, cast_type_basic_type_id, cast_type_dimension, cast_type_flag)) {
+    if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      if (cast_type_basic_type_id == src_type_basic_type_id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
+        castability = 1;
+      }
+      else {
+        castability = 0;
+      }
+    }
+    else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      castability = 1;
+    }
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      castability = 1;
+    }
+    else {
+      castability = 0;
+    }
+  }
   // Cast type is object type
   else if (SPVM_TYPE_is_object_type(compiler, cast_type_basic_type_id, cast_type_dimension, cast_type_flag)) {
     // Cast type is any object array type
@@ -1546,26 +1566,6 @@ int32_t SPVM_TYPE_check_castability(
     else if (SPVM_TYPE_is_any_object_type(compiler, cast_type_basic_type_id, cast_type_dimension, cast_type_flag)) {
       if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         castability = 1;
-      }
-      else if (SPVM_TYPE_is_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-        castability = 1;
-      }
-      else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-        castability = 1;
-      }
-      else {
-        castability = 0;
-      }
-    }
-    // Cast type is numeric_object type
-    else if (SPVM_TYPE_is_numeric_object_type(compiler, cast_type_basic_type_id, cast_type_dimension, cast_type_flag)) {
-      if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-        if (cast_type_basic_type_id == src_type_basic_type_id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
-          castability = 1;
-        }
-        else {
-          castability = 0;
-        }
       }
       else if (SPVM_TYPE_is_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         castability = 1;
