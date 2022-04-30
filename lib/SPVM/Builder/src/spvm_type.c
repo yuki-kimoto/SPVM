@@ -1701,9 +1701,6 @@ int32_t SPVM_TYPE_check_castability(
     else if (SPVM_TYPE_is_interface_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
-    else if (SPVM_TYPE_is_callback_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      castability = 0;
-    }
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
@@ -1721,9 +1718,6 @@ int32_t SPVM_TYPE_check_castability(
   else if (SPVM_TYPE_is_callback_array_type(compiler, cast_type_basic_type_id, cast_type_dimension, cast_type_flag)) {
     if (SPVM_TYPE_is_class_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = SPVM_BASIC_TYPE_has_callback(compiler, src_type_basic_type_id, cast_type_basic_type_id);
-    }
-    else if (SPVM_TYPE_is_interface_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      castability = 0;
     }
     else if (SPVM_TYPE_is_callback_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
