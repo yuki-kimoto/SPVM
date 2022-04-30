@@ -4312,7 +4312,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
   int32_t narrowing_conversion_error = 0;
   int32_t mutable_invalid = 0;
   
-  int32_t can_assign = SPVM_TYPE_can_assign(
+  int32_t can_assign = SPVM_TYPE_check_assignability(
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,

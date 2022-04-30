@@ -3427,7 +3427,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               int32_t narrowing_conversion_error = 0;
                               int32_t mutable_invalid = 0;
                               
-                              int32_t can_assign = SPVM_TYPE_can_assign(
+                              int32_t can_assign = SPVM_TYPE_check_assignability(
                                 compiler,
                                 cast_type_basic_type_id, cast_type_dimension, cast_type_flag,
                                 src_type_basic_type_id, src_type_dimension, src_type_flag,

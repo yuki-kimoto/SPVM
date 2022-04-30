@@ -115,7 +115,7 @@ int32_t SPVM_TYPE_is_not_found_class_type(SPVM_COMPILER* compiler, int32_t basic
 
 int32_t SPVM_TYPE_is_string_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
-int32_t SPVM_TYPE_can_assign(
+int32_t SPVM_TYPE_check_assignability(
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
