@@ -1631,12 +1631,30 @@ int32_t SPVM_TYPE_check_castability(
       castability = 0;
     }
   }
-  // Cast type is multi-numeric
+  // Cast type is multi-numeric array
   else if (SPVM_TYPE_is_mulnum_array_type(compiler, cast_type_basic_type_id, cast_type_dimension, cast_type_flag)) {
     if (cast_type_basic_type_id == src_type_basic_type_id) {
       castability = 1;
     }
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      castability = 1;
+    }
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      castability = 1;
+    }
+    else {
+      castability = 0;
+    }
+  }
+  // Cast type is string array
+  else if (SPVM_TYPE_is_string_array_type(compiler, cast_type_basic_type_id, cast_type_dimension, cast_type_flag)) {
+    if (SPVM_TYPE_is_string_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      castability = 1;
+    }
+    else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      castability = 1;
+    }
+    else if (SPVM_TYPE_is_any_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
