@@ -2282,8 +2282,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (method->op_block) {
           SPVM_COMPILER_error(compiler, "Methods of interface classes can't have the blocks at %s line %d", method->op_method->file, method->op_method->line);
         }
+
+        if (strcmp(method_name, "") == 0) {
+          SPVM_COMPILER_error(compiler, "Methods of interfaces must have the names at %s line %d", op_name_method->file, op_name_method->line);
+        }
       }
-      
+
       if (method->is_native) {
         if (method->op_block) {
           SPVM_COMPILER_error(compiler, "Native methods can't have blocks at %s line %d", method->op_method->file, method->op_method->line);

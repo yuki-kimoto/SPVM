@@ -1,0 +1,3 @@
+class TestCase::CompileError::Interface::AnonMethod : interface_t {
+  method : int ();
+}

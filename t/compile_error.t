@@ -280,6 +280,7 @@ sub print_error_messages {
   compile_not_ok('TestCase::CompileError::Interface::StaticMethod', qr/interface.+instance/i);
   compile_not_ok('TestCase::CompileError::Interface::ImplementStatement', qr/implement/i);
   compile_not_ok('TestCase::CompileError::Interface::ArrayElementCantAssign', qr/List to Stringable/i);
+  compile_not_ok('TestCase::CompileError::Interface::AnonMethod', qr/interface.+names/i);
 }
 
 # Syntax

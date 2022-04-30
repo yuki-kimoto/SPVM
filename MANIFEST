@@ -443,6 +443,7 @@ t/default/lib/SPVM/TestCase/CompileError/Field/HasFieldNameContainsUnderScoreTwi
 t/default/lib/SPVM/TestCase/CompileError/Field/HasFieldNameStartDigit.spvm
 t/default/lib/SPVM/TestCase/CompileError/Field/Private.spvm
 t/default/lib/SPVM/TestCase/CompileError/ForTest.spvm
+t/default/lib/SPVM/TestCase/CompileError/Interface/AnonMethod.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/ArrayElementCantAssign.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/HaveBlock.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/ImplementStatement.spvm

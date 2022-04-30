@@ -90,6 +90,7 @@ Revision history for SPVM
         * Remove -O|--optimize option from spvmcc.
         * Remove --dynamic-lib option from spvmcc.
         * Remove --static-lib option from spvmcc.
+        * Methods of interfaces must have the names.
 0.9513  2021-04-23
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove Fn->srand because this method is not thread safe.
