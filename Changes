@@ -84,6 +84,7 @@ Revision history for SPVM
         * Fix the bug that unboxing type conversion doesn't throw the exception.
         * Fix the bug that type cast to numeric array compilation error is wrong.
         * Improve the message of type cast compilation error.
+        * Fix type cast many bugs.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove -O|--optimize option from spvmcc.
