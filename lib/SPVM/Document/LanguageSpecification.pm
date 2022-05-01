@@ -3697,7 +3697,7 @@ B<Getting Array Element Expression> is an L<expression|/"Expressions"> to get a 
 
 Array Expression must be L</"Array Types">.
 
-Index Expression must be L</"int Type"> or the type that become L</"int Type"> by L</"Unary Numeric Widening Type Conversion">.
+Index Expression must be L</"int Type"> or the type that become L</"int Type"> by L</"Numeric Widening Type Conversion">.
 
 Getting Array Element Expression returns the Element Value of the Index.
 
@@ -3724,7 +3724,7 @@ Setting Array Element Expression is an L<expression|/"Expressions"> to set a Ele
 
 Array Expression must be L</"Array Types">.
 
-Index Expression must be L</"int Type"> or the type that become L</"int Type"> by L</"Unary Numeric Widening Type Conversion">.
+Index Expression must be L</"int Type"> or the type that become L</"int Type"> by L</"Numeric Widening Type Conversion">.
 
 The assignment must satisfy the L<type assignability|/"Type Assignability">.
 
@@ -3777,7 +3777,7 @@ The creating array is an L<expression|/"Expressions"> to create an array using t
 
 The type must be a L<basic type|/"Basic Type">.
 
-The type of length must be the L<int type|/"int Type"> or the type that become L<int type|/"int Type"> after the L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion">.
+The type of length must be the L<int type|/"int Type"> or the type that become L<int type|/"int Type"> after the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
 
 If the length is lower than C<0>, an exception is thrown.
 
@@ -4124,11 +4124,11 @@ The unary plus operator C<+> is an L<Unary Operator|/"Unary Operators"> to retur
 
 The operand must be an L<expression|/"Expressions"> that type is a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
 
-L</"Unary Numeric Widening Type Conversion"> applys to the operand.
+L</"Numeric Widening Type Conversion"> applys to the operand.
 
 returns the value copied from the value of the operand.
 
-the return type of the unary plus pperator is the type that L</"Unary Numeric Widening Type Conversion"> is performed.
+the return type of the unary plus pperator is the type that L</"Numeric Widening Type Conversion"> is performed.
 
 B<Examples of unary plus operators:>
   
@@ -4143,13 +4143,13 @@ The unary minus operator C<-> is an L<Unary Operator|/"Unary Operators"> to retu
 
 The operand must be an L<expression|/"Expressions"> that type is a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
 
-L</"Unary Numeric Widening Type Conversion"> applys to the operand.
+L</"Numeric Widening Type Conversion"> applys to the operand.
 
 the unary minus operator performs the following operation of C language.
 
   -x
 
-Return type of an unary minus operator is the type that L</"Unary Numeric Widening Type Conversion"> is performed.
+Return type of an unary minus operator is the type that L</"Numeric Widening Type Conversion"> is performed.
 
 B<Examples of unary minus operators:>
 
@@ -4508,13 +4508,13 @@ The bit NOT operator C<~> is an L<unary operator|/"Unary Operators"> to perform 
 
 The type of the operand must is an L<integral type|/"Integral Types">, otherwise a compilation error will occur.
 
-The L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion"> is performed.
+The L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
 
 The return value is the same as the follwoing operation of C<C language>.
 
   ~x
 
-The return type is the type that the L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion"> is performed.
+The return type is the type that the L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
 
 B<Examples:>
   
@@ -4533,11 +4533,11 @@ The left shift operator C<E<lt>E<lt>> is a L<binary operator|/"Binary Operators"
 
 The left operand must be L</"Integral Types">, otherwise a compilation error will occur.
 
-L</"Unary Numeric Widening Type Conversion"> is performed to the left operand.
+L</"Numeric Widening Type Conversion"> is performed to the left operand.
 
 The right operand must be L</"Integral Types"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
 
-L</"Unary Numeric Widening Type Conversion"> is performed to the right operand.
+L</"Numeric Widening Type Conversion"> is performed to the right operand.
 
 The return type is same as the type of the left operand.
 
@@ -4553,11 +4553,11 @@ The arithmetic right shift operator C<E<gt>E<gt>> is a L<binary operator|/"Binar
 
 The left operand must be L</"Integral Types">, otherwise a compilation error will occur.
 
-L</"Unary Numeric Widening Type Conversion"> is performed to the left operand.
+L</"Numeric Widening Type Conversion"> is performed to the left operand.
 
 The right operand must be L</"Integral Types"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
 
-L</"Unary Numeric Widening Type Conversion"> is performed to the right operand.
+L</"Numeric Widening Type Conversion"> is performed to the right operand.
 
 The return type is same as the type of the left operand.
 
@@ -4573,11 +4573,11 @@ The logical right shift operator C<E<gt>E<gt>E<gt>>is a L<binary operator|/"Bina
 
 The left operand must be L</"Integral Types">, otherwise a compilation error will occur.
 
-L</"Unary Numeric Widening Type Conversion"> is performed to the left operand.
+L</"Numeric Widening Type Conversion"> is performed to the left operand.
 
 The right operand must be L</"Integral Types"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
 
-L</"Unary Numeric Widening Type Conversion"> is performed to the right operand.
+L</"Numeric Widening Type Conversion"> is performed to the right operand.
 
 The return type is same as the type of the left operand.
 
@@ -6453,7 +6453,7 @@ Explains the type assignability to the L<numeric types|"Numeric Types">.
 
 If the L<nemric type order|/"Numeric Types Order"> of the left operand is greater than or equal to the L<nemric type order|/"Numeric Types Order"> of the right operand, the assignability is true.
 
-If the L<nemric type order|/"Numeric Types Order"> of the left operand is greater than the L<nemric type order|/"Numeric Types Order"> of the right operand, the L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion"> is performed.
+If the L<nemric type order|/"Numeric Types Order"> of the left operand is greater than the L<nemric type order|/"Numeric Types Order"> of the right operand, the L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
 
 =begin html
 
@@ -6465,21 +6465,21 @@ If the L<nemric type order|/"Numeric Types Order"> of the left operand is greate
   <tr><td>True</td><td>long</td><td>long</td><td>None</td></tr>
   <tr><td>True</td><td>float</td><td>float</td><td>None</td></tr>
   <tr><td>True</td><td>double</td><td>double</td><td>None</td></tr>
-  <tr><td>True</td><td>short</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>int</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>int</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>int</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>long</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>long</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>float</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>short</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>int</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>int</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>int</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
 </table>
 
 =end html
@@ -7047,7 +7047,7 @@ The type castability to the L<numeric types|/"Numeric Types"> is explained.
 
 The castability is true.
 
-If the L<nemric type order|/"Numeric Types Order"> of the left operand is greater than the L<nemric type order|/"Numeric Types Order"> of the right operand, the L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion"> is performed.
+If the L<nemric type order|/"Numeric Types Order"> of the left operand is greater than the L<nemric type order|/"Numeric Types Order"> of the right operand, the L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
 
 If the L<nemric type order|/"Numeric Types Order"> of the left operand is lower than the L<nemric type order|/"Numeric Types Order"> of the right operand, the L<numeric narrowing type conversion|/"Numeric Narrowing Type Conversion"> is performed.
 
@@ -7063,21 +7063,21 @@ If the L<nemric type order|/"Numeric Types Order"> of the left operand is equal 
   <tr><td>True</td><td>long</td><td>long</td><td>Copying</td></tr>
   <tr><td>True</td><td>float</td><td>float</td><td>Copying</td></tr>
   <tr><td>True</td><td>double</td><td>double</td><td>Copying</td></tr>
-  <tr><td>True</td><td>short</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>int</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>int</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>int</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>long</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>long</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>float</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>short</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>int</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>int</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>int</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
   <tr><td>True</td><td>byte</td><td>short</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
   <tr><td>True</td><td>byte</td><td>int</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
   <tr><td>True</td><td>byte</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
@@ -7659,58 +7659,174 @@ B<Examples:>
   # Implicte int to string type conversion
   my $string : string = 4;
 
-=head2 Numeric Type Conversion
+=head2 Numeric Widening Type Conversion
 
-Numeric Type Conversion is the conversion from L</"Numeric Types"> to L</"Numeric Types">.
+The numeric widening type conversion is a L<conversion|"Type Conversion"> from a small-order L<numeric type|/"Numeric Types"> to a large-order L<numeric type|/"Numeric Types">.
 
-Numeric Type Conversion performs exactly the same processing as Numeric Type Conversion in the corresponding C language. For example, Type Conversion from int to long in SPVM is the same as the type conversion from int32_t Type to int64_t Type in C language.
+See also L<numeric types order|/"Numeric Types Order"> abount the order of numeric type.
 
-  # SPVM conversion
-  my $src : int = 5;
-  my $dist = (long)$src;
+The return value of a converion are same as the return value of the type cast of C<C language>.
   
-  # Correspondence in C language
-  int32_t src = 5;
-  int64_t dist = (int64_t)src;
+  (TYPE)OPERAND
 
-SPVM has two Numeric Types Convertions.
+B<byte to short:>
 
-There are some rules for automatic type conversion of Numeric Types.
+  int8_t from = VALUE;
+  int16_t to = (int16_t)from;
 
-=begin html
+B<byte to int:>
 
-<ul>
-  <li>L</"Unary Numeric Widening Type Conversion"></li>
-  <li>L</"Binary Numeric Type Conversion"></li>
-</ul>
+  int8_t from = VALUE;
+  int32_t to = (int32_t)from;
 
-=end html
+B<byte to long:>
 
-Numeric types have an order.
+  int8_t from = VALUE;
+  int64_t to = (int64_t)from;
 
-=begin html
+B<byte to float:>
 
-See also L<numeric types order|/"Numeric Types Order">.
+  int8_t from = VALUE;
+  float to = (float)from;
 
-=end html
+B<byte to double:>
 
-=head2 Unary Numeric Widening Type Conversion
+  int8_t from = VALUE;
+  double to = (double)from;
 
-Unary Numeric Widening Type Conversion means that L</"Expressions"> is L</"byte Type"> or short Type. In this case, perform L</"Numeric Widening Type Conversion"> to L</"int Type"> I say that.
+B<short to int:>
 
-Unary Numeric Widening Type Conversion is performed in the following cases.
+  int16_t from = VALUE;
+  int32_t to = (int32_t)from;
 
-=begin html
+B<short to long:>
 
-<ul>
-  <li>Array Index</li>
-  <li>Dimension when creating Array</li>
-  <li>Unary Plus Operator operands</li>
-  <li>Unary Minus Operator operands</li>
-  <li>Left and the right operands of Shift Operator "<<" ">>" ">>>"</li>
-</ul>
+  int16_t from = VALUE;
+  int64_t to = (int64_t)from;
 
-=end html
+B<short to float:>
+
+  int16_t from = VALUE;
+  float to = (float)from;
+
+B<short to double:>
+
+  int16_t from = VALUE;
+  double to = (double)from;
+
+B<int to long:>
+
+  int32_t from = VALUE;
+  int64_t to = (int64_t)from;
+
+B<int to float:>
+
+  int32_t from = VALUE;
+  float to = (float)from;
+
+B<int to double:>
+
+  int32_t from = VALUE;
+  double to = (double)from;
+
+B<long to float:>
+
+  int64_t from = VALUE;
+  float to = (float)from;
+
+B<long to double:>
+
+  int64_t from = VALUE;
+  double to = (double)from;
+
+The numeric widening type conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"Array Access">, the length of the L<creating array|/"Creating Array">, the operand of the L<unary plus operator|/"Unary Plus Operator">, the operand of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operators">.
+
+=head2 Numeric Narrowing Type Conversion
+
+The numeric narrowing type conversion is a L<conversion|"Type Conversion"> from a large-order L<numeric type|/"Numeric Types"> to a small-order L<numeric type|/"Numeric Types">.
+
+See also L<numeric types order|/"Numeric Types Order"> abount the order of numeric type.
+
+The return value of a converion are same as the return value of the type cast of C<C language>.
+  
+  (TYPE)OPERAND
+
+b<double to float:>
+
+  double from = value;
+  float to = (float)from;
+
+b<double to long:>
+
+  double from = value;
+  int64_t to = (int64_t)from;
+
+b<double to int:>
+
+  double from = value;
+  int32_t to = (int32_t)from;
+
+b<double to short:>
+
+  double from = value;
+  int16_t to = (int16_t)from;
+
+b<double to byte:>
+
+  double from = value;
+  int8_t to = (int8_t)from;
+
+b<float to long:>
+
+  float from = value;
+  int64_t to = (int64_t)from;
+
+b<float to int:>
+
+  float from = value;
+  int32_t to = (int32_t)from;
+
+b<float to short:>
+
+  float from = value;
+  int16_t to = (int16_t)from;
+
+b<float to byte:>
+
+  float from = value;
+  int8_t to = (int8_t)from;
+
+b<long to int:>
+
+  int64_t from = value;
+  int32_t to = (int32_)from;
+
+b<long to short:>
+
+  int64_t from = value;
+  int16_t to = (int16_t)from;
+
+b<long to byte:>
+
+  int64_t from = value;
+  int8_t to = (int8_t)from;
+
+b<int to short:>
+
+  int32_t from = value;
+  int16_t to = (int16_t)from;
+
+b<int to byte:>
+
+  int32_t from = value;
+  int16_t to = (int16_t)from;
+
+b<short to byte:>
+
+  int16_t from = value;
+  int8_t to = (int8_t)from;
+
+The numeric narrowing type conversion is performed in some of the L<type casts|/"Type Cast">.
 
 =head2 Binary Numeric Type Conversion
 
@@ -7727,14 +7843,6 @@ The following rules apply.
 4, otherwise, it will be converted to L</"int Type">.
 
 Binary Numeric Type Conversion is performed in the following cases.
-
-=head2 Numeric Narrowing Type Conversion
-
-Numeric Narrowing Type Conversion is a conversion rule applied when converting from a large type to a small type in L</"Numeric Types">.
-
-=head2 Numeric Widening Type Conversion
-
-Numeric Widening Type Conversion is a conversion rule applied when converting from a small type to a large type in L</"Numeric Types">.
 
 =head2 Numeric-to-String Type Conversion
 
@@ -7847,7 +7955,7 @@ If the operand is L<true|/"true">(the C<TRUE> method of L<Bool|SPVM::Bool>), C<1
 
 If the operand is L<false|/"false">(the C<FALSE> method of L<Bool|SPVM::Bool>), C<0> is returned.
 
-If the type of the operand is a L<numeric type|/"Numeric Types">, the L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion"> is performed.
+If the type of the operand is a L<numeric type|/"Numeric Types">, the L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
 
 And the following operation is performed.
 
