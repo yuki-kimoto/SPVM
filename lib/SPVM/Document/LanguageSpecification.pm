@@ -6465,21 +6465,21 @@ If the L<nemric type order|/"Numeric Types Order"> of the left operand is greate
   <tr><td>True</td><td>long</td><td>long</td><td>None</td></tr>
   <tr><td>True</td><td>float</td><td>float</td><td>None</td></tr>
   <tr><td>True</td><td>double</td><td>double</td><td>None</td></tr>
-  <tr><td>True</td><td>short</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>int</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>long</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>float</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>double</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>int</td><td>short</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>long</td><td>short</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>float</td><td>short</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>double</td><td>short</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>long</td><td>int</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>float</td><td>int</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>double</td><td>int</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>float</td><td>long</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>double</td><td>long</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>double</td><td>float</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>short</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>int</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>int</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>int</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>long</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>long</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>float</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
 </table>
 
 =end html
@@ -6498,7 +6498,7 @@ B<Examples:>
   # float to double
   my $num : double = 4.5f;
 
-If the L<nemric type order|/"Numeric Types Order"> of the left operand is lower than the L<nemric type order|/"Numeric Types Order"> of the right operand, the assignment is conditional valid.
+If the L<nemric type order|/"Numeric Types Order"> of the left operand is lower than the L<nemric type order|/"Numeric Types Order"> of the right operand, the type assignability is conditional true.
 
 The condition is that the right operand is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of the left operand.
 
@@ -6508,16 +6508,16 @@ If the condition is ture, the L<numeric narrowing type conversion|/"Numeric Narr
 
 <table>
   <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>Conditinal True</td><td>byte</td><td>short</td><td>Numeric Narrowing Type Conversion</td></tr>
-  <tr><td>Conditinal True</td><td>byte</td><td>int</td><td>Numeric Narrowing Type Conversion</td></tr>
-  <tr><td>Conditinal True</td><td>byte</td><td>long</td><td>Numeric Narrowing Type Conversion</td></tr>
+  <tr><td>Conditional True</td><td>byte</td><td>short</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>Conditional True</td><td>byte</td><td>int</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>Conditional True</td><td>byte</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
   <tr><td>False</td><td>byte</td><td>float</td><td>None</td></tr>
   <tr><td>False</td><td>byte</td><td>double</td><td>None</td></tr>
-  <tr><td>Conditinal True</td><td>short</td><td>int</td><td>Numeric Narrowing Type Conversion</td></tr>
-  <tr><td>Conditinal True</td><td>short</td><td>long</td><td>Numeric Narrowing Type Conversion</td></tr>
+  <tr><td>Conditional True</td><td>short</td><td>int</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>Conditional True</td><td>short</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
   <tr><td>False</td><td>short</td><td>float</td><td>None</td></tr>
   <tr><td>False</td><td>short</td><td>double</td><td>None</td></tr>
-  <tr><td>Conditinal True</td><td>int</td><td>long</td><td>Numeric Narrowing Type Conversion</td></tr>
+  <tr><td>Conditional True</td><td>int</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
   <tr><td>False</td><td>int</td><td>float</td><td>None</td></tr>
   <tr><td>False</td><td>int</td><td>double</td><td>None</td></tr>
   <tr><td>False</td><td>long</td><td>float</td><td>None</td></tr>
@@ -6713,7 +6713,7 @@ If not, the assignability is false.
 <table>
   <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td></tr>
-  <tr><td>Conditinal True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -6739,7 +6739,7 @@ If not, the assignability is false.
 <table>
   <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>None</td></tr>
-  <tr><td>Conditinal True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>None</td></tr>
   <tr><td>True</td><td>CALLBACK</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>CALLBACK</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7045,9 +7045,11 @@ The type castability to the L<numeric types|/"Numeric Types"> is explained.
 
 =head3 Type Castability from Numeric to Numeric
 
-If the L<nemric type order|/"Numeric Types Order"> of the left operand is greater than or equal to the L<nemric type order|/"Numeric Types Order"> of the right operand, the castability is true.
+The castability is true.
 
 If the L<nemric type order|/"Numeric Types Order"> of the left operand is greater than the L<nemric type order|/"Numeric Types Order"> of the right operand, the L<unary numeric widening type conversion|/"Unary Numeric Widening Type Conversion"> is performed.
+
+If the L<nemric type order|/"Numeric Types Order"> of the left operand is lower than the L<nemric type order|/"Numeric Types Order"> of the right operand, the L<numeric narrowing type conversion|/"Numeric Narrowing Type Conversion"> is performed.
 
 If the L<nemric type order|/"Numeric Types Order"> of the left operand is equal to the L<nemric type order|/"Numeric Types Order"> of the right operand, copying is performed.
 
@@ -7061,21 +7063,36 @@ If the L<nemric type order|/"Numeric Types Order"> of the left operand is equal 
   <tr><td>True</td><td>long</td><td>long</td><td>Copying</td></tr>
   <tr><td>True</td><td>float</td><td>float</td><td>Copying</td></tr>
   <tr><td>True</td><td>double</td><td>double</td><td>Copying</td></tr>
-  <tr><td>True</td><td>short</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>int</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>long</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>float</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>double</td><td>byte</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>int</td><td>short</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>long</td><td>short</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>float</td><td>short</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>double</td><td>short</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>long</td><td>int</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>float</td><td>int</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>double</td><td>int</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>float</td><td>long</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>double</td><td>long</td><td>Unary Numeric Widening Type Conversion</td></tr>
-  <tr><td>True</td><td>double</td><td>float</td><td>Unary Numeric Widening Type Conversion</td></tr>
+  <tr><td>True</td><td>short</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>byte</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>short</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>int</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>int</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>int</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>long</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>long</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>float</td><td><a href="#Unary-Numeric-Widening-Type-Conversion">Unary Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>byte</td><td>short</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>byte</td><td>int</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>byte</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>byte</td><td>float</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>byte</td><td>double</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>short</td><td>int</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>short</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>short</td><td>float</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>short</td><td>double</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>float</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>double</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>float</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>double</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>double</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
 </table>
 
 =end html
@@ -7083,50 +7100,23 @@ If the L<nemric type order|/"Numeric Types Order"> of the left operand is equal 
 B<Examples:>
   
   # int to int
-  my $num : int = 3;
+  my $num = (int)3;
   
   # byte to int
-  my $num : int = (byte)5;
+  my $num_byte : byte = 5;
+  my $num = (int)5;
   
   # double to double
-  my $num : double = 4.5;
+  my $num = (double)4.5;
   
   # float to double
-  my $num : double = 4.5f;
-
-If the L<nemric type order|/"Numeric Types Order"> of the left operand is lower than the L<nemric type order|/"Numeric Types Order"> of the right operand, the assignment is conditional valid.
-
-The condition is that the right operand is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of the left operand.
-
-If the condition is ture, the L<numeric narrowing type conversion|/"Numeric Narrowing Type Conversion"> is performed.
-
-=begin html
-
-<table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
-  <tr><td>Conditinal True</td><td>byte</td><td>short</td><td>Numeric Narrowing Type Conversion</td></tr>
-  <tr><td>Conditinal True</td><td>byte</td><td>int</td><td>Numeric Narrowing Type Conversion</td></tr>
-  <tr><td>Conditinal True</td><td>byte</td><td>long</td><td>Numeric Narrowing Type Conversion</td></tr>
-  <tr><td>False</td><td>byte</td><td>float</td><td>Copying</td></tr>
-  <tr><td>False</td><td>byte</td><td>double</td><td>Copying</td></tr>
-  <tr><td>Conditinal True</td><td>short</td><td>int</td><td>Numeric Narrowing Type Conversion</td></tr>
-  <tr><td>Conditinal True</td><td>short</td><td>long</td><td>Numeric Narrowing Type Conversion</td></tr>
-  <tr><td>False</td><td>short</td><td>float</td><td>Copying</td></tr>
-  <tr><td>False</td><td>short</td><td>double</td><td>Copying</td></tr>
-  <tr><td>Conditinal True</td><td>int</td><td>long</td><td>Numeric Narrowing Type Conversion</td></tr>
-  <tr><td>False</td><td>int</td><td>float</td><td>Copying</td></tr>
-  <tr><td>False</td><td>int</td><td>double</td><td>Copying</td></tr>
-  <tr><td>False</td><td>long</td><td>float</td><td>Copying</td></tr>
-  <tr><td>False</td><td>long</td><td>double</td><td>Copying</td></tr>
-  <tr><td>False</td><td>float</td><td>double</td><td>Copying</td></tr>
-</table>
-
-=end html
-
-B<Examples:>
+  my $num = (double)4.5f;
   
   # int to byte
-  my $num : byte = 127;
+  my $num = (byte)127;
+
+  # double to int
+  my $num = (int)2.5;
 
 =head3 Type Castability from NumericObject to Numeric
 
@@ -7309,7 +7299,7 @@ If not, the castability is false.
 <table>
   <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>Copying</td></tr>
-  <tr><td>Conditinal True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>Copying</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>Copying</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>Copying</td></tr>
 </table>
@@ -7335,7 +7325,7 @@ If not, the castability is false.
 <table>
   <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>Copying</td></tr>
-  <tr><td>Conditinal True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>Copying</td></tr>
+  <tr><td>Conditional True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>Copying</td></tr>
   <tr><td>True</td><td>CALLBACK</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>CALLBACK</td><td>OTHER</td><td>Copying</td></tr>
 </table>
