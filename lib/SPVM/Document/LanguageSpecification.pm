@@ -4164,13 +4164,13 @@ The addition operator C<+> is a L<binary operator|/"Binary Operators"> to calcul
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
 
-L</"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
+L</"Binary Numeric Type Conversion"> is performed to the left operand and the right operand.
 
 The addition operator performs the operation that exactly same as the following operation in C language.
 
   x + y;
 
-The return type of the addition operator is the type that L</"Binary Numeric Widening Type Conversion"> is performed.
+The return type of the addition operator is the type that L</"Binary Numeric Type Conversion"> is performed.
 
 =head2 Subtraction Operator
 
@@ -4180,13 +4180,13 @@ The subtraction operator C<-> is a L<binary operator|/"Binary Operators"> to cal
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
 
-L</"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
+L</"Binary Numeric Type Conversion"> is performed to the left operand and the right operand.
 
 The subtraction operator performs the operation that exactly same as the following operation in C language.
 
   x - y;
 
-The return type of the subtraction operator is the type that L</"Binary Numeric Widening Type Conversion"> is performed.
+The return type of the subtraction operator is the type that L</"Binary Numeric Type Conversion"> is performed.
 
 =head2 Multiplication Operator
 
@@ -4196,13 +4196,13 @@ The multiplication operator is a L<binary operator|/"Binary Operators"> to calcu
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
 
-L</"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
+L</"Binary Numeric Type Conversion"> is performed to the left operand and the right operand.
 
 The multiplication operator performs the operation that exactly same as the following operation in C language.
 
   x * y;
 
-The return type of the multiplication operator is the type after L</"Binary Numeric Widening Type Conversion"> is performed.
+The return type of the multiplication operator is the type after L</"Binary Numeric Type Conversion"> is performed.
 
 =head2 Division Operator
 
@@ -4212,13 +4212,13 @@ The division operator C</> is a L<binary operator|/"Binary Operators"> to culcur
 
 The left operand and the right operand must be L</"Numeric Types">, otherwise a compilation error will occur.
 
-L</"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
+L</"Binary Numeric Type Conversion"> is performed to the left operand and the right operand.
 
 The division operator performs the operation that exactly same as the following operation in C language.
 
   x / y;
 
-The return type of the division operator is the type after L</"Binary Numeric Widening Type Conversion"> is performed.
+The return type of the division operator is the type after L</"Binary Numeric Type Conversion"> is performed.
 
 If the two operands are L<integral types|/"Integral Types"> and the value of the right operand is C<0>, an L<exception|/"Exception"> is thrown.
 
@@ -4262,13 +4262,13 @@ The remainder operator C<%> is a L<binary operator|/"Binary Operators"> to calcu
 
 The left operand and the right operand must be an L<integral type|/"Integral Types">, otherwise a compilation error will occur.
 
-L</"Binary Numeric Widening Type Conversion"> is performed to the left operand and the right operand.
+L</"Binary Numeric Type Conversion"> is performed to the left operand and the right operand.
 
 The remainder operator performs the operation that exactly same as the following operation in C language.
 
   x % y;
 
-the return type of Remainder Operator is the type that L</"Binary Numeric Widening Type Conversion"> is performed.
+the return type of Remainder Operator is the type that L</"Binary Numeric Type Conversion"> is performed.
 
 If the right operand is C<0>, the remainder operator throw an L<exception|/"Exception">.
 
@@ -4462,7 +4462,7 @@ The bit AND operator C<&> is an L<operator|/"Operators"> to performe a bit AND o
 
 The left operand and the right operand must be an L<integral type/"Integral Types">, otherwise a compilation error will occur.
 
-A L<binary numeric widening type conversion|/"Binary Numeric Widening Type Conversion"> is performed.
+A L<binary numeric widening type conversion|/"Binary Numeric Type Conversion"> is performed.
 
 The return value is the same as the follwoing operation of C<C language>.
 
@@ -4485,7 +4485,7 @@ The bit OR operator C<|> is an L<operator|/"Operators"> to performe a bit OR ope
 
 The left operand and the right operand must be an L<integral type/"Integral Types">, otherwise a compilation error will occur.
 
-A L<binary numeric widening type conversion|/"Binary Numeric Widening Type Conversion"> is performed.
+A L<binary numeric widening type conversion|/"Binary Numeric Type Conversion"> is performed.
 
 The return value is the same as the follwoing operation of C<C language>.
 
@@ -4696,7 +4696,7 @@ A list of Numeric Comparison Operators.
 
 The Types of The left operand and the right operand Comparable Types, otherwise a compilation error will occur.
 
-In Numeric Types Comparison, L</"Binary Numeric Widening Type Conversion"> is performed for The left operand and the right operand.
+In Numeric Types Comparison, L</"Binary Numeric Type Conversion"> is performed for The left operand and the right operand.
 
 the Numeric Comparison Operation is performed that exactly same as the following operation in C language.
 
@@ -7681,7 +7681,7 @@ There are some rules for automatic type conversion of Numeric Types.
 
 <ul>
   <li>L</"Unary Numeric Widening Type Conversion"></li>
-  <li>L</"Binary Numeric Widening Type Conversion"></li>
+  <li>L</"Binary Numeric Type Conversion"></li>
 </ul>
 
 =end html
@@ -7712,9 +7712,9 @@ Unary Numeric Widening Type Conversion is performed in the following cases.
 
 =end html
 
-=head2 Binary Numeric Widening Type Conversion
+=head2 Binary Numeric Type Conversion
 
-Binary Numeric Widening Type Conversion is performed to the left operand and the right operand in Binary Operator that takes Numeric Types on the Left and Right sides. L</"Numeric Widening Type Conversion">.
+Binary Numeric Type Conversion is performed to the left operand and the right operand in Binary Operator that takes Numeric Types on the Left and Right sides. L</"Numeric Widening Type Conversion">.
 
 The following rules apply.
 
@@ -7726,7 +7726,7 @@ The following rules apply.
 
 4, otherwise, it will be converted to L</"int Type">.
 
-Binary Numeric Widening Type Conversion is performed in the following cases.
+Binary Numeric Type Conversion is performed in the following cases.
 
 =head2 Numeric Narrowing Type Conversion
 
