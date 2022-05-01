@@ -6458,7 +6458,7 @@ If the L<nemric type order|/"Numeric Types Order"> of the left operand is greate
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>byte</td><td>byte</td><td>None</td></tr>
   <tr><td>True</td><td>short</td><td>short</td><td>None</td></tr>
   <tr><td>True</td><td>int</td><td>int</td><td>None</td></tr>
@@ -6507,7 +6507,7 @@ If the condition is ture, the L<numeric narrowing type conversion|/"Numeric Narr
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>Conditional True</td><td>byte</td><td>short</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
   <tr><td>Conditional True</td><td>byte</td><td>int</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
   <tr><td>Conditional True</td><td>byte</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
@@ -6539,7 +6539,7 @@ If the type of the left operand is a L<numeric type|/"Numeric Types"> correspond
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td></tr>
   <tr><td>True</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td></tr>
   <tr><td>True</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td></tr>
@@ -6565,7 +6565,7 @@ The L<unboxing type conversion|/"Unboxing Type Conversion"> corresponding to the
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td></tr>
 </table>
 
@@ -6590,7 +6590,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td></tr>
   <tr><td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -6611,12 +6611,17 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>REF_X</td><td>REF_X</td><td>None</td></tr>
   <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
+
+B<Examples:>
+
+  my $num : int = 5;
+  my $num_ref : int* = \num;
 
 =head2 Type Assignability to String
 
@@ -6633,7 +6638,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<Nu
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
   <tr><td>True</td><td>string</td><td>mutable string</td><td>None</td></tr>
   <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>None</td></tr>
@@ -6663,7 +6668,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<bo
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td></tr>
@@ -6687,7 +6692,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>CLASS</td><td>OTHER</td><td>None</td></tr>
@@ -6711,7 +6716,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>None</td></tr>
@@ -6737,7 +6742,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>None</td></tr>
   <tr><td>True</td><td>CALLBACK</td><td>undef</td><td>None</td></tr>
@@ -6768,7 +6773,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<bo
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>object</td><td>OBJECT_X</td><td>None</td></tr>
   <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
   <tr><td>True</td><td>object</td><td>undef</td><td>None</td></tr>
@@ -6790,7 +6795,7 @@ If the type of the left operand is the L<undefined type|/"Undefined Type">, the 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>False</td><td>Undefined Type</td><td>OTHER</td><td>None</td></tr>
 </table>
 
@@ -6810,7 +6815,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>byte[]</td><td>byte[]</td><td>None</td></tr>
   <tr><td>True</td><td>short[]</td><td>short[]</td><td>None</td></tr>
   <tr><td>True</td><td>int[]</td><td>int[]</td><td>None</td></tr>
@@ -6837,7 +6842,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td></tr>
@@ -6859,7 +6864,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>string[]</td><td>string[]</td><td>None</td></tr>
   <tr><td>True</td><td>string[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>string[]</td><td>OTHER</td><td>None</td></tr>
@@ -6881,7 +6886,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>CLASS_X[]</td><td>OTHER</td><td>None</td></tr>
@@ -6905,7 +6910,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
@@ -6933,7 +6938,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>Callback_X[]</td><td>Callback_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>Callback_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>Callback_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
@@ -6965,7 +6970,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>object[]</td><td>OBJECT_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
@@ -7005,7 +7010,7 @@ If not, the assignability is false.
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td></tr>
@@ -7045,7 +7050,7 @@ The type castability to the L<numeric types|/"Numeric Types"> is explained.
 
 =head3 Type Castability from Numeric to Numeric
 
-The castability is true.
+If the type of the left operand is a L<numeric type|/"Numeric Types"> and the type of the right operand is a L<numeric type|/"Numeric Types">, the type castability is true.
 
 If the L<nemric type order|/"Numeric Types Order"> of the left operand is greater than the L<nemric type order|/"Numeric Types Order"> of the right operand, the L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
 
@@ -7056,7 +7061,7 @@ If the L<nemric type order|/"Numeric Types Order"> of the left operand is equal 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>byte</td><td>byte</td><td>Copying</td></tr>
   <tr><td>True</td><td>short</td><td>short</td><td>Copying</td></tr>
   <tr><td>True</td><td>int</td><td>int</td><td>Copying</td></tr>
@@ -7120,12 +7125,12 @@ B<Examples:>
 
 =head3 Type Castability from NumericObject to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Types"> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|/"Numeric Object Type">, the castability is true.
+If the type of the left operand is a L<numeric type|/"Numeric Types"> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|/"Numeric Object Type">, the type castability is true.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td></tr>
   <tr><td>True</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td></tr>
   <tr><td>True</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td></tr>
@@ -7138,47 +7143,49 @@ If the type of the left operand is a L<numeric type|/"Numeric Types"> correspond
 
 B<Examples:>
 
-  my $int : int = Int->new(3);
+  my $int = (int)Int->new(3);
 
-  my $double : double = Double->new(3.5);
+  my $double = (double)Double->new(3.5);
 
 =head3 Type Castability from Any Object to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Types"> and the type of the right operand is a L<any object type|/"Any Object Type"> C<object>, the castability is true.
+If the type of the left operand is a L<numeric type|/"Numeric Types"> and the type of the right operand is a L<any object type|/"Any Object Type"> C<object>, the type castability is true.
 
 The L<unboxing type conversion|/"Unboxing Type Conversion"> corresponding to the numeric type is performed.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td></tr>
 </table>
 
 =end html
 
 B<Examples:>
-
-  my $int : int = (object)Int->new(3);
-
-  my $double : double = (object)Double->new(3.5);
+  
+  my $object : object = Int->new(3);
+  my $int = (int)$object;
+  
+  my $object : object = Double->new(3.5);
+  my $double = (double)$object;
 
 =head3 Type Castability from Others to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Types"> and the type of the right operand is other than the types described above, the castability is false.
+If the type of the left operand is a L<numeric type|/"Numeric Types"> and the type of the right operand is other than the types described above, the type castability is false.
 
 =head2 Type Castability to Multi-Numeric
 
-If the type of the left operand is a L<multi-numeric type|/"Multi-Numeric Types"> and the type of the right operand is the same type of the left operand, the castability is true.
+If the type of the left operand is a L<multi-numeric type|/"Multi-Numeric Types"> and the type of the right operand is the same type of the left operand, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>MULNUM_X</td><td>MULNUM_X</td><td>Copying</td></tr>
-  <tr><td>False</td><td>MULNUM_X</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7186,74 +7193,82 @@ If not, the castability is false.
 B<Examples:>
 
   my $z1 : Complex_2d;
-  my $z2 : Complex_2d = $z1;
+  my $z2 = (Complex_2d)$z1;
 
 =head2 Type Castability to Referenece
 
-If the type of the left operand is a L<reference type|/"Reference Types"> and the type of the right operand is the same type of the left operand, the castability is true.
+If the type of the left operand is a L<reference type|/"Reference Types"> and the type of the right operand is the same type of the left operand, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>REF_X</td><td>REF_X</td><td>Copying</td></tr>
-  <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>Copying</td></tr>
-</table>
-
-=end html
-
-=head2 Type Castability to String
-
-If the type of the left operand is the L<string type|/"String Type"> without the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type">, the castability is true.
-
-If the type of the left operand is the L<string type|/"String Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type"> with the L<mutable type qualifier|/"mutable Type Qualifier">, the castability is true.
-
-If the type of the left operand is the L<string type|/"String Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the castability is false.
-
-If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is a L<numeric type|/"Numeric Types"> or the L<undef type|/"Undefined Type">, the castability is true.
-
-If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<Numeric-to-String type conversion|/"Numeric-to-String Type Conversion"> is performed.
-
-=begin html
-
-<table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
-  <tr><td>True</td><td>string</td><td>string</td><td>Copying</td></tr>
-  <tr><td>True</td><td>string</td><td>mutable string</td><td>Copying</td></tr>
-  <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>Copying</td></tr>
-  <tr><td>False</td><td>mutable string</td><td>string</td><td>Copying</td></tr>
-  <tr><td>True</td><td>string</td><td>string</td><td>Copying</td></tr>
-  <tr><td>True</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String type conversion</td></tr>
-  <tr><td>True</td><td>string</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>False</td><td>string</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
 
 B<Examples:>
 
-  my $string : string = "abc";
-  my $num_string : string = 3;
+  my $num : int = 5;
+  my $num_ref = (int*)\num;
+
+=head2 Type Castability to String
+
+If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is the L<string type|/"String Type">, the type castability is true.
+
+If the type of the left operand is the L<string type|/"String Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the runtime type checking is performed.
+
+If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<Numeric-to-String type conversion|/"Numeric-to-String Type Conversion"> is performed.
+
+If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is a L<numeric type|/"Numeric Types"> or the L<undef type|/"Undefined Type">, the type castability is true.
+
+If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<Numeric-to-String type conversion|/"Numeric-to-String Type Conversion"> is performed.
+
+If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, the type castability is true and the runtime type checking is performed.
+
+=begin html
+
+<table>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><td>True</td><td>string</td><td>string</td><td>Copying</td></tr>
+  <tr><td>True</td><td>string</td><td>mutable string</td><td>Copying</td></tr>
+  <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>Copying</td></tr>
+  <tr><td>True</td><td>mutable string</td><td>string</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>string</td><td>string</td><td>Copying</td></tr>
+  <tr><td>True</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String type conversion</td></tr>
+  <tr><td>True</td><td>string</td><td>Any Object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>string</td><td>undef</td><td>Copying</td></tr>
+  <tr><td>False</td><td>string</td><td>OTHER</td><td>None</td></tr>
+</table>
+
+=end html
+
+B<Examples:>
+
+  my $string = (string)"abc";
+  my $num_string = (string)3;
   my $string : string = undef;
 
 =head2 Type Castability to NumericObject
 
-If the type of the left operand is a L<numeric object type|/"Numeric Object Types"> and the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Types"> that is corresponding to the numeric object type, or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is a L<numeric object type|/"Numeric Object Types"> and the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Types"> that is corresponding to the numeric object type, or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>Copying</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>False</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7266,17 +7281,17 @@ B<Examples:>
 
 =head2 Type Castability to Class
 
-If the type of the left operand is a L<class type|/"Class Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is a L<class type|/"Class Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>Copying</td></tr>
   <tr><td>True</td><td>CLASS</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>False</td><td>CLASS</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>CLASS</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7288,20 +7303,20 @@ B<Examples:>
 
 =head2 Type Castability to Interface
 
-If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same interface of the left operand, the castability is true.
+If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same interface of the left operand, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>Copying</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7314,20 +7329,20 @@ B<Examples:>
 
 =head2 Type Castability to Callback
 
-If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same callback method defined in the L<callback type definition|/"Callback Type Definition"> of the left operand, the castability is true.
+If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same callback method defined in the L<callback type definition|/"Callback Type Definition"> of the left operand, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>Copying</td></tr>
   <tr><td>True</td><td>CALLBACK</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>False</td><td>CALLBACK</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>CALLBACK</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7345,20 +7360,20 @@ B<Examples:>
 
 =head2 Type Castability to Any Object
 
-If the type of the left operand is the L<any object type|/"Any Object Type"> and the type of the right operand is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is the L<any object type|/"Any Object Type"> and the type of the right operand is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>object</td><td>OBJECT_X</td><td>Copying</td></tr>
   <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
   <tr><td>True</td><td>object</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>False</td><td>object</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>object</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7371,13 +7386,13 @@ B<Examples:>
 
 =head2 Type Castability to Undefined
 
-If the type of the left operand is the L<undefined type|/"Undefined Type">, the castability is false.
+If the type of the left operand is the L<undefined type|/"Undefined Type">, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
-  <tr><td>False</td><td>Undefined Type</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><td>False</td><td>Undefined Type</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7389,14 +7404,14 @@ B<Examples:>
   
 =head2 Type Castability to Numeric Array
 
-If the type of the left operand is a L<numeric array type|/"Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is a L<numeric array type|/"Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>byte[]</td><td>byte[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>short[]</td><td>short[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>int[]</td><td>int[]</td><td>Copying</td></tr>
@@ -7404,7 +7419,7 @@ If not, the castability is false.
   <tr><td>True</td><td>float[]</td><td>float[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>double[]</td><td>double[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>NUMERIC[]</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>False</td><td>NUMERIC[]</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7416,17 +7431,17 @@ B<Examples:>
 
 =head2 Type Castability to Multi-Numeric Array
 
-If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7438,17 +7453,17 @@ B<Examples:>
 
 =head2 Type Castability to String Array
 
-If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>string[]</td><td>string[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>string[]</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>False</td><td>string[]</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>string[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7460,17 +7475,17 @@ B<Examples:>
 
 =head2 Type Castability to Class Array
 
-If the type of the left operand is a L<class array type|/"Class Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is a L<class array type|/"Class Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>False</td><td>CLASS_X[]</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>CLASS_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7482,20 +7497,20 @@ B<Examples:>
 
 =head2 Type Castability to Interface Array
 
-If the type of the left operand is an L<interface array type|/"Interface Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is an L<interface array type|/"Interface Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If the type of the left operand is an L<interface array type|/"Interface Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the castability is true.
+If the type of the left operand is an L<interface array type|/"Interface Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>CLASS_Y[]</td><td>Copying</td></tr>
-  <tr><td>False</td><td>INTERFACE_X[]</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>INTERFACE_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7510,20 +7525,20 @@ B<Examples:>
 
 =head2 Type Castability to Callback Array
 
-If the type of the left operand is an L<Callback array type|/"Callback Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is an L<Callback array type|/"Callback Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If the type of the left operand is an L<Callback array type|/"Callback Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the castability is true.
+If the type of the left operand is an L<Callback array type|/"Callback Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>Callback_X[]</td><td>Callback_X[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>Callback_X[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>Callback_X[]</td><td>CLASS_Y[]</td><td>Copying</td></tr>
-  <tr><td>False</td><td>Callback_X[]</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>Callback_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7544,17 +7559,17 @@ B<Examples:>
 
 =head2 Type Castability to Any Object Array
 
-If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>object[]</td><td>OBJECT_X[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>False</td><td>object[]</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -7580,23 +7595,23 @@ B<Examples:>
   
 =head2 Type Castability to Multi-Dimensional Array
 
-If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the castability is true.
+If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the type castability is true.
 
-If the L<basic type|/"Basic Type"> of the type of the left operand is an L<callback type|/"Callback Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the callback of the L<basic type|/"Basic Type"> of the type of the left operand , the castability is true.
+If the L<basic type|/"Basic Type"> of the type of the left operand is an L<callback type|/"Callback Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the callback of the L<basic type|/"Basic Type"> of the type of the left operand , the type castability is true.
 
-If not, the castability is false.
+If not, the type castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Assignable</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
+  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>Copying</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>CALLBACK_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>Copying</td></tr>
-  <tr><td>False</td><td>object[]</td><td>OTHER</td><td>Copying</td></tr>
+  <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
