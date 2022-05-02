@@ -6585,7 +6585,7 @@ If the type of the left operand is a L<numeric type|/"Numeric Types"> and the ty
 
 If the type of the left operand is a L<multi-numeric type|/"Multi-Numeric Types"> and the type of the right operand is the same type of the left operand, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -6606,7 +6606,7 @@ B<Examples:>
 
 If the type of the left operand is a L<reference type|/"Reference Types"> and the type of the right operand is the same type of the left operand, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -6661,7 +6661,7 @@ B<Examples:>
 
 If the type of the left operand is a L<numeric object type|/"Numeric Object Types"> and the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Types"> that is corresponding to the numeric object type, or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
 
@@ -6687,7 +6687,7 @@ B<Examples:>
 
 If the type of the left operand is a L<class type|/"Class Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -6711,7 +6711,7 @@ If the type of the left operand is an L<interface type|/"Interface Type"> and th
 
 If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same interface of the left operand, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -6737,7 +6737,7 @@ If the type of the left operand is a L<callback type|/"Callback Type"> and the t
 
 If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same callback method defined in the L<callback type definition|/"Callback Type Definition"> of the left operand, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -6766,7 +6766,7 @@ B<Examples:>
 
 If the type of the left operand is the L<any object type|/"Any Object Type"> and the type of the right operand is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
 
@@ -6810,7 +6810,7 @@ B<Examples:>
 
 If the type of the left operand is a L<numeric array type|/"Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -6837,7 +6837,7 @@ B<Examples:>
 
 If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -6859,7 +6859,7 @@ B<Examples:>
 
 If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -6881,7 +6881,7 @@ B<Examples:>
 
 If the type of the left operand is a L<class array type|/"Class Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -6905,7 +6905,7 @@ If the type of the left operand is an L<interface array type|/"Interface Array T
 
 If the type of the left operand is an L<interface array type|/"Interface Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -6933,7 +6933,7 @@ If the type of the left operand is an L<Callback array type|/"Callback Array Typ
 
 If the type of the left operand is an L<Callback array type|/"Callback Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -6965,7 +6965,7 @@ B<Examples:>
 
 If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -7005,7 +7005,7 @@ If the L<basic type|/"Basic Type"> of the type of the left operand is an L<inter
 
 If the L<basic type|/"Basic Type"> of the type of the left operand is an L<callback type|/"Callback Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the callback of the L<basic type|/"Basic Type"> of the type of the left operand , the assignability is true.
 
-If not, the assignability is false.
+Otherwise, the assignability is false.
 
 =begin html
 
@@ -7178,7 +7178,7 @@ If the type of the left operand is a L<numeric type|/"Numeric Types"> and the ty
 
 If the type of the left operand is a L<multi-numeric type|/"Multi-Numeric Types"> and the type of the right operand is the same type of the left operand, the type castability is true.
 
-If not, the type castability is false.
+Otherwise, the type castability is false.
 
 =begin html
 
@@ -7199,7 +7199,7 @@ B<Examples:>
 
 If the type of the left operand is a L<reference type|/"Reference Types"> and the type of the right operand is the same type of the left operand, the type castability is true.
 
-If not, the type castability is false.
+Otherwise, the type castability is false.
 
 =begin html
 
@@ -7224,7 +7224,7 @@ If the type of the left operand is the L<string type|/"String Type"> with the L<
 
 If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<Numeric-to-String type conversion|/"Numeric-to-String Type Conversion"> is performed.
 
-If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is a L<numeric type|/"Numeric Types"> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is a L<numeric type|/"Numeric Types">, the L<undef type|/"Undefined Type">, or the L<any object type|/"Any Object Type"> C<object>, the type castability is true.
 
 If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<Numeric-to-String type conversion|/"Numeric-to-String Type Conversion"> is performed.
 
@@ -7255,11 +7255,15 @@ B<Examples:>
 
 =head2 Type Castability to NumericObject
 
-If the type of the left operand is a L<numeric object type|/"Numeric Object Types"> and the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Types"> that is corresponding to the numeric object type, or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<numeric object type|/"Numeric Object Types"> and the types of the right operands are the following cases:
 
-If not, the type castability is false.
+If the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Types"> that is corresponding to the numeric object type, the L<any object type|/"Any Object Type"> C<object>, or the L<undef type|/"Undefined Type">, the type castability is true.
+
+The type of the right operand is other than above, the type castability is false.
 
 If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
+
+If the type of the left operand is the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, the runtime type checking is performed.
 
 =begin html
 
@@ -7267,6 +7271,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<bo
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>Copying</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
+  <tr><td>True</td><td>NUMERIC_OBJECT</td><td>Any Object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7275,21 +7280,31 @@ If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<bo
 
 B<Examples:>
 
-  my $num_object : Int = Int->new(3);
-  my $num_object : Int = 3;
-  my $num_object : Int = undef;
+  my $num_object = (Int)Int->new(3);
+  my $num_object = (Int)3;
+  my $num_object = (Int)undef;
+  
+  my $object : object = Int->new(3);
+  my $num_object = (Int)$object;
 
 =head2 Type Castability to Class
 
-If the type of the left operand is a L<class type|/"Class Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<class type|/"Class Type"> and the types of the right operands are the following cases:
 
-If not, the type castability is false.
+If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, a L<callback type|/"Callback Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
+
+Otherwise, the type castability is false.
+
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, or a L<callback type|/"Callback Type">, the runtime type checking is performed.
 
 =begin html
 
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>Copying</td></tr>
+  <tr><td>True</td><td>CLASS_X</td><td>INTERFACE_Y</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>CLASS_X</td><td>CALLBACK_Y</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>CLASS_X</td><td>Any Object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>CLASS</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7299,22 +7314,34 @@ If not, the type castability is false.
 B<Examples:>
 
   my $point : Point = Point->new;
-  my $point : Point = undef;
+  
+  my $stringable : Stringable;
+  my $point = (Point)$stringable;
+
+  my $stringer : Stringer;
+  my $point = (Point)$stringer
+
+  my $point = (Point)undef;
 
 =head2 Type Castability to Interface
 
-If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is an L<interface type|/"Interface Type">, and the types of the right operands are the following cases:
 
-If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same interface of the left operand, the type castability is true.
+If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object> or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the type castability is false.
+If the type of the right operand is a L<class type|/"Class Type"> and the class has the interface of the left operand, the type castability is true.
 
+Otherwise, the type castability is false.
+
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the runtime type checking is performed.
 =begin html
 
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>Copying</td></tr>
+  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_Y</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>INTERFACE_X</td><td>Any Object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7333,7 +7360,7 @@ If the type of the left operand is a L<callback type|/"Callback Type"> and the t
 
 If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same callback method defined in the L<callback type definition|/"Callback Type Definition"> of the left operand, the type castability is true.
 
-If not, the type castability is false.
+Otherwise, the type castability is false.
 
 =begin html
 
@@ -7362,7 +7389,7 @@ B<Examples:>
 
 If the type of the left operand is the L<any object type|/"Any Object Type"> and the type of the right operand is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the type castability is false.
+Otherwise, the type castability is false.
 
 If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
 
@@ -7406,7 +7433,7 @@ B<Examples:>
 
 If the type of the left operand is a L<numeric array type|/"Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the type castability is false.
+Otherwise, the type castability is false.
 
 =begin html
 
@@ -7433,7 +7460,7 @@ B<Examples:>
 
 If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the type castability is false.
+Otherwise, the type castability is false.
 
 =begin html
 
@@ -7455,7 +7482,7 @@ B<Examples:>
 
 If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the type castability is false.
+Otherwise, the type castability is false.
 
 =begin html
 
@@ -7477,7 +7504,7 @@ B<Examples:>
 
 If the type of the left operand is a L<class array type|/"Class Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the type castability is false.
+Otherwise, the type castability is false.
 
 =begin html
 
@@ -7501,7 +7528,7 @@ If the type of the left operand is an L<interface array type|/"Interface Array T
 
 If the type of the left operand is an L<interface array type|/"Interface Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the type castability is true.
 
-If not, the type castability is false.
+Otherwise, the type castability is false.
 
 =begin html
 
@@ -7529,7 +7556,7 @@ If the type of the left operand is an L<Callback array type|/"Callback Array Typ
 
 If the type of the left operand is an L<Callback array type|/"Callback Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the type castability is true.
 
-If not, the type castability is false.
+Otherwise, the type castability is false.
 
 =begin html
 
@@ -7561,7 +7588,7 @@ B<Examples:>
 
 If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
 
-If not, the type castability is false.
+Otherwise, the type castability is false.
 
 =begin html
 
@@ -7601,7 +7628,7 @@ If the L<basic type|/"Basic Type"> of the type of the left operand is an L<inter
 
 If the L<basic type|/"Basic Type"> of the type of the left operand is an L<callback type|/"Callback Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the callback of the L<basic type|/"Basic Type"> of the type of the left operand , the type castability is true.
 
-If not, the type castability is false.
+Otherwise, the type castability is false.
 
 =begin html
 
