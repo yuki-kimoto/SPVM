@@ -213,7 +213,7 @@ The list of keywords.
   isa
   isweak
   is_read_only
-  implement
+  interface
   int
   interface_t
   last
@@ -866,7 +866,7 @@ The SPVM language is assumed to be parsed by yacc/bison.
 The definition of syntax parsing of SPVM language. This is written by yacc/bison syntax.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-  %token <opval> DESCRIPTOR MAKE_READ_ONLY IMPLEMENT
+  %token <opval> DESCRIPTOR MAKE_READ_ONLY INTERFACE
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -886,7 +886,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow has_implement
   %type <opval> new array_init
-  %type <opval> my_var var implement
+  %type <opval> my_var var interface
   %type <opval> expression opt_expressions expressions opt_expression case_statements
   %type <opval> field_name method_name class_name class_alias_name is_read_only
   %type <opval> type qualified_type basic_type array_type
@@ -941,7 +941,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | our
     | use
     | allow
-    | implement
+    | interface
     | init_block
     | alias
 
@@ -961,8 +961,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   allow
     : ALLOW class_name ';'
 
-  implement
-    : IMPLEMENT class_name ';'
+  interface
+    : INTERFACE class_name ';'
 
   enumeration
     : opt_descriptors ENUM enumeration_block
@@ -1461,7 +1461,7 @@ The list of syntax parsing tokens:
     <td>IF</td><td>if</td>
   </tr>
   <tr>
-    <td>IMPLEMENT</td><td>implement</td>
+    <td>INTERFACE</td><td>interface</td>
   </tr>
   <tr>
     <td>INC</td><td>++</td>
@@ -1736,7 +1736,7 @@ B<Examples of class definitions:>
 
 Direct children of the class block must be L<use|/"Load Modules">, L<our|/"Class Variable">,
 L<has|/"Field Definition">, L<enum|/"Enumeration Definition">, L<method|/"Method Definition">, L<allow|/"Allow Class Access">,
-L<implement|/"implement Statement"> and L<INIT block|/"INIT Block"> can be defined.
+L<interface|/"interface Statement"> and L<INIT block|/"INIT Block"> can be defined.
 
   class Foo {
  
@@ -1755,7 +1755,7 @@ L<implement|/"implement Statement"> and L<INIT block|/"INIT Block"> can be defin
       # ...
     }
 
-    implement Asset;
+    interface Asset;
     
     INIT {
       # ...
@@ -1905,12 +1905,12 @@ In this example, Bar can access the private Method, Field, and Class Variable of
 
 Specifying the module of B<allow> also loads the module by L</"use"> at the same time.
 
-=head2 implement Statement
+=head2 interface Statement
 
 The L<class|/"Class"> that implements L<interfaces|/"Interface"> is expected to implement the methods of the interface.
 
   class Asset::Memory {
-    implement Asset;
+    interface Asset;
 
     method add_chunk : void ($chunk : string) {
       # ...
@@ -1927,7 +1927,7 @@ The L<class|/"Class"> that implements L<interfaces|/"Interface"> is expected to 
   }
 
   class Asset::File {
-    implement Asset;
+    interface Asset;
 
     method add_chunk : void ($chunk : string){
       # ...
@@ -1943,10 +1943,10 @@ The L<class|/"Class"> that implements L<interfaces|/"Interface"> is expected to 
     }
   }
 
-Not that C<implement> statement doesn't force the implementation of methods of the interface.
+Not that C<interface> statement doesn't force the implementation of methods of the interface.
 
   class Asset::File {
-    implement Asset;
+    interface Asset;
 
     method add_chunk : void ($chunk : string){
       # ...
@@ -1985,14 +1985,14 @@ A interface is defined using a L<class descriptor/"Class Descriptors"> C<interfa
 
 The type of the interface is L</"Interface Type">.
 
-The object that implements the interface using L<implement stataments|/"implement Statement"> can be assign to the interface.
+The object that implements the interface using L<interface stataments|/"interface Statement"> can be assign to the interface.
 
   class Asset::Memory {
-    implement Asset;
+    interface Asset;
   }
 
   class Asset::File {
-    implement Asset;
+    interface Asset;
   }
   
   my $asset : Asset = Asset::Memory->new;
@@ -2647,7 +2647,7 @@ A native method is defined by the C<native> L<method descriptor|/"Method Descrip
 
 A native method doesn't have its L<method block|/"Method Block">.
 
-See also the L<SPVM Native API|SPVM::Document::NativeAPI> to implement native methods.
+See also the L<SPVM Native API|SPVM::Document::NativeAPI> to interface native methods.
 
 =head2 Precompiled Method
 

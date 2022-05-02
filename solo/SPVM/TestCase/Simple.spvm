@@ -1,5 +1,5 @@
 class TestCase::Simple : public {
-  implement TestCase::CommonInterface;
+  interface TestCase::CommonInterface;
 
   use TestCase::EnumA;
   use TestCase::Minimal;

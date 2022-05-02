@@ -2,10 +2,11 @@ Revision history for SPVM
 0.9514_01  2022-05-02
         * Add cloneable_clone to Point class.
         * Point class has Cloneable interface.
-        * Interface can have implement statment.
+        * Interface can have interface statment.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Revert 0.9514 Methods of interfaces must have the names.
+        * implement statement is renamed to interface statement.
 0.9514  2022-05-02
         [CHANGE]
         * Add no_compiler_api to SPVM::Builder::Config::Exe

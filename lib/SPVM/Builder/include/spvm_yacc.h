@@ -60,7 +60,7 @@ extern int SPVM_yydebug;
     MUTABLE = 270,
     DESCRIPTOR = 271,
     MAKE_READ_ONLY = 272,
-    IMPLEMENT = 273,
+    INTERFACE = 273,
     IF = 274,
     UNLESS = 275,
     ELSIF = 276,

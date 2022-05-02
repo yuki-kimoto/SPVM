@@ -1,6 +1,6 @@
 class Point {
-  implement Stringable;
-  implement Cloneable;
+  interface Stringable;
+  interface Cloneable;
   
   has x : rw int;
   has y : rw int;

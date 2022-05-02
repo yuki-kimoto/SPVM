@@ -1,9 +1,9 @@
 class TestCase::Simple : public {
   use TestCase::Minimal;
   
-  implement Stringable;
-  implement Cloneable;
-  implement TestCase::InterfaceType;
+  interface Stringable;
+  interface Cloneable;
+  interface TestCase::InterfaceType;
   
   has x : rw public int;
   has y : rw public int;

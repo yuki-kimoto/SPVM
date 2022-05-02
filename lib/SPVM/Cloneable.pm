@@ -9,7 +9,7 @@ SPVM::Cloneable - A Interface Type to Clone a Object
 =head1 SYNOPSYS
   
   class Point {
-    implement Cloneable;
+    interface Cloneable;
     
     method cloneable_clone : object () {
       my $new_point = Point->new($self->x, $self->y);

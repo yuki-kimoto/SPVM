@@ -1,5 +1,5 @@
 class TestCase::Minimal : public {
-  implement TestCase::CommonInterface;
+  interface TestCase::CommonInterface;
   
   has x : public rw int;
   has y : public rw int;

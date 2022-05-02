@@ -5,7 +5,7 @@ class TestCase::Interface {
   use Cloneable;
   use List;
   
-  implement TestCase::InterfaceType;
+  interface TestCase::InterfaceType;
   
   static method new : TestCase::Interface () {
     return new TestCase::Interface;

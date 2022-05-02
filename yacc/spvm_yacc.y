@@ -20,7 +20,7 @@
 %}
 
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-%token <opval> DESCRIPTOR MAKE_READ_ONLY IMPLEMENT
+%token <opval> DESCRIPTOR MAKE_READ_ONLY INTERFACE
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -41,7 +41,7 @@
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow has_implement
 %type <opval> new array_init
-%type <opval> var_decl var implement
+%type <opval> var_decl var interface
 %type <opval> expression opt_expressions expressions opt_expression case_statements
 %type <opval> field_name method_name class_name class_alias_name is_read_only
 %type <opval> type qualified_type basic_type array_type
@@ -166,7 +166,7 @@ declaration
   | our
   | use
   | allow
-  | implement
+  | interface
   | init_block
   | alias
 
@@ -220,8 +220,8 @@ allow
       $$ = SPVM_OP_build_allow(compiler, $1, $2);
     }
 
-implement
-  : IMPLEMENT class_name ';'
+interface
+  : INTERFACE class_name ';'
     {
       $$ = SPVM_OP_build_implement(compiler, $1, $2);
     }

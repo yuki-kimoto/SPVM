@@ -1,7 +1,7 @@
 class TestCase::Minimal : public {
 
-  implement Stringable;
-  implement Cloneable;
+  interface Stringable;
+  interface Cloneable;
 
   has x : rw public int;
   has y : rw public int;

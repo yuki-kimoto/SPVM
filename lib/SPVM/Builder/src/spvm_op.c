@@ -246,7 +246,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "IS_READ_ONLY",
     "MAKE_READ_ONLY",
     "COPY",
-    "IMPLEMENT",
+    "INTERFACE",
     "HAS_IMPLEMENT",
     "ELEMENT",
     "OARRAY",
@@ -1922,7 +1922,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       // interface declarations
       else if (op_decl->id == SPVM_OP_C_ID_IMPLEMENT) {
         if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-          SPVM_COMPILER_error(compiler, "Multi-numeric types can't have \"implement\" statements at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "Multi-numeric types can't have \"interface\" statements at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->interface_decls, op_decl->uv.interface);
       }
