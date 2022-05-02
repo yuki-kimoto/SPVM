@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9513_02  2022-05-01
+0.9514  2022-05-02
         [CHANGE]
         * Add no_compiler_api to SPVM::Builder::Config::Exe
         * Add no_precompile to SPVM::Builder::Config::Exe
