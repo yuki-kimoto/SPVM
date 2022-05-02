@@ -7350,8 +7350,14 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 
 B<Examples:>
   
-  # Point has Stringable interface
-  my $stringable : Stringable = Point->new_xy(1, 2);
+  my $stringable1 : Stringable;
+  my $stringable2 = (Stringable)$stringable1;
+  
+  my $cloneable : Cloneable;
+  my $stringable = (Stringable)$cloneable;
+  
+  my $stringable  = (Stringable)Point->new_xy(1, 2);
+  
   my $stringable : Stringable = undef;
 
 =head2 Type Castability to Callback
