@@ -2926,7 +2926,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index += fields_length;
         break;
       }
-      case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_ASSIGN: {
+      case SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECKING: {
         int32_t cast_basic_type = opcode->operand2;
         int32_t cast_type_dimension = opcode->operand3;
 

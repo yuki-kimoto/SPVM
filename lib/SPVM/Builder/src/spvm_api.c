@@ -4016,7 +4016,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         stack_index += fields_length;
         break;
       }
-      case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_ASSIGN: {
+      case SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECKING: {
         void* object = *(void**)&object_vars[opcode->operand1];
         
         int32_t cast_basic_type_id = opcode->operand2;
