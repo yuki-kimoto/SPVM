@@ -45,6 +45,20 @@ class TestCase::Point {
       }
     }
 
+    # Cloneable
+    {
+      my $point = Point->new_xy(1, 2);
+      my $cloneable = (Cloneable)$point;
+      my $point_clone = (Point)$cloneable->cloneable_clone;
+      unless ($point_clone->x == $point->x && $point_clone->y == $point->y) {
+        return 0;
+      }
+      
+      if ($point_clone == $point) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 }
