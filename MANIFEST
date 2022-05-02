@@ -601,6 +601,7 @@ t/default/lib/SPVM/TestCase/NativeAPICpp.spvm
 t/default/lib/SPVM/TestCase/NumericOperator.spvm
 t/default/lib/SPVM/TestCase/Object.spvm
 t/default/lib/SPVM/TestCase/OnlyField.spvm
+t/default/lib/SPVM/TestCase/Point.spvm
 t/default/lib/SPVM/TestCase/Point_3b.spvm
 t/default/lib/SPVM/TestCase/Point_3d.spvm
 t/default/lib/SPVM/TestCase/Point_3f.spvm
@@ -674,6 +675,7 @@ t/default/SPVM_IntList.t
 t/default/SPVM_List.t
 t/default/SPVM_Long.t
 t/default/SPVM_LongList.t
+t/default/SPVM_Point.t
 t/default/SPVM_Regex.t
 t/default/SPVM_Short.t
 t/default/SPVM_ShortList.t

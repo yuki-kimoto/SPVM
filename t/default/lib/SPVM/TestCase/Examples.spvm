@@ -1,55 +1,8 @@
 class TestCase::Examples {
   use TestCase::OnlyField;
-  use Point;
   
   static method new_only_field_object : TestCase::OnlyField () {
     my $object = new TestCase::OnlyField;
     return $object;
-  }
-  
-  static method test_point : int () {
-    {
-      my $point = Point->new;
-      $point->set_x(1);
-      $point->set_y(2);
-      
-      my $x = $point->x;
-      my $y = $point->y;
-      
-      unless ($x == 1) {
-        return 0;
-      }
-      
-      unless ($y == 2) {
-        return 0;
-      }
-    }
-    
-    
-    {
-      my $point = Point->new_xy(1, 2);
-      
-      my $x = $point->x;
-      my $y = $point->y;
-      
-      unless ($x == 1) {
-        return 0;
-      }
-      
-      unless ($y == 2) {
-        return 0;
-      }
-    }
-    
-    {
-      my $point = Point->new_xy(1, 2);
-      my $stringable = (Stringable)$point;
-      my $point_string = $stringable->to_string;
-      unless ($point_string eq "(1,2)") {
-        return 0;
-      }
-    }
-    
-    return 1;
   }
 }
