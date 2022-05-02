@@ -5,6 +5,8 @@ Revision history for SPVM
         * Interface can have interface statment.
         * Interface type and callback type can be assign to interface type that has the interface.
         * Interface type and callback type can be assign to callback type that has the callback.
+        * Allow type cast from interface type to callback type
+        * Allow type cast from callback type to interface type
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Revert 0.9514 Methods of interfaces must have the names.
