@@ -7357,23 +7357,31 @@ B<Examples:>
   my $stringable = (Stringable)$cloneable;
   
   my $stringable  = (Stringable)Point->new_xy(1, 2);
+
+  my $object : object  = Point->new_xy(1, 2);
+  my $stringable  = (Stringable)Point->new_xy(1, 2);
   
   my $stringable : Stringable = undef;
 
 =head2 Type Castability to Callback
 
-If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<callback type|/"Callback Type">, and the types of the right operands are the following cases:
 
-If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same callback method defined in the L<callback type definition|/"Callback Type Definition"> of the left operand, the type castability is true.
+If the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the type castability is true.
+
+If the type of the right operand is a L<class type|/"Class Type"> and the class has the callback of the left operand, the type castability is true.
 
 Otherwise, the type castability is false.
 
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, a L<callback type|/"Callback Type">, the runtime type checking is performed.
 =begin html
 
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>Copying</td></tr>
+  <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_Y</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>CALLBACK_X</td><td>Any Object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CALLBACK</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>CALLBACK</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7382,13 +7390,19 @@ Otherwise, the type castability is false.
 
 B<Examples:>
   
-  # Create a callback and the callback is assigned to a callback type
-  my $comparator : Comparator = method : int ($x1 : object, $x2 : object) {
+  my $stringer1 : Stringer;
+  my $stringer2 = (Stringer)$stringer1;
+  
+  my $comparator : Comparator;
+  my $stringer = (Stringer)$comparator;
+  
+  my $comparator = (Comparator)method : int ($x1 : object, $x2 : object) {
     my $point1 = (Point)$x1;
     my $point2 = (Point)$x2;
     
     return $point1->x <=> $point2->x;
   };
+  
   my $comparator : Comparator = undef;
 
 =head2 Type Castability to Any Object
