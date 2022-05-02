@@ -2,6 +2,7 @@ Revision history for SPVM
 0.9514_01  2022-05-02
         * Add cloneable_clone to Point class.
         * Point class has Cloneable interface.
+        * Interface can have implement statment.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Revert 0.9514 Methods of interfaces must have the names.
