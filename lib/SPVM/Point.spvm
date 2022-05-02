@@ -1,5 +1,6 @@
 class Point {
   implement Stringable;
+  implement Cloneable;
   
   has x : rw int;
   has y : rw int;
@@ -24,5 +25,11 @@ class Point {
     my $string = "($x,$y)";
     
     return $string;
+  }
+  
+  method cloneable_clone : object () {
+    my $point_clone = Point->new_xy($self->x, $self->y);
+    
+    return $point_clone;
   }
 }

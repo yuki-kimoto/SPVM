@@ -35,6 +35,8 @@ C<Point> class has the following interfaces.
 
 =item * L<Stringable|SPVM::Stringable>
 
+=item * L<Cloneable|SPVM::Cloneable>
+
 =back
 
 =head1 CLASS METHODS
@@ -84,3 +86,9 @@ Set C<y> field.
 Convert the C<Point> object to a string as the following.
 
   (1,2)
+
+=head2 cloneable_clone
+
+  method cloneable_clone : object ()
+
+Clone a C<Point> object by create a new C<Point> object and C<x> and C<y> fields are copied to the new object.
