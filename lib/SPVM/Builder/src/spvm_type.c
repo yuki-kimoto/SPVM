@@ -1469,7 +1469,6 @@ int32_t SPVM_TYPE_check_castability(
 {
   int32_t castability;
   if (SPVM_TYPE_is_numeric_type(compiler, cast_type_basic_type_id, cast_type_dimension, cast_type_flag)) {
-    // Soruce type is numeric type
     if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
@@ -1480,6 +1479,9 @@ int32_t SPVM_TYPE_check_castability(
       else {
         castability = 0;
       }
+    }
+    else if (SPVM_TYPE_is_string_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      castability = 1;
     }
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
