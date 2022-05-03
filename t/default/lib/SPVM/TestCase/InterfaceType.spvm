@@ -1,6 +1,4 @@
 class TestCase::InterfaceType : interface_t {
-  interface Stringable;
-  
   method interface_shared1 : string ($num : int);
   
   method interface_shared2 : string ($num : int);
