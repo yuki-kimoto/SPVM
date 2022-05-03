@@ -6709,7 +6709,7 @@ B<Examples:>
 
 If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same interface of the left operand, the assignability is true.
+If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is a L<class type|/"Class Type">, an L<interface type|/"Interface Type">, or a L<callback type|/"Callback Type"> and the type of the right operand has the interface of the left operand, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -6719,6 +6719,8 @@ Otherwise, the assignability is false.
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_X</td><td>INTERFACE_Y</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_X</td><td>CALLBACK_Y</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -6735,7 +6737,7 @@ B<Examples:>
 
 If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same callback method defined in the L<callback type definition|/"Callback Type Definition"> of the left operand, the assignability is true.
+If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is a L<class type|/"Class Type">, an L<interface type|/"Interface Type">, or a L<callback type|/"Callback Type"> and the type of the right operand has the callback of the left operand, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -6745,6 +6747,8 @@ Otherwise, the assignability is false.
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>CALLBACK_X</td><td>INTERFACE_Y</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>CALLBACK_X</td><td>CALLBACK_Y</td><td>None</td></tr>
   <tr><td>True</td><td>CALLBACK</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>CALLBACK</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -6903,7 +6907,7 @@ B<Examples:>
 
 If the type of the left operand is an L<interface array type|/"Interface Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If the type of the left operand is an L<interface array type|/"Interface Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the assignability is true.
+If the type of the left operand is an L<interface array type|/"Interface Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types">,  an L<interface type|/"Interface Type">, or a L<callback type|/"Callback Type"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -6914,6 +6918,8 @@ Otherwise, the assignability is false.
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>INTERFACE_Y[]</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>CALLBACK_Y[]</td><td>None</td></tr>
   <tr><td>False</td><td>INTERFACE_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
@@ -6939,9 +6945,11 @@ Otherwise, the assignability is false.
 
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>True</td><td>Callback_X[]</td><td>Callback_X[]</td><td>None</td></tr>
-  <tr><td>True</td><td>Callback_X[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>Conditional True</td><td>Callback_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
+  <tr><td>True</td><td>CALLBACK_X[]</td><td>CALLBACK_X[]</td><td>None</td></tr>
+  <tr><td>True</td><td>CALLBACK_X[]</td><td>undef</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>CALLBACK_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>CALLBACK_X[]</td><td>INTERFACE_Y[]</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>CALLBACK_X[]</td><td>CALLBACK_Y[]</td><td>None</td></tr>
   <tr><td>False</td><td>Callback_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
@@ -7001,9 +7009,9 @@ B<Examples:>
 
 If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the assignability is true.
+If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type">, an L<interface type|/"Interface Type">, or a L<callback type|/"Callback Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the assignability is true.
 
-If the L<basic type|/"Basic Type"> of the type of the left operand is an L<callback type|/"Callback Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the callback of the L<basic type|/"Basic Type"> of the type of the left operand , the assignability is true.
+If the L<basic type|/"Basic Type"> of the type of the left operand is an L<callback type|/"Callback Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type">, an L<interface type|/"Interface Type">, or a L<callback type|/"Callback Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the callback of the L<basic type|/"Basic Type"> of the type of the left operand , the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -7014,7 +7022,11 @@ Otherwise, the assignability is false.
   <tr><td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>INTERFACE_MULDIM_Y[]</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CALLBACK_MULDIM_Y[]</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>CALLBACK_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>CALLBACK_MULDIM_X[]</td><td>INTERFACE_MULDIM_Y[]</td><td>None</td></tr>
+  <tr><td>Conditional True</td><td>CALLBACK_MULDIM_X[]</td><td>CALLBACK_MULDIM_Y[]</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
