@@ -7455,8 +7455,14 @@ Otherwise, the type castability is false.
 =end html
 
 B<Examples:>
-
+  
+  my $bytes = (byte[])"abc";
+  
   my $nums : int[] = new int[3];
+  
+  my $object : object = new int[3];
+  my $nums = (int[])$object;
+  
   my $nums : int[] = undef;
 
 =head2 Type Castability to Multi-Numeric Array
