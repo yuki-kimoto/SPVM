@@ -7435,6 +7435,8 @@ B<Examples:>
 
 =head2 Type Castability to Numeric Array
 
+If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the same type of the left operand, the L<string type|/"String Type">, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the type castability is true.
+
 If the type of the left operand is a L<numeric array type|/"Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
@@ -7443,12 +7445,9 @@ Otherwise, the type castability is false.
 
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
-  <tr><td>True</td><td>byte[]</td><td>byte[]</td><td>Copying</td></tr>
-  <tr><td>True</td><td>short[]</td><td>short[]</td><td>Copying</td></tr>
-  <tr><td>True</td><td>int[]</td><td>int[]</td><td>Copying</td></tr>
-  <tr><td>True</td><td>long[]</td><td>long[]</td><td>Copying</td></tr>
-  <tr><td>True</td><td>float[]</td><td>float[]</td><td>Copying</td></tr>
-  <tr><td>True</td><td>double[]</td><td>double[]</td><td>Copying</td></tr>
+  <tr><td>True</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Type Conversion</a></td></tr>
+  <tr><td>True</td><td>NUMERIC_X[]</td><td>NUMERIC_X[]</td><td>Copying</td></tr>
+  <tr><td>True</td><td>NUMERIC[]</td><td>ANY_OBJECT</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>NUMERIC[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td></tr>
 </table>
