@@ -7240,7 +7240,7 @@ If the type of the left operand is the L<string type|/"String Type"> and the typ
   <tr><td>True</td><td>mutable string</td><td>string</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>string</td><td>string</td><td>Copying</td></tr>
   <tr><td>True</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String type conversion</td></tr>
-  <tr><td>True</td><td>string</td><td>Any Object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>string</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>string</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>string</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7271,7 +7271,7 @@ If the type of the left operand is the type of the right operand is the L<any ob
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>Copying</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
-  <tr><td>True</td><td>NUMERIC_OBJECT</td><td>Any Object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>NUMERIC_OBJECT</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7304,7 +7304,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
   <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>Copying</td></tr>
   <tr><td>True</td><td>CLASS_X</td><td>INTERFACE_Y</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS_X</td><td>CALLBACK_Y</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>CLASS_X</td><td>Any Object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>CLASS_X</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>CLASS</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7342,7 +7342,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
   <tr><td>Conditional True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>Copying</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_Y</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>CALLBACK_Y</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>INTERFACE_X</td><td>Any Object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>INTERFACE_X</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7383,7 +7383,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
   <tr><td>Conditional True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>Copying</td></tr>
   <tr><td>True</td><td>CALLBACK_X</td><td>INTERFACE_Y</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_Y</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>CALLBACK_X</td><td>Any Object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>CALLBACK_X</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CALLBACK</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>CALLBACK</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7447,7 +7447,7 @@ Otherwise, the type castability is false.
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Type Conversion</a></td></tr>
   <tr><td>True</td><td>NUMERIC_X[]</td><td>NUMERIC_X[]</td><td>Copying</td></tr>
-  <tr><td>True</td><td>NUMERIC[]</td><td>ANY_OBJECT</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>NUMERIC[]</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>NUMERIC[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7467,7 +7467,7 @@ B<Examples:>
 
 =head2 Type Castability to Multi-Numeric Array
 
-If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
 
@@ -7476,7 +7476,7 @@ Otherwise, the type castability is false.
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>Copying</td></tr>
-  <tr><td>True</td><td>NUMERIC[]</td><td>ANY_OBJECT</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>MULNUM_X[]</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7494,7 +7494,7 @@ B<Examples:>
 
 =head2 Type Castability to String Array
 
-If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
 
@@ -7503,6 +7503,8 @@ Otherwise, the type castability is false.
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>string[]</td><td>string[]</td><td>Copying</td></tr>
+  <tr><td>True</td><td>string[]</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>string[]</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>string[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>string[]</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7512,6 +7514,13 @@ Otherwise, the type castability is false.
 B<Examples:>
 
   my $strings : string[] = ["abc", "def"];
+
+  my $object : object = ["abc", "def"];
+  my $strings = (string[])$object;
+
+  my $objects : object[] = ["abc", "def"];
+  my $strings = (string[])$object;
+
   my $strings : string[] = undef;
 
 =head2 Type Castability to Class Array
