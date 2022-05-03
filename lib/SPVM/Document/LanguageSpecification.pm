@@ -7409,7 +7409,9 @@ B<Examples:>
 
 =head2 Type Castability to Any Object
 
-If the type of the left operand is the L<any object type|/"Any Object Type"> and the type of the right operand is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is the L<any object type|/"Any Object Type"> and the types of the right operands are the following cases:
+ 
+If the type of the right operand is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
 
@@ -7435,11 +7437,17 @@ B<Examples:>
 
 =head2 Type Castability to Numeric Array
 
-If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the same type of the left operand, the L<string type|/"String Type">, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the L<string type|/"String Type">, the type castability is true.
 
-If the type of the left operand is a L<numeric array type|/"Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<numeric array type|/"Numeric Array Types"> and the types of the right operands are the following cases:
+
+If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
+
+If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the L<string type|/"String Type">, L<String-to-byte[] Type Conversion> is performed.
+
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the runtime type checking is performed.
 
 =begin html
 
@@ -7458,18 +7466,22 @@ B<Examples:>
   
   my $bytes = (byte[])"abc";
   
-  my $nums : int[] = new int[3];
+  my $nums = (int[])new int[3];
   
   my $object : object = new int[3];
   my $nums = (int[])$object;
   
-  my $nums : int[] = undef;
+  my $nums = (int[])undef;
 
 =head2 Type Castability to Multi-Numeric Array
 
-If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the types of the right operands are the following cases:
+ 
+If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
+
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the runtime type checking is performed.
 
 =begin html
 
@@ -7485,26 +7497,30 @@ Otherwise, the type castability is false.
 
 B<Examples:>
 
-  my $nums : Complex_2d[] = new Complex_2d[3];
+  my $nums = (Complex_2d[])new Complex_2d[3];
 
   my $object : object = new Complex_2d[3];
   my $nums = (Complex_2d[])$object;
 
-  my $nums : Complex_2d[] = undef;
+  my $nums = (Complex_2d[])undef;
 
 =head2 Type Castability to String Array
 
-If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<string array type|/"String Array Type"> and the types of the right operands are the following cases:
+ 
+If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
+
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the runtime type checking is performed.
 
 =begin html
 
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>string[]</td><td>string[]</td><td>Copying</td></tr>
-  <tr><td>True</td><td>string[]</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>string[]</td><td>object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>string[]</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>string[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>string[]</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7513,7 +7529,7 @@ Otherwise, the type castability is false.
 
 B<Examples:>
 
-  my $strings : string[] = ["abc", "def"];
+  my $strings = (string[])["abc", "def"];
 
   my $object : object = ["abc", "def"];
   my $strings = (string[])$object;
@@ -7521,21 +7537,25 @@ B<Examples:>
   my $objects : object[] = ["abc", "def"];
   my $strings = (string[])$object;
 
-  my $strings : string[] = undef;
+  my $strings  = (string[])undef;
 
 =head2 Type Castability to Class Array
 
-If the type of the left operand is a L<class array type|/"Class Array Types"> and the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<class array type|/"Class Array Types"> and the types of the right operands are the following cases:
+ 
+If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
+
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the runtime type checking is performed.
 
 =begin html
 
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>Copying</td></tr>
-  <tr><td>True</td><td>CLASS_X[]</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>CLASS_X[]</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>CLASS_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7544,7 +7564,7 @@ Otherwise, the type castability is false.
 
 B<Examples:>
 
-  my $points : Point[] = new Point[3];
+  my $points = (Point[])new Point[3];
 
   my $object : object = new Point[3];
   my $points = (Point[])$object;
@@ -7552,7 +7572,7 @@ B<Examples:>
   my $objects : object[] = new Point[3];
   my $points = (Point[])$object;
 
-  my $points : Point[] = undef;
+  my $points = (Point[])undef;
 
 =head2 Type Castability to Interface Array
 
@@ -7580,8 +7600,8 @@ If the type of the right operand is a L<Callback array type|/"Callback Array Typ
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_Y[]</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>CALLBACK_Y[]</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>INTERFACE_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
