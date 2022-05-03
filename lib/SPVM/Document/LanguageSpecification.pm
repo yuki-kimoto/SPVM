@@ -7433,24 +7433,6 @@ B<Examples:>
   my $num_object : object = 3;
   my $object : object = undef;
 
-=head2 Type Castability to Undefined
-
-If the type of the left operand is the L<undefined type|/"Undefined Type">, the type castability is false.
-
-=begin html
-
-<table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
-  <tr><td>False</td><td>Undefined Type</td><td>OTHER</td><td>None</td></tr>
-</table>
-
-=end html
-
-B<Examples:>
-  
-  # The castability is false
-  undef = Point->new;
-  
 =head2 Type Castability to Numeric Array
 
 If the type of the left operand is a L<numeric array type|/"Numeric Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
