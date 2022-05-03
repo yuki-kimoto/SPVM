@@ -7476,6 +7476,7 @@ Otherwise, the type castability is false.
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>Copying</td></tr>
+  <tr><td>True</td><td>NUMERIC[]</td><td>ANY_OBJECT</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7485,6 +7486,10 @@ Otherwise, the type castability is false.
 B<Examples:>
 
   my $nums : Complex_2d[] = new Complex_2d[3];
+
+  my $object : object = new Complex_2d[3];
+  my $nums = (Complex_2d[])$object;
+
   my $nums : Complex_2d[] = undef;
 
 =head2 Type Castability to String Array
