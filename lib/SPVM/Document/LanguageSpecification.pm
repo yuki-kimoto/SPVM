@@ -7494,7 +7494,7 @@ B<Examples:>
 
 =head2 Type Castability to String Array
 
-If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
 
@@ -7525,7 +7525,7 @@ B<Examples:>
 
 =head2 Type Castability to Class Array
 
-If the type of the left operand is a L<class array type|/"Class Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<class array type|/"Class Array Types"> and the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
 
@@ -7534,6 +7534,8 @@ Otherwise, the type castability is false.
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>Copying</td></tr>
+  <tr><td>True</td><td>CLASS_X[]</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>CLASS_X[]</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>CLASS_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -7543,6 +7545,13 @@ Otherwise, the type castability is false.
 B<Examples:>
 
   my $points : Point[] = new Point[3];
+
+  my $object : object = new Point[3];
+  my $points = (Point[])$object;
+
+  my $objects : object[] = new Point[3];
+  my $points = (Point[])$object;
+
   my $points : Point[] = undef;
 
 =head2 Type Castability to Interface Array
