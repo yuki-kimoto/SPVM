@@ -7327,7 +7327,7 @@ B<Examples:>
 
 If the type of the left operand is an L<interface type|/"Interface Type">, and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Type">, a L<callback type|/"Callback Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 If the type of the right operand is a L<class type|/"Class Type"> and the class has the interface of the left operand, the type castability is true.
 
@@ -7341,6 +7341,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>Copying</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_Y</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>INTERFACE_X</td><td>CALLBACK_Y</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>Any Object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td></tr>
@@ -7367,7 +7368,7 @@ B<Examples:>
 
 If the type of the left operand is a L<callback type|/"Callback Type">, and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the same type , an L<interface type|/"Interface Type">, a L<callback type|/"Callback Type"> , or the L<undef type|/"Undefined Type">, the type castability is true.
 
 If the type of the right operand is a L<class type|/"Class Type"> and the class has the callback of the left operand, the type castability is true.
 
@@ -7380,6 +7381,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>Copying</td></tr>
+  <tr><td>True</td><td>CALLBACK_X</td><td>INTERFACE_Y</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_Y</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CALLBACK_X</td><td>Any Object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CALLBACK</td><td>undef</td><td>Copying</td></tr>
