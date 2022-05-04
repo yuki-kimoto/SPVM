@@ -2143,6 +2143,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   is_keyword = 1;
                   keyword_term = REQUIRE;
                 }
+                else if (strcmp(symbol_name, "required") == 0) {
+                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_REQUIRED, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_descriptor;
+                  is_keyword = 1;
+                  keyword_term = DESCRIPTOR;
+                }
                 else if (strcmp(symbol_name, "rw") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_RW, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;

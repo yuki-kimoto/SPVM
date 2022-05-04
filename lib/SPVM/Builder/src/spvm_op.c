@@ -252,6 +252,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "OARRAY",
     "ALIAS",
     "OF",
+    "REQUIRED",
   };
   
   return id_names;
