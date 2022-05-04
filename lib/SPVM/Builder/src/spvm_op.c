@@ -1753,8 +1753,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     // int32_t max length is 10(2147483647)
     int32_t int32_max_length = 10;
     
-    // Create anon sub class name
-    // If Foo::Bar anon sub is defined line 123, sub keyword start pos 32, the anon sub class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
+    // Create anon method class name
+    // If Foo::Bar anon method is defined line 123, sub keyword start pos 32, the anon method class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
     const char* anon_method_defined_rel_file_class_name = compiler->cur_rel_file_class_name;
     int32_t anon_method_defined_line = op_method->line;
     int32_t anon_method_defined_column = op_method->column;
