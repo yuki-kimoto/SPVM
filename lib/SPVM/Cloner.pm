@@ -27,6 +27,6 @@ L<Cloner|SPVM::Cloner> is a callback type to clone a object.
 
 =head1 CALLBACK METHOD
 
-  method : object ($object : object);
+  required method : object ($object : object);
 
 The implementation must receive a object and return the cloned object.

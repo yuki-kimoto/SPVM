@@ -29,6 +29,6 @@ L<Stringer|SPVM::Stringer> is a callback type to stringify a object.
 
 =head1 CALLBACK METHOD
 
-  method : string ($object : object)
+  required method : string ($object : object)
 
 The implementation must receive a object and return the string expression.

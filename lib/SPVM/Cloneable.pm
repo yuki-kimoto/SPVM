@@ -28,6 +28,6 @@ Interface methods.
 
 =head2 cloneable_clone
 
-  method cloneable_clone : object ();
+  required method cloneable_clone : object ();
 
 The implementation must return the cloned object.

@@ -35,6 +35,6 @@ L<Comparator|SPVM::Comparator> is a callback type to compare two objects.
 
 =head1 CALLBACK METHOD
 
-  method : int ($object1 : object, $object2 : object);
+  required method : int ($object1 : object, $object2 : object);
 
 This method must receive two objects and return 1 if $object1 is more than $object2, -1 if $x is less than $object2, 0 if $object1 equals $object2 in the implementation.

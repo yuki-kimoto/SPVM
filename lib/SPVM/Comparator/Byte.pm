@@ -22,6 +22,6 @@ L<Comparator::Byte|SPVM::Comparator::Byte> is a callback type to compare two byt
 
 =head1 CALLBACK METHOD
 
-  method : int ($a : byte, $b : byte);
+  required method : int ($a : byte, $b : byte);
 
 The implementation must receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.

@@ -1,3 +1,3 @@
 class TestCase::Callback1 : callback_t {
-  method : int ($var1 : int, $var2 : long);
+  required method : int ($var1 : int, $var2 : long);
 }

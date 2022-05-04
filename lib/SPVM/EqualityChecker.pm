@@ -33,6 +33,6 @@ L<EqualityChecker|SPVM::EqualityChecker> is a callback type to check the object 
 
 =head1 CALLBACK METHOD
 
-  method : int ($object1 : object, $object2 : object)
+  required method : int ($object1 : object, $object2 : object)
 
 The implementation must receive two objects and if they are equals, return C<1>, otherwise return C<0>.

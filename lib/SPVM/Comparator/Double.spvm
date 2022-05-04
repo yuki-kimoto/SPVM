@@ -1,3 +1,3 @@
 class Comparator::Double : callback_t {
-  method : int ($a : double, $b : double);
+  required method : int ($a : double, $b : double);
 }

@@ -1,3 +1,3 @@
 class TestCase::Comparator::Byte : callback_t {
-  method : int ($a : byte, $b : byte);
+  required method : int ($a : byte, $b : byte);
 }

@@ -23,7 +23,7 @@ L<Regex::Replacer|SPVM::Regex::Replacer> is a callback type for the regex replac
 
 =head1 CALLBACK METHOD
 
-  method : string ($re : Regex)
+  required method : string ($re : Regex)
 
 This method return the string after the replacement.
 

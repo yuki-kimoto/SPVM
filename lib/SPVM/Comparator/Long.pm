@@ -22,6 +22,6 @@ L<Comparator::Long|SPVM::Comparator::Long> is a callback type to compare two lon
 
 =head1 CALLBACK METHOD
 
-  method : int ($a : long, $b : long);
+  required method : int ($a : long, $b : long);
 
 The implementation must receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.

@@ -1,7 +1,7 @@
 class TestCase::CommonInterface : interface_t {
   use TestCase::Minimal;
   
-  method shared1 : string ();
+  required method shared1 : string ();
   
   method shared2 : string ();
 

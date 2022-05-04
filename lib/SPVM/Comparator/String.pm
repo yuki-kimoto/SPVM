@@ -22,6 +22,6 @@ L<Comparator::String|SPVM::Comparator::String> is a callback type to compare two
 
 =head1 CALLBACK METHOD
 
-  method : int ($a : string, $b : string);
+  required method : int ($a : string, $b : string);
 
 The implementation must receive two strings and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.

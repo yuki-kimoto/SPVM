@@ -1,3 +1,3 @@
 class Comparator : callback_t {
-  method : int ($x1 : object, $x2 : object);
+  required method : int ($x1 : object, $x2 : object);
 }

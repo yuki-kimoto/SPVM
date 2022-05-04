@@ -22,6 +22,6 @@ L<Comparator::Double|SPVM::Comparator::Double> is a callback type to compare two
 
 =head1 CALLBACK METHOD
 
-  method : int ($a : double, $b : double);
+  required method : int ($a : double, $b : double);
 
 The implementation must receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
