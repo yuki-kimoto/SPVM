@@ -1754,7 +1754,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     int32_t int32_max_length = 10;
     
     // Create anon method class name
-    // If Foo::Bar anon method is defined line 123, sub keyword start pos 32, the anon method class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
+    // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
     const char* anon_method_defined_rel_file_class_name = compiler->cur_rel_file_class_name;
     int32_t anon_method_defined_line = op_method->line;
     int32_t anon_method_defined_column = op_method->column;
@@ -1978,7 +1978,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         // Setter
         if (class_var->has_setter) {
           
-          // sub SET_FOO : void ($foo : int) {
+          // method SET_FOO : void ($foo : int) {
           //   $FOO = $foo;
           // }
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
@@ -2232,7 +2232,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
       }
 
-      // If Method is anon, sub must be method
+      // If Method is anon, method must be method
       if (strlen(method_name) == 0 && method->is_class_method) {
         SPVM_COMPILER_error(compiler, "Anon methods must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
       }
@@ -2296,7 +2296,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       if (found_method) {
         SPVM_COMPILER_error(compiler, "Redeclaration of the method \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
       }
-      // Unknown sub
+      // Unknown method
       else {
         const char* found_method_name = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
         if (found_method_name) {
@@ -2559,12 +2559,12 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   }
   const char* method_name = op_name_method->uv.name;
   
-  // Block is sub block
+  // Block is method block
   if (op_block) {
     op_block->uv.block->id = SPVM_BLOCK_C_ID_METHOD;
   }
   
-  // Create sub information
+  // Create method information
   method->op_name = op_name_method;
   
   method->name = method->op_name->uv.name;
@@ -2777,7 +2777,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_name->file, op_name->line);
   SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
   
-  // sub
+  // method
   SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_name->file, op_name->line);
   op_method->file = op_name->file;
   op_method->line = op_name->line;
