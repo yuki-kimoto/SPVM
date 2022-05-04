@@ -397,7 +397,7 @@ Precompiled SPVM Method. This code is converted to C language and then converted
 
 =head1 DESCRIPTION
 
-SPVM is a Static Perl Virtual Machine. SPVM is a programming language which has Perlish syntax. SPVM provides fast Calculation & easy C/C++ Binding.
+SPVM is a Static Perl Virtual Machine. SPVM is a programming language which has Perlish syntax. SPVM provides fast calculation & easy C/C++ Binding.
 
 =head1 FEATURES
 
