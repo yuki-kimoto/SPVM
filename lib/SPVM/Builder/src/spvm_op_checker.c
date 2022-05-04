@@ -4645,6 +4645,16 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     SPVM_OP_CHECKER_resolve_field_offset(compiler, class);
+
+    // Add interfaces
+    for (int32_t i = 0; i < class->interface_decls->length; i++) {
+      SPVM_INTERFACE* interface_decl = SPVM_LIST_get(class->interface_decls, i);
+      SPVM_CLASS* interface = SPVM_HASH_get(compiler->class_symtable, interface_decl->class_name, strlen(interface_decl->class_name));
+      assert(interface);
+      
+      SPVM_LIST_push(class->interfaces, interface);
+      SPVM_HASH_set(class->interface_symtable, interface->name, strlen(interface->name), interface);
+    }
     
     // Check methods
     for (int32_t i = 0; i < class->methods->length; i++) {
