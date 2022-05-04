@@ -785,6 +785,7 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
     runtime_method->return_type_id = method->return_type->id;
     runtime_method->is_native = method->is_native;
     runtime_method->is_precompile = method->is_precompile;
+    runtime_method->is_destructor = method->is_destructor;
     runtime_method->is_required = method->is_required;
 
     SPVM_CONSTANT_STRING* method_name_string = SPVM_HASH_get(compiler->constant_string_symtable, method->name, strlen(method->name));
