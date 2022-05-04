@@ -2600,6 +2600,10 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
           method->is_precompile = 1;
           break;
         }
+        case SPVM_DESCRIPTOR_C_ID_REQUIRED: {
+          method->is_required = 1;
+          break;
+        }
         case SPVM_DESCRIPTOR_C_ID_NATIVE: {
           method->is_native = 1;
           break;
