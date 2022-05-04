@@ -1249,38 +1249,21 @@ int32_t SPVM_API_RUNTIME_has_callback_by_id(SPVM_RUNTIME* runtime, int32_t class
 
   assert(callback->methods_length == 1);
   
-  // Class which have only anon sub
-  if (class->is_anon) {
-    assert(class->methods_length == 1);
-    SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method(runtime, class->methods_base_id + 0);
-    
-    const char* method_callback_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_callback->signature_id, NULL);
-    const char* found_method_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, found_method->signature_id, NULL);
-    if (strcmp(method_callback_signature, found_method_signature) == 0) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  // Normal class
-  else {
-    const char* method_callback_name =  SPVM_API_RUNTIME_get_constant_string_value(runtime, method_callback->name_id, NULL);
-    SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_callback_name);
-    if (!found_method) {
-      return 0;
-    }
-    
-    const char* method_callback_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_callback->signature_id, NULL);
-    const char* found_method_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, found_method->signature_id, NULL);
-    if (strcmp(method_callback_signature, found_method_signature) == 0) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
+  const char* method_callback_name =  SPVM_API_RUNTIME_get_constant_string_value(runtime, method_callback->name_id, NULL);
+  SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_callback_name);
+  if (!found_method) {
+    return 0;
   }
   
+  const char* method_callback_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_callback->signature_id, NULL);
+  const char* found_method_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, found_method->signature_id, NULL);
+  if (strcmp(method_callback_signature, found_method_signature) == 0) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+
   return has_callback;
 }
 
