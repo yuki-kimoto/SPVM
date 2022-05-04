@@ -48,7 +48,7 @@ Use SPVM Module from Perl
   print $total . "\n";
 ```
 
-# More imformation
+# More information
 
 SPVM Document
 
