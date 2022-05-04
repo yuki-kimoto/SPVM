@@ -2,6 +2,13 @@
 
 Static Perl Virtual Machine. Fast calculation, fast array operation, and easy C/C++ Binding.
 
+|                                                                            Tests                                                                             |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [![linux](https://github.com/yuki-kimoto/SPVM/actions/workflows/linux.yml/badge.svg)](https://github.com/yuki-kimoto/SPVM/actions/workflows/linux.yml)       |
+| [![macos](https://github.com/yuki-kimoto/SPVM/actions/workflows/macos.yml/badge.svg)](https://github.com/yuki-kimoto/SPVM/actions/workflows/macos.yml)       |
+| [![windows](https://github.com/yuki-kimoto/SPVM/actions/workflows/windows.yml/badge.svg)](https://github.com/yuki-kimoto/SPVM/actions/workflows/windows.yml) |
+
+
 # Features
 
 * Fast calculation, Fast array operation, Small memory
