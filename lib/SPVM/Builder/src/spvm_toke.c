@@ -1945,7 +1945,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_term = IS_READ_ONLY;
                 }
                 else if (strcmp(symbol_name, "interface") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IMPLEMENT);
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_INTERFACE);
                   is_keyword = 1;
                   keyword_term = INTERFACE;
                 }

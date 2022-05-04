@@ -282,7 +282,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, allow);
         break;
       }
-      case SPVM_OP_C_ID_IMPLEMENT: {
+      case SPVM_OP_C_ID_INTERFACE: {
         SPVM_INTERFACE* interface = op->uv.interface;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, interface);
         break;
