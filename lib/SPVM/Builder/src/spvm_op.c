@@ -1923,7 +1923,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       // interface declarations
       else if (op_decl->id == SPVM_OP_C_ID_INTERFACE) {
         if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-          SPVM_COMPILER_error(compiler, "Multi-numeric types can't have \"interface\" statements at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "Multi-numeric types can't have \"interface\" syntax at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->interface_decls, op_decl->uv.interface);
       }
