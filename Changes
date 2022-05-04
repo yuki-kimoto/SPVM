@@ -13,6 +13,7 @@ Revision history for SPVM
         * implement statement is renamed to interface statement.
         * A interface type must have one required method.
         * A callback type must have one required method.
+        * A class must have the required methods defined in the interface classes.
 0.9514  2022-05-02
         [CHANGE]
         * Add no_compiler_api to SPVM::Builder::Config::Exe

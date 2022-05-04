@@ -4645,16 +4645,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     SPVM_OP_CHECKER_resolve_field_offset(compiler, class);
-
-    // Add interfaces
-    for (int32_t i = 0; i < class->interface_decls->length; i++) {
-      SPVM_INTERFACE* interface_decl = SPVM_LIST_get(class->interface_decls, i);
-      SPVM_CLASS* interface = SPVM_HASH_get(compiler->class_symtable, interface_decl->class_name, strlen(interface_decl->class_name));
-      assert(interface);
-      
-      SPVM_LIST_push(class->interfaces, interface);
-      SPVM_HASH_set(class->interface_symtable, interface->name, strlen(interface->name), interface);
-    }
     
     // Check methods
     for (int32_t i = 0; i < class->methods->length; i++) {
@@ -4758,37 +4748,54 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
   }
   
-  // classes must be interface the interface classes 
+  // Add anon methods
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
     
-    // Add the interfaces to the class
-    for (int32_t i = 0; i < class->interface_decls->length; i++) {
-      SPVM_INTERFACE* interface_decl =  SPVM_LIST_get(class->interface_decls, i);
-
-      SPVM_OP* op_interface = interface_decl->op_interface;
-      
-      const char* interface_name = interface_decl->class_name;
-      
-      SPVM_CLASS* interface = SPVM_HASH_get(compiler->class_symtable, interface_name, strlen(interface_name));
-      
-      if (interface->category != SPVM_CLASS_C_CATEGORY_INTERFACE) {
-        SPVM_COMPILER_error(compiler, "The operand of the interface statment must be the interface class at %s line %d", interface->name, op_interface->file, op_interface->line);
-        return;
-      }
-      
-      SPVM_CLASS* found_interface = SPVM_HASH_get(class->interface_symtable, interface->name, strlen(interface->name));
-      if (!found_interface) {
-        SPVM_LIST_push(class->interfaces, interface);
-        SPVM_HASH_set(class->interface_symtable, interface->name, strlen(interface->name), interface);
-      }
-    }
-
     // Add the anon method
     for (int32_t anon_methods_index = 0; anon_methods_index < class->anon_methods->length; anon_methods_index++) {
       SPVM_METHOD* anon_method = SPVM_LIST_get(class->anon_methods, anon_methods_index);
       anon_method->anon_method_id = compiler->anon_methods->length;
       SPVM_LIST_push(compiler->anon_methods, anon_method);
+    }
+  }
+
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    // Add interfaces
+    for (int32_t i = 0; i < class->interface_decls->length; i++) {
+      SPVM_INTERFACE* interface_decl = SPVM_LIST_get(class->interface_decls, i);
+      SPVM_CLASS* interface = SPVM_HASH_get(compiler->class_symtable, interface_decl->class_name, strlen(interface_decl->class_name));
+      assert(interface);
+      
+      SPVM_LIST_push(class->interfaces, interface);
+      SPVM_HASH_set(class->interface_symtable, interface->name, strlen(interface->name), interface);
+    }
+  }
+
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    // Check the class has interface methods
+    for (int32_t i = 0; i < class->interfaces->length; i++) {
+      SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, i);
+      assert(interface);
+      
+      SPVM_METHOD* required_method = interface->required_method;
+      assert(required_method);
+      
+      int32_t method_found = 0;
+      for (int32_t i = 0; i < class->methods->length; i++) {
+        SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+        if (strcmp(method->name, required_method->name) == 0) {
+          if (strcmp(method->signature, required_method->signature) == 0) {
+            method_found = 1;
+            break;
+          }
+        }
+      }
+      if (!method_found) {
+        SPVM_COMPILER_error(compiler, "The class \"%s\" must have the method \"%s\" with the signature \"%s\" defined in the interface \"%s\" at %s line %d", class->name, required_method->name, required_method->signature, interface->name, class->op_class->file, class->op_class->line);
+      }
     }
   }
 
