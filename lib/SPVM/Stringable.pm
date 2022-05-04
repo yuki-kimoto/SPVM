@@ -31,6 +31,6 @@ Interface methods.
 
 =head2 to_string
 
-  method to_string : string ();
+  required method to_string : string ();
 
 The implementation must return the string expression.

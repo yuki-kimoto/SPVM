@@ -2284,6 +2284,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_COMPILER_error(compiler, "Methods of interface classes can't have the blocks at %s line %d", method->op_method->file, method->op_method->line);
         }
       }
+      else if (class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
+        if (method->is_required) {
+          SPVM_COMPILER_error(compiler, "A class type can't have required methods at %s line %d", method->op_method->file, method->op_method->line);
+        }
+      }
       
       if (method->is_native) {
         if (method->op_block) {
@@ -2309,6 +2314,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           if (method->is_destructor) {
             class->destructor_method = method;
           }
+
+          if (method->is_required) {
+            if (class->required_method) {
+              SPVM_COMPILER_error(compiler, "A interface can't have multiple required method \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
+            }
+            class->required_method = method;
+          }
           
           assert(method->op_method->file);
           
@@ -2323,6 +2335,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           // Add the method to the method symtable of the class
           SPVM_HASH_set(class->method_symtable, method->name, strlen(method->name), method);
         }
+      }
+    }
+
+    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE || class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
+      if (!class->required_method) {
+        SPVM_COMPILER_error(compiler, "A interface method must have one required method at %s line %d", op_class->file, op_class->line);
       }
     }
     
