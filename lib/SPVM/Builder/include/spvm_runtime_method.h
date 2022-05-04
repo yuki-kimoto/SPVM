@@ -28,6 +28,7 @@ struct spvm_runtime_method {
   int8_t is_anon;
   int8_t is_precompile;
   int8_t is_native;
+  int8_t is_required;
 };
 
 #endif

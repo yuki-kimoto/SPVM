@@ -30,6 +30,7 @@ struct spvm_class {
   SPVM_LIST* allows;
   SPVM_LIST* interface_decls;
   SPVM_HASH* class_alias_symtable;
+  SPVM_METHOD* required_method;
   SPVM_METHOD* destructor_method;
   int32_t id;
   int32_t object_fields_length;

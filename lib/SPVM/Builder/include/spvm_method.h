@@ -48,6 +48,7 @@ struct spvm_method {
   int8_t is_precompile;
   int8_t is_native;
   int8_t is_anon;
+  int8_t is_required;
 };
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);
