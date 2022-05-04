@@ -447,6 +447,7 @@ t/default/lib/SPVM/TestCase/CompileError/Interface/ArrayElementCantAssign.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/HaveBlock.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/ImplementStatement.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/NativeMethod.spvm
+t/default/lib/SPVM/TestCase/CompileError/Interface/NotHaveInterfaceMethod.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/StaticMethod.spvm
 t/default/lib/SPVM/TestCase/CompileError/InvalidType.spvm
 t/default/lib/SPVM/TestCase/CompileError/Isa/LeftIsNotObject.spvm
