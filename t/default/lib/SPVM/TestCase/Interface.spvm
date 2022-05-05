@@ -4,6 +4,8 @@ class TestCase::Interface {
   use Stringable;
   use Cloneable;
   use List;
+  use Point;
+  use TestCase::Pointable;
   
   interface TestCase::InterfaceType;
   
@@ -139,6 +141,20 @@ class TestCase::Interface {
       }
 
       if ($minimals isa Stringable) {
+        return 0;
+      }
+    }
+    
+    # Pointable
+    {
+      my $pointable : TestCase::Pointable = Point->new_xy(1, 2);
+      unless ($pointable->x == 1) {
+        return 0;
+      }
+      unless ($pointable->y == 2) {
+        return 0;
+      }
+      unless ($pointable->to_string eq "(1,2)") {
         return 0;
       }
     }

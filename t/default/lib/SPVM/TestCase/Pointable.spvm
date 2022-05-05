@@ -1,0 +1,7 @@
+class TestCase::Pointable : interface_t {
+  interface Stringable;
+  
+  required method x : int ();
+  method y : int();
+  method to_string : string ();
+}

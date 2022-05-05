@@ -608,6 +608,7 @@ t/default/lib/SPVM/TestCase/Point_3f.spvm
 t/default/lib/SPVM/TestCase/Point_3i.spvm
 t/default/lib/SPVM/TestCase/Point_3l.spvm
 t/default/lib/SPVM/TestCase/Point_3s.spvm
+t/default/lib/SPVM/TestCase/Pointable.spvm
 t/default/lib/SPVM/TestCase/Pointer.c
 t/default/lib/SPVM/TestCase/Pointer.config
 t/default/lib/SPVM/TestCase/Pointer.spvm
