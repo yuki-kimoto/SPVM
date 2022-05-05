@@ -1245,7 +1245,9 @@ int32_t SPVM_API_RUNTIME_has_callback_by_id(SPVM_RUNTIME* runtime, int32_t class
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_basic_type->class_id);
   SPVM_RUNTIME_CLASS* callback = SPVM_API_RUNTIME_get_class(runtime, callback_basic_type->class_id);
   
-  SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(runtime, callback->methods_base_id + 0);
+  assert(callback->required_method_id >= 0);
+  
+  SPVM_RUNTIME_METHOD* method_callback = SPVM_API_RUNTIME_get_method(runtime, callback->required_method_id);
 
   assert(callback->methods_length == 1);
   
