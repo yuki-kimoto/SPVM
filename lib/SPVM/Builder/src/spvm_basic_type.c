@@ -342,14 +342,7 @@ int32_t SPVM_BASIC_TYPE_has_callback(SPVM_COMPILER* compiler, int32_t class_basi
   assert(callback->methods->length == 1);
   SPVM_METHOD* method_callback = SPVM_LIST_get(callback->methods, 0);
 
-  SPVM_METHOD* method_class = NULL;
-  if (class->methods->length == 1) {
-    method_class = SPVM_LIST_get(class->methods, 0);
-  }
-  else {
-    method_class = SPVM_HASH_get(class->method_symtable, method_callback->name, strlen(method_callback->name));
-  }
-
+  SPVM_METHOD* method_class = SPVM_HASH_get(class->method_symtable, method_callback->name, strlen(method_callback->name));
   if (method_class) {
     if (strcmp(method_class->signature, method_callback->signature) == 0) {
       return 1;
