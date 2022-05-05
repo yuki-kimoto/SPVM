@@ -30,9 +30,9 @@ Space characters have no meaning in programs.
 
 =head2 Identifiers
 
-Identifiers are L</"Class Names">, L</"Method Names">, L</"Field Names">, L</"Class Variable Names">, and L</"Local Variable Names">.
+Identifiers are L</"Class Name">, L</"Method Names">, L</"Field Names">, L</"Class Variable Names">, and L</"Local Variable Names">.
 
-=head2 Class Names
+=head2 Class Name
 
 A class names consists of one or more alphabet(C<a-zA-Z>), number(C<0-9>), underscore(C<_>) or C<::> of ASCII.
 
@@ -69,6 +69,8 @@ A method name consists of one or more alphabet(C<a-zA-Z>), number(C<0-9>), or un
 The first character must not a number.
 
 Underscore(C<_>) cannot be continued twice.
+
+0-length method name is valid.
 
 If method names are invalid, a compilation error will occur.
 
@@ -186,7 +188,6 @@ The list of keywords.
   as
   break
   byte
-  callback_t
   case
   cmp
   class
@@ -1710,7 +1711,7 @@ The C<class> keyword defins a class. A class has a class block.
   
   }
 
-Class names must follow the rule of L<class names|/"Class Names">.
+Class names must follow the rule of L<class names|/"Class Name">.
 
 L<Class descriptors|/"Class Descriptors"> can be specified after C<:>.
 
@@ -1809,14 +1810,6 @@ The list of class descriptors.
   </tr>
   <tr>
     <td>
-      <b>callback_t</b>
-    </td>
-    <td>
-      This class is a <a href="#Callback-Type">callback type</a>.
-    </td>
-  </tr>
-  <tr>
-    <td>
       <b>interface_t</b>
     </td>
     <td>
@@ -1853,7 +1846,7 @@ The list of class descriptors.
 
 If both "public" and "private" are specifed, a compilation error will occur.
 
-If more than one of "callback_t", "mulnum_t", "pointer_t" are specified, a compilation error will occur.
+If more than one of "mulnum_t", "pointer_t" are specified, a compilation error will occur.
 
 =head2 Destructor
 
@@ -1964,9 +1957,22 @@ The existence of the method implementation can be checked by the L<has_implement
 
 =head2 Anon Class
 
-The anon class is the class that is defined by the L<creating callback|/"Creating Callback"> syntax.
+The anon class is the class that is defined by the L<anon method|/"Anon Method"> syntax.
 
-A anon class has its unique name.
+A anon class has its unique L<class name|/"Class Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
+
+L<Examples:>
+    123456789...
+  1:class Foo::Bar {
+  2:  method sum : void () {
+  3:    my $anon_method = method : string () {
+  4:      
+  5:    }
+  6:: }
+  7:}
+  
+  # The name of anon class
+  Foo::Bar::anon::3::23;
 
 =head1 Interface
 
@@ -1977,7 +1983,7 @@ Explains interfaces.
 A interface is defined using a L<class descriptor/"Class Descriptors"> C<interface_t>.
 
   class Asset: interface_t {
-    method add_chunk : void ($chunk : string);
+    required method add_chunk : void ($chunk : string);
     method contains : int ($substring : string);
     method size : int ();
     method is_file : int ();
@@ -1998,41 +2004,6 @@ The object that implements the interface using L<interface stataments|/"interfac
   my $asset : Asset = Asset::Memory->new;
   
   my $asset : Asset = Asset::File->new;
-
-=head1 Callback
-
-Explains callbacks.
-
-=head2 Callback Type Definition
-
-A L<callback type|/"Callback Type"> can be defined using the L<class descriptor|/"Class Descriptors"> C<callback_t>.
-  
-  # Define an interface type for the callback
-  class Comparator: interface_t {
-    method : int ($x1 : object, $x2 : object);
-  }
-
-A callback must have only one L<method definition|/"Method Definition">. The method must be an L<instance method|/"Instance Method">.
-
-The method can't have the L<method block|/"Method Block">.
-
-A callback type can't have L<field definitions|/"Field Definition"> and L<class variable definitions|/"Class Variable Definition">.
-
-If the callback type definition is invalid, a compilation error will occur.
-
-A callback can be create using the syntax of L</"Creating Callback">. A callback is an object of a L<class type|/"Class Type">.
-
-A callback that have the same method defined in the callback type can be assign to the callback type.
-
-  # Create a callback and the callback is assigned to an interface type for the callback
-  my $comparator : Comparator = method : int ($x1 : object, $x2 : object) {
-    my $point1 = (Point)$x1;
-    my $point2 = (Point)$x2;
-    
-    return $point1->x <=> $point2->x;
-  };
-
-See also L<Comparator|SPVM::Comparator>.
 
 =head1 Module
 
@@ -2541,7 +2512,7 @@ A class method is defined with the C<static> keyword.
     # ...
   }
 
-A class method can be called from the L<class name|/"Class Names">.
+A class method can be called from the L<class name|/"Class Name">.
   
   # Call a class method
   my $total = Foo->sum(1, 2);
@@ -2610,6 +2581,14 @@ Method descriptors are descriptors used in a L<method definition|/"Method Defini
     </td>
     <td>
       This method is a <a href="#Native-Method">native method</a>.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>required</b>
+    </td>
+    <td>
+      This method is required.
     </td>
   </tr>
 </table>
@@ -3942,133 +3921,148 @@ Setting a value with Dereference returns the set value. This is L</"Expressions"
   
   $$z_ref = $z2;
 
-=head2 Getting Current Class Names
+=head2 Getting Current Class Name
 
-B<Getting Current class names> is an L<expression|/"Expressions"> to get the current class name by __CLASS__ L</"Keyword">.
+The getting current class name C<__CLASS__> is an L<expression|/"Expressions"> to get the current class name.
 
   __CLASS__
 
-B<Examples of Getting Current class names:>
+B<Examples:>
 
   class Foo::Bar {
     static method baz : void () {
       # Foo::Bar
-      my $class_name == __CLASS__;
+      my $class_name = __CLASS__;
     }
   }
 
 =head2 Getting Current File Name
 
-B<Getting Current File Name> is an L<expression|/"Expressions"> to get the current file name by __LINE__ L</"Keyword">.
+The getting current file name C<__FILE__> is an L<expression|/"Expressions"> to get the current file name.
 
   __FILE__
 
 Current File Name means the relative path from the base path of the module file. For example, if the Module Loaded Path is "/mypath" and the Module name is "Foo::Bar", the absolute path is "/mypath/SPVM/Foo/Bar.spvm" and the relative path is "SPVM/Foo/Bar.spvm". "SPVM/Foo/Bar.spvm" is Current File Name.
 
-B<Examples of Getting Current File Name:>
+B<Examples:>
 
   # SPVM/Foo/Bar.spvm
   class Foo::Bar {
     static method baz : void () {
-      # SPVM/Foo/Bar.spvm
+      # Get the current file name - SPVM/Foo/Bar.spvm
       my $file_name == __FILE__;
     }
   }
   class Foo::Bar2 {
     static method baz : void () {
-      # SPVM/Foo/Bar.spvm
+      # Get the current file name - SPVM/Foo/Bar.spvm
       my $file_name == __FILE__;
     }
   }
 
 =head2 Getting Current Line Number
 
-B<Getting Current Line Number> is an L<expression|/"Expressions"> to get the current line number of the current file by __LINE__ L</"Keyword">.
+The getting current line number C<__LINE__> is an L<expression|/"Expressions"> to get the current line number of the current file.
 
   __LINE__
 
-B<Examples of Getting Current Line Number:>
+B<Examples:>
 
   class Foo::Bar {
     static method baz : void () {
-      # 4
+      # Get the current line number - 4
       my $line = __LINE__;
     }
   }
 
-=head2 Creating Callback
+=head2 Anon Method
 
-The creating callback is an L<expression|/"Expressions"> to define the implementation of L<callback|/"Callback"> and create a L<callback|/"Callback">.
+The anon method is an L<expression|/"Expressions"> to define an L<anon calss|/"Anon Class"> and define an L<instance method|/"Instance Method"> that has 0-length name and create the object by the L<new|/"Creating Object"> operator.
 
   method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ...) {
   
   }
 
-The creating callback returns the object its type is an L<anon class|/"Anon Class">.
-
-The created callback can be assign to a L<callback type|/"Callback Type"> that has a same L<signature|/"Signature"> of the method defined by the creating callback.
-
-B<Examples of Create Callback:>
-
-  my $comparator : Comparator = method : int ($x1 : object, $x2 : object) {
-    my $point1 = (Point)$x1;
-    my $point2 = (Point)$x2;
-    
-    return $point1->x <=> $point2->x;
-  };
+B<Examples:>
+  
+  # Anon method
+  class Foo::Bar {
+    method some_method : void () {
+      my $comparator = (Comparator)method : int ($x1 : object, $x2 : object) {
+        my $point1 = (Point)$x1;
+        my $point2 = (Point)$x2;
+        
+        return $point1->x <=> $point2->x;
+      };
+    }
+  }
 
 See also L<Comparator|SPVM::Comparator>.
 
+The above example is same as the following codes.
+
+  class Foo::Bar {
+    method some_method : void () {
+      my $comparator = (Comparator)new Foo::Bar::anon::3::31;
+    }
+  }
+
+  class Foo::Bar::anon::3::31 : public {
+    method : int ($x1 : object, $x2 : object) {
+      my $point1 = (Point)$x1;
+      my $point2 = (Point)$x2;
+      
+      return $point1->x <=> $point2->x;
+    }
+  }
+
 =head3 Capture
 
-In Create Callback, you can use the syntax called Capture to use the variables defined outside the method defined by Create Callback inside the method defined by Create Callback.
+The capture is a syntax to pass L<local variables|/"Local Variable"> to an L<anon method|/"Anon Method">.
 
   # Capture
   [VariableName1 : Type1, VariableName2 : Type2] method MethodNames : int ($x1 : object, $x2 : object) {
   
   };
 
-Capture Example.
+B<Examples:>
 
-  my $foo = 1;
-  my $bar = 5L;
-  
-  my $comparator = [$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
-  
-    print "$foo\n";
-    print "$bar\n";
-  };
-  
-
-The variable name used in Capture must be the one with "$" added at the beginning of L</"Field Names">.
-
-The Capture is actually defined as a field of Class. Capture is a field definition and value setting syntax sugar.
-
-If L</"Local Variable"> with the same name as the Capture variable exists in the Scope, access the Local Variable.
-
-If there is a L</"Class Variable"> with the same name as the Capture variable, access the Capture variable.
-
-If you write Create Callback and Capture without using syntax sugar, it will be as follows.
-
-  class ComapartorImpl {
-    has foo : int;
-    has bar : long;
-  
-    method : int ($x1 : object, $x2 : object) {
-      print $self->{foo} . "\n";
-      print $self->{bar} . "\n";
+  class Foo::Bar {
+    method some_method : void () {
+      my $foo = 1;
+      my $bar = 5L;
+      my $comparator = (Comparator)[$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
+        print "$foo\n";
+        print "$bar\n";
+      };
     }
   }
 
-  my $foo = 1;
-  my $bar = 5L;
-  
-  my $comparator = new ComparatorImpl;
-  
-  $comparator->{foo} = $foo;
-  $comparator->{bar} = $bar;
+A capture is actually implemented as a L<field|/"Field">.
 
-Capture is a syntax for writing such a long description short.
+The above example is same as the following codes.
+
+  class Foo::Bar {
+    method some_method : void () {
+      my $foo = 1;
+      my $bar = 5L;
+      
+      my $anon = new Foo::Bar::anon::5::61;
+      $anon->{foo} = $foo;
+      $anon->{bar} = $bar;
+      my $comparator = (Comparator)$anon;
+    }
+  }
+
+  class Foo::Bar::anon::5::61 : public {
+    has foo : public int;
+    has bar : public long;
+    
+    method : int ($x1 : object, $x2 : object) {
+      print "$self->{foo}\n";
+      print "$self->{bar}\n";
+    }
+  }
 
 =head1 Operators
 
@@ -4808,7 +4802,7 @@ isa Operator has three behaviors, depending on Right Type.
 
 2. If the Right Type is L</"Class Type">, isa operator checks whether the type of The left operand is same as Right Type at Run Time. If their types are same, L</"int Type"> 1 is return, otherwise 0. The type of The left operand must be L</"Object Types">, otherwise a compilation error will occur.
 
-3. If the Right Type is L</"Callback Type">, isa Operator checks whether the type of The left operand satisfy the Callback Type at Run Time. If The left operand satisfies the Callback Type, returns L</"int Type"> 1, otherwise 0. The type of The left operand must be L</"Object Types">, otherwise a compilation error will occur.
+3. If the Right Type is L</"Interface Type">, isa Operator checks whether the type of The left operand satisfy the Interface Type at Run Time. If The left operand satisfies the Interface Type, returns L</"int Type"> 1, otherwise 0. The type of The left operand must be L</"Object Types">, otherwise a compilation error will occur.
 
 =head2 ref Operator
 
@@ -6003,7 +5997,7 @@ A pointer type is a L<class type|/"Class Type">.
 
 =head2 Basic Object Types
 
-Basic object types are the L<class type|/"Class Type">, the L<callback type|/"Callback Type">, the L<array type|/"Array Types">, the L<string type|/"String Type">, and the L<any object type|/"Any Object Type">.
+Basic object types are the L<class type|/"Class Type">, the L<array type|/"Array Types">, the L<string type|/"String Type">, and the L<any object type|/"Any Object Type">.
 
 =head2 Object Types
 
@@ -6105,24 +6099,12 @@ See also L</"Boxing Type Conversion"> and L</"Unboxing Type Conversion">.
 
 The undefined type is the type of L<undef|/"Undefined Value"> value.
 
-=head2 Callback Type
-
-The callback type is a type that is defined using a C<class> keyword and a L<class descriptor|/"Class Descriptors"> C<callback_t>.
-
-  class Comparator: interface_t {
-    method : int ($x1 : object, $x2 : object);
-  }
-
-See also L</"Callback">.
-
-Note that callback types are not L<class types|/"Class Types"> although they are defined by C<class> keyword.
-
 =head2 Interface Type
 
 The interface type is a type that is defined using a C<class> keyword and a L<class descriptor|/"Class Descriptors"> C<interface_t>.
 
   class Asset: interface_t {
-    method add_chunk : void ($chunk : string);
+    required method add_chunk : void ($chunk : string);
     method contains : int ($substring : string);
     method size : int ();
     method is_file : int();
@@ -6265,23 +6247,14 @@ B<Examples:>
   # Interface array types
   my $stringables : Stringable[];
 
-=head3 Callback Array Types
-
-Callback array types are L</"Array Types"> that the type of the element is the L<callback type|/"Callback Type">.
-
-B<Examples:>
-
-  # Callback array types
-  my $stringers : Stringer[];
-
 =head3 Multi-Dimensional Array Type
 
 The multi-dimensional array type is the L<array type|/"Array Types"> that the type of the element is an L<array type|/"Array Types">.
 
 B<Examples:>
 
-  # Callback array types
-  my $stringers : Stringer[];
+  # Multi-dimensional array types
+  my $nums_2dim : Int[][];
 
 =head3 Multi-Numeric Array Types
 
@@ -6731,37 +6704,6 @@ B<Examples:>
   my $stringable : Stringable = Point->new_xy(1, 2);
   my $stringable : Stringable = undef;
 
-=head2 Type Assignability to Callback
-
-If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the assignability is true.
-
-If the type of the left operand is a L<callback type|/"Callback Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same callback method defined in the L<callback type definition|/"Callback Type Definition"> of the left operand, the assignability is true.
-
-Otherwise, the assignability is false.
-
-=begin html
-
-<table>
-  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>None</td></tr>
-  <tr><td>Conditional True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>None</td></tr>
-  <tr><td>True</td><td>CALLBACK</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>CALLBACK</td><td>OTHER</td><td>None</td></tr>
-</table>
-
-=end html
-
-B<Examples:>
-  
-  # Create a callback and the callback is assigned to an interface type for the callback
-  my $comparator : Comparator = method : int ($x1 : object, $x2 : object) {
-    my $point1 = (Point)$x1;
-    my $point2 = (Point)$x2;
-    
-    return $point1->x <=> $point2->x;
-  };
-  my $comparator : Comparator = undef;
-
 =head2 Type Assignability to Any Object
 
 If the type of the left operand is the L<any object type|/"Any Object Type"> and the type of the right operand is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"Undefined Type">, the assignability is true.
@@ -6927,40 +6869,6 @@ B<Examples:>
   
   my $stringables : Stringable[] = undef;
 
-=head2 Type Assignability to Callback Array
-
-If the type of the left operand is an L<Callback array type|/"Callback Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
-
-If the type of the left operand is an L<Callback array type|/"Callback Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the assignability is true.
-
-Otherwise, the assignability is false.
-
-=begin html
-
-<table>
-  <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>True</td><td>Callback_X[]</td><td>Callback_X[]</td><td>None</td></tr>
-  <tr><td>True</td><td>Callback_X[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>Conditional True</td><td>Callback_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
-  <tr><td>False</td><td>Callback_X[]</td><td>OTHER</td><td>None</td></tr>
-</table>
-
-=end html
-
-B<Examples:>
-
-  my $stringers : Stringer[] = new Stringer[3];
-
-  {
-    my $cb = method : string ($object : object) {
-      my $point = (Point)$object;
-      return $point->to_string;
-    };
-    my $stringers : Stringer[] = [$cb];
-  }
-  
-  my $stringers : Stringer[] = undef;
-
 =head2 Type Assignability to Any Object Array
 
 If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the assignability is true.
@@ -7003,8 +6911,6 @@ If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dime
 
 If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the assignability is true.
 
-If the L<basic type|/"Basic Type"> of the type of the left operand is an L<callback type|/"Callback Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the callback of the L<basic type|/"Basic Type"> of the type of the left operand , the assignability is true.
-
 Otherwise, the assignability is false.
 
 =begin html
@@ -7014,7 +6920,6 @@ Otherwise, the assignability is false.
   <tr><td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td></tr>
-  <tr><td>Conditional True</td><td>CALLBACK_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
@@ -7291,11 +7196,11 @@ B<Examples:>
 
 If the type of the left operand is a L<class type|/"Class Type"> and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, a L<callback type|/"Callback Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, or a L<callback type|/"Callback Type">, the runtime type checking is performed.
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the runtime type checking is performed.
 
 =begin html
 
@@ -7303,7 +7208,6 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>Copying</td></tr>
   <tr><td>True</td><td>CLASS_X</td><td>INTERFACE_Y</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>CLASS_X</td><td>CALLBACK_Y</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS_X</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>CLASS</td><td>OTHER</td><td>None</td></tr>
@@ -7327,7 +7231,7 @@ B<Examples:>
 
 If the type of the left operand is an L<interface type|/"Interface Type">, and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Type">, a L<callback type|/"Callback Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 If the type of the right operand is a L<class type|/"Class Type"> and the class has the interface of the left operand, the type castability is true.
 
@@ -7341,7 +7245,6 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>Copying</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_Y</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>INTERFACE_X</td><td>CALLBACK_Y</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td></tr>
@@ -7363,49 +7266,6 @@ B<Examples:>
   my $stringable  = (Stringable)Point->new_xy(1, 2);
   
   my $stringable : Stringable = undef;
-
-=head2 Type Castability to Callback
-
-If the type of the left operand is a L<callback type|/"Callback Type">, and the types of the right operands are the following cases:
-
-If the type of the right operand is the same type , an L<interface type|/"Interface Type">, a L<callback type|/"Callback Type"> , or the L<undef type|/"Undefined Type">, the type castability is true.
-
-If the type of the right operand is a L<class type|/"Class Type"> and the class has the callback of the left operand, the type castability is true.
-
-Otherwise, the type castability is false.
-
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, a L<callback type|/"Callback Type">, the runtime type checking is performed.
-=begin html
-
-<table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
-  <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_X</td><td>Copying</td></tr>
-  <tr><td>Conditional True</td><td>CALLBACK_X</td><td>CLASS_Y</td><td>Copying</td></tr>
-  <tr><td>True</td><td>CALLBACK_X</td><td>INTERFACE_Y</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>CALLBACK_X</td><td>CALLBACK_Y</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>CALLBACK_X</td><td>object</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>CALLBACK</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>False</td><td>CALLBACK</td><td>OTHER</td><td>None</td></tr>
-</table>
-
-=end html
-
-B<Examples:>
-  
-  my $stringer1 : Stringer;
-  my $stringer2 = (Stringer)$stringer1;
-  
-  my $comparator : Comparator;
-  my $stringer = (Stringer)$comparator;
-  
-  my $comparator = (Comparator)method : int ($x1 : object, $x2 : object) {
-    my $point1 = (Point)$x1;
-    my $point2 = (Point)$x2;
-    
-    return $point1->x <=> $point2->x;
-  };
-  
-  my $comparator : Comparator = undef;
 
 =head2 Type Castability to Any Object
 
@@ -7584,13 +7444,13 @@ If the type of the right operand is the same type of the left operand, the type 
 
 If the type of the right operand is an differnt type of L<interface array type|/"Interface Array Types">, the type castability is also true.
 
-If the type of the right operand is a L<Callback array type|/"Callback Array Types">, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]>  or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]>  or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
 
 If the type of the right operand is an differnt type of  L<interface array type|/"Interface Array Types">, the runtime type checking is performed.
 
-If the type of the right operand is a L<Callback array type|/"Callback Array Types">, the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the runtime type checking is performed.
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the runtime type checking is performed.
 
 =begin html
 
@@ -7599,7 +7459,6 @@ If the type of the right operand is a L<Callback array type|/"Callback Array Typ
   <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>CLASS_Y[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_Y[]</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>CALLBACK_Y[]</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>Copying</td></tr>
@@ -7615,40 +7474,6 @@ B<Examples:>
   my $stringables : Stringable[] = new Point[3];
   
   my $stringables : Stringable[] = undef;
-
-=head2 Type Castability to Callback Array
-
-If the type of the left operand is a L<Callback array type|/"Callback Array Types"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
-
-If the type of the left operand is a L<Callback array type|/"Callback Array Types"> and the type of the right operand is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the type castability is true.
-
-Otherwise, the type castability is false.
-
-=begin html
-
-<table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
-  <tr><td>True</td><td>Callback_X[]</td><td>Callback_X[]</td><td>Copying</td></tr>
-  <tr><td>True</td><td>Callback_X[]</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>Conditional True</td><td>Callback_X[]</td><td>CLASS_Y[]</td><td>Copying</td></tr>
-  <tr><td>False</td><td>Callback_X[]</td><td>OTHER</td><td>None</td></tr>
-</table>
-
-=end html
-
-B<Examples:>
-
-  my $stringers : Stringer[] = new Stringer[3];
-
-  {
-    my $cb = method : string ($object : object) {
-      my $point = (Point)$object;
-      return $point->to_string;
-    };
-    my $stringers : Stringer[] = [$cb];
-  }
-  
-  my $stringers : Stringer[] = undef;
 
 =head2 Type Castability to Any Object Array
 
@@ -7692,8 +7517,6 @@ If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dime
 
 If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the type castability is true.
 
-If the L<basic type|/"Basic Type"> of the type of the left operand is an L<callback type|/"Callback Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the callback of the L<basic type|/"Basic Type"> of the type of the left operand , the type castability is true.
-
 Otherwise, the type castability is false.
 
 =begin html
@@ -7703,7 +7526,6 @@ Otherwise, the type castability is false.
   <tr><td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>Copying</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>Copying</td></tr>
-  <tr><td>Conditional True</td><td>CALLBACK_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>Copying</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
