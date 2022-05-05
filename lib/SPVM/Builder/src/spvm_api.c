@@ -7716,11 +7716,11 @@ int32_t SPVM_API_can_assign(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t c
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE: {
-          can_assign = SPVM_API_RUNTIME_has_interface_by_id(runtime, cast_basic_type_id, object_basic_type_id);
+          can_assign = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, cast_basic_type_id);
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK: {
-          can_assign = SPVM_API_RUNTIME_has_callback_by_id(runtime, cast_basic_type_id, object_basic_type_id);
+          can_assign = SPVM_API_RUNTIME_has_callback_by_id(runtime, object_basic_type_id, cast_basic_type_id);
           break;
         }
         default: {
