@@ -203,7 +203,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_leave_scope,
     SPVM_API_remove_mortal,
     SPVM_API_is_type,
-    SPVM_API_has_callback,
+    SPVM_API_has_interface,
     SPVM_API_get_object_basic_type_id,
     SPVM_API_get_object_type_dimension,
     SPVM_API_weaken,
@@ -1695,25 +1695,12 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         break;
       }
-      case SPVM_OPCODE_C_ID_HAS_CALLBACK: {
-        void* object = *(void**)&object_vars[opcode->operand1];
-        int32_t callback_basic_type_id = opcode->operand2;
-        
-        if (object) {
-          int_vars[0] = env->has_callback(env, object, callback_basic_type_id);
-        }
-        else {
-          int_vars[0] = 0;
-        }
-        
-        break;
-      }
       case SPVM_OPCODE_C_ID_HAS_INTERFACE: {
         void* object = *(void**)&object_vars[opcode->operand1];
-        int32_t callback_basic_type_id = opcode->operand2;
+        int32_t interface_basic_type_id = opcode->operand2;
         
         if (object) {
-          int_vars[0] = env->has_interface(env, object, callback_basic_type_id);
+          int_vars[0] = env->has_interface(env, object, interface_basic_type_id);
         }
         else {
           int_vars[0] = 0;
@@ -4087,7 +4074,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-              case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
               {
                 SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], stack[0].oval);
@@ -4232,7 +4218,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-                case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
                 {
                   SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], stack[0].oval);
@@ -5433,7 +5418,6 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_OBJECT* object) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
         {
           is_object_array = 1;
@@ -5591,10 +5575,6 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t inter
   }
   
   return has_interface;
-}
-
-int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id) {
-  return SPVM_API_has_interface(env, object, callback_basic_type_id);
 }
 
 int32_t SPVM_API_enter_scope(SPVM_ENV* env) {
@@ -7699,10 +7679,6 @@ int32_t SPVM_API_can_assign(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t c
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE: {
-          can_assign = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, cast_basic_type_id);
-          break;
-        }
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK: {
           can_assign = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, cast_basic_type_id);
           break;
         }

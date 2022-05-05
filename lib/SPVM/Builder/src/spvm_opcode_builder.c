@@ -297,7 +297,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
                   case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
                   case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-                  case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
                   case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
                   {
                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
@@ -320,7 +319,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-                case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
                 {
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
@@ -1214,8 +1212,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
 
                           SPVM_TYPE* call_method_return_type = call_method->method->return_type;
-                          if (method_call_method->class->category == SPVM_CLASS_C_CATEGORY_CALLBACK ||
-                              method_call_method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE)
+                          if (method_call_method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE)
                           {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE);
 
@@ -4030,10 +4027,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode = {0};
                           
                           
-                          if (SPVM_TYPE_is_callback_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_HAS_INTERFACE);
-                          }
-                          else if (SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                          if (SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_HAS_INTERFACE);
                           }
                           else {
@@ -4691,7 +4685,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             if (array_type_dimension == 1) {
                               switch (array_basic_type_category) {
                                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-                                case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
                                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
                                 {
                                   is_check_type = 1;

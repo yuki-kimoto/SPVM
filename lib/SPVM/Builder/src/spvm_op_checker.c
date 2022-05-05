@@ -1149,11 +1149,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                   SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, type->basic_type->name, strlen(type->basic_type->name));
                   
-                  if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-                    SPVM_COMPILER_error(compiler, "Can't create the object of a callback type at %s line %d", op_cur->file, op_cur->line);
-                    return;
-                  }
-                  else if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+                  if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
                     SPVM_COMPILER_error(compiler, "Can't create the object of a interface type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
@@ -3641,7 +3637,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             assert(method->class->module_file);
             
             // Add op var_decl if need
-            if (method->class->category == SPVM_CLASS_C_CATEGORY_CALLBACK || method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+            if (method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
               int32_t arg_index;
               for (arg_index = 0; arg_index < method->args_length; arg_index++) {
                 SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
@@ -4838,7 +4834,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         else if (method->is_enum) {
           can_precompile = 0;
         }
-        // native method, methods of callback type or interface type
+        // native method, methods of interface type
         else if (!method->op_block) {
           can_precompile = 0;
         }

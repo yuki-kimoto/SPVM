@@ -1788,14 +1788,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 'c' : {
-                if (strcmp(symbol_name, "callback_t") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_CALLBACK_T, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  
-                  is_keyword = 1;
-                  keyword_term = DESCRIPTOR;
-                }
-                else if (strcmp(symbol_name, "case") == 0) {
+                if (strcmp(symbol_name, "case") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CASE);
                   is_keyword = 1;
                   keyword_term = CASE;

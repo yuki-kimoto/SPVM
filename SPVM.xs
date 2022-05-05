@@ -480,7 +480,6 @@ call_spvm_method(...)
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-          case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
           {
             if (!SvOK(sv_value)) {
@@ -782,7 +781,6 @@ call_spvm_method(...)
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
         {
           // Perl undef to SPVM undef
@@ -1072,7 +1070,6 @@ call_spvm_method(...)
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
         {
           void* return_value = (void*)args_stack[0].oval;

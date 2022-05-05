@@ -1830,7 +1830,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   class->name = op_name_class->uv.name;
 
-  // Class is callback
+  // Class descriptors
   int32_t class_descriptors_count = 0;
   int32_t access_control_descriptors_count = 0;
   if (op_list_descriptors) {
@@ -1838,11 +1838,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       switch (descriptor->id) {
-        case SPVM_DESCRIPTOR_C_ID_CALLBACK_T: {
-          class->category = SPVM_CLASS_C_CATEGORY_CALLBACK;
-          class_descriptors_count++;
-          break;
-        }
         case SPVM_DESCRIPTOR_C_ID_POINTER_T: {
           class->category = SPVM_CLASS_C_CATEGORY_CLASS;
           class->is_pointer = 1;
@@ -1879,7 +1874,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
     }
     if (class_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "callback_t, mulnum_t, pointer_t interface_t can be specified only one at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
+      SPVM_COMPILER_error(compiler, "mulnum_t, pointer_t interface_t can be specified only one at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
       SPVM_COMPILER_error(compiler, "private, public can be specified only one at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
@@ -1931,10 +1926,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_CLASS_VAR) {
         SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
 
-        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-          SPVM_COMPILER_error(compiler, "Callback classes can't have class variables at %s line %d", op_decl->file, op_decl->line);
-        }
-        else if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+        if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "Interface classes can't have class variables at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->class_vars, op_decl->uv.class_var);
@@ -2031,10 +2023,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_FIELD) {
         SPVM_FIELD* field = op_decl->uv.field;
         
-        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-          SPVM_COMPILER_error(compiler, "Callback classes can't have fields at %s line %d", op_decl->file, op_decl->line);
-        }
-        else if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+        if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "Interface classes can't have fields at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->fields, field);
@@ -2237,33 +2226,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_COMPILER_error(compiler, "Anon methods must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
       }
 
-      if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-        // Method having callback_t descriptor must be method
-        if (method->is_class_method) {
-          SPVM_COMPILER_error(compiler, "Methods of callback classes must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
-        }
-        
-        // Method having callback_t descriptor must be anon
-        if (strlen(method_name) != 0) {
-          SPVM_COMPILER_error(compiler, "Methods of callback classes can't have names at %s line %d", method->op_method->file, method->op_method->line);
-        }
-        
-        // If class is callback, the method must not be native
-        if (method->is_native) {
-          SPVM_COMPILER_error(compiler, "Methods of callback classes  can't have native descriptors at %s line %d", method->op_method->file, method->op_method->line);
-        }
-
-        // If class is callback, the method must not be precompile
-        if (method->is_precompile) {
-          SPVM_COMPILER_error(compiler, "Methods of callback classes can't have precompile descriptors at %s line %d", method->op_method->file, method->op_method->line);
-        }
-        
-        // If class is callback, the method must not be precompile
-        if (method->op_block) {
-          SPVM_COMPILER_error(compiler, "Methods of callback classes can't have the blocks at %s line %d", method->op_method->file, method->op_method->line);
-        }
-      }
-      else if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+      if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
         // Method having interface_t descriptor must be method
         if (method->is_class_method) {
           SPVM_COMPILER_error(compiler, "Methods of interface classes must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
@@ -2338,16 +2301,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
     }
 
-    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE || class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
+    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
       if (!class->required_method) {
         SPVM_COMPILER_error(compiler, "A interface method must have one required method at %s line %d", op_class->file, op_class->line);
-      }
-    }
-    
-    // Callback must have only one method
-    if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-      if (class->methods->length != 1) {
-        SPVM_COMPILER_error(compiler, "Callback must have only one method at %s line %d", op_class->file, op_class->line);
       }
     }
     
