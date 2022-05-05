@@ -31,9 +31,9 @@ SPVM::Comparator - A Callback Type for Object Comparation
 
 =head1 DESCRIPTION
 
-L<Comparator|SPVM::Comparator> is a callback type to compare two objects.
+L<Comparator|SPVM::Comparator> is an interface type for the callback to compare two objects.
 
-=head1 CALLBACK METHOD
+=head1 INTERFACE METHOD
 
   required method : int ($object1 : object, $object2 : object);
 

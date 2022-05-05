@@ -2007,7 +2007,7 @@ Explains callbacks.
 
 A L<callback type|/"Callback Type"> can be defined using the L<class descriptor|/"Class Descriptors"> C<callback_t>.
   
-  # Define a callback type
+  # Define an interface type for the callback
   class Comparator: interface_t {
     method : int ($x1 : object, $x2 : object);
   }
@@ -2024,7 +2024,7 @@ A callback can be create using the syntax of L</"Creating Callback">. A callback
 
 A callback that have the same method defined in the callback type can be assign to the callback type.
 
-  # Create a callback and the callback is assigned to a callback type
+  # Create a callback and the callback is assigned to an interface type for the callback
   my $comparator : Comparator = method : int ($x1 : object, $x2 : object) {
     my $point1 = (Point)$x1;
     my $point2 = (Point)$x2;
@@ -6753,7 +6753,7 @@ Otherwise, the assignability is false.
 
 B<Examples:>
   
-  # Create a callback and the callback is assigned to a callback type
+  # Create a callback and the callback is assigned to an interface type for the callback
   my $comparator : Comparator = method : int ($x1 : object, $x2 : object) {
     my $point1 = (Point)$x1;
     my $point2 = (Point)$x2;

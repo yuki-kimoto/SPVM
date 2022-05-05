@@ -18,9 +18,9 @@ SPVM::Comparator::String - A Callback Type for string Comparation
 
 =head1 DESCRIPTION
 
-L<Comparator::String|SPVM::Comparator::String> is a callback type to compare two strings.
+L<Comparator::String|SPVM::Comparator::String> is an interface type for the callback to compare two strings.
 
-=head1 CALLBACK METHOD
+=head1 INTERFACE METHOD
 
   required method : int ($a : string, $b : string);
 

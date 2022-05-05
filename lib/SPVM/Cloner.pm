@@ -23,9 +23,9 @@ SPVM::Cloner - A Callback Type to Clone a Object
 
 =head1 DESCRIPTION
 
-L<Cloner|SPVM::Cloner> is a callback type to clone a object.
+L<Cloner|SPVM::Cloner> is an interface type for the callback to clone a object.
 
-=head1 CALLBACK METHOD
+=head1 INTERFACE METHOD
 
   required method : object ($object : object);
 

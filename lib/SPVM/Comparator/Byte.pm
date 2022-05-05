@@ -18,9 +18,9 @@ SPVM::Comparator::Byte - A Callback Type for byte Comparation
 
 =head1 DESCRIPTION
 
-L<Comparator::Byte|SPVM::Comparator::Byte> is a callback type to compare two byte values.
+L<Comparator::Byte|SPVM::Comparator::Byte> is an interface type for the callback to compare two byte values.
 
-=head1 CALLBACK METHOD
+=head1 INTERFACE METHOD
 
   required method : int ($a : byte, $b : byte);
 

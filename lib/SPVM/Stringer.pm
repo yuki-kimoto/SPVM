@@ -25,9 +25,9 @@ SPVM::Stringer - A Callback Yype to Stringify a Object
 
 =head1 DESCRIPTION
 
-L<Stringer|SPVM::Stringer> is a callback type to stringify a object.
+L<Stringer|SPVM::Stringer> is an interface type for the callback to stringify a object.
 
-=head1 CALLBACK METHOD
+=head1 INTERFACE METHOD
 
   required method : string ($object : object)
 

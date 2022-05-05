@@ -34,7 +34,7 @@ L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> is a callback i
 
 Create a new L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> object.
 
-=head1 CALLBACK METHOD IMPLEMENTATION
+=head1 INTERFACE METHOD IMPLEMENTATION
 
   method : int ($object1 : object, $object2 : object)
 
