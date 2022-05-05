@@ -1983,6 +1983,16 @@ A interface can't have L<filed definitions|/"Field Definition">.
 
 A interface can't have L<class variable definitions|/"Class Variable Definition">.
 
+A interface can have L<interface Guarantees|/"Interface Guarantee">.
+
+  class TestCase::Pointable : interface_t {
+    interface Stringable;
+    
+    required method x : int ();
+    method y : int();
+    method to_string : string ();
+  }
+
 If the interface definition is invalid, a compilation error will occur.
 
 C<new> operator can't create the objects from interfaces.
