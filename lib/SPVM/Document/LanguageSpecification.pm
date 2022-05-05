@@ -1898,9 +1898,9 @@ In this example, Bar can access the private Method, Field, and Class Variable of
 
 Specifying the module of B<allow> also loads the module by L</"use"> at the same time.
 
-=head2 interface Statement
+=head2 Interface Guarantee
 
-The L<class|/"Class"> that implements L<interfaces|/"Interface"> is expected to implement the methods of the interface.
+Interface Guarantee C<interface> is a syntax to guarantee that the class has the required method defined in the L<interfaces|/"Interface">.
 
   class Asset::Memory {
     interface Asset;
@@ -1917,38 +1917,6 @@ The L<class|/"Class"> that implements L<interfaces|/"Interface"> is expected to 
     method is_file : int (){
       # ...
     }
-  }
-
-  class Asset::File {
-    interface Asset;
-
-    method add_chunk : void ($chunk : string){
-      # ...
-    }
-    method contains : int ($substring : string){
-      # ...
-    }
-    method size : int (){
-      # ...
-    }
-    method is_file : int (){
-      # ...
-    }
-  }
-
-Not that C<interface> statement doesn't force the implementation of methods of the interface.
-
-  class Asset::File {
-    interface Asset;
-
-    method add_chunk : void ($chunk : string){
-      # ...
-    }
-    method contains : int ($substring : string){
-      # ...
-    }
-    
-    # It is OK although size and is_file method is not defined
   }
 
 If the method implementation is not found, an exception is thrown at runtime.
@@ -1978,36 +1946,48 @@ L<Examples:>
 
 Explains interfaces.
 
-=head2 Interface Type Definition
+=head2 Interface Definition
 
-A interface is defined using a L<class descriptor/"Class Descriptors"> C<interface_t>.
+A interface is defined using a L<class definition|/"Class Definition"> with a L<class descriptor/"Class Descriptors"> C<interface_t>.
 
-  class Asset: interface_t {
-    required method add_chunk : void ($chunk : string);
-    method contains : int ($substring : string);
-    method size : int ();
-    method is_file : int ();
+  class Stringable: interface_t {
+    required method to_string : string ();
+    method foo : int ($num : long);
   }
 
-The type of the interface is L</"Interface Type">.
+A interface can have multiple method declarations. The methods can't have the method blocks.
 
-The object that implements the interface using L<interface stataments|/"interface Statement"> can be assign to the interface.
+A interface must have only one required method. The required method is the method that has the L<method descriptor|/"Method Descriptors"> C<required>.
 
-  class Asset::Memory {
-    interface Asset;
-  }
+The type of the interface is the L</"Interface Type">.
 
-  class Asset::File {
-    interface Asset;
+The class that has L<interface Guarantees|/"Interface Guarantee"> must have the required method that is declared in the interface. Otherwise a compilation error will occur.
+
+  class Point {
+    interface Stringable;
+    
+    method to_string : string () {
+      my $x = $self->x;
+      my $y = $self->y;
+      
+      my $string = "($x,$y)";
+      
+      return $string;
+    }
   }
   
-  my $asset : Asset = Asset::Memory->new;
-  
-  my $asset : Asset = Asset::File->new;
+  my $stringable = (Stringable)Point->new_xy(1, 2);
+  my $string = $stringable->to_string;
+
+A interface can't have L<filed definitions|/"Field Definition">.
+
+A interface can't have L<class variable definitions|/"Class Variable Definition">.
+
+If the interface definition is invalid, a compilation error will occur.
+
+C<new> operator can't create the objects from interfaces.
 
 =head1 Module
-
-=head2 Module Summary
 
 Module is a single file that can be read as SPVM source code.
 
@@ -2533,8 +2513,8 @@ An instance method is defined without the C<static> keyword.
 An instance method can be called from the object.
   
   # Call an instance method
-  my $asset = Asset->new;
-  $asset->add_chumk("foo");
+  my $point = Point->new;
+  $point->set_x(3);
 
 =head2 Method Descriptors
 
@@ -2596,6 +2576,8 @@ Method descriptors are descriptors used in a L<method definition|/"Method Defini
 If C<native> and C<precompile> descriptors can't used together.
 
 C<public> and C<private> descriptors can't be used together.
+
+C<required> can be only used in a method of a L<interface|/"Interface">.
 
 If the specifed descriptor is not found or the way to specify is invalid, a compilation error will occur.
 
@@ -2944,8 +2926,6 @@ L</"Setting Local Variable"> to get Local Variable value.
 If L</"Class Variable"> with the same name as the Local Variable exists, Program uses the variable as Local Variable, not L</"Class Variable">.
 
 =head1 Scope
-
-=head2 Scope Summary
 
 B<Scope> is a range surrounded by L</"Scope Blocks">.
 
@@ -3334,8 +3314,6 @@ See L</"Setting Multi-Numeric Field"> to set Multi-Numeric Types Field.
 
 =head1 Multi-Numeric Array
 
-=head2 Multi-Numeric Array Summary
-
 L</"Multi-Numeric Value"> can be an element of L</"Array">.
 
   my $points = new Point_3i[5];
@@ -3361,8 +3339,6 @@ See L</"Getting Array Element"> to get Array Element Value.
 See L</"Setting Array Element"> to get Array Element Value.
 
 =head1 Reference
-
-=head2 Reference Summary
 
 Reference is data that indicates the location of L</"Local Variable"> in the memory. Reference is a feature corresponding to Pointer in C language.
 
@@ -5737,8 +5713,6 @@ B<Examples:>
 
 =head1 Types
 
-=head2 The Summary of Types
-
 SPVM is a static type language. All data has a static type.
 
 L</"Local Variable Declaration">, L</"Field Definition">, L</"Class Variable Definition">, and B<Arguments> and B<Return Value> of L</"Method Definition"> must specify B<Type>.
@@ -6103,11 +6077,8 @@ The undefined type is the type of L<undef|/"Undefined Value"> value.
 
 The interface type is a type that is defined using a C<class> keyword and a L<class descriptor|/"Class Descriptors"> C<interface_t>.
 
-  class Asset: interface_t {
-    required method add_chunk : void ($chunk : string);
-    method contains : int ($substring : string);
-    method size : int ();
-    method is_file : int();
+  class Stringable: interface_t {
+    required method to_string : string ();
   }
 
 See also L</"Interface">.
