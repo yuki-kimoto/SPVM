@@ -48,7 +48,6 @@ const char* const* SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NAMES(void) {
     "string",
     "class",
     "interface",
-    "callback",
     "any_obejct",
   };
   
@@ -87,9 +86,6 @@ int32_t SPVM_BASIC_TYPE_get_category(SPVM_COMPILER* compiler, int32_t basic_type
   }
   else if (SPVM_BASIC_TYPE_is_interface_type(compiler, basic_type_id)) {
     category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
-  }
-  else if (SPVM_BASIC_TYPE_is_callback_type(compiler, basic_type_id)) {
-    category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK;
   }
   else if (SPVM_BASIC_TYPE_is_any_object_type(compiler, basic_type_id)) {
     category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT;
@@ -216,29 +212,6 @@ int32_t SPVM_BASIC_TYPE_is_interface_type(SPVM_COMPILER* compiler, int32_t basic
   return is_interface_type;
 }
 
-int32_t SPVM_BASIC_TYPE_is_callback_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-  
-  int32_t is_class_type;
-  const char* basic_type_name = basic_type->name;
-  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
-  // Class
-  if (class) {
-    if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-      is_class_type = 1;
-    }
-    else {
-      is_class_type = 0;
-    }
-  }
-  // Numeric type
-  else {
-    is_class_type = 0;
-  }
-  
-  return is_class_type;
-}
-
 int32_t SPVM_BASIC_TYPE_is_any_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
   (void)compiler;
   
@@ -336,8 +309,4 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_bas
   else {
     return 0;
   }
-}
-
-int32_t SPVM_BASIC_TYPE_has_callback(SPVM_COMPILER* compiler, int32_t class_basic_type_id, int32_t callback_basic_type_id) {
-  return SPVM_BASIC_TYPE_has_interface(compiler, class_basic_type_id, callback_basic_type_id);
 }

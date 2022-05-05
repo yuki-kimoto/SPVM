@@ -445,8 +445,9 @@ t/default/lib/SPVM/TestCase/CompileError/Field/Private.spvm
 t/default/lib/SPVM/TestCase/CompileError/ForTest.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/ArrayElementCantAssign.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/HaveBlock.spvm
-t/default/lib/SPVM/TestCase/CompileError/Interface/ImplementStatement.spvm
+t/default/lib/SPVM/TestCase/CompileError/Interface/MultiRequiredMethods.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/NativeMethod.spvm
+t/default/lib/SPVM/TestCase/CompileError/Interface/NoMethods.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/NotHaveInterfaceMethod.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/StaticMethod.spvm
 t/default/lib/SPVM/TestCase/CompileError/InvalidType.spvm

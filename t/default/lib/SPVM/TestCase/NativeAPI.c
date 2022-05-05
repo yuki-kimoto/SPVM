@@ -2260,8 +2260,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
     if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING != 6) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS != 7) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE != 8) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK != 9) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT != 10) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT != 9) { stack[0].ival = 0; return 0; }
   }
   
   stack[0].ival = 1;
