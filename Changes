@@ -2,12 +2,8 @@ Revision history for SPVM
 0.9514_01  2022-05-02
         * Add cloneable_clone to Point class.
         * Point class has Cloneable interface.
-        * Interface can have interface statment.
-        * Interface type and callback type can be assign to interface type that has the interface.
-        * Interface type and callback type can be assign to callback type that has the callback.
-        * Allow type cast from interface type to callback type
-        * Allow type cast from callback type to interface type
-        
+        * Interface can have interface guarantees
+
         [NON BACKWORD COMPATIBLE CHANGES]
         * Revert 0.9514 Methods of interfaces must have the names.
         * implement statement is renamed to interface statement.
