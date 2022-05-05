@@ -2008,7 +2008,7 @@ Explains callbacks.
 A L<callback type|/"Callback Type"> can be defined using the L<class descriptor|/"Class Descriptors"> C<callback_t>.
   
   # Define a callback type
-  class Comparator: callback_t {
+  class Comparator: interface_t {
     method : int ($x1 : object, $x2 : object);
   }
 
@@ -6109,7 +6109,7 @@ The undefined type is the type of L<undef|/"Undefined Value"> value.
 
 The callback type is a type that is defined using a C<class> keyword and a L<class descriptor|/"Class Descriptors"> C<callback_t>.
 
-  class Comparator: callback_t {
+  class Comparator: interface_t {
     method : int ($x1 : object, $x2 : object);
   }
 

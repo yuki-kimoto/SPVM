@@ -1,4 +1,4 @@
-class TestCase::Callback2 : callback_t {
+class TestCase::Callback2 : interface_t {
   use TestCase::Minimal;
 
   required method : TestCase::Minimal ($var1 : TestCase::Minimal, $var2 : object);

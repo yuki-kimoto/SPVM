@@ -1,3 +1,3 @@
-class Stringer : callback_t {
+class Stringer : interface_t {
   required method : string ($object : object);
 }
