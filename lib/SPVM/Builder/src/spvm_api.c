@@ -5594,24 +5594,7 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t inter
 }
 
 int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id) {
-  (void)env;
-
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  // Object must be not null
-  assert(object);
-  
-  int32_t object_type_dimension = object->type_dimension;
-  int32_t has_callback;
-  if (object->type_dimension > 0) {
-    has_callback = 0;
-  }
-  else {
-    int32_t object_basic_type_id = object->basic_type_id;
-    has_callback = SPVM_API_RUNTIME_has_callback_by_id(runtime, object_basic_type_id, callback_basic_type_id);
-  }
-  
-  return has_callback;
+  return SPVM_API_has_interface(env, object, callback_basic_type_id);
 }
 
 int32_t SPVM_API_enter_scope(SPVM_ENV* env) {
@@ -7720,7 +7703,7 @@ int32_t SPVM_API_can_assign(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t c
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK: {
-          can_assign = SPVM_API_RUNTIME_has_callback_by_id(runtime, object_basic_type_id, cast_basic_type_id);
+          can_assign = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, cast_basic_type_id);
           break;
         }
         default: {

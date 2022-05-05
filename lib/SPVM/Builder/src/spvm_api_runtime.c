@@ -1238,10 +1238,6 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t clas
   return has_interface;
 }
 
-int32_t SPVM_API_RUNTIME_has_callback_by_id(SPVM_RUNTIME* runtime, int32_t class_basic_type_id, int32_t callback_basic_type_id) {
-  return SPVM_API_RUNTIME_has_interface_by_id(runtime, class_basic_type_id, callback_basic_type_id);
-}
-
 SPVM_ALLOCATOR* SPVM_API_RUNTIME_get_allocator(SPVM_RUNTIME* runtime) {
   return SPVM_RUNTIME_get_allocator(runtime);
 }
