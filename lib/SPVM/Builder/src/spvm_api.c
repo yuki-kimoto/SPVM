@@ -7081,18 +7081,8 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
   if (class) {
     // Method
-    SPVM_RUNTIME_METHOD* method = NULL;
-    
-    // Anon instance method
-    if (class->is_anon) {
-      // Method name
-      int32_t method_id = class->methods_base_id;
-      method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-    }
-    // Normal instance method
-    else {
-      method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_name);
-    }
+    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_name);
+
     if (method) {
       // Instance method
       if (!method->is_class_method) {
