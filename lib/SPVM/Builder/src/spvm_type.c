@@ -1589,7 +1589,7 @@ int32_t SPVM_TYPE_check_castability(
       castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, cast_type_basic_type_id);
     }
     else if (SPVM_TYPE_is_interface_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      castability = 1;
+      castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, cast_type_basic_type_id);
     }
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
@@ -1629,7 +1629,7 @@ int32_t SPVM_TYPE_check_castability(
         else {
           if (SPVM_BASIC_TYPE_is_class_type(compiler, cast_type_basic_type_id)) {
             if (SPVM_BASIC_TYPE_is_interface_type(compiler, src_type_basic_type_id)) {
-              castability = 1;
+              castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, cast_type_basic_type_id);
             }
             else {
               castability = 0;
@@ -1640,7 +1640,7 @@ int32_t SPVM_TYPE_check_castability(
               castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, cast_type_basic_type_id);
             }
             else if (SPVM_BASIC_TYPE_is_interface_type(compiler, src_type_basic_type_id)) {
-              castability = 1;
+              castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, cast_type_basic_type_id);
             }
             else {
               castability = 0;
