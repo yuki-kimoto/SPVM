@@ -290,8 +290,8 @@ struct spvm_env {
   void (*free_env_prepared)(SPVM_ENV* env);
   SPVM_ENV_API* api;
   void* allocator;
-  int32_t (*can_assign_array_element)(SPVM_ENV* env, void* array, void* element);
-  int32_t (*can_assign)(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
+  int32_t (*check_runtime_assignability_array_element)(SPVM_ENV* env, void* array, void* element);
+  int32_t (*check_runtime_assignability)(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
 };
 
 

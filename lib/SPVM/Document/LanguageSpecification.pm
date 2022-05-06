@@ -6395,7 +6395,7 @@ B<Examples:>
 
 =head1 Type Assignability
 
-Explains the type assignability at compile-time.
+The type assignability at compile-time is explained.
 
 The assignability is false, a compilation error will occur.
 
@@ -7530,6 +7530,56 @@ B<Examples:>
     my $muldim_array : Stringer[][] = [[$cb]];
   }
   
+=head1 Runtime Type Checking
+
+Some L<type cast|/"Type Cast"> operations have runtime type checking. The L<runtime type assignability/"Runtime Type Assignability"> is used to check the type.
+
+=head2 Runtime Type Assignability
+
+The runtime type assignability is the type assignalibility when L<Runtime Type Checking> is performed.
+
+The runtime assignability is false, an exception will be thrown.
+
+If the type of the distribution is an L<object type|/"Object Types"> and the type of the source is L<undef|\"Undefined Type">, the runtime type assignability is true.
+
+If the type of the distribution is same as the type of the source, the runtime type assignability is true.
+
+If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Types">, the runtime type assignability is true.
+
+If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Types">, the runtime type assignability is true.
+
+If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime type assignability is true.
+
+=head2 Runtime Type Assignability
+
+The runtime type assignability is the type assignalibility at runtime.
+
+The runtime assignability is false, an exception will be thrown.
+
+If the type of the distribution is an L<object type|/"Object Types"> and the type of the source is L<undef|\"Undefined Type">, the runtime type assignability is true.
+
+If the type of the distribution is same as the type of the source, the runtime type assignability is true.
+
+If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Types">, the runtime type assignability is true.
+
+If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Types">, the runtime type assignability is true.
+
+If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime type assignability is true.
+
+=begin html
+
+<table>
+  <tr><th>Runtime Assignability</th><th>To</th><th>From</th></tr>
+  <tr><td>True</td><td>OBJECT_X</td><td>undef</td></tr>
+  <tr><td>True</td><td>object</td><td>OBJECT_X</td></tr>
+  <tr><td>True</td><td>object[]</td><td>OBJECT_X[]</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_X</td><td>OBJECT_Y</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>OBJECT_Y</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X</td><td>OBJECT_Y</td></tr>
+  <tr><td>False</td><td>object[]</td><td>OTHER</td></tr>
+</table>
+
+=end html
 
 =head1 Type Conversion
 

@@ -832,28 +832,28 @@ call_spvm_method(...)
               int32_t object_basic_type_id = env->get_object_basic_type_id(env, object);
               int32_t object_type_dimension = env->get_object_type_dimension(env, object);
               
-              int32_t can_assign;
+              int32_t runtime_assignability;
               if (object_basic_type_id == arg_basic_type_id && object_type_dimension == arg_type_dimension) {
-                can_assign = 1;
+                runtime_assignability = 1;
               }
               else {
                 if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
                   if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && object_type_dimension == 1) {
-                    can_assign = 0;
+                    runtime_assignability = 0;
                   }
                   else {
-                    can_assign = 1;
+                    runtime_assignability = 1;
                   }
                 }
                 else if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
-                  can_assign = 1;
+                  runtime_assignability = 1;
                 }
                 else {
-                  can_assign = 0;
+                  runtime_assignability = 0;
                 }
               }
               
-              if (!can_assign) {
+              if (!runtime_assignability) {
                 croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
               }
               
@@ -922,28 +922,28 @@ call_spvm_method(...)
           int32_t object_basic_type_id = env->get_object_basic_type_id(env, object);
           int32_t object_type_dimension = env->get_object_type_dimension(env, object);
           
-          int32_t can_assign;
+          int32_t runtime_assignability;
           if (object_basic_type_id == arg_basic_type_id && object_type_dimension == arg_type_dimension) {
-            can_assign = 1;
+            runtime_assignability = 1;
           }
           else {
             if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
               if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && object_type_dimension == 1) {
-                can_assign = 0;
+                runtime_assignability = 0;
               }
               else {
-                can_assign = 1;
+                runtime_assignability = 1;
               }
             }
             else if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
-              can_assign = 1;
+              runtime_assignability = 1;
             }
             else {
-              can_assign = 0;
+              runtime_assignability = 0;
             }
           }
           
-          if (!can_assign) {
+          if (!runtime_assignability) {
             croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
           }
           

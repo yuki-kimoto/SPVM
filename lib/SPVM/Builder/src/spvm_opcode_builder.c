@@ -3169,7 +3169,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 int32_t narrowing_conversion_error = 0;
                                 int32_t mutable_invalid = 0;
                                 
-                                int32_t can_assign = SPVM_TYPE_check_assignability(
+                                int32_t runtime_assignability = SPVM_TYPE_check_assignability(
                                   compiler,
                                   cast_type_basic_type_id, cast_type_dimension, cast_type_flag,
                                   src_type_basic_type_id, src_type_dimension, src_type_flag,
@@ -3179,7 +3179,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 assert(narrowing_conversion_error == 0);
                                 assert(mutable_invalid == 0);
                                 
-                                if (can_assign) {
+                                if (runtime_assignability) {
                                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
                                 }
                                 else {

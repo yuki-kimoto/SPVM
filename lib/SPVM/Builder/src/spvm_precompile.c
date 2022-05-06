@@ -1633,8 +1633,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "        void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "        int32_t can_assign = env->can_assign_array_element(env, array, object);\n"
-                                              "        if (can_assign) {\n"
+                                              "        int32_t runtime_assignability = env->check_runtime_assignability_array_element(env, array, object);\n"
+                                              "        if (runtime_assignability) {\n"
                                               "          SPVM_API_OBJECT_ASSIGN(element_address, object);\n"
                                               "        }\n"
                                               "        else {\n"
@@ -2911,8 +2911,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "      void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "      int32_t can_assign = env->can_assign(env, cast_basic_type_id, cast_type_dimension, object);\n"
-                                              "      if (can_assign) {\n"
+                                              "      int32_t runtime_assignability = env->check_runtime_assignability(env, cast_basic_type_id, cast_type_dimension, object);\n"
+                                              "      if (runtime_assignability) {\n"
                                               "        SPVM_API_OBJECT_ASSIGN(&");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
@@ -4574,8 +4574,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
-  int32_t method_return_type_can_assign_to_any_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method_return_type_id);
-  if (method_return_type_can_assign_to_any_object) {
+  int32_t method_return_type_check_runtime_assignability_to_any_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method_return_type_id);
+  if (method_return_type_check_runtime_assignability_to_any_object) {
     SPVM_STRING_BUFFER_add(string_buffer, "    if (stack[0].oval != NULL) { SPVM_API_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n"
