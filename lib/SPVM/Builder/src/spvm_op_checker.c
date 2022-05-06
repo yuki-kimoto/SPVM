@@ -3149,7 +3149,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_HAS_IMPLEMENT: {
+            case SPVM_OP_C_ID_HAS_IMPL: {
               SPVM_OP* op_var = op_cur->first;
               SPVM_OP* op_name_method = op_cur->last;
               

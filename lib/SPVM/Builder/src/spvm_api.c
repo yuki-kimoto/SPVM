@@ -4874,7 +4874,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_HAS_IMPLEMENT: {
+      case SPVM_OPCODE_C_ID_HAS_IMPL: {
         int32_t implement_method_id = opcode->operand2;
         SPVM_RUNTIME_METHOD* implement_method = SPVM_API_RUNTIME_get_method(runtime, implement_method_id);
         const char* implement_method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, implement_method->name_id, NULL);

@@ -226,7 +226,7 @@ extern int SPVM_yydebug;
     NEW_STRING_LEN = 361,
     IS_READ_ONLY = 362,
     COPY = 363,
-    HAS_IMPLEMENT = 364,
+    HAS_IMPL = 364,
     INC = 365,
     DEC = 366,
     ARROW = 367
@@ -602,7 +602,7 @@ static const char *const yytname[] =
   "REMAINDER", "REMAINDER_UNSIGNED_INT", "REMAINDER_UNSIGNED_LONG",
   "LOGICAL_NOT", "BIT_NOT", "'@'", "CREATE_REF", "DEREF", "PLUS", "MINUS",
   "CONVERT", "SCALAR", "STRING_LENGTH", "ISWEAK", "REFCNT", "REFOP",
-  "DUMP", "NEW_STRING_LEN", "IS_READ_ONLY", "COPY", "HAS_IMPLEMENT", "INC",
+  "DUMP", "NEW_STRING_LEN", "IS_READ_ONLY", "COPY", "HAS_IMPL", "INC",
   "DEC", "ARROW", "':'", "';'", "'}'", "','", "')'", "']'", "$accept",
   "grammar", "opt_classes", "classes", "class", "class_block",
   "opt_declarations", "declarations", "declaration", "init_block", "use",

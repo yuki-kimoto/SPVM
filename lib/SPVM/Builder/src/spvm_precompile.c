@@ -4532,7 +4532,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_HAS_IMPLEMENT: {
+      case SPVM_OPCODE_C_ID_HAS_IMPL: {
         int32_t implement_method_id = opcode->operand2;
         int32_t implement_method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, implement_method_id);
         const char* implement_method_name = SPVM_API_RUNTIME_get_name(runtime, implement_method_name_id);

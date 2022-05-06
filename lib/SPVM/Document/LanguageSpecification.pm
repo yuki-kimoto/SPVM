@@ -903,7 +903,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPLEMENT
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -1256,7 +1256,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : ISWEAK var ARROW '{' field_name '}'
 
   has_impl
-    : HAS_IMPLEMENT var ARROW method_name
+    : HAS_IMPL var ARROW method_name
 
   array_length
     : '@' expression
@@ -1456,7 +1456,7 @@ The list of syntax parsing tokens:
     <td>HAS</td><td>has</td>
   </tr>
   <tr>
-    <td>HAS_IMPLEMENT</td><td>has_impl</td>
+    <td>HAS_IMPL</td><td>has_impl</td>
   </tr>
   <tr>
     <td>IF</td><td>if</td>
@@ -1685,7 +1685,7 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPLEMENT
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
