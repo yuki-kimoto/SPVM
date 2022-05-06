@@ -4161,14 +4161,14 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
   int32_t narrowing_conversion_error = 0;
   int32_t mutable_invalid = 0;
   
-  int32_t can_assign = SPVM_TYPE_check_assignability(
+  int32_t runtime_assignability = SPVM_TYPE_check_assignability(
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
     src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid
   );
     
-  if (!can_assign) {
+  if (!runtime_assignability) {
     if (mutable_invalid) {
       SPVM_COMPILER_error(compiler, "Can't assign a non-mutable to a mutable type in %s, at %s line %d", place, file, line);
     }

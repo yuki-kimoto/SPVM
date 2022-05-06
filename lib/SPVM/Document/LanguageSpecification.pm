@@ -1983,6 +1983,16 @@ A interface can't have L<filed definitions|/"Field Definition">.
 
 A interface can't have L<class variable definitions|/"Class Variable Definition">.
 
+A interface can have L<interface Guarantees|/"Interface Guarantee">.
+
+  class TestCase::Pointable : interface_t {
+    interface Stringable;
+    
+    required method x : int ();
+    method y : int();
+    method to_string : string ();
+  }
+
 If the interface definition is invalid, a compilation error will occur.
 
 C<new> operator can't create the objects from interfaces.
@@ -6385,7 +6395,7 @@ B<Examples:>
 
 =head1 Type Assignability
 
-Explains the type assignability at compile-time.
+The type assignability at compile-time is explained.
 
 The assignability is false, a compilation error will occur.
 
@@ -6913,6 +6923,80 @@ B<Examples:>
     };
     my $muldim_array : Stringer[][] = [[$cb]];
   }
+
+=head1 Runtime Type Assignability
+
+The type assignability at runtime is explained.
+
+=begin html
+
+<table>
+  <tr><th>Runtime Assignability</th><th>To</th><th>From</th></tr>
+  <tr><td>True</td><td>OBJECT_X</td><td>undef</td></tr>
+  <tr><td>True</td><td>object</td><td>OBJECT_X</td></tr>
+  <tr><td>True</td><td>object[]</td><td>OBJECT_X[]</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td></tr>
+  <tr><td>False</td><td>object[]</td><td>OTHER</td></tr>
+</table>
+
+=end html
+
+
+The runtime assignability is false, an exception will be thrown.
+
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  int32_t runtime_assignability;
+  if (object == NULL) {
+    runtime_assignability = 1;
+  }
+  else {
+    int32_t cast_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, cast_basic_type_id);
+    int32_t object_basic_type_id = object->basic_type_id;
+    int32_t object_type_dimension = object->type_dimension;
+    int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
+    
+    if (cast_type_dimension == 0 && cast_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
+      assert(object_type_dimension >= 0);
+      runtime_assignability = 1;
+    }
+    else if (cast_type_dimension == 1 && cast_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
+      if (object_type_dimension >= 1) {
+        runtime_assignability = 1;
+      }
+      else {
+        runtime_assignability = 0;
+      }
+    }
+    else if (cast_type_dimension == object_type_dimension) {
+      switch (cast_basic_type_category) {
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC:
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
+        {
+          if (cast_basic_type_id == object_basic_type_id) {
+            runtime_assignability = 1;
+          }
+          else {
+            runtime_assignability = 0;
+          }
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE: {
+          runtime_assignability = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, cast_basic_type_id);
+          break;
+        }
+        default: {
+          assert(0);
+        }
+      }
+    }
+    else {
+      runtime_assignability = 0;
+    }
+  }
+
 
 =head1 Type Castability
 
