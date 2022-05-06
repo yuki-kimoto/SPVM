@@ -3156,7 +3156,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
               
               if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-                SPVM_COMPILER_error(compiler, "The invocant of the has_implement operator must be a class type or an interface type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The invocant of the has_impl operator must be a class type or an interface type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               

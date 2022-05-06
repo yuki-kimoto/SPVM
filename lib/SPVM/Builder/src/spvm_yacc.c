@@ -619,8 +619,8 @@ static const char *const yytname[] =
   "binary_op", "comparison_op", "isa", "logical_op", "assign", "new",
   "array_init", "convert", "array_access", "call_spvm_method",
   "field_access", "weaken_field", "unweaken_field", "isweak_field",
-  "has_implement", "array_length", "var_decl", "var", "qualified_type",
-  "type", "basic_type", "ref_type", "array_type", "array_type_with_length",
+  "has_impl", "array_length", "var_decl", "var", "qualified_type", "type",
+  "basic_type", "ref_type", "array_type", "array_type_with_length",
   "return_type", "opt_type_comment", "type_comment", "field_name",
   "method_name", "class_name", "class_alias_name", YY_NULLPTR
 };
@@ -3819,7 +3819,7 @@ yyreduce:
   case 217:
 #line 1139 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_has_implement(compiler, (yyvsp[-3].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
+      (yyval.opval) = SPVM_OP_build_has_impl(compiler, (yyvsp[-3].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
 #line 3825 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

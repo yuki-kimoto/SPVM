@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9514_01  2022-05-06
+0.9514_02  2022-05-07
         * Add cloneable_clone to Point class.
         * Point class has Cloneable interface.
         * Interface can have interface statment.
@@ -39,6 +39,7 @@ Revision history for SPVM
         * Remove "no_symbol_cache_flag" native API. ID 176 is reused by "get_method_id_cache" native API.
         * Remove "set_no_symbol_cache_flag" native API. ID 177 is reused by "get_field_id_cache" native API.
         * Remove "get_class_var_id_cache" native API. ID 178 is reused by "get_class_var_id_cache" native API.
+        * "has_implemenet" operator is renamed to "has_impl".
 0.9514  2022-05-02
         [CHANGE]
         * Add no_compiler_api to SPVM::Builder::Config::Exe

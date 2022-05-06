@@ -209,7 +209,7 @@ The list of keywords.
   gt
   ge
   has
-  has_implement
+  has_impl
   if
   isa
   isweak
@@ -885,7 +885,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> unary_op binary_op comparison_op isa logical_op expression_or_logical_op
   %type <opval> call_spvm_method opt_vaarg
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
-  %type <opval> assign inc dec allow has_implement
+  %type <opval> assign inc dec allow has_impl
   %type <opval> new array_init
   %type <opval> my_var var interface
   %type <opval> expression opt_expressions expressions opt_expression case_statements
@@ -1138,7 +1138,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | TRUE
     | FALSE
     | is_read_only
-    | has_implement
+    | has_impl
 
   expressions
     : expressions ',' expression
@@ -1255,7 +1255,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   isweak_field
     : ISWEAK var ARROW '{' field_name '}'
 
-  has_implement
+  has_impl
     : HAS_IMPLEMENT var ARROW method_name
 
   array_length
@@ -1456,7 +1456,7 @@ The list of syntax parsing tokens:
     <td>HAS</td><td>has</td>
   </tr>
   <tr>
-    <td>HAS_IMPLEMENT</td><td>has_implement</td>
+    <td>HAS_IMPLEMENT</td><td>has_impl</td>
   </tr>
   <tr>
     <td>IF</td><td>if</td>
@@ -1921,7 +1921,7 @@ Interface Guarantee C<interface> is a syntax to guarantee that the class has the
 
 If the method implementation is not found, an exception is thrown at runtime.
 
-The existence of the method implementation can be checked by the L<has_implement|/"has_implement Operator"> operator.
+The existence of the method implementation can be checked by the L<has_impl|/"has_impl Operator"> operator.
 
 =head2 Anon Class
 
@@ -5159,11 +5159,11 @@ B<Examples:>
   # isweak
   my $isweak = isweak $object->{point};
 
-=head2 has_implement Operator
+=head2 has_impl Operator
 
-The C<has_implement> operator checks the existence of the method implementation.
+The C<has_impl> operator checks the existence of the method implementation.
 
-  has_implement OPERAND->METHOD_NAME
+  has_impl OPERAND->METHOD_NAME
 
 The operand must the object that has a L<class type|/"Class Type"> or an L<interface type|/"Interface Type">, otherwise a compilation error will occur.
 
