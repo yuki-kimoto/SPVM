@@ -1012,7 +1012,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 SPVM_CLASS* new_class = type->basic_type->class;
                 
-                // Anon sub
+                // Anon method
                 if (new_class && new_class->is_anon) {
                   SPVM_OP* op_type = op_cur->first;
                   
@@ -2426,7 +2426,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               assert(op_cur->first->id == SPVM_OP_C_ID_LIST);
                   
               
-              // Resulve sub
+              // Resolve method
               SPVM_OP_CHECKER_resolve_call_method(compiler, op_cur, class->op_class);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
@@ -2622,7 +2622,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               {
                 // Enum is replaced to constant value
                 if (call_method->method->is_enum) {
-                  // Replace sub to constant
+                  // Replace method to constant
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
                   int32_t value = call_method->method->op_inline->uv.constant->value.ival;
@@ -2646,7 +2646,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 // Simple constructor is inlined
                 else if (call_method->method->is_simple_constructor) {
-                  // Replace sub to constant
+                  // Replace method to constant
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
                   SPVM_OP* op_type_original = call_method->method->op_inline;
@@ -4695,7 +4695,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       
-      // Is constant sub
+      // Is constant method
       {
         SPVM_OP* op_block = method->op_block;
         if (op_block) {
@@ -4715,7 +4715,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
       }
       
-      // Is simple constructor sub
+      // Is simple constructor method
       {
         SPVM_OP* op_block = method->op_block;
         if (op_block) {
@@ -4748,11 +4748,11 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
 
-      // Create sub signature
+      // Create method signature
       const char* method_signature = SPVM_COMPILER_create_method_signature(compiler, method);
       method->signature = method_signature;
 
-      // Copy has_precomile_descriptor from anon sub defined class
+      // Copy has_precomile_descriptor from anon method defined class
       if (method->anon_method_defined_class_name) {
         SPVM_CLASS* anon_method_defined_class = SPVM_HASH_get(compiler->class_symtable, method->anon_method_defined_class_name, strlen(method->anon_method_defined_class_name));
         SPVM_LIST_push(anon_method_defined_class->anon_methods, method);
