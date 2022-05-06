@@ -6,6 +6,7 @@ class TestCase::Interface {
   use List;
   use Point;
   use TestCase::Pointable;
+  use TestCase::PointForTest;
   
   interface TestCase::InterfaceType;
   
@@ -261,6 +262,25 @@ class TestCase::Interface {
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+
+  static method has_impl : int () {
+    # has_impl
+    {
+      my $pointable : TestCase::Pointable = TestCase::PointForTest->new_xy(1, 2);
+      
+      unless (has_impl $pointable->x) {
+        return 0;
+      }
+      unless (has_impl $pointable->y) {
+        return 0;
+      }
+      unless (has_impl $pointable->to_string) {
+        return 0;
+      }
+    }
     
     return 1;
   }
