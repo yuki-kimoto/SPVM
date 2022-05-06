@@ -5165,13 +5165,19 @@ The C<has_impl> operator checks the existence of the method implementation.
 
   has_impl OPERAND->METHOD_NAME
 
+  has_impl OPERAND
+
 The operand must the object that has a L<class type|/"Class Type"> or an L<interface type|/"Interface Type">, otherwise a compilation error will occur.
+
+If the class or the interface doesn't have the method declaration, a compilation error will occur.
 
 The method name must be a L<method name|/"Method Names">, otherwise a compilation error will occur.
 
+If method name is not specified, the method name become C<"">.
+
 The return type is L<int type|/"int Type">.
 
-If the class of the object has the method implementation, returns C<1>, otherwise returns C<0>.
+If the class or the interface has the method implementation, returns C<1>, otherwise returns C<0>.
 
 =head2 Type Cast
 
