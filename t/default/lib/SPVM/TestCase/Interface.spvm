@@ -280,6 +280,10 @@ class TestCase::Interface {
       unless (has_impl $pointable->to_string) {
         return 0;
       }
+      
+      if (has_impl $pointable->not_impl) {
+        return 0;
+      }
     }
     
     return 1;
