@@ -7651,7 +7651,10 @@ int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, int32_t cast_basic_t
     int32_t object_type_dimension = object->type_dimension;
     int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
     
-    if (cast_type_dimension == 0 && cast_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
+    if (cast_basic_type_id == object_basic_type_id && cast_type_dimension == object_type_dimension) {
+      runtime_assignability = 1;
+    }
+    else if (cast_type_dimension == 0 && cast_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
       assert(object_type_dimension >= 0);
       runtime_assignability = 1;
     }
@@ -7663,29 +7666,8 @@ int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, int32_t cast_basic_t
         runtime_assignability = 0;
       }
     }
-    else if (cast_type_dimension == object_type_dimension) {
-      switch (cast_basic_type_category) {
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC:
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
-        {
-          if (cast_basic_type_id == object_basic_type_id && cast_type_dimension == object_type_dimension) {
-            runtime_assignability = 1;
-          }
-          else {
-            runtime_assignability = 0;
-          }
-          break;
-        }
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE: {
-          runtime_assignability = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, cast_basic_type_id);
-          break;
-        }
-        default: {
-          assert(0);
-        }
-      }
+    else if (cast_type_dimension == object_type_dimension && cast_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+      runtime_assignability = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, cast_basic_type_id);
     }
     else {
       runtime_assignability = 0;
