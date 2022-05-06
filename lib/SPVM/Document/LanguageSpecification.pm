@@ -7504,7 +7504,11 @@ B<Examples:>
   
 =head2 Type Castability to Multi-Dimensional Array
 
-If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and  and the types of the right operands are the following cases:
+
+If the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
+
+If the type of the right operand is an L<any object type|/"Any Object Type">, the type castability is true.
 
 If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the type castability is true.
 
@@ -7515,7 +7519,9 @@ Otherwise, the type castability is false.
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>Copying</td></tr>
-  <tr><td>True</td><td>object[]</td><td>undef</td><td>Copying</td></tr>
+  <tr><td>True</td><td>MULDIM_X</td><td>object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>MULDIM_X</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>MULDIM_X</td><td>undef</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>Copying</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
