@@ -916,8 +916,9 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   179 print
   180 print_stderr
   181 init_env,
-  182 call_init_blocks,
-  183 cleanup_global_vars,
+  182 call_init_blocks
+  183 cleanup_global_vars
+  184 free_env_prepared
 
 =head1 List of Native APIs
 
@@ -2717,18 +2718,6 @@ Print the characters of the string to stderr.
 
 If the string is C<NULL>, nothing is printed.
 
-=head2 new_env_raw
-
-  SPVM_ENV* (*new_env_raw)();
-
-Create a new environment. This environment is not yet initialized.
-
-=head2 free_env_raw
-
-  void (*free_env_raw)(SPVM_ENV* env);
-
-Release the execution environment.
-
 =head2 init_env
 
   int32_t (*init_env)(SPVM_ENV* env);
@@ -2746,6 +2735,12 @@ Call C<INIT> blocks.
   void (*cleanup_global_vars)(SPVM_ENV* env);
 
 Cleanup gloval variable, such as class variables and the exception variable.
+
+=head2 free_env_prepared
+  
+  void (*free_env_prepared)(SPVM_ENV* env);
+
+Free the environment prepared by C<SPVM_NATIVE_new_env_prepared> function.
 
 =head1 Compiler Native API
 
