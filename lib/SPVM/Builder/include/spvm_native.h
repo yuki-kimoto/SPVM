@@ -107,7 +107,7 @@ struct spvm_env {
   void* object_flag_offset;
   void* object_length_offset;
   SPVM_ENV_API* api;
-  void* short_object_basic_type_id;
+  void* allocator;
   void* int_object_basic_type_id;
   void* long_object_basic_type_id;
   void* float_object_basic_type_id;
@@ -288,7 +288,6 @@ struct spvm_env {
   int32_t (*get_field_id_cache)(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
   int32_t (*get_class_var_id_cache)(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
   void (*free_env_prepared)(SPVM_ENV* env);
-  void* allocator;
   int32_t (*check_runtime_assignability_array_element)(SPVM_ENV* env, void* array, void* element);
   int32_t (*check_runtime_assignability)(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
 };

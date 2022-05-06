@@ -107,7 +107,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     (void*)(intptr_t)offsetof(SPVM_OBJECT, flag), // object_flag_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
     env_api,
-    (void*)(intptr_t)SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_OBJECT, // short_object_basic_type_id
+    allocator, // allocator
     (void*)(intptr_t)SPVM_NATIVE_C_BASIC_TYPE_ID_INT_OBJECT, // int_object_basic_type_id
     (void*)(intptr_t)SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_OBJECT,  // long_object_basic_type_id
     (void*)(intptr_t)SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT, // float_object_basic_type_id
@@ -288,7 +288,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_field_id_cache,
     SPVM_API_get_class_var_id_cache,
     SPVM_API_free_env_prepared,
-    allocator, // allocator
     SPVM_API_check_runtime_assignability_array_element,
     SPVM_API_check_runtime_assignability,
   };

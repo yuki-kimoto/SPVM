@@ -645,6 +645,78 @@ Native API can be called from "SPVM_ENV* env" passed as an argument. Note that y
   16 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT
   17 SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT
 
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN
+
+The basic type is unknown.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF
+
+The basic type ID of C<undef> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_VOID
+
+The basic type ID of C<void> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE
+
+The basic type ID of C<byte> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT
+
+The basic type ID of C<short> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_INT
+
+The basic type ID of C<int> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_LONG
+
+The basic type ID of C<long> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT
+
+The basic type ID of C<float> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE
+
+The basic type ID of C<double> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_STRING
+
+The basic type ID of C<string> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT
+
+The basic type ID of C<object> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_OBJECT
+
+The basic type ID of L<Byte|SPVM::Byte> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_OBJECT
+
+The basic type ID of L<Short|SPVM::Short> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_INT_OBJECT
+
+The basic type ID of L<Int|SPVM::Int> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_OBJECT
+
+The basic type ID of L<Long|SPVM::Long> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT
+
+The basic type ID of L<Float|SPVM::Float> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT
+
+The basic type ID of L<Double|SPVM::Double> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT
+
+The basic type ID of L<BOOL|SPVM::BOOL> type.
+
 =head2 Constant Values of Basic Type Categories
 
   0  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN
@@ -671,8 +743,8 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   6 object_type_category_offset
   7 object_flag_offset
   8 object_length_offset
-  9 byte_object_basic_type_id
-  10 short_object_basic_type_id
+  9 api
+  10 allocator
   11 int_object_basic_type_id
   12 long_object_basic_type_id
   13 float_object_basic_type_id
@@ -910,17 +982,34 @@ Offset of flag in object structure. This is used internally.
 
 The length offset in the object structure. This is used internally.
 
-=head2 byte_object_basic_type_id
+=head2 api
 
-  void* byte_object_basic_type_id;
+  void* api;
 
-Basic type ID of L<Byte|SPVM::Byte> type. This is used internally.
+The environment of APIs such as L<compiler native APIs|SPVM::Document::NativeAPI::Compiler>, L<precompile native APIs|SPVM::Document::NativeAPI::Precompile>, L<runtime native APIs|SPVM::Document::NativeAPI::Runtime>, L<string buffer native APIs|SPVM::Document::NativeAPI::StringBuffer>, L<allocator native APIs|SPVM::Document::NativeAPI::Allocator>.
 
-=head2 short_object_basic_type_id
+B<Examples:>
+  
+  // Compiler native APIs
+  void* compiler_api = env->api->compiler;
+  
+  // Precompile native APIs
+  void* precompile_api = env->api->precompile;
+  
+  // Runtime native APIs
+  void* runtime_api = env->api->runtime;
+  
+  // String buffer native APIs
+  void* string_buffer_api = env->api->string_buffer;
+  
+  // Allocator native APIs
+  void* allocator_api = env->api->allocator;
 
-  void* short_object_basic_type_id;
+=head2 allocator
 
-ID of the base type of L<Short|SPVM::Short> type. This is used internally.
+  void* allocator;
+
+The memory allocator for this environment.
 
 =head2 int_object_basic_type_id
 
