@@ -1317,7 +1317,10 @@ int32_t SPVM_TYPE_check_assignability(
         }
         else {
           if (SPVM_BASIC_TYPE_is_interface_type(compiler, dist_type_basic_type_id)) {
-            if (SPVM_BASIC_TYPE_is_class_type(compiler, src_type_basic_type_id)) {
+            if (SPVM_BASIC_TYPE_is_interface_type(compiler, src_type_basic_type_id)) {
+              assignability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
+            }
+            else if (SPVM_BASIC_TYPE_is_class_type(compiler, src_type_basic_type_id)) {
               assignability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
             }
             else {
