@@ -1,5 +1,6 @@
 Revision history for SPVM
 0.9514_02  2022-05-07
+        [CHANGE]
         * Add cloneable_clone to Point class.
         * Point class has Cloneable interface.
         * Interface can have interface statment.
@@ -8,6 +9,8 @@ Revision history for SPVM
         * Allow type cast from interface type to callback type
         * Allow type cast from callback type to interface type
         * Improve calling method error messages.
+        [BUG FIX]
+        * Fix the bug that has_impl can specify not found method.
         [NON BACKWORD COMPATIBLE CHANGES]
         * Revert 0.9514 Methods of interfaces must have the names.
         * implement statement is renamed to interface statement.

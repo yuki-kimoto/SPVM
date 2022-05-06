@@ -3151,12 +3151,29 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             }
             case SPVM_OP_C_ID_HAS_IMPLEMENT: {
               SPVM_OP* op_var = op_cur->first;
-              SPVM_OP* op_name = op_cur->last;
+              SPVM_OP* op_name_method = op_cur->last;
               
               SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
               
               if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
                 SPVM_COMPILER_error(compiler, "The invocant of the has_impl operator must be a class type or an interface type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              const char* class_name = type->basic_type->name;
+              SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+              
+              assert(class);
+              
+              const char* method_name = op_name_method->uv.name;
+              SPVM_METHOD* found_method = SPVM_HASH_get(
+                class->method_symtable,
+                method_name,
+                strlen(method_name)
+              );
+              
+              if (!found_method) {
+                SPVM_COMPILER_error(compiler, "The interface or class \"%s\" doesn't have the method declaration \"%s\" at %s line %d", class_name, method_name, op_name_method->file, op_name_method->line);
                 return;
               }
               
