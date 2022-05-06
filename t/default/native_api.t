@@ -139,9 +139,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::NativeAPI->set_field_object_by_name_exception());
 }
 
-# has_callback
+# has_interface
 {
-  ok(SPVM::TestCase::NativeAPI->has_callback);
+  ok(SPVM::TestCase::NativeAPI->has_interface);
 }
 
 # is_type

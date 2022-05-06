@@ -380,21 +380,21 @@ class TestCase::NativeAPI {
   }
   native static method set_class_var_object_by_name_test_exception : object ();
 
-  native static method has_callback_test : int ($object : object);
-  static method has_callback : int () {
+  native static method has_interface_test : int ($object : object);
+  static method has_interface : int () {
     my $impl1 = TestCase::Callback::ImplementCallback1->new;
     my $impl1s = new TestCase::Callback::ImplementCallback1[3];
     my $minimal = TestCase::Minimal->new;
 
-    unless (TestCase::NativeAPI->has_callback_test($impl1)) {
+    unless (TestCase::NativeAPI->has_interface_test($impl1)) {
       return 0;
     }
     
-    unless (!TestCase::NativeAPI->has_callback_test($impl1s)) {
+    unless (!TestCase::NativeAPI->has_interface_test($impl1s)) {
       return 0;
     }
     
-    unless (!TestCase::NativeAPI->has_callback_test($minimal)) {
+    unless (!TestCase::NativeAPI->has_interface_test($minimal)) {
       return 0;
     }
     

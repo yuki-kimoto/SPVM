@@ -747,8 +747,8 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   10 allocator
   11 new_env_raw
   12 free_env_raw
-  13 float_object_basic_type_id
-  14 double_object_basic_type_id
+  13 check_runtime_assignability
+  14 check_runtime_assignability_array_element
   15 runtime
   16 exception_object
   17 native_mortal_stack
@@ -840,7 +840,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   103 leave_scope
   104 remove_mortal
   105 is_type
-  106 has_callback
+  106 is_object_array
   107 get_object_basic_type_id
   108 get_object_type_dimension
   109 weaken
@@ -915,12 +915,9 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   178 get_no_symbol_cache_flag
   179 print
   180 print_stderr
-  181 new_env_raw,
-  182 free_env_raw,
-  183 init_env,
-  184 call_init_blocks,
-  185 cleanup_global_vars,
-  186 is_object_array,
+  181 init_env,
+  182 call_init_blocks,
+  183 cleanup_global_vars,
 
 =head1 List of Native APIs
 
@@ -1023,17 +1020,17 @@ Create a new raw envriment.
 
 Free the raw environemt that is created by L</"new_env_raw">.
 
-=head2 float_object_basic_type_id
+=head2 check_runtime_assignability
 
-  void* float_object_basic_type_id;
+  int32_t (*check_runtime_assignability)(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
 
-ID of the base type of L<Float|SPVM::Float> type. This is used internally.
+Check the runtime type assignability of an object.
 
-=head2 double_object_basic_type_id
+=head2 check_runtime_assignability_array_element
 
-  void* double_object_basic_type_id;
+  int32_t (*check_runtime_assignability_array_element)(SPVM_ENV* env, void* array, void* element);
 
-ID of the base type of L<Double|SPVM::Double> type. This is used internally.
+Check the runtime type assignability of an array element.
 
 =head2 runtime
 
@@ -1888,11 +1885,13 @@ Given a scope ID and an object, delete the specified object from the mortal stac
 
 Given an object and a base type ID and a type dimension, returns a nonzero value if the object matches both the base type ID and the type dimension, and 0 otherwise.
 
-=head2 has_callback
+=head2 is_object_array
 
-  int32_t (*has_callback)(SPVM_ENV* env, void* object, int32_t callback_basic_type_id);
+  int32_t (*is_object_array)(SPVM_ENV* env, void* object);
 
-Given a base type id for the object and the callback type, returns a non-zero value if the object conforms to the callback type, and zero otherwise.
+If the object is a object array, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
 
 =head2 get_object_basic_type_id
 
@@ -2757,14 +2756,6 @@ Call C<INIT> blocks.
   void (*cleanup_global_vars)(SPVM_ENV* env);
 
 Cleanup gloval variable, such as class variables and the exception variable.
-
-=head2 is_object_array
-
-  int32_t (*is_object_array)(SPVM_ENV* env, void* object);
-
-If the object is a object array, returns C<1>, otherwise returns C<0>.
-
-If the object is C<NULL>, returns C<0>.
 
 =head1 Compiler Native API
 

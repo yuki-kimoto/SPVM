@@ -110,8 +110,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     allocator, // allocator
     SPVM_API_new_env_raw,
     SPVM_API_free_env_raw,
-    (void*)(intptr_t)SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT, // float_object_basic_type_id
-    (void*)(intptr_t)SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT, // double_object_basic_type_id
+    SPVM_API_check_runtime_assignability,
+    SPVM_API_check_runtime_assignability_array_element,
     NULL, // runtime
     NULL, // exception_object
     NULL, // native_mortal_stack
@@ -203,7 +203,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_leave_scope,
     SPVM_API_remove_mortal,
     SPVM_API_is_type,
-    SPVM_API_has_interface,
+    SPVM_API_is_object_array,
     SPVM_API_get_object_basic_type_id,
     SPVM_API_get_object_type_dimension,
     SPVM_API_weaken,
@@ -281,13 +281,10 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
     SPVM_API_cleanup_global_vars,
-    SPVM_API_is_object_array,
     SPVM_API_get_method_id_cache,
     SPVM_API_get_field_id_cache,
     SPVM_API_get_class_var_id_cache,
     SPVM_API_free_env_prepared,
-    SPVM_API_check_runtime_assignability_array_element,
-    SPVM_API_check_runtime_assignability,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
