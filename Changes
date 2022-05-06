@@ -4,6 +4,8 @@ Revision history for SPVM
         * Point class has Cloneable interface.
         * Interface can have interface guarantees
 
+        [BUG FIX]
+        * Fix the bug that switch statement is wrong behaivior when the count of case statements is greater than 255.
         [NON BACKWORD COMPATIBLE CHANGES]
         * Revert 0.9514 Methods of interfaces must have the names.
         * implement statement is renamed to interface statement.

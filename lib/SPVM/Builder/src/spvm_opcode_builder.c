@@ -4118,9 +4118,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           // Set the information of switch opcodes
                           int32_t opcode_id = switch_info->opcode_id;
                           SPVM_OPCODE* opcode = (SPVM_OPCODE*)&opcode_array->values[opcode_id];
-                          opcode->operand1 = switch_info->switch_id;
-                          opcode->operand2 = switch_info->default_opcode_rel_index;
-                          opcode->operand3 = switch_info->case_infos->length;
+                          opcode->operand1 = switch_info->default_opcode_rel_index;
+                          opcode->operand2 = switch_info->case_infos->length;
 
                           // Set case info operands
                           SPVM_LIST* case_infos = switch_info->case_infos;
