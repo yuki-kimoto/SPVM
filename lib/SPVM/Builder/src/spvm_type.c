@@ -1467,7 +1467,7 @@ int32_t SPVM_TYPE_check_castability(
       castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, cast_type_basic_type_id);
     }
     else if (SPVM_TYPE_is_interface_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      castability = 1;
+      castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, cast_type_basic_type_id);
     }
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
