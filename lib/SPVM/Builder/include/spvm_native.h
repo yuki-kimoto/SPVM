@@ -273,17 +273,14 @@ struct spvm_env {
   void* (*copy)(SPVM_ENV* env, void* object);
   void (*shorten)(SPVM_ENV* env, void* string, int32_t new_length);
   int32_t (*has_interface)(SPVM_ENV* env, void* object, int32_t interface_basic_type_id);
-  void* no_symbol_cache_flag;
-  void (*set_no_symbol_cache_flag)(SPVM_ENV* env, int32_t flag);
-  int32_t (*get_no_symbol_cache_flag)(SPVM_ENV* env);
+  int32_t (*get_method_id_cache)(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
+  int32_t (*get_field_id_cache)(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
+  int32_t (*get_class_var_id_cache)(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
   void (*print)(SPVM_ENV* env, void* string);
   void (*print_stderr)(SPVM_ENV* env, void* string);
   int32_t (*init_env)(SPVM_ENV* env);
   void (*call_init_blocks)(SPVM_ENV* env);
   void (*cleanup_global_vars)(SPVM_ENV* env);
-  int32_t (*get_method_id_cache)(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
-  int32_t (*get_field_id_cache)(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
-  int32_t (*get_class_var_id_cache)(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
   void (*free_env_prepared)(SPVM_ENV* env);
 };
 

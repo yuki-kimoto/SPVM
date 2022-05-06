@@ -273,17 +273,14 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_copy,
     SPVM_API_shorten,
     SPVM_API_has_interface,
-    NULL, // no_symbol_cache_flag
-    SPVM_API_set_no_symbol_cache_flag,
-    SPVM_API_get_no_symbol_cache_flag,
+    SPVM_API_get_method_id_cache,
+    SPVM_API_get_field_id_cache,
+    SPVM_API_get_class_var_id_cache,
     SPVM_API_print,
     SPVM_API_print_stderr,
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
     SPVM_API_cleanup_global_vars,
-    SPVM_API_get_method_id_cache,
-    SPVM_API_get_field_id_cache,
-    SPVM_API_get_class_var_id_cache,
     SPVM_API_free_env_prepared,
   };
   
@@ -7533,18 +7530,6 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_OBJECT* string, int32_t new_length) {
       }
     }
   }
-}
-
-void SPVM_API_set_no_symbol_cache_flag(SPVM_ENV* env, int32_t flag) {
-  (void)env;
-
-  env->no_symbol_cache_flag = (void*)(intptr_t)flag;
-}
-
-int32_t SPVM_API_get_no_symbol_cache_flag(SPVM_ENV* env) {
-  (void)env;
-  
-  return (int32_t)(intptr_t)env->no_symbol_cache_flag;
 }
 
 void SPVM_API_call_init_blocks(SPVM_ENV* env) {

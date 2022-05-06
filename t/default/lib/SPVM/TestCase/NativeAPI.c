@@ -191,9 +191,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->copy != &env_array[173]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->shorten != &env_array[174]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->has_interface != &env_array[175]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->no_symbol_cache_flag != &env_array[176]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_no_symbol_cache_flag != &env_array[177]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_no_symbol_cache_flag != &env_array[178]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_method_id_cache != &env_array[176]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_id_cache != &env_array[177]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_id_cache != &env_array[178]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->print != &env_array[179]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->print_stderr != &env_array[180]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->init_env != &env_array[181]) { stack[0].ival = 0; return 0;}

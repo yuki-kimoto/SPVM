@@ -58,7 +58,6 @@ int32_t SPVM_API_is_string(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_API_is_numeric_array(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array);
-int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id);
 int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id);
 
 SPVM_METHOD* SPVM_API_method(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* method_name);
@@ -277,10 +276,6 @@ SPVM_OBJECT* SPVM_API_new_array_proto(SPVM_ENV* env, SPVM_OBJECT* array, int32_t
 SPVM_OBJECT* SPVM_API_copy_raw(SPVM_ENV* env, SPVM_OBJECT* object);
 SPVM_OBJECT* SPVM_API_copy(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_API_shorten(SPVM_ENV* env, SPVM_OBJECT* string, int32_t new_length);
-
-void SPVM_API_set_no_symbol_cache_flag(SPVM_ENV* env, int32_t flag);
-int32_t SPVM_API_get_no_symbol_cache_flag(SPVM_ENV* env);
-
 
 void SPVM_API_fprint(SPVM_ENV* env, FILE* fh, SPVM_OBJECT* string);
 void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_OBJECT* string);

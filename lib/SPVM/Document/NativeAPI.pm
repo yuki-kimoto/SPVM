@@ -910,9 +910,9 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   173 copy
   174 shorten
   175 has_interface
-  176 no_symbol_cache_flag
-  177 set_no_symbol_cache_flag
-  178 get_no_symbol_cache_flag
+  176 get_method_id_cache
+  177 get_field_id_cache
+  178 get_class_var_id_cache
   179 print
   180 print_stderr
   181 init_env,
@@ -2681,35 +2681,25 @@ The charaters of the after the given length are filled with C<\0>.
 
   int32_t (*has_interface)(SPVM_ENV* env, void* object, int32_t interface_basic_type_id);
 
-Check the class of the object has the interface type.
+Check the type of the object has the interface.
 
-=head2 no_symbol_cache_flag
+=head2 get_method_id_cache
 
-  void* no_symbol_cache_flag;
+  int32_t (*get_method_id_cache)(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
 
-(Currently Unused)
+Get the method ID from the method cache name. The method ID is cacahed.
 
-Used internally.
+=head2 get_field_id_cache
 
-=head2 set_no_symbol_cache_flag
+  int32_t (*get_field_id_cache)(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
 
-  void (*set_no_symbol_cache_flag)(SPVM_ENV* env, int32_t flag);
+Get the method ID from the field cache name. The field ID is cacahed.
 
-(Currently Unused)
+=head2 get_class_var_id_cache
 
-Set the flag that precompile and native codes don't use symbol cache such as basic type names, method names, field names, package names.
+  int32_t (*get_class_var_id_cache)(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
 
-If the flag is C<1>, caching is not done, if the flag is C<0>, caching is done.
-
-Note that this flag is merely intention for the native module authors. On the other hand, precompile and the core native code follow this flag.
-
-=head2 get_no_symbol_cache_flag
-
-  int32_t (*get_no_symbol_cache_flag)(SPVM_ENV* env);
-
-(Currently Unused)
-
-Get the flag that native code doesn't use symbol cache such as basic type names, method names, field names, package names.
+Get the class variable ID from the class variable cache name. The class variable ID is cacahed.
 
 =head2 print
 
