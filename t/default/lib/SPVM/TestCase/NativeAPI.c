@@ -24,7 +24,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->object_type_category_offset != &env_array[6]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->object_flag_offset != &env_array[7]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->object_length_offset != &env_array[8]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->byte_object_basic_type_id != &env_array[9]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api != &env_array[9]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->short_object_basic_type_id != &env_array[10]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->int_object_basic_type_id != &env_array[11]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->long_object_basic_type_id != &env_array[12]) { stack[0].ival = 0; return 0; }
