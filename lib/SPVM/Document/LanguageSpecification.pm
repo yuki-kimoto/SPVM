@@ -5179,6 +5179,14 @@ The return type is L<int type|/"int Type">.
 
 If the class or the interface has the method implementation, returns C<1>, otherwise returns C<0>.
 
+B<Examples:>
+
+  my $stringable = (Stringable)Point->new_xy(1, 2);
+  
+  if (has_impl $stringable->to_string) {
+    # ...
+  }
+
 =head2 Type Cast
 
 The type cast is the L<operator|/"Operators"> to perform an L<explicite type conversion|/"Explicite Type Conversion">.
