@@ -6924,80 +6924,6 @@ B<Examples:>
     my $muldim_array : Stringer[][] = [[$cb]];
   }
 
-=head1 Runtime Type Assignability
-
-The type assignability at runtime is explained.
-
-=begin html
-
-<table>
-  <tr><th>Runtime Assignability</th><th>To</th><th>From</th></tr>
-  <tr><td>True</td><td>OBJECT_X</td><td>undef</td></tr>
-  <tr><td>True</td><td>object</td><td>OBJECT_X</td></tr>
-  <tr><td>True</td><td>object[]</td><td>OBJECT_X[]</td></tr>
-  <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td></tr>
-  <tr><td>False</td><td>object[]</td><td>OTHER</td></tr>
-</table>
-
-=end html
-
-
-The runtime assignability is false, an exception will be thrown.
-
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  int32_t runtime_assignability;
-  if (object == NULL) {
-    runtime_assignability = 1;
-  }
-  else {
-    int32_t cast_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, cast_basic_type_id);
-    int32_t object_basic_type_id = object->basic_type_id;
-    int32_t object_type_dimension = object->type_dimension;
-    int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
-    
-    if (cast_type_dimension == 0 && cast_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
-      assert(object_type_dimension >= 0);
-      runtime_assignability = 1;
-    }
-    else if (cast_type_dimension == 1 && cast_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
-      if (object_type_dimension >= 1) {
-        runtime_assignability = 1;
-      }
-      else {
-        runtime_assignability = 0;
-      }
-    }
-    else if (cast_type_dimension == object_type_dimension) {
-      switch (cast_basic_type_category) {
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC:
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
-        {
-          if (cast_basic_type_id == object_basic_type_id) {
-            runtime_assignability = 1;
-          }
-          else {
-            runtime_assignability = 0;
-          }
-          break;
-        }
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE: {
-          runtime_assignability = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, cast_basic_type_id);
-          break;
-        }
-        default: {
-          assert(0);
-        }
-      }
-    }
-    else {
-      runtime_assignability = 0;
-    }
-  }
-
-
 =head1 Type Castability
 
 The type castability at compile-time is explained.
@@ -7604,6 +7530,56 @@ B<Examples:>
     my $muldim_array : Stringer[][] = [[$cb]];
   }
   
+=head1 Runtime Type Checking
+
+Some L<type cast|/"Type Cast"> operations have runtime type checking. The L<runtime type assignability/"Runtime Type Assignability"> is used to check the type.
+
+=head2 Runtime Type Assignability
+
+The runtime type assignability is the type assignalibility when L<Runtime Type Checking> is performed.
+
+The runtime assignability is false, an exception will be thrown.
+
+If the type of the distribution is an L<object type|/"Object Types"> and the type of the source is L<undef|\"Undefined Type">, the runtime type assignability is true.
+
+If the type of the distribution is same as the type of the source, the runtime type assignability is true.
+
+If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Types">, the runtime type assignability is true.
+
+If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Types">, the runtime type assignability is true.
+
+If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime type assignability is true.
+
+=head2 Runtime Type Assignability
+
+The runtime type assignability is the type assignalibility at runtime.
+
+The runtime assignability is false, an exception will be thrown.
+
+If the type of the distribution is an L<object type|/"Object Types"> and the type of the source is L<undef|\"Undefined Type">, the runtime type assignability is true.
+
+If the type of the distribution is same as the type of the source, the runtime type assignability is true.
+
+If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Types">, the runtime type assignability is true.
+
+If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Types">, the runtime type assignability is true.
+
+If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime type assignability is true.
+
+=begin html
+
+<table>
+  <tr><th>Runtime Assignability</th><th>To</th><th>From</th></tr>
+  <tr><td>True</td><td>OBJECT_X</td><td>undef</td></tr>
+  <tr><td>True</td><td>object</td><td>OBJECT_X</td></tr>
+  <tr><td>True</td><td>object[]</td><td>OBJECT_X[]</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_X</td><td>OBJECT_Y</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>OBJECT_Y</td></tr>
+  <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X</td><td>OBJECT_Y</td></tr>
+  <tr><td>False</td><td>object[]</td><td>OTHER</td></tr>
+</table>
+
+=end html
 
 =head1 Type Conversion
 
