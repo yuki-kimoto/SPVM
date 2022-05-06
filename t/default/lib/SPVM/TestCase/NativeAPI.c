@@ -26,8 +26,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->object_length_offset != &env_array[8]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api != &env_array[9]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->allocator != &env_array[10]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->int_object_basic_type_id != &env_array[11]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->long_object_basic_type_id != &env_array[12]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_env_raw != &env_array[11]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->free_env_raw != &env_array[12]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->float_object_basic_type_id != &env_array[13]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->double_object_basic_type_id != &env_array[14]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->runtime != &env_array[15]) { stack[0].ival = 0; return 0; }
@@ -196,12 +196,10 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_no_symbol_cache_flag != &env_array[178]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->print != &env_array[179]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->print_stderr != &env_array[180]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->new_env_raw != &env_array[181]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->free_env_raw != &env_array[182]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->init_env != &env_array[183]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->call_init_blocks != &env_array[184]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->cleanup_global_vars != &env_array[185]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->is_object_array != &env_array[186]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->init_env != &env_array[181]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->call_init_blocks != &env_array[182]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->cleanup_global_vars != &env_array[183]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->is_object_array != &env_array[184]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 

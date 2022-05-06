@@ -108,8 +108,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
     env_api,
     allocator, // allocator
-    (void*)(intptr_t)SPVM_NATIVE_C_BASIC_TYPE_ID_INT_OBJECT, // int_object_basic_type_id
-    (void*)(intptr_t)SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_OBJECT,  // long_object_basic_type_id
+    SPVM_API_new_env_raw,
+    SPVM_API_free_env_raw,
     (void*)(intptr_t)SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT, // float_object_basic_type_id
     (void*)(intptr_t)SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT, // double_object_basic_type_id
     NULL, // runtime
@@ -278,8 +278,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_no_symbol_cache_flag,
     SPVM_API_print,
     SPVM_API_print_stderr,
-    SPVM_API_new_env_raw,
-    SPVM_API_free_env_raw,
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
     SPVM_API_cleanup_global_vars,

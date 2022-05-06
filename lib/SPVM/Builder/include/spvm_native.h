@@ -108,8 +108,8 @@ struct spvm_env {
   void* object_length_offset;
   SPVM_ENV_API* api;
   void* allocator;
-  void* int_object_basic_type_id;
-  void* long_object_basic_type_id;
+  SPVM_ENV* (*new_env_raw)();
+  void (*free_env_raw)(SPVM_ENV* env);
   void* float_object_basic_type_id;
   void* double_object_basic_type_id;
   void* runtime;
@@ -278,8 +278,6 @@ struct spvm_env {
   int32_t (*get_no_symbol_cache_flag)(SPVM_ENV* env);
   void (*print)(SPVM_ENV* env, void* string);
   void (*print_stderr)(SPVM_ENV* env, void* string);
-  SPVM_ENV* (*new_env_raw)();
-  void (*free_env_raw)(SPVM_ENV* env);
   int32_t (*init_env)(SPVM_ENV* env);
   void (*call_init_blocks)(SPVM_ENV* env);
   void (*cleanup_global_vars)(SPVM_ENV* env);

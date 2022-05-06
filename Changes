@@ -19,6 +19,8 @@ Revision history for SPVM
         * Change ID of SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT from 10 to 9
         * Remove "byte_object_basic_type_id" native API. ID 9 is reused by "api" native API.
         * Remove "short_object_basic_type_id" native API. ID 10 is reused by "allocator" native API.
+        * Remove "int_object_basic_type_id" native API. ID 11 is reused by "new_env_raw" native API.
+        * Remove "long_object_basic_type_id" native API. ID 12 is reused by "free_env_raw" native API.
 0.9514  2022-05-02
         [CHANGE]
         * Add no_compiler_api to SPVM::Builder::Config::Exe

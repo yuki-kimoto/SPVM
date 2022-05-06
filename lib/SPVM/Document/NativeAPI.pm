@@ -745,8 +745,8 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   8 object_length_offset
   9 api
   10 allocator
-  11 int_object_basic_type_id
-  12 long_object_basic_type_id
+  11 new_env_raw
+  12 free_env_raw
   13 float_object_basic_type_id
   14 double_object_basic_type_id
   15 runtime
@@ -1011,17 +1011,17 @@ B<Examples:>
 
 The memory allocator for this environment.
 
-=head2 int_object_basic_type_id
+=head2 new_env_raw
 
-  void* int_object_basic_type_id;
+  SPVM_ENV* (*new_env_raw)();
 
-ID of the base type of L<Int|SPVM::Int> type. This is used internally.
+Create a new raw envriment.
 
-=head2 long_object_basic_type_id
+=head2 free_env_raw
 
-  void* long_object_basic_type_id;
+  void (*free_env_raw)(SPVM_ENV* env);
 
-ID of the base type of L<Long|SPVM::Long> type. This is used internally.
+Free the raw environemt that is created by L</"new_env_raw">.
 
 =head2 float_object_basic_type_id
 
