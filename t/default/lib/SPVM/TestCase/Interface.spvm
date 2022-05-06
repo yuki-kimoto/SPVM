@@ -284,6 +284,10 @@ class TestCase::Interface {
       if (has_impl $pointable->not_impl) {
         return 0;
       }
+
+      unless (has_impl $pointable) {
+        return 0;
+      }
     }
     
     return 1;

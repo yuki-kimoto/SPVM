@@ -9,6 +9,11 @@ Revision history for SPVM
         * Allow type cast from interface type to callback type
         * Allow type cast from callback type to interface type
         * Improve calling method error messages.
+        * The "has_impl" operator can check anon method
+          if (has_impl $interface) {
+          
+          }
+          
         [BUG FIX]
         * Fix the bug that has_impl can specify not found method.
         [NON BACKWORD COMPATIBLE CHANGES]

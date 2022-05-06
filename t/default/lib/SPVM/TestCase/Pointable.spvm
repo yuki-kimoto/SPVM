@@ -5,4 +5,5 @@ class TestCase::Pointable : interface_t {
   method y : int();
   method to_string : string ();
   method not_impl : string ($num : long);
+  method : string ($num : int);
 }

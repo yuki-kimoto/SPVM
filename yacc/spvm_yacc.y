@@ -1139,6 +1139,10 @@ has_impl
     {
       $$ = SPVM_OP_build_has_impl(compiler, $1, $2, $4);
     }
+  | HAS_IMPL var
+    {
+      $$ = SPVM_OP_build_has_impl(compiler, $1, $2, NULL);
+    }
 
 array_length
   : '@' expression

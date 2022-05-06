@@ -1657,7 +1657,10 @@ SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_a
 
 SPVM_OP* SPVM_OP_build_has_impl(SPVM_COMPILER* compiler, SPVM_OP* op_has_impl, SPVM_OP* op_var, SPVM_OP* op_name) {
   
-  // Build op
+  if (!op_name) {
+    op_name = SPVM_OP_new_op_name(compiler, "", op_var->file, op_var->line);
+  }
+  
   SPVM_OP_insert_child(compiler, op_has_impl, op_has_impl->last, op_var);
   SPVM_OP_insert_child(compiler, op_has_impl, op_has_impl->last, op_name);
 
