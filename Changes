@@ -7,7 +7,7 @@ Revision history for SPVM
         * Interface type and callback type can be assign to callback type that has the callback.
         * Allow type cast from interface type to callback type
         * Allow type cast from callback type to interface type
-        
+        * Improve calling method error messages.
         [NON BACKWORD COMPATIBLE CHANGES]
         * Revert 0.9514 Methods of interfaces must have the names.
         * implement statement is renamed to interface statement.
