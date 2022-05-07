@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9514_02  2022-05-07
+0.9514_03  2022-05-08
         [CHANGE]
         * Add cloneable_clone to Point class.
         * Point class has Cloneable interface.
