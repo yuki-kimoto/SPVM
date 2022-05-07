@@ -882,13 +882,13 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement switch_statement case_statement default_statement
   %type <opval> block eval_block init_block switch_block if_require_statement
-  %type <opval> unary_op binary_op comparison_op isa logical_op expression_or_logical_op
+  %type <opval> unary_op binary_op comparison_op isa logical_op op
   %type <opval> call_spvm_method opt_vaarg
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow has_impl
   %type <opval> new array_init
   %type <opval> my_var var interface
-  %type <opval> expression opt_expressions expressions opt_expression case_statements
+  %type <opval> value_op opt_value_ops value_ops opt_value_op case_statements
   %type <opval> field_name method_name class_name class_alias_name is_read_only
   %type <opval> type qualified_type basic_type array_type
   %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
@@ -1042,28 +1042,28 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | default_statement
     | eval_block
     | if_require_statement
-    | expression ';'
+    | value_op ';'
     | LAST ';'
     | NEXT ';'
     | BREAK ';'
     | RETURN ';'
-    | RETURN expression ';'
-    | DIE expression ';'
-    | WARN expression ';'
-    | PRINT expression ';'
+    | RETURN value_op ';'
+    | DIE value_op ';'
+    | WARN value_op ';'
+    | PRINT value_op ';'
     | weaken_field ';'
     | unweaken_field ';'
     | ';'
-    | MAKE_READ_ONLY expression ';'
+    | MAKE_READ_ONLY value_op ';'
 
   for_statement
-    : FOR '(' opt_expression ';' expression_or_logical_op ';' opt_expression ')' block
+    : FOR '(' opt_value_op ';' op ';' opt_value_op ')' block
 
   while_statement
-    : WHILE '(' expression_or_logical_op ')' block
+    : WHILE '(' op ')' block
 
   switch_statement
-    : SWITCH '(' expression ')' switch_block
+    : SWITCH '(' value_op ')' switch_block
 
   switch_block
     : '{' case_statements '}'
@@ -1074,8 +1074,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | case_statement
 
   case_statement
-    : CASE expression ':' block
-    | CASE expression ':'
+    : CASE value_op ':' block
+    | CASE value_op ':'
 
   default_statement
     : DEFAULT ':' block
@@ -1086,13 +1086,13 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | IF '(' require ')' block ELSE block
 
   if_statement
-    : IF '(' expression_or_logical_op ')' block else_statement
-    | UNLESS '(' expression_or_logical_op ')' block else_statement
+    : IF '(' op ')' block else_statement
+    | UNLESS '(' op ')' block else_statement
 
   else_statement
     : /* NULL */
     | ELSE block
-    | ELSIF '(' expression_or_logical_op ')' block else_statement
+    | ELSIF '(' op ')' block else_statement
 
   block
     : '{' opt_statements '}'
@@ -1100,19 +1100,19 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   eval_block
     : EVAL block ';'
 
-  opt_expressions
+  opt_value_ops
     : /* Empty */
-    | expressions
+    | value_ops
 
-  opt_expression
+  opt_value_op
     : /* Empty */
-    | expression
+    | value_op
 
-  expression_or_logical_op
-    : expression
+  op
+    : value_op
     | logical_op
 
-  expression
+  value_op
     : var
     | EXCEPTION_VAR
     | CONSTANT
@@ -1130,7 +1130,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | assign
     | inc
     | dec
-    | '(' expressions ')'
+    | '(' value_ops ')'
     | CURRENT_CLASS_NAME
     | isweak_field
     | comparison_op
@@ -1140,79 +1140,79 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | is_read_only
     | has_impl
 
-  expressions
-    : expressions ',' expression
-    | expressions ','
-    | expression
+  value_ops
+    : value_ops ',' value_op
+    | value_ops ','
+    | value_op
 
   unary_op
-    : '+' expression %prec PLUS
-    | '-' expression %prec MINUS
-    | BIT_NOT expression
+    : '+' value_op %prec PLUS
+    | '-' value_op %prec MINUS
+    | BIT_NOT value_op
     | REFCNT var
-    | REFOP expression
-    | STRING_LENGTH expression
-    | DUMP expression
+    | REFOP value_op
+    | STRING_LENGTH value_op
+    | DUMP value_op
     | DEREF var
     | CREATE_REF var
-    | NEW_STRING_LEN expression
-    | COPY expression
+    | NEW_STRING_LEN value_op
+    | COPY value_op
 
   is_read_only
-    : IS_READ_ONLY expression
+    : IS_READ_ONLY value_op
 
   inc
-    : INC expression
-    | expression INC
+    : INC value_op
+    | value_op INC
 
   dec
-    : DEC expression
-    | expression DEC
+    : DEC value_op
+    | value_op DEC
 
   binary_op
-    : expression '+' expression
-    | expression '-' expression
-    | expression '*' expression
-    | expression DIVIDE expression
-    | expression DIVIDE_UNSIGNED_INT expression
-    | expression DIVIDE_UNSIGNED_LONG expression
-    | expression REMAINDER expression
-    | expression REMAINDER_UNSIGNED_INT expression
-    | expression REMAINDER_UNSIGNED_LONG expression
-    | expression BIT_XOR expression
-    | expression BIT_AND expression
-    | expression BIT_OR expression
-    | expression SHIFT expression
-    | expression '.' expression
+    : value_op '+' value_op
+    | value_op '-' value_op
+    | value_op '*' value_op
+    | value_op DIVIDE value_op
+    | value_op DIVIDE_UNSIGNED_INT value_op
+    | value_op DIVIDE_UNSIGNED_LONG value_op
+    | value_op REMAINDER value_op
+    | value_op REMAINDER_UNSIGNED_INT value_op
+    | value_op REMAINDER_UNSIGNED_LONG value_op
+    | value_op BIT_XOR value_op
+    | value_op BIT_AND value_op
+    | value_op BIT_OR value_op
+    | value_op SHIFT value_op
+    | value_op '.' value_op
 
   comparison_op
-    : expression NUMEQ expression
-    | expression NUMNE expression
-    | expression NUMGT expression
-    | expression NUMGE expression
-    | expression NUMLT expression
-    | expression NUMLE expression
-    | expression NUMERIC_CMP expression
-    | expression STREQ expression
-    | expression STRNE expression
-    | expression STRGT expression
-    | expression STRGE expression
-    | expression STRLT expression
-    | expression STRLE expression
-    | expression STRING_CMP expression
+    : value_op NUMEQ value_op
+    | value_op NUMNE value_op
+    | value_op NUMGT value_op
+    | value_op NUMGE value_op
+    | value_op NUMLT value_op
+    | value_op NUMLE value_op
+    | value_op NUMERIC_CMP value_op
+    | value_op STREQ value_op
+    | value_op STRNE value_op
+    | value_op STRGT value_op
+    | value_op STRGE value_op
+    | value_op STRLT value_op
+    | value_op STRLE value_op
+    | value_op STRING_CMP value_op
 
   isa
-    : expression ISA type
+    : value_op ISA type
 
   logical_op
-    : expression_or_logical_op LOGICAL_OR expression_or_logical_op
-    | expression_or_logical_op LOGICAL_AND expression_or_logical_op
-    | LOGICAL_NOT expression_or_logical_op
+    : op LOGICAL_OR op
+    | op LOGICAL_AND op
+    | LOGICAL_NOT op
     | '(' logical_op ')'
 
   assign
-    : expression ASSIGN expression
-    | expression SPECIAL_ASSIGN expression
+    : value_op ASSIGN value_op
+    | value_op SPECIAL_ASSIGN value_op
 
   new
     : NEW basic_type
@@ -1220,29 +1220,29 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | anon_method
 
   array_init
-    : '[' opt_expressions ']'
-    | '{' expressions '}'
+    : '[' opt_value_ops ']'
+    | '{' value_ops '}'
     | '{' '}'
 
   convert
-    : '(' qualified_type ')' expression %prec CONVERT
+    : '(' qualified_type ')' value_op %prec CONVERT
 
   array_access
-    : expression ARROW '[' expression ']'
-    | array_access '[' expression ']'
-    | field_access '[' expression ']'
+    : value_op ARROW '[' value_op ']'
+    | array_access '[' value_op ']'
+    | field_access '[' value_op ']'
 
   call_spvm_method
-    : CURRENT_CLASS NAME '(' opt_expressions  ')'
+    : CURRENT_CLASS NAME '(' opt_value_ops  ')'
     | CURRENT_CLASS NAME
-    | class_name ARROW method_name '(' opt_expressions  ')'
+    | class_name ARROW method_name '(' opt_value_ops  ')'
     | class_name ARROW method_name
-    | expression ARROW method_name '(' opt_expressions ')'
-    | expression ARROW method_name
-    | expression ARROW '(' opt_expressions ')'
+    | value_op ARROW method_name '(' opt_value_ops ')'
+    | value_op ARROW method_name
+    | value_op ARROW '(' opt_value_ops ')'
 
   field_access
-    : expression ARROW '{' field_name '}'
+    : value_op ARROW '{' field_name '}'
     | field_access '{' field_name '}'
     | array_access '{' field_name '}'
 
@@ -1259,10 +1259,10 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : HAS_IMPL var ARROW method_name
 
   array_length
-    : '@' expression
-    | '@' '{' expression '}'
-    | SCALAR '@' expression
-    | SCALAR '@' '{' expression '}'
+    : '@' value_op
+    | '@' '{' value_op '}'
+    | SCALAR '@' value_op
+    | SCALAR '@' '{' value_op '}'
 
   my_var
     : MY var ':' qualified_type opt_type_comment
@@ -1299,8 +1299,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | array_type '[' ']'
 
   array_type_with_length
-    : basic_type '[' expression ']'
-    | array_type '[' expression ']'
+    : basic_type '[' value_op ']'
+    | array_type '[' value_op ']'
 
   return_type
     : qualified_type opt_type_comment
@@ -2378,7 +2378,7 @@ B<Examples of Field Definition:>
 
 =head2 Field Access
 
-The field access is an L<expression|/"Expressions"> to get or set the field.
+The field access is an L<value_op|/"Expressions"> to get or set the field.
 
   INVOCANT->{FIELD_NAME}
 
@@ -3405,654 +3405,17 @@ If the target of Reference Type is L</"Multi-Numeric Types">, the setting and ge
   # If the Target of Reference Type is Multi-Numeric Types, set Multi-Numeric Types Field
   $point_ref->{x} = 1;
 
-=head1 Expressions
-
-Expressions are L</"Operators">, L</"Undefined Value">, L</"Literals">, L</"Getting Local Variable">, L</"Setting Local Variable">,
-L</"Getting Class Variable">, L</"Getting Class Variable">, L</"Setting Class Variable">, L</"Getting Exception Variable">, L</"Setting Exception Variable">,
-L</"Getting Field">, L</"Setting Field">, L</"Getting Multi-Numeric Field">, L</"Setting Multi-Numeric Field">, L</"Getting Multi-Numeric Field via Dereference">, L</"Setting Multi-Numeric Field via Dereference">, <"Getting Array Element">, L</"Setting Array Element"> and L</"Method Call">.
-
-A expression returns a value.
-
-=head2 Getting Local Variable
-
-The getting local variable is an L<expression|/"Expressions"> to get the value of the L<local variable|/"Local Variable">.
-
-  $var
-
-The return value is the value of the local variable.
-
-The return type is the type of the local variable.
-
-=head2 Setting Local Variable
-
-The setting local variable is an L<expression|/"Expressions"> to set the value of L</"Local Variable"> using the L<assignment operator|/"Assignment Operator">.
-
-  $var = VALUE
-
-The assignment of the value must satisfy the L<type assignability|/"Type Assignability">, otherwise a compilation error will occur.
-
-The return value is the value after the assignment.
-
-If the type of the assigned value is an L<object type|/"Object Types">, the reference count of the object is incremented by C<1>.
-
-If an object has already been assigned to $var before the assignment, the reference count of the object is decremented by C<1>.
-
-See the L<scope|/"Scope"> to know the L<garbage collection|/"Garbage Collection"> of local variables.
-
-=head2 Getting Class Variable
-
-The getting class variable is an L<expression|/"Expressions"> to get the value of the L<class variable|/"Class Variable">.
-
-  $CLASS_NAME::CLASS_VARIABLE_NAME
-
-C<CLASS_NAME::> can be omitted if the class variable belongs to the current L<class|/"Class">.
-
-  $CLASS_VARIABLE_NAME
-
-If the class variable does not found, a compilation error will occur.
-
-If the class variable is C<private> and it is accessed outside of the class, a compilation error will occur.
-
-B<Examples of getting class variable:>
-
-  class Foo {
-    our $VAR : int;
-  
-    static method bar : int () {
-      my $var1 = $Foo::VAR;
-      my $var2 = $VAR;
-    }
-  }
-
-=head2 Setting Class Variable
-
-B<Setting Class Variable Expression> is an L<expression|/"Expressions"> to set L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
-
-  $CLASS_NAME::CLASS_VARIABLE_NAME = VALUE
-
-"CLASS_NAME::" can be omitted when the Class Variable belongs to own L</"Class">.
-
-  $CLASS_VARIABLE_NAME = VALUE
-
-If the assignment does not satisfy the L<type assignability|/"Type Assignability">, a compilation error will occur.
-
-The return value is the value after the setting.
-
-The return type is the type of the class variable.
-
-If the class variable does not found, a compilation error will occur.
-
-If the class variable is C<private> and it is accessed outside of the class, a compilation error will occur.
-
-If the type of the assigned value is an L<object type|/"Object Types">, the reference count of the object is incremented by C<1>.
-
-If an object has already been assigned to $CLASS_VARIABLE_NAME before the assignment, the reference count of the object is decremented by C<1>.
-
-B<Examples of setting class variable:>
-
-  class Foo {
-    our $VAR : int;
-  
-    static method bar : int () {
-      $Foo::VAR = 1;
-      $VAR = 3;
-    }
-  }
-
-=head2 Getting Exception Variable
-
-The setting exception variable is an L<expression|/"Expressions"> to get the value of the L<exception variable|/"Exception Variable">.
-
-  $@
-
-The return value is the value of L<exception variable|/"Exception Variable">.
-
-The return type is the L<string type|/"String Type">.
-
-B<Examples of getting exception variable:>
-  
-  # Getting the exception variable
-  my $message = $@;
-
-=head2 Setting Exception Variable
-
-The setting exception variable is an L<expression|/"Expressions"> to set the value of L</"Exception Variable"> using the L<assignment operator|/"Assignment Operator">.
-
-  $@ = VALUE
-
-The type of the assigned value must be L</"String Type">.
-
-The return value is the value after the setting.
-
-The return type is the L<string type|/"String Type">.
-
-The reference count of the assigned value is incremented by C<1>.
-
-If an string has already been assigned to the exception variable before the assignment, the reference count of the string is decremented by C<1>.
-
-B<Examples of setting exception variable:>
-
-  $@ = "Error";
-
-=head2 Getting Field
-
-The getting field is an L<expression|/"Expressions"> to get the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
-
-  INVOCANT->{FIELD_NAME}
-
-The type of invocant is a L<class type|/"Class Type">.
-
-The retrun type is the L<type|/"Types"> of the Field.
-
-B<Examples of getting field:>
-
-  my $point = Point->new;
-  my $x = $point->{x};
-
-=head2 Setting Field
-
-The setting field is an L<expression|/"Expressions"> to set the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
-
-  INVOCANT->{FIELD_NAME} = VALUE
-
-The type of invocant is a L<class type|/"Class Type">.
-
-If the assignment does not satisfy the L<type assignability|/"Type Assignability">, a compilation error will occur.
-
-The return value is the value after the setting. 
-
-The return type is the type of the field.
-
-If the type of assigned value is a L<basic object type|/"Object Types">, Reference Count of the object is incremented by C<1>.
-
-If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by C<1>.
-
-B<Examples of Setting Field:>
-
-  my $point = Point->new;
-  $point->{x} = 1;
-
-=head2 Getting Multi-Numeric Field
-
-B<Getting Multi-Numeric Field Expression> is an L<expression|/"Expressions"> to get Field of L</"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
-
-  INVOCANT->{FIELD_NAME}
-
-Invocant Expression is L</"Multi-Numeric Types">.
-  
-If the field names does not found in the L</"Class">, a compilation error will occur
-
-Getting Multi-Numeric Field Expression returns the field value in the Multi-Numeric Value.
-
-Retrun Type is The L</"Types"> of the Field.
-
-B<Examples of Getting Multi-Numeric Field:>
-
-  my $z : Complex_2d;
-  my $re = $z->{x};
-
-=head2 Setting Multi-Numeric Field
-
-Setting Multi-Numeric Field Expression is an L<expression|/"Expressions"> to set Field of L</"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
-
-  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
-
-Invocant Expression is L</"Multi-Numeric Types">.
-
-If the field names does not found in the L</"Class">, a compilation error will occur.
-
-Setting Multi-Numeric Field Expression returns the value of Field after setting. 
-
-The assignment must satisfy the L<type assignability|/"Type Assignability">.
-
-Return Value Type is the type of Field.
-
-B<Examples of Setting Multi-Numeric Field:>
-
-  my $z : Complex_2d;
-  $z->{x} = 2.5;
-
-=head2 Getting Multi-Numeric Field via Dereference
-
-B<Getting Multi-Numeric Field via Dereference Expression> is an L<expression|/"Expressions"> to get Field of L</"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
-
-  INVOCANT->{FIELD_NAME}
-
-Invocant Expression is L</"Multi-Numeric Reference Type">.
-
-If the field names does not found in the L</"Class">, a compilation error will occur
-
-Getting Multi-Numeric Field via Dereference Expression returns the field value in the Multi-Numeric Value.
-
-Retrun Type is The L</"Types"> of the Field.
-
-B<Examples of Getting Multi-Numeric Field via Dereference:>
-
-  my $z : Complex_2d;
-  my $z_ref = \$z;
-  my $re = $z_ref->{x};
-
-=head2 Setting Multi-Numeric Field via Dereference
-
-Setting Multi-Numeric Field Expression via Dereference is an L<expression|/"Expressions"> to set Field of L</"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
-
-  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
-
-Invocant Expression is L</"Multi-Numeric Reference Type">.
-
-If the field names does not found in the L</"Class">, a compilation error will occur
-
-Setting Multi-Numeric Field via Dereference Expression returns the value of Field after setting.
-
-The assignment must satisfy the L<type assignability|/"Type Assignability">.
-
-Return Value Type is the type of Field.
-
-B<Examples of Setting Multi-Numeric Field via Dereference:>
-
-  my $z : Complex_2d;
-  my $z_ref = \$z;
-  $z_ref->{x} = 2.5;
-
-=head2 Getting Array Element
-
-B<Getting Array Element Expression> is an L<expression|/"Expressions"> to get a Element Value of L</"Array">.
-
-  ARRAY_EXPRESSION->[INDEX_EXPRESSION]
-
-Array Expression must be L</"Array Types">.
-
-Index Expression must be L</"int Type"> or the type that become L</"int Type"> by L</"Numeric Widening Type Conversion">.
-
-Getting Array Element Expression returns the Element Value of the Index.
-
-If Array Expression is L</"Undefined Value">, a Runtime Exception occurs.
-
-If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
-
-B<Examples of Getting Array Element:>
-
-  my $nums = new int[3];
-  my $num = $nums->[1];
-  
-  my $points = new Point[3];
-  my $point = $points->[1];
-  
-  my $objects : object[] = $points;
-  my $object = (Point)$objects->[1];
-
-=head2 Setting Array Element
-
-Setting Array Element Expression is an L<expression|/"Expressions"> to set a Element Value of a Array using L</"Assignment Operator">.
-
-  ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_OPERAND
-
-Array Expression must be L</"Array Types">.
-
-Index Expression must be L</"int Type"> or the type that become L</"int Type"> by L</"Numeric Widening Type Conversion">.
-
-The assignment must satisfy the L<type assignability|/"Type Assignability">.
-
-Setting Array Element Expression returns the value of the element after setting.
-
-If Array Expression is L</"Undefined Value">, a Runtime Exception occurs.
-
-If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
-
-If the right operand is L</"Object Types">, Reference Count of the object is incremented by C<1>.
-
-If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by C<1>.
-
-B<Examples of Setting Array Element:>
-
-  my $nums = new int[3];
-  $nums->[1] = 3;
-  
-  my $points = new Point[3];
-  $points->[1] = Point->new(1, 2);
-  
-  my $objects : object[] = $points;
-  $objects->[2] = Point->new(3, 5);
-
-=head2 new Operator
-
-The C<new> operator is an L<expression|/"Expressions"> to create an object or an array.
-
-=head2 Creating Object
-
-The creating object is an L<expression|/"Expressions"> to create an object using the C<new> keyword.
-
-  new CLASS_NAME;
-
-The class name must be the name of the L<class|/"Class"> defined by the L<class definition|/"Class Definition">.
-
-The fields of the created object are initialized by L<the rule of type initial value|/"Type Initial Value">.
-
-The reference count of the created object is C<0>. If the object is assigned to a local variable, a class variable, or a field by L</"Assignment Operator">, the reference count is incremented by C<1>.
-
-B<Examples of creating object:>
-
-  my $object = new Foo;
-
-=head2 Creating Array
-
-The creating array is an L<expression|/"Expressions"> to create an array using the C<new> keyword.
-
-  new BasicType[LENGTH]
-
-The type must be a L<basic type|/"Basic Type">.
-
-The type of length must be the L<int type|/"int Type"> or the type that become L<int type|/"int Type"> after the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
-
-If the length is lower than C<0>, an exception is thrown.
-
-All elements of the array are initialized by L<the rule of type initial value|/"Type Initial Value">.
-
-The type of created array is the L<array type|/"Array Types">.
-
-B<Examples of creating array:>
-
-  my $nums = new int[3];
-  my $objects = new Foo[3];
-  my $objects = new object[3];
-  my $values = new Complex_2d[3]
-
-=head3 Multi Dimensional Array
-
-Multi dimensional arrays can be created.
-
-  new BasicType[][LENGTH]
-  new BasicType[][]...[LENGTH]
-
-B<Examples of creating multi dimentional array:>
-
-  # 2 dimentional int array
-  my $nums = new int[][3];
-  
-  # 3 dimentional int array
-  my $nums = new int[][][3];
-
-The max dimention is C<255>.
-
-=head2 Array Initialization
-
-SPVM has a syntax for Array Initialization to simplify Creating Array. Expression is not required.
-
-  []
-  [Expression1, Expression2, Expression3]
-
-Array Initialization returns an Array that has the length of the number of elements of Expression.
-
-The type of Array is the type of Expression1 converted to Array Types. If no element is specified, it will be an Array Types of L</"Any Object Type">.
-
-If Expression2 or later does not satisfy the L<type assignability|/"Type Assignability">, a a compilation error will occur.
-
-B<Examples:>
-
-  # int array
-  my $nums = [1, 2, 3];
-  
-  # double array
-  my $nums = [1.5, 2.6, 3.7];
-  
-  # string array
-  my $strings = ["foo", "bar", "baz"];
-
-Array Initialization has another syntax. This is same as above array init syntax, but always the generated object type is an array Type of L</"Any Object Type">. And if count of expression is odd number, a compile error occurs.
-
-  {}
-  {Expression1, Expression2, Expression3, Expression4}
-
-B<Examples:>
-
-  # Key values empty
-  my $key_values = {};
-  
-  # Key values
-  my $key_values = {foo => 1, bar => "Hello"};
-
-=head2 Method Calls
-
-Method calls are L</"Class Method Call"> and L</"Instance Method Call">.
-
-=head3 Class Method Call
-
-A method defined as the L<class method|/"Class Method"> can be called using the class method call.
-
-  ClassName->MethodName(ARGS1, ARGS2, ...);
-
-If the number of arguments does not correct, a compilation error will occur.
-
-If the types of arguments have no type compatible, a compilation error will occur.
-
-B<Examples of class method call:>
-
-  my $ret = Foo->bar(1, 2, 3);
-
-=head3 Instance Method Call
-
-A method defined as the L<instance method|/"Instance Method"> can be called using the instance method call.
-
-  Object->MethodName(ARGS1, ARGS2, ...);
-
-If the number of arguments does not correct, a compilation error will occur.
-
-If the types of arguments have no type compatible, a compilation error will occur.
-
-B<Examples of instance method call:>
-  
-  $object->bar(5, 3. 6);
-
-=head2 Current Class
-
-B<&> before method name means the current class. You can call method using C<&> keyword instead of the current class name.
-
-B<Examples of Current Class:>
-
-  class Foo {
-    
-    static method test : void () {
-      # This means Foo->sum(1, 2)
-      my $ret = &sum(1, 2);
-    }
-  
-    static method sum : int ($num1 : int, $num2 : int) {
-      return $num1 + $num2;
-    }
-    
-  }
-
-=head2 Getting value by Dereference
-
-Obtaining a value by Dereference is an operation to obtain the actual value from Reference. It was designed to realize the C joint operator "*".
-
-  $VARIABLE
-
-The variable Type must be Reference Type, otherwise a compilation error will occur.
-
-The value obtained by Dereference returns L</"Expressions">.
-
-    B<Example of getting value by Dereference>
-
-  my $num : int;
-  my $num_ref : int* = \$num;
-  my $num_deref : int = $$num_ref;
-  
-  my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
-  my $z_deref : Complex_2d = $$z_ref;
-
-=head2 Setting the value with Dereference
-
-Setting a value with Dereference is an operation to set the actual value from Reference. It was designed to realize the C joint operator "*".
-
-  $VARIABLE = Expression
-
-The variable Type must be Reference Type, otherwise a compilation error will occur.
-
-The type of Expression must match the type of the variable when dereferenced, otherwise a compilation error will occur.
-
-Setting a value with Dereference returns the set value. This is L</"Expressions">.
-
-    B<Example of setting values ​​with Dereference>
-
-  my $num : int;
-  my $num_ref : int* = \$num;
-  $$num_ref = 1;
-  
-  my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
-  
-  my $z2 : Complex_2d;
-  
-  $$z_ref = $z2;
-
-=head2 Getting Current Class Name
-
-The getting current class name C<__CLASS__> is an L<expression|/"Expressions"> to get the current class name.
-
-  __CLASS__
-
-B<Examples:>
-
-  class Foo::Bar {
-    static method baz : void () {
-      # Foo::Bar
-      my $class_name = __CLASS__;
-    }
-  }
-
-=head2 Getting Current File Name
-
-The getting current file name C<__FILE__> is an L<expression|/"Expressions"> to get the current file name.
-
-  __FILE__
-
-Current File Name means the relative path from the base path of the module file. For example, if the Module Loaded Path is "/mypath" and the Module name is "Foo::Bar", the absolute path is "/mypath/SPVM/Foo/Bar.spvm" and the relative path is "SPVM/Foo/Bar.spvm". "SPVM/Foo/Bar.spvm" is Current File Name.
-
-B<Examples:>
-
-  # SPVM/Foo/Bar.spvm
-  class Foo::Bar {
-    static method baz : void () {
-      # Get the current file name - SPVM/Foo/Bar.spvm
-      my $file_name == __FILE__;
-    }
-  }
-  class Foo::Bar2 {
-    static method baz : void () {
-      # Get the current file name - SPVM/Foo/Bar.spvm
-      my $file_name == __FILE__;
-    }
-  }
-
-=head2 Getting Current Line Number
-
-The getting current line number C<__LINE__> is an L<expression|/"Expressions"> to get the current line number of the current file.
-
-  __LINE__
-
-B<Examples:>
-
-  class Foo::Bar {
-    static method baz : void () {
-      # Get the current line number - 4
-      my $line = __LINE__;
-    }
-  }
-
-=head2 Anon Method
-
-The anon method is an L<expression|/"Expressions"> to define an L<anon calss|/"Anon Class"> and define an L<instance method|/"Instance Method"> that has 0-length name and create the object by the L<new|/"Creating Object"> operator.
-
-  method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ...) {
-  
-  }
-
-B<Examples:>
-  
-  # Anon method
-  class Foo::Bar {
-    method some_method : void () {
-      my $comparator = (Comparator)method : int ($x1 : object, $x2 : object) {
-        my $point1 = (Point)$x1;
-        my $point2 = (Point)$x2;
-        
-        return $point1->x <=> $point2->x;
-      };
-    }
-  }
-
-See also L<Comparator|SPVM::Comparator>.
-
-The above example is same as the following codes.
-
-  class Foo::Bar {
-    method some_method : void () {
-      my $comparator = (Comparator)new Foo::Bar::anon::3::31;
-    }
-  }
-
-  class Foo::Bar::anon::3::31 : public {
-    method : int ($x1 : object, $x2 : object) {
-      my $point1 = (Point)$x1;
-      my $point2 = (Point)$x2;
-      
-      return $point1->x <=> $point2->x;
-    }
-  }
-
-=head3 Capture
-
-The capture is a syntax to pass L<local variables|/"Local Variable"> to an L<anon method|/"Anon Method">.
-
-  # Capture
-  [VariableName1 : Type1, VariableName2 : Type2] method MethodNames : int ($x1 : object, $x2 : object) {
-  
-  };
-
-B<Examples:>
-
-  class Foo::Bar {
-    method some_method : void () {
-      my $foo = 1;
-      my $bar = 5L;
-      my $comparator = (Comparator)[$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
-        print "$foo\n";
-        print "$bar\n";
-      };
-    }
-  }
-
-A capture is actually implemented as a L<field|/"Field">.
-
-The above example is same as the following codes.
-
-  class Foo::Bar {
-    method some_method : void () {
-      my $foo = 1;
-      my $bar = 5L;
-      
-      my $anon = new Foo::Bar::anon::5::61;
-      $anon->{foo} = $foo;
-      $anon->{bar} = $bar;
-      my $comparator = (Comparator)$anon;
-    }
-  }
-
-  class Foo::Bar::anon::5::61 : public {
-    has foo : public int;
-    has bar : public long;
-    
-    method : int ($x1 : object, $x2 : object) {
-      print "$self->{foo}\n";
-      print "$self->{bar}\n";
-    }
-  }
-
 =head1 Operators
 
 B<Operators> are L</"Unary Operators">, L</"Binary Operators">, L</"Increment Operator">, L</"Decrement Operator">, L</"Comparison Operator">, L</"Logical Operators">, and L</"Assignment Operator">.
+
+=head2 Value-Returning Operators
+
+The value-returning operator is the L<operator|/"Operators> that return a value.
+
+The value-returning operators are L</"Operators">, L</"Undefined Value">, L</"Literals">, L</"Getting Local Variable">, L</"Setting Local Variable">,
+L</"Getting Class Variable">, L</"Getting Class Variable">, L</"Setting Class Variable">, L</"Getting Exception Variable">, L</"Setting Exception Variable">,
+L</"Getting Field">, L</"Setting Field">, L</"Getting Multi-Numeric Field">, L</"Setting Multi-Numeric Field">, L</"Getting Multi-Numeric Field via Dereference">, L</"Setting Multi-Numeric Field via Dereference">, <"Getting Array Element">, L</"Setting Array Element"> and L</"Method Call">.
 
 =head2 Unary Operators
 
@@ -4060,7 +3423,7 @@ Unary operators are operators have one operand.
 
   UNARY_OPERATOR OPERAND
 
-The operand is an L<expression|/"Expressions">.
+The operand is an L<value_op|/"Expressions">.
 
 Unary operators are L</"Unary Plus Operator">, L</"Unary Minus Operator">, L</"Bit NOT Operator">, L</"Array Length Operator">, L</"String Creation Operator">, and L</"String Length Operator">.
 
@@ -4102,7 +3465,7 @@ The unary plus operator C<+> is an L<Unary Operator|/"Unary Operators"> to retur
 
   +OPERAND
 
-The operand must be an L<expression|/"Expressions"> that type is a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
+The operand must be an L<value_op|/"Expressions"> that type is a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> applys to the operand.
 
@@ -4121,7 +3484,7 @@ The unary minus operator C<-> is an L<Unary Operator|/"Unary Operators"> to retu
 
   -OPERAND
 
-The operand must be an L<expression|/"Expressions"> that type is a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
+The operand must be an L<value_op|/"Expressions"> that type is a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> applys to the operand.
 
@@ -4667,7 +4030,7 @@ A list of Numeric Comparison Operators.
       The left operand and the right operand are Numeric Types
     </td>
     <td>
-      If The left operand is greater than Right expression, return 1. If The left operand is lower than Right expression, return -1. If The left operand is equals to Right expression, return 0.
+      If The left operand is greater than Right value_op, return 1. If The left operand is lower than Right value_op, return -1. If The left operand is equals to Right value_op, return 0.
     </td>
   </tr>
 </table>
@@ -4767,7 +4130,7 @@ A list of String Comparison Operators.
       LEFT_OPERAND cmp RIGHT_OPERAND
     </td>
     <td>
-      If The left operand is greater than Right expression, return 1. If The left operand is lower than Right expression, return -1. If The left operand is equals to Right expression, return 0.
+      If The left operand is greater than Right value_op, return 1. If The left operand is lower than Right value_op, return -1. If The left operand is equals to Right value_op, return 0.
     </td>
   </tr>
 </table>
@@ -4822,7 +4185,7 @@ The logical AND operator C<&&> returns the result of a logical AND operation.
 
   LEFT_OPERAND && RIGHT_OPERAND
   
-The left operand and the right operand must be a L<logical operator|/"Logical Operators"> or an L<expression|/"Expressions">.
+The left operand and the right operand must be a L<logical operator|/"Logical Operators"> or an L<value_op|/"Expressions">.
 
 The return type of logical AND operator is L</"int Type">.
 
@@ -4832,7 +4195,7 @@ If the value is C<1>, the right operand is evaluated.
 Next, Thg logical AND operator performs L</"Bool Type Conversion"> to the right operand. If the evaluated value is C<0>, the logical AND operator returns C<0>,
 otherwise returns C<1>.
 
-Logical AND operators can be only used as conditions. Note that these can't be used as L<expressions|/"Expressions">. 
+Logical AND operators can be only used as conditions. Note that these can't be used as L<value_ops|/"Expressions">. 
 
 =head2 Logical OR Operator
 
@@ -4840,7 +4203,7 @@ The logical OR operator C<||> returns the result of a logical OR operation.
 
   LEFT_OPERAND || RIGHT_OPERAND
 
-The left operand and the right operand must be a L<logical operator|/"Logical Operators"> or an L<expression|/"Expressions">.
+The left operand and the right operand must be a L<logical operator|/"Logical Operators"> or an L<value_op|/"Expressions">.
 
 The return type of logical OR operator is L</"int Type">.
 
@@ -4850,7 +4213,7 @@ If the value is C<0>, the right operand is evaluated.
 Next, Thg logical OR operator performs L</"Bool Type Conversion"> to the right operand. If the evaluated value is C<1>, the logical OR operator returns C<1>,
 otherwise returns C<0>.
 
-Logical OR operators can be only used as conditions. Note that these can't be used as L<expressions|/"Expressions">. 
+Logical OR operators can be only used as conditions. Note that these can't be used as L<value_ops|/"Expressions">. 
 
 =head2 Logical NOT Operator
 
@@ -4858,14 +4221,14 @@ The logical NOT operator C<!> returns the result of a logical NOT operation.
 
   !OPERAND
 
-The operand must be a L<logical operator|/"Logical Operators"> or an L<expression|/"Expressions">.
+The operand must be a L<logical operator|/"Logical Operators"> or an L<value_op|/"Expressions">.
 
 The return type of logical NOT operator is L</"int Type">.
 
 Thg logical NOT operator performs L</"Bool Type Conversion"> to the operand. If the evaluated value is C<1>, the logical NOT operator returns C<0>.
 If the evaluated value is C<0>, returns C<1>.
 
-Logical NOT operators can be only used as conditions. Note that these can't be used as L<expressions|/"Expressions">. 
+Logical NOT operators can be only used as conditions. Note that these can't be used as L<value_ops|/"Expressions">. 
 
 =head2 String Concatenation Operator
 
@@ -4899,7 +4262,7 @@ Assignment Operator is a L</"Binary Operators"> for assignment, expressed in "="
 
 Assignment Operator has multiple meanings depending on the Right and Left sides. Please refer to each item.
 
-In Assignment Operator, the The left operand is evaluated after the right operand is evaluated. This is with the exception of expression being executed from Left to Right as a rule.
+In Assignment Operator, the The left operand is evaluated after the right operand is evaluated. This is with the exception of value_op being executed from Left to Right as a rule.
 
 =head2 Special Assignment Operator
 
@@ -5001,7 +4364,7 @@ The Reference Operator is an operator that retrieves the address of a variable f
 
 If the variable is not numeric type or Multi-Numeric Types, a compilation error will occur
 
-Reference Operator returns expression. The type returned is L</"Reference Type">.
+Reference Operator returns value_op. The type returned is L</"Reference Type">.
 
 B<Examples of Reference Operator:>
 
@@ -5043,7 +4406,7 @@ The string creation operator C<new_string_len> is an L<Unary Operator|/"Unary Op
 
   new_string_len OPERAND
 
-The operand must be an L<expression|/"Expressions"> that type is a L</"Integral Type"> except for a L<long type|/"long Type">, otherwise a compilation error will occur.
+The operand must be an L<value_op|/"Expressions"> that type is a L</"Integral Type"> except for a L<long type|/"long Type">, otherwise a compilation error will occur.
 
 The string creation operator returns the string that is created with the lenght.
 
@@ -5060,7 +4423,7 @@ The C<copy> operator is an L<Unary Operator|/"Unary Operators"> to copy the obje
 
   copy OPERAND
 
-The operand must be an L<expression|/"Expressions"> that type is a L<object type|/"object Type">, otherwise a compilation error will occur.
+The operand must be an L<value_op|/"Expressions"> that type is a L<object type|/"object Type">, otherwise a compilation error will occur.
 
 If the type of operand is none of a L<string type|/"String Type">, a L<numeric type|/"Numerci Types">, a L<multi-numeric type|/"Multi-Numeric Types">,
 An L<exception|/"Exception"> is thorwn.
@@ -5100,7 +4463,7 @@ The string length operator is an L<Unary Operator|/"Unary Operators"> to get the
 
   length OPERAND
 
-The operand must be an L<expression|/"Expressions"> that type is a L</"String Type">, otherwise a compilation error will occur.
+The operand must be an L<value_op|/"Expressions"> that type is a L</"String Type">, otherwise a compilation error will occur.
 
 The string length operator returns a L</"int Type"> value that is the length of the L</"String">.
 
@@ -5218,6 +4581,643 @@ B<Examples:>
   my $point = Point->new;
   my $stringable = $point->(Stringable);
 
+=head2 Getting Local Variable
+
+The getting local variable is an L<value_op|/"Expressions"> to get the value of the L<local variable|/"Local Variable">.
+
+  $var
+
+The return value is the value of the local variable.
+
+The return type is the type of the local variable.
+
+=head2 Setting Local Variable
+
+The setting local variable is an L<value_op|/"Expressions"> to set the value of L</"Local Variable"> using the L<assignment operator|/"Assignment Operator">.
+
+  $var = VALUE
+
+The assignment of the value must satisfy the L<type assignability|/"Type Assignability">, otherwise a compilation error will occur.
+
+The return value is the value after the assignment.
+
+If the type of the assigned value is an L<object type|/"Object Types">, the reference count of the object is incremented by C<1>.
+
+If an object has already been assigned to $var before the assignment, the reference count of the object is decremented by C<1>.
+
+See the L<scope|/"Scope"> to know the L<garbage collection|/"Garbage Collection"> of local variables.
+
+=head2 Getting Class Variable
+
+The getting class variable is an L<value_op|/"Expressions"> to get the value of the L<class variable|/"Class Variable">.
+
+  $CLASS_NAME::CLASS_VARIABLE_NAME
+
+C<CLASS_NAME::> can be omitted if the class variable belongs to the current L<class|/"Class">.
+
+  $CLASS_VARIABLE_NAME
+
+If the class variable does not found, a compilation error will occur.
+
+If the class variable is C<private> and it is accessed outside of the class, a compilation error will occur.
+
+B<Examples of getting class variable:>
+
+  class Foo {
+    our $VAR : int;
+  
+    static method bar : int () {
+      my $var1 = $Foo::VAR;
+      my $var2 = $VAR;
+    }
+  }
+
+=head2 Setting Class Variable
+
+B<Setting Class Variable Expression> is an L<value_op|/"Expressions"> to set L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
+
+  $CLASS_NAME::CLASS_VARIABLE_NAME = VALUE
+
+"CLASS_NAME::" can be omitted when the Class Variable belongs to own L</"Class">.
+
+  $CLASS_VARIABLE_NAME = VALUE
+
+If the assignment does not satisfy the L<type assignability|/"Type Assignability">, a compilation error will occur.
+
+The return value is the value after the setting.
+
+The return type is the type of the class variable.
+
+If the class variable does not found, a compilation error will occur.
+
+If the class variable is C<private> and it is accessed outside of the class, a compilation error will occur.
+
+If the type of the assigned value is an L<object type|/"Object Types">, the reference count of the object is incremented by C<1>.
+
+If an object has already been assigned to $CLASS_VARIABLE_NAME before the assignment, the reference count of the object is decremented by C<1>.
+
+B<Examples of setting class variable:>
+
+  class Foo {
+    our $VAR : int;
+  
+    static method bar : int () {
+      $Foo::VAR = 1;
+      $VAR = 3;
+    }
+  }
+
+=head2 Getting Exception Variable
+
+The setting exception variable is an L<value_op|/"Expressions"> to get the value of the L<exception variable|/"Exception Variable">.
+
+  $@
+
+The return value is the value of L<exception variable|/"Exception Variable">.
+
+The return type is the L<string type|/"String Type">.
+
+B<Examples of getting exception variable:>
+  
+  # Getting the exception variable
+  my $message = $@;
+
+=head2 Setting Exception Variable
+
+The setting exception variable is an L<value_op|/"Expressions"> to set the value of L</"Exception Variable"> using the L<assignment operator|/"Assignment Operator">.
+
+  $@ = VALUE
+
+The type of the assigned value must be L</"String Type">.
+
+The return value is the value after the setting.
+
+The return type is the L<string type|/"String Type">.
+
+The reference count of the assigned value is incremented by C<1>.
+
+If an string has already been assigned to the exception variable before the assignment, the reference count of the string is decremented by C<1>.
+
+B<Examples of setting exception variable:>
+
+  $@ = "Error";
+
+=head2 Getting Field
+
+The getting field is an L<value_op|/"Expressions"> to get the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
+
+  INVOCANT->{FIELD_NAME}
+
+The type of invocant is a L<class type|/"Class Type">.
+
+The retrun type is the L<type|/"Types"> of the Field.
+
+B<Examples of getting field:>
+
+  my $point = Point->new;
+  my $x = $point->{x};
+
+=head2 Setting Field
+
+The setting field is an L<value_op|/"Expressions"> to set the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
+
+  INVOCANT->{FIELD_NAME} = VALUE
+
+The type of invocant is a L<class type|/"Class Type">.
+
+If the assignment does not satisfy the L<type assignability|/"Type Assignability">, a compilation error will occur.
+
+The return value is the value after the setting. 
+
+The return type is the type of the field.
+
+If the type of assigned value is a L<basic object type|/"Object Types">, Reference Count of the object is incremented by C<1>.
+
+If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by C<1>.
+
+B<Examples of Setting Field:>
+
+  my $point = Point->new;
+  $point->{x} = 1;
+
+=head2 Getting Multi-Numeric Field
+
+B<Getting Multi-Numeric Field Expression> is an L<value_op|/"Expressions"> to get Field of L</"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
+
+  INVOCANT->{FIELD_NAME}
+
+Invocant Expression is L</"Multi-Numeric Types">.
+  
+If the field names does not found in the L</"Class">, a compilation error will occur
+
+Getting Multi-Numeric Field Expression returns the field value in the Multi-Numeric Value.
+
+Retrun Type is The L</"Types"> of the Field.
+
+B<Examples of Getting Multi-Numeric Field:>
+
+  my $z : Complex_2d;
+  my $re = $z->{x};
+
+=head2 Setting Multi-Numeric Field
+
+Setting Multi-Numeric Field Expression is an L<value_op|/"Expressions"> to set Field of L</"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+
+  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
+
+Invocant Expression is L</"Multi-Numeric Types">.
+
+If the field names does not found in the L</"Class">, a compilation error will occur.
+
+Setting Multi-Numeric Field Expression returns the value of Field after setting. 
+
+The assignment must satisfy the L<type assignability|/"Type Assignability">.
+
+Return Value Type is the type of Field.
+
+B<Examples of Setting Multi-Numeric Field:>
+
+  my $z : Complex_2d;
+  $z->{x} = 2.5;
+
+=head2 Getting Multi-Numeric Field via Dereference
+
+B<Getting Multi-Numeric Field via Dereference Expression> is an L<value_op|/"Expressions"> to get Field of L</"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
+
+  INVOCANT->{FIELD_NAME}
+
+Invocant Expression is L</"Multi-Numeric Reference Type">.
+
+If the field names does not found in the L</"Class">, a compilation error will occur
+
+Getting Multi-Numeric Field via Dereference Expression returns the field value in the Multi-Numeric Value.
+
+Retrun Type is The L</"Types"> of the Field.
+
+B<Examples of Getting Multi-Numeric Field via Dereference:>
+
+  my $z : Complex_2d;
+  my $z_ref = \$z;
+  my $re = $z_ref->{x};
+
+=head2 Setting Multi-Numeric Field via Dereference
+
+Setting Multi-Numeric Field Expression via Dereference is an L<value_op|/"Expressions"> to set Field of L</"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+
+  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
+
+Invocant Expression is L</"Multi-Numeric Reference Type">.
+
+If the field names does not found in the L</"Class">, a compilation error will occur
+
+Setting Multi-Numeric Field via Dereference Expression returns the value of Field after setting.
+
+The assignment must satisfy the L<type assignability|/"Type Assignability">.
+
+Return Value Type is the type of Field.
+
+B<Examples of Setting Multi-Numeric Field via Dereference:>
+
+  my $z : Complex_2d;
+  my $z_ref = \$z;
+  $z_ref->{x} = 2.5;
+
+=head2 Getting Array Element
+
+B<Getting Array Element Expression> is an L<value_op|/"Expressions"> to get a Element Value of L</"Array">.
+
+  ARRAY_EXPRESSION->[INDEX_EXPRESSION]
+
+Array Expression must be L</"Array Types">.
+
+Index Expression must be L</"int Type"> or the type that become L</"int Type"> by L</"Numeric Widening Type Conversion">.
+
+Getting Array Element Expression returns the Element Value of the Index.
+
+If Array Expression is L</"Undefined Value">, a Runtime Exception occurs.
+
+If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
+
+B<Examples of Getting Array Element:>
+
+  my $nums = new int[3];
+  my $num = $nums->[1];
+  
+  my $points = new Point[3];
+  my $point = $points->[1];
+  
+  my $objects : object[] = $points;
+  my $object = (Point)$objects->[1];
+
+=head2 Setting Array Element
+
+Setting Array Element Expression is an L<value_op|/"Expressions"> to set a Element Value of a Array using L</"Assignment Operator">.
+
+  ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_OPERAND
+
+Array Expression must be L</"Array Types">.
+
+Index Expression must be L</"int Type"> or the type that become L</"int Type"> by L</"Numeric Widening Type Conversion">.
+
+The assignment must satisfy the L<type assignability|/"Type Assignability">.
+
+Setting Array Element Expression returns the value of the element after setting.
+
+If Array Expression is L</"Undefined Value">, a Runtime Exception occurs.
+
+If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
+
+If the right operand is L</"Object Types">, Reference Count of the object is incremented by C<1>.
+
+If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by C<1>.
+
+B<Examples of Setting Array Element:>
+
+  my $nums = new int[3];
+  $nums->[1] = 3;
+  
+  my $points = new Point[3];
+  $points->[1] = Point->new(1, 2);
+  
+  my $objects : object[] = $points;
+  $objects->[2] = Point->new(3, 5);
+
+=head2 new Operator
+
+The C<new> operator is an L<value_op|/"Expressions"> to create an object or an array.
+
+=head2 Creating Object
+
+The creating object is an L<value_op|/"Expressions"> to create an object using the C<new> keyword.
+
+  new CLASS_NAME;
+
+The class name must be the name of the L<class|/"Class"> defined by the L<class definition|/"Class Definition">.
+
+The fields of the created object are initialized by L<the rule of type initial value|/"Type Initial Value">.
+
+The reference count of the created object is C<0>. If the object is assigned to a local variable, a class variable, or a field by L</"Assignment Operator">, the reference count is incremented by C<1>.
+
+B<Examples of creating object:>
+
+  my $object = new Foo;
+
+=head2 Creating Array
+
+The creating array is an L<value_op|/"Expressions"> to create an array using the C<new> keyword.
+
+  new BasicType[LENGTH]
+
+The type must be a L<basic type|/"Basic Type">.
+
+The type of length must be the L<int type|/"int Type"> or the type that become L<int type|/"int Type"> after the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
+
+If the length is lower than C<0>, an exception is thrown.
+
+All elements of the array are initialized by L<the rule of type initial value|/"Type Initial Value">.
+
+The type of created array is the L<array type|/"Array Types">.
+
+B<Examples of creating array:>
+
+  my $nums = new int[3];
+  my $objects = new Foo[3];
+  my $objects = new object[3];
+  my $values = new Complex_2d[3]
+
+=head3 Multi Dimensional Array
+
+Multi dimensional arrays can be created.
+
+  new BasicType[][LENGTH]
+  new BasicType[][]...[LENGTH]
+
+B<Examples of creating multi dimentional array:>
+
+  # 2 dimentional int array
+  my $nums = new int[][3];
+  
+  # 3 dimentional int array
+  my $nums = new int[][][3];
+
+The max dimention is C<255>.
+
+=head2 Array Initialization
+
+SPVM has a syntax for Array Initialization to simplify Creating Array. Expression is not required.
+
+  []
+  [Expression1, Expression2, Expression3]
+
+Array Initialization returns an Array that has the length of the number of elements of Expression.
+
+The type of Array is the type of Expression1 converted to Array Types. If no element is specified, it will be an Array Types of L</"Any Object Type">.
+
+If Expression2 or later does not satisfy the L<type assignability|/"Type Assignability">, a a compilation error will occur.
+
+B<Examples:>
+
+  # int array
+  my $nums = [1, 2, 3];
+  
+  # double array
+  my $nums = [1.5, 2.6, 3.7];
+  
+  # string array
+  my $strings = ["foo", "bar", "baz"];
+
+Array Initialization has another syntax. This is same as above array init syntax, but always the generated object type is an array Type of L</"Any Object Type">. And if count of value_op is odd number, a compile error occurs.
+
+  {}
+  {Expression1, Expression2, Expression3, Expression4}
+
+B<Examples:>
+
+  # Key values empty
+  my $key_values = {};
+  
+  # Key values
+  my $key_values = {foo => 1, bar => "Hello"};
+
+=head2 Method Calls
+
+Method calls are L</"Class Method Call"> and L</"Instance Method Call">.
+
+=head3 Class Method Call
+
+A method defined as the L<class method|/"Class Method"> can be called using the class method call.
+
+  ClassName->MethodName(ARGS1, ARGS2, ...);
+
+If the number of arguments does not correct, a compilation error will occur.
+
+If the types of arguments have no type compatible, a compilation error will occur.
+
+B<Examples of class method call:>
+
+  my $ret = Foo->bar(1, 2, 3);
+
+=head3 Instance Method Call
+
+A method defined as the L<instance method|/"Instance Method"> can be called using the instance method call.
+
+  Object->MethodName(ARGS1, ARGS2, ...);
+
+If the number of arguments does not correct, a compilation error will occur.
+
+If the types of arguments have no type compatible, a compilation error will occur.
+
+B<Examples of instance method call:>
+  
+  $object->bar(5, 3. 6);
+
+=head2 Current Class
+
+B<&> before method name means the current class. You can call method using C<&> keyword instead of the current class name.
+
+B<Examples of Current Class:>
+
+  class Foo {
+    
+    static method test : void () {
+      # This means Foo->sum(1, 2)
+      my $ret = &sum(1, 2);
+    }
+  
+    static method sum : int ($num1 : int, $num2 : int) {
+      return $num1 + $num2;
+    }
+    
+  }
+
+=head2 Getting value by Dereference
+
+Obtaining a value by Dereference is an operation to obtain the actual value from Reference. It was designed to realize the C joint operator "*".
+
+  $VARIABLE
+
+The variable Type must be Reference Type, otherwise a compilation error will occur.
+
+The value obtained by Dereference returns L</"Expressions">.
+
+    B<Example of getting value by Dereference>
+
+  my $num : int;
+  my $num_ref : int* = \$num;
+  my $num_deref : int = $$num_ref;
+  
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
+  my $z_deref : Complex_2d = $$z_ref;
+
+=head2 Setting the value with Dereference
+
+Setting a value with Dereference is an operation to set the actual value from Reference. It was designed to realize the C joint operator "*".
+
+  $VARIABLE = Expression
+
+The variable Type must be Reference Type, otherwise a compilation error will occur.
+
+The type of Expression must match the type of the variable when dereferenced, otherwise a compilation error will occur.
+
+Setting a value with Dereference returns the set value. This is L</"Expressions">.
+
+    B<Example of setting values ​​with Dereference>
+
+  my $num : int;
+  my $num_ref : int* = \$num;
+  $$num_ref = 1;
+  
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
+  
+  my $z2 : Complex_2d;
+  
+  $$z_ref = $z2;
+
+=head2 Getting Current Class Name
+
+The getting current class name C<__CLASS__> is an L<value_op|/"Expressions"> to get the current class name.
+
+  __CLASS__
+
+B<Examples:>
+
+  class Foo::Bar {
+    static method baz : void () {
+      # Foo::Bar
+      my $class_name = __CLASS__;
+    }
+  }
+
+=head2 Getting Current File Name
+
+The getting current file name C<__FILE__> is an L<value_op|/"Expressions"> to get the current file name.
+
+  __FILE__
+
+Current File Name means the relative path from the base path of the module file. For example, if the Module Loaded Path is "/mypath" and the Module name is "Foo::Bar", the absolute path is "/mypath/SPVM/Foo/Bar.spvm" and the relative path is "SPVM/Foo/Bar.spvm". "SPVM/Foo/Bar.spvm" is Current File Name.
+
+B<Examples:>
+
+  # SPVM/Foo/Bar.spvm
+  class Foo::Bar {
+    static method baz : void () {
+      # Get the current file name - SPVM/Foo/Bar.spvm
+      my $file_name == __FILE__;
+    }
+  }
+  class Foo::Bar2 {
+    static method baz : void () {
+      # Get the current file name - SPVM/Foo/Bar.spvm
+      my $file_name == __FILE__;
+    }
+  }
+
+=head2 Getting Current Line Number
+
+The getting current line number C<__LINE__> is an L<value_op|/"Expressions"> to get the current line number of the current file.
+
+  __LINE__
+
+B<Examples:>
+
+  class Foo::Bar {
+    static method baz : void () {
+      # Get the current line number - 4
+      my $line = __LINE__;
+    }
+  }
+
+=head2 Anon Method
+
+The anon method is an L<value_op|/"Expressions"> to define an L<anon calss|/"Anon Class"> and define an L<instance method|/"Instance Method"> that has 0-length name and create the object by the L<new|/"Creating Object"> operator.
+
+  method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ...) {
+  
+  }
+
+B<Examples:>
+  
+  # Anon method
+  class Foo::Bar {
+    method some_method : void () {
+      my $comparator = (Comparator)method : int ($x1 : object, $x2 : object) {
+        my $point1 = (Point)$x1;
+        my $point2 = (Point)$x2;
+        
+        return $point1->x <=> $point2->x;
+      };
+    }
+  }
+
+See also L<Comparator|SPVM::Comparator>.
+
+The above example is same as the following codes.
+
+  class Foo::Bar {
+    method some_method : void () {
+      my $comparator = (Comparator)new Foo::Bar::anon::3::31;
+    }
+  }
+
+  class Foo::Bar::anon::3::31 : public {
+    method : int ($x1 : object, $x2 : object) {
+      my $point1 = (Point)$x1;
+      my $point2 = (Point)$x2;
+      
+      return $point1->x <=> $point2->x;
+    }
+  }
+
+=head3 Capture
+
+The capture is a syntax to pass L<local variables|/"Local Variable"> to an L<anon method|/"Anon Method">.
+
+  # Capture
+  [VariableName1 : Type1, VariableName2 : Type2] method MethodNames : int ($x1 : object, $x2 : object) {
+  
+  };
+
+B<Examples:>
+
+  class Foo::Bar {
+    method some_method : void () {
+      my $foo = 1;
+      my $bar = 5L;
+      my $comparator = (Comparator)[$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
+        print "$foo\n";
+        print "$bar\n";
+      };
+    }
+  }
+
+A capture is actually implemented as a L<field|/"Field">.
+
+The above example is same as the following codes.
+
+  class Foo::Bar {
+    method some_method : void () {
+      my $foo = 1;
+      my $bar = 5L;
+      
+      my $anon = new Foo::Bar::anon::5::61;
+      $anon->{foo} = $foo;
+      $anon->{bar} = $bar;
+      my $comparator = (Comparator)$anon;
+    }
+  }
+
+  class Foo::Bar::anon::5::61 : public {
+    has foo : public int;
+    has bar : public long;
+    
+    method : int ($x1 : object, $x2 : object) {
+      print "$self->{foo}\n";
+      print "$self->{bar}\n";
+    }
+  }
+
 =head1 Statements
 
 Statements are the parts of syntax that can be written directly under L</"Scope Blocks">.
@@ -5228,13 +5228,13 @@ An empty statement is a L<statement|/"Statements"> that do nothing and ends with
 
   ;
 
-=head2 expression Statement
+=head2 value_op Statement
 
-The expression statement is a L<statement|/"Statements"> that consisting of an L<expression|/"Expressions"> and C<;>.
+The value_op statement is a L<statement|/"Statements"> that consisting of an L<value_op|/"Expressions"> and C<;>.
 
   Expression;
 
-B<Examples of expression statements:>
+B<Examples of value_op statements:>
 
   1;
   $var;
