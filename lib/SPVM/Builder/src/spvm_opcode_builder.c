@@ -4061,9 +4061,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_HAS_IMPL);
 
-                          opcode.operand1 = mem_id_in;
-                          opcode.operand2 = implement_method->id;
-                          opcode.operand3 = interface_basic_type->id;
+                          opcode.operand0 = mem_id_in;
+                          opcode.operand1 = implement_method->id;
+                          opcode.operand2 = interface_basic_type->id;
                           
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           
