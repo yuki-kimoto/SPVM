@@ -4161,7 +4161,7 @@ B<ref Operator> is a Operator to get type name of the object.
 
 ref Operator return type name if the object defined. Otherwise return undef.
 
-If OPERAND is not a object type, a compile error occurs.
+If OPERAND is not a object type, a compilation error will occur.
 
 =head2 dump Operator
 
@@ -4171,7 +4171,7 @@ B<dump Operator> is a Operator to dump object value.
 
 dump Operator return the dump string.
 
-If OPERAND is not a object type, a compile error occurs.
+If OPERAND is not a object type, a compilation error will occur.
 
 The contents of the dumped string may vary from SPVM version to version. Please use dump operator only for viewing the content of object data.
 
@@ -4944,16 +4944,20 @@ The max dimention is C<255>.
 
 =head2 Array Initialization
 
-SPVM has a syntax for Array Initialization to simplify Creating Array. Expression is not required.
+The array initialization is an L<operator|/"Operators"> to create an array and initialize the array easily.
 
   []
-  [Expression1, Expression2, Expression3]
+  [ELEMENT1, ELEMENT2, ELEMENT3]
 
-Array Initialization returns an Array that has the length of the number of elements of Expression.
+The array initialization create an L<array|/"Array"> that has the length of the elements.
 
-The type of Array is the type of Expression1 converted to Array Types. If no element is specified, it will be an Array Types of L</"Any Object Type">.
+And the array is initialized by the elements.
 
-If Expression2 or later does not satisfy the L<type assignability|/"Type Assignability">, a a compilation error will occur.
+And the created array is returned.
+
+The type of the created array is the type that C<1> dimension is added to the type of the first element.
+
+If no element is specified, the type of the create array becomes L<any object type|/"Any Object Type">.
 
 B<Examples:>
 
@@ -4966,10 +4970,22 @@ B<Examples:>
   # string array
   my $strings = ["foo", "bar", "baz"];
 
-Array Initialization has another syntax. This is same as above array init syntax, but always the generated object type is an array Type of L</"Any Object Type">. And if count of value_op is odd number, a compile error occurs.
+The first example is same as the following codes.
+
+  # int array
+  my $nums = new int[3];
+  $nums->[0] = 1;
+  $nums->[1] = 2;
+  $nums->[2] = 3;
+
+The array initialization has another syntax using C<{}>. 
 
   {}
-  {Expression1, Expression2, Expression3, Expression4}
+  {ELEMENT1, ELEMENT2, ELEMENT3, ELEMENT4}
+
+This is same as above array init syntax, but the type of the created array is always L</"Any Object Array Type"> C<object[]>.
+
+And if the length of the elements is odd number, a compilation error will occur.
 
 B<Examples:>
 
