@@ -4540,27 +4540,26 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t interface_basic_type_id = opcode->operand2;
         int32_t interface_basic_type_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(runtime, interface_basic_type_id);
 
-        int32_t interface_id = SPVM_API_RUNTIME_get_basic_type_class_id(runtime, interface_basic_type_class_id);
-        int32_t interface_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, interface_id);
+        int32_t interface_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, interface_basic_type_class_id);
         const char* interface_name = SPVM_API_RUNTIME_get_name(runtime, interface_name_id);
+        
         int32_t interface_method_id = SPVM_API_RUNTIME_get_method_id_by_name(runtime, interface_name, implement_method_name);
         int32_t interface_method_signature_id = SPVM_API_RUNTIME_get_method_signature_id(runtime, interface_method_id);
         const char* interface_method_signature = SPVM_API_RUNTIME_get_name(runtime, interface_method_signature_id);
-
         const char* implement_method_signature = interface_method_signature;
-        
+
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "    int32_t call_method_id = env->get_instance_method_id(env, object, ");
+                                              "    int32_t call_method_id = env->get_instance_method_id(env, object, \"");
         SPVM_STRING_BUFFER_add(string_buffer, implement_method_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, implement_method_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, ");"
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id >= 0;\n"
+        SPVM_STRING_BUFFER_add(string_buffer, " = call_method_id >= 0;\n"
                                               "  }\n");
 
         break;
