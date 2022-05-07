@@ -13,9 +13,9 @@ Revision history for SPVM
           if (has_impl $interface) {
           
           }
-          
         [BUG FIX]
         * Fix the bug that has_impl can specify not found method.
+        * Interface can have interface guarantees
         [NON BACKWORD COMPATIBLE CHANGES]
         * Revert 0.9514 Methods of interfaces must have the names.
         * implement statement is renamed to interface statement.

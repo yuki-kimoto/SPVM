@@ -2,18 +2,25 @@
 
 Static Perl Virtual Machine. Fast calculation, fast array operation, and easy C/C++ Binding.
 
+|                                                                            Tests                                                                             |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [![linux](https://github.com/yuki-kimoto/SPVM/actions/workflows/linux.yml/badge.svg)](https://github.com/yuki-kimoto/SPVM/actions/workflows/linux.yml)       |
+| [![macos](https://github.com/yuki-kimoto/SPVM/actions/workflows/macos.yml/badge.svg)](https://github.com/yuki-kimoto/SPVM/actions/workflows/macos.yml)       |
+| [![windows](https://github.com/yuki-kimoto/SPVM/actions/workflows/windows.yml/badge.svg)](https://github.com/yuki-kimoto/SPVM/actions/workflows/windows.yml) |
+
+
 # Features
 
 * Fast calculation, Fast array operation, Small memory
 * Perl syntax, Static typing, Switch syntax, Have language specification
 * Enum, Type inference, Anon method, Variable captures
-* Array initialization, 
+* Array initialization
 * Reference count GC, Weaken reference, Module system
 * Exception, Package variable
 * Object oriented, Inteface, Value type, Value array type, Reference type
-* Easy way to C/C++ binding, Automatically Perl binding, C99 math functions
-* Dynamic linking, Method precompile, AOT compile(create exe file)
-* Native API(C level api), C99 standard
+* Easy way to C/C++ binding, Automatic Perl binding, C99 math functions
+* Dynamic linking, Method precompile, AOT compile (create exe file)
+* Native API (C level API), C99 standard
 
 # Examples
 
@@ -48,7 +55,7 @@ Use SPVM Module from Perl
   print $total . "\n";
 ```
 
-# More imformation
+# More information
 
 SPVM Document
 
