@@ -46,16 +46,16 @@ A class name must be corresponding to the relative name of the module file. If t
 
 If class names are invalid, a compilation error will occur.
 
-B<Examples of valid class names:>
-
+B<Examples:>
+  
+  # Valid class names
   Foo
   Foo::Bar
   Foo::Bar::Baz3
   Foo::bar
   Foo_Bar::Baz_Baz
 
-B<Examples of invalid class names:>
-
+  # Invalid class names
   Foo
   Foo::::Bar
   Foo::Bar::
@@ -74,7 +74,7 @@ Underscore(C<_>) cannot be continued twice.
 
 If method names are invalid, a compilation error will occur.
 
-B<Examples of valid method names:>
+B<Examples:>
 
   # Valid method names
   FOO
@@ -84,8 +84,6 @@ B<Examples of valid method names:>
   _foo
   _foo_bar_
 
-B<Examples of invalid method names:>
-  
   # Invalid method names
   foo__bar
   3foo
@@ -107,7 +105,7 @@ Underscore(C<_>) cannot be continued twice.
 
 If field names are invalid, a compilation error will occur.
 
-B<Examples of valid field names:>
+B<Examples:>
 
   # Valid field names
   FOO
@@ -116,8 +114,6 @@ B<Examples of valid field names:>
   foo_bar
   _foo
   _foo_bar_
-
-B<Examples of invalid field names:>
 
   # Invalid field names
   foo__bar
@@ -140,7 +136,7 @@ Underscore(C<_>) cannot be continued twice.
 
 If class variable names are invalid, a compilation error will occur.
 
-B<Examples of valid class variable names:>
+B<Examples:>
 
   # Valid class variable names
   $FOO::BAR
@@ -149,8 +145,6 @@ B<Examples of valid class variable names:>
   $FOO_BAR
   $foo
 
-B<Examples of invalid class variable names:>
-  
   # Invalid class variable names
   $FOO__BAR
   $3FOO
@@ -165,7 +159,7 @@ Underscore(C<_>) cannot be continued twice.
 
 If local variable names are invalid, a compilation error will occur.
 
-B<Examples of valid local variable names:>
+B<Examples:>
 
   # Valid local variable names
   $foo
@@ -173,8 +167,6 @@ B<Examples of valid local variable names:>
   $_foo
   $FOO
 
-B<Examples of invalid local variable names:>
-  
   # Invalid local variable names
   $foo__bar
   $3foo
@@ -345,7 +337,7 @@ POD starts from the line beginning with C<=>, followed by any string that is com
 
 POD ends from the line beginning with C<=cut>, and ending with L</"Line Terminators">.
 
-B<Examples of POD:>
+B<Examples:>
 
   =pod
 
@@ -389,7 +381,7 @@ If Integer Literal is assigned to a L</"byte Type"> variable or passed to L</"by
 
 If Integer Literal is assigned to a L</"short Type"> variable or passed to L</"short Type"> Method Argument, and does not exceed the range of numbers that can be represented by L</"short Type">, the L<numeric narrowing type conversion|/"Numeric Narrowing Type Conversion"> is performed and the value converted to L</"short Type"> value. If it exceeds the range, a compilation error will occur.
 
-B<Examples of Integer Literal:>
+B<Examples:>
 
   123
   +123
@@ -409,7 +401,7 @@ It is followed by one or more consecutive characters C<0> to C<9>, C<a> to C<f>,
 
 Other rules are same as Decimal Representation of Integer Literal
 
-B<Examples of Hexadecimal Representation of Integer Literal:>
+B<Examples:>
 
   0x3b4f
   -0x3F1A
@@ -426,7 +418,7 @@ It is followed by one or more consecutive characters C<0> to C<7>.
 
 Other rules are same as Decimal Representation of Integer Literal
 
-B<Examples of Octal Representation of Integer Literal:>
+B<Examples:>
 
   0755
   -0644
@@ -441,7 +433,7 @@ Binary Representation of Integer Literal starts with C<0b> or C<0B>.
 
 It is followed by one or more consecutive characters C<0> or C<1>.
 
-B<Examples of Binary Representation of Integer Literal:>
+B<Examples:>
 
   0b0101
   -0b1010
@@ -488,7 +480,7 @@ If Floating Point Literal is L</"float Type">, the Floating Point Literal is con
 
 If Floating Point Literal is L</"double Type">, the Floating Point Literal is converted to double value using C standard "strtod" function. If the conversion fails, a compilation error will occur.
 
-B<Examples of Floating Point Literal:>
+B<Examples:>
 
   1.32
   -1.32
@@ -610,7 +602,7 @@ L</"Types"> of Charater Literal is L</"byte Type">.
 
 =end html
 
-B<Examples of Charater Literal:>
+B<Examples:>
 
 B<Charater Literal> represents one character of ASCII.
 
@@ -640,7 +632,7 @@ A string literal is written by the characters of UTF-8.
 
 The string Literal is enclosed in double quotes C<">.
 
-B<Examples of string literals:>
+B<Examples:>
 
   # String Literal
   my $message = "abc";
@@ -763,7 +755,7 @@ B<Examples of string literals:>
 
 If the espape characters that is not included avobe is used, a compiler error occurs.<br>
 
-B<Examples of escape characters of string literals:>
+B<Examples:>
 
   # Escape characters of string literals
   "abc\tdef\n"
@@ -780,7 +772,7 @@ C<true> is the alias for the L<TRUE|SPVM::Bool/"TRUE"> method of L<Bool|SPVM::Bo
 
   true
 
-B<Examples of true:>
+B<Examples:>
 
   # true
   my $is_valid = true;
@@ -791,7 +783,7 @@ C<false> is the alias for L<FALSE|SPVM::Bool/"FALSE"> method of L<Bool|SPVM::Boo
 
   false
 
-B<Examples of false:>
+B<Examples:>
 
   # false
   my $is_valid = false;
@@ -1723,7 +1715,7 @@ L<Class descriptors|/"Class Descriptors"> can be specified after C<:>.
   
   }
 
-B<Examples of class definitions:>
+B<Examples:>
 
   # The definition of a class
   class Point {
@@ -1866,7 +1858,7 @@ A destructor must be an L<instance method|/"Instance Method"> that don't have th
 
 If a L</"Exception"> occurs in the destructor, the exception is not thrown, and prints the message to STDERR.
 
-B<Examples of destructors:>
+B<Examples:>
 
   class Foo {
     static method new : Foo {
@@ -2228,7 +2220,7 @@ Write Acessor of Class Variable has one argument and the type is same as the typ
 
 Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Class Variable Accessors.
 
-B<Examples of Class Variable Definition:>
+B<Examples:>
 
   class Foo {
     our $NUM1 : byte;
@@ -2360,7 +2352,7 @@ Write Acessor of Class Variable has two arguments. First argument is L</"self Ty
 
 Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Field Accessors.
 
-B<Examples of Field Definition:>
+B<Examples:>
 
   class Foo {
     has num1 : byte;
@@ -3129,7 +3121,7 @@ An undefined value can be compared by the C<==> operator and the C<!=> operator.
 
 The type of C<undef> is L<undefined type|/"Undefined Type">
 
-B<Examples of undefined values:>
+B<Examples:>
   
   # Undefine values
   my $string : string = undef;
@@ -3445,7 +3437,7 @@ The sequential operator C<,> is an L<operator|/"Operators"> like the following.
 
 The operands are evaluated from the left to the right, and return the evaluated value of the last operand.
 
-B<Examples of sequential operators:>
+B<Exampless:>
 
   # 3 is assigned to $foo
   my $foo = (1, 2, 3);
@@ -3475,7 +3467,7 @@ returns the value copied from the value of the operand.
 
 the return type of the unary plus pperator is the type that L</"Numeric Widening Type Conversion"> is performed.
 
-B<Examples of unary plus operators:>
+B<Examples:>
   
   # A unary plus operator
   my $num = +10;
@@ -3496,7 +3488,7 @@ the unary minus operator performs the following operation of C language.
 
 Return type of an unary minus operator is the type that L</"Numeric Widening Type Conversion"> is performed.
 
-B<Examples of unary minus operators:>
+B<Examples:>
 
   # A unary minus operator
   my $num = -10;
@@ -4252,7 +4244,7 @@ If both the left operand and the right operand are a L<string literal|/"String L
 
 If the left operand or the right operand is L<undef|/"Undefined Value">, an exception occurs.
 
-B<Examples of string concatenation operators:>
+B<Examples:>
 
   my $str = "abc" . "def";
   my $str = "def" . 34;
@@ -4343,7 +4335,7 @@ For example, for add assignment Operator, it is expanded as follows:
   # After unwinding
   $x = (byte)($x + 1)
 
-B<Examples of Special Assignment Operator:>
+B<Examples:>
 
 Special Assignment Operator Example
 
@@ -4370,7 +4362,7 @@ If the variable is not numeric type or Multi-Numeric Types, a compilation error 
 
 Reference Operator returns value_op. The type returned is L</"Reference Type">.
 
-B<Examples of Reference Operator:>
+B<Examples:>
 
   my $num : int;
   my $num_ref : int* = \$num;
@@ -4392,7 +4384,7 @@ The array length operator returns a L</"int Type"> value that is the length of t
 
 Array Length Operator returns L</"Expressions">
 
-B<Examples of array length operators:>
+B<Examples:>
   
   # Getting the length of the array.
   my $nums = new byte[10];
@@ -4416,7 +4408,7 @@ The string creation operator returns the string that is created with the lenght.
 
 The return type is a L<string type|/"String Type">.
 
-B<Examples of string creation operators:>
+B<Examples:>
   
   # New a string with the length
   my $message = new_string_len 5;
@@ -4438,7 +4430,7 @@ The return type is same as the type of operand.
 
 Read-only flag of the string is dropped.
 
-B<Examples of string creation operators:>
+B<Examples:>
   
   # New a string with the length
   my $message = copy "abc";
@@ -4455,7 +4447,7 @@ If the string is read-only, the C<is_read_only> operator returns C<1>, otherwise
 
 The return type is an L<int type|/"int Type">.
 
-B<Examples of is_read_only operators:>
+B<Examples:>
   
   # New a string with the length
   my $message = "Hello";
@@ -4473,7 +4465,7 @@ The string length operator returns a L</"int Type"> value that is the length of 
 
 Note that the returned length is byte size, not the count of the characters of the string that is encoded to a specific character set.
 
-B<Examples of string length operators:>
+B<Examples:>
   
   # Getting the string length. The result is 5
   my $message = "Hello";
@@ -4491,7 +4483,7 @@ The C<scalar> operator is an L<Operator|/"Operators"> that returns the value of 
 
 The operand must be an L</"Array Length Operator">, otherwise a compilation error will occur.
 
-B<Examples of scalar operators:>
+B<Examples:>
   
   # Getting the array length 
   my $nums = new int[3];
@@ -4625,7 +4617,7 @@ If the class variable does not found, a compilation error will occur.
 
 If the class variable is C<private> and it is accessed outside of the class, a compilation error will occur.
 
-B<Examples of getting class variable:>
+B<Examples:>
 
   class Foo {
     our $VAR : int;
@@ -4660,7 +4652,7 @@ If the type of the assigned value is an L<object type|/"Object Types">, the refe
 
 If an object has already been assigned to $CLASS_VARIABLE_NAME before the assignment, the reference count of the object is decremented by C<1>.
 
-B<Examples of setting class variable:>
+B<Examples:>
 
   class Foo {
     our $VAR : int;
@@ -4681,7 +4673,7 @@ The return value is the value of L<exception variable|/"Exception Variable">.
 
 The return type is the L<string type|/"String Type">.
 
-B<Examples of getting exception variable:>
+B<Examples:>
   
   # Getting the exception variable
   my $message = $@;
@@ -4702,7 +4694,7 @@ The reference count of the assigned value is incremented by C<1>.
 
 If an string has already been assigned to the exception variable before the assignment, the reference count of the string is decremented by C<1>.
 
-B<Examples of setting exception variable:>
+B<Examples:>
 
   $@ = "Error";
 
@@ -4716,7 +4708,7 @@ The type of invocant is a L<class type|/"Class Type">.
 
 The retrun type is the L<type|/"Types"> of the Field.
 
-B<Examples of getting field:>
+B<Examples:>
 
   my $point = Point->new;
   my $x = $point->{x};
@@ -4739,7 +4731,7 @@ If the type of assigned value is a L<basic object type|/"Object Types">, Referen
 
 If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by C<1>.
 
-B<Examples of Setting Field:>
+B<Examples:>
 
   my $point = Point->new;
   $point->{x} = 1;
@@ -4758,7 +4750,7 @@ Getting Multi-Numeric Field Expression returns the field value in the Multi-Nume
 
 Retrun Type is The L</"Types"> of the Field.
 
-B<Examples of Getting Multi-Numeric Field:>
+B<Examples:>
 
   my $z : Complex_2d;
   my $re = $z->{re};
@@ -4779,7 +4771,7 @@ The assignment must satisfy the L<type assignability|/"Type Assignability">.
 
 Return Value Type is the type of Field.
 
-B<Examples of Setting Multi-Numeric Field:>
+B<Examples:>
 
   my $z : Complex_2d;
   $z->{re} = 2.5;
@@ -4800,7 +4792,7 @@ If Array Expression is L</"Undefined Value">, a Runtime Exception occurs.
 
 If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
-B<Examples of Getting Array Element:>
+B<Examples:>
 
   my $nums = new int[3];
   my $num = $nums->[1];
@@ -4833,7 +4825,7 @@ If the right operand is L</"Object Types">, Reference Count of the object is inc
 
 If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by C<1>.
 
-B<Examples of Setting Array Element:>
+B<Examples:>
 
   my $nums = new int[3];
   $nums->[1] = 3;
@@ -4860,7 +4852,7 @@ The fields of the created object are initialized by L<the rule of type initial v
 
 The reference count of the created object is C<0>. If the object is assigned to a local variable, a class variable, or a field by L</"Assignment Operator">, the reference count is incremented by C<1>.
 
-B<Examples of creating object:>
+B<Examples:>
 
   my $object = new Foo;
 
@@ -4880,7 +4872,7 @@ All elements of the array are initialized by L<the rule of type initial value|/"
 
 The type of created array is the L<array type|/"Array Types">.
 
-B<Examples of creating array:>
+B<Examples:>
 
   my $nums = new int[3];
   my $objects = new Foo[3];
@@ -4894,7 +4886,7 @@ Multi dimensional arrays can be created.
   new BasicType[][LENGTH]
   new BasicType[][]...[LENGTH]
 
-B<Examples of creating multi dimentional array:>
+B<Examples:>
 
   # 2 dimentional int array
   my $nums = new int[][3];
@@ -4971,7 +4963,7 @@ If the number of arguments does not correct, a compilation error will occur.
 
 If the types of arguments have no type compatible, a compilation error will occur.
 
-B<Examples of class method call:>
+B<Examples:>
 
   my $ret = Foo->bar(1, 2, 3);
 
@@ -4985,15 +4977,15 @@ If the number of arguments does not correct, a compilation error will occur.
 
 If the types of arguments have no type compatible, a compilation error will occur.
 
-B<Examples of instance method call:>
+B<Examples:>
   
   $object->bar(5, 3. 6);
 
-=head2 Current Class
+=head3 Current Class
 
 B<&> before method name means the current class. You can call method using C<&> keyword instead of the current class name.
 
-B<Examples of Current Class:>
+B<Examples:>
 
   class Foo {
     
@@ -5072,7 +5064,7 @@ Getting Multi-Numeric Field via Dereference Expression returns the field value i
 
 Retrun Type is The L</"Types"> of the Field.
 
-B<Examples of Getting Multi-Numeric Field via Dereference:>
+B<Examples:>
 
   my $z : Complex_2d;
   my $z_ref = \$z;
@@ -5094,7 +5086,7 @@ The assignment must satisfy the L<type assignability|/"Type Assignability">.
 
 Return Value Type is the type of Field.
 
-B<Examples of Setting Multi-Numeric Field via Dereference:>
+B<Examples:>
 
   my $z : Complex_2d;
   my $z_ref = \$z;
@@ -5302,7 +5294,7 @@ You can use C<else> statement to describe what happens if or if the elsif Statem
   
   }
 
-B<Examples of if statements:>
+B<Examples:>
 
   # An example of if Statement.
   my $flag = 1;
@@ -5463,7 +5455,7 @@ If you use break Statement, you can exit from the switch block.
 
 If a case Block exists, the last Statement must be a break Statement or a returnl Statement, otherwise a compilation error will occur.
 
-B<Examples of switch statements:>
+B<Examples:>
 
   # switch statements.
   my $code = 2;
@@ -5509,7 +5501,7 @@ The C<while> statement is a L<statement|/"Statements"> for repeating.
 
 L</"Expressions"> can be described in the condition Expression. L</"Bool Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
 
-B<Examples of While Statement:>
+B<Examples:>
 
 An example of a while Statement.
 
