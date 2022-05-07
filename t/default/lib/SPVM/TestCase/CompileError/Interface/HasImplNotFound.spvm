@@ -1,0 +1,10 @@
+class TestCase::CompileError::Interface::HasImplNotFound {
+  use TestCase::Pointable;
+  use TestCase::PointForTest;
+
+  static method main : void () {
+    my $pointable : TestCase::Pointable = TestCase::PointForTest->new_xy(1, 2);
+    
+    has_impl $pointable->not_found;
+  }
+}

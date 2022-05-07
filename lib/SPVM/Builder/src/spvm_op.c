@@ -247,7 +247,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "MAKE_READ_ONLY",
     "COPY",
     "INTERFACE",
-    "HAS_IMPLEMENT",
+    "HAS_IMPL",
     "ELEMENT",
     "OARRAY",
     "ALIAS",
@@ -1327,7 +1327,7 @@ int32_t SPVM_OP_get_mem_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
-    case SPVM_OP_C_ID_HAS_IMPLEMENT:
+    case SPVM_OP_C_ID_HAS_IMPL:
       return 0;
     default: {
       SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
@@ -1394,7 +1394,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_IF:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
     case SPVM_OP_C_ID_IS_READ_ONLY:
-    case SPVM_OP_C_ID_HAS_IMPLEMENT:
+    case SPVM_OP_C_ID_HAS_IMPL:
     {
       type = SPVM_TYPE_new_int_type(compiler);
       break;
@@ -1655,16 +1655,19 @@ SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_a
   return op_field_access;
 }
 
-SPVM_OP* SPVM_OP_build_has_implement(SPVM_COMPILER* compiler, SPVM_OP* op_has_implement, SPVM_OP* op_var, SPVM_OP* op_name) {
+SPVM_OP* SPVM_OP_build_has_impl(SPVM_COMPILER* compiler, SPVM_OP* op_has_impl, SPVM_OP* op_var, SPVM_OP* op_name) {
   
-  // Build op
-  SPVM_OP_insert_child(compiler, op_has_implement, op_has_implement->last, op_var);
-  SPVM_OP_insert_child(compiler, op_has_implement, op_has_implement->last, op_name);
+  if (!op_name) {
+    op_name = SPVM_OP_new_op_name(compiler, "", op_var->file, op_var->line);
+  }
+  
+  SPVM_OP_insert_child(compiler, op_has_impl, op_has_impl->last, op_var);
+  SPVM_OP_insert_child(compiler, op_has_impl, op_has_impl->last, op_name);
 
   SPVM_OP* op_name_var_condition = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_var->file, op_var->line);
   SPVM_OP* op_var_condition = SPVM_OP_new_op_var(compiler, op_name_var_condition);
   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_var->file, op_var->line);
-  SPVM_OP_build_assign(compiler, op_assign, op_var_condition, op_has_implement);
+  SPVM_OP_build_assign(compiler, op_assign, op_var_condition, op_has_impl);
 
   return op_assign;
 }

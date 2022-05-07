@@ -1909,10 +1909,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   is_keyword = 1;
                   keyword_term = HAS;
                 }
-                else if (strcmp(symbol_name, "has_implement") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_HAS_IMPLEMENT);
+                else if (strcmp(symbol_name, "has_impl") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_HAS_IMPL);
                   is_keyword = 1;
-                  keyword_term = HAS_IMPLEMENT;
+                  keyword_term = HAS_IMPL;
                 }
                 break;
               }

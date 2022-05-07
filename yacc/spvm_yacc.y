@@ -39,7 +39,7 @@
 %type <opval> unary_op binary_op comparison_op isa logical_op expression_or_logical_op
 %type <opval> call_spvm_method opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
-%type <opval> assign inc dec allow has_implement
+%type <opval> assign inc dec allow has_impl
 %type <opval> new array_init
 %type <opval> var_decl var interface
 %type <opval> expression opt_expressions expressions opt_expression case_statements
@@ -57,7 +57,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPLEMENT
+%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -714,7 +714,7 @@ expression
       $$ = SPVM_OP_new_op_false(compiler, $1);
     }
   | is_read_only
-  | has_implement
+  | has_impl
 
 expressions
   : expressions ',' expression
@@ -1134,10 +1134,14 @@ isweak_field
       $$ = SPVM_OP_build_isweak_field(compiler, $1, op_field_access);
     }
 
-has_implement
-  : HAS_IMPLEMENT var ARROW method_name
+has_impl
+  : HAS_IMPL var ARROW method_name
     {
-      $$ = SPVM_OP_build_has_implement(compiler, $1, $2, $4);
+      $$ = SPVM_OP_build_has_impl(compiler, $1, $2, $4);
+    }
+  | HAS_IMPL var
+    {
+      $$ = SPVM_OP_build_has_impl(compiler, $1, $2, NULL);
     }
 
 array_length

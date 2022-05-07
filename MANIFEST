@@ -444,6 +444,7 @@ t/default/lib/SPVM/TestCase/CompileError/Field/HasFieldNameStartDigit.spvm
 t/default/lib/SPVM/TestCase/CompileError/Field/Private.spvm
 t/default/lib/SPVM/TestCase/CompileError/ForTest.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/ArrayElementCantAssign.spvm
+t/default/lib/SPVM/TestCase/CompileError/Interface/HasImplNotFound.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/HaveBlock.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/MultiRequiredMethods.spvm
 t/default/lib/SPVM/TestCase/CompileError/Interface/NativeMethod.spvm
@@ -613,6 +614,7 @@ t/default/lib/SPVM/TestCase/Pointable.spvm
 t/default/lib/SPVM/TestCase/Pointer.c
 t/default/lib/SPVM/TestCase/Pointer.config
 t/default/lib/SPVM/TestCase/Pointer.spvm
+t/default/lib/SPVM/TestCase/PointForTest.spvm
 t/default/lib/SPVM/TestCase/Precedence.spvm
 t/default/lib/SPVM/TestCase/Print.spvm
 t/default/lib/SPVM/TestCase/Private.spvm

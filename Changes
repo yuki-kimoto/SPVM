@@ -1,11 +1,23 @@
 Revision history for SPVM
-0.9514_01  2022-05-02
+0.9514_02  2022-05-07
+        [CHANGE]
         * Add cloneable_clone to Point class.
         * Point class has Cloneable interface.
-        * Interface can have interface guarantees
-
+        * Interface can have interface statment.
+        * Interface type and callback type can be assign to interface type that has the interface.
+        * Interface type and callback type can be assign to callback type that has the callback.
+        * Allow type cast from interface type to callback type
+        * Allow type cast from callback type to interface type
+        * Improve calling method error messages.
+        * The "has_impl" operator can check anon method
+          if (has_impl $interface) {
+          
+          }
         [BUG FIX]
+        * Fix the bug that has_impl can specify not found method.
+        * Interface can have interface guarantees
         * Fix the bug that switch statement is wrong behaivior when the count of case statements is greater than 255.
+        * Fix the bug that "has_impl" operator can't do precompile.
         [NON BACKWORD COMPATIBLE CHANGES]
         * Revert 0.9514 Methods of interfaces must have the names.
         * implement statement is renamed to interface statement.
@@ -13,8 +25,31 @@ Revision history for SPVM
         * A callback type must have one required method.
         * A class must have the required methods defined in the interface classes.
         * Remove callback_t. The feature of callback_t is merged into interface_t.
+        * Add the following native APIs
+          "free_env_prepared", "get_class_var_id_cache", "get_field_id_cache",  "get_method_id_cache"
+          "check_runtime_assignability_array_element", "check_runtime_assignability",
+          "free_env_raw", "new_env_raw", "allocator", "api",
         * Remove SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CALLBACK
         * Change ID of SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT from 10 to 9
+        * Remove "byte_object_basic_type_id" native API. ID 9 is reused by "api" native API.
+        * Remove "short_object_basic_type_id" native API. ID 10 is reused by "allocator" native API.
+        * Remove "int_object_basic_type_id" native API. ID 11 is reused by "new_env_raw" native API.
+        * Remove "long_object_basic_type_id" native API. ID 12 is reused by "free_env_raw" native API.
+        * Remove "float_object_basic_type_id" native API. ID 13 is reused by "check_runtime_assignability" native API.
+        * Remove "double_object_basic_type_id" native API. ID 14 is reused by "check_runtime_assignability_array_element" native API.
+        * Remove "has_callback" native API. ID 106 is reused Y_CALLBACK
+        * Change ID of SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT from 10 to 9
+        * Remove "byte_object_basic_type_id" native API. ID 9 is reused by "api" native API.
+        * Remove "short_object_basic_type_id" native API. ID 10 is reused by "allocator" native API.
+        * Remove "int_object_basic_type_id" native API. ID 11 is reused by "new_env_raw" native API.
+        * Remove "long_object_basic_type_id" native API. ID 12 is reused by "free_env_raw" native API.
+        * Remove "float_object_basic_type_id" native API. ID 13 is reused by "check_runtime_assignability" native API.
+        * Remove "double_object_basic_type_id" native API. ID 14 is reused by "check_runtime_assignability_array_element" native API.
+        * Remove "has_callback" native API. ID 106 is reused by "is_object_array" native API.
+        * Remove "no_symbol_cache_flag" native API. ID 176 is reused by "get_method_id_cache" native API.
+        * Remove "set_no_symbol_cache_flag" native API. ID 177 is reused by "get_field_id_cache" native API.
+        * Remove "get_class_var_id_cache" native API. ID 178 is reused by "get_class_var_id_cache" native API.
+        * "has_implemenet" operator is renamed to "has_impl".
 0.9514  2022-05-02
         [CHANGE]
         * Add no_compiler_api to SPVM::Builder::Config::Exe

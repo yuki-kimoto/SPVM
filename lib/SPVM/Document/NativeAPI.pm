@@ -645,6 +645,78 @@ Native API can be called from "SPVM_ENV* env" passed as an argument. Note that y
   16 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT
   17 SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT
 
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN
+
+The basic type is unknown.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF
+
+The basic type ID of C<undef> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_VOID
+
+The basic type ID of C<void> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE
+
+The basic type ID of C<byte> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT
+
+The basic type ID of C<short> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_INT
+
+The basic type ID of C<int> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_LONG
+
+The basic type ID of C<long> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT
+
+The basic type ID of C<float> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE
+
+The basic type ID of C<double> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_STRING
+
+The basic type ID of C<string> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT
+
+The basic type ID of C<object> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_OBJECT
+
+The basic type ID of L<Byte|SPVM::Byte> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_OBJECT
+
+The basic type ID of L<Short|SPVM::Short> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_INT_OBJECT
+
+The basic type ID of L<Int|SPVM::Int> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_OBJECT
+
+The basic type ID of L<Long|SPVM::Long> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT
+
+The basic type ID of L<Float|SPVM::Float> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT
+
+The basic type ID of L<Double|SPVM::Double> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT
+
+The basic type ID of L<BOOL|SPVM::BOOL> type.
+
 =head2 Constant Values of Basic Type Categories
 
   0  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN
@@ -671,12 +743,12 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   6 object_type_category_offset
   7 object_flag_offset
   8 object_length_offset
-  9 byte_object_basic_type_id
-  10 short_object_basic_type_id
-  11 int_object_basic_type_id
-  12 long_object_basic_type_id
-  13 float_object_basic_type_id
-  14 double_object_basic_type_id
+  9 api
+  10 allocator
+  11 new_env_raw
+  12 free_env_raw
+  13 check_runtime_assignability
+  14 check_runtime_assignability_array_element
   15 runtime
   16 exception_object
   17 native_mortal_stack
@@ -768,7 +840,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   103 leave_scope
   104 remove_mortal
   105 is_type
-  106 has_callback
+  106 is_object_array
   107 get_object_basic_type_id
   108 get_object_type_dimension
   109 weaken
@@ -838,17 +910,15 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   173 copy
   174 shorten
   175 has_interface
-  176 no_symbol_cache_flag
-  177 set_no_symbol_cache_flag
-  178 get_no_symbol_cache_flag
+  176 get_method_id_cache
+  177 get_field_id_cache
+  178 get_class_var_id_cache
   179 print
   180 print_stderr
-  181 new_env_raw,
-  182 free_env_raw,
-  183 init_env,
-  184 call_init_blocks,
-  185 cleanup_global_vars,
-  186 is_object_array,
+  181 init_env,
+  182 call_init_blocks
+  183 cleanup_global_vars
+  184 free_env_prepared
 
 =head1 List of Native APIs
 
@@ -910,41 +980,58 @@ Offset of flag in object structure. This is used internally.
 
 The length offset in the object structure. This is used internally.
 
-=head2 byte_object_basic_type_id
+=head2 api
 
-  void* byte_object_basic_type_id;
+  void* api;
 
-Basic type ID of L<Byte|SPVM::Byte> type. This is used internally.
+The environment of APIs such as L<compiler native APIs|SPVM::Document::NativeAPI::Compiler>, L<precompile native APIs|SPVM::Document::NativeAPI::Precompile>, L<runtime native APIs|SPVM::Document::NativeAPI::Runtime>, L<string buffer native APIs|SPVM::Document::NativeAPI::StringBuffer>, L<allocator native APIs|SPVM::Document::NativeAPI::Allocator>.
 
-=head2 short_object_basic_type_id
+B<Examples:>
+  
+  // Compiler native APIs
+  void* compiler_api = env->api->compiler;
+  
+  // Precompile native APIs
+  void* precompile_api = env->api->precompile;
+  
+  // Runtime native APIs
+  void* runtime_api = env->api->runtime;
+  
+  // String buffer native APIs
+  void* string_buffer_api = env->api->string_buffer;
+  
+  // Allocator native APIs
+  void* allocator_api = env->api->allocator;
 
-  void* short_object_basic_type_id;
+=head2 allocator
 
-ID of the base type of L<Short|SPVM::Short> type. This is used internally.
+  void* allocator;
 
-=head2 int_object_basic_type_id
+The memory allocator for this environment.
 
-  void* int_object_basic_type_id;
+=head2 new_env_raw
 
-ID of the base type of L<Int|SPVM::Int> type. This is used internally.
+  SPVM_ENV* (*new_env_raw)();
 
-=head2 long_object_basic_type_id
+Create a new raw envriment.
 
-  void* long_object_basic_type_id;
+=head2 free_env_raw
 
-ID of the base type of L<Long|SPVM::Long> type. This is used internally.
+  void (*free_env_raw)(SPVM_ENV* env);
 
-=head2 float_object_basic_type_id
+Free the raw environemt that is created by L</"new_env_raw">.
 
-  void* float_object_basic_type_id;
+=head2 check_runtime_assignability
 
-ID of the base type of L<Float|SPVM::Float> type. This is used internally.
+  int32_t (*check_runtime_assignability)(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
 
-=head2 double_object_basic_type_id
+Check the runtime type assignability of an object.
 
-  void* double_object_basic_type_id;
+=head2 check_runtime_assignability_array_element
 
-ID of the base type of L<Double|SPVM::Double> type. This is used internally.
+  int32_t (*check_runtime_assignability_array_element)(SPVM_ENV* env, void* array, void* element);
+
+Check the runtime type assignability of an array element.
 
 =head2 runtime
 
@@ -1799,11 +1886,13 @@ Given a scope ID and an object, delete the specified object from the mortal stac
 
 Given an object and a base type ID and a type dimension, returns a nonzero value if the object matches both the base type ID and the type dimension, and 0 otherwise.
 
-=head2 has_callback
+=head2 is_object_array
 
-  int32_t (*has_callback)(SPVM_ENV* env, void* object, int32_t callback_basic_type_id);
+  int32_t (*is_object_array)(SPVM_ENV* env, void* object);
 
-Given a base type id for the object and the callback type, returns a non-zero value if the object conforms to the callback type, and zero otherwise.
+If the object is a object array, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
 
 =head2 get_object_basic_type_id
 
@@ -2593,35 +2682,25 @@ The charaters of the after the given length are filled with C<\0>.
 
   int32_t (*has_interface)(SPVM_ENV* env, void* object, int32_t interface_basic_type_id);
 
-Check the class of the object has the interface type.
+Check the type of the object has the interface.
 
-=head2 no_symbol_cache_flag
+=head2 get_method_id_cache
 
-  void* no_symbol_cache_flag;
+  int32_t (*get_method_id_cache)(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
 
-(Currently Unused)
+Get the method ID from the method cache name. The method ID is cacahed.
 
-Used internally.
+=head2 get_field_id_cache
 
-=head2 set_no_symbol_cache_flag
+  int32_t (*get_field_id_cache)(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
 
-  void (*set_no_symbol_cache_flag)(SPVM_ENV* env, int32_t flag);
+Get the method ID from the field cache name. The field ID is cacahed.
 
-(Currently Unused)
+=head2 get_class_var_id_cache
 
-Set the flag that precompile and native codes don't use symbol cache such as basic type names, method names, field names, package names.
+  int32_t (*get_class_var_id_cache)(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
 
-If the flag is C<1>, caching is not done, if the flag is C<0>, caching is done.
-
-Note that this flag is merely intention for the native module authors. On the other hand, precompile and the core native code follow this flag.
-
-=head2 get_no_symbol_cache_flag
-
-  int32_t (*get_no_symbol_cache_flag)(SPVM_ENV* env);
-
-(Currently Unused)
-
-Get the flag that native code doesn't use symbol cache such as basic type names, method names, field names, package names.
+Get the class variable ID from the class variable cache name. The class variable ID is cacahed.
 
 =head2 print
 
@@ -2638,18 +2717,6 @@ If the string is C<NULL>, nothing is printed.
 Print the characters of the string to stderr.
 
 If the string is C<NULL>, nothing is printed.
-
-=head2 new_env_raw
-
-  SPVM_ENV* (*new_env_raw)();
-
-Create a new environment. This environment is not yet initialized.
-
-=head2 free_env_raw
-
-  void (*free_env_raw)(SPVM_ENV* env);
-
-Release the execution environment.
 
 =head2 init_env
 
@@ -2669,13 +2736,11 @@ Call C<INIT> blocks.
 
 Cleanup gloval variable, such as class variables and the exception variable.
 
-=head2 is_object_array
+=head2 free_env_prepared
+  
+  void (*free_env_prepared)(SPVM_ENV* env);
 
-  int32_t (*is_object_array)(SPVM_ENV* env, void* object);
-
-If the object is a object array, returns C<1>, otherwise returns C<0>.
-
-If the object is C<NULL>, returns C<0>.
+Free the environment prepared by C<SPVM_NATIVE_new_env_prepared> function.
 
 =head1 Compiler Native API
 

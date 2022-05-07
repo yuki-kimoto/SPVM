@@ -106,12 +106,12 @@ struct spvm_env {
   void* object_type_category_offset;
   void* object_flag_offset;
   void* object_length_offset;
-  void* byte_object_basic_type_id;
-  void* short_object_basic_type_id;
-  void* int_object_basic_type_id;
-  void* long_object_basic_type_id;
-  void* float_object_basic_type_id;
-  void* double_object_basic_type_id;
+  SPVM_ENV_API* api;
+  void* allocator;
+  SPVM_ENV* (*new_env_raw)();
+  void (*free_env_raw)(SPVM_ENV* env);
+  int32_t (*check_runtime_assignability)(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
+  int32_t (*check_runtime_assignability_array_element)(SPVM_ENV* env, void* array, void* element);
   void* runtime;
   void* exception_object;
   void* native_mortal_stack;
@@ -203,7 +203,7 @@ struct spvm_env {
   void (*leave_scope)(SPVM_ENV* env, int32_t scope_id);
   int32_t (*remove_mortal)(SPVM_ENV* env, int32_t scope_id, void* remove_object);
   int32_t (*is_type)(SPVM_ENV* env, void* object, int32_t basic_type_id, int32_t type_dimension);
-  int32_t (*has_callback)(SPVM_ENV* env, void* object, int32_t callback_basic_type_id);
+  int32_t (*is_object_array)(SPVM_ENV* env, void* object);
   int32_t (*get_object_basic_type_id)(SPVM_ENV* env, void* object);
   int32_t (*get_object_type_dimension)(SPVM_ENV* env, void* object);
   int32_t (*weaken)(SPVM_ENV* env, void** object_address);
@@ -273,25 +273,15 @@ struct spvm_env {
   void* (*copy)(SPVM_ENV* env, void* object);
   void (*shorten)(SPVM_ENV* env, void* string, int32_t new_length);
   int32_t (*has_interface)(SPVM_ENV* env, void* object, int32_t interface_basic_type_id);
-  void* no_symbol_cache_flag;
-  void (*set_no_symbol_cache_flag)(SPVM_ENV* env, int32_t flag);
-  int32_t (*get_no_symbol_cache_flag)(SPVM_ENV* env);
-  void (*print)(SPVM_ENV* env, void* string);
-  void (*print_stderr)(SPVM_ENV* env, void* string);
-  SPVM_ENV* (*new_env_raw)();
-  void (*free_env_raw)(SPVM_ENV* env);
-  int32_t (*init_env)(SPVM_ENV* env);
-  void (*call_init_blocks)(SPVM_ENV* env);
-  void (*cleanup_global_vars)(SPVM_ENV* env);
-  int32_t (*is_object_array)(SPVM_ENV* env, void* object);
   int32_t (*get_method_id_cache)(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
   int32_t (*get_field_id_cache)(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
   int32_t (*get_class_var_id_cache)(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
+  void (*print)(SPVM_ENV* env, void* string);
+  void (*print_stderr)(SPVM_ENV* env, void* string);
+  int32_t (*init_env)(SPVM_ENV* env);
+  void (*call_init_blocks)(SPVM_ENV* env);
+  void (*cleanup_global_vars)(SPVM_ENV* env);
   void (*free_env_prepared)(SPVM_ENV* env);
-  SPVM_ENV_API* api;
-  void* allocator;
-  int32_t (*check_runtime_assignability_array_element)(SPVM_ENV* env, void* array, void* element);
-  int32_t (*check_runtime_assignability)(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
 };
 
 

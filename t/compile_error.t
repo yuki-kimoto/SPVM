@@ -282,6 +282,7 @@ sub print_error_messages {
   compile_not_ok('TestCase::CompileError::Interface::NotHaveInterfaceMethod', qr/TestCase::CompileError::Interface::NotHaveInterfaceMethod.+to_string.*string\(self\).+interface.+Stringable/i);
   compile_not_ok('TestCase::CompileError::Interface::NoMethods', qr/one required method/i);
   compile_not_ok('TestCase::CompileError::Interface::MultiRequiredMethods', qr/multiple required method/i);
+  compile_not_ok('TestCase::CompileError::Interface::HasImplNotFound', qr/interface.+TestCase::Pointable.+the method declaration.+not_found/i);
 }
 
 # Syntax

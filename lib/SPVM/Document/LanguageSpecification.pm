@@ -209,7 +209,7 @@ The list of keywords.
   gt
   ge
   has
-  has_implement
+  has_impl
   if
   isa
   isweak
@@ -885,7 +885,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> unary_op binary_op comparison_op isa logical_op expression_or_logical_op
   %type <opval> call_spvm_method opt_vaarg
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
-  %type <opval> assign inc dec allow has_implement
+  %type <opval> assign inc dec allow has_impl
   %type <opval> new array_init
   %type <opval> my_var var interface
   %type <opval> expression opt_expressions expressions opt_expression case_statements
@@ -903,7 +903,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPLEMENT
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -1138,7 +1138,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | TRUE
     | FALSE
     | is_read_only
-    | has_implement
+    | has_impl
 
   expressions
     : expressions ',' expression
@@ -1255,8 +1255,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   isweak_field
     : ISWEAK var ARROW '{' field_name '}'
 
-  has_implement
-    : HAS_IMPLEMENT var ARROW method_name
+  has_impl
+    : HAS_IMPL var ARROW method_name
 
   array_length
     : '@' expression
@@ -1456,7 +1456,7 @@ The list of syntax parsing tokens:
     <td>HAS</td><td>has</td>
   </tr>
   <tr>
-    <td>HAS_IMPLEMENT</td><td>has_implement</td>
+    <td>HAS_IMPL</td><td>has_impl</td>
   </tr>
   <tr>
     <td>IF</td><td>if</td>
@@ -1685,7 +1685,7 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPLEMENT
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -1921,7 +1921,7 @@ Interface Guarantee C<interface> is a syntax to guarantee that the class has the
 
 If the method implementation is not found, an exception is thrown at runtime.
 
-The existence of the method implementation can be checked by the L<has_implement|/"has_implement Operator"> operator.
+The existence of the method implementation can be checked by the L<has_impl|/"has_impl Operator"> operator.
 
 =head2 Anon Class
 
@@ -5159,19 +5159,33 @@ B<Examples:>
   # isweak
   my $isweak = isweak $object->{point};
 
-=head2 has_implement Operator
+=head2 has_impl Operator
 
-The C<has_implement> operator checks the existence of the method implementation.
+The C<has_impl> operator checks the existence of the method implementation.
 
-  has_implement OPERAND->METHOD_NAME
+  has_impl OPERAND->METHOD_NAME
+
+  has_impl OPERAND
 
 The operand must the object that has a L<class type|/"Class Type"> or an L<interface type|/"Interface Type">, otherwise a compilation error will occur.
 
+If the class or the interface doesn't have the method declaration, a compilation error will occur.
+
 The method name must be a L<method name|/"Method Names">, otherwise a compilation error will occur.
+
+If method name is not specified, the method name become C<"">.
 
 The return type is L<int type|/"int Type">.
 
-If the class of the object has the method implementation, returns C<1>, otherwise returns C<0>.
+If the class or the interface has the method implementation, returns C<1>, otherwise returns C<0>.
+
+B<Examples:>
+
+  my $stringable = (Stringable)Point->new_xy(1, 2);
+  
+  if (has_impl $stringable->to_string) {
+    # ...
+  }
 
 =head2 Type Cast
 
@@ -6869,8 +6883,8 @@ Otherwise, the assignability is false.
 
 B<Examples:>
 
-  my $any_object0 : object[];
-  my $any_object : object[] = $any_object0;
+  my $any_objects0 : object[];
+  my $any_objects : object[] = $any_objects0;
 
   my $points : Point[];
   my $any_object : object[] = $points;
@@ -7106,7 +7120,7 @@ B<Examples:>
 
 If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is the L<string type|/"String Type">, the type castability is true.
 
-If the type of the left operand is the L<string type|/"String Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the runtime type checking is performed.
+If the type of the left operand is the L<string type|/"String Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<Numeric-to-String type conversion|/"Numeric-to-String Type Conversion"> is performed.
 
@@ -7149,7 +7163,7 @@ The type of the right operand is other than above, the type castability is false
 
 If the type of the right operand is a L<numeric type|/"Numeric Types">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
 
-If the type of the left operand is the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, the runtime type checking is performed.
+If the type of the left operand is the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -7181,7 +7195,7 @@ If the type of the right operand is the same type, the L<any object type|/"Any O
 
 Otherwise, the type castability is false.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the runtime type checking is performed.
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -7218,7 +7232,7 @@ If the type of the right operand is a L<class type|/"Class Type"> and the class 
 
 Otherwise, the type castability is false.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the runtime type checking is performed.
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 =begin html
 
 <table>
@@ -7288,7 +7302,7 @@ Otherwise, the type castability is false.
 
 If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the L<string type|/"String Type">, L<String-to-byte[] Type Conversion> is performed.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the runtime type checking is performed.
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -7322,7 +7336,7 @@ If the type of the right operand is the same type of the left operand, the L<any
 
 Otherwise, the type castability is false.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the runtime type checking is performed.
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -7353,7 +7367,7 @@ If the type of the right operand is the same type of the left operand, the L<any
 
 Otherwise, the type castability is false.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the runtime type checking is performed.
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -7388,7 +7402,7 @@ If the type of the right operand is the same type of the left operand, the L<any
 
 Otherwise, the type castability is false.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the runtime type checking is performed.
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -7429,9 +7443,9 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 
 Otherwise, the type castability is false.
 
-If the type of the right operand is an differnt type of  L<interface array type|/"Interface Array Types">, the runtime type checking is performed.
+If the type of the right operand is an differnt type of  L<interface array type|/"Interface Array Types">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the runtime type checking is performed.
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -7450,17 +7464,23 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 
 B<Examples:>
 
-  my $stringables : Stringable[] = new Stringable[3];
+  my $stringables = (Stringable[])new Stringable[3];
 
-  my $stringables : Stringable[] = new Point[3];
+  my $stringables = (Stringable[])new Point[3];
   
-  my $stringables : Stringable[] = undef;
+  my $stringables = (Stringable[])undef;
 
 =head2 Type Castability to Any Object Array
 
-If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the types of the right operands are the following cases:
+
+If the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
+
+If the type of the right operand is an L<any object type|/"Any Object Type">, the type castability is true.
 
 Otherwise, the type castability is false.
+
+If the type of the right operand is an L<any object type|/"Any Object Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -7468,6 +7488,7 @@ Otherwise, the type castability is false.
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>object[]</td><td>OBJECT_X[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>Copying</td></tr>
+  <tr><td>True</td><td>object[]</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
@@ -7475,26 +7496,33 @@ Otherwise, the type castability is false.
 
 B<Examples:>
 
-  my $any_object0 : object[];
-  my $any_object : object[] = $any_object0;
+  my $any_object : object;
+  my $any_objects = (object[])$any_object;
+
+  my $any_objects0 : object[];
+  my $any_objects = (object[])$any_objects0;
 
   my $points : Point[];
-  my $any_object : object[] = $points;
+  my $any_object = (object[])$points;
 
-  my $any_object : object[] = undef;
+  my $any_object = (object[])undef;
 
   my $points_2dim : Point[][];
-  my $any_object : object[] = $points_2dim;
+  my $any_object = (object[])$points_2dim;
 
   my $stringables : Stringable[];
-  my $any_object : object[] = $stringables;
+  my $any_object = (object[])$stringables;
   
   my $strings : string[];
-  my $any_object : object[] = $strings;
+  my $any_object = (object[])$strings;
   
 =head2 Type Castability to Multi-Dimensional Array
 
-If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and  and the types of the right operands are the following cases:
+
+If the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
+
+If the type of the right operand is an L<any object type|/"Any Object Type">, the type castability is true.
 
 If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the type castability is true.
 
@@ -7505,7 +7533,9 @@ Otherwise, the type castability is false.
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>Copying</td></tr>
-  <tr><td>True</td><td>object[]</td><td>undef</td><td>Copying</td></tr>
+  <tr><td>True</td><td>MULDIM_X</td><td>object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>MULDIM_X</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>MULDIM_X</td><td>undef</td><td>Copying</td></tr>
   <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>Copying</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
