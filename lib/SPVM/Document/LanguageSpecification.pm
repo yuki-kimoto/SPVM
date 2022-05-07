@@ -3075,7 +3075,7 @@ A C<switch> block is a scope block.
 
 =head1 String
 
-SPVM has the L<string type|/"String Type">. A string is created by L</"String Literal"> L</"String Creation Operator"> or L</"Type Convertion"> to the string type.
+SPVM has the L<string type|/"String Type">. A string is created by L</"String Literal"> L</"String Creating Operator"> or L</"Type Convertion"> to the string type.
   
   # Create a string using a string literal
   my $string = "Hello";
@@ -3427,7 +3427,7 @@ Unary operators are operators have one operand.
 
 The operand is an L<operator|/"Operators">.
 
-Unary operators are L</"Unary Plus Operator">, L</"Unary Minus Operator">, L</"Bit NOT Operator">, L</"Array Length Operator">, L</"String Creation Operator">, and L</"String Length Operator">.
+Unary operators are L</"Unary Plus Operator">, L</"Unary Minus Operator">, L</"Bit NOT Operator">, L</"Array Length Operator">, L</"String Creating Operator">, and L</"String Length Operator">.
 
 =head2 Binary Operators
 
@@ -4179,9 +4179,11 @@ The contents of the dumped string may vary from SPVM version to version. Please 
 
 =head2 Logical Operators
 
-Logical Operators are L</"Operators"> that performs a logical operation. These are L</"Logical AND Operator">, L</"Logical OR Operator">, and L</"Logical NOT Operator">.
+The logical operators are the L<operators|/"Operators"> to perform logical operations.
 
-=head2 Logical AND Operator
+The logical operators are the L<logical AND operator|/"Logical AND Operator">, the L<logical OR operator|/"Logical OR Operator">, and the L<logical NOT operator|/"Logical NOT Operator">.
+
+=head3 Logical AND Operator
 
 The logical AND operator C<&&> returns the result of a logical AND operation.
 
@@ -4199,7 +4201,7 @@ otherwise returns C<1>.
 
 Logical AND operators can be only used as conditions. Note that these can't be used as L<value_ops|/"Expressions">. 
 
-=head2 Logical OR Operator
+=head3 Logical OR Operator
 
 The logical OR operator C<||> returns the result of a logical OR operation.
 
@@ -4217,7 +4219,7 @@ otherwise returns C<0>.
 
 Logical OR operators can be only used as conditions. Note that these can't be used as L<value_ops|/"Expressions">. 
 
-=head2 Logical NOT Operator
+=head3 Logical NOT Operator
 
 The logical NOT operator C<!> returns the result of a logical NOT operation.
 
@@ -4402,7 +4404,7 @@ B<Examples of array length operators:>
   
 Note that SPVM does not have the context different from Perl, and array length operators always return the length of the array.
 
-=head2 String Creation Operator
+=head2 String Creating Operator
 
 The string creation operator C<new_string_len> is an L<Unary Operator|/"Unary Operators"> to create a L<string|/"String"> with the length.
 
