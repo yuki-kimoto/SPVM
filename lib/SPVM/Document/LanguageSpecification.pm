@@ -4352,26 +4352,6 @@ Special Assignment Operator Example
   $x >>>= 1;
   $x .= "abc";
 
-=head2 Reference Operator
-
-The Reference Operator is an operator that retrieves the address of a variable for L</"Numeric Types"> or L</"Multi-Numeric Types">. Designed to achieve c address Operator C<*>.
-
-  \VARIABLE
-
-If the variable is not numeric type or Multi-Numeric Types, a compilation error will occur
-
-Reference Operator returns value_op. The type returned is L</"Reference Type">.
-
-B<Examples:>
-
-  my $num : int;
-  my $num_ref : int* = \$num;
-  
-  my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
-
-For a detailed description of Reference, see L</"Reference">.
-
 =head2 Array Length Operator
 
 The array length operator is an L<Unary Operator|/"Unary Operators"> to get the length of the array.
@@ -4999,6 +4979,26 @@ B<Examples:>
     }
     
   }
+
+=head2 Reference Operator
+
+The reference operator C<\> is the L<operator|/"Operators"> to create a L<reference|/"Reference">.
+
+  \ OPERAND
+
+The operand must be a L<local variable|/"Local Variable"> that type is a L<numeric type|/"Numeric Types"> or a L<multi-numeric type|/"Multi-Numeric Types">. Otherwise a compilation error will occur.
+
+The return type is the L<reference type|/"Reference Type"> of the operand.
+
+B<Examples:>
+  
+  # Create the reference of a numeric type
+  my $num : int;
+  my $num_ref : int* = \$num;
+  
+  # Create the reference of a multi-numeric type
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
 
 =head2 Dereference Operators
 
