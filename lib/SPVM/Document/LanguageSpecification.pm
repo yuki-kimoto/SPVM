@@ -3192,7 +3192,7 @@ Multi-Numeric type represents continuous numeric values. For example, there are 
 Multi-Numeric Types are defined by specifying mulnum_t L</"Class Descriptors"> in L</"Class Definition">.
 
   # Three consecutive 32bit signed integers
-  class Point_3i : mulnum_t {
+  class Complex_2d : mulnum_t {
     has x : int;
     has y : int;
     has z : int;
@@ -3220,12 +3220,12 @@ Multi-Numeric Types can be used as L</"Types"> of Return Value in L</"Method Def
 
 Multi-Numeric Types can be used as L</"Basic Type"> of L</"Array Types"> .
 
-  my $points = new Point_3i[5];
+  my $points = new Complex_2d[5];
 
 Reference can be created for Multi-Numeric Types value.
 
-  my $point : Point_3i;
-  my $point_ref = \$point;
+  my $z : Complex_2d;
+  my $z_ref = \$z;
 
 L</"Undefined Value"> cannot be assigned to Multi-Numeric Types value.
 
@@ -3302,12 +3302,12 @@ List of Multi-Numeric Types Suffix.
 
 To use Multi-Numeric Types, load a Module using L</"use Statement">.
 
-  use Point_3i;
+  use Complex_2d;
   use Complex_2d;
 
 Next is L</"Local Variable Declaration">. Local Variable Declaration create continuous area for fields of Multi-Numeric Types Value. All fields of of Multi-Numeric Types Value are initialized by L</"Type Initial Value">.
 
-  my $point : Point_3i;
+  my $z : Complex_2d;
   my $z : Complex_2d;
 
 Note that Multi-Numeric Types value are not object, so cannot create a Object by L</"new"> syntax.
@@ -3326,7 +3326,7 @@ See L</"Setting Multi-Numeric Field"> to set Multi-Numeric Types Field.
 
 L</"Multi-Numeric Value"> can be an element of L</"Array">.
 
-  my $points = new Point_3i[5];
+  my $points = new Complex_2d[5];
   
   my $zs = new Complex_2d[5];
 
@@ -3334,7 +3334,7 @@ Multi-Numeric Array has continuous Multi-Numeric Values.
 
 The Element Type is L</"Multi-Numeric Types">, not L</"Object Types">.
 
-For example, Point_3i[5] is continuous 15 (= 3 * 5) count L</"int Type"> Value.
+For example, Complex_2d[5] is continuous 15 (= 3 * 5) count L</"int Type"> Value.
 
 L</"Types"> of Multi-Numeric Array is L</"Array Types">.
 
@@ -3350,60 +3350,62 @@ See L</"Setting Array Element"> to get Array Element Value.
 
 =head1 Reference
 
-Reference is data that indicates the location of L</"Local Variable"> in the memory. Reference is a feature corresponding to Pointer in C language.
+The reference is the address of a L<local variable|/"Local Variable"> on the memory.
 
-You can get Reference of Local Variable using L</"Reference Operator">.
+=head2 Creating Reference
 
-L</"Reference Type"> is represented by L</"Numeric Types"> "*" or L</"Multi-Numeric Types"> followed by "*".
-Reference types are represented by appending an * after L</"Numeric Types"> or L</"Multi-Numeric Types">.
+The L<reference operator|/"Reference Operator"> creates the reference of a L<local variable|/"Local Variable">.
 
-  # Numeric Types Reference
+A reference is assigned to the L<reference type/"Reference Type">.
+
+The operand of a reference operator must be the variable of a L<numeric type|/"Numeric Types"> or a L<multi-numeric type|/"Multi-Numeric Types">.
+
+  # The reference of numeric type
   my $num : int;
   my $num_ref : int* = \$num;
   
-  # Multi-Numeric Types Reference
-  my $point : Point_3d;
-  my $point_ref : Point_3d* = \$point;
+  # The reference of multi-numeric type
+  my $z : Complex_2d;;
+  my $z_ref : Complex_2d* = \$z;
 
-Target of Reference Operator is Variable of L</"Numeric Types"> or L</"Multi-Numeric Types">. L</"Object Types"> Variable or L</"Literals"> can't be target of Reference Operator.
-
-L</"Reference Type"> can be used in Method Argument.
+The L<reference type|/"Reference Type"> can be used as the types of the arguments of a method.
 
   # Method Definition
-  static method sum : void ($out_ref : int*, $in1 : int, $in2 : int) {
-    $$out_ref = $in1 + $in2;
+  static method sum : void ($result_ref : int*, $num1 : int, $num2 : int) {
+    $$result_ref = $num1 + $num2;
   }
   
   # Method Call
   my $num1 = 1;
   my $num2 = 2;
-  my $out : int;
-  my $out_ref = \$out;
-  sum($out_ref, $num1, $num2);
+  my $result_ref = \$result;
+  sum($result_ref, $num1, $num2);
 
 =head2 Dereference
 
-Dereference is an operation to get and set the value pointed by Reference.
+The dereference is the operation to get the value from a reference.
 
-  # Dereference Numeric Types Reference to get the pointed value
+A L<dereference operator|/"Dereference Operators"> perform a dereference.
+
+  # Get the value using a dereference
   my $num2 = $$num_ref;
   
-  # Dereference Numeric Types Reference to set the pointed value
+  # Set the value using a dereference
   $$num_ref = 3;
   
-  # Dereference Multi-Numeric Types Reference to get the pointed value
-  my $point2 = $$point_ref;
+  # Get the value of a multi-numeric type using a dereference
+  my $z2 = $$z_ref;
   
-  # Dereference Multi-Numeric Types Reference to set the pointed value
-  $$point_ref = $point2;
+  # Set the value of a multi-numeric type using a dereference
+  $$z_ref = $z2;
 
-If the target of Reference Type is L</"Multi-Numeric Types">, the setting and getting of Multi-Numeric Types Field can be done by Arrow Operator.
+In the referencec of L<multi-numeric types|/"Multi-Numeric Types">, the deference can be performed using the arrow operator C<-E<gt>>.
 
-  # If the target of Reference Type is Multi-Numeric Types, get Multi-Numeric Types Field
-  my $x = $point_ref->{x};
+  # Get a field of a multi-numeric type using a dereference
+  my $x = $z_ref->{re};
   
-  # If the Target of Reference Type is Multi-Numeric Types, set Multi-Numeric Types Field
-  $point_ref->{x} = 1;
+  # Set a field of a multi-numeric type using a dereference
+  $z_ref->{re} = 1;
 
 =head1 Operators
 
@@ -4358,7 +4360,7 @@ Special Assignment Operator Example
 
 =head2 Reference Operator
 
-The Reference Operator is an operator that retrieves the address of a variable for L</"Numeric Types"> or L</"Multi-Numeric Types">. Designed to achieve c address Operator "*".
+The Reference Operator is an operator that retrieves the address of a variable for L</"Numeric Types"> or L</"Multi-Numeric Types">. Designed to achieve c address Operator C<*>.
 
   \VARIABLE
 
@@ -4757,7 +4759,7 @@ Retrun Type is The L</"Types"> of the Field.
 B<Examples of Getting Multi-Numeric Field:>
 
   my $z : Complex_2d;
-  my $re = $z->{x};
+  my $re = $z->{re};
 
 =head2 Setting Multi-Numeric Field
 
@@ -4778,49 +4780,7 @@ Return Value Type is the type of Field.
 B<Examples of Setting Multi-Numeric Field:>
 
   my $z : Complex_2d;
-  $z->{x} = 2.5;
-
-=head2 Getting Multi-Numeric Field via Dereference
-
-B<Getting Multi-Numeric Field via Dereference Expression> is an L<operator|/"Operators"> to get Field of L</"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
-
-  INVOCANT->{FIELD_NAME}
-
-Invocant Expression is L</"Multi-Numeric Reference Type">.
-
-If the field names does not found in the L</"Class">, a compilation error will occur
-
-Getting Multi-Numeric Field via Dereference Expression returns the field value in the Multi-Numeric Value.
-
-Retrun Type is The L</"Types"> of the Field.
-
-B<Examples of Getting Multi-Numeric Field via Dereference:>
-
-  my $z : Complex_2d;
-  my $z_ref = \$z;
-  my $re = $z_ref->{x};
-
-=head2 Setting Multi-Numeric Field via Dereference
-
-Setting Multi-Numeric Field Expression via Dereference is an L<operator|/"Operators"> to set Field of L</"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
-
-  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
-
-Invocant Expression is L</"Multi-Numeric Reference Type">.
-
-If the field names does not found in the L</"Class">, a compilation error will occur
-
-Setting Multi-Numeric Field via Dereference Expression returns the value of Field after setting.
-
-The assignment must satisfy the L<type assignability|/"Type Assignability">.
-
-Return Value Type is the type of Field.
-
-B<Examples of Setting Multi-Numeric Field via Dereference:>
-
-  my $z : Complex_2d;
-  my $z_ref = \$z;
-  $z_ref->{x} = 2.5;
+  $z->{re} = 2.5;
 
 =head2 Getting Array Element
 
@@ -5046,11 +5006,15 @@ B<Examples of Current Class:>
     
   }
 
-=head2 Getting value by Dereference
+=head2 Dereference Operators
 
-Obtaining a value by Dereference is an operation to obtain the actual value from Reference. It was designed to realize the C joint operator "*".
+The dereference operators are the L<operatoers|/"Operators"> to perform a deference.
 
-  $VARIABLE
+=head3 Getting value by Dereference
+
+Obtaining a value by Dereference is an operation to obtain the actual value from Reference. It was designed to realize the C joint operator C<*>.
+
+  $ VARIABLE
 
 The variable Type must be Reference Type, otherwise a compilation error will occur.
 
@@ -5066,11 +5030,11 @@ The value obtained by Dereference returns L</"Expressions">.
   my $z_ref : Complex_2d* = \$z;
   my $z_deref : Complex_2d = $$z_ref;
 
-=head2 Setting the value with Dereference
+=head3 Setting the value with Dereference
 
-Setting a value with Dereference is an operation to set the actual value from Reference. It was designed to realize the C joint operator "*".
+Setting a value with Dereference is an operation to set the actual value from Reference. It was designed to realize the C joint operator C<*>.
 
-  $VARIABLE = Expression
+  $ VARIABLE = OPERAND
 
 The variable Type must be Reference Type, otherwise a compilation error will occur.
 
@@ -5090,6 +5054,49 @@ Setting a value with Dereference returns the set value. This is L</"Expressions"
   my $z2 : Complex_2d;
   
   $$z_ref = $z2;
+
+
+=head3 Getting Multi-Numeric Field via Dereference
+
+B<Getting Multi-Numeric Field via Dereference Expression> is an L<operator|/"Operators"> to get Field of L</"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
+
+  INVOCANT->{FIELD_NAME}
+
+Invocant Expression is L</"Multi-Numeric Reference Type">.
+
+If the field names does not found in the L</"Class">, a compilation error will occur
+
+Getting Multi-Numeric Field via Dereference Expression returns the field value in the Multi-Numeric Value.
+
+Retrun Type is The L</"Types"> of the Field.
+
+B<Examples of Getting Multi-Numeric Field via Dereference:>
+
+  my $z : Complex_2d;
+  my $z_ref = \$z;
+  my $re = $z_ref->{re};
+
+=head3 Setting Multi-Numeric Field via Dereference
+
+Setting Multi-Numeric Field Expression via Dereference is an L<operator|/"Operators"> to set Field of L</"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+
+  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
+
+Invocant Expression is L</"Multi-Numeric Reference Type">.
+
+If the field names does not found in the L</"Class">, a compilation error will occur
+
+Setting Multi-Numeric Field via Dereference Expression returns the value of Field after setting.
+
+The assignment must satisfy the L<type assignability|/"Type Assignability">.
+
+Return Value Type is the type of Field.
+
+B<Examples of Setting Multi-Numeric Field via Dereference:>
+
+  my $z : Complex_2d;
+  my $z_ref = \$z;
+  $z_ref->{re} = 2.5;
 
 =head2 Getting Current Class Name
 
@@ -6348,7 +6355,7 @@ Multi-Numeric Types are a type that can represent continuous numerical values.
 
 Multi-Numeric Types can be defined by specifying "mulnum_t" Descriptor in L</"Class Definition">.
 
-  class Point_3i : mulnum_t {
+  class Complex_2d : mulnum_t {
     has x : int;
     has y : int;
     has z : int;
@@ -6358,13 +6365,13 @@ See L</"Values ​​"> for a detailed explanation of Multi-Numeric Types.
 
 =head2 Reference Type
 
-Reference Type is a Type that can store the address of a variable. Add "*" after L</"Numeric Types"> or L</"Multi-Numeric Types"> You can define it.
+Reference Type is a Type that can store the address of a variable. Add C<*> after L</"Numeric Types"> or L</"Multi-Numeric Types"> You can define it.
 
   my $num : int;
   my $num_ref : int* = \$num;
   
-  my $point : Point_3i;
-  my $point_ref : Point_3i* = \$point;
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
 
 Only the address of the Local Variable acquired by L</"Reference Operator"> can be assigned to the value of Reference Type.
 
