@@ -28,13 +28,17 @@ Space characters are C<SP>, C<HT>, C<FF> of ASCII and L</"Line Terminators">.
 
 Space characters have no meaning in programs.
 
+=head2 Word Characters
+
+The word characters are alphabet(C<a-zA-Z>), number(C<0-9>), and underscore(C<_>) of ASCII.
+
 =head2 Identifiers
 
 Identifiers are L</"Class Name">, L</"Method Names">, L</"Field Names">, L</"Class Variable Names">, and L</"Local Variable Names">.
 
 =head2 Class Name
 
-A class names is composed of one or more alphabet(C<a-zA-Z>), number(C<0-9>), underscore(C<_>) or C<::> of ASCII.
+A class names is composed of one or more L<word characters|/"Word Characters"> or C<::> of ASCII.
 
 The part names of a class name must start uppercase letter. Part names means, for example, "Foo", "Bar", and "Baz" in the class name "Foo:Bar::Baz".
 
@@ -64,7 +68,7 @@ B<Examples:>
 
 =head2 Method Names
 
-A method name is composed of one or more alphabet(C<a-zA-Z>), number(C<0-9>), or underscore(C<_>) of ASCII.
+A method name is composed of one or more L<word characters|/"Word Characters">.
 
 The first character must not a number.
 
@@ -97,7 +101,7 @@ A method name can be the same as L</"Keywords">.
 
 =head2 Field Names
 
-A field name is composed of one or more alphabet(C<a-zA-Z>), number(C<0-9>), or underscore(C<_>) of ASCII.
+A field name is composed of one or more  L<word characters|/"Word Characters">.
 
 The first character must not number.
   
@@ -126,7 +130,7 @@ A field name can be the same as L</"Keywords">.
 
 =head2 Class Variable Names
 
-A class variable name starts with C<$>, followed alphabets(C<a-zA-Z>), numbers(C<0-9>), underscores(C<_>) or C<::> of ASCII.
+A class variable name starts with C<$>, followed  L<word characters|/"Word Characters"> or C<::> of ASCII.
 
 The followed character must not start with a number.
 
@@ -151,7 +155,7 @@ B<Examples:>
 
 =head2 Local Variable Names
 
-A local variable name starts with C<$>, followed alphabets(C<a-zA-Z>), numbers(C<0-9>), underscores(C<_>) of ASCII.
+A local variable name starts with C<$>, followed  L<word characters|/"Word Characters">.
 
 The followed character must not start with a number.
 
@@ -323,7 +327,7 @@ Note that operators for tokenization include those that are not really operators
 
 =head2 Comments
 
-A comment begins with "#" and ends with L</"Line Terminators">.
+A comment begins with C<#> and ends with L</"Line Terminators">.
 
   # Comment
 
@@ -365,17 +369,17 @@ Literals are representations of values in source codes. These are L</"Integer Li
 
 Decimal Representation of Integer Literal is represented by one or more consecutive characters from C<0> to C<9>.
 
-Can be prefixed with "+" or "-".
+Can be prefixed with C<+> or C<->.
 
 L</"Types"> of Integer Literal is L</"int Type"> by default.
 
 If Integer Literal exceeds the range of numbers that can be represented by L</"int Type">, a compilation error will occur.
 
-By suffixing "L" or "l" at the end, that represents L</"long Type"> Integer Literal.
+By suffixing C<L> or C<l> at the end, that represents L</"long Type"> Integer Literal.
 
 If L</"long Type"> Integer Literal  exceeds the range of numbers that can be represented by L</"long Type">,  If it exceeds the range, a compilation error will occur.
 
-"_" can be used as a separator. Separator has no meaning.
+C<_> can be used as a separator. Separator has no meaning.
 
 If Integer Literal is assigned to a L</"byte Type"> variable or passed to L</"byte Type"> Method Argument, and does not exceed the range of numbers that can be represented by L</"byte Type">, the L<numeric narrowing type conversion|/"Numeric Narrowing Type Conversion"> is performed and the value converted to L</"byte Type"> value. If it exceeds the range, a compilation error will occur.
 
@@ -449,7 +453,7 @@ Floating Point Literal is composed of B<Sign Part>, B<Numeric Part>, B<Exponent 
 
 Floating Point Literal is B<Decimal Floating Point Literal> or B<Hexadecimal Floating Point Literal>.
 
-B<Sign Part> is represented by "+" or "-". Sign Part is optional.
+B<Sign Part> is represented by C<+> or C<->. Sign Part is optional.
 
 Numeric Part of Decimal Floating Point Literal starts one or more C<0> to C<9>.
 
@@ -457,7 +461,7 @@ Numeric Part of Hexadecimal Floating Point Literal starts C<0x> or C<0X>, and is
 
 For that the Literal is Floating Point Literal, Numeric Part contains C<.> or, The Literal have Exponent Part, or have Suffix Part.
 
-Numeric part can contain "_". This is just a Numeric Separator and is ignored.
+Numeric part can contain C<_>. This is just a Numeric Separator and is ignored.
 
 Hexadecimal Floating Point Literal needs Exponent Part.
 
@@ -499,11 +503,11 @@ B<Examples:>
 
 B<Charater Literal> represents one character of ASCII.
 
-Character Literal is enclosed in single quotes "'".
+Character Literal is enclosed in single quotes C<'>.
 
 Content of Character Literal is one printable ASCII character or one Escape Character of Character Literal.
 
-Charater Literal Type is "L</"byte Type">"
+Charater Literal Type is "L</"byte TypeC<>>
 
 L</"Types"> of Charater Literal is L</"byte Type">.
 
@@ -810,7 +814,7 @@ The above is expanded as the following.
   "AAA" . $foo->{x}[3] . "BBB"
   "AAA" . $@ . "BBB"
 
-The variable name can besurround with "{" and "}" to indicate the end of the variable name.
+The variable name can besurround with C<{> and C<}> to indicate the end of the variable name.
 
   "AAA ${foo}_ccc BBB"
 
@@ -818,37 +822,38 @@ The above is expanded as the following.
 
   "AAA " . ${foo} . "_ccc BBB"
 
-If there is no enclosing "{" and "}", up to the valid part as a variable name is interpreted as a Variable. Dereference interpreting is same as this.
+If there is no enclosing C<{> and C<}>, up to the valid part as a variable name is interpreted as a Variable. Dereference interpreting is same as this.
 
 If "->" follows the variable name, it is interpreted as L</"Field Access"> or L</"Array Access">.
 
-[1] If the following Characters are "a-z" "A-Z" "0-9" "_" "{" "[", proceed with the interpretation.
+[1] If the following Characters are "a-zC< >A-ZC< >0-9C< >_C< >{C< >[", proceed with the interpretation.
 
-[2] If the Character following [1] is "}", or "]", then if the next Character is "->", "{", or "[", proceed with the interpretation and return back to [1], otherwise stop interpreting.
+[2] If the Character following [1] is C<}>, or C<]>, then if the next Character is "->", C<{>, or C<[>, proceed with the interpretation and return back to [1], otherwise stop interpreting.
 
-The trailing $is not treated as the start of Variable Expansion. It is treated as "$".
+The trailing $is not treated as the start of Variable Expansion. It is treated as C<$>.
 
   "AAA$"
 
 =head2 Fat Comma
 
-Fat Comma is a L</"Separators"> represented by "B<=>>".
+The fat comma C<=>> is a L<separator|/"Separators">.
 
   =>
 
-Fat Comma is an alias for Comma "B<,>". Wherever you can use "B<,>" you can use Fat Comma instead.
+The fat comma is an alias for Comma C<,>.
 
   # Comma
   ["a", "b", "c", "d"]
   
-  # Use Fat Comma instead of Comma
+  # Fat Comma
   ["a" => "b", "c" => "d"]
 
-Identifiers other than L</"Class Variable Names"> and L</"Local Variable Names"> placed on the Left of Fat Comma are treated as L</"String Literal">.
+If the string of the left operand of the fat camma is not wrapped by C<"> and the characters are composed of L<word characters|/"Word Characters"> that is not started by a number, the string is treated as L</"String Literal">.
 
-  # Identifiers placed on the Left of Fat Comma are treated as String Literal
-  # a is "a", c is "c"
-  [a => "b", c => "d"]
+  # foo_bar2 is treated as "foo_bar2"
+  [foo_bar2 => "Mark"]
+
+  ["foo_bar2" => "Mark"]
 
 =head1 Syntax Parsing
 
@@ -2013,7 +2018,7 @@ Module can contain multiple Classes.
 
 Modules must be placed in the module loading path with the following File Name.
 
-Change "::" to "/". Add ".spvm" at the end.
+Change "::" to C</>. Add ".spvm" at the end.
 
   SPVM/Foo.spvm
   SPVM/Foo/Bar.spvm
@@ -2187,7 +2192,7 @@ List of Class Variable Descriptors.
       <b>ro</b>
     </td>
     <td>
-      This Class Variable has Read Accessor. Read Accessor name is the same as class variable names except removing "$". For example, If the class variable names is "$FOO", Read Accessor name is "FOO".
+      This Class Variable has Read Accessor. Read Accessor name is the same as class variable names except removing C<$>. For example, If the class variable names is "$FOO", Read Accessor name is "FOO".
     </td>
   </tr>
   <tr>
@@ -2195,7 +2200,7 @@ List of Class Variable Descriptors.
       <b>wo</b>
     </td>
     <td>
-      This Class Variable has Write Accessor. Write Accessor name is the same as class variable names except removing "$" and adding "SET_" to top. For example, If the class variable names is "$FOO", Read Accessor name is "SET_FOO".
+      This Class Variable has Write Accessor. Write Accessor name is the same as class variable names except removing C<$> and adding "SET_" to top. For example, If the class variable names is "$FOO", Read Accessor name is "SET_FOO".
     </td>
   </tr>
   <tr>
@@ -3196,7 +3201,7 @@ Multi-Numeric Types are defined by specifying mulnum_t L</"Class Descriptors"> i
     y : double;
   }
 
-Multi-Numeric Types must end with "_", Number of Fields, L</"Multi-Numeric Types Suffix">.
+Multi-Numeric Types must end with C<_>, Number of Fields, L</"Multi-Numeric Types Suffix">.
 
 The suffix must correspond to L</"Numeric Types">.
 
@@ -4252,7 +4257,7 @@ B<Examples:>
 
 =head2 Assignment Operator
 
-Assignment Operator is a L</"Binary Operators"> for assignment, expressed in "=".
+Assignment Operator is a L</"Binary Operators"> for assignment, expressed in C<=>.
 
   LEFT_OPERAND = RIGHTH_OPERAND
 
@@ -7868,16 +7873,16 @@ The numeric-to-String type conversion is a L<type conversion|/"Type Conversion">
   my $float = 2.5f;
   my $double = 3.3;
   
-  # The string is "1".
+  # The string is 1.
   my $string_byte = (string)$byte;
   
-  # The string is "2".
+  # The string is 2.
   my $string_short = (string)$short;
 
-  # The string is "3".
+  # The string is 3.
   my $string_int = (string)$int;
 
-  # The string is "4".
+  # The string is 4.
   my $string_long = (string)$long;
   
   # The string is "2.5"

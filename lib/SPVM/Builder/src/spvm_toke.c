@@ -1740,6 +1740,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else {
             next_is_fat_camma = 0;
           }
+          
           // Check if the symbol is symbol_name
           int32_t is_keyword = 0;
           int32_t keyword_term = 0;
