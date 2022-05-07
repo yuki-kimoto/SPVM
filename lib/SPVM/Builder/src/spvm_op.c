@@ -3153,11 +3153,11 @@ SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_
   return op_return;
 }
 
-SPVM_OP* SPVM_OP_build_expression_statement(SPVM_COMPILER* compiler, SPVM_OP* op_expression) {
+SPVM_OP* SPVM_OP_build_value_op_statement(SPVM_COMPILER* compiler, SPVM_OP* op_value_op) {
   
-  // Free tmp vars at end of expression statement
-  SPVM_OP* op_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_expression->file, op_expression->line);
-  SPVM_OP_insert_child(compiler, op_free_tmp, op_free_tmp->last, op_expression);
+  // Free tmp vars at end of value_op statement
+  SPVM_OP* op_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_value_op->file, op_value_op->line);
+  SPVM_OP_insert_child(compiler, op_free_tmp, op_free_tmp->last, op_value_op);
   
   return op_free_tmp;
 }

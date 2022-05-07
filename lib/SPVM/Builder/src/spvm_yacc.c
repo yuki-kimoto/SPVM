@@ -613,16 +613,16 @@ static const char *const yytname[] =
   "opt_statements", "statements", "statement", "for_statement",
   "while_statement", "switch_statement", "switch_block", "case_statements",
   "case_statement", "default_statement", "if_require_statement",
-  "if_statement", "else_statement", "block", "eval_block",
-  "opt_expressions", "opt_expression", "expression_or_logical_op",
-  "expression", "expressions", "unary_op", "is_read_only", "inc", "dec",
-  "binary_op", "comparison_op", "isa", "logical_op", "assign", "new",
-  "array_init", "convert", "array_access", "call_spvm_method",
-  "field_access", "weaken_field", "unweaken_field", "isweak_field",
-  "has_impl", "array_length", "var_decl", "var", "qualified_type", "type",
-  "basic_type", "ref_type", "array_type", "array_type_with_length",
-  "return_type", "opt_type_comment", "type_comment", "field_name",
-  "method_name", "class_name", "class_alias_name", YY_NULLPTR
+  "if_statement", "else_statement", "block", "eval_block", "opt_value_ops",
+  "opt_value_op", "value_op_or_logical_op", "value_op", "value_ops",
+  "unary_op", "is_read_only", "inc", "dec", "binary_op", "comparison_op",
+  "isa", "logical_op", "assign", "new", "array_init", "convert",
+  "array_access", "call_spvm_method", "field_access", "weaken_field",
+  "unweaken_field", "isweak_field", "has_impl", "array_length", "var_decl",
+  "var", "qualified_type", "type", "basic_type", "ref_type", "array_type",
+  "array_type_with_length", "return_type", "opt_type_comment",
+  "type_comment", "field_name", "method_name", "class_name",
+  "class_alias_name", YY_NULLPTR
 };
 #endif
 
@@ -2802,7 +2802,7 @@ yyreduce:
   case 74:
 #line 468 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_expression_statement(compiler, (yyvsp[-1].opval));
+      (yyval.opval) = SPVM_OP_build_value_op_statement(compiler, (yyvsp[-1].opval));
     }
 #line 2808 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -3092,12 +3092,12 @@ yyreduce:
 #line 689 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       if ((yyvsp[-1].opval)->id == SPVM_OP_C_ID_LIST) {
-        SPVM_OP* op_expression = (yyvsp[-1].opval)->first;
+        SPVM_OP* op_value_op = (yyvsp[-1].opval)->first;
         SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, compiler->cur_file, compiler->cur_line);
-        while ((op_expression = SPVM_OP_sibling(compiler, op_expression))) {
-          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_expression);
-          SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_expression);
-          op_expression = op_stab;
+        while ((op_value_op = SPVM_OP_sibling(compiler, op_value_op))) {
+          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_value_op);
+          SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_value_op);
+          op_value_op = op_stab;
         }
         (yyval.opval) = op_sequence;
       }
@@ -3705,8 +3705,8 @@ yyreduce:
 #line 1062 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
-      SPVM_OP* op_expressions = SPVM_OP_new_op_list(compiler, (yyvsp[-1].opval)->file, (yyvsp[0].opval)->line);
-      (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-1].opval), (yyvsp[0].opval), op_expressions);
+      SPVM_OP* op_value_ops = SPVM_OP_new_op_list(compiler, (yyvsp[-1].opval)->file, (yyvsp[0].opval)->line);
+      (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-1].opval), (yyvsp[0].opval), op_value_ops);
     }
 #line 3712 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -3724,8 +3724,8 @@ yyreduce:
 #line 1073 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
-      SPVM_OP* op_expressions = SPVM_OP_new_op_list(compiler, (yyvsp[-2].opval)->file, (yyvsp[-1].opval)->line);
-      (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-2].opval), (yyvsp[0].opval), op_expressions);
+      SPVM_OP* op_value_ops = SPVM_OP_new_op_list(compiler, (yyvsp[-2].opval)->file, (yyvsp[-1].opval)->line);
+      (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-2].opval), (yyvsp[0].opval), op_value_ops);
     }
 #line 3731 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -3743,8 +3743,8 @@ yyreduce:
 #line 1084 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
-      SPVM_OP* op_expressions = SPVM_OP_new_op_list(compiler, (yyvsp[-2].opval)->file, (yyvsp[-1].opval)->line);
-      (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-2].opval), (yyvsp[0].opval), op_expressions);
+      SPVM_OP* op_value_ops = SPVM_OP_new_op_list(compiler, (yyvsp[-2].opval)->file, (yyvsp[-1].opval)->line);
+      (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-2].opval), (yyvsp[0].opval), op_value_ops);
     }
 #line 3750 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
