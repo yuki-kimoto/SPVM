@@ -3530,13 +3530,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
-        int32_t switch_id = opcode->operand1;
-        
         // Default branch
-        int32_t default_opcode_rel_index = opcode->operand2;
+        int32_t default_opcode_rel_index = opcode->operand1;
         
         // Cases length
-        int32_t case_infos_length = opcode->operand3;
+        int32_t case_infos_length = opcode->operand2;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);

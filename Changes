@@ -16,6 +16,7 @@ Revision history for SPVM
         [BUG FIX]
         * Fix the bug that has_impl can specify not found method.
         * Interface can have interface guarantees
+        * Fix the bug that switch statement is wrong behaivior when the count of case statements is greater than 255.
         * Fix the bug that "has_impl" operator can't do precompile.
         [NON BACKWORD COMPATIBLE CHANGES]
         * Revert 0.9514 Methods of interfaces must have the names.

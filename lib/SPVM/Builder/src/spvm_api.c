@@ -4518,13 +4518,11 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         
-        int32_t switch_id = opcode->operand1;
-        
         // Default branch
-        int32_t default_opcode_rel_index = opcode->operand2;
+        int32_t default_opcode_rel_index = opcode->operand1;
         
         // Cases length
-        int32_t case_infos_length = opcode->operand3;
+        int32_t case_infos_length = opcode->operand2;
 
         if (case_infos_length > 0) {
           // min
