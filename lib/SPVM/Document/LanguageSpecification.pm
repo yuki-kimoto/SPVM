@@ -34,7 +34,7 @@ Identifiers are L</"Class Name">, L</"Method Names">, L</"Field Names">, L</"Cla
 
 =head2 Class Name
 
-A class names consists of one or more alphabet(C<a-zA-Z>), number(C<0-9>), underscore(C<_>) or C<::> of ASCII.
+A class names is composed of one or more alphabet(C<a-zA-Z>), number(C<0-9>), underscore(C<_>) or C<::> of ASCII.
 
 The part names of a class name must start uppercase letter. Part names means, for example, "Foo", "Bar", and "Baz" in the class name "Foo:Bar::Baz".
 
@@ -64,7 +64,7 @@ B<Examples of invalid class names:>
 
 =head2 Method Names
 
-A method name consists of one or more alphabet(C<a-zA-Z>), number(C<0-9>), or underscore(C<_>) of ASCII.
+A method name is composed of one or more alphabet(C<a-zA-Z>), number(C<0-9>), or underscore(C<_>) of ASCII.
 
 The first character must not a number.
 
@@ -99,7 +99,7 @@ A method name can be the same as L</"Keywords">.
 
 =head2 Field Names
 
-A field name consists of one or more alphabet(C<a-zA-Z>), number(C<0-9>), or underscore(C<_>) of ASCII.
+A field name is composed of one or more alphabet(C<a-zA-Z>), number(C<0-9>), or underscore(C<_>) of ASCII.
 
 The first character must not number.
   
@@ -341,7 +341,7 @@ Comments have no meaning in tokenization.
 
 POD(Plain Old Document) is a syntax to write documents easily.
 
-POD starts from the line beginning with C<=>, followed by any string that consists of ASCII printable characters, and ending with L</"Line Terminators">.
+POD starts from the line beginning with C<=>, followed by any string that is composed of ASCII printable characters, and ending with L</"Line Terminators">.
 
 POD ends from the line beginning with C<=cut>, and ending with L</"Line Terminators">.
 
@@ -450,7 +450,7 @@ B<Examples of Binary Representation of Integer Literal:>
 
 =head2 Floating Point Literal
 
-Floating Point Literal consists of B<Sign Part>, B<Numeric Part>, B<Exponent Part> and B<Suffix>.
+Floating Point Literal is composed of B<Sign Part>, B<Numeric Part>, B<Exponent Part> and B<Suffix>.
 
   # Floating Point Literal
   [Sign Part][Numeric Part][Exponent Part][Suffix Part]
@@ -2378,7 +2378,7 @@ B<Examples of Field Definition:>
 
 =head2 Field Access
 
-The field access is an L<value_op|/"Expressions"> to get or set the field.
+The field access is an L<operator|/"Operators"> to get or set the field.
 
   INVOCANT->{FIELD_NAME}
 
@@ -3423,7 +3423,7 @@ Unary operators are operators have one operand.
 
   UNARY_OPERATOR OPERAND
 
-The operand is an L<value_op|/"Expressions">.
+The operand is an L<operator|/"Operators">.
 
 Unary operators are L</"Unary Plus Operator">, L</"Unary Minus Operator">, L</"Bit NOT Operator">, L</"Array Length Operator">, L</"String Creation Operator">, and L</"String Length Operator">.
 
@@ -3465,7 +3465,7 @@ The unary plus operator C<+> is an L<Unary Operator|/"Unary Operators"> to retur
 
   +OPERAND
 
-The operand must be an L<value_op|/"Expressions"> that type is a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operators"> that type is a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> applys to the operand.
 
@@ -3484,7 +3484,7 @@ The unary minus operator C<-> is an L<Unary Operator|/"Unary Operators"> to retu
 
   -OPERAND
 
-The operand must be an L<value_op|/"Expressions"> that type is a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operators"> that type is a L<numeric type|/"Numeric Types">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> applys to the operand.
 
@@ -4185,7 +4185,7 @@ The logical AND operator C<&&> returns the result of a logical AND operation.
 
   LEFT_OPERAND && RIGHT_OPERAND
   
-The left operand and the right operand must be a L<logical operator|/"Logical Operators"> or an L<value_op|/"Expressions">.
+The left operand and the right operand must be a L<logical operator|/"Logical Operators"> or an L<operator|/"Operators">.
 
 The return type of logical AND operator is L</"int Type">.
 
@@ -4203,7 +4203,7 @@ The logical OR operator C<||> returns the result of a logical OR operation.
 
   LEFT_OPERAND || RIGHT_OPERAND
 
-The left operand and the right operand must be a L<logical operator|/"Logical Operators"> or an L<value_op|/"Expressions">.
+The left operand and the right operand must be a L<logical operator|/"Logical Operators"> or an L<operator|/"Operators">.
 
 The return type of logical OR operator is L</"int Type">.
 
@@ -4221,7 +4221,7 @@ The logical NOT operator C<!> returns the result of a logical NOT operation.
 
   !OPERAND
 
-The operand must be a L<logical operator|/"Logical Operators"> or an L<value_op|/"Expressions">.
+The operand must be a L<logical operator|/"Logical Operators"> or an L<operator|/"Operators">.
 
 The return type of logical NOT operator is L</"int Type">.
 
@@ -4406,7 +4406,7 @@ The string creation operator C<new_string_len> is an L<Unary Operator|/"Unary Op
 
   new_string_len OPERAND
 
-The operand must be an L<value_op|/"Expressions"> that type is a L</"Integral Type"> except for a L<long type|/"long Type">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operators"> that type is a L</"Integral Type"> except for a L<long type|/"long Type">, otherwise a compilation error will occur.
 
 The string creation operator returns the string that is created with the lenght.
 
@@ -4423,7 +4423,7 @@ The C<copy> operator is an L<Unary Operator|/"Unary Operators"> to copy the obje
 
   copy OPERAND
 
-The operand must be an L<value_op|/"Expressions"> that type is a L<object type|/"object Type">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operators"> that type is a L<object type|/"object Type">, otherwise a compilation error will occur.
 
 If the type of operand is none of a L<string type|/"String Type">, a L<numeric type|/"Numerci Types">, a L<multi-numeric type|/"Multi-Numeric Types">,
 An L<exception|/"Exception"> is thorwn.
@@ -4463,7 +4463,7 @@ The string length operator is an L<Unary Operator|/"Unary Operators"> to get the
 
   length OPERAND
 
-The operand must be an L<value_op|/"Expressions"> that type is a L</"String Type">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operators"> that type is a L</"String Type">, otherwise a compilation error will occur.
 
 The string length operator returns a L</"int Type"> value that is the length of the L</"String">.
 
@@ -4583,7 +4583,7 @@ B<Examples:>
 
 =head2 Getting Local Variable
 
-The getting local variable is an L<value_op|/"Expressions"> to get the value of the L<local variable|/"Local Variable">.
+The getting local variable is an L<operator|/"Operators"> to get the value of the L<local variable|/"Local Variable">.
 
   $var
 
@@ -4593,7 +4593,7 @@ The return type is the type of the local variable.
 
 =head2 Setting Local Variable
 
-The setting local variable is an L<value_op|/"Expressions"> to set the value of L</"Local Variable"> using the L<assignment operator|/"Assignment Operator">.
+The setting local variable is an L<operator|/"Operators"> to set the value of L</"Local Variable"> using the L<assignment operator|/"Assignment Operator">.
 
   $var = VALUE
 
@@ -4609,7 +4609,7 @@ See the L<scope|/"Scope"> to know the L<garbage collection|/"Garbage Collection"
 
 =head2 Getting Class Variable
 
-The getting class variable is an L<value_op|/"Expressions"> to get the value of the L<class variable|/"Class Variable">.
+The getting class variable is an L<operator|/"Operators"> to get the value of the L<class variable|/"Class Variable">.
 
   $CLASS_NAME::CLASS_VARIABLE_NAME
 
@@ -4634,7 +4634,7 @@ B<Examples of getting class variable:>
 
 =head2 Setting Class Variable
 
-B<Setting Class Variable Expression> is an L<value_op|/"Expressions"> to set L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
+B<Setting Class Variable Expression> is an L<operator|/"Operators"> to set L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
 
   $CLASS_NAME::CLASS_VARIABLE_NAME = VALUE
 
@@ -4669,7 +4669,7 @@ B<Examples of setting class variable:>
 
 =head2 Getting Exception Variable
 
-The setting exception variable is an L<value_op|/"Expressions"> to get the value of the L<exception variable|/"Exception Variable">.
+The setting exception variable is an L<operator|/"Operators"> to get the value of the L<exception variable|/"Exception Variable">.
 
   $@
 
@@ -4684,7 +4684,7 @@ B<Examples of getting exception variable:>
 
 =head2 Setting Exception Variable
 
-The setting exception variable is an L<value_op|/"Expressions"> to set the value of L</"Exception Variable"> using the L<assignment operator|/"Assignment Operator">.
+The setting exception variable is an L<operator|/"Operators"> to set the value of L</"Exception Variable"> using the L<assignment operator|/"Assignment Operator">.
 
   $@ = VALUE
 
@@ -4704,7 +4704,7 @@ B<Examples of setting exception variable:>
 
 =head2 Getting Field
 
-The getting field is an L<value_op|/"Expressions"> to get the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
+The getting field is an L<operator|/"Operators"> to get the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
@@ -4719,7 +4719,7 @@ B<Examples of getting field:>
 
 =head2 Setting Field
 
-The setting field is an L<value_op|/"Expressions"> to set the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
+The setting field is an L<operator|/"Operators"> to set the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = VALUE
 
@@ -4742,7 +4742,7 @@ B<Examples of Setting Field:>
 
 =head2 Getting Multi-Numeric Field
 
-B<Getting Multi-Numeric Field Expression> is an L<value_op|/"Expressions"> to get Field of L</"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
+B<Getting Multi-Numeric Field Expression> is an L<operator|/"Operators"> to get Field of L</"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
@@ -4761,7 +4761,7 @@ B<Examples of Getting Multi-Numeric Field:>
 
 =head2 Setting Multi-Numeric Field
 
-Setting Multi-Numeric Field Expression is an L<value_op|/"Expressions"> to set Field of L</"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+Setting Multi-Numeric Field Expression is an L<operator|/"Operators"> to set Field of L</"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
@@ -4782,7 +4782,7 @@ B<Examples of Setting Multi-Numeric Field:>
 
 =head2 Getting Multi-Numeric Field via Dereference
 
-B<Getting Multi-Numeric Field via Dereference Expression> is an L<value_op|/"Expressions"> to get Field of L</"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
+B<Getting Multi-Numeric Field via Dereference Expression> is an L<operator|/"Operators"> to get Field of L</"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
 
   INVOCANT->{FIELD_NAME}
 
@@ -4802,7 +4802,7 @@ B<Examples of Getting Multi-Numeric Field via Dereference:>
 
 =head2 Setting Multi-Numeric Field via Dereference
 
-Setting Multi-Numeric Field Expression via Dereference is an L<value_op|/"Expressions"> to set Field of L</"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+Setting Multi-Numeric Field Expression via Dereference is an L<operator|/"Operators"> to set Field of L</"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
@@ -4824,7 +4824,7 @@ B<Examples of Setting Multi-Numeric Field via Dereference:>
 
 =head2 Getting Array Element
 
-B<Getting Array Element Expression> is an L<value_op|/"Expressions"> to get a Element Value of L</"Array">.
+B<Getting Array Element Expression> is an L<operator|/"Operators"> to get a Element Value of L</"Array">.
 
   ARRAY_EXPRESSION->[INDEX_EXPRESSION]
 
@@ -4851,7 +4851,7 @@ B<Examples of Getting Array Element:>
 
 =head2 Setting Array Element
 
-Setting Array Element Expression is an L<value_op|/"Expressions"> to set a Element Value of a Array using L</"Assignment Operator">.
+Setting Array Element Expression is an L<operator|/"Operators"> to set a Element Value of a Array using L</"Assignment Operator">.
 
   ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_OPERAND
 
@@ -4884,11 +4884,11 @@ B<Examples of Setting Array Element:>
 
 =head2 new Operator
 
-The C<new> operator is an L<value_op|/"Expressions"> to create an object or an array.
+The C<new> operator is an L<operator|/"Operators"> to create an object or an array.
 
 =head2 Creating Object
 
-The creating object is an L<value_op|/"Expressions"> to create an object using the C<new> keyword.
+The creating object is an L<operator|/"Operators"> to create an object using the C<new> keyword.
 
   new CLASS_NAME;
 
@@ -4904,7 +4904,7 @@ B<Examples of creating object:>
 
 =head2 Creating Array
 
-The creating array is an L<value_op|/"Expressions"> to create an array using the C<new> keyword.
+The creating array is an L<operator|/"Operators"> to create an array using the C<new> keyword.
 
   new BasicType[LENGTH]
 
@@ -5077,7 +5077,7 @@ Setting a value with Dereference returns the set value. This is L</"Expressions"
 
 =head2 Getting Current Class Name
 
-The getting current class name C<__CLASS__> is an L<value_op|/"Expressions"> to get the current class name.
+The getting current class name C<__CLASS__> is an L<operator|/"Operators"> to get the current class name.
 
   __CLASS__
 
@@ -5092,7 +5092,7 @@ B<Examples:>
 
 =head2 Getting Current File Name
 
-The getting current file name C<__FILE__> is an L<value_op|/"Expressions"> to get the current file name.
+The getting current file name C<__FILE__> is an L<operator|/"Operators"> to get the current file name.
 
   __FILE__
 
@@ -5116,7 +5116,7 @@ B<Examples:>
 
 =head2 Getting Current Line Number
 
-The getting current line number C<__LINE__> is an L<value_op|/"Expressions"> to get the current line number of the current file.
+The getting current line number C<__LINE__> is an L<operator|/"Operators"> to get the current line number of the current file.
 
   __LINE__
 
@@ -5131,7 +5131,7 @@ B<Examples:>
 
 =head2 Anon Method
 
-The anon method is an L<value_op|/"Expressions"> to define an L<anon calss|/"Anon Class"> and define an L<instance method|/"Instance Method"> that has 0-length name and create the object by the L<new|/"Creating Object"> operator.
+The anon method is an L<operator|/"Operators"> to define an L<anon calss|/"Anon Class"> and define an L<instance method|/"Instance Method"> that has 0-length name and create the object by the L<new|/"Creating Object"> operator.
 
   method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ...) {
   
@@ -5228,13 +5228,17 @@ An empty statement is a L<statement|/"Statements"> that do nothing and ends with
 
   ;
 
-=head2 value_op Statement
+=head2 Operator Statement
 
-The value_op statement is a L<statement|/"Statements"> that consisting of an L<value_op|/"Expressions"> and C<;>.
+The operator statement is the L<statement|/"Statements"> that executes an L<operator|/"Operators">.
 
-  Expression;
+A operator statement is composed of an L<operator|/"Operators"> and C<;>.
 
-B<Examples of value_op statements:>
+  OPERATOR;
+
+The operator must be a L<value-returing operator|/"Value-Returning Operators">.
+
+B<Examples:>
 
   1;
   $var;
