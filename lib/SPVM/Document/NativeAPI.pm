@@ -645,6 +645,8 @@ Native API can be called from "SPVM_ENV* env" passed as an argument. Note that y
   16 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT
   17 SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT
 
+These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
+
 =head3 SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN
 
 The basic type is unknown.
@@ -730,6 +732,8 @@ The basic type ID of L<BOOL|SPVM::BOOL> type.
   8 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE
   9 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT
 
+These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
+
 =head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN
 
 The basic type category for unknown types.
@@ -770,9 +774,9 @@ The basic type category for the interface types.
 
 The basic type category for the any object type.
 
-=head1 IDs of Native API
+=head1 Native APIs
 
-Native APIs of L<SPVM> have the IDs that is corresponding to the names. These IDs are permanently same for the binary compatibility in the future release. When a new Native API is added, it will be added after the end of IDs.
+Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 
   0 class_vars_heap
   1 object_header_byte_size
@@ -957,10 +961,6 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   180 print_stderr
   181 init_env,
   182 call_init_blocks
-
-=head1 List of Native APIs
-
-List of Native APIs of L<SPVM>.
 
 =head2 class_vars_heap
 
