@@ -730,6 +730,46 @@ The basic type ID of L<BOOL|SPVM::BOOL> type.
   8 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE
   9 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT
 
+=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN
+
+The basic type category for unknown types.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS
+
+The basic type category for not found class types.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNDEF
+
+The basic type category for the undefined type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID
+
+The basic type category for the void type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC
+
+The basic type category for the numeric types.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM
+
+The basic type category for the multi-numeric types.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING
+
+The basic type category for the string type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS
+
+The basic type category for the class types.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE
+
+The basic type category for the interface types.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT
+
+The basic type category for the any object type.
+
 =head1 IDs of Native API
 
 Native APIs of L<SPVM> have the IDs that is corresponding to the names. These IDs are permanently same for the binary compatibility in the future release. When a new Native API is added, it will be added after the end of IDs.
