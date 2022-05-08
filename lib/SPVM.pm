@@ -595,7 +595,7 @@ motiE<lt>motohiko.ave@gmail.comE<gt>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2018-2021 Yuki Kimoto, all rights reserved.
+Copyright 2018-2022 Yuki Kimoto, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
