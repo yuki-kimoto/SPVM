@@ -4,13 +4,9 @@ SPVM::Document::NativeAPI - SPVM Native APIs
 
 =head1 DESCRIPTION
 
-B<SPVM Native APIs> are public APIs that are used in native modules. SPVM Native APIs are writen in C language.
+The SPVM native APIs are public APIs that are used in native language sources such as C<C/C++>.
 
-This document describes L<the usage of SPVM Native APIs|/"List-of-Native-APIs">, and also the way to write native methods and native modules.
-
-Native methods can be written by C language or C++. If the rule of the function call is same as C, you can use any language, for example, CUDA/nvcc.
-
-B<The interfaces and IDs of Native APIs that is added after 0.9506+(after 181+) will be changed many times.>
+The native APIs are writen in C<C language>, but the languages that have compatibility of C<C language> such as <C++>, C<CUDA/nvcc> can call the native APIs.
 
 =head1 Native Methods
 
