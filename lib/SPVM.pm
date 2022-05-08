@@ -479,13 +479,23 @@ SPVM Exchange API converts Perl data structures to SPVM data structures, and vic
 
 =back
 
-=head2 Native API
+=head2 Native Method
 
-SPVM Native API is C API used in SPVM native method.
+The native methods are the methods that the implementations are writen by native language such as C<C language> or C<C++>.
 
 =over 2
 
-=item * L<NativeAPI|SPVM::Document::NativeAPI>
+=item * L<Native Method|SPVM::Document::NativeMethod>
+
+=back
+
+=head2 Native API
+
+The SPVM native APIs are public APIs that are used in native language sources such as C<C/C++>.
+
+=over 2
+
+=item * L<SPVM Native API|SPVM::Document::NativeAPI>
 
 =back
 
