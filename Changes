@@ -1,4 +1,6 @@
 Revision history for SPVM
+0.9515_1  2022-05-09
+
 0.9515  2022-05-09
         [CHANGE]
         * Add cloneable_clone to Point class.
