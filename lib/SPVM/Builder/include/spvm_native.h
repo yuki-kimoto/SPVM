@@ -252,7 +252,7 @@ struct spvm_env {
   int32_t (*call_class_method_by_name)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line);
   int32_t (*call_instance_method_by_name)(SPVM_ENV* env, void* object, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line);
   const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, void* obj, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
-  void* any_object_basic_type_id;
+  void (*free_env_prepared)(SPVM_ENV* env);
   void* (*dump_raw)(SPVM_ENV* env, void* object);
   void* (*dump)(SPVM_ENV* env, void* object);
   int32_t (*call_class_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
@@ -281,7 +281,6 @@ struct spvm_env {
   int32_t (*init_env)(SPVM_ENV* env);
   void (*call_init_blocks)(SPVM_ENV* env);
   void (*cleanup_global_vars)(SPVM_ENV* env);
-  void (*free_env_prepared)(SPVM_ENV* env);
 };
 
 

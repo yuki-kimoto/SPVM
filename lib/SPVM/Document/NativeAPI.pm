@@ -889,7 +889,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   152 call_class_method_by_name
   153 call_instance_method_by_name
   154 get_field_string_chars_by_name
-  155 any_object_basic_type_id
+  155 free_env_prepared
   156 dump_raw
   157 dump
   158 call_class_method
@@ -918,7 +918,6 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   181 init_env,
   182 call_init_blocks
   183 cleanup_global_vars
-  184 free_env_prepared
 
 =head1 List of Native APIs
 
@@ -2536,11 +2535,11 @@ B<Examples:>
 
 B<Examples:>
 
-=head2 any_object_basic_type_id
+=head2 free_env_prepared
+  
+  void (*free_env_prepared)(SPVM_ENV* env);
 
-  void* any_object_basic_type_id;
-
-Basic type ID of any object type. This is used internally.
+Free the environment prepared by C<SPVM_NATIVE_new_env_prepared> function.
 
 =head2 dump_raw
 
@@ -2735,12 +2734,6 @@ Call C<INIT> blocks.
   void (*cleanup_global_vars)(SPVM_ENV* env);
 
 Cleanup gloval variable, such as class variables and the exception variable.
-
-=head2 free_env_prepared
-  
-  void (*free_env_prepared)(SPVM_ENV* env);
-
-Free the environment prepared by C<SPVM_NATIVE_new_env_prepared> function.
 
 =head1 Compiler Native API
 

@@ -170,7 +170,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->call_class_method_by_name != &env_array[152]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_instance_method_by_name != &env_array[153]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_string_chars_by_name != &env_array[154]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->any_object_basic_type_id != &env_array[155]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->free_env_prepared != &env_array[155]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->dump_raw != &env_array[156]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->dump != &env_array[157]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_class_method != &env_array[158]) { stack[0].ival = 0; return 0; }
@@ -199,7 +199,6 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->init_env != &env_array[181]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->call_init_blocks != &env_array[182]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->cleanup_global_vars != &env_array[183]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->free_env_prepared != &env_array[184]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 
