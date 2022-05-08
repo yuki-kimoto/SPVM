@@ -2,6 +2,7 @@ Revision history for SPVM
 0.9515_1  2022-05-09
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove "any_object_basic_type_id" native API. ID 155 is reused by "free_env_prepared" native API.
+        * Remove "string_basic_type_id" native API. ID 162 is reused by "cleanup_global_vars" native API.
 
 0.9515  2022-05-09
         [CHANGE]

@@ -719,15 +719,15 @@ The basic type ID of L<BOOL|SPVM::BOOL> type.
 
 =head2 Constant Values of Basic Type Categories
 
-  0  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN
-  1  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS
-  2  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNDEF
-  3  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID
-  4  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC
-  5  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM
-  6  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING
-  7  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS
-  8  SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE
+  0 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN
+  1 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS
+  2 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNDEF
+  3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID
+  4 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC
+  5 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM
+  6 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING
+  7 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS
+  8 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE
   9 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT
 
 =head1 IDs of Native API
@@ -896,7 +896,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   159 call_instance_method
   160 get_instance_method_id_static
   161 get_bool_object_value
-  162 string_basic_type_id
+  162 cleanup_global_vars
   163 make_read_only
   164 is_read_only
   165 is_array
@@ -917,7 +917,6 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   180 print_stderr
   181 init_env,
   182 call_init_blocks
-  183 cleanup_global_vars
 
 =head1 List of Native APIs
 
@@ -2587,11 +2586,11 @@ B<Examples:>
 
   int32_t bool_value = env->get_bool_object_value(env, bool_object);
 
-=head2 string_basic_type_id
+=head2 cleanup_global_vars
+  
+  void (*cleanup_global_vars)(SPVM_ENV* env);
 
-  void* string_basic_type_id;
-
-Basic type ID of the C<string> type. This is used internally.
+Cleanup gloval variable, such as class variables and the exception variable.
 
 =head2 make_read_only
 
@@ -2728,12 +2727,6 @@ Initialize the environment.
   void (*call_init_blocks)(SPVM_ENV* env);
 
 Call C<INIT> blocks.
-
-=head2 cleanup_global_vars
-  
-  void (*cleanup_global_vars)(SPVM_ENV* env);
-
-Cleanup gloval variable, such as class variables and the exception variable.
 
 =head1 Compiler Native API
 

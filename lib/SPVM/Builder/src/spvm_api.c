@@ -252,14 +252,14 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_call_class_method_by_name,
     SPVM_API_call_instance_method_by_name,
     SPVM_API_get_field_string_chars_by_name,
-    (void*)(intptr_t)SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT, // any_object_basic_type_id
+    SPVM_API_free_env_prepared,
     SPVM_API_dump_raw,
     SPVM_API_dump,
     SPVM_API_call_spvm_method, // call_class_method
     SPVM_API_call_spvm_method, // call_instance_method
     SPVM_API_get_instance_method_id_static,
     SPVM_API_get_bool_object_value,
-    (void*)(intptr_t)SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, // string_basic_type_id
+    SPVM_API_cleanup_global_vars,
     SPVM_API_make_read_only,
     SPVM_API_is_read_only,
     SPVM_API_is_array,
@@ -280,8 +280,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_print_stderr,
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
-    SPVM_API_cleanup_global_vars,
-    SPVM_API_free_env_prepared,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
