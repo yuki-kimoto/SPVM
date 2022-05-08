@@ -589,6 +589,8 @@ motiE<lt>motohiko.ave@gmail.comE<gt>
 
 =item * Yasuaki Omokawa
 
+=item * Suman Khanal
+
 =back
 
 =head1 COPYRIGHT & LICENSE
