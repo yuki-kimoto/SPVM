@@ -371,18 +371,21 @@ sub print_error_messages {
 
 # Local variable
 {
-  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameStartDigit', qr/The symbol name part of the variable name "\$3foo" can't start with a number/);
-  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameInvalidColon', qr/Unknown class "BAR"/);
-  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameEndColon2', qr/The variable name "\$FOO::" can't end with "::"/);
-  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
-  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameColon2Twice', qr/The variable name "\$FOO::::BAR" can't contain "::::"/);
+  # Local variable name
   {
-    my $source = 'class Tmp { static method main : void () { my ${name : int; } }';
-    compile_not_ok($source, qr/Need a closing brace "}"/);
-  }
-  {
-    my $source = 'class Tmp { static method main : void () { my $Foo::name : int; } }';
-    compile_not_ok($source, qr/The local variable "\$Foo::name" can't contain "::"/);
+    compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameStartDigit', qr/The symbol name part of the variable name "\$3foo" can't start with a number/);
+    compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameInvalidColon', qr/Unknown class "BAR"/);
+    compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameEndColon2', qr/The variable name "\$FOO::" can't end with "::"/);
+    compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
+    compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameColon2Twice', qr/The variable name "\$FOO::::BAR" can't contain "::::"/);
+    {
+      my $source = 'class Tmp { static method main : void () { my ${name : int; } }';
+      compile_not_ok($source, qr/Need a closing brace "}"/);
+    }
+    {
+      my $source = 'class Tmp { static method main : void () { my $Foo::name : int; } }';
+      compile_not_ok($source, qr/The local variable "\$Foo::name" can't contain "::"/);
+    }
   }
 }
 
