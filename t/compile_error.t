@@ -14,7 +14,7 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/default/lib";
 
-sub compile_not_ok {
+sub compile_not_ok_file {
   my ($class_name, $error_message_re) = @_;
   
   my (undef, $file, $line) = caller;
@@ -60,98 +60,98 @@ sub print_error_messages {
 
 # Class
 {
-  compile_not_ok('TestCase::CompileError::Class::NotClosed');
-  compile_not_ok('TestCase::CompileError::Class::ClassNameDifferntFromModuleName');
-  compile_not_ok('TestCase::CompileError::Class::classPartNameStartWithLowerCase');
-  compile_not_ok('foo');
-  compile_not_ok('4foo');
+  compile_not_ok_file('TestCase::CompileError::Class::NotClosed');
+  compile_not_ok_file('TestCase::CompileError::Class::ClassNameDifferntFromModuleName');
+  compile_not_ok_file('TestCase::CompileError::Class::classPartNameStartWithLowerCase');
+  compile_not_ok_file('foo');
+  compile_not_ok_file('4foo');
 }
 
 # Pakcage name must start SPVM::
 {
-  compile_not_ok('ClassNameCompileError');
+  compile_not_ok_file('ClassNameCompileError');
 }
 
 # use
 {
-  compile_not_ok('TestCase::CompileError::Use::ImportMethodNotFound');
-  compile_not_ok('TestCase::CompileError::Use::AliasStartsLowerCase');
-  compile_not_ok('TestCase::CompileError::Use::AliasDuplication');
+  compile_not_ok_file('TestCase::CompileError::Use::ImportMethodNotFound');
+  compile_not_ok_file('TestCase::CompileError::Use::AliasStartsLowerCase');
+  compile_not_ok_file('TestCase::CompileError::Use::AliasDuplication');
 }
 
 # Logical operator
 {
-  compile_not_ok('TestCase::CompileError::LogicalOperator::AndNotExpression');
-  compile_not_ok('TestCase::CompileError::LogicalOperator::OrNotExpression');
-  compile_not_ok('TestCase::CompileError::LogicalOperator::NotNotExpression');
+  compile_not_ok_file('TestCase::CompileError::LogicalOperator::AndNotExpression');
+  compile_not_ok_file('TestCase::CompileError::LogicalOperator::OrNotExpression');
+  compile_not_ok_file('TestCase::CompileError::LogicalOperator::NotNotExpression');
 }
 
 # oarray
 {
-  compile_not_ok('TestCase::CompileError::OArray::AssignNumeric');
-  compile_not_ok('TestCase::CompileError::OArray::AssignNumericArray');
+  compile_not_ok_file('TestCase::CompileError::OArray::AssignNumeric');
+  compile_not_ok_file('TestCase::CompileError::OArray::AssignNumericArray');
 }
 
 # Literal
 {
   # Caharater
   {
-    compile_not_ok('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty');
-    compile_not_ok('TestCase::CompileError::Literal::Character::InvalidCharacterLiteral');
-    compile_not_ok('TestCase::CompileError::Literal::Character::NotEnd');
-    compile_not_ok('TestCase::CompileError::Literal::Character::InvalidHexAscii1');
-    compile_not_ok('TestCase::CompileError::Literal::Character::InvalidHexAscii2');
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty');
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteral');
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::NotEnd');
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii1');
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii2');
   }
   # Integer
-  compile_not_ok('TestCase::CompileError::Literal::Integer::IntOutOfRange');
+  compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange');
 }
 
 # Lexcarl Variable
 {
-  compile_not_ok('TestCase::CompileError::LexVar::LexVarNameStartDigit');
-  compile_not_ok('TestCase::CompileError::LexVar::LexVarNameInvalidColon');
-  compile_not_ok('TestCase::CompileError::LexVar::LexVarNameEndColon2');
-  compile_not_ok('TestCase::CompileError::LexVar::LexVarNameContainsUnderScoreTwice');
-  compile_not_ok('TestCase::CompileError::LexVar::LexVarNameColon2Twice');
+  compile_not_ok_file('TestCase::CompileError::LexVar::LexVarNameStartDigit');
+  compile_not_ok_file('TestCase::CompileError::LexVar::LexVarNameInvalidColon');
+  compile_not_ok_file('TestCase::CompileError::LexVar::LexVarNameEndColon2');
+  compile_not_ok_file('TestCase::CompileError::LexVar::LexVarNameContainsUnderScoreTwice');
+  compile_not_ok_file('TestCase::CompileError::LexVar::LexVarNameColon2Twice');
 }
 
 # Class Variable
 {
-  compile_not_ok('TestCase::CompileError::ClassVar::Private');
-  compile_not_ok('TestCase::CompileError::ClassVar::OurClassVarNameStartDigit');
-  compile_not_ok('TestCase::CompileError::ClassVar::OurClassVarNameInvalidColon');
-  compile_not_ok('TestCase::CompileError::ClassVar::OurClassVarNameEndColon2');
-  compile_not_ok('TestCase::CompileError::ClassVar::OurClassVarNameContainsUnderScoreTwice');
-  compile_not_ok('TestCase::CompileError::ClassVar::OurClassVarNameColon2Twice');
+  compile_not_ok_file('TestCase::CompileError::ClassVar::Private');
+  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameStartDigit');
+  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameInvalidColon');
+  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameEndColon2');
+  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameContainsUnderScoreTwice');
+  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameColon2Twice');
 }
 
 # Method
 {
-  compile_not_ok('TestCase::CompileError::Method::Begin');
-  compile_not_ok('TestCase::CompileError::Method::MethodNameStartDigit');
-  compile_not_ok('TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice');
-  compile_not_ok('TestCase::CompileError::Method::TooManyArguments', qr/Too many arguments/i);
-  compile_not_ok('TestCase::CompileError::Method::TooManyArgumentsMulnum'. qr/Too many arguments/i);
+  compile_not_ok_file('TestCase::CompileError::Method::Begin');
+  compile_not_ok_file('TestCase::CompileError::Method::MethodNameStartDigit');
+  compile_not_ok_file('TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice');
+  compile_not_ok_file('TestCase::CompileError::Method::TooManyArguments', qr/Too many arguments/i);
+  compile_not_ok_file('TestCase::CompileError::Method::TooManyArgumentsMulnum'. qr/Too many arguments/i);
 }
 
 # Field
 {
-  compile_not_ok('TestCase::CompileError::Field::Private');
-  compile_not_ok('TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice');
-  compile_not_ok('TestCase::CompileError::Field::HasFieldNameStartDigit');
+  compile_not_ok_file('TestCase::CompileError::Field::Private');
+  compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice');
+  compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameStartDigit');
 }
 
 
 # Enum
 {
-  compile_not_ok('TestCase::CompileError::Enum::PrivateAccess');
+  compile_not_ok_file('TestCase::CompileError::Enum::PrivateAccess');
 }
 
 # Call sub
 {
   {
     
-    compile_not_ok('TestCase::CompileError::Switch::NoLastBreak');
+    compile_not_ok_file('TestCase::CompileError::Switch::NoLastBreak');
     
     
   }
@@ -159,147 +159,147 @@ sub print_error_messages {
 
 # Value
 {
-  compile_not_ok('TestCase::CompileError::Value::FieldsZero');
-  compile_not_ok('TestCase::CompileError::Value::Fields17');
+  compile_not_ok_file('TestCase::CompileError::Value::FieldsZero');
+  compile_not_ok_file('TestCase::CompileError::Value::Fields17');
 }
 
 # Call method
 {
-  compile_not_ok('TestCase::CompileError::CallMethod::NotFound');
-  compile_not_ok('TestCase::CompileError::CallMethod::ClassNotFound');
+  compile_not_ok_file('TestCase::CompileError::CallMethod::NotFound');
+  compile_not_ok_file('TestCase::CompileError::CallMethod::ClassNotFound');
 }
 
 # Assign
 {
-  compile_not_ok('TestCase::CompileError::Assign::StringToBytArray');
-  compile_not_ok('TestCase::CompileError::Assign::DifferentObject');
-  compile_not_ok('TestCase::CompileError::Assign::ConstToNoConst');
-  compile_not_ok('TestCase::CompileError::Assign::NotNumericToNumeric');
-  compile_not_ok('TestCase::CompileError::Assign::NarrwoingConvertionIntToByte');
-  compile_not_ok('TestCase::CompileError::Assign::NarrwoingConvertionIntToShort');
-  compile_not_ok('TestCase::CompileError::Assign::NarrwoingConvertionLongToByte');
-  compile_not_ok('TestCase::CompileError::Assign::NarrwoingConvertionLongToInt');
-  compile_not_ok('TestCase::CompileError::Assign::NarrwoingConvertionLongToShort');
-  compile_not_ok('TestCase::CompileError::Assign::UnboxingDifferentType');
-  compile_not_ok('TestCase::CompileError::Assign::BoxingDifferentType');
+  compile_not_ok_file('TestCase::CompileError::Assign::StringToBytArray');
+  compile_not_ok_file('TestCase::CompileError::Assign::DifferentObject');
+  compile_not_ok_file('TestCase::CompileError::Assign::ConstToNoConst');
+  compile_not_ok_file('TestCase::CompileError::Assign::NotNumericToNumeric');
+  compile_not_ok_file('TestCase::CompileError::Assign::NarrwoingConvertionIntToByte');
+  compile_not_ok_file('TestCase::CompileError::Assign::NarrwoingConvertionIntToShort');
+  compile_not_ok_file('TestCase::CompileError::Assign::NarrwoingConvertionLongToByte');
+  compile_not_ok_file('TestCase::CompileError::Assign::NarrwoingConvertionLongToInt');
+  compile_not_ok_file('TestCase::CompileError::Assign::NarrwoingConvertionLongToShort');
+  compile_not_ok_file('TestCase::CompileError::Assign::UnboxingDifferentType');
+  compile_not_ok_file('TestCase::CompileError::Assign::BoxingDifferentType');
 }
 
 # Remainder
 {
-  compile_not_ok('TestCase::CompileError::Remainder::RightIsNotIntegral');
-  compile_not_ok('TestCase::CompileError::Remainder::LeftIsNotIntegral');
+  compile_not_ok_file('TestCase::CompileError::Remainder::RightIsNotIntegral');
+  compile_not_ok_file('TestCase::CompileError::Remainder::LeftIsNotIntegral');
 }
 
 # String
 {
-  compile_not_ok('TestCase::CompileError::String::CharacterAssign');
-  compile_not_ok('TestCase::CompileError::String::AssignNonMutableToMutable');
+  compile_not_ok_file('TestCase::CompileError::String::CharacterAssign');
+  compile_not_ok_file('TestCase::CompileError::String::AssignNonMutableToMutable');
 }
 
 # Comparison operator
 {
-  compile_not_ok('TestCase::CompileError::ComparisonOperator::GtNotNumeric');
-  compile_not_ok('TestCase::CompileError::ComparisonOperator::GeNotNumeric');
-  compile_not_ok('TestCase::CompileError::ComparisonOperator::LtNotNumeric');
-  compile_not_ok('TestCase::CompileError::ComparisonOperator::LeNotNumeric');
+  compile_not_ok_file('TestCase::CompileError::ComparisonOperator::GtNotNumeric');
+  compile_not_ok_file('TestCase::CompileError::ComparisonOperator::GeNotNumeric');
+  compile_not_ok_file('TestCase::CompileError::ComparisonOperator::LtNotNumeric');
+  compile_not_ok_file('TestCase::CompileError::ComparisonOperator::LeNotNumeric');
 }
 
 # Bool
 {
-  compile_not_ok('TestCase::CompileError::Bool::NotNumericObject');
+  compile_not_ok_file('TestCase::CompileError::Bool::NotNumericObject');
 }
 
 # isa
 {
-  compile_not_ok('TestCase::CompileError::Isa::LeftIsNotObject');
+  compile_not_ok_file('TestCase::CompileError::Isa::LeftIsNotObject');
 }
 
 {
-  compile_not_ok('TestCase::CompileError::InvalidType');
+  compile_not_ok_file('TestCase::CompileError::InvalidType');
 }
 
 {
-  compile_not_ok('TestCase::CompileError::TypeCantBeDetectedUndef');
+  compile_not_ok_file('TestCase::CompileError::TypeCantBeDetectedUndef');
 }
 
 {
-  compile_not_ok('TestCase::CompileError::TypeCantBeDetectedUndefDefault');
+  compile_not_ok_file('TestCase::CompileError::TypeCantBeDetectedUndefDefault');
 }
 
 {
-  compile_not_ok('TestCase::CompileError::New::Private');
+  compile_not_ok_file('TestCase::CompileError::New::Private');
 }
 
 # Convert
 {
-  compile_not_ok('TestCase::CompileError::Convert::ConvertFromByteArrayToString');
-  compile_not_ok('TestCase::CompileError::Convert::ConvertFromStringToByteArray');
-  compile_not_ok('TestCase::CompileError::Convert::ConvertToRef');
-  compile_not_ok('TestCase::CompileError::Convert::ConvertFromRef');
-  compile_not_ok('TestCase::CompileError::Convert::ConvertFromValueType');
+  compile_not_ok_file('TestCase::CompileError::Convert::ConvertFromByteArrayToString');
+  compile_not_ok_file('TestCase::CompileError::Convert::ConvertFromStringToByteArray');
+  compile_not_ok_file('TestCase::CompileError::Convert::ConvertToRef');
+  compile_not_ok_file('TestCase::CompileError::Convert::ConvertFromRef');
+  compile_not_ok_file('TestCase::CompileError::Convert::ConvertFromValueType');
 }
 
 # Concat
 {
-  compile_not_ok('TestCase::CompileError::Concat::RightIsNotString');
-  compile_not_ok('TestCase::CompileError::Concat::LeftIsNotString');
+  compile_not_ok_file('TestCase::CompileError::Concat::RightIsNotString');
+  compile_not_ok_file('TestCase::CompileError::Concat::LeftIsNotString');
 }
 
 # Type
 {
-  compile_not_ok('TestCase::CompileError::Type::MutableNoStringCaseStringArray');
-  compile_not_ok('TestCase::CompileError::Type::MutableNoStringCaseInt');
-  compile_not_ok('TestCase::CompileError::Type::MultiDimensionalAnyObject', qr/Multi dimensional array of any object/i);
+  compile_not_ok_file('TestCase::CompileError::Type::MutableNoStringCaseStringArray');
+  compile_not_ok_file('TestCase::CompileError::Type::MutableNoStringCaseInt');
+  compile_not_ok_file('TestCase::CompileError::Type::MultiDimensionalAnyObject', qr/Multi dimensional array of any object/i);
 }
 
 # Divide - Compile Error
 {
-  compile_not_ok('TestCase::CompileError::Divide::LeftIsNotNumeric');
-  compile_not_ok('TestCase::CompileError::Divide::RightIsNotNumeric');
-  compile_not_ok('TestCase::CompileError::Divide::DivuiLeftIsNotInt');
-  compile_not_ok('TestCase::CompileError::Divide::DivuiRightIsNotInt');
-  compile_not_ok('TestCase::CompileError::Divide::DivulLeftIsNotLong');
-  compile_not_ok('TestCase::CompileError::Divide::DivulRightIsNotLong');
+  compile_not_ok_file('TestCase::CompileError::Divide::LeftIsNotNumeric');
+  compile_not_ok_file('TestCase::CompileError::Divide::RightIsNotNumeric');
+  compile_not_ok_file('TestCase::CompileError::Divide::DivuiLeftIsNotInt');
+  compile_not_ok_file('TestCase::CompileError::Divide::DivuiRightIsNotInt');
+  compile_not_ok_file('TestCase::CompileError::Divide::DivulLeftIsNotLong');
+  compile_not_ok_file('TestCase::CompileError::Divide::DivulRightIsNotLong');
 }
 
 
 # Remainder - Compile Error
 {
-  compile_not_ok('TestCase::CompileError::Remainder::LeftIsNotIntegral', qr/left.+%.+integral/);
-  compile_not_ok('TestCase::CompileError::Remainder::RightIsNotIntegral', qr/right.+%.+integral/);
-  compile_not_ok('TestCase::CompileError::Remainder::RemuiLeftIsNotInt', qr/left.+remui.+int/);
-  compile_not_ok('TestCase::CompileError::Remainder::RemuiRightIsNotInt', qr/right.+remui.+int/);
-  compile_not_ok('TestCase::CompileError::Remainder::RemulLeftIsNotLong', qr/left.+remul.+long/);
-  compile_not_ok('TestCase::CompileError::Remainder::RemulRightIsNotLong', qr/right.+remul.+long/);
+  compile_not_ok_file('TestCase::CompileError::Remainder::LeftIsNotIntegral', qr/left.+%.+integral/);
+  compile_not_ok_file('TestCase::CompileError::Remainder::RightIsNotIntegral', qr/right.+%.+integral/);
+  compile_not_ok_file('TestCase::CompileError::Remainder::RemuiLeftIsNotInt', qr/left.+remui.+int/);
+  compile_not_ok_file('TestCase::CompileError::Remainder::RemuiRightIsNotInt', qr/right.+remui.+int/);
+  compile_not_ok_file('TestCase::CompileError::Remainder::RemulLeftIsNotLong', qr/left.+remul.+long/);
+  compile_not_ok_file('TestCase::CompileError::Remainder::RemulRightIsNotLong', qr/right.+remul.+long/);
 }
 
 # Interface
 {
-  compile_not_ok('TestCase::CompileError::Interface::HaveBlock', qr/interface.+block/i);
-  compile_not_ok('TestCase::CompileError::Interface::NativeMethod', qr/interface.+native/i);
-  compile_not_ok('TestCase::CompileError::Interface::StaticMethod', qr/interface.+instance/i);
-  compile_not_ok('TestCase::CompileError::Interface::ArrayElementCantAssign', qr/List to Stringable/i);
-  compile_not_ok('TestCase::CompileError::Interface::NotHaveInterfaceMethod', qr/TestCase::CompileError::Interface::NotHaveInterfaceMethod.+to_string.*string\(self\).+interface.+Stringable/i);
-  compile_not_ok('TestCase::CompileError::Interface::NoMethods', qr/one required method/i);
-  compile_not_ok('TestCase::CompileError::Interface::MultiRequiredMethods', qr/multiple required method/i);
-  compile_not_ok('TestCase::CompileError::Interface::HasImplNotFound', qr/interface.+TestCase::Pointable.+the method declaration.+not_found/i);
+  compile_not_ok_file('TestCase::CompileError::Interface::HaveBlock', qr/interface.+block/i);
+  compile_not_ok_file('TestCase::CompileError::Interface::NativeMethod', qr/interface.+native/i);
+  compile_not_ok_file('TestCase::CompileError::Interface::StaticMethod', qr/interface.+instance/i);
+  compile_not_ok_file('TestCase::CompileError::Interface::ArrayElementCantAssign', qr/List to Stringable/i);
+  compile_not_ok_file('TestCase::CompileError::Interface::NotHaveInterfaceMethod', qr/TestCase::CompileError::Interface::NotHaveInterfaceMethod.+to_string.*string\(self\).+interface.+Stringable/i);
+  compile_not_ok_file('TestCase::CompileError::Interface::NoMethods', qr/one required method/i);
+  compile_not_ok_file('TestCase::CompileError::Interface::MultiRequiredMethods', qr/multiple required method/i);
+  compile_not_ok_file('TestCase::CompileError::Interface::HasImplNotFound', qr/interface.+TestCase::Pointable.+the method declaration.+not_found/i);
 }
 
 # Syntax
 {
-  compile_not_ok('TestCase::CompileError::Syntax::LineNumber', qr/our.*\b8:3\b/i);
+  compile_not_ok_file('TestCase::CompileError::Syntax::LineNumber', qr/our.*\b8:3\b/i);
 }
 
 # Type comment
 {
-  compile_not_ok('TestCase::CompileError::TypeComment::NotExistType', qr/NotExists::XXXX/);
+  compile_not_ok_file('TestCase::CompileError::TypeComment::NotExistType', qr/NotExists::XXXX/);
 }
 
 # Weaken
 {
-  compile_not_ok('TestCase::CompileError::Weaken::IsweakFieldNotObjectType', qr/isweak.*object/);
-  compile_not_ok('TestCase::CompileError::Weaken::UnweakenFieldNotObjectType', qr/unweaken.*object/);
-  compile_not_ok('TestCase::CompileError::Weaken::WeakenFieldNotObjectType', qr/weaken.*object/);
+  compile_not_ok_file('TestCase::CompileError::Weaken::IsweakFieldNotObjectType', qr/isweak.*object/);
+  compile_not_ok_file('TestCase::CompileError::Weaken::UnweakenFieldNotObjectType', qr/unweaken.*object/);
+  compile_not_ok_file('TestCase::CompileError::Weaken::WeakenFieldNotObjectType', qr/weaken.*object/);
 }
 
 done_testing;
