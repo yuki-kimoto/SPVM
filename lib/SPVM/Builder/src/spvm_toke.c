@@ -1395,25 +1395,35 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 SPVM_COMPILER_error(compiler, "Need a closing brace \"}\" at the end of the variable name at %s line %d", compiler->cur_file, compiler->cur_line);
               }
             }
+            
+            // Check the variable name
+            {
+              // A variable name can't conatain "__"
+              if (strstr(var_name, "__")) {
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't contain \"__\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+              }
 
-            // Variable name can't conatain __
-            if (strstr(var_name, "__")) {
-              SPVM_COMPILER_error(compiler, "Variable name \"%s\" can't contain \"__\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+              // A variable name can't start with \"$::\"
+              if (var_name_symbol_name_part_length >= 2 && var_name[1] == ':' && var_name[2] == ':') {
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't start with \"$::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+              }
+
+              // A variable name can't end with \"::\"
+              if (var_name_symbol_name_part_length >= 2 && var_name[var_name_length] == ':' && var_name[var_name_length - 1] == ':') {
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't end with \"::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+              }
+              
+              // A variable name \"%s\" can't contain \"::::\"
+              if (strstr(var_name, "::::")) {
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't contain \"::::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+              }
+
+              // A variable name can't start with a number
+              if (var_name_symbol_name_part_length >= 1 && isdigit(var_name[1])) {
+                SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" can't start with a number at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+              }
             }
-
-            if (strstr(var_name, ":::")) {
-              SPVM_COMPILER_error(compiler, "Variable name \"%s\" can't contain \":::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
-            }
-
-            // Variable name can't start with number
-            if (isdigit(var_name[1])) {
-              SPVM_COMPILER_error(compiler, "Variable name \"%s\" must not start with number at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
-            }
-
-            if (strlen(var_name) > 1 && var_name[var_name_symbol_name_part_length] == ':' && var_name[var_name_symbol_name_part_length - 1] == ':') {
-              SPVM_COMPILER_error(compiler, "Variable name \"%s\" must not end with \"::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
-            }
-
+            
             // Name op
             SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
             yylvalp->opval = op_name;
@@ -2206,7 +2216,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Check the symbol name
             {
               // A symbol name can't conatain "__"
-              if (symbol_name_length >= 2 && strstr(symbol_name, "__")) {
+              if (strstr(symbol_name, "__")) {
                 SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't constain \"__\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
               
@@ -2216,7 +2226,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
 
               // A symbol name can't contains "::::".
-              if (symbol_name_length >= 4 && strstr(symbol_name, "::::")) {
+              if (strstr(symbol_name, "::::")) {
                 SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't contains \"::::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
 
