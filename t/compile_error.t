@@ -65,11 +65,11 @@ sub compile_not_ok {
   my $builder = SPVM::Builder->new;
   
   my $class_name;
-  if ($source =~ /\bclass\s+(\w+)\s*/) {
+  if ($source =~ /\bclass\s+([\w+:])\s*/) {
     $class_name = $1;
   }
   unless (defined $class_name) {
-    die "Invalid class name";
+    die "Can't find class name in the source";
   }
   
   my $tmp_module_dir = File::Temp->newdir;
@@ -361,6 +361,18 @@ sub print_error_messages {
   {
     my $source = 'class Foo__Bar { static method main : void () { } }';
     compile_not_ok($source, qr/\QThe symbol name "Foo__Bar" can't constain "__"/);
+  }
+
+  # A symbol name can't end with "::"
+  {
+    my $source = 'class Foo:: { static method main : void () { } }';
+    compile_not_ok($source, qr/\QThe symbol name "Foo::" can't end with "::"/);
+  }
+
+  # A symbol name can't contains "::::".
+  {
+    my $source = 'class Foo::::Bar { static method main : void () { } }';
+    compile_not_ok($source, qr/\QThe symbol name "Foo::::Bar" can't contains "::::"/);
   }
 }
 

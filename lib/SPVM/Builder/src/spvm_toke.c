@@ -2216,11 +2216,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't constain \"__\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
               
-              // A symbol name can't start with "::"
-              if (symbol_name_length >= 2 && symbol_name[0] == ':' && symbol_name[1] == ':' ) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't start with \"::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
-              }
-
               // A symbol name can't end with "::"
               if (symbol_name_length >= 2 && symbol_name[symbol_name_length - 2] == ':' && symbol_name[symbol_name_length - 1] == ':' ) {
                 SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't end with \"::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
@@ -2231,15 +2226,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't contains \"::::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
 
+              // A symbol name can't start with "::"
+              assert(!(symbol_name[0] == ':' && symbol_name[1] == ':'));
+
               // A symbol name can't start with a number "0-9".
               assert(!isdigit(symbol_name[0]));
             }
 
             // A string literal of the left operand of the fat camma
             if (next_is_fat_camma) {
-              // A symbol name can't contains "::::".
+              // The string literal of the left operand of the fat camma can't contains "::".
               if (symbol_name_length >= 2 && strstr(symbol_name, "::")) {
-                SPVM_COMPILER_error(compiler, "The string literal of the left operand of the fat camma \"%s\" can't can't contains \"::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The string literal of the left operand of the fat camma \"%s\" can't contains \"::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
 
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name, symbol_name_length, compiler->cur_file, compiler->cur_line);
