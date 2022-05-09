@@ -162,15 +162,6 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange');
 }
 
-# Local variable
-{
-  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameStartDigit');
-  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameInvalidColon');
-  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameEndColon2');
-  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameContainsUnderScoreTwice');
-  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameColon2Twice');
-}
-
 # Class variable
 {
   compile_not_ok_file('TestCase::CompileError::ClassVar::Private');
@@ -386,6 +377,15 @@ sub print_error_messages {
     my $source = 'class Tmp { static method main : void () { {Foo::Bar => 1}; } }';
     compile_not_ok($source, qr/\QThe string literal "Foo::Bar" of the left operand of the fat camma can't contains "::"/);
   }
+}
+
+# Local variable
+{
+  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameStartDigit', qr/The symbol name part of the variable name "\$3foo" can't start with a number/);
+  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameInvalidColon', qr/Unknown class "BAR"/);
+  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameEndColon2', qr/The variable name "\$FOO::" can't end with "::"/);
+  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
+  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameColon2Twice', qr/The variable name "\$FOO::::BAR" can't contain "::::"/);
 }
 
 done_testing;
