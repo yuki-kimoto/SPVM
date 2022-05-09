@@ -1,5 +1,0 @@
-class TestCase::CompileError::LexVar::LexVarNameStartDigit {
-  static method foo : void () {
-    my $3foo = 0;
-  }
-}

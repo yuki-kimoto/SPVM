@@ -1,5 +1,0 @@
-class TestCase::CompileError::LexVar::LexVarNameInvalidColon {
-  static method foo : void () {
-    my $FOO:BAR = 0;
-  }
-}

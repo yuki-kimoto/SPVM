@@ -1,5 +1,0 @@
-class TestCase::CompileError::LexVar::LexVarNameContainsUnderScoreTwice {
-  static method foo : void () {
-    my $Foo__Bar = 0;
-  }
-}

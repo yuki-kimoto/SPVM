@@ -162,16 +162,16 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange');
 }
 
-# Lexcarl Variable
+# Local variable
 {
-  compile_not_ok_file('TestCase::CompileError::LexVar::LexVarNameStartDigit');
-  compile_not_ok_file('TestCase::CompileError::LexVar::LexVarNameInvalidColon');
-  compile_not_ok_file('TestCase::CompileError::LexVar::LexVarNameEndColon2');
-  compile_not_ok_file('TestCase::CompileError::LexVar::LexVarNameContainsUnderScoreTwice');
-  compile_not_ok_file('TestCase::CompileError::LexVar::LexVarNameColon2Twice');
+  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameStartDigit');
+  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameInvalidColon');
+  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameEndColon2');
+  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameContainsUnderScoreTwice');
+  compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameColon2Twice');
 }
 
-# Class Variable
+# Class variable
 {
   compile_not_ok_file('TestCase::CompileError::ClassVar::Private');
   compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameStartDigit');
