@@ -28,7 +28,7 @@ sub compile_not_ok_file {
   
   my $file;
   if (defined $options->{file}) {
-    $file = defined $options->{file};
+    $file = $options->{file};
   }
   else {
     $file = $caller_file;
@@ -36,7 +36,7 @@ sub compile_not_ok_file {
 
   my $line;
   if (defined $options->{line}) {
-    $line = defined $options->{line};
+    $line = $options->{line};
   }
   else {
     $line = $caller_line;
@@ -44,6 +44,7 @@ sub compile_not_ok_file {
   
   my $builder = SPVM::Builder->new;
   unshift @{$builder->module_dirs}, $module_dir;
+  
   my $success = $builder->compile_spvm($class_name, $file, $line);
   ok($success == 0);
   unless ($success == 0) {
@@ -65,7 +66,7 @@ sub compile_not_ok {
   my $builder = SPVM::Builder->new;
   
   my $class_name;
-  if ($source =~ /\bclass\s+([\w+:])\s*/) {
+  if ($source =~ /\bclass\s+([\w+:]+)\s*/) {
     $class_name = $1;
   }
   unless (defined $class_name) {
@@ -83,7 +84,7 @@ sub compile_not_ok {
   
   close $module_fh;
   
-  compile_not_ok_file($class_name, $error_message_re, {module_dir => $tmp_module_dir, file => $file, line => $line});
+  compile_not_ok_file($class_name, $error_message_re, {module_dir => "$tmp_module_dir", file => $file, line => $line});
 }
 
 sub print_error_messages {
@@ -365,14 +366,23 @@ sub print_error_messages {
 
   # A symbol name can't end with "::"
   {
-    my $source = 'class Foo:: { static method main : void () { } }';
+    my $source = 'class Tmp { use Int as Foo::; static method main : void () { } }';
     compile_not_ok($source, qr/\QThe symbol name "Foo::" can't end with "::"/);
   }
 
   # A symbol name can't contains "::::".
   {
-    my $source = 'class Foo::::Bar { static method main : void () { } }';
+    my $source = 'class Tmp { use Int as Foo::::Bar; static method main : void () { } }';
     compile_not_ok($source, qr/\QThe symbol name "Foo::::Bar" can't contains "::::"/);
+  }
+}
+
+# Fat comma
+{
+  # The string literal of the left operand of the fat camma can't contains "::".
+  {
+    my $source = 'class Tmp { static method main : void () { {Foo::Bar => 1}; } }';
+    compile_not_ok($source, qr/\QThe string literal "Foo::Bar" of the left operand of the fat camma can't contains "::"/);
   }
 }
 
