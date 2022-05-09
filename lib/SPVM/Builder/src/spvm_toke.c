@@ -1699,9 +1699,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           return CONSTANT;
         }
-        // Keyword or name
+        // A symbol name
         else if (isalpha(ch) || ch == '_') {
-          // Keyword start position
+          // The starting position of the symbol name
           int32_t column = compiler->bufptr - compiler->line_start_ptr;
           
           // Save current position
@@ -1709,7 +1709,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           compiler->bufptr++;
           
-          // Go to end of name
+          // Go forward to the end of the symbol name
           while(isalnum(*compiler->bufptr)
             || *compiler->bufptr == '_'
             || (*compiler->bufptr == ':' && *(compiler->bufptr + 1) == ':'))
@@ -1722,7 +1722,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           
-          // Keyword name
+          // Symbol name
           int32_t symbol_name_length = (compiler->bufptr - cur_token_ptr);
           char* symbol_name = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, symbol_name_length + 1);
           memcpy(symbol_name, cur_token_ptr, symbol_name_length);
