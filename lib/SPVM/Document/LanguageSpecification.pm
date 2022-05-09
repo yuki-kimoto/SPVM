@@ -56,7 +56,7 @@ The word characters are alphabet(C<a-zA-Z>), number(C<0-9>), and underscore(C<_>
 
 =head2 Identifiers
 
-Identifiers are L</"Class Name">, L</"Method Name">, L</"Field Name">, L</"Class Variable Name">, and L</"Local Variable Names">.
+Identifiers are L</"Class Name">, L</"Method Name">, L</"Field Name">, L</"Class Variable Name">, and L</"Local Variable Name">.
 
 =head2 Class Name
 
@@ -168,7 +168,7 @@ B<Examples:>
   $FOO__BAR
   $3FOO
 
-=head2 Local Variable Names
+=head2 Local Variable Name
 
 A local variable name starts with C<$>, followed  L<word characters|/"Word Characters">.
 
@@ -2459,7 +2459,7 @@ Methods must be defined directly under L</"Class Definition">.
 
 Method names must be follow the rule of L</"Method Name">.
 
-The argument names must be follow the rule of L</"Local Variable Names">.
+The argument names must be follow the rule of L</"Local Variable Name">.
 
 The minimal length of arguments is C<0>. The max length of arguments is C<255>.
 
@@ -2876,7 +2876,7 @@ Local Variable is declared using B<my> L</"Keyword">.
 
   my LOCAL_VARIABLE_NAME : TYPE;
 
-The local variable name must be follow the rule of L</"Local Variable Names">.
+The local variable name must be follow the rule of L</"Local Variable Name">.
 
 L</"Types"> must be specified. Type must be L</"Numeric Types">, L</"Object Types">, L</"Multi-Numeric Types">, or L</"Reference Type">.
 
