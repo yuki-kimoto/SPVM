@@ -267,6 +267,7 @@ The list of keywords:
   remul
   return
   require
+  required
   rw
   ro
   static
