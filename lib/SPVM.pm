@@ -439,16 +439,6 @@ SPVM Language Specification.
 
 =back
 
-=head2 Standard Functions
-
-SPVM Standard Functions
-
-=over 2
-
-=item * L<Standard Functions|SPVM::Fn>
-
-=back
-
 =head2 Standard Modules
 
 SPVM Standard Modules.
