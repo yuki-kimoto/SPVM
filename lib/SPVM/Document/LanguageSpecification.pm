@@ -133,50 +133,76 @@ The field name that is same as a L</"Keywords"> is allowed.
   # "if" is a valid field name
   has if : int;
 
+=head2 Variable Name
+
+A variable name starts with C<$> and is followed by a L<symbol name|/"Symbol Name">.
+
+The L<symbol name|/"Symbol Name"> can be wrapped by C<{> and C<}>. If a opening C<{> exists and the closing C<}> doesn't exists, a compilation error will occur.
+
+B<Examples:>
+
+  # Variable names
+  $name
+  $my_name
+  ${name}
+  $Foo::name
+  $Foo::Bar::name
+  ${Foo::name}
+
+  # Invalid variable names
+  $::name
+  $name::
+  $Foo::::name
+  $my__name
+  ${name
+
 =head2 Class Variable Name
 
-A class variable name starts with C<$> and is followed by a L<symbol name|/"Symbol Name">.
+A class variable name is a L<variable name|/"Variable Name">.
 
 If class variable names are invalid, a compilation error will occur.
 
 B<Examples:>
 
   # Class variable names
-  $FOO::BAR
-  $Foo::Bar3
-  $FOO
-  $FOO_BAR
-  $foo
-  $_FOO
+  $name
+  $my_name
+  ${name}
+  $Foo::name
+  $Foo::Bar::name
+  ${Foo::name}
 
   # Invalid class variable names
-  $FOO__BAR
-  $3FOO
-  $FOO::
-  $::FOO
+  $::name
+  $name::
+  $Foo::::name
+  $my__name
+  ${name
 
 =head2 Local Variable Name
 
-A local variable name starts with C<$> and is followed by a L<symbol name|/"Symbol Name"> that doesn't contain C<::>.
+A local variable name is a L<variable name|/"Variable Name"> that doesn't contain C<::>.
 
 B<Examples:>
 
   # Local variable names
-  $foo
-  $foo_bar3
-  $_foo
-  $FOO
+  $name
+  $my_name
+  ${name}
 
   # Invalid local variable names
-  $foo__bar
-  $3foo
-  $foo::bar
-  $::foo
-  $foo::
+  $::name
+  $name::
+  $Foo::::name
+  $my__name
+  ${name
+  $Foo::name
+  $Foo::Bar::name
+  ${Foo::name}
 
 =head2 Keywords
 
-The list of keywords.
+The list of keywords:
 
   alias
   allow
