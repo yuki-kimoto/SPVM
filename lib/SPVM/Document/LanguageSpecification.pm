@@ -170,7 +170,7 @@ B<Examples:>
   ${NAME}
   $FOO::NAME
   $FOO::BAR::NAME
-  ${FOO::NAME}
+  ${FOO::NAME_BRACE}
   $FOO::name
   
   # Invalid class variable names
@@ -190,19 +190,17 @@ B<Examples:>
   # Local variable names
   $name
   $my_name
-  ${name}
+  ${name_brace}
   $_name
   $NAME
 
   # Invalid local variable names
   $::name
   $name::
+  $Foo::name
   $Foo::::name
   $my__name
   ${name
-  $Foo::name
-  $Foo::Bar::name
-  ${Foo::name}
   $3foo
 
 =head2 Keywords
