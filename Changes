@@ -7,6 +7,7 @@ Revision history for SPVM
         * Add no_compiler_api field to SPVM::Builder::Config::Exe.
         * Add dynamic_lib field to SPVM::Builder::Config::Exe.
         * Add static_lib field to SPVM::Builder::Config::Exe.
+        * Add SPVM::Document::NativeMethod document. Native methods of SPVM::Document::NativeAPI is moved to this document.
 
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove "any_object_basic_type_id" native API. ID 155 is reused by "free_env_prepared" native API.
