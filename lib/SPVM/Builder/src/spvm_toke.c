@@ -1366,22 +1366,27 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->bufptr++;
               }
             }
-
+            
+            // Create a variable name that doesn't contain "{" and "}"
             int32_t var_name_symbol_name_part_length = compiler->bufptr - var_name_symbol_name_part_start_ptr;
             int32_t var_name_length = var_name_symbol_name_part_length + 1;
+            const char* var_name = NULL;
+            {
 
-            int32_t memory_blocks_count_tmp_var_name_tmp = compiler->allocator->memory_blocks_count_tmp;
-            char* var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, var_name_length + 1);
-            var_name_tmp[0] = '$';
-            memcpy(&var_name_tmp[1], var_name_symbol_name_part_start_ptr, var_name_symbol_name_part_length);
-            var_name_tmp[1 + var_name_symbol_name_part_length] = '\0';
+              int32_t memory_blocks_count_tmp_var_name_tmp = compiler->allocator->memory_blocks_count_tmp;
+              char* var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, var_name_length + 1);
+              var_name_tmp[0] = '$';
+              memcpy(&var_name_tmp[1], var_name_symbol_name_part_start_ptr, var_name_symbol_name_part_length);
+              var_name_tmp[1 + var_name_symbol_name_part_length] = '\0';
+              
+              SPVM_CONSTANT_STRING* var_name_string = SPVM_CONSTANT_STRING_new(compiler, var_name_tmp, 1 + var_name_symbol_name_part_length);
+              var_name = var_name_string->value;
+              
+              SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var_name_tmp);
+              assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp_var_name_tmp);
+            }
             
-            SPVM_CONSTANT_STRING* var_name_string = SPVM_CONSTANT_STRING_new(compiler, var_name_tmp, 1 + var_name_symbol_name_part_length);
-            const char* var_name = var_name_string->value;
-            
-            SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var_name_tmp);
-            assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp_var_name_tmp);
-
+            // Check the closing brace
             if (have_brace) {
               if (*compiler->bufptr == '}') {
                 compiler->bufptr++;
@@ -1409,7 +1414,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               SPVM_COMPILER_error(compiler, "Variable name \"%s\" must not end with \"::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
             }
 
-            // Name OP
+            // Name op
             SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
             yylvalp->opval = op_name;
 
