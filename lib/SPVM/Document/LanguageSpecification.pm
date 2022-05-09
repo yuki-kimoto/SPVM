@@ -5212,7 +5212,7 @@ The above example is same as the following codes.
 The capture is a syntax to pass L<local variables|/"Local Variable"> to an L<anon method|/"Anon Method">.
 
   # Capture
-  [VariableName1 : Type1, VariableName2 : Type2] method MethodNames : int ($x1 : object, $x2 : object) {
+  [VAR_NAME1 : Type1, VAR_NAME2 : Type2] method METHOD_NAME : int ($x1 : object, $x2 : object) {
   
   };
 
