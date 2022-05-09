@@ -380,6 +380,10 @@ sub print_error_messages {
     my $source = 'class Tmp { static method main : void () { my ${name : int; } }';
     compile_not_ok($source, qr/Need a closing brace "}"/);
   }
+  {
+    my $source = 'class Tmp { static method main : void () { my $Foo::name : int; } }';
+    compile_not_ok($source, qr/The local variable "\$Foo::name" can't contain "::"/);
+  }
 }
 
 # Class variable
