@@ -5,6 +5,41 @@ class TestCase::LocalVar {
   INIT {
     $VAR_PREC = 11;
   }
+
+  static method local_var_name : int () {
+
+    my $name = 1;
+    my $my_name = 2;
+    my ${name_brace} = 3;
+    my $_name = 4;
+    my $NAME = 5;
+    
+    unless ($name == 1) {
+      return 0;
+    }
+
+    unless ($my_name == 2) {
+      return 0;
+    }
+
+    unless (${name_brace} == 3) {
+      return 0;
+    }
+
+    unless ($name_brace == 3) {
+      return 0;
+    }
+
+    unless ($_name == 4) {
+      return 0;
+    }
+
+    unless ($NAME == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
   
   static method var_brace : int () {
     

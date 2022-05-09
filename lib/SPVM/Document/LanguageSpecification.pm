@@ -165,19 +165,21 @@ If class variable names are invalid, a compilation error will occur.
 B<Examples:>
 
   # Class variable names
-  $name
-  $my_name
-  ${name}
-  $Foo::name
-  $Foo::Bar::name
-  ${Foo::name}
-
+  $NAME
+  $MY_NAME
+  ${NAME}
+  $FOO::NAME
+  $FOO::BAR::NAME
+  ${FOO::NAME}
+  $FOO::name
+  
   # Invalid class variable names
-  $::name
-  $name::
-  $Foo::::name
-  $my__name
-  ${name
+  $::NAME
+  $NAME::
+  $FOO::::NAME
+  $MY__NAME
+  $3FOO
+  ${NAME
 
 =head2 Local Variable Name
 
@@ -189,6 +191,8 @@ B<Examples:>
   $name
   $my_name
   ${name}
+  $_name
+  $NAME
 
   # Invalid local variable names
   $::name
@@ -199,6 +203,7 @@ B<Examples:>
   $Foo::name
   $Foo::Bar::name
   ${Foo::name}
+  $3foo
 
 =head2 Keywords
 
@@ -293,7 +298,7 @@ The list of keywords:
 
 =head2 Operators for Tokenization
 
-The list of operators for tokenization.
+The list of operators for tokenization:
 
   !
   !=

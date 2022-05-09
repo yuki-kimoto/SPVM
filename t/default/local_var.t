@@ -8,13 +8,12 @@ use Test::More;
 
 use SPVM 'TestCase::LocalVar';
 
-
-
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-# Array
+# Local variable
 {
+  ok(SPVM::TestCase::LocalVar->local_var_name);
   ok(SPVM::TestCase::LocalVar->var_brace);
   ok(SPVM::TestCase::LocalVar->local_var_upper_case);
   ok(SPVM::TestCase::LocalVar->local_var_high_precidence_than_class_var);
