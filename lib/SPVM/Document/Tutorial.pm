@@ -212,7 +212,7 @@ The above declaration has the same meaning as:
 
 0 on the right side is a signed 32-bit integer, so the type of the variable is automatically determined by type inference.
 
-See also <a href="/language.html#language-local-var">Lexical Variable - SPVM Language Specification</a> about Lexical Variable Declaration.
+See also <a href="/language.html#language-local-var">Local Variable - SPVM Language Specification</a> about Local Variable Declaration.
 
 See also <a href="/language.html#language-type-inference">Type Inference - SPVM Language Specification</a> about Type Inference.
 

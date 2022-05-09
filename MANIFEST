@@ -534,7 +534,6 @@ t/default/lib/SPVM/TestCase/Inline.spvm
 t/default/lib/SPVM/TestCase/Interface.spvm
 t/default/lib/SPVM/TestCase/InterfaceType.spvm
 t/default/lib/SPVM/TestCase/Isa.spvm
-t/default/lib/SPVM/TestCase/LexicalVar.spvm
 t/default/lib/SPVM/TestCase/Lib/Bool.spvm
 t/default/lib/SPVM/TestCase/Lib/Byte.spvm
 t/default/lib/SPVM/TestCase/Lib/ByteList.spvm
@@ -566,6 +565,7 @@ t/default/lib/SPVM/TestCase/Literal/FloatingPoint.spvm
 t/default/lib/SPVM/TestCase/Literal/Integer.spvm
 t/default/lib/SPVM/TestCase/Literal/String.spvm
 t/default/lib/SPVM/TestCase/Literal/Undef.spvm
+t/default/lib/SPVM/TestCase/LocalVar.spvm
 t/default/lib/SPVM/TestCase/LogicalOperator.spvm
 t/default/lib/SPVM/TestCase/Matrix4_16b.spvm
 t/default/lib/SPVM/TestCase/Matrix4_16d.spvm

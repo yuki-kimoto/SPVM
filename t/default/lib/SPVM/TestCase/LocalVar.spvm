@@ -1,4 +1,4 @@
-class TestCase::LexicalVar {
+class TestCase::LocalVar {
   
   our $VAR_PREC : int;
   
