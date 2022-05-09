@@ -360,7 +360,6 @@ t/default/increment.t
 t/default/inline.t
 t/default/interface.t
 t/default/isa.t
-t/default/lexical_var.t
 t/default/lib/SPVM/4foo.spvm
 t/default/lib/SPVM/EmptyClass.spvm
 t/default/lib/SPVM/EmptyPackage.spvm
@@ -646,6 +645,7 @@ t/default/literal_floating_point.t
 t/default/literal_integer.t
 t/default/literal_string.t
 t/default/literal_undef.t
+t/default/local_var.t
 t/default/logical_operator.t
 t/default/method.t
 t/default/mulnum.t
