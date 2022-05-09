@@ -4,6 +4,7 @@ use utf8;
 use Data::Dumper;
 use File::Basename 'basename';
 use FindBin;
+use File::Temp ();
 
 use SPVM::Builder;
 
@@ -15,22 +16,74 @@ use FindBin;
 use lib "$FindBin::Bin/default/lib";
 
 sub compile_not_ok_file {
-  my ($class_name, $error_message_re) = @_;
+  my ($class_name, $error_message_re, $options) = @_;
+  
+  unless ($options) {
+    $options = {};
+  }
+  
+  my $module_dir = $options->{module_dir};
+  
+  my (undef, $caller_file, $caller_line) = caller;
+  
+  my $file;
+  if (defined $options->{file}) {
+    $file = defined $options->{file};
+  }
+  else {
+    $file = $caller_file;
+  }
+
+  my $line;
+  if (defined $options->{line}) {
+    $line = defined $options->{line};
+  }
+  else {
+    $line = $caller_line;
+  }
+  
+  my $builder = SPVM::Builder->new;
+  unshift @{$builder->module_dirs}, $module_dir;
+  my $success = $builder->compile_spvm($class_name, $file, $line);
+  ok($success == 0);
+  unless ($success == 0) {
+    warn "  at $file line $line\n";
+  }
+  my $error_messages = $builder->get_error_messages;
+  my $first_error_message = $error_messages->[0];
+  if ($error_message_re) {
+    like($first_error_message, $error_message_re);
+  }
+  print_error_messages($builder);
+}
+
+sub compile_not_ok {
+  my ($source, $error_message_re) = @_;
   
   my (undef, $file, $line) = caller;
   
-    my $builder = SPVM::Builder->new;
-    my $success = $builder->compile_spvm($class_name, $file, $line);
-    ok($success == 0);
-    unless ($success == 0) {
-      warn "  at $file line $line\n";
-    }
-    my $error_messages = $builder->get_error_messages;
-    my $first_error_message = $error_messages->[0];
-    if ($error_message_re) {
-      like($first_error_message, $error_message_re);
-    }
-    print_error_messages($builder);
+  my $builder = SPVM::Builder->new;
+  
+  my $class_name;
+  if ($source =~ /\bclass\s+(\w+)\s*/) {
+    $class_name = $1;
+  }
+  unless (defined $class_name) {
+    die "Invalid class name";
+  }
+  
+  my $tmp_module_dir = File::Temp->newdir;
+  
+  my $module_file = "$tmp_module_dir/$class_name.spvm";
+  
+  open my $module_fh, '>', $module_file
+    or die "Can't open $module_file: $!";
+  
+  print $module_fh $source;
+  
+  close $module_fh;
+  
+  compile_not_ok_file($class_name, $error_message_re, {module_dir => $tmp_module_dir, file => $file, line => $line});
 }
 
 sub print_error_messages {
@@ -300,6 +353,15 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::Weaken::IsweakFieldNotObjectType', qr/isweak.*object/);
   compile_not_ok_file('TestCase::CompileError::Weaken::UnweakenFieldNotObjectType', qr/unweaken.*object/);
   compile_not_ok_file('TestCase::CompileError::Weaken::WeakenFieldNotObjectType', qr/weaken.*object/);
+}
+
+# Symbol name
+{
+  # A symbol name can't conatain "__"
+  {
+    my $source = 'class Foo__Bar { static method main : void () { } }';
+    compile_not_ok($source, qr/\QThe symbol name "Foo__Bar" can't constain "__"/);
+  }
 }
 
 done_testing;
