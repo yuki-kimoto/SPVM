@@ -1367,16 +1367,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
             }
 
-            int32_t var_name_length_symbol_name_part = compiler->bufptr - var_name_symbol_name_part_start_ptr;
-            int32_t var_name_length = var_name_length_symbol_name_part + 1;
+            int32_t var_name_symbol_name_part_length = compiler->bufptr - var_name_symbol_name_part_start_ptr;
+            int32_t var_name_length = var_name_symbol_name_part_length + 1;
 
             int32_t memory_blocks_count_tmp_var_name_tmp = compiler->allocator->memory_blocks_count_tmp;
-            char* var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, 1 + var_name_length_symbol_name_part + 1);
+            char* var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, var_name_length + 1);
             var_name_tmp[0] = '$';
-            memcpy(&var_name_tmp[1], var_name_symbol_name_part_start_ptr, var_name_length_symbol_name_part);
-            var_name_tmp[1 + var_name_length_symbol_name_part] = '\0';
+            memcpy(&var_name_tmp[1], var_name_symbol_name_part_start_ptr, var_name_symbol_name_part_length);
+            var_name_tmp[1 + var_name_symbol_name_part_length] = '\0';
             
-            SPVM_CONSTANT_STRING* var_name_string = SPVM_CONSTANT_STRING_new(compiler, var_name_tmp, 1 + var_name_length_symbol_name_part);
+            SPVM_CONSTANT_STRING* var_name_string = SPVM_CONSTANT_STRING_new(compiler, var_name_tmp, 1 + var_name_symbol_name_part_length);
             const char* var_name = var_name_string->value;
             
             SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var_name_tmp);
@@ -1405,7 +1405,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               SPVM_COMPILER_error(compiler, "Variable name \"%s\" must not start with number at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
             }
 
-            if (strlen(var_name) > 1 && var_name[var_name_length_symbol_name_part] == ':' && var_name[var_name_length_symbol_name_part - 1] == ':') {
+            if (strlen(var_name) > 1 && var_name[var_name_symbol_name_part_length] == ':' && var_name[var_name_symbol_name_part_length - 1] == ':') {
               SPVM_COMPILER_error(compiler, "Variable name \"%s\" must not end with \"::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
             }
 
