@@ -56,7 +56,7 @@ The word characters are alphabet(C<a-zA-Z>), number(C<0-9>), and underscore(C<_>
 
 =head2 Identifiers
 
-Identifiers are L</"Class Name">, L</"Method Name">, L</"Field Name">, L</"Class Variable Names">, and L</"Local Variable Names">.
+Identifiers are L</"Class Name">, L</"Method Name">, L</"Field Name">, L</"Class Variable Name">, and L</"Local Variable Names">.
 
 =head2 Class Name
 
@@ -143,7 +143,7 @@ The field name that is same as a L</"Keywords"> is allowed.
   # "if" is a valid field name
   has if : int;
 
-=head2 Class Variable Names
+=head2 Class Variable Name
 
 A class variable name starts with C<$>, followed  L<word characters|/"Word Characters"> or C<::> of ASCII.
 
@@ -2162,7 +2162,7 @@ Class Variable must be defined directly under L</"Class Definition">.
 
 Class Variable Definition must specify L</"Types">. The Type must be L</"Numeric Types"> or L</"Object Types">.
 
-Class variable mames must follows the rule specified in L</"Class Variable Names">, and must not contain "::", otherwise a compilation error will occur.
+Class variable mames must follows the rule specified in L</"Class Variable Name">, and must not contain "::", otherwise a compilation error will occur.
 
 If more than one Class Variable with the same name is defined, a compilation error will occur.
 
