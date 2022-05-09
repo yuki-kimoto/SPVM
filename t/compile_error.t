@@ -43,7 +43,9 @@ sub compile_not_ok_file {
   }
   
   my $builder = SPVM::Builder->new;
-  unshift @{$builder->module_dirs}, $module_dir;
+  if (defined $module_dir) {
+    unshift @{$builder->module_dirs}, $module_dir;
+  }
   
   my $success = $builder->compile_spvm($class_name, $file, $line);
   ok($success == 0);
