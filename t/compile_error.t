@@ -162,16 +162,6 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange');
 }
 
-# Class variable
-{
-  compile_not_ok_file('TestCase::CompileError::ClassVar::Private');
-  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameStartDigit');
-  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameInvalidColon');
-  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameEndColon2');
-  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameContainsUnderScoreTwice');
-  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameColon2Twice');
-}
-
 # Method
 {
   compile_not_ok_file('TestCase::CompileError::Method::Begin');
@@ -386,6 +376,16 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameEndColon2', qr/The variable name "\$FOO::" can't end with "::"/);
   compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
   compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameColon2Twice', qr/The variable name "\$FOO::::BAR" can't contain "::::"/);
+}
+
+# Class variable
+{
+  compile_not_ok_file('TestCase::CompileError::ClassVar::Private');
+  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameStartDigit', qr/The symbol name part of the variable name "\$3foo" can't start with a number/);
+  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameInvalidColon', qr/Unexpected token ":"/);
+  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameEndColon2', qr/The variable name "\$FOO::" can't end with "::"/);
+  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
+  compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameColon2Twice', qr/The variable name "\$FOO::::BAR" can't contain "::::"/);
 }
 
 done_testing;
