@@ -1316,30 +1316,29 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return CREATE_REF;
       }
       default: {
-        // Variable
         if (ch == '$') {
-          // Derefernece
+          // A derefernece operator
           if (*(compiler->bufptr + 1) == '$') {
             compiler->bufptr++;
             SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DEREF);
             yylvalp->opval = op;
             return DEREF;
           }
-          // Exception variable
+          // A exception variable
           else if (*(compiler->bufptr + 1) == '@') {
             compiler->bufptr += 2;
             SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, compiler->cur_file, compiler->cur_line);
             yylvalp->opval = op_exception_var;
             return EXCEPTION_VAR;
           }
-          // Exception variable with {}
+          // A exception variable with {}
           else if (*(compiler->bufptr + 1) == '{' && *(compiler->bufptr + 2) == '@' && *(compiler->bufptr + 3) == '}') {
             compiler->bufptr += 4;
             SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, compiler->cur_file, compiler->cur_line);
             yylvalp->opval = op_exception_var;
             return EXCEPTION_VAR;
           }
-          // Lexical variable or Class variable
+          // A local variable or a class variable
           else {
             compiler->bufptr++;
 
