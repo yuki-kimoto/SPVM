@@ -30,7 +30,7 @@ Space characters have no meaning in programs.
 
 =head2 Symbol Name
 
-A symbol name is the characters that are composed of L<word characters|/"Word Characters"> and C<::>, and doesn't contains C<__>, and doesn't start with a number C<0-9>.
+A symbol name is the characters that are composed of L<word characters|/"Word Characters"> and C<::>, and don't contains C<__>, and don't start with a number C<0-9>.
 
   # Symbol names
   foo
