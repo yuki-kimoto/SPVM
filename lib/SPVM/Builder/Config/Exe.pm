@@ -336,6 +336,36 @@ B<Examples:>
     return $global_optimize;
   });
 
+=head2 no_precompile
+
+  my $no_precompile = $config->no_precompile;
+  $config->no_precompile($no_precompile);
+
+If C<no_precompile> is a true value, precompiling is not performed.
+
+=head2 no_compiler_api
+
+  my $no_compiler_api = $config->no_compiler_api;
+  $config->no_compiler_api($no_compiler_api);
+
+If C<no_compiler_api> is a true value, the source codes of the L<compiler native APIs|SPVM::Document::NativeAPI::Compiler> and the L<precompile native APIs|SPVM::Document::NativeAPI::Precompile> is not linked.
+
+=head2 dynamic_lib
+
+  my $dynamic_lib = $config->dynamic_lib;
+  $config->dynamic_lib($dynamic_lib);
+
+If C<dynamic_lib> is a true value, a dynamic library is created instead of a executable file.
+
+A dynamic library means a shared library C<foo.so> on C<Linux/UNIX>, a Mach-O Dynamic Library C<foo.dylib> on C<Mac>, a dynamic link library C<foo.dll> on C<Windows>.
+
+=head2 static_lib
+
+  my $static_lib = $config->static_lib;
+  $config->static_lib($static_lib);
+
+If C<static_lib> is a true value, a static library C<foo.a> on C<Linux/UNIX> is created instead of a executable file.
+
 =head1 METHODS
 
 Methods of B<SPVM::Builder::Config::Exe>.

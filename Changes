@@ -3,7 +3,11 @@ Revision history for SPVM
         [CHANGE]
         * Improve symbol name checking.
         * The string literal of the left operand of the fat camma can't contains \"::\"
-        
+        * Add no_precompile field to SPVM::Builder::Config::Exe.
+        * Add no_compiler_api field to SPVM::Builder::Config::Exe.
+        * Add dynamic_lib field to SPVM::Builder::Config::Exe.
+        * Add static_lib field to SPVM::Builder::Config::Exe.
+
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove "any_object_basic_type_id" native API. ID 155 is reused by "free_env_prepared" native API.
         * Remove "string_basic_type_id" native API. ID 162 is reused by "cleanup_global_vars" native API.
