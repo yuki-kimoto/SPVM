@@ -157,17 +157,11 @@ B<Examples:>
 
 =head2 Local Variable Name
 
-A local variable name starts with C<$>, followed  L<word characters|/"Word Characters">.
-
-The followed character must not start with a number.
-
-Underscore(C<_>) cannot be continued twice.
-
-If local variable names are invalid, a compilation error will occur.
+A local variable name starts with C<$> and is followed by a L<symbol name|/"Symbol Name"> that doesn't contain C<::>.
 
 B<Examples:>
 
-  # Valid local variable names
+  # Local variable names
   $foo
   $foo_bar3
   $_foo
@@ -176,6 +170,9 @@ B<Examples:>
   # Invalid local variable names
   $foo__bar
   $3foo
+  $foo::bar
+  $::foo
+  $foo::
 
 =head2 Keywords
 
