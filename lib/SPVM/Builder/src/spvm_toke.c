@@ -1338,7 +1338,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             yylvalp->opval = op_exception_var;
             return EXCEPTION_VAR;
           }
-          // A local variable or a class variable
+          // A local variable name or a class variable name
           else {
             compiler->bufptr++;
 
@@ -1350,7 +1350,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             // Save current position
-            const char* cur_token_ptr = compiler->bufptr;
+            const char* var_name_start_ptr = compiler->bufptr;
             
             // Variable name
             while (
@@ -1374,16 +1374,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           
 
-            int32_t var_name_length_without_sigil = compiler->bufptr - cur_token_ptr;
-            int32_t var_name_length = var_name_length_without_sigil + 1;
+            int32_t var_name_length_symbol_name_part = compiler->bufptr - var_name_start_ptr;
+            int32_t var_name_length = var_name_length_symbol_name_part + 1;
 
             int32_t memory_blocks_count_tmp_var_name_tmp = compiler->allocator->memory_blocks_count_tmp;
-            char* var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, 1 + var_name_length_without_sigil + 1);
+            char* var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, 1 + var_name_length_symbol_name_part + 1);
             var_name_tmp[0] = '$';
-            memcpy(&var_name_tmp[1], cur_token_ptr, var_name_length_without_sigil);
-            var_name_tmp[1 + var_name_length_without_sigil] = '\0';
+            memcpy(&var_name_tmp[1], var_name_start_ptr, var_name_length_symbol_name_part);
+            var_name_tmp[1 + var_name_length_symbol_name_part] = '\0';
             
-            SPVM_CONSTANT_STRING* var_name_string = SPVM_CONSTANT_STRING_new(compiler, var_name_tmp, 1 + var_name_length_without_sigil);
+            SPVM_CONSTANT_STRING* var_name_string = SPVM_CONSTANT_STRING_new(compiler, var_name_tmp, 1 + var_name_length_symbol_name_part);
             const char* var_name = var_name_string->value;
             
             SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var_name_tmp);
@@ -1394,14 +1394,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->bufptr++;
               }
               else {
-                SPVM_COMPILER_error(compiler, "Need close brace at end of variable at %s line %d", compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "Need a closing brace \"}\" at the end of the variable name at %s line %d", compiler->cur_file, compiler->cur_line);
               }
             }
-
-            // Name OP
-            SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
-
-            yylvalp->opval = op_name;
 
             // Variable name can't conatain __
             if (strstr(var_name, "__")) {
@@ -1417,12 +1412,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               SPVM_COMPILER_error(compiler, "Variable name \"%s\" must not start with number at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
             }
 
-            if (strlen(var_name) > 1 && var_name[var_name_length_without_sigil] == ':' && var_name[var_name_length_without_sigil - 1] == ':') {
+            if (strlen(var_name) > 1 && var_name[var_name_length_symbol_name_part] == ':' && var_name[var_name_length_symbol_name_part - 1] == ':') {
               SPVM_COMPILER_error(compiler, "Variable name \"%s\" must not end with \"::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
             }
-            
-            
-            // Class variable
+
+            // Name OP
+            SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
+            yylvalp->opval = op_name;
+
             return VAR_NAME;
           }
         }
