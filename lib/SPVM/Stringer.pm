@@ -4,31 +4,30 @@ package SPVM::Stringer;
 
 =head1 NAME
 
-SPVM::Stringer - A Callback Yype to Stringify a Object
+SPVM::Stringer -  Interface Type for Stringing Callback
 
 =head1 SYNOPSYS
   
   use Stringer;
+  use Point;
   
-  my $stringer : Stringer = method : string ($object : object) {
+  my $stringer = (Stringer)method : string ($object : object) {
     my $point = (Point)$object;
-    my $x = $point->x;
-    my $y = $point->y;
-    
-    my $string = "($x, $y)";
+
+    my $string = $point->to_string;
     
     return $string;
   };
   
-  my $point = Point->new(1, 2);
+  my $point = Point->new_xy(1, 2);
   my $string = $stringer->($point);
 
 =head1 DESCRIPTION
 
-L<Stringer|SPVM::Stringer> is an interface type for the callback to stringify a object.
+L<Stringer|SPVM::Stringer> is the interface type for the stringing callback.
 
-=head1 INTERFACE METHOD
+=head1 INTERFACE METHODS
 
   required method : string ($object : object)
 
-The implementation must receive a object and return the string expression.
+The implementation must receive a object and return the string that represents the object.
