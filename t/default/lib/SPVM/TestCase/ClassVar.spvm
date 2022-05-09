@@ -45,7 +45,7 @@ class TestCase::ClassVar {
     return 0;
   }
 
-  static method class_var_rel_name : int () {
+  static method class_var_name : int () {
     $CLASS_VAR_INT = 2;
     
     if ($CLASS_VAR_INT == 2) {

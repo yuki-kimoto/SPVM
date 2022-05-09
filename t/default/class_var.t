@@ -14,7 +14,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Class variable relative name
 {
   my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
-  ok(SPVM::TestCase::ClassVar->class_var_rel_name);
+  ok(SPVM::TestCase::ClassVar->class_var_name);
   my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($start_memory_blocks_count, $end_memory_blocks_count);
 }
