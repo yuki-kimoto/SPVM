@@ -881,7 +881,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
   %token <opval> DESCRIPTOR MAKE_READ_ONLY INTERFACE
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
-  %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
+  %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
   %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF
   %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
@@ -1245,8 +1245,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | field_access '[' value_op ']'
 
   call_spvm_method
-    : CURRENT_CLASS NAME '(' opt_value_ops  ')'
-    | CURRENT_CLASS NAME
+    : CURRENT_CLASS SYMBOL_NAME '(' opt_value_ops  ')'
+    | CURRENT_CLASS SYMBOL_NAME
     | class_name ARROW method_name '(' opt_value_ops  ')'
     | class_name ARROW method_name
     | value_op ARROW method_name '(' opt_value_ops ')'
@@ -1293,7 +1293,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | ref_type
 
   basic_type
-    : NAME
+    : SYMBOL_NAME
     | BYTE
     | SHORT
     | INT
@@ -1326,16 +1326,16 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : OF type
 
   field_name
-    : NAME
+    : SYMBOL_NAME
 
   method_name
-    : NAME
+    : SYMBOL_NAME
 
   class_name
-    : NAME
+    : SYMBOL_NAME
 
   class_alias_name
-    : NAME
+    : SYMBOL_NAME
 
 =head2 Syntax Parsing Tokens
 
@@ -1387,7 +1387,7 @@ The list of syntax parsing tokens:
     <td>CLASS</td><td>class</td>
   </tr>
   <tr>
-    <td>CLASS_VAR_NAME</td><td>A class variable name</td>
+    <td>VAR_NAME</td><td>A variable name</td>
   </tr>
   <tr>
     <td>CONSTANT</td><td>Literal</td>
@@ -1528,7 +1528,7 @@ The list of syntax parsing tokens:
     <td>MY</td><td>my</td>
   </tr>
   <tr>
-    <td>NAME</td><td>name</td>
+    <td>SYMBOL_NAME</td><td>A symbol name</td>
   </tr>
   <tr>
     <td>NEW</td><td>new</td>
