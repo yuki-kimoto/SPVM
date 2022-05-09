@@ -2230,26 +2230,21 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               if (symbol_name_length >= 3 && strstr(symbol_name, "::::")) {
                 SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't can't contains \"::::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
+
+              // A symbol name can't start with a number "0-9".
+              assert(!isdigit(symbol_name[0]));
             }
 
-            // Create eternal symbol name
-            SPVM_CONSTANT_STRING* symbol_name_string = SPVM_CONSTANT_STRING_new(compiler, symbol_name, symbol_name_length);
-            const char* symbol_name_eternal = symbol_name_string->value;
-            
             // A string literal of the left operand of the fat camma
             if (next_is_fat_camma) {
-              SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name_eternal, symbol_name_length, compiler->cur_file, compiler->cur_line);
+              SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name, symbol_name_length, compiler->cur_file, compiler->cur_line);
               yylvalp->opval = op_constant;
               token = CONSTANT;
             }
             // A symbol name
             else {
-              // A symbol name can't start with a number "0-9".
-              assert(!isdigit(symbol_name_eternal[0]));
-
-              SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name_eternal, compiler->cur_file, compiler->cur_line);
+              SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name, compiler->cur_file, compiler->cur_line);
               yylvalp->opval = op_name;
-              
               token = SYMBOL_NAME;
             }
           }
