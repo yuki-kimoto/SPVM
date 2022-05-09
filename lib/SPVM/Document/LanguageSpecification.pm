@@ -6,27 +6,29 @@ SPVM::Document::LanguageSpecification - SPVM Language Specification
 
 =head1 DESCRIPTION
 
-B<SPVM::Document::LanguageSpecification> describes SPVM language specification.
+B<SPVM::Document::LanguageSpecification> defines SPVM language specification.
 
 =head1 Tokenization
 
-Describes the tokenizing of the SPVM language.
+The tokenizing the source codes of SPVM language is explained.
 
 =head2 Character Set
 
-SPVM language are written by UTF-8.
+The source codes of SPVM language are written by C<UTF-8>.
 
 =head2 Line Terminators
 
-Line terminators are C<LF>, C<CR>, and C<CRLF> of ASCII.
+The line terminators are C<LF>, C<CR>, and C<CRLF> of ASCII.
 
-When a line terminator appears, the current line number is incremented. The line terminator is converted to C<LF> of ASCII .
+When a line terminator appears, the current line number is incremented by C<1>. The line terminator is converted to C<LF> of ASCII.
 
 =head2 Space Characters
 
-Space characters are C<SP>, C<HT>, C<FF> of ASCII and L</"Line Terminators">.
+Space characters are C<SP>, C<HT>, C<FF> of ASCII and the L<line terminators|/"Line Terminators">.
 
-Space characters have no meaning in programs.
+=head2 Word Characters
+
+The word characters are alphabet(C<a-zA-Z>), number(C<0-9>), and underscore(C<_>) of ASCII.
 
 =head2 Symbol Name
 
@@ -50,31 +52,19 @@ A symbol name can't contains C<::::>, and can't start with a number C<0-9>.
   Foo::
   Foo::::Bar
 
-=head2 Word Characters
-
-The word characters are alphabet(C<a-zA-Z>), number(C<0-9>), and underscore(C<_>) of ASCII.
-
-=head2 Identifiers
-
-Identifiers are L</"Class Name">, L</"Method Name">, L</"Field Name">, L</"Class Variable Name">, and L</"Local Variable Name">.
-
 =head2 Class Name
 
-A class names is composed of one or more L<word characters|/"Word Characters"> or C<::> of ASCII.
+A class name is a L<symbol name|/"Symbol Name">.
 
-The part names of a class name must start uppercase letter. Part names means, for example, "Foo", "Bar", and "Baz" in the class name "Foo:Bar::Baz".
+The part names of a class name must start uppercase letter. If the class name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
 
-C<::> cannot be continued twice. The last character cannot end with C<::>.
-
-Underscore C<_> cannot be continued twice.
-
-A class name must be corresponding to the relative name of the module file. If the class name is "Foo::Bar::Baz", the relative name of the module file must be "Foo/Bar/Baz.spvm".
+A class name must be corresponding to the relative name of the module file. If the class name is C<Foo::Bar::Baz>, the relative name of the module file must be C<Foo/Bar/Baz.spvm>.
 
 If class names are invalid, a compilation error will occur.
 
 B<Examples:>
   
-  # Valid class names
+  # Class names
   Foo
   Foo::Bar
   Foo::Bar::Baz3
@@ -145,28 +135,25 @@ The field name that is same as a L</"Keywords"> is allowed.
 
 =head2 Class Variable Name
 
-A class variable name starts with C<$>, followed  L<word characters|/"Word Characters"> or C<::> of ASCII.
-
-The followed character must not start with a number.
-
-C<::> cannot be continued twice. Last characters cannot end with C<::>.
-
-Underscore(C<_>) cannot be continued twice.
+A class variable name starts with C<$> and is followed by a L<symbol name|/"Symbol Name">.
 
 If class variable names are invalid, a compilation error will occur.
 
 B<Examples:>
 
-  # Valid class variable names
+  # Class variable names
   $FOO::BAR
   $Foo::Bar3
   $FOO
   $FOO_BAR
   $foo
+  $_FOO
 
   # Invalid class variable names
   $FOO__BAR
   $3FOO
+  $FOO::
+  $::FOO
 
 =head2 Local Variable Name
 
