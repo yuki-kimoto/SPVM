@@ -22,7 +22,7 @@
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
 %token <opval> DESCRIPTOR MAKE_READ_ONLY INTERFACE
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
-%token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
+%token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
 %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF
 %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
@@ -1053,12 +1053,12 @@ array_access
     }
 
 call_spvm_method
-  : CURRENT_CLASS NAME '(' opt_value_ops  ')'
+  : CURRENT_CLASS SYMBOL_NAME '(' opt_value_ops  ')'
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_call_method(compiler, op_call_method, $1, $2, $4);
     }
-  | CURRENT_CLASS NAME
+  | CURRENT_CLASS SYMBOL_NAME
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_value_ops = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
@@ -1194,7 +1194,7 @@ type
   | ref_type
 
 basic_type
-  : NAME
+  : SYMBOL_NAME
     {
       $$ = SPVM_OP_build_basic_type(compiler, $1);
     }
@@ -1291,16 +1291,17 @@ type_comment
     {
       $$ = $2;
     }
+    
 field_name
-  : NAME
+  : SYMBOL_NAME
 
 method_name
-  : NAME
+  : SYMBOL_NAME
 
 class_name
-  : NAME
+  : SYMBOL_NAME
 
 class_alias_name
-  : NAME
+  : SYMBOL_NAME
 
 %%

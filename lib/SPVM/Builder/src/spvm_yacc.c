@@ -149,7 +149,7 @@ extern int SPVM_yydebug;
     DEFAULT = 284,
     BREAK = 285,
     EVAL = 286,
-    NAME = 287,
+    SYMBOL_NAME = 287,
     VAR_NAME = 288,
     CONSTANT = 289,
     EXCEPTION_VAR = 290,
@@ -576,7 +576,7 @@ static const yytype_uint16 yyrline[] =
     1153,  1158,  1163,  1170,  1174,  1180,  1186,  1187,  1192,  1193,
     1194,  1197,  1201,  1207,  1213,  1219,  1225,  1231,  1237,  1242,
     1250,  1256,  1260,  1266,  1270,  1276,  1277,  1284,  1287,  1290,
-    1295,  1298,  1301,  1304
+    1296,  1299,  1302,  1305
 };
 #endif
 
@@ -589,7 +589,7 @@ static const char *const yytname[] =
   "MY", "USE", "AS", "REQUIRE", "ALIAS", "ALLOW", "CURRENT_CLASS",
   "MUTABLE", "DESCRIPTOR", "MAKE_READ_ONLY", "INTERFACE", "IF", "UNLESS",
   "ELSIF", "ELSE", "FOR", "WHILE", "LAST", "NEXT", "SWITCH", "CASE",
-  "DEFAULT", "BREAK", "EVAL", "NAME", "VAR_NAME", "CONSTANT",
+  "DEFAULT", "BREAK", "EVAL", "SYMBOL_NAME", "VAR_NAME", "CONSTANT",
   "EXCEPTION_VAR", "UNDEF", "VOID", "BYTE", "SHORT", "INT", "LONG",
   "FLOAT", "DOUBLE", "STRING", "OBJECT", "TRUE", "FALSE", "END_OF_FILE",
   "DOT3", "FATCAMMA", "RW", "RO", "WO", "INIT", "NEW", "OF", "RETURN",
@@ -4280,5 +4280,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1306 "yacc/spvm_yacc.y" /* yacc.c:1906  */
+#line 1307 "yacc/spvm_yacc.y" /* yacc.c:1906  */
 

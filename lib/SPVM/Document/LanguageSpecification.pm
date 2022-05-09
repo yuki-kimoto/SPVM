@@ -28,6 +28,22 @@ Space characters are C<SP>, C<HT>, C<FF> of ASCII and L</"Line Terminators">.
 
 Space characters have no meaning in programs.
 
+=head2 Symbol Name
+
+A symbol name is the characters that are composed of L<word characters|/"Word Characters"> and C<::>, and doesn't contains C<__>, and doesn't start with a number C<0-9>.
+
+  # Symbol names
+  foo
+  foo_bar2
+  Foo::Bar
+  
+  # Invalid symbol names
+  2foo
+  foo__bar
+  ::Foo
+  Foo::
+  Foo::::Bar
+
 =head2 Word Characters
 
 The word characters are alphabet(C<a-zA-Z>), number(C<0-9>), and underscore(C<_>) of ASCII.

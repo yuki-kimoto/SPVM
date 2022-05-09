@@ -48,7 +48,7 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message_not_used) {
 void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval) {
   
   switch(type) {
-    case NAME:
+    case SYMBOL_NAME:
     case VAR_NAME:
     {
       const char* name = yylval.opval->uv.name;

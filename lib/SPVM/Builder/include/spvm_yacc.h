@@ -74,7 +74,7 @@ extern int SPVM_yydebug;
     DEFAULT = 284,
     BREAK = 285,
     EVAL = 286,
-    NAME = 287,
+    SYMBOL_NAME = 287,
     VAR_NAME = 288,
     CONSTANT = 289,
     EXCEPTION_VAR = 290,
