@@ -1341,46 +1341,39 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // A local variable name or a class variable name
           else {
             compiler->bufptr++;
-
-            int8_t have_brace = 0;
             
+            // ${var} is allowed
+            int8_t have_brace = 0;
             if (*compiler->bufptr == '{') {
               have_brace = 1;
               compiler->bufptr++;
             }
             
-            // Save current position
-            const char* var_name_start_ptr = compiler->bufptr;
+            // Save the starting position of the symbol name part of the variable name
+            const char* var_name_symbol_name_part_start_ptr = compiler->bufptr;
             
-            // Variable name
+            // Go forward to the end of the variable name
             while (
               isalnum(*compiler->bufptr)
               || (*compiler->bufptr) == '_'
               || (*compiler->bufptr == ':' && *(compiler->bufptr + 1) == ':')
             )
             {
-              if (*compiler->bufptr == ':') {
-                if (*(compiler->bufptr + 1) == ':') {
-                  compiler->bufptr += 2;
-                }
-                else {
-                  SPVM_COMPILER_error(compiler, "Single colon \":\" in variable name is invalid at %s line %d", compiler->cur_file, compiler->cur_line);
-                  compiler->bufptr += 1;
-                }
+              if (*compiler->bufptr == ':' && *(compiler->bufptr + 1) == ':') {
+                compiler->bufptr += 2;
               }
               else {
                 compiler->bufptr++;
               }
             }
-          
 
-            int32_t var_name_length_symbol_name_part = compiler->bufptr - var_name_start_ptr;
+            int32_t var_name_length_symbol_name_part = compiler->bufptr - var_name_symbol_name_part_start_ptr;
             int32_t var_name_length = var_name_length_symbol_name_part + 1;
 
             int32_t memory_blocks_count_tmp_var_name_tmp = compiler->allocator->memory_blocks_count_tmp;
             char* var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, 1 + var_name_length_symbol_name_part + 1);
             var_name_tmp[0] = '$';
-            memcpy(&var_name_tmp[1], var_name_start_ptr, var_name_length_symbol_name_part);
+            memcpy(&var_name_tmp[1], var_name_symbol_name_part_start_ptr, var_name_length_symbol_name_part);
             var_name_tmp[1 + var_name_length_symbol_name_part] = '\0';
             
             SPVM_CONSTANT_STRING* var_name_string = SPVM_CONSTANT_STRING_new(compiler, var_name_tmp, 1 + var_name_length_symbol_name_part);
