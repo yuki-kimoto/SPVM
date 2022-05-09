@@ -1409,7 +1409,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
 
               // A variable name can't end with \"::\"
-              if (var_name_symbol_name_part_length >= 2 && var_name[var_name_length] == ':' && var_name[var_name_length - 1] == ':') {
+              if (var_name_symbol_name_part_length >= 2 && var_name[var_name_length - 1] == ':' && var_name[var_name_length - 2] == ':') {
                 SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't end with \"::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
               
