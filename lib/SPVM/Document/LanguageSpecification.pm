@@ -56,7 +56,7 @@ The word characters are alphabet(C<a-zA-Z>), number(C<0-9>), and underscore(C<_>
 
 =head2 Identifiers
 
-Identifiers are L</"Class Name">, L</"Method Names">, L</"Field Names">, L</"Class Variable Names">, and L</"Local Variable Names">.
+Identifiers are L</"Class Name">, L</"Method Name">, L</"Field Name">, L</"Class Variable Names">, and L</"Local Variable Names">.
 
 =head2 Class Name
 
@@ -88,15 +88,11 @@ B<Examples:>
   Foo__Bar
   Foo::bar
 
-=head2 Method Names
+=head2 Method Name
 
-A method name is composed of one or more L<word characters|/"Word Characters">.
+A method name is a L<symbol name|/"Symbol Name"> that doesn't contains C<::>.
 
-The first character must not a number.
-
-Underscore(C<_>) cannot be continued twice.
-
-0-length method name is valid.
+0-length method name is valid. This is used in the L<anon method|/"Anon Method">.
 
 If method names are invalid, a compilation error will occur.
 
@@ -114,26 +110,22 @@ B<Examples:>
   foo__bar
   3foo
 
-A method name can be the same as L</"Keywords">.
+A method name that is same as a L</"Keywords"> is allowed.
   
-  # "if" is a valid method name although this name is the same as the "if" keyword.
+  # "if" is a valid method name
   static method if : void () {
     
   }
 
-=head2 Field Names
+=head2 Field Name
 
-A field name is composed of one or more  L<word characters|/"Word Characters">.
-
-The first character must not number.
-  
-Underscore(C<_>) cannot be continued twice.
+A field name is a L<symbol name|/"Symbol Name"> that doesn't contains C<::>.
 
 If field names are invalid, a compilation error will occur.
 
 B<Examples:>
 
-  # Valid field names
+  # Field names
   FOO
   FOO_BAR3
   foo
@@ -144,10 +136,11 @@ B<Examples:>
   # Invalid field names
   foo__bar
   3foo
+  Foo::Bar
 
-A field name can be the same as L</"Keywords">.
+The field name that is same as a L</"Keywords"> is allowed.
   
-  # "if" is a valid field name although this name is the same as the "if" keyword.
+  # "if" is a valid field name
   has if : int;
 
 =head2 Class Variable Names
@@ -2299,7 +2292,7 @@ Field must be defined directly under L</"Class Definition">.
 
 Field Definition must be specify L</"Types">. The Type must be L</"Numeric Types"> or L</"Object Types">.
 
-Field names must follows the rule specified in L</"Field Names">.
+Field names must follows the rule specified in L</"Field Name">.
 
 Field Type must be L</"Numeric Types"> or L</"Object Types">, otherwise a compilation error will occur.
 
@@ -2464,7 +2457,7 @@ The C<method> keyword defines a class method or an instance method.
 
 Methods must be defined directly under L</"Class Definition">.
 
-Method names must be follow the rule of L</"Method Names">.
+Method names must be follow the rule of L</"Method Name">.
 
 The argument names must be follow the rule of L</"Local Variable Names">.
 
@@ -4537,7 +4530,7 @@ The operand must the object that has a L<class type|/"Class Type"> or an L<inter
 
 If the class or the interface doesn't have the method declaration, a compilation error will occur.
 
-The method name must be a L<method name|/"Method Names">, otherwise a compilation error will occur.
+The method name must be a L<method name|/"Method Name">, otherwise a compilation error will occur.
 
 If method name is not specified, the method name become C<"">.
 
