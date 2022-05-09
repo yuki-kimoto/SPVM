@@ -2212,7 +2212,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Check the symbol name
             {
               // A symbol name can't conatain "__"
-              if (strstr(symbol_name, "__")) {
+              if (symbol_name_length >= 2 && strstr(symbol_name, "__")) {
                 SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't constain \"__\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
               
