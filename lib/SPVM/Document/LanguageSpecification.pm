@@ -36,7 +36,7 @@ A symbol name can't contains C<__>, and can't start with a number C<0-9>.
 
 A symbol name can't start with C<::>, and can't end with C<::>.
 
-A symbol name can't contains C<:::>.
+A symbol name can't contains C<::::>, and can't start with a number C<0-9>.
 
   # Symbol names
   foo

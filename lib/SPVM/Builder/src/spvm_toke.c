@@ -2322,8 +2322,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
 
               // A symbol name can't contains ":::".
-              if (symbol_name_length >= 3 && strstr(symbol_name_eternal, ":::")) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't can't contains \":::\" at %s line %d", symbol_name_eternal, compiler->cur_file, compiler->cur_line);
+              if (symbol_name_length >= 3 && strstr(symbol_name_eternal, "::::")) {
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't can't contains \"::::\" at %s line %d", symbol_name_eternal, compiler->cur_file, compiler->cur_line);
               }
               
               // A symbol name can't start with a number "0-9".
