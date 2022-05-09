@@ -870,7 +870,7 @@ The fat comma is an alias for Comma C<,>.
   # Fat Comma
   ["a" => "b", "c" => "d"]
 
-If the string of the left operand of the fat camma is not wrapped by C<"> and the characters are composed of L<word characters|/"Word Characters"> that is not started by a number, the string is treated as L</"String Literal">.
+If the characters of the left operand of the fat camma is not wrapped by C<"> and the characters are a L<symbol name|/"Symbol Name"> that does'nt contain C<::>, the characters are treated as a L<string literal|/"String Literal">.
 
   # foo_bar2 is treated as "foo_bar2"
   [foo_bar2 => "Mark"]

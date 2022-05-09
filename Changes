@@ -2,6 +2,7 @@ Revision history for SPVM
 0.9515_1  2022-05-09
         [CHANGE]
         * Improve symbol name checking.
+        * The string literal of the left operand of the fat camma can't contains \"::\"
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove "any_object_basic_type_id" native API. ID 155 is reused by "free_env_prepared" native API.
