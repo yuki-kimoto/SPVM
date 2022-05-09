@@ -1701,12 +1701,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         // A symbol name
         else if (isalpha(ch) || ch == '_') {
-          // The starting position of the symbol name
+          // Column
           int32_t column = compiler->bufptr - compiler->line_start_ptr;
           
-          // Save current position
-          const char* cur_token_ptr = compiler->bufptr;
+          // The staring position of the symbol name
+          const char* symbol_name_start_ptr = compiler->bufptr;
           
+          // Go foward by one character
           compiler->bufptr++;
           
           // Go forward to the end of the symbol name
@@ -1723,12 +1724,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           // Symbol name
-          int32_t symbol_name_length = (compiler->bufptr - cur_token_ptr);
+          int32_t symbol_name_length = (compiler->bufptr - symbol_name_start_ptr);
           char* symbol_name = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, symbol_name_length + 1);
-          memcpy(symbol_name, cur_token_ptr, symbol_name_length);
+          memcpy(symbol_name, symbol_name_start_ptr, symbol_name_length);
           symbol_name[symbol_name_length] = '\0';
           
-          // If following token is fat comma, symbol_name is manipulated as string literal
+          // If following token is fat comma, the symbol name is manipulated as a string literal
           int32_t next_is_fat_camma = 0;
           char* fat_camma_check_ptr = compiler->bufptr;
           while (SPVM_TOKE_is_white_space(compiler, *fat_camma_check_ptr)) {
@@ -2288,10 +2289,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           // Keyword
-          int32_t term;
+          int32_t token;
           if (is_keyword) {
             assert(keyword_token > 0);
-            term = keyword_token;
+            token = keyword_token;
           }
           else {
             // Create eternal symbol name
@@ -2302,7 +2303,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (next_is_fat_camma) {
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name_eternal, symbol_name_length, compiler->cur_file, compiler->cur_line);
               yylvalp->opval = op_constant;
-              term = CONSTANT;
+              token = CONSTANT;
             }
             // Symbol name
             else {
@@ -2332,14 +2333,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name_eternal, compiler->cur_file, compiler->cur_line);
               yylvalp->opval = op_name;
               
-              term = SYMBOL_NAME;
+              token = SYMBOL_NAME;
             }
           }
 
           // Free symbol name
           SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, symbol_name);
           
-          return term;
+          return token;
         }
         
         // Return character
