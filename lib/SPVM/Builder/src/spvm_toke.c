@@ -2306,10 +2306,28 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             // Symbol name
             else {
-              // Symbol name can't conatain __
+              // A symbol name can't conatain "__"
               if (strstr(symbol_name_eternal, "__")) {
-                SPVM_COMPILER_error(compiler, "Symbol name \"%s\" must not contains __ at %s line %d", symbol_name_eternal, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't constain \"__\" at %s line %d", symbol_name_eternal, compiler->cur_file, compiler->cur_line);
               }
+              
+              // A symbol name can't start with "::"
+              if (symbol_name_length >= 2 && symbol_name_eternal[0] == ':' && symbol_name_eternal[1] == ':' ) {
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't start with \"::\" at %s line %d", symbol_name_eternal, compiler->cur_file, compiler->cur_line);
+              }
+
+              // A symbol name can't end with "::"
+              if (symbol_name_length >= 2 && symbol_name_eternal[symbol_name_length - 2] == ':' && symbol_name_eternal[symbol_name_length - 1] == ':' ) {
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't end with \"::\" at %s line %d", symbol_name_eternal, compiler->cur_file, compiler->cur_line);
+              }
+
+              // A symbol name can't contains ":::".
+              if (symbol_name_length >= 3 && strstr(symbol_name_eternal, ":::")) {
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't can't contains \":::\" at %s line %d", symbol_name_eternal, compiler->cur_file, compiler->cur_line);
+              }
+              
+              // A symbol name can't start with a number "0-9".
+              assert(!isdigit(symbol_name_eternal[0]));
 
               SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name_eternal, compiler->cur_file, compiler->cur_line);
               yylvalp->opval = op_name;
