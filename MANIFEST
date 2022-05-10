@@ -308,6 +308,7 @@ solo/SPVM/TestCase/Simple.spvm
 solo/SPVM/TestCase/Weaken.spvm
 solo/SPVM/TestCase/Weaken2.spvm
 SPVM.xs
+spvmdist.sh
 t/builder_config.t
 t/builder_config/libpng.def
 t/builder_config/zlib.def
@@ -365,6 +366,7 @@ t/default/lib/SPVM/EmptyClass.spvm
 t/default/lib/SPVM/EmptyPackage.spvm
 t/default/lib/SPVM/foo.spvm
 t/default/lib/SPVM/MinimalMethod.spvm
+t/default/lib/SPVM/MyMath.spvm
 t/default/lib/SPVM/TestCase.spvm
 t/default/lib/SPVM/TestCase/Add.spvm
 t/default/lib/SPVM/TestCase/Alias.spvm
