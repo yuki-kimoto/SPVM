@@ -47,15 +47,18 @@ class TestCase::ClassVar {
 
   static method class_var_name : int () {
     $CLASS_VAR_INT = 2;
-    
-    if ($CLASS_VAR_INT == 2) {
-      if ($TestCase::ClassVar::CLASS_VAR_INT == 2) {
-        $CLASS_VAR_INT = 0;
-        return 1;
-      }
+
+    unless ($CLASS_VAR_INT == 2) {
+      return 0;
     }
     
-    return 0;
+    unless ($TestCase::ClassVar::CLASS_VAR_INT == 2) {
+      return 0;
+    }
+
+    $CLASS_VAR_INT = 0;
+    
+    return 1;
   }
 
   static method class_var_other_class : int () {
