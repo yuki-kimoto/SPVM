@@ -375,9 +375,7 @@ Call the SPVM method from Perl:
 
 =head1 DESCRIPTION
 
-C<SPVM>(Static Perl Virtual Machine) is a perl-ish static typed programing language.
-
-C<SPVM> provides fast calculation, fast array operations, easy C/C++ binding, and creating executable files.
+B<SPVM>(Static Perl Virtual Machine) is a perl-ish static typed programing language. SPVM provides fast calculation, fast array operations, easy C/C++ binding, and creating executable files.
 
 =head1 DOCUMENT
 
@@ -413,19 +411,9 @@ SPVM Standard Modules.
 
 =back
 
-=head2 Performance Benchmark
+=head2 Exchange APIs
 
-SPVM Performance Benchmark.
-
-=over 2
-
-=item * L<Benchmark|SPVM::Document::Benchmark>
-
-=back
-
-=head2 Exchange API
-
-SPVM Exchange API converts Perl data structures to SPVM data structures, and vice versa.
+SPVM Exchange APIs is functions to convert between Perl data structures and SPVM data structures.
 
 =over 2
 
@@ -435,7 +423,7 @@ SPVM Exchange API converts Perl data structures to SPVM data structures, and vic
 
 =head2 Native Method
 
-The native methods are the methods that the implementations are writen by native language such as C<C language> or C<C++>.
+Native methods are the methods that implementations are writen by native language such as C<C language> or C<C++>.
 
 =over 2
 
@@ -443,19 +431,19 @@ The native methods are the methods that the implementations are writen by native
 
 =back
 
-=head2 Native API
+=head2 Native APIs
 
-The SPVM native APIs are public APIs that are used in native language sources such as C<C/C++>.
+SPVM native APIs are public APIs that are used in native language sources such as C<C language> or C<C++>.
 
 =over 2
 
-=item * L<SPVM Native API|SPVM::Document::NativeAPI>
+=item * L<Native APIs|SPVM::Document::NativeAPI>
 
 =back
 
-=head2 Creating Execution File
+=head2 Creating Executable File
 
-B<spvmcc> is the compiler and linker to create the executable file from SPVM source codes.
+C<spvmcc> is the compiler and linker to create the executable file from SPVM source codes.
 
 =over 2
 
@@ -465,7 +453,7 @@ B<spvmcc> is the compiler and linker to create the executable file from SPVM sou
 
 =head2 Creating SPVM Modules
 
-B<spvmgenlib> is the command to create SPVM native modules.
+C<spvmgenlib> is the command to create SPVM native modules.
 
 =over 2
 
@@ -473,37 +461,41 @@ B<spvmgenlib> is the command to create SPVM native modules.
 
 =back
 
+=head2 Benchmark
+
+SPVM performance benchmarks.
+
+=over 2
+
+=item * L<Benchmark|SPVM::Document::Benchmark>
+
+=back
+
 =head1 ENVIRONMENT VARIABLES
 
 =head2 SPVM_BUILD_DIR
 
-SPVM build directory for precompile and native method.
-
-If SPVM_BUILD_DIR environment variable is not set, SPVM can't compile precompile method and native method, and a exception occur. You see error message "SPVM_BUILD_DIR environment variable must be set ...".
+SPVM building directory to build C<precompile> and C<native> methods. If the C<SPVM_BUILD_DIR> environment variable is not set, the building of C<precompile> and C<native> methods fails.
 
 B<bash:>
-
-In bash, you can set SPVM_BUILD_DIR to the following.
 
   export SPVM_BUILD_DIR=~/.spvm_build
 
 B<csh:>
 
-In csh, you can set SPVM_BUILD_DIR to the following.
-
   setenv SPVM_BUILD_DIR ~/.spvm_build
 
 =head2 SPVM_CC_DEBUG
 
-Print L<SVPM::Builder::CC> compile and link outputs to stderr.
+Print debug messages of L<SPVM::Builder::CC> to stderr.
 
 =head2 SPVM_CC_FORCE
 
-Force L<SVPM::Builder::CC> compile and link.
+Force the compilation and the link of L<SPVM::Builder::CC>.
 
 =head1 REPOSITORY
 
-L<SPVM - Github|https://github.com/yuki-kimoto/SPVM>
+L<Github|https://github.com/yuki-kimoto/SPVM>
 
 =head1 BUG REPORT
 
