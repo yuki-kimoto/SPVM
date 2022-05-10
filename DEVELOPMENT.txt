@@ -134,9 +134,10 @@ DEVELOPERS NOTE
     Create SPVM module for CPAN distribution
       
       # Create SPVM module
-      export SPVM_MODULE_NAME=Foo
+      export SPVM_MODULE_NAME=MIME::Base64
+      export SPVM_MODULE_NAME_DIR=$(echo $SPVM_MODULE_NAME | perl -p -e 's/::/-/g')
       h2xs -X "SPVM::$SPVM_MODULE_NAME"
-      spvmgenlib -f --module-dir "SPVM-$SPVM_MODULE_NAME/lib/SPVM" --native-language c $SPVM_MODULE_NAME
+      spvmgenlib -f --module-dir "SPVM-$SPVM_MODULE_NAME_DIR/lib/SPVM" --native-language c $SPVM_MODULE_NAME
       
       # Add the content of make to Makefile.PL
       perl -e '
@@ -160,7 +161,7 @@ sub MY::postamble {
   return \$make_rule;
 }
 EOS
-' $SPVM_MODULE_NAME >> "SPVM-$SPVM_MODULE_NAME/Makefile.PL"
+' $SPVM_MODULE_NAME >> "SPVM-$SPVM_MODULE_NAME_DIR/Makefile.PL"
 
       
       
