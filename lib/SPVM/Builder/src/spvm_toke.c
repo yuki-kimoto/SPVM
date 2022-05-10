@@ -172,6 +172,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
           // Check the class name
           {
+            // A class name must begin with a upper case character
+            if (islower(class_name[0])) {
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with a upper case character at %s line %d", class_name, op_use->file, op_use->line);
+              return 0;
+            }
+
             // A class name can't conatain "__"
             if (strstr(class_name, "__")) {
               SPVM_COMPILER_error(compiler, "The class name \"%s\" can't constain \"__\" at %s line %d", class_name, op_use->file, op_use->line);

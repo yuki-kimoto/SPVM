@@ -1780,37 +1780,30 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   class->type = op_type->uv.type;
 
   if (!class->is_anon) {
-
-    // Class name must begin with upper case, otherwise compiler error occur.
+    assert(!islower(class_name[0]));
+    
+    // If class part name begin with lower case, compiler error occur.
     // (Invalid example) Foo::bar
-    if (islower(class_name[0])) {
-      SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with a upper case character at %s line %d", class_name, op_class->file, op_class->line);
-    }
-    else {
-      
-      // If class part name begin with lower case, compiler error occur.
-      // (Invalid example) Foo::bar
-      int32_t class_part_name_is_invalid = 0;
-      int32_t class_name_length = strlen(class_name);
-      for (int32_t i = 0; i < class_name_length; i++) {
-        if (i > 1) {
-          if (class_name[i - 2] == ':' && class_name[i - 1] == ':') {
-            if (islower(class_name[i])) {
-              SPVM_COMPILER_error(compiler, "The part names of the class \"%s\" must begin with a upper case character at %s line %d", class_name, op_class->file, op_class->line);
-              break;
-            }
+    int32_t class_part_name_is_invalid = 0;
+    int32_t class_name_length = strlen(class_name);
+    for (int32_t i = 0; i < class_name_length; i++) {
+      if (i > 1) {
+        if (class_name[i - 2] == ':' && class_name[i - 1] == ':') {
+          if (islower(class_name[i])) {
+            SPVM_COMPILER_error(compiler, "The part names of the class \"%s\" must begin with a upper case character at %s line %d", class_name, op_class->file, op_class->line);
+            break;
           }
         }
       }
-      
-      // If class name is different from the class name corresponding to the module file, compile error occur.
-      if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
-        // If class fail load by if (require xxx) syntax, that is ok
-        const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_class_symtable, class_name, strlen(class_name));
-        if (!not_found_class_class_name) {
-          SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\" at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
-          return op_class;
-        }
+    }
+    
+    // If class name is different from the class name corresponding to the module file, compile error occur.
+    if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
+      // If class fail load by if (require xxx) syntax, that is ok
+      const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_class_symtable, class_name, strlen(class_name));
+      if (!not_found_class_class_name) {
+        SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\" at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
+        return op_class;
       }
     }
   }
