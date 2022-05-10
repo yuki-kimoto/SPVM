@@ -364,29 +364,50 @@ Comments have no meaning in source codes.
 
 =head2 POD
 
-POD(Plain Old Document) is a syntax to write documents easily.
+POD(Plain Old Document) is a syntax to write documents in source codes.
 
-POD begins from the line beginning with C<=>, followed by any string that is composed of ASCII printable characters, and ending with L</"Line Terminators">.
+The biginning of POD begins with C<=>, and is followed by any string that is composed of ASCII printable characters, and end with a L<line terminator|/"Line Terminators">.
 
-POD ends from the line beginning with C<=cut>, and ending with L</"Line Terminators">.
+The previous line of the biginning of POD must need a L<line terminator|/"Line Terminators">
+
+The lator line of the biginning of POD must need a L<line terminator|/"Line Terminators">
+  
+  =pod
+  
+  =head1
+  
+  =item * foo
+  
+
+The end of POD begins with C<=>, and is followed by C<cut>, and ends with a L<line terminator|/"Line Terminators">.
+
+The previous line of the end of POD must need a L<line terminator|/"Line Terminators">
+
+The lator line of the end of POD must need a L<line terminator|/"Line Terminators">
+
+  
+  =cut
+  
 
 B<Examples:>
 
+  
   =pod
-
+  
   Multi-Line
   Comment
-
+  
   =cut
-
+  
   =head1
-
+  
   Multi-Line
   Comment
-
+  
   =cut
+  
 
-POD has no meaning in tokenization.
+POD has no meaning in source codes.
 
 =head2 Literals
 
