@@ -12,18 +12,12 @@ class TestCase::ClassVar {
   our $CLASS_VAR_LONG2 : long;
   our $CLASS_VAR_MINIMAL2 : TestCase::Minimal;
 
+  our $NAME : int;
+  our ${NAME_BRACE} : int;
+  our $_NAME : int;
+  our $name : int;
+
   our $ACCESSOR : rw int;
-
-  static method var_brace : int () {
-    
-    $lower_var = 1;
-    
-    unless ($lower_var == 1) {
-      return 0;
-    }
-
-    return 1;
-  }
 
   static method class_var : int () {
     if ($TestCase::ClassVar::CLASS_VAR_INT == 0) {
@@ -46,17 +40,43 @@ class TestCase::ClassVar {
   }
 
   static method class_var_name : int () {
-    $CLASS_VAR_INT = 2;
-
-    unless ($CLASS_VAR_INT == 2) {
+    
+    $NAME = 1;
+    ${NAME_BRACE} = 2;
+    $_NAME = 3;
+    $name = 4;
+    
+    unless ($NAME == 1) {
       return 0;
     }
     
-    unless ($TestCase::ClassVar::CLASS_VAR_INT == 2) {
+    unless ($TestCase::ClassVar::NAME == 1) {
       return 0;
     }
 
-    $CLASS_VAR_INT = 0;
+    unless (${NAME_BRACE} == 2) {
+      return 0;
+    }
+    
+    unless (${TestCase::ClassVar::NAME_BRACE} == 2) {
+      return 0;
+    }
+    
+    unless ($_NAME == 3) {
+      return 0;
+    }
+    
+    unless ($TestCase::ClassVar::_NAME == 3) {
+      return 0;
+    }
+    
+    unless ($name == 4) {
+      return 0;
+    }
+    
+    unless ($TestCase::ClassVar::name == 4) {
+      return 0;
+    }
     
     return 1;
   }
