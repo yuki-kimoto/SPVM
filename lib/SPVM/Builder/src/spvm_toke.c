@@ -1403,9 +1403,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't contain \"__\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
 
-              // A variable name can't start with \"$::\"
+              // A variable name can't begin with \"$::\"
               if (var_name_symbol_name_part_length >= 2 && var_name[1] == ':' && var_name[2] == ':') {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't start with \"$::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't begin with \"$::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
 
               // A variable name can't end with \"::\"
@@ -1418,9 +1418,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't contain \"::::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
 
-              // A variable name can't start with a number
+              // A variable name can't begin with a number
               if (var_name_symbol_name_part_length >= 1 && isdigit(var_name[1])) {
-                SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" can't start with a number at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" can't begin with a number at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
             }
             
@@ -2230,10 +2230,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't contains \"::::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
 
-              // A symbol name can't start with "::"
+              // A symbol name can't begin with "::"
               assert(!(symbol_name[0] == ':' && symbol_name[1] == ':'));
 
-              // A symbol name can't start with a number "0-9".
+              // A symbol name can't begin with a number "0-9".
               assert(!isdigit(symbol_name[0]));
             }
 

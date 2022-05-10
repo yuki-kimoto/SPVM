@@ -123,7 +123,7 @@ sub print_error_messages {
   compile_not_ok_file('4foo');
 }
 
-# Pakcage name must start SPVM::
+# Class name must begin with "SPVM::"
 {
   compile_not_ok_file('ClassNameCompileError');
 }
@@ -373,7 +373,7 @@ sub print_error_messages {
 {
   # Local variable name
   {
-    compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameStartDigit', qr/The symbol name part of the variable name "\$3foo" can't start with a number/);
+    compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameStartDigit', qr/The symbol name part of the variable name "\$3foo" can't begin with a number/);
     compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameInvalidColon', qr/Unknown class "BAR"/);
     compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameEndColon2', qr/The variable name "\$FOO::" can't end with "::"/);
     compile_not_ok_file('TestCase::CompileError::LocalVar::LocalVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
@@ -396,7 +396,7 @@ sub print_error_messages {
   
   # Class variable name
   {
-    compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameStartDigit', qr/The symbol name part of the variable name "\$3foo" can't start with a number/);
+    compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameStartDigit', qr/The symbol name part of the variable name "\$3foo" can't begin with a number/);
     compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameInvalidColon', qr/Unexpected token ":"/);
     compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameEndColon2', qr/The variable name "\$FOO::" can't end with "::"/);
     compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
