@@ -168,6 +168,40 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           SPVM_OP* op_use = SPVM_LIST_shift(op_use_stack);
           
           const char* class_name = op_use->uv.use->class_name;
+          int32_t class_name_length = strlen(class_name);
+
+          // Check the class name
+          {
+            // A class name can't conatain "__"
+            if (strstr(class_name, "__")) {
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't constain \"__\"", class_name);
+              return 0;
+            }
+            
+            // A class name can't end with "::"
+            if (class_name_length >= 2 && class_name[class_name_length - 2] == ':' && class_name[class_name_length - 1] == ':' ) {
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't end with \"::\"", class_name);
+              return 0;
+            }
+
+            // A class name can't contains "::::".
+            if (strstr(class_name, "::::")) {
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't contains \"::::\"", class_name);
+              return 0;
+            }
+
+            // A class name can't begin with \"$::\"
+            if (class_name_length >= 2 && class_name[0] == ':' && class_name[1] == ':') {
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't begin with \"::\"", class_name);
+              return 0;
+            }
+
+            // A class name can't begin with a number
+            if (class_name_length >= 1 && isdigit(class_name[0])) {
+              SPVM_COMPILER_error(compiler, "The symbol name part of the class name \"%s\" can't begin with a number", class_name);
+              return 0;
+            }
+          }
 
           const char* used_class_name = (const char*)SPVM_HASH_get(compiler->used_class_symtable, class_name, strlen(class_name));
 

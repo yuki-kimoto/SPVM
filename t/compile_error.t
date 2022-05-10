@@ -114,20 +114,6 @@ sub print_error_messages {
 }
 
 
-# Class
-{
-  compile_not_ok_file('TestCase::CompileError::Class::NotClosed');
-  compile_not_ok_file('TestCase::CompileError::Class::ClassNameDifferntFromModuleName');
-  compile_not_ok_file('TestCase::CompileError::Class::classPartNameStartWithLowerCase');
-  compile_not_ok_file('foo');
-  compile_not_ok_file('4foo');
-}
-
-# Class name must begin with "SPVM::"
-{
-  compile_not_ok_file('ClassNameCompileError');
-}
-
 # use
 {
   compile_not_ok_file('TestCase::CompileError::Use::ImportMethodNotFound');
@@ -343,7 +329,7 @@ sub print_error_messages {
 {
   # A symbol name can't conatain "__"
   {
-    my $source = 'class Foo__Bar { static method main : void () { } }';
+    my $source = 'class Tmp { use Int as Foo__Bar; static method main : void () { } }';
     compile_not_ok($source, qr/\QThe symbol name "Foo__Bar" can't constain "__"/);
   }
 
@@ -408,6 +394,34 @@ sub print_error_messages {
     {
       my $source = 'class Tmp { our $Tmp::NAME : int; static method main : void () {  } }';
       compile_not_ok($source, qr/The class varaible name "\$Tmp::NAME" in the class variable definition can't contain "::"/);
+    }
+  }
+}
+
+# Class
+{
+  # Syntax
+  {
+    compile_not_ok_file('TestCase::CompileError::Class::NotClosed');
+  }
+  
+  # Class name
+  {
+    compile_not_ok_file('TestCase::CompileError::Class::ClassNameDifferntFromModuleName');
+    compile_not_ok_file('TestCase::CompileError::Class::classPartNameStartWithLowerCase');
+    compile_not_ok_file('foo');
+    compile_not_ok_file('4foo');
+    {
+      my $source = 'class Tmp:: { static method main : void () {} }';
+      compile_not_ok($source, qr|The class name "Tmp::" can't end with "::"|);
+    }
+    {
+      my $source = 'class ::Tmp { static method main : void () {} }';
+      compile_not_ok($source, qr|The class name "::Tmp" can't begin with "::"|);
+    }
+    {
+      my $source = 'class Tmp::::Foo { static method main : void () {} }';
+      compile_not_ok($source, qr|The class name "Tmp::::Foo" can't contains "::::"|);
     }
   }
 }
