@@ -2,7 +2,7 @@
 
 SPVM(Static Perl Virtual Machine) is a perl-ish static typed programing language. SPVM provides fast calculation, fast array operations, easy C/C++ binding, and creating executable files.
 
-# Installing SPVM
+## Installing SPVM
 
 Install SPVM.
 
@@ -10,7 +10,7 @@ Install SPVM.
 cpanm SPVM
 ```
 
-# Examples
+## Examples
 
 Write a SPVM Module.
 
@@ -47,14 +47,14 @@ my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
 print "$total\n";
 ```
 
-# Documents
+## Documents
 
 Documents of SPVM language.
 
 https://metacpan.org/pod/SPVM
 
 
-# Test Status
+## Test Status
 
 |                                                                            Tests                                                                             |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------|
