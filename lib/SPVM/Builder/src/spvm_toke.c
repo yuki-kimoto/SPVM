@@ -895,7 +895,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->bufptr++;
           }
           else {
-            SPVM_COMPILER_error(compiler, "Can't find the keyword_tokeniniator \"'\" of the character literal at %s line %d", compiler->cur_file, compiler->cur_line);
+            SPVM_COMPILER_error(compiler, "A character literal must ends with \"'\" of the character literal at %s line %d", compiler->cur_file, compiler->cur_line);
           }
         }
         
