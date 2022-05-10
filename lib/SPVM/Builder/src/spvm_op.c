@@ -1781,14 +1781,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
   if (!class->is_anon) {
 
-    // Class name must start with upper case, otherwise compiler error occur.
+    // Class name must begin with upper case, otherwise compiler error occur.
     // (Invalid example) Foo::bar
     if (islower(class_name[0])) {
-      SPVM_COMPILER_error(compiler, "class name \"%s\" must start with upper case at %s line %d", class_name, op_class->file, op_class->line);
+      SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with a upper case character at %s line %d", class_name, op_class->file, op_class->line);
     }
     else {
       
-      // If class part name start with lower case, compiler error occur.
+      // If class part name begin with lower case, compiler error occur.
       // (Invalid example) Foo::bar
       int32_t class_part_name_is_invalid = 0;
       int32_t class_name_length = strlen(class_name);
@@ -1796,7 +1796,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (i > 1) {
           if (class_name[i - 2] == ':' && class_name[i - 1] == ':') {
             if (islower(class_name[i])) {
-              SPVM_COMPILER_error(compiler, "Part name of class \"%s\" must start with upper case at %s line %d", class_name, op_class->file, op_class->line);
+              SPVM_COMPILER_error(compiler, "The part names of the class \"%s\" must begin with a upper case character at %s line %d", class_name, op_class->file, op_class->line);
               break;
             }
           }
@@ -1808,7 +1808,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         // If class fail load by if (require xxx) syntax, that is ok
         const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_class_symtable, class_name, strlen(class_name));
         if (!not_found_class_class_name) {
-          SPVM_COMPILER_error(compiler, "Wrong class name \"%s\". The class name must be \"%s\" at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
+          SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\" at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
           return op_class;
         }
       }
@@ -1897,16 +1897,16 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         const char* class_alias_name = op_use->uv.use->class_alias_name;
         if (class_alias_name) {
     
-          // Class name must start with upper case, otherwise compiler error occur.
+          // Class name must begin with upper case, otherwise compiler error occur.
           // (Invalid example) Foo::bar
           if (islower(class_alias_name[0])) {
-            SPVM_COMPILER_error(compiler, "Class alias name \"%s\" must start with upper case at %s line %d", class_alias_name, op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with a upper case character at %s line %d", class_alias_name, op_decl->file, op_decl->line);
           }
           else {
             const char* use_class_name = op_use->uv.use->class_name;
             const char* use_class_name_exists = SPVM_HASH_get(class->class_alias_symtable, class_alias_name, strlen(class_alias_name));
             if (use_class_name_exists) {
-              SPVM_COMPILER_error(compiler, "Class alias name \"%s\" is already used at %s line %d", class_alias_name, op_decl->file, op_decl->line);
+              SPVM_COMPILER_error(compiler, "The class alias name \"%s\" is already used at %s line %d", class_alias_name, op_decl->file, op_decl->line);
             }
             else {
               SPVM_HASH_set(class->class_alias_symtable, class_alias_name, strlen(class_alias_name), (void*)use_class_name);

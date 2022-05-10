@@ -174,31 +174,31 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           {
             // A class name can't conatain "__"
             if (strstr(class_name, "__")) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't constain \"__\"", class_name);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't constain \"__\" at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
             
             // A class name can't end with "::"
             if (class_name_length >= 2 && class_name[class_name_length - 2] == ':' && class_name[class_name_length - 1] == ':' ) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't end with \"::\"", class_name);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't end with \"::\" at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
 
             // A class name can't contains "::::".
             if (strstr(class_name, "::::")) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't contains \"::::\"", class_name);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't contains \"::::\" at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
 
             // A class name can't begin with \"$::\"
             if (class_name_length >= 2 && class_name[0] == ':' && class_name[1] == ':') {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't begin with \"::\"", class_name);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't begin with \"::\" at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
 
             // A class name can't begin with a number
             if (class_name_length >= 1 && isdigit(class_name[0])) {
-              SPVM_COMPILER_error(compiler, "The symbol name part of the class name \"%s\" can't begin with a number", class_name);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't begin with a number at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
           }
