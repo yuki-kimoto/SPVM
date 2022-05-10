@@ -2386,13 +2386,8 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
   const char* name = op_name->uv.name;;
   class_var->name = op_name->uv.name;
   
-  int32_t invalid_name = 0;
-  if (strchr(name, ':')) {
-    invalid_name = 1;
-  }
-  
-  if (invalid_name) {
-    SPVM_COMPILER_error(compiler, "Invalid class variable name %s at %s line %d", name, op_name->file, op_name->line);
+  if (strstr(name, "::")) {
+    SPVM_COMPILER_error(compiler, "The class varaible name \"%s\" in the class variable definition can't contain \"::\" at %s line %d", class_var->name, op_name->file, op_name->line);
   }
   
   class_var->op_name = op_name;

@@ -405,6 +405,10 @@ sub print_error_messages {
       my $source = 'class Tmp { our $NAME : int; static method main : void () { ${NAME = 1; } }';
       compile_not_ok($source, qr/Need a closing brace "}" at the end of the variable name/);
     }
+    {
+      my $source = 'class Tmp { our $Tmp::NAME : int; static method main : void () {  } }';
+      compile_not_ok($source, qr/The class varaible name "\$Tmp::NAME" in the class variable definition can't contain "::"/);
+    }
   }
 }
 
