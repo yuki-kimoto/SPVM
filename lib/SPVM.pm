@@ -335,15 +335,15 @@ sub call_spvm_method {
 
 =head1 NAME
 
-SPVM - Static Perl Virtual Machine. Fast Calculation, Fast Array Operation, and Easy C/C++ Binding.
+SPVM - SPVM Language
 
 =head1 CAUTHION
 
-B<L<SPVM> is not yet 1.0. Please note L<SPVM> can change without warnings. There can be a lot of changes until I feel good enough.>
+B<C<SPVM> is not yet 1.0 release. C<SPVM> is quit often changed without warnings until I feel the implementation is enough good.>
 
 =head1 SYNOPSIS
 
-SPVM Module:
+Write a SPVM Module:
 
   # lib/SPVM/MyMath.spvm
   class MyMath {
@@ -358,9 +358,9 @@ SPVM Module:
     }
   }
 
-Call SPVM method from Perl:
+Call the SPVM method from Perl:
 
-  # spvm.pl
+  # sum.pl
   use strict;
   use warnings;
   use FindBin;
@@ -371,49 +371,13 @@ Call SPVM method from Perl:
   # Call method
   my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
 
-  print "Total: $total\n";
-
-  # Call method with packed data
-  my $nums_packed = pack('l*', 3, 6, 8, 9);
-  my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
-  my $total_packed = SPVM::MyMath->sum($sv_nums);
-
-  print "Total Packed: $total_packed\n";
-
-Precompiled SPVM Method. This code is converted to C language and then converted to a shared library.
-
-  # lib/SPVM/MyMath.spvm
-  class MyMath : precompile {
-    static method sum : int ($nums : int[]) {
-
-      my $total = 0;
-      for (my $i = 0; $i < @$nums; $i++) {
-        $total += $nums->[$i];
-      }
-
-      return $total;
-    }
-  }
+  print "$total\n";
 
 =head1 DESCRIPTION
 
-SPVM is a Static Perl Virtual Machine. SPVM is a programming language which has Perlish syntax. SPVM provides fast calculation & easy C/C++ Binding.
+C<SPVM>(Static Perl Virtual Machine) is a perl-ish static typed programing language.
 
-=head1 FEATURES
-
-=over 4
-
-=item * Fast calculation, Fast array operation
-
-=item * Precompile Method, Easy way to C/C++ binding, C99 math functions
-
-=item * Perlish syntax, Static typing, Type inference
-
-=item * Reference count GC, Weaken reference, Exception, Module
-
-=item * Object oriented programming
-
-=back
+C<SPVM> provides fast calculation, fast array operations, easy C/C++ binding, and creating executable files.
 
 =head1 DOCUMENT
 
@@ -489,9 +453,9 @@ The SPVM native APIs are public APIs that are used in native language sources su
 
 =back
 
-=head2 Generate Execution File
+=head2 Creating Execution File
 
-B<spvmcc> is a compiler to compile SPVM source codes to a execution file. The execution file can be run by itself.
+B<spvmcc> is the compiler and linker to create the executable file from SPVM source codes.
 
 =over 2
 
@@ -499,9 +463,9 @@ B<spvmcc> is a compiler to compile SPVM source codes to a execution file. The ex
 
 =back
 
-=head2 Generate SPVM Native Modules
+=head2 Creating SPVM Modules
 
-B<spvmgenlib> is the command to generate SPVM native modules.
+B<spvmgenlib> is the command to create SPVM native modules.
 
 =over 2
 
@@ -509,7 +473,7 @@ B<spvmgenlib> is the command to generate SPVM native modules.
 
 =back
 
-=head1 ENVIRONMENT VARIABLE
+=head1 ENVIRONMENT VARIABLES
 
 =head2 SPVM_BUILD_DIR
 
@@ -536,10 +500,6 @@ Print L<SVPM::Builder::CC> compile and link outputs to stderr.
 =head2 SPVM_CC_FORCE
 
 Force L<SVPM::Builder::CC> compile and link.
-
-=head1 CAUTION
-
-This release is a beta release before SPVM 1.0. The features can change without notice. Use at your own risk.
 
 =head1 REPOSITORY
 
