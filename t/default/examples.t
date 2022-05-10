@@ -28,6 +28,21 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   my $weights_mat = SPVM::TestCase::ModuleContainsMultiClass->mat_new_zero($outputs_length, $inputs_length);
 }
 
+# SYNOPSIS
+{
+  # sum.pl
+  use strict;
+  use warnings;
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
+
+  use SPVM 'MyMath';
+
+  # Call method
+  my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
+  is($total, 26);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
