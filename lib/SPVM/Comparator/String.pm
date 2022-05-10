@@ -4,13 +4,13 @@ package SPVM::Comparator::String;
 
 =head1 NAME
 
-SPVM::Comparator::String - A Callback Type for string Comparation
+SPVM::Comparator::String - Interface Type for String Comparation Callback
 
 =head1 SYNOPSYS
   
   use Comparator::String;
   
-  my $comparator : Comparator::String = method : int ($a : string, $b : string); {
+  my $comparator = (Comparator::String)method : int ($a : string, $b : string); {
     return $a cmp $b;
   };
   
@@ -18,10 +18,12 @@ SPVM::Comparator::String - A Callback Type for string Comparation
 
 =head1 DESCRIPTION
 
-L<Comparator::String|SPVM::Comparator::String> is an interface type for the callback to compare two strings.
+L<Comparator::String|SPVM::Comparator::String> is the interface type for the string comparation callback.
 
-=head1 INTERFACE METHOD
+=head1 INTERFACE METHODS
 
   required method : int ($a : string, $b : string);
 
-The implementation must receive two strings and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
+This method must receive two values that types are C<string> and return the following value.
+
+If the first argument is greater than the second argument, returns C<1>. If the first argument is lower than the second argument, returns C<-1>. If the first argument is equal to the second argument, returns C<0>.

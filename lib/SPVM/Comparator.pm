@@ -4,13 +4,14 @@ package SPVM::Comparator;
 
 =head1 NAME
 
-SPVM::Comparator - A Callback Type for Object Comparation
+SPVM::Comparator - Interface Type for Object Comparation Callback
 
 =head1 SYNOPSYS
   
   use Comparator;
+  use Point;
   
-  my $comparator : Comparator = method : int ($object1 : object, $object2 : object); {
+  my $comparator = (Comparator)method : int ($object1 : object, $object2 : object); {
     my $point1 = (Point)$object1;
     my $point2 = (Point)$object2;
     
@@ -25,16 +26,18 @@ SPVM::Comparator - A Callback Type for Object Comparation
     }
   };
   
-  my $point1 = Point->new(1, 2);
-  my $point2 = Point->new(5, 6);
+  my $point1 = Point->new_xy(1, 2);
+  my $point2 = Point->new_xy(5, 6);
   my $result = $comparator->($point1, $point2);
 
 =head1 DESCRIPTION
 
-L<Comparator|SPVM::Comparator> is an interface type for the callback to compare two objects.
+C<Comparator> is the interface type for the object comparation callback.
 
-=head1 INTERFACE METHOD
+=head1 INTERFACE METHODS
 
   required method : int ($object1 : object, $object2 : object);
 
-This method must receive two objects and return 1 if $object1 is more than $object2, -1 if $x is less than $object2, 0 if $object1 equals $object2 in the implementation.
+This method must receive two objects and return the following value.
+
+If the first argument is greater than the second argument, returns C<1>. If the first argument is lower than the second argument, returns C<-1>. If the first argument is equal to the second argument, returns C<0>.

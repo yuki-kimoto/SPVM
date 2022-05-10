@@ -4,13 +4,13 @@ package SPVM::Comparator::Int;
 
 =head1 NAME
 
-SPVM::Comparator::Int - A Callback Type for int Comparation
+SPVM::Comparator::Int - Interface Type for int Comparation Callback
 
 =head1 SYNOPSYS
   
   use Comparator::Int;
   
-  my $comparator : Comparator::Int = method : int ($a : int, $b : int); {
+  my $comparator = (Comparator::Int)method : int ($a : int, $b : int); {
     return $a <=> $b;
   };
   
@@ -18,10 +18,12 @@ SPVM::Comparator::Int - A Callback Type for int Comparation
 
 =head1 DESCRIPTION
 
-L<Comparator::Int|SPVM::Comparator::Int> is an interface type for the callback to compare two int values.
+L<Comparator::Int|SPVM::Comparator::Int> is the interface type for the int comparation callback.
 
-=head1 INTERFACE METHOD
+=head1 INTERFACE METHODS
 
   required method : int ($a : int, $b : int);
 
-The implementation must receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
+This method must receive two values that types are C<int> and return the following value.
+
+If the first argument is greater than the second argument, returns C<1>. If the first argument is lower than the second argument, returns C<-1>. If the first argument is equal to the second argument, returns C<0>.
