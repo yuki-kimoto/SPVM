@@ -401,6 +401,10 @@ sub print_error_messages {
     compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameEndColon2', qr/The variable name "\$FOO::" can't end with "::"/);
     compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
     compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameColon2Twice', qr/The variable name "\$FOO::::BAR" can't contain "::::"/);
+    {
+      my $source = 'class Tmp { our $NAME : int; static method main : void () { ${NAME = 1; } }';
+      compile_not_ok($source, qr/Need a closing brace "}" at the end of the variable name/);
+    }
   }
 }
 
