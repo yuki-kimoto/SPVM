@@ -17,7 +17,7 @@ Static Perl Virtual Machine. Fast calculation, fast array operation, and easy C/
 * Array initialization
 * Reference count GC, Weaken reference, Module system
 * Exception, Package variable
-* Object oriented, Inteface, Value type, Value array type, Reference type
+* Object oriented interface, Value type, Value array type, Reference type
 * Easy way to C/C++ binding, Automatic Perl binding, C99 math functions
 * Dynamic linking, Method precompile, AOT compile (create exe file)
 * Native API (C level API), C99 standard
