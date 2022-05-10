@@ -1782,21 +1782,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   if (!class->is_anon) {
     assert(!islower(class_name[0]));
     
-    // If class part name begin with lower case, compiler error occur.
-    // (Invalid example) Foo::bar
-    int32_t class_part_name_is_invalid = 0;
-    int32_t class_name_length = strlen(class_name);
-    for (int32_t i = 0; i < class_name_length; i++) {
-      if (i > 1) {
-        if (class_name[i - 2] == ':' && class_name[i - 1] == ':') {
-          if (islower(class_name[i])) {
-            SPVM_COMPILER_error(compiler, "The part names of the class \"%s\" must begin with a upper case character at %s line %d", class_name, op_class->file, op_class->line);
-            break;
-          }
-        }
-      }
-    }
-    
     // If class name is different from the class name corresponding to the module file, compile error occur.
     if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
       // If class fail load by if (require xxx) syntax, that is ok

@@ -178,6 +178,20 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               return 0;
             }
 
+            // Part names of the class name begin with lower case
+            int32_t class_part_name_is_invalid = 0;
+            int32_t class_name_length = strlen(class_name);
+            for (int32_t i = 0; i < class_name_length; i++) {
+              if (i > 1) {
+                if (class_name[i - 2] == ':' && class_name[i - 1] == ':') {
+                  if (islower(class_name[i])) {
+                    SPVM_COMPILER_error(compiler, "The part names of the class \"%s\" must begin with a upper case character at %s line %d", class_name, op_use->file, op_use->line);
+                    return 0;
+                  }
+                }
+              }
+            }
+
             // A class name can't conatain "__"
             if (strstr(class_name, "__")) {
               SPVM_COMPILER_error(compiler, "The class name \"%s\" can't constain \"__\" at %s line %d", class_name, op_use->file, op_use->line);
