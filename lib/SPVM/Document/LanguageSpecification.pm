@@ -34,11 +34,11 @@ The word characters are alphabet(C<a-zA-Z>), number(C<0-9>), and underscore(C<_>
 
 A symbol name is the characters that are composed of L<word characters|/"Word Characters"> and C<::>.
 
-A symbol name can't contains C<__>, and can't start with a number C<0-9>.
+A symbol name can't contains C<__>, and can't begin with a number C<0-9>.
 
-A symbol name can't start with C<::>, and can't end with C<::>.
+A symbol name can't begin with C<::>, and can't end with C<::>.
 
-A symbol name can't contains C<::::>, and can't start with a number C<0-9>.
+A symbol name can't contains C<::::>, and can't begin with a number C<0-9>.
 
   # Symbol names
   foo
@@ -56,7 +56,7 @@ A symbol name can't contains C<::::>, and can't start with a number C<0-9>.
 
 A class name is a L<symbol name|/"Symbol Name">.
 
-The part names of a class name must start uppercase letter. If the class name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
+The part names of a class name must begin uppercase letter. If the class name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
 
 A class name must be corresponding to the relative name of the module file. If the class name is C<Foo::Bar::Baz>, the relative name of the module file must be C<Foo/Bar/Baz.spvm>.
 
@@ -135,7 +135,7 @@ The field name that is same as a L</"Keywords"> is allowed.
 
 =head2 Variable Name
 
-A variable name starts with C<$> and is followed by a L<symbol name|/"Symbol Name">.
+A variable name begins with C<$> and is followed by a L<symbol name|/"Symbol Name">.
 
 The L<symbol name|/"Symbol Name"> can be wrapped by C<{> and C<}>. If a opening C<{> exists and the closing C<}> doesn't exists, a compilation error will occur.
 
@@ -296,7 +296,7 @@ The list of keywords:
 
 =head2 Operators for Tokenization
 
-The list of operators for tokenization:
+The list of the operators for tokenization:
 
   !
   !=
@@ -352,21 +352,21 @@ The list of operators for tokenization:
   ->
   =>
 
-Note that operators for tokenization include those that are not really operators, and do not include operators with names.
+Note that the operators for tokenization are different from the operators that are explained in L<Operators|/"Operators">. The operators for tokenization are only for tokenization.
 
 =head2 Comments
 
-A comment begins with C<#> and ends with L</"Line Terminators">.
+A comment begins with C<#> and ends with a L<line terminator|/"Line Terminators">.
 
   # Comment
 
-Comments have no meaning in tokenization.
+Comments have no meaning in source codes.
 
 =head2 POD
 
 POD(Plain Old Document) is a syntax to write documents easily.
 
-POD starts from the line beginning with C<=>, followed by any string that is composed of ASCII printable characters, and ending with L</"Line Terminators">.
+POD begins from the line beginning with C<=>, followed by any string that is composed of ASCII printable characters, and ending with L</"Line Terminators">.
 
 POD ends from the line beginning with C<=cut>, and ending with L</"Line Terminators">.
 
@@ -428,7 +428,7 @@ B<Examples:>
 
 Hexadecimal Representation of Integer Literal is represented by the following rule.
 
-Hexadecimal Representation of Integer Literal starts with C<0x> or C<0X>.
+Hexadecimal Representation of Integer Literal begins with C<0x> or C<0X>.
 
 It is followed by one or more consecutive characters C<0> to C<9>, C<a> to C<f>, or C<A> to C<F>.
 
@@ -445,7 +445,7 @@ B<Examples:>
 
 Octal Representation of Integer Literal is represented by the following rule.
 
-Octal Representation of Integer Literal starts with C<0>.
+Octal Representation of Integer Literal begins with C<0>.
 
 It is followed by one or more consecutive characters C<0> to C<7>.
 
@@ -462,7 +462,7 @@ B<Examples:>
 
 Binary Representation of Integer Literal is represented by the following rule.
 
-Binary Representation of Integer Literal starts with C<0b> or C<0B>.
+Binary Representation of Integer Literal begins with C<0b> or C<0B>.
 
 It is followed by one or more consecutive characters C<0> or C<1>.
 
@@ -484,9 +484,9 @@ Floating Point Literal is B<Decimal Floating Point Literal> or B<Hexadecimal Flo
 
 B<Sign Part> is represented by C<+> or C<->. Sign Part is optional.
 
-Numeric Part of Decimal Floating Point Literal starts one or more C<0> to C<9>.
+Numeric Part of Decimal Floating Point Literal begins one or more C<0> to C<9>.
 
-Numeric Part of Hexadecimal Floating Point Literal starts C<0x> or C<0X>, and is followed by C<0> to C<9>, C<a> to C<f>, or C<A> to C<F>.
+Numeric Part of Hexadecimal Floating Point Literal begins C<0x> or C<0X>, and is followed by C<0> to C<9>, C<a> to C<f>, or C<A> to C<F>.
 
 For that the Literal is Floating Point Literal, Numeric Part contains C<.> or, The Literal have Exponent Part, or have Suffix Part.
 
@@ -859,7 +859,7 @@ If "->" follows the variable name, it is interpreted as L</"Field Access"> or L<
 
 [2] If the Character following [1] is C<}>, or C<]>, then if the next Character is "->", C<{>, or C<[>, proceed with the interpretation and return back to [1], otherwise stop interpreting.
 
-The trailing $is not treated as the start of Variable Expansion. It is treated as C<$>.
+The trailing $is not treated as the begin of Variable Expansion. It is treated as C<$>.
 
   "AAA$"
 
@@ -2166,7 +2166,7 @@ The following modules are loaded by default. These modules are deeply related to
 
 =head2 Class Variable Definition
 
-B<Class Variable> is a global variable that belongs to L</"Class"> and exists from the start to the end of the program execution.
+B<Class Variable> is a global variable that belongs to L</"Class"> and exists from the begin to the end of the program execution.
 
 "our" Keyword defines a Class Variable.
 
@@ -2721,7 +2721,7 @@ The C<enum> keyword defines an enumeration. An enumeration defines constant valu
 
 An enumeration must be defined directly under L</"Class Definition">.
 
-The first value of an enumeration starts with C<0>. The next value is incremented by C<1>, and this is continued in the same way. In this example, C<FLAG1> is C<0>, C<FALG2> is C<1>, and C<FLAG3> is C<2>.
+The first value of an enumeration begins with C<0>. The next value is incremented by C<1>, and this is continued in the same way. In this example, C<FLAG1> is C<0>, C<FALG2> is C<1>, and C<FLAG3> is C<2>.
 
 The type of a value of an enumeration is the L<int type|/"int Type">.
 
@@ -2967,7 +2967,7 @@ B<Scope> is a range surrounded by L</"Scope Blocks">.
 
   # Scope Blocks 
   {
-    # Start of Scope
+    # Beginning of Scope
     
     # ...
     
