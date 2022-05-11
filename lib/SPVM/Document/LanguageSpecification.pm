@@ -417,9 +417,9 @@ Literals are the L<integer literal|/"Integer Literal">, the L<floating point lit
 
 =head2 Integer Literal
 
-=head3 Decimal Representation of Integer Literal
+=head3 Integer Literal Decimal Notation
 
-Decimal Representation of Integer Literal is represented by one or more consecutive characters from C<0> to C<9>.
+Decimal Notation of Integer Literal is represented by one or more consecutive characters from C<0> to C<9>.
 
 Can be prefixed with C<+> or C<->.
 
@@ -447,15 +447,15 @@ B<Examples:>
   123_456_789
   -123_456_789L
 
-=head3 Hexadecimal Representation of Integer Literal
+=head3 Integer Literal Hexadecimal Notation
 
-Hexadecimal Representation of Integer Literal is represented by the following rule.
+Hexadecimal Notation of Integer Literal is represented by the following rule.
 
-Hexadecimal Representation of Integer Literal begins with C<0x> or C<0X>.
+Hexadecimal Notation of Integer Literal begins with C<0x> or C<0X>.
 
 It is followed by one or more consecutive characters C<0> to C<9>, C<a> to C<f>, or C<A> to C<F>.
 
-Other rules are same as Decimal Representation of Integer Literal
+Other rules are same as Decimal Notation of Integer Literal
 
 B<Examples:>
 
@@ -464,15 +464,15 @@ B<Examples:>
   0xDeL
   0xFFFFFFFF_FFFFFFFF
 
-=head3 Octal Representation of Integer Literal
+=head3 Integer Literal Octal Notation
 
-Octal Representation of Integer Literal is represented by the following rule.
+Octal Notation of Integer Literal is represented by the following rule.
 
-Octal Representation of Integer Literal begins with C<0>.
+Octal Notation of Integer Literal begins with C<0>.
 
 It is followed by one or more consecutive characters C<0> to C<7>.
 
-Other rules are same as Decimal Representation of Integer Literal
+Other rules are same as Decimal Notation of Integer Literal
 
 B<Examples:>
 
@@ -481,11 +481,11 @@ B<Examples:>
   0666L
   0655_755
 
-=head3 Binary Representation of Integer Literal
+=head3 Integer Literal Binary Notation
 
-Binary Representation of Integer Literal is represented by the following rule.
+Binary Notation of Integer Literal is represented by the following rule.
 
-Binary Representation of Integer Literal begins with C<0b> or C<0B>.
+Binary Notation of Integer Literal begins with C<0b> or C<0B>.
 
 It is followed by one or more consecutive characters C<0> or C<1>.
 
