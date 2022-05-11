@@ -147,15 +147,6 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange');
 }
 
-# Method
-{
-  compile_not_ok_file('TestCase::CompileError::Method::Begin');
-  compile_not_ok_file('TestCase::CompileError::Method::MethodNameStartDigit');
-  compile_not_ok_file('TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice');
-  compile_not_ok_file('TestCase::CompileError::Method::TooManyArguments', qr/Too many arguments/i);
-  compile_not_ok_file('TestCase::CompileError::Method::TooManyArgumentsMulnum'. qr/Too many arguments/i);
-}
-
 # Field
 {
   compile_not_ok_file('TestCase::CompileError::Field::Private');
@@ -423,6 +414,15 @@ sub print_error_messages {
       compile_not_ok($source, qr|The class name "Tmp::::Foo" can't contains "::::"|);
     }
   }
+}
+
+# Method
+{
+  compile_not_ok_file('TestCase::CompileError::Method::Begin');
+  compile_not_ok_file('TestCase::CompileError::Method::MethodNameStartDigit');
+  compile_not_ok_file('TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice');
+  compile_not_ok_file('TestCase::CompileError::Method::TooManyArguments', qr/Too many arguments/i);
+  compile_not_ok_file('TestCase::CompileError::Method::TooManyArgumentsMulnum'. qr/Too many arguments/i);
 }
 
 done_testing;
