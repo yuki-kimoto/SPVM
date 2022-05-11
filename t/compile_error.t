@@ -434,8 +434,8 @@ sub print_error_messages {
   
   # Field name
   {
-    compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice');
-    compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameStartDigit');
+    compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice', qr/The symbol name "Foo__Bar" can't constain "__"/);
+    compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameStartDigit',qr/Unexpected token "3f"/);
   }
 }
 
