@@ -419,10 +419,14 @@ sub print_error_messages {
 # Method
 {
   compile_not_ok_file('TestCase::CompileError::Method::Begin');
-  compile_not_ok_file('TestCase::CompileError::Method::MethodNameStartDigit');
-  compile_not_ok_file('TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice');
   compile_not_ok_file('TestCase::CompileError::Method::TooManyArguments', qr/Too many arguments/i);
   compile_not_ok_file('TestCase::CompileError::Method::TooManyArgumentsMulnum'. qr/Too many arguments/i);
+  
+  # Method name
+  {
+    compile_not_ok_file('TestCase::CompileError::Method::MethodNameStartDigit', qr/Unexpected token "3f"/);
+    compile_not_ok_file('TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice', qr/The symbol name "Foo__Bar" can't constain "__"/);
+  }
 }
 
 done_testing;
