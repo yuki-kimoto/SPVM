@@ -162,10 +162,10 @@ sub print_error_messages {
   }
 }
 
-# Value
+# Multi-numeric
 {
-  compile_not_ok_file('TestCase::CompileError::Value::FieldsZero');
-  compile_not_ok_file('TestCase::CompileError::Value::Fields17');
+  compile_not_ok_file('TestCase::CompileError::MultiNumeric::FieldsZero');
+  compile_not_ok_file('TestCase::CompileError::MultiNumeric::Fields17');
 }
 
 # Call method
@@ -241,7 +241,7 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::Convert::ConvertFromStringToByteArray');
   compile_not_ok_file('TestCase::CompileError::Convert::ConvertToRef');
   compile_not_ok_file('TestCase::CompileError::Convert::ConvertFromRef');
-  compile_not_ok_file('TestCase::CompileError::Convert::ConvertFromValueType');
+  compile_not_ok_file('TestCase::CompileError::Convert::ConvertFromMultiNumericType');
 }
 
 # Concat

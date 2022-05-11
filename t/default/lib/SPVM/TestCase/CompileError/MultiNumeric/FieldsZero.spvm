@@ -1,0 +1,2 @@
+class TestCase::CompileError::MultiNumeric::FieldsZero : mulnum_t {
+}

@@ -429,9 +429,9 @@ t/default/lib/SPVM/TestCase/CompileError/ComparisonOperator/LtNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/Concat/LeftIsNotString.spvm
 t/default/lib/SPVM/TestCase/CompileError/Concat/RightIsNotString.spvm
 t/default/lib/SPVM/TestCase/CompileError/Convert/ConvertFromByteArrayToString.spvm
+t/default/lib/SPVM/TestCase/CompileError/Convert/ConvertFromMultiNumericType.spvm
 t/default/lib/SPVM/TestCase/CompileError/Convert/ConvertFromRef.spvm
 t/default/lib/SPVM/TestCase/CompileError/Convert/ConvertFromStringToByteArray.spvm
-t/default/lib/SPVM/TestCase/CompileError/Convert/ConvertFromValueType.spvm
 t/default/lib/SPVM/TestCase/CompileError/Convert/ConvertToInterface.spvm
 t/default/lib/SPVM/TestCase/CompileError/Convert/ConvertToRef.spvm
 t/default/lib/SPVM/TestCase/CompileError/Divide/DivuiLeftIsNotInt.spvm
@@ -474,6 +474,8 @@ t/default/lib/SPVM/TestCase/CompileError/Method/MethodNameContainsUnderScoreTwic
 t/default/lib/SPVM/TestCase/CompileError/Method/MethodNameStartDigit.spvm
 t/default/lib/SPVM/TestCase/CompileError/Method/TooManyArguments.spvm
 t/default/lib/SPVM/TestCase/CompileError/Method/TooManyArgumentsMulnum.spvm
+t/default/lib/SPVM/TestCase/CompileError/MultiNumeric/Fields17.spvm
+t/default/lib/SPVM/TestCase/CompileError/MultiNumeric/FieldsZero.spvm
 t/default/lib/SPVM/TestCase/CompileError/Multiply/LeftIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/Multiply/RightIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/New/Private.spvm
@@ -505,8 +507,6 @@ t/default/lib/SPVM/TestCase/CompileError/UnaryPlus/NotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/Use/AliasDuplication.spvm
 t/default/lib/SPVM/TestCase/CompileError/Use/AliasStartsLowerCase.spvm
 t/default/lib/SPVM/TestCase/CompileError/Use/ImportMethodNotFound.spvm
-t/default/lib/SPVM/TestCase/CompileError/Value/Fields17.spvm
-t/default/lib/SPVM/TestCase/CompileError/Value/FieldsZero.spvm
 t/default/lib/SPVM/TestCase/CompileError/Weaken/IsweakFieldNotObjectType.spvm
 t/default/lib/SPVM/TestCase/CompileError/Weaken/UnweakenFieldNotObjectType.spvm
 t/default/lib/SPVM/TestCase/CompileError/Weaken/WeakenFieldNotObjectType.spvm

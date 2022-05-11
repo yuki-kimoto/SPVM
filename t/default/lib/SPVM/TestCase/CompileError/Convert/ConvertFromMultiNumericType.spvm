@@ -1,4 +1,4 @@
-class TestCase::CompileError::Convert::ConvertFromValueType {
+class TestCase::CompileError::Convert::ConvertFromMultiNumericType {
   use TestCase::Minimal;
   use Complex_2d;
 
