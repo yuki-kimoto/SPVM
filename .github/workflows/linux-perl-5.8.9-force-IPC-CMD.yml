@@ -1,0 +1,30 @@
+name: linux-5.8.9
+
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: shogo82148/actions-setup-perl@v1
+      with:
+        perl-version: '5.8.9'
+    - name: perl -V
+      run: perl -V
+    - name: perl %Config
+      run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
+    - run: cpanm -v -f IPC::Cmd
+    - run: cpanm ExtUtils::CBuilder
+    - name: perl Makefile.PL
+      run: perl Makefile.PL
+    - name: make
+      run: make
+    - name: make disttest
+      run: make disttest
