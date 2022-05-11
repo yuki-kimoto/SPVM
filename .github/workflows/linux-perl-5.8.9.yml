@@ -20,6 +20,7 @@ jobs:
       run: perl -V
     - name: perl %Config
       run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
+    - run: cpanm -v IPC::Cmd
     - run: cpanm ExtUtils::CBuilder
     - name: perl Makefile.PL
       run: perl Makefile.PL
