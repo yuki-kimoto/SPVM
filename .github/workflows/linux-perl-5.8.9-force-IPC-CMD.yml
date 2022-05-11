@@ -1,4 +1,4 @@
-name: linux-5.8.9
+name: linux-5.8.9-force-IPC-CMD
 
 on:
   push:
