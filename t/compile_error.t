@@ -78,13 +78,12 @@ sub compile_not_ok {
   my $tmp_module_dir = File::Temp->newdir;
   
   my $module_file = "$tmp_module_dir/$class_name.spvm";
+  $module_file =~ s|::|/|g;
   
-  open my $module_fh, '>', $module_file
-    or die "Can't open $module_file: $!";
-  
-  print $module_fh $source;
-  
-  close $module_fh;
+  if (open my $module_fh, '>', $module_file) {
+    print $module_fh $source;
+    close $module_fh;
+  }
   
   compile_not_ok_file($class_name, $error_message_re, {module_dir => "$tmp_module_dir", file => $file, line => $line});
 }
