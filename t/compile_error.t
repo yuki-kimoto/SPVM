@@ -436,6 +436,10 @@ sub print_error_messages {
   {
     compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice', qr/The symbol name "Foo__Bar" can't constain "__"/);
     compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameStartDigit',qr/Unexpected token "3f"/);
+    {
+      my $source = 'class Tmp { has foo::x : int; }';
+      compile_not_ok($source, qr/The field name "foo::x" can't contain "::"/);
+    }
   }
 }
 

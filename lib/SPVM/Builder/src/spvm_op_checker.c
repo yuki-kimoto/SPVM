@@ -4640,11 +4640,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
       SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
 
-      if (strchr(field->op_name->uv.name, ':')) {
-        SPVM_COMPILER_error(compiler, "field name can't contain :: at %s line %d", field->op_name->file, field->op_name->line);
-        return;
-      }
-
       // valut_t can't become field
       int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
       if (is_mulnum_t) {

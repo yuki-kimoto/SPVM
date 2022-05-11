@@ -1651,7 +1651,7 @@ SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_a
   
   field_access->op_term = op_term;
   field_access->op_name = op_name_field;
-  
+
   return op_field_access;
 }
 
@@ -2433,6 +2433,10 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   // Field Name
   field->op_name = op_name_field;
   field->name = op_name_field->uv.name;
+
+  if (strstr(field->op_name->uv.name, "::")) {
+    SPVM_COMPILER_error(compiler, "The field name \"%s\" can't contain \"::\" at %s line %d", field->name, op_name_field->file, op_name_field->line);
+  }
 
   // Type
   field->type = op_type->uv.type;
