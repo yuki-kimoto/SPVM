@@ -427,9 +427,16 @@ sub print_error_messages {
 
 # Field
 {
-  compile_not_ok_file('TestCase::CompileError::Field::Private');
-  compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice');
-  compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameStartDigit');
+  # Access control
+  {
+    compile_not_ok_file('TestCase::CompileError::Field::Private');
+  }
+  
+  # Field name
+  {
+    compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice');
+    compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameStartDigit');
+  }
 }
 
 done_testing;
