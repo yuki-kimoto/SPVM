@@ -207,7 +207,7 @@ Replace the target string specified with the start byte offset with replace stri
 
   method replace_cb  : string ($target : string, $target_offset : int, $replace_cb : Regex::Replacer)
 
-Replace the target string specified with the start byte offset with replace callback. The callback must have "replace_to" method defined in L<Regex::Replacer|SPVM::Regex::Replacer>.
+Replace the target string specified with the start byte offset with replace callback. The callback must have the L<Regex::Replacer|SPVM::Regex::Replacer> interface..
 
 =head2 replace_all
 
@@ -219,4 +219,4 @@ Replace all of the target strings specified with the start byte offset with repl
 
   method replace_all_cb  : string ($target : string, $target_offset : int, $replace_cb : Regex::Replacer)
 
-Replace all of the target strings specified with the start byte offset with replace callback. The callback must have "replace_to" method defined in L<Regex::Replacer|SPVM::Regex::Replacer>.
+Replace all of the target strings specified with the start byte offset with replace callback. The callback must have the L<Regex::Replacer|SPVM::Regex::Replacer> interface.
