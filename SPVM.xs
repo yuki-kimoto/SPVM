@@ -13,6 +13,8 @@
 #include <inttypes.h>
 #include <stdint.h>
 
+static int check_valid_sviv (SV* sv) { return SvTYPE(sv) != SVt_PVAV && SvTYPE(sv) != SVt_PVHV && SvTYPE(sv) != SVt_PVFM; }
+
 #include "spvm_native.h"
 
 static const char* MFILE = "SPVM.xs";
