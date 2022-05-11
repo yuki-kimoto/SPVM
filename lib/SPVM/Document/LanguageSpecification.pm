@@ -419,23 +419,19 @@ Literals are the L<integer literal|/"Integer Literal">, the L<floating point lit
 
 =head3 Integer Literal Decimal Notation
 
-Decimal Notation of Integer Literal is represented by one or more consecutive characters from C<0> to C<9>.
+The interger literal decimal notation is the way to write a integer literal using decimals C<0-9>.
 
-Can be prefixed with C<+> or C<->.
+C<+> or C<-> can be at the beginning, and is followed by one or more than one of a decimal C<0-9>.
 
-L</"Types"> of Integer Literal is L</"int Type"> by default.
+C<_> can be used as a separator. C<_> has no meaning.
 
-If Integer Literal exceeds the range of numbers that can be represented by L</"int Type">, a compilation error will occur.
+The suffix C<L> or C<l> can be at the end.
 
-By suffixing C<L> or C<l> at the end, that represents L</"long Type"> Integer Literal.
+If the suffix C<L> or C<l> exists, the return type is the L<long type|/"long Type">. Otherwise the return type is the L<int type|/"int Type">.
 
-If L</"long Type"> Integer Literal  exceeds the range of numbers that can be represented by L</"long Type">,  If it exceeds the range, a compilation error will occur.
+If the return type is the L<int type|/"int Type"> and the value is greater than the max value of L<int type|/"int Type"> or less than the minimal value of L<int type|/"int Type">, a compilation error will occur.
 
-C<_> can be used as a separator. Separator has no meaning.
-
-If Integer Literal is assigned to a L</"byte Type"> variable or passed to L</"byte Type"> Method Argument, and does not exceed the range of numbers that can be represented by L</"byte Type">, the L<numeric narrowing type conversion|/"Numeric Narrowing Type Conversion"> is performed and the value converted to L</"byte Type"> value. If it exceeds the range, a compilation error will occur.
-
-If Integer Literal is assigned to a L</"short Type"> variable or passed to L</"short Type"> Method Argument, and does not exceed the range of numbers that can be represented by L</"short Type">, the L<numeric narrowing type conversion|/"Numeric Narrowing Type Conversion"> is performed and the value converted to L</"short Type"> value. If it exceeds the range, a compilation error will occur.
+If the return type is the L<long type|/"long Type"> and the value is greater than the max value of L<long type|/"long Type"> or less than the minimal value of L<long type|/"long Type">, a compilation error will occur.
 
 B<Examples:>
 
@@ -4081,7 +4077,7 @@ A list of Numeric Comparison Operators.
       The left operand and the right operand are Numeric Types
     </td>
     <td>
-      If The left operand is greater than Right value_op, return 1. If The left operand is lower than Right value_op, return -1. If The left operand is equals to Right value_op, return 0.
+      If The left operand is greater than Right value_op, return 1. If The left operand is less than Right value_op, return -1. If The left operand is equals to Right value_op, return 0.
     </td>
   </tr>
 </table>
@@ -4181,7 +4177,7 @@ A list of String Comparison Operators.
       LEFT_OPERAND cmp RIGHT_OPERAND
     </td>
     <td>
-      If The left operand is greater than Right value_op, return 1. If The left operand is lower than Right value_op, return -1. If The left operand is equals to Right value_op, return 0.
+      If The left operand is greater than Right value_op, return 1. If The left operand is less than Right value_op, return -1. If The left operand is equals to Right value_op, return 0.
     </td>
   </tr>
 </table>
@@ -4827,7 +4823,7 @@ Getting Array Element Expression returns the Element Value of the Index.
 
 If Array Expression is L</"Undefined Value">, a Runtime Exception occurs.
 
-If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
+If Index Expression is less than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
 B<Examples:>
 
@@ -4856,7 +4852,7 @@ Setting Array Element Expression returns the value of the element after setting.
 
 If Array Expression is L</"Undefined Value">, a Runtime Exception occurs.
 
-If Index Expression is lower than 0 or more than the max index of the Array, a Runtime Exception occurs.
+If Index Expression is less than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
 If the right operand is L</"Object Types">, Reference Count of the object is incremented by C<1>.
 
@@ -4903,7 +4899,7 @@ The type must be a L<basic type|/"Basic Type">.
 
 The type of length must be the L<int type|/"int Type"> or the type that become L<int type|/"int Type"> after the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
 
-If the length is lower than C<0>, an exception is thrown.
+If the length is less than C<0>, an exception is thrown.
 
 All elements of the array are initialized by L<the rule of type initial value|/"Type Initial Value">.
 
@@ -6544,7 +6540,7 @@ B<Examples:>
   # float to double
   my $num : double = 4.5f;
 
-If the L<nemric type order|/"Numeric Types Order"> of the left operand is lower than the L<nemric type order|/"Numeric Types Order"> of the right operand, the type assignability is conditional true.
+If the L<nemric type order|/"Numeric Types Order"> of the left operand is less than the L<nemric type order|/"Numeric Types Order"> of the right operand, the type assignability is conditional true.
 
 The condition is that the right operand is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of the left operand.
 
@@ -7032,7 +7028,7 @@ If the type of the left operand is a L<numeric type|/"Numeric Types"> and the ty
 
 If the L<nemric type order|/"Numeric Types Order"> of the left operand is greater than the L<nemric type order|/"Numeric Types Order"> of the right operand, the L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
 
-If the L<nemric type order|/"Numeric Types Order"> of the left operand is lower than the L<nemric type order|/"Numeric Types Order"> of the right operand, the L<numeric narrowing type conversion|/"Numeric Narrowing Type Conversion"> is performed.
+If the L<nemric type order|/"Numeric Types Order"> of the left operand is less than the L<nemric type order|/"Numeric Types Order"> of the right operand, the L<numeric narrowing type conversion|/"Numeric Narrowing Type Conversion"> is performed.
 
 If the L<nemric type order|/"Numeric Types Order"> of the left operand is equal to the L<nemric type order|/"Numeric Types Order"> of the right operand, copying is performed.
 
