@@ -4305,13 +4305,27 @@ B<Examples:>
 
 =head2 Assignment Operator
 
-Assignment Operator is a L</"Binary Operators"> for assignment, expressed in C<=>.
+The assignment operator C<=> is a L</"Binary Operators"> to assign a value.
 
   LEFT_OPERAND = RIGHTH_OPERAND
 
-Assignment Operator has multiple meanings depending on the Right and Left sides. Please refer to each item.
+The assignment operator has different meanings depending on the left operand and the right operand.
 
-In Assignment Operator, the The left operand is evaluated after the right operand is evaluated. This is with the exception of value_op being executed from Left to Right as a rule.
+=head3 Local Variable Assignment
+
+See L</"Getting Local Variable"> and L</"Setting Local Variable">.
+
+=head3 Class Variable Assignment
+
+See L</"Getting Class Variable"> and L</"Setting Class Variable">.
+
+=head3 Array Element Assignment
+
+See L</"Getting Array Element"> and L</"Setting Array Element">.
+
+=head3 Field Assignment
+
+See L</"Getting Field"> and L</"Setting Field">.
 
 =head2 Special Assignment Operator
 
