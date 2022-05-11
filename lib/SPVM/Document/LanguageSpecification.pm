@@ -411,7 +411,9 @@ POD has no meaning in source codes.
 
 =head2 Literals
 
-Literals are representations of values in source codes. These are L</"Integer Literal">, L</"Floating Point Literal">, L</"Character Literal">, L</"String Literal"> and L</"Bool Literal">.
+A literal is a constant value in source codes.
+
+Literals are the L<integer literal|/"Integer Literal">, the L<floating point literal|/"Floating Point Literal">, the L<character literal|/"Character Literal">, the L<string literal|/"String Literal"> and the L<bool literal|/"Bool Literal">.
 
 =head2 Integer Literal
 
