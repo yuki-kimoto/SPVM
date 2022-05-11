@@ -13,8 +13,6 @@
 #include <inttypes.h>
 #include <stdint.h>
 
-static int check_valid_sviv (SV* sv) { return SvTYPE(sv) != SVt_PVAV && SvTYPE(sv) != SVt_PVHV && SvTYPE(sv) != SVt_PVFM; }
-
 #include "spvm_native.h"
 
 static const char* MFILE = "SPVM.xs";
@@ -255,9 +253,18 @@ call_spvm_method(...)
               // Perl reference to SPVM byte reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                 args_have_ref = 1;
-                if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
-                  croak("%dth argument of %s->%s must be sa calar reference which referenced value is non-ref scalar at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                
+                int32_t is_iok_scalar_ref;
+                if (SvROK(sv_value)) {
+                  is_iok_scalar_ref = SvIOK(SvRV(sv_value));
                 }
+                else {
+                  is_iok_scalar_ref = 0;
+                }
+                if (!is_iok_scalar_ref) {
+                  croak("%dth argument of %s->%s must be a interger compatible scalar reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                }
+                
                 SV* sv_value_deref = SvRV(sv_value);
                 int8_t value = (int8_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].bval = value;
@@ -270,8 +277,15 @@ call_spvm_method(...)
               // Perl reference to SPVM short reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                 args_have_ref = 1;
-                if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
-                  croak("%dth argument of %s->%s must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                int32_t is_iok_scalar_ref;
+                if (SvROK(sv_value)) {
+                  is_iok_scalar_ref = SvIOK(SvRV(sv_value));
+                }
+                else {
+                  is_iok_scalar_ref = 0;
+                }
+                if (!is_iok_scalar_ref) {
+                  croak("%dth argument of %s->%s must be a interger compatible scalar reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 int16_t value = (int16_t)SvIV(sv_value_deref);
@@ -285,8 +299,15 @@ call_spvm_method(...)
               // Perl reference to SPVM int reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                 args_have_ref = 1;
-                if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
-                  croak("%dth argument of %s->%s must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                int32_t is_iok_scalar_ref;
+                if (SvROK(sv_value)) {
+                  is_iok_scalar_ref = SvIOK(SvRV(sv_value));
+                }
+                else {
+                  is_iok_scalar_ref = 0;
+                }
+                if (!is_iok_scalar_ref) {
+                  croak("%dth argument of %s->%s must be a interger compatible scalar reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 int32_t value = (int32_t)SvIV(sv_value_deref);
@@ -300,8 +321,15 @@ call_spvm_method(...)
               // Perl reference to SPVM long reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                 args_have_ref = 1;
-                if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
-                  croak("%dth argument of %s->%s must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                int32_t is_iok_scalar_ref;
+                if (SvROK(sv_value)) {
+                  is_iok_scalar_ref = SvIOK(SvRV(sv_value));
+                }
+                else {
+                  is_iok_scalar_ref = 0;
+                }
+                if (!is_iok_scalar_ref) {
+                  croak("%dth argument of %s->%s must be a interger compatible scalar reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 int64_t value = (int64_t)SvIV(sv_value_deref);
@@ -315,8 +343,15 @@ call_spvm_method(...)
               // Perl reference to SPVM long reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                 args_have_ref = 1;
-                if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
-                  croak("%dth argument of %s->%s must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                int32_t is_nok_scalar_ref;
+                if (SvROK(sv_value)) {
+                  is_nok_scalar_ref = SvNOK(SvRV(sv_value));
+                }
+                else {
+                  is_nok_scalar_ref = 0;
+                }
+                if (!is_nok_scalar_ref) {
+                  croak("%dth argument of %s->%s must be a floating-point compatible scalar reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 float value = (float)SvNV(sv_value_deref);
@@ -330,8 +365,15 @@ call_spvm_method(...)
               // Perl reference to SPVM double reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                 args_have_ref = 1;
-                if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
-                  croak("%dth argument of %s->%s must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                int32_t is_nok_scalar_ref;
+                if (SvROK(sv_value)) {
+                  is_nok_scalar_ref = SvNOK(SvRV(sv_value));
+                }
+                else {
+                  is_nok_scalar_ref = 0;
+                }
+                if (!is_nok_scalar_ref) {
+                  croak("%dth argument of %s->%s must be a floating-point compatible scalar reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 double value = (double)SvNV(sv_value_deref);

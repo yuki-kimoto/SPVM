@@ -1,4 +1,8 @@
 Revision history for SPVM
+0.9517  2022-05-12
+        [BUG FIX]
+        * Fix the bug Github #212. Tests fail when perl is built with -DDEBUGGING set in ccflags [rt.cpan.org #142336].
+        
 0.9516  2022-05-11
         [CHANGE]
         * Improve symbol name checking.
