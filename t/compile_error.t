@@ -147,14 +147,6 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange');
 }
 
-# Field
-{
-  compile_not_ok_file('TestCase::CompileError::Field::Private');
-  compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice');
-  compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameStartDigit');
-}
-
-
 # Enum
 {
   compile_not_ok_file('TestCase::CompileError::Enum::PrivateAccess');
@@ -431,6 +423,13 @@ sub print_error_messages {
       compile_not_ok($source, qr/The method name "foo::main" can't contain "::"/);
     }
   }
+}
+
+# Field
+{
+  compile_not_ok_file('TestCase::CompileError::Field::Private');
+  compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice');
+  compile_not_ok_file('TestCase::CompileError::Field::HasFieldNameStartDigit');
 }
 
 done_testing;
