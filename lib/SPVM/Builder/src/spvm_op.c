@@ -2508,6 +2508,9 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     op_name_method = SPVM_OP_new_op_name(compiler, anon_method_name, op_method->file, op_method->line);
   }
   const char* method_name = op_name_method->uv.name;
+  if (strstr(method_name, "::")) {
+    SPVM_COMPILER_error(compiler, "The method name \"%s\" can't contain \"::\" at %s line %d", method_name, op_name_method->file, op_name_method->line);
+  }
   
   // Block is method block
   if (op_block) {

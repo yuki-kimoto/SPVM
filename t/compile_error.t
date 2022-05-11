@@ -426,6 +426,10 @@ sub print_error_messages {
   {
     compile_not_ok_file('TestCase::CompileError::Method::MethodNameStartDigit', qr/Unexpected token "3f"/);
     compile_not_ok_file('TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice', qr/The symbol name "Foo__Bar" can't constain "__"/);
+    {
+      my $source = 'class Tmp { static method foo::main : void () { } }';
+      compile_not_ok($source, qr/The method name "foo::main" can't contain "::"/);
+    }
   }
 }
 
