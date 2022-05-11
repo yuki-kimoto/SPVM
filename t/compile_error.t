@@ -410,7 +410,7 @@ sub print_error_messages {
 
 # Method
 {
-  compile_not_ok_file('TestCase::CompileError::Method::Begin');
+  compile_not_ok_file('TestCase::CompileError::Method::INIT');
   compile_not_ok_file('TestCase::CompileError::Method::TooManyArguments', qr/Too many arguments/i);
   compile_not_ok_file('TestCase::CompileError::Method::TooManyArgumentsMulnum'. qr/Too many arguments/i);
   

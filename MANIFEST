@@ -469,7 +469,7 @@ t/default/lib/SPVM/TestCase/CompileError/LocalVar/LocalVarNameStartDigit.spvm
 t/default/lib/SPVM/TestCase/CompileError/LogicalOperator/AndNotExpression.spvm
 t/default/lib/SPVM/TestCase/CompileError/LogicalOperator/NotNotExpression.spvm
 t/default/lib/SPVM/TestCase/CompileError/LogicalOperator/OrNotExpression.spvm
-t/default/lib/SPVM/TestCase/CompileError/Method/Begin.spvm
+t/default/lib/SPVM/TestCase/CompileError/Method/INIT.spvm
 t/default/lib/SPVM/TestCase/CompileError/Method/MethodNameContainsUnderScoreTwice.spvm
 t/default/lib/SPVM/TestCase/CompileError/Method/MethodNameStartDigit.spvm
 t/default/lib/SPVM/TestCase/CompileError/Method/TooManyArguments.spvm

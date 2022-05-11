@@ -9,6 +9,8 @@ Revision history for SPVM
         * Add static_lib field to SPVM::Builder::Config::Exe.
         * Add SPVM::Document::NativeMethod document. Native methods of SPVM::Document::NativeAPI is moved to this document.
         * Improve the messages of class name compilation errors.
+        * Improve the messages of method name compilation errors.
+        * Improve the messages of field name compilation errors.
         [BUG FIX]
         * Fix the bug that local variable can contain "::".
         * Fix the bug that the method name of the method definition can contain "::".
