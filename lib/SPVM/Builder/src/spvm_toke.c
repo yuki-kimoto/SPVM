@@ -1579,31 +1579,31 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           int32_t str_len = (compiler->bufptr - number_literal_begin_ptr);
           
           // Ignore under line
-          int32_t num_str_memoyr_blocks_count = compiler->allocator->memory_blocks_count_tmp;
-          char* num_str = (char*)SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, str_len + 2);
+          int32_t numeric_literal_memoyr_blocks_count = compiler->allocator->memory_blocks_count_tmp;
+          char* numeric_literal = (char*)SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, str_len + 2);
           int32_t pos = 0;
           {
             int32_t i;
             for (i = 0; i < str_len; i++) {
               if (*(number_literal_begin_ptr + i) != '_') {
-                *(num_str + pos) = *(number_literal_begin_ptr + i);
+                *(numeric_literal + pos) = *(number_literal_begin_ptr + i);
                 pos++;
               }
             }
-            num_str[pos] = '\0';
+            numeric_literal[pos] = '\0';
           }
           // Back suffix such as "f" or "F" when hex floating number
           if (is_hex_floating_number && !isdigit(*(compiler->bufptr - 1))) {
             compiler->bufptr--;
-            num_str[pos - 1] = '\0';
+            numeric_literal[pos - 1] = '\0';
           }
           
-          char* num_str_nosign;
+          char* numeric_literal_nosign;
           if (minus) {
-            num_str_nosign = num_str + 1;
+            numeric_literal_nosign = numeric_literal + 1;
           }
           else {
-            num_str_nosign = num_str;
+            numeric_literal_nosign = numeric_literal;
           }
 
           // Constant
@@ -1662,7 +1662,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             char *end;
-            uint64_t num_uint64_nosign = strtoull(num_str_nosign + parse_start_offset, &end, digit);
+            uint64_t num_uint64_nosign = strtoull(numeric_literal_nosign + parse_start_offset, &end, digit);
             if (*end != '\0') {
               invalid = 1;
             }
@@ -1690,7 +1690,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (invalid) {
-              SPVM_COMPILER_error(compiler, "The literal \"%s%s\" is invalid integer decimal notation at %s line %d", minus ? "-" : "", num_str_nosign, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The literal \"%s%s\" is invalid integer decimal notation at %s line %d", minus ? "-" : "", numeric_literal_nosign, compiler->cur_file, compiler->cur_line);
             }
             
             if (digit == 16 || digit == 8 || digit == 2) {
@@ -1726,7 +1726,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             char *end;
-            uint64_t num_uint64_nosign = strtoull(num_str_nosign + parse_start_offset, &end, digit);
+            uint64_t num_uint64_nosign = strtoull(numeric_literal_nosign + parse_start_offset, &end, digit);
             if (*end != '\0') {
               invalid = 1;
             }
@@ -1754,7 +1754,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (invalid) {
-              SPVM_COMPILER_error(compiler, "The literal \"%s%s\" is invalid integer decimal notation at %s line %d", minus ? "-" : "", num_str_nosign, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The literal \"%s%s\" is invalid integer decimal notation at %s line %d", minus ? "-" : "", numeric_literal_nosign, compiler->cur_file, compiler->cur_line);
             }
             
             if (digit == 16 || digit == 8 || digit == 2) {
@@ -1770,7 +1770,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Parse floating point literal - float
           else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
             char *end;
-            num.fval = strtof(num_str_nosign, &end);
+            num.fval = strtof(numeric_literal_nosign, &end);
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid float literal at %s line %d", compiler->cur_file, compiler->cur_line);
             }
@@ -1782,7 +1782,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Parse floating point literal - double
           else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
             char *end;
-            num.dval = strtod(num_str_nosign, &end);
+            num.dval = strtod(numeric_literal_nosign, &end);
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid double literal at %s line %d", compiler->cur_file, compiler->cur_line);
             }
@@ -1793,8 +1793,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else {
             assert(0);
           }
-          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, num_str);
-          assert(compiler->allocator->memory_blocks_count_tmp == num_str_memoyr_blocks_count);
+          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, numeric_literal);
+          assert(compiler->allocator->memory_blocks_count_tmp == numeric_literal_memoyr_blocks_count);
 
           // Constant op
           SPVM_OP* op_constant;
