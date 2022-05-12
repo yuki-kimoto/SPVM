@@ -1485,7 +1485,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             return VAR_NAME;
           }
         }
-        // Number Literal
+        // Numeric literal
         else if (isdigit(ch)) {
           const char* cur_token_ptr;
           
