@@ -1636,6 +1636,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // int
           if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
+            
             errno = 0;
             int32_t out_of_range = 0;
             int32_t invalid = 0;
@@ -1666,21 +1667,32 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             else {
               char *end;
-              int64_t num_long = (int64_t)strtoll(num_str, &end, 10);
+              uint64_t num_uint64_nosign = strtoull(num_str_nosign, &end, 10);
+              
               if (*end != '\0') {
                 invalid = 1;
               }
-              else if (num_long < INT32_MIN || num_long > INT32_MAX || errno == ERANGE) {
-                out_of_range = 1;
+              else if (errno == ERANGE) {
+                invalid = 1;
               }
-              num.ival = (int32_t)num_long;
+              else {
+                if (minus) {
+                  if (num_uint64_nosign > ((uint32_t)INT32_MAX + 1)) {
+                    invalid = 1;
+                  }
+                }
+                else {
+                  if (num_uint64_nosign > INT32_MAX) {
+                    invalid = 1;
+                  }
+                }
+              }
+              
+              num.ival = minus ? (int32_t)-num_uint64_nosign : (int32_t)num_uint64_nosign;
             }
             
             if (invalid) {
               SPVM_COMPILER_error(compiler, "Invalid int literal at %s line %d", compiler->cur_file, compiler->cur_line);
-            }
-            else if (out_of_range) {
-              SPVM_COMPILER_error(compiler, "int literal out of range at %s line %d", compiler->cur_file, compiler->cur_line);
             }
           }
           // long
