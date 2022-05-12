@@ -1755,19 +1755,28 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
           // Constant op
           SPVM_OP* op_constant;
-          if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
-            op_constant = SPVM_OP_new_op_constant_float(compiler, num.fval, compiler->cur_file, compiler->cur_line);
+          switch (constant_type->basic_type->id) {
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+              op_constant = SPVM_OP_new_op_constant_int(compiler, num.ival, compiler->cur_file, compiler->cur_line);
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+              op_constant = SPVM_OP_new_op_constant_long(compiler, num.lval, compiler->cur_file, compiler->cur_line);
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+              op_constant = SPVM_OP_new_op_constant_float(compiler, num.fval, compiler->cur_file, compiler->cur_line);
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+              op_constant = SPVM_OP_new_op_constant_double(compiler, num.dval, compiler->cur_file, compiler->cur_line);
+              break;
+            }
+            default: {
+              assert(0);
+            }
           }
-          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
-            op_constant = SPVM_OP_new_op_constant_double(compiler, num.dval, compiler->cur_file, compiler->cur_line);
-          }
-          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
-            op_constant = SPVM_OP_new_op_constant_int(compiler, num.ival, compiler->cur_file, compiler->cur_line);
-          }
-          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
-            op_constant = SPVM_OP_new_op_constant_long(compiler, num.lval, compiler->cur_file, compiler->cur_line);
-          }
-          
+
           yylvalp->opval = op_constant;
           
           return CONSTANT;
