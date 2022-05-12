@@ -476,14 +476,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->bufptr++;
         
         // "-" is the sign of a numeric literal
-        if (
-          isdigit(*compiler->bufptr)
-          &&
-          (
-            (*compiler->bufptr != '0')
-            || ((*compiler->bufptr == '0') && (*(compiler->bufptr + 1) == '.')))
-          )
-        {
+        if (isdigit(*compiler->bufptr)) {
           before_char_is_minus = 1;
           continue;
         }
