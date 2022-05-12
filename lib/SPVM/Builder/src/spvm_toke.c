@@ -1489,10 +1489,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else if (isdigit(ch)) {
           const char* number_literal_begin_ptr;
           
-          // If the before character is "-", go back by one character
+          // The before character is "-"
+          int32_t minus = 0;
           if (before_char_is_minus) {
             number_literal_begin_ptr = compiler->bufptr - 1;
             before_char_is_minus = 0;
+            minus = 1;
           }
           else {
             number_literal_begin_ptr = compiler->bufptr;
