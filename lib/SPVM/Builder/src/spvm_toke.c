@@ -1690,7 +1690,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (invalid) {
-              SPVM_COMPILER_error(compiler, "Invalid int literal at %s line %d", compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The literal \"%s%s\" is invalid integer decimal notation at %s line %d", minus ? "-" : "", num_str_nosign, compiler->cur_file, compiler->cur_line);
             }
             
             if (digit == 16 || digit == 8 || digit == 2) {
