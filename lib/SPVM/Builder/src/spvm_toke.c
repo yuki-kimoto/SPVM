@@ -1706,49 +1706,65 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Parse Interger literal - long
           else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
             errno = 0;
-            int32_t out_of_range = 0;
             int32_t invalid = 0;
             
-            if (digit == 16 || digit == 8 || digit == 2) {
-              char* num_str_only_num;
-              if (digit == 16) {
-                num_str_only_num = num_str + 2;
-              }
-              else if (digit == 8) {
-                num_str_only_num = num_str + 1;
-              }
-              else if (digit == 2) {
-                num_str_only_num = num_str + 2;
-              }
-              else {
-                assert(0);
-              }
-              char *end;
-              uint64_t unum = (uint64_t)strtoull(num_str_only_num, &end, digit);
-              if (*end != '\0') {
-                invalid = 1;
-              }
-              else if (unum > UINT64_MAX || errno == ERANGE) {
-                out_of_range = 1;
-              }
-              num.lval = (int64_t)unum;
+            int32_t parse_start_offset;
+            if (digit == 16) {
+              parse_start_offset = 2;
+            }
+            else if (digit == 8) {
+              parse_start_offset = 1;
+            }
+            else if (digit == 2) {
+              parse_start_offset = 2;
+            }
+            else if (digit == 10) {
+              parse_start_offset = 0;
             }
             else {
-              char *end;
-              num.lval = (int64_t)strtoll(num_str, &end, 10);
-              if (*end != '\0') {
-                invalid = 1;
+              assert(0);
+            }
+            
+            char *end;
+            uint64_t num_uint64_nosign = strtoull(num_str_nosign + parse_start_offset, &end, digit);
+            if (*end != '\0') {
+              invalid = 1;
+            }
+            else if (errno == ERANGE) {
+              invalid = 1;
+            }
+            else {
+              if (digit == 16 || digit == 8 || digit == 2) {
+                if (num_uint64_nosign > UINT64_MAX) {
+                  invalid = 1;
+                }
               }
-              else if (num.lval < INT64_MIN || num.lval > INT64_MAX || errno == ERANGE) {
-                out_of_range = 1;
+              else {
+                if (minus) {
+                  if (num_uint64_nosign > ((uint64_t)INT64_MAX + 1)) {
+                    invalid = 1;
+                  }
+                }
+                else {
+                  if (num_uint64_nosign > INT64_MAX) {
+                    invalid = 1;
+                  }
+                }
               }
             }
             
             if (invalid) {
-              SPVM_COMPILER_error(compiler, "Invalid long literal at %s line %d", compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The literal \"%s%s\" is invalid integer decimal notation at %s line %d", minus ? "-" : "", num_str_nosign, compiler->cur_file, compiler->cur_line);
             }
-            else if (out_of_range) {
-              SPVM_COMPILER_error(compiler, "long literal out of range at %s line %d", compiler->cur_file, compiler->cur_line);
+            
+            if (digit == 16 || digit == 8 || digit == 2) {
+              num.lval = (int64_t)(uint64_t)num_uint64_nosign;
+              if (minus) {
+                num.lval = -num.lval;
+              }
+            }
+            else {
+              num.lval = minus ? (int64_t)-num_uint64_nosign : (int64_t)num_uint64_nosign;
             }
           }
           // Parse floating point literal - float
