@@ -94,7 +94,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   compiler->befbufptr = compiler->bufptr;
 
   // Constant minus sign
-  int32_t minus = 0;
+  int32_t before_char_is_minus = 0;
   
   // Expect sub name
   int32_t expect_method_name = compiler->expect_method_name;
@@ -484,7 +484,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             || ((*compiler->bufptr == '0') && (*(compiler->bufptr + 1) == '.')))
           )
         {
-          minus = 1;
+          before_char_is_minus = 1;
           continue;
         }
         else if (*compiler->bufptr == '>') {
@@ -1489,10 +1489,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else if (isdigit(ch)) {
           const char* cur_token_ptr;
           
-          // Before character is minus
-          if (minus) {
+          // If the before character is "-", go back by one character
+          if (before_char_is_minus) {
             cur_token_ptr = compiler->bufptr - 1;
-            minus = 0;
+            before_char_is_minus = 0;
           }
           else {
             cur_token_ptr = compiler->bufptr;
