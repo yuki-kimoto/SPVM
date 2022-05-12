@@ -1770,17 +1770,24 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Parse floating point literal - float
           else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
             char *end;
-            num.fval = strtof(num_str, &end);
+            num.fval = strtof(num_str_nosign, &end);
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid float literal at %s line %d", compiler->cur_file, compiler->cur_line);
+            }
+            
+            if (minus) {
+              num.fval = -num.fval;
             }
           }
           // Parse floating point literal - double
           else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
             char *end;
-            num.dval = strtod(num_str, &end);
+            num.dval = strtod(num_str_nosign, &end);
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid double literal at %s line %d", compiler->cur_file, compiler->cur_line);
+            }
+            if (minus) {
+              num.dval = -num.dval;
             }
           }
           else {
