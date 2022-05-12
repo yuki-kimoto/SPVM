@@ -1637,7 +1637,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // float
           if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
             char *end;
-            num.dval = strtof(num_str, &end);
+            num.fval = strtof(num_str, &end);
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid float literal at %s line %d", compiler->cur_file, compiler->cur_line);
             }
@@ -1755,7 +1755,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Constant op
           SPVM_OP* op_constant;
           if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
-            op_constant = SPVM_OP_new_op_constant_float(compiler, (float)num.dval, compiler->cur_file, compiler->cur_line);
+            op_constant = SPVM_OP_new_op_constant_float(compiler, num.fval, compiler->cur_file, compiler->cur_line);
           }
           else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
             op_constant = SPVM_OP_new_op_constant_double(compiler, num.dval, compiler->cur_file, compiler->cur_line);
