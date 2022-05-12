@@ -1682,13 +1682,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             else {
               char *end;
-              num.lval = (int64_t)strtoll(num_str, &end, 10);
+              int64_t num_long = (int64_t)strtoll(num_str, &end, 10);
               if (*end != '\0') {
                 invalid = 1;
               }
-              else if (num.lval < INT32_MIN || num.lval > INT32_MAX || errno == ERANGE) {
+              else if (num_long < INT32_MIN || num_long > INT32_MAX || errno == ERANGE) {
                 out_of_range = 1;
               }
+              num.ival = (int32_t)num_long;
             }
             
             if (invalid) {
@@ -1761,7 +1762,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             op_constant = SPVM_OP_new_op_constant_double(compiler, num.dval, compiler->cur_file, compiler->cur_line);
           }
           else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
-            op_constant = SPVM_OP_new_op_constant_int(compiler, num.lval, compiler->cur_file, compiler->cur_line);
+            op_constant = SPVM_OP_new_op_constant_int(compiler, num.ival, compiler->cur_file, compiler->cur_line);
           }
           else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
             op_constant = SPVM_OP_new_op_constant_long(compiler, num.lval, compiler->cur_file, compiler->cur_line);
