@@ -475,7 +475,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '-': {
         compiler->bufptr++;
         
-        // Decimal Literal or Floating point Literal allow minus
+        // "-" is the sign of a numeric literal
         if (
           isdigit(*compiler->bufptr)
           &&
