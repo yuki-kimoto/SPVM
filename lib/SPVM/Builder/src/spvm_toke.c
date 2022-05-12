@@ -1634,24 +1634,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           SPVM_VALUE num;
           
-          // float
-          if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
-            char *end;
-            num.fval = strtof(num_str, &end);
-            if (*end != '\0') {
-              SPVM_COMPILER_error(compiler, "Invalid float literal at %s line %d", compiler->cur_file, compiler->cur_line);
-            }
-          }
-          // double
-          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
-            char *end;
-            num.dval = strtod(num_str, &end);
-            if (*end != '\0') {
-              SPVM_COMPILER_error(compiler, "Invalid double literal at %s line %d", compiler->cur_file, compiler->cur_line);
-            }
-          }
           // int
-          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
+          if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
             errno = 0;
             int32_t out_of_range = 0;
             int32_t invalid = 0;
@@ -1745,6 +1729,22 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             else if (out_of_range) {
               SPVM_COMPILER_error(compiler, "long literal out of range at %s line %d", compiler->cur_file, compiler->cur_line);
+            }
+          }
+          // float
+          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
+            char *end;
+            num.fval = strtof(num_str, &end);
+            if (*end != '\0') {
+              SPVM_COMPILER_error(compiler, "Invalid float literal at %s line %d", compiler->cur_file, compiler->cur_line);
+            }
+          }
+          // double
+          else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
+            char *end;
+            num.dval = strtod(num_str, &end);
+            if (*end != '\0') {
+              SPVM_COMPILER_error(compiler, "Invalid double literal at %s line %d", compiler->cur_file, compiler->cur_line);
             }
           }
           else {
