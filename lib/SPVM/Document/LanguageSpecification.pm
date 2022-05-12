@@ -413,7 +413,13 @@ POD has no meaning in source codes.
 
 A literal is a constant value in source codes.
 
-Literals are the L<integer literal|/"Integer Literal">, the L<floating point literal|/"Floating Point Literal">, the L<character literal|/"Character Literal">, the L<string literal|/"String Literal"> and the L<bool literal|/"Bool Literal">.
+Literals are L<numeric literals|/"Numeric Literals">, the L<floating point literal|/"Floating Point Literal">, the L<character literal|/"Character Literal">, the L<string literal|/"String Literal"> and the L<bool literal|/"Bool Literal">.
+
+=head2 Numeric Literals
+
+A numeric literal is a numeric constant value in source codes.
+
+Numeric literals are the L<integer literal|/"Integer Literal"> and the L<floating point literal|/"Floating Point Literal">.
 
 =head2 Integer Literal
 
