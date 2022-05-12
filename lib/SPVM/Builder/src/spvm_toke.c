@@ -1487,15 +1487,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         // Numeric literal
         else if (isdigit(ch)) {
-          const char* cur_token_ptr;
+          const char* number_literal_begin_ptr;
           
           // If the before character is "-", go back by one character
           if (before_char_is_minus) {
-            cur_token_ptr = compiler->bufptr - 1;
+            number_literal_begin_ptr = compiler->bufptr - 1;
             before_char_is_minus = 0;
           }
           else {
-            cur_token_ptr = compiler->bufptr;
+            number_literal_begin_ptr = compiler->bufptr;
           }
           
           int32_t digit = 0;
@@ -1570,7 +1570,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           // First is space for + or -
-          int32_t str_len = (compiler->bufptr - cur_token_ptr);
+          int32_t str_len = (compiler->bufptr - number_literal_begin_ptr);
           
           // Ignore under line
           int32_t num_str_memoyr_blocks_count = compiler->allocator->memory_blocks_count_tmp;
@@ -1579,8 +1579,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           {
             int32_t i;
             for (i = 0; i < str_len; i++) {
-              if (*(cur_token_ptr + i) != '_') {
-                *(num_str + pos) = *(cur_token_ptr + i);
+              if (*(number_literal_begin_ptr + i) != '_') {
+                *(num_str + pos) = *(number_literal_begin_ptr + i);
                 pos++;
               }
             }
