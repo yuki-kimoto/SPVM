@@ -5,8 +5,7 @@ Revision history for SPVM
         
         [SPECIFICATION FIX]
         * "+" just before integer literal is tokenized as an unary operator.
-        
-        [NON BACKWORD COMPATIBLE CHANGES]
+        * C<-> can be at the beginning of integer literal of hex, octet, binary notations.
         
 0.9516  2022-05-11
         [CHANGE]

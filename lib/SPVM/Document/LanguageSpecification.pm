@@ -452,7 +452,7 @@ B<Examples:>
 
 Hexadecimal Notation of Integer Literal is represented by the following rule.
 
-Hexadecimal Notation of Integer Literal begins with C<0x> or C<0X>.
+C<-> can be at the beginning, and Hexadecimal Notation of Integer Literal begins with C<0x> or C<0X>.
 
 It is followed by one or more consecutive characters C<0> to C<9>, C<a> to C<f>, or C<A> to C<F>.
 
@@ -468,6 +468,8 @@ B<Examples:>
 =head3 Integer Literal Octal Notation
 
 Octal Notation of Integer Literal is represented by the following rule.
+
+C<-> can be at the beginning.
 
 Octal Notation of Integer Literal begins with C<0>.
 
@@ -485,6 +487,8 @@ B<Examples:>
 =head3 Integer Literal Binary Notation
 
 Binary Notation of Integer Literal is represented by the following rule.
+
+C<-> can be at the beginning.
 
 Binary Notation of Integer Literal begins with C<0b> or C<0B>.
 
@@ -506,7 +510,7 @@ Floating Point Literal is composed of B<Sign Part>, B<Numeric Part>, B<Exponent 
 
 Floating Point Literal is B<Decimal Floating Point Literal> or B<Hexadecimal Floating Point Literal>.
 
-B<Sign Part> is represented by C<->. Sign Part is optional.
+C<-> can be at the beginning.
 
 Numeric Part of Decimal Floating Point Literal begins one or more C<0> to C<9>.
 
