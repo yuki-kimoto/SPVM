@@ -3,6 +3,11 @@ Revision history for SPVM
         [BUG FIX]
         * Fix the bug Github #212. Tests fail when perl is built with -DDEBUGGING set in ccflags [rt.cpan.org #142336].
         
+        [SPECIFICATION FIX]
+        * "+" just before integer literal is tokenized as an unary operator.
+        
+        [NON BACKWORD COMPATIBLE CHANGES]
+        
 0.9516  2022-05-11
         [CHANGE]
         * Improve symbol name checking.

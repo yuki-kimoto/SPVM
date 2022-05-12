@@ -427,7 +427,7 @@ Numeric literals are the L<integer literal|/"Integer Literal"> and the L<floatin
 
 The interger literal decimal notation is the way to write a integer literal using decimals C<0-9>.
 
-C<+> or C<-> can be at the beginning, and is followed by one or more than one of a decimal C<0-9>.
+C<-> can be at the beginning, and is followed by one or more than one of a decimal C<0-9>.
 
 C<_> can be used as a separator. C<_> has no meaning.
 
@@ -442,7 +442,6 @@ If the return type is the L<long type|/"long Type"> and the value is greater tha
 B<Examples:>
 
   123
-  +123
   -123
   123L
   123l
@@ -507,7 +506,7 @@ Floating Point Literal is composed of B<Sign Part>, B<Numeric Part>, B<Exponent 
 
 Floating Point Literal is B<Decimal Floating Point Literal> or B<Hexadecimal Floating Point Literal>.
 
-B<Sign Part> is represented by C<+> or C<->. Sign Part is optional.
+B<Sign Part> is represented by C<->. Sign Part is optional.
 
 Numeric Part of Decimal Floating Point Literal begins one or more C<0> to C<9>.
 
