@@ -4329,83 +4329,78 @@ See L</"Getting Field"> and L</"Setting Field">.
 
 =head2 Special Assignment Operator
 
-Special Assignment Operator is a L</"Assignment Operator">the L<type assignability|/"Type Assignability"> ,a compilation error will occur
+A special assignment operator is the alias for the combination of a L<operator> and L</"Assignment Operator"> C<=>.
 
-B<List of Special Assignment Operators>
+  LEFT_OPERAND OPERATOR= RIGHTH_OPERAND
 
-List of Special Assignment Operators
+Above is the alias for the following code.
+
+  LEFT_OPERAND = (TYPE_OF_LEFT_OPERAND)(LEFT_OPERAND OPERATOR RIGHTH_OPERAND)
+
+For example, See a C<byte> case.
+
+  # Addition assignment operator
+  $x += 1;
+  
+  # Above is same as the following code.
+  $x = (byte)($x + 1)
+
+The following operators are used as the operators of the special assignment operators.
 
 =begin html
 
 <table>
   <tr>
-    <td>Addition Assignment Operator </td>
+    <td>Addition assignment operator</td>
     <td>+=</td>
   </tr>
   <tr>
-    <td>Subtraction Assignment Operator </td>
+    <td>Subtraction assignment operator</td>
     <td>-=</td>
   </tr>
   <tr>
-    <td>Multiplication Assignment Operator </td>
+    <td>Multiplication assignment operator</td>
     <td>*=</td>
   </tr>
   <tr>
-    <td>Division Assignment Operator </td>
+    <td>Division assignment operator</td>
     <td>/=</td>
   </tr>
   <tr>
-    <td>Remainder Assignment Operator </td>
+    <td>Remainder assignment operator</td>
     <td>%=</td>
   </tr>
   <tr>
-    <td>Bit AND Assignment Operator </td>
+    <td>Bit AND assignment operator</td>
     <td>&=</td>
   </tr>
   <tr>
-    <td>Bit OR Assignment Operator </td>
+    <td>Bit OR assignment operator</td>
     <td>|=</td>
   </tr>
   <tr>
-    <td>Left Shift Assignment Operator </td>
+    <td>Left shift assignment operator</td>
     <td><<=</td>
   </tr>
   <tr>
-    <td>Arithmetic Right Shift Assignment Operator </td>
+    <td>Arithmetic right shift assignment operator</td>
     <td>>>=</td>
   </tr>
   <tr>
-    <td>Logical Right Shift Operator</td>
+    <td>Logical right shift assignment operator</td>
     <td>>>>=</td>
   </tr>
   <tr>
-    <td>Concatenation Operator</td>
+    <td>Concatenation assignment operator</td>
     <td>.=</td>
   </tr>
 </table>
 
 =end html
 
-The Special Assignment Operator is deployed as follows:
-
-  # Before unexpanding
-  LEFT_OPERAND SPECIAL_ASSIGNMENT_OPERATOR RIGHT_OPERAND
-  
-  # After unwinding
-  LEFT_OPERAND ASSIGNMENT_OPERATOR (LEFT_OPERAND TYPE CAST)(LEFT_OPERAND SPECIFIC_OPERATOR RIGHT_OPERAND)
-
-For example, for add assignment Operator, it is expanded as follows:
-
-  # Before unexpanding x is L</"byte Type">
-  $x += 1;
-  
-  # After unwinding
-  $x = (byte)($x + 1)
-
 B<Examples:>
 
-Special Assignment Operator Example
-
+  # Special assignment operators
   $x += 1;
   $x -= 1;
   $x *= 1;
