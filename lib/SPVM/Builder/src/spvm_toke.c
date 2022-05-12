@@ -1638,7 +1638,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
             
             errno = 0;
-            int32_t out_of_range = 0;
             int32_t invalid = 0;
             
             if (digit == 16 || digit == 8 || digit == 2) {
@@ -1661,7 +1660,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 invalid = 1;
               }
               else if (unum > UINT32_MAX || errno == ERANGE) {
-                out_of_range = 1;
+                invalid = 1;
               }
               num.lval = (int64_t)unum;
             }
