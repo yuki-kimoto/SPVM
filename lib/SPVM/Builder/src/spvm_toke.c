@@ -1593,6 +1593,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->bufptr--;
             num_str[pos - 1] = '\0';
           }
+          
+          char* num_str_nosign;
+          if (minus) {
+            num_str_nosign = num_str + 1;
+          }
+          else {
+            num_str_nosign = num_str;
+          }
 
           // Constant
           SPVM_TYPE* constant_type;
