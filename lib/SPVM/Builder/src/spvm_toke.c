@@ -1622,11 +1622,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           
-          char *end;
           SPVM_VALUE num;
           
           // float
           if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
+            char *end;
             num.dval = strtof(num_str, &end);
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid float literal at %s line %d", compiler->cur_file, compiler->cur_line);
@@ -1634,7 +1634,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           // double
           else if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
-            
+            char *end;
             num.dval = strtod(num_str, &end);
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid double literal at %s line %d", compiler->cur_file, compiler->cur_line);
@@ -1660,6 +1660,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               else {
                 assert(0);
               }
+              char *end;
               uint64_t unum = (uint64_t)strtoull(num_str_only_num, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
@@ -1670,6 +1671,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               num.lval = (int64_t)unum;
             }
             else {
+              char *end;
               num.lval = (int64_t)strtoll(num_str, &end, 10);
               if (*end != '\0') {
                 invalid = 1;
@@ -1706,6 +1708,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               else {
                 assert(0);
               }
+              char *end;
               uint64_t unum = (uint64_t)strtoull(num_str_only_num, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
@@ -1716,6 +1719,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               num.lval = (int64_t)unum;
             }
             else {
+              char *end;
               num.lval = (int64_t)strtoll(num_str, &end, 10);
               if (*end != '\0') {
                 invalid = 1;
