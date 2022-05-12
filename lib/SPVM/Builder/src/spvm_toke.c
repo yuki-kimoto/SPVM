@@ -1640,33 +1640,33 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             errno = 0;
             int32_t invalid = 0;
             
+            int32_t parse_start_offset = 0;
             if (digit == 16 || digit == 8 || digit == 2) {
-              char* num_str_only_num;
               if (digit == 16) {
-                num_str_only_num = num_str + 2;
+                parse_start_offset = 2;
               }
               else if (digit == 8) {
-                num_str_only_num = num_str + 1;
+                parse_start_offset = 1;
               }
               else if (digit == 2) {
-                num_str_only_num = num_str + 2;
+                parse_start_offset = 2;
               }
               else {
                 assert(0);
               }
               char *end;
-              uint64_t unum = (uint64_t)strtoull(num_str_only_num, &end, digit);
+              uint64_t num_uint64_nosign = (uint64_t)strtoull(num_str + parse_start_offset, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
               }
-              else if (unum > UINT32_MAX || errno == ERANGE) {
+              else if (num_uint64_nosign > UINT32_MAX || errno == ERANGE) {
                 invalid = 1;
               }
-              num.lval = (int64_t)unum;
+              num.ival = minus ? (int32_t)-num_uint64_nosign : (int32_t)num_uint64_nosign;
             }
             else {
               char *end;
-              uint64_t num_uint64_nosign = strtoull(num_str_nosign, &end, 10);
+              uint64_t num_uint64_nosign = strtoull(num_str_nosign + parse_start_offset, &end, digit);
               
               if (*end != '\0') {
                 invalid = 1;
