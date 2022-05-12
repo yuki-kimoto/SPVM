@@ -443,4 +443,15 @@ sub print_error_messages {
   }
 }
 
+# Subtraction Operator
+{
+  # The beginning of the number is an integer literal
+  {
+    {
+      my $source = 'class Tmp { static method main : void () { my $num = 0; $num-2; } }';
+      compile_not_ok($source, qr/Unexpected token "-2"/);
+    }
+  }
+}
+
 done_testing;
