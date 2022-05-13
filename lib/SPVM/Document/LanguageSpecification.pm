@@ -427,9 +427,9 @@ Numeric literals are the L<integer literal|/"Integer Literal"> and the L<floatin
 
 The interger literal decimal notation is the way to write a integer literal using decimals C<0-9>.
 
-C<-> can be at the beginning, and is followed by one or more than one of a decimal C<0-9>.
+C<-> can be at the beginning, and is followed by one or more than one of C<0-9>.
 
-C<_> can be used as a separator. C<_> has no meaning.
+C<_> can be used as a separator in the any positions after the first C<0-9>. C<_> has no meaning.
 
 The suffix C<L> or C<l> can be at the end.
 
