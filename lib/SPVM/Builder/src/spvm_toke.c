@@ -1623,7 +1623,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (constant_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
             
             errno = 0;
-            int32_t invalid = 0;
+            int32_t out_of_range = 0;
             
             int32_t parse_start_offset;
             if (digit == 16) {
@@ -1645,33 +1645,33 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             char *end;
             uint64_t num_uint64_nosign = strtoull(numeric_literal + parse_start_offset, &end, digit);
             if (*end != '\0') {
-              invalid = 1;
+              out_of_range = 1;
             }
             else if (errno == ERANGE) {
-              invalid = 1;
+              out_of_range = 1;
             }
             else {
               if (digit == 16 || digit == 8 || digit == 2) {
                 if (num_uint64_nosign > UINT32_MAX) {
-                  invalid = 1;
+                  out_of_range = 1;
                 }
               }
               else {
                 if (minus) {
                   if (num_uint64_nosign > ((uint32_t)INT32_MAX + 1)) {
-                    invalid = 1;
+                    out_of_range = 1;
                   }
                 }
                 else {
                   if (num_uint64_nosign > INT32_MAX) {
-                    invalid = 1;
+                    out_of_range = 1;
                   }
                 }
               }
             }
             
-            if (invalid) {
-              SPVM_COMPILER_error(compiler, "The literal \"%s%s\" is invalid integer decimal notation at %s line %d", minus ? "-" : "", numeric_literal, compiler->cur_file, compiler->cur_line);
+            if (out_of_range) {
+              SPVM_COMPILER_error(compiler, "The numeric literal \"%s%s\" is out of the range of maximum and minimum values of int type at %s line %d", minus ? "-" : "", numeric_literal, compiler->cur_file, compiler->cur_line);
             }
             
             if (digit == 16 || digit == 8 || digit == 2) {
