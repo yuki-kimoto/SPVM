@@ -445,6 +445,21 @@ sub print_error_messages {
   # Integer literal
   {
     compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange', qr/The numeric literal "8232624535311216194" is out of the range of maximum and minimum values of int type/);
+    {
+      # Invalid "_"
+      my $source = 'class Tmp { static method main : void () { _-123 } }';
+      compile_not_ok($source, qr/Unexpected token "-123"/);
+    }
+    {
+      # Invalid "_"
+      my $source = 'class Tmp { static method main : void () { -_123 } }';
+      compile_not_ok($source, qr/Unexpected token "}"/);
+    }
+    {
+      # Invalid "_"
+      my $source = 'class Tmp { static method main : void () { 123L_ } }';
+      compile_not_ok($source, qr/Unexpected token "_"/);
+    }
   }
   
   # Caharater
