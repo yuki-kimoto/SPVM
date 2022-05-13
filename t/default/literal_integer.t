@@ -19,12 +19,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Integer Literal - hex notation
 {
-  ok(SPVM::TestCase::Literal::Integer->hex_all_numbers());
-  ok(SPVM::TestCase::Literal::Integer->hex_all_f());
-  ok(SPVM::TestCase::Literal::Integer->hex_max_int());
-  ok(SPVM::TestCase::Literal::Integer->hex_min_int());
-  ok(SPVM::TestCase::Literal::Integer->hex_combination());
-  ok(SPVM::TestCase::Literal::Integer->hex_long_all_f());
+  ok(SPVM::TestCase::Literal::Integer->integer_literal_hex_notation);
 }
 
 # Integer Literal - octal notation
