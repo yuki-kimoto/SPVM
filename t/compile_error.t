@@ -444,45 +444,49 @@ sub print_error_messages {
 {
   # Integer literal
   {
-    compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange', qr/The numeric literal "8232624535311216194" is out of range of maximum and minimum values of int type/);
+    # Integer literal decimal notation
     {
-      # Greater than int max value
-      my $source = 'class Tmp { static method main : void () { 2147483648; } }';
-      compile_not_ok($source, qr/The numeric literal "2147483648" is out of range of maximum and minimum values of int type/);
-    }
-    {
-      # Less than int minimal value
-      my $source = 'class Tmp { static method main : void () { -2147483649; } }';
-      compile_not_ok($source, qr/The numeric literal "-2147483649" is out of range of maximum and minimum values of int type/);
-    }
-    {
-      # Greater than long max value
-      my $source = 'class Tmp { static method main : void () { 9223372036854775808L; } }';
-      compile_not_ok($source, qr/The numeric literal "9223372036854775808L" is out of range of maximum and minimum values of long type/);
-    }
-    {
-      # Less than long minimal value
-      my $source = 'class Tmp { static method main : void () { -9223372036854775809L; } }';
-      compile_not_ok($source, qr/The numeric literal "-9223372036854775809L" is out of range of maximum and minimum values of long type/);
-    }
-    {
-      # Invalid "_"
-      my $source = 'class Tmp { static method main : void () { _-123; } }';
-      compile_not_ok($source, qr/Unexpected token "-123"/);
-    }
-    {
-      # Invalid "_"
-      my $source = 'class Tmp { static method main : void () { -_123; } }';
-      compile_not_ok($source, qr/Unexpected token ";"/);
-    }
-    {
-      # Invalid "_"
-      my $source = 'class Tmp { static method main : void () { 123L_; } }';
-      compile_not_ok($source, qr/Unexpected token "_"/);
+      compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange', qr/The numeric literal "8232624535311216194" is out of range of maximum and minimum values of int type/);
+      {
+        # Greater than int max value
+        my $source = 'class Tmp { static method main : void () { 2147483648; } }';
+        compile_not_ok($source, qr/The numeric literal "2147483648" is out of range of maximum and minimum values of int type/);
+      }
+      {
+        # Less than int minimal value
+        my $source = 'class Tmp { static method main : void () { -2147483649; } }';
+        compile_not_ok($source, qr/The numeric literal "-2147483649" is out of range of maximum and minimum values of int type/);
+      }
+      {
+        # Greater than long max value
+        my $source = 'class Tmp { static method main : void () { 9223372036854775808L; } }';
+        compile_not_ok($source, qr/The numeric literal "9223372036854775808L" is out of range of maximum and minimum values of long type/);
+      }
+      {
+        # Less than long minimal value
+        my $source = 'class Tmp { static method main : void () { -9223372036854775809L; } }';
+        compile_not_ok($source, qr/The numeric literal "-9223372036854775809L" is out of range of maximum and minimum values of long type/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { _-123; } }';
+        compile_not_ok($source, qr/Unexpected token "-123"/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { -_123; } }';
+        compile_not_ok($source, qr/Unexpected token ";"/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { 123L_; } }';
+        compile_not_ok($source, qr/Unexpected token "_"/);
+      }
     }
   }
   
-  # Caharater
+  
+  # Caharater literal
   {
     compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty');
     compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteral');
