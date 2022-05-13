@@ -425,7 +425,7 @@ Numeric literals are the L<integer literal|/"Integer Literal"> and the L<floatin
 
 =head3 Integer Literal Decimal Notation
 
-The interger literal decimal notation is the way to write a integer literal using decimals C<0-9>.
+The interger literal decimal notation is the way to write an integer literal using decimal numbers C<0-9>.
 
 C<-> can be at the beginning, and is followed by one or more than one of C<0-9>.
 
@@ -450,7 +450,7 @@ B<Examples:>
 
 =head3 Integer Literal Hexadecimal Notation
 
-The interger literal hexadecimal notation is the way to write a integer literal using hexadecimals C<0-9a-zA-Z>.
+The interger literal hexadecimal notation is the way to write an integer literal using hexadecimal numbers C<0-9a-zA-Z>.
 
 C<-> can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more than one C<0-9a-zA-Z>.
 
