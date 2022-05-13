@@ -410,20 +410,130 @@ class TestCase::Literal::Integer {
     return 1;
   }
   
-  # binary
-  static method binary_all_numbers : int () {
-    my $all_numbers = 0b10101010;
-    unless ($all_numbers == 170) {
-      return 0;
-    }
-    return 1;
-  }
-  static method binary_combination : int () {
-    my $combination = -0b11111111_1111111111111111111111111111111111111111111111111111111L;
-    unless ($combination == -9223372036854775807L) {
-      return 0;
+  static method integer_literal_binary_notation : int () {
+    # 0-1
+    {
+      my $all_numbers1 = 0b10;
+      unless ($all_numbers1 isa int) {
+        return 0;
+      }
+      unless ($all_numbers1 == 2) {
+        return 0;
+      }
     }
     
+    # L suffix
+    {
+      my $all_numbers1 = 0b10L;
+      unless ($all_numbers1 isa long) {
+        return 0;
+      }
+      unless ($all_numbers1 == 2L) {
+        return 0;
+      }
+    }
+
+    # l suffix
+    {
+      my $all_numbers1 = 0b10l;
+      unless ($all_numbers1 isa long) {
+        return 0;
+      }
+      unless ($all_numbers1 == 2l) {
+        return 0;
+      }
+    }
+
+    # 0B
+    {
+      my $all_numbers1 = 0B10;
+      unless ($all_numbers1 isa int) {
+        return 0;
+      }
+      unless ($all_numbers1 == 2) {
+        return 0;
+      }
+    }
+    
+    # Max int value
+    {
+      my $max_int = 0b11111111111111111111111111111111;
+      unless ($max_int == -1) {
+        return 0;
+      }
+    }
+
+    # Max int value with "-"
+    {
+      my $max_int_minus = -0b11111111111111111111111111111111;
+      unless ($max_int_minus == 1) {
+        return 0;
+      }
+    }
+
+    # Max long value
+    {
+      my $max_long = 0b1111111111111111111111111111111111111111111111111111111111111111L;
+      unless ($max_long == -1L) {
+        return 0;
+      }
+    }
+
+    # Max long value with "-"
+    {
+      my $max_long = -0b1111111111111111111111111111111111111111111111111111111111111111L;
+      unless ($max_long == 1L) {
+        return 0;
+      }
+    }
+
+    # Separator
+    {
+      # Simple
+      {
+        my $separator = 0b10_10_10_10;
+        unless ($separator == 170) {
+          return 0;
+        }
+      }
+
+      # More complex
+      {
+        my $separator = 0b_10_10_10_10_L;
+        
+        unless ($separator isa long) {
+          return 0;
+        }
+        unless ($separator == 170) {
+          return 0;
+        }
+      }
+    }
+
+    # Combination with the unary "+" operator
+    {
+      my $plus_max = +0b10;
+      unless ($plus_max == 0b10) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method integer_literal_binary_notation_extra : int () {
+    {
+      my $all_numbers = 0b10101010;
+      unless ($all_numbers == 170) {
+        return 0;
+      }
+    }
+    {
+      my $combination = -0b11111111_1111111111111111111111111111111111111111111111111111111L;
+      unless ($combination == -9223372036854775807L) {
+        return 0;
+      }
+    }
     return 1;
   }
 }

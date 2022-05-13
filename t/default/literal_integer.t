@@ -31,8 +31,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Integer Literal - binary notation
 {
-  ok(SPVM::TestCase::Literal::Integer->binary_all_numbers());
-  ok(SPVM::TestCase::Literal::Integer->binary_combination());
+  ok(SPVM::TestCase::Literal::Integer->integer_literal_binary_notation);
+  ok(SPVM::TestCase::Literal::Integer->integer_literal_binary_notation_extra);
 }
 
 # All object is freed
