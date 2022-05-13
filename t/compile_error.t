@@ -496,6 +496,21 @@ sub print_error_messages {
         my $source = 'class Tmp { static method main : void () { 0x10000000000000000L; } }';
         compile_not_ok($source, qr/The numeric literal "0x10000000000000000L" is out of range of maximum and minimum values of long type at/);
       }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { _-0xFF; } }';
+        compile_not_ok($source, qr/Unexpected token "-0xFF"/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { -0_xFF; } }';
+        compile_not_ok($source, qr/Unexpected token "xFF"/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { 0xFFL_; } }';
+        compile_not_ok($source, qr/Unexpected token "_"/);
+      }
     }
   }
   
