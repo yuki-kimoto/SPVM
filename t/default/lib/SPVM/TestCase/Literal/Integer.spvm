@@ -46,24 +46,32 @@ class TestCase::Literal::Integer {
     
     # Max int value
     {
-      my $plus_max = 2147483647;
-      unless ($plus_max == 2147483646 + 1) {
+      my $int_max = 2147483647;
+      unless ($int_max == 2147483646 + 1) {
         return 0;
       }
     }
 
     # Minimal int value
     {
-      my $minus_max = -2147483648;
-      unless ($minus_max == -2147483647 - 1) {
+      my $int_min = -2147483648;
+      unless ($int_min == -2147483647 - 1) {
+        return 0;
+      }
+    }
+
+    # Max long value
+    {
+      my $long_max = 9223372036854775807L;
+      unless ($long_max == 9223372036854775806L + 1L) {
         return 0;
       }
     }
     
-    # Max long value
+    # Minimal long value
     {
-      my $long_minus_max = -9223372036854775808L;
-      unless ($long_minus_max == -9223372036854775807L - 1L) {
+      my $long_min = -9223372036854775808L;
+      unless ($long_min == -9223372036854775807L - 1L) {
         return 0;
       }
     }
