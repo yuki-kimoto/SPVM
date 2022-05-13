@@ -133,20 +133,6 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::OArray::AssignNumericArray');
 }
 
-# Literal
-{
-  # Caharater
-  {
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty');
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteral');
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::NotEnd');
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii1');
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii2');
-  }
-  # Integer
-  compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange');
-}
-
 # Enum
 {
   compile_not_ok_file('TestCase::CompileError::Enum::PrivateAccess');
@@ -453,5 +439,23 @@ sub print_error_messages {
     }
   }
 }
+
+# Literal
+{
+  # Integer literal
+  {
+    compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange', qr/The numeric literal "8232624535311216194" is out of the range of maximum and minimum values of int type/);
+  }
+  
+  # Caharater
+  {
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty');
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteral');
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::NotEnd');
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii1');
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii2');
+  }
+}
+
 
 done_testing;
