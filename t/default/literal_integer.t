@@ -16,9 +16,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Decimal Literal
 {
   ok(SPVM::TestCase::Literal::Integer->integer_literal_decimal_notation);
-  ok(SPVM::TestCase::Literal::Integer->decimal_long_minus_max());
-  ok(SPVM::TestCase::Literal::Integer->decimal_long_lower_case());
-  ok(SPVM::TestCase::Literal::Integer->decimal_long_underline());
   ok(SPVM::TestCase::Literal::Integer->decimal_byte_norrowing_convertion());
   ok(SPVM::TestCase::Literal::Integer->decimal_short_norrowing_convertion());
 }

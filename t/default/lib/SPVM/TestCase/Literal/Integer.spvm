@@ -6,7 +6,32 @@ class TestCase::Literal::Integer {
     # 0-9
     {
       my $all_numbers = 1234567890;
+      unless ($all_numbers isa int) {
+        return 0;
+      }
       unless ($all_numbers == 1234567889 + 1) {
+        return 0;
+      }
+    }
+
+    # 0-9 long - suffix L
+    {
+      my $all_numbers = 1234567890L;
+      unless ($all_numbers isa long) {
+        return 0;
+      }
+      unless ($all_numbers == 1234567889L + 1L) {
+        return 0;
+      }
+    }
+
+    # 0-9 long - suffix l
+    {
+      my $all_numbers = 1234567890l;
+      unless ($all_numbers isa long) {
+        return 0;
+      }
+      unless ($all_numbers == 1234567889l + 1l) {
         return 0;
       }
     }
@@ -31,6 +56,14 @@ class TestCase::Literal::Integer {
     {
       my $minus_max = -2147483648;
       unless ($minus_max == -2147483647 - 1) {
+        return 0;
+      }
+    }
+    
+    # Max long value
+    {
+      my $long_minus_max = -9223372036854775808L;
+      unless ($long_minus_max == -9223372036854775807L - 1L) {
         return 0;
       }
     }
@@ -70,27 +103,6 @@ class TestCase::Literal::Integer {
   }
 
   # decimal literal
-  static method decimal_long_minus_max : int () {
-    my $long_minus_max = -9223372036854775808L;
-    unless ($long_minus_max == -9223372036854775807L - 1L) {
-      return 0;
-    }
-    return 1;
-  }
-  static method decimal_long_lower_case : int () {
-    my $long_lower_case = 4l;
-    unless ($long_lower_case == 4L) {
-      return 0;
-    }
-    return 1;
-  }
-  static method decimal_long_underline : int () {
-    my $long_underline = 123_456L;
-    unless ($long_underline == 123456L) {
-      return 0;
-    }
-    return 1;
-  }
   static method decimal_byte_norrowing_convertion : int () {
     my $byte_norrowing_convertion : byte = -128;
     unless ($byte_norrowing_convertion == -128) {
