@@ -498,15 +498,41 @@ B<Examples:>
 
 =head3 Integer Literal Octal Notation
 
-Octal Notation of Integer Literal is represented by the following rule.
+The interger literal octal notation is the way to write an integer literal using octal numbers C<0-7>.
 
-C<-> can be at the beginning.
+C<-> can be at the beginning, and is followed by C<0>, and is followed by one or more than one C<0-7>.
 
-Octal Notation of Integer Literal begins with C<0>.
+C<_> can be used as a separator at the any positions after C<0>. C<_> has no meaning.
 
-It is followed by one or more consecutive characters C<0> to C<7>.
+The suffix C<L> or C<l> can be at the end.
 
-Other rules are same as Decimal Notation of Integer Literal
+If the suffix C<L> or C<l> exists, the return type is the L<long type|/"long Type">. Otherwise the return type is the L<int type|/"int Type">.
+
+If the return type is the L<int type|/"int Type"> and the value that is except for C<-> is greater than octal C<37777777777>, a compilation error will occur.
+
+If the return type is the L<long type|/"long Type"> and the value that is except for C<-> is greater than octal C<1777777777777777777777>, a compilation error will occur.
+
+If the return type is the L<int type|/"int Type">, the value that is except for C<-> is interpreted as unsigned 32 bit integer C<uint32_t> type in C<C language>, and the following conversion is performed.
+
+  uint32_t value_uint32_t;
+  int32_t value_int32_t = (int32_t)value_uint32_t;
+
+And if C<-> exists, the following conversion is performed.
+
+  value_int32_t = -value_int32_t;
+
+For example, C<037777777777> is same as C<-1>, C<-037777777777> is same as C<1>.
+
+If the return type is the L<long type|/"long Type">, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in C<C language>, and the following conversion is performed.
+
+  uint64_t value_uint64_t;
+  value_int64_t = (int64_t)value_uint64_t;
+
+And if C<-> exists, the following conversion is performed.
+
+  value_int64_t = -value_int64_t;
+
+For example, C<01777777777777777777777L> is same as C<-1L>, C<-01777777777777777777777L> is same as C<1L>.
 
 B<Examples:>
 
@@ -517,13 +543,41 @@ B<Examples:>
 
 =head3 Integer Literal Binary Notation
 
-Binary Notation of Integer Literal is represented by the following rule.
+The interger literal binary notation is the way to write an integer literal using binary numbers C<0> and C<1>.
 
-C<-> can be at the beginning.
+C<-> can be at the beginning, and is followed by C<0b> or C<0B>, and is followed by one or more than one C<0> and C<1>.
 
-Binary Notation of Integer Literal begins with C<0b> or C<0B>.
+C<_> can be used as a separator at the any positions after C<0b> or C<0B>. C<_> has no meaning.
 
-It is followed by one or more consecutive characters C<0> or C<1>.
+The suffix C<L> or C<l> can be at the end.
+
+If the suffix C<L> or C<l> exists, the return type is the L<long type|/"long Type">. Otherwise the return type is the L<int type|/"int Type">.
+
+If the return type is the L<int type|/"int Type"> and the value that is except for C<-> is greater than binary C<11111111111111111111111111111111>, a compilation error will occur.
+
+If the return type is the L<long type|/"long Type"> and the value that is except for C<-> is greater than binary C<1111111111111111111111111111111111111111111111111111111111111111>, a compilation error will occur.
+
+If the return type is the L<int type|/"int Type">, the value that is except for C<-> is interpreted as unsigned 32 bit integer C<uint32_t> type in C<C language>, and the following conversion is performed.
+
+  uint32_t value_uint32_t;
+  int32_t value_int32_t = (int32_t)value_uint32_t;
+
+And if C<-> exists, the following conversion is performed.
+
+  value_int32_t = -value_int32_t;
+
+For example, C<0b11111111111111111111111111111111> is same as C<-1>, C<-0b11111111111111111111111111111111> is same as C<1>.
+
+If the return type is the L<long type|/"long Type">, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in C<C language>, and the following conversion is performed.
+
+  uint64_t value_uint64_t;
+  value_int64_t = (int64_t)value_uint64_t;
+
+And if C<-> exists, the following conversion is performed.
+
+  value_int64_t = -value_int64_t;
+
+For example, C<0b1111111111111111111111111111111111111111111111111111111111111111L> is same as C<-1L>, C<-0b1111111111111111111111111111111111111111111111111111111111111111L> is same as C<1L>.
 
 B<Examples:>
 
