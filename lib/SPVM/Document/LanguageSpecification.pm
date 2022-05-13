@@ -543,13 +543,41 @@ B<Examples:>
 
 =head3 Integer Literal Binary Notation
 
-Binary Notation of Integer Literal is represented by the following rule.
+The interger literal binary notation is the way to write an integer literal using binary numbers C<0> and C<1>.
 
-C<-> can be at the beginning.
+C<-> can be at the beginning, and is followed by C<0b> or C<0B>, and is followed by one or more than one C<0> and C<1>.
 
-Binary Notation of Integer Literal begins with C<0b> or C<0B>.
+C<_> can be used as a separator at the any positions after C<0b> or C<0B>. C<_> has no meaning.
 
-It is followed by one or more consecutive characters C<0> or C<1>.
+The suffix C<L> or C<l> can be at the end.
+
+If the suffix C<L> or C<l> exists, the return type is the L<long type|/"long Type">. Otherwise the return type is the L<int type|/"int Type">.
+
+If the return type is the L<int type|/"int Type"> and the value that is except for C<-> is greater than binary C<11111111111111111111111111111111>, a compilation error will occur.
+
+If the return type is the L<long type|/"long Type"> and the value that is except for C<-> is greater than binary C<1111111111111111111111111111111111111111111111111111111111111111>, a compilation error will occur.
+
+If the return type is the L<int type|/"int Type">, the value that is except for C<-> is interpreted as unsigned 32 bit integer C<uint32_t> type in C<C language>, and the following conversion is performed.
+
+  uint32_t value_uint32_t;
+  int32_t value_int32_t = (int32_t)value_uint32_t;
+
+And if C<-> exists, the following conversion is performed.
+
+  value_int32_t = -value_int32_t;
+
+For example, C<0b11111111111111111111111111111111> is same as C<-1>, C<-0b11111111111111111111111111111111> is same as C<1>.
+
+If the return type is the L<long type|/"long Type">, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in C<C language>, and the following conversion is performed.
+
+  uint64_t value_uint64_t;
+  value_int64_t = (int64_t)value_uint64_t;
+
+And if C<-> exists, the following conversion is performed.
+
+  value_int64_t = -value_int64_t;
+
+For example, C<0b1111111111111111111111111111111111111111111111111111111111111111L> is same as C<-1L>, C<-0b1111111111111111111111111111111111111111111111111111111111111111L> is same as C<1L>.
 
 B<Examples:>
 
@@ -3518,6 +3546,527 @@ In the referencec of L<multi-numeric types|/"Multi-Numeric Types">, the deferenc
   # Set a field of a multi-numeric type using a dereference
   $z_ref->{re} = 1;
 
+=head1 Statements
+
+Statements are the parts of syntax that can be written directly under L</"Scope Blocks">.
+
+=head2 empty Statement
+
+An empty statement is a L<statement|/"Statements"> that do nothing and ends with just C<;>.
+
+  ;
+
+=head2 Operator Statement
+
+The operator statement is the L<statement|/"Statements"> that executes an L<operator|/"Operators">.
+
+A operator statement is composed of an L<operator|/"Operators"> and C<;>.
+
+  OPERATOR;
+
+The operator must be a L<value-returing operator|/"Value-Returning Operators">.
+
+B<Examples:>
+
+  1;
+  $var;
+  1 + 2;
+  foo();
+  my $num = 1 + 2;
+
+=head2 if Statement
+
+The C<if> statement is a L<statement|/"Statements"> for conditional branching.
+
+  if (CONDITION) {
+  
+  }
+
+The condition L</"Bool Type Conversion"> is executed and Block is executed if the value is non-zero.
+
+If you want to write more than one condition, you can continue with "elsif Statement". The condition determination is performed from above, and each Expression is L</"Bool Type Conversion"> is executed, and a corresponding Block is executed if the value is non-zero.
+
+  if (CONDITION) {
+  
+  }
+  elsif(CONDITION) {
+  
+  }
+
+You can use C<else> statement to describe what happens if or if the elsif Statement does not meet the criteria. If the if statement and elsif statement condition determination are all false, the statement inside the elseBlock is executed. Elsif Statement does not have to be.
+
+  if (CONDITION) {
+  
+  }
+  elsif (CONDITION) {
+  
+  }
+  else {
+  
+  }
+
+B<Examples:>
+
+  # An example of if Statement.
+  my $flag = 1;
+  
+  if ($flag == 1) {
+    print "One \ n";
+  }
+  elsif ($flag == 2) {
+    print "Tow \ n";
+  }
+  else {
+    print "Other";
+  }
+
+The C<if> Statement is internally surrounded by an invisible Simple Block.
+
+  {
+    if (CONDITION) {
+  
+    }
+  }
+
+C<elsif> is internally expanded into C<if> Statement and C<else> Statement.
+
+  #Before deployment
+  if (CONDITION1) {
+  
+  }
+  elsif (CONDITION2) {
+  
+  }
+  else {
+  
+  }
+  
+  #After deployment
+  if (CONDITION1) {
+  }
+  else {
+    if (CONDITION2) {
+  
+    }
+    else {
+  
+    }
+  }
+
+When a variable is declared in the conditional part of if Statement, it must be surrounded by invisible L</"Simple Block">. Be aware that elsif is internally expanded into if Statement and else Statement.
+
+  #Before deployment
+  my $num = 1;
+  if (my $num = 2) {
+  
+  }
+  elsif (my $num = 3) {
+  
+  }
+  else {
+  
+  }
+  
+  #After deployment
+  my $num = 1;
+  {
+    if (my $num = 2) {
+  
+    }
+    else {
+      {
+        if (my $num = 3) {
+          
+        }
+        else {
+          
+        }
+      }
+    }
+  }
+
+=head2 unless Statement
+
+The C<unless> statement is a L<statement|/"Statements"> for conditional branches. 
+
+  unless (CONDITION) {
+    
+  }
+
+This is the same as the following L<if Statement|/"if Statement">.
+
+  if (!CONDITION) {
+    
+  }
+
+=head2 switch Statement
+
+The C<switch> statement is a L<statement|/"Statements"> for conditional branching with an integer of L</"int Type"> as a condition. Faster than if Statement if the condition is an integer of L</"int Type"> and there are many branches.
+
+  switch (CONDITION) {
+    case constant 1: (
+  
+      break;
+    }
+    case constant 2: {
+  
+      break;
+    }
+    case constant n: {
+      break;
+    }
+    default: {
+  
+    }
+  }
+
+As the condition Expression, L</"Expressions"> can be specified. L</"Bool Type Conversion"> is executed for the condition Expression.
+
+The constants specified in L</"case Statement"> are L</"byte Type"> or L</"int Type"> constants. must be. For a constant of L</"byte Type">, type conversion to L</"int Type"> at compile-time. Will be done. The value of enumType and Constant Method of L</"int Type"> are constants of L</"int Type">. As it is expanded at the time of syntax analysis, it can be used.
+
+The constants specified in the case statement must not overlap. If there are duplicates, a compilation error will occur
+
+If the value specified in the condition Expression matches the value specified in the case statement, jump to the position of that case statement.
+
+If there is no match and a default statement is specified, jump to the default statement position. If no default statement is specified, switch block will not be executed.
+
+A switch statement requires at least one case statement, otherwise a compilation error will occur.
+
+The default Statement is optional.
+
+Only case statement and default statement can be described directly under switch block.
+
+The case and default Blocks can be omitted.
+
+  switch (CONDITION) {
+    case constant 1:
+    case constant 2:
+    {
+      break;
+    }
+    default:
+  }
+
+If you use break Statement, you can exit from the switch block.
+
+  switch (CONDITION) {
+    case constant 1: (
+      break;
+    }
+    case constant 2: {
+      break;
+    }
+    case constant n: {
+      break;
+    }
+    default: {
+  
+    }
+  }
+
+If a case Block exists, the last Statement must be a break Statement or a returnl Statement, otherwise a compilation error will occur.
+
+B<Examples:>
+
+  # switch statements.
+  my $code = 2;
+  switch ($code) {
+    case 1: {
+      print "1 \ n";
+      break;
+    }
+    case 2: {
+      print "2 \ n";
+      break;
+    }
+    case 3: {
+      print "3 \ n";
+      break;
+    }
+    case 4:
+    case 5:
+    {
+      print "4 or 5 \ n"; {
+      break;
+    }
+    default: {
+      print "Other \ n";
+    }
+  }
+
+=head2 case Statement
+
+The C<case> statement is a L<statement|/"Statements"> that can be used in a switch block to specify conditions. For more information on case statements, see the L</"switch Statement"> description.
+
+=head2 default Statement
+
+The C<default> statement is a L<statement|/"Statements"> that can be used in the switch block to specify the default condition. For more information on the default Statement, see the L</"switch Statement"> description.
+
+=head2 while Statement
+
+The C<while> statement is a L<statement|/"Statements"> for repeating.
+
+  while (CONDITION) {
+  
+  }
+
+L</"Expressions"> can be described in the condition Expression. L</"Bool Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
+
+B<Examples:>
+
+An example of a while Statement.
+
+  my $i = 0;
+  while ($i <5) {
+  
+    print "$i \ n";
+  
+    $i++;
+  }
+
+Inside the while block, you can leave the while block by using L</"last Statement">.
+
+  while (1) {
+    last;
+  }
+
+Inside a while block, you can use L</"next Statement"> to move to the condition immediately before the next condition Expression.
+
+  my $i = 0;
+  while ($i <5) {
+  
+    if ($i == 3) {
+      $i++;
+      next;
+    }
+  
+    print "$i \ n";
+    $i++;
+  }
+
+The while Statement is internally enclosed by an invisible L</"Simple Block">.
+
+  {
+    while (CONDITION) {
+    $i++;
+  }
+  
+  # After expansion
+  my $num = 5;
+  {
+    while (my $num = 3) {
+  
+      $i++;
+    }
+  }
+
+=head2 for Statement
+
+The C<for> Statement is a L<statement|/"Statements"> for repeating.
+
+  for (INIT_STATEMENT; CONDITION; INCREMENT_STATEMENT) {
+  
+  }
+
+L</"Expressions"> can be described in the initialization Expression. Generally, write Expression such as initialization of loop variable. Initialization Expression can be omitted.
+
+Condition Expression, L</"Expressions"> can be described. L</"Bool Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise block.
+
+L</"Expressions"> can be described in INCREMENT_STATEMENT. Generally, Expression of Increment of loop variable is described. INCREMENT_STATEMENT can be omitted.
+
+for Statement has the same meaning as the following while Statement. INCREMENT_STATEMENT is executed at the end of Block. Initialization Expression is enclosed in L</"Simple Block">.
+
+  {
+    INIT_STATEMENT;
+    while (CONDITION) {
+  
+  
+      INCREMENT_STATEMENT;
+    }
+  }
+
+B<Exampels fo for statements:>
+
+  # for statements
+  for (my $i = 0; $i <5; $i++) {
+  
+    print "$i \ n";
+  }
+
+Inside the for Block, you can exit the for Block using L</"last Statement">.
+
+  for (INIT_STATEMENT; CONDITION; INCREMENT_STATEMENT) {
+  
+  }
+
+Inside the for Block, you can use L</"next Statement"> to move immediately before the next INCREMENT_STATEMENT to be executed.
+
+  for (my $i = 0; $i <5; $i++) {
+  
+    if ($i == 3) {
+      next;
+    }
+  }
+
+=head2 return Statement
+
+The C<return> statement is a L<statement|/"Statements"> to get out of the method. The object assigned to the mortal variable is automatically released.
+
+  return;
+
+If there is a Return Value, L</"Expressions"> can be specified.
+
+  return EXPRESSION;
+
+If the Return Value Type in L</"Method Definition"> is L</"void Type">, Expression Must not exist, otherwise a compilation error will occur.
+
+L</"Method Definition">, if the Return Value Type is other than L</"void Type">, Expression Must match the type of, otherwise a compilation error will occur.
+
+=head2 next Statement
+
+The C<next> statement is a L<statement|/"Statements"> to move to the beginning of the next loop block.
+
+  next;
+
+See also L</"while Statement">, L</"for Statement">.
+
+=head2 last Statement
+
+The C<last> statement" is a L<statement|/"Statements"> to move to the outside of the loop block.
+
+  last;
+
+See also L</"while Statement">, L</"for Statement">.
+
+=head2 break Statement
+
+The C<break> statement is a L<statement|/"Statements"> to move to the outside of the L<switch block|/"switch Block">.
+
+  break;
+
+See also L</"switch Statement">.
+
+=head2 warn Statement
+
+The C<warn> statement is a L<statement|/"Statements"> to print a warning string to the standard error.
+
+  warn OPERNAD;
+
+The operand must be L</"String Type">.
+
+If the end character of the string is C<\n>, C<warn> statement prints the string itself.
+
+If not, the current file name and current line number are added to the end of the string.
+
+If the value of the operand is an L<undef|/"Undefined Value">, print "Warning: something's wrong".
+
+The buffer of the standard error is flushed after the printing.
+
+=head2 die Statement
+
+The C<die> statement is a L<statement|/"Statements"> to L<throw an exception|/"Throwing Exception">.
+
+  die OPERAND;
+
+The operand must be the L<string type|/"String Type">. If not a compilation error will occur.
+
+You can specify the error message to the operand.
+
+  # Throw an exception
+  die "Error";
+
+The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
+
+If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error code C<255>.
+
+The stack traces constain the class names, the method names, the file names and the line numbers.
+
+  Error
+  from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
+  from TestCase->main at SPVM/TestCase.spvm line 1198
+
+The exception can be catched using an L<eval block|/"Exception Catching">.
+
+B<Examples:>
+  
+  # Catch the exception
+  eval {
+    # Throw an exception
+    die "Error";
+  };
+  
+  # Check the exception
+  if ($@) {
+    # ...
+  }
+
+=head2 print Statement
+
+The C<print> statement is a L<statement|/"Statements"> to print a L<string|/"String"> to the standard output.
+
+  print OPERAND;
+
+The oeprand must be a L<string type|/"String Type">.
+
+If the value of the operand is an L<undef|/"Undefined Value">, print nothing.
+
+=head2 make_read_only Statement
+
+The C<make_read_only> statement is a L<statement|/"Statements"> to make the L<string|/"Strings"> read-only.
+
+  make_read_only OPERAND;
+
+The oeprand must be a L<string type|/"String Type">.
+
+Read-only strings can't be cast to L<string type|/"String Type"> qualified by L<mutable|/"mutable Type Qualifier">.
+
+  # A string
+  my $string = new_string_len 3;
+  
+  # Make the string read-only
+  make_read_only $string;
+  
+  # The conversion to the string type qualified by mutable throw an exception.
+  my $string_mut = (mutable string)$string;
+
+=head2 weaken Statement
+
+The C<weaken> statement is a L<statement|/"Statements"> to create a L<weak reference|/"Weak Reference">.
+
+  weaken OBJECT->{FIELD_NAME};
+
+The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
+
+If the field name is not found, a compilation error will occur.
+
+The type of the field targetted by the C<weaken> statement is not an L<object type|/"Object Types">, a compilation error will occur.
+
+See L</"Weak Reference"> to know the behavior of the C<weaken> statement.
+
+B<Examples:>
+
+  # weaken
+  weaken $object->{point};
+
+=head2 unweaken Statement
+
+The C<unweaken> statement is a L<statement|/"Statements"> to unweakens a L<weak reference|/"Weak Reference">.
+
+  unweaken OBJECT->{FIELD_NAME};
+
+The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
+
+If the field name is not found, a compilation error will occur.
+
+The type of the field targetted by the C<unweaken> statement is not an L<object type|/"Object Types">, a compilation error will occur.
+
+See L</"Weak Reference"> to know the behavior of the C<unweaken> statement.
+
+B<Examples:>
+
+  # unweaken
+  unweaken $object->{point};
+
 =head1 Operators
 
 B<Operators> are L</"Unary Operators">, L</"Binary Operators">, L</"Increment Operator">, L</"Decrement Operator">, L</"Comparison Operator">, L</"Logical Operators">, and L</"Assignment Operator">.
@@ -5362,527 +5911,6 @@ The above example is same as the following codes.
       print "$self->{bar}\n";
     }
   }
-
-=head1 Statements
-
-Statements are the parts of syntax that can be written directly under L</"Scope Blocks">.
-
-=head2 empty Statement
-
-An empty statement is a L<statement|/"Statements"> that do nothing and ends with just C<;>.
-
-  ;
-
-=head2 Operator Statement
-
-The operator statement is the L<statement|/"Statements"> that executes an L<operator|/"Operators">.
-
-A operator statement is composed of an L<operator|/"Operators"> and C<;>.
-
-  OPERATOR;
-
-The operator must be a L<value-returing operator|/"Value-Returning Operators">.
-
-B<Examples:>
-
-  1;
-  $var;
-  1 + 2;
-  foo();
-  my $num = 1 + 2;
-
-=head2 if Statement
-
-The C<if> statement is a L<statement|/"Statements"> for conditional branching.
-
-  if (CONDITION) {
-  
-  }
-
-The condition L</"Bool Type Conversion"> is executed and Block is executed if the value is non-zero.
-
-If you want to write more than one condition, you can continue with "elsif Statement". The condition determination is performed from above, and each Expression is L</"Bool Type Conversion"> is executed, and a corresponding Block is executed if the value is non-zero.
-
-  if (CONDITION) {
-  
-  }
-  elsif(CONDITION) {
-  
-  }
-
-You can use C<else> statement to describe what happens if or if the elsif Statement does not meet the criteria. If the if statement and elsif statement condition determination are all false, the statement inside the elseBlock is executed. Elsif Statement does not have to be.
-
-  if (CONDITION) {
-  
-  }
-  elsif (CONDITION) {
-  
-  }
-  else {
-  
-  }
-
-B<Examples:>
-
-  # An example of if Statement.
-  my $flag = 1;
-  
-  if ($flag == 1) {
-    print "One \ n";
-  }
-  elsif ($flag == 2) {
-    print "Tow \ n";
-  }
-  else {
-    print "Other";
-  }
-
-The C<if> Statement is internally surrounded by an invisible Simple Block.
-
-  {
-    if (CONDITION) {
-  
-    }
-  }
-
-C<elsif> is internally expanded into C<if> Statement and C<else> Statement.
-
-  #Before deployment
-  if (CONDITION1) {
-  
-  }
-  elsif (CONDITION2) {
-  
-  }
-  else {
-  
-  }
-  
-  #After deployment
-  if (CONDITION1) {
-  }
-  else {
-    if (CONDITION2) {
-  
-    }
-    else {
-  
-    }
-  }
-
-When a variable is declared in the conditional part of if Statement, it must be surrounded by invisible L</"Simple Block">. Be aware that elsif is internally expanded into if Statement and else Statement.
-
-  #Before deployment
-  my $num = 1;
-  if (my $num = 2) {
-  
-  }
-  elsif (my $num = 3) {
-  
-  }
-  else {
-  
-  }
-  
-  #After deployment
-  my $num = 1;
-  {
-    if (my $num = 2) {
-  
-    }
-    else {
-      {
-        if (my $num = 3) {
-          
-        }
-        else {
-          
-        }
-      }
-    }
-  }
-
-=head2 unless Statement
-
-The C<unless> statement is a L<statement|/"Statements"> for conditional branches. 
-
-  unless (CONDITION) {
-    
-  }
-
-This is the same as the following L<if Statement|/"if Statement">.
-
-  if (!CONDITION) {
-    
-  }
-
-=head2 switch Statement
-
-The C<switch> statement is a L<statement|/"Statements"> for conditional branching with an integer of L</"int Type"> as a condition. Faster than if Statement if the condition is an integer of L</"int Type"> and there are many branches.
-
-  switch (CONDITION) {
-    case constant 1: (
-  
-      break;
-    }
-    case constant 2: {
-  
-      break;
-    }
-    case constant n: {
-      break;
-    }
-    default: {
-  
-    }
-  }
-
-As the condition Expression, L</"Expressions"> can be specified. L</"Bool Type Conversion"> is executed for the condition Expression.
-
-The constants specified in L</"case Statement"> are L</"byte Type"> or L</"int Type"> constants. must be. For a constant of L</"byte Type">, type conversion to L</"int Type"> at compile-time. Will be done. The value of enumType and Constant Method of L</"int Type"> are constants of L</"int Type">. As it is expanded at the time of syntax analysis, it can be used.
-
-The constants specified in the case statement must not overlap. If there are duplicates, a compilation error will occur
-
-If the value specified in the condition Expression matches the value specified in the case statement, jump to the position of that case statement.
-
-If there is no match and a default statement is specified, jump to the default statement position. If no default statement is specified, switch block will not be executed.
-
-A switch statement requires at least one case statement, otherwise a compilation error will occur.
-
-The default Statement is optional.
-
-Only case statement and default statement can be described directly under switch block.
-
-The case and default Blocks can be omitted.
-
-  switch (CONDITION) {
-    case constant 1:
-    case constant 2:
-    {
-      break;
-    }
-    default:
-  }
-
-If you use break Statement, you can exit from the switch block.
-
-  switch (CONDITION) {
-    case constant 1: (
-      break;
-    }
-    case constant 2: {
-      break;
-    }
-    case constant n: {
-      break;
-    }
-    default: {
-  
-    }
-  }
-
-If a case Block exists, the last Statement must be a break Statement or a returnl Statement, otherwise a compilation error will occur.
-
-B<Examples:>
-
-  # switch statements.
-  my $code = 2;
-  switch ($code) {
-    case 1: {
-      print "1 \ n";
-      break;
-    }
-    case 2: {
-      print "2 \ n";
-      break;
-    }
-    case 3: {
-      print "3 \ n";
-      break;
-    }
-    case 4:
-    case 5:
-    {
-      print "4 or 5 \ n"; {
-      break;
-    }
-    default: {
-      print "Other \ n";
-    }
-  }
-
-=head2 case Statement
-
-The C<case> statement is a L<statement|/"Statements"> that can be used in a switch block to specify conditions. For more information on case statements, see the L</"switch Statement"> description.
-
-=head2 default Statement
-
-The C<default> statement is a L<statement|/"Statements"> that can be used in the switch block to specify the default condition. For more information on the default Statement, see the L</"switch Statement"> description.
-
-=head2 while Statement
-
-The C<while> statement is a L<statement|/"Statements"> for repeating.
-
-  while (CONDITION) {
-  
-  }
-
-L</"Expressions"> can be described in the condition Expression. L</"Bool Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
-
-B<Examples:>
-
-An example of a while Statement.
-
-  my $i = 0;
-  while ($i <5) {
-  
-    print "$i \ n";
-  
-    $i++;
-  }
-
-Inside the while block, you can leave the while block by using L</"last Statement">.
-
-  while (1) {
-    last;
-  }
-
-Inside a while block, you can use L</"next Statement"> to move to the condition immediately before the next condition Expression.
-
-  my $i = 0;
-  while ($i <5) {
-  
-    if ($i == 3) {
-      $i++;
-      next;
-    }
-  
-    print "$i \ n";
-    $i++;
-  }
-
-The while Statement is internally enclosed by an invisible L</"Simple Block">.
-
-  {
-    while (CONDITION) {
-    $i++;
-  }
-  
-  # After expansion
-  my $num = 5;
-  {
-    while (my $num = 3) {
-  
-      $i++;
-    }
-  }
-
-=head2 for Statement
-
-The C<for> Statement is a L<statement|/"Statements"> for repeating.
-
-  for (INIT_STATEMENT; CONDITION; INCREMENT_STATEMENT) {
-  
-  }
-
-L</"Expressions"> can be described in the initialization Expression. Generally, write Expression such as initialization of loop variable. Initialization Expression can be omitted.
-
-Condition Expression, L</"Expressions"> can be described. L</"Bool Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise block.
-
-L</"Expressions"> can be described in INCREMENT_STATEMENT. Generally, Expression of Increment of loop variable is described. INCREMENT_STATEMENT can be omitted.
-
-for Statement has the same meaning as the following while Statement. INCREMENT_STATEMENT is executed at the end of Block. Initialization Expression is enclosed in L</"Simple Block">.
-
-  {
-    INIT_STATEMENT;
-    while (CONDITION) {
-  
-  
-      INCREMENT_STATEMENT;
-    }
-  }
-
-B<Exampels fo for statements:>
-
-  # for statements
-  for (my $i = 0; $i <5; $i++) {
-  
-    print "$i \ n";
-  }
-
-Inside the for Block, you can exit the for Block using L</"last Statement">.
-
-  for (INIT_STATEMENT; CONDITION; INCREMENT_STATEMENT) {
-  
-  }
-
-Inside the for Block, you can use L</"next Statement"> to move immediately before the next INCREMENT_STATEMENT to be executed.
-
-  for (my $i = 0; $i <5; $i++) {
-  
-    if ($i == 3) {
-      next;
-    }
-  }
-
-=head2 return Statement
-
-The C<return> statement is a L<statement|/"Statements"> to get out of the method. The object assigned to the mortal variable is automatically released.
-
-  return;
-
-If there is a Return Value, L</"Expressions"> can be specified.
-
-  return EXPRESSION;
-
-If the Return Value Type in L</"Method Definition"> is L</"void Type">, Expression Must not exist, otherwise a compilation error will occur.
-
-L</"Method Definition">, if the Return Value Type is other than L</"void Type">, Expression Must match the type of, otherwise a compilation error will occur.
-
-=head2 next Statement
-
-The C<next> statement is a L<statement|/"Statements"> to move to the beginning of the next loop block.
-
-  next;
-
-See also L</"while Statement">, L</"for Statement">.
-
-=head2 last Statement
-
-The C<last> statement" is a L<statement|/"Statements"> to move to the outside of the loop block.
-
-  last;
-
-See also L</"while Statement">, L</"for Statement">.
-
-=head2 break Statement
-
-The C<break> statement is a L<statement|/"Statements"> to move to the outside of the L<switch block|/"switch Block">.
-
-  break;
-
-See also L</"switch Statement">.
-
-=head2 warn Statement
-
-The C<warn> statement is a L<statement|/"Statements"> to print a warning string to the standard error.
-
-  warn OPERNAD;
-
-The operand must be L</"String Type">.
-
-If the end character of the string is C<\n>, C<warn> statement prints the string itself.
-
-If not, the current file name and current line number are added to the end of the string.
-
-If the value of the operand is an L<undef|/"Undefined Value">, print "Warning: something's wrong".
-
-The buffer of the standard error is flushed after the printing.
-
-=head2 die Statement
-
-The C<die> statement is a L<statement|/"Statements"> to L<throw an exception|/"Throwing Exception">.
-
-  die OPERAND;
-
-The operand must be the L<string type|/"String Type">. If not a compilation error will occur.
-
-You can specify the error message to the operand.
-
-  # Throw an exception
-  die "Error";
-
-The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
-
-If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error code C<255>.
-
-The stack traces constain the class names, the method names, the file names and the line numbers.
-
-  Error
-  from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
-  from TestCase->main at SPVM/TestCase.spvm line 1198
-
-The exception can be catched using an L<eval block|/"Exception Catching">.
-
-B<Examples:>
-  
-  # Catch the exception
-  eval {
-    # Throw an exception
-    die "Error";
-  };
-  
-  # Check the exception
-  if ($@) {
-    # ...
-  }
-
-=head2 print Statement
-
-The C<print> statement is a L<statement|/"Statements"> to print a L<string|/"String"> to the standard output.
-
-  print OPERAND;
-
-The oeprand must be a L<string type|/"String Type">.
-
-If the value of the operand is an L<undef|/"Undefined Value">, print nothing.
-
-=head2 make_read_only Statement
-
-The C<make_read_only> statement is a L<statement|/"Statements"> to make the L<string|/"Strings"> read-only.
-
-  make_read_only OPERAND;
-
-The oeprand must be a L<string type|/"String Type">.
-
-Read-only strings can't be cast to L<string type|/"String Type"> qualified by L<mutable|/"mutable Type Qualifier">.
-
-  # A string
-  my $string = new_string_len 3;
-  
-  # Make the string read-only
-  make_read_only $string;
-  
-  # The conversion to the string type qualified by mutable throw an exception.
-  my $string_mut = (mutable string)$string;
-
-=head2 weaken Statement
-
-The C<weaken> statement is a L<statement|/"Statements"> to create a L<weak reference|/"Weak Reference">.
-
-  weaken OBJECT->{FIELD_NAME};
-
-The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
-
-If the field name is not found, a compilation error will occur.
-
-The type of the field targetted by the C<weaken> statement is not an L<object type|/"Object Types">, a compilation error will occur.
-
-See L</"Weak Reference"> to know the behavior of the C<weaken> statement.
-
-B<Examples:>
-
-  # weaken
-  weaken $object->{point};
-
-=head2 unweaken Statement
-
-The C<unweaken> statement is a L<statement|/"Statements"> to unweakens a L<weak reference|/"Weak Reference">.
-
-  unweaken OBJECT->{FIELD_NAME};
-
-The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
-
-If the field name is not found, a compilation error will occur.
-
-The type of the field targetted by the C<unweaken> statement is not an L<object type|/"Object Types">, a compilation error will occur.
-
-See L</"Weak Reference"> to know the behavior of the C<unweaken> statement.
-
-B<Examples:>
-
-  # unweaken
-  unweaken $object->{point};
 
 =head1 Types
 
