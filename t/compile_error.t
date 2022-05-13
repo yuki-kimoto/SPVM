@@ -536,6 +536,35 @@ sub print_error_messages {
         compile_not_ok($source, qr/Unexpected token "_"/);
       }
     }
+
+    # Integer literal binary notation
+    {
+      {
+        # Greater than int max value
+        my $source = 'class Tmp { static method main : void () { 0b100000000000000000000000000000000; } }';
+        compile_not_ok($source, qr/The numeric literal "0b100000000000000000000000000000000" is out of range of maximum and minimum values of int type at/);
+      }
+      {
+        # Greater than long max value
+        my $source = 'class Tmp { static method main : void () { 0b10000000000000000000000000000000000000000000000000000000000000000L; } }';
+        compile_not_ok($source, qr/The numeric literal "0b10000000000000000000000000000000000000000000000000000000000000000L" is out of range of maximum and minimum values of long type at/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { _-0b11; } }';
+        compile_not_ok($source, qr/Unexpected token "-0b11"/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { -0_b11; } }';
+        compile_not_ok($source, qr/Unexpected token "b11"/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { 0b11L_; } }';
+        compile_not_ok($source, qr/Unexpected token "_"/);
+      }
+    }
   }
   
   
