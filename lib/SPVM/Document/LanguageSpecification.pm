@@ -5812,7 +5812,9 @@ B<Examples:>
 
 =head1 Runtime Type Checking
 
-Some L<type cast|/"Type Cast"> operations have runtime type checking. The L<runtime type assignability/"Runtime Type Assignability"> is used to check the type.
+The runtime type cheking is the type cheking that is performed at runtime.
+
+Some L<type cast|/"Type Cast"> operators performe the runtime type checking using L<runtime type assignability/"Runtime Type Assignability">.
 
 =head1 Type Comment
 
