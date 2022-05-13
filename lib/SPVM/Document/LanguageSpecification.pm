@@ -429,7 +429,7 @@ The interger literal decimal notation is the way to write a integer literal usin
 
 C<-> can be at the beginning, and is followed by one or more than one of C<0-9>.
 
-C<_> can be used as a separator in the any positions after the first C<0-9>. C<_> has no meaning.
+C<_> can be used as a separator at the any positions after the first C<0-9>. C<_> has no meaning.
 
 The suffix C<L> or C<l> can be at the end.
 
@@ -454,11 +454,15 @@ The interger literal hexadecimal notation is the way to write a integer literal 
 
 C<-> can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more than one C<0-9a-zA-Z>.
 
+C<_> can be used as a separator at the any positions after C<0x> or C<0X>. C<_> has no meaning.
+
 The suffix C<L> or C<l> can be at the end.
 
 If the suffix C<L> or C<l> exists, the return type is the L<long type|/"long Type">. Otherwise the return type is the L<int type|/"int Type">.
 
 If the return type is the L<int type|/"int Type"> and the value that is except for C<-> is greater than hexadecimal C<FFFFFFFF>, a compilation error will occur.
+
+If the return type is the L<long type|/"long Type"> and the value that is except for C<-> is greater than hexadecimal C<FFFFFFFFFFFFFFFF>, a compilation error will occur.
 
 If the return type is the L<int type|/"int Type">, the value that is except for C<-> is interpreted as unsigned 32 bit integer C<uint32_t> type in C<C language>, and the following conversion is performed.
 
@@ -470,8 +474,6 @@ And if C<-> exists, the following conversion is performed.
   value_int32_t = -value_int32_t;
 
 For example, C<0xFFFFFFFF> is same as C<-1>, C<-0xFFFFFFFF> is same as C<1>.
-
-If the return type is the L<long type|/"long Type"> and the value that is except for C<-> is greater than hexadecimal C<FFFFFFFFFFFFFFFF>, a compilation error will occur.
 
 If the return type is the L<long type|/"long Type">, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in C<C language>, and the following conversion is performed.
 
