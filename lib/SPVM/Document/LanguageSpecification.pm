@@ -427,7 +427,7 @@ Numeric literals are the L<integer literal|/"Integer Literal"> and the L<floatin
 
 The interger literal decimal notation is the way to write an integer literal using decimal numbers C<0-9>.
 
-C<-> can be at the beginning, and is followed by one or more than one of C<0-9>.
+A minus C<-> can be at the beginning, and is followed by one or more than one of C<0-9>.
 
 C<_> can be used as a separator at the any positions after the first C<0-9>. C<_> has no meaning.
 
@@ -452,7 +452,7 @@ B<Examples:>
 
 The interger literal hexadecimal notation is the way to write an integer literal using hexadecimal numbers C<0-9a-zA-Z>.
 
-C<-> can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more than one C<0-9a-zA-Z>.
+A minus C<-> can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more than one C<0-9a-zA-Z>.
 
 C<_> can be used as a separator at the any positions after C<0x> or C<0X>. C<_> has no meaning.
 
@@ -500,7 +500,7 @@ B<Examples:>
 
 The interger literal octal notation is the way to write an integer literal using octal numbers C<0-7>.
 
-C<-> can be at the beginning, and is followed by C<0>, and is followed by one or more than one C<0-7>.
+A minus C<-> can be at the beginning, and is followed by C<0>, and is followed by one or more than one C<0-7>.
 
 C<_> can be used as a separator at the any positions after C<0>. C<_> has no meaning.
 
@@ -545,7 +545,7 @@ B<Examples:>
 
 The interger literal binary notation is the way to write an integer literal using binary numbers C<0> and C<1>.
 
-C<-> can be at the beginning, and is followed by C<0b> or C<0B>, and is followed by one or more than one C<0> and C<1>.
+A minus C<-> can be at the beginning, and is followed by C<0b> or C<0B>, and is followed by one or more than one C<0> and C<1>.
 
 C<_> can be used as a separator at the any positions after C<0b> or C<0B>. C<_> has no meaning.
 
@@ -595,7 +595,7 @@ Floating Point Literal is composed of B<Sign Part>, B<Numeric Part>, B<Exponent 
 
 Floating Point Literal is B<Decimal Floating Point Literal> or B<Hexadecimal Floating Point Literal>.
 
-C<-> can be at the beginning.
+A minus C<-> can be at the beginning.
 
 Numeric Part of Decimal Floating Point Literal begins one or more C<0> to C<9>.
 
@@ -5044,6 +5044,7 @@ If the type of the right operand is a L<class type|/"Class Type"> and the class 
 Otherwise, the type castability is false.
 
 If the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+
 =begin html
 
 <table>
