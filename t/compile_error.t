@@ -461,6 +461,11 @@ sub print_error_messages {
       compile_not_ok($source, qr/The numeric literal "9223372036854775808L" is out of range of maximum and minimum values of long type/);
     }
     {
+      # Less than long minimal value
+      my $source = 'class Tmp { static method main : void () { -9223372036854775809L; } }';
+      compile_not_ok($source, qr/The numeric literal "-9223372036854775809L" is out of range of maximum and minimum values of long type/);
+    }
+    {
       # Invalid "_"
       my $source = 'class Tmp { static method main : void () { _-123; } }';
       compile_not_ok($source, qr/Unexpected token "-123"/);
