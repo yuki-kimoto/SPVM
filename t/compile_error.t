@@ -512,6 +512,30 @@ sub print_error_messages {
         compile_not_ok($source, qr/Unexpected token "_"/);
       }
     }
+
+    # Integer literal octal notation
+    {
+      {
+        # Greater than int max value
+        my $source = 'class Tmp { static method main : void () { 040000000000; } }';
+        compile_not_ok($source, qr/The numeric literal "040000000000" is out of range of maximum and minimum values of int type at/);
+      }
+      {
+        # Greater than long max value
+        my $source = 'class Tmp { static method main : void () { 0x2000000000000000000000L; } }';
+        compile_not_ok($source, qr/The numeric literal "0x2000000000000000000000L" is out of range of maximum and minimum values of long type at/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { _-077; } }';
+        compile_not_ok($source, qr/Unexpected token "-077"/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { 0x77L_; } }';
+        compile_not_ok($source, qr/Unexpected token "_"/);
+      }
+    }
   }
   
   
