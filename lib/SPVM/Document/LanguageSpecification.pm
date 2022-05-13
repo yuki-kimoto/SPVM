@@ -5371,10 +5371,6 @@ B<Examples:>
     my $muldim_array : Stringer[][] = [[$cb]];
   }
   
-=head1 Runtime Type Checking
-
-Some L<type cast|/"Type Cast"> operations have runtime type checking. The L<runtime type assignability/"Runtime Type Assignability"> is used to check the type.
-
 =head2 Runtime Type Assignability
 
 The runtime type assignability is the type assignalibility when L<Runtime Type Checking> is performed.
@@ -5813,6 +5809,10 @@ B<Examples:>
   if (undef) {
     # not ok
   }
+
+=head1 Runtime Type Checking
+
+Some L<type cast|/"Type Cast"> operations have runtime type checking. The L<runtime type assignability/"Runtime Type Assignability"> is used to check the type.
 
 =head1 Type Comment
 
