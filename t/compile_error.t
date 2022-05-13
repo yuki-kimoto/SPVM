@@ -444,16 +444,21 @@ sub print_error_messages {
 {
   # Integer literal
   {
-    compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange', qr/The numeric literal "8232624535311216194" is out of the range of maximum and minimum values of int type/);
+    compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange', qr/The numeric literal "8232624535311216194" is out of range of maximum and minimum values of int type/);
     {
       # Greater than int max value
       my $source = 'class Tmp { static method main : void () { 2147483648; } }';
-      compile_not_ok($source, qr/The numeric literal "2147483648" is out of the range of maximum and minimum values of int type/);
+      compile_not_ok($source, qr/The numeric literal "2147483648" is out of range of maximum and minimum values of int type/);
     }
     {
       # Less than int minimal value
       my $source = 'class Tmp { static method main : void () { -2147483649; } }';
-      compile_not_ok($source, qr/The numeric literal "-2147483649" is out of the range of maximum and minimum values of int type/);
+      compile_not_ok($source, qr/The numeric literal "-2147483649" is out of range of maximum and minimum values of int type/);
+    }
+    {
+      # Greater than long max value
+      my $source = 'class Tmp { static method main : void () { 9223372036854775808L; } }';
+      compile_not_ok($source, qr/The numeric literal "9223372036854775808L" is out of range of maximum and minimum values of long type/);
     }
     {
       # Invalid "_"

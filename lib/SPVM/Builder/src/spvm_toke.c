@@ -1590,23 +1590,32 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Constant
           SPVM_TYPE* constant_type;
           
+          // suffix
+          char suffix[2];
+          suffix[1] = '\0';
+          
           // long suffix
           if (*compiler->bufptr == 'l' || *compiler->bufptr == 'L')  {
+            suffix[0] = *compiler->bufptr;
             constant_type = SPVM_TYPE_new_long_type(compiler);
             compiler->bufptr++;
           }
           // float suffix
           else if (*compiler->bufptr == 'f' || *compiler->bufptr == 'F')  {
+            suffix[0] = *compiler->bufptr;
             constant_type = SPVM_TYPE_new_float_type(compiler);
             compiler->bufptr++;
           }
           // double suffix
           else if (*compiler->bufptr == 'd' || *compiler->bufptr == 'D')  {
+            suffix[0] = *compiler->bufptr;
             constant_type = SPVM_TYPE_new_double_type(compiler);
             compiler->bufptr++;
           }
           // no suffix
           else {
+            suffix[0] = '\0';
+            
             // floating point
             if (is_floating_number) {
               constant_type = SPVM_TYPE_new_double_type(compiler);
@@ -1671,7 +1680,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (out_of_range) {
-              SPVM_COMPILER_error(compiler, "The numeric literal \"%s%s\" is out of the range of maximum and minimum values of int type at %s line %d", minus ? "-" : "", numeric_literal, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The numeric literal \"%s%s\" is out of range of maximum and minimum values of int type at %s line %d", minus ? "-" : "", numeric_literal, compiler->cur_file, compiler->cur_line);
             }
             
             if (digit == 16 || digit == 8 || digit == 2) {
@@ -1735,7 +1744,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (invalid) {
-              SPVM_COMPILER_error(compiler, "The literal \"%s%s\" is invalid integer decimal notation at %s line %d", minus ? "-" : "", numeric_literal, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The numeric literal \"%s%s%s\" is out of range of maximum and minimum values of long type at %s line %d", minus ? "-" : "", numeric_literal, suffix, compiler->cur_file, compiler->cur_line);
             }
             
             if (digit == 16 || digit == 8 || digit == 2) {
