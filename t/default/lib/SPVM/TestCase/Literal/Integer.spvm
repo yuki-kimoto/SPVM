@@ -102,22 +102,29 @@ class TestCase::Literal::Integer {
     return 1;
   }
 
-  # decimal literal
-  static method decimal_byte_norrowing_convertion : int () {
-    my $byte_norrowing_convertion : byte = -128;
-    unless ($byte_norrowing_convertion == -128) {
-      return 0;
+  static method integer_literal_decimal_notation_extra : int () {
+    
+    # byte norrowing numeric conversion
+    {
+      my $byte_norrowing_convertion : byte = -128;
+      unless ($byte_norrowing_convertion == -128) {
+        return 0;
+      }
+      return 1;
     }
+    
+    # short norrowing numeric conversion
+    {
+      my $short_norrowing_convertion : short = -32768;
+      unless ($short_norrowing_convertion == -32768) {
+        return 0;
+      }
+      return 1;
+    }
+    
     return 1;
   }
-  static method decimal_short_norrowing_convertion : int () {
-    my $short_norrowing_convertion : short = -32768;
-    unless ($short_norrowing_convertion == -32768) {
-      return 0;
-    }
-    return 1;
-  }
-  
+
   # hex
   static method hex_all_numbers : int () {
     my $all_numbers1 = 0x01234567;
