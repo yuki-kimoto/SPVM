@@ -80,20 +80,20 @@ class TestCase::Literal::Integer {
     {
       # Simple
       {
-        my $underline = 123_456_789;
-        unless ($underline == 123456789) {
+        my $separator = 123_456_789;
+        unless ($separator == 123456789) {
           return 0;
         }
       }
 
       # More complex
       {
-        my $underline = -1_23_456__789_L;
+        my $separator = -1_23_456__789_L;
         
-        unless ($underline isa long) {
+        unless ($separator isa long) {
           return 0;
         }
-        unless ($underline == -123456789) {
+        unless ($separator == -123456789) {
           return 0;
         }
       }
@@ -134,11 +134,15 @@ class TestCase::Literal::Integer {
   }
 
   static method integer_literal_hex_notation : int () {
+    # 0-9a-zA-Z
     {
       my $all_numbers1 = 0x01234567;
       my $all_numbers2 = 0x00890000;
       my $all_numbers3 = 0x00ABCDEF;
       my $all_numbers4 = 0x00abcdef;
+      unless ($all_numbers1 isa int) {
+        return 0;
+      }
       unless ($all_numbers1 == 19088743) {
         return 0;
       }
@@ -152,37 +156,142 @@ class TestCase::Literal::Integer {
         return 0;
       }
     }
+    
+    # 0-9a-zA-Z - L suffix
     {
-      my $all_f = 0xFFFFFFFF;
-      unless ($all_f == -1) {
+      my $all_numbers1 = 0x01234567L;
+      my $all_numbers2 = 0x00890000L;
+      my $all_numbers3 = 0x00ABCDEFL;
+      my $all_numbers4 = 0x00abcdefL;
+      unless ($all_numbers1 isa long) {
+        return 0;
+      }
+      unless ($all_numbers1 == 19088743L) {
+        return 0;
+      }
+      unless ($all_numbers2 == 8978432L) {
+        return 0;
+      }
+      unless ($all_numbers3 == 11259375L) {
+        return 0;
+      }
+      unless ($all_numbers4 == 11259375L) {
         return 0;
       }
     }
+
+    # 0X
+    {
+      my $all_numbers1 = 0X01234567;
+      my $all_numbers2 = 0X00890000;
+      my $all_numbers3 = 0X00ABCDEF;
+      my $all_numbers4 = 0X00abcdef;
+      unless ($all_numbers1 isa int) {
+        return 0;
+      }
+      unless ($all_numbers1 == 19088743) {
+        return 0;
+      }
+      unless ($all_numbers2 == 8978432) {
+        return 0;
+      }
+      unless ($all_numbers3 == 11259375) {
+        return 0;
+      }
+      unless ($all_numbers4 == 11259375) {
+        return 0;
+      }
+    }
+    
+    # Max int value
+    {
+      my $max_int = 0xFFFFFFFF;
+      unless ($max_int == -1) {
+        return 0;
+      }
+    }
+
+    # Max int value with "-"
+    {
+      my $max_int_minus = -0xFFFFFFFF;
+      unless ($max_int_minus == 1) {
+        return 0;
+      }
+    }
+
+    # Max long value
+    {
+      my $max_long = 0xFFFFFFFF_FFFFFFFFL;
+      unless ($max_long == -1L) {
+        return 0;
+      }
+    }
+
+    # Max long value with "-"
+    {
+      my $max_long = -0xFFFFFFFF_FFFFFFFFL;
+      unless ($max_long == 1L) {
+        return 0;
+      }
+    }
+
+    # Separator
+    {
+      # Simple
+      {
+        my $separator = 0xFF_FF_FF_FF;
+        unless ($separator == -1) {
+          return 0;
+        }
+      }
+
+      # More complex
+      {
+        my $separator = 0x_FF__FF_FF_FF_FFFFFFFF_L;
+        
+        unless ($separator isa long) {
+          return 0;
+        }
+        unless ($separator == -1) {
+          return 0;
+        }
+      }
+    }
+
+    # Combination with the unary "+" operator
+    {
+      my $plus_max = +0xFF;
+      unless ($plus_max == 0xFF) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method integer_literal_hex_notation_extra : int () {
+    
     {
       my $max_int = 0x7FFFFFFF;
       unless ($max_int == Fn->INT32_MAX()) {
         return 0;
       }
     }
+    
     {
       my $min_int = 0x80000000;
       unless ($min_int == Fn->INT32_MIN()) {
         return 0;
       }
     }
+    
     {
       my $combination = -0x000000FF_FFFFFFFFL;
       unless ($combination == -1099511627775L) {
         return 0;
       }
     }
-    {
-      my $long_all_f = 0xFFFFFFFF_FFFFFFFFL;
-      unless ($long_all_f == -1L) {
-        return 0;
-      }
-    }
-
+    
     return 1;
   }
   

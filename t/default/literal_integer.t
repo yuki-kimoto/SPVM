@@ -20,6 +20,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Integer Literal - hex notation
 {
   ok(SPVM::TestCase::Literal::Integer->integer_literal_hex_notation);
+  ok(SPVM::TestCase::Literal::Integer->integer_literal_hex_notation_extra);
 }
 
 # Integer Literal - octal notation
