@@ -257,5 +257,45 @@ class TestCase::Lib::Unicode {
     
     return 1;
   }
+  
+  static method is_unicode_scalar_value : int () {
+    
+    if (Unicode->is_unicode_scalar_value(-1)) {
+      return 0;
+    }
+    
+    unless (Unicode->is_unicode_scalar_value(0)) {
+      return 0;
+    }
 
+    unless (Unicode->is_unicode_scalar_value(0xD800 - 1)) {
+      return 0;
+    }
+
+    if (Unicode->is_unicode_scalar_value(0xD800)) {
+      return 0;
+    }
+
+    if (Unicode->is_unicode_scalar_value(0xD800 + 10)) {
+      return 0;
+    }
+
+    if (Unicode->is_unicode_scalar_value(0xDFFF)) {
+      return 0;
+    }
+    
+    unless (Unicode->is_unicode_scalar_value(0xDFFF + 1)) {
+      return 0;
+    }
+
+    unless (Unicode->is_unicode_scalar_value(0x10FFFF)) {
+      return 0;
+    }
+    
+    if (Unicode->is_unicode_scalar_value(0x10FFFF + 1)) {
+      return 0;
+    }
+    
+    return 1;
+  }
 }

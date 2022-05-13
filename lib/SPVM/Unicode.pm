@@ -29,6 +29,14 @@ L<Unicode|SPVM::Unicode> is L<SPVM> Unicode utilities. This module privides the 
 
 return -2. this means uchar function find invalid utf8.
 
+=head2 is_unicode_scalar_value
+
+  static method is_unicode_scalar_value : int ($code_point: int) {
+
+Check if the given value is a Unicode scalar values.
+
+The range of Unicode scalar values are the range of Unicode code points(C<0> to C<0x10FFFF>) except for the range of surrogate code points(C<0xD800> to C<0xDFFF>).
+
 =head2 uchar
 
   static method uchar : int ($string : string, $offset_ref : int*);

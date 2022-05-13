@@ -7,6 +7,19 @@ class Unicode : precompile {
   enum {
     ERROR_INVALID_UTF8 = -2,
   }
+  
+  static method is_unicode_scalar_value : int ($code_point: int) {
+    my $is_unicode_scalar_value = 0;
+    # The range of Unicde code points
+    if ($code_point >= 0 && $code_point <= 0x10FFFF) {
+      # Not surrogate code points
+      unless ($code_point >= 0xD800 && $code_point <= 0xDFFF) {
+        $is_unicode_scalar_value = 1;
+      }
+    }
+    
+    return $is_unicode_scalar_value;
+  }
  
   static method utf8_to_utf16 : short[] ($str : string) {
     my $pos = 0;

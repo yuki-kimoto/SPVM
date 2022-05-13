@@ -2,6 +2,7 @@ Revision history for SPVM
 0.9516_01  2022-05-12
         [CHANGE]
         * Numeric literal error messages.
+        * Add "is_unicode_scalar_value" method to Unicode module.
         
         [BUG FIX]
         * Fix the bug Github #212. Tests fail when perl is built with -DDEBUGGING set in ccflags [rt.cpan.org #142336].
