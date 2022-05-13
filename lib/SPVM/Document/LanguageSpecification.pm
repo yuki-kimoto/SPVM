@@ -450,20 +450,49 @@ B<Examples:>
 
 =head3 Integer Literal Hexadecimal Notation
 
-Hexadecimal Notation of Integer Literal is represented by the following rule.
+The interger literal hexadecimal notation is the way to write a integer literal using hexadecimals C<0-9a-zA-Z>.
 
-C<-> can be at the beginning, and Hexadecimal Notation of Integer Literal begins with C<0x> or C<0X>.
+C<-> can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more than one C<0-9a-zA-Z>.
 
-It is followed by one or more consecutive characters C<0> to C<9>, C<a> to C<f>, or C<A> to C<F>.
+The suffix C<L> or C<l> can be at the end.
 
-Other rules are same as Decimal Notation of Integer Literal
+If the suffix C<L> or C<l> exists, the return type is the L<long type|/"long Type">. Otherwise the return type is the L<int type|/"int Type">.
+
+If the return type is the L<int type|/"int Type"> and the value that is except for C<-> is greater than hexadecimal C<FFFFFFFF>, a compilation error will occur.
+
+If the return type is the L<int type|/"int Type">, the value that is except for C<-> is interpreted as unsigned 32 bit integer C<uint32_t> type in C<C language>, and the following conversion is performed.
+
+  uint32_t value_uint32_t;
+  int32_t value_int32_t = (int32_t)value_uint32_t;
+
+And if C<-> exists, the following conversion is performed.
+
+  value_int32_t = -value_int32_t;
+
+For example, C<0xFFFFFFFF> is same as C<-1>, C<-0xFFFFFFFF> is same as C<1>.
+
+If the return type is the L<long type|/"long Type"> and the value that is except for C<-> is greater than hexadecimal C<FFFFFFFFFFFFFFFF>, a compilation error will occur.
+
+If the return type is the L<long type|/"long Type">, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in C<C language>, and the following conversion is performed.
+
+  uint64_t value_uint64_t;
+  value_int64_t = (int64_t)value_uint64_t;
+
+And if C<-> exists, the following conversion is performed.
+
+  value_int64_t = -value_int64_t;
+
+For example, C<0xFFFFFFFFFFFFFFFFL> is same as C<-1L>, C<-0xFFFFFFFFFFFFFFFFL> is same as C<1L>.
 
 B<Examples:>
 
   0x3b4f
+  0X3b4f
   -0x3F1A
   0xDeL
-  0xFFFFFFFF_FFFFFFFF
+  0xFFFFFFFF
+  0xFF_FF_FF_FF
+  0xFFFFFFFFFFFFFFFFL
 
 =head3 Integer Literal Octal Notation
 
