@@ -1515,4 +1515,55 @@ class TestCase::Lib::Fn1 {
 
     return 1;
   }
+
+  static method chr : int () {
+    
+    {
+      unless (Fn->chr(0) eq "\0") {
+        return 0;
+      }
+
+      unless (Fn->chr('0') eq "0") {
+        return 0;
+      }
+
+      unless (Fn->chr('a') eq "a") {
+        return 0;
+      }
+
+      unless (Fn->chr(0x3042) eq "あ") {
+        return 0;
+      }
+      
+      if (Fn->chr(-1)) {
+        return 0;
+      }
+
+      unless (Fn->chr(0xD800 - 1)) {
+        return 0;
+      }
+
+      if (Fn->chr(0xD800)) {
+        return 0;
+      }
+
+      if (Fn->chr(0xDFFF)) {
+        return 0;
+      }
+
+      unless (Fn->chr(0xDFFF + 1)) {
+        return 0;
+      }
+
+      unless (Fn->chr(0x10FFFF)) {
+        return 0;
+      }
+
+      if (Fn->chr(0x10FFFF + 1)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }

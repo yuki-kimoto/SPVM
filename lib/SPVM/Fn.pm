@@ -329,6 +329,14 @@ If the string is C<undef> or the length is zero, does nothing.
 
 Copy the string and remove "\n" of the end of the string and return it.
 
+=head2 chr
+
+  static method chr : string ($unicode_code_point : int) {
+
+Convert Unicode code point to a UTF-8 character. If the Unicode code point is not a Unicode scalar value, return C<undef>.
+
+See also L<Unicode->is_unicode_scalar_value|SPVM::Unicode/"is_unicode_scalar_value">.
+
 =head2 copy_array_byte
 
   static method copy_array_byte : byte[] ($nums : byte[])
