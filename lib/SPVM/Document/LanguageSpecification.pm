@@ -4187,19 +4187,6 @@ Numeric Reference Type means L</"Numeric Types"> for L</"Reference Type">. Says.
 
 Multi-Numeric Reference Type means L</"Reference Type"> for L</"Multi-Numeric Types"> variables. > Means.
 
-=head1 Type Inference
-
-Omitting L</"Types"> when L</"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
-
-  # int
-  my $num = 1;
-  
-  # double
-  my $num = 1.0;
-  
-  # Foo
-  my $foo = new Foo;
-
 =head2 Type Qualifiers
 
 Type qualifiers qualify the type.
@@ -4217,6 +4204,19 @@ B<Examples:>
   # Mutable string
   my $message = (mutable string)"abc";
   $message->[0] = 'd';
+
+=head1 Type Inference
+
+Omitting L</"Types"> when L</"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
+
+  # int
+  my $num = 1;
+  
+  # double
+  my $num = 1.0;
+  
+  # Foo
+  my $foo = new Foo;
 
 =head1 Type Assignability
 
