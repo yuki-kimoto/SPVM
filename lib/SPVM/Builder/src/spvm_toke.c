@@ -1500,7 +1500,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               digit = 2;
             }
             // Octal Literal
-            else if (isdigit(*(compiler->bufptr + 1))) {
+            else if (isdigit(*(compiler->bufptr + 1)) || *(compiler->bufptr + 1) == '_') {
               digit = 8;
             }
             // 0...
