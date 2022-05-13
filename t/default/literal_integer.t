@@ -17,7 +17,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Literal::Integer->integer_literal_decimal_notation_extra);
 }
 
-# Integer Literal - hex notation
+# Integer Literal - hexadecimal notation
 {
   ok(SPVM::TestCase::Literal::Integer->integer_literal_hex_notation);
   ok(SPVM::TestCase::Literal::Integer->integer_literal_hex_notation_extra);
@@ -25,8 +25,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Integer Literal - octal notation
 {
-  ok(SPVM::TestCase::Literal::Integer->octal_all_numbers());
-  ok(SPVM::TestCase::Literal::Integer->octal_combination());
+  ok(SPVM::TestCase::Literal::Integer->integer_literal_octal_notation);
+  ok(SPVM::TestCase::Literal::Integer->integer_literal_octal_notation_extra);
 }
 
 # Integer Literal - binary notation

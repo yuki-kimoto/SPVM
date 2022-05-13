@@ -294,19 +294,118 @@ class TestCase::Literal::Integer {
     
     return 1;
   }
-  
-  # octal
-  static method octal_all_numbers : int () {
-    my $all_numbers = 012345670;
-    unless ($all_numbers == 2739128) {
-      return 0;
+
+  static method integer_literal_octal_notation : int () {
+    # 0-7
+    {
+      my $all_numbers = 012345670;
+      unless ($all_numbers isa int) {
+        return 0;
+      }
+      unless ($all_numbers == 2739128) {
+        return 0;
+      }
     }
+
+    # L suffix
+    {
+      my $all_numbers = 012345670L;
+      unless ($all_numbers isa long) {
+        return 0;
+      }
+      unless ($all_numbers == 2739128L) {
+        return 0;
+      }
+    }
+
+    # l suffix
+    {
+      my $all_numbers = 012345670l;
+      unless ($all_numbers isa long) {
+        return 0;
+      }
+      unless ($all_numbers == 2739128L) {
+        return 0;
+      }
+    }
+    
+    # Max int value
+    {
+      my $max_int = 037777777777;
+      unless ($max_int == -1) {
+        return 0;
+      }
+    }
+
+    # Max int value with "-"
+    {
+      my $max_int_minus = -037777777777;
+      unless ($max_int_minus == 1) {
+        return 0;
+      }
+    }
+
+    # Max long value
+    {
+      my $max_long = 01777777777777777777777L;
+      unless ($max_long == -1L) {
+        return 0;
+      }
+    }
+
+    # Max long value with "-"
+    {
+      my $max_long = -01777777777777777777777L;
+      unless ($max_long == 1L) {
+        return 0;
+      }
+    }
+
+    # Separator
+    {
+      # Simple
+      {
+        my $separator = 012_345_670;
+        unless ($separator == 2739128) {
+          return 0;
+        }
+      }
+      # More complex
+      {
+        my $separator = 0_12_345_670_L;
+        
+        unless ($separator isa long) {
+          return 0;
+        }
+        unless ($separator == 2739128) {
+          return 0;
+        }
+      }
+    }
+
+    # Combination with the unary "+" operator
+    {
+      my $plus_max = +077;
+      unless ($plus_max == 077) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
-  static method octal_combination : int () {
-    my $combination = -0777_777777777777777777L;
-    unless ($combination == -9223372036854775807L) {
-      return 0;
+  
+  static method integer_literal_octal_notation_extra : int () {
+    {
+      my $all_numbers = 012345670;
+      unless ($all_numbers == 2739128) {
+        return 0;
+      }
+    }
+    {
+      my $combination = -0777_777777777777777777L;
+      unless ($combination == -9223372036854775807L) {
+        return 0;
+      }
     }
     return 1;
   }
