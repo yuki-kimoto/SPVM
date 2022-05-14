@@ -7118,56 +7118,66 @@ The logical operators are the L<operators|/"Operators"> to perform logical opera
 
 The logical operators are the L<logical AND operator|/"Logical AND Operator">, the L<logical OR operator|/"Logical OR Operator">, and the L<logical NOT operator|/"Logical NOT Operator">.
 
+The logical operators can be the operands of only the following statements or operators.
+
+=over 2
+
+=item * the operand of the L<if or eslif statement|/"if Statement">
+
+=item * the operand of the L<unless statement|/"unless Statement">
+
+=item * the second operand of the L<for statement|/"for Statement">
+
+=item * the operand of the L<while statement|/"while Statement">
+
+=item * the left operand and the right operand of the L<logical AND operator|/"Logical AND Operator">
+
+=item * the left operand and the right operand of the L<logical OR operator|/"Logical OR Operator">
+
+=item * the operand of the L<logical NOT operator|/"Logical NOT Operator">
+
+=back
+
 =head3 Logical AND Operator
 
-The logical AND operator C<&&> returns the result of a logical AND operation.
+The logical AND operator C<&&> is a L<logical operator|/"Logical Operator"> to perform a logical AND operation.
 
   LEFT_OPERAND && RIGHT_OPERAND
   
-The left operand and the right operand must be a L<logical operator|/"Logical Operators"> or an L<operator|/"Operators">.
+The left operand and the right operand must be an L<operator|/"Operators">.
 
 The return type of logical AND operator is L</"int Type">.
 
-Thg logical AND operator performs L</"Bool Type Conversion"> to the left operand. If the evaluated value is C<0>, the logical AND operator returns C<0>.
+Thg logical AND operator performs the L<bool type conversion|/"Bool Type Conversion"> to the left operand. If the evaluated value is C<0>, the logical AND operator returns C<0>.
 If the value is C<1>, the right operand is evaluated.
 
-Next, Thg logical AND operator performs L</"Bool Type Conversion"> to the right operand. If the evaluated value is C<0>, the logical AND operator returns C<0>,
-otherwise returns C<1>.
-
-Logical AND operators can be only used as conditions. Note that these can't be used as L<value_ops|/"Expressions">. 
+And thg logical AND operator performs the L<bool type conversion|/"Bool Type Conversion"> to the right operand. If the evaluated value is C<0>, the logical AND operator returns C<0>. Otherwise returns C<1>.
 
 =head3 Logical OR Operator
 
-The logical OR operator C<||> returns the result of a logical OR operation.
+The logical OR operator C<||> is a L<logical operator|/"Logical Operator"> to performe a logical OR operation.
 
   LEFT_OPERAND || RIGHT_OPERAND
 
-The left operand and the right operand must be a L<logical operator|/"Logical Operators"> or an L<operator|/"Operators">.
+The left operand and the right operand must be an L<operator|/"Operators">.
 
 The return type of logical OR operator is L</"int Type">.
 
-Thg logical OR operator performs L</"Bool Type Conversion"> to the left operand. If the evaluated value is C<1>, the logical OR operator returns C<1>.
-If the value is C<0>, the right operand is evaluated.
+Thg logical OR operator performs the L<bool type conversion|/"Bool Type Conversion"> to the left operand. If the evaluated value is C<1>, the logical OR operator returns C<1>. Otherwise the right operand is evaluated.
 
-Next, Thg logical OR operator performs L</"Bool Type Conversion"> to the right operand. If the evaluated value is C<1>, the logical OR operator returns C<1>,
-otherwise returns C<0>.
-
-Logical OR operators can be only used as conditions. Note that these can't be used as L<value_ops|/"Expressions">. 
+And the L<bool type conversion|/"Bool Type Conversion"> is performed to the right operand. If the evaluated value is C<1>, the logical OR operator returns C<1>. Otherwise returns C<0>.
 
 =head3 Logical NOT Operator
 
-The logical NOT operator C<!> returns the result of a logical NOT operation.
+The logical NOT operator C<!> is a L<logical operator|/"Logical Operator"> to performe a logical NOT operation.
 
   !OPERAND
 
-The operand must be a L<logical operator|/"Logical Operators"> or an L<operator|/"Operators">.
+The operand must be a an L<operator|/"Operators">.
 
-The return type of logical NOT operator is L</"int Type">.
+The return type of logical NOT operator is the L<int type|/"int Type">.
 
-Thg logical NOT operator performs L</"Bool Type Conversion"> to the operand. If the evaluated value is C<1>, the logical NOT operator returns C<0>.
-If the evaluated value is C<0>, returns C<1>.
-
-Logical NOT operators can be only used as conditions. Note that these can't be used as L<value_ops|/"Expressions">. 
+Thg logical NOT operator performs the L<bool type conversion|/"Bool Type Conversion"> to the operand. If the evaluated value is C<1>, the logical NOT operator returns C<0>. Otherwise returns C<1>.
 
 =head2 String Concatenation Operator
 
