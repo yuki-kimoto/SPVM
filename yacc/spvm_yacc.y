@@ -36,7 +36,7 @@
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block init_block switch_block if_require_statement
-%type <opval> unary_op binary_op comparison_op isa logical_op value_op_or_logical_op
+%type <opval> unary_op binary_op comparison_op isa logical_op op
 %type <opval> call_spvm_method opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow has_impl
@@ -503,13 +503,13 @@ statement
     }
 
 for_statement
-  : FOR '(' opt_value_op ';' value_op_or_logical_op ';' opt_value_op ')' block
+  : FOR '(' opt_value_op ';' op ';' opt_value_op ')' block
     {
       $$ = SPVM_OP_build_for_statement(compiler, $1, $3, $5, $7, $9);
     }
 
 while_statement
-  : WHILE '(' value_op_or_logical_op ')' block
+  : WHILE '(' op ')' block
     {
       $$ = SPVM_OP_build_while_statement(compiler, $1, $3, $5);
     }
@@ -588,7 +588,7 @@ if_require_statement
       $$ = SPVM_OP_build_if_require_statement(compiler, op_if_require, $3, $5, $7);
     }
 if_statement
-  : IF '(' value_op_or_logical_op ')' block else_statement
+  : IF '(' op ')' block else_statement
     {
       SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6);
       
@@ -599,7 +599,7 @@ if_statement
       
       $$ = op_block;
     }
-  | UNLESS '(' value_op_or_logical_op ')' block else_statement
+  | UNLESS '(' op ')' block else_statement
     {
       SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6);
       
@@ -620,7 +620,7 @@ else_statement
     {
       $$ = $2;
     }
-  | ELSIF '(' value_op_or_logical_op ')' block else_statement
+  | ELSIF '(' op ')' block else_statement
     {
       $$ = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6);
     }
@@ -663,7 +663,7 @@ opt_value_op
     }
   | value_op
 
-value_op_or_logical_op
+op
   : value_op
   | logical_op
 
@@ -944,15 +944,15 @@ isa
     }
     
 logical_op
-  : value_op_or_logical_op LOGICAL_OR value_op_or_logical_op
+  : op LOGICAL_OR op
     {
       $$ = SPVM_OP_build_or(compiler, $2, $1, $3);
     }
-  | value_op_or_logical_op LOGICAL_AND value_op_or_logical_op
+  | op LOGICAL_AND op
     {
       $$ = SPVM_OP_build_and(compiler, $2, $1, $3);
     }
-  | LOGICAL_NOT value_op_or_logical_op
+  | LOGICAL_NOT op
     {
       $$ = SPVM_OP_build_not(compiler, $1, $2);
     }
