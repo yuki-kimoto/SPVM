@@ -1,91 +1,82 @@
 class TestCase::Literal::FloatingPoint {
-
-  # decimal
-  static method decimal_all_numbers : int () {
-    my $all_numbers : double = 0.12345678912345;
-    unless ($all_numbers == 0.12345678912345) {
-      return 0;
+  
+  static method decimal_notation : int () {
+    {
+      my $all_numbers : double = 0.12345678912345;
+      unless ($all_numbers == 0.12345678912345) {
+        return 0;
+      }
     }
+    {
+      my $minus = -0.25;
+      unless ($minus == -0.25) {
+        return 0;
+      }
+    }
+    {
+      my $plus = +0.25;
+      unless ($plus == +0.25) {
+        return 0;
+      }
+    }
+    {
+      my $prefix_f : float = 0.25f;
+      unless ($prefix_f == 0.25f) {
+        return 0;
+      }
+    }
+    {
+      my $prefix_F : float = 0.25F;
+      unless ($prefix_F == 0.25F) {
+        return 0;
+      }
+    }
+    {
+      my $prefix_d : double = 0.12345678912345d;
+      unless ($prefix_d == 0.12345678912345d) {
+        return 0;
+      }
+    }
+    {
+      my $prefix_D : double = 0.12345678912345D;
+      unless ($prefix_D == 0.12345678912345d) {
+        return 0;
+      }
+    }
+    {
+      my $under_line = 0.12_34;
+      unless ($under_line == 0.1234) {
+        return 0;
+      }
+    }
+    {
+      my $exponant_e_plus = 0.12e+7;
+      unless ($exponant_e_plus == 0.12e+7) {
+        return 0;
+      }
+    }
+    {
+      my $exponant_E_minus = 0.12E-7;
+      unless ($exponant_E_minus == 0.12E-7) {
+        return 0;
+      }
+    }
+    {
+      my $exponant_e_nosign = 0.12e7;
+      unless ($exponant_e_nosign == 0.12e7) {
+        return 0;
+      }
+    }
+    {
+      my $exponant_no_point = 12e7;
+      unless ($exponant_no_point == 12e7) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
-  static method decimal_minus : int () {
-    my $minus = -0.25;
-    unless ($minus == -0.25) {
-      return 0;
-    }
-    return 1;
-  }
-  static method decimal_plus : int () {
-    my $plus = +0.25;
-    unless ($plus == +0.25) {
-      return 0;
-    }
-    return 1;
-  }
-  static method decimal_prefix_f : int () {
-    my $prefix_f : float = 0.25f;
-    unless ($prefix_f == 0.25f) {
-      return 0;
-    }
-    return 1;
-  }
-  static method decimal_prefix_F : int () {
-    my $prefix_F : float = 0.25F;
-    unless ($prefix_F == 0.25F) {
-      return 0;
-    }
-    return 1;
-  }
-  static method decimal_prefix_d : int () {
-    my $prefix_d : double = 0.12345678912345d;
-    unless ($prefix_d == 0.12345678912345d) {
-      return 0;
-    }
-    return 1;
-  }
-  static method decimal_prefix_D : int () {
-    my $prefix_D : double = 0.12345678912345D;
-    unless ($prefix_D == 0.12345678912345d) {
-      return 0;
-    }
-    return 1;
-  }
-  static method decimal_under_line : int () {
-    my $under_line = 0.12_34;
-    unless ($under_line == 0.1234) {
-      return 0;
-    }
-    return 1;
-  }
-  static method decimal_exponant_e_plus : int () {
-    my $exponant_e_plus = 0.12e+7;
-    unless ($exponant_e_plus == 0.12e+7) {
-      return 0;
-    }
-    return 1;
-  }
-  static method decimal_exponant_E_minus : int () {
-    my $exponant_E_minus = 0.12E-7;
-    unless ($exponant_E_minus == 0.12E-7) {
-      return 0;
-    }
-    return 1;
-  }
-  static method decimal_exponant_e_nosign : int () {
-    my $exponant_e_nosign = 0.12e7;
-    unless ($exponant_e_nosign == 0.12e7) {
-      return 0;
-    }
-    return 1;
-  }
-  static method decimal_exponant_no_point : int () {
-    my $exponant_no_point = 12e7;
-    unless ($exponant_no_point == 12e7) {
-      return 0;
-    }
-    return 1;
-  }
-
+  
   # hex
   static method hex_all_numbers : int () {
     my $all_numbers1 = 0x0.123456789p0;

@@ -15,18 +15,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # decimal
 {
-  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_all_numbers);
-  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_minus);
-  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_plus);
-  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_prefix_f);
-  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_prefix_F);
-  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_prefix_d);
-  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_prefix_D);
-  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_under_line);
-  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_exponant_e_plus);
-  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_exponant_E_minus);
-  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_exponant_e_nosign);
-  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_exponant_no_point);
+  ok(SPVM::TestCase::Literal::FloatingPoint->decimal_notation);
 }
 
 # Hex Literal
