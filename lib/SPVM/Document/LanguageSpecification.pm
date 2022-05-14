@@ -598,13 +598,17 @@ A minus C<-> can be at the beginning, and is followed by one or more than one C<
 
 C<_> can be used as a separator at the any positions after the first C<0-9>.
 
-And is followed by a floating point part or a exponent part
+And can be followed by a floating point part.
 
 A floating point part is C<.> and is followed by one or more than one C<0-9>.
 
-A exponent part is C<e> or C<E> and is followed by C<+>, C<->, or C<"">, and followed by one or more than one C<0-9>.
+And can be followed by an exponent part.
 
-And can be followed by a suffix is C<f> or C<F>. If a suffix exists, a floating point part and a exponent part are optional.
+An exponent part is C<e> or C<E> and is followed by C<+>, C<->, or C<"">, and followed by one or more than one C<0-9>.
+
+And can be followed by a suffix is C<f>, C<F>, C<d>, or C<D>.
+
+one of a floating point part, an exponent part, or a suffix must exist.
 
 If the suffix C<f> or C<F> exists, the return type is the L<float type|/"float Type">. Otherwise the return type is the L<double type|/"double Type">.
 
@@ -618,10 +622,13 @@ B<Examples:>
   -1.32
   1.32f
   1.32F
+  1.32d
+  1.32D
   1.32e3
   1.32e-3
   1.32E+3
   1.32E-3
+  12e7
 
 =head3 Floating Point Literal Hexadecimal Notation
 
@@ -631,13 +638,17 @@ A minus C<-> can be at the beginning, and is followed by C<0x> or C<0X>, and is 
 
 C<_> can be used as a separator at the any positions after C<0x> or C<0X>.
 
-And is followed by a floating point part or a exponent part.
+And can be followed by a floating point part.
 
 A floating point part is C<.> and is followed by one or more than one C<0-9a-zA-Z>.
 
-A exponent part is C<p> or C<P> and is followed by C<+>, C<->, or C<"">, and followed by one or more than one decimal numbers C<0-9>.
+And can be followed by an exponent part.
 
-And can be followed by a suffix C<f> or C<F>.
+An exponent part is C<p> or C<P> and is followed by C<+>, C<->, or C<"">, and followed by one or more than one decimal numbers C<0-9>.
+
+And can be followed by a suffix C<f>, C<F>, C<d>, or C<D>.
+
+one of a floating point part, an exponent part, or a suffix must exist.
 
 If the suffix C<f> or C<F> exists, the return type is the L<float type|/"float Type">. Otherwise the return type is the L<double type|/"double Type">.
 
@@ -652,6 +663,9 @@ B<Examples:>
   0x3d3d.edP3
   0x3d3d.edP+3
   0x3d3d.edP-3f
+  0x3d3d.edP-3F
+  0x3d3d.edP-3d
+  0x3d3d.edP-3D
 
 =head2 Charater Literal
 
