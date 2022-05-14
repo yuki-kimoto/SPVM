@@ -637,7 +637,7 @@ A floating point part is C<.> and is followed by one or more than one C<0-9a-zA-
 
 A exponent part is C<p> or C<P> and is followed by C<+>, C<->, or C<"">, and followed by one or more than one decimal numbers C<0-9>.
 
-And can be followed a suffix C<f> or C<F>.
+And can be followed by a suffix C<f> or C<F>.
 
 If the suffix C<f> or C<F> exists, the return type is the L<float type|/"float Type">. Otherwise the return type is the L<double type|/"double Type">.
 
