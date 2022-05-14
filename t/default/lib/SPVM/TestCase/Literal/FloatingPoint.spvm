@@ -1,75 +1,152 @@
 class TestCase::Literal::FloatingPoint {
   
   static method decimal_notation : int () {
+    # 0-9
     {
       my $all_numbers : double = 0.12345678912345;
+      unless ($all_numbers isa double) {
+        return 0;
+      }
       unless ($all_numbers == 0.12345678912345) {
         return 0;
       }
     }
+    
+    # "-" at the beginning
     {
       my $minus = -0.25;
       unless ($minus == -0.25) {
         return 0;
       }
     }
+    
+    # Suffix "f"
     {
-      my $plus = +0.25;
-      unless ($plus == +0.25) {
+      my $suffix_f : float = 0.25f;
+      unless ($suffix_f isa float) {
+        return 0;
+      }
+      unless ($suffix_f == 0.25f) {
         return 0;
       }
     }
+
+    # Suffix "F"
     {
-      my $prefix_f : float = 0.25f;
-      unless ($prefix_f == 0.25f) {
+      my $suffix_F : float = 0.25F;
+      unless ($suffix_F isa float) {
+        return 0;
+      }
+      unless ($suffix_F == 0.25F) {
         return 0;
       }
     }
+    
+    # Suffix "d"
     {
-      my $prefix_F : float = 0.25F;
-      unless ($prefix_F == 0.25F) {
+      my $suffix_d : double = 0.12345678912345d;
+      unless ($suffix_d isa double) {
+        return 0;
+      }
+      unless ($suffix_d == 0.12345678912345d) {
         return 0;
       }
     }
+
+    # Suffix "D"
     {
-      my $prefix_d : double = 0.12345678912345d;
-      unless ($prefix_d == 0.12345678912345d) {
+      my $suffix_D : double = 0.12345678912345D;
+      unless ($suffix_D isa double) {
+        return 0;
+      }
+      unless ($suffix_D == 0.12345678912345d) {
         return 0;
       }
     }
+
+    # Suffix without a floating point part and an exponent part
     {
-      my $prefix_D : double = 0.12345678912345D;
-      unless ($prefix_D == 0.12345678912345d) {
+      my $suffix_d : double = 13d;
+      unless ($suffix_d isa double) {
+        return 0;
+      }
+      unless ($suffix_d == 13.0) {
         return 0;
       }
     }
+
+    # Separator
     {
-      my $under_line = 0.12_34;
-      unless ($under_line == 0.1234) {
+      # Simple
+      {
+        my $separator = 0.12_34;
+        unless ($separator == 0.1234) {
+          return 0;
+        }
+      }
+
+      # More complex
+      {
+        my $separator = -10_.12_34_e_-_12;
+        unless ($separator == -10.1234e-12) {
+          return 0;
+        }
+      }
+    }
+
+    # A exponent part
+    {
+      my $exponant_e_plus = 1.0e-2;
+      unless ($exponant_e_plus isa double) {
+        return 0;
+      }
+      unless ($exponant_e_plus == 0.01) {
         return 0;
       }
     }
+    
+    # A exponent part "e" "+"
     {
       my $exponant_e_plus = 0.12e+7;
+      unless ($exponant_e_plus isa double) {
+        return 0;
+      }
       unless ($exponant_e_plus == 0.12e+7) {
         return 0;
       }
     }
+
+    # A exponent part "E" "-"
     {
       my $exponant_E_minus = 0.12E-7;
+      unless ($exponant_E_minus isa double) {
+        return 0;
+      }
       unless ($exponant_E_minus == 0.12E-7) {
         return 0;
       }
     }
+    
+    # A exponent part sign is empty
     {
       my $exponant_e_nosign = 0.12e7;
       unless ($exponant_e_nosign == 0.12e7) {
         return 0;
       }
     }
+    
+    # A exponent part. A floating point part doesn't exist
     {
       my $exponant_no_point = 12e7;
       unless ($exponant_no_point == 12e7) {
+        return 0;
+      }
+    }
+
+    # Combination with the unary "+" operator
+    {
+      my $plus = +0.25;
+      unless ($plus == +0.25) {
         return 0;
       }
     }

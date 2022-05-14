@@ -646,9 +646,9 @@ And can be followed by an exponent part.
 
 An exponent part is C<p> or C<P> and is followed by C<+>, C<->, or C<"">, and followed by one or more than one decimal numbers C<0-9>.
 
-And can be followed by a suffix C<f>, C<F>, C<d>, or C<D>.
+And can be followed by a suffix C<f>, C<F>, C<d>, or C<D> if an exponent part exist.
 
-one of a floating point part, an exponent part, or a suffix must exist.
+one of a floating point part or an exponent part must exist.
 
 If the suffix C<f> or C<F> exists, the return type is the L<float type|/"float Type">. Otherwise the return type is the L<double type|/"double Type">.
 
@@ -657,7 +657,7 @@ If the return type is the L<float type|/"float Type">, the floating point litera
 If the return type is the L<double type|/"double Type">, the floating point literal is parsed by the C<strtod> function of C<C language>. If the parsing fails, a compilation error will occur.
 
 B<Examples:>
-
+  
   0x3d3d.edp0
   0x3d3d.edp3
   0x3d3d.edP3
@@ -666,6 +666,7 @@ B<Examples:>
   0x3d3d.edP-3F
   0x3d3d.edP-3d
   0x3d3d.edP-3D
+  0x3d3dP+3
 
 =head2 Charater Literal
 
