@@ -411,13 +411,13 @@ POD has no meaning in source codes.
 
 =head2 Literals
 
-A literal is a constant value in source codes.
+A literal is the way to write a constant value in source codes.
 
 Literals are L<numeric literals|/"Numeric Literals">, the L<floating point literal|/"Floating Point Literal">, the L<character literal|/"Character Literal">, the L<string literal|/"String Literal"> and the L<bool literal|/"Bool Literal">.
 
 =head2 Numeric Literals
 
-A numeric literal is a numeric constant value in source codes.
+A numeric literal is the way to write a numeric constant value in source codes.
 
 Numeric literals are the L<integer literal|/"Integer Literal"> and the L<floating point literal|/"Floating Point Literal">.
 
@@ -588,43 +588,29 @@ B<Examples:>
 
 =head2 Floating Point Literal
 
-Floating Point Literal is composed of B<Sign Part>, B<Numeric Part>, B<Exponent Part> and B<Suffix>.
+The floating point litral is the way to write floating point constant in source codes.
 
-  # Floating Point Literal
-  [Sign Part][Numeric Part][Exponent Part][Suffix Part]
+=head3 Floating Point Literal Decimal Notation
 
-Floating Point Literal is B<Decimal Floating Point Literal> or B<Hexadecimal Floating Point Literal>.
+The floating point litral decimal notation is the way to write a floating point constant using decimal numbers C<0-9> in source codes.
 
-A minus C<-> can be at the beginning.
+A minus C<-> can be at the beginning, and is followed by one or more than one C<0-9>
 
-Numeric Part of Decimal Floating Point Literal begins one or more C<0> to C<9>.
+C<_> can be used as a separator at the any positions after the first C<0-9>.
 
-Numeric Part of Hexadecimal Floating Point Literal begins C<0x> or C<0X>, and is followed by C<0> to C<9>, C<a> to C<f>, or C<A> to C<F>.
+And is followed by a floating point part or a exponent part
 
-For that the Literal is Floating Point Literal, Numeric Part contains C<.> or, The Literal have Exponent Part, or have Suffix Part.
+A floating point part is C<.> and is followed by one or more than one C<0-9>.
 
-Numeric part can contain C<_>. This is just a Numeric Separator and is ignored.
+A exponent part is C<e> or C<E> and is followed by C<+>, C<->, or C<"">, and followed by one or more than one C<0-9>.
 
-Hexadecimal Floating Point Literal needs Exponent Part.
+And can be followed by a suffix is C<f> or C<F>. If a suffix exists, a floating point part and a exponent part are optional.
 
-B<Exponent Part> is consist of B<Exponential Notation> and B<Signed Decimal Integer>.
+If the suffix C<f> or C<F> exists, the return type is the L<float type|/"float Type">. Otherwise the return type is the L<double type|/"double Type">.
 
-  # Exponent Part
-  [Exponential Notation][Signed Decimal Integer]
+If the return type is the L<float type|/"float Type">, the floating point literal is parsed by the C<strtof> function of C<C language>. If the parsing fails, a compilation error will occur.
 
-Exponential Notation is C<e> or C<E> for Decimal Floating Point Literal, and C<p> or C<P> for Hexadecimal Floating Point Literal.
-
-The meaning of Exponent Part is decimal shift for Decimal Floating Point Literal, or binary shift for Hexadecimal Floating Point Literal.
-
-If Suffix Part is C<f> or C<F>, the L</"Types"> of Floating Point Literal is L</"float Type">.
-
-If Suffix Part is C<d> or C<D>, the L</"Types"> of Floating Point Literal is L</"double Type">.
-
-If Suffix Part is omitted, the L</"Types"> of Floating Point Literal is L</"double Type">.
-
-If Floating Point Literal is L</"float Type">, the Floating Point Literal is converted to float value using C standard "strtof" function. If the conversion fails, a compilation error will occur.
-
-If Floating Point Literal is L</"double Type">, the Floating Point Literal is converted to double value using C standard "strtod" function. If the conversion fails, a compilation error will occur.
+If the return type is the L<double type|/"double Type">, the floating point literal is parsed by the C<strtod> function of C<C language>. If the parsing fails, a compilation error will occur.
 
 B<Examples:>
 
@@ -636,9 +622,35 @@ B<Examples:>
   1.32e-3
   1.32E+3
   1.32E-3
+
+=head3 Floating Point Literal Hexadecimal Notation
+
+The floating point litral hexadecimal notation is the way to write a floating point constant using hexadecimal numbers C<0-9a-zA-Z> in source codes.
+
+A minus C<-> can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more than one C<0-9a-zA-Z>.
+
+C<_> can be used as a separator at the any positions after C<0x> or C<0X>.
+
+And is followed by a floating point part or a exponent part.
+
+A floating point part is C<.> and is followed by one or more than one C<0-9a-zA-Z>.
+
+A exponent part is C<p> or C<P> and is followed by C<+>, C<->, or C<"">, and followed by one or more than one decimal numbers C<0-9>.
+
+And can be followed a suffix C<f> or C<F>.
+
+If the suffix C<f> or C<F> exists, the return type is the L<float type|/"float Type">. Otherwise the return type is the L<double type|/"double Type">.
+
+If the return type is the L<float type|/"float Type">, the floating point literal is parsed by the C<strtof> function of C<C language>. If the parsing fails, a compilation error will occur.
+
+If the return type is the L<double type|/"double Type">, the floating point literal is parsed by the C<strtod> function of C<C language>. If the parsing fails, a compilation error will occur.
+
+B<Examples:>
+
   0x3d3d.edp0
   0x3d3d.edp3
   0x3d3d.edP3
+  0x3d3d.edP+3
   0x3d3d.edP-3f
 
 =head2 Charater Literal
