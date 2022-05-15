@@ -155,6 +155,7 @@ class TestCase::Literal::FloatingPoint {
   }
   
   static method hex_notation : int () {
+    # 0-9a-zA-Z
     {
       my $all_numbers1 = 0x0.123456789p0;
       my $all_numbers2 = 0x0.abcdep0;
@@ -174,6 +175,8 @@ class TestCase::Literal::FloatingPoint {
         return 0;
       }
     }
+    
+    # suffix "f"
     {
       my $hex_suffix_f = 0x0.FFp0f;
       unless ($hex_suffix_f isa float) {
@@ -182,21 +185,50 @@ class TestCase::Literal::FloatingPoint {
       unless ($hex_suffix_f == 0x0.FFp0f) {
         return 0;
       }
-
+    }
+    
+    # suffix "F"
+    {
       my $hex_suffix_F = 0x0.FFp0F;
-      unless ($hex_suffix_f isa float) {
+      unless ($hex_suffix_F isa float) {
         return 0;
       }
       unless ($hex_suffix_F == 0x0.FFp0F) {
         return 0;
       }
     }
+
+    # suffix "d"
+    {
+      my $hex_suffix_d = 0x0.FFp0d;
+      unless ($hex_suffix_d isa double) {
+        return 0;
+      }
+      unless ($hex_suffix_d == 0x0.FFp0) {
+        return 0;
+      }
+    }
+    
+    # suffix "D"
+    {
+      my $hex_suffix_D = 0x0.FFp0D;
+      unless ($hex_suffix_D isa double) {
+        return 0;
+      }
+      unless ($hex_suffix_D == 0x0.FFp0) {
+        return 0;
+      }
+    }
+    
+    # Value test
     {
       my $hex_equals_decimal = 0x0.Fp0;
       unless ($hex_equals_decimal == 0.9375) {
         return 0;
       }
     }
+    
+    # The exponent part
     {
       my $hex_exponent_p = 0x0.Fp-4;
       unless ($hex_exponent_p == 0.05859375) {
@@ -211,11 +243,36 @@ class TestCase::Literal::FloatingPoint {
       unless ($hex_exponent_nosign == 0xFp0) {
         return 0;
       }
-    }
-    {
-      my $hex_underline = 0x0.F_Fp0;
-      unless ($hex_underline == 0x0.FFp0) {
+
+      my $hex_exponent_plus = 0x0.Fp+4;
+      unless ($hex_exponent_plus == 0xFp0) {
         return 0;
+      }
+    }
+    
+    {
+      my $hex_separator = 0x0.F_Fp0;
+      unless ($hex_separator == 0x0.FFp0) {
+        return 0;
+      }
+    }
+
+    # Separator
+    {
+      # Simple
+      {
+        my $hex_separator = 0x0.F_Fp0;
+        unless ($hex_separator == 0x0.FFp0) {
+          return 0;
+        }
+      }
+
+      # More complex
+      {
+        my $hex_separator = 0x_0_._F_F_p_+_0;
+        unless ($hex_separator == 0x0.FFp0) {
+          return 0;
+        }
       }
     }
 
