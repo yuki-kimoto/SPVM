@@ -417,11 +417,13 @@ Literals are L<numeric literals|/"Numeric Literals">, the L<floating point liter
 
 =head2 Numeric Literals
 
-A numeric literal is the way to write a numeric constant value in source codes.
+A numeric literal is the way to write a constant value that type is a L<numeric type|/"Numeric Types"> in source codes.
 
 Numeric literals are the L<integer literal|/"Integer Literal"> and the L<floating point literal|/"Floating Point Literal">.
 
 =head2 Integer Literal
+
+A interger literal is a L<numeric literal/"Numeric Literals"> to write a constant value that type is an L<integral type|/"Integral Types"> in source codes.
 
 =head3 Integer Literal Decimal Notation
 
@@ -588,7 +590,7 @@ B<Examples:>
 
 =head2 Floating Point Literal
 
-The floating point litral is the way to write floating point constant in source codes.
+The floating point litral is a L<numeric literal/"Numeric Literals"> to write a constant value that type is a L<floating point type|/"Floating Point Types"> in source codes.
 
 =head3 Floating Point Literal Decimal Notation
 
