@@ -587,6 +587,25 @@ sub print_error_messages {
         compile_not_ok($source, qr/Unexpected token "_"/);
       }
     }
+
+    # Floating point literal dexadecimal notation
+    {
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { _-0xFF.FF; } }';
+        compile_not_ok($source, qr/Unexpected token "-0xFF.FF"/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { -0_xFF.FF; } }';
+        compile_not_ok($source, qr/Unexpected token "xFF"/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { 0xFF.FFp5F_; } }';
+        compile_not_ok($source, qr/Unexpected token "_"/);
+      }
+    }
   }
 
   # Caharater literal
