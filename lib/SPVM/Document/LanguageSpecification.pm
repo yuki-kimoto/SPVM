@@ -592,7 +592,7 @@ The floating point litral is the way to write floating point constant in source 
 
 =head3 Floating Point Literal Decimal Notation
 
-The floating point litral decimal notation is the way to write a floating point constant using decimal numbers C<0-9> in source codes.
+The floating point litral decimal notation is the way to write a L<floating point literal|/"Floating Point Literal"> using decimal numbers C<0-9> in source codes.
 
 A minus C<-> can be at the beginning, and is followed by one or more than one C<0-9>
 
@@ -632,7 +632,7 @@ B<Examples:>
 
 =head3 Floating Point Literal Hexadecimal Notation
 
-The floating point litral hexadecimal notation is the way to write a floating point constant using hexadecimal numbers C<0-9a-zA-Z> in source codes.
+The floating point litral hexadecimal notation is the way to write a L<floating point literal|/"Floating Point Literal"> using hexadecimal numbers C<0-9a-zA-Z> in source codes.
 
 A minus C<-> can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more than one C<0-9a-zA-Z>.
 
