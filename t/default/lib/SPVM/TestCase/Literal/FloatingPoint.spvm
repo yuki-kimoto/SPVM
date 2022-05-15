@@ -87,7 +87,7 @@ class TestCase::Literal::FloatingPoint {
 
       # More complex
       {
-        my $separator = -10_.12_34_e_-_12;
+        my $separator = -10_._12_34_e_-_12;
         unless ($separator == -10.1234e-12) {
           return 0;
         }

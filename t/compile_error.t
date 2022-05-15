@@ -567,7 +567,28 @@ sub print_error_messages {
     }
   }
   
-  
+  # Floating point literal
+  {
+    # Floating point literal decimal notation
+    {
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { _-1.23; } }';
+        compile_not_ok($source, qr/Unexpected token "-1.23"/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { -_1.23; } }';
+        compile_not_ok($source, qr/Unexpected token "."/);
+      }
+      {
+        # Invalid "_"
+        my $source = 'class Tmp { static method main : void () { 1.23f_; } }';
+        compile_not_ok($source, qr/Unexpected token "_"/);
+      }
+    }
+  }
+
   # Caharater literal
   {
     compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty');
