@@ -1668,6 +1668,10 @@ class Fn : precompile {
             }
           }
         }
+        
+        if ($left_justified) {
+          $pad_char = ' ';
+        }
 
         # Read `width`
         my $width = 0;
@@ -1965,10 +1969,13 @@ class Fn : precompile {
         elsif ($specifier eq "x" || $specifier eq "X") {
           my $arg = (Int)$args->[$arg_count];
           my $formatted_value = &_native_snprintf_x($arg);
-          
+
           if ($specifier eq "X") {
+          
             my $formatted_value_mut = (mutable string)$formatted_value;
+
             for (my $i = 0; $i < length $formatted_value_mut; $i++) {
+               
               my $char = $formatted_value_mut->[$i];
               switch ((int)$char) {
                 case 'a' : {
@@ -1995,9 +2002,11 @@ class Fn : precompile {
                   $formatted_value_mut->[$i] = 'F';
                   break;
                 }
+                default : {
+                  
+                }
               }
             }
-            $formatted_value = $formatted_value_mut;
           }
           &_push_formatted_string($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
