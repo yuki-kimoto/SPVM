@@ -204,6 +204,36 @@ int32_t SPVM__Fn___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn___native_snprintf_x(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  int32_t value = stack[0].ival;
+  
+  // "ffffffff"
+  char formatted_string[9] = {};
+
+  int32_t length = snprintf(formatted_string, 9, "%"PRIx32, (uint32_t)value);
+
+  stack[0].oval = env->new_string(env, formatted_string, length);
+
+  return 0;
+}
+
+int32_t SPVM__Fn___native_snprintf_X(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  int32_t value = stack[0].ival;
+  
+  // "FFFFFFFF"
+  char formatted_string[9] = {};
+
+  int32_t length = snprintf(formatted_string, 9, "%"PRIx32, (uint32_t)value);
+
+  stack[0].oval = env->new_string(env, formatted_string, length);
+
+  return 0;
+}
+
 int32_t SPVM__Fn___long_to_unsigned_digits(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 

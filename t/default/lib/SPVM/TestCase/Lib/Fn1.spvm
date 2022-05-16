@@ -217,6 +217,58 @@ class TestCase::Lib::Fn1 {
     return 1;
   }
 
+  static method sprintf_x : int () {
+    
+    unless (Fn->sprintf("%x", 0) eq "0") {
+      return 0;
+    }
+    unless (Fn->sprintf("%x", 255) eq "ff") {
+      return 0;
+    }
+    unless (Fn->sprintf("%x", -1) eq "ffffffff") {
+      return 0;
+    }
+    
+    # Invalid type
+    {
+      eval {
+        Fn->sprintf("%x", (byte)1);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
+  static method sprintf_X : int () {
+    
+    unless (Fn->sprintf("%X", 0) eq "0") {
+      return 0;
+    }
+    unless (Fn->sprintf("%X", 255) eq "FF") {
+      return 0;
+    }
+    unless (Fn->sprintf("%X", -1) eq "FFFFFFFF") {
+      return 0;
+    }
+    
+    # Invalid type
+    {
+      eval {
+        Fn->sprintf("%X", (byte)1);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
   static method sprintf_all : int () {
     {
       # Invalid conversion (end of string)
