@@ -672,7 +672,7 @@ B<Examples:>
 
 =head2 Charater Literal
 
-A charater literal is a L<literal/"Literals"> to write a constant value that type is the L<byte type|/"byte Type"> in source codes.
+A charater literal is a L<literal|/"Literals"> to write a constant value that type is the L<byte type|/"byte Type"> in source codes.
 
 A charater literal represents an ASCII character.
 
@@ -682,103 +682,103 @@ And is followed by a printable ASCII character C<0x20-0x7e> or an escape charact
 
 And ends with C<'>.
 
-The return type is the "L<byte type|/"byte Type">
+The return type is the L<byte type|/"byte Type">.
 
 If the format of the character literal is invalid, a compilation error will occur.
 
-=head3 Escape Characters of Charater Literal
+=head3 Charater Literal Escape Characters
 
-The escape characters of the character literal is listed.
+The character literal escape characters are listed.
 
 =begin html
 
 <table>
   <tr>
     <th>
-      Escape Characters of Character Literal
+      Character literal escape characters
     </th>
     <th>
-      ASCII
+      ASCII characters
     </th>
   </tr>
   <tr>
     <td>
-      <b>\0</b>
+      \0
     </td>
     <td>
-      0x00 NUL
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\a</b>
-    </td>
-    <td>
-      0x07 BEL
+      <code>0x00</code> NUL
     </td>
   </tr>
   <tr>
     <td>
-      <b>\t</b>
+      \a
     </td>
     <td>
-      0x09 HT
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\n</b>
-    </td>
-    <td>
-      0x0a LF
+      <code>0x07</code> BEL
     </td>
   </tr>
   <tr>
     <td>
-      <b>\f</b>
+      \t
     </td>
     <td>
-      0x0c FF
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\r</b>
-    </td>
-    <td>
-      0x0d CR
+      <code>0x09</code> HT
     </td>
   </tr>
   <tr>
     <td>
-      <b>\"</b>
+      \n
     </td>
     <td>
-      0x22 "
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\'</b>
-    </td>
-    <td>
-      0x27 '
+      <code>0x0a</code> LF
     </td>
   </tr>
   <tr>
     <td>
-      <b>\\</b>
+      \f
     </td>
     <td>
-      0x5c \
+      <code>0x0c</code> FF
     </td>
   </tr>
   <tr>
     <td>
-      <b>\x and is followed by one or more than one <code>0-9a-fA-F</code>. The value must be less than or equal to <code>0xFF</code></b>
+      \r
     </td>
     <td>
-      An ASCII character.
+      <code>0x0d</code> CR
+    </td>
+  </tr>
+  <tr>
+    <td>
+      \"
+    </td>
+    <td>
+      <code>0x22</code> "
+    </td>
+  </tr>
+  <tr>
+    <td>
+      \'
+    </td>
+    <td>
+      <code>0x27</code> '
+    </td>
+  </tr>
+  <tr>
+    <td>
+      \\
+    </td>
+    <td>
+      <code>0x5c</code> \
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="#Charater-Literal-Hexadecimal-Escape-Character">Hexadecimal escape character</a>
+    </td>
+    <td>
+      An ASCII character
     </td>
   </tr>
 </table>
@@ -787,7 +787,7 @@ The escape characters of the character literal is listed.
 
 B<Examples:>
 
-  # Charater Literal 
+  # Charater Literals
   'a'
   'x'
   '\a'
@@ -807,6 +807,17 @@ B<Examples:>
   '\xD'
   '\xA'
   '\xFF'
+  '\x{A}'
+
+=head3 Charater Literal Hexadecimal Escape Character
+
+The charater literal hexadecimal escape character is the way to write an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
+
+The charater literal hexadecimal escape character begins with C<\x>.
+
+And is followed by one or two C<0-9a-fA-F>.
+
+The hexadecimal numbers can be sorrounded by C<{> and C<}>.
 
 =head2 String Literal
 
