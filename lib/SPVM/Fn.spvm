@@ -1962,15 +1962,44 @@ class Fn : precompile {
           my $utf8 = Unicode->uchar_to_utf8($arg->value);
           $buffer->push($utf8);
         }
-        elsif ($specifier eq "x") {
+        elsif ($specifier eq "x" || $specifier eq "X") {
           my $arg = (Int)$args->[$arg_count];
-          my $formatted_string = &_native_snprintf_x($arg);
-          $buffer->push($formatted_string);
-        }
-        elsif ($specifier eq "X") {
-          my $arg = (Int)$args->[$arg_count];
-          my $formatted_string = &_native_snprintf_X($arg);
-          $buffer->push($formatted_string);
+          my $formatted_value = &_native_snprintf_x($arg);
+          
+          if ($specifier eq "X") {
+            my $formatted_value_mut = (mutable string)$formatted_value;
+            for (my $i = 0; $i < length $formatted_value_mut; $i++) {
+              my $char = $formatted_value_mut->[$i];
+              switch ((int)$char) {
+                case 'a' : {
+                  $formatted_value_mut->[$i] = 'A';
+                  break;
+                }
+                case 'b' : {
+                  $formatted_value_mut->[$i] = 'B';
+                  break;
+                }
+                case 'c' : {
+                  $formatted_value_mut->[$i] = 'C';
+                  break;
+                }
+                case 'd' : {
+                  $formatted_value_mut->[$i] = 'D';
+                  break;
+                }
+                case 'e' : {
+                  $formatted_value_mut->[$i] = 'E';
+                  break;
+                }
+                case 'f' : {
+                  $formatted_value_mut->[$i] = 'F';
+                  break;
+                }
+              }
+            }
+            $formatted_value = $formatted_value_mut;
+          }
+          &_push_formatted_string($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
         else {
           die "Invalid specifier \"%$specifier\"";
