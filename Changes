@@ -1,10 +1,11 @@
 Revision history for SPVM
-0.9516_01  2022-05-12
+0.9516_01  2022-05-17
         [CHANGE]
         * Numeric literal error messages.
         * Add "is_unicode_scalar_value" method to Unicode module.
         * Add "chr" method to Fn module.
         * Add "ord" method to Fn module.
+        * Improve the compilation error message of the character literal.
         
         [BUG FIX]
         * Fix the bug Github #212. Tests fail when perl is built with -DDEBUGGING set in ccflags [rt.cpan.org #142336].

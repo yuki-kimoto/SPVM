@@ -852,7 +852,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         char ch = 0;
         
         if (*compiler->bufptr == '\'') {
-          SPVM_COMPILER_error(compiler, "Character literals must have at least one character at %s line %d", compiler->cur_file, compiler->cur_line);
+          SPVM_COMPILER_error(compiler, "A character literal can't be empty at %s line %d", compiler->cur_file, compiler->cur_line);
           compiler->bufptr++;
         }
         else {
