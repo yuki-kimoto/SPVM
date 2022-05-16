@@ -1353,6 +1353,8 @@ Create a formatted string with the format and the embdded values.
   <tr><td>%c</td></tr><tr><td></td>Character</tr>
   <tr><td>%s</td></tr><tr><td></td>String</tr>
   <tr><td>%U</td></tr><tr><td></td>Unicode Code Point to UTF-8</tr>
+  <tr><td>%x</td></tr><tr><td></td>Unsiged 32 bit integer to a hexadecimal string using <code>0-9a-z</code></tr>
+  <tr><td>%X</td></tr><tr><td></td>Unsiged 32 bit integer to a hexadecimal string using <code>0-9A-Z</code></tr>
 </table>
 
 =end html
