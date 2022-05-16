@@ -2002,9 +2002,6 @@ class Fn : precompile {
                   $formatted_value_mut->[$i] = 'F';
                   break;
                 }
-                default : {
-                  
-                }
               }
             }
           }
