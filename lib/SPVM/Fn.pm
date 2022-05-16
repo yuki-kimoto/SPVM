@@ -1147,6 +1147,18 @@ Source offset + length must be within the range of the source array, otherwise a
 
 Create a new generic object array as the same type as the given array.
 
+=head2 ord
+
+  static method ord : int ($utf8_character : string)
+
+Gets the Unicode code point from the first character of the specified <UTF-8> string.
+
+If the specified C<UTF-8> character is C<undef>, returns a negative value.
+
+If the length of the specified C<UTF-8> string is C<0>, returns a negative value.
+
+If the specified C<UTF-8> character is invalid C<UTF-8> character, returns a negative value.
+
 =head2 powi
 
   static method powi : int ($x : int, $y : int)

@@ -465,6 +465,11 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn1->chr);
 }
 
+# ord
+{
+  ok(SPVM::TestCase::Lib::Fn1->ord);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

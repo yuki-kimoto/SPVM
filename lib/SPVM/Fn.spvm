@@ -1247,6 +1247,21 @@ class Fn : precompile {
 
   native static method new_array_proto : object[] ($proto_array : object[], $length : int);
 
+  static method ord : int ($utf8_character : string) {
+    unless ($utf8_character) {
+      return -1;
+    }
+
+    if (length $utf8_character == 0) {
+      return -1;
+    }
+    
+    my $offset = 0;
+    my $unicode_code_point = Unicode->uchar($utf8_character, \$offset);
+    
+    return $unicode_code_point;
+  }
+
   static method powi : int ($x : int, $y : int) {
     my $p = 1;
     

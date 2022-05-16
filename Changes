@@ -4,6 +4,7 @@ Revision history for SPVM
         * Numeric literal error messages.
         * Add "is_unicode_scalar_value" method to Unicode module.
         * Add "chr" method to Fn module.
+        * Add "ord" method to Fn module.
         
         [BUG FIX]
         * Fix the bug Github #212. Tests fail when perl is built with -DDEBUGGING set in ccflags [rt.cpan.org #142336].

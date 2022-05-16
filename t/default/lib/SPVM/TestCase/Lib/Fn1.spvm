@@ -1566,4 +1566,46 @@ class TestCase::Lib::Fn1 {
     
     return 1;
   }
+
+  static method ord : int () {
+    
+    unless (Fn->ord("a") == 97) {
+      return 0;
+    }
+    unless (Fn->ord("ab") == 97) {
+      return 0;
+    }
+    unless (Fn->ord("\x00") == 0) {
+      return 0;
+    }
+    
+    unless (Fn->ord("\x01") == 1) {
+      return 0;
+    }
+
+    unless (Fn->ord("\x7F") == 127) {
+      return 0;
+    }
+
+    unless (Fn->ord("あ") == 12354) {
+      return 0;
+    }
+    
+    # Unicode max scalar value
+    unless (Fn->ord(Fn->chr(0x10FFFF)) == 0x10FFFF) {
+      return 0;
+    }
+    
+    # Error
+    {
+      unless (Fn->ord("") < 0) {
+        return 0;
+      }
+      unless (Fn->ord(undef) < 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }
