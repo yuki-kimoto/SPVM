@@ -672,15 +672,23 @@ B<Examples:>
 
 =head2 Charater Literal
 
-B<Charater Literal> represents one character of ASCII.
+A charater literal is a L<literal/"Literals"> to write a constant value that type is the L<byte type|/"byte Type"> in source codes.
 
-Character Literal is enclosed in single quotes C<'>.
+A charater literal represents an ASCII character.
 
-Content of Character Literal is one printable ASCII character or one Escape Character of Character Literal.
+A character literal begins with C<'>.
 
-Charater Literal Type is "L</"byte TypeC<>>
+And is followed by a printable ASCII character C<0x20-0x7e> or an escape character.
 
-L</"Types"> of Charater Literal is L</"byte Type">.
+And ends with C<'>.
+
+The return type is the "L<byte type|/"byte Type">
+
+If the format of the character literal is invalid, a compilation error will occur.
+
+=head3 Escape Characters of Charater Literal
+
+The escape characters of the character literal is listed.
 
 =begin html
 
@@ -688,17 +696,17 @@ L</"Types"> of Charater Literal is L</"byte Type">.
   <tr>
     <th>
       Escape Characters of Character Literal
-   </th>
+    </th>
     <th>
-      Description
-   </th>
+      ASCII
+    </th>
   </tr>
   <tr>
     <td>
       <b>\0</b>
     </td>
     <td>
-      ASCII 0 NUL
+      0x00 NUL
     </td>
   </tr>
   <tr>
@@ -706,7 +714,7 @@ L</"Types"> of Charater Literal is L</"byte Type">.
       <b>\a</b>
     </td>
     <td>
-      ASCII 7 BEL
+      0x07 BEL
     </td>
   </tr>
   <tr>
@@ -714,7 +722,7 @@ L</"Types"> of Charater Literal is L</"byte Type">.
       <b>\t</b>
     </td>
     <td>
-      ASCII 9 HT
+      0x09 HT
     </td>
   </tr>
   <tr>
@@ -722,7 +730,7 @@ L</"Types"> of Charater Literal is L</"byte Type">.
       <b>\n</b>
     </td>
     <td>
-      ASCII 10 LF
+      0x0a LF
     </td>
   </tr>
   <tr>
@@ -730,7 +738,7 @@ L</"Types"> of Charater Literal is L</"byte Type">.
       <b>\f</b>
     </td>
     <td>
-      ASCII 12 "FF"
+      0x0c FF
     </td>
   </tr>
   <tr>
@@ -738,7 +746,7 @@ L</"Types"> of Charater Literal is L</"byte Type">.
       <b>\r</b>
     </td>
     <td>
-      ASCII 13 CR
+      0x0d CR
     </td>
   </tr>
   <tr>
@@ -746,7 +754,7 @@ L</"Types"> of Charater Literal is L</"byte Type">.
       <b>\"</b>
     </td>
     <td>
-      ASCII 34 "
+      0x22 "
     </td>
   </tr>
   <tr>
@@ -754,7 +762,7 @@ L</"Types"> of Charater Literal is L</"byte Type">.
       <b>\'</b>
     </td>
     <td>
-      ASCII 39 '
+      0x27 '
     </td>
   </tr>
   <tr>
@@ -762,15 +770,15 @@ L</"Types"> of Charater Literal is L</"byte Type">.
       <b>\\</b>
     </td>
     <td>
-      ASCII 92 \
+      0x5c \
     </td>
   </tr>
   <tr>
     <td>
-      <b>\x + tow hexadecimal numbers</b>
+      <b>\x and is followed by one or more than one <code>0-9a-fA-F</code>. The value must be less than or equal to <code>0xFF</code></b>
     </td>
     <td>
-      Specify ASCII by hexadecimal. Hexadecimal numbers are "0" to "9", "a" to "z", "A" to "Z".
+      An ASCII character.
     </td>
   </tr>
 </table>
@@ -779,13 +787,9 @@ L</"Types"> of Charater Literal is L</"byte Type">.
 
 B<Examples:>
 
-B<Charater Literal> represents one character of ASCII.
-
   # Charater Literal 
   'a'
   'x'
-  
-  # Charater Literal using Escape Character
   '\a'
   '\t'
   '\n'
@@ -794,8 +798,15 @@ B<Charater Literal> represents one character of ASCII.
   '\"'
   '\''
   '\\'
+  '\0'
+  ' '
+  '\xab'
+  '\xAB'
   '\x0D'
   '\x0A'
+  '\xD'
+  '\xA'
+  '\xFF'
 
 =head2 String Literal
 
