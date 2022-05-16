@@ -1697,8 +1697,11 @@ class Fn : precompile {
               . Fn->substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
         }
         
-        my $specifier : string;
-        switch ((int)$format->[$index]) {
+        my $specifier_first_char = $format->[$index];
+        $index++;
+        
+        my $specifier = (string)"";
+        switch ((int) $specifier_first_char) {
           case 'c' : {
             $specifier = "c";
             break;
@@ -1716,14 +1719,15 @@ class Fn : precompile {
             break;
           }
           case 'l' : {
-            if ($format->[$index + 1] == 'd') {
-              $specifier = "ld";
-            }
-            elsif ($format->[$index + 1] == 'u') {
-              $specifier = "lu";
-            }
-            else {
-              die "Invalid format";
+            if ($index < length $format) {
+              if ($format->[$index] == 'd') {
+                $index++;
+                $specifier = "ld";
+              }
+              elsif ($format->[$index] == 'u') {
+                $index++;
+                $specifier = "lu";
+              }
             }
             break;
           }
@@ -1753,9 +1757,7 @@ class Fn : precompile {
         }
         
         if ($specifier eq "c") {
-          ++$index;
           my $arg = ((Byte)$args->[$arg_count])->value;
-
           if ($left_justified) {
             $buffer->push_char($arg);
             my $space_count = $width - 1;
@@ -1776,7 +1778,6 @@ class Fn : precompile {
           }
         }
         elsif ($specifier eq "s") {
-          ++$index;
           my $arg = (string)$args->[$arg_count];
 
           my $space_count = $width - length $arg;;
@@ -1794,7 +1795,6 @@ class Fn : precompile {
           }
         }
         elsif ($specifier eq "d") {
-          ++$index;
           my $arg = ((Int)$args->[$arg_count])->value;
           my $digits = new byte[11]; # -2147483648 has 11 digits
           my $digit_count = 0;
@@ -1854,7 +1854,6 @@ class Fn : precompile {
           }
         }
         elsif ($specifier eq "u") {
-          ++$index;
           my $arg = ((Int)$args->[$arg_count])->value & 0xFFFFFFFFL;
           my $digits = new byte[10]; # 4294967295 has 10 digits
           my $digit_count = 0;
@@ -1914,8 +1913,7 @@ class Fn : precompile {
           }
         }
         elsif ($specifier eq "ld" || $specifier eq "lu") {
-          my $is_signed_format = $format->[$index + 1] == 'd';
-          $index += 2;
+          my $is_signed_format = $specifier eq "ld";
 
           my $arg = ((Long)$args->[$arg_count])->value;
           my $digits = new byte[20]; # -9223372036854775808[18446744073709551615] has 20 digits
@@ -1982,33 +1980,28 @@ class Fn : precompile {
           }
         }
         elsif ($specifier eq "f" || $specifier eq "g") {
-          ++$index;
           my $arg = (Double)$args->[$arg_count];
           my $specifier_str = Fn->substr($format, $specifier_base_index, $index - $specifier_base_index);
           my $string = Fn->_snsprintf_double($specifier_str, $arg->value);
           $buffer->push($string);
         }
         elsif ($specifier eq "U") {
-          ++$index;
           my $arg = (Int)$args->[$arg_count];
           my $utf8 = Unicode->uchar_to_utf8($arg->value);
           $buffer->push($utf8);
         }
         elsif ($specifier eq "x") {
-          ++$index;
           my $arg = (Int)$args->[$arg_count];
           my $formatted_string = &_native_snprintf_x($arg);
           $buffer->push($formatted_string);
         }
         elsif ($specifier eq "X") {
-          ++$index;
           my $arg = (Int)$args->[$arg_count];
           my $formatted_string = &_native_snprintf_X($arg);
           $buffer->push($formatted_string);
         }
         else {
-          die "Invalid conversion in sprintf: \""
-              . Fn->substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
+          die "Invalid specifier \"%$specifier\"";
         }
 
         ++$arg_count;
