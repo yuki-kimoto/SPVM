@@ -54,6 +54,17 @@ int32_t SPVM_TOKE_is_white_space(SPVM_COMPILER* compiler, char ch) {
   }
 }
 
+int32_t SPVM_TOKE_is_hex_number(SPVM_COMPILER* compiler, char ch) {
+  (void)compiler;
+  // SP, CR, LF, HT, FF
+  if (isdigit(ch) || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F')) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 int32_t SPVM_TOKE_is_valid_unicode_codepoint(int32_t uc) {
   return (((uint32_t)uc)-0xd800 > 0x07ff) && ((uint32_t)uc < 0x110000);
 }
@@ -897,20 +908,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Hex ascii code
             else if (*compiler->bufptr == 'x') {
               compiler->bufptr++;
-              if (isdigit(*compiler->bufptr)
-                  || (*compiler->bufptr >= 'a' && *compiler->bufptr <= 'f')
-                  || (*compiler->bufptr >= 'A' && *compiler->bufptr <= 'F'))
-              {
+              if (SPVM_TOKE_is_hex_number(compiler, *compiler->bufptr)) {
                 int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
                 
                 char* num_str = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, 3);
                 num_str[0] = *compiler->bufptr;
                 compiler->bufptr++;
-                if (
-                  isdigit(*compiler->bufptr)
-                  || (*compiler->bufptr >= 'a' && *compiler->bufptr <= 'f')
-                  || (*compiler->bufptr >= 'A' && *compiler->bufptr <= 'F'))
-                {
+                if (SPVM_TOKE_is_hex_number(compiler, *compiler->bufptr)) {
                   num_str[1] = *compiler->bufptr;
                   compiler->bufptr++;
                   char *end;
@@ -1164,12 +1168,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     char* num_str = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, 3);
                     num_str[0] = *char_ptr;
                     char_ptr++;
-                    if (
-                      isdigit(*char_ptr)
-                      || *char_ptr == 'a'  || *char_ptr == 'b'  || *char_ptr == 'c'  || *char_ptr == 'd'  || *char_ptr == 'e'  || *char_ptr == 'f'
-                      || *char_ptr == 'A'  || *char_ptr == 'B'  || *char_ptr == 'C'  || *char_ptr == 'D'  || *char_ptr == 'E'  || *char_ptr == 'F'
-                    )
-                    {
+                    if (SPVM_TOKE_is_hex_number(compiler, *char_ptr)) {
                       num_str[1] = *char_ptr;
                       char_ptr++;
                       char *end;
@@ -1195,12 +1194,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     char* char_start_ptr = char_ptr;
                     int32_t unicode_chars_length = 0;
                     
-                    while (
-                      isdigit(*char_ptr)
-                      || *char_ptr == 'a'  || *char_ptr == 'b'  || *char_ptr == 'c'  || *char_ptr == 'd'  || *char_ptr == 'e'  || *char_ptr == 'f'
-                      || *char_ptr == 'A'  || *char_ptr == 'B'  || *char_ptr == 'C'  || *char_ptr == 'D'  || *char_ptr == 'E'  || *char_ptr == 'F'
-                    )
-                    {
+                    while (SPVM_TOKE_is_hex_number(compiler, *char_ptr)) {
                       char_ptr++;
                       unicode_chars_length++;
                     }
@@ -1521,10 +1515,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (digit == 16) {
             compiler->bufptr += 2;
             while(
-              isdigit(*compiler->bufptr)
-              || *compiler->bufptr == 'a' || *compiler->bufptr == 'b' || *compiler->bufptr == 'c' || *compiler->bufptr == 'd' || *compiler->bufptr == 'e' || *compiler->bufptr == 'f'
-              || *compiler->bufptr == 'A' || *compiler->bufptr == 'B' || *compiler->bufptr == 'C' || *compiler->bufptr == 'D' || *compiler->bufptr == 'E' || *compiler->bufptr == 'F'
-              || *compiler->bufptr == '_' || *compiler->bufptr == '.' || *compiler->bufptr == 'p' || *compiler->bufptr == 'P' || *compiler->bufptr == '-' || *compiler->bufptr == '+'
+              SPVM_TOKE_is_hex_number(compiler, *compiler->bufptr) || *compiler->bufptr == '_'
+              || *compiler->bufptr == '.' || *compiler->bufptr == 'p' || *compiler->bufptr == 'P' || *compiler->bufptr == '-' || *compiler->bufptr == '+'
             )
             {
               // Floating point literal
