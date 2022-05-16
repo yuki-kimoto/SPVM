@@ -1758,9 +1758,10 @@ class Fn : precompile {
         
         if ($specifier eq "c") {
           my $arg = ((Byte)$args->[$arg_count])->value;
+          my $formatted_value = Fn->chr($arg);
+          my $space_count = $width - length $formatted_value;
           if ($left_justified) {
-            $buffer->push_char($arg);
-            my $space_count = $width - 1;
+            $buffer->push($formatted_value);
             if ($space_count > 0) {
               for (; $space_count > 0; --$space_count) {
                 $buffer->push_char($pad_char);
@@ -1768,19 +1769,18 @@ class Fn : precompile {
             }
           }
           else {
-            my $space_count = $width - 1;
             if ($space_count > 0) {
               for (; $space_count > 0; --$space_count) {
                 $buffer->push_char($pad_char);
               }
             }
-            $buffer->push(Fn->chr($arg));
+            $buffer->push($formatted_value);
           }
         }
         elsif ($specifier eq "s") {
           my $arg = (string)$args->[$arg_count];
-
-          my $space_count = $width - length $arg;;
+          my $formatted_value = $arg;
+          my $space_count = $width - length $formatted_value;
           if ($left_justified) {
             $buffer->push($arg);
             for (my $i = 0; $i < $space_count; ++$i) {
