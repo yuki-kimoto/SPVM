@@ -1774,7 +1774,7 @@ class Fn : precompile {
                 $buffer->push_char($pad_char);
               }
             }
-            $buffer->push_char($arg);
+            $buffer->push(Fn->chr($arg));
           }
         }
         elsif ($specifier eq "s") {
@@ -2022,7 +2022,7 @@ class Fn : precompile {
   
   native static method _native_snprintf_x : string ($value : int);
   native static method _native_snprintf_X : string ($value : int);
-
+  
   static method substr : string ($string : string, $offset : int, $length : int) {
 
     if ($string == undef) {
