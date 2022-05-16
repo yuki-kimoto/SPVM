@@ -1696,7 +1696,62 @@ class Fn : precompile {
           die "Invalid conversion in sprintf: \""
               . Fn->substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
         }
+        
+        my $specifier : string;
+        switch ((int)$format->[$index]) {
+          case 'c' : {
+            $specifier = "c";
+            break;
+          }
+          case 's' : {
+            $specifier = "s";
+            break;
+          }
+          case 'd' : {
+            $specifier = "d";
+            break;
+          }
+          case 'u' : {
+            $specifier = "s";
+            break;
+          }
+          case 'l' : {
+            if ($format->[$index + 1] == 'd') {
+              $specifier = "ld";
+            }
+            elsif ($format->[$index + 1] == 'u') {
+              $specifier = "lu";
+            }
+            else {
+              die "Invalid format";
+            }
+            break;
+          }
+          case 'f' : {
+            $specifier = "f";
+            break;
+          }
+          case 'g' : {
+            $specifier = "g";
+            break;
+          }
+          case 'U' : {
+            $specifier = "U";
+            break;
+          }
+          case 'x' : {
+            $specifier = "x";
+            break;
+          }
+          case 'X' : {
+            $specifier = "X";
+            break;
+          }
+          default: {
 
+          }
+        }
+        
         my $specifier_char = $format->[$index];
         if ($specifier_char == 'c') {
           ++$index;

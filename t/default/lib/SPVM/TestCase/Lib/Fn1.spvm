@@ -89,7 +89,7 @@ class TestCase::Lib::Fn1 {
       eval {
         Fn->sprintf("%l", 1L);
       };
-      unless ($@ && Fn->index($@, "Invalid conversion in sprintf: \"%l\"", 0) > -1) {
+      unless ($@) {
         return 0;
       }
       $@ = undef;
@@ -119,7 +119,7 @@ class TestCase::Lib::Fn1 {
       eval {
         Fn->sprintf("%l", 1L);
       };
-      unless ($@ && Fn->index($@, "Invalid conversion in sprintf: \"%l\"", 0) > -1) {
+      unless ($@) {
         return 0;
       }
       $@ = undef;
