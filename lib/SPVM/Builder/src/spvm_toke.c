@@ -54,6 +54,17 @@ int32_t SPVM_TOKE_is_white_space(SPVM_COMPILER* compiler, char ch) {
   }
 }
 
+int32_t SPVM_TOKE_is_hex_number(SPVM_COMPILER* compiler, char ch) {
+  (void)compiler;
+  // SP, CR, LF, HT, FF
+  if (isdigit(ch) || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F')) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 int32_t SPVM_TOKE_is_valid_unicode_codepoint(int32_t uc) {
   return (((uint32_t)uc)-0xd800 > 0x07ff) && ((uint32_t)uc < 0x110000);
 }
@@ -852,84 +863,89 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         char ch = 0;
         
         if (*compiler->bufptr == '\'') {
-          SPVM_COMPILER_error(compiler, "Character literals must have at least one character at %s line %d", compiler->cur_file, compiler->cur_line);
+          SPVM_COMPILER_error(compiler, "A character literal can't be empty at %s line %d", compiler->cur_file, compiler->cur_line);
           compiler->bufptr++;
         }
         else {
           if (*compiler->bufptr == '\\') {
             compiler->bufptr++;
             if (*compiler->bufptr == '0') {
-              ch = '\0';
+              ch = 0x00; // NUL
               compiler->bufptr++;
             }
             else if (*compiler->bufptr == 'a') {
-              ch = '\a';
-              compiler->bufptr++;
-            }
-            else if (*compiler->bufptr == 'f') {
-              ch = '\f';
+              ch = 0x07; // BEL
               compiler->bufptr++;
             }
             else if (*compiler->bufptr == 't') {
-              ch = '\t';
-              compiler->bufptr++;
-            }
-            else if (*compiler->bufptr == 'r') {
-              ch = '\r';
+              ch = 0x09; // HT
               compiler->bufptr++;
             }
             else if (*compiler->bufptr == 'n') {
-              ch = '\n';
+              ch = 0x0a; // 
+              compiler->bufptr++;
+            }
+            else if (*compiler->bufptr == 'f') {
+              ch = 0x0c; // FF
+              compiler->bufptr++;
+            }
+            else if (*compiler->bufptr == 'r') {
+              ch = 0x0d; // LF
               compiler->bufptr++;
             }
             else if (*compiler->bufptr == '\'') {
-              ch = '\'';
+              ch = 0x27; // '
               compiler->bufptr++;
             }
             else if (*compiler->bufptr == '"') {
-              ch = '\"';
+              ch = 0x22; // "
               compiler->bufptr++;
             }
             else if (*compiler->bufptr == '\\') {
-              ch = '\\';
+              ch = 0x5c; /* \ */
               compiler->bufptr++;
             }
             // Hex ascii code
             else if (*compiler->bufptr == 'x') {
               compiler->bufptr++;
-              if (isdigit(*compiler->bufptr)
-                  || (*compiler->bufptr >= 'a' && *compiler->bufptr <= 'f')
-                  || (*compiler->bufptr >= 'A' && *compiler->bufptr <= 'F'))
-              {
-                int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
-                
-                char* num_str = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, 3);
-                num_str[0] = *compiler->bufptr;
+
+              // {
+              int32_t has_brace = 0;
+              if (*compiler->bufptr == '{') {
+                has_brace = 1;
                 compiler->bufptr++;
-                if (
-                  isdigit(*compiler->bufptr)
-                  || (*compiler->bufptr >= 'a' && *compiler->bufptr <= 'f')
-                  || (*compiler->bufptr >= 'A' && *compiler->bufptr <= 'F'))
-                {
-                  num_str[1] = *compiler->bufptr;
-                  compiler->bufptr++;
-                  char *end;
-                  ch = (char)strtol(num_str, &end, 16);
+              }
+              
+              char hex_escape_char[3] = {0};
+              int32_t hex_escape_char_index = 0;
+              while (SPVM_TOKE_is_hex_number(compiler, *compiler->bufptr)) {
+                if (hex_escape_char_index >= 2) {
+                  break;
                 }
-                else {
-                  SPVM_COMPILER_error(compiler, "A invalid hexadecimal ascii code \"\\x%c%c\" in the second hexadecimal character of the charater literal at %s line %d", *(compiler->bufptr - 1), *compiler->bufptr, compiler->cur_file, compiler->cur_line);
-                  compiler->bufptr++;
-                }
-                SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, num_str);
-                assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
+                hex_escape_char[hex_escape_char_index] = *compiler->bufptr;
+                compiler->bufptr++;
+                hex_escape_char_index++;
+              }
+              
+              if (strlen(hex_escape_char) > 0) {
+                char* end;
+                ch = (char)strtol(hex_escape_char, &end, 16);
               }
               else {
-                SPVM_COMPILER_error(compiler, "A invalid hexadecimal ascii code \"\\x%c%c\" in the first hexadecimal character of the charater literal at %s line %d", *compiler->bufptr, *(compiler->bufptr + 1), compiler->cur_file, compiler->cur_line);
-                compiler->bufptr += 2;
+                SPVM_COMPILER_error(compiler, "After \"\\x\" of the charater literal hexadecimal escape character, one or tow hexadecimal numbers must follow at %s line %d", compiler->cur_file, compiler->cur_line);
+              }
+              
+              if (has_brace) {
+                if (*compiler->bufptr == '}') {
+                  compiler->bufptr++;
+                }
+                else {
+                  SPVM_COMPILER_error(compiler, "The charater literal hexadecimal escape character that has the opening \"{\" must have the closing \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                }
               }
             }
             else {
-              SPVM_COMPILER_error(compiler, "A invalid escape character \"\\%c\" in the charater literal at %s line %d", *compiler->bufptr, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "Invalid charater literal escape character \"\\%c\" at %s line %d", *compiler->bufptr, compiler->cur_file, compiler->cur_line);
               compiler->bufptr++;
             }
           }
@@ -942,7 +958,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->bufptr++;
           }
           else {
-            SPVM_COMPILER_error(compiler, "A character literal must ends with \"'\" of the character literal at %s line %d", compiler->cur_file, compiler->cur_line);
+            SPVM_COMPILER_error(compiler, "A character literal must ends with \"'\" at %s line %d", compiler->cur_file, compiler->cur_line);
           }
         }
         
@@ -1164,12 +1180,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     char* num_str = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, 3);
                     num_str[0] = *char_ptr;
                     char_ptr++;
-                    if (
-                      isdigit(*char_ptr)
-                      || *char_ptr == 'a'  || *char_ptr == 'b'  || *char_ptr == 'c'  || *char_ptr == 'd'  || *char_ptr == 'e'  || *char_ptr == 'f'
-                      || *char_ptr == 'A'  || *char_ptr == 'B'  || *char_ptr == 'C'  || *char_ptr == 'D'  || *char_ptr == 'E'  || *char_ptr == 'F'
-                    )
-                    {
+                    if (SPVM_TOKE_is_hex_number(compiler, *char_ptr)) {
                       num_str[1] = *char_ptr;
                       char_ptr++;
                       char *end;
@@ -1195,12 +1206,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     char* char_start_ptr = char_ptr;
                     int32_t unicode_chars_length = 0;
                     
-                    while (
-                      isdigit(*char_ptr)
-                      || *char_ptr == 'a'  || *char_ptr == 'b'  || *char_ptr == 'c'  || *char_ptr == 'd'  || *char_ptr == 'e'  || *char_ptr == 'f'
-                      || *char_ptr == 'A'  || *char_ptr == 'B'  || *char_ptr == 'C'  || *char_ptr == 'D'  || *char_ptr == 'E'  || *char_ptr == 'F'
-                    )
-                    {
+                    while (SPVM_TOKE_is_hex_number(compiler, *char_ptr)) {
                       char_ptr++;
                       unicode_chars_length++;
                     }
@@ -1521,10 +1527,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (digit == 16) {
             compiler->bufptr += 2;
             while(
-              isdigit(*compiler->bufptr)
-              || *compiler->bufptr == 'a' || *compiler->bufptr == 'b' || *compiler->bufptr == 'c' || *compiler->bufptr == 'd' || *compiler->bufptr == 'e' || *compiler->bufptr == 'f'
-              || *compiler->bufptr == 'A' || *compiler->bufptr == 'B' || *compiler->bufptr == 'C' || *compiler->bufptr == 'D' || *compiler->bufptr == 'E' || *compiler->bufptr == 'F'
-              || *compiler->bufptr == '_' || *compiler->bufptr == '.' || *compiler->bufptr == 'p' || *compiler->bufptr == 'P' || *compiler->bufptr == '-' || *compiler->bufptr == '+'
+              SPVM_TOKE_is_hex_number(compiler, *compiler->bufptr) || *compiler->bufptr == '_'
+              || *compiler->bufptr == '.' || *compiler->bufptr == 'p' || *compiler->bufptr == 'P' || *compiler->bufptr == '-' || *compiler->bufptr == '+'
             )
             {
               // Floating point literal

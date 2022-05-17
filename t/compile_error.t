@@ -610,11 +610,16 @@ sub print_error_messages {
 
   # Caharater literal
   {
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty');
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteral');
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::NotEnd');
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii1');
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii2');
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty', qr/A character literal can't be empty/);
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteral', qr/\QInvalid charater literal escape character "\A"/);
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::NotEnd', qr/A character literal must ends with "'"/);
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii1', qr/\QAfter "\x" of the charater literal hexadecimal escape character, one or tow hexadecimal numbers must follow/);
+    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii2', qr/A character literal must ends with "'"/);
+    {
+      # Invalid "_"
+      my $source = q|class Tmp { static method main : void () { '\x{a' } }|;
+      compile_not_ok($source, qr/The charater literal hexadecimal escape character that has the opening "\{" must have the closing "\}"/);
+    }
   }
 }
 
