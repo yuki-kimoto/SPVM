@@ -870,39 +870,39 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (*compiler->bufptr == '\\') {
             compiler->bufptr++;
             if (*compiler->bufptr == '0') {
-              ch = '\0';
+              ch = 0x00; // NUL
               compiler->bufptr++;
             }
             else if (*compiler->bufptr == 'a') {
-              ch = '\a';
-              compiler->bufptr++;
-            }
-            else if (*compiler->bufptr == 'f') {
-              ch = '\f';
+              ch = 0x07; // BEL
               compiler->bufptr++;
             }
             else if (*compiler->bufptr == 't') {
-              ch = '\t';
-              compiler->bufptr++;
-            }
-            else if (*compiler->bufptr == 'r') {
-              ch = '\r';
+              ch = 0x09; // HT
               compiler->bufptr++;
             }
             else if (*compiler->bufptr == 'n') {
-              ch = '\n';
+              ch = 0x0a; // 
+              compiler->bufptr++;
+            }
+            else if (*compiler->bufptr == 'f') {
+              ch = 0x0c; // FF
+              compiler->bufptr++;
+            }
+            else if (*compiler->bufptr == 'r') {
+              ch = 0x0d; // LF
               compiler->bufptr++;
             }
             else if (*compiler->bufptr == '\'') {
-              ch = '\'';
+              ch = 0x27; // '
               compiler->bufptr++;
             }
             else if (*compiler->bufptr == '"') {
-              ch = '\"';
+              ch = 0x22; // "
               compiler->bufptr++;
             }
             else if (*compiler->bufptr == '\\') {
-              ch = '\\';
+              ch = 0x5c; /* \ */
               compiler->bufptr++;
             }
             // Hex ascii code
