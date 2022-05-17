@@ -1360,16 +1360,16 @@ Create a formatted string with the format and the embdded values.
 
 <table>
   <tr><th>Specifiers</th><th>Descriptions</th><th>Acceptable Types</th></tr>
-  <tr><td>%c</td><td>Signed 8bit integer to an ASCII character</td><td>Byte</td></tr>
-  <tr><td>%d</td><td>Signed 32bit integer</td><td>L<Int|SPVM::Int></td></tr>
-  <tr><td>%u</td><td>Unsigned 32bit integer</td><td>L<Int|SPVM::Int></td></tr>
-  <tr><td>%x</td><td></td>Unsiged 32 bit integer to a hexadecimal string using <code>0-9a-z</code><td>L<Int|SPVM::Int></td></tr>
-  <tr><td>%X</td><td></td>Unsiged 32 bit integer to a hexadecimal string using <code>0-9A-Z</code><td>L<Int|SPVM::Int></td></tr>
-  <tr><td>%ld</td><td>Signed 64bit integer</td><td>L<Long|SPVM::Long></td></tr>
-  <tr><td>%lu</td><td>Unsigned 64bit integer</td><td>L<Long|SPVM::Long></td></tr>
-  <tr><td>%lx</td><td>Unsiged 64 bit integer to a hexadecimal string using <code>0-9a-z</code></td><td>L<Long|SPVM::Long></td></tr>
-  <tr><td>%lX</td><td>Unsiged 64 bit integer to a hexadecimal string using <code>0-9A-Z</code></td><td>L<Long|SPVM::Long></td></tr>
-  <tr><td>%f</td><td>64bit floating point</td><td>L<Double|SPVM::Double>, L<Float|SPVM::Float></td></tr>
+  <tr><td>%c</td><td>Signed 8bit integer to an ASCII character</td><td><a href="https://metacpan.org/pod/SPVM::Byte">Byte</a></td></tr>
+  <tr><td>%d</td><td>Signed 32bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
+  <tr><td>%u</td><td>Unsigned 32bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
+  <tr><td>%x</td><td>Unsiged 32 bit integer to a hexadecimal string using <code>0-9a-z</code></td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
+  <tr><td>%X</td><td>Unsiged 32 bit integer to a hexadecimal string using <code>0-9A-Z</code></td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
+  <tr><td>%ld</td><td>Signed 64bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
+  <tr><td>%lu</td><td>Unsigned 64bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
+  <tr><td>%lx</td><td>Unsiged 64 bit integer to a hexadecimal string using <code>0-9a-z</code></td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
+  <tr><td>%lX</td><td>Unsiged 64 bit integer to a hexadecimal string using <code>0-9A-Z</code></td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
+  <tr><td>%f</td><td>64bit floating point</td><td><a href="https://metacpan.org/pod/SPVM::Double">Double</a>, <a href="https://metacpan.org/pod/SPVM::Float">Float</a></td></tr>
   <tr><td>%s</td><td>String</td><td>string</td></tr>
   <tr><td>%U</td><td>Unicode Code Point to a UTF-8 character</td><td></td></tr>
 </table>
