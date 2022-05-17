@@ -137,10 +137,24 @@ class TestCase::Lib::Fn1 {
     unless (Fn->sprintf("%+12.6f", 3.14) eq "   +3.140000") { return 0; }
     unless (Fn->sprintf("%-12.6f", 3.14) eq "3.140000    ") { return 0; }
     unless (Fn->sprintf("%+-12.6f", 3.14) eq "+3.140000   ") { return 0; }
-    unless (Fn->sprintf("%g", 3.14) eq "3.14") { return 0; }
     {
       eval {
         Fn->sprintf("%f", "str");
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  static method sprintf_g : int () {
+    unless (Fn->sprintf("%g", 3.14) eq "3.14") { return 0; }
+    
+    {
+      eval {
+        Fn->sprintf("%g", "str");
       };
       unless ($@) {
         return 0;

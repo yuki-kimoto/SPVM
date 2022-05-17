@@ -138,6 +138,7 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn1->sprintf_ld);
   ok(SPVM::TestCase::Lib::Fn1->sprintf_lu);
   ok(SPVM::TestCase::Lib::Fn1->sprintf_f);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_g);
   ok(SPVM::TestCase::Lib::Fn1->sprintf_c);
   ok(SPVM::TestCase::Lib::Fn1->sprintf_s);
   ok(SPVM::TestCase::Lib::Fn1->sprintf_U);
