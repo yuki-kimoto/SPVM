@@ -231,6 +231,34 @@ int32_t SPVM__Fn___native_snprintf_f(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn___native_snprintf_g(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  double value = stack[0].dval;
+  int32_t precision = stack[1].ival;
+
+  // "%." "2147483647" "f": 2 + 11 + 1
+  char specifier[14] = {0};
+  if (precision >= 0) {
+    snprintf(specifier, 14, "%%.%" PRId32 "g", precision);
+  }
+  else {
+    snprintf(specifier, 14, "%%g");
+  }
+
+  // "-9223372036854775808" + "." + width + precision
+  int32_t max_length = 20 + 1 + precision;
+  void* obj_formatted_string = env->new_string(env, NULL, max_length);
+  
+  char* formatted_string = (char*)env->get_chars(env, obj_formatted_string);
+
+  int32_t length = snprintf(formatted_string, max_length + 1, specifier, value);
+
+  stack[0].oval = env->new_string(env, formatted_string, length);
+
+  return 0;
+}
+
 int32_t SPVM__Fn___native_snprintf_d(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 

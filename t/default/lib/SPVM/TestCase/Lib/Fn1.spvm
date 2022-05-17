@@ -151,6 +151,8 @@ class TestCase::Lib::Fn1 {
 
   static method sprintf_g : int () {
     unless (Fn->sprintf("%g", 3.14) eq "3.14") { return 0; }
+    unless (Fn->sprintf("%.2g", 3.14) eq "3.1") { return 0; }
+    unless (Fn->sprintf("%-+10.2g", 3.14) eq "+3.1      ") { return 0; }
     
     {
       eval {

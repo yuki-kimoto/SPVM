@@ -1831,9 +1831,8 @@ class Fn : precompile {
         }
         elsif ($specifier eq "g") {
           my $arg = (Double)$args->[$arg_count];
-          my $specifier_str = Fn->substr($format, $specifier_base_index, $index - $specifier_base_index);
-          my $string = Fn->_snsprintf_double($specifier_str, $arg->value);
-          $buffer->push($string);
+          my $formatted_value = &_native_snprintf_g($arg, $precision);
+          &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
         }
         elsif ($specifier eq "U") {
           my $arg = (Int)$args->[$arg_count];
@@ -1887,6 +1886,7 @@ class Fn : precompile {
   native static method _native_snprintf_x : string ($value : int);
   native static method _native_snprintf_lx : string ($value : long);
   native static method _native_snprintf_f : string ($value : double, $precision : int);
+  native static method _native_snprintf_g : string ($value : double, $precision : int);
   
   static method _push_formatted_string_unsigned : void($buffer : StringBuffer, $formatted_value : string, $width : int, $pad_char : byte, $left_justified : int) {
     
