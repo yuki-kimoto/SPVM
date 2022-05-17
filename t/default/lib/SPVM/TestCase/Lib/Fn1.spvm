@@ -136,7 +136,12 @@ class TestCase::Lib::Fn1 {
     unless (Fn->sprintf("%+-12.6f", 3.14) eq "+3.140000   ") { return 0; }
     unless (Fn->sprintf("%.300f", 1.0) eq ("1." . Fn->repeat("0", 300))) { return 0; }
     unless (Fn->sprintf("%10.300f", 1.0) eq ("1." . Fn->repeat("0", 300))) { return 0; }
-
+    
+    # Float
+    {
+      unless (Fn->sprintf("%.2f", 3.1415f) eq "3.14") { return 0; }
+    }
+    
     {
       eval {
         Fn->sprintf("%f", "str");
@@ -153,6 +158,8 @@ class TestCase::Lib::Fn1 {
     unless (Fn->sprintf("%g", 3.14) eq "3.14") { return 0; }
     unless (Fn->sprintf("%.2g", 3.14) eq "3.1") { return 0; }
     unless (Fn->sprintf("%-+10.2g", 3.14) eq "+3.1      ") { return 0; }
+
+    unless (Fn->sprintf("%g", 3.14f) eq "3.14") { return 0; }
     
     {
       eval {

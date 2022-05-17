@@ -1825,13 +1825,27 @@ class Fn : precompile {
           &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
         elsif ($specifier eq "f") {
-          my $arg = (Double)$args->[$arg_count];
-          my $formatted_value = &_native_snprintf_f($arg, $precision);
+          my $arg_value : double;
+          my $arg = $args->[$arg_count];
+          if ($arg isa Float) {
+            $arg_value = $arg->(Float)->value;
+          }
+          else {
+            $arg_value = $arg->(Double)->value;
+          }
+          my $formatted_value = &_native_snprintf_f($arg_value, $precision);
           &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
         }
         elsif ($specifier eq "g") {
-          my $arg = (Double)$args->[$arg_count];
-          my $formatted_value = &_native_snprintf_g($arg, $precision);
+          my $arg_value : double;
+          my $arg = $args->[$arg_count];
+          if ($arg isa Float) {
+            $arg_value = $arg->(Float)->value;
+          }
+          else {
+            $arg_value = $arg->(Double)->value;
+          }
+          my $formatted_value = &_native_snprintf_g($arg_value, $precision);
           &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
         }
         elsif ($specifier eq "U") {
