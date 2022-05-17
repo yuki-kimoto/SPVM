@@ -1188,6 +1188,21 @@ B<Examples:>
   my $rand0 = Fn->rand(\$seed);
   my $rand1 = Fn->rand(\$seed);
 
+=head2 repeat
+
+  static method repeat : double ($string : string, $count : int)
+
+Gets the repeat string.
+
+If the string is not defined, an exception will be thrown.
+
+If the repeat is not more than C<0>, an exception will be thrown.
+
+B<Examples:>
+  
+  # "abcabcabc"
+  my $repeat_string = Fn->repeat("abc", 3);
+
 =head2 rindex
 
   static method rindex : int ($string : string, $sub_string : string, $start_pos : int)

@@ -1720,4 +1720,28 @@ class TestCase::Lib::Fn1 {
     
     return 1;
   }
+
+  static method repeat : int () {
+    
+    unless (Fn->repeat("abc", 3) eq "abcabcabc") {
+      return 0;
+    }
+
+    # Exception
+    {
+      eval { Fn->repeat(undef, 1); };
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { Fn->repeat("abc", 0); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }

@@ -1290,6 +1290,25 @@ class Fn : precompile {
     return $random_number;
   }
 
+  static method repeat : string ($string : string, $count : int) {
+    
+    unless ($string) {
+      die "The string must be defined";
+    }
+    
+    unless ($count > 0) {
+      die "The repeat count must be more than 0";
+    }
+    
+    my $buffer = StringBuffer->new;
+    for (my $i = 0; $i < $count; $i++) {
+      $buffer->push($string);
+    }
+    my $repeat_string = $buffer->to_string;
+    
+    return $repeat_string;
+  }
+
   static method rindex : int ($string : string, $sub_string : string, $start_pos : int) {
     return &rindex_len($string, $sub_string, $start_pos, length $string);
   }

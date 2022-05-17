@@ -8,6 +8,7 @@ Revision history for SPVM
         * Add "%lx" specifier to Fn->sprintf method.
         * Add "%lX" specifier to Fn->sprintf method.
         * Support any precision of %f of Fn->sprintf.
+        * Add "repeat" method to Fn module.
         
         [BUG FIX]
         * Fix the bug Github #212. Tests fail when perl is built with -DDEBUGGING set in ccflags [rt.cpan.org #142336].
