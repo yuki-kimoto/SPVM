@@ -1344,17 +1344,19 @@ Create a formatted string with the format and the embdded values.
 =begin html
 
 <table>
+  <tr><td>%c</td></tr><tr><td></td>Signed 8bit integer to an ASCII character</tr>
   <tr><th>Format Specifier</th></tr><tr><th>Description</th></tr>
-  <tr><td>%d</td></tr><tr><td>32bit Integer</td></tr>
-  <tr><td>%u</td></tr><tr><td>Unsigned 32bit Integer</td></tr>
-  <tr><td>%ld</td></tr><tr><td>64bit Integer</td></tr>
-  <tr><td>%lu</td></tr><tr><td>Unsigned 64bit Integer</td></tr>
-  <tr><td>%f</td></tr><tr><td>64bit Floating Point</td></tr>
-  <tr><td>%c</td></tr><tr><td></td>Character</tr>
-  <tr><td>%s</td></tr><tr><td></td>String</tr>
-  <tr><td>%U</td></tr><tr><td></td>Unicode Code Point to UTF-8</tr>
+  <tr><td>%d</td></tr><tr><td>Signed 32bit integer</td></tr>
+  <tr><td>%u</td></tr><tr><td>Unsigned 32bit integer</td></tr>
   <tr><td>%x</td></tr><tr><td></td>Unsiged 32 bit integer to a hexadecimal string using <code>0-9a-z</code></tr>
   <tr><td>%X</td></tr><tr><td></td>Unsiged 32 bit integer to a hexadecimal string using <code>0-9A-Z</code></tr>
+  <tr><td>%ld</td></tr><tr><td>Signed 64bit integer</td></tr>
+  <tr><td>%lu</td></tr><tr><td>Unsigned 64bit integer</td></tr>
+  <tr><td>%lx</td></tr><tr><td></td>Unsiged 64 bit integer to a hexadecimal string using <code>0-9a-z</code></tr>
+  <tr><td>%lX</td></tr><tr><td></td>Unsiged 64 bit integer to a hexadecimal string using <code>0-9A-Z</code></tr>
+  <tr><td>%f</td></tr><tr><td>64bit floating point</td></tr>
+  <tr><td>%s</td></tr><tr><td></td>String</tr>
+  <tr><td>%U</td></tr><tr><td></td>Unicode Code Point to a UTF-8 character</tr>
 </table>
 
 =end html

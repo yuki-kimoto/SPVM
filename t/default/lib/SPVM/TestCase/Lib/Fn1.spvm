@@ -314,6 +314,84 @@ class TestCase::Lib::Fn1 {
     return 1;
   }
 
+  static method sprintf_lx : int () {
+    
+    unless (Fn->sprintf("%lx", 0L) eq "0") {
+      return 0;
+    }
+    unless (Fn->sprintf("%lx", 255L) eq "ff") {
+      return 0;
+    }
+    unless (Fn->sprintf("%lx", -1L) eq "ffffffffffffffff") {
+      return 0;
+    }
+    unless (Fn->sprintf("%08lx", 255L) eq "000000ff") {
+      return 0;
+    }
+    
+    # Ignore "+"
+    unless (Fn->sprintf("%+08lx", 255L) eq "000000ff") {
+      return 0;
+    }
+    
+    # "-" ignores "0" padding
+    unless (Fn->sprintf("%-08lx", 255L) eq "ff      ") {
+      return 0;
+    }
+    
+    # Invalid type
+    {
+      eval {
+        Fn->sprintf("%lx", 1);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
+  static method sprintf_lX : int () {
+    
+    unless (Fn->sprintf("%lX", 0L) eq "0") {
+      return 0;
+    }
+    unless (Fn->sprintf("%lX", 255L) eq "FF") {
+      return 0;
+    }
+    unless (Fn->sprintf("%lX", -1L) eq "FFFFFFFFFFFFFFFF") {
+      return 0;
+    }
+    unless (Fn->sprintf("%08lX", 255L) eq "000000FF") {
+      return 0;
+    }
+    
+    # Ignore "+"
+    unless (Fn->sprintf("%+08lX", 255L) eq "000000FF") {
+      return 0;
+    }
+    
+    # "-" ignores "0" padding
+    unless (Fn->sprintf("%-08lX", 255L) eq "FF      ") {
+      return 0;
+    }
+    
+    # Invalid type
+    {
+      eval {
+        Fn->sprintf("%lX", 1);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
   static method sprintf_all : int () {
     {
       # Invalid conversion (end of string)

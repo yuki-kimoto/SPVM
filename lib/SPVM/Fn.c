@@ -267,12 +267,27 @@ int32_t SPVM__Fn___native_snprintf_lu(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM__Fn___native_snprintf_x(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
-  int32_t value = stack[0].ival;
+  uint32_t value = (uint32_t)stack[0].ival;
   
   // "ffffffff"
   char formatted_string[9] = {0};
 
-  int32_t length = snprintf(formatted_string, 9, "%"PRIx32, (uint32_t)value);
+  int32_t length = snprintf(formatted_string, 9, "%"PRIx32, value);
+
+  stack[0].oval = env->new_string(env, formatted_string, length);
+
+  return 0;
+}
+
+int32_t SPVM__Fn___native_snprintf_lx(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  uint64_t value = (uint64_t)stack[0].lval;
+  
+  // "ffffffffffffffff"
+  char formatted_string[17] = {0};
+
+  int32_t length = snprintf(formatted_string, 17, "%"PRIx64, value);
 
   stack[0].oval = env->new_string(env, formatted_string, length);
 

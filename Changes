@@ -5,6 +5,8 @@ Revision history for SPVM
         * Add "is_unicode_scalar_value" method to Unicode module.
         * Add "chr" method to Fn module.
         * Add "ord" method to Fn module.
+        * Add "%lx" specifier to Fn->sprintf method.
+        * Add "%lX" specifier to Fn->sprintf method.
         
         [BUG FIX]
         * Fix the bug Github #212. Tests fail when perl is built with -DDEBUGGING set in ccflags [rt.cpan.org #142336].

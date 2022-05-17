@@ -144,6 +144,8 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn1->sprintf_percent);
   ok(SPVM::TestCase::Lib::Fn1->sprintf_x);
   ok(SPVM::TestCase::Lib::Fn1->sprintf_X);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_lx);
+  ok(SPVM::TestCase::Lib::Fn1->sprintf_lX);
   ok(SPVM::TestCase::Lib::Fn1->sprintf_all);
 }
 
