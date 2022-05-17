@@ -69,13 +69,16 @@ class TestCase::Lib::Fn1 {
   }
 
   static method sprintf_ld : int () {
-    unless (Fn->sprintf("abc%ld", 10000000000L) eq "abc10000000000") { return 0; }
-    unless (Fn->sprintf("%ldabc", 10000000000L) eq "10000000000abc") { return 0; }
-    unless (Fn->sprintf("%ldabc%ld", 10000000000L, 20000000000L) eq "10000000000abc20000000000") { return 0; }
-    unless (Fn->sprintf("%ld%ld%ld", 10000000000L, 20000000000L, 30000000000L) eq "100000000002000000000030000000000") { return 0; }
+    unless (Fn->sprintf("%ld", 10000000000L) eq "10000000000") { return 0; }
     unless (Fn->sprintf("%013ld", 12345678901L) eq "0012345678901") { return 0; }
     unless (Fn->sprintf("%+13ld", 12345678901L) eq " +12345678901") { return 0; }
     unless (Fn->sprintf("%-13ld", 12345678901L) eq "12345678901  ") { return 0; }
+    unless (Fn->sprintf("%ld", -9223372036854775808L) eq "-9223372036854775808") {
+      return 0;
+    }
+    unless (Fn->sprintf("%3ld", -9223372036854775808L) eq "-9223372036854775808") {
+      return 0;
+    }
     {
       eval {
         Fn->sprintf("%ld", "str");
