@@ -12,6 +12,8 @@ Revision history for SPVM
         [SPECIFICATION FIX]
         * "+" just before integer literal is tokenized as an unary operator.
         * C<-> can be at the beginning of integer literal of hex, octet, binary notations.
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Fn->sprintf("%+5u", 123) become "  123" from " +123". This becomes same as the result of Perl sprintf.
         
 0.9516  2022-05-11
         [CHANGE]

@@ -1773,67 +1773,12 @@ class Fn : precompile {
         elsif ($specifier eq "d") {
           my $arg = (Int)$args->[$arg_count];
           my $formatted_value = &_native_snprintf_d($arg);
-          my $is_minus = 0;
           &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
         }
         elsif ($specifier eq "u") {
-          my $arg = ((Int)$args->[$arg_count])->value & 0xFFFFFFFFL;
-          my $digits = new byte[10]; # 4294967295 has 10 digits
-          my $digit_count = 0;
-          while ($arg > 0) {
-            $digits->[$digit_count++] = (byte)('0' + $arg % 10);
-            $arg /= 10;
-          }
-
-          if ($left_justified) {
-            my $space_count = $width - $digit_count;
-
-            if ($arg < 0) {
-              $buffer->push_char('-');
-              --$space_count;
-            }
-            elsif ($plus_sign && $arg >= 0) {
-              $buffer->push_char('+');
-              --$space_count;
-            }
-
-            for (my $i = 0; $i < $digit_count; ++$i) {
-              $buffer->push_char($digits->[$digit_count - $i - 1]);
-            }
-
-            if ($space_count > 0) {
-              for (; $space_count > 0; --$space_count) {
-                $buffer->push_char($pad_char);
-              }
-            }
-          }
-          else {
-            my $space_count = $width - $digit_count;
-
-            if ($arg < 0) {
-              --$space_count;
-            }
-            elsif ($plus_sign && $arg >= 0) {
-              --$space_count;
-            }
-
-            if ($space_count > 0) {
-              for (; $space_count > 0; --$space_count) {
-                $buffer->push_char($pad_char);
-              }
-            }
-
-            if ($arg < 0) {
-              $buffer->push_char('-');
-            }
-            elsif ($plus_sign && $arg >= 0) {
-              $buffer->push_char('+');
-            }
-
-            for (my $i = 0; $i < $digit_count; ++$i) {
-              $buffer->push_char($digits->[$digit_count - $i - 1]);
-            }
-          }
+          my $arg = (Int)$args->[$arg_count];
+          my $formatted_value = &_native_snprintf_u($arg);
+          &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
         elsif ($specifier eq "ld" || $specifier eq "lu") {
           my $is_signed_format = $specifier eq "ld";
@@ -1978,6 +1923,7 @@ class Fn : precompile {
   }
   
   native static method _native_snprintf_d : string ($value : int);
+  native static method _native_snprintf_u : string ($value : int);
   native static method _native_snprintf_x : string ($value : int);
   native static method _native_snprintf_X : string ($value : int);
   

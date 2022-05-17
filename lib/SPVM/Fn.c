@@ -219,6 +219,21 @@ int32_t SPVM__Fn___native_snprintf_d(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn___native_snprintf_u(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  uint32_t value = (uint32_t)stack[0].ival;
+  
+  // "4294967295"
+  char formatted_string[11] = {0};
+
+  int32_t length = snprintf(formatted_string, 11, "%"PRIu32, value);
+
+  stack[0].oval = env->new_string(env, formatted_string, length);
+
+  return 0;
+}
+
 int32_t SPVM__Fn___native_snprintf_x(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
