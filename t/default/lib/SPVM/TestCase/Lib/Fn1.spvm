@@ -5,18 +5,10 @@ class TestCase::Lib::Fn1 {
 
   static method sprintf_d : int () {
     
-    unless (Fn->sprintf("abc%d", 123) eq "abc123") {
+    unless (Fn->sprintf("%d", 123) eq "123") {
       return 0;
     }
-    unless (Fn->sprintf("%dabc%d", 1, 10) eq "1abc10") {
-      return 0;
-    }
-    unless (Fn->sprintf("%d%d%d", 1, 10, 100) eq "110100") {
-      return 0;
-    }
-    unless (Fn->sprintf("%d%d%d", 1, 10, 100) eq "110100") {
-      return 0;
-    }
+    
     unless (Fn->sprintf("%05d", 123) eq "00123") {
       return 0;
     }
@@ -29,6 +21,16 @@ class TestCase::Lib::Fn1 {
     unless (Fn->sprintf("%-05d", 123) eq "123  ") {
       return 0;
     }
+    unless (Fn->sprintf("%d", -123) eq "-123") {
+      return 0;
+    }
+    warn "AAAAAA";
+    unless (Fn->sprintf("%+5d", -123) eq " -123") {
+      die "Error";
+      return 0;
+    }
+    warn "BBBB";
+    
     
     # Invalid type
     {
