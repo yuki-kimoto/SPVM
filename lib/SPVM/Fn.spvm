@@ -1806,43 +1806,9 @@ class Fn : precompile {
           my $formatted_value = &_native_snprintf_x($arg);
 
           if ($specifier eq "X") {
-          
-            my $formatted_value_mut = (mutable string)$formatted_value;
-
-            for (my $i = 0; $i < length $formatted_value_mut; $i++) {
-               
-              my $char = $formatted_value_mut->[$i];
-              switch ((int)$char) {
-                case 'a' : {
-                  $formatted_value_mut->[$i] = 'A';
-                  break;
-                }
-                case 'b' : {
-                  $formatted_value_mut->[$i] = 'B';
-                  break;
-                }
-                case 'c' : {
-                  $formatted_value_mut->[$i] = 'C';
-                  break;
-                }
-                case 'd' : {
-                  $formatted_value_mut->[$i] = 'D';
-                  break;
-                }
-                case 'e' : {
-                  $formatted_value_mut->[$i] = 'E';
-                  break;
-                }
-                case 'f' : {
-                  $formatted_value_mut->[$i] = 'F';
-                  break;
-                }
-                default : {
-                  
-                }
-              }
-            }
+            $formatted_value = Fn->uc($formatted_value);
           }
+          
           &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
         else {
