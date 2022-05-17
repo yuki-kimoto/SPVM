@@ -1836,8 +1836,8 @@ class Fn : precompile {
         }
         elsif ($specifier eq "U") {
           my $arg = (Int)$args->[$arg_count];
-          my $utf8_char = Fn->chr($arg->value);
-          $buffer->push($utf8_char);
+          my $formatted_value = Fn->chr($arg->value);
+          &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
         elsif ($specifier eq "x" || $specifier eq "X") {
           my $arg = (Int)$args->[$arg_count];

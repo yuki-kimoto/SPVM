@@ -167,12 +167,10 @@ class TestCase::Lib::Fn1 {
   }
 
   static method sprintf_c : int () {
-    unless (Fn->sprintf("abc%c", 'x') eq "abcx") { return 0; }
-    unless (Fn->sprintf("%cabc", 'x') eq "xabc") { return 0; }
-    unless (Fn->sprintf("%cabc%c", 'x', 'y') eq "xabcy") { return 0; }
-    unless (Fn->sprintf("%c%c%c", 'x', 'y', 'z') eq "xyz") { return 0; }
+    unless (Fn->sprintf("%c", 'x') eq "x") { return 0; }
     unless (Fn->sprintf("%05c", 'x') eq "0000x") { return 0; }
     unless (Fn->sprintf("%-5c", 'x') eq "x    ") { return 0; }
+    unless (Fn->sprintf("%+c", 'x') eq "x") { return 0; }
     {
       eval {
         Fn->sprintf("%c", "str");
@@ -186,12 +184,10 @@ class TestCase::Lib::Fn1 {
   }
 
   static method sprintf_s : int () {
-    unless (Fn->sprintf("abc%s", "ABC") eq "abcABC") { return 0; }
-    unless (Fn->sprintf("%sabc", "ABC") eq "ABCabc") { return 0; }
-    unless (Fn->sprintf("%sabc%s", "ABC", "XYZ") eq "ABCabcXYZ") { return 0; }
-    unless (Fn->sprintf("%s%s%s", "ABC", "XYZ", "123") eq "ABCXYZ123") { return 0; }
+    unless (Fn->sprintf("%s", "ABC") eq "ABC") { return 0; }
     unless (Fn->sprintf("%05s", "str") eq "00str") { return 0; }
     unless (Fn->sprintf("%-5s", "str") eq "str  ") { return 0; }
+    unless (Fn->sprintf("%+s", "str") eq "str") { return 0; }
     {
       eval {
         Fn->sprintf("%s", 1);
@@ -204,16 +200,13 @@ class TestCase::Lib::Fn1 {
     return 1;
   }
 
-  private static method _first_uchar : int ($string : string) {
-    my $uchar_pos = 0;
-    return Un->uchar($string, \$uchar_pos);
-  }
-
   static method sprintf_U : int () {
-    unless (Fn->sprintf("abc%U", &_first_uchar("あ")) eq "abcあ") { return 0; }
-    unless (Fn->sprintf("%Uabc", &_first_uchar("あ")) eq "あabc") { return 0; }
-    unless (Fn->sprintf("%Uabc%U", &_first_uchar("あ"), &_first_uchar("い")) eq "あabcい") { return 0; }
-    unless (Fn->sprintf("%U%U%U", &_first_uchar("あ"), &_first_uchar("い"), &_first_uchar("う")) eq "あいう") { return 0; }
+    unless (Fn->sprintf("%U", Fn->ord("あ")) eq "あ") { return 0; }
+    
+    unless (Fn->sprintf("%05U", Fn->ord("あ")) eq "00あ") { return 0; }
+    unless (Fn->sprintf("%-5U", Fn->ord("あ")) eq "あ  ") { return 0; }
+    unless (Fn->sprintf("%+U", Fn->ord("あ")) eq "あ") { return 0; }
+
     {
       eval {
         Fn->sprintf("%U", "str");
