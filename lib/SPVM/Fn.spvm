@@ -1673,7 +1673,7 @@ class Fn : precompile {
           $pad_char = ' ';
         }
 
-        # Read `width`
+        # Width
         my $width = 0;
         while ($index < $format_length) {
           my $c = $format->[$index];
@@ -1684,7 +1684,9 @@ class Fn : precompile {
           ++$index;
         }
 
-        # Skip `precision` because of using native sprintf.
+        # Precision
+        my $precision = 0;
+        my $has_precision = 0;
         if ($index < $format_length && $format->[$index] == '.') {
           ++$index;
           while ($index < $format_length) {
@@ -1692,8 +1694,13 @@ class Fn : precompile {
             if ($c < '0' || '9' < $c) {
               last;
             }
+            $has_precision = 1;
+            $precision = $precision * 10 + $c - '0';
             ++$index;
           }
+        }
+        unless ($has_precision) {
+          $precision = -1;
         }
 
         unless ($index < $format_length) {
@@ -1798,7 +1805,12 @@ class Fn : precompile {
           my $formatted_value = &_native_snprintf_lu($arg);
           &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
-        elsif ($specifier eq "f" || $specifier eq "g") {
+        elsif ($specifier eq "f") {
+          my $arg = (Double)$args->[$arg_count];
+          my $formatted_value = &_native_snprintf_f($arg, $precision);
+          &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
+        }
+        elsif ($specifier eq "g") {
           my $arg = (Double)$args->[$arg_count];
           my $specifier_str = Fn->substr($format, $specifier_base_index, $index - $specifier_base_index);
           my $string = Fn->_snsprintf_double($specifier_str, $arg->value);
@@ -1855,6 +1867,7 @@ class Fn : precompile {
   native static method _native_snprintf_u : string ($value : int);
   native static method _native_snprintf_x : string ($value : int);
   native static method _native_snprintf_lx : string ($value : long);
+  native static method _native_snprintf_f : string ($value : double, $precision : int);
   
   static method _push_formatted_string_unsigned : void($buffer : StringBuffer, $formatted_value : string, $width : int, $pad_char : byte, $left_justified : int) {
     
