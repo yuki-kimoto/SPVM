@@ -618,7 +618,7 @@ sub print_error_messages {
     {
       # Invalid "_"
       my $source = q|class Tmp { static method main : void () { '\x{a' } }|;
-      compile_not_ok($source, qr/The charater literal hexadecimal escape character that has the opening "{" must have the closing "}"/);
+      compile_not_ok($source, qr/The charater literal hexadecimal escape character that has the opening "\{" must have the closing "\}"/);
     }
   }
 }
