@@ -249,6 +249,21 @@ int32_t SPVM__Fn___native_snprintf_u(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn___native_snprintf_lu(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  uint64_t value = (uint64_t)stack[0].lval;
+  
+  // "18446744073709551615"
+  char formatted_string[21] = {0};
+
+  int32_t length = snprintf(formatted_string, 21, "%"PRIu64, value);
+
+  stack[0].oval = env->new_string(env, formatted_string, length);
+
+  return 0;
+}
+
 int32_t SPVM__Fn___native_snprintf_x(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 

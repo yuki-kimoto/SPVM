@@ -1,14 +1,10 @@
 Revision history for SPVM
-0.9516_01  2022-05-17
+0.9516_01  2022-05-12
         [CHANGE]
         * Numeric literal error messages.
         * Add "is_unicode_scalar_value" method to Unicode module.
         * Add "chr" method to Fn module.
         * Add "ord" method to Fn module.
-        * Improve the compilation error message of the character literal.
-        * Support 1 hexadecimal character and "{}" in the character literal hexadecimal escape character.
-          '\xa'
-          '\x{6b}'
         
         [BUG FIX]
         * Fix the bug Github #212. Tests fail when perl is built with -DDEBUGGING set in ccflags [rt.cpan.org #142336].
@@ -18,6 +14,7 @@ Revision history for SPVM
         * C<-> can be at the beginning of integer literal of hex, octet, binary notations.
         [NON BACKWORD COMPATIBLE CHANGES]
         * Fn->sprintf("%+5u", 123) become "  123" from " +123". This becomes same as the result of Perl sprintf.
+        * Fn->sprintf("%+5lu", 123) become "  123" from " +123". This becomes same as the result of Perl sprintf "%u".
         
 0.9516  2022-05-11
         [CHANGE]
