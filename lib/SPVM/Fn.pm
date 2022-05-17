@@ -1360,7 +1360,7 @@ Create a formatted string with the format and the embdded values.
 
 <table>
   <tr><th>Specifiers</th><th>Descriptions</th><th>Acceptable Types</th></tr>
-  <tr><td>%c</td><td>Signed 8bit integer to an ASCII character</td><td><a href="https://metacpan.org/pod/SPVM::Byte">Byte</a></td></tr>
+  <tr><td>%c</td><td>An <code>UTF-8</code> character</td><td><a href="https://metacpan.org/pod/SPVM::Byte">Byte</a>, <a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
   <tr><td>%d</td><td>Signed 32bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
   <tr><td>%u</td><td>Unsigned 32bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
   <tr><td>%x</td><td>Unsiged 32 bit integer to a hexadecimal string using <code>0-9a-z</code></td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>

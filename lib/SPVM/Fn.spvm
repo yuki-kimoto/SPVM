@@ -1795,8 +1795,15 @@ class Fn : precompile {
         }
         
         if ($specifier eq "c") {
-          my $arg = ((Byte)$args->[$arg_count])->value;
-          my $formatted_value = Fn->chr($arg);
+          my $arg_value : int;
+          my $arg = $args->[$arg_count];
+          if ($arg isa Byte) {
+            $arg_value = $arg->(Byte)->value;
+          }
+          else {
+            $arg_value = $arg->(Int)->value;
+          }
+          my $formatted_value = Fn->chr($arg_value);
           &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
         elsif ($specifier eq "s") {

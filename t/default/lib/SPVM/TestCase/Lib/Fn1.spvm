@@ -178,6 +178,16 @@ class TestCase::Lib::Fn1 {
     unless (Fn->sprintf("%05c", 'x') eq "0000x") { return 0; }
     unless (Fn->sprintf("%-5c", 'x') eq "x    ") { return 0; }
     unless (Fn->sprintf("%+c", 'x') eq "x") { return 0; }
+    
+    # UTF-8
+    {
+      unless (Fn->sprintf("%c", Fn->ord("あ")) eq "あ") { return 0; }
+      
+      unless (Fn->sprintf("%05c", Fn->ord("あ")) eq "00あ") { return 0; }
+      unless (Fn->sprintf("%-5c", Fn->ord("あ")) eq "あ  ") { return 0; }
+      unless (Fn->sprintf("%+c", Fn->ord("あ")) eq "あ") { return 0; }
+    }
+
     {
       eval {
         Fn->sprintf("%c", "str");

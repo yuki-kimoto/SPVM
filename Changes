@@ -10,6 +10,7 @@ Revision history for SPVM
         * Support any precision of %f of Fn->sprintf.
         * Add "repeat" method to Fn module.
         * Float object can be passed to Fn->srpintf "%f" and "%g" specifier.
+        * Int object can be passed to Fn->srpintf "%c" specifier.
         
         [BUG FIX]
         * Fix the bug Github #212. Tests fail when perl is built with -DDEBUGGING set in ccflags [rt.cpan.org #142336].
