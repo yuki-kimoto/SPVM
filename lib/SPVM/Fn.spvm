@@ -2059,8 +2059,6 @@ class Fn : precompile {
 
   native static method _snsprintf_double : string ($format : string, $value : double);
 
-  native static method _long_to_unsigned_digits : void ($value : long, $out_digits : byte[], $out_digit_count : int*);
-
   private static method _sort_byte_merge : void($a : byte[], $b : byte[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Byte) {
     my $i = $left;
     my $j = $mid + 1;

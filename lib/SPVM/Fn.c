@@ -294,22 +294,6 @@ int32_t SPVM__Fn___native_snprintf_lx(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Fn___long_to_unsigned_digits(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-
-  unsigned long long value = stack[0].lval;
-  void* onums = stack[1].oval;
-  int8_t* nums = env->get_elems_byte(env, onums);
-  int32_t* digit_count = stack[2].iref;
-
-  for(*digit_count = 0; value > 0 && *digit_count < UINT64_MAX_LEN; ++*digit_count){
-    nums[*digit_count] = (char)('0' + value % 10);
-    value /= 10;
-  }
-
-  return 0;
-}
-
 int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
