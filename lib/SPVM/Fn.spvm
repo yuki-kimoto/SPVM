@@ -1780,7 +1780,12 @@ class Fn : precompile {
           my $formatted_value = &_native_snprintf_u($arg);
           &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
-        elsif ($specifier eq "ld" || $specifier eq "lu") {
+        elsif ($specifier eq "ld") {
+          my $arg = (Long)$args->[$arg_count];
+          my $formatted_value = &_native_snprintf_ld($arg);
+          &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
+        }
+        elsif ($specifier eq "lu") {
           my $is_signed_format = $specifier eq "ld";
 
           my $arg = ((Long)$args->[$arg_count])->value;
@@ -1923,6 +1928,7 @@ class Fn : precompile {
   }
   
   native static method _native_snprintf_d : string ($value : int);
+  native static method _native_snprintf_ld : string ($value : long);
   native static method _native_snprintf_u : string ($value : int);
   native static method _native_snprintf_x : string ($value : int);
   native static method _native_snprintf_X : string ($value : int);

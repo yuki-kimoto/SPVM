@@ -219,6 +219,21 @@ int32_t SPVM__Fn___native_snprintf_d(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn___native_snprintf_ld(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  int64_t value = stack[0].lval;
+  
+  // "-9223372036854775808"
+  char formatted_string[21] = {0};
+
+  int32_t length = snprintf(formatted_string, 21, "%"PRId64, value);
+
+  stack[0].oval = env->new_string(env, formatted_string, length);
+
+  return 0;
+}
+
 int32_t SPVM__Fn___native_snprintf_u(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
