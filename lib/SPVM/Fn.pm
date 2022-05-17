@@ -1354,7 +1354,7 @@ Split a string by the specific separator.
 
   static method sprintf : string ($format : string, $args : object[]...)
 
-Create a formatted string with the format and the embdded values.
+Create a formatted string with the format and the values.
 
 =begin html
 
@@ -1376,51 +1376,65 @@ Create a formatted string with the format and the embdded values.
 
 =end html
 
-=head3 Format Options
+B<Specifier Options:>
 
-=head4 Zero Padding
-  
-  # Format
-  "%05d"
-  
-  # Value
-  123
-  
-  # Output
-  "00123"
+Specifier options can be written between C<%> and the character of specifier such as C<d>, C<f>.
 
-=head4 Plus
+=begin html
 
-  # Format
-  %+d
-  
-  # Value
-  123
-  
-  # Output
-  "+123"
+<table>
+  <tr><th>Specifier options</th><th>Descriptions</th></tr>
+  <tr><td>0[DECIMAL_NUMBERS]</td><td>Zero padding</td></tr>
+  <tr><td>+</td><td>Adding a plus sign</td></tr>
+  <tr><td>-</td><td>Left justified</td></tr>
+  <tr><td>.[DECIMAL_NUMBERS]</td><td>Precision</td></tr>
+</table>
 
-=head4 Left Justified
+=end html
 
-  # Format
-  "%-5d"
+B<Examples:>
+    
+  # %d - "123"
+  my $formatted_string = Fn->sprintf("%d", 123);
   
-  # Value
-  123
-  
-  # Output
-  "123  "
+  # %5d - "  123"
+  my $formatted_string = Fn->sprintf("%5d", 123);
 
-=head4 Number of Decimal Places Displayed
+  # %05d - "00123"
+  my $formatted_string = Fn->sprintf("%05d", 123);
+  
+  # %+d - "+123"
+  my $formatted_string = Fn->sprintf("%+d", 123);
+  
+  # %-5d - "123  "
+  my $formatted_string = Fn->sprintf("%-5d", 123);
+  
+  # %d - "x"
+  my $formatted_string = Fn->sprintf("%c", 'x');
+  
+  # %c - "あ"
+  my $formatted_string = Fn->sprintf("%c", Fn->ord("あ"));
 
-  # Format
-  "%.2f"
+  # %s - "ABC"
+  my $formatted_string = Fn->sprintf("%s", "ABC") eq "ABC");
   
-  # Value
-  3.1415
+  # %u - "4294967295"
+  my $formatted_string = Fn->sprintf("%u", -1) eq "4294967295");
   
-  # Output
-  "3.14"
+  # %f - "3.141500"
+  my $formatted_string = Fn->sprintf("%f", 3.1415) eq "3.141500");
+  
+  # %.2f - "3.14"
+  my $formatted_string = Fn->sprintf("%.2f", 3.1415) eq "3.14");
+  
+  # %g - "3.14"
+  my $formatted_string = Fn->sprintf("%g", 3.14) eq "3.14");
+  
+  # %x - "ff"
+  my $formatted_string = Fn->sprintf("%x", 255) eq "ff");
+    
+  # %x - "ffffffff"
+  my $formatted_string = Fn->sprintf("%x", -1) eq "ffffffff");
 
 =head2 substr
 

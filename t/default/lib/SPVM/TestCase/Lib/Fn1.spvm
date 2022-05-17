@@ -8,7 +8,9 @@ class TestCase::Lib::Fn1 {
     unless (Fn->sprintf("%d", 123) eq "123") {
       return 0;
     }
-    
+    unless (Fn->sprintf("%5d", 123) eq "  123") {
+      return 0;
+    }
     unless (Fn->sprintf("%05d", 123) eq "00123") {
       return 0;
     }
@@ -128,6 +130,7 @@ class TestCase::Lib::Fn1 {
   }
 
   static method sprintf_f : int () {
+    unless (Fn->sprintf("%f", 3.1415) eq "3.141500") { return 0; }
     unless (Fn->sprintf("%.2f", 3.1415) eq "3.14") { return 0; }
     unless (Fn->sprintf("%.10f", 3.14) eq "3.1400000000") { return 0; }
     unless (Fn->sprintf("%012.6f", 3.14) eq "00003.140000") { return 0; }
