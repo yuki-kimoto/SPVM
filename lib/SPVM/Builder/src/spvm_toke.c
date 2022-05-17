@@ -908,32 +908,44 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Hex ascii code
             else if (*compiler->bufptr == 'x') {
               compiler->bufptr++;
-              if (SPVM_TOKE_is_hex_number(compiler, *compiler->bufptr)) {
-                int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
-                
-                char* num_str = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, 3);
-                num_str[0] = *compiler->bufptr;
+
+              // {
+              int32_t has_brace = 0;
+              if (*compiler->bufptr == '{') {
+                has_brace = 1;
                 compiler->bufptr++;
-                if (SPVM_TOKE_is_hex_number(compiler, *compiler->bufptr)) {
-                  num_str[1] = *compiler->bufptr;
-                  compiler->bufptr++;
-                  char *end;
-                  ch = (char)strtol(num_str, &end, 16);
+              }
+              
+              char hex_escape_char[3] = {0};
+              int32_t hex_escape_char_index = 0;
+              while (SPVM_TOKE_is_hex_number(compiler, *compiler->bufptr)) {
+                if (hex_escape_char_index >= 2) {
+                  break;
                 }
-                else {
-                  SPVM_COMPILER_error(compiler, "A invalid hexadecimal ascii code \"\\x%c%c\" in the second hexadecimal character of the charater literal at %s line %d", *(compiler->bufptr - 1), *compiler->bufptr, compiler->cur_file, compiler->cur_line);
-                  compiler->bufptr++;
-                }
-                SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, num_str);
-                assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
+                hex_escape_char[hex_escape_char_index] = *compiler->bufptr;
+                compiler->bufptr++;
+                hex_escape_char_index++;
+              }
+              
+              if (strlen(hex_escape_char) > 0) {
+                char* end;
+                ch = (char)strtol(hex_escape_char, &end, 16);
               }
               else {
-                SPVM_COMPILER_error(compiler, "A invalid hexadecimal ascii code \"\\x%c%c\" in the first hexadecimal character of the charater literal at %s line %d", *compiler->bufptr, *(compiler->bufptr + 1), compiler->cur_file, compiler->cur_line);
-                compiler->bufptr += 2;
+                SPVM_COMPILER_error(compiler, "After \"\\x\" of the charater literal hexadecimal escape character, one or tow hexadecimal numbers must follow at %s line %d", compiler->cur_file, compiler->cur_line);
+              }
+              
+              if (has_brace) {
+                if (*compiler->bufptr == '}') {
+                  compiler->bufptr++;
+                }
+                else {
+                  SPVM_COMPILER_error(compiler, "The charater literal hexadecimal escape character that has \"{\" must have \"}\"  at %s line %d", compiler->cur_file, compiler->cur_line);
+                }
               }
             }
             else {
-              SPVM_COMPILER_error(compiler, "A invalid escape character \"\\%c\" in the charater literal at %s line %d", *compiler->bufptr, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "Invalid charater literal escape character \"\\%c\"at %s line %d", *compiler->bufptr, compiler->cur_file, compiler->cur_line);
               compiler->bufptr++;
             }
           }

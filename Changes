@@ -6,6 +6,9 @@ Revision history for SPVM
         * Add "chr" method to Fn module.
         * Add "ord" method to Fn module.
         * Improve the compilation error message of the character literal.
+        * Support 1 hexadecimal character and "{}" in the character literal hexadecimal escape character.
+          '\xa'
+          '\x{6b}'
         
         [BUG FIX]
         * Fix the bug Github #212. Tests fail when perl is built with -DDEBUGGING set in ccflags [rt.cpan.org #142336].
