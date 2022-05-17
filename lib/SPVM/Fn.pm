@@ -2,6 +2,8 @@ package SPVM::Fn;
 
 1;
 
+=encoding utf8
+
 =head1 NAME
 
 SPVM::Fn - SPVM Starndard Functions
