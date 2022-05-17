@@ -1806,8 +1806,8 @@ class Fn : precompile {
         }
         elsif ($specifier eq "U") {
           my $arg = (Int)$args->[$arg_count];
-          my $utf8 = Unicode->uchar_to_utf8($arg->value);
-          $buffer->push($utf8);
+          my $utf8_char = Fn->chr($arg->value);
+          $buffer->push($utf8_char);
         }
         elsif ($specifier eq "x" || $specifier eq "X") {
           my $arg = (Int)$args->[$arg_count];
