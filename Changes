@@ -21,7 +21,8 @@ Revision history for SPVM
         [NON BACKWORD COMPATIBLE CHANGES]
         * Fn->sprintf("%+5u", 123) become "  123" from " +123". This becomes same as the result of Perl sprintf.
         * Fn->sprintf("%+5lu", 123) become "  123" from " +123". This becomes same as the result of Perl sprintf "%u".
-        
+        * Remove Fn->sprintf %U specifier because I relalize %U has different meaning in Perl sprintf. 
+          Use %c instead of %U.
 0.9516  2022-05-11
         [CHANGE]
         * Improve symbol name checking.

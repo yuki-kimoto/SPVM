@@ -1855,11 +1855,6 @@ class Fn : precompile {
           my $formatted_value = &_native_snprintf_g($arg_value, $precision);
           &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
         }
-        elsif ($specifier eq "U") {
-          my $arg = (Int)$args->[$arg_count];
-          my $formatted_value = Fn->chr($arg->value);
-          &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
-        }
         elsif ($specifier eq "x" || $specifier eq "X") {
           my $arg = (Int)$args->[$arg_count];
           my $formatted_value = &_native_snprintf_x($arg);
