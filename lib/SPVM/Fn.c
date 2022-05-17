@@ -100,7 +100,6 @@ int32_t SPVM__Fn__RAND_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 
 #define SPRINTF_MAX_RESULT_LEN 256
-#define UINT64_MAX_LEN 20
 
 int32_t SPVM__Fn__is_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
