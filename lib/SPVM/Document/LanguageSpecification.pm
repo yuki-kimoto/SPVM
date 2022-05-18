@@ -678,7 +678,7 @@ A character literal represents an ASCII character.
 
 A character literal begins with C<'>.
 
-And is followed by a printable ASCII character C<0x20-0x7e> or an escape character.
+And is followed by a printable ASCII character C<0x20-0x7e> or an L<character literal escape character|/"Charater Literal Escape Characters">.
 
 And ends with C<'>.
 
@@ -811,31 +811,44 @@ B<Examples:>
 
 =head2 String Literal
 
-The string literal is a L<literal|/"Literals"> to represents a string in source codes.
+A string literal is a L<literal|/"Literals"> to write a constant value that type is the L<string type|/"String Type"> in source codes.
 
 The return type is a L<string type|/"String Type">.
 
-A string literal is written by the characters of UTF-8.
+A character literal begins with C<">.
 
-The string Literal is enclosed in double quotes C<">.
+And is followed by zero or more than zero C<UTF-8> character, or L<string literal escape characters|/"String Literal Escape Characters">, or L<variable expansions|/"Variable Expansion">.
+
+And ends with C<">.
 
 B<Examples:>
 
-  # String Literal
-  my $message = "abc";
-  my $message_utf8 = "あいう"
-
-=head3 Escape characters of String Literal
+  # String literals
+  "abc";
+  "あいう"
+  "hello\tworld\n"
+  "hello\x0D\x0A"
+  "hello\xA"
+  "hello\x{0A}"
+  "AAA $foo BBB"
+  "AAA $FOO BBB"
+  "AAA $$foo BBB"
+  "AAA $foo->{x} BBB"
+  "AAA $foo->[3] BBB"
+  "AAA $foo->{x}[3] BBB"
+  "AAA $@ BBB"
+  
+=head3 String Literal Escape Characters
 
 =begin html
 
 <table>
   <tr>
     <th>
-      Escape Character of String Literal
+      String literal escape characters
    </th>
     <th>
-      Description
+      Descriptions
    </th>
   </tr>
   <tr>
@@ -843,7 +856,7 @@ B<Examples:>
       <b>\0</b>
     </td>
     <td>
-      ASCII 0 NUL
+      ASCII <code>0x00</code> NUL
     </td>
   </tr>
   <tr>
@@ -851,7 +864,7 @@ B<Examples:>
       <b>\a</b>
     </td>
     <td>
-      ASCII 7 BEL
+      ASCII <code>0x07</code> BEL
     </td>
   </tr>
   <tr>
@@ -859,7 +872,7 @@ B<Examples:>
       <b>\t</b>
     </td>
     <td>
-      ASCII 9 HT
+      ASCII <code>0x09</code> HT
     </td>
   </tr>
   <tr>
@@ -867,7 +880,7 @@ B<Examples:>
       <b>\n</b>
     </td>
     <td>
-      ASCII 10 LF
+      ASCII <code>0x0a</code> LF
     </td>
   </tr>
   <tr>
@@ -875,7 +888,7 @@ B<Examples:>
       <b>\f</b>
     </td>
     <td>
-      ASCII 12 FF
+      ASCII <code>0x0c</code> FF
     </td>
   </tr>
   <tr>
@@ -883,7 +896,7 @@ B<Examples:>
       <b>\r</b>
     </td>
     <td>
-      ASCII 13 CR
+      ASCII <code>0x0d</code> CR
     </td>
   </tr>
   <tr>
@@ -891,7 +904,7 @@ B<Examples:>
       <b>\"</b>
     </td>
     <td>
-      ASCII 34 "
+      ASCII <code>0x22</code> "
     </td>
   </tr>
   <tr>
@@ -899,7 +912,7 @@ B<Examples:>
       <b>\'</b>
     </td>
     <td>
-      ASCII 39 '
+      ASCII <code>0x27</code> '
     </td>
   </tr>
   <tr>
@@ -907,7 +920,7 @@ B<Examples:>
       <b>\\</b>
     </td>
     <td>
-      ASCII 92 \
+      ASCII <code>0x5c</code> \
     </td>
   </tr>
   <tr>
@@ -920,10 +933,10 @@ B<Examples:>
   </tr>
   <tr>
     <td>
-      <b>\N{U+} + hexadecimal numbers after U+</b>
+      <a href="#Unicode-Escape-Character">Unicode escape character</a>
     </td>
     <td>
-      Specify the Unicode code point in hexadecimal. Hexadecimal numbers are expressed as "0" to "9", "a" to "f", "A" to "F".<br>For example, \N{U+3046}.<br>The code point is converted to UTF-8. 
+      An UTF-8 character
     </td>
   </tr>
   <tr>
@@ -948,6 +961,20 @@ B<Examples:>
   "abc\tdef\n"
   "\x0D\x0A"
   "\N{U+3042}\N{U+3044}\N{U+3046}"
+
+=head3 Unicode Escape Character
+
+The Unicode escape character is the way to write an C<UTF-8> character using an Unicode code point that is written by hexadecimal numbers C<0-9a-fA-F>.
+
+The Unicode escape character can be used as an escape character of the L<string literal|/"String Literal">.
+
+The Unicode escape character begins with C<N{U+>.
+
+And is followed by one or more than one C<0-9a-fA-F>.
+
+And ends with C<}>.
+
+If the Unicode code point is not a Unicode scalar value, a compilation error will occur.
 
 =head2 Hexadecimal Escape Character
 
