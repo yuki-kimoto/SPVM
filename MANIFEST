@@ -315,9 +315,9 @@ t/builder_config/zlib.def
 t/builder_config_exe.t
 t/builder_link_info.pl
 t/builder_object_file_info.t
-t/compile_error.pl
 t/compile_error.t
 t/compile_error_dist.pl
+t/compile_error_perl_program.pl
 t/copy_default_to_precompile.pl
 t/default/000_use_spvm.t
 t/default/001_use_empty_class.t

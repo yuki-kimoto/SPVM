@@ -100,7 +100,7 @@ sub print_error_messages {
 
 # SPVM compile error
 {
-  my $command = "$^X -Mblib $FindBin::Bin/compile_error.pl 2>&1";
+  my $command = "$^X -Mblib $FindBin::Bin/compile_error_perl_program.pl 2>&1";
   my $output = `$command 2>&1`;
   like($output, qr/CompileError/);
 }
