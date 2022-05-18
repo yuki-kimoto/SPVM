@@ -250,6 +250,22 @@ class TestCase::Switch {
       }
     }
     
+    # If a case statement exists and default doesn't exist, wrong branch is executed.
+    {
+      my $num = 1;
+      my $branch_first_case = 0;
+      switch ($num) {
+        case 2 : {
+          1; # If a statement exists and default doesn't exist, this branch is executed.
+          $branch_first_case = 1;
+          break;
+        }
+      }
+      if ($branch_first_case) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
