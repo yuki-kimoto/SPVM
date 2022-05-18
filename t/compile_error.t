@@ -620,6 +620,11 @@ sub print_error_messages {
       my $source = q|class Tmp { static method main : void () { '\x{a' } }|;
       compile_not_ok($source, qr/The charater literal hexadecimal escape character that has the opening "\{" must have the closing "\}"/);
     }
+    {
+      # Invalid "_"
+      my $source = q|class Tmp { static method main : void () { '\xaz' } }|;
+      compile_not_ok($source, qr/A character literal must ends with "'"/);
+    }
   }
 }
 
