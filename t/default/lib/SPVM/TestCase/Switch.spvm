@@ -1,45 +1,192 @@
 class TestCase::Switch {
 
-  static method switch_return : int () {
-    my $ret = TestCase::Switch->switch_return_method();
+  static method switch : int () {
     
-    unless ($ret == 5) {
-      return 0;
-    }
-    
-    return 1;
-  }
+    # switch basec patterns
+    {
+      {
+        my $success : int;
+        switch (1) {
+          case 1: {
+            $success = 1;
+            break;
+          }
+          case 3: {
+            $success = 0;
+            break;
+          }
+          case 10000: {
+            $success = 0;
+            break;
+          }
+          default:
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+      
+      {
+        my $success : int;
+        switch (3) {
+          case 1: {
+            $success = 0;
+            break;
+          }
+          case 3: {
+            $success = 1;
+            break;
+          }
+          case 10000: {
+            $success = 0;
+            break;
+          }
+          default:
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+      
+      {
+        my $success : int;
+        switch (10000) {
+          case 3: {
+            $success = 0;
+            break;
+          }
+          case 1: {
+            $success = 0;
+            break;
+          }
+          case 10000: {
+            $success = 1;
+            break;
+          }
+          default:
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+      
+      {
+        my $success4 : int;
+        switch (2) {
+          case 1: {
+            break;
+          }
+          case 3: {
+            break;
+          }
+          case 10000: {
+            break;
+          }
+          default: {
+            $success4 = 1;
+          }
+        }
+        unless ($success4) {
+          return 0;
+        }
+      }
 
-  static method switch_return_method : int () {
-    my $i = 2;
-    switch ($i) {
-      case 1: {
-        return 3;
+      {
+        my $success : int;
+        
+        switch(3) {
+          case 3: {
+            $success = 1;
+            break;
+          }
+          case 4: {
+            $success = 0;
+            break;
+          }
+          case 5: {
+            $success = 0;
+            break;
+          }
+          default:
+        }
+        unless ($success) {
+          return 0;
+        }
       }
-      case 2: {
-        return 5;
+      
+      {
+        my $success : int;
+        switch(4) {
+          case 3: {
+            $success = 0;
+            break;
+          }
+          case 4: {
+            $success = 1;
+            break;
+          }
+          case 5: {
+            $success = 0;
+            break;
+          }
+          default:
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+      
+      {
+        my $success : int;
+        switch(10) {
+          case 3: {
+            $success = 0;
+            break;
+          }
+          case 4: {
+            $success = 0;
+            break;
+          }
+          case 5: {
+            $success = 0;
+            break;
+          }
+          default: {
+            $success = 1;
+          }
+        }
+        unless ($success) {
+          return 0;
+        }
       }
     }
-  }
-  
-  static method switch_no_default : int () {
-    my $i = 0;
-    switch ($i) {
-      case 1: {
-        1;
-        break;
-      }
-    }
-    my $p = 5;
     
-    unless ($p == 5) {
-      return 0;
+    # return statement in the switch statement
+    {
+      my $ret = TestCase::Switch->switch_return_method();
+      
+      unless ($ret == 5) {
+        return 0;
+      }
     }
     
-    return 1;
-  }
-
-  static method switch_constant_byte : int () {
+    # No default branch
+    {
+      my $i = 0;
+      switch ($i) {
+        case 1: {
+          1;
+          break;
+        }
+      }
+      my $p = 5;
+      
+      unless ($p == 5) {
+        return 0;
+      }
+    }
+    
+    # The type of the operand of the case statement is the byte type
     {
       my $char = (int)'[';
       
@@ -62,189 +209,59 @@ class TestCase::Switch {
       }
     }
     
+    # Nested switch statements
+    {
+      my $success : int;
+      switch (3) {
+        case 1: {
+          $success = 0;
+          break;
+        }
+        case 3: {
+          switch (5) {
+            case 2: {
+              $success = 0;
+              break;
+            }
+            case 5: {
+              $success = 1;
+              break;
+            }
+            case 6: {
+              $success = 0;
+              break;
+            }
+            default: {
+              $success = 0;
+              break;
+            }
+          }
+          break;
+        }
+        case 10000: {
+          $success = 0;
+          break;
+        }
+        default:
+      }
+      
+      unless ($success) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
-  # Switch - nest
-  static method switch_nest : int () {
-    my $success1 : int;
-    switch (3) {
+  static method switch_return_method : int () {
+    my $i = 2;
+    switch ($i) {
       case 1: {
-        $success1 = 0;
-        break;
+        return 3;
       }
-      case 3: {
-        switch (5) {
-          case 2: {
-            $success1 = 0;
-            break;
-          }
-          case 5: {
-            $success1 = 1;
-            break;
-          }
-          case 6: {
-            $success1 = 0;
-            break;
-          }
-          default: {
-            $success1 = 0;
-            break;
-          }
-        }
-        break;
-      }
-      case 10000: {
-        $success1 = 0;
-        break;
-      }
-      default:
-    }
-    
-    return $success1;
-  }
-  
-  # Switch - lookup switch
-  static method switch_lookup_switch : int () {
-    my $success1 : int;
-    switch (1) {
-      case 1: {
-        $success1 = 1;
-        break;
-      }
-      case 3: {
-        $success1 = 0;
-        break;
-      }
-      case 10000: {
-        $success1 = 0;
-        break;
-      }
-      default:
-    }
-    my $success2 : int;
-    switch (3) {
-      case 1: {
-        $success2 = 0;
-        break;
-      }
-      case 3: {
-        $success2 = 1;
-        break;
-      }
-      case 10000: {
-        $success2 = 0;
-        break;
-      }
-      default:
-    }
-    my $success3 : int;
-    switch (10000) {
-      case 3: {
-        $success3 = 0;
-        break;
-      }
-      case 1: {
-        $success3 = 0;
-        break;
-      }
-      case 10000: {
-        $success3 = 1;
-        break;
-      }
-      default:
-    }
-    my $success4 : int;
-    switch (2) {
-      case 1: {
-        break;
-      }
-      case 3: {
-        break;
-      }
-      case 10000: {
-        break;
-      }
-      default: {
-        $success4 = 1;
+      case 2: {
+        return 5;
       }
     }
-    
-    if ($success1) {
-      if ($success2) {
-        if ($success3) {
-          if ($success4) {
-            return 1;
-          }
-        }
-      }
-    }
-    return 0;
-  }
-  
-  # Switch - table switch
-  static method switch_table_switch : int () {
-    my $success1 : int;
-    
-    switch(3) {
-      case 3: {
-        $success1 = 1;
-        break;
-      }
-      case 4: {
-        $success1 = 0;
-        break;
-      }
-      case 5: {
-        $success1 = 0;
-        break;
-      }
-      default:
-    }
-
-    my $success2 : int;
-    switch(4) {
-      case 3: {
-        $success2 = 0;
-        break;
-      }
-      case 4: {
-        $success2 = 1;
-        break;
-      }
-      case 5: {
-        $success2 = 0;
-        break;
-      }
-      default:
-    }
-    my $success3 : int;
-    switch(10) {
-      case 3: {
-        $success3 = 0;
-        break;
-      }
-      case 4: {
-        $success3 = 0;
-        break;
-      }
-      case 5: {
-        $success3 = 0;
-        break;
-      }
-      default: {
-        $success3 = 1;
-      }
-    }
-    
-    if ($success1) {
-      if ($success2) {
-        if ($success3) {
-          return 1;
-        }
-      }
-    }
-    
-    return 0;
   }
 }
