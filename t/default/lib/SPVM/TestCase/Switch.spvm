@@ -250,19 +250,163 @@ class TestCase::Switch {
       }
     }
     
-    # If a case statement exists and default doesn't exist, wrong branch is executed.
+    # default statement
     {
-      my $num = 1;
-      my $branch_first_case = 0;
-      switch ($num) {
-        case 2 : {
-          1; # If a statement exists and default doesn't exist, this branch is executed.
-          $branch_first_case = 1;
-          break;
+      # default statement
+      {
+        {
+          my $num = 1;
+          my $value = 3;
+          switch ($num) {
+            case 2 : {
+              $value = 5;
+              break;
+            }
+            default : {
+              $value = 7;
+            }
+          }
+          unless ($value == 7) {
+            return 0;
+          }
+        }
+        {
+          my $num = 1;
+          my $value = 3;
+          switch ($num) {
+            case 2 : {
+              $value = 5;
+              break;
+            }
+            case 3 : {
+              $value = 5;
+              break;
+            }
+            default : {
+              $value = 7;
+            }
+          }
+          unless ($value == 7) {
+            return 0;
+          }
+        }
+        {
+          my $num = 1;
+          my $value = 3;
+          switch ($num) {
+            case 2 : {
+              $value = 5;
+              break;
+            }
+            case 3 : {
+              $value = 5;
+              break;
+            }
+            case 4 : {
+              $value = 5;
+              break;
+            }
+            default : {
+              $value = 7;
+            }
+          }
+          unless ($value == 7) {
+            return 0;
+          }
         }
       }
-      if ($branch_first_case) {
-        return 0;
+
+      # no default statement
+      {
+        {
+          my $num = 1;
+          my $value = 3;
+          switch ($num) {
+            case 2 : {
+              $value = 5;
+              break;
+            }
+          }
+          unless ($value == 3) {
+            return 0;
+          }
+        }
+        {
+          my $num = 1;
+          my $value = 3;
+          switch ($num) {
+            case 2 : {
+              $value = 5;
+              break;
+            }
+            case 3 : {
+              $value = 5;
+              break;
+            }
+          }
+          unless ($value == 3) {
+            return 0;
+          }
+        }
+        {
+          my $num = 1;
+          my $value = 3;
+          switch ($num) {
+            case 2 : {
+              $value = 5;
+              break;
+            }
+            case 3 : {
+              $value = 5;
+              break;
+            }
+            case 4 : {
+              $value = 5;
+              break;
+            }
+          }
+          unless ($value == 3) {
+            return 0;
+          }
+        }
+      }
+    }
+    
+    return 1;
+  }
+  static method switch_extra : int () {
+    
+    {
+      # If a case statement exists and default doesn't exist, wrong branch is executed.
+      {
+        my $num = 1;
+        my $branch_first_case = 0;
+        switch ($num) {
+          case 2 : {
+            1; # If a statement exists and default doesn't exist, this branch is executed.
+            $branch_first_case = 1;
+            break;
+          }
+        }
+        if ($branch_first_case) {
+          return 0;
+        }
+      }
+      # Add default in above case
+      {
+        my $num = 1;
+        my $branch_first_case = 0;
+        switch ($num) {
+          case 2 : {
+            1; # If a statement exists and default doesn't exist, this branch is executed.
+            $branch_first_case = 1;
+            break;
+          }
+          default : {}
+        }
+        if ($branch_first_case) {
+          return 0;
+        }
       }
     }
     
