@@ -486,6 +486,16 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Decide switch type
               switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
               
+              if (!switch_info->op_default) {
+                SPVM_OP* op_switch_block = op_cur->last;
+                
+                SPVM_OP* op_default = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DEFAULT, op_cur->file, op_cur->line);
+                SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_cur->file, op_cur->line);
+                SPVM_OP_build_default_statement(compiler, op_default, op_block);
+                
+                SPVM_OP_insert_child(compiler, op_switch_block, op_switch_block->last, op_default);
+              }
+              
               break;
             }
             case SPVM_OP_C_ID_CASE: {

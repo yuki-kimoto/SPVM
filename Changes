@@ -15,6 +15,7 @@ Revision history for SPVM
         [BUG FIX]
         * Fix the bug Github #212. Tests fail when perl is built with -DDEBUGGING set in ccflags [rt.cpan.org #142336].
         * Fix the bug that integer literal octal natation 0_123 is interpretted as 123, not 0123.
+        * Fix the bug that switch statement jump the wrong position when default statement doesn't exist.
         [SPECIFICATION FIX]
         * "+" just before integer literal is tokenized as an unary operator.
         * C<-> can be at the beginning of integer literal of hex, octet, binary notations.
