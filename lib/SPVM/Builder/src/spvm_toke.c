@@ -1124,52 +1124,52 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               if (*char_ptr == '\\') {
                 char_ptr++;
                 if (*char_ptr == '0') {
-                  string_literal_tmp[string_literal_length] = '\0';
+                  string_literal_tmp[string_literal_length] = 0x00;
                   string_literal_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == 'a') {
-                  string_literal_tmp[string_literal_length] = '\a';
-                  string_literal_length++;
-                  char_ptr++;
-                }
-                else if (*char_ptr == 'f') {
-                  string_literal_tmp[string_literal_length] = '\f';
+                  string_literal_tmp[string_literal_length] = 0x07;
                   string_literal_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == 't') {
-                  string_literal_tmp[string_literal_length] = '\t';
-                  string_literal_length++;
-                  char_ptr++;
-                }
-                else if (*char_ptr == 'r') {
-                  string_literal_tmp[string_literal_length] = '\r';
+                  string_literal_tmp[string_literal_length] = 0x09;
                   string_literal_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == 'n') {
-                  string_literal_tmp[string_literal_length] = '\n';
+                  string_literal_tmp[string_literal_length] = 0x0a;
                   string_literal_length++;
                   char_ptr++;
                 }
-                else if (*char_ptr == '\'') {
-                  string_literal_tmp[string_literal_length] = '\'';
+                else if (*char_ptr == 'f') {
+                  string_literal_tmp[string_literal_length] = 0x0c;
+                  string_literal_length++;
+                  char_ptr++;
+                }
+                else if (*char_ptr == 'r') {
+                  string_literal_tmp[string_literal_length] = 0x0d;
                   string_literal_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == '"') {
-                  string_literal_tmp[string_literal_length] = '\"';
+                  string_literal_tmp[string_literal_length] = 0x22;
+                  string_literal_length++;
+                  char_ptr++;
+                }
+                else if (*char_ptr == '\'') {
+                  string_literal_tmp[string_literal_length] = 0x27;
                   string_literal_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == '\\') {
-                  string_literal_tmp[string_literal_length] = '\\';
+                  string_literal_tmp[string_literal_length] = 0x5c;
                   string_literal_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == '$') {
-                  string_literal_tmp[string_literal_length] = '$';
+                  string_literal_tmp[string_literal_length] = 0x44;
                   string_literal_length++;
                   char_ptr++;
                 }
@@ -1251,6 +1251,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else {
                   switch(*char_ptr) {
+                    case '"':
                     case 'w':
                     case 'W':
                     case 's':
