@@ -672,9 +672,9 @@ B<Examples:>
 
 =head2 Charater Literal
 
-A charater literal is a L<literal|/"Literals"> to write a constant value that type is the L<byte type|/"byte Type"> in source codes.
+A character literal is a L<literal|/"Literals"> to write a constant value that type is the L<byte type|/"byte Type"> in source codes.
 
-A charater literal represents an ASCII character.
+A character literal represents an ASCII character.
 
 A character literal begins with C<'>.
 
@@ -811,9 +811,9 @@ B<Examples:>
 
 =head3 Charater Literal Hexadecimal Escape Character
 
-The charater literal hexadecimal escape character is the way to write an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
+The character literal hexadecimal escape character is the way to write an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
 
-The charater literal hexadecimal escape character begins with C<\x>.
+The character literal hexadecimal escape character begins with C<\x>.
 
 And is followed by one or two C<0-9a-fA-F>.
 
@@ -835,7 +835,7 @@ B<Examples:>
   my $message = "abc";
   my $message_utf8 = "あいう"
 
-=head3 Escape charaters of String Literal
+=head3 Escape characters of String Literal
 
 =begin html
 
@@ -958,6 +958,16 @@ B<Examples:>
   "abc\tdef\n"
   "\x0D\x0A"
   "\N{U+3042}\N{U+3044}\N{U+3046}"
+
+=head3 String Literal Hexadecimal Escape Character
+
+The string literal hexadecimal escape string is the way to write an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
+
+The string literal hexadecimal escape string begins with C<\x>.
+
+And is followed by one or two C<0-9a-fA-F>.
+
+The hexadecimal numbers can be sorrounded by C<{> and C<}>.
 
 =head2 Bool Literal
 
