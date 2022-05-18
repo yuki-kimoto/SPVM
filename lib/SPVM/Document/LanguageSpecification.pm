@@ -775,7 +775,7 @@ The character literal escape characters are listed.
   </tr>
   <tr>
     <td>
-      <a href="#Charater-Literal-Hexadecimal-Escape-Character">Hexadecimal escape character</a>
+      <a href="#Hexadecimal-Escape-Character">Hexadecimal escape character</a>
     </td>
     <td>
       An ASCII character
@@ -808,16 +808,6 @@ B<Examples:>
   '\xA'
   '\xFF'
   '\x{A}'
-
-=head3 Charater Literal Hexadecimal Escape Character
-
-The character literal hexadecimal escape character is the way to write an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
-
-The character literal hexadecimal escape character begins with C<\x>.
-
-And is followed by one or two C<0-9a-fA-F>.
-
-The hexadecimal numbers can be sorrounded by C<{> and C<}>.
 
 =head2 String Literal
 
@@ -922,10 +912,10 @@ B<Examples:>
   </tr>
   <tr>
     <td>
-      <b>\x + two hexadecimal numbers</b>
+      <a href="#Hexadecimal-Escape-Character">Hexadecimal escape character</a>
     </td>
     <td>
-      Specify ASCII by hexadecimal. Hexadecimal numbers are "0" to "9", "a" to "z", "A" to "Z". <br>For example, \x0D.
+      An ASCII character
     </td>
   </tr>
   <tr>
@@ -959,11 +949,13 @@ B<Examples:>
   "\x0D\x0A"
   "\N{U+3042}\N{U+3044}\N{U+3046}"
 
-=head3 String Literal Hexadecimal Escape Character
+=head2 Hexadecimal Escape Character
 
-The string literal hexadecimal escape string is the way to write an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
+The hexadecimal escape character is the way to write an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
 
-The string literal hexadecimal escape string begins with C<\x>.
+The hexadecimal escape character can be used as an escape character of the L<string literal|/"String Literal"> and the L<character literal|/"Character Literal">.
+
+The hexadecimal escape character begins with C<\x>.
 
 And is followed by one or two C<0-9a-fA-F>.
 
