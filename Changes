@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9516_01  2022-05-12
+0.9516_02  2022-05-18
         [CHANGE]
         * Numeric literal error messages.
         * Add "is_unicode_scalar_value" method to Unicode module.
