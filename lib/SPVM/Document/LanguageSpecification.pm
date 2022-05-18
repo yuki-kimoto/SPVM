@@ -821,6 +821,8 @@ And is followed by zero or more than zero C<UTF-8> character, or L<string litera
 
 And ends with C<">.
 
+If the format of the string literal is invalid, a compilation error will occur.
+
 B<Examples:>
 
   # String literals
@@ -837,6 +839,7 @@ B<Examples:>
   "AAA $foo->[3] BBB"
   "AAA $foo->{x}[3] BBB"
   "AAA $@ BBB"
+  "\N{U+3042}\N{U+3044}\N{U+3046}"
   
 =head3 String Literal Escape Characters
 
@@ -941,26 +944,15 @@ B<Examples:>
   </tr>
   <tr>
     <td>
-      <b>Raw escape character<br>(For example, \s is become \s. This represents a sequence of two characters in a character literal '\\' 's')</b>
+      <a href="#Raw-Escape-Character">Raw escape character</a>
     </td>
     <td>
-      \s \S \d \D \w \W \p \P \X \g \k \K \v \V \h \H \R \b \B \A \Z \z \G \N<br>
-      \1 \2 \3 \4 \5 \6 \7 \8 \9 <br>
-      \! \# \@ \% \& \( \) \* \+ \- \. \/ \: \; \< \= \> \? \[ \] \^ \_ \` \{ \| \} \~ \,
+      The value of raw escape character
     </td>
   </tr>
 </table>
 
 =end html
-
-If the espape characters that is not included avobe is used, a compiler error occurs.<br>
-
-B<Examples:>
-
-  # Escape characters of string literals
-  "abc\tdef\n"
-  "\x0D\x0A"
-  "\N{U+3042}\N{U+3044}\N{U+3046}"
 
 =head3 Unicode Escape Character
 
@@ -976,6 +968,30 @@ And ends with C<}>.
 
 If the Unicode code point is not a Unicode scalar value, a compilation error will occur.
 
+B<Examples:>
+  
+  # あいう
+  "\N{U+3042}\N{U+3044}\N{U+3046}"
+  
+  # くぎが
+  "\N{U+304F}\N{U+304E}\N{U+304c}"
+
+=head3 Raw Escape Character
+
+The raw escape character is the escapa character that <\> has no effect and C<\> is interpreted as ASCII C<\>.
+
+For example, C<\s> is ASCII chracters C<\s>, C<\d> is ASCII chracters <\d>.
+
+The raw escape character can be used as an escape character of the L<string literal|/"String Literal">.
+
+The raw escape character is designed to be used by regular expression modules such as L<Regex|SPVM::Regex>.
+
+The raw escape characters are listed.
+
+  \s \S \d \D \w \W \p \P \X \g \k \K \v \V \h \H \R \b \B \A \Z \z \G \N
+  \1 \2 \3 \4 \5 \6 \7 \8 \9
+  \! \# \@ \% \& \( \) \* \+ \- \. \/ \: \; \< \= \> \? \[ \] \^ \_ \` \{ \| \} \~ \,
+
 =head2 Hexadecimal Escape Character
 
 The hexadecimal escape character is the way to write an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
@@ -987,6 +1003,26 @@ The hexadecimal escape character begins with C<\x>.
 And is followed by one or two C<0-9a-fA-F>.
 
 The hexadecimal numbers can be sorrounded by C<{> and C<}>.
+
+  # Hexadecimal escape characters in character literals
+  '\xab'
+  '\xAB'
+  '\x0D'
+  '\x0A'
+  '\xD'
+  '\xA'
+  '\xFF'
+  '\x{A}'
+
+  # Hexadecimal escape characters in string literals
+  "Foo \xab  Bar"
+  "Foo \xAB  Bar"
+  "Foo \x0D  Bar"
+  "Foo \x0A  Bar"
+  "Foo \xD   Bar"
+  "Foo \xA   Bar"
+  "Foo \xFF  Bar"
+  "Foo \x{A} Bar"
 
 =head2 Bool Literal
 
