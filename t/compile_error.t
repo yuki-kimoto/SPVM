@@ -616,14 +616,24 @@ sub print_error_messages {
     compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii1', qr/\QAfter "\x" of the hexadecimal escape character, one or tow hexadecimal numbers must follow/);
     compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii2', qr/A character literal must ends with "'"/);
     {
-      # Invalid "_"
       my $source = q|class Tmp { static method main : void () { '\x{a' } }|;
       compile_not_ok($source, qr/The hexadecimal escape character that has the opening "\{" must have the closing "\}"/);
     }
     {
-      # Invalid "_"
       my $source = q|class Tmp { static method main : void () { '\xaz' } }|;
       compile_not_ok($source, qr/A character literal must ends with "'"/);
+    }
+  }
+
+  # String literal
+  {
+    {
+      my $source = q|class Tmp { static method main : void () { "Foo \xg Bar" } }|;
+      compile_not_ok($source, qr/\QAfter "\x" of the hexadecimal escape character, one or tow hexadecimal numbers must follow/);
+    }
+    {
+      my $source = q|class Tmp { static method main : void () { "Foo \x{a Bar" } }|;
+      compile_not_ok($source, qr/The hexadecimal escape character that has the opening "\{" must have the closing "\}"/);
     }
   }
 }

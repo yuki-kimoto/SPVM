@@ -1173,29 +1173,45 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   string_literal_length++;
                   char_ptr++;
                 }
+                // A hexadecimal escape character
                 else if (*char_ptr == 'x') {
                   char_ptr++;
-                  if (*char_ptr == '0' || *char_ptr == '1' || *char_ptr == '2' || *char_ptr == '3' || *char_ptr == '4' || *char_ptr == '5' || *char_ptr == '6' || *char_ptr == '7') {
-                    int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
-                    char* num_str = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, 3);
-                    num_str[0] = *char_ptr;
+
+                  // {
+                  int32_t has_brace = 0;
+                  if (*char_ptr == '{') {
+                    has_brace = 1;
                     char_ptr++;
-                    if (SPVM_TOKE_is_hex_number(compiler, *char_ptr)) {
-                      num_str[1] = *char_ptr;
-                      char_ptr++;
-                      char *end;
-                      ch = (char)strtol(num_str, &end, 16);
-                      string_literal_tmp[string_literal_length] = ch;
-                      string_literal_length++;
+                  }
+                  
+                  char hex_escape_char[3] = {0};
+                  int32_t hex_escape_char_index = 0;
+                  while (SPVM_TOKE_is_hex_number(compiler, *char_ptr)) {
+                    if (hex_escape_char_index >= 2) {
+                      break;
                     }
-                    else {
-                      SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of string literal at %s line %d", compiler->cur_file, compiler->cur_line);
-                    }
-                    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, num_str);
-                    assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
+                    hex_escape_char[hex_escape_char_index] = *char_ptr;
+                    char_ptr++;
+                    hex_escape_char_index++;
+                  }
+                  
+                  if (strlen(hex_escape_char) > 0) {
+                    char* end;
+                    ch = (char)strtol(hex_escape_char, &end, 16);
+                    string_literal_tmp[string_literal_length] = ch;
+                    string_literal_length++;
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of string literal at %s line %d", compiler->cur_file, compiler->cur_line);
+                    SPVM_COMPILER_error(compiler, "After \"\\x\" of the hexadecimal escape character, one or tow hexadecimal numbers must follow at %s line %d", compiler->cur_file, compiler->cur_line);
+                  }
+                  
+                  if (has_brace) {
+                    if (*char_ptr == '}') {
+                      char_ptr++;
+                    }
+                    else {
+                      SPVM_COMPILER_error(compiler, "The hexadecimal escape character that has the opening \"{\" must have the closing \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                    }
                   }
                 }
                 // Unicode code point. This is converted to UTF-8

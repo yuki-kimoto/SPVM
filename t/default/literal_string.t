@@ -19,7 +19,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Literal::String->var_expansion);
   ok(SPVM::TestCase::Literal::String->characters);
   ok(SPVM::TestCase::Literal::String->escape);
-  ok(SPVM::TestCase::Literal::String->escape_ascii);
+  ok(SPVM::TestCase::Literal::String->hexadecimal_escape_characters);
   ok(SPVM::TestCase::Literal::String->escape_unicode);
   ok(SPVM::TestCase::Literal::String->edge_case);
 }

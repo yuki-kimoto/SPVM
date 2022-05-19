@@ -5,6 +5,16 @@ Revision history for SPVM
           die;
         * Add Fn->match method
         * Simplify the compilation error messages of the character literal
+        * Support brace in the hexadecimal escape character
+          
+          '\x{A}'
+          '\x{6A}'
+          "Foo \x{A} Bar"
+          
+        * Support single character in the hexadecimal escape character
+        
+          '\xA'
+          "Foo \xA Bar"
         
         [SPECIFICATION FIX]
         * Add string literal escape character \$
