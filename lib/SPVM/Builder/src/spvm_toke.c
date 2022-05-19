@@ -1251,7 +1251,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else {
                   switch(*char_ptr) {
-                    case '"':
                     case 'w':
                     case 'W':
                     case 's':
