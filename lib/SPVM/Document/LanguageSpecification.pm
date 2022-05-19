@@ -928,6 +928,14 @@ B<Examples:>
   </tr>
   <tr>
     <td>
+      <b>\$</b>
+    </td>
+    <td>
+      ASCII <code>0x44</code> $
+    </td>
+  </tr>
+  <tr>
+    <td>
       <a href="#Hexadecimal-Escape-Character">Hexadecimal escape character</a>
     </td>
     <td>
