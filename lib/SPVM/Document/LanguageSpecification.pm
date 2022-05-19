@@ -995,10 +995,15 @@ The raw escape character can be used as an escape character of the L<string lite
 The raw escape character is designed to be used by regular expression modules such as L<Regex|SPVM::Regex>.
 
 The raw escape characters are listed.
-
-  \s \S \d \D \w \W \p \P \X \g \k \K \v \V \h \H \R \b \B \A \Z \z \G \N
+  
+  # Raw excape literals
+  \! \# \% \& \( \) \* \+ \, \- \. \/
   \1 \2 \3 \4 \5 \6 \7 \8 \9
-  \! \# \@ \% \& \( \) \* \+ \- \. \/ \: \; \< \= \> \? \[ \] \^ \_ \` \{ \| \} \~ \,
+  \: \; \< \= \> \? \@
+  \A \B \D \G \H \K \N \P \R \S \V \W \X \Z
+  \[ \] \^ \_ \`
+  \b \d \g \h \k \p \s \v \w \z
+  \{ \| \} \~
 
 =head2 Hexadecimal Escape Character
 
