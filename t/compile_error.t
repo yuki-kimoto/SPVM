@@ -650,6 +650,10 @@ sub print_error_messages {
         my $source = q|class Tmp { static method main : void () { "\N{U+}" }|;
         compile_not_ok($source, qr/After "\\N\{U\+" of the Unicode escape character, one or more than one hexadecimal numbers must follow/);
       }
+      {
+        my $source = q|class Tmp { static method main : void () { "\N{U+FFFFFFFFA}" }|;
+        compile_not_ok($source, qr/Too big Unicode escape character/);
+      }
     }
   }
 }

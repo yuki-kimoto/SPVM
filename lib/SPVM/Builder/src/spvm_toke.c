@@ -1233,7 +1233,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         SPVM_COMPILER_error(compiler, "After \"\\N{U+\" of the Unicode escape character, one or more than one hexadecimal numbers must follow at %s line %d", compiler->cur_file, compiler->cur_line);
                       }
                       else if (unicode_chars_length > 8) {
-                        SPVM_COMPILER_error(compiler, "Too big unicode code point at %s line %d", compiler->cur_file, compiler->cur_line);
+                        SPVM_COMPILER_error(compiler, "Too big Unicode escape character at %s line %d", compiler->cur_file, compiler->cur_line);
                       }
                       else {
                         int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
