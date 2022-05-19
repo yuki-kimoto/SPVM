@@ -483,6 +483,10 @@ statement
     {
       $$ = SPVM_OP_build_die(compiler, $1, $2);
     }
+  | DIE ';'
+    {
+      $$ = SPVM_OP_build_die(compiler, $1, NULL);
+    }
   | WARN value_op ';'
     {
       $$ = SPVM_OP_build_warn(compiler, $1, $2);

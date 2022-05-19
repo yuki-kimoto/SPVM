@@ -2,6 +2,7 @@ class TestCase::Exception {
   use TestCase::Minimal;
   use TestCase;
   use Comparator;
+  use Regex;
   
   our $CALLBACK_DIE_LINE  : rw int;
   our $ZERO_DIVIDE_INT_LINE : rw int;
@@ -190,5 +191,26 @@ class TestCase::Exception {
     };
     
     $comparator->(undef, undef);
+  }
+
+  static method die : int () {
+    {
+      eval { die "Error"; };
+      my $error = $@;
+      unless (Regex->new("^Error\n")->match($error, 0)) {
+        return 0;
+      }
+    }
+    {
+      eval { die; };
+      my $error = $@;
+      unless (Regex->new("^Died\n")->match($error, 0)) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
   }
 }

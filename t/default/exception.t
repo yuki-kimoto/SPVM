@@ -103,4 +103,9 @@ ok($@);
   like($error, qr|TestCase/Exception\.spvm line $callback_die_line|);
 }
 
+# die statement
+{
+  ok(SPVM::TestCase::Exception->die);
+}
+
 done_testing;

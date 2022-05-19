@@ -1,5 +1,9 @@
 Revision history for SPVM
 0.9517_01  2022-05-18
+        [CHANGE]
+        * Support die statement without the operand again. This was remove at 0.9504(2021-02-10).
+          die;
+        
         [SPECIFICATION FIX]
         * Add string literal escape character \$
         
