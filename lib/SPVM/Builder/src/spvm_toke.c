@@ -932,7 +932,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 ch = (char)strtol(hex_escape_char, &end, 16);
               }
               else {
-                SPVM_COMPILER_error(compiler, "After \"\\x\" of the charater literal hexadecimal escape character, one or tow hexadecimal numbers must follow at %s line %d", compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "After \"\\x\" of the hexadecimal escape character, one or tow hexadecimal numbers must follow at %s line %d", compiler->cur_file, compiler->cur_line);
               }
               
               if (has_brace) {
@@ -940,7 +940,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   compiler->bufptr++;
                 }
                 else {
-                  SPVM_COMPILER_error(compiler, "The charater literal hexadecimal escape character that has the opening \"{\" must have the closing \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                  SPVM_COMPILER_error(compiler, "The hexadecimal escape character that has the opening \"{\" must have the closing \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
                 }
               }
             }
