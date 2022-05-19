@@ -639,9 +639,17 @@ sub print_error_messages {
       my $source = q|class Tmp { static method main : void () { "\u" }|;
       compile_not_ok($source, qr/Invalid string literal escape character "\\u"/);
     }
+    
+    # Unicode escape character
     {
-      my $source = q|class Tmp { static method main : void () { "\Np" }|;
-      compile_not_ok($source, qr/Invalid Unicode escape character/);
+      {
+        my $source = q|class Tmp { static method main : void () { "\Np" }|;
+        compile_not_ok($source, qr/Invalid Unicode escape character/);
+      }
+      {
+        my $source = q|class Tmp { static method main : void () { "\N{U+}" }|;
+        compile_not_ok($source, qr/After "\\N\{U\+" of the Unicode escape character, one or more than one hexadecimal numbers must follow/);
+      }
     }
   }
 }
