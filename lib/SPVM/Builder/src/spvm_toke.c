@@ -1337,7 +1337,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       break;
                     }
                     default: {
-                      SPVM_COMPILER_error(compiler, "Invalid escape character in string literal \"\\%c\" at %s line %d", *char_ptr, compiler->cur_file, compiler->cur_line);
+                      SPVM_COMPILER_error(compiler, "Invalid string literal escape character \"\\%c\" at %s line %d", *char_ptr, compiler->cur_file, compiler->cur_line);
                     }
                   }
                 }

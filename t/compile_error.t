@@ -635,6 +635,10 @@ sub print_error_messages {
       my $source = q|class Tmp { static method main : void () { "Foo \x{a Bar" } }|;
       compile_not_ok($source, qr/The hexadecimal escape character that has the opening "\{" must have the closing "\}"/);
     }
+    {
+      my $source = q|class Tmp { static method main : void () { "\u" }|;
+      compile_not_ok($source, qr/Invalid string literal escape character "\\u"/);
+    }
   }
 }
 
