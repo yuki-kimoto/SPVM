@@ -639,6 +639,10 @@ sub print_error_messages {
       my $source = q|class Tmp { static method main : void () { "\u" }|;
       compile_not_ok($source, qr/Invalid string literal escape character "\\u"/);
     }
+    {
+      my $source = q|class Tmp { static method main : void () { "\Np" }|;
+      compile_not_ok($source, qr/Invalid Unicode escape character/);
+    }
   }
 }
 

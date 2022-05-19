@@ -1214,9 +1214,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     }
                   }
                 }
-                // Unicode code point. This is converted to UTF-8
-                else if (*char_ptr == 'N' && *(char_ptr + 1) == '{') {
+                // Unicode escape character
+                else if (*char_ptr == 'N') {
                   char_ptr++;
+                  
                   if (*char_ptr == '{' && *(char_ptr + 1) == 'U' && *(char_ptr + 2) == '+') {
                     char_ptr += 3;
                     char* char_start_ptr = char_ptr;
@@ -1258,11 +1259,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       }
                     }
                     else {
-                      SPVM_COMPILER_error(compiler, "Unicode escape need close bracket at %s line %d", compiler->cur_file, compiler->cur_line);
+                      SPVM_COMPILER_error(compiler, "A Unicode escape character must be closed by \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
                     }
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "Invalid unicode escape of string literal at %s line %d", compiler->cur_file, compiler->cur_line);
+                    SPVM_COMPILER_error(compiler, "Invalid Unicode escape character at %s line %d", compiler->cur_file, compiler->cur_line);
                   }
                 }
                 else {

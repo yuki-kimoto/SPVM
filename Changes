@@ -15,6 +15,7 @@ Revision history for SPVM
         
           '\xA'
           "Foo \xA Bar"
+        * Improve the compilation error message of the Unicode escape character
         
         [SPECIFICATION FIX]
         * Add string literal escape character \$
