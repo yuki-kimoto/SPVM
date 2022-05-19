@@ -1251,33 +1251,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else {
                   switch(*char_ptr) {
-                    case 'w':
-                    case 'W':
-                    case 's':
-                    case 'S':
-                    case 'd':
-                    case 'D':
-                    case 'p':
-                    case 'P':
-                    case 'X':
-                    case 'g':
-                    case 'k':
-                    case 'K':
-                    case 'v':
-                    case 'V':
-                    case 'h':
-                    case 'H':
-                    case 'R':
-                    case 'b':
-                    case 'B':
-                    case 'A':
-                    case 'Z':
-                    case 'z':
-                    case 'G':
-                    case 'N':
                     case '!':
                     case '#':
-                    case '@':
                     case '%':
                     case '&':
                     case '(':
@@ -1288,21 +1263,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     case '-':
                     case '.':
                     case '/':
-                    case ':':
-                    case ';':
-                    case '<':
-                    case '=':
-                    case '>':
-                    case '?':
-                    case '[':
-                    case ']':
-                    case '^':
-                    case '_':
-                    case '`':
-                    case '{':
-                    case '|':
-                    case '}':
-                    case '~':
                     case '1':
                     case '2':
                     case '3':
@@ -1312,6 +1272,46 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     case '7':
                     case '8':
                     case '9':
+                    case ':':
+                    case ';':
+                    case '<':
+                    case '=':
+                    case '>':
+                    case '?':
+                    case '@':
+                    case 'A':
+                    case 'B':
+                    case 'D':
+                    case 'G':
+                    case 'H':
+                    case 'K':
+                    case 'N':
+                    case 'P':
+                    case 'R':
+                    case 'S':
+                    case 'V':
+                    case 'W':
+                    case 'X':
+                    case 'Z':
+                    case '[':
+                    case ']':
+                    case '^':
+                    case '_':
+                    case '`':
+                    case 'b':
+                    case 'd':
+                    case 'g':
+                    case 'h':
+                    case 'k':
+                    case 'p':
+                    case 's':
+                    case 'v':
+                    case 'w':
+                    case 'z':
+                    case '{':
+                    case '|':
+                    case '}':
+                    case '~':
                     {
                       string_literal_tmp[string_literal_length] = '\\';
                       string_literal_length++;
