@@ -3,6 +3,7 @@ Revision history for SPVM
         [CHANGE]
         * Support die statement without the operand again. This was remove at 0.9504(2021-02-10).
           die;
+        * Add Fn->match method
         
         [SPECIFICATION FIX]
         * Add string literal escape character \$

@@ -4,6 +4,9 @@ class TestCase::Lib::Fn1 {
   use TestCase::Minimal;
 
   static method sprintf_d : int () {
+    unless (Fn->sprintf("%d", 123) eq "123") {
+      return 0;
+    }
     
     unless (Fn->sprintf("%d", 123) eq "123") {
       return 0;
@@ -1751,6 +1754,44 @@ class TestCase::Lib::Fn1 {
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+
+  static method match : int () {
+    
+    # match
+    {
+      my $match = Fn->match("ppzabcz", "abc");
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($match isa Regex) {
+        return 0;
+      }
+    }
+    
+    # not match
+    {
+      my $match = Fn->match("ppzabcz", "abd");
+      unless ($match == undef) {
+        return 0;
+      }
+    }
+    
+    # . - single line mode
+    {
+      my $match_re = Fn->match("abc\ndef", "(.+)", "s");
+      
+      unless ($match_re) {
+        return 0;
+      }
+      
+      unless ($match_re->captures->[0] eq "abc\ndef") {
+        return 0;
+      }
+    }
     
     return 1;
   }

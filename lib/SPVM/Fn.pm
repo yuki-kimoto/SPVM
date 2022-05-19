@@ -879,6 +879,23 @@ Convert uppercase string to lowercase string.
 
 Convert first chracter of string from uppercase to lowercase.
 
+=head2 match
+
+  static method match : Regex ($string : string, $regex_string : string, $regex_options_opt : string[]...) {
+
+If the string matches the regex with/without options, return the L<Regex|SPVM::Regex> object. Otherwise C<undef>.
+
+See also L<Regex|SPVM::Regex>.
+
+B<Examples:>
+
+  my $match = Fn->match("Foo Bar Baz", "^Foo.+Baz$");
+
+  my $match = Fn->match("Foo Bar Baz", "^Foo.+Baz$", "s");
+
+  my $match_re = Fn->match("abc\ndef", "(.+)", "s");
+  my $capture_first = $match_re->captures->[0]l
+
 =head2 memcpy
 
   static method memcpy : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);

@@ -1229,6 +1229,31 @@ class Fn : precompile {
     return (string)$new_string;
   }
 
+  static method match : Regex ($string : string, $regex_string : string, $regex_options_opt : string[]...) {
+    
+    my $regex_options = (string)undef;
+    if (@$regex_options_opt > 0) {
+      $regex_options = $regex_options_opt->[0];
+    }
+    
+    my $regex = (Regex)undef;
+    if ($regex_options) {
+      $regex = Regex->new_with_options($regex_string, $regex_options);
+    }
+    else {
+      $regex = Regex->new($regex_string);
+    }
+        
+    my $match = $regex->match($string, 0);
+    
+    if ($match) {
+      return $regex;
+    }
+    else {
+      return undef;
+    }
+  }
+  
   native static method memcpy : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
   native static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
   native static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
