@@ -225,6 +225,12 @@ ef"
       return 0;
     }
     
+    {
+      my $string = "\N{U+1F9E6}";
+      
+      my $utf8_char = [(byte)0xF0,(byte)0x9F,(byte)0xA7,(byte)0xB0];
+    }
+    
     return 1;
   }
 
