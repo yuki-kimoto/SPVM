@@ -1211,7 +1211,7 @@ B<Examples:>
 
   static method repeat : double ($string : string, $count : int)
 
-Gets the repeat string.
+Get the repeat string.
 
 If the string is not defined, an exception will be thrown.
 
@@ -1221,6 +1221,39 @@ B<Examples:>
   
   # "abcabcabc"
   my $repeat_string = Fn->repeat("abc", 3);
+
+=head2 replace
+
+  static method replace : string (
+    $string : string,
+    $regex_string : string,
+    $replace_string_or_replacer : object,
+    $regex_options_opt : string[]...
+  )
+
+Replaces the string using a regular expression with/without options.
+
+The first argument is a string that the regular expression is performed.
+
+The second argument is a string that is a regular expression.
+
+The third argument is a replacement string or a L<Replacer|SPVM::Replacer> object.
+
+The 4th argument is the options of regular expression. This is optional.
+
+B<Examples:>
+  
+  # "xyzBBBxyzAAA"
+  my $result = Fn->replace("xyzAAAxyzAAA", "A+", "BBB");
+
+  # "xyzBBBxyzBBB"
+  my $result = Fn->replace("xyzAAAxyzAAA", "A+", "BBB", "g");
+
+  # "xyzaaaxyzAAA"
+  my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[0]); });
+
+  # "xyzaaaxyzaaa"
+  my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[0]); }, "g");
 
 =head2 rindex
 
