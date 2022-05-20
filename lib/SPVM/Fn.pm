@@ -10,8 +10,6 @@ SPVM::Fn - SPVM Starndard Functions
 
 =head1 SYNOPSYS
 
-=head2 SPVM
-
   use Fn;
   
   my $int8_max = Fn->INT8_MAX();
@@ -197,15 +195,6 @@ SPVM::Fn - SPVM Starndard Functions
     
     return $minimal1->{x} <=> $minimal2->{x} || $minimal1->{y} <=> $minimal2->{y};
   };
-
-=head2 Perl
-
-  use SPVM 'Fn';
-  
-  my $int8_max = SPVM::Fn->INT8_MAX();
-  my $int16_max = SPVM::Fn->INT16_MAX();
-  my $int32_max = SPVM::Fn->INT32_MAX();
-  my $int64_max = SPVM::Fn->INT64_MAX();
 
 =head1 DESCRIPTION
 
