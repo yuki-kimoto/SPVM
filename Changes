@@ -19,6 +19,7 @@ Revision history for SPVM
         
         [SPECIFICATION FIX]
         * Add string literal escape character \$
+        * Hexadecimal escape charcter represents any value of byte type
 
         [NON BACKWORD COMPATIBLE CHANGES]
         * The unicode copde point of Unicode escape character must be a Unicode scalar value.

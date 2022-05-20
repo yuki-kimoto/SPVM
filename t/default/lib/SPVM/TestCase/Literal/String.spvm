@@ -214,6 +214,29 @@ ef"
       }
     }
     
+    # any byte type
+    {
+      my $bytes = "\xFF\xFE\x03";
+      unless ($bytes->[0] == -1) {
+        return 0;
+      }
+      unless ($bytes->[1] == -2) {
+        return 0;
+      }
+      unless ($bytes->[2] == 3) {
+        return 0;
+      }
+
+      unless ($bytes->[0] == (byte)0xFF) {
+        return 0;
+      }
+      unless ($bytes->[1] == (byte)0xFE) {
+        return 0;
+      }
+      unless ($bytes->[2] == (byte)0x03) {
+        return 0;
+      }
+    }
     
     return 1;
   }
