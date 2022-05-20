@@ -28,7 +28,7 @@ SPVM::Fn - SPVM Starndard Functions
     my $string_copy = Fn->copy_string ($string);
   }
 
-  # Search substr
+  # Searches substr
   {
     my $found_offset = Fn->index("pppabcde", "bcd", 2);
   }
@@ -79,49 +79,49 @@ SPVM::Fn - SPVM Starndard Functions
     my $strs_copy = Fn->copy_array_string($strs);
   }
   
-  # Check if the two byte arrays equal
+  # Checks if the two byte arrays equal
   {
     my $nums1 = [(byte)1, 2];
     my $nums2 = [(byte)1, 2];
     my $ret = Fn->equals_array_byte($nums1, $nums2);
   }
 
-  # Check if the two short arrays equal
+  # Checks if the two short arrays equal
   {
     my $nums1 = [(short)1, 2];
     my $nums2 = [(short)1, 2];
     my $ret = Fn->equals_array_short($nums1, $nums2);
   }
 
-  # Check if the two int arrays equal
+  # Checks if the two int arrays equal
   {
     my $nums1 = [(int)1, 2];
     my $nums2 = [(int)1, 2];
     my $ret = Fn->equals_array_int($nums1, $nums2);
   }
 
-  # Check if the two long arrays equal
+  # Checks if the two long arrays equal
   {
     my $nums1 = [(long)1, 2];
     my $nums2 = [(long)1, 2];
     my $ret = Fn->equals_array_long($nums1, $nums2);
   }
 
-  # Check if the two float arrays equal
+  # Checks if the two float arrays equal
   {
     my $nums1 = [(float)1, 2];
     my $nums2 = [(float)1, 2];
     my $ret = Fn->equals_array_float($nums1, $nums2);
   }
 
-  # Check if the two double arrays equal
+  # Checks if the two double arrays equal
   {
     my $nums1 = [(double)1, 2];
     my $nums2 = [(double)1, 2];
     my $ret = Fn->equals_array_double($nums1, $nums2);
   }
 
-  # Check if the two string arrays equal
+  # Checks if the two string arrays equal
   {
     my $strs1 = ["abc", "def"];
     my $strs2 = ["abc", "def"];
@@ -136,49 +136,49 @@ SPVM::Fn - SPVM Starndard Functions
     return $new_int_obj;
   });
 
-  # Sort byte array itself by asc order
+  # Sorts byte array itself by asc order
   my $nums = [(byte)2, 3, 1];
   Fn->sort_byte($nums, 0, scalar @$nums, method : int ($a : byte, $b : byte) {
     return $a <=> $b;
   });
 
-  # Sort short array itself by asc order
+  # Sorts short array itself by asc order
   my $nums = [(short)2, 3, 1];
   Fn->sort_short($nums, 0, scalar @$nums, method : int ($a : short, $b : short) {
     return $a <=> $b;
   });
 
-  # Sort int array itself by asc order
+  # Sorts int array itself by asc order
   my $nums = [2, 3, 1];
   Fn->sort_int($nums, 0, scalar @$nums, method : int ($a : int, $b : int) {
     return $a <=> $b;
   });
 
-  # Sort long array itself by asc order
+  # Sorts long array itself by asc order
   my $nums = [(long)2, 3, 1];
   Fn->sort_long($nums, 0, scalar @$nums, method : int ($a : long, $b : long) {
     return $a <=> $b;
   });
 
-  # Sort float array itself by asc order
+  # Sorts float array itself by asc order
   my $nums = [(float)2, 3, 1];
   Fn->sort_float($nums, 0, scalar @$nums, method : int ($a : float, $b : float) {
     return $a <=> $b;
   });
 
-  # Sort double array itself by asc order
+  # Sorts double array itself by asc order
   my $nums = [(double)2, 3, 1];
   Fn->sort_double($nums, 0, scalar @$nums, method : int ($a : double, $b : double) {
     return $a <=> $b;
   });
 
-  # Sort string array itself by asc order
+  # Sorts string array itself by asc order
   my $nums = ["11", "1", "2", undef, ""];
   Fn->sort_double($nums, 0, scalar @$nums, method : int ($a : double, $b : double) {
     return $a <=> $b;
   });
 
-  # Sort object array itself by asc order
+  # Sorts object array itself by asc order
   my $minimals = new TestCase::Minimal[3];
   $minimals->[0] = TestCase::Minimal->new;
   $minimals->[0]{x} = 3;
@@ -208,109 +208,109 @@ Class method of B<Fn> module.
 
   static method DBL_MAX : double ()
 
-Return the value of DBL_MAX macro defined in C<float.h> header of C language.
+Returns the value of C<DBL_MAX> macro defined in C<float.h> header of C language.
 
 =head2 DBL_MIN
 
   static method DBL_MIN : double ()
 
-Return the value of DBL_MIN macro defined in C<float.h> header of C language.
+Returns the value of C<DBL_MIN> macro defined in C<float.h> header of C language.
 
 =head2 FLT_MAX
 
   static method FLT_MAX : float ()
 
-Return the value of FLT_MAX macro defined in C<float.h> header of C language.
+Returns the value of C<FLT_MAX> macro defined in C<float.h> header of C language.
 
 =head2 FLT_MIN
 
   static method FLT_MIN : float ()
 
-Return the value of FLT_MIN macro defined in C<float.h> header of C language.
+Returns the value of C<FLT_MIN> macro defined in C<float.h> header of C language.
 
 =head2 INT16_MAX
 
   static method INT16_MAX : short ()
 
-Return 32767. The maximum value of the signed 16bit integer.
+Returns 32767. The maximum value of the signed 16bit integer.
 
 =head2 INT16_MIN
 
   static method INT16_MIN : short ()
 
-Return -32768. The minimal value of the signed 16bit integer. 
+Returns -32768. The minimal value of the signed 16bit integer. 
 
 =head2 INT32_MAX
 
   static method INT32_MAX : int ()
 
-Return 2147483647. The maximum value of the signed 32bit integer.
+Returns 2147483647. The maximum value of the signed 32bit integer.
 
 =head2 INT32_MIN
 
   static method INT32_MIN : int ()
 
-Return -2147483648. The minimal value of the signed 32bit integer.
+Returns -2147483648. The minimal value of the signed 32bit integer.
 
 =head2 INT64_MAX
 
   static method INT64_MAX : long ()
 
-Return 9223372036854775807. The maximum value of the signed 64bit integer. 
+Returns 9223372036854775807. The maximum value of the signed 64bit integer. 
 
 =head2 INT64_MIN
 
   static method INT64_MIN : long ()
 
-Return -9223372036854775808. The minimal value of signed 64bit integer.
+Returns -9223372036854775808. The minimal value of signed 64bit integer.
 
 =head2 INT8_MAX
 
   INT8_MAX : byte ()
 
-Return 127. The maximum value of the signed 8bit integer.
+Returns 127. The maximum value of the signed 8bit integer.
 
 =head2 INT8_MIN
 
   static method INT8_MIN : byte ()
 
-Return -128. The minimal value of the signed 8bit integer.
+Returns -128. The minimal value of the signed 8bit integer.
 
 =head2 UINT16_MAX
 
   static method UINT16_MAX : short ()
 
-Return -1. The same bit expression of 0xFFFF in the unsigned 16bit integer in 2's complement.
+Returns -1. The same bit expression of 0xFFFF in the unsigned 16bit integer in 2's complement.
 
 =head2 UINT32_MAX
 
   static method UINT32_MAX : int ()
 
-Return -1. The same bit expression of 0xFFFFFFFF in the unsigned 32bit integer in 2's complement.
+Returns -1. The same bit expression of 0xFFFFFFFF in the unsigned 32bit integer in 2's complement.
 
 =head2 UINT64_MAX
 
   static method UINT64_MAX : long ()
 
-Return -1. The same bit expression of 0xFFFFFFFFFFFFFFFF in the unsigned 64bit integer in 2's complement.
+Returns -1. The same bit expression of 0xFFFFFFFFFFFFFFFF in the unsigned 64bit integer in 2's complement.
 
 =head2 UINT8_MAX
 
   static method UINT8_MAX : byte ()
 
-Return -1. The same bit expression of 0xFF in the unsigned 8bit integer in 2's complement.
+Returns -1. The same bit expression of 0xFF in the unsigned 8bit integer in 2's complement.
 
 =head2 abs
 
   static method abs : int ($x : int)
 
-Return the absolute value.
+Returns the absolute value.
 
 =head2 chomp
 
   static method chomp : void ($string : mutable string)
 
-Remove C<\n> of the end of the string. This method changes the given string itself.
+Removes C<\n> of the end of the string. This method changes the given string itself.
 
 If the string is C<undef> or the length is zero, does nothing.
 
@@ -318,13 +318,13 @@ If the string is C<undef> or the length is zero, does nothing.
 
   static method chompr : string ($string : string)
 
-Copy the string and remove "\n" of the end of the string and return it.
+Copies the string and remove "\n" of the end of the string and return it.
 
 =head2 chr
 
   static method chr : string ($unicode_code_point : int) {
 
-Convert Unicode code point to a UTF-8 character. If the Unicode code point is not a Unicode scalar value, return C<undef>.
+Converts Unicode code point to a UTF-8 character. If the Unicode code point is not a Unicode scalar value, return C<undef>.
 
 See also L<Unicode->is_unicode_scalar_value|SPVM::Unicode/"is_unicode_scalar_value">.
 
@@ -332,7 +332,7 @@ See also L<Unicode->is_unicode_scalar_value|SPVM::Unicode/"is_unicode_scalar_val
 
   static method copy_array_byte : byte[] ($nums : byte[])
 
-Copy a byte array.
+Copies a byte array.
 
 If the array is undef, return undef.
 
@@ -340,7 +340,7 @@ If the array is undef, return undef.
 
   static method copy_array_double : double[] ($nums : double[])
 
-Copy a double array.
+Copies a double array.
 
 If the array is undef, return undef.
 
@@ -348,7 +348,7 @@ If the array is undef, return undef.
 
   static method copy_array_float : float[] ($nums : float[])
 
-Copy a float array.
+Copies a float array.
 
 If the array is undef, return undef.
 
@@ -356,7 +356,7 @@ If the array is undef, return undef.
 
   static method copy_array_int : int[] ($nums : int[])
 
-Copy a int array.
+Copies a int array.
 
 If the array is undef, return undef.
   
@@ -364,7 +364,7 @@ If the array is undef, return undef.
 
   static method copy_array_long : long[] ($nums : long[])
 
-Copy a long array.
+Copies a long array.
 
 If the array is undef, return undef.
 
@@ -372,7 +372,7 @@ If the array is undef, return undef.
 
   static method copy_array_object : object[] ($objects : object[], $cloner : Cloner)
 
-Copy a object array with a L<Cloner|SPVM::Cloner> callback implemetation.
+Copies a object array with a L<Cloner|SPVM::Cloner> callback implemetation.
 
 If the array is undef, return undef.
 
@@ -380,7 +380,7 @@ If the array is undef, return undef.
 
   static method copy_array_range_byte : byte[] ($nums : byte[], $offset : int, $length : int)
   
-Slice elements in the byte array with the start offset and the length.
+Slices elements in the byte array with the start offset and the length.
 
 Array must be defined, otherwise an exception occurs.
 
@@ -394,7 +394,7 @@ Offset + length must not be in the array range, othrewise an exception occurs.
 
   static method copy_array_range_double : double[] ($nums : double[], $offset : int, $length : int)
 
-Slice elements in the double array with the start offset and the length.
+Slices elements in the double array with the start offset and the length.
 
 Array must be defined, otherwise an exception occurs.
 
@@ -408,7 +408,7 @@ Offset + length must not be in the array range, othrewise an exception occurs.
 
   static method copy_array_range_float : float[] ($nums : float[], $offset : int, $length : int)
 
-Slice elements in the float array with the start offset and the length.
+Slices elements in the float array with the start offset and the length.
 
 Array must be defined, otherwise an exception occurs.
 
@@ -422,7 +422,7 @@ Offset + length must not be in the array range, othrewise an exception occurs.
 
   static method copy_array_range_int : int[] ($nums : int[], $offset : int, $length : int)
 
-Slice elements in the int array with the start offset and the length.
+Slices elements in the int array with the start offset and the length.
 
 Array must be defined, otherwise an exception occurs.
 
@@ -436,7 +436,7 @@ Offset + length must not be in the array range, othrewise an exception occurs.
 
   static method copy_array_range_long : long[] ($nums : long[], $offset : int, $length : int)
 
-Slice elements in the long array with the start offset and the length.
+Slices elements in the long array with the start offset and the length.
 
 Array must be defined, otherwise an exception occurs.
 
@@ -450,7 +450,7 @@ Offset + length must not be in the array range, othrewise an exception occurs.
 
   static method copy_array_range_object : object[] ($elems : object[], $offset : int, $length : int)
 
-Slice elements in the object array with the start offset and the length.
+Slices elements in the object array with the start offset and the length.
 
 Array must be defined, otherwise an exception occurs.
 
@@ -464,7 +464,7 @@ Offset + length must not be in the array range, othrewise an exception occurs.
 
   static method copy_array_range_short : short[] ($nums : short[], $offset : int, $length : int)
 
-Slice elements in the short array with the start offset and the length.
+Slices elements in the short array with the start offset and the length.
 
 Array must be defined, otherwise an exception occurs.
 
@@ -478,7 +478,7 @@ Offset + length must not be in the array range, othrewise an exception occurs.
   
   static method copy_array_range_string : string[] ($strings : string[], $offset : int, $length : int)
 
-Slice elements in the string array with the start offset and the length.
+Slices elements in the string array with the start offset and the length.
 
 Array must be defined, otherwise an exception occurs.
 
@@ -492,7 +492,7 @@ Offset + length must not be in the array range, othrewise an exception occurs.
 
   static method copy_array_short : short[] ($nums : short[])
 
-Copy a short array.
+Copies a short array.
 
 If the array is undef, return undef.
   
@@ -500,7 +500,7 @@ If the array is undef, return undef.
 
   static method copy_array_string : string[] ($strings : string[])
 
-Copy a string array.
+Copies a string array.
 
 If the array is undef, return undef.
 
@@ -508,7 +508,7 @@ If the array is undef, return undef.
 
   static method copy_string : string ($string : string)
 
-Copy the value of the string, and return a new string.
+Copies the value of the string, and return a new string.
 
 If the argument string is undef, return undef.
 
@@ -516,7 +516,7 @@ If the argument string is undef, return undef.
 
   static method crand : int ($seed : int*);
 
-Get random number(0 <= rundom_number <= Fn->RAND_MAX) with a seed.
+Gets random number(0 <= rundom_number <= Fn->RAND_MAX) with a seed.
 
 The seed is updated.
 
@@ -533,7 +533,7 @@ B<Examples:>
 
   static method dump_array_byte : string ($nums : byte[])
   
-Convert the elements in the byte array to string and join them with "," and surround it with "[" and "]", and return it.
+Converts the elements in the byte array to string and Joins them with "," and surround it with "[" and "]", and return it.
 
 For readability spaces and line breaks are inserted.
 
@@ -543,7 +543,7 @@ If byte array is undef, return undef.
 
   static method dump_array_double : string ($nums : double[])
   
-Convert the elements in the double array to string and join them with "," and surround it with "[" and "]", and return it.
+Converts the elements in the double array to string and Joins them with "," and surround it with "[" and "]", and return it.
 
 For readability spaces and line breaks are inserted.
 
@@ -553,7 +553,7 @@ If byte array is undef, return undef.
 
   static method dump_array_float : string ($nums : float[])
   
-Convert the elements in the float array to string and join them with "," and surround it with "[" and "]", and return it.
+Converts the elements in the float array to string and Joins them with "," and surround it with "[" and "]", and return it.
 
 For readability spaces and line breaks are inserted.
 
@@ -563,7 +563,7 @@ If byte array is undef, return undef.
 
   static method dump_array_int : string ($nums : int[])
   
-Convert the elements in the int array to string and join them with "," and surround it with "[" and "]", and return it.
+Converts the elements in the int array to string and Joins them with "," and surround it with "[" and "]", and return it.
 
 If byte array is undef, return undef.
 
@@ -571,7 +571,7 @@ If byte array is undef, return undef.
 
   static method dump_array_long : string ($nums : long[])
   
-Convert the elements in the long array to string and join them with "," and surround it with "[" and "]", and return it.
+Converts the elements in the long array to string and Joins them with "," and surround it with "[" and "]", and return it.
 
 If byte array is undef, return undef.
 
@@ -579,7 +579,7 @@ If byte array is undef, return undef.
 
   static method dump_array_object : string ($objects : object[], $stringer : Stringer)
   
-Convert the elements in the object array to string by a C<SPVM::Stringer> callback implementation and join them with "," and surround it with "[" and "]", and return it.
+Converts the elements in the object array to string by a C<SPVM::Stringer> callback implementation and Joins them with "," and surround it with "[" and "]", and return it.
 
 For readability spaces and line breaks are inserted.
 
@@ -589,7 +589,7 @@ If string array is undef, return undef.
 
   static method dump_array_short : string ($nums : short[])
   
-Convert the elements in the short array to string and join them with "," and surround it with "[" and "]".
+Converts the elements in the short array to string and Joins them with "," and surround it with "[" and "]".
 
 For readability spaces and line breaks are inserted.
 
@@ -599,7 +599,7 @@ If byte array is undef, return undef.
 
   static method dump_array_string : string ($strings : string[])
   
-Join the strings in the array with "," and surround it with "[" and "]", and return it.
+Joins the strings in the array with "," and surround it with "[" and "]", and return it.
 
 For readability spaces and line breaks are inserted.
 
@@ -609,7 +609,7 @@ If string array is undef, return undef.
 
   static method dump_array_unsigned_byte : string ($nums : byte[])
   
-Convert the elements in the byte array to string interpreting as an unsigned 8bit integer and join them with "," and surround it with "[" and "]", and return it.
+Converts the elements in the byte array to string interpreting as an unsigned 8bit integer and Joins them with "," and surround it with "[" and "]", and return it.
 
 If byte array is undef, return undef.
 
@@ -617,7 +617,7 @@ If byte array is undef, return undef.
 
   static method dump_array_unsigned_int : string ($nums : int[])
   
-Convert the elements in the int array to string interpreting as an unsigned 32bit integer and join them with "," and surround it with "[" and "]", and return it.
+Converts the elements in the int array to string interpreting as an unsigned 32bit integer and Joins them with "," and surround it with "[" and "]", and return it.
 
 If byte array is undef, return undef.
 
@@ -625,7 +625,7 @@ If byte array is undef, return undef.
 
   static method dump_array_unsigned_long : string ($nums : long[])
   
-Convert the elements in the long array to string interpreting as an unsigned 64bit integer and join them with "," and surround it with "[" and "]", and return it.
+Converts the elements in the long array to string interpreting as an unsigned 64bit integer and Joins them with "," and surround it with "[" and "]", and return it.
 
 For readability spaces and line breaks are inserted.
 
@@ -635,7 +635,7 @@ If byte array is undef, return undef.
 
   static method dump_array_unsigned_short : string ($nums : short[])
   
-Convert the elements in the short array to string interpreting as an unsigned 16bit integer and join them with "," and surround it with "[" and "]".
+Converts the elements in the short array to string interpreting as an unsigned 16bit integer and Joins them with "," and surround it with "[" and "]".
 
 For readability spaces and line breaks are inserted.
 
@@ -645,7 +645,7 @@ If byte array is undef, return undef.
 
   static method equals_array_byte : int ($nums1 : byte[], $nums2 : byte[])
 
-Check if two byte arrays equal.
+Checks if two byte arrays equal.
 
 If at least one of the arrays is undef, a excetpion occurs.
 
@@ -653,7 +653,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
   static method equals_array_double : int ($nums1 : double[], $nums2 : double[])
 
-Check if two double arrays equal.
+Checks if two double arrays equal.
 
 If at least one of the arrays is undef, a excetpion occurs.
 
@@ -661,7 +661,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
   static method equals_array_float : int ($nums1 : float[], $nums2 : float[])
 
-Check if two float arrays equal.
+Checks if two float arrays equal.
 
 If at least one of the arrays is undef, a excetpion occurs.
 
@@ -669,7 +669,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
   static method equals_array_int : int ($nums1 : int[], $nums2 : int[])
 
-Check if two int arrays equal.
+Checks if two int arrays equal.
 
 If at least one of the arrays is undef, a excetpion occurs.
 
@@ -677,7 +677,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
   static method equals_array_long : int ($nums1 : long[], $nums2 : long[])
 
-Check if two long arrays equal.
+Checks if two long arrays equal.
 
 If at least one of the arrays is undef, a excetpion occurs.
 
@@ -685,17 +685,17 @@ If at least one of the arrays is undef, a excetpion occurs.
 
   static method static method equals_array_object : int ($objs1 : object[], $objs2 : object[], $equality_checker : EqualityChecker)
 
-Check equality of two objects. You must sepecify a L<EqualityChecker|SPVM::EqualityChecker> object to check the equality of each element.
+Checks equality of two objects. You must sepecify a L<EqualityChecker|SPVM::EqualityChecker> object to Checks the equality of each element.
 
 $objs1 and $objs2 and $equality_checker must be defined, otherwise an exception occurs.
 
-Return 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return 0.
+Returns 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return 0.
 
 =head2 equals_array_short
 
   static method equals_array_short : int ($nums1 : short[], $nums2 : short[])
 
-Check if two short arrays equal.
+Checks if two short arrays equal.
 
 If at least one of the arrays is undef, a excetpion occurs.
 
@@ -703,7 +703,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
   static method equals_array_string : int ($strs1 : double[], $strs2 : double[])
 
-Check if two string arrays equal.
+Checks if two string arrays equal.
 
 If at least one of the arrays is undef, a excetpion occurs.
 
@@ -711,7 +711,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
   static method hex : int ($hex_string : string)
 
-Convert hex string to int value.
+Converts hex string to int value.
 
 the hex string must be defined, otherwise an exception occurs.
 
@@ -721,7 +721,7 @@ the hex string must be a valid expression which is represented by a regex "^([0-
 
   static method index : int ($string : string, $sub_string : string, $start_pos : int)
 
-Search for the substring in the string from the starting position
+Searches for the substring in the string from the starting position
 and return the found position. If the substring is not found, return C<-1>.
 
 =head2 index_len
@@ -842,9 +842,9 @@ If the object is C<NULL>, returns C<0>.
 
 =head2 join
 
-  static method join : string ($sep : string, $strings : string[])
+  static method Joins : string ($sep : string, $strings : string[])
   
-Join a string array with separater and return it.
+Joins a string array with separater and return it.
 
 If separater is undef, an exception occurs.
 
@@ -854,19 +854,19 @@ If string array is undef, an exception occurs.
 
   static method labs : long ($x : long)
 
-Return the absolute value.
+Returns the absolute value.
 
 =head2 lc
 
   static method lc : string ($string : string)
 
-Convert uppercase string to lowercase string.
+Converts uppercase string to lowercase string.
 
 =head2 lcfirst
 
   static method lcfirst : string ($string : string)
 
-Convert first chracter of string from uppercase to lowercase.
+Converts first chracter of string from uppercase to lowercase.
 
 =head2 match
 
@@ -895,7 +895,7 @@ If the destination is a read-only string, an exception is thrown.
 
 The source must be a string type, a numeric type, or a multi numeric type, otherwise an exception is thrown.
 
-Copy the source to the destination with the given each offset and the given length by byte unit.
+Copies the source to the destination with the given each offset and the given length by byte unit.
 
 If source data range and destination data overlap, the result is not guaranteed.
 
@@ -915,7 +915,7 @@ If source data range and destination data overlap, the result is not guaranteed.
 
   static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int)
 
-Copy source byte array to destination byte array with the each offset and a length.
+Copies source byte array to destination byte array with the each offset and a length.
 
 If source data range and destination data overlap, the result is not guaranteed.
 
@@ -933,7 +933,7 @@ Source offset + length must be within the range of the source array, otherwise a
   
   static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int)
 
-Copy source double array to destination double array with the each offset and a length.
+Copies source double array to destination double array with the each offset and a length.
 
 If source data range and destination data overlap, the result is not guaranteed.
 
@@ -951,7 +951,7 @@ Source offset + length must be within the range of the source array, otherwise a
   
   static method memcpy_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int)
 
-Copy source float array to destination float array with the each offset and a length.
+Copies source float array to destination float array with the each offset and a length.
 
 If source data range and destination data overlap, the result is not guaranteed.
 
@@ -969,7 +969,7 @@ Source offset + length must be within the range of the source array, otherwise a
   
   static method memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int)
 
-Copy source int array to destination int array with the each offset and a length.
+Copies source int array to destination int array with the each offset and a length.
 
 Destnation must be defined, otherwise an exception occurs.
 
@@ -985,7 +985,7 @@ Source offset + length must be within the range of the source array, otherwise a
   
   static method memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int)
 
-Copy source long array to destination long array with the each offset and a length.
+Copies source long array to destination long array with the each offset and a length.
 
 If source data range and destination data overlap, the result is not guaranteed.
 
@@ -1003,7 +1003,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
   static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
 
-Copy source short array to destination short array with the each offset and a length.
+Copies source short array to destination short array with the each offset and a length.
 
 If source data range and destination data overlap, the result is not guaranteed.
 
@@ -1027,7 +1027,7 @@ If the destination is a read-only string, an exception is thrown.
 
 The source must be a string type, a numeric type, or a multi numeric type, otherwise an exception is thrown.
 
-Copy the source to the destination with the given each offset and the given length by byte unit.
+Copies the source to the destination with the given each offset and the given length by byte unit.
 
 If source data range and destination data overlap, the result is not guaranteed.
 
@@ -1045,7 +1045,7 @@ The source byte offset + byte length must be within the byte range of the source
 
   static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int)
 
-Copy source byte array to destination byte array with the each offset and a length.
+Copies source byte array to destination byte array with the each offset and a length.
 
 Even if source data range and destination data overlap, the result is guaranteed.
 
@@ -1063,7 +1063,7 @@ Source offset + length must be within the range of the source array, otherwise a
   
   memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int)
 
-Copy source double array to destination double array with the each offset and a length.
+Copies source double array to destination double array with the each offset and a length.
 
 Even if source data range and destination data overlap, the result is guaranteed.
 
@@ -1081,7 +1081,7 @@ Source offset + length must be within the range of the source array, otherwise a
   
   static method memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int)
 
-Copy source float array to destination float array with the each offset and a length.
+Copies source float array to destination float array with the each offset and a length.
 
 Even if source data range and destination data overlap, the result is guaranteed.
 
@@ -1099,7 +1099,7 @@ Source offset + length must be within the range of the source array, otherwise a
   
   memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int)
 
-Copy source int array to destination int array with the each offset and a length.
+Copies source int array to destination int array with the each offset and a length.
 
 Even if source data range and destination data overlap, the result is guaranteed.
 
@@ -1117,7 +1117,7 @@ Source offset + length must be within the range of the source array, otherwise a
   
   memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int)
 
-Copy source long array to destination long array with the each offset and a length.
+Copies source long array to destination long array with the each offset and a length.
 
 Even if source data range and destination data overlap, the result is guaranteed.
 
@@ -1135,7 +1135,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
   memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
 
-Copy source short array to destination short array with the each offset and a length.
+Copies source short array to destination short array with the each offset and a length.
 
 Even if source data range and destination data overlap, the result is guaranteed.
 
@@ -1153,7 +1153,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
   static method new_array_proto : object[] ($proto_array : object[], $length : int)
 
-Create a new generic object array as the same type as the given array.
+Converts a new generic object array as the same type as the given array.
 
 =head2 ord
 
@@ -1171,19 +1171,19 @@ If the specified C<UTF-8> character is invalid C<UTF-8> character, returns a neg
 
   static method powi : int ($x : int, $y : int)
 
-Calculate the exponentiation.
+Calculates the exponentiation.
 
 =head2 powl
 
   static method powl : long ($x : long, $y : long)
 
-Calculate the exponentiation.
+Calculates the exponentiation.
 
 =head2 rand
 
   static method rand : double ($seed : int*)
 
-Get random number(0 <= random_number < 1)with a seed.
+Gets random number(0 <= random_number < 1)with a seed.
 
 The seed is updated.
 
@@ -1200,7 +1200,7 @@ B<Examples:>
 
   static method repeat : double ($string : string, $count : int)
 
-Get the repeat string.
+Gets the repeat string.
 
 If the string is not defined, an exception will be thrown.
 
@@ -1248,7 +1248,7 @@ B<Examples:>
 
   static method rindex : int ($string : string, $sub_string : string, $start_pos : int)
 
-Search for the substring in the string from the starting position to the start of the string.
+Searches for the substring in the string from the starting position to the start of the string.
 and return the found position. If the substring is not found, return C<-1>.
 
 =head2 rindex_len
@@ -1277,7 +1277,7 @@ In the level of native APIs, the charaters of the after the given length are fil
 
     static method sort_byte : void ($nums : byte[], $offset : int, $length : int, $comparator : Comparator::Byte)
 
-Sort byte array itself with a offset, a length, and a L<Comparator::Byte|SPVM::Comparator::Byte> comparator.
+Sorts byte array itself with a offset, a length, and a L<Comparator::Byte|SPVM::Comparator::Byte> comparator.
 
 Array must be not undef. Otherwise an exception occurs.
 
@@ -1291,7 +1291,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
     static method sort_double : void ($nums : double[], $offset : int, $length : int, $comparator : Comparator::Double)
 
-Sort double array itself with a offset, a length, and a L<Comparator::Double|SPVM::Comparator::Double> comparator.
+Sorts double array itself with a offset, a length, and a L<Comparator::Double|SPVM::Comparator::Double> comparator.
 
 Array must be not undef. Otherwise an exception occurs.
 
@@ -1305,7 +1305,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
     static method static method sort_float : void ($nums : float[], $offset : int, $length : int, $comparator : Comparator::Float)
 
-Sort float array itself with a offset, a length, and a L<Comparator::Float|SPVM::Comparator::Float> comparator.
+Sorts float array itself with a offset, a length, and a L<Comparator::Float|SPVM::Comparator::Float> comparator.
 
 Array must be not undef. Otherwise an exception occurs.
 
@@ -1319,7 +1319,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
     static method sort_int : void ($nums : int[], $offset : int, $length : int, $comparator : Comparator::Int)
 
-Sort int array itself with a offset, a length, and a L<Comparator::Int|SPVM::Comparator::Int> comparator.
+Sorts int array itself with a offset, a length, and a L<Comparator::Int|SPVM::Comparator::Int> comparator.
 
 Array must be not undef. Otherwise an exception occurs.
 
@@ -1333,7 +1333,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
     static method sort_long : void ($nums : long[], $offset : int, $length : int, $comparator : Comparator::Long)
 
-Sort long array itself with a offset, a length, and a L<Comparator::Long|SPVM::Comparator::Long> comparator.
+Sorts long array itself with a offset, a length, and a L<Comparator::Long|SPVM::Comparator::Long> comparator.
 
 Array must be not undef. Otherwise an exception occurs.
 
@@ -1347,7 +1347,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
     static method sort_object : void ($objs : object[], $offset : int, $length : int, $comparator : Comparator)
 
-Sort object array itself with a offset, a length, and a L<Comparator|SPVM::Comparator> comparator.
+Sorts object array itself with a offset, a length, and a L<Comparator|SPVM::Comparator> comparator.
 
 Array must be not undef. Otherwise an exception occurs.
 
@@ -1361,7 +1361,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
     static method sort_short : void ($nums : short[], $offset : int, $length : int, $comparator : Comparator::Short)
 
-Sort short array itself with a offset, a length, and a L<Comparator::Short|SPVM::Comparator::Short> comparator.
+Sorts short array itself with a offset, a length, and a L<Comparator::Short|SPVM::Comparator::Short> comparator.
 
 Array must be not undef. Otherwise an exception occurs.
 
@@ -1375,7 +1375,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
     static method sort_string : void ($nums : string[], $offset : int, $length : int, $comparator : Comparator::Double)
 
-Sort string array itself with a offset, a length, and a L<Comparator::String|SPVM::Comparator::String> comparator.
+Sorts string array itself with a offset, a length, and a L<Comparator::String|SPVM::Comparator::String> comparator.
 
 Array must be not undef. Otherwise an exception occurs.
 
@@ -1395,7 +1395,7 @@ Split a string by the specific separator.
 
   static method sprintf : string ($format : string, $args : object[]...)
 
-Create a formatted string with the format and the values.
+Converts a formatted string with the format and the values.
 
 =begin html
 
@@ -1481,13 +1481,13 @@ B<Examples:>
 
   static method substr : string ($string : string, $offset : int, $length : int)
 
-Get the substring of the string with the start offset and the length.
+Gets the substring of the string with the start offset and the length.
 
 =head2 to_double
 
   static method to_double : double ($string : string);
 
-Convert the string to float value.
+Converts the string to float value.
 
 Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][zero more than 0-9][.][zero more than 0-9][e or E[+ or -]zero more than 0-9]. Internal of [] is optional.
 
@@ -1500,7 +1500,7 @@ If the convertion fails, an exception occuer.
 
   static method to_float : float ($string : string);
 
-Convert the string to float value.
+Converts the string to float value.
 
 Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][zero more than 0-9][.][zero more than 0-9][e or E[+ or -]zero more than 0-9]. Internal of [] is optional.
 
@@ -1513,7 +1513,7 @@ If the convertion fails, an exception occuer.
 
   static method to_int : int ($string : string, $digit : int);
 
-Convert the string to a int value. This method is same as to_int_with_base($string, 10).
+Converts the string to a int value. This method is same as to_int_with_base($string, 10).
 
   my $string = "-2147483648";
   my $num = to_int($string);
@@ -1522,7 +1522,7 @@ Convert the string to a int value. This method is same as to_int_with_base($stri
 
   static method to_int_with_base : int ($string : string, $digit : int);
 
-Convert the string to a int value with a digit(2, 8, 10, 16).
+Converts the string to a int value with a digit(2, 8, 10, 16).
 
 Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][0][x][one more than 0-9]. Internal of [] is optional.
 
@@ -1535,7 +1535,7 @@ If convertion fails, an exception occuer.
 
   static method to_long : long ($string : string);
 
-Convert the string to long value. This method is same as to_long($string, 10).
+Converts the string to long value. This method is same as to_long($string, 10).
 
   my $string = "-9223372036854775808";
   my $num = to_long($string);
@@ -1544,7 +1544,7 @@ Convert the string to long value. This method is same as to_long($string, 10).
 
   static method to_long_with_base : long ($string : string, $digit : int);
 
-Convert the string to long value with digit(2, 8, 10, 16).
+Converts the string to long value with digit(2, 8, 10, 16).
 
 Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][0][x][zero more than 0-9]. Internal of [] is optional.
 
@@ -1557,13 +1557,13 @@ If the convertion fails, an exception occuer.
 
   static method to_lower : int ($code_point : int)
 
-Convert uppercase letter('A'-'Z') to lowercase. If the character is not uppercase letter, return the character.
+Converts uppercase letter('A'-'Z') to lowercase. If the character is not uppercase letter, return the character.
 
 =head2 to_upper
 
   static method to_upper : int ($code_point : int)
 
-Convert lowercase letter('a'-'z') to lowercase. If the character is not uppercase letter, return the character.
+Converts lowercase letter('a'-'z') to lowercase. If the character is not uppercase letter, return the character.
 
 =head2 trim_ascii_space
 
@@ -1577,7 +1577,7 @@ If the argument string is undef, return undef.
 
   static method uc : string ($string : string)
 
-Convert a lowercase string to a uppercase string.
+Converts a lowercase string to a uppercase string.
 
 If the string is undef, an exception occurs.
 
@@ -1585,7 +1585,7 @@ If the string is undef, an exception occurs.
 
   static method ucfirst : string ($string : string)
 
-Convert the first character of a string to a uppercase character.
+Converts the first character of a string to a uppercase character.
 
 If the string is undef, an exception occurs.
 
