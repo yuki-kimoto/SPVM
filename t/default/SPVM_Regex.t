@@ -40,6 +40,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Lib::Regex->match_offset);
   ok(SPVM::TestCase::Lib::Regex->match);
   ok(SPVM::TestCase::Lib::Regex->compile);
+  ok(SPVM::TestCase::Lib::Regex->extra);
 }
 
 # All object is freed

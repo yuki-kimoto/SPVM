@@ -748,8 +748,11 @@ class Regex : precompile {
     else {
       my $match_end = $self->match_start + $self->match_length;
       my $rest_length = $tarlength - $match_end;
-      my $rest_string = Fn->substr($target, $match_end, $rest_length);
-      $result_buffer->push($rest_string);
+      
+      if ($rest_length > 0) {
+        my $rest_string = Fn->substr($target, $match_end, $rest_length);
+        $result_buffer->push($rest_string);
+      }
       
       $result = $result_buffer->to_string;
     }

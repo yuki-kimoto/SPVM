@@ -16,7 +16,11 @@ Revision history for SPVM
           '\xA'
           "Foo \xA Bar"
         * Improve the compilation error message of the Unicode escape character
-        
+
+        [BUG FIX]
+        * Fix bug that Regex don't work well in the following case.
+          my $result = Fn->replace("xyzAAAxyzAAA", "A+", "BBB", "g");
+          
         [SPECIFICATION FIX]
         * Add string literal escape character \$
         * Hexadecimal escape charcter represents any value of byte type

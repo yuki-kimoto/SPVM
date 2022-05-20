@@ -1223,4 +1223,39 @@ class TestCase::Lib::Regex {
 
     return 1;
   }
+  
+  static method extra : int () {
+    {
+      my $result = Fn->replace("xyzAAAxyzAAA", "A+", "BBB");
+      unless ($result eq "xyzBBBxyzAAA") {
+        return 0;
+      }
+    }
+    
+    {
+      # "xyzBBBxyzBBB"
+      my $result = Fn->replace("xyzAAAxyzAAA", "A+", "BBB", "g");
+      unless ($result eq "xyzBBBxyzBBB") {
+        return 0;
+      }
+    }
+    
+    {
+      # "xyzaaaxyzAAA"
+      my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[0]); });
+      unless ($result eq "xyzaaaxyzAAA") {
+        return 0;
+      }
+    }
+    
+    {
+      # "xyzaaaxyzaaa"
+      my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[0]); }, "g");
+      unless ($result eq "xyzaaaxyzaaa") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }
