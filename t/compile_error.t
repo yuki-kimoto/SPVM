@@ -643,16 +643,24 @@ sub print_error_messages {
     # Unicode escape character
     {
       {
-        my $source = q|class Tmp { static method main : void () { "\Np" }|;
-        compile_not_ok($source, qr/Invalid Unicode escape character/);
-      }
-      {
         my $source = q|class Tmp { static method main : void () { "\N{U+}" }|;
         compile_not_ok($source, qr/After "\\N\{U\+" of the Unicode escape character, one or more than one hexadecimal numbers must follow/);
       }
       {
         my $source = q|class Tmp { static method main : void () { "\N{U+FFFFFFFFA}" }|;
         compile_not_ok($source, qr/Too big Unicode escape character/);
+      }
+      {
+        my $source = q|class Tmp { static method main : void () { "\N{U+DFFF}" }|;
+        compile_not_ok($source, qr/The code point of Unicode escape character must be a Unicode scalar value/);
+      }
+      {
+        my $source = q|class Tmp { static method main : void () { "\N{U+DFFF}" }|;
+        compile_not_ok($source, qr/The code point of Unicode escape character must be a Unicode scalar value/);
+      }
+      {
+        my $source = q|class Tmp { static method main : void () { "\N{U+D800}" }|;
+        compile_not_ok($source, qr/The code point of Unicode escape character must be a Unicode scalar value/);
       }
     }
   }

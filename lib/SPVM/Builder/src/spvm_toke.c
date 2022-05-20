@@ -65,11 +65,18 @@ int32_t SPVM_TOKE_is_hex_number(SPVM_COMPILER* compiler, char ch) {
   }
 }
 
-int32_t SPVM_TOKE_is_valid_unicode_codepoint(int32_t uc) {
-  return (((uint32_t)uc)-0xd800 > 0x07ff) && ((uint32_t)uc < 0x110000);
+int32_t SPVM_TOKE_is_unicode_scalar_value(int32_t code_point) {
+  int32_t is_unicode_scalar_value = 0;
+  if (code_point >= 0 && code_point <= 0x10FFFF) {
+    if (!(code_point >= 0xD800 && code_point <= 0xDFFF)) {
+      is_unicode_scalar_value = 1;
+    }
+  }
+  
+  return is_unicode_scalar_value;
 }
 
-int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8(int32_t uc, uint8_t* dst) {
+int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_t* dst) {
   if (uc < 0x00) {
     return 0;
   } else if (uc < 0x80) {
@@ -1215,7 +1222,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                 }
                 // Unicode escape character
-                else if (*char_ptr == 'N') {
+                // Note: "\N" is raw escape character, "\N{" is Unicode escape character
+                else if (*char_ptr == 'N' && *(char_ptr + 1) == '{') {
                   char_ptr++;
                   
                   if (*char_ptr == '{' && *(char_ptr + 1) == 'U' && *(char_ptr + 2) == '+') {
@@ -1240,19 +1248,19 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         char* unicode_chars = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, unicode_chars_length + 1);
                         memcpy(unicode_chars, char_start_ptr, unicode_chars_length);
                         char *end;
-                        int32_t unicode = (int32_t)strtoll(unicode_chars, &end, 16);
+                        int64_t unicode = (int64_t)strtoll(unicode_chars, &end, 16);
                         
-                        int32_t valid = SPVM_TOKE_is_valid_unicode_codepoint(unicode);
-                        if (valid) {
+                        int32_t is_unicode_scalar_value = SPVM_TOKE_is_unicode_scalar_value(unicode);
+                        if (is_unicode_scalar_value) {
                           char utf8_chars[4];
-                          int32_t byte_length = SPVM_TOKE_convert_unicode_codepoint_to_utf8(unicode, (uint8_t*)utf8_chars);
+                          int32_t byte_length = SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(unicode, (uint8_t*)utf8_chars);
                           for (int32_t byte_index = 0; byte_index < byte_length; byte_index++) {
                             string_literal_tmp[string_literal_length] = utf8_chars[byte_index];
                             string_literal_length++;
                           }
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "Invalid unicode code point at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "The code point of Unicode escape character must be a Unicode scalar value at %s line %d", compiler->cur_file, compiler->cur_line);
                         }
                         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, unicode_chars);
                         assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
