@@ -834,4 +834,15 @@ class Regex : precompile {
     
     return $duplicate;
   }
+  
+  method cap1 : string () { return $self->captures->[0]; }
+  method cap2 : string () { return $self->captures->[1]; }
+  method cap3 : string () { return $self->captures->[2]; }
+  method cap4 : string () { return $self->captures->[3]; }
+  method cap5 : string () { return $self->captures->[4]; }
+  method cap6 : string () { return $self->captures->[5]; }
+  method cap7 : string () { return $self->captures->[6]; }
+  method cap8 : string () { return $self->captures->[7]; }
+  method cap9 : string () { return $self->captures->[8]; }
+  method cap10 : string () { return $self->captures->[9]; }
 }

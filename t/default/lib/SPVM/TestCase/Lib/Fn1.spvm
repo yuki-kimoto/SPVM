@@ -1782,13 +1782,13 @@ class TestCase::Lib::Fn1 {
     
     # . - single line mode
     {
-      my $match_re = Fn->match("abc\ndef", "(.+)", "s");
+      my $m = Fn->match("abc\ndef", "(.+)", "s");
       
-      unless ($match_re) {
+      unless ($m) {
         return 0;
       }
       
-      unless ($match_re->captures->[0] eq "abc\ndef") {
+      unless ($m->cap1 eq "abc\ndef") {
         return 0;
       }
     }

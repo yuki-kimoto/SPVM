@@ -220,3 +220,63 @@ Replace all of the target strings specified with the start byte offset with repl
   method replace_all_cb  : string ($target : string, $target_offset : int, $replace_cb : Regex::Replacer)
 
 Replace all of the target strings specified with the start byte offset with replace callback. The callback must have the L<Regex::Replacer|SPVM::Regex::Replacer> interface.
+
+=head2 cap1
+
+  method cap1 : string ()
+
+The alias for C<$re->captures->[0]>.
+
+=head2 cap2
+
+  method cap2 : string ()
+
+The alias for C<$re->captures->[1]>.
+
+=head2 cap3
+
+  method cap3 : string ()
+
+The alias for C<$re->captures->[2]>.
+
+=head2 cap4
+
+  method cap4 : string ()
+
+The alias for C<$re->captures->[3]>.
+
+=head2 cap5
+
+  method cap5 : string ()
+
+The alias for C<$re->captures->[4]>.
+
+=head2 cap6
+
+  method cap6 : string ()
+
+The alias for C<$re->captures->[5]>.
+
+=head2 cap7
+
+  method cap7 : string ()
+
+The alias for C<$re->captures->[6]>.
+
+=head2 cap8
+
+  method cap8 : string ()
+
+The alias for C<$re->captures->[7]>.
+
+=head2 cap9
+
+  method cap9 : string ()
+
+The alias for C<$re->captures->[8]>.
+
+=head2 cap10
+
+  method cap10 : string ()
+
+The alias for C<$re->captures->[9]>.

@@ -1225,6 +1225,45 @@ class TestCase::Lib::Regex {
   }
   
   static method extra : int () {
+    
+    # Capture syntax suger
+    {
+      my $re = Regex->new("(1)(2)(3)(4)(5)(6)(7)(8)(9)(10)");
+      
+      $re->match("12345678910", 0);
+      
+      unless ($re->cap1 eq "1") {
+        return 0;
+      }
+      unless ($re->cap2 eq "2") {
+        return 0;
+      }
+      unless ($re->cap3 eq "3") {
+        return 0;
+      }
+      unless ($re->cap4 eq "4") {
+        return 0;
+      }
+      unless ($re->cap5 eq "5") {
+        return 0;
+      }
+      unless ($re->cap6 eq "6") {
+        return 0;
+      }
+      unless ($re->cap7 eq "7") {
+        return 0;
+      }
+      unless ($re->cap8 eq "8") {
+        return 0;
+      }
+      unless ($re->cap9 eq "9") {
+        return 0;
+      }
+      unless ($re->cap10 eq "10") {
+        return 0;
+      }
+    }
+    
     {
       my $result = Fn->replace("xyzAAAxyzAAA", "A+", "BBB");
       unless ($result eq "xyzBBBxyzAAA") {

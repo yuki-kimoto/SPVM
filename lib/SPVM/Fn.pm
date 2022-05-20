@@ -882,8 +882,8 @@ B<Examples:>
 
   my $match = Fn->match("Foo Bar Baz", "^Foo.+Baz$", "s");
 
-  my $match_re = Fn->match("abc\ndef", "(.+)", "s");
-  my $capture_first = $match_re->captures->[0]l
+  my $m = Fn->match("abc\ndef", "(.+)", "s");
+  my $capture_first = $m->cap1;
 
 =head2 memcpy
 
