@@ -6,14 +6,6 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
-enum {
-  SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT,
-  SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT,
-  SPVM_TOKE_C_STATE_VAR_EXPANSION_VAR,
-  SPVM_TOKE_C_STATE_VAR_EXPANSION_SECOND_CONCAT,
-  SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE,
-};
-
 // Parser information
 struct spvm_compiler {
   // OPs
