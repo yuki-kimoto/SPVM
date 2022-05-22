@@ -155,7 +155,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     else if (state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT) {
       ch = '.';
     }
-    else if (state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_DOUBLE_QUOTE) {
+    else if (state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL) {
       ch = '"';
     }
 
@@ -438,7 +438,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return '.';
         }
         else if (state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT) {
-          compiler->state_var_expansion = SPVM_TOKE_C_VAR_EXPANSION_STATE_DOUBLE_QUOTE;
+          compiler->state_var_expansion = SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL;
           yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CONCAT);
           return '.';
         }
@@ -978,7 +978,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       // String Literal
       case '"': {
-        if (state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_DOUBLE_QUOTE) {
+        if (state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL) {
           // Nothing
         }
         else {
