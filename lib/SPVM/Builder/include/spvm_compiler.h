@@ -68,8 +68,8 @@ struct spvm_compiler {
   // Pasing start
   int8_t parse_start;
 
-  // Expect variable expansion start
-  int8_t state_var_expansion;
+  // State of variable expansion
+  int8_t var_expansion_state;
   
   // Current enum value
   int32_t current_enum_value;

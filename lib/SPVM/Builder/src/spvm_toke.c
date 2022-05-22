@@ -127,8 +127,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   compiler->expect_field_name = 0;
   
   // Expect variable expansion state
-  int32_t state_var_expansion = compiler->state_var_expansion;
-  compiler->state_var_expansion = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
+  int32_t var_expansion_state = compiler->var_expansion_state;
+  compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
 
   int32_t parse_start = compiler->parse_start;
   compiler->parse_start = 0;
@@ -145,17 +145,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     // "aaa $foo bar" is interupted "aaa $foo " . "bar"
     if (compiler->bufptr == compiler->next_double_quote_start_bufptr) {
       compiler->next_double_quote_start_bufptr = NULL;
-      state_var_expansion = SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT;
+      var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT;
     }
     
     // Variable expansion state
-    if (state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT) {
+    if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT) {
       ch = '.';
     }
-    else if (state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT) {
+    else if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT) {
       ch = '.';
     }
-    else if (state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL) {
+    else if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL) {
       ch = '"';
     }
 
@@ -432,13 +432,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       // Cancat
       case '.': {
-        if (state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT) {
-          compiler->state_var_expansion = SPVM_TOKE_C_VAR_EXPANSION_STATE_VAR;
+        if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT) {
+          compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_VAR;
           yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CONCAT);
           return '.';
         }
-        else if (state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT) {
-          compiler->state_var_expansion = SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL;
+        else if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT) {
+          compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL;
           yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CONCAT);
           return '.';
         }
@@ -978,19 +978,19 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       // String Literal
       case '"': {
-        if (state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL) {
+        if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL) {
           // Nothing
         }
         else {
           compiler->bufptr++;
         }
 
-        compiler->state_var_expansion = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
+        compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
         
         // Save current position
         const char* cur_token_ptr = compiler->bufptr;
         
-        int8_t next_state_var_expansion = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
+        int8_t next_var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
         
         char* string_literal_tmp;
         int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
@@ -1015,7 +1015,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               else {
                 finish = 1;
-                next_state_var_expansion = SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT;
+                next_var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT;
                 
                 // Pending next string literal start
                 char* next_double_quote_start_bufptr = compiler->bufptr + 1;
@@ -1378,8 +1378,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         yylvalp->opval = op_constant;
         
         // Next is start from $
-        if (next_state_var_expansion == SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT) {
-          compiler->state_var_expansion = next_state_var_expansion;
+        if (next_var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT) {
+          compiler->var_expansion_state = next_var_expansion_state;
           compiler->bufptr--;
         }
         
