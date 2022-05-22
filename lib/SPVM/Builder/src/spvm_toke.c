@@ -1009,7 +1009,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Variable expansion
             else if (*compiler->bufptr == '$') {
               if (*(compiler->bufptr + 1) == '"') {
-                // Last $ is allow
+                // Last $ is allowed
               }
               else {
                 finish = 1;
