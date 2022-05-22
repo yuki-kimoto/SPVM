@@ -663,6 +663,10 @@ sub print_error_messages {
         compile_not_ok($source, qr/The code point of Unicode escape character must be a Unicode scalar value/);
       }
     }
+    {
+      my $source = q|class Tmp { static method main : void () { " } }|;
+      compile_not_ok($source, qr/A string literal must be end with '"'/);
+    }
   }
 }
 

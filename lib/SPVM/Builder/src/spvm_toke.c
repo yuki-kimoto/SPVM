@@ -1114,10 +1114,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           if (*compiler->bufptr == '\0') {
-            SPVM_COMPILER_error(compiler, "Can't find string keyword_tokeninator '\"' anywhere before EOF at %s line %d", compiler->cur_file, compiler->cur_line);
-            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, "", 0, compiler->cur_file, compiler->cur_line);
-            yylvalp->opval = op_constant;
-            return CONSTANT;
+            SPVM_COMPILER_error(compiler, "A string literal must be end with '\"' at %s line %d", compiler->cur_file, compiler->cur_line);
+            return 0;
           }
           
           int32_t string_literal_tmp_len = (int32_t)(compiler->bufptr - cur_token_ptr) * 4;
