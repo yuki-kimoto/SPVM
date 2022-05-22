@@ -976,7 +976,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         return CONSTANT;
       }
-      // String Literal
+      // String literal
       case '"': {
         if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL) {
           compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
