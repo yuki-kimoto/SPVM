@@ -14,7 +14,7 @@ The tokenizing the source codes of SPVM language is explained.
 
 =head2 Character Set
 
-The source codes of SPVM language are written by C<UTF-8>.
+The source codes of SPVM language are expected to be written by the C<UTF-8> charcter set.
 
 =head2 Line Terminators
 
