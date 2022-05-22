@@ -142,7 +142,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     // Get current character
     char ch = *compiler->bufptr;
     
-    // "aaa $foo bar" is interupted "aaa $foo " . "bar"
+    // "aaa $foo bar" is interupted "aaa $foo" . " bar"
     if (compiler->bufptr == compiler->next_double_quote_start_bufptr) {
       compiler->next_double_quote_start_bufptr = NULL;
       var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT;
