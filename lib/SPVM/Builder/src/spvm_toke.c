@@ -979,13 +979,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       // String Literal
       case '"': {
         if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL) {
-          // Nothing
+          compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
         }
         else {
           compiler->bufptr++;
         }
-
-        compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
         
         // Save current position
         const char* cur_token_ptr = compiler->bufptr;
