@@ -135,8 +135,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   int32_t var_expansion_state = compiler->var_expansion_state;
   compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
 
-  int32_t parse_start = compiler->parse_start;
-  compiler->parse_start = 0;
+  int32_t parse_not_started = compiler->parse_not_started;
+  compiler->parse_not_started = 0;
 
   while(1) {
     
@@ -163,8 +163,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     // '\0' means end of file, so try to read next module source
     if (ch == '\0') {
       
-      if (!parse_start) {
-        compiler->parse_start = 1;
+      if (!parse_not_started) {
+        compiler->parse_not_started = 1;
         SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_END_OF_FILE);
         yylvalp->opval = op;
         return END_OF_FILE;
