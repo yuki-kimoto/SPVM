@@ -479,6 +479,16 @@ ef"
         return 0;
       }
     }
+
+    # Single ":" is not the part of variable
+    {
+      my $foo = 1;
+      my $str = "$foo:bar";
+      
+      unless ($str eq "1:bar") {
+        return 0;
+      }
+    }
     
     return 1;
   }
