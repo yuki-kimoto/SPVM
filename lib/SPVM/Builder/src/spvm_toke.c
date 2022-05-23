@@ -163,6 +163,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     // '\0' means end of file, so try to read next module source
     if (ch == '\0') {
       
+      // End of file
       if (!parse_not_started) {
         compiler->parse_not_started = 1;
         SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_END_OF_FILE);
@@ -170,6 +171,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return END_OF_FILE;
       }
       
+      // Start parsing a source code
       compiler->cur_file = NULL;
       compiler->cur_src = NULL;
       compiler->bufptr = NULL;
