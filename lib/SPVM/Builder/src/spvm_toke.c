@@ -133,7 +133,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   
   // Variable expansion state
   int32_t var_expansion_state = compiler->var_expansion_state;
-  compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
+  compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED;
 
   int32_t parse_not_started = compiler->parse_not_started;
   compiler->parse_not_started = 0;
@@ -985,7 +985,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       // String literal
       case '"': {
         if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL) {
-          compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
+          compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED;
         }
         else {
           compiler->bufptr++;
@@ -994,7 +994,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // Save current position
         const char* cur_token_ptr = compiler->bufptr;
         
-        int8_t next_var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
+        int8_t next_var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED;
         
         char* string_literal_tmp;
         int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
