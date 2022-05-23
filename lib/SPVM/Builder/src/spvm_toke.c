@@ -37,7 +37,7 @@ SPVM_OP* SPVM_TOKE_new_op_with_column(SPVM_COMPILER* compiler, int32_t type, int
   
   SPVM_OP* op = SPVM_OP_new_op(compiler, type, compiler->cur_file, compiler->cur_line);
   
-  // column is only used to decide anon sub uniquness
+  // column is only used to decide anon method uniquness
   op->column = column;
   
   return op;
@@ -111,22 +111,22 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   // Save buf pointer
   compiler->befbufptr = compiler->bufptr;
 
-  // Constant minus sign
+  // Before character is "-". This is used by the numeric literal that has "-".
   int32_t before_char_is_minus = 0;
-  
-  // Expect sub name
-  int32_t expect_method_name = compiler->expect_method_name;
-  compiler->expect_method_name = 0;
-  
+
   // Before token is arrow
   int32_t before_token_is_arrow = compiler->before_token_is_arrow;
   compiler->before_token_is_arrow = 0;
 
+  // Expect method name
+  int32_t expect_method_name = compiler->expect_method_name;
+  compiler->expect_method_name = 0;
+  
   // Expect field name
   int32_t expect_field_name = compiler->expect_field_name;
   compiler->expect_field_name = 0;
   
-  // Expect variable expansion state
+  // Variable expansion state
   int32_t var_expansion_state = compiler->var_expansion_state;
   compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_DEFAULT;
 
