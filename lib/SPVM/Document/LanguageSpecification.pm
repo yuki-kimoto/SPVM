@@ -1073,6 +1073,7 @@ The variable expasion is the feature to embed L<getting local variable|/"Getting
   "AAA $foo->{x} BBB"
   "AAA $foo->[3] BBB"
   "AAA $foo->{x}[3] BBB"
+  "AAA $foo->{x}->[3] BBB"
   "AAA $@ BBB"
   "AAA ${foo}BBB"
 
@@ -1084,6 +1085,7 @@ The above codes are convarted to the following codes.
   "AAA " . $foo->{x} . " BBB"
   "AAA " . $foo->[3] . " BBB"
   "AAA " . $foo->{x}[3] . " BBB"
+  "AAA " . $foo->{x}->[3] . " BBB"
   "AAA " . $@ . "BBB"
   "AAA " . ${foo} . "BBB"
 
