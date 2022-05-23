@@ -153,6 +153,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT) {
       ch = '.';
     }
+    else if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_VAR) {
+      // Nothing
+    }
     else if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT) {
       ch = '.';
     }
