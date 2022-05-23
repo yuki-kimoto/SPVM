@@ -107,6 +107,11 @@ int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_
 
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
+
+  // Default source is a empty string
+  if (compiler->bufptr == NULL) {
+    compiler->bufptr = "";
+  }
   
   // Save buf pointer
   compiler->befbufptr = compiler->bufptr;
@@ -135,11 +140,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   compiler->beginning_of_file = 0;
 
   while(1) {
-    
-    // Default source is a empty string
-    if (compiler->bufptr == NULL) {
-      compiler->bufptr = "";
-    }
     
     // Get current character
     char ch = *compiler->bufptr;
