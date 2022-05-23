@@ -54,7 +54,7 @@ struct spvm_compiler {
   char* befbufptr;
 
   // Next double quote start position
-  char* next_double_quote_start_bufptr;
+  char* next_string_literal_bufptr;
 
   // Expect method name
   int8_t expect_method_name;
