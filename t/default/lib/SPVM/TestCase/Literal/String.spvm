@@ -474,7 +474,7 @@ ef"
       $minimals->[10] = new TestCase::Minimal;
       $minimals->[10]{x} = 11;
       
-      my $string = "a $minimals->[1]{x}b $minimals->[1_0]{x} c";
+      my $string = "a $minimals->[1]{x}b $minimals->[1_0]{x} c $minimals->[1]{x}";
       
       unless ($string eq "a 5b 11 c") {
         return 0;

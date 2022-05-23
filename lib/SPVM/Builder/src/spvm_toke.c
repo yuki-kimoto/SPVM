@@ -1079,31 +1079,69 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   // Can't contain space character between "{" and "}" and between "[" and "]"
                   if (!var_have_brace && !var_is_ref) {
                     int32_t has_arrow = 0;
-                    if (*next_string_literal_bufptr == '-' && *(next_string_literal_bufptr + 1) == '>') {
-                      has_arrow = 1;
-                      next_string_literal_bufptr += 2;
-                    }
-                    if (has_arrow) {
-                      while (1) {
-                        if (isalnum(*next_string_literal_bufptr) || *next_string_literal_bufptr == '_' || *next_string_literal_bufptr == '{' || *next_string_literal_bufptr == '[') {
-                          next_string_literal_bufptr++;
-                        }
-                        else if (*next_string_literal_bufptr == '}' || *next_string_literal_bufptr == ']') {
-                          if ((*(next_string_literal_bufptr + 1) == '-' && *(next_string_literal_bufptr + 2) == '>')) {
-                            next_string_literal_bufptr += 2;
-                          }
-                          else if (*(next_string_literal_bufptr + 1) == '{' || *(next_string_literal_bufptr + 1) == '[') {
-                            next_string_literal_bufptr++;
-                          }
-                          else {
-                            next_string_literal_bufptr++;
-                            break;
-                          }
+                    int32_t open_getting_field_brace = 0;
+                    int32_t open_bracket = 0;
+                    int32_t is_first_allow = 1;
+                    while (1) {
+                      if (!has_arrow) {
+                        if (*next_string_literal_bufptr == '-' && *(next_string_literal_bufptr + 1) == '>') {
+                          has_arrow = 1;
+                          next_string_literal_bufptr += 2;
                         }
                         else {
                           break;
                         }
                       }
+                      
+                      if (has_arrow) {
+                        has_arrow = 0;
+                        if (*next_string_literal_bufptr == '{') {
+                          open_getting_field_brace = 1;
+                          next_string_literal_bufptr++;
+                        }
+                        else if (*next_string_literal_bufptr == '[') {
+                          open_bracket = 1;
+                          next_string_literal_bufptr++;
+                        }
+                        else {
+                          SPVM_COMPILER_error(compiler, "The character after \"->\" must be \"[\" or \"{\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                          return 0;
+                        }
+                      }
+                      
+                      while (isalnum(*next_string_literal_bufptr) || *next_string_literal_bufptr == '_') {
+                        next_string_literal_bufptr++;
+                      }
+                      
+                      if (open_getting_field_brace) {
+                        if (*next_string_literal_bufptr == '}') {
+                          next_string_literal_bufptr++;
+                          open_getting_field_brace = 0;
+                        }
+                        else {
+                          SPVM_COMPILER_error(compiler, "Getting field must be closed with \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                          return 0;
+                        }
+                      }
+                      else if (open_bracket) {
+                        if (*next_string_literal_bufptr == ']') {
+                          next_string_literal_bufptr++;
+                          open_bracket = 0;
+                        }
+                        else {
+                          SPVM_COMPILER_error(compiler, "Getting array element must be closed with \"]\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                          return 0;
+                        }
+                      }
+                      else {
+                        assert(0);
+                      }
+                      
+                      if (!(*next_string_literal_bufptr == '{' || *next_string_literal_bufptr == '[')) {
+                        break;
+                      }
+                      
+                      has_arrow = 1;
                     }
                   }
                 }
