@@ -442,15 +442,25 @@ ef"
       }
     }
 
-    # Field and hash access
+    # Getting array element
     {
-      my $nums = [1, 2, 3];
+      my $nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+      
+      my $string = "a $nums->[1]b$nums->[10]c$nums->[1_0]";
+      
+      unless ($string eq "a 2b11c11") {
+        return 0;
+      }
+    }
+
+    # Getting field
+    {
       my $minimal = TestCase::Minimal->new;
       $minimal->{x} = 5;
       
-      my $string = "a $nums->[1]b $minimal->{x}c";
+      my $string = "b $minimal->{x}c";
       
-      unless ($string eq "a 2b 5c") {
+      unless ($string eq "b 5c") {
         return 0;
       }
     }
