@@ -470,6 +470,15 @@ ef"
         return 0;
       }
     }
+
+    # String literal last allow $
+    {
+      my $str = "aaaa$";
+      
+      unless ($str->[4] == '$') {
+        return 0;
+      }
+    }
     
     return 1;
   }
@@ -485,15 +494,6 @@ ef"
       }
     }
 
-    # String literal last allow $
-    {
-      my $str = "aaaa$";
-      
-      unless ($str->[4] == '$') {
-        return 0;
-      }
-    }
-    
     return 1;
   }
 }
