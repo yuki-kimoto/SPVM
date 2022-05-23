@@ -1078,12 +1078,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   // Array index must be a constant value.
                   // Can't contain space character between "{" and "}" and between "[" and "]"
                   if (!var_have_brace && !var_is_ref) {
-                    int32_t is_access = 0;
+                    int32_t has_arrow = 0;
                     if (*next_string_literal_bufptr == '-' && *(next_string_literal_bufptr + 1) == '>') {
-                      is_access = 1;
+                      has_arrow = 1;
                       next_string_literal_bufptr += 2;
                     }
-                    if (is_access) {
+                    if (has_arrow) {
                       while (1) {
                         if (isalnum(*next_string_literal_bufptr) || *next_string_literal_bufptr == '_' || *next_string_literal_bufptr == '{' || *next_string_literal_bufptr == '[') {
                           next_string_literal_bufptr++;
