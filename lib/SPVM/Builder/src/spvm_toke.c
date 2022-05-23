@@ -1036,15 +1036,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   var_is_ref = 1;
                 }
                 
+                // Open brace
                 int32_t var_have_brace = 0;
                 if (*next_string_literal_bufptr == '{') {
                   next_string_literal_bufptr++;
                   var_have_brace = 1;
                 }
                 
+                // Exception variable
                 if (*next_string_literal_bufptr == '@') {
                   next_string_literal_bufptr++;
                   if (var_have_brace) {
+                    // Close brace
                     if (*next_string_literal_bufptr == '}') {
                       next_string_literal_bufptr++;
                     }
@@ -1052,7 +1055,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else {
                 
-                  // Pend variable
+                  // Proceed through a variable
                   while (1) {
                     if (isalnum(*next_string_literal_bufptr) || *next_string_literal_bufptr == '_') {
                       next_string_literal_bufptr++;
@@ -1071,7 +1074,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     }
                   }
                   
-                  // Pend Field access or array access(only support field access or constant array accsess)
+                  // Proceed through getting field or getting array element
+                  // Array index must be a constant value.
+                  // Can't contain space character between "{" and "}" and between "[" and "]"
                   if (!var_have_brace && !var_is_ref) {
                     int32_t is_access = 0;
                     if (*next_string_literal_bufptr == '-' && *(next_string_literal_bufptr + 1) == '>') {
