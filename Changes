@@ -22,6 +22,7 @@ Revision history for SPVM
         [BUG FIX]
         * Fix bug that Regex don't work well in the following case.
           my $result = Fn->replace("xyzAAAxyzAAA", "A+", "BBB", "g");
+        * Fix the bug that variable expansion doesn' support the arrow between braces or brackets such as "$minimals->[1]->{x}".
           
         [SPECIFICATION FIX]
         * Add string literal escape character \$

@@ -1137,6 +1137,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         assert(0);
                       }
                       
+                      if (*next_string_literal_bufptr == '-' && *(next_string_literal_bufptr + 1) == '>') {
+                        next_string_literal_bufptr += 2;
+                      }
+                      
                       if (!(*next_string_literal_bufptr == '{' || *next_string_literal_bufptr == '[')) {
                         break;
                       }
