@@ -1065,7 +1065,7 @@ B<Examples:>
 
 =head2 Variable Expansion
 
-B<Variable Expansion> applys L</"Local Variable">, L</"Class Variable">, L</"Dereference">, L</"Field Access">, L</"Array Access">, L</"Exception Variable"> in String Literal.
+The variable expasion is the feature to embed L<getting local variable|/"Getting Local Variable">, L<getting class variables|/"Getting Class Variable">, L<dereference|/"Dereference">, L<getting field/"Getting Field">, L<getting array element|/"Getting Array Element">, L<getting exception variable/"Getting Exception Variable"> into the L<string literal|"String Literal">.
 
   "AAA $foo BBB"
   "AAA $FOO BBB"
@@ -1074,34 +1074,24 @@ B<Variable Expansion> applys L</"Local Variable">, L</"Class Variable">, L</"Der
   "AAA $foo->[3] BBB"
   "AAA $foo->{x}[3] BBB"
   "AAA $@ BBB"
+  "AAA ${foo}BBB"
 
-The above is expanded as the following.
+The above codes are convarted to the following codes.
 
-  "AAA" . $foo . "BBB"
-  "AAA" . $FOO . "BBB"
-  "AAA" . $$foo . "BBB"
-  "AAA" . $foo->{x} . "BBB"
-  "AAA" . $foo->[3] . "BBB"
-  "AAA" . $foo->{x}[3] . "BBB"
-  "AAA" . $@ . "BBB"
+  "AAA " . $foo . " BBB"
+  "AAA " . $FOO . " BBB"
+  "AAA " . $$foo . " BBB"
+  "AAA " . $foo->{x} . " BBB"
+  "AAA " . $foo->[3] . " BBB"
+  "AAA " . $foo->{x}[3] . " BBB"
+  "AAA " . $@ . "BBB"
+  "AAA " . ${foo} . "BBB"
 
-The variable name can besurround with C<{> and C<}> to indicate the end of the variable name.
+The getting field doesn't contain space characters between C<{> and C<}>.
 
-  "AAA ${foo}_ccc BBB"
+The index of getting array element must be a constant value. The getting array doesn't contain space characters between C<[> and C<]>.
 
-The above is expanded as the following.
-
-  "AAA " . ${foo} . "_ccc BBB"
-
-If there is no enclosing C<{> and C<}>, up to the valid part as a variable name is interpreted as a Variable. Dereference interpreting is same as this.
-
-If "->" follows the variable name, it is interpreted as L</"Field Access"> or L</"Array Access">.
-
-[1] If the following Characters are "a-zC< >A-ZC< >0-9C< >_C< >{C< >[", proceed with the interpretation.
-
-[2] If the Character following [1] is C<}>, or C<]>, then if the next Character is "->", C<{>, or C<[>, proceed with the interpretation and return back to [1], otherwise stop interpreting.
-
-The trailing $is not treated as the begin of Variable Expansion. It is treated as C<$>.
+The end C<$> is not interpreted as a variable expansion.
 
   "AAA$"
 
