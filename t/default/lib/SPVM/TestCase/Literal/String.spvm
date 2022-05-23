@@ -446,9 +446,9 @@ ef"
     {
       my $nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
       
-      my $string = "a $nums->[1]b$nums->[10]c$nums->[1_0]";
+      my $string = "a $nums->[1]b$nums->[10]c$nums->[1_0]d$nums->[0xA]";
       
-      unless ($string eq "a 2b11c11") {
+      unless ($string eq "a 2b11c11d11") {
         return 0;
       }
     }
