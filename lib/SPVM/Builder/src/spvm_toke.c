@@ -134,7 +134,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   compiler->parse_start = 0;
 
   while(1) {
-
+    
+    // Default source is a empty string
     if (compiler->bufptr == NULL) {
       compiler->bufptr = "";
     }
