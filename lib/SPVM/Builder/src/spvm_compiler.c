@@ -200,7 +200,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   SPVM_yydebug = 1;
 #endif
 
-  compiler->parse_start = 1;
+  compiler->beginning_of_file = 1;
 
   // Initialize error messages
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->allocator, 0);

@@ -66,7 +66,7 @@ struct spvm_compiler {
   int8_t before_token_is_arrow;
   
   // Pasing start
-  int8_t parse_start;
+  int8_t beginning_of_file;
 
   // State of variable expansion
   int8_t var_expansion_state;
