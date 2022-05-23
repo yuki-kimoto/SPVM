@@ -18,7 +18,7 @@ Revision history for SPVM
         * Improve the compilation error message of the Unicode escape character.
         * Add the "cap1", "cap2", "cap3", "cap4", "cap5", "cap6", "cap7", "cap8", "cap9", "cap10" methods
           to Regex class. These are corresponding to Perl's $1, $2, $3 ... $10.
-
+        * Improve the compilation error messages of variable expansion.
         [BUG FIX]
         * Fix bug that Regex don't work well in the following case.
           my $result = Fn->replace("xyzAAAxyzAAA", "A+", "BBB", "g");

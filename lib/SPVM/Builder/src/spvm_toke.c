@@ -1104,7 +1104,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           next_string_literal_bufptr++;
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "The character after \"->\" must be \"[\" or \"{\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "The character after \"->\" in a string literal must be \"[\" or \"{\" at %s line %d", compiler->cur_file, compiler->cur_line);
                           return 0;
                         }
                       }
@@ -1119,7 +1119,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           open_getting_field_brace = 0;
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "Getting field must be closed with \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "Getting field in a string literal must be closed with \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
                           return 0;
                         }
                       }
@@ -1129,7 +1129,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           open_bracket = 0;
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "Getting array element must be closed with \"]\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "Getting array element in a string literal must be closed with \"]\" at %s line %d", compiler->cur_file, compiler->cur_line);
                           return 0;
                         }
                       }

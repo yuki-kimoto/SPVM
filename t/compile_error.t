@@ -667,6 +667,18 @@ sub print_error_messages {
       my $source = q|class Tmp { static method main : void () { " } }|;
       compile_not_ok($source, qr/A string literal must be end with '"'/);
     }
+    {
+      my $source = q|class Tmp { static method main : void () { "$foo->{foo-" }|;
+      compile_not_ok($source, qr/Getting field in a string literal must be closed with "}"/);
+    }
+    {
+      my $source = q|class Tmp { static method main : void () { "$foo->[3-" }|;
+      compile_not_ok($source, qr/Getting array element in a string literal must be closed with "]"/);
+    }
+    {
+      my $source = q|class Tmp { static method main : void () { "$foo->bar" }|;
+      compile_not_ok($source, qr/\QThe character after "->" in a string literal must be "[" or "{"/);
+    }
   }
 }
 
