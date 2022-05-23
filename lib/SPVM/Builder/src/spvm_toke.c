@@ -1010,12 +1010,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           compiler->bufptr++;
         }
         else {
-          int32_t finish = 0;
+          int32_t string_literal_finished = 0;
           
           while(1) {
             // End of string literal
             if (*compiler->bufptr == '"') {
-              finish = 1;
+              string_literal_finished = 1;
             }
             // Variable expansion
             else if (*compiler->bufptr == '$') {
@@ -1023,10 +1023,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 // Last $ is allowed
               }
               else {
-                finish = 1;
+                string_literal_finished = 1;
                 next_var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT;
                 
-                // Pending next string literal start
+                // Pending the variable
                 char* var_bufptr = compiler->bufptr + 1;
 
                 // Dereference
@@ -1107,9 +1107,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             // End of source file
             else if (*compiler->bufptr == '\0') {
-              finish = 1;
+              string_literal_finished = 1;
             }
-            if (finish) {
+            if (string_literal_finished) {
               break;
             }
             else {
