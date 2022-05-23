@@ -1026,27 +1026,27 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 string_literal_finished = 1;
                 next_var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT;
                 
-                // Pending the variable
-                char* var_bufptr = compiler->bufptr + 1;
+                // Proceed through a variable expansion and find the position of the next string literal
+                char* next_string_literal_bufptr = compiler->bufptr + 1;
 
                 // Dereference
                 int32_t var_is_ref = 0;
-                if (*var_bufptr == '$') {
-                  var_bufptr++;
+                if (*next_string_literal_bufptr == '$') {
+                  next_string_literal_bufptr++;
                   var_is_ref = 1;
                 }
                 
                 int32_t var_have_brace = 0;
-                if (*var_bufptr == '{') {
-                  var_bufptr++;
+                if (*next_string_literal_bufptr == '{') {
+                  next_string_literal_bufptr++;
                   var_have_brace = 1;
                 }
                 
-                if (*var_bufptr == '@') {
-                  var_bufptr++;
+                if (*next_string_literal_bufptr == '@') {
+                  next_string_literal_bufptr++;
                   if (var_have_brace) {
-                    if (*var_bufptr == '}') {
-                      var_bufptr++;
+                    if (*next_string_literal_bufptr == '}') {
+                      next_string_literal_bufptr++;
                     }
                   }
                 }
@@ -1054,15 +1054,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 
                   // Pend variable
                   while (1) {
-                    if (isalnum(*var_bufptr) || *var_bufptr == '_') {
-                      var_bufptr++;
+                    if (isalnum(*next_string_literal_bufptr) || *next_string_literal_bufptr == '_') {
+                      next_string_literal_bufptr++;
                     }
-                    else if (*var_bufptr == ':' && *(var_bufptr + 1) == ':') {
-                      var_bufptr += 2;
+                    else if (*next_string_literal_bufptr == ':' && *(next_string_literal_bufptr + 1) == ':') {
+                      next_string_literal_bufptr += 2;
                     }
-                    else if (*var_bufptr == '}') {
+                    else if (*next_string_literal_bufptr == '}') {
                       if (var_have_brace) {
-                        var_bufptr++;
+                        next_string_literal_bufptr++;
                         break;
                       }
                     }
@@ -1074,24 +1074,24 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   // Pend Field access or array access(only support field access or constant array accsess)
                   if (!var_have_brace && !var_is_ref) {
                     int32_t is_access = 0;
-                    if (*var_bufptr == '-' && *(var_bufptr + 1) == '>') {
+                    if (*next_string_literal_bufptr == '-' && *(next_string_literal_bufptr + 1) == '>') {
                       is_access = 1;
-                      var_bufptr += 2;
+                      next_string_literal_bufptr += 2;
                     }
                     if (is_access) {
                       while (1) {
-                        if (isalnum(*var_bufptr) || *var_bufptr == '_' || *var_bufptr == '{' || *var_bufptr == '[') {
-                          var_bufptr++;
+                        if (isalnum(*next_string_literal_bufptr) || *next_string_literal_bufptr == '_' || *next_string_literal_bufptr == '{' || *next_string_literal_bufptr == '[') {
+                          next_string_literal_bufptr++;
                         }
-                        else if (*var_bufptr == '}' || *var_bufptr == ']') {
-                          if ((*(var_bufptr + 1) == '-' && *(var_bufptr + 2) == '>')) {
-                            var_bufptr += 2;
+                        else if (*next_string_literal_bufptr == '}' || *next_string_literal_bufptr == ']') {
+                          if ((*(next_string_literal_bufptr + 1) == '-' && *(next_string_literal_bufptr + 2) == '>')) {
+                            next_string_literal_bufptr += 2;
                           }
-                          else if (*(var_bufptr + 1) == '{' || *(var_bufptr + 1) == '[') {
-                            var_bufptr++;
+                          else if (*(next_string_literal_bufptr + 1) == '{' || *(next_string_literal_bufptr + 1) == '[') {
+                            next_string_literal_bufptr++;
                           }
                           else {
-                            var_bufptr++;
+                            next_string_literal_bufptr++;
                             break;
                           }
                         }
@@ -1102,7 +1102,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     }
                   }
                 }
-                compiler->next_string_literal_bufptr = var_bufptr;
+                compiler->next_string_literal_bufptr = next_string_literal_bufptr;
               }
             }
             // End of source file
