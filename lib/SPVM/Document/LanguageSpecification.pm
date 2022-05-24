@@ -429,7 +429,7 @@ A interger literal is a L<numeric literal/"Numeric Literals"> to write a constan
 
 The interger literal decimal notation is the way to write an L<integer literal|/"Integer Literal"> using decimal numbers C<0-9>.
 
-A minus C<-> can be at the beginning, and is followed by one or more than one of C<0-9>.
+A minus C<-> can be at the beginning, and is followed by one or more of C<0-9>.
 
 C<_> can be used as a separator at the any positions after the first C<0-9>. C<_> has no meaning.
 
@@ -454,7 +454,7 @@ B<Examples:>
 
 The interger literal hexadecimal notation is the way to write an L<integer literal|/"Integer Literal"> using hexadecimal numbers C<0-9a-zA-Z>.
 
-A minus C<-> can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more than one C<0-9a-zA-Z>.
+A minus C<-> can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more C<0-9a-zA-Z>.
 
 C<_> can be used as a separator at the any positions after C<0x> or C<0X>. C<_> has no meaning.
 
@@ -502,7 +502,7 @@ B<Examples:>
 
 The interger literal octal notation is the way to write an L<integer literal|/"Integer Literal"> using octal numbers C<0-7>.
 
-A minus C<-> can be at the beginning, and is followed by C<0>, and is followed by one or more than one C<0-7>.
+A minus C<-> can be at the beginning, and is followed by C<0>, and is followed by one or more C<0-7>.
 
 C<_> can be used as a separator at the any positions after C<0>. C<_> has no meaning.
 
@@ -547,7 +547,7 @@ B<Examples:>
 
 The interger literal binary notation is the way to write an L<integer literal|/"Integer Literal"> using binary numbers C<0> and C<1>.
 
-A minus C<-> can be at the beginning, and is followed by C<0b> or C<0B>, and is followed by one or more than one C<0> and C<1>.
+A minus C<-> can be at the beginning, and is followed by C<0b> or C<0B>, and is followed by one or more C<0> and C<1>.
 
 C<_> can be used as a separator at the any positions after C<0b> or C<0B>. C<_> has no meaning.
 
@@ -596,17 +596,17 @@ The floating point litral is a L<numeric literal/"Numeric Literals"> to write a 
 
 The floating point litral decimal notation is the way to write a L<floating point literal|/"Floating Point Literal"> using decimal numbers C<0-9> in source codes.
 
-A minus C<-> can be at the beginning, and is followed by one or more than one C<0-9>
+A minus C<-> can be at the beginning, and is followed by one or more C<0-9>
 
 C<_> can be used as a separator at the any positions after the first C<0-9>.
 
 And can be followed by a floating point part.
 
-A floating point part is C<.> and is followed by one or more than one C<0-9>.
+A floating point part is C<.> and is followed by one or more C<0-9>.
 
 And can be followed by an exponent part.
 
-An exponent part is C<e> or C<E> and is followed by C<+>, C<->, or C<"">, and followed by one or more than one C<0-9>.
+An exponent part is C<e> or C<E> and is followed by C<+>, C<->, or C<"">, and followed by one or more C<0-9>.
 
 And can be followed by a suffix is C<f>, C<F>, C<d>, or C<D>.
 
@@ -636,17 +636,17 @@ B<Examples:>
 
 The floating point litral hexadecimal notation is the way to write a L<floating point literal|/"Floating Point Literal"> using hexadecimal numbers C<0-9a-zA-Z> in source codes.
 
-A minus C<-> can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more than one C<0-9a-zA-Z>.
+A minus C<-> can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more C<0-9a-zA-Z>.
 
 C<_> can be used as a separator at the any positions after C<0x> or C<0X>.
 
 And can be followed by a floating point part.
 
-A floating point part is C<.> and is followed by one or more than one C<0-9a-zA-Z>.
+A floating point part is C<.> and is followed by one or more C<0-9a-zA-Z>.
 
 And can be followed by an exponent part.
 
-An exponent part is C<p> or C<P> and is followed by C<+>, C<->, or C<"">, and followed by one or more than one decimal numbers C<0-9>.
+An exponent part is C<p> or C<P> and is followed by C<+>, C<->, or C<"">, and followed by one or more decimal numbers C<0-9>.
 
 And can be followed by a suffix C<f>, C<F>, C<d>, or C<D> if an exponent part exist.
 
@@ -970,7 +970,7 @@ The Unicode escape character can be used as an escape character of the L<string 
 
 The Unicode escape character begins with C<N{U+>.
 
-And is followed by one or more than one C<0-9a-fA-F>.
+And is followed by one or more C<0-9a-fA-F>.
 
 And ends with C<}>.
 
@@ -1961,11 +1961,13 @@ The operator precidence can be increased using C<()>.
 
 =head1 Class
 
-Descriptions of classes.
+A class defines its L<class type|/"Class Type">, its L<class variables|/"Class Variable">, its L<fields|/"Field"> and its L<methods|/"Method">.
+
+The object can be created from a class using L<new operator|/"Creating Object">.
 
 =head2 Class Definition
 
-The C<class> keyword defins a class. A class has a class block.
+The C<class> keyword defins a class. A class has a L<class block|/"Class Block">.
 
   class CLASS_NAME {
   
@@ -3118,7 +3120,7 @@ A common use of INIT Block is to initialize L</"Class Variable">.
 
 =head2 Local Variable Declaration
 
-B<Local Variable> is a variable that is declared in L</"Scope Blocks">.  Local Variable has L</"Scope">. This is same as Local Variable in C Language.
+B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has L</"Scope">. This is same as Local Variable in C Language.
 
 Local Variable is declared using B<my> L</"Keyword">.
 
@@ -3197,33 +3199,30 @@ If L</"Class Variable"> with the same name as the Local Variable exists, Program
 
 =head1 Scope
 
-B<Scope> is a range surrounded by L</"Scope Blocks">.
+A scope is the part that is surrounded by a L<scope block|/"Scope Block">.
 
-  # Scope Blocks 
+  # Scope block
   {
-    # Beginning of Scope
+    # Beginning of scope
     
-    # ...
+    my $point = Point->new;
     
-    # End of Scope
+    # End of scope
   }
 
-Local Variable Declaration registers the Local Variable that is L</"Object Types"> with Mortal Variable in run-time. 
+When a object that is not L<undef|/"Undefined Value"> is assigned to a L<local variable|/"Local Variable">, the reference count is incremented by C<1>.
 
-If the object is not L</"undef">, The reference count is added by C<1>.
+At the end of scope, the reference count is decremented by C<1>. If the reference count becomes C<0>, the object will be released.
 
-  {
-    # $num become Mortal Variable in run-time
-    my $num = new Foo;
-  }
-
-At the end of Scope, the object that is registered as Mortal Variable, Reference Count is reduced by 1 except the object is not L</"undef">.
-
-If the reference count become 0, the object released.
+See also L<garbage collection|/"Garbage Collection">.
 
 =head2 Block
 
-The parts enclosed by C<{> and C<}> are called blocks.
+A block is the part that is enclosed by C<{> and C<}>.
+
+Blocks are the L<class block|/"Class Block">, the L<enumeration block|/"Enumeration Block">, and the L<scope blocks|/"Scope Block">.
+
+B<Examples:>
 
   # Blocks
   {
@@ -3247,88 +3246,110 @@ The parts enclosed by C<{> and C<}> are called blocks.
     
   }
 
-=head2 Scope Blocks
+=head3 Class Block
 
-A scope block is the block that create a scope. Zero or more L<statements|/"Statements"> can be written in a scope block.
-
-Scope blocks are L</"Simple Block">, L</"Method Block">, L</"eval Block">, L</"if Block">, L</"elsif Block">, L</"else Block">, L</"for Block">, L</"while Block"> and L</"switch Block">.
-
-=head2 Simple Block
-
-A simple block is a scope block.
-
-  # A simple block
-  {
+A class block is a L<block|/"Block">.
+  
+  # Class block
+  class Point {
   
   }
 
-=head2 Method Block
+=head3 Enumeration Block
 
-A C<method> block is a scope block.
+A enumeration block is a L<block|/"Block">.
 
-  # A method block
+  # Enumeration block
+  enum {
+    ONE,
+    TWO,
+  }
+
+=head2 Scope Block
+
+A scope block is the block that has the L<scope|/"Scope">. Zero or more L<statements|/"Statements"> are written in a scope block.
+
+Scope blocks are the L<simple block|/"Simple Block">, the L<method block|/"Method Block">, the L<eval block|/"eval Block">, the L<if block|/"if Block">, the L<elsif block|/"elsif Block">, the L<else block|/"else Block">, the L<for block|/"for Block">, the L<while block|/"while Block"> and the L<switch block|/"switch Block">.
+
+=head3 Simple Block
+
+A simple block is a L<scope block|/"Scope Block">.
+
+  # Simple block
+  {
+    1;
+  }
+
+A simple block must have at least one statements. Otherwise it is intepreted as the L<array initialization|/"Array Initialization">.
+
+=head3 Method Block
+
+A method block is a L<scope block|/"Scope Block">.
+
+  # Method block
   static method foo : int () {
   
   }
 
-=head2 eval Block
+=head3 eval Block
 
-a C<eval> block is a scope block.
+a C<eval> block is a L<scope block|/"Scope Block">.
 
-  # A eval block
+  # eval block
   eval {
   
   };
 
-=head2 if Block
+=head3 if Block
 
-A C<if> block is a scope block.
+A C<if> block is a L<scope block|/"Scope Block">.
 
-  # A if block
+  # if block
   if (CONDITION) {
   
   }
 
-=head2 elsif Block
+=head3 elsif Block
 
-A C<elsif> block is a scope block.
+A C<elsif> block is a L<scope block|/"Scope Block">.
 
-  # A elsif block
+  # elsif block
   elsif (CONDITION) {
   
   }
 
-=head2 else Block
+=head3 else Block
 
-A C<else> block is a scope block.
+A C<else> block is a L<scope block|/"Scope Block">.
 
-  # A else Block
+  # else block
   else {
   
   }
 
-=head2 for Block
+=head3 for Block
 
-A C<for> block is a scope block.
+A C<for> block is a L<scope block|/"Scope Block">.
 
-  # A for Block 
+  # for Block 
   for (my $i = 0; $i < 3; $i++) {
   
   }
 
-=head2 while Block
+=head3 while Block
 
-A C<while> block is a scope block.
+A C<while> block is a L<scope block|/"Scope Block">.
 
-  # A while block
+  # while block
   while (CONDITION) {
   
   }
 
-=head2 switch Block
+=head3 switch Block
 
-A C<switch> block is a scope block.
-
+A C<switch> block is a L<scope block|/"Scope Block">.
+  
+  # switch block
   switch (CONDITION) {
   
   }
@@ -5944,7 +5965,7 @@ Type comments have no meanings at runtime.
 
 =head1 Statements
 
-Statements are the parts of syntax that can be written directly under L</"Scope Blocks">.
+Statements are the parts of syntax that can be written directly under L</"Scope Block">.
 
 =head2 empty Statement
 
