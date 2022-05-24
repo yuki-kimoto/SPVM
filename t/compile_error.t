@@ -680,6 +680,14 @@ sub print_error_messages {
       compile_not_ok($source, qr/\QThe character after "->" in a string literal must be "[" or "{"/);
     }
   }
+  
+  # Block
+  {
+    {
+      my $source = q|class Tmp { static method main : void () { {} }|;
+      compile_not_ok($source, qr/Unexpected token "}"/);
+    }
+  }
 }
 
 

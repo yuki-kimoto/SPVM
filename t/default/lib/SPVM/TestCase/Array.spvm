@@ -18,6 +18,9 @@ class TestCase::Array {
       return 0;
     }
     
+    # Only "{}"
+    {};
+    
     return 1;
   }
 
