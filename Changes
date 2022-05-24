@@ -1,6 +1,7 @@
 Revision history for SPVM
-0.9517_01  2022-05-18
+0.96  2022-05-25
         [CHANGE]
+        * This is major version up from 0.95xx. SPVM language becomes a little more stable in my opinion.
         * Support die statement without the operand again. This was remove at 0.9504(2021-02-10).
           die;
         * Add Fn->match method
