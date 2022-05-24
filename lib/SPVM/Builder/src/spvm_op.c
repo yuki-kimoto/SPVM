@@ -1794,17 +1794,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
   
   SPVM_HASH* class_symtable = compiler->class_symtable;
-
-  // Redeclaration class error
+  
+  // Assert
   SPVM_CLASS* found_class = SPVM_HASH_get(class_symtable, class_name, strlen(class_name));
-  if (found_class) {
-    SPVM_COMPILER_error(compiler, "Redeclaration of class \"%s\" at %s line %d", class_name, op_class->file, op_class->line);
-  }
-  else {
-    // Add class
-    SPVM_LIST_push(compiler->classes, class);
-    SPVM_HASH_set(compiler->class_symtable, class_name, strlen(class_name), class);
-  }
+  if (found_class) { assert(0); }
+  
+  // Add class
+  SPVM_LIST_push(compiler->classes, class);
+  SPVM_HASH_set(compiler->class_symtable, class_name, strlen(class_name), class);
   
   SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
   class->op_name = op_name_class;

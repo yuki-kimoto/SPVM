@@ -371,6 +371,10 @@ sub print_error_messages {
   # Syntax
   {
     compile_not_ok_file('TestCase::CompileError::Class::NotClosed');
+    {
+      my $source = 'class Tmp { static method main : void () {} } class Tmp2 { static method main : void () {} }';
+      compile_not_ok($source, qr/Unexpected token "class"/);
+    }
   }
   
   # Class name
