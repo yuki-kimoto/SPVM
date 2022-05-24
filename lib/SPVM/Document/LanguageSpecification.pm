@@ -58,7 +58,17 @@ A class name is a L<symbol name|/"Symbol Name">.
 
 The part names of a class name must begin uppercase letter. If the class name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
 
-A class name must be corresponding to the relative name of the module file. If the class name is C<Foo::Bar::Baz>, the relative name of the module file must be C<Foo/Bar/Baz.spvm>.
+A class name must be the name that the relative L<module|/"Module"> file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative module file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
+
+  # Valid class name in the module file "Foo/Bar/Baz.spvm"
+  class Foo::Bar::Baz {
+    
+  }
+
+  # Invalid class name in the module file "Foo/Bar/Baz.spvm"
+  class Foo::Bar::Hello {
+    
+  }
 
 If class names are invalid, a compilation error will occur.
 
@@ -1967,77 +1977,80 @@ The object can be created from a class using L<new operator|/"Creating Object">.
 
 =head2 Class Definition
 
-The C<class> keyword defins a class. A class has a L<class block|/"Class Block">.
-
+The C<class> keyword defines a class. A class has a L<class block|/"Class Block">.
+  
+  # Class definition
   class CLASS_NAME {
   
   }
 
-Class names must follow the rule of L<class names|/"Class Name">.
+The class name must follow the naming rule of the L<class name|/"Class Name">.
 
-L<Class descriptors|/"Class Descriptors"> can be specified after C<:>.
+B<Examples:>
+
+  # Class definition
+  class Point {
+  
+  }
+
+L<Class descriptors|/"Class Descriptors"> can be written after C<:>.
 
   class CLASS_NAME : CLASS_DESCRIPTOR {
   
   }
   
-  class CLASS_NAME : CLASS_DESCRIPTOR1 CLASS_DESCRIPTOR2 ... CLASS_DESCRIPTORN {
+  class CLASS_NAME : CLASS_DESCRIPTOR1 CLASS_DESCRIPTOR2 CLASS_DESCRIPTOR3 {
   
   }
 
 B<Examples:>
 
-  # The definition of a class
-  class Point {
-  
-  }
-
-  # With class descriptors
+  # Class descriptors
   class Point : public {
   
   }
 
-Direct children of the class block must be L<use|/"Load Modules">, L<our|/"Class Variable">,
-L<has|/"Field Definition">, L<enum|/"Enumeration Definition">, L<method|/"Method Definition">, L<allow|/"Allow Class Access">,
-L<interface|/"interface Statement"> and L<INIT block|/"INIT Block"> can be defined.
+  class Point : public pointer_t {
+  
+  }
+
+In a class block, L<loading modules|/"Load Modules">, L<class variables|/"Class Variable">, L<fields|/"Field Definition">, L<enumerations|/"Enumeration Definition">, L<methods|/"Method Definition">, L<allow statements|/"Allow Class Access">, L<interface guarantees|/"Interface Guarantee"> and a L<INIT block|/"INIT Block"> can be defined.
 
   class Foo {
- 
+    
+    # allow statements
+    allow Bar;
+    
+    # INIT block
+    INIT {
+      # ...
+    }
+    
+    # Loading modules
     use Point;
-  
+    
+    # Interface guarantees
+    interface Stringable;
+    
+    # Class variables
     our $VAR : int;
-  
+    
+    # Fields
     has var : int;
-  
+    
+    # Enumerations
     enum {
       CONST_VAL1,
       CONST_VAL2,
     }
-  
-    static method foo : int ($num : int) {
-      # ...
-    }
-
-    interface Asset;
     
-    INIT {
+    # Methods
+    method foo : int ($num : int) {
       # ...
     }
   }
 
-If more than one class in a module file, a compilation error will occur.
-
-If the class name is different from the name that the module file C</> is replaced with C<::> and added C<.spvm> to the end, a compilation error will occur.
-
-  # Valid class name for "Foo/Bar/Baz.spvm"
-  class Foo::Bar::Baz {
-    
-  }
-
-  # Invalid class name for "Foo/Bar/Baz.spvm"
-  class Foo::Bar::Hello {
-    
-  }
+If more than one class is defined in a L<module|/"Module"> file, a compilation error will occur.
 
 =head2 Class Descriptors
 
@@ -2162,7 +2175,7 @@ Specifying the module of B<allow> also loads the module by L</"use"> at the same
 
 =head2 Interface Guarantee
 
-Interface Guarantee C<interface> is a syntax to guarantee that the class has the required method defined in the L<interfaces|/"Interface">.
+A interface guarantee C<interface> is a syntax to guarantee that the class has the required method defined in the L<interfaces|/"Interface">.
 
   class Asset::Memory {
     interface Asset;
