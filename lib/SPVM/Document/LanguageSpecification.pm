@@ -3083,52 +3083,6 @@ In special cases, a value of an enumeration can be used as the operand of a L<ca
     }
   }
 
-=head1 INIT Block
-
-B<INIT Block> is a block that is executed immediately after the compilation of program.
-
-INIT Keyword defines INIT Block.
-
-  INIT {
-  
-  }
-
-INIT Block must be defined directly under L</"Class Definition">.
-
-  class Foo {
-    INIT {
-  
-    }
-  }
-
-Zero or more L</"Statements"> can be written in INIT Block.
-
-  INIT {
-    my $foo = 1 + 1;
-    my $bar;
-  }
-
-L</"return Statement"> cannot be written in INIT Block.
-
-Internally, INIT Block is a L</"Method"> that the return type is L</"void Type"> and has no arguments.
-
-You can define multiple INIT Blocks.
-
-The execution order of INIT Block is not guaranteed. If ohter INIT Block is defined in ohter Class, do not assume that INIT Block of the current class will be executed first.
-
-A common use of INIT Block is to initialize L</"Class Variable">.
-
-  class Foo {
-    use Point;
-    
-    our $NUM : int;
-    our $POINT : Point;
-    INIT {
-      $NUM = 3;
-      $POINT = Point->new;
-    }
-  }
-
 =head1 Local Variable
 
 =head2 Local Variable Declaration
@@ -3365,6 +3319,50 @@ A C<switch> block is a L<scope block|/"Scope Block">.
   # switch block
   switch (CONDITION) {
   
+  }
+
+=head2 INIT Block
+
+The C<INIT> block is a L<block|/"Block"> to be executed just after the program starts.
+
+  INIT {
+  
+  }
+
+A C<INIT> block must be defined directly under the L<class definition|/"Class Definition">.
+
+  class Foo {
+    INIT {
+  
+    }
+  }
+
+Zero or more L<statements|/"Statements"> can be written in a C<INIT> block.
+
+  INIT {
+    my $foo = 1 + 1;
+    my $bar;
+  }
+
+The L<return statement|/"return Statement"> cannot be written in C<INIT> block.
+
+Each class can have its C<INIT> block.
+
+The execution order of C<INIT> blocks is not guaranteed.
+
+B<Examples:>
+
+  class Foo {
+    use Point;
+    
+    our $NUM : int;
+    our $POINT : Point;
+    
+    # INIT block
+    INIT {
+      $NUM = 3;
+      $POINT = Point->new;
+    }
   }
 
 =head1 String
