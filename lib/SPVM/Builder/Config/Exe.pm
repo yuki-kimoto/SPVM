@@ -62,10 +62,19 @@ sub load_mode_config {
   return $config;
 }
 
-sub load_default_config {
-  my ($self, $config_file) = @_;
+sub load_base_config {
+  my ($self, $config_file, $base) = @_;
   
-  my $config = $self->load_mode_config($config_file, 'default');
+  my $base_config_file = $config_file;
+  
+  $base_config_file =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
+  $base_config_file .= ".config";
+  
+  unless (-f $base_config_file) {
+    confess "Can't find the base config file \"$base_config_file\"";
+  }
+  
+  my $config = $self->load_config($base_config_file);
   
   return $config;
 }
