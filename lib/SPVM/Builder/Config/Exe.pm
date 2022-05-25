@@ -48,16 +48,16 @@ sub load_config {
 sub load_mode_config {
   my ($self, $config_file, $mode) = @_;
   
-  my $default_config_file = $config_file;
+  my $mode_config_file = $config_file;
   
-  $default_config_file =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
-  $default_config_file .= ".$mode.config";
+  $mode_config_file =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
+  $mode_config_file .= ".$mode.config";
   
-  unless (-f $default_config_file) {
-    confess "Can't find default config file \"$default_config_file\"";
+  unless (-f $mode_config_file) {
+    confess "Can't find the mode config file \"$mode_config_file\"";
   }
   
-  my $config = $self->load_config($default_config_file);
+  my $config = $self->load_config($mode_config_file);
   
   return $config;
 }
