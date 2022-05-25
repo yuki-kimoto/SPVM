@@ -226,46 +226,6 @@ sub build_shared_lib {
   return $build_shared_lib_file;
 }
 
-sub resolve_resources {
-  my ($self, $self_class_name, $resource_class_names_root) = @_;
-  
-  my @found_resources;
-  my @all_resources = (@$resource_class_names_root);
-  my $found_resources_h = {$self_class_name => 1};
-  while (my $resource = shift @all_resources) {
-    next if $found_resources_h->{$resource};
-    
-    my $module_file = $self->builder->get_module_file($resource);
-    unless (defined $module_file) {
-      confess "Resouce module \"$resource\" is not loaded";
-    }
-    
-    my $config_file = $module_file;
-    $config_file =~ s/\.spvm$/.config/;
-    unless (-f $config_file) {
-      confess "Can't find config file \"$config_file\"";
-    }
-    
-    # Config file
-    if (defined $config_file) {
-      $found_resources_h->{$resource}++;
-      push @found_resources, $resource;
-      
-      my $config = SPVM::Builder::Util::load_config($config_file);
-      my $depend_resources = $config->resources;
-      
-      for my $depend_resource (@$depend_resources) {
-        unshift @all_resources, @$depend_resources;
-      }
-    }
-    else {
-      warn "Can't find config file $config_file";
-    }
-  }
-  
-  return \@found_resources;
-}
-
 sub get_resource_src_dir_from_class_name {
   my ($self, $class_name) = @_;
   
@@ -379,8 +339,7 @@ sub compile {
   if ($category eq 'native') {
     
     my $resources = $config->resources;
-    my $resources_all_depend = $self->resolve_resources($class_name, $resources);
-    for my $resource (@$resources_all_depend) {
+    for my $resource (@$resources) {
       my $config_file = $self->get_config_file_from_class_name($resource);
       
       my $include_dir = $config_file;
@@ -748,8 +707,7 @@ sub link {
   if ($category eq 'native') {
     my $symbol_names_h = {};
     my $resources = $config->resources;
-    my $resources_all_depend = $self->resolve_resources($class_name, $resources);
-    for my $resource (@$resources_all_depend) {
+    for my $resource (@$resources) {
       
       # Build native classes
       my $builder_cc_resource = SPVM::Builder::CC->new(
