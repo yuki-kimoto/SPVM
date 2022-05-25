@@ -22,17 +22,17 @@ The line terminators are C<LF>, C<CR>, and C<CRLF> of ASCII.
 
 When a line terminator appears, the current line number is incremented by C<1>. The line terminator is converted to C<LF> of ASCII.
 
-=head2 Space Characters
+=head2 Space Character
 
 Space characters are C<SP>, C<HT>, C<FF> of ASCII and the L<line terminators|/"Line Terminators">.
 
-=head2 Word Characters
+=head2 Word Character
 
 The word characters are alphabet(C<a-zA-Z>), number(C<0-9>), and underscore(C<_>) of ASCII.
 
 =head2 Symbol Name
 
-A symbol name is the characters that are composed of L<word characters|/"Word Characters"> and C<::>.
+A symbol name is the characters that are composed of L<word characters|/"Word Character"> and C<::>.
 
 A symbol name can't contains C<__>, and can't begin with a number C<0-9>.
 
@@ -110,7 +110,7 @@ B<Examples:>
   foo__bar
   3foo
 
-A method name that is same as a L</"Keywords"> is allowed.
+A method name that is same as a L<keyword/"Keyword"> is allowed.
   
   # "if" is a valid method name
   static method if : void () {
@@ -138,7 +138,7 @@ B<Examples:>
   3foo
   Foo::Bar
 
-The field name that is same as a L</"Keywords"> is allowed.
+The field name that is same as a L<keyword/"Keyword"> is allowed.
   
   # "if" is a valid field name
   has if : int;
@@ -213,7 +213,7 @@ B<Examples:>
   ${name
   $3foo
 
-=head2 Keywords
+=head2 Keyword
 
 The list of keywords:
 
@@ -304,7 +304,7 @@ The list of keywords:
   __FILE__
   __LINE__
 
-=head2 Operators for Tokenization
+=head2 Operator for Tokenization
 
 The list of the operators for tokenization:
 
@@ -364,7 +364,7 @@ The list of the operators for tokenization:
 
 Note that the operators for tokenization are different from the operators that are explained in L<Operators|/"Operators">. The operators for tokenization are only for tokenization.
 
-=head2 Comments
+=head2 Comment
 
 A comment begins with C<#> and ends with a L<line terminator|/"Line Terminators">.
 
@@ -419,13 +419,13 @@ B<Examples:>
 
 POD has no meaning in source codes.
 
-=head2 Literals
+=head2 Literal
 
 A literal is the way to write a constant value in source codes.
 
-Literals are L<numeric literals|/"Numeric Literals">, the L<floating point literal|/"Floating Point Literal">, the L<character literal|/"Character Literal">, the L<string literal|/"String Literal"> and the L<bool literal|/"Bool Literal">.
+Literals are L<numeric literals|/"Numeric Literal">, the L<floating point literal|/"Floating Point Literal">, the L<character literal|/"Character Literal">, the L<string literal|/"String Literal"> and the L<bool literal|/"Bool Literal">.
 
-=head2 Numeric Literals
+=head2 Numeric Literal
 
 A numeric literal is the way to write a constant value that type is a L<numeric type|/"Numeric Types"> in source codes.
 
@@ -433,7 +433,7 @@ Numeric literals are the L<integer literal|/"Integer Literal"> and the L<floatin
 
 =head2 Integer Literal
 
-A interger literal is a L<numeric literal/"Numeric Literals"> to write a constant value that type is an L<integral type|/"Integral Types"> in source codes.
+A interger literal is a L<numeric literal/"Numeric Literal"> to write a constant value that type is an L<integral type|/"Integral Types"> in source codes.
 
 =head3 Integer Literal Decimal Notation
 
@@ -600,7 +600,7 @@ B<Examples:>
 
 =head2 Floating Point Literal
 
-The floating point litral is a L<numeric literal/"Numeric Literals"> to write a constant value that type is a L<floating point type|/"Floating Point Types"> in source codes.
+The floating point litral is a L<numeric literal/"Numeric Literal"> to write a constant value that type is a L<floating point type|/"Floating Point Types"> in source codes.
 
 =head3 Floating Point Literal Decimal Notation
 
@@ -682,7 +682,7 @@ B<Examples:>
 
 =head2 Charater Literal
 
-A character literal is a L<literal|/"Literals"> to write a constant value that type is the L<byte type|/"byte Type"> in source codes.
+A character literal is a L<literal|/"Literal"> to write a constant value that type is the L<byte type|/"byte Type"> in source codes.
 
 A character literal represents an ASCII character.
 
@@ -797,7 +797,7 @@ The character literal escape characters are listed.
 
 B<Examples:>
 
-  # Charater Literals
+  # Charater literals
   'a'
   'x'
   '\a'
@@ -821,7 +821,7 @@ B<Examples:>
 
 =head2 String Literal
 
-A string literal is a L<literal|/"Literals"> to write a constant value that type is the L<string type|/"String Type"> in source codes.
+A string literal is a L<literal|/"Literal"> to write a constant value that type is the L<string type|/"String Type"> in source codes.
 
 The return type is a L<string type|/"String Type">.
 
@@ -1049,7 +1049,7 @@ The hexadecimal numbers can be sorrounded by C<{> and C<}>.
 
 =head2 Bool Literal
 
-The bool literal is a L<literal|/"Literals"> to represent a bool value in source codes.
+The bool literal is a L<literal|/"Literal"> to represent a bool value in source codes.
 
 =head3 true
 
@@ -1595,7 +1595,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   class_alias_name
     : SYMBOL_NAME
 
-=head2 Syntax Parsing Tokens
+=head2 Syntax Parsing Token
 
 The list of syntax parsing tokens:
 
@@ -1603,7 +1603,7 @@ The list of syntax parsing tokens:
 
 <table>
   <tr>
-    <th>Tokens</td><th>Keywords or Operators</th>
+    <th>Tokens</td><th>Keywords or operators</th>
   </tr>
   <tr>
     <td>ALIAS</td><td>alias</td>
@@ -1959,7 +1959,7 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
-See also L<syntax parsing tokens|/"Syntax Parsing Tokens"> to know real operators.
+See also L<syntax parsing token|/"Syntax Parsing Token"> to know real operators.
 
 The operator precidence can be increased using C<()>.
 
@@ -1993,7 +1993,7 @@ B<Examples:>
   
   }
 
-L<Class descriptors|/"Class Descriptors"> can be written after C<:>.
+L<Class descriptors|/"Class Descriptor"> can be written after C<:>.
 
   class CLASS_NAME : CLASS_DESCRIPTOR {
   
@@ -2052,7 +2052,7 @@ In a class block, L<loading modules|/"Load Modules">, L<class variables|/"Class 
 
 If more than one class is defined in a L<module|/"Module"> file, a compilation error will occur.
 
-=head2 Class Descriptors
+=head2 Class Descriptor
 
 The list of class descriptors.
 
@@ -2223,7 +2223,7 @@ Explains interfaces.
 
 =head2 Interface Definition
 
-A interface is defined using a L<class definition|/"Class Definition"> with a L<class descriptor/"Class Descriptors"> C<interface_t>.
+A interface is defined using a L<class definition|/"Class Definition"> with a L<class descriptor/"Class Descriptor"> C<interface_t>.
 
   class Stringable: interface_t {
     required method to_string : string ();
@@ -2897,7 +2897,7 @@ See also the L<SPVM Native API|SPVM::Document::NativeAPI> to interface native me
 
 =head2 Precompiled Method
 
-If the class has the C<precompile> L<class descriptor|/"Class Descriptors">, the methods of the class are precompiled.
+If the class has the C<precompile> L<class descriptor|/"Class Descriptor">, the methods of the class are precompiled.
 
 The source code of each precompiled method is translated to C source code and is compiled to the machine code such as C<MyMath.o>.
 
@@ -3483,7 +3483,7 @@ See L</"Setting Array Element"> to set the element value of Array.
 
 Multi-Numeric type represents continuous numeric values. For example, there are three consecutive 32-bit signed integers, two consecutive double-precision floating point numbers. It isplaned to use 3D points, complex numbers, quaternions, etc.
 
-Multi-Numeric Types are defined by specifying mulnum_t L</"Class Descriptors"> in L</"Class Definition">.
+Multi-Numeric Types are defined by specifying mulnum_t L</"Class Descriptor"> in L</"Class Definition">.
 
   # Three consecutive 32bit signed integers
   class Complex_2d : mulnum_t {
@@ -3868,7 +3868,7 @@ Integral types are the following four types.
 
 =end html
 
-See L</"Arithmetic Operators"> for integer calculation.
+See L</"Arithmetic Operator"> for integer calculation.
 
 Note that SPVM has only B<singed> integral types, and doesn't have B<unsigned> integral types.
 
@@ -3932,7 +3932,7 @@ B<Floating Point Types> are the following two.
 
 =end html
 
-See L</"Arithmetic Operators"> for floating-point calculation.
+See L</"Arithmetic Operator"> for floating-point calculation.
 
 =head2 float Type
 
@@ -3950,7 +3950,7 @@ The class type is the type that can create the object using a L<new operator|/"n
 
 =head2 Pointer Type
 
-The pointer type is the type that has a L<class descriptor|/"Class Descriptors"> C<pointer_t>.
+The pointer type is the type that has a L<class descriptor|/"Class Descriptor"> C<pointer_t>.
 
   # Pointer Type
   class Foo: pointer_t {
@@ -4065,7 +4065,7 @@ The undefined type is the type of L<undef|/"Undefined Value"> value.
 
 =head2 Interface Type
 
-The interface type is a type that is defined using a C<class> keyword and a L<class descriptor|/"Class Descriptors"> C<interface_t>.
+The interface type is a type that is defined using a C<class> keyword and a L<class descriptor|/"Class Descriptor"> C<interface_t>.
 
   class Stringable: interface_t {
     required method to_string : string ();
@@ -5548,7 +5548,7 @@ B<Examples:>
 
 =head2 Implicite Type Conversion
 
-The implicite type conversion is the L<type conversion|/"Type Conversion"> performed implicitly when a value is assigned using L<assignment operator|/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Calls">, or set a return value using the L<return statement|/"return Statement">.
+The implicite type conversion is the L<type conversion|/"Type Conversion"> performed implicitly when a value is assigned using L<assignment operator|/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Call">, or set a return value using the L<return statement|/"return Statement">.
 
 See L<"Type Assignability"> if you know when implicite type conversion is performed.
 
@@ -6499,17 +6499,17 @@ B<Examples:>
 
 =head1 Operators
 
-B<Operators> are L</"Unary Operators">, L</"Binary Operators">, L</"Increment Operator">, L</"Decrement Operator">, L</"Comparison Operator">, L</"Logical Operators">, and L</"Assignment Operator">.
+B<Operators> are L</"Unary Operator">, L</"Binary Operator">, L</"Increment Operator">, L</"Decrement Operator">, L</"Comparison Operator">, L</"Logical Operators">, and L</"Assignment Operator">.
 
 =head2 Value-Returning Operators
 
 The value-returning operator is the L<operator|/"Operators> that return a value.
 
-The value-returning operators are L</"Operators">, L</"Undefined Value">, L</"Literals">, L</"Getting Local Variable">, L</"Setting Local Variable">,
+The value-returning operators are L</"Operators">, L</"Undefined Value">, L</"Literal">, L</"Getting Local Variable">, L</"Setting Local Variable">,
 L</"Getting Class Variable">, L</"Getting Class Variable">, L</"Setting Class Variable">, L</"Getting Exception Variable">, L</"Setting Exception Variable">,
 L</"Getting Field">, L</"Setting Field">, L</"Getting Multi-Numeric Field">, L</"Setting Multi-Numeric Field">, L</"Getting Multi-Numeric Field via Dereference">, L</"Setting Multi-Numeric Field via Dereference">, <"Getting Array Element">, L</"Setting Array Element"> and L</"Method Call">.
 
-=head2 Unary Operators
+=head2 Unary Operator
 
 Unary operators are operators have one operand.
 
@@ -6519,13 +6519,13 @@ The operand is an L<operator|/"Operators">.
 
 Unary operators are L</"Unary Plus Operator">, L</"Unary Minus Operator">, L</"Bit NOT Operator">, L</"Array Length Operator">, L</"String Creating Operator">, and L</"String Length Operator">.
 
-=head2 Binary Operators
+=head2 Binary Operator
 
-Binary Operator is a L<operator|/"Operators"> that have two operands.
+The binary operator is the L<operator|/"Operators"> that has the left operand and the right operand.
 
   LEFT_OPERAND BINARY_OPERATOR RIGHT_OPERAND
 
-Binary operators are L</"Addition Operator">, L</"Subtraction Operator">, L</"Multiplication Operator">, L</"Division Operator">, L</"Remainder Operator">, L</"Bit AND Operator">, L</"Bit OR Operator">, L</"Shift Operators">, and L</"String Concatenation Operator">.
+Binary operators are the L<addition operator/"Addition Operator">, the L<subtraction operator|/"Subtraction Operator">, the L<multiplication operator|/"Multiplication Operator">, the L<division operator|/"Division Operator">, the L<remainder operator|/"Remainder Operator">, the L<bit AND operator|/"Bit AND Operator">, the L<bit OR operator|/"Bit OR Operator">, the L<shift operators/"Shift Operators">, and the L<string concatenation operator|/"String Concatenation Operator">.
 
 =head2 Sequential Operator
 
@@ -6545,15 +6545,15 @@ B<Exampless:>
   my $y = 2;
   my $ret = ($x += 2, $x + $y);
 
-=head2 Arithmetic Operators
+=head2 Arithmetic Operator
 
-B<Arithmetic Operators> is an L</"Operators"> that performs arithmetic.
+The arithmetic operator> is an L<operator/"Operators"> to perform arithmetic operation.
 
-B<Arithmetic Operatorss> are L</"Addition Operator">, L</"Subtraction Operator">, L</"Multiplication Operator">, L</"Division Operator">, L</"Division Unsigned Int Operator">, , L</"Division Unsigned Long Operator">, L</"Remainder Operator">, L</"Remainder Unsigned Int Operator">, L</"Remainder Unsigned Long Operator">, L</"Unary Plus Operator">, L</"Unary Minus Operator">, L</"Increment Operator">, and L</"Decrement Operator">.
+Arithmetic operators are the L<additional operator|/"Addition Operator">, the L<subtraction operator|/"Subtraction Operator">, the L<multiplication operator|/"Multiplication Operator">, the L<division|/"Division Operator">, the L<division unsigned int operator|/"Division Unsigned Int Operator">, the L<division unsigned long operator|/"Division Unsigned Long Operator">, the L<reminder operator|/"Remainder Operator">, the L<remainder unsigned int operator|/"Remainder Unsigned Int Operator">, the L<remainder unsigned long operator|/"Remainder Unsigned Long Operator">, the L<unary plus operator/"Unary Plus Operator">, the L<umary minus operator|/"Unary Minus Operator">, the L<increment operators|/"Increment Operator">, and the L<decrement operators|/"Decrement Operator">.
 
 =head2 Unary Plus Operator
 
-The unary plus operator C<+> is an L<Unary Operator|/"Unary Operators"> to return the value of the operand.
+The unary plus operator C<+> is an L<unary operator|/"Unary Operator"> to return the value of the operand.
 
   +OPERAND
 
@@ -6572,7 +6572,7 @@ B<Examples:>
 
 =head2 Unary Minus Operator
 
-The unary minus operator C<-> is an L<Unary Operator|/"Unary Operators"> to return the negative value of the operand.
+The unary minus operator C<-> is an L<unary operator|/"Unary Operator"> to return the negative value of the operand.
 
   -OPERAND
 
@@ -6593,7 +6593,7 @@ B<Examples:>
 
 =head2 Addition Operator
 
-The addition operator C<+> is a L<binary operator|/"Binary Operators"> to calculate the result of the addition of two numbers.
+The addition operator C<+> is a L<binary operator|/"Binary Operator"> to calculate the result of the addition of two numbers.
 
   LEFT_OPERAND + RIGHT_OPERAND
 
@@ -6609,7 +6609,7 @@ The return type of the addition operator is the type that L</"Binary Numeric Typ
 
 =head2 Subtraction Operator
 
-The subtraction operator C<-> is a L<binary operator|/"Binary Operators"> to calculate the result of the subtraction of two numbers.
+The subtraction operator C<-> is a L<binary operator|/"Binary Operator"> to calculate the result of the subtraction of two numbers.
 
   LEFT_OPERAND - RIGHT_OPERAND
 
@@ -6625,7 +6625,7 @@ The return type of the subtraction operator is the type that L</"Binary Numeric 
 
 =head2 Multiplication Operator
 
-The multiplication operator is a L<binary operator|/"Binary Operators"> to calculate the result of multiplication of two numbers.
+The multiplication operator is a L<binary operator|/"Binary Operator"> to calculate the result of multiplication of two numbers.
 
   LEFT_OPERAND * RIGHT_OPERAND
 
@@ -6641,7 +6641,7 @@ The return type of the multiplication operator is the type after L</"Binary Nume
 
 =head2 Division Operator
 
-The division operator C</> is a L<binary operator|/"Binary Operators"> to culcurate the division of two numbers.
+The division operator C</> is a L<binary operator|/"Binary Operator"> to culcurate the division of two numbers.
 
   LEFT_OPERAND / RIGHT_OPERAND
 
@@ -6659,7 +6659,7 @@ If the two operands are L<integral types|/"Integral Types"> and the value of the
 
 =head2 Division Unsigned Int Operator
 
-The division unsigned int operator C<divui> is a L<binary operator|/"Binary Operators"> to culcurate the unsigned int division of two numbers.
+The division unsigned int operator C<divui> is a L<binary operator|/"Binary Operator"> to culcurate the unsigned int division of two numbers.
 
   LEFT_OPERAND divui RIGHT_OPERAND
 
@@ -6675,7 +6675,7 @@ If the value of the right operand is C<0>, an L<exception|/"Exception"> is throw
 
 =head2 Division Unsigned Long Operator
 
-The division unsigned long operator C<divul> is a L<binary operator|/"Binary Operators"> to culcurate the unsigned long division of two numbers.
+The division unsigned long operator C<divul> is a L<binary operator|/"Binary Operator"> to culcurate the unsigned long division of two numbers.
 
   LEFT_OPERAND divul RIGHT_OPERAND
 
@@ -6691,7 +6691,7 @@ If the value of the right operand is C<0>, an L<exception|/"Exception"> is throw
 
 =head2 Remainder Operator
 
-The remainder operator C<%> is a L<binary operator|/"Binary Operators"> to calculate a remainder of two numbers.
+The remainder operator C<%> is a L<binary operator|/"Binary Operator"> to calculate a remainder of two numbers.
 
   LEFT_OPERAND % RIGHT_OPERAND
 
@@ -6709,7 +6709,7 @@ If the right operand is C<0>, the remainder operator throw an L<exception|/"Exce
 
 =head2 Remainder Unsigned Int Operator
 
-The remainder unsigned int operator C<remui> is a L<binary operator|/"Binary Operators"> to calculate a unsigned int remainder of two numbers.
+The remainder unsigned int operator C<remui> is a L<binary operator|/"Binary Operator"> to calculate a unsigned int remainder of two numbers.
 
   LEFT_OPERAND remui RIGHT_OPERAND
 
@@ -6725,7 +6725,7 @@ If the value of the right operand is C<0>, an L<exception|/"Exception"> is throw
 
 =head2 Remainder Unsigned Long Operator
 
-The remainder unsigned long operator C<remul> is a L<binary operator|/"Binary Operators"> to calculate a unsigned long remainder of two numbers.
+The remainder unsigned long operator C<remul> is a L<binary operator|/"Binary Operator"> to calculate a unsigned long remainder of two numbers.
 
   LEFT_OPERAND remul RIGHT_OPERAND
 
@@ -6937,7 +6937,7 @@ B<Examples:>
 
 =head2 Bit NOT Operator
 
-The bit NOT operator C<~> is an L<unary operator|/"Unary Operators"> to perform the bit NOT operation.
+The bit NOT operator C<~> is an L<unary operator|/"Unary Operator"> to perform the bit NOT operation.
 
   ~OPERAND
 
@@ -6962,7 +6962,7 @@ Shift operators are operators that performs bit shift operations. These are L</"
 
 =head2 Left Shift Operator
 
-The left shift operator C<E<lt>E<lt>> is a L<binary operator|/"Binary Operators"> to perform the left bit shift.
+The left shift operator C<E<lt>E<lt>> is a L<binary operator|/"Binary Operator"> to perform the left bit shift.
 
   LEFT_OPERAND << RIGHT_OPERAND
 
@@ -6982,7 +6982,7 @@ The calculation result of the left shift operator is the same as the following c
 
 =head2 Arithmetic Right Shift Operator
 
-The arithmetic right shift operator C<E<gt>E<gt>> is a L<binary operator|/"Binary Operators"> to perform the arithmetic right bit shift.
+The arithmetic right shift operator C<E<gt>E<gt>> is a L<binary operator|/"Binary Operator"> to perform the arithmetic right bit shift.
 
   LEFT_OPERAND >> RIGHT_OPERAND
 
@@ -7002,7 +7002,7 @@ The operation result of the arithmetic right shift Operator is the operation tha
 
 =head2 Logical Right Shift Operator
 
-The logical right shift operator C<E<gt>E<gt>E<gt>>is a L<binary operator|/"Binary Operators"> to perform the logical right bit shift.
+The logical right shift operator C<E<gt>E<gt>E<gt>>is a L<binary operator|/"Binary Operator"> to perform the logical right bit shift.
 
   LEFT_OPERAND >>> RIGHT_OPERAND
 
@@ -7336,7 +7336,7 @@ Thg logical NOT operator performs the L<bool type conversion|/"Bool Type Convers
 
 =head2 String Concatenation Operator
 
-String concatenation operator C<.> is a L<binary operator|/"Binary Operators"> to concat two strings.
+String concatenation operator C<.> is a L<binary operator|/"Binary Operator"> to concat two strings.
 
   LEFT_OPERAND . RIGHT_OPERAND
 
@@ -7360,7 +7360,7 @@ B<Examples:>
 
 =head2 Assignment Operator
 
-The assignment operator C<=> is a L</"Binary Operators"> to assign a value.
+The assignment operator C<=> is a L<binary operator|/"Binary Operator"> to assign a value.
 
   LEFT_OPERAND = RIGHTH_OPERAND
 
@@ -7384,7 +7384,7 @@ See L</"Getting Field"> and L</"Setting Field">.
 
 =head2 Special Assignment Operator
 
-A special assignment operator is the alias for the combination of a L<operator> and L</"Assignment Operator"> C<=>.
+A special assignment operator is the alias for the combination of an L<operator> and L</"Assignment Operator"> C<=>.
 
   LEFT_OPERAND OPERATOR= RIGHTH_OPERAND
 
@@ -7471,7 +7471,7 @@ B<Examples:>
 
 =head2 Array Length Operator
 
-The array length operator is an L<Unary Operator|/"Unary Operators"> to get the length of the array.
+The array length operator is an L<unary operator|/"Unary Operator"> to get the length of the array.
 
   @OPERAND
 
@@ -7495,7 +7495,7 @@ Note that SPVM does not have the context different from Perl, and array length o
 
 =head2 String Creating Operator
 
-The string creation operator C<new_string_len> is an L<Unary Operator|/"Unary Operators"> to create a L<string|/"String"> with the length.
+The string creation operator C<new_string_len> is an L<unary operator|/"Unary Operator"> to create a L<string|/"String"> with the length.
 
   new_string_len OPERAND
 
@@ -7512,7 +7512,7 @@ B<Examples:>
 
 =head2 copy Operator
 
-The C<copy> operator is an L<Unary Operator|/"Unary Operators"> to copy the object.
+The C<copy> operator is an L<unary operator|/"Unary Operator"> to copy the object.
 
   copy OPERAND
 
@@ -7534,7 +7534,7 @@ B<Examples:>
 
 =head2 is_read_only Operator
 
-The C<is_read_only> is an L<Unary Operator|/"Unary Operators"> to check if the L<string|/"String"> is read-only.
+The C<is_read_only> is an L<unary operator|/"Unary Operator"> to check if the L<string|/"String"> is read-only.
 
   is_read_only OPERAND
 
@@ -7552,23 +7552,23 @@ B<Examples:>
 
 =head2 String Length Operator
 
-The string length operator is an L<Unary Operator|/"Unary Operators"> to get the length of the string.
+The string length operator C<length> is an L<unary operator|/"Unary Operator"> to get the length of the string.
 
   length OPERAND
 
-The operand must be an L<operator|/"Operators"> that type is a L</"String Type">, otherwise a compilation error will occur.
+The returned length is the byte size. Note that the length is not the count of C<UTF-8> characters.
 
-The string length operator returns a L</"int Type"> value that is the length of the L</"String">.
+The type of the operand must be the L<string type|/"String Type">. Otherwise a compilation error will occur.
 
-Note that the returned length is byte size, not the count of the characters of the string that is encoded to a specific character set.
+The return type is the L<int type|/"int Type">.
 
 B<Examples:>
   
-  # Getting the string length. The result is 5
+  # Getting the string length. The length is 5.
   my $message = "Hello";
   my $length = length $message;
   
-  # Getting the string length of UTF-8. The result is 9, not 3
+  # Getting the string length of UTF-8. The length is 9.
   my $message = "あいう";
   my $length = length $message;
 
@@ -8046,7 +8046,7 @@ B<Examples:>
   # Key values
   my $key_values = {foo => 1, bar => "Hello"};
 
-=head2 Method Calls
+=head2 Method Call
 
 Method calls are L</"Class Method Call"> and L</"Instance Method Call">.
 
