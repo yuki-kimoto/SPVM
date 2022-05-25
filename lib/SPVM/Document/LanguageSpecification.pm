@@ -3701,7 +3701,9 @@ In the referencec of L<multi-numeric types|/"Multi-Numeric Type">, the deference
 
 =head1 Type
 
-SPVM language has L<types|https://en.wikipedia.org/wiki/Type_system>.
+SPVM language has data types.
+
+See L<Data type - Wikipedia|https://en.wikipedia.org/wiki/Type_system> about data types.
 
 =head2 Type Initial Value
 
