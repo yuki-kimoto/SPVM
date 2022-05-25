@@ -2061,10 +2061,10 @@ The list of class descriptors.
 <table>
   <tr>
     <th>
-      Descriptors
+      Class descriptors
    </th>
     <th>
-      Meaning
+      Descriptions
    </th>
   </tr>
   <tr>
@@ -2072,7 +2072,7 @@ The list of class descriptors.
       <b>public</b>
     </td>
     <td>
-      This class is public. Other classes can new the object from this class.
+      This class is public. In other classes, this class can be used as the operand of <a href="#Creating-Object">new operator</a>.
     </td>
   </tr>
   <tr>
@@ -2080,7 +2080,7 @@ The list of class descriptors.
       <b>private</b>
     </td>
     <td>
-      This class is private. Other classes can't new the object from this class. This is default setting.
+      This class is private. In other classes, this class cannot be used as the operand of <a href="#Creating-Object">new operator</a>. This is default.
     </td>
   </tr>
   <tr>
@@ -2088,7 +2088,7 @@ The list of class descriptors.
       <b>interface_t</b>
     </td>
     <td>
-      This class is an <a href="#Interface-Type">interface type</a>.
+      This class is an <a href="#Interface-Type">interface type</a>. The class definition is interpreted as an <a href="#Interface-Definiton">interface definiton</a>.
     </td>
   </tr>
   <tr>
@@ -2096,7 +2096,7 @@ The list of class descriptors.
       <b>mulnum_t</b>
     </td>
     <td>
-      This class is a <a href="#Multi-Numeric-Type">multi-numeric type</a>.
+      This class is a <a href="#Multi-Numeric-Type">multi-numeric type</a>. The class definition is interpreted as an <a href="#Multi-Numeric-Type-Definiton">multi-numeric type definiton</a>.
     </td>
   </tr>
   <tr>
@@ -2112,16 +2112,16 @@ The list of class descriptors.
       <b>precompile</b>
     </td>
     <td>
-      Do <a href="#Precompiled-Method">precompile</a> all methods in this class, except for accessors, and enumurations. 
+      Perform <a href="#Precompiled-Method">precompile</a> to all methods in this class, except for accessors, and enumurations. 
     </td>
   </tr>
 </table>
 
 =end html
 
-If both "public" and "private" are specifed, a compilation error will occur.
+If both C<public> and C<private> are specifed, a compilation error will occur.
 
-If more than one of "mulnum_t", "pointer_t" are specified, a compilation error will occur.
+If more than one of C<interface_t>, C<mulnum_t>, and C<pointer_t> are specified, a compilation error will occur.
 
 =head2 Destructor
 
@@ -2493,7 +2493,7 @@ List of Class Variable Descriptors.
 
 =end html
 
-If both "public" and "private" Descriptors are specified, a compilation error will occur.
+If both C<public> and C<private> Descriptors are specified, a compilation error will occur.
 
 If more than one of "ro", "wo", and "rw" are specified at the same time, a compilation error will occur
 
@@ -2625,7 +2625,7 @@ List of Field Descriptors.
 
 =end html
 
-If both "public" and "private" Descriptors are specified, a compilation error will occur.
+If both C<public> and C<private> Descriptors are specified, a compilation error will occur.
 
 If more than one of "ro", "wo", and "rw" are specified at the same time, a compilation error will occur
 
@@ -3053,7 +3053,7 @@ B<The list of enumeration descriptors:>
 
 =end html
 
-If both "public" and "private" descriptors are specified, a compilation error will occur.
+If both C<public> and C<private> descriptors are specified, a compilation error will occur.
 
 =head2 Enumeration Call
 
@@ -4288,7 +4288,7 @@ B<Examples:>
 
 Multi-Numeric Type are a type that can represent continuous numerical values.
 
-Multi-Numeric Type can be defined by specifying "mulnum_t" Descriptor in L</"Class Definition">.
+Multi-Numeric Type can be defined by specifying C<mulnum_t> Descriptor in the L</"Class Definition">.
 
   class Complex_2d : mulnum_t {
     has x : int;
