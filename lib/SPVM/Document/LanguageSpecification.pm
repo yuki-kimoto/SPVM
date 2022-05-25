@@ -3868,7 +3868,7 @@ Integral types are the following four types.
 
 =end html
 
-See L</"Arithmetic Operator"> for integer calculation.
+See also L<arithmetic operators|/"Arithmetic Operator"> to calculate integer values.
 
 Note that SPVM has only B<singed> integral types, and doesn't have B<unsigned> integral types.
 
@@ -3932,7 +3932,7 @@ B<Floating Point Types> are the following two.
 
 =end html
 
-See L</"Arithmetic Operator"> for floating-point calculation.
+See also L<arithmetic operators|/"Arithmetic Operator"> to calculate floating-point values.
 
 =head2 float Type
 
@@ -6547,7 +6547,7 @@ B<Exampless:>
 
 =head2 Arithmetic Operator
 
-The arithmetic operator> is an L<operator/"Operators"> to perform arithmetic operation.
+Arithmetic operators are the L<operators/"Operators"> to perform arithmetic operations.
 
 Arithmetic operators are the L<additional operator|/"Addition Operator">, the L<subtraction operator|/"Subtraction Operator">, the L<multiplication operator|/"Multiplication Operator">, the L<division|/"Division Operator">, the L<division unsigned int operator|/"Division Unsigned Int Operator">, the L<division unsigned long operator|/"Division Unsigned Long Operator">, the L<reminder operator|/"Remainder Operator">, the L<remainder unsigned int operator|/"Remainder Unsigned Int Operator">, the L<remainder unsigned long operator|/"Remainder Unsigned Long Operator">, the L<unary plus operator/"Unary Plus Operator">, the L<umary minus operator|/"Unary Minus Operator">, the L<increment operators|/"Increment Operator">, and the L<decrement operators|/"Decrement Operator">.
 
