@@ -698,7 +698,7 @@ If the format of the character literal is invalid, a compilation error will occu
 
 =head3 Charater Literal Escape Characters
 
-The character literal escape characters are listed.
+The list of character literal escape characters.
 
 =begin html
 
@@ -1004,7 +1004,7 @@ The raw escape character can be used as an escape character of the L<string lite
 
 The raw escape character is designed to be used by regular expression modules such as L<Regex|SPVM::Regex>.
 
-The raw escape characters are listed.
+The list of raw escape characters.
   
   # Raw excape literals
   \! \# \% \& \( \) \* \+ \, \- \. \/
@@ -7034,7 +7034,7 @@ B<Numeric Comparison Operator> is a L</"Comparison Operator"> that is placed bet
 
   LEFT_OPERAND NUMERIC_COMPARISON_OPERATOR RIGHT_OPERAND
 
-Numeric comparison operators are listed.
+The list of numeric comparison operators.
 
 =begin html
 
@@ -7158,7 +7158,7 @@ The type of the left operand and the right operand must be the L<string type|/"S
 
 The return type is the L<int type|/"int Type">. If the condition is satisfied, return C<1>, otherwise C<0>.
 
-String comparison operators are listed.
+The list of string comparison operators.
 
 =begin html
 
