@@ -46,6 +46,11 @@ Revision history for SPVM
           static method new : StringList ($array : string[])
           [After]
           static method new : StringList ($array : string[]...)
+        * Change Regex->new method definition
+          [Before]
+          static method new : Regex ($re_str : string)
+          [After]
+          static method new : Regex ($re_str_and_options : string[]...)
 
 0.96  2022-05-25
         [CHANGE]

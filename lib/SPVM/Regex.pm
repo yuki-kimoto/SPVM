@@ -85,10 +85,28 @@ SPVM::Regex - Regular expression
       return "ABC" . $re->captures->[0] . "PQRS";
     });
   }
-  
+
+  # . - single line mode
+  {
+    my $re = Regex->new("(.+)", "s");
+    my $target = "abc\ndef";
+    
+    my $match = $re->match($target, 0);
+    
+    unless ($match) {
+      return 0;
+    }
+    
+    unless ($re->captures->[0] eq "abc\ndef") {
+      return 0;
+    }
+  }
+
 =head1 DESCRIPTION
 
 L<Regex|SPVM::Regex> provides regular expression functions.
+
+This module is very unstable compared to other modules. So many changes will be performed.
 
 =head1 REGULAR EXPRESSION SYNTAX
 
@@ -149,15 +167,20 @@ If 0 width quantifir is between two same set of characters after a quantifier, i
 
 =head2 new
 
-  my $re = Regex->new("^ab+c");
+  static method new : Regex ($re_str_and_options : string[]...)
 
 Create a new L<Regex|SPVM::Regex> object and compile the regex.
 
-=head2 new_with_options
-
+  my $re = Regex->new("^ab+c");
   my $re = Regex->new("^ab+c", "s");
 
+=head2 new_with_options
+
+  static method new_with_options : Regex ($re_str : string, $option_chars : string) {
+  
 Create a new L<Regex|SPVM::Regex> object and compile the regex with the options.
+
+  my $re = Regex->new("^ab+c", "s");
 
 =head1 INSTANCE METHODS
 

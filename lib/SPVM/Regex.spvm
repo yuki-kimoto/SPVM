@@ -7,7 +7,6 @@ class Regex : precompile {
   use Regex::Replacer;
   use Regex::Pattern;
   use Fn;
-  use Hash;
   has patterns : List;
   has string_start : byte;
   has string_end : byte;
@@ -29,11 +28,15 @@ class Regex : precompile {
     STATUS_CHAR_CLASS,
   }
   
-  static method new : Regex ($re_str : string) {
+  static method new : Regex ($re_str_and_options : string[]...) {
     
-    my $self = Regex->_new_without_compile();
+    my $re_str = $re_str_and_options->[0];
+    my $options = (string)undef;
+    if (@$re_str_and_options > 1) {
+      $options = $re_str_and_options->[1];
+    }
     
-    $self->compile($re_str);
+    my $self = Regex->new_with_options($re_str, $options);
     
     return $self;
   }

@@ -62,7 +62,7 @@ class TestCase::Lib::Regex {
 
     # Replace all with number
     {
-      my $re = Regex->new_with_options("a\d+b", "a");
+      my $re = Regex->new("a\d+b", "a");
       my $target = "za123bz";
       my $result = $re->replace_all($target, 0, "ABC");
       
@@ -77,7 +77,7 @@ class TestCase::Lib::Regex {
 
     # Replace all - Not replace_all
     {
-      my $re = Regex->new_with_options("a\d+b", "a");
+      my $re = Regex->new("a\d+b", "a");
       my $target = "pppp";
       my $result = $re->replace_all($target, 0, "ABC");
       
