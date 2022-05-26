@@ -1,5 +1,11 @@
 Revision history for SPVM
 0.9600_01  2022-05-25
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Change ByteList->new method definition
+          [Before]
+          static method new : ByteList ($array : byte[])
+          [After]
+          static method new : ByteList ($array : byte[]...)
 
 0.96  2022-05-25
         [CHANGE]

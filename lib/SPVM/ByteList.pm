@@ -10,7 +10,8 @@ SPVM::ByteList - Dynamic Byte Array
   
   use ByteList;
   
-  # Create a byte list with array
+  # Create a byte list
+  my $byte_list = ByteList->new;
   my $byte_list = ByteList->new([(byte)1, 2, 3]);
   
   # Create a byte list with array length
@@ -54,13 +55,14 @@ L<ByteList|SPVM::ByteList> is Dynamic Byte Array.
 
 =head2 new
 
-    static method new : ByteList ($array : byte[])
+    static method new : ByteList ($array : byte[]...)
 
-Create a new L<ByteList|SPVM::ByteList> object with byte array.
+Create a new L<ByteList|SPVM::ByteList> object with a byte array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
-If array is undef, 0-length internal array is created.
+  my $byte_list = ByteList->new;
+  my $byte_list = ByteList->new([(byte)1, 2, 3]);
 
 =head2 new_len
 

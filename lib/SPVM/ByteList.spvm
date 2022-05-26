@@ -9,7 +9,7 @@ class ByteList : precompile {
     DEFAULT_CAPACITY = 16,
   }
   
-  static method new : ByteList ($array : byte[]) {
+  static method new : ByteList ($array : byte[]...) {
     my $self = new ByteList;
     
     my $length : int;
