@@ -11,6 +11,16 @@ Revision history for SPVM
           static method new : DoubleList ($array : double[])
           [After]
           static method new : DoubleList ($array : double[]...)
+        * Change FloatList->new method definition
+          [Before]
+          static method new : FloatList ($array : float[])
+          [After]
+          static method new : FloatList ($array : float[]...)
+        * Change Hash->new method definition
+          [Before]
+          static method new : Hash ($key_values : object[])
+          [After]
+          static method new : Hash ($key_values : object[]...)
 
 0.96  2022-05-25
         [CHANGE]

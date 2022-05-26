@@ -11,7 +11,9 @@ SPVM::Hash - Hash Data Structure
   use Hash;
   
   # Create hash
+  my $book = Hash->new;
   my $book = Hash->new({});
+  my $book = Hash->new({id => 4, name => "Perl", price => 3000.0});
   
   $book->set_int(id => 4);
   $book->set_string(name => "Perl");
@@ -21,9 +23,6 @@ SPVM::Hash - Hash Data Structure
   my $name = (string)$book->get_string("name");
   my $price = (double)$book->get_double("price");
   
-  # Create hash with key value pairs
-  my $book = Hash->new({id => 4, name => "Perl", price => 3000.0});
-
 =head1 DESCRIPTION
 
 L<Hash|SPVM::Hash> is Hash Data Structure. This is generally called associative array.
@@ -32,14 +31,12 @@ L<Hash|SPVM::Hash> is Hash Data Structure. This is generally called associative 
 
 =head2 new
 
-  static method new : Hash ($key_values : object[]) {
+  static method new : Hash ($key_values : object[]...)
 
 Create a new L<Hash|SPVM::Hash> object with key value pairs.
 
-  # Create hash
+  my $book = Hash->new;
   my $book = Hash->new({});
-
-  # Create hash with key value pairs
   my $book = Hash->new({id => 4, name => "Perl"});
 
 =head1 INSTANCE METHODS

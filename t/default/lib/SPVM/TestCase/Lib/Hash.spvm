@@ -9,9 +9,18 @@ class TestCase::Lib::Hash {
   use Comparator::Int;
 
   static method new : int () {
+    # Without arguments
+    {
+      my $hash = Hash->new;
+      my $keys = $hash->keys;
+      unless (@$keys == 0) {
+        return 0;
+      }
+    }
+    
     # undef
     {
-      my $hash = Hash->new(undef);
+      my $hash = Hash->new((object[])undef);
       my $keys = $hash->keys;
       unless (@$keys == 0) {
         return 0;
