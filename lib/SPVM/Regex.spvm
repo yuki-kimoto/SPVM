@@ -634,30 +634,24 @@ class Regex : precompile {
   }
   
   method replace  : string ($target : string, $target_offset : int, $replace : string) {
-    my $opt = Hash->new({});
-    $opt->set_int(replace_all => 0);
-    return $self->replace_opt($target, $target_offset, $replace, $opt);
+    return $self->replace_opt($target, $target_offset, $replace, {replace_all => 0});
   }
 
   method replace_cb  : string ($target : string, $target_offset : int, $replace_cb : Regex::Replacer) {
-    my $opt = Hash->new({});
-    $opt->set_int(replace_all => 0);
-    return $self->replace_opt($target, $target_offset, $replace_cb, $opt);
+    return $self->replace_opt($target, $target_offset, $replace_cb, {replace_all => 0});
   }
 
   method replace_all  : string ($target : string, $target_offset : int, $replace : string) {
-    my $opt = Hash->new({});
-    $opt->set_int(replace_all => 1);
-    return $self->replace_opt($target, $target_offset, $replace, $opt);
+    return $self->replace_opt($target, $target_offset, $replace, {replace_all => 1});
   }
 
   method replace_all_cb  : string ($target : string, $target_offset : int, $replace_cb : Regex::Replacer) {
-    my $opt = Hash->new({});
-    $opt->set_int(replace_all => 1);
-    return $self->replace_opt($target, $target_offset, $replace_cb, $opt);
+    return $self->replace_opt($target, $target_offset, $replace_cb, {replace_all => 1});
   }
   
-  private method replace_opt  : string ($target : string, $target_base_index : int, $replace_object : object, $opt : Hash) {
+  private method replace_opt  : string ($target : string, $target_base_index : int, $replace_object : object, $options : object[]) {
+    
+    my $opt = Hash->new($options);
     
     my $original_target_base_index = $target_base_index;
     
