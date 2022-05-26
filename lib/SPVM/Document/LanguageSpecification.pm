@@ -2202,6 +2202,7 @@ The anon class is the class that is defined by the L<anon method|/"Anon Method">
 A anon class has its unique L<class name|/"Class Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
 
 L<Examples:>
+
     123456789...
   1:class Foo::Bar {
   2:  method sum : void () {
@@ -2211,7 +2212,7 @@ L<Examples:>
   6:: }
   7:}
   
-  # The name of anon class
+  # The name of the anon class
   Foo::Bar::anon::3::23;
 
 =head1 Interface
