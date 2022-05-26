@@ -2125,29 +2125,30 @@ If more than one of C<interface_t>, C<mulnum_t>, and C<pointer_t> are specified,
 
 =head2 Destructor
 
-If a L<class|/"Class"> can has the destructor.
+A L<class|/"Class"> can have the destructor.
 
   method DESTROY : void () {
   
   }
 
-A destructor is a special L<method|/"Method"> called when the object is destroyed.
+The destructor is the L<method|/"Method"> that is called when the object is destroyed by the L<garbage collection|/"Garbage Collection">.
 
-A destructor name must be C<DESTROY>.
+The name of the destructor must be C<DESTROY>.
 
-A destructor retrun type must be L<void type|/"void Type">, otherwise a compilation error will occur.
+A destructor can't have its arguments.
 
-A destructor must be an L<instance method|/"Instance Method"> that don't have the arguments, otherwise a compilation error will occur.
+The retrun type must be L<void type|/"void Type">.
 
-If a L</"Exception"> occurs in the destructor, the exception is not thrown, and prints the message to STDERR.
+A destructor must be an L<instance method|/"Instance Method">.
+
+If the definition of the destructor is invalid, a compilation error will occur.
+
+If an L<exception|/"Exception"> occurs in the destructor, the exception is not thrown. Instead, a warnings message is printed to C<STDERR>.
 
 B<Examples:>
-
-  class Foo {
-    static method new : Foo {
-      return new Foo;
-    }
   
+  # Destructor
+  class Foo {
     method DESTROY : void () {
       print "DESTROY";
     }
@@ -3179,7 +3180,7 @@ A scope is the part that is surrounded by a L<scope block|/"Scope Block">.
 
 When a object that is not L<undef|/"Undefined Value"> is assigned to a L<local variable|/"Local Variable">, the reference count is incremented by C<1>.
 
-At the end of scope, the reference count is decremented by C<1>. If the reference count becomes C<0>, the object will be released.
+At the end of scope, the reference count is decremented by C<1>. If the reference count becomes C<0>, the object will be destroyed.
 
 See also L<garbage collection|/"Garbage Collection">.
 
@@ -6336,7 +6337,7 @@ Inside the for Block, you can use L</"next Statement"> to move immediately befor
 
 =head2 return Statement
 
-The C<return> statement is a L<statement|/"Statements"> to get out of the method. The object assigned to the mortal variable is automatically released.
+The C<return> statement is a L<statement|/"Statements"> to get out of the method. The object assigned to the mortal variable is automatically destroyed.
 
   return;
 
@@ -8400,11 +8401,11 @@ See L</"Setting Exception Variable"> to set Exception Variable Value.
 
 =head1 Garbage Collection
 
-The object is released from memory when the reference count reaches 0.
+The object is destroyed when the reference count becomes C<0>.
 
 If the object is an Array that has Object Type values ​​as elements, the reference count of all Array elements that are not Undefined Value is decremented by C<1> before Garbage Collection
 
-When an object is a L<class type|/"Class Type"> and has a field of Object Type, the reference count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by C<1> before Garbage Collection. If Weak Reference is set to the object saved in Field, Weak Reference is released before Reference Count is decremented by C<1>.
+When an object is a L<class type|/"Class Type"> and has a field of Object Type, the reference count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by C<1> before Garbage Collection. If Weak Reference is set to the object saved in Field, Weak Reference is destroyed before Reference Count is decremented by C<1>.
 
 When the object has Back references of Weak Reference, Undefined Value is assigned to all Fields registered as back References and all back References are deleted.
 
@@ -8414,7 +8415,7 @@ The above process is done recursively.
 
 Weak Reference is a reference that does not increase the reference count. Weak Reference can be used to solve the problem of circular references.
 
-SPVM has GC of Reference Count Type. In the GC of Reference Count Type, the object is automatically released when the reference count becomes 0, but when the circular reference occurs, the reference count does not become 0 and the object is automatically released. not.
+SPVM has GC of Reference Count Type. In the GC of Reference Count Type, the object is automatically destroyed when the reference count becomes 0, but when the circular reference occurs, the reference count does not become 0 and the object is automatically destroyed. not.
 
 This is an Example when the Field of the object is circularly referenced.
 
@@ -8426,7 +8427,7 @@ This is an Example when the Field of the object is circularly referenced.
     $bar->{foo} = $foo;
   }
 
-In this case, both objects are not released when the Scope ends. This is because a circular reference has occurred and the reference count does not become 0.
+In this case, both objects are not destroyed when the Scope ends. This is because a circular reference has occurred and the reference count does not become 0.
 
 Weak Reference is a function to correctly destroy objects when a circular reference occurs in a programming language that has a Reference Count GC.
 
@@ -8444,11 +8445,11 @@ In such a case, it is possible to release correctly by setting one Field to Weak
 
 Before the weaken statement is executed, $foo has a Reference Count of 2 and $bar has a Reference Count of 2.
 
-If there is no weaken statement, the reference count of $foo and the reference count of $bar will not be 0 and will not be released even if the scope ends.
+If there is no weaken statement, the reference count of $foo and the reference count of $bar will not be 0 and will not be destroyed even if the scope ends.
 
 When a weaken statement is executed, $foo has a Reference Count of 2 and $bar has a Reference Count of 1.
 
-When the Scope ends, the reference count of $bar is decremented by C<1> and becomes 0, so it is released correctly.
+When the Scope ends, the reference count of $bar is decremented by C<1> and becomes 0, so it is destroyed correctly.
 
 Even if there are 3 circular references, you can release them correctly by setting Weak Reference in 1 Field.
 
@@ -8464,7 +8465,7 @@ Even if there are 3 circular references, you can release them correctly by setti
     weaken $foo->{bar};
   }
 
-As a syntax related to Weak Reference, Weak Reference can be released L</"weaken Statement">, and it can be confirmed whether Field is Weak Reference the L<isweak operator|/"isweak Operator">.
+As a syntax related to Weak Reference, Weak Reference can be destroyed L</"weaken Statement">, and it can be confirmed whether Field is Weak Reference the L<isweak operator|/"isweak Operator">.
 
 =head1 SEE ALSO
 
