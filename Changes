@@ -26,6 +26,11 @@ Revision history for SPVM
           static method new : IntList ($array : int[])
           [After]
           static method new : IntList ($array : int[]...)
+        * Change List->new method definition
+          [Before]
+          static method new : List ($array : object[])
+          [After]
+          static method new : List ($array : object[]...)
 
 0.96  2022-05-25
         [CHANGE]

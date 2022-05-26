@@ -11,49 +11,50 @@ SPVM::List - Dynamic object array
   use List;
   
   # Create a object list
-  my $object_list = List->new([(object)Byte->new(1), Int->new(2), Long->new(3)]);
+  my $list = List->new;
+  my $list = List->new([(object)Byte->new(1), Int->new(2), Long->new(3)]);
 
   # Create a Int list
-  my $object_list = List->new([Byte->new(1), Int->new(2), Int->new(3)]);
+  my $list = List->new([Byte->new(1), Int->new(2), Int->new(3)]);
   
   # Create a object list with length
-  my $object_list = List->new_len([], 3);
+  my $list = List->new_len([], 3);
 
   # Create a Int list with length
-  my $object_list = List->new_len(new Int[0], 3);
+  my $list = List->new_len(new Int[0], 3);
 
   # Get list length
-  my $length = $object_list->length;
+  my $length = $list->length;
   
   # Push object value
-  $object_list->push(Int->new(3));
+  $list->push(Int->new(3));
 
   # Pop object value.
-  my $object_value = $object_list->pop;
+  my $object_value = $list->pop;
 
   # Unshift object value.
-  $object_list->unshift(Int->new(3));
+  $list->unshift(Int->new(3));
   
   # Shift object value.
-  my $object_value = $object_list->shift;
+  my $object_value = $list->shift;
   
   # Set object value.
-  $object_list->set(2, Int->new(3));
+  $list->set(2, Int->new(3));
   
   # Get object value.
-  my $object_value = $object_list->get(2);
+  my $object_value = $list->get(2);
 
   # Insert object value
-  $object_list->insert(1, Int->new(3));
+  $list->insert(1, Int->new(3));
 
   # Remove object value
-  my $object_value = $object_list->remove(1);
+  my $object_value = $list->remove(1);
 
   # Convert List to object array.
-  my $int_array = $object_list->to_array;
+  my $int_array = $list->to_array;
 
   # Convert List to Int array.
-  my $int_array = (Int[])$object_list->to_array;
+  my $int_array = (Int[])$list->to_array;
 
 =head1 DESCRIPTION
 
@@ -63,13 +64,16 @@ L<List|SPVM::List> is dynamic object array.
 
 =head2 new
 
-    static method new : List ($objects : object[])
+    static method new : List ($objects : object[]...)
 
 Create a new L<List|SPVM::List> object with specific C<object> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
-If array is undef, 0-length internal array is created.
+If the array of the argument is C<undef>, 0-length internal array is created.
+
+  my $list = List->new;
+  my $list = List->new([(object)Byte->new(1), Int->new(2), Long->new(3)]);
 
 =head2 new_len
 

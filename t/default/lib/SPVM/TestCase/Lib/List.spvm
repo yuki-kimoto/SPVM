@@ -7,7 +7,7 @@ class TestCase::Lib::List {
   static method new : int () {
     # new with undef
     {
-      my $list = List->new(undef);
+      my $list = List->new((object[])undef);
       
       unless ($list->length == 0) {
         return 0;
@@ -18,6 +18,21 @@ class TestCase::Lib::List {
         return 0;
       }
     }
+
+    # new without arguments
+    {
+      my $list = List->new;
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      
+      $list->push(Int->new(1));
+      unless ((int)$list->get(0) == 1) {
+        return 0;
+      }
+    }
+    
     
     return 1;
   }

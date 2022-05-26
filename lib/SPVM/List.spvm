@@ -8,7 +8,7 @@ class List : precompile {
   private enum {
     DEFAULT_CAPACITY = 16,
   }
-  static method new : List ($objects : object[]) {
+  static method new : List ($objects : object[]...) {
     my $self = new List;
     
     my $length : int;
