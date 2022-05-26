@@ -9,7 +9,7 @@ class IntList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  static method new : IntList ($array : int[]) {
+  static method new : IntList ($array : int[]...) {
     my $self = new IntList;
     my $length : int;
     if ($array) {

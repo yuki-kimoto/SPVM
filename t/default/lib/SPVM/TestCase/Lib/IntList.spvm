@@ -1,7 +1,6 @@
 class TestCase::Lib::IntList {
   use IntList;
   use Fn;
-  use Fn;
 
   static method new : int () {
     # new with array
@@ -28,7 +27,16 @@ class TestCase::Lib::IntList {
 
     # new with undef
     {
-      my $list = IntList->new(undef);
+      my $list = IntList->new((int[])undef);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+
+    # new without arguments
+    {
+      my $list = IntList->new;
       
       unless ($list->length == 0) {
         return 0;

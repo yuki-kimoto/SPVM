@@ -21,6 +21,11 @@ Revision history for SPVM
           static method new : Hash ($key_values : object[])
           [After]
           static method new : Hash ($key_values : object[]...)
+        * Change IntList->new method definition
+          [Before]
+          static method new : IntList ($array : int[])
+          [After]
+          static method new : IntList ($array : int[]...)
 
 0.96  2022-05-25
         [CHANGE]

@@ -10,12 +10,13 @@ SPVM::IntList - Dynamic int array
   
   use IntList;
   
+  # Create a int list
+  my $int_list = IntList->new;
+  my $int_list = IntList->new([1, 2, 3]);
+  
   # Create a int list with array length
   my $int_list = IntList->new_len(10);
 
-  # Create a int list with array
-  my $int_list = IntList->new([1, 2, 3]);
-  
   # Get list length
   my $length = $int_list->length;
   
@@ -54,13 +55,16 @@ L<IntList|SPVM::IntList> is dynamic int array.
 
 =head2 new
 
-    static method new : IntList ($array : int[])
+    static method new : IntList ($array : int[]...)
 
 Create a new L<IntList|SPVM::IntList> object with specific C<int> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
-If array is undef, 0-length internal array is created.
+If the array of the argument is C<undef>, 0-length internal array is created.
+
+  my $int_list = IntList->new;
+  my $int_list = IntList->new([1, 2, 3]);
 
 =head2 new_len
 
