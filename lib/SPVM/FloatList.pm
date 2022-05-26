@@ -9,13 +9,14 @@ SPVM::FloatList - Dynamic float array
 =head1 SYNOPSYS
   
   use FloatList;
+
+  # Create a float list with array
+  my $float_list = FloatList->new;
+  my $float_list = FloatList->new([1.5f, 2.5f, 3.5f]);
   
   # Create a float list
   my $float_list = FloatList->new_len(10);
 
-  # Create a float list with array
-  my $float_list = FloatList->new([1.5f, 2.5f, 3.5f]);
-  
   # Get list length
   my $length = $float_list->length;
   
@@ -54,13 +55,16 @@ L<FloatList|SPVM::FloatList> is dynamic float array.
 
 =head2 new
 
-    static method new : FloatList ($array : float[])
+    static method new : FloatList ($array : float[]...)
 
 Create a new L<FloatList|SPVM::FloatList> object with specific C<float> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
-If array is undef, 0-length internal array is created.
+If the array of the argument is C<undef>, 0-length internal array is created.
+
+  my $float_list = FloatList->new;
+  my $float_list = FloatList->new([1.5f, 2.5f, 3.5f]);
 
 =head2 new_len
 

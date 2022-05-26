@@ -9,7 +9,7 @@ class FloatList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  static method new : FloatList ($array : float[]) {
+  static method new : FloatList ($array : float[]...) {
     my $self = new FloatList;
     my $length : int;
     if ($array) {

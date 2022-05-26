@@ -28,7 +28,16 @@ class TestCase::Lib::FloatList {
 
     # new with undef
     {
-      my $list = FloatList->new(undef);
+      my $list = FloatList->new((float[])undef);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+
+    # new without arguments
+    {
+      my $list = FloatList->new;
       
       unless ($list->length == 0) {
         return 0;
