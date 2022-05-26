@@ -722,7 +722,6 @@ t/exe/lib/SPVM/TestCase/NativeAPI2.native/src/noneed.txt
 t/exe/lib/SPVM/TestCase/NativeAPI2.spvm
 t/exe/myexe.config
 t/exe/myexe.debug.config
-t/exe/myexe.default.config
 t/exe/myexe.no_precompile.config
 t/exe/myexe.no_precompile_no_compiler_api.config
 t/exe/myexe.pl
