@@ -2014,7 +2014,7 @@ B<Examples:>
   
   }
 
-In a class block, L<loading modules|/"Load Modules">, L<class variables|/"Class Variable">, L<fields|/"Field Definition">, L<enumerations|/"Enumeration Definition">, L<methods|/"Method Definition">, L<allow statements|/"Allow Class Access">, L<interface guarantees|/"Interface Guarantee"> and a L<INIT block|/"INIT Block"> can be defined.
+In a class block, L<loading modules|/"Loading Module">, L<class variables|/"Class Variable">, L<fields|/"Field Definition">, L<enumerations|/"Enumeration Definition">, L<methods|/"Method Definition">, L<allow statements|/"Allowing Private Access">, L<interface guarantees|/"Interface Guarantee"> and a L<INIT block|/"INIT Block"> can be defined.
 
   class Foo {
     
@@ -2154,25 +2154,26 @@ B<Examples:>
     }
   }
 
-=head2 Allow Class Access
+=head2 Allowing Private Access
 
-By default, private Methods, Fields, and Class Variables cannot be accessed from outside the Class.
+Private methods, private fields, and private class variables cannot be accessed except from the current class.
 
-Also, Private Class cannot L</"new Operator"> from outside of Class.
+A private class cannot be the operand of the L<new operator|/"Creating Object"> except from the current class.
 
-If the class allow other class, the other class can access private Methods, Fields, and Class Variables, and can L</"new Operator"> of the class.
+The C<allow> syntax allows the private access from the other classes.
 
   allow CLASS_NAME;
 
-allow must be defined directory under L</"Class Definition">.
+The C<allow> syntax must be defined directory under the L<class definition|/"Class Definition">.
+  
+The module that is the operand of the C<allow> syntax is loaded by the same way as the L<use syntax|/"Loading Module">.
 
+B<Examples:>
+
+  # Allowing private access
   class Foo {
     allow Bar;
   }
-
-In this example, Bar can access the private Method, Field, and Class Variable of Foo can be accessed and can new Operator of Foo.
-
-Specifying the module of B<allow> also loads the module by L</"use"> at the same time.
 
 =head2 Interface Guarantee
 
@@ -2303,7 +2304,7 @@ Change "::" to C</>. Add ".spvm" at the end.
   SPVM/Foo/Bar.spvm
   SPVM/Foo/Bar/Baz.spvm
 
-=head2 Load Modules
+=head2 Loading Module
 
 The C<use> syntax loads a Module.
   
@@ -2314,7 +2315,7 @@ If the module does not exist, a compilation error will occur.
 
 Modules are loaded at compile-time.
 
-C<use> syntax must be defined directly under L</"Class Definition">.
+C<use> syntax must be defined directly under the L<class definition|/"Class Definition">.
 
   class Foo {
     use Foo;
@@ -2332,7 +2333,7 @@ FB is used as Foo::Bar alias in L<class method calls|Class Method Call>.
   # This means Foo::Bar->sum(1, 2);
   FB->sum(1, 2);
 
-C<alias> syntax must be defined directly under L</"Class Definition">.
+C<alias> syntax must be defined directly under the L<class definition|/"Class Definition">.
 
   class Foo {
     alias Foo::Bar as FB;
@@ -2344,7 +2345,7 @@ You can create an alias at the same time as loading a module by C<use>.
 
 =head2 Automatically Loaded Module
 
-The followings are Automatically Loaded Modules. They can be used without L</"use">.
+The followings are Automatically Loaded Modules. They can be used without L</"Loading Module">.
 
 =begin html
 
@@ -2422,7 +2423,7 @@ B<Class Variable> is a global variable that belongs to L</"Class"> and exists fr
 
   our CLASS_VARIABLE_NAME : TYPE;
 
-Class Variable must be defined directly under L</"Class Definition">.
+Class Variable must be defined directly under the L<class definition|/"Class Definition">.
 
 Class Variable Definition must specify L</"Type">. The Type must be L</"Numeric Type"> or L</"Object Type">.
 
@@ -2552,7 +2553,7 @@ C<has> keyword defines a field.
 
   has FIELD_NAME : TYPE;
 
-Field must be defined directly under L</"Class Definition">.
+Field must be defined directly under the L<class definition|/"Class Definition">.
 
 Field Definition must be specify L</"Type">. The Type must be L</"Numeric Type"> or L</"Object Type">.
 
@@ -2664,7 +2665,7 @@ If the invocant is different from the following three field access, a compilatio
 
 If the field name does not found, a compilation error will occur
 
-=head3 Field Access of the Class
+=head3 Field Access of the class
 
 The field access of the L<class|/"Class">.
 
@@ -2719,7 +2720,7 @@ The C<method> keyword defines a class method or an instance method.
     
   }
 
-Methods must be defined directly under L</"Class Definition">.
+Methods must be defined directly under the L<class definition|/"Class Definition">.
 
 Method names must be follow the rule of L</"Method Name">.
 
@@ -2969,7 +2970,7 @@ The C<enum> keyword defines an enumeration. An enumeration defines constant valu
     FLAG3
   }
 
-An enumeration must be defined directly under L</"Class Definition">.
+An enumeration must be defined directly under the L<class definition|/"Class Definition">.
 
 The first value of an enumeration begins with C<0>. The next value is incremented by C<1>, and this is continued in the same way. In this example, C<FLAG1> is C<0>, C<FALG2> is C<1>, and C<FLAG3> is C<2>.
 
@@ -3482,7 +3483,7 @@ See L</"Setting Array Element"> to set the element value of Array.
 
 Multi-Numeric type represents continuous numeric values. For example, there are three consecutive 32-bit signed integers, two consecutive double-precision floating point numbers. It isplaned to use 3D points, complex numbers, quaternions, etc.
 
-Multi-Numeric Type are defined by specifying mulnum_t L</"Class Descriptor"> in L</"Class Definition">.
+Multi-Numeric Type are defined by specifying mulnum_t L</"Class Descriptor"> in the L<class definition|/"Class Definition">.
 
   # Three consecutive 32bit signed integers
   class Complex_2d : mulnum_t {
@@ -3507,9 +3508,9 @@ The maximum number of Fields is 255.
 
 Multi-Numeric Type can be used as L</"Type"> of L</"Local Variable Declaration">.
 
-Multi-Numeric Type can be used as an argument L</"Type"> in L</"Method Definition"> .
+Multi-Numeric Type can be used as an argument L</"Type"> in the L<method definition|/"Method Definition"> .
 
-Multi-Numeric Type can be used as L</"Type"> of Return Value in L</"Method Definition">.
+Multi-Numeric Type can be used as L</"Type"> of Return Value in the L<method definition|/"Method Definition">.
 
 Multi-Numeric Type can be used as L</"Basic Type"> of L</"Array Type"> .
 
@@ -4086,7 +4087,7 @@ You can methodstitute the value of "Object Type" for Any Object Type.
 
 =head2 void Type
 
-B<void Type> is a special Type that can only be used in the return type of L</"Method Definition"> and indicates the method has no Return Value.
+B<void Type> is a special Type that can only be used in the return type of the L<method definition|/"Method Definition"> and indicates the method has no Return Value.
 
   void
 
@@ -4289,7 +4290,7 @@ B<Examples:>
 
 Multi-Numeric Type are a type that can represent continuous numerical values.
 
-Multi-Numeric Type can be defined by specifying C<mulnum_t> Descriptor in the L</"Class Definition">.
+Multi-Numeric Type can be defined by specifying C<mulnum_t> Descriptor in the the L<class definition|/"Class Definition">.
 
   class Complex_2d : mulnum_t {
     has x : int;
@@ -4315,13 +4316,13 @@ If only Local Variable Declaration of Reference Type is performed, a compilation
 
 Reference Type can be used as Type of L</"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error will occur
 
-Reference Type can be used as Type of argument in L</"Method Definition">.
+Reference Type can be used as Type of argument in the L<method definition|/"Method Definition">.
 
-Reference Type cannot be used as Return Value Type in L</"Method Definition">.
+Reference Type cannot be used as Return Value Type in the L<method definition|/"Method Definition">.
 
-Reference Type cannot be used as the type of Field in L</"Class Definition">.
+Reference Type cannot be used as the type of Field in the L<class definition|/"Class Definition">.
 
-Reference Type cannot be used as the type of Class Variable in L</"Class Definition">.
+Reference Type cannot be used as the type of Class Variable in the L<class definition|/"Class Definition">.
 
 If the Reference Type is used at an Invalid location, a compilation error will occur
 
@@ -6345,9 +6346,9 @@ If there is a Return Value, L</"Expressions"> can be specified.
 
   return EXPRESSION;
 
-If the Return Value Type in L</"Method Definition"> is L</"void Type">, Expression Must not exist, otherwise a compilation error will occur.
+If the Return Value Type in the L<method definition|/"Method Definition"> is L</"void Type">, Expression Must not exist, otherwise a compilation error will occur.
 
-L</"Method Definition">, if the Return Value Type is other than L</"void Type">, Expression Must match the type of, otherwise a compilation error will occur.
+the L<method definition|/"Method Definition">, if the Return Value Type is other than L</"void Type">, Expression Must match the type of, otherwise a compilation error will occur.
 
 =head2 next Statement
 
@@ -7728,7 +7729,7 @@ B<Setting Class Variable Expression> is an L<operator|/"Operator"> to set L</"Cl
 
   $CLASS_NAME::CLASS_VARIABLE_NAME = VALUE
 
-"CLASS_NAME::" can be omitted when the Class Variable belongs to own L</"Class">.
+"CLASS_NAME::" can be omitted when the class Variable belongs to own L</"Class">.
 
   $CLASS_VARIABLE_NAME = VALUE
 
