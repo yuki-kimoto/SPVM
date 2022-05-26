@@ -41,6 +41,11 @@ Revision history for SPVM
           static method new : ShortList ($array : short[])
           [After]
           static method new : ShortList ($array : short[]...)
+        * Change StringList->new method definition
+          [Before]
+          static method new : StringList ($array : string[])
+          [After]
+          static method new : StringList ($array : string[]...)
 
 0.96  2022-05-25
         [CHANGE]

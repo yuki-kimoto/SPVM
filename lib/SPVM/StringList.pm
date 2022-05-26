@@ -11,11 +11,12 @@ SPVM::StringList - Dynamic string array
   use StringList;
   
   # Create a string list
-  my $string_list = StringList->new_len(10);
-
-  # Create a string list with array
+  my $string_list = StringList->new;
   my $string_list = StringList->new(["abc", "def", "ghi"]);
   
+  # Create a string list
+  my $string_list = StringList->new_len(10);
+
   # Get list length
   my $length = $string_list->length;
   
@@ -54,17 +55,20 @@ L<StringList|SPVM::StringList> is dynamic string array.
 
 =head2 new
 
-    static method new : StringList ($array : string[])
+  static method new : StringList ($array : string[]...)
 
 Create a new L<StringList|SPVM::StringList> object with specific C<string> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
-If array is undef, 0-length internal array is created.
+If the array of the argument is C<undef>, 0-length internal array is created.
+
+  my $string_list = StringList->new;
+  my $string_list = StringList->new(["abc", "def", "ghi"]);
 
 =head2 new_len
 
-    static method new_len : StringList ($length : int)
+  static method new_len : StringList ($length : int)
 
 Create a new L<StringList|SPVM::StringList> object with array length.
 

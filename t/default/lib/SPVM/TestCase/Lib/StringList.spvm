@@ -27,7 +27,16 @@ class TestCase::Lib::StringList {
 
     # new with undef
     {
-      my $list = StringList->new(undef);
+      my $list = StringList->new((string[])undef);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+
+    # new without arugments
+    {
+      my $list = StringList->new;
       
       unless ($list->length == 0) {
         return 0;

@@ -7,7 +7,7 @@ class StringList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  static method new : StringList ($array : string[]) {
+  static method new : StringList ($array : string[]...) {
     my $self = new StringList;
     my $length : int;
     if ($array) {
