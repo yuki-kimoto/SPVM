@@ -9,7 +9,7 @@ class LongList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  static method new : LongList ($array : long[]) {
+  static method new : LongList ($array : long[]...) {
     my $self = new LongList;
     my $length : int;
     if ($array) {

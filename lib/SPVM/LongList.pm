@@ -10,12 +10,13 @@ SPVM::LongList - Dynamic long array
   
   use LongList;
   
+  # Create a long list with array
+  my $long_list = LongList->new;
+  my $long_list = LongList->new([(long)1, 2, 3]);
+  
   # Create a long list
   my $long_list = LongList->new_len(10);
 
-  # Create a long list with array
-  my $long_list = LongList->new([(long)1, 2, 3]);
-  
   # Get list length
   my $length = $long_list->length;
   
@@ -54,13 +55,16 @@ L<LongList|SPVM::LongList> is dynamic long array.
 
 =head2 new
 
-    static method new : LongList ($array : long[])
+    static method new : LongList ($array : long[]...)
 
 Create a new L<LongList|SPVM::LongList> object with specific C<long> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
-If array is undef, 0-length internal array is created.
+If the array of the argument is C<undef>, 0-length internal array is created.
+
+  my $long_list = LongList->new;
+  my $long_list = LongList->new([(long)1, 2, 3]);
 
 =head2 new_len
 
