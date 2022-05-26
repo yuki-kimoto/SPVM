@@ -9,7 +9,7 @@ class ShortList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  static method new : ShortList ($array : short[]) {
+  static method new : ShortList ($array : short[]...) {
     my $self = new ShortList;
     my $length : int;
     if ($array) {

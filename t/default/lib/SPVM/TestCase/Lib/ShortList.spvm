@@ -27,13 +27,21 @@ class TestCase::Lib::ShortList {
 
     # new with undef
     {
-      my $list = ShortList->new(undef);
+      my $list = ShortList->new((short[])undef);
       
       unless ($list->length == 0) {
         return 0;
       }
     }
     
+    # new without arguments
+    {
+      my $list = ShortList->new;
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
     
     return 1;
   }
