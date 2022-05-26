@@ -9,7 +9,7 @@ class DoubleList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  static method new : DoubleList ($array : double[]) {
+  static method new : DoubleList ($array : double[]...) {
     my $self = new DoubleList;
     my $length : int;
     if ($array) {

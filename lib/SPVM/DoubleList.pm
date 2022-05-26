@@ -10,12 +10,13 @@ SPVM::DoubleList - Dynamic double array
   
   use DoubleList;
   
-  # Create a double list
-  my $double_list = DoubleList->new_len;
-
   # Create a double list with array
+  my $double_list = DoubleList->new;
   my $double_list = DoubleList->new([1.5, 2.5, 3.5]);
   
+  # Create a double list
+  my $double_list = DoubleList->new_len(3);
+
   # Get list length
   my $length = $double_list->length;
   
@@ -54,13 +55,16 @@ L<DoubleList|SPVM::DoubleList> is dynamic double array.
 
 =head2 new
 
-    static method new : DoubleList ($array : double[])
+    static method new : DoubleList ($array : double[]...)
 
 Create a new L<DoubleList|SPVM::DoubleList> object with specific C<double> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
-If array is undef, 0-length internal array is created.
+If the array of the argument is C<undef>, 0-length internal array is created.
+
+  my $double_list = DoubleList->new;
+  my $double_list = DoubleList->new([1.5, 2.5, 3.5]);
 
 =head2 new_len
 
