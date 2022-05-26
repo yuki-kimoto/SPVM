@@ -2177,28 +2177,23 @@ B<Examples:>
 
 =head2 Interface Guarantee
 
-A interface guarantee C<interface> is a syntax to guarantee that the class has the required method defined in the L<interfaces|/"Interface">.
+The C<interface> syntax guarantees that the class has the required method defined in the L<interface|/"Interface">.
 
-  class Asset::Memory {
-    interface Asset;
+  interface INTERFACE_NAME;
 
-    method add_chunk : void ($chunk : string) {
-      # ...
-    }
-    method contains : int ($substring : string){
-      # ...
-    }
-    method size : int (){
-      # ...
-    }
-    method is_file : int (){
-      # ...
-    }
+The C<interface> syntax must be defined directory under the L<class definition|/"Class Definition">.
+
+If the required method of the interface is not defined in the current class, a compilation error will occur.
+
+The current class B<is expected to> have all methods defined in the interface.
+
+B<Examples:>
+
+  # Interface guarantee
+  class Foo {
+    interface Stringable;
+    interface Cloneable;
   }
-
-If the method implementation is not found, an exception is thrown at runtime.
-
-The existence of the method implementation can be checked by the L<has_impl|/"has_impl Operator"> operator.
 
 =head2 Anon Class
 
