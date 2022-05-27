@@ -12,6 +12,7 @@ class Regex : precompile {
   has string_end : byte;
   has single_line_mode : byte;
   has ascii_mode : byte;
+  has ignore_case : byte;
   
   has captures : ro string[];
   
@@ -65,6 +66,14 @@ class Regex : precompile {
           }
           $self->{ascii_mode} = 1;
           $options_h->set_int("a" => 1);
+        }
+        elsif ($option_char == 'i') {
+          my $found = $options_h->get("i");
+          if ($found) {
+            die "a option must be used once";
+          }
+          $self->{ignore_case} = 1;
+          $options_h->set_int("i" => 1);
         }
       }
     }
@@ -414,6 +423,31 @@ class Regex : precompile {
       }
 
       if ($cur_is_char) {
+        my $ignore_case = $self->{ignore_case};
+        
+        if ($ignore_case) {
+          for (my $i = 0; $i < @$cur_uchar_min_maxs; $i += 2) {
+            my $min = $cur_uchar_min_maxs->[$i];
+            my $max = $cur_uchar_min_maxs->[$i + 1];
+            
+            # a-z (0x61-0x7A)
+            {
+              my $lower_min_range = -1;
+              my $lower_max_range = -1;
+              
+              if ($min >= 0x61 && $min <= 0x7A) {
+                $lower_min_range = $min;
+              }
+              else {
+                
+              }
+              
+            }
+            # A-Z(0x41-0x5A)
+            
+          }
+        }
+        
         my $pattern = new Regex::Pattern;
         $pattern->{type} = Regex::Pattern->PATTERN;
         $pattern->{negate} = (byte)$cur_negate;
@@ -487,6 +521,7 @@ class Regex : precompile {
     my $match_all = 0;
     my $target_index = 0;
     my $target_base_index_before : int;
+    my $ignore_case = $self->{ignore_case};
     while (1) {
       $target_base_index_before = $target_base_index;
       my $target_base_uchar = Unicode->uchar($target, \$target_base_index);
@@ -553,6 +588,27 @@ class Regex : precompile {
                 
                 if ($target_uchar >= $uchar_min && $target_uchar <= $uchar_max) {
                   $match_uchar = 1;
+                }
+                else {
+                  if ($ignore_case) {
+                    my $target_uchar_reverse_case = -1;
+                    # a-z
+                    if ($target_uchar >= 0x61 && $target_uchar <= 0x7A) {
+                      $target_uchar_reverse_case = $target_uchar - 32;
+                    }
+                    # A-Z
+                    elsif ($target_uchar >= 0x41 && $target_uchar <= 0x5A) {
+                      $target_uchar_reverse_case = $target_uchar + 32;
+                    }
+                    if ($target_uchar_reverse_case >= 0) {
+                      if ($target_uchar_reverse_case >= $uchar_min && $target_uchar_reverse_case <= $uchar_max) {
+                        $match_uchar = 1;
+                      }
+                    }
+                  }
+                }
+                
+                if ($match_uchar) {
                   last;
                 }
               }

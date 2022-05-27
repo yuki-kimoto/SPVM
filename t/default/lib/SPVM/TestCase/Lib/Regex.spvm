@@ -1221,6 +1221,53 @@ class TestCase::Lib::Regex {
       }
     }
 
+    # ignore case
+    {
+      {
+        my $re = Regex->new("abz", "i");
+        my $target = "zABZz";
+        
+        my $match = $re->match($target, 0);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+
+      {
+        my $re = Regex->new("ABZ", "i");
+        my $target = "zabzz";
+        
+        my $match = $re->match($target, 0);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+      
+      {
+        my $re = Regex->new("A[B-Z]{2,2}", "i");
+        my $target = "zabzz";
+        
+        my $match = $re->match($target, 0);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+
+      {
+        my $re = Regex->new("a[b-z]{2,2}", "i");
+        my $target = "zABZz";
+        
+        my $match = $re->match($target, 0);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+    }
+
     return 1;
   }
   
