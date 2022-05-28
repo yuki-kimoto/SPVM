@@ -8,11 +8,11 @@ class Regex::Pattern {
     CAPTURE_START,
     CAPTURE_END,
   }
+  has code_point_range : int[];
+  has negate : byte;
+  has min_repeat : int;
+  has max_repeat : int;
   has capture_start : byte;
   has capture_end : byte;
-  has negate : byte;
   has type : byte;
-  has max_repeat : int;
-  has min_repeat : int;
-  has uchar_min_maxs : int[];
 }
