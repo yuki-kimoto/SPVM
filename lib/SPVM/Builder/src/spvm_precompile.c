@@ -263,7 +263,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   }
 
   // Exception
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
+  // volatile attribute is not needed, but the environment "FreeBSD 9.1" and "gcc 4.2.1" seems to performe wrong optimisation
+  // in double pointer logic. volatile attribute fixed the test "ref.t" "SPVM::TestCase::Ref->test_pass_value_ref_byte".
+  SPVM_STRING_BUFFER_add(string_buffer, "  volatile int32_t exception_flag = 0;\n");
   
   int32_t method_mortal_stack_length = SPVM_API_RUNTIME_get_method_mortal_stack_length(runtime, method_id);
   if (method_mortal_stack_length > 0) {

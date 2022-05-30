@@ -54,6 +54,8 @@ Revision history for SPVM
           static method new : Regex ($re_str : string)
           [After]
           static method new : Regex ($re_str_and_options : string[]...)
+        [BUG FIX]
+        * Fix the bug that the tests of FreeBSD 9.1 fail.
 
 0.96  2022-05-25
         [CHANGE]
