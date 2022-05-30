@@ -29,4 +29,3 @@ struct spvm_runtime_class {
 };
 
 #endif
- 
