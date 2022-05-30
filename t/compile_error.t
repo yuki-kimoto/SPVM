@@ -700,6 +700,10 @@ sub print_error_messages {
       my $source = 'class Tmp { our $FOO : public private int; }';
       compile_not_ok($source, qr/Only one of "private", "public" class variable descriptors can be specifed/);
     }
+    {
+      my $source = 'class Tmp { our $FOO : int; our $FOO : int; }';
+      compile_not_ok($source, qr/Redeclaration of the class variable "\$FOO" in the class "Tmp"/);
+    }
   }
 }
 
