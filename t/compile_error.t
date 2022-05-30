@@ -689,6 +689,10 @@ sub print_error_messages {
     my $source = q|class Tmp { interface_t enum { ONE } }|;
     compile_not_ok($source, qr/Invalid enumeration descriptor "interface_t"/);
   }
+  {
+    my $source = q|class Tmp { public private enum { ONE } }|;
+    compile_not_ok($source, qr/aaa/);
+  }
 }
 
 done_testing;
