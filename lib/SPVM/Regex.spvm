@@ -595,12 +595,7 @@ class Regex : precompile {
           
           # Negate
           if ($negate) {
-            if ($match_char) {
-              $match_char = 0;
-            }
-            else {
-              $match_char = 1;
-            }
+            $match_char = !$match_char;
           }
           
           # Increment repeat count
