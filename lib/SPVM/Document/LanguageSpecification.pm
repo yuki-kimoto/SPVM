@@ -5986,8 +5986,6 @@ A operator statement is composed of an L<operator|/"Operator"> and C<;>.
 
   OPERATOR;
 
-The operator must be a L<value-returing operator|/"Value-Returning Operator">.
-
 B<Examples:>
 
   1;
@@ -6494,14 +6492,6 @@ B<Examples:>
 An operator performs an operation.
 
 Operators are L<unary operators/"Unary Operator">, L<binary operators|/"Binary Operator">, L<increment operators|/"Increment Operator">, L<decrement operators|/"Decrement Operator">, L<comparison operators|/"Comparison Operator">, L<logical operators|/"Logical Operator">, and L<assignment operators|/"Assignment Operator">.
-
-=head2 Value-Returning Operator
-
-The value-returning operator is the L<operator|/"Operators> that return a value.
-
-The value-returning operators are L</"Operator">, L</"Undefined Value">, L</"Literal">, L</"Getting Local Variable">, L</"Setting Local Variable">,
-L</"Getting Class Variable">, L</"Getting Class Variable">, L</"Setting Class Variable">, L</"Getting Exception Variable">, L</"Setting Exception Variable">,
-L</"Getting Field">, L</"Setting Field">, L</"Getting Multi-Numeric Field">, L</"Setting Multi-Numeric Field">, L</"Getting Multi-Numeric Field via Dereference">, L</"Setting Multi-Numeric Field via Dereference">, <"Getting Array Element">, L</"Setting Array Element"> and L</"Method Call">.
 
 =head2 Unary Operator
 
