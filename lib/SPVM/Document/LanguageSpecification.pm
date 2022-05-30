@@ -1152,17 +1152,16 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement switch_statement case_statement default_statement
   %type <opval> block eval_block init_block switch_block if_require_statement
-  %type <opval> unary_op binary_op comparison_op isa logical_op op
+  %type <opval> unary_operator binary_operator comparison_operator isa
   %type <opval> call_spvm_method opt_vaarg
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow has_impl
   %type <opval> new array_init
-  %type <opval> my_var var interface
-  %type <opval> value_op opt_value_ops value_ops opt_value_op case_statements
+  %type <opval> var_decl var interface
+  %type <opval> operator opt_operators operators opt_operator case_statements logical_operator
   %type <opval> field_name method_name class_name class_alias_name is_read_only
   %type <opval> type qualified_type basic_type array_type
   %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
-  
   %right <opval> ASSIGN SPECIAL_ASSIGN
   %left <opval> LOGICAL_OR
   %left <opval> LOGICAL_AND
@@ -1312,28 +1311,29 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | default_statement
     | eval_block
     | if_require_statement
-    | value_op ';'
+    | operator ';'
     | LAST ';'
     | NEXT ';'
     | BREAK ';'
     | RETURN ';'
-    | RETURN value_op ';'
-    | DIE value_op ';'
-    | WARN value_op ';'
-    | PRINT value_op ';'
+    | RETURN operator ';'
+    | DIE operator ';'
+    | DIE ';'
+    | WARN operator ';'
+    | PRINT operator ';'
     | weaken_field ';'
     | unweaken_field ';'
     | ';'
-    | MAKE_READ_ONLY value_op ';'
+    | MAKE_READ_ONLY operator ';'
 
   for_statement
-    : FOR '(' opt_value_op ';' op ';' opt_value_op ')' block
+    : FOR '(' opt_operator ';' operator ';' opt_operator ')' block
 
   while_statement
-    : WHILE '(' op ')' block
+    : WHILE '(' operator ')' block
 
   switch_statement
-    : SWITCH '(' value_op ')' switch_block
+    : SWITCH '(' operator ')' switch_block
 
   switch_block
     : '{' case_statements '}'
@@ -1344,8 +1344,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | case_statement
 
   case_statement
-    : CASE value_op ':' block
-    | CASE value_op ':'
+    : CASE operator ':' block
+    | CASE operator ':'
 
   default_statement
     : DEFAULT ':' block
@@ -1356,13 +1356,13 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | IF '(' require ')' block ELSE block
 
   if_statement
-    : IF '(' op ')' block else_statement
-    | UNLESS '(' op ')' block else_statement
+    : IF '(' operator ')' block else_statement
+    | UNLESS '(' operator ')' block else_statement
 
   else_statement
     : /* NULL */
     | ELSE block
-    | ELSIF '(' op ')' block else_statement
+    | ELSIF '(' operator ')' block else_statement
 
   block
     : '{' opt_statements '}'
@@ -1370,19 +1370,15 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   eval_block
     : EVAL block ';'
 
-  opt_value_ops
+  opt_operators
     : /* Empty */
-    | value_ops
+    | operators
 
-  opt_value_op
+  opt_operator
     : /* Empty */
-    | value_op
+    | operator
 
-  op
-    : value_op
-    | logical_op
-
-  value_op
+  operator
     : var
     | EXCEPTION_VAR
     | CONSTANT
@@ -1394,95 +1390,95 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | new
     | array_init
     | array_length
-    | my_var
-    | unary_op
-    | binary_op
+    | var_decl
+    | unary_operator
+    | binary_operator
     | assign
     | inc
     | dec
-    | '(' value_ops ')'
+    | '(' operators ')'
     | CURRENT_CLASS_NAME
     | isweak_field
-    | comparison_op
+    | comparison_operator
     | isa
     | TRUE
     | FALSE
     | is_read_only
     | has_impl
+    | logical_operator
 
-  value_ops
-    : value_ops ',' value_op
-    | value_ops ','
-    | value_op
+  operators
+    : operators ',' operator
+    | operators ','
+    | operator
 
-  unary_op
-    : '+' value_op %prec PLUS
-    | '-' value_op %prec MINUS
-    | BIT_NOT value_op
+  unary_operator
+    : '+' operator %prec PLUS
+    | '-' operator %prec MINUS
+    | BIT_NOT operator
     | REFCNT var
-    | REFOP value_op
-    | STRING_LENGTH value_op
-    | DUMP value_op
+    | REFOP operator
+    | STRING_LENGTH operator
+    | DUMP operator
     | DEREF var
     | CREATE_REF var
-    | NEW_STRING_LEN value_op
-    | COPY value_op
+    | NEW_STRING_LEN operator
+    | COPY operator
 
   is_read_only
-    : IS_READ_ONLY value_op
+    : IS_READ_ONLY operator
 
   inc
-    : INC value_op
-    | value_op INC
+    : INC operator
+    | operator INC
 
   dec
-    : DEC value_op
-    | value_op DEC
+    : DEC operator
+    | operator DEC
 
-  binary_op
-    : value_op '+' value_op
-    | value_op '-' value_op
-    | value_op '*' value_op
-    | value_op DIVIDE value_op
-    | value_op DIVIDE_UNSIGNED_INT value_op
-    | value_op DIVIDE_UNSIGNED_LONG value_op
-    | value_op REMAINDER value_op
-    | value_op REMAINDER_UNSIGNED_INT value_op
-    | value_op REMAINDER_UNSIGNED_LONG value_op
-    | value_op BIT_XOR value_op
-    | value_op BIT_AND value_op
-    | value_op BIT_OR value_op
-    | value_op SHIFT value_op
-    | value_op '.' value_op
+  binary_operator
+    : operator '+' operator
+    | operator '-' operator
+    | operator '*' operator
+    | operator DIVIDE operator
+    | operator DIVIDE_UNSIGNED_INT operator
+    | operator DIVIDE_UNSIGNED_LONG operator
+    | operator REMAINDER operator
+    | operator REMAINDER_UNSIGNED_INT operator
+    | operator REMAINDER_UNSIGNED_LONG operator
+    | operator BIT_XOR operator
+    | operator BIT_AND operator
+    | operator BIT_OR operator
+    | operator SHIFT operator
+    | operator '.' operator
 
-  comparison_op
-    : value_op NUMEQ value_op
-    | value_op NUMNE value_op
-    | value_op NUMGT value_op
-    | value_op NUMGE value_op
-    | value_op NUMLT value_op
-    | value_op NUMLE value_op
-    | value_op NUMERIC_CMP value_op
-    | value_op STREQ value_op
-    | value_op STRNE value_op
-    | value_op STRGT value_op
-    | value_op STRGE value_op
-    | value_op STRLT value_op
-    | value_op STRLE value_op
-    | value_op STRING_CMP value_op
+  comparison_operator
+    : operator NUMEQ operator
+    | operator NUMNE operator
+    | operator NUMGT operator
+    | operator NUMGE operator
+    | operator NUMLT operator
+    | operator NUMLE operator
+    | operator NUMERIC_CMP operator
+    | operator STREQ operator
+    | operator STRNE operator
+    | operator STRGT operator
+    | operator STRGE operator
+    | operator STRLT operator
+    | operator STRLE operator
+    | operator STRING_CMP operator
 
   isa
-    : value_op ISA type
+    : operator ISA type
 
-  logical_op
-    : op LOGICAL_OR op
-    | op LOGICAL_AND op
-    | LOGICAL_NOT op
-    | '(' logical_op ')'
+  logical_operator
+    : operator LOGICAL_OR operator
+    | operator LOGICAL_AND operator
+    | LOGICAL_NOT operator
 
   assign
-    : value_op ASSIGN value_op
-    | value_op SPECIAL_ASSIGN value_op
+    : operator ASSIGN operator
+    | operator SPECIAL_ASSIGN operator
 
   new
     : NEW basic_type
@@ -1490,29 +1486,30 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | anon_method
 
   array_init
-    : '[' opt_value_ops ']'
-    | '{' value_ops '}'
+    : '[' opt_operators ']'
+    | '{' operators '}'
     | '{' '}'
 
   convert
-    : '(' qualified_type ')' value_op %prec CONVERT
+    : '(' qualified_type ')' operator %prec CONVERT
+    | operator ARROW '(' qualified_type ')' %prec CONVERT
 
   array_access
-    : value_op ARROW '[' value_op ']'
-    | array_access '[' value_op ']'
-    | field_access '[' value_op ']'
+    : operator ARROW '[' operator ']'
+    | array_access '[' operator ']'
+    | field_access '[' operator ']'
 
   call_spvm_method
-    : CURRENT_CLASS SYMBOL_NAME '(' opt_value_ops  ')'
+    : CURRENT_CLASS SYMBOL_NAME '(' opt_operators  ')'
     | CURRENT_CLASS SYMBOL_NAME
-    | class_name ARROW method_name '(' opt_value_ops  ')'
+    | class_name ARROW method_name '(' opt_operators  ')'
     | class_name ARROW method_name
-    | value_op ARROW method_name '(' opt_value_ops ')'
-    | value_op ARROW method_name
-    | value_op ARROW '(' opt_value_ops ')'
+    | operator ARROW method_name '(' opt_operators ')'
+    | operator ARROW method_name
+    | operator ARROW '(' opt_operators ')'
 
   field_access
-    : value_op ARROW '{' field_name '}'
+    : operator ARROW '{' field_name '}'
     | field_access '{' field_name '}'
     | array_access '{' field_name '}'
 
@@ -1527,14 +1524,15 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
 
   has_impl
     : HAS_IMPL var ARROW method_name
+    | HAS_IMPL var
 
   array_length
-    : '@' value_op
-    | '@' '{' value_op '}'
-    | SCALAR '@' value_op
-    | SCALAR '@' '{' value_op '}'
+    : '@' operator
+    | '@' '{' operator '}'
+    | SCALAR '@' operator
+    | SCALAR '@' '{' operator '}'
 
-  my_var
+  var_decl
     : MY var ':' qualified_type opt_type_comment
     | MY var
 
@@ -1569,8 +1567,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | array_type '[' ']'
 
   array_type_with_length
-    : basic_type '[' value_op ']'
-    | array_type '[' value_op ']'
+    : basic_type '[' operator ']'
+    | array_type '[' operator ']'
 
   return_type
     : qualified_type opt_type_comment
