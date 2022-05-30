@@ -110,7 +110,7 @@ B<Examples:>
   foo__bar
   3foo
 
-A method name that is same as a L<keyword/"Keyword"> is allowed.
+A method name that is the same as a L<keyword/"Keyword"> is allowed.
   
   # "if" is a valid method name
   static method if : void () {
@@ -138,7 +138,7 @@ B<Examples:>
   3foo
   Foo::Bar
 
-The field name that is same as a L<keyword/"Keyword"> is allowed.
+The field name that is the same as a L<keyword/"Keyword"> is allowed.
   
   # "if" is a valid field name
   has if : int;
@@ -485,7 +485,7 @@ And if C<-> exists, the following conversion is performed.
 
   value_int32_t = -value_int32_t;
 
-For example, C<0xFFFFFFFF> is same as C<-1>, C<-0xFFFFFFFF> is same as C<1>.
+For example, C<0xFFFFFFFF> is the same as C<-1>, C<-0xFFFFFFFF> is the same as C<1>.
 
 If the return type is the L<long type|/"long Type">, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in C<C language>, and the following conversion is performed.
 
@@ -496,7 +496,7 @@ And if C<-> exists, the following conversion is performed.
 
   value_int64_t = -value_int64_t;
 
-For example, C<0xFFFFFFFFFFFFFFFFL> is same as C<-1L>, C<-0xFFFFFFFFFFFFFFFFL> is same as C<1L>.
+For example, C<0xFFFFFFFFFFFFFFFFL> is the same as C<-1L>, C<-0xFFFFFFFFFFFFFFFFL> is the same as C<1L>.
 
 B<Examples:>
 
@@ -533,7 +533,7 @@ And if C<-> exists, the following conversion is performed.
 
   value_int32_t = -value_int32_t;
 
-For example, C<037777777777> is same as C<-1>, C<-037777777777> is same as C<1>.
+For example, C<037777777777> is the same as C<-1>, C<-037777777777> is the same as C<1>.
 
 If the return type is the L<long type|/"long Type">, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in C<C language>, and the following conversion is performed.
 
@@ -544,7 +544,7 @@ And if C<-> exists, the following conversion is performed.
 
   value_int64_t = -value_int64_t;
 
-For example, C<01777777777777777777777L> is same as C<-1L>, C<-01777777777777777777777L> is same as C<1L>.
+For example, C<01777777777777777777777L> is the same as C<-1L>, C<-01777777777777777777777L> is the same as C<1L>.
 
 B<Examples:>
 
@@ -578,7 +578,7 @@ And if C<-> exists, the following conversion is performed.
 
   value_int32_t = -value_int32_t;
 
-For example, C<0b11111111111111111111111111111111> is same as C<-1>, C<-0b11111111111111111111111111111111> is same as C<1>.
+For example, C<0b11111111111111111111111111111111> is the same as C<-1>, C<-0b11111111111111111111111111111111> is the same as C<1>.
 
 If the return type is the L<long type|/"long Type">, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in C<C language>, and the following conversion is performed.
 
@@ -589,7 +589,7 @@ And if C<-> exists, the following conversion is performed.
 
   value_int64_t = -value_int64_t;
 
-For example, C<0b1111111111111111111111111111111111111111111111111111111111111111L> is same as C<-1L>, C<-0b1111111111111111111111111111111111111111111111111111111111111111L> is same as C<1L>.
+For example, C<0b1111111111111111111111111111111111111111111111111111111111111111L> is the same as C<-1L>, C<-0b1111111111111111111111111111111111111111111111111111111111111111L> is the same as C<1L>.
 
 B<Examples:>
 
@@ -2292,7 +2292,7 @@ Module can contain multiple Classes.
 
 Modules must be placed in the module loading path with the following File Name.
 
-Change "::" to C</>. Add ".spvm" at the end.
+Change C<::> to C</>. Add ".spvm" at the end.
 
   SPVM/Foo.spvm
   SPVM/Foo/Bar.spvm
@@ -2409,95 +2409,26 @@ The following modules are loaded by default. These modules are deeply related to
 
 =head1 Class Variable
 
+A class variable is a global variable that has the name space.
+
 =head2 Class Variable Definition
 
-B<Class Variable> is a global variable that belongs to L</"Class"> and exists from the begin to the end of the program execution.
-
-"our" Keyword defines a Class Variable.
+C<our> keyword defines a class variable.
 
   our CLASS_VARIABLE_NAME : TYPE;
 
-Class Variable must be defined directly under the L<class definition|/"Class Definition">.
+A Class variable must be defined directly under the L<class definition|/"Class Definition">.
 
-Class Variable Definition must specify L</"Type">. The Type must be L</"Numeric Type"> or L</"Object Type">.
+The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">.
 
-Class variable mames must follows the rule specified in L</"Class Variable Name">, and must not contain "::", otherwise a compilation error will occur.
+The class variable mame must follow the rule defined in the L<class variable name|/"Class Variable Name">, and must not contain C<::>. Otherwise a compilation error will occur.
 
-If more than one Class Variable with the same name is defined, a compilation error will occur.
+If a class name with the same name is defined, a compilation error will occur.
 
-Class Variable Descriptor can be specified together in Class Variable definition.
+L<Class variable descriptors|/"Class Variable Descriptor"> can be specified.
 
   our CLASS_VARIABLE_NAME : DESCRIPTOR TYPE;
-  our CLASS_VARIABLE_NAME : DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN TYPE;
-
-=head2 Class Variable Descriptor
-
-List of Class Variable Descriptors.
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      Descriptor
-   </th>
-    <th>
-      Description
-   </th>
-  </tr>
-  <tr>
-    <td>
-      <b>public</b>
-    </td>
-    <td>
-      This Class Variable is public. This Class Variable can be accessed from other class.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>private</b>
-    </td>
-    <td>
-      This Class Variable is private. This Class Variable can't be accessed from other class. This is default setting of Class Variable.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>ro</b>
-    </td>
-    <td>
-      This Class Variable has Read Accessor. Read Accessor name is the same as class variable names except removing C<$>. For example, If the class variable names is "$FOO", Read Accessor name is "FOO".
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>wo</b>
-    </td>
-    <td>
-      This Class Variable has Write Accessor. Write Accessor name is the same as class variable names except removing C<$> and adding "SET_" to top. For example, If the class variable names is "$FOO", Read Accessor name is "SET_FOO".
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>rw</b>
-    </td>
-    <td>
-      This Class Variable has Read accessor and Write Accessor.
-    </td>
-  </tr>
-</table>
-
-=end html
-
-If both C<public> and C<private> Descriptors are specified, a compilation error will occur.
-
-If more than one of "ro", "wo", and "rw" are specified at the same time, a compilation error will occur
-
-Read Accessor of Class Variable has no arguments and the return type is same as the type of Class Variable.
-
-Write Acessor of Class Variable has one argument and the type is same as the type of Class Variable. The return type is L</"void Type">.
-
-Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Class Variable Accessors.
+  our CLASS_VARIABLE_NAME : DESCRIPTOR1 DESCRIPTOR2 DESCRIPTOR3 TYPE;
 
 B<Examples:>
 
@@ -2513,6 +2444,119 @@ B<Examples:>
     our $NUM_RO : ro int;
     our $NUM_WO : wo int;
     our $NUM_RW : rw int;
+  }
+
+=head2 Class Variable Descriptor
+
+The list of class variable descriptors.
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      Descriptors
+   </th>
+    <th>
+      Descriptions
+   </th>
+  </tr>
+  <tr>
+    <td>
+      <b>public</b>
+    </td>
+    <td>
+      The class variable is public. The class variable can be accessed from other classes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>private</b>
+    </td>
+    <td>
+      The class variable is private. The class variable can't be accessed from other classes. This is default setting.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>ro</b>
+    </td>
+    <td>
+      The class variable has its <a href="#Class-Variable-Read-Accessor">read-accessor</a>.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>wo</b>
+    </td>
+    <td>
+      The class variable has its <a href="#Class-Variable-Write-Accessor">write-accessor</a>.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>rw</b>
+    </td>
+    <td>
+      The class variable has its <a href="#Class-Variable-Read-Accessor">read-accessor</a> and <a href="#Class-Variable-Write-Accessor">write-accessor</a>.
+    </td>
+  </tr>
+</table>
+
+=end html
+
+If both C<public> and C<private> descriptors are specified, a compilation error will occur.
+
+If more than one of C<ro>, C<wo>, and C<rw> are specified, a compilation error will occur
+
+=head2 Class Variable Accessor
+
+A class variable accessor is a L<method|/"Method"> that gets and sets a class variable.
+
+=head3 Class Variable Read-Accessor
+
+A class variable read-accessor is a L<method|/"Method"> to perform the L<getting class variable|/"Getting Class Variable">.
+
+It has no arguments and the return type is the same as the type of the class variable.
+
+It is defined by the C<ro> or C<rw> L<class variable descriptors|/"Class Variable Descriptors">.
+
+It is a L<method|/"Method"> that name is the same as the class variable name removing C<$>. For example, if the class variable name is C<$FOO>, its read-accessor name is C<FOO>.
+
+Inline expantion to the L<getting class variable|/"Getting Class Variable"> is performed to each class variable read-accessor.
+
+B<Examples:>
+
+  # Class variable read-accessor
+  class Foo {
+    our $NUM : ro int;
+    
+    static method main : void {
+      my $num = Foo->NUM;
+    }
+  }
+
+=head3 Class Variable Write-Accessor
+
+A class variable write-accessor is a L<method|/"Method"> to perform the L<setting class variable|/"Setting Class Variable">.
+
+It has an argument that type is the same as the type of the class variable. The return type is the L<void type/"void Type">.
+
+It is defined by the C<wo>  or C<rw> L<class variable descriptors|/"Class Variable Descriptors">.
+
+It is a L<method|/"Method"> that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is C<$FOO>, its write-accessor name is C<SET_FOO>.
+
+Inline expantion to the L<setting class variable|/"Setting Class Variable"> is performed to each class variable write-accessor.
+
+B<Examples:>
+
+  # Class variable write-accessor
+  class Foo {
+    our $NUM : wo int;
+    
+    static method main : void {
+      Foo->SET_NUM(3);
+    }
   }
 
 =head2 Class Variable Initial Value
@@ -2549,11 +2593,11 @@ C<has> keyword defines a field.
 
 Field must be defined directly under the L<class definition|/"Class Definition">.
 
-Field Definition must be specify L</"Type">. The Type must be L</"Numeric Type"> or L</"Object Type">.
+Field Definition must be specify L</"Type">. The Type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">.
 
 Field names must follows the rule specified in L</"Field Name">.
 
-Field Type must be L</"Numeric Type"> or L</"Object Type">, otherwise a compilation error will occur.
+Field Type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">, otherwise a compilation error will occur.
 
 If more than one field names Variable with the same name is defined, a compilation error will occur.
 
@@ -2564,17 +2608,17 @@ Field Descriptor can be specified together in Field Definition.
 
 =head2 Field Descriptor
 
-List of Field Descriptors.
+The list of field descriptors.
 
 =begin html
 
 <table>
   <tr>
     <th>
-      Descriptor
+      Descriptors
    </th>
     <th>
-      Description
+      Descriptions
    </th>
   </tr>
   <tr>
@@ -2598,7 +2642,7 @@ List of Field Descriptors.
       <b>ro</b>
     </td>
     <td>
-      This Field has Read Accessor. Read Accessor name is the same as field mames. For example, If the field names is "foo", Read Accessor name is "foo".
+      This Field has Read-Accessor. Read-Accessor name is the same as field mames. For example, If the field names is "foo", Read-Accessor name is "foo".
     </td>
   </tr>
   <tr>
@@ -2606,7 +2650,7 @@ List of Field Descriptors.
       <b>wo</b>
     </td>
     <td>
-      This Field has Write Accessor. Write Accessor name is the same as field names adding "set_" to top. For example, If the field names is "foo", Read Accessor name is "set_foo".
+      This Field has Write-Accessor. Write-Accessor name is the same as field names adding "set_" to top. For example, If the field names is "foo", Read-Accessor name is "set_foo".
     </td>
   </tr>
   <tr>
@@ -2614,7 +2658,7 @@ List of Field Descriptors.
       <b>rw</b>
     </td>
     <td>
-      This Field has Read Accessor and Write Accessor.
+      This Field has Read-Accessor and Write-Accessor.
     </td>
   </tr>
 </table>
@@ -2623,13 +2667,13 @@ List of Field Descriptors.
 
 If both C<public> and C<private> Descriptors are specified, a compilation error will occur.
 
-If more than one of "ro", "wo", and "rw" are specified at the same time, a compilation error will occur
+If more than one of C<ro>, C<wo>, and C<rw> are specified at the same time, a compilation error will occur
 
-Read Accessor of Field has one argument that is L</"self Type"> and the return type is same as the type of Field.
+Read-Accessor of Field has one argument that is L</"self Type"> and the return type is the same as the type of Field.
 
-Write Acessor of Class Variable has two arguments. First argument is L</"self Type"> and second argument is same as the type of Field. The return type is L</"void Type">.
+Write Acessor of Class Variable has two arguments. First argument is L</"self Type"> and second argument is the same as the type of Field. The return type is the L<void type/"void Type">.
 
-Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Field Accessors.
+Inline Expansion optimization is performed to Read-Accessor and Write-Accessor. You don't have to worry about the performance penalty of using Field Accessors.
 
 B<Examples:>
 
@@ -2722,9 +2766,9 @@ The argument names must be follow the rule of L</"Local Variable Name">.
 
 The minimal length of arguments is C<0>. The max length of arguments is C<255>.
 
-The types of the arguments must be L</"Numeric Type">, L</"Multi-Numeric Type">, L</"Object Type">, or L</"Reference Type">, otherwise a compilation error will occur.
+The types of the arguments must be a L<numeric type|/"Numeric Type">, L</"Multi-Numeric Type">, an L<object type|/"Object Type">, or L</"Reference Type">, otherwise a compilation error will occur.
 
-The type of the return value must be L</"void Type">, L</"Numeric Type">, L</"Multi-Numeric Type"> or L</"Object Type">, otherwise a compilation error will occur.
+The type of the return value must be the L<void type/"void Type">, a L<numeric type|/"Numeric Type">, L</"Multi-Numeric Type"> or an L<object type|/"Object Type">, otherwise a compilation error will occur.
 
 Defined methods can be called using L</"Method Call"> syntax.
 
@@ -2905,7 +2949,7 @@ Precompiled methods need the L<build directory|SPVM/"SPVM_BUILD_DIR"> such as C<
 
 =head2 Constant Method
 
-Constant Method is a Method that the return type is L</"Numeric Type"> and returns Constant Value.
+Constant Method is a Method that the return type is a L<numeric type|/"Numeric Type"> and returns Constant Value.
 
   static method foo : int () { return 5; }
   static method foo : long () { return 5L; }
@@ -3083,7 +3127,7 @@ In special cases, a value of an enumeration can be used as the operand of a L<ca
 
 =head2 Local Variable Declaration
 
-B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has L</"Scope">. This is same as Local Variable in C Language.
+B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has L</"Scope">. This is the same as Local Variable in C Language.
 
 Local Variable is declared using B<my> L</"Keyword">.
 
@@ -3091,7 +3135,7 @@ Local Variable is declared using B<my> L</"Keyword">.
 
 The local variable name must be follow the rule of L</"Local Variable Name">.
 
-L</"Type"> must be specified. Type must be L</"Numeric Type">, L</"Object Type">, L</"Multi-Numeric Type">, or L</"Reference Type">.
+L</"Type"> must be specified. Type must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type">, L</"Multi-Numeric Type">, or L</"Reference Type">.
 
   # Local Variable Declaration Examples
   my $var : int;
@@ -3494,9 +3538,9 @@ Multi-Numeric Type are defined by specifying mulnum_t L</"Class Descriptor"> in 
 
 Multi-Numeric Type must end with C<_>, Number of Fields, L</"Multi-Numeric Type Suffix">.
 
-The suffix must correspond to L</"Numeric Type">.
+The suffix must correspond to a L<numeric type|/"Numeric Type">.
 
-All Fields must be the same L</"Numeric Type">.
+All Fields must be the same a L<numeric type|/"Numeric Type">.
 
 The maximum number of Fields is 255.
 
@@ -3515,7 +3559,7 @@ Reference can be created for Multi-Numeric Type value.
   my $z : Complex_2d;
   my $z_ref = \$z;
 
-L</"Undefined Value"> cannot be assigned to Multi-Numeric Type value.
+L<undef|/"Undefined Value"> cannot be assigned to Multi-Numeric Type value.
 
 See L</"Multi-Numeric Type Field Access"> to get and set the value of field of Multi-Numeric Type Value.
 
@@ -3620,9 +3664,9 @@ L</"Multi-Numeric Value"> can be an element of L</"Array">.
 
 Multi-Numeric Array has continuous Multi-Numeric Values.
 
-The Element Type is L</"Multi-Numeric Type">, not L</"Object Type">.
+The Element Type is L</"Multi-Numeric Type">, not an L<object type|/"Object Type">.
 
-For example, Complex_2d[5] is continuous 15 (= 3 * 5) count L</"int Type"> Value.
+For example, Complex_2d[5] is continuous 15 (= 3 * 5) count the L<int type|/"int Type"> Value.
 
 L</"Type"> of Multi-Numeric Array is L</"Array Type">.
 
@@ -3792,7 +3836,7 @@ Numeric Type are L</"Integral Type"> and L</"Floating Point Type">.
 
 =head3 Numeric Type Order
 
-L</"Numeric Type"> has the type order. The order is "byte", "short", "int", "long", "float", "double" from the smallest.
+a L<numeric type|/"Numeric Type"> has the type order. The order is "byte", "short", "int", "long", "float", "double" from the smallest.
 
 =head2 Integral Type
 
@@ -3874,7 +3918,7 @@ C<short> type  is a L</"Integral Type"> that represents a signed 16-bit integer.
 
 =head2 int Type
 
-C<int> type is  is a L</"Integral Type"> that represents signed 32-bit integer. This is same as C<int32_t> type of C language.
+C<int> type is  is a L</"Integral Type"> that represents signed 32-bit integer. This is the same as C<int32_t> type of C language.
 
 =head2 long Type
 
@@ -4109,9 +4153,9 @@ Array has dimensions and can express up to 255 dimensions.
   # Three-dimensional
   int[] [] []
 
-Array Type is L</"Object Type">.
+Array Type is an L<object type|/"Object Type">.
 
-Use new Operator to create an Array. In the following example, L</"int Type"> Array with 3 elements is created.
+Use new Operator to create an Array. In the following example, the L<int type|/"int Type"> Array with 3 elements is created.
 
 my $nums = new int [3];
 
@@ -4121,7 +4165,7 @@ my $nums = new int[] [3];
 
 =head3 Numeric Array Type
 
-Numeric Array Type means L</"Numeric Type"> with the element L</"Array Type"> It is.
+Numeric Array Type means a L<numeric type|/"Numeric Type"> with the element L</"Array Type"> It is.
 
 B<Numeric Array Type list>
 
@@ -4150,7 +4194,7 @@ B<Numeric Array Type list>
 
 =end html
 
-Data represented by Numeric Array Type must have elements whose size is L</"Numeric Type">, and must be consecutive by the number of Array Length.
+Data represented by Numeric Array Type must have elements whose size is a L<numeric type|/"Numeric Type">, and must be consecutive by the number of Array Length.
 
 All elements of Numeric Array Type are initialized by L</"Type Initial Value"> when the L<creating array|/"Creating Array"> is performed.
 
@@ -4296,7 +4340,7 @@ See L</"Values ​​"> for a detailed explanation of Multi-Numeric Type.
 
 =head2 Reference Type
 
-Reference Type is a Type that can store the address of a variable. Add C<*> after L</"Numeric Type"> or L</"Multi-Numeric Type"> You can define it.
+Reference Type is a Type that can store the address of a variable. Add C<*> after a L<numeric type|/"Numeric Type"> or L</"Multi-Numeric Type"> You can define it.
 
   my $num : int;
   my $num_ref : int* = \$num;
@@ -4328,7 +4372,7 @@ Reference Type are L<Numeric Reference Type> and L<Multi-Numeric Reference Type>
 
 =head2 Numeric Reference Type
 
-Numeric Reference Type means L</"Numeric Type"> for L</"Reference Type">. Says.
+Numeric Reference Type means a L<numeric type|/"Numeric Type"> for L</"Reference Type">. Says.
 
 =head2 Multi-Numeric Reference Type
 
@@ -4862,7 +4906,7 @@ B<Examples:>
 
 If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the assignability is true.
+If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is the same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5483,7 +5527,7 @@ If the type of the right operand is the same type of the left operand or the L<u
 
 If the type of the right operand is an L<any object type|/"Any Object Type">, the type castability is true.
 
-If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the type castability is true.
+If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is the same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the type castability is true.
 
 Otherwise, the type castability is false.
 
@@ -5739,7 +5783,7 @@ The following rules apply.
 
 3. When one Expression is L</"long Type">, the other Type is L</"long Type"> Is converted to>.
 
-4, otherwise, it will be converted to L</"int Type">.
+4, otherwise, it will be converted to the L<int type|/"int Type">.
 
 Binary Numeric Type Conversion is performed in the following cases.
 
@@ -5925,13 +5969,13 @@ The runtime assignability is false, an exception will be thrown.
 
 If the type of the distribution is an L<object type|/"Object Type"> and the type of the source is L<undef|\"Undefined Type">, the runtime type assignability is true.
 
-If the type of the distribution is same as the type of the source, the runtime type assignability is true.
+If the type of the distribution is the same as the type of the source, the runtime type assignability is true.
 
 If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Type">, the runtime type assignability is true.
 
 If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Type">, the runtime type assignability is true.
 
-If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime type assignability is true.
+If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime type assignability is true.
 
 =begin html
 
@@ -6121,7 +6165,7 @@ This is the same as the following L<if Statement|/"if Statement">.
 
 =head2 switch Statement
 
-The C<switch> statement is a L<statement|/"Statements"> for conditional branching with an integer of L</"int Type"> as a condition. Faster than if Statement if the condition is an integer of L</"int Type"> and there are many branches.
+The C<switch> statement is a L<statement|/"Statements"> for conditional branching with an integer of the L<int type|/"int Type"> as a condition. Faster than if Statement if the condition is an integer of the L<int type|/"int Type"> and there are many branches.
 
   switch (CONDITION) {
     case constant 1: (
@@ -6142,7 +6186,7 @@ The C<switch> statement is a L<statement|/"Statements"> for conditional branchin
 
 As the condition Expression, L</"Expressions"> can be specified. L</"Bool Type Conversion"> is executed for the condition Expression.
 
-The constants specified in L</"case Statement"> are L</"byte Type"> or L</"int Type"> constants. must be. For a constant of L</"byte Type">, type conversion to L</"int Type"> at compile-time. Will be done. The value of enumType and Constant Method of L</"int Type"> are constants of L</"int Type">. As it is expanded at the time of syntax analysis, it can be used.
+The constants specified in L</"case Statement"> are L</"byte Type"> or the L<int type|/"int Type"> constants. must be. For a constant of L</"byte Type">, type conversion to the L<int type|/"int Type"> at compile-time. Will be done. The value of enumType and Constant Method of the L<int type|/"int Type"> are constants of the L<int type|/"int Type">. As it is expanded at the time of syntax analysis, it can be used.
 
 The constants specified in the case statement must not overlap. If there are duplicates, a compilation error will occur
 
@@ -6338,9 +6382,9 @@ If there is a Return Value, L</"Expressions"> can be specified.
 
   return EXPRESSION;
 
-If the Return Value Type in the L<method definition|/"Method Definition"> is L</"void Type">, Expression Must not exist, otherwise a compilation error will occur.
+If the Return Value Type in the L<method definition|/"Method Definition"> is the L<void type/"void Type">, Expression Must not exist, otherwise a compilation error will occur.
 
-the L<method definition|/"Method Definition">, if the Return Value Type is other than L</"void Type">, Expression Must match the type of, otherwise a compilation error will occur.
+the L<method definition|/"Method Definition">, if the Return Value Type is other than the L<void type/"void Type">, Expression Must match the type of, otherwise a compilation error will occur.
 
 =head2 next Statement
 
@@ -6627,7 +6671,7 @@ The division operator C</> is a L<binary operator|/"Binary Operator"> to culcura
 
   LEFT_OPERAND / RIGHT_OPERAND
 
-The left operand and the right operand must be L</"Numeric Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be a L<numeric type|/"Numeric Type">, otherwise a compilation error will occur.
 
 L</"Binary Numeric Type Conversion"> is performed to the left operand and the right operand.
 
@@ -6956,7 +7000,7 @@ The right operand must be L</"Integral Type"> except for the L<long type|/"long 
 
 L</"Numeric Widening Type Conversion"> is performed to the right operand.
 
-The return type is same as the type of the left operand.
+The return type is the same as the type of the left operand.
 
 The calculation result of the left shift operator is the same as the following calculation in C language.
 
@@ -6976,7 +7020,7 @@ The right operand must be L</"Integral Type"> except for the L<long type|/"long 
 
 L</"Numeric Widening Type Conversion"> is performed to the right operand.
 
-The return type is same as the type of the left operand.
+The return type is the same as the type of the left operand.
 
 The operation result of the arithmetic right shift Operator is the operation that exactly same as the following operation in C language.
 
@@ -6996,7 +7040,7 @@ The right operand must be L</"Integral Type"> except for the L<long type|/"long 
 
 L</"Numeric Widening Type Conversion"> is performed to the right operand.
 
-The return type is same as the type of the left operand.
+The return type is the same as the type of the left operand.
 
 The operation result of logical right shift Operator is the same as the following calculation in C language.
   
@@ -7128,11 +7172,11 @@ the Numeric Comparison Operation is performed that exactly same as the following
   (int32_t)(x <= y);
   (int32_t)(x > y ? 1 : x < y ? -1 : 0);
 
-For Numeric Type Operation(==, !=, >, >=, <, <=), L</"int Type"> Operation, L</"long Type"> Operation, L</"float Type"> Operation, L</"double Type"> Operation is defined.
+For Numeric Type Operation(==, !=, >, >=, <, <=), the L<int type|/"int Type"> Operation, L</"long Type"> Operation, L</"float Type"> Operation, L</"double Type"> Operation is defined.
 
 And Object Type Operation(==, !=) is defined.
 
-The return type of the Numeric Comparison Operator is L</"int Type">.
+The return type of the Numeric Comparison Operator is the L<int type|/"int Type">.
 
 =head2 String Comparison Operator
 
@@ -7221,11 +7265,11 @@ B<isa Operator> is a L</"Comparison Operator"> to check whether The left operand
 
 isa Operator has three behaviors, depending on Right Type.
 
-1. If Right Type is L</"Numeric Type">, L</"Multi-Numeric Type">, L</"Any Object Type">, L</"Reference Type">, isa operator checks whether the type of the left operand is same as Right Type. This check is done at compile-time and isa operator is replaced by L</"int Type"> value. If their types is same, replaced by 1, otherwise by 0.
+1. If the right type is a L<numeric type|/"Numeric Type">, L</"Multi-Numeric Type">, L</"Any Object Type">, L</"Reference Type">, isa operator checks whether the type of the left operand is the same as Right Type. This check is done at compile-time and isa operator is replaced by the L<int type|/"int Type"> value. If their types is the same, replaced by 1, otherwise by 0.
 
-2. If the Right Type is L</"Class Type">, isa operator checks whether the type of the left operand is same as Right Type at Run Time. If their types are same, L</"int Type"> 1 is return, otherwise 0. The type of the left operand must be L</"Object Type">, otherwise a compilation error will occur.
+2. If the right type is L</"Class Type">, isa operator checks whether the type of the left operand is the same as Right Type at Run Time. If their types are same, the L<int type|/"int Type"> 1 is return, otherwise 0. The type of the left operand must be an L<object type|/"Object Type">, otherwise a compilation error will occur.
 
-3. If the Right Type is L</"Interface Type">, isa Operator checks whether the type of the left operand satisfy the Interface Type at Run Time. If the left operand satisfies the Interface Type, returns L</"int Type"> 1, otherwise 0. The type of the left operand must be L</"Object Type">, otherwise a compilation error will occur.
+3. If the right type is L</"Interface Type">, isa Operator checks whether the type of the left operand satisfy the Interface Type at Run Time. If the left operand satisfies the Interface Type, returns the L<int type|/"int Type"> 1, otherwise 0. The type of the left operand must be an L<object type|/"Object Type">, otherwise a compilation error will occur.
 
 =head2 ref Operator
 
@@ -7283,7 +7327,7 @@ The logical AND operator C<&&> is a L<logical operator|/"Logical Operator"> to p
   
 The left operand and the right operand must be an L<operator|/"Operator">.
 
-The return type of logical AND operator is L</"int Type">.
+The return type of logical AND operator is the L<int type|/"int Type">.
 
 Thg logical AND operator performs the L<bool type conversion|/"Bool Type Conversion"> to the left operand. If the evaluated value is C<0>, the logical AND operator returns C<0>.
 If the value is C<1>, the right operand is evaluated.
@@ -7298,7 +7342,7 @@ The logical OR operator C<||> is a L<logical operator|/"Logical Operator"> to pe
 
 The left operand and the right operand must be an L<operator|/"Operator">.
 
-The return type of logical OR operator is L</"int Type">.
+The return type of logical OR operator is the L<int type|/"int Type">.
 
 Thg logical OR operator performs the L<bool type conversion|/"Bool Type Conversion"> to the left operand. If the evaluated value is C<1>, the logical OR operator returns C<1>. Otherwise the right operand is evaluated.
 
@@ -7379,7 +7423,7 @@ For example, See a C<byte> case.
   # Addition assignment operator
   $x += 1;
   
-  # Above is same as the following code.
+  # Above is the same as the following code.
   $x = (byte)($x + 1)
 
 The following operators are used as the operators of the special assignment operators.
@@ -7459,7 +7503,7 @@ The array length operator is an L<unary operator|/"Unary Operator"> to get the l
 
 The operand must be a L<Expression|/"Expressions"> that type is an L</"Array Type">, otherwise a compilation error will occur.
 
-The array length operator returns a L</"int Type"> value that is the length of the L</"Array">.
+The array length operator returns a the L<int type|/"int Type"> value that is the length of the L</"Array">.
 
 Array Length Operator returns L</"Expressions">
 
@@ -7505,7 +7549,7 @@ An L<exception|/"Exception"> is thorwn.
 
 The C<copy> operator returns the copied object.
 
-The return type is same as the type of operand.
+The return type is the same as the type of operand.
 
 Read-only flag of the string is dropped.
 
@@ -7859,17 +7903,17 @@ B<Examples:>
 
 B<Getting Array Element Expression> is an L<operator|/"Operator"> to get a Element Value of L</"Array">.
 
-  ARRAY_EXPRESSION->[INDEX_EXPRESSION]
+  ARRAY->[INDEX]
 
 Array Expression must be L</"Array Type">.
 
-Index Expression must be L</"int Type"> or the type that become L</"int Type"> by L</"Numeric Widening Type Conversion">.
+the index must be the L<int type|/"int Type"> or the type that become the L<int type|/"int Type"> by L</"Numeric Widening Type Conversion">.
 
 Getting Array Element Expression returns the Element Value of the Index.
 
-If Array Expression is L</"Undefined Value">, a Runtime Exception occurs.
+If the array is L<undef|/"Undefined Value">, a Runtime Exception occurs.
 
-If Index Expression is less than 0 or more than the max index of the Array, a Runtime Exception occurs.
+If the index is less than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
 B<Examples:>
 
@@ -7886,21 +7930,21 @@ B<Examples:>
 
 Setting Array Element Expression is an L<operator|/"Operator"> to set a Element Value of a Array using L</"Assignment Operator">.
 
-  ARRAY_EXPRESSION->[INDEX_EXPRESSION] = RIGHT_OPERAND
+  ARRAY->[INDEX] = RIGHT_OPERAND
 
-Array Expression must be L</"Array Type">.
+The array must be L</"Array Type">.
 
-Index Expression must be L</"int Type"> or the type that become L</"int Type"> by L</"Numeric Widening Type Conversion">.
+The index must be the L<int type|/"int Type"> or the type that become the L<int type|/"int Type"> by L</"Numeric Widening Type Conversion">.
 
 The assignment must satisfy the L<type assignability|/"Type Assignability">.
 
 Setting Array Element Expression returns the value of the element after setting.
 
-If Array Expression is L</"Undefined Value">, a Runtime Exception occurs.
+If the array is L<undef|/"Undefined Value">, a Runtime Exception occurs.
 
-If Index Expression is less than 0 or more than the max index of the Array, a Runtime Exception occurs.
+If the index is less than 0 or more than the max index of the Array, a Runtime Exception occurs.
 
-If the right operand is L</"Object Type">, Reference Count of the object is incremented by C<1>.
+If the right operand is an L<object type|/"Object Type">, Reference Count of the object is incremented by C<1>.
 
 If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by C<1>.
 
@@ -8003,7 +8047,7 @@ B<Examples:>
   # string array
   my $strings = ["foo", "bar", "baz"];
 
-The first example is same as the following codes.
+The first example is the same as the following codes.
 
   # int array
   my $nums = new int[3];
@@ -8016,7 +8060,7 @@ The array initialization has another syntax using C<{}>.
   {}
   {ELEMENT1, ELEMENT2, ELEMENT3, ELEMENT4}
 
-This is same as above array init syntax, but the type of the created array is always L</"Any Object Array Type"> C<object[]>.
+This is the same as above array init syntax, but the type of the created array is always L</"Any Object Array Type"> C<object[]>.
 
 And if the length of the elements is odd number, a compilation error will occur.
 
@@ -8269,7 +8313,7 @@ B<Examples:>
 
 See also L<Comparator|SPVM::Comparator>.
 
-The above example is same as the following codes.
+The above example is the same as the following codes.
 
   class Foo::Bar {
     method some_method : void () {
@@ -8310,7 +8354,7 @@ B<Examples:>
 
 A capture is actually implemented as a L<field|/"Field">.
 
-The above example is same as the following codes.
+The above example is the same as the following codes.
 
   class Foo::Bar {
     method some_method : void () {
