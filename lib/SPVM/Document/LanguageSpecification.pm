@@ -2951,7 +2951,7 @@ Signatures are used by L<native APIs|SPVM::Document::NativeAPI>.
 
 =head1 Enumeration
 
-Explains enumeration.
+The enumeration defines constant values.
 
 =head2 Enumeration Definition
 
