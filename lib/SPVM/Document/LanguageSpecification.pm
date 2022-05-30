@@ -2561,10 +2561,11 @@ B<Examples:>
 
 =head2 Class Variable Initial Value
 
-Class Variable is initialized with L</"Type Initial Value"> after compilation and before execution.
+Each class variable is initialized with the L<initial value/"Initial Value"> just after the program starts.
 
-This initial value can be changed by using L</"INIT Block">.
+This initial value can be changed by using the L<INIT block|/"INIT Block">.
 
+  # Change the initial value of the class variable using INIT block.
   class Foo {
     our $VAR : int;
   
@@ -2575,11 +2576,9 @@ This initial value can be changed by using L</"INIT Block">.
 
 =head2 Class Variable Access
 
-Class Variable Access is an operation to access Class Variable to get or set a value.
+The class variable access is an operation to set or get a class variable.
 
-See L</"Getting Class Variable"> for how to get the value of Class Variable.
-
-See L</"Setting Class Variable"> for the setting of the value of Class Variable.
+See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting class varialbe|/"Setting Class Variable">.
 
 =head1 Field
 
@@ -3192,7 +3191,7 @@ See L</"Scope"> about Local Variable Scope.
 
 =head2 Local Variable Initial Value
 
-Local Variable is initialized by L</"Type Initial Value">.
+Local Variable is initialized by the L<initial value/"Initial Value">.
 
 =head2 Local Variable Access
 
@@ -3637,7 +3636,7 @@ To use Multi-Numeric Type, load a Module using L</"use Statement">.
   use Complex_2d;
   use Complex_2d;
 
-Next is L</"Local Variable Declaration">. Local Variable Declaration create continuous area for fields of Multi-Numeric Type Value. All fields of of Multi-Numeric Type Value are initialized by L</"Type Initial Value">.
+Next is L</"Local Variable Declaration">. Local Variable Declaration create continuous area for fields of Multi-Numeric Type Value. All fields of of Multi-Numeric Type Value are initialized by the L<initial value/"Initial Value">.
 
   my $z : Complex_2d;
   my $z : Complex_2d;
@@ -3745,11 +3744,11 @@ SPVM language has data types.
 
 See L<Data type - Wikipedia|https://en.wikipedia.org/wiki/Type_system> about data types.
 
-=head2 Type Initial Value
+=head2 Initial Value
 
 Local Variable Initial Value are described in L</"Class Variable Initial Value">.
 
-A list of Type Initial Value. All Bit columns in the data are set to 0.
+A list of Initial Value. All Bit columns in the data are set to 0.
 
 =begin html
 
@@ -4196,7 +4195,7 @@ B<Numeric Array Type list>
 
 Data represented by Numeric Array Type must have elements whose size is a L<numeric type|/"Numeric Type">, and must be consecutive by the number of Array Length.
 
-All elements of Numeric Array Type are initialized by L</"Type Initial Value"> when the L<creating array|/"Creating Array"> is performed.
+All elements of Numeric Array Type are initialized by the L<initial value/"Initial Value"> when the L<creating array|/"Creating Array"> is performed.
 
 =head3 byte[] Type
 
@@ -7398,7 +7397,7 @@ See L</"Getting Local Variable"> and L</"Setting Local Variable">.
 
 =head3 Class Variable Assignment
 
-See L</"Getting Class Variable"> and L</"Setting Class Variable">.
+See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting class varialbe|/"Setting Class Variable">.
 
 =head3 Array Element Assignment
 
@@ -7971,7 +7970,7 @@ The creating object is an L<operator|/"Operator"> to create an object using the 
 
 The class name must be the name of the L<class|/"Class"> defined by the L<class definition|/"Class Definition">.
 
-The fields of the created object are initialized by L<the rule of type initial value|/"Type Initial Value">.
+The fields of the created object are initialized by the rule of L<initial value|/"Initial Value">.
 
 The reference count of the created object is C<0>. If the object is assigned to a local variable, a class variable, or a field by L</"Assignment Operator">, the reference count is incremented by C<1>.
 
@@ -7991,7 +7990,7 @@ The type of length must be the L<int type|/"int Type"> or the type that become L
 
 If the length is less than C<0>, an exception is thrown.
 
-All elements of the array are initialized by L<the rule of type initial value|/"Type Initial Value">.
+All elements of the array are initialized by the rule of L<initial value|/"Initial Value">.
 
 The type of created array is the L<array type|/"Array Type">.
 
@@ -8424,7 +8423,7 @@ B<Exception Variable> is a global variable that is represented by "B<$@>"
 
   $@
 
-See L</"Setting Class Variable"> to get Exception Variable Value.
+See the L<setting class varialbe|/"Setting Class Variable"> to get Exception Variable Value.
 
 See L</"Setting Exception Variable"> to set Exception Variable Value.
 
