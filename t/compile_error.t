@@ -685,6 +685,10 @@ sub print_error_messages {
 # Enumeration
 {
   compile_not_ok_file('TestCase::CompileError::Enum::PrivateAccess', qr/Can't call the private method "TestCase::Enum->PRIVATE_VALUE"/);
+  {
+    my $source = q|class Tmp { interface_t enum { ONE } }|;
+    compile_not_ok($source, qr/Invalid enumeration descriptor "interface_t"/);
+  }
 }
 
 done_testing;

@@ -3,10 +3,10 @@
 #include "spvm_allocator.h"
 #include "spvm_compiler.h"
 
+
 const char* const* SPVM_DESCRIPTOR_C_ID_NAMES(void) {
 
   static const char* const id_names[] = {
-    "callback_t",
     "mulnum_t",
     "pointer_t",
     "native",

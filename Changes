@@ -1,4 +1,8 @@
 Revision history for SPVM
+0.9601_01  2022-05-31
+        [CHANGE]
+        * Improve compilation error messages.
+        
 0.9600_02  2022-05-30
         [CHANGE]
         * Regex class support "i" (ignore case) option.

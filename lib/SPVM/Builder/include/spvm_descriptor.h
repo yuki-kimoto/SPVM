@@ -3,6 +3,9 @@
 
 #include "spvm_typedecl.h"
 
+
+
+
 enum {
   SPVM_DESCRIPTOR_C_ID_MULNUM_T,
   SPVM_DESCRIPTOR_C_ID_POINTER_T,
