@@ -668,7 +668,7 @@ sub print_error_messages {
   }
   {
     my $source = q|class Tmp { public private enum { ONE } }|;
-    compile_not_ok($source, qr/aaa/);
+    compile_not_ok($source, qr/Only one of "public" and "private" enumeration descriptors can be specified/);
   }
 }
 
@@ -691,6 +691,10 @@ sub print_error_messages {
     {
       my $source = 'class Tmp { our $Tmp::NAME : int; static method main : void () {  } }';
       compile_not_ok($source, qr/The class varaible name "\$Tmp::NAME" in the class variable definition can't contain "::"/);
+    }
+    {
+      my $source = 'class Tmp { our $FOO : required int; }';
+      compile_not_ok($source, qr/Invalid class variable descriptor "required"/);
     }
   }
 }

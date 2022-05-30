@@ -2573,10 +2573,10 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     }
     
     if (method->is_native && method->is_precompile) {
-      SPVM_COMPILER_error(compiler, "native and precompile descriptors can't be used together in method dinition at %s line %d", op_descriptors->file, op_descriptors->line);
+      SPVM_COMPILER_error(compiler, "Only one of \"native\" and \"precompile\" method descriptors can be specified at %s line %d", op_descriptors->file, op_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "public and private descriptors can't be used together in method difinition at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "Only one of \"public\" and \"private\" method descriptors can be specified in method difinition at %s line %d", op_method->file, op_method->line);
     }
   }
 
@@ -2788,7 +2788,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
         }
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "\"public\" and \"private\" descriptors can't be used together in the enumeration difinition at %s line %d", op_method->file, op_method->line);
+        SPVM_COMPILER_error(compiler, "Only one of \"public\" and \"private\" enumeration descriptors can be specified at %s line %d", op_method->file, op_method->line);
       }
     }
   }
