@@ -1,5 +1,0 @@
-class TestCase::CompileError::LogicalOperator::AndNotExpression {
-  static method main : void () {
-    1 && 1;
-  }
-}

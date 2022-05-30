@@ -120,13 +120,6 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::Use::AliasDuplication');
 }
 
-# Logical operator
-{
-  compile_not_ok_file('TestCase::CompileError::LogicalOperator::AndNotExpression');
-  compile_not_ok_file('TestCase::CompileError::LogicalOperator::OrNotExpression');
-  compile_not_ok_file('TestCase::CompileError::LogicalOperator::NotNotExpression');
-}
-
 # oarray
 {
   compile_not_ok_file('TestCase::CompileError::OArray::AssignNumeric');

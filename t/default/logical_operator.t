@@ -15,13 +15,20 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Spec tests
 {
+  # logical operator - combination
+  {
+    ok(SPVM::TestCase::LogicalOperator->logical_operator_combination);
+  }
+
   # logical not
   {
+    ok(SPVM::TestCase::LogicalOperator->logical_not_operator);
     ok(SPVM::TestCase::LogicalOperator->logical_not_false());
   }
 
   # logical or
   {
+    ok(SPVM::TestCase::LogicalOperator->logical_or_operator);
     ok(SPVM::TestCase::LogicalOperator->logical_or_both_true());
     ok(SPVM::TestCase::LogicalOperator->logical_or_left_true());
     ok(SPVM::TestCase::LogicalOperator->logical_or_right_true());
@@ -30,6 +37,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
   # logical and
   {
+    ok(SPVM::TestCase::LogicalOperator->logical_and_operator);
     ok(SPVM::TestCase::LogicalOperator->logical_and_both_true());
     ok(SPVM::TestCase::LogicalOperator->logical_and_left_true());
     ok(SPVM::TestCase::LogicalOperator->logical_and_right_true());

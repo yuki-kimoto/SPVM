@@ -1,5 +1,183 @@
 class TestCase::LogicalOperator {
   use TestCase::Minimal;
+  use Point;
+
+
+  static method logical_operator_combination : int () {
+    {
+      my $ret = (1 || 0) && (0 || 1);
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (1 || 0) && !(0 || 1);
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method logical_not_operator : int () {
+    
+    # Reverse true value "1"
+    {
+      my $true = 1;
+      my $false = !$true;
+      unless ($false == 0) {
+        return 0;
+      }
+    }
+    
+    # Reverse true value "-5"
+    {
+      my $true = -5;
+      my $false = !$true;
+      unless ($false == 0) {
+        return 0;
+      }
+    }
+
+    # Reverse true value object
+    {
+      my $true = Point->new;
+      my $false = !$true;
+      unless ($false == 0) {
+        return 0;
+      }
+    }
+
+    # Reverse false value "0"
+    {
+      my $true = 0;
+      my $false = !$true;
+      unless ($false == 1) {
+        return 0;
+      }
+    }
+
+    # Reverse false value "undef"
+    {
+      my $true = 0;
+      my $false = !$true;
+      unless ($false == 1) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method logical_and_operator : int () {
+    # Logical AND 1 && 1
+    {
+      my $ret = 1 && 1;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    # Logical AND 1 && 0
+    {
+      my $ret = 1 && 0;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    # Logical AND 0 && 1
+    {
+      my $ret = 0 && 1;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    # Logical AND 0 && 0
+    {
+      my $ret = 0 && 0;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    # Logical AND object && 1
+    {
+      my $point = Point->new;
+      my $ret = $point && 1;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    # Logical AND undef object && undef
+    {
+      my $point = (Point)undef;
+      my $ret = $point && undef;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method logical_or_operator : int () {
+    # Logical OR 1 || 1
+    {
+      my $ret = 1 || 1;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    # Logical OR 1 || 0
+    {
+      my $ret = 1 || 0;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    # Logical OR 0 || 1
+    {
+      my $ret = 0 || 1;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    # Logical OR 0 || 0
+    {
+      my $ret = 0 || 0;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    # Logical OR object || 1
+    {
+      my $point = Point->new;
+      my $ret = $point || 0;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    # Logical OR undef object || undef
+    {
+      my $point = (Point)undef;
+      my $ret = $point || undef;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 
   static method logical_and_nagate : int () {
     if (!(1 && 1)) {
