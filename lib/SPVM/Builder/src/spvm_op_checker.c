@@ -2472,7 +2472,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (is_private) {
                 if (!SPVM_OP_is_allowed(compiler, method->class->op_class, call_method->method->class->op_class)) {
-                  SPVM_COMPILER_error(compiler, "Can't call private method %s->%s at %s line %d", call_method->method->class->name, call_method->method->name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Can't call the private method \"%s->%s\" at %s line %d", call_method->method->class->name, call_method->method->name, op_cur->file, op_cur->line);
                   return;
                 }
               }

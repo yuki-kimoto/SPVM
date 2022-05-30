@@ -126,11 +126,6 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::OArray::AssignNumericArray');
 }
 
-# Enumeration
-{
-  compile_not_ok_file('TestCase::CompileError::Enum::PrivateAccess');
-}
-
 # Call sub
 {
   {
@@ -687,5 +682,9 @@ sub print_error_messages {
   }
 }
 
+# Enumeration
+{
+  compile_not_ok_file('TestCase::CompileError::Enum::PrivateAccess', qr/Can't call the private method "TestCase::Enum->PRIVATE_VALUE"/);
+}
 
 done_testing;
