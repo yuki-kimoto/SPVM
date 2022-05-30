@@ -331,29 +331,6 @@ sub print_error_messages {
   }
 }
 
-# Class variable
-{
-  # Access control
-  compile_not_ok_file('TestCase::CompileError::ClassVar::Private');
-  
-  # Class variable name
-  {
-    compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameStartDigit', qr/The symbol name part of the variable name "\$3foo" can't begin with a number/);
-    compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameInvalidColon', qr/Unexpected token ":"/);
-    compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameEndColon2', qr/The variable name "\$FOO::" can't end with "::"/);
-    compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
-    compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameColon2Twice', qr/The variable name "\$FOO::::BAR" can't contain "::::"/);
-    {
-      my $source = 'class Tmp { our $NAME : int; static method main : void () { ${NAME = 1; } }';
-      compile_not_ok($source, qr/Need a closing brace "}" at the end of the variable name/);
-    }
-    {
-      my $source = 'class Tmp { our $Tmp::NAME : int; static method main : void () {  } }';
-      compile_not_ok($source, qr/The class varaible name "\$Tmp::NAME" in the class variable definition can't contain "::"/);
-    }
-  }
-}
-
 # Class
 {
   # Syntax
@@ -692,6 +669,29 @@ sub print_error_messages {
   {
     my $source = q|class Tmp { public private enum { ONE } }|;
     compile_not_ok($source, qr/aaa/);
+  }
+}
+
+# Class variable
+{
+  # Access control
+  compile_not_ok_file('TestCase::CompileError::ClassVar::Private');
+  
+  # Class variable name
+  {
+    compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameStartDigit', qr/The symbol name part of the variable name "\$3foo" can't begin with a number/);
+    compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameInvalidColon', qr/Unexpected token ":"/);
+    compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameEndColon2', qr/The variable name "\$FOO::" can't end with "::"/);
+    compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
+    compile_not_ok_file('TestCase::CompileError::ClassVar::OurClassVarNameColon2Twice', qr/The variable name "\$FOO::::BAR" can't contain "::::"/);
+    {
+      my $source = 'class Tmp { our $NAME : int; static method main : void () { ${NAME = 1; } }';
+      compile_not_ok($source, qr/Need a closing brace "}" at the end of the variable name/);
+    }
+    {
+      my $source = 'class Tmp { our $Tmp::NAME : int; static method main : void () {  } }';
+      compile_not_ok($source, qr/The class varaible name "\$Tmp::NAME" in the class variable definition can't contain "::"/);
+    }
   }
 }
 
