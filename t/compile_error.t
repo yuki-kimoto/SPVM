@@ -126,7 +126,7 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::OArray::AssignNumericArray');
 }
 
-# Enum
+# Enumeration
 {
   compile_not_ok_file('TestCase::CompileError::Enum::PrivateAccess');
 }

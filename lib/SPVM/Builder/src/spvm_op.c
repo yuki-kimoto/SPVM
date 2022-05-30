@@ -2788,7 +2788,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
         }
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "public and private descriptors can't be used together in enumeration difinition at %s line %d", op_method->file, op_method->line);
+        SPVM_COMPILER_error(compiler, "\"public\" and \"private\" descriptors can't be used together in the enumeration difinition at %s line %d", op_method->file, op_method->line);
       }
     }
   }
