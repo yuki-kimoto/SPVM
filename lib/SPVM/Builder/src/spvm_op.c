@@ -1847,7 +1847,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid class descriptor %s at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_class->file, op_class->line);
+          SPVM_COMPILER_error(compiler, "Invalid class descriptor %s at %s line %d", SPVM_DESCRIPTOR_get_name(compiler, descriptor->id), op_class->file, op_class->line);
         }
       }
     }
@@ -2407,7 +2407,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid class variable descriptor in class variable declaration %s at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid class variable descriptor in class variable declaration %s at %s line %d", SPVM_DESCRIPTOR_get_name(compiler, descriptor->id), op_descriptors->file, op_descriptors->line);
         }
       }
       if (accessor_descriptors_count > 1) {
@@ -2477,7 +2477,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid field descriptor %s at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid field descriptor %s at %s line %d", SPVM_DESCRIPTOR_get_name(compiler, descriptor->id), op_descriptors->file, op_descriptors->line);
         }
       }
       
@@ -2567,7 +2567,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid method descriptor \"%s\" at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid method descriptor \"%s\" at %s line %d", SPVM_DESCRIPTOR_get_name(compiler, descriptor->id), op_descriptors->file, op_descriptors->line);
         }
       }
     }
@@ -2783,7 +2783,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
             break;
           }
           default: {
-            SPVM_COMPILER_error(compiler, "Invalid enumeration descriptor \"%s\" at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+            SPVM_COMPILER_error(compiler, "Invalid enumeration descriptor \"%s\" at %s line %d", SPVM_DESCRIPTOR_get_name(compiler, descriptor->id), op_descriptors->file, op_descriptors->line);
           }
         }
       }
