@@ -696,6 +696,10 @@ sub print_error_messages {
       my $source = 'class Tmp { our $FOO : required int; }';
       compile_not_ok($source, qr/Invalid class variable descriptor "required"/);
     }
+    {
+      my $source = 'class Tmp { our $FOO : public private int; }';
+      compile_not_ok($source, qr/Only one of "private", "public" class variable descriptors can be specifed/);
+    }
   }
 }
 
