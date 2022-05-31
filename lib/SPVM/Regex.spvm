@@ -129,12 +129,12 @@ class Regex : precompile {
       
       switch ($code_point) {
         case '\\': {
-          my $next_uchar = Unicode->uchar($re_str, \$pos);
+          my $next_code_point = Unicode->uchar($re_str, \$pos);
           if ($code_point < 0) {
             die "Invalid regex. Last is \\ ";
           }
           
-          switch ($next_uchar) {
+          switch ($next_code_point) {
             case 'd': {
               if ($self->{ascii_mode}) {
                 $cur_is_char = 1;
@@ -199,12 +199,12 @@ class Regex : precompile {
               break;
             }
             default: {
-              if (Fn->is_perl_word($next_uchar)) {
+              if (Fn->is_perl_word($next_code_point)) {
                 die "Invalid regex escape character";
               }
               # \: \- etc
               else {
-                my $code_point_range = [(int)$next_uchar, $next_uchar];
+                my $code_point_range = [(int)$next_code_point, $next_code_point];
                 if ($status == Regex->STATUS_CHAR_CLASS()) {
                   $code_point_ranges_list->push($code_point_range->[0]);
                   $code_point_ranges_list->push($code_point_range->[1]);
