@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9600_02  2022-05-30
+0.9601  2022-06-01
         [CHANGE]
         * Regex class support "i" (ignore case) option.
         * Logical operator can be used as operands.
