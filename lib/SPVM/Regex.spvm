@@ -120,7 +120,7 @@ class Regex : precompile {
     my $before_is_char_class_range = 0;
     
     my $is_capture = 0;
-    my $is_capture_begin = 0;
+    my $pattern_capture_begin = 0;
     
     while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
       if ($self->{string_end}) {
@@ -311,7 +311,7 @@ class Regex : precompile {
                 }
                 else {
                   $is_capture = 1;
-                  $is_capture_begin = 1;
+                  $pattern_capture_begin = 1;
                 }
                 break;
               }
@@ -454,9 +454,9 @@ class Regex : precompile {
         $pattern->{max_repeat} = 1;
         $pattern->{min_repeat} = 1;
 
-        if ($is_capture_begin) {
+        if ($pattern_capture_begin) {
           $pattern->{capture_begin} = 1;
-          $is_capture_begin = 0;
+          $pattern_capture_begin = 0;
         }
         
         $patterns->push($pattern);
@@ -532,7 +532,7 @@ class Regex : precompile {
       
       my $pattern_index = 0;
       
-      my $capture_begin_index = -1;
+      my $pattern_capture_begin_index = -1;
       my $capture_count = 0;
       while (1) {
         my $pattern = (Regex::Pattern)$patterns->get($pattern_index);
@@ -542,7 +542,7 @@ class Regex : precompile {
         my $negate = $pattern->{negate};
         
         if ($pattern->{capture_begin}) {
-          $capture_begin_index = $target_index;
+          $pattern_capture_begin_index = $target_index;
         }
         
         my $target_before_index = $target_index;
@@ -621,7 +621,7 @@ class Regex : precompile {
         
         if ($match_repeat) {
           if ($pattern->{capture_end}) {
-            $self->{captures}[$capture_count] = Fn->substr($target, $capture_begin_index, $repeat_before_target_index - $capture_begin_index);
+            $self->{captures}[$capture_count] = Fn->substr($target, $pattern_capture_begin_index, $repeat_before_target_index - $pattern_capture_begin_index);
             $capture_count++;
             if ($capture_count > 255) {
               die "Too many captures";
