@@ -30,7 +30,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Lib::Regex->match_word);
   ok(SPVM::TestCase::Lib::Regex->match_number);
   ok(SPVM::TestCase::Lib::Regex->match_not_number);
-  ok(SPVM::TestCase::Lib::Regex->invalid_regex);
   ok(SPVM::TestCase::Lib::Regex->match_end);
   ok(SPVM::TestCase::Lib::Regex->match_start);
   ok(SPVM::TestCase::Lib::Regex->match_quantifier);
