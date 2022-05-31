@@ -754,5 +754,37 @@ class Regex : precompile {
     
     return $code_point_ranges_list->to_array;
   }
+
+  private method negate_code_point_ranges : int[] ($code_point_ranges : int[]) {
+    
+    if (@$code_point_ranges < 2) {
+      die "The length of the code point rainges must be more than 2";
+    }
+    
+    my $negate_code_point_rainges_raw_list = IntList->new;
+    $negate_code_point_rainges_raw_list->push(0);
+    for (my $i = 0; $i < @$code_point_ranges; $i += 2) {
+      my $min = $code_point_ranges->[$i];
+      my $max = $code_point_ranges->[$i + 1];
+      $negate_code_point_rainges_raw_list->push($min - 1);
+      $negate_code_point_rainges_raw_list->push($max + 1);
+    }
+    $negate_code_point_rainges_raw_list->push(0x10FFFF);
+    
+    my $cur_max = 0;
+    my $negate_code_point_rainges_list = IntList->new;
+    for (my $i = 0; $i < $negate_code_point_rainges_raw_list->length; $i += 2) {
+      my $min = $negate_code_point_rainges_raw_list->get($i);
+      my $max = $negate_code_point_rainges_raw_list->get($i);
+      unless ($min > $max) {
+        $negate_code_point_rainges_list->push($min);
+        $negate_code_point_rainges_list->push($max);
+      }
+    }
+    
+    my $negate_code_point_rainges = $negate_code_point_rainges_list->to_array;
+    
+    return $negate_code_point_rainges;
+  }
 }
 
