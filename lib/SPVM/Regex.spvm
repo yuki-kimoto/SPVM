@@ -121,6 +121,7 @@ class Regex : precompile {
     my $is_capture = 0;
     my $pattern_capture_begin = 0;
     
+    my $cur_code_point_ranges_list = IntList->new;
     while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
       my $finish_code_point_ranges = 0;
       my $cur_code_point_range : int[];
@@ -138,6 +139,9 @@ class Regex : precompile {
               if ($self->{ascii_mode}) {
                 $finish_code_point_ranges = 1;
                 $cur_code_point_range = [(int)'0', '9'];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
+                }
               }
               else {
                 die "\d must be used with ascii option";
@@ -148,6 +152,9 @@ class Regex : precompile {
               if ($self->{ascii_mode}) {
                 $finish_code_point_ranges = 1;
                 $cur_code_point_range = [(int)'0', '9'];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
+                }
                 $cur_negate = 1;
               }
               else {
@@ -159,6 +166,9 @@ class Regex : precompile {
               if ($self->{ascii_mode}) {
                 $finish_code_point_ranges = 1;
                 $cur_code_point_range = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
+                }
               }
               else {
                 die "\w  must be used with ascii option";
@@ -169,6 +179,9 @@ class Regex : precompile {
               if ($self->{ascii_mode}) {
                 $finish_code_point_ranges = 1;
                 $cur_code_point_range = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
+                }
                 $cur_negate = 1;
               }
               else {
@@ -180,6 +193,9 @@ class Regex : precompile {
               if ($self->{ascii_mode}) {
                 $finish_code_point_ranges = 1;
                 $cur_code_point_range = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
+                }
               }
               else {
                 die "\s must be used with ascii option";
@@ -190,6 +206,9 @@ class Regex : precompile {
               if ($self->{ascii_mode}) {
                 $finish_code_point_ranges = 1;
                 $cur_code_point_range = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
+                }
                 $cur_negate = 1;
               }
               else {
@@ -211,6 +230,9 @@ class Regex : precompile {
                 else {
                   $finish_code_point_ranges = 1;
                   $cur_code_point_range = $code_point_range;
+                  for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                    $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
+                  }
                 }
               }
             }
@@ -288,6 +310,9 @@ class Regex : precompile {
                 }
                 else {
                   $cur_code_point_range = [(int)'\n', '\n'];
+                  for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                    $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
+                  }
                 }
                 $cur_negate = 1;
                 break;
