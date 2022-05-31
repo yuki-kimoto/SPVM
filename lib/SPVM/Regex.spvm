@@ -30,8 +30,8 @@ class Regex : precompile {
   }
 
   private enum {
-    RANGE_INCLUDED = 0,
-    RANGE_EXCLUDED = 1,
+    RANGE_INCLUDED = -1,
+    RANGE_EXCLUDED = -2,
   }
   
   static method new : Regex ($re_str_and_options : string[]...) {
@@ -144,7 +144,7 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_raw_range = [(int)'0', '9'];
+                my $cur_code_point_raw_range = [(int)'0', '9', &RANGE_INCLUDED];
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
                   $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
@@ -435,7 +435,16 @@ class Regex : precompile {
       if ($finish_code_point_ranges) {
         my $pattern = new Regex::Pattern;
         $pattern->{negate} = (byte)$cur_negate;
-        $pattern->{code_point_ranges} = $cur_code_point_raw_ranges_list->to_array;
+        
+        my $code_point_ranges_list = IntList->new;
+        for (my $i = 0; $i < $cur_code_point_raw_ranges_list->length; $i++) {
+          my $value = $cur_code_point_raw_ranges_list->get($i);
+          if ($value >= 0) {
+            $code_point_ranges_list->push($value);
+          }
+        }
+        
+        $pattern->{code_point_ranges} = $code_point_ranges_list->to_array;
         $pattern->{max_repeat} = 1;
         $pattern->{min_repeat} = 1;
 
