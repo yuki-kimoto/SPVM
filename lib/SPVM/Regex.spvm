@@ -198,7 +198,7 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_range = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
+                my $cur_code_point_range = [(int)'\t', '\t', '\n', '\n', '\f', '\f', '\r', '\r', ' ', ' '];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
@@ -213,7 +213,7 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_range = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
+                my $cur_code_point_range = $self->negate_code_point_ranges([(int)'\t', '\t', '\n', '\n', '\f', '\f', '\r', '\r', ' ', ' ']);
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
@@ -302,7 +302,7 @@ class Regex : precompile {
                   $cur_code_point_range = [(int)0, 0xDFFF];
                 }
                 else {
-                  $cur_code_point_range = [(int)'\n', '\n'];
+                  $cur_code_point_range = $self->negate_code_point_ranges([(int)'\n', '\n']);
                 }
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
