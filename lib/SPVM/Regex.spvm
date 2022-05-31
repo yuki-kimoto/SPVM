@@ -245,18 +245,7 @@ class Regex : precompile {
             if ($code_point == ']') {
               $status = Regex->STATUS_CONTINUE();
               $cur_code_point_range = $code_point_ranges_list->to_array;
-              if (@$cur_code_point_range == 0) {
-                die "Emtpy character class";
-              }
-              for (my $i = 0; $i < @$cur_code_point_range; $i += 2) {
-                my $min = $cur_code_point_range->[$i];
-                my $max = $cur_code_point_range->[$i + 1];
-                if ($max < $min) {
-                  die "Invalid range character class";
-                }
-              }
-              
-              $code_point_ranges_list = IntList->new_len(0);
+              $code_point_ranges_list = IntList->new;
               $finish_code_point_ranges = 1;
               $cur_negate = $char_class_negate;
             }
