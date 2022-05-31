@@ -423,7 +423,7 @@ class Regex : precompile {
       if ($finish_code_point_ranges) {
         my $pattern = new Regex::Pattern;
         $pattern->{negate} = (byte)$cur_negate;
-        $pattern->{code_point_ranges} = $cur_code_point_range;
+        $pattern->{code_point_ranges} = $cur_code_point_ranges_list->to_array;
         $pattern->{max_repeat} = 1;
         $pattern->{min_repeat} = 1;
 
@@ -433,6 +433,8 @@ class Regex : precompile {
         }
         
         $patterns->push($pattern);
+        
+        $cur_code_point_ranges_list = IntList->new;
       }
     }
     
