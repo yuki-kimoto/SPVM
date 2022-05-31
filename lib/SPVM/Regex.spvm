@@ -28,6 +28,10 @@ class Regex : precompile {
     STATUS_QUANTIFIER_MAX,
     STATUS_CHAR_CLASS,
   }
+
+  private enum {
+    RANGE_EXCLUDED = 1,
+  }
   
   static method new : Regex ($re_str_and_options : string[]...) {
     
