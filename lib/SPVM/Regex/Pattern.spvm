@@ -14,4 +14,6 @@ class Regex::Pattern {
   has max_repeat : int;
   has capture_begin : byte;
   has capture_end : byte;
+  has string_or_line_begin : byte;
+  has string_or_line_end : byte;
 }
