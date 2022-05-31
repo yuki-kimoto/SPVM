@@ -285,8 +285,10 @@ class Regex : precompile {
                   }
                 }
                 else {
-                  $code_point_raw_ranges_list->push($code_point);
-                  $code_point_raw_ranges_list->push($code_point);
+                  my $cur_code_point_raw_range = [$code_point, $code_point];
+                  for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
+                    $code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
+                  }
                 }
               }
             }
