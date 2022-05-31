@@ -435,17 +435,9 @@ class Regex : precompile {
 
       if ($finish_code_point_ranges) {
         my $pattern = new Regex::Pattern;
+
         $pattern->{negate} = (byte)$cur_negate;
-        
-        my $code_point_ranges_list = IntList->new;
-        for (my $i = 0; $i < $cur_code_point_raw_ranges_list->length; $i++) {
-          my $value = $cur_code_point_raw_ranges_list->get($i);
-          if ($value >= 0) {
-            $code_point_ranges_list->push($value);
-          }
-        }
-        
-        $pattern->{code_point_ranges} = $code_point_ranges_list->to_array;
+        $pattern->{code_point_ranges} = $self->culcurate_code_point_ranges($cur_code_point_raw_ranges_list);
         $pattern->{max_repeat} = 1;
         $pattern->{min_repeat} = 1;
 
@@ -874,4 +866,17 @@ class Regex : precompile {
   method cap8 : string () { return $self->captures->[7]; }
   method cap9 : string () { return $self->captures->[8]; }
   method cap10 : string () { return $self->captures->[9]; }
+
+  private method culcurate_code_point_ranges : int[] ($code_point_raw_ranges_list : IntList) {
+    my $code_point_ranges_list = IntList->new;
+    for (my $i = 0; $i < $code_point_raw_ranges_list->length; $i++) {
+      my $value = $code_point_raw_ranges_list->get($i);
+      if ($value >= 0) {
+        $code_point_ranges_list->push($value);
+      }
+    }
+    
+    return $code_point_ranges_list->to_array;
+  }
 }
+
