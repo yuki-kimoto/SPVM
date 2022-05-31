@@ -105,7 +105,6 @@ class Regex : precompile {
       die "Regex string must have length";
     }
     
-    my $before_is_charset = 0;
     my $pos = 0;
     my $patterns = $self->{patterns};
     
@@ -333,41 +332,25 @@ class Regex : precompile {
                 break;
               }
               case '*': {
-                unless ($before_is_charset) {
-                  die "Regex compile error";
-                }
                 my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                 $before_pattern->{min_repeat} = 0;
                 $before_pattern->{max_repeat} = Fn->INT32_MAX();
-                $before_is_charset = 0;
                 break;
               }
               case '+': {
-                unless ($before_is_charset) {
-                  die "Regex compile error";
-                }
                 my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                 $before_pattern->{min_repeat} = 1;
                 $before_pattern->{max_repeat} = Fn->INT32_MAX();
-                $before_is_charset = 0;
                 break;
               }
               case '?': {
-                unless ($before_is_charset) {
-                  die "Regex compile error";
-                }
                 my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                 $before_pattern->{min_repeat} = 0;
                 $before_pattern->{max_repeat} = 1;
-                $before_is_charset = 0;
                 break;
               }
               case '{': {
-                unless ($before_is_charset) {
-                  die "Regex compile error";
-                }
                 $status = Regex->STATUS_QUANTIFIER_MIN();
-                $before_is_charset = 0;
                 break;
               }
               case '}': {
@@ -379,7 +362,6 @@ class Regex : precompile {
                 $last_pattern->{max_repeat} = $quantifier_max;
                 
                 $status = Regex->STATUS_CONTINUE();
-                $before_is_charset = 0;
                 $quantifier_max_str = "";
                 break;
               }
@@ -456,7 +438,6 @@ class Regex : precompile {
         }
         
         $patterns->push($pattern);
-        $before_is_charset = 1;
       }
     }
     
