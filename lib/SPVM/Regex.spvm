@@ -245,6 +245,9 @@ class Regex : precompile {
             if ($code_point == ']') {
               $status = Regex->STATUS_CONTINUE();
               $cur_code_point_range = $code_point_ranges_list->to_array;
+              for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
+              }
               $code_point_ranges_list = IntList->new;
               $finish_code_point_ranges = 1;
               $cur_negate = $char_class_negate;
@@ -407,6 +410,9 @@ class Regex : precompile {
                 else {
                   $finish_code_point_ranges = 1;
                   $cur_code_point_range = [$code_point, $code_point];
+                  for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                    $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
+                  }
                 }
               }
             }
