@@ -312,7 +312,7 @@ class Regex : precompile {
                   $finish_code_point_ranges = 1;
                 }
                 unless ($self->{single_line_mode}) {
-                  my $cur_code_point_raw_range = [(int)'\n', '\n'];
+                  my $cur_code_point_raw_range = [(int)'\n', '\n', &RANGE_EXCLUDED];
                   for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
                     $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
                   }
