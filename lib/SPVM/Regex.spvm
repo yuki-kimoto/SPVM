@@ -120,7 +120,7 @@ class Regex : precompile {
     my $is_capture = 0;
     my $pattern_capture_begin = 0;
     
-    my $cur_code_point_raw_ranges_list = IntList->new;
+    my $cur_code_point_ranges_list = IntList->new;
     while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
       my $finish_code_point_ranges = 0;
       
@@ -139,7 +139,7 @@ class Regex : precompile {
                 }
                 my $cur_code_point_raw_range = [(int)'0', '9'];
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
+                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
               }
               else {
@@ -154,7 +154,7 @@ class Regex : precompile {
                 }
                 my $cur_code_point_raw_range = [(int)'0', '9'];
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
+                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
               }
               else {
@@ -169,7 +169,7 @@ class Regex : precompile {
                 }
                 my $cur_code_point_raw_range = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
+                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
               }
               else {
@@ -184,7 +184,7 @@ class Regex : precompile {
                 }
                 my $cur_code_point_raw_range = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
+                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
               }
               else {
@@ -199,7 +199,7 @@ class Regex : precompile {
                 }
                 my $cur_code_point_raw_range = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
+                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
               }
               else {
@@ -214,7 +214,7 @@ class Regex : precompile {
                 }
                 my $cur_code_point_raw_range = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
+                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
               }
               else {
@@ -233,7 +233,7 @@ class Regex : precompile {
                 }
                 my $cur_code_point_raw_range = [(int)$next_code_point, $next_code_point];
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
+                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
               }
             }
@@ -256,23 +256,23 @@ class Regex : precompile {
               }
             }
             else {
-              if ($code_point == '^' && $cur_code_point_raw_ranges_list->length == 0) {
+              if ($code_point == '^' && $cur_code_point_ranges_list->length == 0) {
                 $char_class_negate = 1;
               }
               else {
                 if ($before_is_char_class_range) {
-                  if ($cur_code_point_raw_ranges_list->length == 0) {
+                  if ($cur_code_point_ranges_list->length == 0) {
                     die "- start not found";
                   }
                   else {
-                    $cur_code_point_raw_ranges_list->set($cur_code_point_raw_ranges_list->length - 2, $code_point);
+                    $cur_code_point_ranges_list->set($cur_code_point_ranges_list->length - 2, $code_point);
                     $before_is_char_class_range = 0;
                   }
                 }
                 else {
                   my $cur_code_point_raw_range = [$code_point, $code_point];
                   for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                    $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
+                    $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
                   }
                 }
               }
@@ -304,7 +304,7 @@ class Regex : precompile {
                   $cur_code_point_raw_range = [(int)'\n', '\n'];
                 }
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
+                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
                 break;
               }
@@ -411,7 +411,7 @@ class Regex : precompile {
                   }
                   my $cur_code_point_raw_range = [$code_point, $code_point];
                   for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                    $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
+                    $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
                   }
                 }
               }
@@ -424,7 +424,7 @@ class Regex : precompile {
         my $pattern = new Regex::Pattern;
 
         $pattern->{negate} = (byte)$char_class_negate;
-        $pattern->{code_point_ranges} = $cur_code_point_raw_ranges_list->to_array;
+        $pattern->{code_point_ranges} = $cur_code_point_ranges_list->to_array;
         
         $pattern->{max_repeat} = 1;
         $pattern->{min_repeat} = 1;
@@ -436,7 +436,7 @@ class Regex : precompile {
         
         $patterns->push($pattern);
         
-        $cur_code_point_raw_ranges_list = IntList->new;
+        $cur_code_point_ranges_list = IntList->new;
       }
     }
   }
