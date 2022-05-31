@@ -128,7 +128,6 @@ class Regex : precompile {
     my $cur_code_point_raw_ranges_list = IntList->new;
     while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
       my $finish_code_point_ranges = 0;
-      my $cur_negate = 0;
       
       switch ($code_point) {
         case '\\': {
@@ -162,7 +161,6 @@ class Regex : precompile {
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
                   $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
-                $cur_negate = 1;
               }
               else {
                 die "\D must be used with ascii option";
@@ -193,7 +191,6 @@ class Regex : precompile {
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
                   $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
-                $cur_negate = 1;
               }
               else {
                 die "\W must be used with ascii option";
@@ -224,7 +221,6 @@ class Regex : precompile {
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
                   $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
-                $cur_negate = 1;
               }
               else {
                 die "\S must be used with ascii option";
@@ -255,7 +251,6 @@ class Regex : precompile {
             if ($code_point == ']') {
               $status = Regex->STATUS_CONTINUE;
               $finish_code_point_ranges = 1;
-              $cur_negate = $char_class_negate;
             }
             elsif ($code_point == '-') {
               if ($before_is_char_class_range) {
@@ -316,7 +311,6 @@ class Regex : precompile {
                 for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
                   $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
                 }
-                $cur_negate = 1;
                 break;
               }
               case '$': {
@@ -434,7 +428,7 @@ class Regex : precompile {
       if ($finish_code_point_ranges) {
         my $pattern = new Regex::Pattern;
 
-        $pattern->{negate} = 0;
+        $pattern->{negate} = (byte)$char_class_negate;
         $pattern->{code_point_ranges} = $cur_code_point_raw_ranges_list->to_array;
         
         $pattern->{max_repeat} = 1;
