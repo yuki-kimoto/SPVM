@@ -123,10 +123,7 @@ class Regex : precompile {
     my $pattern_capture_begin = 0;
     
     while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
-      if ($self->{string_end}) {
-        die "\$ must be last of regex";
-      }
-      
+
       my $cur_is_char = 0;
       my $cur_code_point_range : int[];
       my $cur_negate = 0;
