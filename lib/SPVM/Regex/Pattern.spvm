@@ -12,6 +12,6 @@ class Regex::Pattern {
   has negate : byte;
   has min_repeat : int;
   has max_repeat : int;
-  has capture_start : byte;
+  has capture_begin : byte;
   has capture_end : byte;
 }
