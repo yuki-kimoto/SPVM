@@ -221,17 +221,10 @@ class Regex : precompile {
               }
               # \: \- etc
               else {
-                my $code_point_range = [(int)$next_code_point, $next_code_point];
-                if ($status == Regex->STATUS_CHAR_CLASS()) {
-                  $code_point_ranges_list->push($code_point_range->[0]);
-                  $code_point_ranges_list->push($code_point_range->[1]);
-                }
-                else {
-                  $finish_code_point_ranges = 1;
-                  my $cur_code_point_range = $code_point_range;
-                  for (my $i = 0; $i < @$cur_code_point_range; $i++) {
-                    $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
-                  }
+                $finish_code_point_ranges = 1;
+                my $cur_code_point_range = [(int)$next_code_point, $next_code_point];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
               }
             }
