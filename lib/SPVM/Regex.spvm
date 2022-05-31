@@ -168,7 +168,7 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_range = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
+                my $cur_code_point_range = [(int)'0', '9', 'A', 'Z', '_', '_', 'a', 'z'];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
@@ -183,7 +183,7 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_range = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
+                my $cur_code_point_range = $self->negate_code_point_ranges([(int)'0', '9', 'A', 'Z', '_', '_', 'a', 'z']);
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
