@@ -152,7 +152,8 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_range = [(int)'0', '9'];
+                my $cur_code_point_range = $self->negate_code_point_ranges([(int)'0', '9']);
+                
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
@@ -760,7 +761,7 @@ class Regex : precompile {
     if (@$code_point_ranges < 2) {
       die "The length of the code point rainges must be more than 2";
     }
-    
+
     my $negate_code_point_rainges_raw_list = IntList->new;
     $negate_code_point_rainges_raw_list->push(0);
     for (my $i = 0; $i < @$code_point_ranges; $i += 2) {
@@ -770,12 +771,12 @@ class Regex : precompile {
       $negate_code_point_rainges_raw_list->push($max + 1);
     }
     $negate_code_point_rainges_raw_list->push(0x10FFFF);
-    
+
     my $cur_max = 0;
     my $negate_code_point_rainges_list = IntList->new;
     for (my $i = 0; $i < $negate_code_point_rainges_raw_list->length; $i += 2) {
       my $min = $negate_code_point_rainges_raw_list->get($i);
-      my $max = $negate_code_point_rainges_raw_list->get($i);
+      my $max = $negate_code_point_rainges_raw_list->get($i + 1);
       unless ($min > $max) {
         $negate_code_point_rainges_list->push($min);
         $negate_code_point_rainges_list->push($max);
@@ -783,7 +784,7 @@ class Regex : precompile {
     }
     
     my $negate_code_point_rainges = $negate_code_point_rainges_list->to_array;
-    
+
     return $negate_code_point_rainges;
   }
 }
