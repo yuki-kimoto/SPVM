@@ -137,9 +137,9 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_raw_range = [(int)'0', '9'];
-                for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
+                my $cur_code_point_range = [(int)'0', '9'];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
               }
               else {
@@ -152,9 +152,9 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_raw_range = [(int)'0', '9'];
-                for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
+                my $cur_code_point_range = [(int)'0', '9'];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
               }
               else {
@@ -167,9 +167,9 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_raw_range = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
-                for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
+                my $cur_code_point_range = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
               }
               else {
@@ -182,9 +182,9 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_raw_range = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
-                for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
+                my $cur_code_point_range = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
               }
               else {
@@ -197,9 +197,9 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_raw_range = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
-                for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
+                my $cur_code_point_range = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
               }
               else {
@@ -212,9 +212,9 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_raw_range = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
-                for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
+                my $cur_code_point_range = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
               }
               else {
@@ -231,9 +231,9 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_raw_range = [(int)$next_code_point, $next_code_point];
-                for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
+                my $cur_code_point_range = [(int)$next_code_point, $next_code_point];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
               }
             }
@@ -270,9 +270,9 @@ class Regex : precompile {
                   }
                 }
                 else {
-                  my $cur_code_point_raw_range = [$code_point, $code_point];
-                  for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                    $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
+                  my $cur_code_point_range = [$code_point, $code_point];
+                  for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                    $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                   }
                 }
               }
@@ -296,15 +296,15 @@ class Regex : precompile {
                 unless ($status == Regex->STATUS_CHAR_CLASS) {
                   $finish_code_point_ranges = 1;
                 }
-                my $cur_code_point_raw_range = (int[])undef;
+                my $cur_code_point_range = (int[])undef;
                 if ($self->{single_line_mode}) {
-                  $cur_code_point_raw_range = [(int)0, 0xDFFF];
+                  $cur_code_point_range = [(int)0, 0xDFFF];
                 }
                 else {
-                  $cur_code_point_raw_range = [(int)'\n', '\n'];
+                  $cur_code_point_range = [(int)'\n', '\n'];
                 }
-                for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                  $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
                 break;
               }
@@ -409,9 +409,9 @@ class Regex : precompile {
                   unless ($status == Regex->STATUS_CHAR_CLASS) {
                     $finish_code_point_ranges = 1;
                   }
-                  my $cur_code_point_raw_range = [$code_point, $code_point];
-                  for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
-                    $cur_code_point_ranges_list->push($cur_code_point_raw_range->[$i]);
+                  my $cur_code_point_range = [$code_point, $code_point];
+                  for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                    $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                   }
                 }
               }
