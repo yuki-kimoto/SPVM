@@ -259,7 +259,6 @@ class Regex : precompile {
               for (my $i = 0; $i < @$cur_code_point_raw_range; $i++) {
                 $cur_code_point_raw_ranges_list->push($cur_code_point_raw_range->[$i]);
               }
-              $code_point_raw_ranges_list = IntList->new;
               $finish_code_point_ranges = 1;
               $cur_negate = $char_class_negate;
             }
