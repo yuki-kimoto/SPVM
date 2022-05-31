@@ -8,7 +8,7 @@ class Regex::Pattern {
     CAPTURE_START,
     CAPTURE_END,
   }
-  has code_point_range : int[];
+  has code_point_ranges : int[];
   has negate : byte;
   has min_repeat : int;
   has max_repeat : int;
