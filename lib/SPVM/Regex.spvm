@@ -136,7 +136,9 @@ class Regex : precompile {
           switch ($next_code_point) {
             case 'd': {
               if ($self->{ascii_mode}) {
-                $finish_code_point_ranges = 1;
+                unless ($status == Regex->STATUS_CHAR_CLASS) {
+                  $finish_code_point_ranges = 1;
+                }
                 my $cur_code_point_range = [(int)'0', '9'];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
@@ -149,7 +151,9 @@ class Regex : precompile {
             }
             case 'D': {
               if ($self->{ascii_mode}) {
-                $finish_code_point_ranges = 1;
+                unless ($status == Regex->STATUS_CHAR_CLASS) {
+                  $finish_code_point_ranges = 1;
+                }
                 my $cur_code_point_range = [(int)'0', '9'];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
@@ -163,7 +167,9 @@ class Regex : precompile {
             }
             case 'w': {
               if ($self->{ascii_mode}) {
-                $finish_code_point_ranges = 1;
+                unless ($status == Regex->STATUS_CHAR_CLASS) {
+                  $finish_code_point_ranges = 1;
+                }
                 my $cur_code_point_range = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
@@ -176,7 +182,9 @@ class Regex : precompile {
             }
             case 'W': {
               if ($self->{ascii_mode}) {
-                $finish_code_point_ranges = 1;
+                unless ($status == Regex->STATUS_CHAR_CLASS) {
+                  $finish_code_point_ranges = 1;
+                }
                 my $cur_code_point_range = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
@@ -190,7 +198,9 @@ class Regex : precompile {
             }
             case 's': {
               if ($self->{ascii_mode}) {
-                $finish_code_point_ranges = 1;
+                unless ($status == Regex->STATUS_CHAR_CLASS) {
+                  $finish_code_point_ranges = 1;
+                }
                 my $cur_code_point_range = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
@@ -203,7 +213,9 @@ class Regex : precompile {
             }
             case 'S': {
               if ($self->{ascii_mode}) {
-                $finish_code_point_ranges = 1;
+                unless ($status == Regex->STATUS_CHAR_CLASS) {
+                  $finish_code_point_ranges = 1;
+                }
                 my $cur_code_point_range = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
@@ -221,7 +233,9 @@ class Regex : precompile {
               }
               # \: \- etc
               else {
-                $finish_code_point_ranges = 1;
+                unless ($status == Regex->STATUS_CHAR_CLASS) {
+                  $finish_code_point_ranges = 1;
+                }
                 my $cur_code_point_range = [(int)$next_code_point, $next_code_point];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                   $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
@@ -233,7 +247,7 @@ class Regex : precompile {
           break;
         }
         default: {
-          if ($status == Regex->STATUS_CHAR_CLASS()) {
+          if ($status == Regex->STATUS_CHAR_CLASS) {
             if ($code_point == ']') {
               $status = Regex->STATUS_CONTINUE();
               my $cur_code_point_range = $code_point_ranges_list->to_array;
@@ -288,7 +302,9 @@ class Regex : precompile {
                 break;
               }
               case '.': {
-                $finish_code_point_ranges = 1;
+                unless ($status == Regex->STATUS_CHAR_CLASS) {
+                  $finish_code_point_ranges = 1;
+                }
                 unless ($self->{single_line_mode}) {
                   my $cur_code_point_range = [(int)'\n', '\n'];
                   for (my $i = 0; $i < @$cur_code_point_range; $i++) {
@@ -397,7 +413,9 @@ class Regex : precompile {
                   }
                 }
                 else {
-                  $finish_code_point_ranges = 1;
+                  unless ($status == Regex->STATUS_CHAR_CLASS) {
+                    $finish_code_point_ranges = 1;
+                  }
                   my $cur_code_point_range = [$code_point, $code_point];
                   for (my $i = 0; $i < @$cur_code_point_range; $i++) {
                     $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);

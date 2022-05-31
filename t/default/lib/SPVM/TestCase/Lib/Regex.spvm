@@ -501,13 +501,24 @@ class TestCase::Lib::Regex {
 
     # Match char class
     {
-      my $re = Regex->new("[bcdあ]+");
-      my $target = "zabcあz";
+      {
+        my $re = Regex->new("[bcdあ]+");
+        my $target = "zabcあz";
+        
+        my $match = $re->match($target, 0);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
       
-      my $match = $re->match($target, 0);
-      
-      unless ($match) {
-        return 0;
+      {
+        my $re = Regex->new("^[a-c\dx-z]+$", "a");
+        my $target = "ac09xz";
+        my $match = $re->match($target, 0);
+        unless ($match) {
+          return 0;
+        }
       }
     }
 
