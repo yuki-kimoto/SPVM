@@ -11,7 +11,7 @@ Revision history for SPVM
         * Regex module is very experimental status and uncompleted.
           I start to implement the part of Perl regular expression.
           Many small non-backwordcompatible occur.
-        * Regex captures start index become from 0 to 1.
+        * Regex captures start index become from 0 to 1. whole matching is set to captures 0.
           
 0.9601  2022-06-01
         [CHANGE]

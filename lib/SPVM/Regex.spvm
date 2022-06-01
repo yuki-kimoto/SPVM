@@ -620,6 +620,7 @@ class Regex : precompile {
     if ($really_match) {
       $self->{match_start} = $target_base_index_before;
       $self->{match_length} = $target_index - $self->{match_start};
+      $self->{captures}[0] = Fn->substr($target, $target_base_index_before, $self->{match_length});
     }
     
     return $really_match;
@@ -751,6 +752,7 @@ class Regex : precompile {
     return $result;
   }
   
+  method cap0 : string () { return $self->captures->[0]; }
   method cap1 : string () { return $self->captures->[1]; }
   method cap2 : string () { return $self->captures->[2]; }
   method cap3 : string () { return $self->captures->[3]; }

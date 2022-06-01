@@ -380,6 +380,16 @@ class TestCase::Lib::Regex {
         return 0;
       }
     }
+
+    # Capture whole matching string
+    {
+      my $re = Regex->new("[0-9]+");
+      my $target = "aaa09bbb";
+      $re->match($target, 0);
+      unless ($re->cap0 eq "09") {
+        return 0;
+      }
+    }
     
     return 1;
   }
