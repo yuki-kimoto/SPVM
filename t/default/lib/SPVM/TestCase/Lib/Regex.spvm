@@ -593,6 +593,7 @@ class TestCase::Lib::Regex {
         }
       }
     }
+    
     # [a-aa-a] | "-" is a character unless "-" is used as a charcter class range
     {
       my $re = Regex->new("[a-aa-a]");

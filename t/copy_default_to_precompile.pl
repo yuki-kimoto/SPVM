@@ -33,7 +33,7 @@ find(
         
         my $content = do { local $/; <$fh> };
         
-        $content =~ s/class\s+([\w:]+)\s*\{/class $1 : precompile {/g;
+        $content =~ s/class +([\w:]+) *\{/class $1 : precompile {/g;
         
         mkpath $to_dir;
         
