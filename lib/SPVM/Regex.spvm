@@ -5,9 +5,9 @@ class Regex : precompile {
   use Hash;
   use StringBuffer;
   use Regex::Replacer;
-  use Regex::Pattern;
+  use Regex::Opcode;
   use Fn;
-  has patterns : List;
+  has opcodes : List;
   has string_start : byte;
   has string_end : byte;
   has single_line_mode : byte;
@@ -86,7 +86,7 @@ class Regex : precompile {
   private static method _new_without_compile : Regex () {
     my $self = new Regex;
     
-    $self->{patterns} = List->new_len(new Regex::Pattern[0], 0);
+    $self->{opcodes} = List->new_len(new Regex::Opcode[0], 0);
 
     $self->{captures} = new string[256];
     
@@ -106,7 +106,7 @@ class Regex : precompile {
     }
     
     my $pos = 0;
-    my $patterns = $self->{patterns};
+    my $opcodes = $self->{opcodes};
     
     my $quantifier_min_str = "";
     my $quantifier_max_str = "";
@@ -116,7 +116,7 @@ class Regex : precompile {
     my $char_class_negate = 0;
     
     my $is_capture = 0;
-    my $pattern_capture_begin = 0;
+    my $opcode_capture_begin = 0;
     
     my $cur_code_point_ranges_list = IntList->new;
     
@@ -300,13 +300,13 @@ class Regex : precompile {
               unless ($quantifier_status == &QUANTIFIER_STATUS_MAX) {
                 die "Invalid quantifier";
               }
-              my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
+              my $last_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
               if (length $quantifier_max_str == 0) {
-                $last_pattern->{max_repeat} = Fn->INT32_MAX;
+                $last_opcode->{max_repeat} = Fn->INT32_MAX;
               }
               else {
                 my $quantifier_max = Fn->to_int($quantifier_max_str);
-                $last_pattern->{max_repeat} = $quantifier_max;
+                $last_opcode->{max_repeat} = $quantifier_max;
               }
               
               $quantifier_status = &QUANTIFIER_STATUS_NOT_STARTED;
@@ -321,13 +321,13 @@ class Regex : precompile {
                   $quantifier_min_str .= $code_point - '0';
                 }
                 elsif ($code_point == ',') {
-                  my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
+                  my $last_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
                   if (length $quantifier_min_str == 0) {
-                    $last_pattern->{min_repeat} = 0;
+                    $last_opcode->{min_repeat} = 0;
                   }
                   else {
                     my $quantifier_min = Fn->to_int($quantifier_min_str);
-                    $last_pattern->{min_repeat} = $quantifier_min;
+                    $last_opcode->{min_repeat} = $quantifier_min;
                   }
                   $quantifier_status = &QUANTIFIER_STATUS_MAX();
                   $quantifier_min_str .= "";
@@ -382,15 +382,15 @@ class Regex : precompile {
                 }
                 else {
                   $is_capture = 1;
-                  $pattern_capture_begin = 1;
+                  $opcode_capture_begin = 1;
                 }
                 break;
               }
               case ')': {
                 if ($is_capture) {
                   $is_capture = 0;
-                  my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
-                  $before_pattern->{capture_end} = 1;
+                  my $before_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
+                  $before_opcode->{capture_end} = 1;
                 }
                 else {
                   die "Invalid capture end";
@@ -403,21 +403,21 @@ class Regex : precompile {
                 break;
               }
               case '*': {
-                my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
-                $before_pattern->{min_repeat} = 0;
-                $before_pattern->{max_repeat} = Fn->INT32_MAX();
+                my $before_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
+                $before_opcode->{min_repeat} = 0;
+                $before_opcode->{max_repeat} = Fn->INT32_MAX();
                 break;
               }
               case '+': {
-                my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
-                $before_pattern->{min_repeat} = 1;
-                $before_pattern->{max_repeat} = Fn->INT32_MAX();
+                my $before_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
+                $before_opcode->{min_repeat} = 1;
+                $before_opcode->{max_repeat} = Fn->INT32_MAX();
                 break;
               }
               case '?': {
-                my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
-                $before_pattern->{min_repeat} = 0;
-                $before_pattern->{max_repeat} = 1;
+                my $before_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
+                $before_opcode->{min_repeat} = 0;
+                $before_opcode->{max_repeat} = 1;
                 break;
               }
               case '{': {
@@ -440,20 +440,20 @@ class Regex : precompile {
       }
 
       if ($finish_code_point_ranges) {
-        my $pattern = new Regex::Pattern;
+        my $opcode = new Regex::Opcode;
 
-        $pattern->{negate} = (byte)$char_class_negate;
-        $pattern->{code_point_ranges} = $cur_code_point_ranges_list->to_array;
+        $opcode->{negate} = (byte)$char_class_negate;
+        $opcode->{code_point_ranges} = $cur_code_point_ranges_list->to_array;
         
-        $pattern->{max_repeat} = 1;
-        $pattern->{min_repeat} = 1;
+        $opcode->{max_repeat} = 1;
+        $opcode->{min_repeat} = 1;
 
-        if ($pattern_capture_begin) {
-          $pattern->{capture_begin} = 1;
-          $pattern_capture_begin = 0;
+        if ($opcode_capture_begin) {
+          $opcode->{capture_begin} = 1;
+          $opcode_capture_begin = 0;
         }
         
-        $patterns->push($pattern);
+        $opcodes->push($opcode);
         
         $cur_code_point_ranges_list = IntList->new;
       }
@@ -466,8 +466,8 @@ class Regex : precompile {
       die "Target string must be defined";
     }
     
-    my $patterns = $self->{patterns};
-    my $patterns_length = $patterns->length;
+    my $opcodes = $self->{opcodes};
+    my $opcodes_length = $opcodes->length;
     
     my $match_all = 0;
     my $target_index = 0;
@@ -482,19 +482,19 @@ class Regex : precompile {
       
       $target_index =  $target_base_index_before;
       
-      my $pattern_index = 0;
+      my $opcode_index = 0;
       
-      my $pattern_capture_begin_index = -1;
+      my $opcode_capture_begin_index = -1;
       my $capture_count = 0;
       while (1) {
-        my $pattern = (Regex::Pattern)$patterns->get($pattern_index);
-        my $max_repeat = $pattern->{max_repeat};
-        my $min_repeat = $pattern->{min_repeat};
-        my $code_point_range = $pattern->{code_point_ranges};
-        my $negate = $pattern->{negate};
+        my $opcode = (Regex::Opcode)$opcodes->get($opcode_index);
+        my $max_repeat = $opcode->{max_repeat};
+        my $min_repeat = $opcode->{min_repeat};
+        my $code_point_range = $opcode->{code_point_ranges};
+        my $negate = $opcode->{negate};
         
-        if ($pattern->{capture_begin}) {
-          $pattern_capture_begin_index = $target_index;
+        if ($opcode->{capture_begin}) {
+          $opcode_capture_begin_index = $target_index;
         }
         
         my $target_before_index = $target_index;
@@ -576,16 +576,16 @@ class Regex : precompile {
         }
         
         if ($match_repeat) {
-          if ($pattern->{capture_end}) {
-            $self->{captures}[$capture_count] = Fn->substr($target, $pattern_capture_begin_index, $repeat_before_target_index - $pattern_capture_begin_index);
+          if ($opcode->{capture_end}) {
+            $self->{captures}[$capture_count] = Fn->substr($target, $opcode_capture_begin_index, $repeat_before_target_index - $opcode_capture_begin_index);
             $capture_count++;
             if ($capture_count > 255) {
               die "Too many captures";
             }
           }
-          $pattern_index++;
+          $opcode_index++;
           $target_index = $repeat_before_target_index;
-          if ($pattern_index == $patterns_length) {
+          if ($opcode_index == $opcodes_length) {
             last;
           }
         }
@@ -594,7 +594,7 @@ class Regex : precompile {
         }
       }
       
-      if ($pattern_index == $patterns_length) {
+      if ($opcode_index == $opcodes_length) {
         $match_all = 1;
         last;
       }

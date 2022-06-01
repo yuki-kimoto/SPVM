@@ -1,4 +1,4 @@
-class Regex::Pattern {
+class Regex::Opcode {
   allow Regex;
   
   enum {
@@ -9,7 +9,6 @@ class Regex::Pattern {
     CAPTURE_END,
   }
   has code_point_ranges : int[];
-  has pattern : Regex::Pattern;
   has negate : byte;
   has min_repeat : int;
   has max_repeat : int;
@@ -17,4 +16,5 @@ class Regex::Pattern {
   has capture_end : byte;
   has string_or_line_begin : byte;
   has string_or_line_end : byte;
+  has next_opcodes : Regex::Opcode[];
 }

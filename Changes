@@ -5,6 +5,7 @@ Revision history for SPVM
         * Improve Regex module
           Support quantifier {,n} {m,}
           Support [\d\D] [^\d\D]
+        * Rename Regex::Pattern to Regex::Opcode
           
         [NON BACKWORD COMPATIBLE CHANGES]
         * Regex module is very experimental status and uncompleted.
