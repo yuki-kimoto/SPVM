@@ -3,9 +3,9 @@ class Regex::Opcode {
   
   enum {
     ID_CHAR_CLASS,
-    ID_LINE_START,
+    ID_LINE_BEGIN,
     ID_LIND_END,
-    ID_TEXT_START,
+    ID_TEXT_BEGIN,
     ID_TEXT_END,
     ID_WORD_BOUNDARY,
     ID_NO_WORD_BOUNDARY,
@@ -14,7 +14,7 @@ class Regex::Opcode {
   
   has id : int;
   has code_point_ranges : int[];
-  has negate : byte;
+  has char_class_negate : byte;
   has min_repeat : int;
   has max_repeat : int;
   has capture_begin : byte;

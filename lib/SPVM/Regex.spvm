@@ -442,7 +442,7 @@ class Regex : precompile {
       if ($finish_code_point_ranges) {
         my $opcode = new Regex::Opcode;
 
-        $opcode->{negate} = (byte)$char_class_negate;
+        $opcode->{char_class_negate} = (byte)$char_class_negate;
         $opcode->{code_point_ranges} = $cur_code_point_ranges_list->to_array;
         
         $opcode->{max_repeat} = 1;
@@ -491,7 +491,7 @@ class Regex : precompile {
         my $max_repeat = $opcode->{max_repeat};
         my $min_repeat = $opcode->{min_repeat};
         my $code_point_range = $opcode->{code_point_ranges};
-        my $negate = $opcode->{negate};
+        my $negate = $opcode->{char_class_negate};
         
         if ($opcode->{capture_begin}) {
           $opcode_capture_begin_index = $target_index;
