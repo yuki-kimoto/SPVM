@@ -485,7 +485,7 @@ class Regex : precompile {
       my $opcode_index = 0;
       
       my $opcode_capture_begin_index = -1;
-      my $capture_count = 0;
+      my $capture_count = 1;
       while (1) {
         my $opcode = (Regex::Opcode)$opcodes->get($opcode_index);
         my $max_repeat = $opcode->{max_repeat};
@@ -751,16 +751,16 @@ class Regex : precompile {
     return $result;
   }
   
-  method cap1 : string () { return $self->captures->[0]; }
-  method cap2 : string () { return $self->captures->[1]; }
-  method cap3 : string () { return $self->captures->[2]; }
-  method cap4 : string () { return $self->captures->[3]; }
-  method cap5 : string () { return $self->captures->[4]; }
-  method cap6 : string () { return $self->captures->[5]; }
-  method cap7 : string () { return $self->captures->[6]; }
-  method cap8 : string () { return $self->captures->[7]; }
-  method cap9 : string () { return $self->captures->[8]; }
-  method cap10 : string () { return $self->captures->[9]; }
+  method cap1 : string () { return $self->captures->[1]; }
+  method cap2 : string () { return $self->captures->[2]; }
+  method cap3 : string () { return $self->captures->[3]; }
+  method cap4 : string () { return $self->captures->[4]; }
+  method cap5 : string () { return $self->captures->[5]; }
+  method cap6 : string () { return $self->captures->[6]; }
+  method cap7 : string () { return $self->captures->[7]; }
+  method cap8 : string () { return $self->captures->[8]; }
+  method cap9 : string () { return $self->captures->[9]; }
+  method cap10 : string () { return $self->captures->[10]; }
 
   private method culcurate_code_point_ranges : int[] ($code_point_raw_ranges_list : IntList) {
     my $code_point_ranges_list = IntList->new;

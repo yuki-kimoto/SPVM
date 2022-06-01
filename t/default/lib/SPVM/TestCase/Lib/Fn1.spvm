@@ -1815,7 +1815,7 @@ class TestCase::Lib::Fn1 {
     
     {
       # "xyzaaaxyzAAA"
-      my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[0]); });
+      my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[1]); });
       unless ($result eq "xyzaaaxyzAAA") {
         return 0;
       }
@@ -1823,7 +1823,7 @@ class TestCase::Lib::Fn1 {
     
     {
       # "xyzaaaxyzaaa"
-      my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[0]); }, "g");
+      my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[1]); }, "g");
       unless ($result eq "xyzaaaxyzaaa") {
         return 0;
       }
