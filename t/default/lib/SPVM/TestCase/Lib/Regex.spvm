@@ -177,7 +177,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
   
-  static method match_start_and_end : int () {
+  static method match_line_begin_and_end : int () {
     # Match start and end
     {
       my $re = Regex->new("abc");
@@ -954,7 +954,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
   
-  static method match_end : int () {
+  static method match_line_end : int () {
     # Match $
     {
       # Match $ - "zabbc"
@@ -985,7 +985,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  static method match_start : int () {
+  static method match_line_begin : int () {
     # Match ^
     {
       # Match ^ - "abbcz"
