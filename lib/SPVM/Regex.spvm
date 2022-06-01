@@ -298,15 +298,7 @@ class Regex : precompile {
           else {
             switch ($code_point) {
               case '^': {
-                if ($char_class_parsing) {
-                  die "Unexpected";
-                }
-                elsif ($status != Regex->STATUS_START()) {
-                  die "Regex compile error";
-                }
-                
                 $self->{string_start} = 1;
-                
                 break;
               }
               case '.': {
