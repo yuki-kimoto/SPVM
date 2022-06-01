@@ -316,10 +316,15 @@ class Regex : precompile {
                   $quantifier_min_str .= $code_point - '0';
                 }
                 elsif ($code_point == ',') {
-                  my $quantifier_min = Fn->to_int_with_base($quantifier_min_str, 10);
-                  my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
-                  $last_pattern->{min_repeat} = $quantifier_min;
-                  
+                  if (length $quantifier_min_str == 0) {
+                    my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
+                    $last_pattern->{min_repeat} = 0;
+                  }
+                  else {
+                    my $quantifier_min = Fn->to_int_with_base($quantifier_min_str, 10);
+                    my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
+                    $last_pattern->{min_repeat} = $quantifier_min;
+                  }
                   $quantifier_status = &QUANTIFIER_STATUS_MAX();
                   $quantifier_min_str .= "";
                 }

@@ -1105,6 +1105,48 @@ class TestCase::Lib::Regex {
         }
       }
     }
+
+    # {,n}
+    {
+      my $re = Regex->new("ab{,2}c");
+      
+      {
+        my $target = "zacz";
+        
+        my $match = $re->match($target, 0);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+      {
+        my $target = "zabcz";
+        
+        my $match = $re->match($target, 0);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+      {
+        my $target = "zabbcz";
+        
+        my $match = $re->match($target, 0);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+      {
+        my $target = "zabbbcz";
+        
+        my $match = $re->match($target, 0);
+        
+        if ($match) {
+          return 0;
+        }
+      }
+    }
     
     return 1;
   }
