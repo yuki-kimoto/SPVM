@@ -2,7 +2,15 @@ Revision history for SPVM
 0.9601_01  2022-05-31
         [CHANGE]
         * Improve compilation error messages.
-        
+        * Improve Regex module
+          Support quantifier {,n} {m,}
+          Support [\d\D] [^\d\D]
+          
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Regex module is very experimental status and uncompleted.
+          I start to implement the part of Perl regular expression.
+          Many small non-backwordcompatible occur.
+          
 0.9600_02  2022-05-30
         [CHANGE]
         * Regex class support "i" (ignore case) option.
