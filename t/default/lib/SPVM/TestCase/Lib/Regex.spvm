@@ -545,6 +545,41 @@ class TestCase::Lib::Regex {
         return 0;
       }
     }
+
+    # ^[\d\D]+
+    {
+      my $re = Regex->new_with_options("^[\d\D]+$", "a");
+      
+      my $target = "abc123";
+      
+      my $match = $re->match($target, 0);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    # ^[^\d\D]+
+    {
+      my $re = Regex->new_with_options("^[^\d\D]+$", "a");
+      
+      {
+        my $target = "abc";
+        
+        my $match = $re->match($target, 0);
+        if ($match) {
+          return 0;
+        }
+      }
+      {
+        my $target = "123";
+        
+        my $match = $re->match($target, 0);
+        if ($match) {
+          return 0;
+        }
+      }
+    }
     
     return 1;
   }
