@@ -345,10 +345,6 @@ class Regex : precompile {
                 $before_is_char_class_hyphen = 0;
                 break;
               }
-              case ']': {
-                die "] must be end of character class";
-                break;
-              }
               case '*': {
                 my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                 $before_pattern->{min_repeat} = 0;
