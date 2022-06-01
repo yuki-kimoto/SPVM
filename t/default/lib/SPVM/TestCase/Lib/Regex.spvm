@@ -606,6 +606,33 @@ class TestCase::Lib::Regex {
       }
     }
 
+    # - | "-" is a character unless "-" is used as a charcter class range
+    {
+      {
+        my $re = Regex->new("-");
+        
+        {
+          my $target = "-";
+          my $match = $re->match($target, 0);
+          unless ($match) {
+            return 0;
+          }
+        }
+      }
+      {
+        my $re = Regex->new("a-z");
+        
+        {
+          my $target = "a-z";
+          my $match = $re->match($target, 0);
+          unless ($match) {
+            return 0;
+          }
+        }
+      }
+      
+    }
+
     # [-] | "-" is a character unless "-" is used as a charcter class range
     {
       my $re = Regex->new("[-]");
