@@ -305,7 +305,7 @@ class Regex : precompile {
                 $last_pattern->{max_repeat} = Fn->INT32_MAX;
               }
               else {
-                my $quantifier_max = Fn->to_int_with_base($quantifier_max_str, 10);
+                my $quantifier_max = Fn->to_int($quantifier_max_str);
                 $last_pattern->{max_repeat} = $quantifier_max;
               }
               
@@ -326,7 +326,7 @@ class Regex : precompile {
                     $last_pattern->{min_repeat} = 0;
                   }
                   else {
-                    my $quantifier_min = Fn->to_int_with_base($quantifier_min_str, 10);
+                    my $quantifier_min = Fn->to_int($quantifier_min_str);
                     $last_pattern->{min_repeat} = $quantifier_min;
                   }
                   $quantifier_status = &QUANTIFIER_STATUS_MAX();
