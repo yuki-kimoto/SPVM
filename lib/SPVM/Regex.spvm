@@ -298,11 +298,16 @@ class Regex : precompile {
           elsif ($quantifier_parsing) {
             if ($code_point == '}') {
               unless ($quantifier_status == &QUANTIFIER_STATUS_MAX) {
-                die "Regex compile error";
+                die "Invalid quantifier";
               }
-              my $quantifier_max = Fn->to_int_with_base($quantifier_max_str, 10);
               my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
-              $last_pattern->{max_repeat} = $quantifier_max;
+              if (length $quantifier_max_str == 0) {
+                $last_pattern->{max_repeat} = Fn->INT32_MAX;
+              }
+              else {
+                my $quantifier_max = Fn->to_int_with_base($quantifier_max_str, 10);
+                $last_pattern->{max_repeat} = $quantifier_max;
+              }
               
               $quantifier_status = &QUANTIFIER_STATUS_NOT_STARTED;
               $quantifier_max_str = "";
@@ -316,20 +321,19 @@ class Regex : precompile {
                   $quantifier_min_str .= $code_point - '0';
                 }
                 elsif ($code_point == ',') {
+                  my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                   if (length $quantifier_min_str == 0) {
-                    my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                     $last_pattern->{min_repeat} = 0;
                   }
                   else {
                     my $quantifier_min = Fn->to_int_with_base($quantifier_min_str, 10);
-                    my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                     $last_pattern->{min_repeat} = $quantifier_min;
                   }
                   $quantifier_status = &QUANTIFIER_STATUS_MAX();
                   $quantifier_min_str .= "";
                 }
                 else {
-                  die "Quantifier min must be non-fractional number";
+                  die "Invalid quantifier";
                 }
               }
               elsif ($quantifier_status == &QUANTIFIER_STATUS_MAX) {
@@ -337,7 +341,7 @@ class Regex : precompile {
                   $quantifier_max_str .= $code_point - '0';
                 }
                 else {
-                  die "Quantifier max must be non-fractional number";
+                  die "Invalid quantifier";
                 }
               }
             }
