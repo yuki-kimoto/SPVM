@@ -25,7 +25,6 @@ class Regex : precompile {
   
   private enum {
     STATUS_START,
-    STATUS_CONTINUE,
     STATUS_QUANTIFIER_MIN,
     STATUS_QUANTIFIER_MAX,
   }
@@ -255,7 +254,6 @@ class Regex : precompile {
           if ($char_class_parsing) {
             if ($code_point == ']') {
               $char_class_parsing = 0;
-              $status = Regex->STATUS_CONTINUE;
               $finish_code_point_ranges = 1;
             }
             elsif ($code_point == '-') {
@@ -381,7 +379,7 @@ class Regex : precompile {
                 my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                 $last_pattern->{max_repeat} = $quantifier_max;
                 
-                $status = Regex->STATUS_CONTINUE();
+                $status = Regex->STATUS_START();
                 $quantifier_max_str = "";
                 break;
               }
