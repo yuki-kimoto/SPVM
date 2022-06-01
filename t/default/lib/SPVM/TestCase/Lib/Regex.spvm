@@ -14,7 +14,7 @@ class TestCase::Lib::Regex {
       my $re = Regex->new("a(bc)");
       my $target = "ppzabczabcz";
       my $result = $re->replace_all_cb($target, 0, method : string ($re : Regex) {
-        return "ABC" . $re->captures->[0] . "PQRS";
+        return "ABC" . $re->cap1 . "PQRS";
       });
       
       unless ($re->replace_count == 2) {
@@ -163,7 +163,7 @@ class TestCase::Lib::Regex {
       my $re = Regex->new("a(bc)");
       my $target = "ppzabcz";
       my $result = $re->replace_cb($target, 0, method : string ($re : Regex) {
-        return "AB" . $re->captures->[0] . "C";
+        return "AB" . $re->cap1 . "C";
       });
       
       unless ($re->replace_count == 1) {
@@ -260,7 +260,7 @@ class TestCase::Lib::Regex {
       my $re = Regex->new("(a*)");
       my $target = "aaa";
       $re->match($target, 0);
-      unless ($re->captures->[0] eq "aaa") {
+      unless ($re->cap1 eq "aaa") {
         return 0;
       }
     }
@@ -275,7 +275,7 @@ class TestCase::Lib::Regex {
         return 0;
       }
       
-      unless ($re->captures->[0] eq "b") {
+      unless ($re->cap1 eq "b") {
         return 0;
       }
     }
@@ -290,7 +290,7 @@ class TestCase::Lib::Regex {
         return 0;
       }
       
-      unless ($re->captures->[0] eq "い") {
+      unless ($re->cap1 eq "い") {
         return 0;
       }
     }
@@ -305,12 +305,12 @@ class TestCase::Lib::Regex {
         return 0;
       }
       
-      unless ($re->captures->[0] eq "") {
+      unless ($re->cap1 eq "") {
         return 0;
       }
     }
 
-    # Capture char class-and quantifier
+    # Capture char class and quantifier
     {
       my $re = Regex->new_with_options("\-(\w+)\-", "a");
       my $target = "-abc89-";
@@ -321,7 +321,7 @@ class TestCase::Lib::Regex {
       }
 
       
-      unless ($re->captures->[0] eq "abc89") {
+      unless ($re->cap1 eq "abc89") {
         return 0;
       }
     }
@@ -336,23 +336,23 @@ class TestCase::Lib::Regex {
         return 0;
       }
       
-      unless ($re->captures->[0] eq "abc1") {
+      unless ($re->cap1 eq "abc1") {
         return 0;
       }
 
-      unless ($re->captures->[1] eq "abc2") {
+      unless ($re->cap2 eq "abc2") {
         return 0;
       }
 
-      unless ($re->captures->[2] eq "abc3") {
+      unless ($re->cap3 eq "abc3") {
         return 0;
       }
 
-      unless ($re->captures->[3] eq "abc4") {
+      unless ($re->cap4 eq "abc4") {
         return 0;
       }
 
-      unless ($re->captures->[4] eq "abc5") {
+      unless ($re->cap5 eq "abc5") {
         return 0;
       }
     }
@@ -376,7 +376,7 @@ class TestCase::Lib::Regex {
       my $re = Regex->new("(a*)");
       my $target = "aaa";
       $re->match($target, 0);
-      unless ($re->captures->[0] eq "aaa") {
+      unless ($re->cap1 eq "aaa") {
         return 0;
       }
     }
@@ -385,7 +385,7 @@ class TestCase::Lib::Regex {
   }
   
   static method match_char_class_range : int ()  {
-    # Match char class-range
+    # Match char class range
     {
       my $re = Regex->new("[0-9]+");
       my $target = "z09az";
@@ -397,7 +397,7 @@ class TestCase::Lib::Regex {
       }
     }
 
-    # Not Match char class-range
+    # Not Match char class range
     {
       my $re = Regex->new("[0-9a-c]+");
       my $target = "zz";
@@ -420,7 +420,7 @@ class TestCase::Lib::Regex {
         return 0;
       }
       
-      unless ($re->captures->[0] eq "abc") {
+      unless ($re->cap1 eq "abc") {
         return 0;
       }
     }
@@ -436,7 +436,7 @@ class TestCase::Lib::Regex {
         return 0;
       }
       
-      unless ($re->captures->[0] eq "abc\ndef") {
+      unless ($re->cap1 eq "abc\ndef") {
         return 0;
       }
     }
@@ -446,7 +446,7 @@ class TestCase::Lib::Regex {
 
   static method match_char_class_negate : int () {
 
-    # Match char class-negate
+    # Match char class negate
     {
       my $re = Regex->new("[^0-9]+");
       my $target = "zabcz";
@@ -458,7 +458,7 @@ class TestCase::Lib::Regex {
       }
     }
 
-    # Not match char class-negate
+    # Not match char class negate
     {
       my $re = Regex->new("[^0-9]+");
       my $target = "012";
@@ -470,7 +470,7 @@ class TestCase::Lib::Regex {
       }
     }
 
-    # Match char class-negate UTF-8
+    # Match char class negate UTF-8
     {
       my $re = Regex->new("[^あ]+");
       my $target = "いうえ";
@@ -482,7 +482,7 @@ class TestCase::Lib::Regex {
       }
     }
 
-    # Don't Match char class-negate UTF-8
+    # Don't Match char class negate UTF-8
     {
       my $re = Regex->new("[^あ]+");
       my $target = "あああ";
@@ -499,7 +499,7 @@ class TestCase::Lib::Regex {
   
   static method match_char_class : int () {
 
-    # Match char class
+    # Match char cap1
     {
       {
         my $re = Regex->new("[bcdあ]+");
@@ -522,7 +522,7 @@ class TestCase::Lib::Regex {
       }
     }
 
-    # Match char class-\d
+    # Match char class \d
     {
       my $re = Regex->new_with_options("[\da]+", "a");
       my $target = "z01az";
@@ -534,7 +534,7 @@ class TestCase::Lib::Regex {
       }
     }
 
-    # Not Match char class
+    # Not Match char cap1
     {
       my $re = Regex->new_with_options("[bcd\d]+", "a");
       my $target = "ae";
@@ -581,7 +581,7 @@ class TestCase::Lib::Regex {
       }
     }
 
-    # [a-a] | "-" is a character unless "-" is used as a charcter class range
+    # [a-a] | "-" is a character unless "-" is used as a charcter cap1 range
     {
       my $re = Regex->new("[a-a]");
       
@@ -594,7 +594,7 @@ class TestCase::Lib::Regex {
       }
     }
     
-    # [a-aa-a] | "-" is a character unless "-" is used as a charcter class range
+    # [a-aa-a] | "-" is a character unless "-" is used as a charcter cap1 range
     {
       my $re = Regex->new("[a-aa-a]");
       
@@ -607,7 +607,7 @@ class TestCase::Lib::Regex {
       }
     }
 
-    # - | "-" is a character unless "-" is used as a charcter class range
+    # - | "-" is a character unless "-" is used as a charcter cap1 range
     {
       {
         my $re = Regex->new("-");
@@ -634,7 +634,7 @@ class TestCase::Lib::Regex {
       
     }
 
-    # [-] | "-" is a character unless "-" is used as a charcter class range
+    # [-] | "-" is a character unless "-" is used as a charcter cap1 range
     {
       my $re = Regex->new("[-]");
       
@@ -647,7 +647,7 @@ class TestCase::Lib::Regex {
       }
     }
 
-    # [a-] | "-" is a character unless "-" is used as a charcter class range
+    # [a-] | "-" is a character unless "-" is used as a charcter cap1 range
     {
       my $re = Regex->new("[a-]");
       
@@ -668,7 +668,7 @@ class TestCase::Lib::Regex {
       }
     }
 
-    # Invalid character class range
+    # Invalid character cap1 range
     {
       eval { Regex->new("[z-a]"); };
       
@@ -1488,7 +1488,7 @@ class TestCase::Lib::Regex {
     
     {
       # "xyzaaaxyzAAA"
-      my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[0]); });
+      my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->cap1); });
       unless ($result eq "xyzaaaxyzAAA") {
         return 0;
       }
@@ -1496,13 +1496,13 @@ class TestCase::Lib::Regex {
     
     {
       # "xyzaaaxyzaaa"
-      my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[0]); }, "g");
+      my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->cap1); }, "g");
       unless ($result eq "xyzaaaxyzaaa") {
         return 0;
       }
     }
 
-    # "]" is a character at the place that is not character class.
+    # "]" is a character at the place that is not character cap1.
     {
       my $re = Regex->new("]");
       my $match = $re->match("]", 0);
