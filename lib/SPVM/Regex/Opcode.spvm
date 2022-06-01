@@ -1,6 +1,17 @@
 class Regex::Opcode {
   allow Regex;
   
+  enum {
+    ID_CHAR_CLASS,
+    ID_LINE_START,
+    ID_LIND_END,
+    ID_TEXT_START,
+    ID_TEXT_END,
+    ID_WORD_BOUNDARY,
+    ID_NO_WORD_BOUNDARY,
+    ID_CAPTURE,
+  }
+  
   has id : int;
   has code_point_ranges : int[];
   has negate : byte;
@@ -8,7 +19,5 @@ class Regex::Opcode {
   has max_repeat : int;
   has capture_begin : byte;
   has capture_end : byte;
-  has string_or_line_begin : byte;
-  has string_or_line_end : byte;
   has next_opcodes : Regex::Opcode[];
 }
