@@ -24,9 +24,9 @@ class Regex : precompile {
   has before_is_open_bracket : byte;
   
   private enum {
-    STATUS_START,
-    STATUS_QUANTIFIER_MIN,
-    STATUS_QUANTIFIER_MAX,
+    QUANTIFIER_STATUS_NOT_STARTED,
+    QUANTIFIER_STATUS_MIN,
+    QUANTIFIER_STATUS_MAX,
   }
 
   static method new : Regex ($re_str_and_options : string[]...) {
@@ -111,7 +111,7 @@ class Regex : precompile {
     my $quantifier_min_str = "";
     my $quantifier_max_str = "";
     
-    my $status = Regex->STATUS_START();
+    my $quantifier_status = &QUANTIFIER_STATUS_NOT_STARTED;
     
     my $char_class_negate = 0;
     
@@ -297,21 +297,21 @@ class Regex : precompile {
           # Quantifier "{m,n}"
           elsif ($quantifier_parsing) {
             if ($code_point == '}') {
-              unless ($status == Regex->STATUS_QUANTIFIER_MAX()) {
+              unless ($quantifier_status == &QUANTIFIER_STATUS_MAX) {
                 die "Regex compile error";
               }
               my $quantifier_max = Fn->to_int_with_base($quantifier_max_str, 10);
               my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
               $last_pattern->{max_repeat} = $quantifier_max;
               
-              $status = Regex->STATUS_START();
+              $quantifier_status = &QUANTIFIER_STATUS_NOT_STARTED;
               $quantifier_max_str = "";
               
               $quantifier_parsing = 0;
               break;
             }
             else {
-              if ($status == Regex->STATUS_QUANTIFIER_MIN()) {
+              if ($quantifier_status == &QUANTIFIER_STATUS_MIN) {
                 if (Fn->is_digit($code_point)) {
                   $quantifier_min_str .= $code_point - '0';
                 }
@@ -320,14 +320,14 @@ class Regex : precompile {
                   my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                   $last_pattern->{min_repeat} = $quantifier_min;
                   
-                  $status = Regex->STATUS_QUANTIFIER_MAX();
+                  $quantifier_status = &QUANTIFIER_STATUS_MAX();
                   $quantifier_min_str .= "";
                 }
                 else {
                   die "Quantifier min must be non-fractional number";
                 }
               }
-              elsif ($status == Regex->STATUS_QUANTIFIER_MAX()) {
+              elsif ($quantifier_status == &QUANTIFIER_STATUS_MAX) {
                 if (Fn->is_digit($code_point)) {
                   $quantifier_max_str .= $code_point - '0';
                 }
@@ -412,7 +412,7 @@ class Regex : precompile {
                 break;
               }
               case '{': {
-                $status = Regex->STATUS_QUANTIFIER_MIN();
+                $quantifier_status = &QUANTIFIER_STATUS_MIN;
                 $quantifier_parsing = 1;
                 break;
               }
