@@ -1,13 +1,7 @@
 class Regex::Opcode {
   allow Regex;
   
-  enum {
-    RE_START,
-    RE_END,
-    PATTERN,
-    CAPTURE_START,
-    CAPTURE_END,
-  }
+  has id : int;
   has code_point_ranges : int[];
   has negate : byte;
   has min_repeat : int;
