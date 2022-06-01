@@ -21,6 +21,7 @@ class Regex : precompile {
   
   has replace_count : ro int;
   has before_is_hyphen : byte;
+  has before_is_open_bracket : byte;
   
   private enum {
     STATUS_START,
@@ -125,6 +126,9 @@ class Regex : precompile {
       
       my $before_is_hyphen = $self->{before_is_hyphen};
       $self->{before_is_hyphen} = 0;
+
+      my $before_is_open_bracket = $self->{before_is_open_bracket};
+      $self->{before_is_open_bracket} = 0;
       
       my $finish_code_point_ranges = 0;
       
@@ -247,6 +251,7 @@ class Regex : precompile {
           break;
         }
         default: {
+          # Charcter class
           if ($char_class_parsing) {
             if ($code_point == ']') {
               $char_class_parsing = 0;
@@ -261,7 +266,8 @@ class Regex : precompile {
               $self->{before_is_hyphen} = 1;
             }
             else {
-              if ($code_point == '^' && $cur_code_point_ranges_list->length == 0) {
+              # Charcater class negate
+              if ($before_is_open_bracket && $code_point == '^') {
                 $char_class_negate = 1;
               }
               else {
@@ -350,6 +356,7 @@ class Regex : precompile {
               }
               case '[': {
                 $char_class_parsing = 1;
+                $self->{before_is_open_bracket} = 1;
                 break;
               }
               case '*': {

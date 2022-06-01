@@ -675,6 +675,33 @@ class TestCase::Lib::Regex {
         return 0;
       }
     }
+
+    # [ ^a]
+    {
+      my $re = Regex->new("[ ^a]");
+      
+      {
+        my $target = " ";
+        my $match = $re->match($target, 0);
+        unless ($match) {
+          return 0;
+        }
+      }
+      {
+        my $target = "^";
+        my $match = $re->match($target, 0);
+        unless ($match) {
+          return 0;
+        }
+      }
+      {
+        my $target = "a";
+        my $match = $re->match($target, 0);
+        unless ($match) {
+          return 0;
+        }
+      }
+    }
     
     $@ = undef;
     
