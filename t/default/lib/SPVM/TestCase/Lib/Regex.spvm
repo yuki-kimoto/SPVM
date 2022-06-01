@@ -580,6 +580,76 @@ class TestCase::Lib::Regex {
         }
       }
     }
+
+    # [a-a] | "-" is a character unless "-" is used as a charcter class range
+    {
+      my $re = Regex->new("[a-a]");
+      
+      {
+        my $target = "a";
+        my $match = $re->match($target, 0);
+        unless ($match) {
+          return 0;
+        }
+      }
+    }
+    # [a-aa-a] | "-" is a character unless "-" is used as a charcter class range
+    {
+      my $re = Regex->new("[a-aa-a]");
+      
+      {
+        my $target = "a";
+        my $match = $re->match($target, 0);
+        unless ($match) {
+          return 0;
+        }
+      }
+    }
+
+    # [-] | "-" is a character unless "-" is used as a charcter class range
+    {
+      my $re = Regex->new("[-]");
+      
+      {
+        my $target = "-";
+        my $match = $re->match($target, 0);
+        unless ($match) {
+          return 0;
+        }
+      }
+    }
+
+    # [a-] | "-" is a character unless "-" is used as a charcter class range
+    {
+      my $re = Regex->new("[a-]");
+      
+      {
+        my $target = "a";
+        my $match = $re->match($target, 0);
+        unless ($match) {
+          return 0;
+        }
+      }
+
+      {
+        my $target = "-";
+        my $match = $re->match($target, 0);
+        unless ($match) {
+          return 0;
+        }
+      }
+    }
+
+    # Invalid character class range
+    {
+      eval { Regex->new("[z-a]"); };
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
     
     return 1;
   }
