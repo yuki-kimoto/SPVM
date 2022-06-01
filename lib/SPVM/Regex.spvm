@@ -121,6 +121,7 @@ class Regex : precompile {
     my $cur_code_point_ranges_list = IntList->new;
     
     my $char_class_parsing = 0;
+    my $quantifier_parsing = 0;
     while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
       
       my $before_is_hyphen = $self->{before_is_hyphen};
@@ -293,6 +294,49 @@ class Regex : precompile {
               }
             }
           }
+          # Quantifier "{m,n}"
+          elsif ($quantifier_parsing) {
+            if ($code_point == '}') {
+              unless ($status == Regex->STATUS_QUANTIFIER_MAX()) {
+                die "Regex compile error";
+              }
+              my $quantifier_max = Fn->to_int_with_base($quantifier_max_str, 10);
+              my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
+              $last_pattern->{max_repeat} = $quantifier_max;
+              
+              $status = Regex->STATUS_START();
+              $quantifier_max_str = "";
+              
+              $quantifier_parsing = 0;
+              break;
+            }
+            else {
+              if ($status == Regex->STATUS_QUANTIFIER_MIN()) {
+                if (Fn->is_digit($code_point)) {
+                  $quantifier_min_str .= $code_point - '0';
+                }
+                elsif ($code_point == ',') {
+                  my $quantifier_min = Fn->to_int_with_base($quantifier_min_str, 10);
+                  my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
+                  $last_pattern->{min_repeat} = $quantifier_min;
+                  
+                  $status = Regex->STATUS_QUANTIFIER_MAX();
+                  $quantifier_min_str .= "";
+                }
+                else {
+                  die "Quantifier min must be non-fractional number";
+                }
+              }
+              elsif ($status == Regex->STATUS_QUANTIFIER_MAX()) {
+                if (Fn->is_digit($code_point)) {
+                  $quantifier_max_str .= $code_point - '0';
+                }
+                else {
+                  die "Quantifier max must be non-fractional number";
+                }
+              }
+            }
+          }
           else {
             switch ($code_point) {
               case '^': {
@@ -369,53 +413,16 @@ class Regex : precompile {
               }
               case '{': {
                 $status = Regex->STATUS_QUANTIFIER_MIN();
-                break;
-              }
-              case '}': {
-                unless ($status == Regex->STATUS_QUANTIFIER_MAX()) {
-                  die "Regex compile error";
-                }
-                my $quantifier_max = Fn->to_int_with_base($quantifier_max_str, 10);
-                my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
-                $last_pattern->{max_repeat} = $quantifier_max;
-                
-                $status = Regex->STATUS_START();
-                $quantifier_max_str = "";
+                $quantifier_parsing = 1;
                 break;
               }
               default: {
-                if ($status == Regex->STATUS_QUANTIFIER_MIN()) {
-                  if (Fn->is_digit($code_point)) {
-                    $quantifier_min_str .= $code_point - '0';
-                  }
-                  elsif ($code_point == ',') {
-                    my $quantifier_min = Fn->to_int_with_base($quantifier_min_str, 10);
-                    my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
-                    $last_pattern->{min_repeat} = $quantifier_min;
-                    
-                    $status = Regex->STATUS_QUANTIFIER_MAX();
-                    $quantifier_min_str .= "";
-                  }
-                  else {
-                    die "Quantifier min must be non-fractional number";
-                  }
+                unless ($char_class_parsing) {
+                  $finish_code_point_ranges = 1;
                 }
-                elsif ($status == Regex->STATUS_QUANTIFIER_MAX()) {
-                  if (Fn->is_digit($code_point)) {
-                    $quantifier_max_str .= $code_point - '0';
-                  }
-                  else {
-                    die "Quantifier max must be non-fractional number";
-                  }
-                }
-                else {
-                  unless ($char_class_parsing) {
-                    $finish_code_point_ranges = 1;
-                  }
-                  my $cur_code_point_range = [$code_point, $code_point];
-                  for (my $i = 0; $i < @$cur_code_point_range; $i++) {
-                    $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
-                  }
+                my $cur_code_point_range = [$code_point, $code_point];
+                for (my $i = 0; $i < @$cur_code_point_range; $i++) {
+                  $cur_code_point_ranges_list->push($cur_code_point_range->[$i]);
                 }
               }
             }
