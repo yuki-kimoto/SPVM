@@ -1,4 +1,4 @@
-class Regex::Opcode {
+class Regex::Expression {
   allow Regex;
   
   enum {
@@ -19,7 +19,7 @@ class Regex::Opcode {
   has max_repeat : int;
   has capture_begin : byte;
   has capture_end : byte;
-  has next_opcodes : Regex::Opcode[];
+  has next_opcodes : Regex::Expression[];
   has rest_liner_opcodes_length : int;
   
   has state_before_is_word_character : byte;

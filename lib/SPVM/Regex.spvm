@@ -5,9 +5,9 @@ class Regex : precompile {
   use Hash;
   use StringBuffer;
   use Regex::Replacer;
-  use Regex::Opcode;
+  use Regex::Expression;
   use Fn;
-  has opcodes : List;
+  has expressions : List;
   has single_line_mode : byte;
   has ascii_mode : byte;
   has ignore_case : byte;
@@ -20,7 +20,7 @@ class Regex : precompile {
   has replace_count : ro int;
   has before_is_hyphen : byte;
   has before_is_open_bracket : byte;
-  has opcode_stack : List of Regex::Opcode;
+  has expression_stack : List of Regex::Expression;
   
   private enum {
     QUANTIFIER_STATUS_NOT_STARTED,
@@ -85,7 +85,7 @@ class Regex : precompile {
   private static method _new_without_compile : Regex () {
     my $self = new Regex;
     
-    $self->{opcodes} = List->new_len(new Regex::Opcode[0], 0);
+    $self->{expressions} = List->new_len(new Regex::Expression[0], 0);
 
     $self->{captures} = new string[256];
     
@@ -105,7 +105,7 @@ class Regex : precompile {
     }
     
     my $pos = 0;
-    my $opcodes = $self->{opcodes};
+    my $expressions = $self->{expressions};
     
     my $quantifier_min_str = "";
     my $quantifier_max_str = "";
@@ -115,7 +115,7 @@ class Regex : precompile {
     my $char_class_negate = 0;
     
     my $is_capture = 0;
-    my $opcode_capture_begin = 0;
+    my $expression_capture_begin = 0;
     
     my $cur_code_point_ranges_list = IntList->new;
     
@@ -129,7 +129,7 @@ class Regex : precompile {
       my $before_is_open_bracket = $self->{before_is_open_bracket};
       $self->{before_is_open_bracket} = 0;
       
-      my $create_opcode = 0;
+      my $create_expression = 0;
       
       my $line_begin = 0;
       my $line_end = 0;
@@ -144,7 +144,7 @@ class Regex : precompile {
             case 'd': {
               if ($self->{ascii_mode}) {
                 unless ($char_class_parsing) {
-                  $create_opcode = 1;
+                  $create_expression = 1;
                 }
                 my $cur_code_point_range = [(int)'0', '9'];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
@@ -159,7 +159,7 @@ class Regex : precompile {
             case 'D': {
               if ($self->{ascii_mode}) {
                 unless ($char_class_parsing) {
-                  $create_opcode = 1;
+                  $create_expression = 1;
                 }
                 my $cur_code_point_range = $self->negate_code_point_ranges([(int)'0', '9']);
                 
@@ -175,7 +175,7 @@ class Regex : precompile {
             case 'w': {
               if ($self->{ascii_mode}) {
                 unless ($char_class_parsing) {
-                  $create_opcode = 1;
+                  $create_expression = 1;
                 }
                 my $cur_code_point_range = [(int)'0', '9', 'A', 'Z', '_', '_', 'a', 'z'];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
@@ -190,7 +190,7 @@ class Regex : precompile {
             case 'W': {
               if ($self->{ascii_mode}) {
                 unless ($char_class_parsing) {
-                  $create_opcode = 1;
+                  $create_expression = 1;
                 }
                 my $cur_code_point_range = $self->negate_code_point_ranges([(int)'0', '9', 'A', 'Z', '_', '_', 'a', 'z']);
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
@@ -205,7 +205,7 @@ class Regex : precompile {
             case 's': {
               if ($self->{ascii_mode}) {
                 unless ($char_class_parsing) {
-                  $create_opcode = 1;
+                  $create_expression = 1;
                 }
                 my $cur_code_point_range = [(int)'\t', '\t', '\n', '\n', '\f', '\f', '\r', '\r', ' ', ' '];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
@@ -220,7 +220,7 @@ class Regex : precompile {
             case 'S': {
               if ($self->{ascii_mode}) {
                 unless ($char_class_parsing) {
-                  $create_opcode = 1;
+                  $create_expression = 1;
                 }
                 my $cur_code_point_range = $self->negate_code_point_ranges([(int)'\t', '\t', '\n', '\n', '\f', '\f', '\r', '\r', ' ', ' ']);
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
@@ -239,7 +239,7 @@ class Regex : precompile {
               # \: \- etc
               else {
                 unless ($char_class_parsing) {
-                  $create_opcode = 1;
+                  $create_expression = 1;
                 }
                 my $cur_code_point_range = [(int)$next_code_point, $next_code_point];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
@@ -256,7 +256,7 @@ class Regex : precompile {
           if ($char_class_parsing) {
             if ($code_point == ']') {
               $char_class_parsing = 0;
-              $create_opcode = 1;
+              $create_expression = 1;
             }
             elsif ($code_point == '-') {
               my $cur_code_point_range = ['-', '-'];
@@ -301,13 +301,13 @@ class Regex : precompile {
               unless ($quantifier_status == &QUANTIFIER_STATUS_MAX) {
                 die "Invalid quantifier";
               }
-              my $last_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
+              my $last_expression = (Regex::Expression)$expressions->get($expressions->length - 1);
               if (length $quantifier_max_str == 0) {
-                $last_opcode->{max_repeat} = Fn->INT32_MAX;
+                $last_expression->{max_repeat} = Fn->INT32_MAX;
               }
               else {
                 my $quantifier_max = Fn->to_int($quantifier_max_str);
-                $last_opcode->{max_repeat} = $quantifier_max;
+                $last_expression->{max_repeat} = $quantifier_max;
               }
               
               $quantifier_status = &QUANTIFIER_STATUS_NOT_STARTED;
@@ -322,13 +322,13 @@ class Regex : precompile {
                   $quantifier_min_str .= $code_point - '0';
                 }
                 elsif ($code_point == ',') {
-                  my $last_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
+                  my $last_expression = (Regex::Expression)$expressions->get($expressions->length - 1);
                   if (length $quantifier_min_str == 0) {
-                    $last_opcode->{min_repeat} = 0;
+                    $last_expression->{min_repeat} = 0;
                   }
                   else {
                     my $quantifier_min = Fn->to_int($quantifier_min_str);
-                    $last_opcode->{min_repeat} = $quantifier_min;
+                    $last_expression->{min_repeat} = $quantifier_min;
                   }
                   $quantifier_status = &QUANTIFIER_STATUS_MAX();
                   $quantifier_min_str .= "";
@@ -351,17 +351,17 @@ class Regex : precompile {
             switch ($code_point) {
               case '^': {
                 $line_begin = 1;
-                $create_opcode = 1;
+                $create_expression = 1;
                 break;
               }
               case '$': {
                 $line_end = 1;
-                $create_opcode = 1;
+                $create_expression = 1;
                 break;
               }
               case '.': {
                 unless ($char_class_parsing) {
-                  $create_opcode = 1;
+                  $create_expression = 1;
                 }
                 my $cur_code_point_range = (int[])undef;
                 if ($self->{single_line_mode}) {
@@ -385,15 +385,15 @@ class Regex : precompile {
                 }
                 else {
                   $is_capture = 1;
-                  $opcode_capture_begin = 1;
+                  $expression_capture_begin = 1;
                 }
                 break;
               }
               case ')': {
                 if ($is_capture) {
                   $is_capture = 0;
-                  my $before_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
-                  $before_opcode->{capture_end} = 1;
+                  my $before_expression = (Regex::Expression)$expressions->get($expressions->length - 1);
+                  $before_expression->{capture_end} = 1;
                 }
                 else {
                   die "Invalid capture end";
@@ -406,21 +406,21 @@ class Regex : precompile {
                 break;
               }
               case '*': {
-                my $before_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
-                $before_opcode->{min_repeat} = 0;
-                $before_opcode->{max_repeat} = Fn->INT32_MAX();
+                my $before_expression = (Regex::Expression)$expressions->get($expressions->length - 1);
+                $before_expression->{min_repeat} = 0;
+                $before_expression->{max_repeat} = Fn->INT32_MAX();
                 break;
               }
               case '+': {
-                my $before_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
-                $before_opcode->{min_repeat} = 1;
-                $before_opcode->{max_repeat} = Fn->INT32_MAX();
+                my $before_expression = (Regex::Expression)$expressions->get($expressions->length - 1);
+                $before_expression->{min_repeat} = 1;
+                $before_expression->{max_repeat} = Fn->INT32_MAX();
                 break;
               }
               case '?': {
-                my $before_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
-                $before_opcode->{min_repeat} = 0;
-                $before_opcode->{max_repeat} = 1;
+                my $before_expression = (Regex::Expression)$expressions->get($expressions->length - 1);
+                $before_expression->{min_repeat} = 0;
+                $before_expression->{max_repeat} = 1;
                 break;
               }
               case '{': {
@@ -430,7 +430,7 @@ class Regex : precompile {
               }
               default: {
                 unless ($char_class_parsing) {
-                  $create_opcode = 1;
+                  $create_expression = 1;
                 }
                 my $cur_code_point_range = [$code_point, $code_point];
                 for (my $i = 0; $i < @$cur_code_point_range; $i++) {
@@ -442,33 +442,33 @@ class Regex : precompile {
         }
       }
 
-      if ($create_opcode) {
-        my $opcode = new Regex::Opcode;
+      if ($create_expression) {
+        my $expression = new Regex::Expression;
         
         # Line begin
         if ($line_begin) {
-          $opcode->{id} = Regex::Opcode->ID_LINE_BEGIN;
+          $expression->{id} = Regex::Expression->ID_LINE_BEGIN;
         }
         elsif ($line_end) {
-          $opcode->{id} = Regex::Opcode->ID_LINE_END;
+          $expression->{id} = Regex::Expression->ID_LINE_END;
         }
         # charcater or caracter class
         else {
-          $opcode->{id} = Regex::Opcode->ID_CHAR_CLASS;;
-          $opcode->{char_class_negate} = (byte)$char_class_negate;
-          $opcode->{code_point_ranges} = $cur_code_point_ranges_list->to_array;
+          $expression->{id} = Regex::Expression->ID_CHAR_CLASS;;
+          $expression->{char_class_negate} = (byte)$char_class_negate;
+          $expression->{code_point_ranges} = $cur_code_point_ranges_list->to_array;
           
-          $opcode->{max_repeat} = 1;
-          $opcode->{min_repeat} = 1;
+          $expression->{max_repeat} = 1;
+          $expression->{min_repeat} = 1;
 
-          if ($opcode_capture_begin) {
-            $opcode->{capture_begin} = 1;
-            $opcode_capture_begin = 0;
+          if ($expression_capture_begin) {
+            $expression->{capture_begin} = 1;
+            $expression_capture_begin = 0;
           }
           
           $cur_code_point_ranges_list = IntList->new;
         }
-        $opcodes->push($opcode);
+        $expressions->push($expression);
       }
     }
   }
@@ -479,7 +479,7 @@ class Regex : precompile {
       die "Target string must be defined";
     }
     
-    my $opcodes = $self->{opcodes};
+    my $expressions = $self->{expressions};
     
     my $match_all = 0;
     my $target_forward_index = $target_base_index;
@@ -488,12 +488,12 @@ class Regex : precompile {
     my $ignore_case = $self->{ignore_case};
     my $line_end = 0;
 
-    my $last_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
-    if ($last_opcode->{id} == Regex::Opcode->ID_LINE_END) {
+    my $last_expression = (Regex::Expression)$expressions->get($expressions->length - 1);
+    if ($last_expression->{id} == Regex::Expression->ID_LINE_END) {
       $line_end = 1;
-      $opcodes->pop;
+      $expressions->pop;
     }
-    my $opcodes_length = $opcodes->length;
+    my $expressions_length = $expressions->length;
 
     while (1) {
       $target_match_begin_index = $target_forward_next_index;
@@ -503,39 +503,39 @@ class Regex : precompile {
         last;
       }
       
-      my $opcode_index = 0;
+      my $expression_index = 0;
       
-      my $opcode_capture_begin_index = -1;
+      my $expression_capture_begin_index = -1;
       my $capture_count = 1;
       my $match_line_begin = 0;
       while (1) {
-        if ($opcode_index >= $opcodes->length) {
+        if ($expression_index >= $expressions->length) {
           last;
         }
-        my $opcode = (Regex::Opcode)$opcodes->get($opcode_index);
+        my $expression = (Regex::Expression)$expressions->get($expression_index);
         
         # Line beginning "^"
-        if ($opcode->{id} == Regex::Opcode->ID_LINE_BEGIN) {
+        if ($expression->{id} == Regex::Expression->ID_LINE_BEGIN) {
           if ($target_forward_index == $target_base_index) {
             $match_line_begin = 1;
-            $opcode_index++;
+            $expression_index++;
             next;
           }
           else {
             last;
           }
         }
-        elsif ($opcode->{id} == Regex::Opcode->ID_LINE_END) {
+        elsif ($expression->{id} == Regex::Expression->ID_LINE_END) {
           last;
         }
         
-        my $max_repeat = $opcode->{max_repeat};
-        my $min_repeat = $opcode->{min_repeat};
-        my $code_point_range = $opcode->{code_point_ranges};
-        my $negate = $opcode->{char_class_negate};
+        my $max_repeat = $expression->{max_repeat};
+        my $min_repeat = $expression->{min_repeat};
+        my $code_point_range = $expression->{code_point_ranges};
+        my $negate = $expression->{char_class_negate};
         
-        if ($opcode->{capture_begin}) {
-          $opcode_capture_begin_index = $target_forward_index;
+        if ($expression->{capture_begin}) {
+          $expression_capture_begin_index = $target_forward_index;
         }
         
         my $match_repeat = 0;
@@ -618,16 +618,16 @@ class Regex : precompile {
         }
         
         if ($match_repeat) {
-          if ($opcode->{capture_end}) {
-            $self->{captures}[$capture_count] = Fn->substr($target, $opcode_capture_begin_index, $repeat_target_index - $opcode_capture_begin_index);
+          if ($expression->{capture_end}) {
+            $self->{captures}[$capture_count] = Fn->substr($target, $expression_capture_begin_index, $repeat_target_index - $expression_capture_begin_index);
             $capture_count++;
             if ($capture_count > 255) {
               die "Too many captures";
             }
           }
-          $opcode_index++;
+          $expression_index++;
           $target_forward_index = $repeat_target_index;
-          if ($opcode_index == $opcodes_length) {
+          if ($expression_index == $expressions_length) {
             last;
           }
         }
@@ -636,7 +636,7 @@ class Regex : precompile {
         }
       }
       
-      if ($opcode_index == $opcodes_length) {
+      if ($expression_index == $expressions_length) {
         $match_all = 1;
         last;
       }
