@@ -20,5 +20,4 @@ class Regex::Opcode {
   has capture_begin : byte;
   has capture_end : byte;
   has next_opcodes : Regex::Opcode[];
-  has line_begin_char : byte;
 }

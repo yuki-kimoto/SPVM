@@ -446,9 +446,6 @@ class Regex : precompile {
         # Line begin
         if ($line_begin) {
           $opcode->{id} = Regex::Opcode->ID_LINE_BEGIN;
-          if ($opcodes->length == 0) {
-            $opcode->{line_begin_char} = 1;
-          }
           $line_begin = 0;
         }
         # charcater or caracter class
@@ -465,9 +462,6 @@ class Regex : precompile {
             $opcode_capture_begin = 0;
           }
           
-          if ($opcodes->length == 0) {
-            $opcode->{line_begin_char} = 1;
-          }
           $cur_code_point_ranges_list = IntList->new;
         }
         $opcodes->push($opcode);
@@ -486,6 +480,7 @@ class Regex : precompile {
     
     my $match_all = 0;
     my $target_index = 0;
+    my $target_base_index_original = $target_base_index;
     my $target_base_index_before : int;
     my $ignore_case = $self->{ignore_case};
     while (1) {
@@ -503,7 +498,23 @@ class Regex : precompile {
       my $capture_count = 1;
       my $match_line_begin = 0;
       while (1) {
+        if ($opcode_index >= $opcodes->length) {
+          last;
+        }
         my $opcode = (Regex::Opcode)$opcodes->get($opcode_index);
+        
+        # Line beginning "^"
+        if ($opcode->{id} == Regex::Opcode->ID_LINE_BEGIN) {
+          if ($target_index == $target_base_index_original) {
+            $match_line_begin = 1;
+            $opcode_index++;
+            next;
+          }
+          else {
+            last;
+          }
+        }
+
         my $max_repeat = $opcode->{max_repeat};
         my $min_repeat = $opcode->{min_repeat};
         my $code_point_range = $opcode->{code_point_ranges};
@@ -511,15 +522,6 @@ class Regex : precompile {
         
         if ($opcode->{capture_begin}) {
           $opcode_capture_begin_index = $target_index;
-        }
-        
-        if ($opcode->{id} == Regex::Opcode->ID_LINE_BEGIN) {
-          if ($opcode->{line_begin_char}) {
-            $match_line_begin = 1;
-          }
-          else {
-            last;
-          }
         }
         
         my $target_before_index = $target_index;
