@@ -1,0 +1,34 @@
+class Regex::Op {
+  allow Regex;
+  
+  enum {
+    ID_CHAR,
+    ID_CONCAT,
+    ID_OR,
+    ID_REPEAT,
+    ID_CAPTURE,
+  }
+  
+  enum {
+    CHAR_CATEGORY_CHAR,
+    CHAR_CATEGORY_CHAR_CLASS,
+    CHAR_CATEGORY_LINE_BEGIN,
+    CHAR_CATEGORY_LINE_END,
+    CHAR_CATEGORY_TEXT_BEGIN,
+    CHAR_CATEGORY_TEXT_END,
+    CHAR_CATEGORY_WORD_BOUNDARY,
+  }
+  
+  has id : int;
+  has char_class_code_point_ranges : int[];
+  has char_class_negate : byte;
+  
+  has repeat_min : int;
+  has repeat_max : int;
+
+  has ops : List of Regex::Op;
+  
+  static method new : Regex::Op ($options : object[]...) {
+    return new Regex::Op;
+  }
+}
