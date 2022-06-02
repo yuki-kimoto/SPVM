@@ -479,17 +479,18 @@ class Regex : precompile {
     
     my $match_all = 0;
     my $target_index = 0;
-    my $target_base_index_original = $target_base_index;
-    my $target_base_index_before : int;
+    my $target_base_index_copy = $target_base_index;
+    my $target_base_index_copy_original = $target_base_index_copy;
+    my $target_base_index_copy_before : int;
     my $ignore_case = $self->{ignore_case};
     while (1) {
-      $target_base_index_before = $target_base_index;
-      my $target_base_uchar = Unicode->uchar($target, \$target_base_index);
+      $target_base_index_copy_before = $target_base_index_copy;
+      my $target_base_uchar = Unicode->uchar($target, \$target_base_index_copy);
       unless ($target_base_uchar >= 0) {
         last;
       }
       
-      $target_index =  $target_base_index_before;
+      $target_index =  $target_base_index_copy_before;
       
       my $opcode_index = 0;
       
@@ -504,7 +505,7 @@ class Regex : precompile {
         
         # Line beginning "^"
         if ($opcode->{id} == Regex::Opcode->ID_LINE_BEGIN) {
-          if ($target_index == $target_base_index_original) {
+          if ($target_index == $target_base_index_copy_original) {
             $match_line_begin = 1;
             $opcode_index++;
             next;
@@ -643,9 +644,9 @@ class Regex : precompile {
     }
     
     if ($really_match) {
-      $self->{match_start} = $target_base_index_before;
+      $self->{match_start} = $target_base_index_copy_before;
       $self->{match_length} = $target_index - $self->{match_start};
-      $self->{captures}[0] = Fn->substr($target, $target_base_index_before, $self->{match_length});
+      $self->{captures}[0] = Fn->substr($target, $target_base_index_copy_before, $self->{match_length});
     }
     
     return $really_match;
@@ -667,11 +668,11 @@ class Regex : precompile {
     return $self->replace_opt($target, $target_offset, $replace_cb, {replace_all => 1});
   }
   
-  private method replace_opt  : string ($target : string, $target_base_index : int, $replace_object : object, $options : object[]) {
+  private method replace_opt  : string ($target : string, $target_base_index_copy : int, $replace_object : object, $options : object[]) {
     
     my $opt = Hash->new($options);
     
-    my $original_target_base_index = $target_base_index;
+    my $original_target_base_index = $target_base_index_copy;
     
     my $replace_all = 0;
     if (my $replace_all_obj = $opt->get("replace_all")) {
@@ -688,12 +689,12 @@ class Regex : precompile {
     my $result_buffer = StringBuffer->new;
     my $tarlength = length $target;
     
-    if ($target_base_index > 0) {
-      my $first_string = Fn->substr($target, 0, $target_base_index);
+    if ($target_base_index_copy > 0) {
+      my $first_string = Fn->substr($target, 0, $target_base_index_copy);
       $result_buffer->push($first_string);
     }
     
-    while (my $match = $self->match($target, $target_base_index)) {
+    while (my $match = $self->match($target, $target_base_index_copy)) {
       
       my $match_start = $self->match_start;
       my $match_end = $match_start + $self->match_length;
@@ -744,7 +745,7 @@ class Regex : precompile {
       
       my $rest_length = $tarlength - $match_end;
       
-      my $before_result = (mutable string)Fn->substr($target, $target_base_index, $match_start - $target_base_index);
+      my $before_result = (mutable string)Fn->substr($target, $target_base_index_copy, $match_start - $target_base_index_copy);
       $result_buffer->push($before_result);
       $result_buffer->push($replace);
       
@@ -753,7 +754,7 @@ class Regex : precompile {
       unless ($replace_all) {
         last;
       }
-      $target_base_index = $match_end;
+      $target_base_index_copy = $match_end;
     }
     
     
