@@ -6,6 +6,7 @@ class Regex : precompile {
   use StringBuffer;
   use Regex::Replacer;
   use Regex::Expression;
+  use Regex::Opcode;
   use Fn;
   has expressions : List;
   has single_line_mode : byte;

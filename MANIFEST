@@ -234,6 +234,8 @@ lib/SPVM/Point.pm
 lib/SPVM/Point.spvm
 lib/SPVM/Regex.pm
 lib/SPVM/Regex.spvm
+lib/SPVM/Regex/Expression.pm
+lib/SPVM/Regex/Expression.spvm
 lib/SPVM/Regex/Opcode.pm
 lib/SPVM/Regex/Opcode.spvm
 lib/SPVM/Regex/Replacer.pm

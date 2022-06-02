@@ -1,0 +1,17 @@
+class Regex::Opcode {
+  allow Regex;
+  
+  enum {
+    ID_CHAR,
+    ID_JUMP,
+    ID_SPLIT,
+    ID_MATCH,
+    ID_SAVE,
+  }
+  
+  has id : int;
+  has operand0 : int;
+  has operand1 : int;
+  has operand2 : int;
+  has operand3 : int;
+}
