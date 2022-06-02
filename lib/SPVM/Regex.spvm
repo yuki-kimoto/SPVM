@@ -91,6 +91,30 @@ class Regex : precompile {
     
     return $self;
   }
+
+  private method compile2 : void ($re_str : string) {
+    
+    my $expressions = $self->{expressions};
+    
+    # Capture begin
+    {
+      my $expression = new Regex::Expression;
+      $expression->{id} = Regex::Expression->ID_CAPTURE_BEGIN;
+      $expressions->push($expression);
+    }
+    
+    my $pos = 0;
+    while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
+      
+    }
+
+    # Capture end
+    {
+      my $expression = new Regex::Expression;
+      $expression->{id} = Regex::Expression->ID_CAPTURE_END;
+      $expressions->push($expression);
+    }
+  }
   
   private method compile : void ($re_str : string) {
     

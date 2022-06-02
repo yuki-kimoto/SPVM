@@ -10,11 +10,16 @@ class Regex::Expression {
     ID_WORD_BOUNDARY,
     ID_NO_WORD_BOUNDARY,
     ID_CAPTURE,
+    ID_CAPTURE_BEGIN,
+    ID_CAPTURE_END,
+    ID_OR,
+    ID_CONCAT,
   }
   
   has id : int;
   has code_point_ranges : int[];
   has char_class_negate : byte;
+  has expressions : List of Regex::Expression;
   
   # Temporary fields
   has min_repeat : int;
