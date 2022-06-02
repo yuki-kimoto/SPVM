@@ -524,8 +524,8 @@ class Regex : precompile {
         }
         
         my $target_before_index = $target_forward_index;
-        my $target_uchar = Unicode->uchar($target, \$target_forward_index);
-        unless ($target_uchar >= 0) {
+        my $target_code_point = Unicode->uchar($target, \$target_forward_index);
+        unless ($target_code_point >= 0) {
           last;
         }
         
@@ -544,25 +544,25 @@ class Regex : precompile {
             my $code_point_max = $code_point_range->[$min_max_index + 1];
             
             # Match a code point
-            if ($target_uchar >= $code_point_min && $target_uchar <= $code_point_max) {
+            if ($target_code_point >= $code_point_min && $target_code_point <= $code_point_max) {
               $match_char = 1;
             }
             
             unless ($match_char) {
               # Try ignore case
               if ($ignore_case) {
-                my $target_uchar_reverse_case = -1;
+                my $target_code_point_reverse_case = -1;
                 # a-z
-                if ($target_uchar >= 0x61 && $target_uchar <= 0x7A) {
-                  $target_uchar_reverse_case = $target_uchar - 32;
+                if ($target_code_point >= 0x61 && $target_code_point <= 0x7A) {
+                  $target_code_point_reverse_case = $target_code_point - 32;
                 }
                 # A-Z
-                elsif ($target_uchar >= 0x41 && $target_uchar <= 0x5A) {
-                  $target_uchar_reverse_case = $target_uchar + 32;
+                elsif ($target_code_point >= 0x41 && $target_code_point <= 0x5A) {
+                  $target_code_point_reverse_case = $target_code_point + 32;
                 }
                 
-                if ($target_uchar_reverse_case >= 0) {
-                  if ($target_uchar_reverse_case >= $code_point_min && $target_uchar_reverse_case <= $code_point_max) {
+                if ($target_code_point_reverse_case >= 0) {
+                  if ($target_code_point_reverse_case >= $code_point_min && $target_code_point_reverse_case <= $code_point_max) {
                     $match_char = 1;
                   }
                 }
@@ -588,7 +588,7 @@ class Regex : precompile {
               last;
             }
             
-            $target_uchar = Unicode->uchar($target, \$target_forward_index);
+            $target_code_point = Unicode->uchar($target, \$target_forward_index);
           }
           else {
             last;
