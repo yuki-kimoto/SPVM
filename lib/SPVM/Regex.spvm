@@ -265,6 +265,104 @@ class Regex : precompile {
           
           break;
         }
+        case '^': {
+          my $char_class_expression = Regex::Expression->new;
+          $char_class_expression->{id} = Regex::Expression->ID_LINE_BEGIN;
+          switch ($before_expression->{id}) {
+            case Regex::Expression->ID_CHAR_CLASS:
+            case Regex::Expression->ID_LINE_BEGIN:
+            case Regex::Expression->ID_LINE_END:
+            case Regex::Expression->ID_TEXT_BEGIN:
+            case Regex::Expression->ID_TEXT_END:
+            case Regex::Expression->ID_WORD_BOUNDARY:
+            case Regex::Expression->ID_NO_WORD_BOUNDARY:
+            {
+              my $concat_expression = Regex::Expression->new;
+              $concat_expression->{id} = Regex::Expression->ID_CONCAT;
+              $concat_expression->{expressions} = List->new([$before_expression]);
+
+              my $char_class_expression = Regex::Expression->new;
+              $char_class_expression->{id} = Regex::Expression->ID_CHAR_CLASS;
+              $char_class_expression->{code_point_ranges} = [$code_point, $code_point];
+              $concat_expression->{expressions}->push($char_class_expression);
+              
+              $expressions->set($expressions->length - 1, $concat_expression);
+              break;
+            }
+            case Regex::Expression->ID_OR:
+            case Regex::Expression->ID_CONCAT:
+            {
+              my $char_class_expression = Regex::Expression->new;
+              $char_class_expression->{id} = Regex::Expression->ID_CHAR_CLASS;
+              $char_class_expression->{code_point_ranges} = [$code_point, $code_point];
+              $before_expression->{expressions}->push($char_class_expression);
+              break;
+            }
+            case Regex::Expression->ID_REPEAT:
+            case Regex::Expression->ID_CAPTURE_BEGIN:
+            case Regex::Expression->ID_CAPTURE_END:
+            {
+              my $char_class_expression = Regex::Expression->new;
+              $char_class_expression->{id} = Regex::Expression->ID_CHAR_CLASS;
+              $char_class_expression->{code_point_ranges} = [$code_point, $code_point];
+              $expressions->push($char_class_expression);
+              break;
+            }
+            default: {
+              die;
+            }
+          }
+          break;
+        }
+        case '$': {
+          my $char_class_expression = Regex::Expression->new;
+          $char_class_expression->{id} = Regex::Expression->ID_LINE_END;
+          switch ($before_expression->{id}) {
+            case Regex::Expression->ID_CHAR_CLASS:
+            case Regex::Expression->ID_LINE_BEGIN:
+            case Regex::Expression->ID_LINE_END:
+            case Regex::Expression->ID_TEXT_BEGIN:
+            case Regex::Expression->ID_TEXT_END:
+            case Regex::Expression->ID_WORD_BOUNDARY:
+            case Regex::Expression->ID_NO_WORD_BOUNDARY:
+            {
+              my $concat_expression = Regex::Expression->new;
+              $concat_expression->{id} = Regex::Expression->ID_CONCAT;
+              $concat_expression->{expressions} = List->new([$before_expression]);
+
+              my $char_class_expression = Regex::Expression->new;
+              $char_class_expression->{id} = Regex::Expression->ID_CHAR_CLASS;
+              $char_class_expression->{code_point_ranges} = [$code_point, $code_point];
+              $concat_expression->{expressions}->push($char_class_expression);
+              
+              $expressions->set($expressions->length - 1, $concat_expression);
+              break;
+            }
+            case Regex::Expression->ID_OR:
+            case Regex::Expression->ID_CONCAT:
+            {
+              my $char_class_expression = Regex::Expression->new;
+              $char_class_expression->{id} = Regex::Expression->ID_CHAR_CLASS;
+              $char_class_expression->{code_point_ranges} = [$code_point, $code_point];
+              $before_expression->{expressions}->push($char_class_expression);
+              break;
+            }
+            case Regex::Expression->ID_REPEAT:
+            case Regex::Expression->ID_CAPTURE_BEGIN:
+            case Regex::Expression->ID_CAPTURE_END:
+            {
+              my $char_class_expression = Regex::Expression->new;
+              $char_class_expression->{id} = Regex::Expression->ID_CHAR_CLASS;
+              $char_class_expression->{code_point_ranges} = [$code_point, $code_point];
+              $expressions->push($char_class_expression);
+              break;
+            }
+            default: {
+              die;
+            }
+          }
+          break;
+        }
         default: {
           switch ($before_expression->{id}) {
             case Regex::Expression->ID_CHAR_CLASS:
