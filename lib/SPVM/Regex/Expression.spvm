@@ -9,12 +9,11 @@ class Regex::Expression {
     ID_TEXT_END,
     ID_WORD_BOUNDARY,
     ID_NO_WORD_BOUNDARY,
-    ID_CAPTURE,
-    ID_CAPTURE_BEGIN,
-    ID_CAPTURE_END,
     ID_OR,
     ID_CONCAT,
     ID_REPEAT,
+    ID_CAPTURE_BEGIN,
+    ID_CAPTURE_END,
   }
   
   has id : int;
