@@ -27,7 +27,7 @@ class Regex : precompile {
     QUANTIFIER_STATUS_MIN,
     QUANTIFIER_STATUS_MAX,
   }
-
+  
   static method new : Regex ($re_str_and_options : string[]...) {
     
     my $re_str = $re_str_and_options->[0];
@@ -95,12 +95,14 @@ class Regex : precompile {
   private method compile2 : void ($re_str : string) {
     
     my $expressions = $self->{expressions};
+    my $open_paren_count = 0;
     
     # Capture begin
     {
       my $expression = new Regex::Expression;
       $expression->{id} = Regex::Expression->ID_CAPTURE_BEGIN;
       $expressions->push($expression);
+      $open_paren_count++;
     }
     
     my $pos = 0;
@@ -113,6 +115,7 @@ class Regex : precompile {
       my $expression = new Regex::Expression;
       $expression->{id} = Regex::Expression->ID_CAPTURE_END;
       $expressions->push($expression);
+      $open_paren_count--;
     }
   }
   
