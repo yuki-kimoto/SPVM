@@ -121,7 +121,6 @@ class Regex : precompile {
     
     my $char_class_parsing = 0;
     my $quantifier_parsing = 0;
-    my $line_begin = 0;
     while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
       
       my $before_is_hyphen = $self->{before_is_hyphen};
@@ -132,6 +131,7 @@ class Regex : precompile {
       
       my $create_opcode = 0;
       
+      my $line_begin = 0;
       switch ($code_point) {
         case '\\': {
           my $next_code_point = Unicode->uchar($re_str, \$pos);
@@ -446,7 +446,6 @@ class Regex : precompile {
         # Line begin
         if ($line_begin) {
           $opcode->{id} = Regex::Opcode->ID_LINE_BEGIN;
-          $line_begin = 0;
         }
         # charcater or caracter class
         else {
