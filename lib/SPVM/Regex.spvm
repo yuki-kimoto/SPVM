@@ -589,8 +589,6 @@ class Regex : precompile {
             }
             
             $target_uchar = Unicode->uchar($target, \$target_forward_index);
-            
-            $target_before_index = $target_forward_index;
           }
           else {
             last;
