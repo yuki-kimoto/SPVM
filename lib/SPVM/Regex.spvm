@@ -480,7 +480,6 @@ class Regex : precompile {
     my $match_all = 0;
     my $target_index = 0;
     my $target_base_index_copy = $target_base_index;
-    my $target_base_index_copy_original = $target_base_index_copy;
     my $target_base_index_copy_before : int;
     my $ignore_case = $self->{ignore_case};
     while (1) {
@@ -505,7 +504,7 @@ class Regex : precompile {
         
         # Line beginning "^"
         if ($opcode->{id} == Regex::Opcode->ID_LINE_BEGIN) {
-          if ($target_index == $target_base_index_copy_original) {
+          if ($target_index == $target_base_index) {
             $match_line_begin = 1;
             $opcode_index++;
             next;
