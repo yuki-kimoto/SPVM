@@ -8,7 +8,7 @@ class Regex : precompile {
   use Regex::Opcode;
   use Fn;
   has opcodes : List;
-  has string_end : byte;
+  has line_end : byte;
   has single_line_mode : byte;
   has ascii_mode : byte;
   has ignore_case : byte;
@@ -354,7 +354,7 @@ class Regex : precompile {
                 break;
               }
               case '$': {
-                $self->{string_end} = 1;
+                $self->{line_end} = 1;
                 break;
               }
               case '.': {
@@ -632,7 +632,7 @@ class Regex : precompile {
     
     my $really_match = 0;
     if ($match_all) {
-      if ($self->{string_end}) {
+      if ($self->{line_end}) {
         if ($target_index == length $target) {
           $really_match = 1;
         }
