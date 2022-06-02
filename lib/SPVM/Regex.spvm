@@ -8,7 +8,6 @@ class Regex : precompile {
   use Regex::Opcode;
   use Fn;
   has opcodes : List;
-  has line_end : byte;
   has single_line_mode : byte;
   has ascii_mode : byte;
   has ignore_case : byte;
@@ -133,6 +132,7 @@ class Regex : precompile {
       my $create_opcode = 0;
       
       my $line_begin = 0;
+      my $line_end = 0;
       switch ($code_point) {
         case '\\': {
           my $next_code_point = Unicode->uchar($re_str, \$pos);
@@ -355,7 +355,8 @@ class Regex : precompile {
                 break;
               }
               case '$': {
-                $self->{line_end} = 1;
+                $line_end = 1;
+                $create_opcode = 1;
                 break;
               }
               case '.': {
@@ -448,6 +449,9 @@ class Regex : precompile {
         if ($line_begin) {
           $opcode->{id} = Regex::Opcode->ID_LINE_BEGIN;
         }
+        elsif ($line_end) {
+          $opcode->{id} = Regex::Opcode->ID_LINE_END;
+        }
         # charcater or caracter class
         else {
           $opcode->{id} = Regex::Opcode->ID_CHAR_CLASS;;
@@ -476,20 +480,27 @@ class Regex : precompile {
     }
     
     my $opcodes = $self->{opcodes};
-    my $opcodes_length = $opcodes->length;
     
     my $match_all = 0;
     my $target_forward_index = $target_base_index;
     my $target_forward_next_index = $target_forward_index;
     my $target_match_begin_index : int;
     my $ignore_case = $self->{ignore_case};
-    my $end_of_text = 0;
+    my $line_end = 0;
+
+    my $last_opcode = (Regex::Opcode)$opcodes->get($opcodes->length - 1);
+    if ($last_opcode->{id} == Regex::Opcode->ID_LINE_END) {
+      $line_end = 1;
+      $opcodes->pop;
+    }
+    my $opcodes_length = $opcodes->length;
+
     while (1) {
       $target_match_begin_index = $target_forward_next_index;
       $target_forward_index = $target_forward_next_index;
       my $target_base_uchar = Unicode->uchar($target, \$target_forward_next_index);
       unless ($target_base_uchar >= 0) {
-        $end_of_text = 1;
+        last;
       }
       
       my $opcode_index = 0;
@@ -514,11 +525,10 @@ class Regex : precompile {
             last;
           }
         }
-        
-        if ($end_of_text) {
+        elsif ($opcode->{id} == Regex::Opcode->ID_LINE_END) {
           last;
         }
-
+        
         my $max_repeat = $opcode->{max_repeat};
         my $min_repeat = $opcode->{min_repeat};
         my $code_point_range = $opcode->{code_point_ranges};
@@ -625,9 +635,6 @@ class Regex : precompile {
           last;
         }
       }
-      if ($end_of_text) {
-        last;
-      }
       
       if ($opcode_index == $opcodes_length) {
         $match_all = 1;
@@ -642,7 +649,7 @@ class Regex : precompile {
     
     my $really_match = 0;
     if ($match_all) {
-      if ($self->{line_end}) {
+      if ($line_end) {
         if ($target_forward_index == length $target) {
           $really_match = 1;
         }

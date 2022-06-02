@@ -4,7 +4,7 @@ class Regex::Opcode {
   enum {
     ID_CHAR_CLASS,
     ID_LINE_BEGIN,
-    ID_LIND_END,
+    ID_LINE_END,
     ID_TEXT_BEGIN,
     ID_TEXT_END,
     ID_WORD_BOUNDARY,
