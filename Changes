@@ -3,7 +3,7 @@ Revision history for SPVM
         [CHANGE]
         * Improve compilation error messages.
         * Improve Regex module
-          Support quantifier {,n} {m,}
+          Support quantifier {m,}
           Support [\d\D] [^\d\D]
         * Rename Regex::Pattern to Regex::Opcode
           
