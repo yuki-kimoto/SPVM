@@ -26,4 +26,8 @@ class Regex::Expression {
   has max_repeat : int;
   has capture_begin : byte;
   has capture_end : byte;
+  
+  static method new : Regex::Expression ($options : object[]...) {
+    return new Regex::Expression;
+  }
 }

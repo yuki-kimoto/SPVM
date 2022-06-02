@@ -96,7 +96,7 @@ class Regex : precompile {
     
     my $expressions = $self->{expressions};
     my $open_paren_count = 0;
-    
+
     # Capture begin
     {
       my $expression = new Regex::Expression;
@@ -108,6 +108,43 @@ class Regex : precompile {
     my $pos = 0;
     while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
       
+      switch ($code_point) {
+        case -1: {
+          
+          break;
+        }
+        default: {
+          my $before_expression = (Regex::Expression)$expressions->get($expressions->length - 1);
+          switch ($before_expression->{id}) {
+            case Regex::Expression->ID_CHAR_CLASS: {
+              my $concat_expression = Regex::Expression->new;
+              $concat_expression->{id} = Regex::Expression->ID_CONCAT;
+              $concat_expression->{expressions} = List->new([$before_expression]);
+
+              my $char_class_expression = Regex::Expression->new;
+              $char_class_expression->{id} = Regex::Expression->ID_CHAR_CLASS;
+              $char_class_expression->{code_point_ranges} = [$code_point, $code_point];
+              $concat_expression->{expressions}->push($char_class_expression);
+              
+              $expressions->set($expressions->length - 1, $concat_expression);
+              break;
+            }
+            case Regex::Expression->ID_CONCAT: {
+              my $char_class_expression = Regex::Expression->new;
+              $char_class_expression->{id} = Regex::Expression->ID_CHAR_CLASS;
+              $char_class_expression->{code_point_ranges} = [$code_point, $code_point];
+              $before_expression->{expressions}->push($char_class_expression);
+              break;
+            }
+            default: {
+              my $char_class_expression = Regex::Expression->new;
+              $char_class_expression->{id} = Regex::Expression->ID_CHAR_CLASS;
+              $char_class_expression->{code_point_ranges} = [$code_point, $code_point];
+              $expressions->push($char_class_expression);
+            }
+          }
+        }
+      }
     }
 
     # Capture end
