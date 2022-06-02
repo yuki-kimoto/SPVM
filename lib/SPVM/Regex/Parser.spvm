@@ -1,0 +1,9 @@
+class Regex::Parser {
+  static method new : Regex::Parser ($options : object[]...) {
+    return new Regex::Parser;
+  }
+  
+  method parse : void ($regex_string : string) {
+    
+  }
+}
