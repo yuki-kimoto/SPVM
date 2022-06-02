@@ -108,13 +108,131 @@ class Regex : precompile {
     my $pos = 0;
     while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
       
+      my $before_expression = (Regex::Expression)$expressions->get($expressions->length - 1);
       switch ($code_point) {
-        case -1: {
+        case '\\': {
+          my $next_code_point = Unicode->uchar($re_str, \$pos);
+          if ($code_point < 0) {
+            die;
+          }
+          
+          switch ($next_code_point) {
+            case 'd': {
+              my $char_class_expression = Regex::Expression->new;
+              $char_class_expression->{id} = Regex::Expression->ID_CHAR_CLASS;
+              $char_class_expression->{code_point_ranges} = [(int)'0', '9'];
+              
+              switch ($before_expression->{id}) {
+                case Regex::Expression->ID_CONCAT:
+                case Regex::Expression->ID_OR:
+                case Regex::Expression->ID_REPEAT:
+                {
+                  $before_expression->{expressions}->push($char_class_expression);
+                  break;
+                }
+                case Regex::Expression->ID_CHAR_CLASS:
+                case Regex::Expression->ID_LINE_BEGIN:
+                case Regex::Expression->ID_LINE_END:
+                case Regex::Expression->ID_TEXT_BEGIN:
+                case Regex::Expression->ID_TEXT_END:
+                case Regex::Expression->ID_WORD_BOUNDARY:
+                case Regex::Expression->ID_NO_WORD_BOUNDARY:
+                {
+                  my $concat_expression = Regex::Expression->new;
+                  $concat_expression->{id} = Regex::Expression->ID_CONCAT;
+                  $concat_expression->{expressions} = List->new([$before_expression]);
+                  $expressions->set($expressions->length - 1, $concat_expression);
+                  break;
+                }
+                default: {
+                  
+                }
+              }
+              break;
+            }
+          }
+          break;
+        }
+        case '|': {
+          switch ($before_expression->{id}) {
+            case Regex::Expression->ID_CHAR_CLASS:
+            case Regex::Expression->ID_CONCAT:
+            case Regex::Expression->ID_REPEAT:
+            case Regex::Expression->ID_LINE_BEGIN:
+            case Regex::Expression->ID_LINE_END:
+            case Regex::Expression->ID_TEXT_BEGIN:
+            case Regex::Expression->ID_TEXT_END:
+            case Regex::Expression->ID_WORD_BOUNDARY:
+            case Regex::Expression->ID_NO_WORD_BOUNDARY:
+            {
+              my $or_expression = Regex::Expression->new;
+              $or_expression->{id} = Regex::Expression->ID_OR;
+              $or_expression->{expressions} = List->new([$before_expression]);
+              $expressions->set($expressions->length - 1, $or_expression);
+              break;
+            }
+            default: {
+              die;
+            }
+          }
+          
+          break;
+        }
+        case '+': {
+          switch ($before_expression->{id}) {
+            case Regex::Expression->ID_CHAR_CLASS:
+            case Regex::Expression->ID_CONCAT:
+            case Regex::Expression->ID_OR:
+            {
+              my $repeat_expression = Regex::Expression->new;
+              $repeat_expression->{id} = Regex::Expression->ID_REPEAT;
+              $repeat_expression->{expressions} = List->new([$before_expression]);
+              $repeat_expression->{min_repeat} = 1;
+              $repeat_expression->{max_repeat} = -1;
+              $expressions->set($expressions->length - 1, $repeat_expression);
+              break;
+            }
+          }
+          
+          break;
+        }
+        case '*': {
+          switch ($before_expression->{id}) {
+            case Regex::Expression->ID_CHAR_CLASS:
+            case Regex::Expression->ID_CONCAT:
+            case Regex::Expression->ID_OR:
+            {
+              my $repeat_expression = Regex::Expression->new;
+              $repeat_expression->{id} = Regex::Expression->ID_REPEAT;
+              $repeat_expression->{expressions} = List->new([$before_expression]);
+              $repeat_expression->{min_repeat} = 0;
+              $repeat_expression->{max_repeat} = -1;
+              $expressions->set($expressions->length - 1, $repeat_expression);
+              break;
+            }
+          }
+          
+          break;
+        }
+        case '?': {
+          switch ($before_expression->{id}) {
+            case Regex::Expression->ID_CHAR_CLASS:
+            case Regex::Expression->ID_CONCAT:
+            case Regex::Expression->ID_OR:
+            {
+              my $repeat_expression = Regex::Expression->new;
+              $repeat_expression->{id} = Regex::Expression->ID_REPEAT;
+              $repeat_expression->{expressions} = List->new([$before_expression]);
+              $repeat_expression->{min_repeat} = 0;
+              $repeat_expression->{max_repeat} = 1;
+              $expressions->set($expressions->length - 1, $repeat_expression);
+              break;
+            }
+          }
           
           break;
         }
         default: {
-          my $before_expression = (Regex::Expression)$expressions->get($expressions->length - 1);
           switch ($before_expression->{id}) {
             case Regex::Expression->ID_CHAR_CLASS: {
               my $concat_expression = Regex::Expression->new;
