@@ -21,6 +21,7 @@ class Regex : precompile {
   has replace_count : ro int;
   has before_is_hyphen : byte;
   has before_is_open_bracket : byte;
+  has opcode_stack : List of Regex::Opcode;
   
   private enum {
     QUANTIFIER_STATUS_NOT_STARTED,
