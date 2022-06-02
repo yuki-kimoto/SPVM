@@ -478,7 +478,7 @@ class Regex : precompile {
     my $opcodes_length = $opcodes->length;
     
     my $match_all = 0;
-    my $target_index = 0;
+    my $target_index = $target_base_index;
     my $target_base_index_copy = $target_base_index;
     my $target_base_index_copy_before : int;
     my $ignore_case = $self->{ignore_case};
