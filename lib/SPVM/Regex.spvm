@@ -522,17 +522,22 @@ class Regex : precompile {
           $opcode_capture_begin_index = $target_forward_index;
         }
         
-        my $repeat_target_index = $target_forward_index;
-        my $target_code_point = Unicode->uchar($target, \$target_forward_index);
-        unless ($target_code_point >= 0) {
-          last;
-        }
-        
         my $match_repeat = 0;
         my $repeat_count = 0;
         
         # Match uchar repeat
-        for (my $repeat_index = 0; $repeat_index < $max_repeat; $repeat_index++) {
+        my $repeat_index = 0;
+        my $repeat_target_index = $target_forward_index;
+        while (1) {
+          if ($repeat_index >= $max_repeat) {
+            last;
+          };
+          
+          my $target_code_point = Unicode->uchar($target, \$target_forward_index);
+          unless ($target_code_point >= 0) {
+            last;
+          }
+        
           # Match uchar
           my $match_char = 0;
           
@@ -585,12 +590,12 @@ class Regex : precompile {
             if ($target_forward_index == length $target) {
               last;
             }
-            
-            $target_code_point = Unicode->uchar($target, \$target_forward_index);
           }
           else {
             last;
           }
+          
+          $repeat_index++;
         }
         if ($repeat_count >= $min_repeat) {
           $match_repeat = 1;
