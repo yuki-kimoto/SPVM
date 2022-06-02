@@ -1012,6 +1012,42 @@ class TestCase::Lib::Regex {
         }
       }
     }
+
+    # "^a"
+    {
+      my $re = Regex->new("^a");
+      my $target = "ab";
+      
+      my $match = $re->match($target, 0);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+    
+    # "a^a"
+    {
+      my $re = Regex->new("a^a");
+      my $target = "aa";
+      
+      my $match = $re->match($target, 0);
+      
+      if ($match) {
+        return 0;
+      }
+    }
+
+    # "a^"
+    {
+      my $re = Regex->new("a^");
+      my $target = "a";
+      
+      my $match = $re->match($target, 0);
+      
+      if ($match) {
+        return 0;
+      }
+    }
     
     return 1;
   }
