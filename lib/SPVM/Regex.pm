@@ -119,8 +119,6 @@ L<Regex|SPVM::Regex> provides the methodset of Perl regular expression. The targ
   *     more than or equals to 0 repeats
   ?     0 or 1 repeats
   {m,n} repeats between m and n
-  {m,n} repeats between m and n
-  {m,n} repeats between m and n
   
   # Regular expression character
   ^    first of string
