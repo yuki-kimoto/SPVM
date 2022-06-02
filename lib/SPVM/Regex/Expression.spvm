@@ -19,14 +19,4 @@ class Regex::Expression {
   has max_repeat : int;
   has capture_begin : byte;
   has capture_end : byte;
-  has next_opcodes : Regex::Expression[];
-  has rest_liner_opcodes_length : int;
-  
-  has state_before_is_word_character : byte;
-  has state_current_repeat_count :byte;
-  
-  method clear : void () {
-    $self->{state_before_is_word_character} = 0;
-    $self->{state_current_repeat_count} = 0;
-  }
 }
