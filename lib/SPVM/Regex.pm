@@ -104,7 +104,9 @@ SPVM::Regex - Regular expression
 
 =head1 DESCRIPTION
 
-L<Regex|SPVM::Regex> provides regular expression functions.
+L<Regex|SPVM::Regex> provides regular expression.
+
+The regular expression is subset of L<RE2|https://github.com/google/re2>.
 
 This module is very unstable compared to other modules. So many changes will be performed.
 

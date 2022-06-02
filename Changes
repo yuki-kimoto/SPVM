@@ -13,7 +13,8 @@ Revision history for SPVM
           Many small non-backwordcompatible occur.
         * Regex captures start index become from 0 to 1. whole matching is set to captures 0.
         * Regex->match_start is renamed to Regex->match_begin.
-          
+        * The regular expression of Regex module is subset of RE2 https://github.com/google/re2.
+        
 0.9601  2022-06-01
         [CHANGE]
         * Regex class support "i" (ignore case) option.
