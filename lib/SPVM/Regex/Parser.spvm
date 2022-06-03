@@ -110,6 +110,14 @@ class Regex::Parser {
               $op_char = $self->new_op_char_char_class($code_point_ranges);
               break;
             }
+            case 'A': {
+              $op_char = $self->new_op_char_category(Regex::Op->CHAR_CATEGORY_TEXT_BEGIN);
+              break;
+            }
+            case 'z': {
+              $op_char = $self->new_op_char_category(Regex::Op->CHAR_CATEGORY_TEXT_END);
+              break;
+            }
           }
           break;
         }
@@ -237,24 +245,26 @@ class Regex::Parser {
           break;
         }
         case '^':
+        {
+          if ($char_class_parsing) {
+            $op_char = $self->new_op_char_char('^');
+          }
+          else {
+            my $char_categry = Regex::Op->CHAR_CATEGORY_LINE_BEGIN;
+            $op_char = $self->new_op_char_category($char_categry);
+          }
+          
+          break;
+        }
         case '$':
         {
-          my $char_categry : int;
-          switch ($code_point) {
-            case '^': {
-              $char_categry = Regex::Op->CHAR_CATEGORY_LINE_BEGIN;
-              break;
-            }
-            case '$': {
-              $char_categry = Regex::Op->CHAR_CATEGORY_LINE_END;
-              break;
-            }
-            default: {
-              die;
-              break;
-            }
+          if ($char_class_parsing) {
+            $op_char = $self->new_op_char_char('$');
           }
-          $op_char = $self->new_op_char_category($char_categry);
+          else {
+            my $char_categry = Regex::Op->CHAR_CATEGORY_LINE_END;
+            $op_char = $self->new_op_char_category($char_categry);
+          }
           break;
         }
         default: {
