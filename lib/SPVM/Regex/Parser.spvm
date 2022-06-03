@@ -11,8 +11,8 @@ class Regex::Parser {
     my $op_char = Regex::Op->new;
     
     $op_char->{id} = Regex::Op->ID_CHAR;
-    $op_char->{char_category} = Regex::Op->CHAR_CATEGORY_CHAR_CLASS;
-    $op_char->{char_class_code_point_ranges} = $code_point_ranges;
+    $op_char->{char_category} = Regex::Op->CHAR_CATEGORY_CHAR_RANGES;
+    $op_char->{char_code_point_ranges} = $code_point_ranges;
     
     return $op_char;
   }
@@ -21,8 +21,8 @@ class Regex::Parser {
     my $op_char = Regex::Op->new;
     
     $op_char->{id} = Regex::Op->ID_CHAR;
-    $op_char->{char_category} = Regex::Op->CHAR_CATEGORY_CHAR_CLASS;
-    $op_char->{char_class_code_point_ranges} = [$code_point, $code_point];
+    $op_char->{char_category} = Regex::Op->CHAR_CATEGORY_CHAR_RANGES;
+    $op_char->{char_code_point_ranges} = [$code_point, $code_point];
     
     return $op_char;
   }

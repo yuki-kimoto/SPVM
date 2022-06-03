@@ -17,7 +17,7 @@ class Regex::Op {
   
   enum {
     CHAR_CATEGORY_CHAR,
-    CHAR_CATEGORY_CHAR_CLASS,
+    CHAR_CATEGORY_CHAR_RANGES,
     CHAR_CATEGORY_EMPTY_CHAR,
     CHAR_CATEGORY_LINE_BEGIN,
     CHAR_CATEGORY_LINE_END,
@@ -29,7 +29,7 @@ class Regex::Op {
   has id : int;
 
   has char_category : int;
-  has char_class_code_point_ranges : int[];
+  has char_code_point_ranges : int[];
   has char_negate : int;
   
   has repeat_min : int;
