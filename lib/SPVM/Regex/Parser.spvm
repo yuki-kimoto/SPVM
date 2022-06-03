@@ -47,17 +47,23 @@ class Regex::Parser {
     
     my $char_class_parsing = 0;
     my $pos = 0;
-    while (my $op_token = $tokenizer->get_next_token) {
-      my $next_op_token = $tokenizer->look_next_token;
-     
-      my $op_stack_top = (Regex::Op)$op_stack->get($op_stack->length - 1);
+    my $op_cur = (Regex::Op)undef;
+    while (1) {
+      unless (!$op_cur) {
+        $op_cur = $tokenizer->get_next_token;
+        $op_stack->push($op_cur);
+        next;
+      }
       
-      switch ($op_token->{id}) {
+      my $op_next = $tokenizer->look_next_token;
+
+      switch ($op_cur->{id}) {
         case Regex::Op->ID_PAREN_OPEN_BEGIN_CAPTURE: {
-          $op_stack->push($op_token);
+          $op_stack->push($op_cur);
           break;
         }
         case Regex::Op->ID_PAREN_CLOSE_END_CAPTURE: {
+          
           break;
         }
         case Regex::Op->ID_BRACKET_OPEN_BEGIN_CHAR_CLASS: {
@@ -69,7 +75,7 @@ class Regex::Parser {
           break;
         }
         case Regex::Op->ID_VRITICAL_BAR_OR: {
-          switch ($op_stack_top->{id}) {
+          switch ($op_cur->{id}) {
             case Regex::Op->ID_VRITICAL_BAR_OR:
             {
               my $op_char = $self->new_op_char_category(Regex::Op->CHAR_CATEGORY_EMPTY_CHAR);
@@ -84,7 +90,7 @@ class Regex::Parser {
             {
               my $or_op = Regex::Op->new;
               $or_op->{id} = Regex::Op->ID_VRITICAL_BAR_OR;
-              $or_op->{ops} = List->new([$op_stack_top]);
+              $or_op->{ops} = List->new([$op_cur]);
               $op_stack->set($op_stack->length - 1, $or_op);
               break;
             }
@@ -105,15 +111,15 @@ class Regex::Parser {
           break;
         }
         case Regex::Op->ID_CHAR: {
-          if ($op_stack_top) {
-            switch ($op_stack_top->{id}) {
+          if ($op_cur) {
+            switch ($op_cur->{id}) {
               case Regex::Op->ID_PAREN_OPEN_BEGIN_CAPTURE:
               case Regex::Op->ID_PAREN_CLOSE_END_CAPTURE:
               case Regex::Op->ID_VRITICAL_BAR_OR:
               case Regex::Op->ID_REPEAT:
               case Regex::Op->ID_CAPTURE:
               {
-                $op_stack->push($op_token);
+                $op_stack->push($op_cur);
                 break;
               }
               case Regex::Op->ID_CHAR:
@@ -121,12 +127,12 @@ class Regex::Parser {
               {
                 my $concat_op = Regex::Op->new;
                 $concat_op->{id} = Regex::Op->ID_CONCAT;
-                $concat_op->{ops} = List->new([$op_stack_top, $op_token]);
+                $concat_op->{ops} = List->new([$op_cur, $op_cur]);
                 $op_stack->set($op_stack->length - 1, $concat_op);
                 break;
               }
               case Regex::Op->ID_CONCAT: {
-                $op_stack_top->{ops}->push($op_token);
+                $op_cur->{ops}->push($op_cur);
                 break;
               }
               case Regex::Op->ID_HYPHEN_CHAR_OR_RANGE: {
@@ -139,20 +145,20 @@ class Regex::Parser {
             
           }
           else {
-            $op_stack->push($op_token);
+            $op_stack->push($op_cur);
           }
           break;
         }
         case Regex::Op->ID_CHAR_CLASS: {
-          if ($op_stack_top) {
-            switch ($op_stack_top->{id}) {
+          if ($op_cur) {
+            switch ($op_cur->{id}) {
               case Regex::Op->ID_PAREN_OPEN_BEGIN_CAPTURE:
               case Regex::Op->ID_PAREN_CLOSE_END_CAPTURE:
               case Regex::Op->ID_VRITICAL_BAR_OR:
               case Regex::Op->ID_REPEAT:
               case Regex::Op->ID_CAPTURE:
               {
-                $op_stack->push($op_token);
+                $op_stack->push($op_cur);
                 break;
               }
               case Regex::Op->ID_CHAR:
@@ -160,12 +166,12 @@ class Regex::Parser {
               {
                 my $concat_op = Regex::Op->new;
                 $concat_op->{id} = Regex::Op->ID_CONCAT;
-                $concat_op->{ops} = List->new([$op_stack_top, $op_token]);
+                $concat_op->{ops} = List->new([$op_cur, $op_cur]);
                 $op_stack->set($op_stack->length - 1, $concat_op);
                 break;
               }
               case Regex::Op->ID_CONCAT: {
-                $op_stack_top->{ops}->push($op_token);
+                $op_cur->{ops}->push($op_cur);
                 break;
               }
               case Regex::Op->ID_HYPHEN_CHAR_OR_RANGE: {
@@ -176,21 +182,53 @@ class Regex::Parser {
                 die;
               }
             }
-            
           }
           else {
-            $op_stack->push($op_token);
+            $op_stack->push($op_cur);
           }
           break;
         }
         case Regex::Op->ID_CONCAT: {
+          if ($op_cur) {
+            switch ($op_cur->{id}) {
+              case Regex::Op->ID_PAREN_OPEN_BEGIN_CAPTURE:
+              case Regex::Op->ID_PAREN_CLOSE_END_CAPTURE:
+              case Regex::Op->ID_CAPTURE:
+              {
+                $op_stack->push($op_cur);
+                break;
+              }
+              case Regex::Op->ID_VRITICAL_BAR_OR:
+              {
+                break;
+              }
+              case Regex::Op->ID_HYPHEN_CHAR_OR_RANGE:
+              case Regex::Op->ID_CARRET_CHAR_CLASS_NEGATE:
+              case Regex::Op->ID_CONCAT:
+              case Regex::Op->ID_ALTERNATE:
+              case Regex::Op->ID_REPEAT:
+              
+              case Regex::Op->ID_CHAR:
+              case Regex::Op->ID_CHAR_CLASS:
+              case Regex::Op->ID_BRACKET_OPEN_BEGIN_CHAR_CLASS:
+              case Regex::Op->ID_BRACKET_CLOSE_END_CHAR_CLASS:
+              {
+                die;
+                break;
+              }
+              default: {
+                die;
+                break;
+              }
+            }
+          }
           break;
         }
         case Regex::Op->ID_ALTERNATE: {
           break;
         }
         case Regex::Op->ID_REPEAT: {
-          switch ($op_stack_top->{id}) {
+          switch ($op_cur->{id}) {
             case Regex::Op->ID_CHAR:
             case Regex::Op->ID_CONCAT:
             case Regex::Op->ID_ALTERNATE:
@@ -198,7 +236,7 @@ class Regex::Parser {
             {
               my $repeat_op = Regex::Op->new;
               $repeat_op->{id} = Regex::Op->ID_REPEAT;
-              $repeat_op->{ops} = List->new([$op_stack_top]);
+              $repeat_op->{ops} = List->new([$op_cur]);
               $repeat_op->{repeat_min} = 1;
               $repeat_op->{repeat_max} = -1;
               $op_stack->set($op_stack->length - 1, $repeat_op);
