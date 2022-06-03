@@ -144,6 +144,43 @@ class Regex::Parser {
           break;
         }
         case Regex::Op->ID_CHAR_CLASS: {
+          if ($op_stack_top) {
+            switch ($op_stack_top->{id}) {
+              case Regex::Op->ID_PAREN_OPEN_BEGIN_CAPTURE:
+              case Regex::Op->ID_PAREN_CLOSE_END_CAPTURE:
+              case Regex::Op->ID_VRITICAL_BAR_OR:
+              case Regex::Op->ID_REPEAT:
+              case Regex::Op->ID_CAPTURE:
+              {
+                $op_stack->push($op_token);
+                break;
+              }
+              case Regex::Op->ID_CHAR:
+              case Regex::Op->ID_CHAR_CLASS:
+              {
+                my $concat_op = Regex::Op->new;
+                $concat_op->{id} = Regex::Op->ID_CONCAT;
+                $concat_op->{ops} = List->new([$op_stack_top, $op_token]);
+                $op_stack->set($op_stack->length - 1, $concat_op);
+                break;
+              }
+              case Regex::Op->ID_CONCAT: {
+                $op_stack_top->{ops}->push($op_token);
+                break;
+              }
+              case Regex::Op->ID_HYPHEN_CHAR_OR_RANGE: {
+                my $op_char = Regex::Op->new_op_char_char('-');
+                break;
+              }
+              default: {
+                die;
+              }
+            }
+            
+          }
+          else {
+            $op_stack->push($op_token);
+          }
           break;
         }
         case Regex::Op->ID_CONCAT: {
