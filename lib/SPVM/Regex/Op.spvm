@@ -2,6 +2,8 @@ class Regex::Op {
   allow Regex::Parser;
   
   enum {
+    ID_PAREN_OPEN,
+    ID_PAREN_CLOSE,
     ID_CHAR,
     ID_CONCAT,
     ID_OR,
