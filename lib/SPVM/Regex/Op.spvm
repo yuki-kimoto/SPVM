@@ -1,12 +1,15 @@
 class Regex::Op {
   allow Regex::Parser;
+  allow Regex::Tokenizer;
   
   enum {
     ID_PAREN_OPEN,
     ID_PAREN_CLOSE,
     ID_BRACKET_OPEN,
     ID_BRACKET_CLOSE,
-    ID_VRITICAL_VAR,
+    ID_VRITICAL_BAR,
+    ID_NEGATE,
+    ID_CARRET,
     ID_CHAR,
     ID_CHAR_CLASS,
     ID_CONCAT,
@@ -43,4 +46,34 @@ class Regex::Op {
   static method new : Regex::Op ($options : object[]...) {
     return new Regex::Op;
   }
+
+  static method new_op_char_char_class : Regex::Op ($code_point_ranges : int[]) {
+    my $op_char = Regex::Op->new;
+    
+    $op_char->{id} = Regex::Op->ID_CHAR;
+    $op_char->{char_category} = Regex::Op->CHAR_CATEGORY_CHAR_RANGES;
+    $op_char->{char_code_point_ranges} = $code_point_ranges;
+    
+    return $op_char;
+  }
+
+  static method new_op_char_char : Regex::Op ($code_point : int) {
+    my $op_char = Regex::Op->new;
+    
+    $op_char->{id} = Regex::Op->ID_CHAR;
+    $op_char->{char_category} = Regex::Op->CHAR_CATEGORY_CHAR_RANGES;
+    $op_char->{char_code_point_ranges} = [$code_point, $code_point];
+    
+    return $op_char;
+  }
+
+  static method new_op_char_category : Regex::Op ($category : int) {
+    my $op_char = Regex::Op->new;
+    
+    $op_char->{id} = Regex::Op->ID_CHAR;
+    $op_char->{char_category} = $category;
+    
+    return $op_char;
+  }
+  
 }

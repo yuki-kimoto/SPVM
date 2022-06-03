@@ -1,0 +1,184 @@
+class Regex::Tokenizer {
+  use Regex::Op;
+  
+  allow Regex::Parser;
+  
+  has char_class_parsing : byte;
+  has begin_of_char_class_parsing : byte;
+  has offset : int;
+  has source : string;
+  
+  static method new : Regex::Tokenizer ($options : object[]...) {
+    return new Regex::Tokenizer;
+  }
+  
+  method get_next_token : Regex::Op ($re_str : string) {
+    
+    my $begin_of_char_class_parsing = $self->{begin_of_char_class_parsing};
+    $self->{begin_of_char_class_parsing} = 0;
+    
+    my $offset = $self->{offset};
+    my $char_class_parsing = 0;
+    my $code_point = Unicode->uchar($re_str, \$offset);
+    
+    if ($code_point < 0) {
+      return undef;
+    }
+      
+    my $op_token = (Regex::Op)undef;
+    switch ($code_point) {
+      case '[': {
+        if ($char_class_parsing) {
+          $op_token = Regex::Op->new_op_char_char('[');
+        }
+        else {
+          $self->{char_class_parsing} = 1;
+          $self->{begin_of_char_class_parsing} = 1;
+          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_BRACKET_OPEN);
+        }
+        break;
+      }
+      case ']': {
+        if ($char_class_parsing) {
+          $self->{char_class_parsing} = 0;
+          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_BRACKET_OPEN);
+        }
+        else {
+          $op_token = Regex::Op->new_op_char_char(']');
+        }
+        break;
+      }
+      case '\\': {
+        my $next_code_point = Unicode->uchar($re_str, \$offset);
+        if ($code_point < 0) {
+          die;
+        }
+        
+        switch ($next_code_point) {
+          case 'd': {
+            $op_token = Regex::Op->new_op_char_category(Regex::Op->CHAR_CATEGORY_ASCII_NUMBER);
+            break;
+          }
+          case 'D': {
+            $op_token = Regex::Op->new_op_char_category(Regex::Op->CHAR_CATEGORY_ASCII_NUMBER);
+            $op_token->{char_negate} = 1;
+            break;
+          }
+          case 'w': {
+            $op_token = Regex::Op->new_op_char_category(Regex::Op->CHAR_CATEGORY_ASCII_WORD);
+            break;
+          }
+          case 'W': {
+            $op_token = Regex::Op->new_op_char_category(Regex::Op->CHAR_CATEGORY_ASCII_WORD);
+            $op_token->{char_negate} = 1;
+            break;
+          }
+          case 's': {
+            $op_token = Regex::Op->new_op_char_category(Regex::Op->CHAR_CATEGORY_ASCII_SPACE);
+            break;
+          }
+          case 'S': {
+            $op_token = Regex::Op->new_op_char_category(Regex::Op->CHAR_CATEGORY_ASCII_SPACE);
+            break;
+            $op_token->{char_negate} = 1;
+            break;
+          }
+          case 'A': {
+            $op_token = Regex::Op->new_op_char_category(Regex::Op->CHAR_CATEGORY_TEXT_BEGIN);
+            break;
+          }
+          case 'z': {
+            $op_token = Regex::Op->new_op_char_category(Regex::Op->CHAR_CATEGORY_TEXT_END);
+            break;
+          }
+        }
+        break;
+      }
+      case '|': {
+        if ($self->{char_class_parsing}) {
+          $op_token = Regex::Op->new_op_char_char('|');
+        }
+        else {
+          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_VRITICAL_BAR);
+        }
+        
+        break;
+      }
+      case '+': {
+        if ($self->{char_class_parsing}) {
+          $op_token = Regex::Op->new_op_char_char('+');
+        }
+        else {
+          $op_token = Regex::Op->new;
+          $op_token->{id} = Regex::Op->ID_REPEAT;
+          $op_token->{repeat_min} = 1;
+          $op_token->{repeat_max} = -1;
+          break;
+        }
+        
+        break;
+      }
+      case '*': {
+        if ($self->{char_class_parsing}) {
+          $op_token = Regex::Op->new_op_char_char('?');
+        }
+        else {
+          $op_token = Regex::Op->new;
+          $op_token->{id} = Regex::Op->ID_REPEAT;
+          $op_token->{repeat_min} = 0;
+          $op_token->{repeat_max} = -1;
+          break;
+        }
+        
+        break;
+      }
+      case '?': {
+        if ($char_class_parsing) {
+          $op_token = Regex::Op->new_op_char_char('?');
+        }
+        else {
+          $op_token = Regex::Op->new;
+          $op_token->{id} = Regex::Op->ID_REPEAT;
+          $op_token->{repeat_min} = 0;
+          $op_token->{repeat_max} = 1;
+          break;
+        }
+        
+        break;
+      }
+      case '^':
+      {
+        if ($begin_of_char_class_parsing) {
+          $op_token = Regex::Op->new;
+          $op_token->{id} = Regex::Op->ID_NEGATE;
+        }
+        elsif ($self->{char_class_parsing}){
+          $op_token = Regex::Op->new_op_char_char('^');
+        }
+        else {
+          $op_token = Regex::Op->new_op_char_category(Regex::Op->CHAR_CATEGORY_LINE_BEGIN);
+        }
+        
+        break;
+      }
+      case '$':
+      {
+        if ($char_class_parsing) {
+          $op_token = Regex::Op->new_op_char_char('$');
+        }
+        else {
+          my $char_categry = Regex::Op->CHAR_CATEGORY_LINE_END;
+          $op_token = Regex::Op->new_op_char_category($char_categry);
+        }
+        break;
+      }
+      default: {
+        $op_token = Regex::Op->new_op_char_char($code_point);
+      }
+    }
+    
+    $self->{offset} = $offset;
+    
+    return $op_token;
+  }
+}

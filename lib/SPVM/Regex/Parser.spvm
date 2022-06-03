@@ -1,5 +1,6 @@
 class Regex::Parser {
   use Regex::Op;
+  use Regex::Tokenizer;
   
   has op_stack : List of Regex::Op;
   
@@ -118,7 +119,7 @@ class Regex::Parser {
           }
           else {
             switch ($op_stack_top->{id}) {
-              case Regex::Op->ID_VRITICAL_VAR:
+              case Regex::Op->ID_VRITICAL_BAR:
               {
                 $op_char = $self->new_op_char_category(Regex::Op->CHAR_CATEGORY_EMPTY_CHAR);
                 $op_stack->push($op_char);
@@ -131,7 +132,7 @@ class Regex::Parser {
               case Regex::Op->ID_CAPTURE:
               {
                 my $or_op = Regex::Op->new;
-                $or_op->{id} = Regex::Op->ID_VRITICAL_VAR;
+                $or_op->{id} = Regex::Op->ID_VRITICAL_BAR;
                 $or_op->{ops} = List->new([$op_stack_top]);
                 $op_stack->set($op_stack->length - 1, $or_op);
                 break;
@@ -165,7 +166,7 @@ class Regex::Parser {
                 break;
               }
               case Regex::Op->ID_PAREN_OPEN:
-              case Regex::Op->ID_VRITICAL_VAR:
+              case Regex::Op->ID_VRITICAL_BAR:
               {
                 die;
                 break;
@@ -195,7 +196,7 @@ class Regex::Parser {
                 break;
               }
               case Regex::Op->ID_PAREN_OPEN:
-              case Regex::Op->ID_VRITICAL_VAR:
+              case Regex::Op->ID_VRITICAL_BAR:
               {
                 die;
                 break;
@@ -225,7 +226,7 @@ class Regex::Parser {
                 break;
               }
               case Regex::Op->ID_PAREN_OPEN:
-              case Regex::Op->ID_VRITICAL_VAR:
+              case Regex::Op->ID_VRITICAL_BAR:
               {
                 die;
                 break;
