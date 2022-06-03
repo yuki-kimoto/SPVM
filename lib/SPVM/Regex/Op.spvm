@@ -13,7 +13,7 @@ class Regex::Op {
     ID_CHAR,
     ID_CHAR_CLASS,
     ID_CONCAT,
-    ID_OR,
+    ID_ALTERNATE,
     ID_REPEAT,
     ID_CAPTURE,
   }
