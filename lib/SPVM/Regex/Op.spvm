@@ -3,8 +3,12 @@ class Regex::Op {
   
   enum {
     ID_PAREN_OPEN,
+    ID_PAREN_CLOSE,
+    ID_BRACKET_OPEN,
+    ID_BRACKET_CLOSE,
     ID_VRITICAL_VAR,
     ID_CHAR,
+    ID_CHAR_CLASS,
     ID_CONCAT,
     ID_OR,
     ID_REPEAT,
@@ -12,6 +16,7 @@ class Regex::Op {
   }
   
   enum {
+    CHAR_CATEGORY_CHAR,
     CHAR_CATEGORY_CHAR_CLASS,
     CHAR_CATEGORY_EMPTY_CHAR,
     CHAR_CATEGORY_LINE_BEGIN,
