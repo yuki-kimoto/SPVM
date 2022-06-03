@@ -4,9 +4,10 @@ class Regex::Opcode {
   enum {
     ID_CHAR,
     ID_JUMP,
-    ID_SPLIT,
+    ID_BRANCH,
     ID_MATCH,
-    ID_SAVE,
+    ID_CAPTURE_BEGIN,
+    ID_CAPTURE_END,
   }
   
   has id : int;
