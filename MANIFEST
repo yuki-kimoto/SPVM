@@ -243,6 +243,7 @@ lib/SPVM/Regex/Parser.spvm
 lib/SPVM/Regex/Replacer.pm
 lib/SPVM/Regex/Replacer.spvm
 lib/SPVM/Regex/Thread.spvm
+lib/SPVM/Regex/Tokenizer.spvm
 lib/SPVM/Short.pm
 lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm
