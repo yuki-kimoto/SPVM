@@ -12,7 +12,7 @@ class Regex::Tokenizer {
     return new Regex::Tokenizer;
   }
   
-  method look_next_token : Regex::Op ($re_str : string) {
+  method look_next_token : Regex::Op () {
     my $offset = $self->{offset};
     my $op_token = $self->get_next_token;
     $self->{offset} = $offset;
@@ -27,7 +27,8 @@ class Regex::Tokenizer {
     
     my $offset = $self->{offset};
     my $char_class_parsing = 0;
-    my $code_point = Unicode->uchar($re_str, \$offset);
+    my $source = $self->{source};
+    my $code_point = Unicode->uchar($source, \$offset);
     
     if ($code_point < 0) {
       return undef;
@@ -57,7 +58,7 @@ class Regex::Tokenizer {
         break;
       }
       case '\\': {
-        my $next_code_point = Unicode->uchar($re_str, \$offset);
+        my $next_code_point = Unicode->uchar($source, \$offset);
         if ($code_point < 0) {
           die;
         }
@@ -149,7 +150,16 @@ class Regex::Tokenizer {
           $op_token->{id} = Regex::Op->ID_REPEAT;
           $op_token->{repeat_min} = 0;
           $op_token->{repeat_max} = 1;
-          break;
+        }
+        
+        break;
+      }
+      case '-': {
+        if ($char_class_parsing) {
+          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_HYPHEN);
+        }
+        else {
+          $op_token = Regex::Op->new_op_char_char('-');
         }
         
         break;

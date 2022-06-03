@@ -8,6 +8,7 @@ class Regex::Op {
     ID_BRACKET_OPEN,
     ID_BRACKET_CLOSE,
     ID_VRITICAL_BAR,
+    ID_HYPHEN,
     ID_NEGATE,
     ID_CARRET,
     ID_CHAR,
