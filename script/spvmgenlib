@@ -47,7 +47,7 @@ else {
 
 =head1 NAME
 
-spvmgenlib - The Command to Generate SPVM Native Modules
+spvmgenlib - Generating SPVM Module
 
 =head1 SYNOPSIS
 
@@ -70,4 +70,4 @@ spvmgenlib - The Command to Generate SPVM Native Modules
     
 =head1 DESCRIPTION
 
-B<spvmgenlib> is the command to generate SPVM native modules.
+C<spvmgenlib> is the command to generate SPVM native modules.
