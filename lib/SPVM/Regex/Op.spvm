@@ -1,5 +1,5 @@
 class Regex::Op {
-  allow Regex;
+  allow Regex::Parser;
   
   enum {
     ID_CHAR,
@@ -12,6 +12,7 @@ class Regex::Op {
   enum {
     CHAR_CATEGORY_CHAR,
     CHAR_CATEGORY_CHAR_CLASS,
+    CHAR_CATEGORY_EMPTY_CHAR,
     CHAR_CATEGORY_LINE_BEGIN,
     CHAR_CATEGORY_LINE_END,
     CHAR_CATEGORY_TEXT_BEGIN,
@@ -20,8 +21,10 @@ class Regex::Op {
   }
   
   has id : int;
+
+  has char_category : int;
   has char_class_code_point_ranges : int[];
-  has char_class_negate : byte;
+  has char_class_negate : int;
   
   has repeat_min : int;
   has repeat_max : int;

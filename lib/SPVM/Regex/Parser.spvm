@@ -1,9 +1,377 @@
 class Regex::Parser {
+  use Regex::Op;
+  
+  has op_stack : List of Regex::Op;
+  
   static method new : Regex::Parser ($options : object[]...) {
     return new Regex::Parser;
   }
   
-  method parse : void ($regex_string : string) {
+  private method new_op_char_char_class : Regex::Op ($code_point_ranges : int[]) {
+    my $op_char = Regex::Op->new;
     
+    $op_char->{id} = Regex::Op->ID_CHAR;
+    $op_char->{char_category} = Regex::Op->CHAR_CATEGORY_CHAR_CLASS;
+    $op_char->{char_class_code_point_ranges} = $code_point_ranges;
+    
+    return $op_char;
+  }
+
+  private method new_op_char_char : Regex::Op ($code_point : int) {
+    my $op_char = Regex::Op->new;
+    
+    $op_char->{id} = Regex::Op->ID_CHAR;
+    $op_char->{char_category} = Regex::Op->CHAR_CATEGORY_CHAR;
+    $op_char->{char_class_code_point_ranges} = [$code_point, $code_point];
+    
+    return $op_char;
+  }
+
+  private method new_op_char_category : Regex::Op ($category : int) {
+    my $op_char = Regex::Op->new;
+    
+    $op_char->{id} = Regex::Op->ID_CHAR;
+    $op_char->{char_category} = $category;
+    
+    return $op_char;
+  }
+  
+  method parse : Regex::Op ($re_str : string) {
+    
+    # Op stack
+    my $op_stack = $self->{op_stack};
+
+    # Capture
+    my $op_capture = new Regex::Op;
+    $op_capture->{id} = Regex::Op->ID_CAPTURE;
+    $op_stack->push($op_capture);
+    
+    # Root op
+    my $root_op = $op_capture;
+    
+    my $pos = 0;
+    while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
+      
+      my $before_op = (Regex::Op)$op_stack->get($op_stack->length - 1);
+      switch ($code_point) {
+        case '\\': {
+          my $next_code_point = Unicode->uchar($re_str, \$pos);
+          if ($code_point < 0) {
+            die;
+          }
+          
+          my $op_char = (Regex::Op)undef;
+          switch ($next_code_point) {
+            case 'd': {
+              my $code_point_ranges = [(int)'0', '9'];
+              $op_char = $self->new_op_char_char_class($code_point_ranges);
+              break;
+            }
+            case 'D': {
+              my $code_point_ranges = $self->negate_code_point_ranges([(int)'0', '9']);
+              $op_char = $self->new_op_char_char_class($code_point_ranges);
+              break;
+            }
+            case 'w': {
+              my $code_point_ranges = [(int)'0', '9', 'A', 'Z', '_', '_', 'a', 'z'];
+              $op_char = $self->new_op_char_char_class($code_point_ranges);
+              break;
+            }
+            case 'W': {
+              my $code_point_ranges = $self->negate_code_point_ranges([(int)'0', '9', 'A', 'Z', '_', '_', 'a', 'z']);
+              $op_char = $self->new_op_char_char_class($code_point_ranges);
+              break;
+            }
+            case 's': {
+              my $code_point_ranges = [(int)'\t', '\t', '\n', '\n', '\f', '\f', '\r', '\r', ' ', ' '];
+              $op_char = $self->new_op_char_char_class($code_point_ranges);
+              break;
+            }
+            case 'S': {
+              my $code_point_ranges = $self->negate_code_point_ranges([(int)'\t', '\t', '\n', '\n', '\f', '\f', '\r', '\r', ' ', ' ']);
+              $op_char = $self->new_op_char_char_class($code_point_ranges);
+              break;
+            }
+          }
+          
+          if ($op_char) {
+            switch ($before_op->{id}) {
+              case Regex::Op->ID_CHAR:
+              {
+                my $concat_op = Regex::Op->new;
+                $concat_op->{id} = Regex::Op->ID_CONCAT;
+                $concat_op->{ops} = List->new([$before_op]);
+                $op_stack->set($op_stack->length - 1, $concat_op);
+                break;
+              }
+              case Regex::Op->ID_CONCAT:
+              case Regex::Op->ID_OR:
+              {
+                $before_op->{ops}->push($op_char);
+                break;
+              }
+              case Regex::Op->ID_REPEAT:
+              case Regex::Op->ID_CAPTURE:
+              {
+                $op_stack->push($op_char);
+                break;
+              }
+              default: {
+                die;
+              }
+            }
+          }
+          else {
+            die;
+          }
+          break;
+        }
+        case '|': {
+          switch ($before_op->{id}) {
+            case Regex::Op->ID_CHAR:
+            case Regex::Op->ID_CONCAT:
+            case Regex::Op->ID_REPEAT:
+            {
+              my $or_op = Regex::Op->new;
+              $or_op->{id} = Regex::Op->ID_OR;
+              $or_op->{ops} = List->new([$before_op]);
+              $op_stack->set($op_stack->length - 1, $or_op);
+              break;
+            }
+            case Regex::Op->ID_OR:
+            {
+              die;
+              break;
+            }
+            case Regex::Op->ID_CAPTURE:
+            {
+              die;
+              break;
+            }
+            default: {
+              die;
+              break;
+            }
+          }
+          
+          break;
+        }
+        case '+': {
+          switch ($before_op->{id}) {
+            case Regex::Op->ID_CHAR:
+            case Regex::Op->ID_CONCAT:
+            case Regex::Op->ID_OR:
+            {
+              my $repeat_op = Regex::Op->new;
+              $repeat_op->{id} = Regex::Op->ID_REPEAT;
+              $repeat_op->{ops} = List->new([$before_op]);
+              $repeat_op->{repeat_min} = 1;
+              $repeat_op->{repeat_max} = -1;
+              $op_stack->set($op_stack->length - 1, $repeat_op);
+              break;
+            }
+            case Regex::Op->ID_OR:
+            {
+              die;
+              break;
+            }
+            case Regex::Op->ID_CAPTURE:
+            {
+              die;
+              break;
+            }
+          }
+          
+          break;
+        }
+        case '*': {
+          switch ($before_op->{id}) {
+            case Regex::Op->ID_CHAR:
+            case Regex::Op->ID_CONCAT:
+            case Regex::Op->ID_OR:
+            {
+              my $repeat_op = Regex::Op->new;
+              $repeat_op->{id} = Regex::Op->ID_REPEAT;
+              $repeat_op->{ops} = List->new([$before_op]);
+              $repeat_op->{repeat_min} = 0;
+              $repeat_op->{repeat_max} = -1;
+              $op_stack->set($op_stack->length - 1, $repeat_op);
+              break;
+            }
+            case Regex::Op->ID_OR:
+            {
+              die;
+              break;
+            }
+            case Regex::Op->ID_CAPTURE:
+            {
+              die;
+              break;
+            }
+          }
+          
+          break;
+        }
+        case '?': {
+          switch ($before_op->{id}) {
+            case Regex::Op->ID_CHAR:
+            case Regex::Op->ID_CONCAT:
+            case Regex::Op->ID_OR:
+            {
+              my $repeat_op = Regex::Op->new;
+              $repeat_op->{id} = Regex::Op->ID_REPEAT;
+              $repeat_op->{ops} = List->new([$before_op]);
+              $repeat_op->{repeat_min} = 0;
+              $repeat_op->{repeat_max} = 1;
+              $op_stack->set($op_stack->length - 1, $repeat_op);
+              break;
+            }
+            case Regex::Op->ID_OR:
+            {
+              die;
+              break;
+            }
+            case Regex::Op->ID_CAPTURE:
+            {
+              die;
+              break;
+            }
+          }
+          
+          break;
+        }
+        case '^':
+        case '$':
+        {
+          my $char_categry : int;
+          switch ($code_point) {
+            case '^': {
+              $char_categry = Regex::Op->CHAR_CATEGORY_LINE_BEGIN;
+              break;
+            }
+            case '$': {
+              $char_categry = Regex::Op->CHAR_CATEGORY_LINE_END;
+              break;
+            }
+            default: {
+              die;
+              break;
+            }
+          }
+          my $op_char = $self->new_op_char_category($char_categry);
+          switch ($before_op->{id}) {
+            case Regex::Op->ID_CHAR:
+            {
+              my $concat_op = Regex::Op->new;
+              $concat_op->{id} = Regex::Op->ID_CONCAT;
+              $concat_op->{ops} = List->new([$before_op]);
+
+              my $char_class_op = Regex::Op->new;
+              $char_class_op->{id} = Regex::Op->ID_CHAR;
+              $char_class_op->{char_class_code_point_ranges} = [$code_point, $code_point];
+              $concat_op->{ops}->push($char_class_op);
+              
+              $op_stack->set($op_stack->length - 1, $concat_op);
+              break;
+            }
+            case Regex::Op->ID_CONCAT:
+            case Regex::Op->ID_OR:
+            {
+              my $char_class_op = Regex::Op->new;
+              $char_class_op->{id} = Regex::Op->ID_CHAR;
+              $char_class_op->{char_class_code_point_ranges} = [$code_point, $code_point];
+              $before_op->{ops}->push($char_class_op);
+              break;
+            }
+            case Regex::Op->ID_REPEAT:
+            case Regex::Op->ID_CAPTURE:
+            {
+              my $char_class_op = Regex::Op->new;
+              $char_class_op->{id} = Regex::Op->ID_CHAR;
+              $char_class_op->{char_class_code_point_ranges} = [$code_point, $code_point];
+              $op_stack->push($char_class_op);
+              break;
+            }
+            default: {
+              die;
+              break;
+            }
+          }
+          break;
+        }
+        default: {
+          switch ($before_op->{id}) {
+            case Regex::Op->ID_CHAR:
+            {
+              my $concat_op = Regex::Op->new;
+              $concat_op->{id} = Regex::Op->ID_CONCAT;
+              $concat_op->{ops} = List->new([$before_op]);
+
+              my $char_class_op = Regex::Op->new;
+              $char_class_op->{id} = Regex::Op->ID_CHAR;
+              $char_class_op->{char_class_code_point_ranges} = [$code_point, $code_point];
+              $concat_op->{ops}->push($char_class_op);
+              
+              $op_stack->set($op_stack->length - 1, $concat_op);
+              break;
+            }
+            case Regex::Op->ID_CONCAT:
+            case Regex::Op->ID_OR:
+            {
+              my $char_class_op = Regex::Op->new;
+              $char_class_op->{id} = Regex::Op->ID_CHAR;
+              $char_class_op->{char_class_code_point_ranges} = [$code_point, $code_point];
+              $before_op->{ops}->push($char_class_op);
+              break;
+            }
+            case Regex::Op->ID_REPEAT:
+            case Regex::Op->ID_CAPTURE:
+            {
+              my $char_class_op = Regex::Op->new;
+              $char_class_op->{id} = Regex::Op->ID_CHAR;
+              $char_class_op->{char_class_code_point_ranges} = [$code_point, $code_point];
+              $op_stack->push($char_class_op);
+              break;
+            }
+            default: {
+              die;
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private method negate_code_point_ranges : int[] ($code_point_ranges : int[]) {
+    
+    if (@$code_point_ranges < 2) {
+      die "The length of the code point rainges must be more than 2";
+    }
+
+    my $negate_code_point_rainges_raw_list = IntList->new;
+    $negate_code_point_rainges_raw_list->push(0);
+    for (my $i = 0; $i < @$code_point_ranges; $i += 2) {
+      my $min = $code_point_ranges->[$i];
+      my $max = $code_point_ranges->[$i + 1];
+      $negate_code_point_rainges_raw_list->push($min - 1);
+      $negate_code_point_rainges_raw_list->push($max + 1);
+    }
+    $negate_code_point_rainges_raw_list->push(0x10FFFF);
+
+    my $cur_max = 0;
+    my $negate_code_point_rainges_list = IntList->new;
+    for (my $i = 0; $i < $negate_code_point_rainges_raw_list->length; $i += 2) {
+      my $min = $negate_code_point_rainges_raw_list->get($i);
+      my $max = $negate_code_point_rainges_raw_list->get($i + 1);
+      unless ($min > $max) {
+        $negate_code_point_rainges_list->push($min);
+        $negate_code_point_rainges_list->push($max);
+      }
+    }
+    
+    my $negate_code_point_rainges = $negate_code_point_rainges_list->to_array;
+
+    return $negate_code_point_rainges;
   }
 }
