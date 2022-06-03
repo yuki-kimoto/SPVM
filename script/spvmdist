@@ -1,0 +1,72 @@
+#!perl
+
+use strict;
+use warnings;
+
+use SPVM();
+use SPVM::Builder::Generator::Dist;
+use SPVM::Builder::Util;
+
+SPVM::Builder::Util::getopt
+  'h|help'          => \my $help,
+  'v|version'       => \my $show_version,
+  'q|quiet'   => \my $quiet,
+  'f|force' => \my $force,
+  'output-dir=s' => \my $output_dir,
+  'native=s' => \my $native,
+  'precompile' => \my $precompile,
+;
+
+if ($help) {
+  die SPVM::Builder::Util::extract_usage;
+}
+elsif ($show_version) {
+  my $version_string = "spvmdist v$SPVM::VERSION";
+  print "$version_string\n";
+}
+else {
+  my $class_name = shift;
+  unless (defined $class_name) {
+    die SPVM::Builder::Util::extract_usage;
+  }
+  
+  my $genlib= SPVM::Builder::Generator::Dist->new(
+    class_name => $class_name,
+    quiet => $quiet,
+    force => $force,
+    output_dir => $output_dir,
+    native => $native,
+    script_file => $script_file,
+    native_lib_name => $native_lib_name,
+  );
+  $genlib->generate_lib;
+}
+
+=encoding utf8
+
+=head1 NAME
+
+spvmdist - Generating SPVM Distribution
+
+=head1 SYNOPSIS
+
+  Usage: spvmdist [OPTIONS] [CLASS_NAME]
+    
+    spvmdist Foo
+    spvmdist Foo::Bar
+    spvmdist --native c Foo
+    spvmdist --native c++ Foo
+    spvmdist --precompile Foo
+
+  Options:
+    -h, --help                     Show this message
+    -v, --version                  Show the version
+    -q, --quiet                    Quiet output
+    -f, --force                    Force to generate files
+    --output-dir                   Output directory
+    --native LANGUAGE              Add native files and setting
+    --precompile                   Add precompile files and setting
+
+=head1 DESCRIPTION
+
+C<spvmdist> is the command to generate a SPVM distribution.
