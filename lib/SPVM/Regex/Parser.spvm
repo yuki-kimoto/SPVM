@@ -40,19 +40,10 @@ class Regex::Parser {
     
     # Op stack
     my $op_stack = $self->{op_stack};
-
-    # Capture
-    my $op_capture = new Regex::Op;
-    $op_capture->{id} = Regex::Op->ID_CAPTURE;
-    $op_stack->push($op_capture);
     
-    # Root op
-    my $root_op = $op_capture;
+    $re_str = "($re_str)";
 
-    my $cur_code_point_ranges_list = IntList->new;
-    
     my $char_class_parsing = 0;
-    
     my $pos = 0;
     while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
       
@@ -330,6 +321,15 @@ class Regex::Parser {
         die;
       }
     }
+    
+    unless ($op_stack->length == 1) {
+      die;
+    }
+    
+    # Root op
+    my $root_op = (Regex::Op)$op_stack->pop;
+    
+    return $root_op;
   }
 
   private method negate_code_point_ranges : int[] ($code_point_ranges : int[]) {
