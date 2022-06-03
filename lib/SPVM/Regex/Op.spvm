@@ -3,7 +3,7 @@ class Regex::Op {
   
   enum {
     ID_PAREN_OPEN,
-    ID_PAREN_CLOSE,
+    ID_VRITICAL_VAR,
     ID_CHAR,
     ID_CONCAT,
     ID_OR,
@@ -25,7 +25,7 @@ class Regex::Op {
 
   has char_category : int;
   has char_class_code_point_ranges : int[];
-  has char_class_negate : int;
+  has char_negate : int;
   
   has repeat_min : int;
   has repeat_max : int;
