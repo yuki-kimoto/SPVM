@@ -36,6 +36,24 @@ class Regex::Tokenizer {
       
     my $op_token = (Regex::Op)undef;
     switch ($code_point) {
+      case '(': {
+        if ($char_class_parsing) {
+          $op_token = Regex::Op->new_op_char_char('(');
+        }
+        else {
+          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_PAREN_OPEN_BEGIN_CAPTURE);
+        }
+        break;
+      }
+      case ')': {
+        if ($char_class_parsing) {
+          $op_token = Regex::Op->new_op_char_char(')');
+        }
+        else {
+          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_PAREN_CLOSE_END_CAPTURE);
+        }
+        break;
+      }
       case '[': {
         if ($char_class_parsing) {
           $op_token = Regex::Op->new_op_char_char('[');
@@ -43,14 +61,14 @@ class Regex::Tokenizer {
         else {
           $self->{char_class_parsing} = 1;
           $self->{begin_of_char_class_parsing} = 1;
-          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_BRACKET_OPEN);
+          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_BRACKET_OPEN_BEGIN_CHAR_CLASS);
         }
         break;
       }
       case ']': {
         if ($char_class_parsing) {
           $self->{char_class_parsing} = 0;
-          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_BRACKET_OPEN);
+          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_BRACKET_CLOSE_END_CHAR_CLASS);
         }
         else {
           $op_token = Regex::Op->new_op_char_char(']');
@@ -108,7 +126,7 @@ class Regex::Tokenizer {
           $op_token = Regex::Op->new_op_char_char('|');
         }
         else {
-          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_VRITICAL_BAR);
+          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_VRITICAL_BAR_OR);
         }
         
         break;
@@ -156,7 +174,7 @@ class Regex::Tokenizer {
       }
       case '-': {
         if ($char_class_parsing) {
-          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_HYPHEN);
+          $op_token = Regex::Op->new_op_char_category(Regex::Op->ID_HYPHEN_CHAR_OR_RANGE);
         }
         else {
           $op_token = Regex::Op->new_op_char_char('-');
@@ -168,7 +186,7 @@ class Regex::Tokenizer {
       {
         if ($begin_of_char_class_parsing) {
           $op_token = Regex::Op->new;
-          $op_token->{id} = Regex::Op->ID_NEGATE;
+          $op_token->{id} = Regex::Op->ID_CARRET_CHAR_CLASS_NEGATE;
         }
         elsif ($self->{char_class_parsing}){
           $op_token = Regex::Op->new_op_char_char('^');

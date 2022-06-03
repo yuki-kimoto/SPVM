@@ -40,289 +40,115 @@ class Regex::Parser {
   method parse : Regex::Op ($re_str : string) {
     
     my $tokenizer = Regex::Tokenizer->new;
-    $tokenizer->{source} = $re_str;
+    $tokenizer->{source} = "($re_str)";
     
     # Op stack
     my $op_stack = $self->{op_stack};
     
-    $re_str = "($re_str)";
-
     my $char_class_parsing = 0;
     my $pos = 0;
-    while ((my $code_point = Unicode->uchar($re_str, \$pos)) >= 0) {
-      
+    while (my $op_token = $tokenizer->get_next_token) {
+      my $next_op_token = $tokenizer->look_next_token;
+     
       my $op_stack_top = (Regex::Op)$op_stack->get($op_stack->length - 1);
       
       my $op_char = (Regex::Op)undef;
-      switch ($code_point) {
-        case '[': {
+      switch ($op_token->{id}) {
+        case Regex::Op->ID_PAREN_OPEN_BEGIN_CAPTURE: {
+          $op_stack->push($op_token);
+          break;
+        }
+        case Regex::Op->ID_PAREN_CLOSE_END_CAPTURE: {
+          break;
+        }
+        case Regex::Op->ID_BRACKET_OPEN_BEGIN_CHAR_CLASS: {
           $char_class_parsing = 1;
           break;
         }
-        case ']': {
-          if ($char_class_parsing) {
-            $char_class_parsing = 0;
-          }
-          else {
-            $op_char = $self->new_op_char_char(']');
-          }
+        case Regex::Op->ID_BRACKET_CLOSE_END_CHAR_CLASS: {
+          $char_class_parsing = 0;
           break;
         }
-        case '\\': {
-          my $next_code_point = Unicode->uchar($re_str, \$pos);
-          if ($code_point < 0) {
-            die;
-          }
-          
-          switch ($next_code_point) {
-            case 'd': {
-              my $code_point_ranges = [(int)'0', '9'];
-              $op_char = $self->new_op_char_char_class($code_point_ranges);
-              break;
-            }
-            case 'D': {
-              my $code_point_ranges = $self->negate_code_point_ranges([(int)'0', '9']);
-              $op_char = $self->new_op_char_char_class($code_point_ranges);
-              break;
-            }
-            case 'w': {
-              my $code_point_ranges = [(int)'0', '9', 'A', 'Z', '_', '_', 'a', 'z'];
-              $op_char = $self->new_op_char_char_class($code_point_ranges);
-              break;
-            }
-            case 'W': {
-              my $code_point_ranges = $self->negate_code_point_ranges([(int)'0', '9', 'A', 'Z', '_', '_', 'a', 'z']);
-              $op_char = $self->new_op_char_char_class($code_point_ranges);
-              break;
-            }
-            case 's': {
-              my $code_point_ranges = [(int)'\t', '\t', '\n', '\n', '\f', '\f', '\r', '\r', ' ', ' '];
-              $op_char = $self->new_op_char_char_class($code_point_ranges);
-              break;
-            }
-            case 'S': {
-              my $code_point_ranges = $self->negate_code_point_ranges([(int)'\t', '\t', '\n', '\n', '\f', '\f', '\r', '\r', ' ', ' ']);
-              $op_char = $self->new_op_char_char_class($code_point_ranges);
-              break;
-            }
-            case 'A': {
-              $op_char = $self->new_op_char_category(Regex::Op->CHAR_CATEGORY_TEXT_BEGIN);
-              break;
-            }
-            case 'z': {
-              $op_char = $self->new_op_char_category(Regex::Op->CHAR_CATEGORY_TEXT_END);
-              break;
-            }
-          }
-          break;
-        }
-        case '|': {
-          if ($char_class_parsing) {
-            $op_char = $self->new_op_char_char(']');
-          }
-          else {
-            switch ($op_stack_top->{id}) {
-              case Regex::Op->ID_VRITICAL_BAR:
-              {
-                $op_char = $self->new_op_char_category(Regex::Op->CHAR_CATEGORY_EMPTY_CHAR);
-                $op_stack->push($op_char);
-                break;
-              }
-              case Regex::Op->ID_CHAR:
-              case Regex::Op->ID_CONCAT:
-              case Regex::Op->ID_REPEAT:
-              case Regex::Op->ID_OR:
-              case Regex::Op->ID_CAPTURE:
-              {
-                my $or_op = Regex::Op->new;
-                $or_op->{id} = Regex::Op->ID_VRITICAL_BAR;
-                $or_op->{ops} = List->new([$op_stack_top]);
-                $op_stack->set($op_stack->length - 1, $or_op);
-                break;
-              }
-              default: {
-                die;
-                break;
-              }
-            }
-          }
-          
-          break;
-        }
-        case '+': {
-          if ($char_class_parsing) {
-            $op_char = $self->new_op_char_char('?');
-          }
-          else {
-            switch ($op_stack_top->{id}) {
-              case Regex::Op->ID_CHAR:
-              case Regex::Op->ID_CONCAT:
-              case Regex::Op->ID_OR:
-              case Regex::Op->ID_CAPTURE:
-              {
-                my $repeat_op = Regex::Op->new;
-                $repeat_op->{id} = Regex::Op->ID_REPEAT;
-                $repeat_op->{ops} = List->new([$op_stack_top]);
-                $repeat_op->{repeat_min} = 1;
-                $repeat_op->{repeat_max} = -1;
-                $op_stack->set($op_stack->length - 1, $repeat_op);
-                break;
-              }
-              case Regex::Op->ID_PAREN_OPEN:
-              case Regex::Op->ID_VRITICAL_BAR:
-              {
-                die;
-                break;
-              }
-            }
-          }
-          
-          break;
-        }
-        case '*': {
-          if ($char_class_parsing) {
-            $op_char = $self->new_op_char_char('?');
-          }
-          else {
-            switch ($op_stack_top->{id}) {
-              case Regex::Op->ID_CHAR:
-              case Regex::Op->ID_CONCAT:
-              case Regex::Op->ID_OR:
-              case Regex::Op->ID_CAPTURE:
-              {
-                my $repeat_op = Regex::Op->new;
-                $repeat_op->{id} = Regex::Op->ID_REPEAT;
-                $repeat_op->{ops} = List->new([$op_stack_top]);
-                $repeat_op->{repeat_min} = 0;
-                $repeat_op->{repeat_max} = -1;
-                $op_stack->set($op_stack->length - 1, $repeat_op);
-                break;
-              }
-              case Regex::Op->ID_PAREN_OPEN:
-              case Regex::Op->ID_VRITICAL_BAR:
-              {
-                die;
-                break;
-              }
-            }
-          }
-          
-          break;
-        }
-        case '?': {
-          if ($char_class_parsing) {
-            $op_char = $self->new_op_char_char('?');
-          }
-          else {
-            switch ($op_stack_top->{id}) {
-              case Regex::Op->ID_CHAR:
-              case Regex::Op->ID_CONCAT:
-              case Regex::Op->ID_OR:
-              case Regex::Op->ID_CAPTURE:
-              {
-                my $repeat_op = Regex::Op->new;
-                $repeat_op->{id} = Regex::Op->ID_REPEAT;
-                $repeat_op->{ops} = List->new([$op_stack_top]);
-                $repeat_op->{repeat_min} = 0;
-                $repeat_op->{repeat_max} = 1;
-                $op_stack->set($op_stack->length - 1, $repeat_op);
-                break;
-              }
-              case Regex::Op->ID_PAREN_OPEN:
-              case Regex::Op->ID_VRITICAL_BAR:
-              {
-                die;
-                break;
-              }
-            }
-          }
-          
-          break;
-        }
-        case '^':
-        {
-          if ($char_class_parsing) {
-            $op_char = $self->new_op_char_char('^');
-          }
-          else {
-            my $char_categry = Regex::Op->CHAR_CATEGORY_LINE_BEGIN;
-            $op_char = $self->new_op_char_category($char_categry);
-          }
-          
-          break;
-        }
-        case '$':
-        {
-          if ($char_class_parsing) {
-            $op_char = $self->new_op_char_char('$');
-          }
-          else {
-            my $char_categry = Regex::Op->CHAR_CATEGORY_LINE_END;
-            $op_char = $self->new_op_char_category($char_categry);
-          }
-          break;
-        }
-        default: {
-          $op_char = $self->new_op_char_char($code_point);
-        }
-      }
-      
-      if ($op_char) {
-        if ($char_class_parsing) {
+        case Regex::Op->ID_VRITICAL_BAR_OR: {
           switch ($op_stack_top->{id}) {
-            case Regex::Op->ID_CHAR:
+            case Regex::Op->ID_VRITICAL_BAR_OR:
             {
-              my $op_or = Regex::Op->new;
-              $op_or->{id} = Regex::Op->ID_OR;
-              $op_or->{ops} = List->new([$op_stack_top]);
-              
-              $op_stack->pop;
-              $op_stack->push($op_or);
-              break;
-            }
-            case Regex::Op->ID_OR:
-            {
-              $op_stack_top->{ops}->push($op_char);
-              break;
-            }
-            default: {
-              die;
-            }
-          }
-        }
-        else {
-          switch ($op_stack_top->{id}) {
-            case Regex::Op->ID_PAREN_OPEN:
-            case Regex::Op->ID_CHAR:
-            {
-              my $concat_op = Regex::Op->new;
-              $concat_op->{id} = Regex::Op->ID_CONCAT;
-              $concat_op->{ops} = List->new([$op_stack_top]);
-              
-              $op_stack->pop;
-              $op_stack->push($concat_op);
-              break;
-            }
-            case Regex::Op->ID_CONCAT:
-            {
-              $op_stack_top->{ops}->push($op_char);
-              break;
-            }
-            case Regex::Op->ID_OR:
-            case Regex::Op->ID_REPEAT:
-            case Regex::Op->ID_CAPTURE:
-            {
+              $op_char = $self->new_op_char_category(Regex::Op->CHAR_CATEGORY_EMPTY_CHAR);
               $op_stack->push($op_char);
               break;
             }
+            case Regex::Op->ID_CHAR:
+            case Regex::Op->ID_CONCAT:
+            case Regex::Op->ID_REPEAT:
+            case Regex::Op->ID_OR:
+            case Regex::Op->ID_CAPTURE:
+            {
+              my $or_op = Regex::Op->new;
+              $or_op->{id} = Regex::Op->ID_VRITICAL_BAR_OR;
+              $or_op->{ops} = List->new([$op_stack_top]);
+              $op_stack->set($op_stack->length - 1, $or_op);
+              break;
+            }
             default: {
               die;
+              break;
             }
           }
+          
+          break;
         }
-      }
-      else {
-        die;
+        case Regex::Op->ID_HYPHEN_CHAR_OR_RANGE: {
+          
+          break;
+        }
+        case Regex::Op->ID_CARRET_CHAR_CLASS_NEGATE: {
+          
+          break;
+        }
+        case Regex::Op->ID_CHAR: {
+          $op_stack->push($op_token);
+          break;
+        }
+        case Regex::Op->ID_CHAR_CLASS: {
+          break;
+        }
+        case Regex::Op->ID_CONCAT: {
+          break;
+        }
+        case Regex::Op->ID_OR: {
+          break;
+        }
+        case Regex::Op->ID_REPEAT: {
+          switch ($op_stack_top->{id}) {
+            case Regex::Op->ID_CHAR:
+            case Regex::Op->ID_CONCAT:
+            case Regex::Op->ID_OR:
+            case Regex::Op->ID_CAPTURE:
+            {
+              my $repeat_op = Regex::Op->new;
+              $repeat_op->{id} = Regex::Op->ID_REPEAT;
+              $repeat_op->{ops} = List->new([$op_stack_top]);
+              $repeat_op->{repeat_min} = 1;
+              $repeat_op->{repeat_max} = -1;
+              $op_stack->set($op_stack->length - 1, $repeat_op);
+              break;
+            }
+            case Regex::Op->ID_PAREN_OPEN_BEGIN_CAPTURE:
+            case Regex::Op->ID_VRITICAL_BAR_OR:
+            {
+              die;
+              break;
+            }
+          }
+          
+          break;
+        }
+        case Regex::Op->ID_CAPTURE: {
+          break;
+        }
+        default: {
+          die;
+        }
       }
     }
     
