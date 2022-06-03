@@ -39,6 +39,9 @@ class Regex::Parser {
   
   method parse : Regex::Op ($re_str : string) {
     
+    my $tokenizer = Regex::Tokenizer->new;
+    $tokenizer->{source} = $re_str;
+    
     # Op stack
     my $op_stack = $self->{op_stack};
     

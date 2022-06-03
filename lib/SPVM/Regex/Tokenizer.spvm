@@ -12,7 +12,15 @@ class Regex::Tokenizer {
     return new Regex::Tokenizer;
   }
   
-  method get_next_token : Regex::Op ($re_str : string) {
+  method look_next_token : Regex::Op ($re_str : string) {
+    my $offset = $self->{offset};
+    my $op_token = $self->get_next_token;
+    $self->{offset} = $offset;
+    
+    return $op_token;
+  }
+  
+  method get_next_token : Regex::Op () {
     
     my $begin_of_char_class_parsing = $self->{begin_of_char_class_parsing};
     $self->{begin_of_char_class_parsing} = 0;
