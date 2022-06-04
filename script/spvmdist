@@ -12,7 +12,6 @@ SPVM::Builder::Util::getopt
   'v|version'       => \my $show_version,
   'q|quiet'   => \my $quiet,
   'f|force' => \my $force,
-  'output-dir=s' => \my $output_dir,
   'native=s' => \my $native,
   'precompile' => \my $precompile,
 ;
@@ -25,7 +24,7 @@ elsif ($show_version) {
   print "$version_string\n";
 }
 else {
-  my $class_name = shift;
+  my ($class_name, $output_dir) = @_;
   unless (defined $class_name) {
     die SPVM::Builder::Util::extract_usage;
   }

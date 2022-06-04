@@ -90,15 +90,20 @@ sub new {
   
   bless $self, $class;
   
+  unless (defined $self->class_name) {
+    confess "Class name must be specified";
+  }
+  
   if (defined $self->output_dir) {
     # Remove tailing / or \
     my $output_dir = $self->output_dir;
     $output_dir =~ s|[/\\]$||;
     $self->output_dir($output_dir);
   }
-  
-  unless (defined $self->class_name) {
-    confess "Class name must be specified";
+  else {
+    my $default_output_dir = $class_name;
+    $default_output_dir =~ s/::/-/g;
+    $self->output_dir($default_output_dir);
   }
   
   my $native = $self->native;
@@ -201,7 +206,7 @@ sub generate_native_config_file {
   my $native_native_config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'native_config');
 
   # Generate native native_config file
-  my $native_config_file = "$output_dir/$native_config_file_base";
+  my $native_config_file = $self->($native_config_file_base);
   mkpath dirname $native_config_file;
   
   my $new_method;
@@ -229,7 +234,18 @@ EOS
 }
 
 sub generate_native_module_file {
-
+  my ($self) = @_;
+  
+  my $native_module_ext;
+  if (defined $native) {
+    if ($native eq 'c') {
+      $native_module_ext = 'c';
+    }
+    elsif ($native eq 'c++') {
+      $native_module_ext = 'cpp';
+    }
+  }
+  
   # Create native module file
   my $extern_c_start;
   my $extern_c_end;
@@ -282,19 +298,6 @@ sub generate_dist {
   
   my $class_name_rel_file = $class_name;
   $class_name_rel_file =~ s|::|/|g;
-  
-  my $native_module_ext;
-  if (defined $native) {
-    if ($native eq 'c') {
-      $native_module_ext = 'c';
-    }
-    elsif ($native eq 'c++') {
-      $native_module_ext = 'cpp';
-    }
-  }
-  
-  my $dist_dir_base_name = $class_name;
-  $dist_dir_base_name =~ s/::/-/g;
   
   # Generate output directory
   my $output_dir = $self->output_dir;
