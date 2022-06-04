@@ -117,7 +117,7 @@ sub new {
 sub generate_spvm_module_file {
   my ($self) = @_;
   
-  my $output_dir = $self->output_dir;
+  my $class_name = $self->class_name;
 
   my $spvm_module_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
 
@@ -136,7 +136,7 @@ EOS
 sub generate_perl_module_file {
   my ($self) = @_;
   
-  my $output_dir = $self->output_dir;
+  my $class_name = $self->class_name;
 
   my $perl_module_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
 
@@ -201,7 +201,7 @@ EOS
 sub generate_native_config_file {
   my ($self) = @_;
 
-  my $output_dir = $self->output_dir;
+  my $class_name = $self->class_name;
 
   my $native_native_config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'native_config');
 
@@ -349,6 +349,24 @@ EOS
   SPVM::Builder::Util::spurt_binary($manifest_skip_file, $manifest_skip_content);
 }
 
+sub generate_readme_markdown_file {
+  my ($self) = @_;
+
+  my $class_name = $self->class_name;
+
+  # Create ,readme_markdowne file
+  my $readme_markdown_file = $self->create_path('README.md');
+  
+  my $readme_markdown_content = <<"EOS";
+# SPVM::$class_name
+
+SPVM::$class_name is a SPVM module.
+
+EOS
+
+  SPVM::Builder::Util::spurt_binary($readme_markdown_file, $readme_markdown_content);
+}
+
 sub generate_dist {
   my ($self) = @_;
   
@@ -384,6 +402,9 @@ sub generate_dist {
 
   # Generate Changes file
   $self->generate_changes_file;
+
+  # Generate README.md file
+  $self->generate_readme_markdown_file;
   
   # Generate native config file
   if ($native) {
