@@ -49,10 +49,11 @@ spvmdist - Generating SPVM Distribution
 
 =head1 SYNOPSIS
 
-  Usage: spvmdist [OPTIONS] [CLASS_NAME]
+  usage: spvmdist [<options>] <class_name> [<dir>]
     
     spvmdist Foo
-    spvmdist Foo::Bar
+    spvmdist Foo My-Foo
+    spvmdist Foo::Bar::Baz
     spvmdist --native c Foo
     spvmdist --native c++ Foo
     spvmdist --precompile Foo
@@ -64,7 +65,7 @@ spvmdist - Generating SPVM Distribution
     -f, --force                    Force to generate files
     --output-dir                   Output directory
     --native LANGUAGE              Add native files and setting
-    --precompile                   Add precompile files and setting
+    --precompile                   Add precompile setting
 
 =head1 DESCRIPTION
 
