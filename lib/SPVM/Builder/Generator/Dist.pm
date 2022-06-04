@@ -336,6 +336,19 @@ EOS
   SPVM::Builder::Util::spurt_binary($manifest_skip_file, $manifest_skip_content);
 }
 
+sub generate_changes_file {
+  my ($self) = @_;
+  
+  # Create ,manifest_skipe file
+  my $manifest_skip_file = $self->create_path('Changes');
+  
+  my $manifest_skip_content = <<"EOS";
+0.01  YYYY-MM-DD
+EOS
+
+  SPVM::Builder::Util::spurt_binary($manifest_skip_file, $manifest_skip_content);
+}
+
 sub generate_dist {
   my ($self) = @_;
   
@@ -368,6 +381,9 @@ sub generate_dist {
 
   # Generate MANIFEST.SKIP file
   $self->generate_manifest_skip_file;
+
+  # Generate Changes file
+  $self->generate_changes_file;
   
   # Generate native config file
   if ($native) {
