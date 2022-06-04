@@ -283,6 +283,31 @@ EOS
   SPVM::Builder::Util::spurt_binary($native_module_file, $native_module_content);
 }
 
+sub generate_gitignore_file {
+  my ($self) = @_;
+  
+  # Create ,gitignoree file
+  my $gitignore_file = $self->create_path('.gitignore');
+  
+  my $gitignore_content = <<"EOS";
+Makefile
+Makefile.old
+MYMETA.yml
+MYMETA.json
+pm_to_blib
+.spvm_build
+t/.spvm_build
+core.*
+core
+blib/*
+SPVM-*
+*.bak
+*.tmp
+EOS
+
+  SPVM::Builder::Util::spurt_binary($gitignore_file, $gitignore_content);
+}
+
 sub generate_dist {
   my ($self) = @_;
   
@@ -305,10 +330,13 @@ sub generate_dist {
   }
   
   # Generate SPVM module file
-  $self->generate_spvm_module_file
+  $self->generate_spvm_module_file;
 
   # Generate Perl module file
-  $self->generate_perl_module_file
+  $self->generate_perl_module_file;
+
+  # Generate .gitignore file
+  $self->generate_gitignore_file;
   
   # Generate native config file
   if ($native) {
