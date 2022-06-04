@@ -29,16 +29,15 @@ else {
     die SPVM::Builder::Util::extract_usage;
   }
   
-  my $genlib= SPVM::Builder::Generator::Dist->new(
+  my $gendist= SPVM::Builder::Generator::Dist->new(
     class_name => $class_name,
     quiet => $quiet,
     force => $force,
     output_dir => $output_dir,
     native => $native,
-    script_file => $script_file,
-    native_lib_name => $native_lib_name,
+    precompile => $precompile,
   );
-  $genlib->generate_dist;
+  $gendist->generate_dist;
 }
 
 =encoding utf8
