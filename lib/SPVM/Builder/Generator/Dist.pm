@@ -249,25 +249,23 @@ sub generate_native_module_file {
   # Create native module file
   my $extern_c_start;
   my $extern_c_end;
-  if (defined $native) {
-    if ($native eq 'c++') {
-      $extern_c_start = qq(extern "C" {);
-      $extern_c_end = "}";
-    }
-    else {
-      $extern_c_start = '';
-      $extern_c_end = '';
-    }
-    
-    my $native_module_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, $native_module_ext);
-    
-    if ($native) {
-      mkpath dirname $native_module_file;
-      
-      my $native_class_name = $class_name;
-      $native_class_name =~ s/::/__/g;
-      
-      my $native_module_content = <<"EOS";
+  if ($native eq 'c++') {
+    $extern_c_start = qq(extern "C" {);
+    $extern_c_end = "}";
+  }
+  else {
+    $extern_c_start = '';
+    $extern_c_end = '';
+  }
+  
+  my $native_module_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, $native_module_ext);
+  
+  mkpath dirname $native_module_file;
+  
+  my $native_class_name = $class_name;
+  $native_class_name =~ s/::/__/g;
+  
+  my $native_module_content = <<"EOS";
 #include "spvm_native.h"
 
 $extern_c_start
@@ -281,10 +279,8 @@ return 0;
 
 $extern_c_end
 EOS
-      
-      SPVM::Builder::Util::spurt_binary($native_module_file, $native_module_content);
-    }
-  }
+  
+  SPVM::Builder::Util::spurt_binary($native_module_file, $native_module_content);
 }
 
 sub generate_dist {
