@@ -39,7 +39,7 @@ else {
     script_file => $script_file,
     native_lib_name => $native_lib_name,
   );
-  $genlib->generate_lib;
+  $genlib->generate_dist;
 }
 
 =encoding utf8

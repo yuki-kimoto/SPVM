@@ -67,6 +67,22 @@ sub precompile {
   }
 }
 
+sub create_path {
+  my ($self, $file_base_name) = @_;
+  
+  my $output_dir = $self->output_dir;
+  
+  my $path;
+  if (defined $output_dir) {
+    $path = "$output_dir/$file_base_name";
+  }
+  else {
+    $path = $file_base_name;
+  }
+  
+  return $path;
+}
+
 sub new {
   my $class = shift;
   
@@ -74,9 +90,11 @@ sub new {
   
   bless $self, $class;
   
-  unless (defined $self->output_dir) {
-    my $default_output_dir = 'lib';
-    $self->output_dir($default_output_dir);
+  if (defined $self->output_dir) {
+    # Remove tailing / or \
+    my $output_dir = $self->output_dir;
+    $output_dir =~ s|[/\\]$||;
+    $self->output_dir($output_dir);
   }
   
   unless (defined $self->class_name) {
@@ -87,11 +105,173 @@ sub new {
   if (defined $native && !($native eq 'c' || $native eq 'c++')) {
     confess "Can't support native \"$native\"";
   }
-  
+
   return $self;
 }
 
-sub generate_lib {
+sub generate_spvm_module_file {
+  my ($self) = @_;
+  
+  my $output_dir = $self->output_dir;
+
+  my $spvm_module_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
+
+  # Create SPVM module file
+  my $spvm_module_file = $self->create_path("lib/$spvm_module_file_base");
+  mkpath dirname $spvm_module_file;
+  
+  my $module_content = <<"EOS";
+class $class_name {
+
+}
+EOS
+  SPVM::Builder::Util::spurt_binary($spvm_module_file, $spvm_module_content);
+}
+
+sub generate_perl_module_file {
+  my ($self) = @_;
+  
+  my $output_dir = $self->output_dir;
+
+  my $perl_module_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
+
+  # Create SPVM module file
+  my $perl_module_file = $self->create_path("lib/$perl_module_file_base");
+  mkpath dirname $perl_module_file;
+  
+  my $module_content = <<"EOS";
+package SPVM::$class_name;
+
+our $VERSION = '0.01';
+
+1;
+
+=head1 NAME
+
+SPVM::$class_name - $class_name is a SPVM module
+
+=head1 SYNOPSYS
+
+  use $class_name;
+  
+=head1 DESCRIPTION
+
+$class_name is a SPVM module.
+
+=head1 STATIC METHODS
+
+
+
+=head1 INSTANCE METHODS
+
+
+
+=head1 REPOSITORY
+
+
+
+=head1 BUG REPORT
+
+
+
+=head1 SUPPORT
+
+
+
+=head1 AUTHOR
+
+
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright YYYY-YYYY AUTHOR_NAME, all rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+EOS
+  SPVM::Builder::Util::spurt_binary($perl_module_file, $spvm_module_content);
+}
+
+sub generate_native_config_file {
+  my ($self) = @_;
+
+  my $output_dir = $self->output_dir;
+
+  my $native_native_config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'native_config');
+
+  # Generate native native_config file
+  my $native_config_file = "$output_dir/$native_config_file_base";
+  mkpath dirname $native_config_file;
+  
+  my $new_method;
+  if ($native eq 'c') {
+    $new_method = 'new_gnu99';
+  }
+  elsif ($native eq 'c++') {
+    $new_method = 'new_cpp';
+  }
+  
+  my $add_source_files = '';
+  
+  my $native_config_content = <<"EOS";
+use strict;
+use warnings;
+use SPVM::Builder::Config;
+
+my \$native_config = SPVM::Builder::Config->$new_method;
+
+$add_source_files;
+
+\$native_config;
+EOS
+  SPVM::Builder::Util::spurt_binary($native_config_file, $native_config_content);
+}
+
+sub generate_native_module_file {
+
+  # Create native module file
+  my $extern_c_start;
+  my $extern_c_end;
+  if (defined $native) {
+    if ($native eq 'c++') {
+      $extern_c_start = qq(extern "C" {);
+      $extern_c_end = "}";
+    }
+    else {
+      $extern_c_start = '';
+      $extern_c_end = '';
+    }
+    
+    my $native_module_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, $native_module_ext);
+    
+    if ($native) {
+      mkpath dirname $native_module_file;
+      
+      my $native_class_name = $class_name;
+      $native_class_name =~ s/::/__/g;
+      
+      my $native_module_content = <<"EOS";
+#include "spvm_native.h"
+
+$extern_c_start
+
+int32_t SPVM__${native_class_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
+(void)env;
+(void)stack;
+
+return 0;
+}
+
+$extern_c_end
+EOS
+      
+      SPVM::Builder::Util::spurt_binary($native_module_file, $native_module_content);
+    }
+  }
+}
+
+sub generate_dist {
   my ($self) = @_;
   
   my $force = $self->force;
@@ -113,131 +293,28 @@ sub generate_lib {
     }
   }
   
-  # Create lib directory
-  unless (defined $self->output_dir) {
-    my $default_output_dir = 'lib/SPVM';
-    $self->output_dir($default_output_dir);
-  }
+  my $dist_dir_base_name = $class_name;
+  $dist_dir_base_name =~ s/::/-/g;
+  
+  # Generate output directory
   my $output_dir = $self->output_dir;
-  
-  my $spvm_print_hello_world;
-  my $spvm_print_hello_world_method;
-  if (defined $native) {
-    $spvm_print_hello_world = '&print_hello_world();';
-    $spvm_print_hello_world_method = 'native static method print_hello_world : void ();';
+  if ($force || !-f $spvm_module_file) {
+    mkpath $output_dir;
   }
   else {
-    $spvm_print_hello_world = 'print "Hello World!\n;"';
-    $spvm_print_hello_world_method = '';
+    confess "\"$output_dir\" already exists";
   }
   
-  # Create the module file
-  my $module_file = "$output_dir/$class_name_rel_file.spvm";
-  if ($force || !-f $module_file) {
-    mkpath dirname $module_file;
-    
-    my $module_content = <<"EOS";
-class $class_name {
-  static method main : int (\$start_file : string, \$args : string[]) {
-    
-    $spvm_print_hello_world
-    
-    return 0;
-  }
+  # Generate SPVM module file
+  $self->generate_spvm_module_file
+
+  # Generate Perl module file
+  $self->generate_perl_module_file
   
-  $spvm_print_hello_world_method
-}
-EOS
-    SPVM::Builder::Util::spurt_binary($module_file, $module_content);
-  }
-  else {
-    warn "Module file \"$module_file\" already exists";
-  }
-  
-  # Create the config file
-  my $config_file = "$output_dir/$class_name_rel_file.config";
-  if (defined $native ) {
-    if ($force || !-f $config_file) {
-      mkpath dirname $config_file;
-      
-      my $new_method;
-      if ($native eq 'c') {
-        $new_method = 'new_gnu99';
-      }
-      elsif ($native eq 'c++') {
-        $new_method = 'new_cpp';
-      }
-      
-      my $add_source_files = '';
-      
-      my $config_content = <<"EOS";
-use strict;
-use warnings;
-use SPVM::Builder::Config;
-
-my \$config = SPVM::Builder::Config->$new_method;
-
-$add_source_files;
-
-\$config;
-EOS
-      SPVM::Builder::Util::spurt_binary($config_file, $config_content);
-    }
-    else {
-      warn "Config file \"$config_file\" already exists";
-    }
-  }
-  
-  # Create the native module file
-  my $extern_c_start;
-  my $extern_c_end;
-  if (defined $native) {
-    if ($native eq 'c++') {
-      $extern_c_start = qq(extern "C" {);
-      $extern_c_end = "}";
-    }
-    else {
-      $extern_c_start = '';
-      $extern_c_end = '';
-    }
-    
-    my $include_native_header;
-    my $print_hello_world;
-    $include_native_header = '';
-    $print_hello_world = 'printf("Hello World!\n");';
-    
-    my $native_module_file = "$output_dir/$class_name_rel_file.$native_module_ext";
-    
-    if ($native) {
-      if ($force || !-f $native_module_file) {
-        mkpath dirname $native_module_file;
-        
-        my $native_class_name = $class_name;
-        $native_class_name =~ s/::/__/g;
-        
-        my $native_module_content = <<"EOS";
-#include "spvm_native.h"
-$include_native_header
-
-$extern_c_start
-
-int32_t SPVM__${native_class_name}__print_hello_world(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  
-  $print_hello_world
-  
-  return 0;
-}
-
-$extern_c_end
-EOS
-        
-        SPVM::Builder::Util::spurt_binary($native_module_file, $native_module_content);
-      }
-      else {
-        warn "Native module file \"$native_module_file\" already exists";
-      }
-    }
+  # Generate native config file
+  if ($native) {
+    $self->generate_native_config_file
+    $self->generate_native_module_file
   }
 }
 
