@@ -290,6 +290,7 @@ sub generate_gitignore_file {
   my $gitignore_file = $self->create_path('.gitignore');
   
   my $gitignore_content = <<"EOS";
+blib/*
 Makefile
 Makefile.old
 MYMETA.yml
@@ -299,13 +300,40 @@ pm_to_blib
 t/.spvm_build
 core.*
 core
-blib/*
 SPVM-*
 *.bak
+*.BAK
 *.tmp
 EOS
 
   SPVM::Builder::Util::spurt_binary($gitignore_file, $gitignore_content);
+}
+
+sub generate_manifest_skip_file {
+  my ($self) = @_;
+  
+  # Create ,manifest_skipe file
+  my $manifest_skip_file = $self->create_path('MANIFEST.SKIP');
+  
+  my $manifest_skip_content = <<"EOS";
+^blib/
+^Makefile$
+^Makefile\.old$
+^MYMETA.yml$
+^MYMETA.json$
+^pm_to_blib$
+^\.spvm_build$
+^t/\.spvm_build$
+^SPVM-
+^core\.
+^core#
+\.bak$
+\.tmp$
+\.BAK$
+^\.git/
+EOS
+
+  SPVM::Builder::Util::spurt_binary($manifest_skip_file, $manifest_skip_content);
 }
 
 sub generate_dist {
@@ -337,6 +365,9 @@ sub generate_dist {
 
   # Generate .gitignore file
   $self->generate_gitignore_file;
+
+  # Generate MANIFEST.SKIP file
+  $self->generate_manifest_skip_file;
   
   # Generate native config file
   if ($native) {
