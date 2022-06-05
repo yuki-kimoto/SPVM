@@ -380,6 +380,12 @@ sub generate_makefile_pl_file {
 
   # Create SPVM module file
   my $perl_module_file = $self->create_path("lib/$perl_module_file_base");
+  
+  # Native make rule
+  my $make_rule_native = $self->native ? "SPVM::Builder::Util::API::create_make_rule_native('$class_name')" : '';
+  
+  # Precompile make rule
+  my $make_rule_precompile = $self->precompile ? "SPVM::Builder::Util::API::create_make_rule_precompile('$class_name')" : '';
 
   my $readme_makefile_pl_content = <<"EOS";
 use 5.008_007;
@@ -419,9 +425,8 @@ sub MY::postamble {
 
   my $make_rule = '';
   
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('$class_name');
-
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('$class_name');
+  $make_rule_native;
+  $make_rule_precompile;
   
   return $make_rule;
 }
