@@ -83,6 +83,15 @@ sub create_path {
   return $path;
 }
 
+sub generate_file {
+  my ($rel_file, $content) = @_;
+  
+  # Create "t/basic.t" file
+  my $file = $self->create_path($rel_file);
+  mkpath dirname $file;
+  SPVM::Builder::Util::spurt_binary($file, $content);
+}
+
 sub new {
   my $class = shift;
   
@@ -117,34 +126,29 @@ sub new {
 sub generate_spvm_module_file {
   my ($self) = @_;
   
+  # Class name
   my $class_name = $self->class_name;
-
-  my $spvm_module_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
-
-  # Create SPVM module file
-  my $spvm_module_file = $self->create_path("lib/$spvm_module_file_base");
-  mkpath dirname $spvm_module_file;
   
-  my $module_content = <<"EOS";
+  my $spvm_module_content = <<"EOS";
 class $class_name {
 
 }
 EOS
-  SPVM::Builder::Util::spurt_binary($spvm_module_file, $spvm_module_content);
+  
+  # Generate file
+  my $spvm_module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
+  $spvm_module_rel_file = "lib/$spvm_module_rel_file";
+  $self->generate_file($spvm_module_rel_file, $spvm_module_content);
 }
 
 sub generate_perl_module_file {
   my ($self) = @_;
   
+  # Class name
   my $class_name = $self->class_name;
-
-  my $perl_module_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
-
-  # Create SPVM module file
-  my $perl_module_file = $self->create_path("lib/$perl_module_file_base");
-  mkpath dirname $perl_module_file;
   
-  my $module_content = <<"EOS";
+  # Content
+  my $perl_module_content = <<"EOS";
 package SPVM::$class_name;
 
 our $VERSION = '0.01';
@@ -195,20 +199,20 @@ This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 EOS
-  SPVM::Builder::Util::spurt_binary($perl_module_file, $spvm_module_content);
+
+  # Generate file
+  my $perl_module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
+  $perl_module_rel_file = "lib/$perl_module_rel_file";
+  $self->generate_file($perl_module_rel_file, $perl_module_content);
 }
 
 sub generate_native_config_file {
   my ($self) = @_;
-
-  my $class_name = $self->class_name;
-
-  my $native_native_config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'native_config');
-
-  # Generate native native_config file
-  my $native_config_file = $self->($native_config_file_base);
-  mkpath dirname $native_config_file;
   
+  # Class name
+  my $class_name = $self->class_name;
+  
+  # C or C++
   my $new_method;
   if ($native eq 'c') {
     $new_method = 'new_gnu99';
@@ -217,8 +221,7 @@ sub generate_native_config_file {
     $new_method = 'new_cpp';
   }
   
-  my $add_source_files = '';
-  
+  # Content
   my $native_config_content = <<"EOS";
 use strict;
 use warnings;
@@ -226,27 +229,19 @@ use SPVM::Builder::Config;
 
 my \$native_config = SPVM::Builder::Config->$new_method;
 
-$add_source_files;
-
 \$native_config;
 EOS
-  SPVM::Builder::Util::spurt_binary($native_config_file, $native_config_content);
+
+  # Generate file
+  my $native_config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
+  $native_config_rel_file = "lib/$native_config_rel_file";
+  $self->generate_file($native_config_rel_file, $native_config_content);
 }
 
 sub generate_native_module_file {
   my ($self) = @_;
   
-  my $native_module_ext;
-  if (defined $native) {
-    if ($native eq 'c') {
-      $native_module_ext = 'c';
-    }
-    elsif ($native eq 'c++') {
-      $native_module_ext = 'cpp';
-    }
-  }
-  
-  # Create native module file
+  # extern C for C++
   my $extern_c_start;
   my $extern_c_end;
   if ($native eq 'c++') {
@@ -258,13 +253,9 @@ sub generate_native_module_file {
     $extern_c_end = '';
   }
   
-  my $native_module_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, $native_module_ext);
-  
-  mkpath dirname $native_module_file;
-  
+  # Content
   my $native_class_name = $class_name;
   $native_class_name =~ s/::/__/g;
-  
   my $native_module_content = <<"EOS";
 #include "spvm_native.h"
 
@@ -280,14 +271,23 @@ return 0;
 $extern_c_end
 EOS
   
-  SPVM::Builder::Util::spurt_binary($native_module_file, $native_module_content);
+  # Generate file
+  my $native_module_ext;
+  if (defined $native) {
+    if ($native eq 'c') {
+      $native_module_ext = 'c';
+    }
+    elsif ($native eq 'c++') {
+      $native_module_ext = 'cpp';
+    }
+  }
+  my $native_module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, $native_module_ext);
+  $native_module_rel_file = "lib/$native_module_rel_file";
+  $self->generate_file($native_module_rel_file, $native_module_content);
 }
 
 sub generate_gitignore_file {
   my ($self) = @_;
-  
-  # Create ,gitignoree file
-  my $gitignore_file = $self->create_path('.gitignore');
   
   my $gitignore_content = <<"EOS";
 blib/*
@@ -305,16 +305,16 @@ SPVM-*
 *.BAK
 *.tmp
 EOS
-
-  SPVM::Builder::Util::spurt_binary($gitignore_file, $gitignore_content);
+  
+  # Generate file
+  my $gitignore_rel_file = '.gitignore';
+  $self->generate_file($gitignore_rel_file, $gitignore_content);
 }
 
 sub generate_manifest_skip_file {
   my ($self) = @_;
   
-  # Create ,manifest_skipe file
-  my $manifest_skip_file = $self->create_path('MANIFEST.SKIP');
-  
+  # Content
   my $manifest_skip_content = <<"EOS";
 ^blib/
 ^Makefile$
@@ -333,61 +333,58 @@ sub generate_manifest_skip_file {
 ^\.git/
 EOS
 
-  SPVM::Builder::Util::spurt_binary($manifest_skip_file, $manifest_skip_content);
+  # Generate file
+  my $manifest_skip_rel_file = 'MANIFEST.SKIP';
+  $self->generate_file($manifest_skip_rel_file, $manifest_skip_content);
 }
 
 sub generate_changes_file {
   my ($self) = @_;
   
-  # Create ,manifest_skipe file
-  my $manifest_skip_file = $self->create_path('Changes');
-  
-  my $manifest_skip_content = <<"EOS";
+  # Content
+  my $changes_content = <<"EOS";
 0.01  YYYY-MM-DD
 EOS
 
-  SPVM::Builder::Util::spurt_binary($manifest_skip_file, $manifest_skip_content);
+  # Generate file
+  my $changes_rel_file = 'Changes';
+  $self->generate_file($changes_rel_file, $changes_content);
 }
 
 
 sub generate_readme_markdown_file {
   my ($self) = @_;
-
-  my $class_name = $self->class_name;
-
-  # Create ,readme_markdowne file
-  my $readme_markdown_file = $self->create_path('README.md');
   
+  # Class name
+  my $class_name = $self->class_name;
+  
+  # Content
   my $readme_markdown_content = <<"EOS";
 # SPVM::$class_name
 
 SPVM::$class_name is a SPVM module.
 
 EOS
-
-  SPVM::Builder::Util::spurt_binary($readme_markdown_file, $readme_markdown_content);
+  
+  # Generate file
+  my $readme_markdown_rel_file = 'README.md';
+  $self->generate_file($readme_markdown_rel_file, $readme_markdown_content);
 }
 
 sub generate_makefile_pl_file {
   my ($self) = @_;
-
+  
+  # Class name
   my $class_name = $self->class_name;
 
-  # Create ,readme_makefile_ple file
-  my $readme_makefile_pl_file = $self->create_path('Makefile.PL');
-
-  my $perl_module_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
-
-  # Create SPVM module file
-  my $perl_module_file = $self->create_path("lib/$perl_module_file_base");
-  
   # Native make rule
   my $make_rule_native = $self->native ? "SPVM::Builder::Util::API::create_make_rule_native('$class_name')" : '';
   
   # Precompile make rule
   my $make_rule_precompile = $self->precompile ? "SPVM::Builder::Util::API::create_make_rule_precompile('$class_name')" : '';
-
-  my $readme_makefile_pl_content = <<"EOS";
+  
+  # "Makefile.PL" content
+  my $makefile_pl_content = <<"EOS";
 use 5.008_007;
 use ExtUtils::MakeMaker;
 use strict;
@@ -404,7 +401,7 @@ WriteMakefile(
     (ABSTRACT_FROM  => '$perl_module_file',
      AUTHOR         => 'USER_NAME<USER_MAIL>') : ()),
   test => {TESTS => 't/*.t'},
-  clean => {FILES => ['.spvm_build', 't/.spvm_build', 'SPVM-']},
+  clean => {FILES => ['.spvm_build', 't/.spvm_build', 'SPVM-*']},
   META_MERGE => {
     'meta-spec' => { version => 2 },
     resources => {
@@ -417,7 +414,7 @@ WriteMakefile(
   },
   # SPVM::Builder::Util::API is needed for Makefile.PL
   CONFIGURE_REQUIRES => {
-    'SPVM'              => '0',
+    'SPVM'              => '$SPVM::VERSION',
   },
 );
 
@@ -434,7 +431,31 @@ sub MY::postamble {
 1;
 EOS
 
-  SPVM::Builder::Util::spurt_binary($readme_makefile_pl_file, $readme_makefile_pl_content);
+  # Generate file
+  my $makefile_pl_rel_file = 'Makefile.PL';
+  $self->generate_file($makefile_pl_rel_file, $makefile_pl_content);
+}
+
+sub generate_basic_test {
+  my ($self) = @_;
+  
+  # Class name
+  my $class_name = $self->class_name;
+  
+  # Content
+  my $basic_test_content = <<"EOS";
+use strict;
+use warnings;
+use Test::More;
+
+use SPVM '$class_name';
+
+done_testing;
+EOS
+  
+  # Generate file
+  my $basic_test_rel_file = 't/basic.t';
+  $self->generate_file($basic_test_rel_file, $basic_test_content);
 }
 
 sub generate_dist {
@@ -487,3 +508,19 @@ sub generate_dist {
 }
 
 1;
+
+=head1 NAME
+
+SPVM::Builder::Generator::Dist - Generating SPVM Distrubution
+
+=head2 SYNOPSYS
+
+  my $dist = SPVM::Builder::Generator::Dist->new(
+    class_name => 'Math',
+  );
+  
+  $dist->generate_dist;
+
+=head2 DESCRIPTION
+
+C<SPVM::Builder::Generator::Dist> generates a SPVM Distrubution.
