@@ -84,7 +84,7 @@ sub create_path {
 }
 
 sub generate_file {
-  my ($rel_file, $content) = @_;
+  my ($self, $rel_file, $content) = @_;
   
   # Create "t/basic.t" file
   my $file = $self->create_path($rel_file);
@@ -98,7 +98,9 @@ sub new {
   my $self = {@_};
   
   bless $self, $class;
-  
+
+  # Class name
+  my $class_name = $self->class_name;
   unless (defined $self->class_name) {
     confess "Class name must be specified";
   }
@@ -151,7 +153,7 @@ sub generate_perl_module_file {
   my $perl_module_content = <<"EOS";
 package SPVM::$class_name;
 
-our $VERSION = '0.01';
+our \$VERSION = '0.01';
 
 1;
 
@@ -213,6 +215,7 @@ sub generate_native_config_file {
   my $class_name = $self->class_name;
   
   # C or C++
+  my $native = $self->native;
   my $new_method;
   if ($native eq 'c') {
     $new_method = 'new_gnu99';
@@ -240,8 +243,12 @@ EOS
 
 sub generate_native_module_file {
   my ($self) = @_;
+
+  # Class name
+  my $class_name = $self->class_name;
   
   # extern C for C++
+  my $native = $self->native;
   my $extern_c_start;
   my $extern_c_end;
   if ($native eq 'c++') {
@@ -382,6 +389,9 @@ sub generate_makefile_pl_file {
   
   # Precompile make rule
   my $make_rule_precompile = $self->precompile ? "SPVM::Builder::Util::API::create_make_rule_precompile('$class_name')" : '';
+
+  my $perl_module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
+  $perl_module_rel_file = "lib/$perl_module_rel_file";
   
   # "Makefile.PL" content
   my $makefile_pl_content = <<"EOS";
@@ -394,11 +404,11 @@ use SPVM::Builder::Util::API;
 
 WriteMakefile(
   NAME              => '$class_name',
-  VERSION_FROM      => '$perl_module_file',
+  VERSION_FROM      => '$perl_module_rel_file',
   PREREQ_PM         => {}, # e.g., Module::Name => 1.1
   LICENSE           => 'perl_5',
-  ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-    (ABSTRACT_FROM  => '$perl_module_file',
+  (\$] >= 5.005 ?     ## Add these new keywords supported since 5.005
+    (ABSTRACT_FROM  => '$perl_module_rel_file',
      AUTHOR         => 'USER_NAME<USER_MAIL>') : ()),
   test => {TESTS => 't/*.t'},
   clean => {FILES => ['.spvm_build', 't/.spvm_build', 'SPVM-*']},
@@ -420,12 +430,12 @@ WriteMakefile(
 
 sub MY::postamble {
 
-  my $make_rule = '';
+  my \$make_rule = '';
   
   $make_rule_native;
   $make_rule_precompile;
   
-  return $make_rule;
+  return \$make_rule;
 }
 
 1;
@@ -472,7 +482,7 @@ sub generate_dist {
   
   # Generate output directory
   my $output_dir = $self->output_dir;
-  if ($force || !-f $spvm_module_file) {
+  if ($force || !-e $output_dir) {
     mkpath $output_dir;
   }
   else {
@@ -500,10 +510,12 @@ sub generate_dist {
   # Generate Makefile.PL file
   $self->generate_makefile_pl_file;
   
-  # Generate native config file
   if ($native) {
-    $self->generate_native_config_file
-    $self->generate_native_module_file
+    # Generate native config file
+    $self->generate_native_config_file;
+
+    # Generate native module file
+    $self->generate_native_module_file;
   }
 }
 
