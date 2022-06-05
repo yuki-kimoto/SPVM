@@ -349,6 +349,7 @@ EOS
   SPVM::Builder::Util::spurt_binary($manifest_skip_file, $manifest_skip_content);
 }
 
+
 sub generate_readme_markdown_file {
   my ($self) = @_;
 
@@ -365,6 +366,70 @@ SPVM::$class_name is a SPVM module.
 EOS
 
   SPVM::Builder::Util::spurt_binary($readme_markdown_file, $readme_markdown_content);
+}
+
+sub generate_makefile_pl_file {
+  my ($self) = @_;
+
+  my $class_name = $self->class_name;
+
+  # Create ,readme_makefile_ple file
+  my $readme_makefile_pl_file = $self->create_path('Makefile.PL');
+
+  my $perl_module_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
+
+  # Create SPVM module file
+  my $perl_module_file = $self->create_path("lib/$perl_module_file_base");
+
+  my $readme_makefile_pl_content = <<"EOS";
+use 5.008_007;
+use ExtUtils::MakeMaker;
+use strict;
+use warnings;
+use Config;
+use SPVM::Builder::Util::API;
+
+WriteMakefile(
+  NAME              => '$class_name',
+  VERSION_FROM      => '$perl_module_file',
+  PREREQ_PM         => {}, # e.g., Module::Name => 1.1
+  LICENSE           => 'perl_5',
+  ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
+    (ABSTRACT_FROM  => '$perl_module_file',
+     AUTHOR         => 'USER_NAME<USER_MAIL>') : ()),
+  test => {TESTS => 't/*.t'},
+  clean => {FILES => ['.spvm_build', 't/.spvm_build', 'SPVM-']},
+  META_MERGE => {
+    'meta-spec' => { version => 2 },
+    resources => {
+      repository => {
+        type => 'git',
+        url  => '',
+        web  => '',
+      },
+    },
+  },
+  # SPVM::Builder::Util::API is needed for Makefile.PL
+  CONFIGURE_REQUIRES => {
+    'SPVM'              => '0',
+  },
+);
+
+sub MY::postamble {
+
+  my $make_rule = '';
+  
+  $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('$class_name');
+
+  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('$class_name');
+  
+  return $make_rule;
+}
+
+1;
+EOS
+
+  SPVM::Builder::Util::spurt_binary($readme_makefile_pl_file, $readme_makefile_pl_content);
 }
 
 sub generate_dist {
@@ -405,6 +470,9 @@ sub generate_dist {
 
   # Generate README.md file
   $self->generate_readme_markdown_file;
+
+  # Generate Makefile.PL file
+  $self->generate_makefile_pl_file;
   
   # Generate native config file
   if ($native) {
