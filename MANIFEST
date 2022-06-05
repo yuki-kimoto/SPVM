@@ -734,7 +734,7 @@ t/sort_method_name_native.pl
 t/sort_method_name_pod.pl
 t/sort_method_name_spvm.pl
 t/SPVM_Build_Util.t
-t/spvmdist/basic.t
+t/spvmdist/module.t
 t/test_files/file_eof.txt
 t/test_files/fread.txt
 t/test_files/fread_eof.txt
