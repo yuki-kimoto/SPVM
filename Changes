@@ -2,9 +2,14 @@ Revision history for SPVM
 0.9602_01  2022-06-06
         [CHANGE]
         * Add --no-pm-file option to spvmdist command
+        * Add Fn->is_hex_digit.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Rename SPVM::Builder::Generator::Dist to SPVM::Dist.
+        * Remove Fn->replace.
+        * Remove Fn->match.
+        * Regex module becomes CPAN module because Regex is too complex to manage by a SPVM little team.
+          And We plan to bind RE2 library to implement Regex module in the future release.
 0.9601_01  2022-06-06
         [CHANGE]
         * Improve compilation error messages.

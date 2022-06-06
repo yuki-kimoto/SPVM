@@ -689,7 +689,7 @@ Check equality of two objects. You must sepecify a L<EqualityChecker|SPVM::Equal
 
 $objs1 and $objs2 and $equality_checker must be defined, otherwise an exception occurs.
 
-Return 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return 0.
+Return 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return C<0>.
 
 =head2 equals_array_short
 
@@ -736,85 +736,91 @@ If the max string length of the argument is greater than the lenght of the strin
 
   static method is_alnum : int ($code_point : int)
 
-If character is alphanumeric('A'-'Z', 'a'-'z', '0'-'9'), return 1. If not, return 0.
+If character is alphanumeric('A'-'Z', 'a'-'z', '0'-'9'), return C<1>. Otherwise return C<0>.
 
 =head2 is_alpha
 
   static method is_alpha : int ($code_point : int)
 
-If character is alphabetic('A'-'Z', 'a'-'z'), return 1. If not, return 0.
+If character is alphabetic('A'-'Z', 'a'-'z'), return C<1>. Otherwise return C<0>.
 
 =head2 is_blank
 
   static method is_blank : int ($code_point : int)
 
-If character is blank(' ', '\t'), return 1. If not, return 0.
+If character is blank(' ', '\t'), return C<1>. Otherwise return C<0>.
 
 =head2 is_cntrl
 
   static method is_cntrl : int ($code_point : int)
 
-If character is a control character(0x00-0x1F, 0x7F), return 1. If not, return 0.
+If character is a control character(0x00-0x1F, 0x7F), return C<1>. Otherwise return C<0>.
 
 =head2 is_digit
 
   static method is_digit : int ($code_point : int)
 
-If character is decimal digit ('0'-'9'), return 1. If not, return 0.
+If character is decimal digit C<0-9>, return C<1>. Otherwise return C<0>.
 
 =head2 is_graph
 
   static method is_graph : int ($code_point : int)
 
-If character has graphical representation(0x21-0x7E), return 1. If not, return 0.
+If character has graphical representation(C<0x21-0x7E>), return C<1>. Otherwise return C<0>.
+
+=head2 is_hex_digit
+
+  static method is_hex_digit : int ($code_point : int)
+
+If the character is hexadecimal digit C<0-9a-fA-F>, return C<1>. Otherwise return C<0>.
 
 =head2 is_lower
 
   static method is_lower : int ($code_point : int)
 
-If character is lowercase letter('a'-'z'), return 1. If not, return 0.
+If character is lowercase letter('a'-'z'), return C<1>. Otherwise return C<0>.
 
 =head2 is_perl_space
 
   static method is_perl_space : int ($code_point : int)
 
-If character is Perl space character(' ', '\r', '\n', '\t', '\f'), return 1. If not, return 0.
+If character is Perl space character(' ', '\r', '\n', '\t', '\f'), return C<1>. Otherwise return C<0>.
 
 =head2 is_perl_word
 
   static method is_perl_word : int ($code_point : int)
 
-If character is Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return 1. If not, return 0.
+If character is Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return C<1>. Otherwise return C<0>.
 
 =head2 is_print
 
   static method is_print : int ($code_point : int)
 
-If character is printable(0x20-0x7E), return 1. If not, return 0.
+If character is printable(0x20-0x7E), return C<1>. Otherwise return C<0>.
 
 =head2 is_punct
 
   static method is_punct : int ($code_point : int)
 
-If character is a punctuation character(0x21-0x2f, 0x3a-0x40, 0x5b-0x60, 0x7b-0x7e), return 1. If not, return 0.
+If character is a punctuation character(0x21-0x2f, 0x3a-0x40, 0x5b-0x60, 0x7b-0x7e), return C<1>. Otherwise return C<0>.
 
 =head2 is_space
 
   static method is_space : int ($code_point : int)
 
-If character is a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return 1. If not, return 0.
+If character is a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return C<1>. Otherwise return C<0>.
 
 =head2 is_upper
 
   static method is_upper : int ($code_point : int)
 
-If character is uppercase letter('A'-'Z'), return 1. If not, return 0.
+If character is uppercase letter('A'-'Z'), return C<1>. Otherwise return C<0>.
 
 =head2 is_xdigit
 
   static method is_xdigit : int ($code_point : int)
 
-If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return 1. If not, return 0.
+If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return C<1>. Otherwise return C<0>.
 
 =head2 is_mulnum_array
 

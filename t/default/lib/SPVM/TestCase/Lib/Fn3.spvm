@@ -594,6 +594,45 @@ class TestCase::Lib::Fn3 {
     return 1;
   }
 
+  static method is_hex_digit : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= '0' && $char <= '9') {
+        my $ret = Fn->is_hex_digit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      elsif ($char >= 'a' && $char <= 'f') {
+        my $ret = Fn->is_hex_digit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      elsif ($char >= 'A' && $char <= 'F') {
+        my $ret = Fn->is_hex_digit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = Fn->is_hex_digit($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
   static method is_graph : int () {
 
     my $ok = 1;

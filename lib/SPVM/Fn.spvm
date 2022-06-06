@@ -1063,6 +1063,16 @@ class Fn : precompile {
     }
   }
 
+  static method is_hex_digit : int ($code_point : int) {
+
+    if (($code_point >= '0' && $code_point <= '9') || ($code_point >= 'a' && $code_point <= 'f') || ($code_point >= 'A' && $code_point <= 'F')) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
   static method is_lower : int ($code_point : int) {
 
     if ($code_point >= 'a' && $code_point <= 'z') {
