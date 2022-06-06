@@ -1,4 +1,4 @@
-#!perl
+#!/home/kimoto/perl5/perlbrew/perls/perl-5.32.1/bin/perl
 
 use strict;
 use warnings;
@@ -24,7 +24,7 @@ elsif ($show_version) {
   print "$version_string\n";
 }
 else {
-  my ($class_name, $output_dir) = @_;
+  my ($class_name, $output_dir) = @ARGV;
   unless (defined $class_name) {
     die SPVM::Builder::Util::extract_usage;
   }
