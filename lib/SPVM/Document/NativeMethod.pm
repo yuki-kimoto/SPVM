@@ -620,13 +620,13 @@ Native API can be called from "SPVM_ENV* env" passed as an argument. Note that y
 
 Utilities.
 
-=head2 spvmgenlib
+=head2 spvmdist
 
-If you want to create SPVM module that have the native module, L<spvmgenlib> is useful.
+If you want to create SPVM module that have the native module, L<spvmdist> is useful.
 
 =over 2
 
-=item * L<spvmgenlib>
+=item * L<spvmdist>
 
 =back
 

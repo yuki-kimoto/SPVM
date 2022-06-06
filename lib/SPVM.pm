@@ -451,13 +451,13 @@ C<spvmcc> is the compiler and linker to create the executable file from SPVM sou
 
 =back
 
-=head2 Creating SPVM Modules
+=head2 Creating SPVM Distribution
 
-C<spvmgenlib> is the command to create SPVM native modules.
+C<spvmdist> is the command to create SPVM distribution.
 
 =over 2
 
-=item * L<spvmgenlib>
+=item * L<spvmdist>
 
 =back
 

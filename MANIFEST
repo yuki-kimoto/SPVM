@@ -57,7 +57,6 @@ lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
 lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/Generator/Dist.pm
-lib/SPVM/Builder/Generator/Lib.pm
 lib/SPVM/Builder/include/spvm_allocator.h
 lib/SPVM/Builder/include/spvm_allow.h
 lib/SPVM/Builder/include/spvm_api.h
@@ -269,7 +268,6 @@ ppport.h
 README.md
 script/spvmcc
 script/spvmdist
-script/spvmgenlib
 solo/myexe.c
 solo/solo_Makefile.PL
 solo/SPVM/MyExe.spvm
@@ -310,7 +308,6 @@ solo/SPVM/TestCase/Simple.spvm
 solo/SPVM/TestCase/Weaken.spvm
 solo/SPVM/TestCase/Weaken2.spvm
 SPVM.xs
-spvmdist.sh
 t/builder_config.t
 t/builder_config/libpng.def
 t/builder_config/zlib.def
@@ -726,7 +723,6 @@ t/exe/myexe.no_precompile_no_compiler_api.config
 t/exe/myexe.pl
 t/exe/SPVM_Builder_Exe.t
 t/exe/spvmcc.t
-t/exe/spvmgenlib.t
 t/get_native_api_indexes.pl
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
