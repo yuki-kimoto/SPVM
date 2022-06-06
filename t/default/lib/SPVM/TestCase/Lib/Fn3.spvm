@@ -1,5 +1,4 @@
 class TestCase::Lib::Fn3 {
-  use Unicode as Un;
   use TestCase::Minimal;
   use Fn;
   use TestCase::Minimal;

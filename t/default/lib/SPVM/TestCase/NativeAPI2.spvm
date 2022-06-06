@@ -2,7 +2,6 @@ class TestCase::NativeAPI2 {
 
   use Hash;
   use StringList;
-  use Unicode;
 
   has first : rw TestCase::NativeAPI2;
   has last : rw TestCase::NativeAPI2;
@@ -37,8 +36,6 @@ class TestCase::NativeAPI2 {
     return 0;
   }
 
-  native static method use_resource : int ();
-  
   native static method mul : int ($num1 : int, $num2 : int);
 
   native static method src_foo : int ();

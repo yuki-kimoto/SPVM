@@ -1,6 +1,5 @@
 class TestCase::Lib::Fn1 {
   use Fn;
-  use Unicode as Un;
   use TestCase::Minimal;
 
   static method sprintf_d : int () {

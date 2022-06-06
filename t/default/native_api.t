@@ -36,11 +36,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok($is_object_file_infos);
 }
 
-# Use resource
-{
-  ok(SPVM::TestCase::NativeAPI2->use_resource);
-}
-
 # new_object_by_name
 {
   ok(SPVM::TestCase::NativeAPI->new_object_by_name);
