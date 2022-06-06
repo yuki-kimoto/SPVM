@@ -44,7 +44,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'Foo'"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'SPVM::Foo'"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'lib/SPVM/Foo.pm'"));
   
   my $readme_markdown_file = "$tmp_dir/SPVM-Foo/README.md";
@@ -97,7 +97,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'Foo'"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'SPVM::Foo'"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'lib/SPVM/Foo.pm'"));
   
   my $readme_markdown_file = "$tmp_dir/SPVM-Foo/README.md";

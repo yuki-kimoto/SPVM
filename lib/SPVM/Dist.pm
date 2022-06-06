@@ -500,7 +500,7 @@ use Config;
 use SPVM::Builder::Util::API;
 
 WriteMakefile(
-  NAME              => '$class_name',
+  NAME              => 'SPVM::$class_name',
   VERSION_FROM      => '$perl_module_rel_file',
   PREREQ_PM         => {}, # e.g., Module::Name => 1.1
   LICENSE           => 'perl_5',
