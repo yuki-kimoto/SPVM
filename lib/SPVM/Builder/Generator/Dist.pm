@@ -324,19 +324,19 @@ sub generate_manifest_skip_file {
   # Content
   my $manifest_skip_content = <<"EOS";
 ^blib/
-^Makefile$
-^Makefile\.old$
-^MYMETA.yml$
-^MYMETA.json$
-^pm_to_blib$
-^\.spvm_build$
-^t/\.spvm_build$
+^Makefile\$
+^Makefile\.old\$
+^MYMETA.yml\$
+^MYMETA.json\$
+^pm_to_blib\$
+^\.spvm_build\$
+^t/\.spvm_build\$
 ^SPVM-
 ^core\.
-^core#
-\.bak$
-\.tmp$
-\.BAK$
+^core\$
+\.bak\$
+\.tmp\$
+\.BAK\$
 ^\.git/
 EOS
 
@@ -351,6 +351,9 @@ sub generate_changes_file {
   # Content
   my $changes_content = <<"EOS";
 0.01  YYYY-MM-DD
+
+  -
+  
 EOS
 
   # Generate file
@@ -385,10 +388,10 @@ sub generate_makefile_pl_file {
   my $class_name = $self->class_name;
 
   # Native make rule
-  my $make_rule_native = $self->native ? "SPVM::Builder::Util::API::create_make_rule_native('$class_name')" : '';
+  my $make_rule_native = $self->native ? "SPVM::Builder::Util::API::create_make_rule_native('$class_name');" : '';
   
   # Precompile make rule
-  my $make_rule_precompile = $self->precompile ? "SPVM::Builder::Util::API::create_make_rule_precompile('$class_name')" : '';
+  my $make_rule_precompile = $self->precompile ? "SPVM::Builder::Util::API::create_make_rule_precompile('$class_name');" : '';
 
   my $perl_module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
   $perl_module_rel_file = "lib/$perl_module_rel_file";
@@ -432,8 +435,8 @@ sub MY::postamble {
 
   my \$make_rule = '';
   
-  $make_rule_native;
-  $make_rule_precompile;
+  $make_rule_native
+  $make_rule_precompile
   
   return \$make_rule;
 }
@@ -446,7 +449,7 @@ EOS
   $self->generate_file($makefile_pl_rel_file, $makefile_pl_content);
 }
 
-sub generate_basic_test {
+sub generate_basic_test_file {
   my ($self) = @_;
   
   # Class name
@@ -509,6 +512,9 @@ sub generate_dist {
 
   # Generate Makefile.PL file
   $self->generate_makefile_pl_file;
+
+  # Generate t/basic.t file
+  $self->generate_basic_test_file;
   
   if ($native) {
     # Generate native config file
