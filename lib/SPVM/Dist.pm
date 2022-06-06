@@ -337,10 +337,10 @@ sub generate_native_module_file {
 $extern_c_start
 
 int32_t SPVM__${native_class_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
-(void)env;
-(void)stack;
-
-return 0;
+  (void)env;
+  (void)stack;
+  
+  return 0;
 }
 
 $extern_c_end
