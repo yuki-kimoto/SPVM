@@ -11,6 +11,7 @@ use List::Util 'min';
 use File::Basename 'dirname';
 use File::Spec;
 use SPVM::Builder::Config;
+use Encode 'decode';
 
 # SPVM::Builder::Util is used from Makefile.PL
 # so this module must be wrote as pure perl script, not contain XS functions.
@@ -116,6 +117,29 @@ sub slurp_binary {
   my $content = do { local $/; <$fh> };
   
   return $content;
+}
+
+sub slurp_utf8 {
+  my ($file) = @_;
+  
+  my $content = &slurp_binary($file);
+  
+  $content = decode('UTF-8', $content);
+  
+  return $content;
+}
+
+sub file_contains {
+  my ($file, $string) = @_;
+  
+  my $content = &slurp_utf8($file);
+  
+  my $contains;
+  if (index($content, $string) >= 0) {
+    $contains = 1;
+  }
+  
+  return $contains;
 }
 
 sub spurt_binary {
