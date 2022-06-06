@@ -314,4 +314,62 @@ use lib "$FindBin::Bin/exe/lib";
   chdir($save_cur_dir) or die;
 }
 
+# --force
+{
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  my $spvm_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  
+  SPVM::Builder::Util::spurt_binary($spvm_module_file, 'AAAAA');
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "AAAA"));
+
+  my $spvmdist_cmd_fource = qq($^X -I$blib $spvmdist_path --force Foo);
+  system($spvmdist_cmd_fource) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+
+  ok(-f $spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  
+  chdir($save_cur_dir) or die;
+}
+
+# -f
+{
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  my $spvm_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  
+  SPVM::Builder::Util::spurt_binary($spvm_module_file, 'AAAAA');
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "AAAA"));
+
+  my $spvmdist_cmd_fource = qq($^X -I$blib $spvmdist_path -f Foo);
+  system($spvmdist_cmd_fource) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+
+  ok(-f $spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  
+  chdir($save_cur_dir) or die;
+}
+
 done_testing;
