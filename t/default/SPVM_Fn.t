@@ -484,16 +484,6 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn1->repeat);
 }
 
-# match
-{
-  ok(SPVM::TestCase::Lib::Fn1->match);
-}
-
-# replace
-{
-  ok(SPVM::TestCase::Lib::Fn1->replace);
-}
-
 # is_hex_digit
 {
   ok(SPVM::TestCase::Lib::Fn3->is_hex_digit);

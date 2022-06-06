@@ -15,7 +15,6 @@ class Fn : precompile {
   use StringBuffer;
   use StringList;
   use Unicode;
-  use Regex;
   
   native static method DBL_MAX : double ();
   native static method DBL_MIN : double ();
@@ -1247,31 +1246,6 @@ class Fn : precompile {
     return (string)$new_string;
   }
 
-  static method match : Regex ($string : string, $regex_string : string, $regex_options_opt : string[]...) {
-    
-    my $regex_options = (string)undef;
-    if (@$regex_options_opt > 0) {
-      $regex_options = $regex_options_opt->[0];
-    }
-    
-    my $regex = (Regex)undef;
-    if ($regex_options) {
-      $regex = Regex->new_with_options($regex_string, $regex_options);
-    }
-    else {
-      $regex = Regex->new($regex_string);
-    }
-        
-    my $match = $regex->match($string, 0);
-    
-    if ($match) {
-      return $regex;
-    }
-    else {
-      return undef;
-    }
-  }
-  
   native static method memcpy : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
   native static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
   native static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
@@ -1352,58 +1326,6 @@ class Fn : precompile {
     return $repeat_string;
   }
 
-  static method replace : string ($string : string, $regex_string : string, $replace_string_or_replacer : object, $regex_options_opt : string[]...) {
-
-    my $regex_options = (string)undef;
-    if (@$regex_options_opt > 0) {
-      $regex_options = $regex_options_opt->[0];
-    }
-    
-    my $regex = (Regex)undef;
-    my $replace_all = 0;
-    if ($regex_options) {
-      $regex = Regex->new_with_options($regex_string, $regex_options);
-      if (Fn->index($regex_options, "g", 0) > -1) {
-        $replace_all = 1;
-      }
-    }
-    else {
-      $regex = Regex->new($regex_string);
-    }
-    
-    my $replace_string = (string)undef;
-    my $replacer = (Regex::Replacer)undef;
-    if ($replace_string_or_replacer isa string) {
-      $replace_string = (string)$replace_string_or_replacer;
-    }
-    elsif ($replace_string_or_replacer isa Regex::Replacer) {
-      $replacer = (Regex::Replacer)$replace_string_or_replacer;
-    }
-    else {
-      die "The sencond argument must be a object that type is the string type or Regex::Replacer";
-    }
-    
-    my $result = (string)undef;
-    if ($replace_all) {
-      if ($replace_string) {
-        $result = $regex->replace_all($string, 0, $replace_string);
-      }
-      else {
-        $result = $regex->replace_all_cb($string, 0, $replacer);
-      }
-    }
-    else {
-      if ($replace_string) {
-        $result = $regex->replace($string, 0, $replace_string);
-      }
-      else {
-        $result = $regex->replace_cb($string, 0, $replacer);
-      }
-    }
-    
-    return $result;
-  }
-  
   static method rindex : int ($string : string, $sub_string : string, $start_pos : int) {
     return &rindex_len($string, $sub_string, $start_pos, length $string);
   }
