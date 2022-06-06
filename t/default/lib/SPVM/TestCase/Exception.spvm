@@ -197,14 +197,14 @@ class TestCase::Exception {
     {
       eval { die "Error"; };
       my $error = $@;
-      unless (Fn->match($error, "^Error\n")) {
+      unless (Fn->index($error, "Error\n", 0) == 0) {
         return 0;
       }
     }
     {
       eval { die; };
       my $error = $@;
-      unless (Fn->match($error, "^Died\n")) {
+      unless (Fn->index($error, "Died\n", 0) == 0) {
         return 0;
       }
     }
