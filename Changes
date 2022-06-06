@@ -1,5 +1,8 @@
 Revision history for SPVM
 0.9602_01  2022-06-06
+        [CHANGE]
+        * Add --no-pm-file option to spvmdist command
+        
         [NON BACKWORD COMPATIBLE CHANGES]
         * Rename SPVM::Builder::Generator::Dist to SPVM::Dist.
 0.9601_01  2022-06-06

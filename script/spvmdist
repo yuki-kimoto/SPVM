@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use SPVM();
-use SPVM::Builder::Generator::Dist;
+use SPVM::Dist;
 use SPVM::Builder::Util;
 
 SPVM::Builder::Util::getopt
@@ -15,6 +15,7 @@ SPVM::Builder::Util::getopt
   'native=s' => \my $native,
   'precompile' => \my $precompile,
   'only-lib-files' => \my $only_lib_files,
+  'no-pm-file' => \my $no_pm_file,
 ;
 
 if ($help) {
@@ -30,14 +31,15 @@ else {
     die SPVM::Builder::Util::extract_usage;
   }
   
-  my $gendist= SPVM::Builder::Generator::Dist->new(
+  my $gendist= SPVM::Dist->new(
     class_name => $class_name,
     quiet => $quiet,
     force => $force,
     output_dir => $output_dir,
     native => $native,
     precompile => $precompile,
-    'only_lib_files' => $only_lib_files,
+    only_lib_files => $only_lib_files,
+    no_pm_file => $no_pm_file,
   );
   $gendist->generate_dist;
 }
@@ -68,6 +70,7 @@ spvmdist - Generating SPVM Distribution
     --native LANGUAGE              Add native files and setting
     --precompile                   Add precompile setting
     --only-lib-files               Output only the files in "lib" directory
+    --no-pm-file                   Don't output Perl module(.pm) file
 
 =head1 DESCRIPTION
 

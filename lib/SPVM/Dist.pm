@@ -78,6 +78,17 @@ sub only_lib_files {
   }
 }
 
+sub no_pm_file {
+  my $self = shift;
+  if (@_) {
+    $self->{no_pm_file} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{no_pm_file};
+  }
+}
+
 sub lib_dir {
   my $self = shift;
   if (@_) {
@@ -535,8 +546,11 @@ sub generate_dist {
   $self->generate_spvm_module_file;
 
   # Generate Perl module file
-  $self->generate_perl_module_file;
-
+  my $no_pm_file = $self->no_pm_file;
+  unless ($no_pm_file) {
+    $self->generate_perl_module_file;
+  }
+  
   if ($native) {
     # Generate native config file
     $self->generate_native_config_file;
