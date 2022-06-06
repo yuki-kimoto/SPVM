@@ -37,7 +37,7 @@ else {
     output_dir => $output_dir,
     native => $native,
     precompile => $precompile,
-    'only-lib-files' => \my $only_lib_files,
+    'only_lib_files' => $only_lib_files,
   );
   $gendist->generate_dist;
 }

@@ -194,4 +194,49 @@ use lib "$FindBin::Bin/exe/lib";
   chdir($save_cur_dir) or die;
 }
 
+# only-lib-files
+{
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path --only-lib-files --native c Foo mylib);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+
+  my $perl_module_file = "$tmp_dir/mylib/SPVM/Foo.pm";
+  ok(-f $perl_module_file);
+  
+  my $spvm_module_file = "$tmp_dir/mylib/SPVM/Foo.spvm";
+  ok(-f $spvm_module_file);
+  
+  my $native_config_file = "$tmp_dir/mylib/SPVM/Foo.config";
+  ok(-f $native_config_file);
+  
+  my $native_module_file = "$tmp_dir/mylib/SPVM/Foo.c";
+  ok(-f $native_module_file);
+
+  my $makefile_pl_file = "$tmp_dir/Foo/Makefile.PL";
+  ok(!-f $makefile_pl_file);
+  
+  my $readme_markdown_file = "$tmp_dir/Foo/README.md";
+  ok(!-f $readme_markdown_file);
+  
+  my $changes_file = "$tmp_dir/Foo/Changes";
+  ok(!-f $changes_file);
+  
+  my $gitignore_file = "$tmp_dir/Foo/.gitignore";
+  ok(!-f $gitignore_file);
+  
+  my $manifest_skip_file = "$tmp_dir/Foo/MANIFEST.SKIP";
+  ok(!-f $manifest_skip_file);
+  
+  my $basic_test_file = "$tmp_dir/Foo/t/basic.t";
+  ok(!-f $basic_test_file);
+
+  chdir($save_cur_dir) or die;
+}
+
 done_testing;
