@@ -647,6 +647,18 @@ For readability spaces and line breaks are inserted.
 
 If byte array is undef, return undef.
 
+=head2 get_next_code_point
+
+  static method get_next_code_point : int ($str : string, $offset_ref : int*)
+
+Get a Unicode codepoint from UTF-8 string with the reference of the offset of the string.
+
+The offset is updated to the position of the next UTF-8 character.
+
+If the offset is over the length of the string, return a negative value.
+
+If an invalid code point is got, return a negative value.
+
 =head2 equals_array_byte
 
   static method equals_array_byte : int ($nums1 : byte[], $nums2 : byte[])
@@ -879,6 +891,12 @@ Convert uppercase string to lowercase string.
   static method lcfirst : string ($string : string)
 
 Convert first chracter of string from uppercase to lowercase.
+
+=head2 look_next_code_point
+
+  static method look_next_code_point : int ($string : string, $offset_ref : int*)
+
+Same as L</"get_next_code_point">, but the offset is not updated.
 
 =head2 memcpy
 

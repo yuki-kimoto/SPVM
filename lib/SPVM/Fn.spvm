@@ -713,6 +713,8 @@ class Fn : precompile {
     return $dump;
   }
 
+  native static method get_next_code_point : int ($str : string, $offset_ref : int*);
+  
   static method equals_array_byte : int ($nums1 : byte[], $nums2 : byte[]) {
     
     if ($nums1 == undef && $nums2 == undef) {
@@ -1254,6 +1256,13 @@ class Fn : precompile {
     return (string)$new_string;
   }
 
+  static method look_next_code_point : int ($string : string, $offset_ref : int*) {
+    my $save_offset = $$offset_ref;
+    my $code_point = &get_next_code_point($string, $offset_ref);
+    $$offset_ref = $save_offset;
+    return $code_point;
+  }
+  
   native static method memcpy : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
   native static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
   native static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
@@ -1285,15 +1294,6 @@ class Fn : precompile {
     my $unicode_code_point = &get_next_code_point($utf8_character, \$offset);
     
     return $unicode_code_point;
-  }
-
-  native static method get_next_code_point : int ($str : string, $offset_ref : int*);
-  
-  static method look_next_code_point : int ($string : string, $offset_ref : int*) {
-    my $save_offset = $$offset_ref;
-    my $code_point = &get_next_code_point($string, $offset_ref);
-    $$offset_ref = $save_offset;
-    return $code_point;
   }
 
   static method powi : int ($x : int, $y : int) {

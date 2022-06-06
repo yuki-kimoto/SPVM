@@ -489,6 +489,16 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn3->is_hex_digit);
 }
 
+# get_next_code_point
+{
+  ok(SPVM::TestCase::Lib::Fn1->get_next_code_point);
+}
+
+# look_next_code_point
+{
+  ok(SPVM::TestCase::Lib::Fn1->get_next_code_point);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

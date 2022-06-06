@@ -2,6 +2,7 @@ class TestCase::NativeAPI2 {
 
   use Hash;
   use StringList;
+  use Unicode;
 
   has first : rw TestCase::NativeAPI2;
   has last : rw TestCase::NativeAPI2;
