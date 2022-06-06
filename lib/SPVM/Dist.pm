@@ -179,7 +179,7 @@ sub new {
     $self->output_dir($output_dir);
   }
   else {
-    my $default_output_dir = $class_name;
+    my $default_output_dir = "SPVM::$class_name";
     $default_output_dir =~ s/::/-/g;
     $self->output_dir($default_output_dir);
   }

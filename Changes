@@ -13,6 +13,7 @@ Revision history for SPVM
         * Rename SPVM::Builder::Generator::Dist to SPVM::Dist.
         * Remove Fn->replace.
         * Remove Fn->match.
+        * "SPVM-" prefix is added to the default output directory of "spvmdist" command.
 0.9602  2022-06-07
         [CHANGE]
         * Improve compilation error messages.

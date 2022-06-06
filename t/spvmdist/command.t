@@ -33,37 +33,37 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
-  my $perl_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.pm";
+  my $perl_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
   ok(-f $perl_module_file);
   ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
   ok(SPVM::Builder::Util::file_contains($perl_module_file, q(our $VERSION = '0.01')));
   
-  my $spvm_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.spvm";
+  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_module_file);
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
   
-  my $makefile_pl_file = "$tmp_dir/Foo/Makefile.PL";
+  my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'Foo'"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'lib/SPVM/Foo.pm'"));
   
-  my $readme_markdown_file = "$tmp_dir/Foo/README.md";
+  my $readme_markdown_file = "$tmp_dir/SPVM-Foo/README.md";
   ok(-f $readme_markdown_file);
   ok(SPVM::Builder::Util::file_contains($readme_markdown_file, "SPVM::Foo"));
   
-  my $changes_file = "$tmp_dir/Foo/Changes";
+  my $changes_file = "$tmp_dir/SPVM-Foo/Changes";
   ok(-f $changes_file);
   ok(SPVM::Builder::Util::file_contains($changes_file, "0.01 "));
   
-  my $gitignore_file = "$tmp_dir/Foo/.gitignore";
+  my $gitignore_file = "$tmp_dir/SPVM-Foo/.gitignore";
   ok(-f $gitignore_file);
   ok(SPVM::Builder::Util::file_contains($gitignore_file, "Makefile"));
   
-  my $manifest_skip_file = "$tmp_dir/Foo/MANIFEST.SKIP";
+  my $manifest_skip_file = "$tmp_dir/SPVM-Foo/MANIFEST.SKIP";
   ok(-f $manifest_skip_file);
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, "Makefile"));
   
-  my $basic_test_file = "$tmp_dir/Foo/t/basic.t";
+  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'Foo';"));
 
@@ -86,37 +86,37 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $output = `$spvmdist_cmd`;
   like($output, qr/\[exists\]/);
   
-  my $perl_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.pm";
+  my $perl_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
   ok(-f $perl_module_file);
   ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
   ok(SPVM::Builder::Util::file_contains($perl_module_file, q(our $VERSION = '0.01')));
   
-  my $spvm_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.spvm";
+  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_module_file);
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
   
-  my $makefile_pl_file = "$tmp_dir/Foo/Makefile.PL";
+  my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'Foo'"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'lib/SPVM/Foo.pm'"));
   
-  my $readme_markdown_file = "$tmp_dir/Foo/README.md";
+  my $readme_markdown_file = "$tmp_dir/SPVM-Foo/README.md";
   ok(-f $readme_markdown_file);
   ok(SPVM::Builder::Util::file_contains($readme_markdown_file, "SPVM::Foo"));
   
-  my $changes_file = "$tmp_dir/Foo/Changes";
+  my $changes_file = "$tmp_dir/SPVM-Foo/Changes";
   ok(-f $changes_file);
   ok(SPVM::Builder::Util::file_contains($changes_file, "0.01 "));
   
-  my $gitignore_file = "$tmp_dir/Foo/.gitignore";
+  my $gitignore_file = "$tmp_dir/SPVM-Foo/.gitignore";
   ok(-f $gitignore_file);
   ok(SPVM::Builder::Util::file_contains($gitignore_file, "Makefile"));
   
-  my $manifest_skip_file = "$tmp_dir/Foo/MANIFEST.SKIP";
+  my $manifest_skip_file = "$tmp_dir/SPVM-Foo/MANIFEST.SKIP";
   ok(-f $manifest_skip_file);
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, "Makefile"));
   
-  my $basic_test_file = "$tmp_dir/Foo/t/basic.t";
+  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'Foo';"));
 
@@ -135,11 +135,11 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
-  my $perl_module_file = "$tmp_dir/Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.pm";
+  my $perl_module_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.pm";
   ok(-f $perl_module_file);
   ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo::Bar::Baz;"));
   
-  my $spvm_module_file = "$tmp_dir/Foo-Bar-Baz/lib/SPVM//Foo/Bar/Baz.spvm";
+  my $spvm_module_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM//Foo/Bar/Baz.spvm";
   ok(-f $spvm_module_file);
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo::Bar::Baz {"));
   
@@ -177,24 +177,24 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
 
-  my $makefile_pl_file = "$tmp_dir/Foo/Makefile.PL";
+  my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "SPVM::Builder::Util::API::create_make_rule_native('Foo')"));
 
-  my $native_config_file = "$tmp_dir/Foo/lib/SPVM/Foo.config";
+  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_gnu99'));
   
-  my $native_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.c";
+  my $native_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
   ok(-f $native_module_file);
   ok(SPVM::Builder::Util::file_contains($native_module_file, '#include "spvm_native.h"'));
   ok(SPVM::Builder::Util::file_contains($native_module_file, "SPVM__Foo__foo"));
 
-  my $gitkeep_file_for_native_module_include_dir = "$tmp_dir/Foo/lib/SPVM/Foo.native/include/.gitkeep";
+  my $gitkeep_file_for_native_module_include_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/include/.gitkeep";
   ok(-f $gitkeep_file_for_native_module_include_dir);
 
-  my $gitkeep_file_for_native_module_src_dir = "$tmp_dir/Foo/lib/SPVM/Foo.native/src/.gitkeep";
+  my $gitkeep_file_for_native_module_src_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/src/.gitkeep";
   ok(-f $gitkeep_file_for_native_module_src_dir);
 
   chdir($save_cur_dir) or die;
@@ -212,16 +212,16 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
 
-  my $makefile_pl_file = "$tmp_dir/Foo/Makefile.PL";
+  my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "SPVM::Builder::Util::API::create_make_rule_native('Foo')"));
 
-  my $native_config_file = "$tmp_dir/Foo/lib/SPVM/Foo.config";
+  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_cpp'));
   
-  my $native_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.cpp";
+  my $native_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.cpp";
   ok(-f $native_module_file);
   ok(SPVM::Builder::Util::file_contains($native_module_file, '#include "spvm_native.h"'));
   ok(SPVM::Builder::Util::file_contains($native_module_file, 'extern "C" {'));
@@ -242,14 +242,14 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
 
-  my $makefile_pl_file = "$tmp_dir/Foo/Makefile.PL";
+  my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "SPVM::Builder::Util::API::create_make_rule_precompile('Foo')"));
 
-  my $native_config_file = "$tmp_dir/Foo/lib/SPVM/Foo.config";
+  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(!-f $native_config_file);
   
-  my $native_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.c";
+  my $native_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
   ok(!-f $native_module_file);
 
   chdir($save_cur_dir) or die;
@@ -279,22 +279,22 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $native_module_file = "$tmp_dir/mylib/SPVM/Foo.c";
   ok(-f $native_module_file);
 
-  my $makefile_pl_file = "$tmp_dir/Foo/Makefile.PL";
+  my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(!-f $makefile_pl_file);
   
-  my $readme_markdown_file = "$tmp_dir/Foo/README.md";
+  my $readme_markdown_file = "$tmp_dir/SPVM-Foo/README.md";
   ok(!-f $readme_markdown_file);
   
-  my $changes_file = "$tmp_dir/Foo/Changes";
+  my $changes_file = "$tmp_dir/SPVM-Foo/Changes";
   ok(!-f $changes_file);
   
-  my $gitignore_file = "$tmp_dir/Foo/.gitignore";
+  my $gitignore_file = "$tmp_dir/SPVM-Foo/.gitignore";
   ok(!-f $gitignore_file);
   
-  my $manifest_skip_file = "$tmp_dir/Foo/MANIFEST.SKIP";
+  my $manifest_skip_file = "$tmp_dir/SPVM-Foo/MANIFEST.SKIP";
   ok(!-f $manifest_skip_file);
   
-  my $basic_test_file = "$tmp_dir/Foo/t/basic.t";
+  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(!-f $basic_test_file);
 
   chdir($save_cur_dir) or die;
@@ -312,10 +312,10 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
-  my $perl_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.pm";
+  my $perl_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
   ok(!-f $perl_module_file);
   
-  my $spvm_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.spvm";
+  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_module_file);
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
 
@@ -334,7 +334,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
-  my $spvm_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.spvm";
+  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_module_file);
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
   
@@ -363,7 +363,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
-  my $spvm_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.spvm";
+  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_module_file);
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
   
