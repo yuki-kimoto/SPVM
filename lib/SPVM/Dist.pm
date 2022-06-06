@@ -361,6 +361,32 @@ EOS
   $self->generate_file($native_module_rel_file, $native_module_content);
 }
 
+sub generate_gitkeep_file_for_native_module_include_dir {
+  my ($self) = @_;
+
+  # Class name
+  my $class_name = $self->class_name;
+  
+  # Generate file
+  my $gitkeep_rel_file_for_native_module_include_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'native');
+  $gitkeep_rel_file_for_native_module_include_dir .= '/include/.gitkeep';
+  $gitkeep_rel_file_for_native_module_include_dir =  $self->create_lib_rel_file($gitkeep_rel_file_for_native_module_include_dir);
+  $self->generate_file($gitkeep_rel_file_for_native_module_include_dir, '');
+}
+
+sub generate_gitkeep_file_for_native_module_src_dir {
+  my ($self) = @_;
+
+  # Class name
+  my $class_name = $self->class_name;
+  
+  # Generate file
+  my $gitkeep_rel_file_for_native_module_include_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'native');
+  $gitkeep_rel_file_for_native_module_include_dir .= '/src/.gitkeep';
+  $gitkeep_rel_file_for_native_module_include_dir =  $self->create_lib_rel_file($gitkeep_rel_file_for_native_module_include_dir);
+  $self->generate_file($gitkeep_rel_file_for_native_module_include_dir, '');
+}
+
 sub generate_gitignore_file {
   my ($self) = @_;
   
@@ -568,6 +594,12 @@ sub generate_dist {
     
     # Generate native module file
     $self->generate_native_module_file;
+    
+    # Generate ".gitkeep" file for native module include directory
+    $self->generate_gitkeep_file_for_native_module_include_dir;
+    
+    # Generate ".gitkeep" file for native module src directory
+    $self->generate_gitkeep_file_for_native_module_src_dir;
   }
   
   my $only_lib_file = $self->only_lib_files;
