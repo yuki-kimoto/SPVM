@@ -453,7 +453,7 @@ WriteMakefile(
     (ABSTRACT_FROM  => '$perl_module_rel_file',
      AUTHOR         => 'USER_NAME<USER_MAIL>') : ()),
   test => {TESTS => 't/*.t'},
-  clean => {FILES => ['.spvm_build', 't/.spvm_build', 'SPVM-*']},
+  clean => {FILES => ['.spvm_build', 't/.spvm_build']},
   META_MERGE => {
     'meta-spec' => { version => 2 },
     resources => {
