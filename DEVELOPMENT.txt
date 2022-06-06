@@ -130,6 +130,8 @@ DEVELOPERS NOTE
     Create compile error test module
     
       make && perl -Mblib blib/script/spvmgenlib --module-dir t/default/lib/SPVM TestCase::CompileError::Foo
+      
+      make && perl -Mblib blib/script/spvmdist -f --only-lib-files TestCase::CompileError::Foo t/default/lib
     
     Create a SPVM distribution
       
