@@ -14,7 +14,6 @@ class Fn : precompile {
   use EqualityChecker;
   use StringBuffer;
   use StringList;
-  use Unicode;
   
   native static method DBL_MAX : double ();
   native static method DBL_MIN : double ();
@@ -1017,11 +1016,6 @@ class Fn : precompile {
     return -1;
   }
 
-  # The argument type of following charcter checking functions are int, not byte. This is intentinal.
-  # ASCII code is represented by byte type.
-  # On the other hand, Unicode Code Point can be represented by int tyep.
-  # Unicode Code Point is upper compatibility of ASCII code.
-  # So the following character check functions receive int type argument.
   static method is_alnum : int ($code_point : int) {
 
     if (($code_point >= 'A' && $code_point <= 'Z') || ($code_point >= 'a' && $code_point <= 'z') || ($code_point >= '0' && $code_point <= '9')) {
@@ -1288,9 +1282,18 @@ class Fn : precompile {
     }
     
     my $offset = 0;
-    my $unicode_code_point = Unicode->uchar($utf8_character, \$offset);
+    my $unicode_code_point = &get_next_code_point($utf8_character, \$offset);
     
     return $unicode_code_point;
+  }
+
+  native static method get_next_code_point : int ($str : string, $offset_ref : int*);
+  
+  static method look_next_code_point : int ($string : string, $offset_ref : int*) {
+    my $save_offset = $$offset_ref;
+    my $code_point = &get_next_code_point($string, $offset_ref);
+    $$offset_ref = $save_offset;
+    return $code_point;
   }
 
   static method powi : int ($x : int, $y : int) {
