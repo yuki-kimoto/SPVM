@@ -915,33 +915,33 @@ class Fn : precompile {
       die "the hex string must be defined";
     }
     
-    my $re = Regex->new("^([0-9a-fA-F]{1,8})$");
-    
     my $hex_value = 0;
     my $digit = 0;
     my $value = 0;
-    if ($re->match($hex_string, 0)) {
-      my $length = length $hex_string;
-      for (my $i = $length - 1; $i >= 0; $i--) {
-        my $ascii_code = $hex_string->[$i];
-        
-        my $digit_value = 0;
-        if ($ascii_code >= '0' && $ascii_code <= '9') {
-          $digit_value = $ascii_code - 48;
-        }
-        elsif ($ascii_code >= 'a' && $ascii_code <= 'f') {
-          $digit_value = $ascii_code - 87;
-        }
-        elsif ($ascii_code >= 'A' && $ascii_code <= 'F') {
-          $digit_value = $ascii_code - 55;
-        }
-        $value += $digit_value * Fn->powi(16, $digit);
-        
-        $digit += 1;
-      }
+    my $length = length $hex_string;
+    if ($length < 1 || $length > 8) {
+      die "The length of hex string must be 1 to 8";
     }
-    else {
-      die "the hex string must be a valid expression";
+    for (my $i = $length - 1; $i >= 0; $i--) {
+      my $ascii_code = $hex_string->[$i];
+      
+      unless (&is_hex_digit($ascii_code)) {
+        die "The hex string is invalid format";
+      }
+      
+      my $digit_value = 0;
+      if ($ascii_code >= '0' && $ascii_code <= '9') {
+        $digit_value = $ascii_code - 48;
+      }
+      elsif ($ascii_code >= 'a' && $ascii_code <= 'f') {
+        $digit_value = $ascii_code - 87;
+      }
+      elsif ($ascii_code >= 'A' && $ascii_code <= 'F') {
+        $digit_value = $ascii_code - 55;
+      }
+      $value += $digit_value * Fn->powi(16, $digit);
+      
+      $digit += 1;
     }
     
     return $value;
