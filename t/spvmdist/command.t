@@ -68,4 +68,33 @@ use lib "$FindBin::Bin/exe/lib";
   chdir($save_cur_dir) or die;
 }
 
+# Native C
+{
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path --native c Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+
+  my $makefile_pl_file = "$tmp_dir/Foo/Makefile.PL";
+  ok(-f $makefile_pl_file);
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "SPVM::Builder::Util::API::create_make_rule_native('Foo')"));
+
+  my $native_config_file = "$tmp_dir/Foo/lib/SPVM/Foo.config";
+  ok(-f $native_config_file);
+  ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
+  ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_gnu99'));
+  
+  my $native_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.c";
+  ok(-f $native_module_file);
+  ok(SPVM::Builder::Util::file_contains($native_module_file, '#include "spvm_native.h"'));
+  ok(SPVM::Builder::Util::file_contains($native_module_file, "SPVM__Foo__foo"));
+
+  chdir($save_cur_dir) or die;
+}
+
 done_testing;
