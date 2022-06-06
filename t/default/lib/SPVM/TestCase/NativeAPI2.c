@@ -4,24 +4,6 @@
 #include "bar.h"
 #include "baz/baz.h"
 
-#include "spvm_utf8proc.h"
-
-int32_t SPVM__TestCase__NativeAPI2__use_resource(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-  
-  int32_t value = SPVM_UTF8PROC_VERSION_MAJOR;
-  
-  if (value) {
-    stack[0].ival = 1;
-  }
-  else {
-    stack[0].ival = 0;
-  }
-  
-  return 0;
-}
-
 int32_t SPVM__TestCase__NativeAPI2__mul(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

@@ -1,5 +1,4 @@
 class TestCase::Lib::Fn3 {
-  use Unicode as Un;
   use TestCase::Minimal;
   use Fn;
   use TestCase::Minimal;
@@ -581,6 +580,45 @@ class TestCase::Lib::Fn3 {
       }
       else {
         my $ret = Fn->is_digit($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  static method is_hex_digit : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= '0' && $char <= '9') {
+        my $ret = Fn->is_hex_digit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      elsif ($char >= 'a' && $char <= 'f') {
+        my $ret = Fn->is_hex_digit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      elsif ($char >= 'A' && $char <= 'F') {
+        my $ret = Fn->is_hex_digit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = Fn->is_hex_digit($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1336,6 +1374,36 @@ class TestCase::Lib::Fn3 {
       my $search = "pq";
       my $pos = Fn->index($target, $search, 2);
       unless ($pos == -1) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method contains : int () {
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->contains($target, $search);
+      unless ($pos == 1) {
+        return 0;
+      }
+    }
+    {
+      my $target = "abcde";
+      my $search = "abcde";
+      my $pos = Fn->contains($target, $search);
+      unless ($pos == 1) {
+        return 0;
+      }
+    }
+    {
+      my $target = "abcde";
+      my $search = "p";
+      my $pos = Fn->contains($target, $search);
+      unless ($pos == 0) {
         return 0;
       }
     }

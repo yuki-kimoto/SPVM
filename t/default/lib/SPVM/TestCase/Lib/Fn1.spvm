@@ -1,6 +1,5 @@
 class TestCase::Lib::Fn1 {
   use Fn;
-  use Unicode as Un;
   use TestCase::Minimal;
 
   static method sprintf_d : int () {
@@ -1758,74 +1757,99 @@ class TestCase::Lib::Fn1 {
     return 1;
   }
 
-  static method match : int () {
+  static method get_next_code_point : int () {
     
-    # match
     {
-      my $match = Fn->match("ppzabcz", "abc");
-      unless ($match) {
-        return 0;
+      my $str = "あaい";
+      
+      my $pos = 0;
+      
+      # あ
+      {
+        my $uchar = Fn->get_next_code_point($str, \$pos);
+
+        unless ($uchar == 0x3042) {
+          return 0;
+        }
+        
+        unless ($pos == 3) {
+          return 0;
+        }
+      }
+
+      # a
+      {
+        my $uchar = Fn->get_next_code_point($str, \$pos);
+
+        unless ($uchar == 'a') {
+          return 0;
+        }
+        
+        unless ($pos == 4) {
+          return 0;
+        }
+      }
+
+      # い
+      {
+        my $uchar = Fn->get_next_code_point($str, \$pos);
+
+        unless ($uchar == 0x3044) {
+          return 0;
+        }
+        
+        unless ($pos == 7) {
+          return 0;
+        }
       }
       
-      unless ($match isa Regex) {
-        return 0;
-      }
-    }
-    
-    # not match
-    {
-      my $match = Fn->match("ppzabcz", "abd");
-      unless ($match == undef) {
-        return 0;
-      }
-    }
-    
-    # . - single line mode
-    {
-      my $m = Fn->match("abc\ndef", "(.+)", "s");
+      # End
+      {
+        my $uchar = Fn->get_next_code_point($str, \$pos);
       
-      unless ($m) {
-        return 0;
-      }
-      
-      unless ($m->cap1 eq "abc\ndef") {
-        return 0;
+        unless ($uchar == -1) {
+          return 0;
+        }
       }
     }
-    
+
+    {
+      my $str = "あaい";
+      my $code_points = [0x3042, 'a', 0x3044];
+      
+      my $pos = 0;
+      my $i = 0;
+      while ((my $uchar = Fn->get_next_code_point($str, \$pos)) >= 0) {
+        
+        unless ($uchar == $code_points->[$i]) {
+          return 0;
+        }
+        
+        $i++;
+      }
+    }
+      
     return 1;
   }
 
-  static method replace : int () {
+  static method look_next_code_point : int () {
     
     {
-      my $result = Fn->replace("xyzAAAxyzAAA", "A+", "BBB");
-      unless ($result eq "xyzBBBxyzAAA") {
-        return 0;
-      }
-    }
-    
-    {
-      # "xyzBBBxyzBBB"
-      my $result = Fn->replace("xyzAAAxyzAAA", "A+", "BBB", "g");
-      unless ($result eq "xyzBBBxyzBBB") {
-        return 0;
-      }
-    }
-    
-    {
-      # "xyzaaaxyzAAA"
-      my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[0]); });
-      unless ($result eq "xyzaaaxyzAAA") {
-        return 0;
-      }
-    }
-    
-    {
-      # "xyzaaaxyzaaa"
-      my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[0]); }, "g");
-      unless ($result eq "xyzaaaxyzaaa") {
-        return 0;
+      my $str = "あaい";
+      
+      my $pos = 0;
+      
+      # あ
+      {
+        my $uchar = Fn->look_next_code_point($str, \$pos);
+
+        unless ($uchar == 0x3042) {
+          return 0;
+        }
+        
+        unless ($pos == 0) {
+          return 0;
+        }
       }
     }
     

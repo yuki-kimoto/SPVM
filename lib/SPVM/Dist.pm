@@ -1,4 +1,4 @@
-package SPVM::Builder::Generator::Dist;
+package SPVM::Dist;
 
 use strict;
 use warnings;
@@ -78,6 +78,17 @@ sub only_lib_files {
   }
 }
 
+sub no_pm_file {
+  my $self = shift;
+  if (@_) {
+    $self->{no_pm_file} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{no_pm_file};
+  }
+}
+
 sub lib_dir {
   my $self = shift;
   if (@_) {
@@ -124,10 +135,28 @@ sub create_lib_rel_file {
 sub generate_file {
   my ($self, $rel_file, $content) = @_;
   
-  # Create "t/basic.t" file
   my $file = $self->create_path($rel_file);
-  mkpath dirname $file;
-  SPVM::Builder::Util::spurt_binary($file, $content);
+  my $dir = dirname $file;
+  
+  $self->generate_dir($dir);
+  
+  my $force = $self->force;
+  if ($force || !-f $file) {
+    print "  [write]$file\n";
+    SPVM::Builder::Util::spurt_binary($file, $content);
+  }
+  else {
+    print "  [exists]$file\n";
+  }
+}
+
+sub generate_dir {
+  my ($self, $rel_dir, $content) = @_;
+  
+  my @created = mkpath $rel_dir;
+  if (@created) {
+    print "  [mkdir]$rel_dir\n";
+  }
 }
 
 sub new {
@@ -513,8 +542,6 @@ EOS
 sub generate_dist {
   my ($self) = @_;
   
-  my $force = $self->force;
-  
   my $class_name = $self->class_name;
   
   my $native = $self->native;
@@ -524,19 +551,17 @@ sub generate_dist {
   
   # Generate output directory
   my $output_dir = $self->output_dir;
-  if ($force || !-e $output_dir) {
-    mkpath $output_dir;
-  }
-  else {
-    confess "\"$output_dir\" already exists";
-  }
+  $self->generate_dir($output_dir);
   
   # Generate SPVM module file
   $self->generate_spvm_module_file;
 
   # Generate Perl module file
-  $self->generate_perl_module_file;
-
+  my $no_pm_file = $self->no_pm_file;
+  unless ($no_pm_file) {
+    $self->generate_perl_module_file;
+  }
+  
   if ($native) {
     # Generate native config file
     $self->generate_native_config_file;
@@ -571,11 +596,11 @@ sub generate_dist {
 
 =head1 NAME
 
-SPVM::Builder::Generator::Dist - Generating SPVM Distrubution
+SPVM::Dist - Generating SPVM Distrubution
 
 =head2 SYNOPSYS
 
-  my $dist = SPVM::Builder::Generator::Dist->new(
+  my $dist = SPVM::Dist->new(
     class_name => 'Math',
   );
   
@@ -583,4 +608,4 @@ SPVM::Builder::Generator::Dist - Generating SPVM Distrubution
 
 =head2 DESCRIPTION
 
-C<SPVM::Builder::Generator::Dist> generates a SPVM Distrubution.
+C<SPVM::Dist> generates a SPVM Distrubution.

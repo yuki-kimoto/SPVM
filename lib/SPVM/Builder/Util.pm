@@ -368,7 +368,6 @@ sub get_spvm_builder_module_file_names {
     SPVM/Builder/Config/Exe.pm
     SPVM/Builder/Config.pm
     SPVM/Builder/Exe.pm
-    SPVM/Builder/Generator/Dist.pm
     SPVM/Builder/LinkInfo.pm
     SPVM/Builder/ObjectFileInfo.pm
     SPVM/Builder.pm

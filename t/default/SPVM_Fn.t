@@ -266,6 +266,11 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn3->index);
 }
 
+# contains
+{
+  ok(SPVM::TestCase::Lib::Fn3->contains);
+}
+
 # rindex
 {
   ok(SPVM::TestCase::Lib::Fn3->rindex);
@@ -479,14 +484,19 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn1->repeat);
 }
 
-# match
+# is_hex_digit
 {
-  ok(SPVM::TestCase::Lib::Fn1->match);
+  ok(SPVM::TestCase::Lib::Fn3->is_hex_digit);
 }
 
-# replace
+# get_next_code_point
 {
-  ok(SPVM::TestCase::Lib::Fn1->replace);
+  ok(SPVM::TestCase::Lib::Fn1->get_next_code_point);
+}
+
+# look_next_code_point
+{
+  ok(SPVM::TestCase::Lib::Fn1->get_next_code_point);
 }
 
 # All object is freed

@@ -68,6 +68,59 @@ use lib "$FindBin::Bin/exe/lib";
   chdir($save_cur_dir) or die;
 }
 
+# Run again
+{
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  # Run again
+  my $output = `$spvmdist_cmd`;
+  like($output, qr/\[exists\]/);
+  
+  my $perl_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.pm";
+  ok(-f $perl_module_file);
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, q(our $VERSION = '0.01')));
+  
+  my $spvm_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  
+  my $makefile_pl_file = "$tmp_dir/Foo/Makefile.PL";
+  ok(-f $makefile_pl_file);
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'Foo'"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'lib/SPVM/Foo.pm'"));
+  
+  my $readme_markdown_file = "$tmp_dir/Foo/README.md";
+  ok(-f $readme_markdown_file);
+  ok(SPVM::Builder::Util::file_contains($readme_markdown_file, "SPVM::Foo"));
+  
+  my $changes_file = "$tmp_dir/Foo/Changes";
+  ok(-f $changes_file);
+  ok(SPVM::Builder::Util::file_contains($changes_file, "0.01 "));
+  
+  my $gitignore_file = "$tmp_dir/Foo/.gitignore";
+  ok(-f $gitignore_file);
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, "Makefile"));
+  
+  my $manifest_skip_file = "$tmp_dir/Foo/MANIFEST.SKIP";
+  ok(-f $manifest_skip_file);
+  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, "Makefile"));
+  
+  my $basic_test_file = "$tmp_dir/Foo/t/basic.t";
+  ok(-f $basic_test_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'Foo';"));
+
+  chdir($save_cur_dir) or die;
+}
+
 # Foo::Bar::Baz
 {
   my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
@@ -236,6 +289,86 @@ use lib "$FindBin::Bin/exe/lib";
   my $basic_test_file = "$tmp_dir/Foo/t/basic.t";
   ok(!-f $basic_test_file);
 
+  chdir($save_cur_dir) or die;
+}
+
+# --no-pm-file
+{
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path --no-pm-file Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  my $perl_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.pm";
+  ok(!-f $perl_module_file);
+  
+  my $spvm_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+
+  chdir($save_cur_dir) or die;
+}
+
+# --force
+{
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  my $spvm_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  
+  SPVM::Builder::Util::spurt_binary($spvm_module_file, 'AAAAA');
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "AAAA"));
+
+  my $spvmdist_cmd_fource = qq($^X -I$blib $spvmdist_path --force Foo);
+  system($spvmdist_cmd_fource) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+
+  ok(-f $spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  
+  chdir($save_cur_dir) or die;
+}
+
+# -f
+{
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  my $spvm_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  
+  SPVM::Builder::Util::spurt_binary($spvm_module_file, 'AAAAA');
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "AAAA"));
+
+  my $spvmdist_cmd_fource = qq($^X -I$blib $spvmdist_path -f Foo);
+  system($spvmdist_cmd_fource) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+
+  ok(-f $spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  
   chdir($save_cur_dir) or die;
 }
 

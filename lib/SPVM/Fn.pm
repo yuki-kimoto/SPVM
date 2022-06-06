@@ -322,11 +322,17 @@ Copy the string and remove "\n" of the end of the string and return it.
 
 =head2 chr
 
-  static method chr : string ($unicode_code_point : int) {
+  static method contains : int ($string : string, $sub_string : string)
 
 Convert Unicode code point to a UTF-8 character. If the Unicode code point is not a Unicode scalar value, return C<undef>.
 
 See also L<Unicode->is_unicode_scalar_value|SPVM::Unicode/"is_unicode_scalar_value">.
+
+=head2 contains
+
+  static method index : int ($string : string, $sub_string : string, $start_pos : int)
+
+Search for the substring in the string. If the substring is found, return C<1>. Otherwise return C<0>.
 
 =head2 copy_array_byte
 
@@ -641,6 +647,18 @@ For readability spaces and line breaks are inserted.
 
 If byte array is undef, return undef.
 
+=head2 get_next_code_point
+
+  static method get_next_code_point : int ($str : string, $offset_ref : int*)
+
+Get a Unicode codepoint from UTF-8 string with the reference of the offset of the string.
+
+The offset is updated to the position of the next UTF-8 character.
+
+If the offset is over the length of the string, return a negative value.
+
+If an invalid code point is got, return a negative value.
+
 =head2 equals_array_byte
 
   static method equals_array_byte : int ($nums1 : byte[], $nums2 : byte[])
@@ -689,7 +707,7 @@ Check equality of two objects. You must sepecify a L<EqualityChecker|SPVM::Equal
 
 $objs1 and $objs2 and $equality_checker must be defined, otherwise an exception occurs.
 
-Return 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return 0.
+Return 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return C<0>.
 
 =head2 equals_array_short
 
@@ -736,85 +754,91 @@ If the max string length of the argument is greater than the lenght of the strin
 
   static method is_alnum : int ($code_point : int)
 
-If character is alphanumeric('A'-'Z', 'a'-'z', '0'-'9'), return 1. If not, return 0.
+If character is alphanumeric('A'-'Z', 'a'-'z', '0'-'9'), return C<1>. Otherwise return C<0>.
 
 =head2 is_alpha
 
   static method is_alpha : int ($code_point : int)
 
-If character is alphabetic('A'-'Z', 'a'-'z'), return 1. If not, return 0.
+If character is alphabetic('A'-'Z', 'a'-'z'), return C<1>. Otherwise return C<0>.
 
 =head2 is_blank
 
   static method is_blank : int ($code_point : int)
 
-If character is blank(' ', '\t'), return 1. If not, return 0.
+If character is blank(' ', '\t'), return C<1>. Otherwise return C<0>.
 
 =head2 is_cntrl
 
   static method is_cntrl : int ($code_point : int)
 
-If character is a control character(0x00-0x1F, 0x7F), return 1. If not, return 0.
+If character is a control character(0x00-0x1F, 0x7F), return C<1>. Otherwise return C<0>.
 
 =head2 is_digit
 
   static method is_digit : int ($code_point : int)
 
-If character is decimal digit ('0'-'9'), return 1. If not, return 0.
+If character is decimal digit C<0-9>, return C<1>. Otherwise return C<0>.
 
 =head2 is_graph
 
   static method is_graph : int ($code_point : int)
 
-If character has graphical representation(0x21-0x7E), return 1. If not, return 0.
+If character has graphical representation(C<0x21-0x7E>), return C<1>. Otherwise return C<0>.
+
+=head2 is_hex_digit
+
+  static method is_hex_digit : int ($code_point : int)
+
+If the character is hexadecimal digit C<0-9a-fA-F>, return C<1>. Otherwise return C<0>.
 
 =head2 is_lower
 
   static method is_lower : int ($code_point : int)
 
-If character is lowercase letter('a'-'z'), return 1. If not, return 0.
+If character is lowercase letter('a'-'z'), return C<1>. Otherwise return C<0>.
 
 =head2 is_perl_space
 
   static method is_perl_space : int ($code_point : int)
 
-If character is Perl space character(' ', '\r', '\n', '\t', '\f'), return 1. If not, return 0.
+If character is Perl space character(' ', '\r', '\n', '\t', '\f'), return C<1>. Otherwise return C<0>.
 
 =head2 is_perl_word
 
   static method is_perl_word : int ($code_point : int)
 
-If character is Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return 1. If not, return 0.
+If character is Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return C<1>. Otherwise return C<0>.
 
 =head2 is_print
 
   static method is_print : int ($code_point : int)
 
-If character is printable(0x20-0x7E), return 1. If not, return 0.
+If character is printable(0x20-0x7E), return C<1>. Otherwise return C<0>.
 
 =head2 is_punct
 
   static method is_punct : int ($code_point : int)
 
-If character is a punctuation character(0x21-0x2f, 0x3a-0x40, 0x5b-0x60, 0x7b-0x7e), return 1. If not, return 0.
+If character is a punctuation character(0x21-0x2f, 0x3a-0x40, 0x5b-0x60, 0x7b-0x7e), return C<1>. Otherwise return C<0>.
 
 =head2 is_space
 
   static method is_space : int ($code_point : int)
 
-If character is a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return 1. If not, return 0.
+If character is a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return C<1>. Otherwise return C<0>.
 
 =head2 is_upper
 
   static method is_upper : int ($code_point : int)
 
-If character is uppercase letter('A'-'Z'), return 1. If not, return 0.
+If character is uppercase letter('A'-'Z'), return C<1>. Otherwise return C<0>.
 
 =head2 is_xdigit
 
   static method is_xdigit : int ($code_point : int)
 
-If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return 1. If not, return 0.
+If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return C<1>. Otherwise return C<0>.
 
 =head2 is_mulnum_array
 
@@ -868,22 +892,11 @@ Convert uppercase string to lowercase string.
 
 Convert first chracter of string from uppercase to lowercase.
 
-=head2 match
+=head2 look_next_code_point
 
-  static method match : Regex ($string : string, $regex_string : string, $regex_options_opt : string[]...) {
+  static method look_next_code_point : int ($string : string, $offset_ref : int*)
 
-If the string matches the regex with/without options, return the L<Regex|SPVM::Regex> object. Otherwise C<undef>.
-
-See also L<Regex|SPVM::Regex>.
-
-B<Examples:>
-
-  my $match = Fn->match("Foo Bar Baz", "^Foo.+Baz$");
-
-  my $match = Fn->match("Foo Bar Baz", "^Foo.+Baz$", "s");
-
-  my $m = Fn->match("abc\ndef", "(.+)", "s");
-  my $capture_first = $m->cap1;
+Same as L</"get_next_code_point">, but the offset is not updated.
 
 =head2 memcpy
 
@@ -1210,39 +1223,6 @@ B<Examples:>
   
   # "abcabcabc"
   my $repeat_string = Fn->repeat("abc", 3);
-
-=head2 replace
-
-  static method replace : string (
-    $string : string,
-    $regex_string : string,
-    $replace_string_or_replacer : object,
-    $regex_options_opt : string[]...
-  )
-
-Replaces the string using a regular expression with/without options.
-
-The first argument is a string that the regular expression is performed.
-
-The second argument is a string that is a regular expression.
-
-The third argument is a replacement string or a L<Replacer|SPVM::Replacer> object.
-
-The 4th argument is the options of regular expression. This is optional.
-
-B<Examples:>
-  
-  # "xyzBBBxyzAAA"
-  my $result = Fn->replace("xyzAAAxyzAAA", "A+", "BBB");
-
-  # "xyzBBBxyzBBB"
-  my $result = Fn->replace("xyzAAAxyzAAA", "A+", "BBB", "g");
-
-  # "xyzaaaxyzAAA"
-  my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[0]); });
-
-  # "xyzaaaxyzaaa"
-  my $result = Fn->replace("xyzAAAxyzAAA", "(A+)", method : string ($re : Regex) { return Fn->lc($re->captures->[0]); }, "g");
 
 =head2 rindex
 
