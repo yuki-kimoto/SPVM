@@ -557,6 +557,8 @@ use Test::More;
 
 use SPVM '$class_name';
 
+ok(1);
+
 done_testing;
 EOS
   
