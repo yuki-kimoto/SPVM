@@ -5,12 +5,18 @@ Revision history for SPVM
         * Improve Regex module
           Support quantifier {,n} {m,}
           Support [\d\D] [^\d\D]
+        * add "spvmdist" command.
           
         [NON BACKWORD COMPATIBLE CHANGES]
         * Regex module is very experimental status and uncompleted.
           I start to implement the part of Perl regular expression.
           Many small non-backwordcompatible occur.
-          
+        * Remove "spvmgenlib" command. The important fetures are merged into "spvmdist"
+          [Before]
+          spvmgenlib --module-dir t/default/lib/SPVM TestCase::CompileError::Foo
+          [After]
+          spvmdist -f --only-lib-files TestCase::CompileError::Foo t/default/lib
+
 0.9601  2022-06-01
         [CHANGE]
         * Regex class support "i" (ignore case) option.
