@@ -19,13 +19,15 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/exe/lib";
 
+my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+my $blib_lib = File::Spec->rel2abs('blib/lib');
+my $blib_arch = File::Spec->rel2abs('blib/arch');
+my $include_blib = "-I$blib_arch -I$blib_lib";
+
 # Minimal
 {
-  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
-  my $blib = File::Spec->rel2abs('blib/lib');
-  
   my $tmp_dir = File::Temp->newdir;
-  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path Foo);
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
   my $save_cur_dir = getcwd();
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
@@ -74,7 +76,7 @@ use lib "$FindBin::Bin/exe/lib";
   my $blib = File::Spec->rel2abs('blib/lib');
   
   my $tmp_dir = File::Temp->newdir;
-  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path Foo);
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
   my $save_cur_dir = getcwd();
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
@@ -127,7 +129,7 @@ use lib "$FindBin::Bin/exe/lib";
   my $blib = File::Spec->rel2abs('blib/lib');
   
   my $tmp_dir = File::Temp->newdir;
-  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path Foo::Bar::Baz);
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo::Bar::Baz);
   my $save_cur_dir = getcwd();
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
@@ -150,7 +152,7 @@ use lib "$FindBin::Bin/exe/lib";
   my $blib = File::Spec->rel2abs('blib/lib');
   
   my $tmp_dir = File::Temp->newdir;
-  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path Foo myfoo);
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo myfoo);
   my $save_cur_dir = getcwd();
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
@@ -169,7 +171,7 @@ use lib "$FindBin::Bin/exe/lib";
   my $blib = File::Spec->rel2abs('blib/lib');
   
   my $tmp_dir = File::Temp->newdir;
-  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path --native c Foo);
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --native c Foo);
   my $save_cur_dir = getcwd();
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
@@ -189,6 +191,12 @@ use lib "$FindBin::Bin/exe/lib";
   ok(SPVM::Builder::Util::file_contains($native_module_file, '#include "spvm_native.h"'));
   ok(SPVM::Builder::Util::file_contains($native_module_file, "SPVM__Foo__foo"));
 
+  my $gitkeep_file_for_native_module_include_dir = "$tmp_dir/Foo/lib/SPVM/Foo.native/include/.gitkeep";
+  ok(-f $gitkeep_file_for_native_module_include_dir);
+
+  my $gitkeep_file_for_native_module_src_dir = "$tmp_dir/Foo/lib/SPVM/Foo.native/src/.gitkeep";
+  ok(-f $gitkeep_file_for_native_module_src_dir);
+
   chdir($save_cur_dir) or die;
 }
 
@@ -198,7 +206,7 @@ use lib "$FindBin::Bin/exe/lib";
   my $blib = File::Spec->rel2abs('blib/lib');
   
   my $tmp_dir = File::Temp->newdir;
-  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path --native c++ Foo);
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --native c++ Foo);
   my $save_cur_dir = getcwd();
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
@@ -228,7 +236,7 @@ use lib "$FindBin::Bin/exe/lib";
   my $blib = File::Spec->rel2abs('blib/lib');
   
   my $tmp_dir = File::Temp->newdir;
-  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path --precompile Foo);
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --precompile Foo);
   my $save_cur_dir = getcwd();
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
@@ -253,7 +261,7 @@ use lib "$FindBin::Bin/exe/lib";
   my $blib = File::Spec->rel2abs('blib/lib');
   
   my $tmp_dir = File::Temp->newdir;
-  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path --only-lib-files --native c Foo mylib);
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --only-lib-files --native c Foo mylib);
   my $save_cur_dir = getcwd();
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
@@ -298,7 +306,7 @@ use lib "$FindBin::Bin/exe/lib";
   my $blib = File::Spec->rel2abs('blib/lib');
   
   my $tmp_dir = File::Temp->newdir;
-  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path --no-pm-file Foo);
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --no-pm-file Foo);
   my $save_cur_dir = getcwd();
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
@@ -320,7 +328,7 @@ use lib "$FindBin::Bin/exe/lib";
   my $blib = File::Spec->rel2abs('blib/lib');
   
   my $tmp_dir = File::Temp->newdir;
-  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path Foo);
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
   my $save_cur_dir = getcwd();
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
@@ -333,7 +341,7 @@ use lib "$FindBin::Bin/exe/lib";
   SPVM::Builder::Util::spurt_binary($spvm_module_file, 'AAAAA');
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "AAAA"));
 
-  my $spvmdist_cmd_fource = qq($^X -I$blib $spvmdist_path --force Foo);
+  my $spvmdist_cmd_fource = qq($^X $include_blib $spvmdist_path --force Foo);
   system($spvmdist_cmd_fource) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
 
@@ -349,7 +357,7 @@ use lib "$FindBin::Bin/exe/lib";
   my $blib = File::Spec->rel2abs('blib/lib');
   
   my $tmp_dir = File::Temp->newdir;
-  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path Foo);
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
   my $save_cur_dir = getcwd();
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
@@ -362,7 +370,7 @@ use lib "$FindBin::Bin/exe/lib";
   SPVM::Builder::Util::spurt_binary($spvm_module_file, 'AAAAA');
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "AAAA"));
 
-  my $spvmdist_cmd_fource = qq($^X -I$blib $spvmdist_path -f Foo);
+  my $spvmdist_cmd_fource = qq($^X $include_blib $spvmdist_path -f Foo);
   system($spvmdist_cmd_fource) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
 
