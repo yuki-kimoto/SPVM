@@ -68,6 +68,29 @@ use lib "$FindBin::Bin/exe/lib";
   chdir($save_cur_dir) or die;
 }
 
+# Foo::Bar::Baz
+{
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X -I$blib $spvmdist_path Foo::Bar::Baz);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  my $perl_module_file = "$tmp_dir/Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.pm";
+  ok(-f $perl_module_file);
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo::Bar::Baz;"));
+  
+  my $spvm_module_file = "$tmp_dir/Foo-Bar-Baz/lib/SPVM//Foo/Bar/Baz.spvm";
+  ok(-f $spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo::Bar::Baz {"));
+  
+  chdir($save_cur_dir) or die;
+}
+
 # Native C
 {
   my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
