@@ -1,4 +1,4 @@
-package SPVM::Builder::Generator::Dist;
+package SPVM::Dist;
 
 use strict;
 use warnings;
@@ -571,11 +571,11 @@ sub generate_dist {
 
 =head1 NAME
 
-SPVM::Builder::Generator::Dist - Generating SPVM Distrubution
+SPVM::Dist - Generating SPVM Distrubution
 
 =head2 SYNOPSYS
 
-  my $dist = SPVM::Builder::Generator::Dist->new(
+  my $dist = SPVM::Dist->new(
     class_name => 'Math',
   );
   
@@ -583,4 +583,4 @@ SPVM::Builder::Generator::Dist - Generating SPVM Distrubution
 
 =head2 DESCRIPTION
 
-C<SPVM::Builder::Generator::Dist> generates a SPVM Distrubution.
+C<SPVM::Dist> generates a SPVM Distrubution.

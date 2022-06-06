@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM::Builder::Generator::Dist;
+use SPVM::Dist;
 
 ok(1);
 

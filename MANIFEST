@@ -56,7 +56,6 @@ lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
 lib/SPVM/Builder/Exe.pm
-lib/SPVM/Builder/Generator/Dist.pm
 lib/SPVM/Builder/include/spvm_allocator.h
 lib/SPVM/Builder/include/spvm_allow.h
 lib/SPVM/Builder/include/spvm_api.h
@@ -188,6 +187,7 @@ lib/SPVM/Complex_2d.pm
 lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
+lib/SPVM/Dist.pm
 lib/SPVM/Document/Benchmark.pm
 lib/SPVM/Document/ExchangeAPI.pm
 lib/SPVM/Document/LanguageSpecification.pm

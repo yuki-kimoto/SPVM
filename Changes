@@ -1,4 +1,7 @@
 Revision history for SPVM
+0.9602_01  2022-06-06
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Rename SPVM::Builder::Generator::Dist to SPVM::Dist.
 0.9601_01  2022-06-06
         [CHANGE]
         * Improve compilation error messages.
