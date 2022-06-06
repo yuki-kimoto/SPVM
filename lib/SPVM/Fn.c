@@ -20,6 +20,8 @@
 #include <memory.h>
 #include <ctype.h>
 #include <errno.h>
+#include <stddef.h>
+#include <assert.h>
 
 static const char* MFILE = "SPVM/Fn.c";
 
@@ -1051,3 +1053,48 @@ int32_t SPVM__Fn__new_array_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+static ptrdiff_t convert_unicode_code_point_to_utf8_chracter(int32_t uc, uint8_t *dst) {
+  if (uc < 0x00) {
+    return 0;
+  } else if (uc < 0x80) {
+    dst[0] = (uint8_t) uc;
+    return 1;
+  } else if (uc < 0x800) {
+    dst[0] = (uint8_t)(0xC0 + (uc >> 6));
+    dst[1] = (uint8_t)(0x80 + (uc & 0x3F));
+    return 2;
+  // Note: we allow encoding 0xd800-0xdfff here, so as not to change
+  // the API, however, these are actually invalid in UTF-8
+  } else if (uc < 0x10000) {
+    dst[0] = (uint8_t)(0xE0 + (uc >> 12));
+    dst[1] = (uint8_t)(0x80 + ((uc >> 6) & 0x3F));
+    dst[2] = (uint8_t)(0x80 + (uc & 0x3F));
+    return 3;
+  } else if (uc < 0x110000) {
+    dst[0] = (uint8_t)(0xF0 + (uc >> 18));
+    dst[1] = (uint8_t)(0x80 + ((uc >> 12) & 0x3F));
+    dst[2] = (uint8_t)(0x80 + ((uc >> 6) & 0x3F));
+    dst[3] = (uint8_t)(0x80 + (uc & 0x3F));
+    return 4;
+  } else return 0;
+}
+
+int32_t SPVM__Fn___chr_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  
+  int32_t code_point = stack[0].ival;
+  
+  assert(code_point >= 0);
+  assert(code_point < 0x10FFFF);
+  
+  uint8_t utf8_bytes[4];
+  int32_t utf8_bytes_length = (int32_t)convert_unicode_code_point_to_utf8_chracter(code_point, utf8_bytes);
+  
+  assert(utf8_bytes_length > 0);
+  
+  void* utf8_string = env->new_string(env, (char*)utf8_bytes, utf8_bytes_length);
+  
+  stack[0].oval = utf8_string;
+  
+  return 0;
+}
