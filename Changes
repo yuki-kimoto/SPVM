@@ -7,13 +7,12 @@ Revision history for SPVM
         * Add Fn->get_next_code_point.
         * Add Fn->look_next_code_point.
         * Generate Foo.native/src/.gitkeep and Foo.native/include/.gitkeep in "--native" option of "spvmdist".
+        * Fn class doesn't depend on Regex and Unicode class.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Rename SPVM::Builder::Generator::Dist to SPVM::Dist.
         * Remove Fn->replace.
         * Remove Fn->match.
-        * Regex module becomes CPAN module because Regex is too complex to manage by a SPVM little team.
-          And We plan to bind RE2 library to implement Regex module in the future release.
 0.9602  2022-06-07
         [CHANGE]
         * Improve compilation error messages.
