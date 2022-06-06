@@ -30,13 +30,24 @@ use lib "$FindBin::Bin/exe/lib";
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
-
-  ok(-f "$tmp_dir/Foo/Makefile.PL");
+  
+  # Makefile.PL
+  my $makefile_pl_file = "$tmp_dir/Foo/Makefile.PL";
+  ok(-f $makefile_pl_file);
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'Foo'"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'lib/SPVM/Foo.pm'"));
+  
   ok(-f "$tmp_dir/Foo/README.md");
   ok(-f "$tmp_dir/Foo/Changes");
   ok(-f "$tmp_dir/Foo/.gitignore");
   ok(-f "$tmp_dir/Foo/MANIFEST.SKIP");
-  ok(-f "$tmp_dir/Foo/lib/SPVM/Foo.pm");
+  
+  my $perl_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.pm";
+  ok(-f $perl_module_file);
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
+  
+  my $spvm_module_file = "$tmp_dir/Foo/lib/SPVM/Foo.spvm";
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
   ok(-f "$tmp_dir/Foo/lib/SPVM/Foo.spvm");
   ok(-f "$tmp_dir/Foo/t/basic.t");
 
