@@ -1085,7 +1085,7 @@ int32_t SPVM__Fn___chr_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t code_point = stack[0].ival;
   
   assert(code_point >= 0);
-  assert(code_point < 0x10FFFF);
+  assert(code_point < 0x110000);
   
   uint8_t utf8_bytes[4];
   int32_t utf8_bytes_length = (int32_t)convert_unicode_code_point_to_utf8_chracter(code_point, utf8_bytes);

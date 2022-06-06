@@ -100,11 +100,12 @@ class Fn : precompile {
     my $is_unicode_scalar_value = &is_unicode_scalar_value($unicode_code_point);
     my $utf8_char = (string)undef;
     if ($is_unicode_scalar_value) {
-      $utf8_char = Unicode->uchar_to_utf8($unicode_code_point);
+      $utf8_char = &_chr_native($unicode_code_point);
     }
 
     return $utf8_char;
   }
+  native static method _chr_native : string ($uchar : int);
 
   static method contains : int ($string : string, $sub_string : string) {
     my $contains = 0;
