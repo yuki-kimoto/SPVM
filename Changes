@@ -6,6 +6,7 @@ Revision history for SPVM
         * Add Fn->contains.
         * Add Fn->get_next_code_point.
         * Add Fn->look_next_code_point.
+        * Generate Foo.native/src/.gitkeep and Foo.native/include/.gitkeep in "--native" option of "spvmdist".
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Rename SPVM::Builder::Generator::Dist to SPVM::Dist.
