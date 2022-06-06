@@ -67,6 +67,28 @@ sub precompile {
   }
 }
 
+sub only_lib_files {
+  my $self = shift;
+  if (@_) {
+    $self->{only_lib_files} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{only_lib_files};
+  }
+}
+
+sub lib_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{lib_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{lib_dir};
+  }
+}
+
 sub create_path {
   my ($self, $file_base_name) = @_;
   
@@ -81,6 +103,22 @@ sub create_path {
   }
   
   return $path;
+}
+
+sub create_lib_rel_file {
+  my ($self, $file_base_name) = @_;
+  
+  my $lib_rel_file;
+  
+  my $only_lib_files = $self->only_lib_files;
+  if ($only_lib_files) {
+    $lib_rel_file = $file_base_name;
+  }
+  else {
+    $lib_rel_file = "lib/$file_base_name";
+  }
+  
+  return $lib_rel_file;
 }
 
 sub generate_file {
@@ -139,7 +177,8 @@ EOS
   
   # Generate file
   my $spvm_module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
-  $spvm_module_rel_file = "lib/$spvm_module_rel_file";
+  my $lib_dir = $self->lib_dir;
+  $spvm_module_rel_file = $self->create_lib_rel_file($spvm_module_rel_file);
   $self->generate_file($spvm_module_rel_file, $spvm_module_content);
 }
 
@@ -204,7 +243,7 @@ EOS
 
   # Generate file
   my $perl_module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
-  $perl_module_rel_file = "lib/$perl_module_rel_file";
+  $perl_module_rel_file =  $self->create_lib_rel_file($perl_module_rel_file);
   $self->generate_file($perl_module_rel_file, $perl_module_content);
 }
 
@@ -237,7 +276,7 @@ EOS
 
   # Generate file
   my $native_config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
-  $native_config_rel_file = "lib/$native_config_rel_file";
+  $native_config_rel_file =  $self->create_lib_rel_file($native_config_rel_file);
   $self->generate_file($native_config_rel_file, $native_config_content);
 }
 
@@ -289,7 +328,7 @@ EOS
     }
   }
   my $native_module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, $native_module_ext);
-  $native_module_rel_file = "lib/$native_module_rel_file";
+  $native_module_rel_file =  $self->create_lib_rel_file($native_module_rel_file);
   $self->generate_file($native_module_rel_file, $native_module_content);
 }
 
@@ -394,7 +433,7 @@ sub generate_makefile_pl_file {
   my $make_rule_precompile = $self->precompile ? "SPVM::Builder::Util::API::create_make_rule_precompile('$class_name');" : '';
 
   my $perl_module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
-  $perl_module_rel_file = "lib/$perl_module_rel_file";
+  $perl_module_rel_file =  $self->create_lib_rel_file($perl_module_rel_file);
   
   # "Makefile.PL" content
   my $makefile_pl_content = <<"EOS";
@@ -498,30 +537,33 @@ sub generate_dist {
   # Generate Perl module file
   $self->generate_perl_module_file;
 
-  # Generate .gitignore file
-  $self->generate_gitignore_file;
-
-  # Generate MANIFEST.SKIP file
-  $self->generate_manifest_skip_file;
-
-  # Generate Changes file
-  $self->generate_changes_file;
-
-  # Generate README.md file
-  $self->generate_readme_markdown_file;
-
-  # Generate Makefile.PL file
-  $self->generate_makefile_pl_file;
-
-  # Generate t/basic.t file
-  $self->generate_basic_test_file;
-  
   if ($native) {
     # Generate native config file
     $self->generate_native_config_file;
-
+    
     # Generate native module file
     $self->generate_native_module_file;
+  }
+  
+  my $only_lib_file = $self->only_lib_files;
+  unless ($only_lib_file) {
+    # Generate .gitignore file
+    $self->generate_gitignore_file;
+    
+    # Generate MANIFEST.SKIP file
+    $self->generate_manifest_skip_file;
+    
+    # Generate Changes file
+    $self->generate_changes_file;
+    
+    # Generate README.md file
+    $self->generate_readme_markdown_file;
+    
+    # Generate Makefile.PL file
+    $self->generate_makefile_pl_file;
+    
+    # Generate t/basic.t file
+    $self->generate_basic_test_file;
   }
 }
 

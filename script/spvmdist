@@ -14,6 +14,7 @@ SPVM::Builder::Util::getopt
   'f|force' => \my $force,
   'native=s' => \my $native,
   'precompile' => \my $precompile,
+  'only-lib-files' => \my $only_lib_files,
 ;
 
 if ($help) {
@@ -36,6 +37,7 @@ else {
     output_dir => $output_dir,
     native => $native,
     precompile => $precompile,
+    'only-lib-files' => \my $only_lib_files,
   );
   $gendist->generate_dist;
 }
@@ -65,6 +67,7 @@ spvmdist - Generating SPVM Distribution
     --output-dir                   Output directory
     --native LANGUAGE              Add native files and setting
     --precompile                   Add precompile setting
+    --only-lib-files               Output only the files in "lib" directory
 
 =head1 DESCRIPTION
 
