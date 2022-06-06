@@ -94,6 +94,14 @@ class Fn : precompile {
     return $utf8_char;
   }
 
+  static method contains : int ($string : string, $sub_string : string) {
+    my $contains = 0;
+    if (&index($string, $sub_string, 0) >= 0) {
+      $contains = 1;
+    }
+    return $contains;
+  }
+  
   static method copy_array_byte : byte[] ($nums : byte[]) {
     return copy $nums;
   }

@@ -266,6 +266,11 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn3->index);
 }
 
+# contains
+{
+  ok(SPVM::TestCase::Lib::Fn3->contains);
+}
+
 # rindex
 {
   ok(SPVM::TestCase::Lib::Fn3->rindex);
