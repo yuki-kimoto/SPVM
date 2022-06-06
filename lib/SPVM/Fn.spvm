@@ -82,9 +82,22 @@ class Fn : precompile {
     return $new_string;
   }
 
+  private static method is_unicode_scalar_value : int ($code_point: int) {
+    my $is_unicode_scalar_value = 0;
+    # The range of Unicde code points
+    if ($code_point >= 0 && $code_point <= 0x10FFFF) {
+      # Not surrogate code points
+      unless ($code_point >= 0xD800 && $code_point <= 0xDFFF) {
+        $is_unicode_scalar_value = 1;
+      }
+    }
+    
+    return $is_unicode_scalar_value;
+  }
+
   static method chr : string ($unicode_code_point : int) {
     
-    my $is_unicode_scalar_value = Unicode->is_unicode_scalar_value($unicode_code_point);
+    my $is_unicode_scalar_value = &is_unicode_scalar_value($unicode_code_point);
     my $utf8_char = (string)undef;
     if ($is_unicode_scalar_value) {
       $utf8_char = Unicode->uchar_to_utf8($unicode_code_point);
