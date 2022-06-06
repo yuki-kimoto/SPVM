@@ -135,10 +135,28 @@ sub create_lib_rel_file {
 sub generate_file {
   my ($self, $rel_file, $content) = @_;
   
-  # Create "t/basic.t" file
   my $file = $self->create_path($rel_file);
-  mkpath dirname $file;
-  SPVM::Builder::Util::spurt_binary($file, $content);
+  my $dir = dirname $file;
+  
+  $self->generate_dir($dir);
+  
+  my $force = $self->force;
+  if ($force || !-f $file) {
+    print "  [write]$file\n";
+    SPVM::Builder::Util::spurt_binary($file, $content);
+  }
+  else {
+    print "  [exists]$file\n";
+  }
+}
+
+sub generate_dir {
+  my ($self, $rel_dir, $content) = @_;
+  
+  my @created = mkpath $rel_dir;
+  if (@created) {
+    print "  [mkdir]$rel_dir\n";
+  }
 }
 
 sub new {
@@ -524,8 +542,6 @@ EOS
 sub generate_dist {
   my ($self) = @_;
   
-  my $force = $self->force;
-  
   my $class_name = $self->class_name;
   
   my $native = $self->native;
@@ -535,12 +551,7 @@ sub generate_dist {
   
   # Generate output directory
   my $output_dir = $self->output_dir;
-  if ($force || !-e $output_dir) {
-    mkpath $output_dir;
-  }
-  else {
-    confess "\"$output_dir\" already exists";
-  }
+  $self->generate_dir($output_dir);
   
   # Generate SPVM module file
   $self->generate_spvm_module_file;
