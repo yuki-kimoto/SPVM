@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9601_01  2022-06-06
+0.9602  2022-06-07
         [CHANGE]
         * Improve compilation error messages.
         * add "spvmdist" command.
