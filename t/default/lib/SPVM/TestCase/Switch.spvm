@@ -1,4 +1,10 @@
 class TestCase::Switch {
+  
+  enum {
+    VALUE0,
+    VALUE1,
+    VALUE2,
+  }
 
   static method switch : int () {
     
@@ -449,6 +455,54 @@ class TestCase::Switch {
             return 0;
           }
         }
+      }
+    }
+    
+    # Enumeration
+    {
+      my $success : int;
+      switch (1) {
+        case &VALUE0: {
+          $success = 0;
+          break;
+        }
+        case &VALUE1: {
+          $success = 1;
+          break;
+        }
+        case &VALUE2: {
+          $success = 0;
+          break;
+        }
+        default:
+      }
+      unless ($success) {
+        return 0;
+      }
+    }
+
+    # Character literal
+    {
+      my $success : int;
+      switch ('b') {
+        case 'a': {
+          $success = 0;
+          break;
+        }
+        case 'b': {
+          $success = 1;
+          break;
+        }
+        case 'c': {
+          $success = 0;
+          break;
+        }
+        default: {
+          warn "DDDDDD";
+        }
+      }
+      unless ($success) {
+        return 0;
       }
     }
     

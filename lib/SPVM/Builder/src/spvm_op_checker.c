@@ -412,8 +412,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_OP* op_switch_condition = op_cur->first;
               
-              // Check type
-              SPVM_OP_CHECKER_apply_unary_numeric_widening_conversion(compiler, op_switch_condition->first);
+              // Perform numeric widening conversion
+              SPVM_OP_CHECKER_apply_unary_numeric_widening_conversion(compiler, op_switch_condition->first->first);
+              
               SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_switch_condition->first);
               if (!term_type || !(term_type->dimension == 0 && term_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT)) {
                 SPVM_COMPILER_error(compiler, "The condition of the switch statement must be the int type at %s line %d", op_cur->file, op_cur->line);
