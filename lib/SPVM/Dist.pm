@@ -423,8 +423,8 @@ sub generate_manifest_skip_file {
 ^MYMETA.yml\$
 ^MYMETA.json\$
 ^pm_to_blib\$
-^\.spvm_build\$
-^t/\.spvm_build\$
+^\.spvm_build/
+^t/\.spvm_build/
 ^SPVM-
 ^core\.
 ^core\$
