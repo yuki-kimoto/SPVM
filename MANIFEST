@@ -255,13 +255,6 @@ lib/SPVM/Time.pm
 lib/SPVM/Time.spvm
 lib/SPVM/Time/Info.pm
 lib/SPVM/Time/Info.spvm
-lib/SPVM/Unicode.c
-lib/SPVM/Unicode.config
-lib/SPVM/Unicode.native/include/spvm_utf8proc.h
-lib/SPVM/Unicode.native/include/spvm_utf8proc_data.c
-lib/SPVM/Unicode.native/src/spvm_utf8proc.c
-lib/SPVM/Unicode.pm
-lib/SPVM/Unicode.spvm
 Makefile.PL
 MANIFEST			This list of files
 ppport.h
@@ -553,7 +546,6 @@ t/default/lib/SPVM/TestCase/Lib/ShortList.spvm
 t/default/lib/SPVM/TestCase/Lib/StringBuffer.spvm
 t/default/lib/SPVM/TestCase/Lib/StringList.spvm
 t/default/lib/SPVM/TestCase/Lib/Time.spvm
-t/default/lib/SPVM/TestCase/Lib/Unicode.spvm
 t/default/lib/SPVM/TestCase/LINEN.spvm
 t/default/lib/SPVM/TestCase/LINER.spvm
 t/default/lib/SPVM/TestCase/LINERN.spvm
@@ -685,7 +677,6 @@ t/default/SPVM_ShortList.t
 t/default/SPVM_StringBuffer.t
 t/default/SPVM_StringList.t
 t/default/SPVM_Time.t
-t/default/SPVM_Unicode.t
 t/default/string.t
 t/default/subtract.t
 t/default/switch.t

@@ -88,8 +88,6 @@ The list of SPVM Standard Modules.
 
 =item * L<Time::Info|SPVM::Time::Info> - Time Information
 
-=item * L<Unicode|SPVM::Unicode> - Unicode Utilities
-
 =back
 
 =head1 CPAN MODULES
@@ -101,5 +99,7 @@ The list of some CPAN modules.
 =item * L<Math|SPVM::Math> - Math functions
 
 =item * L<JSON|SPVM::JSON> - JSON
+
+=item * L<Unicode|SPVM::Unicode> - Unicode Utilities
 
 =back

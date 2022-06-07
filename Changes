@@ -1,4 +1,7 @@
 Revision history for SPVM
+0.9603_01  2022-06-07
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Remove Unicode module. Unicode module becomes CPAN module.
 0.9602_02  2022-06-07
         [CHANGE]
         * Add --no-pm-file option to spvmdist command
