@@ -505,6 +505,23 @@ class TestCase::Switch {
         return 0;
       }
     }
+
+    # Multiple case values at once
+    {
+      my $total = 0;
+      for (my $i = 0; $i < 2; $i++) {
+        switch ($i) {
+          case 0 :
+          case 1 :
+          {
+            $total++;
+          }
+        }
+      }
+      unless ($total == 2) {
+        return 0;
+      }
+    }
     
     return 1;
   }

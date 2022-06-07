@@ -703,6 +703,12 @@ sub print_error_messages {
     my $source = 'class Tmp { use Fn; static method main : void () { switch (1) { case Fn->INT32_MAX: {} } }}';
     compile_not_ok($source, qr/The operand of the case statement must be a constant value/);
   }
+  {
+    my $source = 'class Tmp { use Fn; static method main : void () { switch (1) { case 1: {} case 1: {} } }}';
+    compile_not_ok($source, qr/The values of the case statements can't be duplicated/);
+  }
+  
+  
 }
 
 done_testing;

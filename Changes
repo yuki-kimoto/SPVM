@@ -3,6 +3,7 @@ Revision history for SPVM
         [CHANGE]
         * switch statement can have only default statement.
         * switch statement don't need to have case statements.
+        * The values of the case statements can't be duplicated.
         * Perform unary numeric widening conversion to the condition of switch statement.
         * "break" statement can be ommited.
         * Improve the messages of the compilation errors.

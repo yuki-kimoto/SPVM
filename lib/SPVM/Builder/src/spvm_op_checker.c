@@ -464,6 +464,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   }
                 }
               }
+
+              // Check duplication
+              for (int32_t i = 0; i < switch_info->case_infos->length - 1; i++) {
+                SPVM_CASE_INFO* case_info = SPVM_LIST_get(switch_info->case_infos, i);
+                SPVM_CASE_INFO* case_info_next = SPVM_LIST_get(switch_info->case_infos, i + 1);
+                if (case_info->condition_value == case_info_next->condition_value) {
+                  SPVM_COMPILER_error(compiler, "The values of the case statements can't be duplicated at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
+                }
+              }
               
               SPVM_LIST_pop(check_ast_info->op_switch_stack);
 
