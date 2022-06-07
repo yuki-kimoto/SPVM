@@ -431,7 +431,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_CONSTANT* constant = op_constant->uv.constant;
 
                 if (op_constant->id != SPVM_OP_C_ID_CONSTANT) {
-                  SPVM_COMPILER_error(compiler, "case value must be constant at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The operand of the case statement must be a constant value at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
 

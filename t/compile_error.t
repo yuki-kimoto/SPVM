@@ -697,4 +697,12 @@ sub print_error_messages {
   }
 }
 
+# switch statement
+{
+  {
+    my $source = 'class Tmp { use Fn; static method main : void () { switch (1) { case Fn->INT32_MAX: {} } }}';
+    compile_not_ok($source, qr/The operand of the case statement must be a constant value/);
+  }
+}
+
 done_testing;
