@@ -7,7 +7,7 @@ Revision history for SPVM
         * Perform unary numeric widening conversion to the condition of switch statement.
         * "break" statement can be ommited.
         * Improve the messages of the compilation errors.
-0.9603_01  2022-06-07
+0.9604  2022-06-08
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove Unicode module. Unicode module becomes CPAN module.
         * Remove Regex module. Regex module becomes CPAN module.
