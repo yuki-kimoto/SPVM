@@ -561,7 +561,7 @@ use lib "$FindBin::Bin/lib";
 
 use SPVM 'TestCase::$class_name';
 
-ok(TestCase::$class_name->test);
+ok(SPVM::TestCase::$class_name->test);
 
 done_testing;
 EOS

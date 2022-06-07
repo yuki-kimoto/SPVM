@@ -119,7 +119,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo';"));
-  ok(SPVM::Builder::Util::file_contains($basic_test_file, "ok(TestCase::Foo->test);"));
+  ok(SPVM::Builder::Util::file_contains($basic_test_file, "ok(SPVM::TestCase::Foo->test);"));
 
   chdir($save_cur_dir) or die;
 }
