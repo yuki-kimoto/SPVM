@@ -1,4 +1,0 @@
-class Regex::Replacer : interface_t {
-  use Regex;
-  required method : string ($re : Regex);
-}

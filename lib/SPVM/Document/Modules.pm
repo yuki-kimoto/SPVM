@@ -66,12 +66,6 @@ The list of SPVM Standard Modules.
 
 =item * L<LongList|SPVM::LongList> - Dynamic long Array
 
-=item * L<Regex|SPVM::Regex> - Regular Expression
-
-=item * L<Regex::Pattern|SPVM::Regex::Pattern> - Regular Expression Pattern
-
-=item * L<Regex::Replacer|SPVM::Regex::Replacer> - Regular Expression Replacer
-
 =item * L<Short|SPVM::Short> - short Object
 
 =item * L<ShortList|SPVM::ShortList> - Dynamic short Array
@@ -96,9 +90,11 @@ The list of some CPAN modules.
 
 =over 2
 
+=item * L<JSON|SPVM::JSON> - JSON
+
 =item * L<Math|SPVM::Math> - Math functions
 
-=item * L<JSON|SPVM::JSON> - JSON
+=item * L<Regex|SPVM::Regex> - Regular Expression
 
 =item * L<Unicode|SPVM::Unicode> - Unicode Utilities
 

@@ -164,7 +164,6 @@ sub MY::postamble {
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('StringList');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('StringBuffer');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Hash');
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Regex');
   
   # Create precompile tests
   {
