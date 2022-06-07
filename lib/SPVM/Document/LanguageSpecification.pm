@@ -3278,7 +3278,7 @@ A enumeration block is a L<block|/"Block">.
 
 =head2 Scope Block
 
-A scope block is the block that has the L<scope|/"Scope">. Zero or more L<statements|/"Statements"> are written in a scope block.
+A scope block is the block that has the L<scope|/"Scope">. Zero or more L<statements|/"Statement"> are written in a scope block.
 
 Scope blocks are the L<simple block|/"Simple Block">, the L<method block|/"Method Block">, the L<eval block|/"eval Block">, the L<if block|/"if Block">, the L<elsif block|/"elsif Block">, the L<else block|/"else Block">, the L<for block|/"for Block">, the L<while block|/"while Block"> and the L<switch block|/"switch Block">.
 
@@ -3381,7 +3381,7 @@ A C<INIT> block must be defined directly under the L<class definition|/"Class De
     }
   }
 
-Zero or more L<statements|/"Statements"> can be written in a C<INIT> block.
+Zero or more L<statements|/"Statement"> can be written in a C<INIT> block.
 
   INIT {
     my $foo = 1 + 1;
@@ -6016,19 +6016,19 @@ If the type specified as the type comment is not found, a compilation error will
 
 Type comments have no meanings at runtime.
 
-=head1 Statements
+=head1 Statement
 
-Statements are the parts of syntax that can be written directly under L</"Scope Block">.
+Statements are syntax or operations that are written direct under a L<scope block|/"Scope Block">.
 
 =head2 empty Statement
 
-An empty statement is a L<statement|/"Statements"> that do nothing and ends with just C<;>.
+An empty statement is a L<statement|/"Statement"> that do nothing and ends with just C<;>.
 
   ;
 
 =head2 Operator Statement
 
-The operator statement is the L<statement|/"Statements"> that executes an L<operator|/"Operator">.
+The operator statement is the L<statement|/"Statement"> that executes an L<operator|/"Operator">.
 
 A operator statement is composed of an L<operator|/"Operator"> and C<;>.
 
@@ -6044,7 +6044,7 @@ B<Examples:>
 
 =head2 if Statement
 
-The C<if> statement is a L<statement|/"Statements"> for conditional branching.
+The C<if> statement is a L<statement|/"Statement"> for conditional branch.
 
   if (CONDITION) {
   
@@ -6155,7 +6155,7 @@ When a variable is declared in the conditional part of if Statement, it must be 
 
 =head2 unless Statement
 
-The C<unless> statement is a L<statement|/"Statements"> for conditional branches. 
+The C<unless> statement is a L<statement|/"Statement"> for conditional branches. 
 
   unless (CONDITION) {
     
@@ -6169,10 +6169,10 @@ This is the same as the following L<if Statement|/"if Statement">.
 
 =head2 switch Statement
 
-The C<switch> statement is a L<statement|/"Statements"> for conditional branching.
+The C<switch> statement is a L<statement|/"Statement"> for conditional branch.
 
   switch (CONDITION) {
-    case CASE_VALUE1: (
+    case CASE_VALUE1: {
       # ...
     }
     case CASE_VALUE2: {
@@ -6207,13 +6207,13 @@ The case statements and the default statement can be ommited.
 The break statement jumps to the end of the switch block.
 
   switch (CONDITION) {
-    case 1: (
+    case CASE_VALUE1: {
       break;
     }
-    case 2: {
+    case CASE_VALUE2: {
       break;
     }
-    case n: {
+    case CASE_VALUE3: {
       break;
     }
     default: {
@@ -6223,7 +6223,7 @@ The break statement jumps to the end of the switch block.
 
 If the last statment of the case block is not the break statement, a break statement is added to the end of the case block.
 
-Multiple case values are specifed at once.
+Multiple case values are specified at once.
 
   switch (CONDITION) {
     case CASE_VALUE1:
@@ -6263,15 +6263,15 @@ B<Examples:>
 
 =head2 case Statement
 
-The C<case> statement is a L<statement|/"Statements"> that can be used in a switch block to specify conditions. For more information on case statements, see the L</"switch Statement"> description.
+The C<case> statement is the L<statement|/"Statement"> that specifies a case value and a branch of a L<switch statement|/"switch Statement">.
 
 =head2 default Statement
 
-The C<default> statement is a L<statement|/"Statements"> that can be used in the switch block to specify the default condition. For more information on the default Statement, see the L</"switch Statement"> description.
+The C<default> statement is a L<statement|/"Statement"> that specifies a default branch of a L<switch statement|/"switch Statement">.
 
 =head2 while Statement
 
-The C<while> statement is a L<statement|/"Statements"> for repeating.
+The C<while> statement is a L<statement|/"Statement"> for repeating.
 
   while (CONDITION) {
   
@@ -6329,7 +6329,7 @@ The while Statement is internally enclosed by an invisible L</"Simple Block">.
 
 =head2 for Statement
 
-The C<for> Statement is a L<statement|/"Statements"> for repeating.
+The C<for> Statement is a L<statement|/"Statement"> for repeating.
 
   for (INIT_STATEMENT; CONDITION; INCREMENT_STATEMENT) {
   
@@ -6374,7 +6374,7 @@ Inside the for Block, you can use L</"next Statement"> to move immediately befor
 
 =head2 return Statement
 
-The C<return> statement is a L<statement|/"Statements"> to get out of the method. The object assigned to the mortal variable is automatically destroyed.
+The C<return> statement is a L<statement|/"Statement"> to get out of the method. The object assigned to the mortal variable is automatically destroyed.
 
   return;
 
@@ -6388,7 +6388,7 @@ the L<method definition|/"Method Definition">, if the Return Value Type is other
 
 =head2 next Statement
 
-The C<next> statement is a L<statement|/"Statements"> to move to the beginning of the next loop block.
+The C<next> statement is a L<statement|/"Statement"> to move to the beginning of the next loop block.
 
   next;
 
@@ -6396,7 +6396,7 @@ See also L</"while Statement">, L</"for Statement">.
 
 =head2 last Statement
 
-The C<last> statement" is a L<statement|/"Statements"> to move to the outside of the loop block.
+The C<last> statement" is a L<statement|/"Statement"> to move to the outside of the loop block.
 
   last;
 
@@ -6404,7 +6404,7 @@ See also L</"while Statement">, L</"for Statement">.
 
 =head2 break Statement
 
-The C<break> statement is a L<statement|/"Statements"> to move to the outside of the L<switch block|/"switch Block">.
+The C<break> statement is a L<statement|/"Statement"> to move to the outside of the L<switch block|/"switch Block">.
 
   break;
 
@@ -6412,7 +6412,7 @@ See also L</"switch Statement">.
 
 =head2 warn Statement
 
-The C<warn> statement is a L<statement|/"Statements"> to print a warning string to the standard error.
+The C<warn> statement is a L<statement|/"Statement"> to print a warning string to the standard error.
 
   warn OPERNAD;
 
@@ -6428,7 +6428,7 @@ The buffer of the standard error is flushed after the printing.
 
 =head2 die Statement
 
-The C<die> statement is a L<statement|/"Statements"> to L<throw an exception|/"Throwing Exception">.
+The C<die> statement is a L<statement|/"Statement"> to L<throw an exception|/"Throwing Exception">.
 
   die OPERAND;
 
@@ -6466,7 +6466,7 @@ B<Examples:>
 
 =head2 print Statement
 
-The C<print> statement is a L<statement|/"Statements"> to print a L<string|/"String"> to the standard output.
+The C<print> statement is a L<statement|/"Statement"> to print a L<string|/"String"> to the standard output.
 
   print OPERAND;
 
@@ -6476,7 +6476,7 @@ If the value of the operand is an L<undef|/"Undefined Value">, print nothing.
 
 =head2 make_read_only Statement
 
-The C<make_read_only> statement is a L<statement|/"Statements"> to make the L<string|/"Strings"> read-only.
+The C<make_read_only> statement is a L<statement|/"Statement"> to make the L<string|/"Strings"> read-only.
 
   make_read_only OPERAND;
 
@@ -6495,7 +6495,7 @@ Read-only strings can't be cast to L<string type|/"String Type"> qualified by L<
 
 =head2 weaken Statement
 
-The C<weaken> statement is a L<statement|/"Statements"> to create a L<weak reference|/"Weak Reference">.
+The C<weaken> statement is a L<statement|/"Statement"> to create a L<weak reference|/"Weak Reference">.
 
   weaken OBJECT->{FIELD_NAME};
 
@@ -6514,7 +6514,7 @@ B<Examples:>
 
 =head2 unweaken Statement
 
-The C<unweaken> statement is a L<statement|/"Statements"> to unweakens a L<weak reference|/"Weak Reference">.
+The C<unweaken> statement is a L<statement|/"Statement"> to unweakens a L<weak reference|/"Weak Reference">.
 
   unweaken OBJECT->{FIELD_NAME};
 
