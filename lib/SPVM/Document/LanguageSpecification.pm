@@ -6026,11 +6026,11 @@ An empty statement is a L<statement|/"Statement"> that do nothing and ends with 
 
   ;
 
-=head2 Operator Statement
+=head2 Operation Statement
 
-The operator statement is the L<statement|/"Statement"> that executes an L<operator|/"Operator">.
+The operation statement is the L<statement|/"Statement"> to execute an operation.
 
-A operator statement is composed of an L<operator|/"Operator"> and C<;>.
+A operation statement is composed of an L<operator|/"Operator"> and C<;>.
 
   OPERATOR;
 
