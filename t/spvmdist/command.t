@@ -411,7 +411,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
 # perl Makefile.PL && make && make test
 {
   my $tmp_dir = File::Temp->newdir;
-  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --native c --precompile Foo);
   my $save_cur_dir = getcwd();
   chdir($tmp_dir) or die;
   system($spvmdist_cmd) == 0
