@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9603_01  2022-06-07
+0.9604  2022-06-08
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove Unicode module. Unicode module becomes CPAN module.
         * Remove Regex module. Regex module becomes CPAN module.
