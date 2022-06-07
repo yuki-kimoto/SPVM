@@ -408,4 +408,23 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   chdir($save_cur_dir) or die;
 }
 
+# perl Makefile.PL && make && make test
+{
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  chdir('SPVM-Foo')
+    or die "Can't chdir";
+  
+  my $make = $Config{make};
+  my $ret = system("$^X Makefile.PL && $make && $make test");
+  ok($ret == 0);
+  
+  chdir($save_cur_dir) or die;
+}
+
 done_testing;
