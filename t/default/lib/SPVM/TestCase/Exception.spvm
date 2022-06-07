@@ -2,7 +2,6 @@ class TestCase::Exception {
   use TestCase::Minimal;
   use TestCase;
   use Comparator;
-  use Regex;
   
   our $CALLBACK_DIE_LINE  : rw int;
   our $ZERO_DIVIDE_INT_LINE : rw int;
