@@ -6,6 +6,8 @@ use Config;
 use Carp 'confess';
 use File::Basename 'dirname';
 
+use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
+
 # Fields
 sub class_name {
   my $self = shift;
@@ -58,6 +60,12 @@ sub new {
   my $self = {@_};
 
   return bless $self, ref $class || $class;
+}
+
+sub to_string {
+  my ($self) = @_;
+  
+  return $self->class_name;
 }
 
 1;

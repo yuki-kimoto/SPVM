@@ -24,6 +24,8 @@ Revision history for SPVM
           static method FLOAT_MIN : float()
           static method DOUBLE_MAX : double ()
           static method DOUBLE_MIN : double ()
+        * Add SPVM::Builder::Resource module
+        * Add use_resource method to SPVM::Builder::Config
 
 0.9604  2022-06-08
         [NON BACKWORD COMPATIBLE CHANGES]

@@ -445,6 +445,24 @@ sub add_resources {
 
 sub use { shift->add_resources(@_) }
 
+sub use_resource {
+  my ($self, @args) = @_;
+  
+  my %resource_args;
+  if (@args == 1) {
+    $resource_args{class_name} = $args[0];
+  }
+  else {
+    %resource_args = @args;
+  }
+  
+  my $resource = SPVM::Builder::Resource->new(%resource_args);
+  
+  $self->add_resources($resource);
+  
+  return $resource;
+}
+
 sub add_static_libs {
   my ($self, @static_libs) = @_;
   

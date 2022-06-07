@@ -724,7 +724,7 @@ sub link {
       mkpath $object_dir;
       
       my $object_file_infos = $builder_cc_resource->compile(
-        $resource,
+        "$resource",
         {
           src_dir => $src_dir,
           object_dir => $object_dir,
