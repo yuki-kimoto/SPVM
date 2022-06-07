@@ -67,6 +67,12 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo';"));
 
+  my $basic_test_spvm_module_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.spvm";
+  ok(-f $basic_test_spvm_module_file);
+  warn SPVM::Builder::Util::slurp_binary($basic_test_spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "class TestCase::Foo {"));
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "static method test : int () {"));
+  
   chdir($save_cur_dir) or die;
 }
 
