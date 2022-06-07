@@ -198,6 +198,28 @@ class TestCase::Lib::Fn3 {
 
     return 0;
   }
+  
+  static method spvm_like_constants : int () {
+    
+    unless (Fn->INT8_MAX == Fn->BYTE_MAX ) { return 0; }
+    unless (Fn->INT8_MIN == Fn->BYTE_MIN) { return 0; }
+    unless (Fn->INT16_MAX == Fn->SHORT_MAX ) { return 0; }
+    unless (Fn->INT16_MIN == Fn->SHORT_MIN ) { return 0; }
+    unless (Fn->INT32_MAX == Fn->INT_MAX ) { return 0; }
+    unless (Fn->INT32_MIN == Fn->INT_MIN ) { return 0; }
+    unless (Fn->INT64_MAX == Fn->LONG_MAX ) { return 0; }
+    unless (Fn->INT64_MIN == Fn->LONG_MIN ) { return 0; }
+    unless (Fn->UINT8_MAX == Fn->UBYTE_MAX ) { return 0; }
+    unless (Fn->UINT16_MAX == Fn->USHORT_MAX ) { return 0; }
+    unless (Fn->UINT32_MAX == Fn->UINT_MAX ) { return 0; }
+    unless (Fn->UINT64_MAX == Fn->ULONG_MAX ) { return 0; }
+    unless (Fn->FLT_MAX == Fn->FLOAT_MAX ) { return 0; }
+    unless (Fn->FLT_MIN == Fn->FLOAT_MIN ) { return 0; }
+    unless (Fn->DBL_MAX == Fn->DOUBLE_MAX ) { return 0; }
+    unless (Fn->DBL_MIN == Fn->DOUBLE_MIN ) { return 0; }
+    
+    return 1;
+  }
 
   static method copy_str : int () {
     my $string = "abc";

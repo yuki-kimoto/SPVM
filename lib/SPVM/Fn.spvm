@@ -15,23 +15,43 @@ class Fn : precompile {
   use StringBuffer;
   use StringList;
   
-  native static method DBL_MAX : double ();
-  native static method DBL_MIN : double ();
-  native static method FLT_MAX : float ();
-  native static method FLT_MIN : float();
+  # C-like max and minimal constants
+  static method INT8_MAX : byte () { return 127; }
+  static method INT8_MIN : byte () { return -128; }
   static method INT16_MAX : short () { return 32767; }
   static method INT16_MIN : short () { return -32768; }
   static method INT32_MAX : int () { return 2147483647; }
   static method INT32_MIN : int () { return -2147483648; }
   static method INT64_MAX : long () { return 9223372036854775807L; }
   static method INT64_MIN : long () { return -9223372036854775808L; }
-  static method INT8_MAX : byte () { return 127; }
-  static method INT8_MIN : byte () { return -128; }
-  native static method RAND_MAX : int ();
+  static method UINT8_MAX : byte () { return (byte)0xFF; }
   static method UINT16_MAX : short () { return (short)0xFFFF; }
   static method UINT32_MAX : int () { return 0xFFFFFFFF; }
   static method UINT64_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
-  static method UINT8_MAX : byte () { return (byte)0xFF; }
+  native static method FLT_MAX : float ();
+  native static method FLT_MIN : float();
+  native static method DBL_MAX : double ();
+  native static method DBL_MIN : double ();
+
+  # SPVM-like max and minimal constants
+  static method BYTE_MAX : byte () { return 127; }
+  static method BYTE_MIN : byte () { return -128; }
+  static method SHORT_MAX : short () { return 32767; }
+  static method SHORT_MIN : short () { return -32768; }
+  static method INT_MAX : int () { return 2147483647; }
+  static method INT_MIN : int () { return -2147483648; }
+  static method LONG_MAX : long () { return 9223372036854775807L; }
+  static method LONG_MIN : long () { return -9223372036854775808L; }
+  static method UBYTE_MAX : byte () { return (byte)0xFF; }
+  static method USHORT_MAX : short () { return (short)0xFFFF; }
+  static method UINT_MAX : int () { return 0xFFFFFFFF; }
+  static method ULONG_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
+  native static method FLOAT_MAX : float ();
+  native static method FLOAT_MIN : float();
+  native static method DOUBLE_MAX : double ();
+  native static method DOUBLE_MIN : double ();
+
+  native static method RAND_MAX : int ();
 
   static method abs : int ($x : int) {
     

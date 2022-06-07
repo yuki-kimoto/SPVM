@@ -12,10 +12,10 @@ SPVM::Fn - SPVM Starndard Functions
 
   use Fn;
   
-  my $int8_max = Fn->INT8_MAX();
-  my $int16_max = Fn->INT16_MAX();
-  my $int32_max = Fn->INT32_MAX();
-  my $int64_max = Fn->INT64_MAX();
+  my $byte_max = Fn->BYTE_MAX();
+  my $short_max = Fn->SHORT_MAX();
+  my $int_max = Fn->INT_MAX();
+  my $long_max = Fn->LONG_MAX();
   
   # Cut a newline LF
   {
@@ -208,97 +208,193 @@ Class method of B<Fn> module.
 
   static method DBL_MAX : double ()
 
-Return the value of DBL_MAX macro defined in C<float.h> header of C language.
+Return the value of C<DBL_MAX> macro defined in C<float.h> header of C language.
 
 =head2 DBL_MIN
 
   static method DBL_MIN : double ()
 
-Return the value of DBL_MIN macro defined in C<float.h> header of C language.
+Return the value of C<DBL_MIN> macro defined in C<float.h> header of C language.
 
 =head2 FLT_MAX
 
   static method FLT_MAX : float ()
 
-Return the value of FLT_MAX macro defined in C<float.h> header of C language.
+Return the value of C<FLT_MAX> macro defined in C<float.h> header of C language.
 
 =head2 FLT_MIN
 
   static method FLT_MIN : float ()
 
-Return the value of FLT_MIN macro defined in C<float.h> header of C language.
+Return the value of C<FLT_MIN> macro defined in C<float.h> header of C language.
 
 =head2 INT16_MAX
 
   static method INT16_MAX : short ()
 
-Return 32767. The maximum value of the signed 16bit integer.
+Return C<32767>. The maximum value of the signed 16bit integer.
 
 =head2 INT16_MIN
 
   static method INT16_MIN : short ()
 
-Return -32768. The minimal value of the signed 16bit integer. 
+Return C<-32768>. The minimal value of the signed 16bit integer. 
 
 =head2 INT32_MAX
 
   static method INT32_MAX : int ()
 
-Return 2147483647. The maximum value of the signed 32bit integer.
+Return C<2147483647>. The maximum value of the signed 32bit integer.
 
 =head2 INT32_MIN
 
   static method INT32_MIN : int ()
 
-Return -2147483648. The minimal value of the signed 32bit integer.
+Return C<-2147483648>. The minimal value of the signed 32bit integer.
 
 =head2 INT64_MAX
 
   static method INT64_MAX : long ()
 
-Return 9223372036854775807. The maximum value of the signed 64bit integer. 
+Return C<9223372036854775807>. The maximum value of the signed 64bit integer. 
 
 =head2 INT64_MIN
 
   static method INT64_MIN : long ()
 
-Return -9223372036854775808. The minimal value of signed 64bit integer.
+Return C<-9223372036854775808>. The minimal value of the signed 64bit integer.
 
 =head2 INT8_MAX
 
   INT8_MAX : byte ()
 
-Return 127. The maximum value of the signed 8bit integer.
+Return C<127>. The maximum value of the signed 8bit integer.
 
 =head2 INT8_MIN
 
   static method INT8_MIN : byte ()
 
-Return -128. The minimal value of the signed 8bit integer.
+Return C<-128>. The minimal value of the signed 8bit integer.
 
 =head2 UINT16_MAX
 
   static method UINT16_MAX : short ()
 
-Return -1. The same bit expression of 0xFFFF in the unsigned 16bit integer in 2's complement.
+Return C<-1>. This represents C<0xFFFF> in the unsigned 16bit integer in 2's complement.
 
 =head2 UINT32_MAX
 
   static method UINT32_MAX : int ()
 
-Return -1. The same bit expression of 0xFFFFFFFF in the unsigned 32bit integer in 2's complement.
+Return C<-1>. This represents C<0xFFFFFFFF> in the unsigned 32bit integer in 2's complement.
 
 =head2 UINT64_MAX
 
   static method UINT64_MAX : long ()
 
-Return -1. The same bit expression of 0xFFFFFFFFFFFFFFFF in the unsigned 64bit integer in 2's complement.
+Return C<-1>. This represents C<0xFFFFFFFFFFFFFFFF> in the unsigned 64bit integer in 2's complement.
 
 =head2 UINT8_MAX
 
   static method UINT8_MAX : byte ()
 
-Return -1. The same bit expression of 0xFF in the unsigned 8bit integer in 2's complement.
+Return C<-1>. The same bit expression of 0xFF in the unsigned 8bit integer in 2's complement.
+
+=head2 DOUBLE_MAX
+
+  static method DOUBLE_MAX : double ()
+
+Same as L</"DBL_MAX">.
+
+=head2 DOUBLE_MIN
+
+  static method DOUBLE_MIN : double ()
+
+Same as L</"DBL_MIN">.
+
+=head2 FLOAT_MAX
+
+  static method FLOAT_MAX : float ()
+
+Same as L</"FLT_MAX">.
+
+=head2 FLOAT_MIN
+
+  static method FLOAT_MIN : float()
+
+Same as L</"FLT_MIN">.
+
+=head2 SHORT_MAX
+
+  static method SHORT_MAX : short ()
+
+Same as L</"INT16_MAX">.
+
+=head2 SHORT_MIN
+  
+  static method SHORT_MIN : short ()
+
+Same as L</"INT16_MIN">.
+
+=head2 INT_MAX
+
+  static method INT_MAX : int ()
+
+Same as L</"INT32_MAX">.
+
+=head2 INT_MIN
+
+  static method INT_MIN : int ()
+
+Same as L</"INT32_MIN">.
+
+=head2 LONG_MAX
+
+  static method LONG_MAX : long ()
+
+Same as L</"INT64_MAX">.
+
+=head2 LONG_MIN
+
+  static method LONG_MIN : long ()
+
+Same as L</"INT64_MIN">.
+
+=head2 INT8_MAX
+
+  static method INT8_MAX : byte ()
+
+Same as L</"INT8_MAX">.
+
+=head2 BYTE_MIN
+
+  static method BYTE_MIN : byte ()
+
+Same as L</"INT8_MIN">.
+
+=head2 USHORT_MAX
+
+  static method USHORT_MAX : short ()
+
+Same as L</"UINT16_MAX">.
+
+=head2 UINT_MAX
+
+  static method UINT_MAX : int ()
+
+Same as L</"UINT32_MAX">.
+
+=head2 ULONG_MAX
+
+  static method ULONG_MAX : long
+
+Same as L</"UINT64_MAX">.
+
+=head2 UBYTE_MAX
+
+  static method UBYTE_MAX : byte ()
+
+Same as L</"UINT8_MAX">.
 
 =head2 abs
 

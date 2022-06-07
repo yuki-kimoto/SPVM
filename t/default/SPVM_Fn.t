@@ -88,6 +88,7 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn3->byte_constant);
   ok(SPVM::TestCase::Lib::Fn3->short_constant);
   ok(SPVM::TestCase::Lib::Fn3->int_constant);
+  ok(SPVM::TestCase::Lib::Fn3->spvm_like_constants);
 }
 
 {

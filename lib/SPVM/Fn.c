@@ -61,6 +61,42 @@ int32_t SPVM__Fn__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__FLOAT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  stack[0].fval = FLT_MAX;
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__FLOAT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  stack[0].fval = FLT_MIN;
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__DOUBLE_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  stack[0].dval = DBL_MAX;
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__DOUBLE_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  stack[0].dval = DBL_MIN;
+  
+  return 0;
+}
+
 // https://code.woboq.org/userspace/glibc/stdlib/rand_r.c.html
 static int
 SPVM__Fn__rand_r (uint32_t *seed)
