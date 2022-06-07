@@ -1,9 +1,10 @@
 Revision history for SPVM
-0.9603_01  2022-06-07
+0.9604_01  2022-06-07
         [CHANGE]
         * switch statement can have only default statement.
         * switch statement don't need to have case statements.
         
+0.9603_01  2022-06-07
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove Unicode module. Unicode module becomes CPAN module.
         * Remove Regex module. Regex module becomes CPAN module.
