@@ -1,5 +1,4 @@
 Revision history for SPVM
-<<<<<<< HEAD
 0.9603_01  2022-06-07
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove Unicode module. Unicode module becomes CPAN module.
