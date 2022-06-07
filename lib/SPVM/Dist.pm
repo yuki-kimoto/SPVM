@@ -552,13 +552,16 @@ sub generate_basic_test_file {
   
   # Content
   my $basic_test_content = <<"EOS";
-use strict;
-use warnings;
 use Test::More;
 
-use SPVM '$class_name';
+use strict;
+use warnings;
+use FindBin;
+use lib "$FindBin::Bin/lib";
 
-ok(1);
+use SPVM 'TestCase::$class_name';
+
+ok(TestCase::$class_name->test);
 
 done_testing;
 EOS
@@ -566,6 +569,28 @@ EOS
   # Generate file
   my $basic_test_rel_file = 't/basic.t';
   $self->generate_file($basic_test_rel_file, $basic_test_content);
+}
+
+sub generate_basic_test_spvm_module_file {
+  my ($self) = @_;
+  
+  # Class name
+  my $class_name = $self->class_name;
+  
+  # Content
+  my $basic_test_spvm_module_content = <<"EOS";
+class TestCase::$class_name {
+  static method test() : int {
+    
+    return 1;
+  }
+}
+EOS
+  
+  # Generate file
+  my $basic_test_spvm_module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file("TestCase::$class_name", 'spvm');
+  $basic_test_spvm_module_rel_file = "t/lib/$basic_test_spvm_module_rel_file";
+  $self->generate_file($basic_test_spvm_module_rel_file, $basic_test_spvm_module_content);
 }
 
 sub generate_dist {
@@ -624,6 +649,9 @@ sub generate_dist {
     
     # Generate t/basic.t file
     $self->generate_basic_test_file;
+
+    # Generate basic test SPVM module file
+    $self->generate_basic_test_spvm_module_file;
   }
 }
 
