@@ -6260,6 +6260,36 @@ B<Examples:>
       print "Other\n";
     }
   }
+  
+  # switch statement using enumeration
+  class Foo {
+    enum {
+      ID1,
+      ID2,
+      ID3,
+    }
+    
+    static method main : int () {
+      my $value = 1;
+      switch ($value) {
+        case Foo->ID1: {
+          print "1\n";
+        }
+        case Foo->ID2: {
+          print "2\n";
+        }
+        case Foo->ID3: {
+          if ($flag) {
+            break;
+          }
+          print "3\n";
+        }
+        default: {
+          print "Other\n";
+        }
+      }
+    }
+  }
 
 =head2 case Statement
 
