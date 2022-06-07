@@ -6269,6 +6269,12 @@ The C<case> statement is the L<statement|/"Statement"> that specifies a case val
 
 The C<default> statement is a L<statement|/"Statement"> that specifies a default branch of a L<switch statement|/"switch Statement">.
 
+=head2 break Statement
+
+The C<break> statement is a L<statement|/"Statement"> to jump to the end of the L<switch block|/"switch Block"> of the L<switch statement|/"switch Statement">.
+
+  break;
+
 =head2 while Statement
 
 The C<while> statement is a L<statement|/"Statement"> for repeating.
@@ -6401,14 +6407,6 @@ The C<last> statement" is a L<statement|/"Statement"> to move to the outside of 
   last;
 
 See also L</"while Statement">, L</"for Statement">.
-
-=head2 break Statement
-
-The C<break> statement is a L<statement|/"Statement"> to move to the outside of the L<switch block|/"switch Block">.
-
-  break;
-
-See also L</"switch Statement">.
 
 =head2 warn Statement
 
