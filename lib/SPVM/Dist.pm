@@ -580,7 +580,7 @@ sub generate_basic_test_spvm_module_file {
   # Content
   my $basic_test_spvm_module_content = <<"EOS";
 class TestCase::$class_name {
-  static method test() : int {
+  static method test : int() {
     
     return 1;
   }
