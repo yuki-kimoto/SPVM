@@ -224,6 +224,21 @@ class TestCase::Switch {
           return 0;
         }
       }
+
+      # break in default
+      {
+        my $success = 0;
+        switch (1) {
+          default: {
+            $success = 1;
+            break;
+            $success = 2;
+          }
+        }
+        unless ($success == 1) {
+          return 0;
+        }
+      }
     }
     
     # return statement in the switch statement
