@@ -993,15 +993,24 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case_
   op_term->flag = SPVM_OP_C_FLAG_CONSTANT_CASE;
   
   if (op_block) {
-    // case block last statement must be break;
     SPVM_OP* op_statements = op_block->first;
     if (op_statements) {
       SPVM_OP* op_last_statement = op_statements->last;
-      if (!(op_last_statement && (op_last_statement->id == SPVM_OP_C_ID_BREAK || op_last_statement->id == SPVM_OP_C_ID_RETURN))) {
-        SPVM_COMPILER_error(compiler, "Last statement of case block must be break or return statement at %s line %d", op_block->file, op_block->line);
+      
+      // Add "break" statement if it doesn't exist
+      {
+        // No statement
+        if (!op_last_statement) {
+          SPVM_OP* op_break = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BREAK, op_statements->file, op_statements->line);
+          SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_break);
+        }
+        // The last statement is not "break" statement
+        else if (op_last_statement->id != SPVM_OP_C_ID_BREAK) {
+          SPVM_OP* op_break = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BREAK, op_last_statement->file, op_last_statement->line + 1);
+          SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_break);
+        }
       }
     }
-    
     SPVM_OP_insert_child(compiler, op_case_info, op_case_info->last, op_block);
   }
   

@@ -316,7 +316,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             }
             case SPVM_OP_C_ID_BREAK: {
               if (check_ast_info->op_switch_stack->length == 0) {
-                SPVM_COMPILER_error(compiler, "break statement must be in switch block or switch block at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "break statement must be in switch block at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;

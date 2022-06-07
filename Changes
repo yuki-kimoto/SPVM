@@ -4,6 +4,7 @@ Revision history for SPVM
         * switch statement can have only default statement.
         * switch statement don't need to have case statements.
         * Perform unary numeric widening conversion to the condition of switch statement.
+        * "break" statement can be ommited.
         
 0.9603_01  2022-06-07
         [NON BACKWORD COMPATIBLE CHANGES]

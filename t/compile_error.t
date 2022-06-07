@@ -126,16 +126,6 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::OArray::AssignNumericArray');
 }
 
-# Call sub
-{
-  {
-    
-    compile_not_ok_file('TestCase::CompileError::Switch::NoLastBreak');
-    
-    
-  }
-}
-
 # Multi-numeric
 {
   compile_not_ok_file('TestCase::CompileError::MultiNumeric::FieldsZero');
