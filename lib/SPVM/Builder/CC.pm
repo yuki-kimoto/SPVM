@@ -16,6 +16,7 @@ use SPVM::Builder::Util;
 use SPVM::Builder::Config;
 use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
+use SPVM::Builder::Resource;
 
 sub category {
   my $self = shift;

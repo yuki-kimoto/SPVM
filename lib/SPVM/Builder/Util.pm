@@ -370,6 +370,7 @@ sub get_spvm_builder_module_file_names {
     SPVM/Builder/Exe.pm
     SPVM/Builder/LinkInfo.pm
     SPVM/Builder/ObjectFileInfo.pm
+    SPVM/Builder/Resource.pm
     SPVM/Builder.pm
     SPVM/Builder/Util/API.pm
     SPVM/Builder/Util.pm
