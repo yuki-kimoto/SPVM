@@ -424,12 +424,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_LIST* cases = switch_info->case_infos;
               int32_t cases_length = cases->length;
               
-              // Need at least one case
-              if (cases_length == 0) {
-                SPVM_COMPILER_error(compiler, "Switch statement need at least one case statement in  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-
               // Check case type
               for (int32_t i = 0; i < cases_length; i++) {
                 SPVM_CASE_INFO* case_info = SPVM_LIST_get(cases, i);
@@ -474,14 +468,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               op_cur->uv.switch_info->switch_id = compiler->switch_infos->length;
               SPVM_LIST_push(compiler->switch_infos, op_cur->uv.switch_info);
-              
-              // Min
-              SPVM_CASE_INFO* case_info_mini = SPVM_LIST_get(switch_info->case_infos, 0);
-              int32_t min = case_info_mini->condition_value;
-              
-              // Max
-              SPVM_CASE_INFO* case_info_max = SPVM_LIST_get(switch_info->case_infos, switch_info->case_infos->length - 1);
-              int32_t max = case_info_max->condition_value;
               
               // Decide switch type
               switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;

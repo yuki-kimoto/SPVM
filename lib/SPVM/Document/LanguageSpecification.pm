@@ -1150,7 +1150,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> method anon_method opt_args args arg has use require alias our
   %type <opval> opt_descriptors descriptors
   %type <opval> opt_statements statements statement if_statement else_statement
-  %type <opval> for_statement while_statement switch_statement case_statement default_statement
+  %type <opval> for_statement while_statement
+  %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
   %type <opval> block eval_block init_block switch_block if_require_statement
   %type <opval> unary_operator binary_operator comparison_operator isa
   %type <opval> call_spvm_method opt_vaarg
@@ -1158,7 +1159,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> assign inc dec allow has_impl
   %type <opval> new array_init
   %type <opval> var_decl var interface
-  %type <opval> operator opt_operators operators opt_operator case_statements logical_operator
+  %type <opval> operator opt_operators operators opt_operator logical_operator
   %type <opval> field_name method_name class_name class_alias_name is_read_only
   %type <opval> type qualified_type basic_type array_type
   %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
@@ -1336,8 +1337,12 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : SWITCH '(' operator ')' switch_block
 
   switch_block
-    : '{' case_statements '}'
-    | '{' case_statements default_statement '}'
+    : '{' opt_case_statements '}'
+    | '{' opt_case_statements default_statement '}'
+
+  opt_case_statements
+    : /* Empty */
+    | case_statements
 
   case_statements
     : case_statements case_statement

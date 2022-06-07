@@ -159,6 +159,29 @@ class TestCase::Switch {
           return 0;
         }
       }
+      
+      # Only default
+      {
+        my $success : int;
+        switch (1) {
+          default: {
+            $success = 1;
+          }
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+
+      # No cases and default
+      {
+        my $success = 0;
+        switch (1) {}
+        $success = 1;
+        unless ($success) {
+          return 0;
+        }
+      }
     }
     
     # return statement in the switch statement

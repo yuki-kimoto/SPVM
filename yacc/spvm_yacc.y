@@ -34,7 +34,8 @@
 %type <opval> method anon_method opt_args args arg has use require alias our
 %type <opval> opt_descriptors descriptors
 %type <opval> opt_statements statements statement if_statement else_statement 
-%type <opval> for_statement while_statement switch_statement case_statement default_statement
+%type <opval> for_statement while_statement 
+%type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
 %type <opval> block eval_block init_block switch_block if_require_statement
 %type <opval> unary_operator binary_operator comparison_operator isa
 %type <opval> call_spvm_method opt_vaarg
@@ -42,7 +43,7 @@
 %type <opval> assign inc dec allow has_impl
 %type <opval> new array_init
 %type <opval> var_decl var interface
-%type <opval> operator opt_operators operators opt_operator case_statements logical_operator
+%type <opval> operator opt_operators operators opt_operator logical_operator
 %type <opval> field_name method_name class_name class_alias_name is_read_only
 %type <opval> type qualified_type basic_type array_type
 %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
@@ -525,17 +526,34 @@ switch_statement
     }
 
 switch_block
-  : '{' case_statements '}'
+  : '{' opt_case_statements '}'
     {
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->cur_file, compiler->cur_line);
       op_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH;
       $$ = SPVM_OP_build_switch_block(compiler, op_block, $2, NULL);
     }
-  | '{' case_statements default_statement '}'
+  | '{' opt_case_statements default_statement '}'
     {
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->cur_file, compiler->cur_line);
       op_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH;
       $$ = SPVM_OP_build_switch_block(compiler, op_block, $2, $3);
+    }
+
+opt_case_statements
+  : /* Empty */
+    {
+      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+    }
+  | case_statements
+    {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
+        $$ = $1;
+      }
+      else {
+        SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+        $$ = op_list;
+      }
     }
 
 case_statements
