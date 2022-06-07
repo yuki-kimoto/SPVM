@@ -182,6 +182,20 @@ class TestCase::Switch {
           return 0;
         }
       }
+
+      # No cases and default
+      {
+        my $success = 0;
+        switch ((byte)1) {
+          case 1: {
+            $success = 1;
+            break;
+          }
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
     }
     
     # return statement in the switch statement
