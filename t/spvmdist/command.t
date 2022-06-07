@@ -69,7 +69,6 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
 
   my $basic_test_spvm_module_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.spvm";
   ok(-f $basic_test_spvm_module_file);
-  warn SPVM::Builder::Util::slurp_binary($basic_test_spvm_module_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "class TestCase::Foo {"));
   ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "static method test : int () {"));
   
@@ -151,6 +150,15 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(-f $spvm_module_file);
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo::Bar::Baz {"));
   
+  my $basic_test_file = "$tmp_dir/SPVM-Foo-Bar-Baz/t/basic.t";
+  ok(-f $basic_test_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo::Bar::Baz';"));
+
+  my $basic_test_spvm_module_file = "$tmp_dir/SPVM-Foo-Bar-Baz/t/lib/SPVM/TestCase/Foo/Bar/Baz.spvm";
+  ok(-f $basic_test_spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "class TestCase::Foo::Bar::Baz {"));
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "static method test : int () {"));
+
   chdir($save_cur_dir) or die;
 }
 
@@ -384,6 +392,18 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
 
   ok(-f $spvm_module_file);
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  
+  chdir($save_cur_dir) or die;
+}
+
+# perl Makefile.PL && make && make test
+{
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
   chdir($save_cur_dir) or die;
 }
