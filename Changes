@@ -1,9 +1,5 @@
 Revision history for SPVM
-0.9603_01  2022-06-07
-        [NON BACKWORD COMPATIBLE CHANGES]
-        * Remove Unicode module. Unicode module becomes CPAN module.
-        * Remove Regex module. Regex module becomes CPAN module.
-0.9602_02  2022-06-07
+0.9603  2022-06-07
         [CHANGE]
         * Add --no-pm-file option to spvmdist command
         * Add Fn->is_hex_digit.
@@ -25,6 +21,8 @@ Revision history for SPVM
         * Remove Fn->replace.
         * Remove Fn->match.
         * "SPVM-" prefix is added to the default output directory of "spvmdist" command.
+        * Remove Unicode module. Unicode module becomes CPAN module.
+        * Remove Regex module. Regex module becomes CPAN module.
 0.9602  2022-06-07
         [CHANGE]
         * Improve compilation error messages.
