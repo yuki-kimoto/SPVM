@@ -180,7 +180,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
 
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "SPVM::Builder::Util::API::create_make_rule_native('Foo')"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Foo')"));
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
@@ -215,7 +215,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
 
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "SPVM::Builder::Util::API::create_make_rule_native('Foo')"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Foo')"));
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
@@ -245,7 +245,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
 
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "SPVM::Builder::Util::API::create_make_rule_precompile('Foo')"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Foo')"));
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(!-f $native_config_file);

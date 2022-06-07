@@ -482,10 +482,10 @@ sub generate_makefile_pl_file {
   my $class_name = $self->class_name;
 
   # Native make rule
-  my $make_rule_native = $self->native ? "SPVM::Builder::Util::API::create_make_rule_native('$class_name');" : '';
+  my $make_rule_native = $self->native ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('$class_name');" : '';
   
   # Precompile make rule
-  my $make_rule_precompile = $self->precompile ? "SPVM::Builder::Util::API::create_make_rule_precompile('$class_name');" : '';
+  my $make_rule_precompile = $self->precompile ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('$class_name');" : '';
 
   my $perl_module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
   $perl_module_rel_file =  $self->create_lib_rel_file($perl_module_rel_file);
