@@ -75,17 +75,6 @@ sub no_compiler_api {
   }
 }
 
-sub dynamic_lib {
-  my $self = shift;
-  if (@_) {
-    $self->{dynamic_lib} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{dynamic_lib};
-  }
-}
-
 1;
 
 =head1 NAME
