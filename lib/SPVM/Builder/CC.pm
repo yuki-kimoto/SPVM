@@ -518,7 +518,7 @@ sub compile {
       source_file => $source_file,
       cc => $compile_info_cc,
       ccflags => $compile_info_ccflags,
-      is_exe_config => $config->is_exe,
+      config => $config,
       source_type => $cur_is_native_module ? 'native_module' : 'resource',
     );
     
@@ -844,7 +844,7 @@ sub link {
         my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
           object_file => $found_lib_file,
           class_name => $class_name,
-          is_exe_config => 0,
+          config => $config,
           is_lib_file => 1,
         );
         

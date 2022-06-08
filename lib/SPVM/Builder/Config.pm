@@ -227,7 +227,16 @@ sub dependent_files {
   }
 }
 
-sub is_exe { 0 }
+sub output_type {
+  my $self = shift;
+  if (@_) {
+    $self->{output_type} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{output_type};
+  }
+}
 
 # Methods
 sub new {
@@ -318,22 +327,6 @@ sub new {
     $self->libs([]);
   }
   
-  # ldflags
-  unless (defined $self->{ldflags}) {
-    $self->ldflags([]);
-    
-    my @default_ldflags;
-    
-    # Dynamic link options
-    if ($^O eq 'MSWin32') {
-      push @default_ldflags, '-mdll', '-s';
-    }
-    else {
-      push @default_ldflags, '-shared';
-    }
-    $self->add_ldflags(@default_ldflags);
-  }
-
   # ld_optimize
   unless (defined $self->{ld_optimize}) {
     $self->ld_optimize('-O2');
@@ -341,6 +334,28 @@ sub new {
 
   unless (defined $self->{dependent_files}) {
     $self->{dependent_files} = [];
+  }
+  
+  unless (defined $self->output_type) {
+    $self->output_type('dynamic_lib');
+  }
+
+  # ldflags
+  unless (defined $self->{ldflags}) {
+    $self->ldflags([]);
+    
+    if ($self->output_type eq 'dynamic_lib') {
+      my @default_ldflags;
+      
+      # Dynamic link options
+      if ($^O eq 'MSWin32') {
+        push @default_ldflags, '-mdll', '-s';
+      }
+      else {
+        push @default_ldflags, '-shared';
+      }
+      $self->add_ldflags(@default_ldflags);
+    }
   }
   
   return $self;
@@ -1211,8 +1226,9 @@ Get the source directory from the config file name.
 
 Get the library directory from the config file name.
 
-=head2 is_exe
+=head2 output_type
 
-  my $is_exe = $config->is_exe;
+  my $output_type = $config->output_type;
+  $config->output_type($type);
 
-Check this config is used for creating executalbe file. Always 0.
+Get and set the output type. C<dynamic_lib>, C<static_lib>, or C<exe>. The default is C<dynamic_lib>.

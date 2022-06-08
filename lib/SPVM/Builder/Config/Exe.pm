@@ -11,12 +11,12 @@ use base 'SPVM::Builder::Config';
 sub new {
   my ($self, %options) = @_;
   
-  unless (defined $options{ldflags}) {
-    $options{ldflags} = [];
+  unless (defined $options{output_type}) {
+    $options{output_type} = 'exe';
   }
   
   $self = $self->SUPER::new(%options);
-  
+
   return $self;
 }
 
@@ -86,25 +86,17 @@ sub dynamic_lib {
   }
 }
 
-
-sub static_lib {
-  my $self = shift;
-  if (@_) {
-    $self->{static_lib} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{static_lib};
-  }
-}
-
-sub is_exe { 1 }
-
 1;
 
 =head1 NAME
 
 SPVM::Builder::Config::Exe - Configurations of creating excutable files.
+
+=head1 SYNOPSYS
+
+  use SPVM::Builder::Config::Exe;
+  
+  my $config = SPVM::Builder::Config::Exe->new_gnu99;
 
 =head1 DESCRIPTION
 
@@ -300,30 +292,16 @@ If C<no_precompile> is a true value, precompiling is not performed.
 
 If C<no_compiler_api> is a true value, the source codes of the L<compiler native APIs|SPVM::Document::NativeAPI::Compiler> and the L<precompile native APIs|SPVM::Document::NativeAPI::Precompile> is not linked.
 
-=head2 dynamic_lib
-
-  my $dynamic_lib = $config->dynamic_lib;
-  $config->dynamic_lib($dynamic_lib);
-
-If C<dynamic_lib> is a true value, a dynamic library is created instead of a executable file.
-
-A dynamic library means a shared library C<foo.so> on C<Linux/UNIX>, a Mach-O Dynamic Library C<foo.dylib> on C<Mac>, a dynamic link library C<foo.dll> on C<Windows>.
-
-=head2 static_lib
-
-  my $static_lib = $config->static_lib;
-  $config->static_lib($static_lib);
-
-If C<static_lib> is a true value, a static library C<foo.a> on C<Linux/UNIX> is created instead of a executable file.
-
 =head1 METHODS
 
 Methods of B<SPVM::Builder::Config::Exe>.
 
 Methods are inherited from L<SPVM::Builder::Config> and you can use the following methods.
 
-=head2 is_exe
+=head2 new
 
-  my $is_exe = $config->is_exe;
+  my $config = SPVM::Builder::Config::Exe->new;
 
-Check this config is used for creating executalbe file. Always 1.
+Create a new C<SPVM::Builder::Config::Exe> object.
+
+This is same as L<SPVM::Builder::Config/"new">, but set C<output_type> field to C<exe>.

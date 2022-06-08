@@ -64,17 +64,6 @@ sub class_name {
   }
 }
 
-sub is_resource {
-  my $self = shift;
-  if (@_) {
-    $self->{is_resource} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{is_resource};
-  }
-}
-
 sub is_lib_file {
   my $self = shift;
   if (@_) {
@@ -97,14 +86,14 @@ sub source_type {
   }
 }
 
-sub is_exe_config {
+sub config {
   my $self = shift;
   if (@_) {
-    $self->{is_exe_config} = $_[0];
+    $self->{config} = $_[0];
     return $self;
   }
   else {
-    return $self->{is_exe_config};
+    return $self->{config};
   }
 }
 
@@ -179,13 +168,6 @@ Get and set the compiler flags that compiled the object file. The default value 
 
 Get and set the class name belonged to when the object file was compiled.
 
-=head2 is_resource
-
-  my $is_resource = $object_file_info->is_resource;
-  $object_file_info->is_resource($is_resource);
-
-Get and set if the object file(this is static library(.a)) is a resource.
-
 =head2 is_lib_file
 
   my $is_lib_file = $object_file_info->is_lib_file;
@@ -200,12 +182,12 @@ Get and set if the object file is a library file.
 
 Get and set source type. C<native_module> or C<resource>.
 
-=head2 is_exe_config
+=head2 config
 
-  my $is_exe_config = $object_file_info->is_exe_config;
-  $object_file_info->is_exe_config($is_exe_config);
+  my $config = $object_file_info->config;
+  $object_file_info->config($config);
 
-Get and set if the object file is compiled using L<SPVM::Builder::Config::Exe>.
+Get and set the L<config|SPVM::Builder::Config> that is used to compile the source file.
 
 =head1 METHODS
 

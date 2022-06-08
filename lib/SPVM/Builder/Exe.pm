@@ -176,7 +176,7 @@ sub new {
   my $config;
   if (defined $config_file) {
     $config = SPVM::Builder::Config::Exe->load_config($config_file);
-    unless ($config->is_exe) {
+    unless ($config->output_type eq 'exe') {
       confess "Config file \"$config_file\" is not the config to create the executable file";
     }
   }
@@ -325,7 +325,7 @@ sub compile_source_file {
     source_file => $source_file,
     cc => $compile_info_cc,
     ccflags => $compile_info_ccflags,
-    is_exe_config => $config->is_exe,
+    config => $config,
   );
   
   return $object_file_info;
@@ -996,7 +996,7 @@ sub link {
     object_file_infos => $object_file_infos,
     ld => $ld,
     ldflags => \@all_ldflags,
-    is_exe => 1,
+    config => $config,
     output_file => $output_file,
   );
 
@@ -1014,14 +1014,13 @@ sub link {
     my $link_info_object_files = [map { $_->to_string } @$link_info_object_file_infos];
     my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
     
-    my $dynamic_lib = $config->dynamic_lib;
-    my $static_lib = $config->static_lib;
+    my $output_type = $config->output_type;
     
     # CBuilder
     my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
 
     # Create a dynamic library
-    if ($dynamic_lib) {
+    if ($output_type eq 'dynamic_lib') {
       my $link_info_output_dir = dirname $link_info_output_file;
       my $link_info_output_file_base = basename $link_info_output_file;
       my $lib_file = $link_info_output_file;
@@ -1037,7 +1036,7 @@ sub link {
       );
     }
     # Create a static library
-    elsif ($static_lib) {
+    elsif ($output_type eq 'static_lib') {
       my $link_info_output_dir = dirname $link_info_output_file;
       my $link_info_output_file_base = basename $link_info_output_file;
       my $lib_file = $link_info_output_file;
@@ -1050,13 +1049,16 @@ sub link {
       $cbuilder->do_system(@ar_cmd);
     }
     # Create an executable file
-    else {
+    elsif ($output_type eq 'exe') {
       $cbuilder->link_executable(
         objects => $link_info_object_files,
         module_name => $link_info_class_name,
         exe_file => $link_info_output_file,
         extra_linker_flags => $link_info_ldflags_str,
       );
+    }
+    else {
+      confess "Unknown output_type \"$output_type\"";
     }
   }
   

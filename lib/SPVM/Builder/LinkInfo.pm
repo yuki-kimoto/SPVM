@@ -62,14 +62,14 @@ sub class_name {
   }
 }
 
-sub is_exe {
+sub config {
   my $self = shift;
   if (@_) {
-    $self->{is_exe} = $_[0];
+    $self->{config} = $_[0];
     return $self;
   }
   else {
-    return $self->{is_exe};
+    return $self->{config};
   }
 }
 
@@ -148,12 +148,12 @@ Get and set the object file informations to be linked. Each object file is L<SPV
 
 Get and set the class name.
 
-=head2 is_exe
+=head2 config
 
-  my $is_exe = $link_info->is_exe;
-  $link_info->is_exe($is_exe);
+  my $config = $link_info->config;
+  $link_info->config($config);
 
-Get and set if the output file is executable file.
+Get and set the L<config|SPVM::Builder::Config> that is used to link the objects.
 
 =head1 METHODS
 
