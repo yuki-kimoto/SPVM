@@ -9,14 +9,14 @@ use File::Basename 'dirname';
 use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
 
 # Fields
-sub object_file {
+sub file {
   my $self = shift;
   if (@_) {
-    $self->{object_file} = $_[0];
+    $self->{file} = $_[0];
     return $self;
   }
   else {
-    return $self->{object_file};
+    return $self->{file};
   }
 }
 
@@ -101,7 +101,7 @@ sub config {
 sub to_string {
   my ($self) = @_;
   
-  return $self->object_file;
+  return $self->file;
 }
 
 # Methods
@@ -133,19 +133,19 @@ B<SPVM::Builder::ObjectFileInfo> is a object file information. This infromation 
 
 Fields of B<SPVM::Builder::ObjectFileInfo>.
 
-=head2 object_file
+=head2 file
 
-  my $object_file = $object_file_info->object_file;
-  $object_file_info->object_file($object_file);
+  my $file = $object_file_info->file;
+  $object_file_info->file($file);
 
-Get and set the object file that is compiled.
+Get and set the path of the object file.
 
 =head2 source_file
 
   my $source_file = $object_file_info->source_file;
   $object_file_info->source_file($source_file);
 
-Get and set the source file that is the source of the compiled object file.
+Get and set the path of source file.
 
 =head2 cc
 

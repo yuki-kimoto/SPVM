@@ -321,7 +321,7 @@ sub compile_source_file {
   }
   
   my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
-    object_file => $output_file,
+    file => $output_file,
     source_file => $source_file,
     cc => $compile_info_cc,
     ccflags => $compile_info_ccflags,

@@ -16,6 +16,7 @@ Revision history for SPVM
         * Remove is_exe field from SPVM::Builder::ObjectFileInfo.
         * Remove is_exe field from SPVM::Builder::LinkInfo.
         * Remove is_lib_file field from SPVM::Builder::ObjectFileInfo.
+        * Rename SPVM::Builder::ObjectFileInfo's "object_file" field to "file".
         
 0.9604_01  2022-06-07
         [CHANGE]

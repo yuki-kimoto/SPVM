@@ -513,8 +513,8 @@ sub compile {
     }
     
     my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
-      object_file => $object_file,
       class_name => $class_name,
+      file => $object_file,
       source_file => $source_file,
       cc => $compile_info_cc,
       ccflags => $compile_info_ccflags,
@@ -847,9 +847,8 @@ sub link {
         push @lib_files, $found_lib_file;
         
         my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
-          object_file => $found_lib_file,
+          file => $found_lib_file,
           class_name => $class_name,
-          config => $config,
           lib_type => $lib_type,
         );
         
