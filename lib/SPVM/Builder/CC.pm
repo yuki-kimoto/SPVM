@@ -518,7 +518,7 @@ sub compile {
       cc => $compile_info_cc,
       ccflags => $compile_info_ccflags,
       is_exe_config => $config->is_exe,
-      is_native_module => $is_native_module,
+      source_type => $is_native_module ? 'native_module' : 'resource',
     );
     
     push @$object_file_infos, $object_file_info;
