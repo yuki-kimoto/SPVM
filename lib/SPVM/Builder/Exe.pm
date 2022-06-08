@@ -830,7 +830,7 @@ sub create_precompile_sources {
       $builder_c_precompile->create_precompile_source_file(
         $class_name,
         {
-          input_dir => $build_src_dir,
+          output_dir => $build_src_dir,
         }
       );
     }

@@ -145,7 +145,7 @@ sub build_shared_lib_runtime {
     $self->create_precompile_source_file(
       $class_name,
       {
-        input_dir => $build_src_dir,
+        output_dir => $build_src_dir,
       }
     );
   }
@@ -187,7 +187,7 @@ sub build_shared_lib_dist {
     $self->create_precompile_source_file(
       $class_name,
       {
-        input_dir => $build_src_dir,
+        output_dir => $build_src_dir,
       }
     );
   }
@@ -956,39 +956,31 @@ sub link {
 
 sub create_precompile_source_file {
   my ($self, $class_name, $opt) = @_;
-
-  my $input_dir = $opt->{input_dir};
-  mkpath $input_dir;
   
-  # Module file - Input
+  # Output - Precompile C source file
+  my $output_dir = $opt->{output_dir};
+  my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
+  my $source_file = "$output_dir/$source_rel_file";
+  
+  # Check if generating is needed
   my $module_file = $self->builder->get_module_file($class_name);
-  
-  # Precompile source file - Output
-  my $class_rel_file_without_ext = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
-  my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
-  my $source_file = "$input_dir/$class_rel_file_without_ext.precompile.c";
-  
   my $spvm_module_dir = $INC{'SPVM/Builder.pm'};
   $spvm_module_dir =~ s/\.pm$//;
   $spvm_module_dir .= '/src';
-  
   my $spvm_precompile_soruce_file = "$spvm_module_dir/spvm_precompile.c";
-  
   unless (-f $spvm_precompile_soruce_file) {
     confess "Can't find $spvm_precompile_soruce_file";
   }
-
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $self->force,
     output_file => $source_file,
     input_files => [$module_file, $spvm_precompile_soruce_file],
   });
   
+  # Generate precompile C source file
   if ($need_generate) {
-    my $source_dir = "$input_dir/$class_rel_dir";
-    mkpath $source_dir;
-    
     my $precompile_source = $self->create_precompile_source($class_name);
+    mkpath dirname $source_file;
     open my $fh, '>', $source_file
       or die "Can't create $source_file";
     print $fh $precompile_source;
