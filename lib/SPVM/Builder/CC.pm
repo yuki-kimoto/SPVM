@@ -292,7 +292,7 @@ sub compile {
     mkpath $build_dir;
   }
   else {
-    confess "SPVM_BUILD_DIR environment variable must be set for compile";
+    confess "Build directory is not specified. Maybe forget to set \"SPVM_BUILD_DIR\" environment variable?";
   }
   
   # Source directory
@@ -339,19 +339,19 @@ sub compile {
     else { confess 'Unexpected Error' }
   }
   
-  # Native Directory
-  my $native_dir = $module_file;
-  $native_dir =~ s/\.spvm$//;
-  $native_dir .= '.native';
+  # Resource directory
+  my $resource_dir = $module_file;
+  $resource_dir =~ s/\.spvm$//;
+  $resource_dir .= '.native';
   
   # Runtime include directries
   my @runtime_include_dirs;
 
   # Include directory
-  my $native_include_dir = "$native_dir/include";
+  my $resource_include_dir = "$resource_dir/include";
   
   # Add native include dir
-  push @runtime_include_dirs, $native_include_dir;
+  push @runtime_include_dirs, $resource_include_dir;
   
   if ($category eq 'native') {
     
@@ -368,7 +368,7 @@ sub compile {
   unshift @{$config->include_dirs}, @runtime_include_dirs;
 
   # Source directory
-  my $native_src_dir = "$native_dir/src";
+  my $resource_src_dir = "$resource_dir/src";
   
   # Quiet output
   my $quiet = $config->quiet;
@@ -384,24 +384,24 @@ sub compile {
   }
   
   
-  # SPVM Method source file
+  # Native module file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
-  my $spvm_method_src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
+  my $native_module_file_no_ext = "$src_dir/$src_rel_file_no_ext";
   my $src_ext = $config->ext;
   unless (defined $src_ext) {
     confess "Source extension is not specified";
   }
   
   my @all_source_files;
-  my $spvm_method_src_file;
+  my $native_module_file;
   my $is_resource = $opt->{is_resource};
   unless ($is_resource) {
-    $spvm_method_src_file = "$spvm_method_src_file_no_ext.$src_ext";
-    if (-f $spvm_method_src_file) {
-      push @all_source_files, $spvm_method_src_file;
+    $native_module_file = "$native_module_file_no_ext.$src_ext";
+    if (-f $native_module_file) {
+      push @all_source_files, $native_module_file;
     }
     else {
-      confess "Can't find source file $spvm_method_src_file";
+      confess "Can't find source file $native_module_file";
     }
   }
   
@@ -409,12 +409,12 @@ sub compile {
   my $source_files = $config->source_files;
 
   # Native source files
-  my $native_src_files = [map { "$native_src_dir/$_" } @$source_files ];
+  my $native_src_files = [map { "$resource_src_dir/$_" } @$source_files ];
   push @all_source_files, @$native_src_files;
 
   # Native header files
   my @include_file_names;
-  if (-d $native_include_dir) {
+  if (-d $resource_include_dir) {
     find(
       {
         wanted => sub {
@@ -425,7 +425,7 @@ sub compile {
         },
         no_chdir => 1,
       },
-      $native_include_dir,
+      $resource_include_dir,
     );
   }
   
@@ -454,7 +454,7 @@ sub compile {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
       
       my $object_file_base = $source_file;
-      $object_file_base =~ s/^\Q$native_src_dir//;
+      $object_file_base =~ s/^\Q$resource_src_dir//;
       $object_file_base =~ s/^[\\\/]//;
       
       $object_file_base =~ s/\.[^\.]+$/.o/;
