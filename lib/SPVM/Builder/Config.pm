@@ -480,7 +480,28 @@ sub use_resource {
   
   my $resource = SPVM::Builder::Resource->new(%resource_args);
   
-  my $resouce_class_name = 
+  my $resource_class_name = $resource->class_name;
+  my $resource_mode = $resource->mode;
+  my $resource_args = $resource->args;
+  
+  my $ext = defined $resource_mode ? "$resource_mode.config" : 'config';
+  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, $ext);
+  
+  my $config_file;
+  for my $inc (@INC) {
+    my $config_file_tmp = "$inc/$config_file_base";
+    if (-f $config_file_tmp) {
+      $config_file = $config_file_tmp;
+      last;
+    }
+  }
+  unless (defined $config_file) {
+    confess "Can't find resource config file $config_file_base in @INC";
+  }
+  
+  my $config = $self->load_config($config_file, @$resource_args);
+  
+  $resource->config($config);
   
   $self->add_resources($resource);
   
