@@ -252,23 +252,17 @@ sub get_resource_object_dir_from_class_name {
 sub get_config_file_from_class_name {
   my ($self, $class_name) = @_;
   
-  my $module_file = $self->builder->get_module_file($class_name);
-  
-  unless ($module_file) {
-    confess "$module_file is not loaded";
-  }
-  
+  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
   my $config_file;
-  if (-f $module_file) {
-    my $config_file_tmp = $module_file;
-    $config_file_tmp =~ s/\.spvm/\.config/;
+  for my $inc (@INC) {
+    my $config_file_tmp = "$inc/$config_file_base";
     if (-f $config_file_tmp) {
       $config_file = $config_file_tmp;
+      last;
     }
   }
-
-  unless ($config_file) {
-    confess "Can't find config file \"$config_file\"";
+  unless (defined $config_file) {
+    confess "Can't find resource config file $config_file_base in @INC";
   }
   
   return $config_file;
