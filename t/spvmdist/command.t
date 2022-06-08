@@ -182,7 +182,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   chdir($save_cur_dir) or die;
 }
 
-# Native C
+# --native c
 {
   my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
   my $blib = File::Spec->rel2abs('blib/lib');
@@ -217,7 +217,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   chdir($save_cur_dir) or die;
 }
 
-# Native C++
+# --native c++
 {
   my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
   my $blib = File::Spec->rel2abs('blib/lib');
@@ -247,7 +247,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   chdir($save_cur_dir) or die;
 }
 
-# Precompile
+# --precompile
 {
   my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
   my $blib = File::Spec->rel2abs('blib/lib');
@@ -427,5 +427,67 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   
   chdir($save_cur_dir) or die;
 }
+
+# --resource
+for my $test_index (0 .. 1) {
+  my $native_opt = '';
+  if ($test_index == 1) {
+    $native_opt = '--native c';
+  }
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --resource $native_opt Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+
+  my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
+  ok(-f $makefile_pl_file);
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Foo')"));
+
+  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
+  ok(!-f $spvm_module_file);
+
+  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
+  ok(-f $native_config_file);
+  ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
+  ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_gnu99'));
+  
+  my $native_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
+  ok(!-f $native_module_file);
+
+  my $gitkeep_file_for_native_module_include_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/include/.gitkeep";
+  ok(-f $gitkeep_file_for_native_module_include_dir);
+
+  my $gitkeep_file_for_native_module_src_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/src/.gitkeep";
+  ok(-f $gitkeep_file_for_native_module_src_dir);
+
+  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
+  ok(-f $basic_test_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo';"));
+  ok(SPVM::Builder::Util::file_contains($basic_test_file, 'BEGIN { $ENV{SPVM_BUILD_DIR} = "$FindBin::Bin/.spvm_build"; }'));
+
+  my $basic_test_spvm_module_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.spvm";
+  ok(-f $basic_test_spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "class TestCase::Foo {"));
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "native static method test : int ();"));
+  
+  my $basic_test_native_module_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.c";
+  ok(-f $basic_test_native_module_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_module_file, '#include "spvm_native.h"'));
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_module_file, "SPVM__TestCase__Foo__test"));
+  
+  my $basic_test_native_config_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.config";
+  ok(-f $basic_test_native_config_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, 'my $config = SPVM::Builder::Config->new_gnu99;'));
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, q($config->use_resource('TestCase::Foo');)));
+
+
+  chdir($save_cur_dir) or die;
+}
+
 
 done_testing;

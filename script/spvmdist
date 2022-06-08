@@ -14,6 +14,7 @@ SPVM::Builder::Util::getopt
   'f|force' => \my $force,
   'native=s' => \my $native,
   'precompile' => \my $precompile,
+  'resource' => \my $resource,
   'only-lib-files' => \my $only_lib_files,
   'no-pm-file' => \my $no_pm_file,
 ;
@@ -40,6 +41,7 @@ else {
     precompile => $precompile,
     only_lib_files => $only_lib_files,
     no_pm_file => $no_pm_file,
+    resource => $resource,
   );
   $gendist->generate_dist;
 }
