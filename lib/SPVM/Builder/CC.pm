@@ -388,20 +388,17 @@ sub compile {
     }
   }
   
-  
-  # Native module file
-  my $src_rel_file_no_ext = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
-  my $native_module_file_no_ext = "$input_dir/$src_rel_file_no_ext";
-  my $src_ext = $config->ext;
-  unless (defined $src_ext) {
-    confess "Source extension is not specified";
-  }
-  
   my @all_source_files;
-  my $native_module_file;
   my $is_resource = $opt->{is_resource};
   unless ($is_resource) {
-    $native_module_file = "$native_module_file_no_ext.$src_ext";
+    # Native module file
+    my $native_module_ext = $config->ext;
+    unless (defined $native_module_ext) {
+      confess "Source extension is not specified";
+    }
+    my $native_module_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_module_ext);
+    my $native_module_file = "$input_dir/$native_module_rel_file";
+    
     if (-f $native_module_file) {
       push @all_source_files, $native_module_file;
     }
@@ -410,12 +407,12 @@ sub compile {
     }
   }
   
-  # Parse source code dependency
+  # Resource source files
   my $source_files = $config->source_files;
 
   # Native source files
-  my $native_src_files = [map { "$resource_input_dir/$_" } @$source_files ];
-  push @all_source_files, @$native_src_files;
+  my $resource_src_files = [map { "$resource_input_dir/$_" } @$source_files ];
+  push @all_source_files, @$resource_src_files;
 
   # Native header files
   my @include_file_names;
