@@ -27,6 +27,7 @@ Revision history for SPVM
         * Add SPVM::Builder::Resource module
         * Add use_resource method to SPVM::Builder::Config
         * Resource system is separated from SPVM moudle system
+        * Resource doesn't need native module file.
 
 0.9604  2022-06-08
         [NON BACKWORD COMPATIBLE CHANGES]

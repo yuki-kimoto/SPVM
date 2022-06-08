@@ -392,9 +392,17 @@ sub compile {
     confess "Source extension is not specified";
   }
   
-  my $spvm_method_src_file = "$spvm_method_src_file_no_ext.$src_ext";
-  unless (-f $spvm_method_src_file) {
-    confess "Can't find source file $spvm_method_src_file";
+  my @all_source_files;
+  my $spvm_method_src_file;
+  my $is_resource = $opt->{is_resource};
+  unless ($is_resource) {
+    $spvm_method_src_file = "$spvm_method_src_file_no_ext.$src_ext";
+    if (-f $spvm_method_src_file) {
+      push @all_source_files, $spvm_method_src_file;
+    }
+    else {
+      confess "Can't find source file $spvm_method_src_file";
+    }
   }
   
   # Parse source code dependency
@@ -402,6 +410,7 @@ sub compile {
 
   # Native source files
   my $native_src_files = [map { "$native_src_dir/$_" } @$source_files ];
+  push @all_source_files, @$native_src_files;
 
   # Native header files
   my @include_file_names;
@@ -438,7 +447,7 @@ sub compile {
   # Compile source files
   my $object_file_infos = [];
   my $is_native_source = 0;
-  for my $source_file ($spvm_method_src_file, @$native_src_files) {
+  for my $source_file (@all_source_files) {
     my $object_file;
     # Native object file name
     if ($is_native_source) {
@@ -764,6 +773,7 @@ sub link {
       my $compile_options = {
         src_dir => $src_dir,
         object_dir => $object_dir,
+        is_resource => 1,
       };
       if ($resource_config) {
         $compile_options->{config} = $resource_config;
