@@ -295,7 +295,14 @@ sub compile {
   # Module file
   my $module_file = $self->builder->get_module_file($class_name);
   unless (defined $module_file) {
-    confess "\"$module_file\" module is not loaded";
+    my $config_file = $self->get_config_file_from_class_name($class_name);
+    if ($config_file) {
+      $module_file = $config_file;
+      $module_file =~ s/\.config$/\.spvm/;
+    }
+    else {
+      confess "\"$module_file\" module is not loaded";
+    }
   }
   
   # Config
@@ -630,7 +637,14 @@ sub link {
   # Module file
   my $module_file = $self->builder->get_module_file($class_name);
   unless (defined $module_file) {
-    confess "\"$module_file\" module is not loaded";
+    my $config_file = $self->get_config_file_from_class_name($class_name);
+    if ($config_file) {
+      $module_file = $config_file;
+      $module_file =~ s/\.config$/\.spvm/;
+    }
+    else {
+      confess "\"$module_file\" module is not loaded";
+    }
   }
   
   # Config
