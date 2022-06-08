@@ -66,6 +66,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo';"));
+  ok(SPVM::Builder::Util::file_contains($basic_test_file, 'BEGIN { $ENV{SPVM_BUILD_DIR} = "$FindBin::Bin/.spvm_build"; }'));
 
   my $basic_test_spvm_module_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.spvm";
   ok(-f $basic_test_spvm_module_file);
