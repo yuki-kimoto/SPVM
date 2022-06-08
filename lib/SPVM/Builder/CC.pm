@@ -229,12 +229,24 @@ sub build_shared_lib {
 
 sub get_resource_src_dir_from_class_name {
   my ($self, $class_name) = @_;
+
+  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
+  my $config_file;
+  for my $inc (@INC) {
+    my $config_file_tmp = "$inc/$config_file_base";
+    if (-f $config_file_tmp) {
+      $config_file = $config_file_tmp;
+      last;
+    }
+  }
+  unless (defined $config_file) {
+    confess "Can't find resource config file $config_file_base in @INC";
+  }
   
-  my $module_file = $self->builder->get_module_file($class_name);
-  my $module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
+  my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
   
-  my $src_dir = $module_file;
-  $src_dir =~ s|/\Q$module_rel_file\E$||;
+  my $src_dir = $config_file;
+  $src_dir =~ s|/\Q$config_rel_file\E$||;
   
   return $src_dir;
 }
