@@ -449,7 +449,7 @@ sub compile {
     my $cur_is_native_module = $is_native_module;
     $is_native_module = 0;
     
-    next unless defined $native_module_file;
+    next unless defined $source_file;
     
     my $object_file;
     # Native object file name
