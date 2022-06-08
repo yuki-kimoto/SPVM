@@ -388,8 +388,8 @@ sub compile {
     }
   }
   
-  my @all_source_files;
   my $is_resource = $opt->{is_resource};
+  my $native_module_file;
   unless ($is_resource) {
     # Native module file
     my $native_module_ext = $config->ext;
@@ -397,12 +397,9 @@ sub compile {
       confess "Source extension is not specified";
     }
     my $native_module_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_module_ext);
-    my $native_module_file = "$input_dir/$native_module_rel_file";
+    $native_module_file = "$input_dir/$native_module_rel_file";
     
-    if (-f $native_module_file) {
-      push @all_source_files, $native_module_file;
-    }
-    else {
+    unless (-f $native_module_file) {
       confess "Can't find source file $native_module_file";
     }
   }
@@ -412,7 +409,6 @@ sub compile {
 
   # Native source files
   my $resource_src_files = [map { "$resource_src_dir/$_" } @$source_files ];
-  push @all_source_files, @$resource_src_files;
 
   # Native header files
   my @include_file_names;
@@ -449,10 +445,15 @@ sub compile {
   # Compile source files
   my $object_file_infos = [];
   my $is_native_module = 1;
-  for my $source_file (@all_source_files) {
+  for my $source_file ($native_module_file, @$resource_src_files) {
+    my $cur_is_native_module = $is_native_module;
+    $is_native_module = 0;
+    
+    next unless defined $native_module_file;
+    
     my $object_file;
     # Native object file name
-    if ($is_native_module) {
+    if ($cur_is_native_module) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
       $object_file = "$output_dir/$object_rel_file";
     }
@@ -477,7 +478,7 @@ sub compile {
     if (defined $config->file) {
       push @$input_files, $config->file;
     };
-    if ($is_native_module) {
+    if ($cur_is_native_module) {
       my $module_file = $source_file;
       $module_file =~ s/\.[^\/\\]+$//;
       $module_file .= '.spvm';
@@ -518,12 +519,10 @@ sub compile {
       cc => $compile_info_cc,
       ccflags => $compile_info_ccflags,
       is_exe_config => $config->is_exe,
-      source_type => $is_native_module ? 'native_module' : 'resource',
+      source_type => $cur_is_native_module ? 'native_module' : 'resource',
     );
     
     push @$object_file_infos, $object_file_info;
-    
-    $is_native_module = 0;
   }
   
   return $object_file_infos;
