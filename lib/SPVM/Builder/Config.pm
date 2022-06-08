@@ -338,6 +338,10 @@ sub new {
   unless (defined $self->{ld_optimize}) {
     $self->ld_optimize('-O2');
   }
+
+  unless (defined $self->{dependent_files}) {
+    $self->{dependent_files} = [];
+  }
   
   return $self;
 }

@@ -17,10 +17,6 @@ sub new {
   
   $self = $self->SUPER::new(%options);
   
-  unless (defined $self->{dependent_files}) {
-    $self->{dependent_files} = [];
-  }
-
   return $self;
 }
 
