@@ -155,8 +155,8 @@ sub build_shared_lib_runtime {
   }
   
   # Object directory
-  my $object_dir = $self->builder->create_build_object_path;
-  mkpath $object_dir;
+  my $output_dir = $self->builder->create_build_output_path;
+  mkpath $output_dir;
   
   # Lib directory
   my $lib_dir = $self->builder->create_build_lib_path;
@@ -166,7 +166,7 @@ sub build_shared_lib_runtime {
     $class_name,
     {
       src_dir => $src_dir,
-      object_dir => $object_dir,
+      output_dir => $output_dir,
       lib_dir => $lib_dir,
     }
   );
@@ -195,8 +195,8 @@ sub build_shared_lib_dist {
     $src_dir = 'lib';
   }
 
-  my $object_dir = $self->builder->create_build_object_path;
-  mkpath $object_dir;
+  my $output_dir = $self->builder->create_build_output_path;
+  mkpath $output_dir;
   
   my $lib_dir = 'blib/lib';
   
@@ -205,7 +205,7 @@ sub build_shared_lib_dist {
     $class_name,
     {
       src_dir => $src_dir,
-      object_dir => $object_dir,
+      output_dir => $output_dir,
       lib_dir => $lib_dir,
     }
   );
@@ -251,14 +251,14 @@ sub get_resource_src_dir_from_class_name {
   return $src_dir;
 }
 
-sub get_resource_object_dir_from_class_name {
+sub get_resource_output_dir_from_class_name {
   my ($self, $class_name) = @_;
 
   my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
   
-  my $object_dir = $self->builder->create_build_object_path("$class_rel_dir.resource");
+  my $output_dir = $self->builder->create_build_output_path("$class_rel_dir.resource");
   
-  return $object_dir;
+  return $output_dir;
 }
 
 sub get_config_file_from_class_name {
@@ -297,10 +297,10 @@ sub compile {
   
   # Source directory
   my $src_dir = $opt->{src_dir};
-
+  
   # Object directory
-  my $object_dir = $opt->{object_dir};
-  unless (defined $object_dir && -d $object_dir) {
+  my $output_dir = $opt->{output_dir};
+  unless (defined $output_dir && -d $output_dir) {
     confess "Temporary directory must exists for " . $self->category . " build";
   }
   
@@ -458,15 +458,15 @@ sub compile {
       $object_file_base =~ s/^[\\\/]//;
       
       $object_file_base =~ s/\.[^\.]+$/.o/;
-      $object_file = "$object_dir/$object_rel_file/$object_file_base";
+      $object_file = "$output_dir/$object_rel_file/$object_file_base";
       
-      my $object_dir = dirname $object_file;
-      mkpath $object_dir;
+      my $output_dir = dirname $object_file;
+      mkpath $output_dir;
     }
     # SPVM method object file name
     else {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
-      $object_file = "$object_dir/$object_rel_file";
+      $object_file = "$output_dir/$object_rel_file";
     }
     
     # Do compile. This is same as make command
@@ -497,7 +497,7 @@ sub compile {
     
     if ($need_generate) {
       my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
-      my $work_object_dir = "$object_dir/$class_rel_dir";
+      my $work_output_dir = "$output_dir/$class_rel_dir";
       mkpath dirname $object_file;
       
       # Execute compile command
@@ -757,8 +757,8 @@ sub link {
       );
       
       my $src_dir = $self->get_resource_src_dir_from_class_name($resource);
-      my $object_dir = $self->get_resource_object_dir_from_class_name($class_name);
-      mkpath $object_dir;
+      my $output_dir = $self->get_resource_output_dir_from_class_name($class_name);
+      mkpath $output_dir;
       
       my $resource_class_name;
       my $resource_config;
@@ -772,7 +772,7 @@ sub link {
       
       my $compile_options = {
         src_dir => $src_dir,
-        object_dir => $object_dir,
+        output_dir => $output_dir,
         is_resource => 1,
       };
       if ($resource_config) {

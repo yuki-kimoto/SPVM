@@ -730,7 +730,7 @@ sub compile_bootstrap_source {
   
   # Compile source files
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_class_name);
-  my $object_file = $self->builder->create_build_object_path("$class_name_rel_file.boot.o");
+  my $object_file = $self->builder->create_build_output_path("$class_name_rel_file.boot.o");
   my $source_file = $self->builder->create_build_src_path("$class_name_rel_file.boot.c");
   
   # Create directory for object file output
@@ -773,14 +773,14 @@ sub compile_spvm_core_sources {
   my @spvm_core_source_files = map { "$spvm_core_source_dir/$_" } @$spvm_runtime_src_base_names;
 
   # Object dir
-  my $object_dir = $self->builder->create_build_object_path;
-  mkpath $object_dir;
+  my $output_dir = $self->builder->create_build_output_path;
+  mkpath $output_dir;
   
   # Compile source files
   my $object_file_infos = [];
   for my $src_file (@spvm_core_source_files) {
     # Object file
-    my $object_file = "$object_dir/" . basename($src_file);
+    my $object_file = "$output_dir/" . basename($src_file);
     $object_file =~ s/\.c$//;
     $object_file .= '.o';
 
@@ -864,14 +864,14 @@ sub compile_precompile_sources {
       my $src_dir = $self->builder->create_build_src_path;
       mkpath $src_dir;
       
-      my $object_dir = $self->builder->create_build_object_path;
-      mkpath $object_dir;
+      my $output_dir = $self->builder->create_build_output_path;
+      mkpath $output_dir;
       
       my $precompile_object_files = $builder_c_precompile->compile(
         $class_name,
         {
           src_dir => $src_dir,
-          object_dir => $object_dir,
+          output_dir => $output_dir,
         }
       );
       push @$object_files, @$precompile_object_files;
@@ -914,14 +914,14 @@ sub compile_native_sources {
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
       my $src_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
-      my $object_dir = $self->builder->create_build_object_path;
-      mkpath $object_dir;
+      my $output_dir = $self->builder->create_build_output_path;
+      mkpath $output_dir;
       
       my $object_files = $builder_c_native->compile(
         $class_name,
         {
           src_dir => $src_dir,
-          object_dir => $object_dir,
+          output_dir => $output_dir,
         }
       );
       push @$all_object_files, @$object_files;
