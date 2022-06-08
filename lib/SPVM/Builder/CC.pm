@@ -222,7 +222,7 @@ sub build_shared_lib {
   
   # Link object files and create shared library
   my $link_options = {};
-  $link_options->{lib_dir} = $opt->{lib_dir};
+  $link_options->{output_dir} = $opt->{lib_dir};
   my $build_shared_lib_file = $self->link(
     $class_name,
     $object_files,
@@ -651,14 +651,14 @@ sub link {
   }
 
   # Shared library directory
-  my $lib_dir = $opt->{lib_dir};
-  unless (defined $lib_dir && -d $lib_dir) {
+  my $output_dir = $opt->{output_dir};
+  unless (defined $output_dir && -d $output_dir) {
     confess "Shared lib directory must be specified for link";
   }
 
   # Shared library file
   my $shared_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_shared_lib_rel_file($class_name, $self->category);
-  my $shared_lib_file = "$lib_dir/$shared_lib_rel_file";
+  my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
 
   # Module file
   my $module_file = $self->builder->get_module_file($class_name);
