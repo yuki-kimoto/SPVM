@@ -805,6 +805,7 @@ sub link {
       }
       
       my $found_lib_file;
+      my $lib_type;
       for my $lib_dir (@$lib_dirs) {
         $lib_dir =~ s|[\\/]$||;
 
@@ -817,22 +818,26 @@ sub link {
         if ($type eq 'dynamic,static') {
           if (-f $dynamic_lib_file) {
             $found_lib_file = $dynamic_lib_file;
+            $lib_type = 'dynamic';
             last;
           }
           elsif (-f $static_lib_file) {
             $found_lib_file = $static_lib_file;
+            $lib_type = 'static';
             last;
           }
         }
         elsif ($type eq 'dynamic') {
           if (-f $dynamic_lib_file) {
             $found_lib_file = $dynamic_lib_file;
+            $lib_type = 'dynamic';
             last;
           }
         }
         elsif ($type eq 'static') {
           if (-f $static_lib_file) {
             $found_lib_file = $static_lib_file;
+            $lib_type = 'static';
             last;
           }
         }
@@ -845,7 +850,7 @@ sub link {
           object_file => $found_lib_file,
           class_name => $class_name,
           config => $config,
-          is_lib_file => 1,
+          lib_type => $lib_type,
         );
         
         push @$all_object_file_infos, $object_file_info;

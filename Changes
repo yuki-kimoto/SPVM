@@ -9,11 +9,13 @@ Revision history for SPVM
         * Add config field to SPVM::Builder::ObjectFileInfo.
         * Add config field to SPVM::Builder::LinkInfo.
         * Add output_type field to SPVM::Builder::Config.
+        * Add lib_type field to SPVM::Builder::ObjectFileInfo.
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove is_exe method from SPVM::Builder::Config.
         * Remove is_resource field from SPVM::Builder::ObjectFileInfo.
         * Remove is_exe field from SPVM::Builder::ObjectFileInfo.
         * Remove is_exe field from SPVM::Builder::LinkInfo.
+        * Remove is_lib_file field from SPVM::Builder::ObjectFileInfo.
         
 0.9604_01  2022-06-07
         [CHANGE]
