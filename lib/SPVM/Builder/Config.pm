@@ -205,6 +205,17 @@ sub before_link {
   }
 }
 
+sub dependent_files {
+  my $self = shift;
+  if (@_) {
+    $self->{dependent_files} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{dependent_files};
+  }
+}
+
 sub is_exe { 0 }
 
 # Methods
@@ -461,6 +472,50 @@ sub use_resource {
   $self->add_resources($resource);
   
   return $resource;
+}
+
+sub load_config {
+  my ($self, $config_file) = @_;
+  
+  my $config = SPVM::Builder::Util::load_config($config_file);
+  
+  push @{$config->dependent_files}, $config_file;
+  
+  return $config;
+}
+
+sub load_mode_config {
+  my ($self, $config_file, $mode) = @_;
+  
+  my $mode_config_file = $config_file;
+  
+  $mode_config_file =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
+  $mode_config_file .= ".$mode.config";
+  
+  unless (-f $mode_config_file) {
+    confess "Can't find the mode config file \"$mode_config_file\"";
+  }
+  
+  my $config = $self->load_config($mode_config_file);
+  
+  return $config;
+}
+
+sub load_base_config {
+  my ($self, $config_file) = @_;
+  
+  my $base_config_file = $config_file;
+  
+  $base_config_file =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
+  $base_config_file .= ".config";
+  
+  unless (-f $base_config_file) {
+    confess "Can't find the base config file \"$base_config_file\"";
+  }
+  
+  my $config = $self->load_config($base_config_file);
+  
+  return $config;
 }
 
 sub add_static_libs {
