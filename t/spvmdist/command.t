@@ -446,7 +446,6 @@ for my $test_index (0 .. 1) {
 
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Foo')"));
 
   my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(!-f $spvm_module_file);
@@ -483,7 +482,7 @@ for my $test_index (0 .. 1) {
   my $basic_test_native_config_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.config";
   ok(-f $basic_test_native_config_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, 'my $config = SPVM::Builder::Config->new_gnu99;'));
-  ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, q($config->use_resource('TestCase::Foo');)));
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, q($config->use_resource('Foo');)));
 
 
   chdir($save_cur_dir) or die;
@@ -503,7 +502,6 @@ for my $test_index (0 .. 1) {
 
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Foo')"));
 
   my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(!-f $spvm_module_file);
@@ -541,9 +539,28 @@ for my $test_index (0 .. 1) {
   my $basic_test_native_config_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.config";
   ok(-f $basic_test_native_config_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, 'my $config = SPVM::Builder::Config->new_cpp;'));
-  ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, q($config->use_resource('TestCase::Foo');)));
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, q($config->use_resource('Foo');)));
 
 
+  chdir($save_cur_dir) or die;
+}
+
+# --resource and perl Makefile.PL && make && make test
+{
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --resource Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  chdir('SPVM-Foo')
+    or die "Can't chdir";
+  
+  my $make = $Config{make};
+  my $ret = system("$^X Makefile.PL && $make && $make test");
+  ok($ret == 0);
+  
   chdir($save_cur_dir) or die;
 }
 
