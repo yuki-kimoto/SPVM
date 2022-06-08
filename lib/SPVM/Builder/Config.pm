@@ -7,6 +7,17 @@ use Carp 'confess';
 use File::Basename 'dirname';
 
 # Fields
+sub file {
+  my $self = shift;
+  if (@_) {
+    $self->{file} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{file};
+  }
+}
+
 sub ext {
   my $self = shift;
   if (@_) {
