@@ -1,4 +1,4 @@
-#!/home/kimoto/perl5/perlbrew/perls/perl-5.32.1/bin/perl
+#!perl
 
 use strict;
 use warnings;
