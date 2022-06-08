@@ -26,6 +26,7 @@ Revision history for SPVM
           static method DOUBLE_MIN : double ()
         * Add SPVM::Builder::Resource module
         * Add use_resource method to SPVM::Builder::Config
+        * Resource system is separated from SPVM moudle system
 
 0.9604  2022-06-08
         [NON BACKWORD COMPATIBLE CHANGES]
