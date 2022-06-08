@@ -825,12 +825,12 @@ sub create_precompile_sources {
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     if (@$precompile_method_names) {
       
-      my $src_dir = $self->builder->create_build_src_path;
-      mkpath $src_dir;
+      my $build_src_dir = $self->builder->create_build_src_path;
+      mkpath $build_src_dir;
       $builder_c_precompile->create_precompile_source_file(
         $class_name,
         {
-          src_dir => $src_dir,
+          input_dir => $build_src_dir,
         }
       );
     }
@@ -861,17 +861,17 @@ sub compile_precompile_sources {
   for my $class_name (@$class_names_without_anon) {
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     if (@$precompile_method_names) {
-      my $src_dir = $self->builder->create_build_src_path;
-      mkpath $src_dir;
+      my $build_src_dir = $self->builder->create_build_src_path;
+      mkpath $build_src_dir;
       
-      my $output_dir = $self->builder->create_build_object_path;
-      mkpath $output_dir;
+      my $build_object_dir = $self->builder->create_build_object_path;
+      mkpath $build_object_dir;
       
       my $precompile_object_files = $builder_c_precompile->compile(
         $class_name,
         {
-          src_dir => $src_dir,
-          output_dir => $output_dir,
+          input_dir => $build_src_dir,
+          output_dir => $build_object_dir,
         }
       );
       push @$object_files, @$precompile_object_files;
@@ -890,7 +890,7 @@ sub compile_native_sources {
   my $build_dir = $self->builder->build_dir;
   mkpath $build_dir;
 
-  # Build native classes
+  # Compiler for native module
   my $builder_c_native = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     category => 'native',
@@ -913,15 +913,15 @@ sub compile_native_sources {
       
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
-      my $src_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
-      my $output_dir = $self->builder->create_build_object_path;
-      mkpath $output_dir;
+      my $input_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
+      my $build_object_dir = $self->builder->create_build_object_path;
+      mkpath $build_object_dir;
       
       my $object_files = $builder_c_native->compile(
         $class_name,
         {
-          src_dir => $src_dir,
-          output_dir => $output_dir,
+          input_dir => $input_dir,
+          output_dir => $build_object_dir,
         }
       );
       push @$all_object_files, @$object_files;
