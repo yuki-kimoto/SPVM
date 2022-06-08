@@ -171,11 +171,12 @@ sub create_cfunc_name {
 }
 
 sub load_config {
-  my ($config_file) = @_;
+  my ($config_file, @argv) = @_;
   
   unless (-f $config_file) {
     confess "Can't find config file \"$config_file\"";
   }
+  local @ARGV = @argv;
   my $config = do File::Spec->rel2abs($config_file);
   if ($@) {
     confess "Can't parse config file \"$config_file\": $@";

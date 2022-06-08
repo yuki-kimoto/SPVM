@@ -469,15 +469,17 @@ sub use_resource {
   
   my $resource = SPVM::Builder::Resource->new(%resource_args);
   
+  my $resouce_class_name = 
+  
   $self->add_resources($resource);
   
   return $resource;
 }
 
 sub load_config {
-  my ($self, $config_file) = @_;
+  my ($self, $config_file, @argv) = @_;
   
-  my $config = SPVM::Builder::Util::load_config($config_file);
+  my $config = SPVM::Builder::Util::load_config($config_file, @argv);
   
   push @{$config->dependent_files}, $config_file;
   
@@ -485,7 +487,7 @@ sub load_config {
 }
 
 sub load_mode_config {
-  my ($self, $config_file, $mode) = @_;
+  my ($self, $config_file, $mode, @argv) = @_;
   
   my $mode_config_file = $config_file;
   
@@ -496,13 +498,13 @@ sub load_mode_config {
     confess "Can't find the mode config file \"$mode_config_file\"";
   }
   
-  my $config = $self->load_config($mode_config_file);
+  my $config = $self->load_config($mode_config_file, @argv);
   
   return $config;
 }
 
 sub load_base_config {
-  my ($self, $config_file) = @_;
+  my ($self, $config_file, @argv) = @_;
   
   my $base_config_file = $config_file;
   
@@ -513,7 +515,7 @@ sub load_base_config {
     confess "Can't find the base config file \"$base_config_file\"";
   }
   
-  my $config = $self->load_config($base_config_file);
+  my $config = $self->load_config($base_config_file, @argv);
   
   return $config;
 }
