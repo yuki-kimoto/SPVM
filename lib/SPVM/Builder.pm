@@ -169,20 +169,20 @@ sub create_build_lib_path {
   return $build_lib_path;
 }
 
-sub get_shared_lib_file_dist {
+sub get_dynamic_lib_file_dist {
   my ($self, $class_name, $category) = @_;
 
   my $module_module_file = $self->get_module_file($class_name);
   
-  my $shared_lib_file = SPVM::Builder::Util::convert_module_file_to_shared_lib_file($module_module_file, $category);
+  my $dynamic_lib_file = SPVM::Builder::Util::convert_module_file_to_dynamic_lib_file($module_module_file, $category);
   
-  return $shared_lib_file;
+  return $dynamic_lib_file;
 }
 
-sub build_shared_lib_dist {
+sub build_dynamic_lib_dist {
   my ($self, $class_name, $category) = @_;
 
-  my $compile_success = $self->compile_spvm($class_name, '(build_shared_lib_dist)', 0);
+  my $compile_success = $self->compile_spvm($class_name, '(build_dynamic_lib_dist)', 0);
   unless ($compile_success) {
     $self->print_error_messages(*STDERR);
     exit(255);
@@ -199,10 +199,10 @@ sub build_shared_lib_dist {
   );
   
   my $method_names = $self->get_method_names($class_name, $category);
-  $cc_native->build_shared_lib_dist($class_name);
+  $cc_native->build_dynamic_lib_dist($class_name);
 }
 
-sub build_and_bind_shared_lib {
+sub build_and_bind_dynamic_lib {
   my ($self, $class_name, $category) = @_;
   
   my $cc = SPVM::Builder::CC->new(
@@ -216,20 +216,20 @@ sub build_and_bind_shared_lib {
   
   if (@$method_names) {
     # Shared library which is already installed in distribution directory
-    my $shared_lib_file = $self->get_shared_lib_file_dist($class_name, $category);
+    my $dynamic_lib_file = $self->get_dynamic_lib_file_dist($class_name, $category);
 
     
     # Try runtime compile if shared library is not found
-    unless (-f $shared_lib_file) {
-      $shared_lib_file = $cc->build_shared_lib_runtime($class_name);
+    unless (-f $dynamic_lib_file) {
+      $dynamic_lib_file = $cc->build_dynamic_lib_runtime($class_name);
     }
     
-    $self->bind_methods($cc, $shared_lib_file, $class_name, $category);
+    $self->bind_methods($cc, $dynamic_lib_file, $class_name, $category);
   }
 }
 
 sub bind_methods {
-  my ($self, $cc, $shared_lib_file, $class_name, $category) = @_;
+  my ($self, $cc, $dynamic_lib_file, $class_name, $category) = @_;
 
   my $method_names = $self->get_method_names($class_name, $category);
   my $method_infos = [];
@@ -258,16 +258,16 @@ sub bind_methods {
     my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($class_name, $method_name, $category);
 
     my $cfunc_address;
-    if ($shared_lib_file) {
-      my $shared_lib_libref = DynaLoader::dl_load_file($shared_lib_file);
+    if ($dynamic_lib_file) {
+      my $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
       
-      if ($shared_lib_libref) {
+      if ($dynamic_lib_libref) {
 
-        $cfunc_address = DynaLoader::dl_find_symbol($shared_lib_libref, $cfunc_name);
+        $cfunc_address = DynaLoader::dl_find_symbol($dynamic_lib_libref, $cfunc_name);
         unless ($cfunc_address) {
           my $dl_error = DynaLoader::dl_error();
           my $error = <<"EOS";
-Can't find native function \"$cfunc_name\" corresponding to ${class_name}->$method_name in \"$shared_lib_file\"
+Can't find native function \"$cfunc_name\" corresponding to ${class_name}->$method_name in \"$dynamic_lib_file\"
 
 You must write the following definition.
 --------------------------------------------------
@@ -286,7 +286,7 @@ EOS
       }
       else {
         my $dl_error = DynaLoader::dl_error();
-        confess "Can't load shared_lib file \"$shared_lib_file\": $dl_error";
+        confess "Can't load dynamic_lib file \"$dynamic_lib_file\": $dl_error";
       }
     }
     else {

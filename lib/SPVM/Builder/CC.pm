@@ -122,7 +122,7 @@ sub new {
   return bless $self, $class;
 }
 
-sub build_shared_lib_runtime {
+sub build_dynamic_lib_runtime {
   my ($self, $class_name) = @_;
 
   my $category = $self->category;
@@ -162,7 +162,7 @@ sub build_shared_lib_runtime {
   my $build_lib_dir = $self->builder->create_build_lib_path;
   mkpath $build_lib_dir;
   
-  my $build_shared_lib_file = $self->build_shared_lib(
+  my $build_dynamic_lib_file = $self->build_dynamic_lib(
     $class_name,
     {
       compile_input_dir => $build_src_dir,
@@ -171,10 +171,10 @@ sub build_shared_lib_runtime {
     }
   );
   
-  return $build_shared_lib_file;
+  return $build_dynamic_lib_file;
 }
 
-sub build_shared_lib_dist {
+sub build_dynamic_lib_dist {
   my ($self, $class_name) = @_;
   
   my $category = $self->category;
@@ -201,7 +201,7 @@ sub build_shared_lib_dist {
   my $build_lib_dir = 'blib/lib';
   
   
-  $self->build_shared_lib(
+  $self->build_dynamic_lib(
     $class_name,
     {
       compile_input_dir => $build_src_dir,
@@ -211,7 +211,7 @@ sub build_shared_lib_dist {
   );
 }
 
-sub build_shared_lib {
+sub build_dynamic_lib {
   my ($self, $class_name, $opt) = @_;
   
   # Compile source file and create object files
@@ -223,13 +223,13 @@ sub build_shared_lib {
   # Link object files and create shared library
   my $link_options = {};
   $link_options->{output_dir} = $opt->{link_output_dir};
-  my $build_shared_lib_file = $self->link(
+  my $build_dynamic_lib_file = $self->link(
     $class_name,
     $object_files,
     $link_options
   );
   
-  return $build_shared_lib_file;
+  return $build_dynamic_lib_file;
 }
 
 sub resource_src_dir_from_class_name {
@@ -653,8 +653,8 @@ sub link {
   }
 
   # Shared library file
-  my $shared_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_shared_lib_rel_file($class_name, $self->category);
-  my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
+  my $dynamic_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_dynamic_lib_rel_file($class_name, $self->category);
+  my $dynamic_lib_file = "$output_dir/$dynamic_lib_rel_file";
 
   # Module file
   my $module_file = $self->builder->get_module_file($class_name);
@@ -873,7 +873,7 @@ sub link {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
 
   # Move temporary shared library file to blib directory
-  mkpath dirname $shared_lib_file;
+  mkpath dirname $dynamic_lib_file;
   
   my $input_files = [@$all_object_files];
   if (defined $config->file) {
@@ -881,7 +881,7 @@ sub link {
   }
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $self->force || $config->force,
-    output_file => $shared_lib_file,
+    output_file => $dynamic_lib_file,
     input_files => $input_files,
   });
 
@@ -890,7 +890,7 @@ sub link {
     object_file_infos => $all_object_file_infos,
     ld => $ld,
     ldflags => \@all_ldflags,
-    output_file => $shared_lib_file,
+    output_file => $dynamic_lib_file,
   );
 
   # Execute the callback before this link
@@ -947,7 +947,7 @@ sub link {
     }
   }
   
-  return $shared_lib_file;
+  return $dynamic_lib_file;
 }
 
 sub create_precompile_source_file {

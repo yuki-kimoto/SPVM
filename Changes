@@ -1,6 +1,11 @@
 Revision history for SPVM
 0.9605_01  2022-06-09
-        
+        * Add build_dynamic_lib_dist_precompile method to SPVM::Builder::API.
+          This is same as build_shared_lib_dist_precompile method.
+          build_shared_lib_dist_precompile method is remained for backwards compatibility.
+        * Add build_dynamic_lib_dist_native method to SPVM::Builder::API.
+          This is same as build_shared_lib_dist_native method.
+          build_shared_lib_dist_native method is remained for backwards compatibility.
 0.9604_01  2022-06-07
         [CHANGE]
         * switch statement can have only default statement.

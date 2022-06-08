@@ -211,25 +211,25 @@ sub getopt {
   Getopt::Long::Configure($save);
 }
 
-sub convert_module_file_to_shared_lib_file {
+sub convert_module_file_to_dynamic_lib_file {
   my ($module_file, $category) = @_;
   
   my $dlext = $Config{dlext};
   $module_file =~ s/\.[^.]+$//;
-  my $shared_lib_category_file = $module_file;
-  $shared_lib_category_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
+  my $dynamic_lib_category_file = $module_file;
+  $dynamic_lib_category_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
   
-  return $shared_lib_category_file;
+  return $dynamic_lib_category_file;
 }
 
-sub convert_class_name_to_shared_lib_rel_file {
+sub convert_class_name_to_dynamic_lib_rel_file {
   my ($class_name, $category) = @_;
   
   my $dlext = $Config{dlext};
-  my $shared_lib_category_rel_file = convert_class_name_to_rel_file($class_name);
-  $shared_lib_category_rel_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
+  my $dynamic_lib_category_rel_file = convert_class_name_to_rel_file($class_name);
+  $dynamic_lib_category_rel_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
   
-  return $shared_lib_category_rel_file;
+  return $dynamic_lib_category_rel_file;
 }
 
 sub convert_class_name_to_category_rel_file {
@@ -346,18 +346,18 @@ sub create_make_rule {
   }
 
   # Shared library file
-  my $shared_lib_rel_file = convert_class_name_to_shared_lib_rel_file($class_name, $category);
-  my $shared_lib_file = "blib/lib/$shared_lib_rel_file";
+  my $dynamic_lib_rel_file = convert_class_name_to_dynamic_lib_rel_file($class_name, $category);
+  my $dynamic_lib_file = "blib/lib/$dynamic_lib_rel_file";
   
   my $make_rule = '';
   
   # dynamic section
-  $make_rule .= "dynamic :: $shared_lib_file\n";
+  $make_rule .= "dynamic :: $dynamic_lib_file\n";
   $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
   
   # Get source files
-  $make_rule .= "$shared_lib_file :: @deps\n";
-  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new(build_dir => '.spvm_build')->build_shared_lib_dist_$category('$class_name')\"\n\n";
+  $make_rule .= "$dynamic_lib_file :: @deps\n";
+  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new(build_dir => '.spvm_build')->build_dynamic_lib_dist_$category('$class_name')\"\n\n";
   
   return $make_rule;
 }

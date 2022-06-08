@@ -71,21 +71,25 @@ sub get_method_signature {
   return $method_signature;
 }
 
-sub build_shared_lib_dist_precompile {
+sub build_dynamic_lib_dist_precompile {
   my ($self, $class_name) = @_;
   
   my $builder = $self->{builder};
   
-  $builder->build_shared_lib_dist($class_name, 'precompile');
+  $builder->build_dynamic_lib_dist($class_name, 'precompile');
 }
 
-sub build_shared_lib_dist_native {
+sub build_dynamic_lib_dist_native {
   my ($self, $class_name) = @_;
   
   my $builder = $self->{builder};
 
-  $builder->build_shared_lib_dist($class_name, 'native');
+  $builder->build_dynamic_lib_dist($class_name, 'native');
 }
+
+# For backward compatible
+sub build_shared_lib_dist_precompile { shift->build_dynamic_lib_dist_precompile(@_) }
+sub build_shared_lib_dist_native { shift->build_dynamic_lib_dist_native(@_) }
 
 1;
 
@@ -194,14 +198,26 @@ Get the method signature. The first argument is a class name. The second argumen
 
 About method signatures, see L<SPVM::Document::LanguageSpecification>.
 
+=head2 build_dynamic_lib_dist_precompile
+
+  $api->build_dynamic_lib_dist_precompile($class_name)
+
+Build a precompile dymamic library and copy it to C<blib/lib>.
+
+=head2 build_dynamic_lib_dist_native
+
+  $api->build_dynamic_lib_dist_native($class_name)
+
+Build a native dynamic library and copy it into C<blib/lib>.
+
 =head2 build_shared_lib_dist_precompile
 
   $api->build_shared_lib_dist_precompile($class_name)
 
-Build a precompile shared library into C<blib/lib>.
+Same as L</"build_dynamic_lib_dist_precompile">. Remained for backwards compatibility.
 
 =head2 build_shared_lib_dist_native
 
   $api->build_shared_lib_dist_native($class_name)
 
-Build a native shared library into C<blib/lib>.
+Same as L</"build_dynamic_lib_dist_native">. Remained for backwards compatibility.
