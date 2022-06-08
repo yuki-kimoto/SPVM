@@ -145,7 +145,7 @@ sub create_build_include_path {
   return $build_include_path;
 }
 
-sub create_build_output_path {
+sub create_build_object_path {
   my ($self, $rel_file) = @_;
   
   my $build_dir = $self->build_dir;

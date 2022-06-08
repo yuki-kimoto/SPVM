@@ -155,7 +155,7 @@ sub build_shared_lib_runtime {
   }
   
   # Object directory
-  my $output_dir = $self->builder->create_build_output_path;
+  my $output_dir = $self->builder->create_build_object_path;
   mkpath $output_dir;
   
   # Lib directory
@@ -195,7 +195,7 @@ sub build_shared_lib_dist {
     $src_dir = 'lib';
   }
 
-  my $output_dir = $self->builder->create_build_output_path;
+  my $output_dir = $self->builder->create_build_object_path;
   mkpath $output_dir;
   
   my $lib_dir = 'blib/lib';
@@ -256,7 +256,7 @@ sub get_resource_output_dir_from_class_name {
 
   my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
   
-  my $output_dir = $self->builder->create_build_output_path("$class_rel_dir.resource");
+  my $output_dir = $self->builder->create_build_object_path("$class_rel_dir.resource");
   
   return $output_dir;
 }

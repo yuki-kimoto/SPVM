@@ -730,7 +730,7 @@ sub compile_bootstrap_source {
   
   # Compile source files
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_class_name);
-  my $object_file = $self->builder->create_build_output_path("$class_name_rel_file.boot.o");
+  my $object_file = $self->builder->create_build_object_path("$class_name_rel_file.boot.o");
   my $source_file = $self->builder->create_build_src_path("$class_name_rel_file.boot.c");
   
   # Create directory for object file output
@@ -773,7 +773,7 @@ sub compile_spvm_core_sources {
   my @spvm_core_source_files = map { "$spvm_core_source_dir/$_" } @$spvm_runtime_src_base_names;
 
   # Object dir
-  my $output_dir = $self->builder->create_build_output_path;
+  my $output_dir = $self->builder->create_build_object_path;
   mkpath $output_dir;
   
   # Compile source files
@@ -864,7 +864,7 @@ sub compile_precompile_sources {
       my $src_dir = $self->builder->create_build_src_path;
       mkpath $src_dir;
       
-      my $output_dir = $self->builder->create_build_output_path;
+      my $output_dir = $self->builder->create_build_object_path;
       mkpath $output_dir;
       
       my $precompile_object_files = $builder_c_precompile->compile(
@@ -914,7 +914,7 @@ sub compile_native_sources {
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
       my $src_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
-      my $output_dir = $self->builder->create_build_output_path;
+      my $output_dir = $self->builder->create_build_object_path;
       mkpath $output_dir;
       
       my $object_files = $builder_c_native->compile(
