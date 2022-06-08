@@ -137,21 +137,21 @@ sub build_shared_lib_runtime {
   }
   
   # Source directory
-  my $input_dir;
+  my $build_src_dir;
   if ($category eq 'precompile') {
-    $input_dir = $self->builder->create_build_src_path;
-    mkpath $input_dir;
+    $build_src_dir = $self->builder->create_build_src_path;
+    mkpath $build_src_dir;
     
     $self->create_precompile_source_file(
       $class_name,
       {
-        input_dir => $input_dir,
+        input_dir => $build_src_dir,
       }
     );
   }
   elsif ($category eq 'native') {
     my $module_file = $self->builder->get_module_file($class_name);
-    $input_dir = SPVM::Builder::Util::remove_class_part_from_file($module_file, $class_name);
+    $build_src_dir = SPVM::Builder::Util::remove_class_part_from_file($module_file, $class_name);
   }
   
   # Object directory
@@ -159,15 +159,15 @@ sub build_shared_lib_runtime {
   mkpath $build_object_dir;
   
   # Lib directory
-  my $lib_dir = $self->builder->create_build_lib_path;
-  mkpath $lib_dir;
+  my $build_lib_dir = $self->builder->create_build_lib_path;
+  mkpath $build_lib_dir;
   
   my $build_shared_lib_file = $self->build_shared_lib(
     $class_name,
     {
-      input_dir => $input_dir,
-      output_dir => $build_object_dir,
-      lib_dir => $lib_dir,
+      compile_input_dir => $build_src_dir,
+      compile_output_dir => $build_object_dir,
+      link_output_dir => $build_lib_dir,
     }
   );
   
@@ -179,34 +179,34 @@ sub build_shared_lib_dist {
   
   my $category = $self->category;
   
-  my $input_dir;
+  my $build_src_dir;
   if ($category eq 'precompile') {
-    $input_dir = $self->builder->create_build_src_path;
-    mkpath $input_dir;
+    $build_src_dir = $self->builder->create_build_src_path;
+    mkpath $build_src_dir;
 
     $self->create_precompile_source_file(
       $class_name,
       {
-        input_dir => $input_dir,
+        input_dir => $build_src_dir,
       }
     );
   }
   elsif ($category eq 'native') {
-    $input_dir = 'lib';
+    $build_src_dir = 'lib';
   }
 
   my $build_object_dir = $self->builder->create_build_object_path;
   mkpath $build_object_dir;
   
-  my $lib_dir = 'blib/lib';
+  my $build_lib_dir = 'blib/lib';
   
   
   $self->build_shared_lib(
     $class_name,
     {
-      input_dir => $input_dir,
-      output_dir => $build_object_dir,
-      lib_dir => $lib_dir,
+      compile_input_dir => $build_src_dir,
+      compile_output_dir => $build_object_dir,
+      link_output_dir => $build_lib_dir,
     }
   );
 }
@@ -216,13 +216,13 @@ sub build_shared_lib {
   
   # Compile source file and create object files
   my $compile_options = {};
-  $compile_options->{input_dir} = $opt->{input_dir};
-  $compile_options->{output_dir} = $opt->{output_dir};
+  $compile_options->{input_dir} = $opt->{compile_input_dir};
+  $compile_options->{output_dir} = $opt->{compile_output_dir};
   my $object_files = $self->compile($class_name, $compile_options);
   
   # Link object files and create shared library
   my $link_options = {};
-  $link_options->{output_dir} = $opt->{lib_dir};
+  $link_options->{output_dir} = $opt->{link_output_dir};
   my $build_shared_lib_file = $self->link(
     $class_name,
     $object_files,
