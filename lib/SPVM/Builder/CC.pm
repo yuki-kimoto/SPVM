@@ -731,13 +731,25 @@ sub link {
       my $object_dir = $self->get_resource_object_dir_from_class_name($class_name);
       mkpath $object_dir;
       
-      my $object_file_infos = $builder_cc_resource->compile(
-        "$resource",
-        {
-          src_dir => $src_dir,
-          object_dir => $object_dir,
-        }
-      );
+      my $resource_class_name;
+      my $resource_config;
+      if (ref $resource) {
+        $resource_class_name = $resource->class_name;
+        $resource_config = $resource->config;
+      }
+      else {
+        $resource_class_name = $resource;
+      }
+      
+      my $compile_options = {
+        src_dir => $src_dir,
+        object_dir => $object_dir,
+      };
+      if ($resource_config) {
+        $compile_options->{config} = $resource_config;
+      }
+      
+      my $object_file_infos = $builder_cc_resource->compile($resource_class_name, $compile_options);
       
       push @$all_object_file_infos, @$object_file_infos;
     }
