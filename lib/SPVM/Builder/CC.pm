@@ -305,24 +305,27 @@ sub compile {
   }
   
   # Config
-  my $config_file = $module_file;
-  $config_file =~ s/\.spvm$/.config/;
-  my $config;
-  if ($category eq 'native') {
-    # Config file
-    if (-f $config_file) {
-      $config = SPVM::Builder::Util::load_config($config_file);
+  my $config = $opt->{config};
+  unless ($config) {
+    my $config_file = $module_file;
+    $config_file =~ s/\.spvm$/.config/;
+    if ($category eq 'native') {
+      # Config file
+      if (-f $config_file) {
+        $config = SPVM::Builder::Util::load_config($config_file);
+      }
+      else {
+        my $error = $self->_error_message_find_config($config_file);
+        confess $error;
+      }
     }
-    else {
-      my $error = $self->_error_message_find_config($config_file);
-      confess $error;
+    elsif ($category eq 'precompile') {
+      $config = SPVM::Builder::Config->new_gnu99;
     }
+    else { confess 'Unexpected Error' }
+    $config->file($config_file);
   }
-  elsif ($category eq 'precompile') {
-    $config = SPVM::Builder::Config->new_gnu99;
-  }
-  else { confess 'Unexpected Error' }
-
+  
   # Native Directory
   my $native_dir = $module_file;
   $native_dir =~ s/\.spvm$//;
@@ -405,8 +408,8 @@ sub compile {
   }
   
   my $mod_time_config_file;
-  if (-f $config_file) {
-     $mod_time_config_file = (stat($config_file))[9];
+  if (-f $config->file) {
+     $mod_time_config_file = (stat($config->file))[9];
   }
   else {
     $mod_time_config_file = 0;
@@ -446,7 +449,7 @@ sub compile {
     
     # Do compile. This is same as make command
     my $need_generate;
-    my $input_files = [$config_file, $source_file, @include_file_names];
+    my $input_files = [$config->file, $source_file, @include_file_names];
     unless ($is_native_source) {
       my $module_file = $source_file;
       $module_file =~ s/\.[^\/\\]+$//;
