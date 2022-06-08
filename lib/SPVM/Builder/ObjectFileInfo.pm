@@ -86,14 +86,14 @@ sub is_lib_file {
   }
 }
 
-sub is_native_source {
+sub is_native_module {
   my $self = shift;
   if (@_) {
-    $self->{is_native_source} = $_[0];
+    $self->{is_native_module} = $_[0];
     return $self;
   }
   else {
-    return $self->{is_native_source};
+    return $self->{is_native_module};
   }
 }
 
@@ -193,10 +193,10 @@ Get and set if the object file(this is static library(.a)) is a resource.
 
 Get and set if the object file is a library file.
 
-=head2 is_native_source
+=head2 is_native_module
 
-  my $is_native_source = $object_file_info->is_native_source;
-  $object_file_info->is_native_source($is_native_source);
+  my $is_native_module = $object_file_info->is_native_module;
+  $object_file_info->is_native_module($is_native_module);
 
 Get and set if the object file is compiled from a native source file.
 

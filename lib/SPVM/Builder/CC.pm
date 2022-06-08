@@ -448,11 +448,16 @@ sub compile {
 
   # Compile source files
   my $object_file_infos = [];
-  my $is_native_source = 0;
+  my $is_native_module = 1;
   for my $source_file (@all_source_files) {
     my $object_file;
     # Native object file name
-    if ($is_native_source) {
+    if ($is_native_module) {
+      my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
+      $object_file = "$output_dir/$object_rel_file";
+    }
+    # SPVM method object file name
+    else {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
       
       my $object_file_base = $source_file;
@@ -465,11 +470,6 @@ sub compile {
       my $output_dir = dirname $object_file;
       mkpath $output_dir;
     }
-    # SPVM method object file name
-    else {
-      my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
-      $object_file = "$output_dir/$object_rel_file";
-    }
     
     # Do compile. This is same as make command
     my $need_generate;
@@ -477,7 +477,7 @@ sub compile {
     if (defined $config->file) {
       push @$input_files, $config->file;
     };
-    unless ($is_native_source) {
+    if ($is_native_module) {
       my $module_file = $source_file;
       $module_file =~ s/\.[^\/\\]+$//;
       $module_file .= '.spvm';
@@ -518,12 +518,12 @@ sub compile {
       cc => $compile_info_cc,
       ccflags => $compile_info_ccflags,
       is_exe_config => $config->is_exe,
-      is_native_source => $is_native_source,
+      is_native_module => $is_native_module,
     );
     
     push @$object_file_infos, $object_file_info;
     
-    $is_native_source = 1;
+    $is_native_module = 0;
   }
   
   return $object_file_infos;
