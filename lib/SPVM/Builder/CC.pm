@@ -215,13 +215,18 @@ sub build_shared_lib {
   my ($self, $class_name, $opt) = @_;
   
   # Compile source file and create object files
-  my $object_files = $self->compile($class_name, $opt);
+  my $compile_options = {};
+  $compile_options->{input_dir} = $opt->{input_dir};
+  $compile_options->{output_dir} = $opt->{output_dir};
+  my $object_files = $self->compile($class_name, $compile_options);
   
   # Link object files and create shared library
+  my $link_options = {};
+  $link_options->{lib_dir} = $opt->{lib_dir};
   my $build_shared_lib_file = $self->link(
     $class_name,
     $object_files,
-    $opt
+    $link_options
   );
   
   return $build_shared_lib_file;
