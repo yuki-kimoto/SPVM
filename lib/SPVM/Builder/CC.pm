@@ -313,6 +313,7 @@ sub compile {
       # Config file
       if (-f $config_file) {
         $config = SPVM::Builder::Util::load_config($config_file);
+        $config->file($config_file);
       }
       else {
         my $error = $self->_error_message_find_config($config_file);
@@ -323,7 +324,6 @@ sub compile {
       $config = SPVM::Builder::Config->new_gnu99;
     }
     else { confess 'Unexpected Error' }
-    $config->file($config_file);
   }
   
   # Native Directory
@@ -408,7 +408,7 @@ sub compile {
   }
   
   my $mod_time_config_file;
-  if (-f $config->file) {
+  if (defined $config->file && -f $config->file) {
      $mod_time_config_file = (stat($config->file))[9];
   }
   else {
@@ -449,7 +449,10 @@ sub compile {
     
     # Do compile. This is same as make command
     my $need_generate;
-    my $input_files = [$config->file, $source_file, @include_file_names];
+    my $input_files = [$source_file, @include_file_names];
+    if (defined $config->file) {
+      push @$input_files, $config->file;
+    };
     unless ($is_native_source) {
       my $module_file = $source_file;
       $module_file =~ s/\.[^\/\\]+$//;
@@ -636,25 +639,27 @@ sub link {
     confess "\"$module_file\" module is not loaded";
   }
   
-  # Config file
-  my $config_file = $module_file;
-  $config_file =~ s/\.spvm$/.config/;
-
   # Config
-  my $config;
-  if ($category eq 'native') {
-    if (-f $config_file) {
-      $config = SPVM::Builder::Util::load_config($config_file);
+  my $config = $opt->{config};
+  unless ($config) {
+    # Config file
+    my $config_file = $module_file;
+    $config_file =~ s/\.spvm$/.config/;
+    if ($category eq 'native') {
+      if (-f $config_file) {
+        $config = SPVM::Builder::Util::load_config($config_file);
+        $config->file($config_file);
+      }
+      else {
+        my $error = $self->_error_message_find_config($config_file);
+        confess $error;
+      }
     }
-    else {
-      my $error = $self->_error_message_find_config($config_file);
-      confess $error;
+    elsif ($category eq 'precompile') {
+      $config = SPVM::Builder::Config->new_gnu99;
     }
+    else { confess 'Unexpected Error' }
   }
-  elsif ($category eq 'precompile') {
-    $config = SPVM::Builder::Config->new_gnu99;
-  }
-  else { confess 'Unexpected Error' }
   
   # Quiet output
   my $quiet = $config->quiet;
@@ -826,11 +831,15 @@ sub link {
 
   # Move temporary shared library file to blib directory
   mkpath dirname $shared_lib_file;
-
+  
+  my $input_files = [@$all_object_files];
+  if (defined $config->file) {
+    push @$input_files, $config->file;
+  }
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $self->force || $config->force,
     output_file => $shared_lib_file,
-    input_files => [$config_file, @$all_object_files],
+    input_files => $input_files,
   });
 
   my $link_info = SPVM::Builder::LinkInfo->new(
