@@ -1,4 +1,6 @@
 Revision history for SPVM
+0.9605_01  2022-06-09
+        
 0.9604_01  2022-06-07
         [CHANGE]
         * switch statement can have only default statement.
