@@ -373,7 +373,7 @@ sub compile {
   unshift @{$config->include_dirs}, @runtime_include_dirs;
 
   # Source directory
-  my $resource_input_dir = "$resource_dir/src";
+  my $resource_src_dir = "$resource_dir/src";
   
   # Quiet output
   my $quiet = $config->quiet;
@@ -411,7 +411,7 @@ sub compile {
   my $source_files = $config->source_files;
 
   # Native source files
-  my $resource_src_files = [map { "$resource_input_dir/$_" } @$source_files ];
+  my $resource_src_files = [map { "$resource_src_dir/$_" } @$source_files ];
   push @all_source_files, @$resource_src_files;
 
   # Native header files
@@ -456,7 +456,7 @@ sub compile {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
       
       my $object_file_base = $source_file;
-      $object_file_base =~ s/^\Q$resource_input_dir//;
+      $object_file_base =~ s/^\Q$resource_src_dir//;
       $object_file_base =~ s/^[\\\/]//;
       
       $object_file_base =~ s/\.[^\.]+$/.o/;
