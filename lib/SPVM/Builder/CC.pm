@@ -235,25 +235,13 @@ sub build_dynamic_lib {
 sub resource_src_dir_from_class_name {
   my ($self, $class_name) = @_;
 
-  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
-  my $config_file;
-  for my $inc (@INC) {
-    my $config_file_tmp = "$inc/$config_file_base";
-    if (-f $config_file_tmp) {
-      $config_file = $config_file_tmp;
-      last;
-    }
-  }
-  unless (defined $config_file) {
-    confess "Can't find resource config file $config_file_base in @INC";
-  }
-  
+  my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
   my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
   
-  my $input_dir = $config_file;
-  $input_dir =~ s|/\Q$config_rel_file\E$||;
+  my $resource_src_dir = $config_file;
+  $resource_src_dir =~ s|/\Q$config_rel_file\E$||;
   
-  return $input_dir;
+  return $resource_src_dir;
 }
 
 sub get_resource_object_dir_from_class_name {
