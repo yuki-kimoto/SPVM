@@ -506,17 +506,7 @@ sub use_resource {
   my $ext = defined $resource_mode ? "$resource_mode.config" : 'config';
   my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, $ext);
   
-  my $config_file;
-  for my $inc (@INC) {
-    my $config_file_tmp = "$inc/$config_file_base";
-    if (-f $config_file_tmp) {
-      $config_file = $config_file_tmp;
-      last;
-    }
-  }
-  unless (defined $config_file) {
-    confess "Can't find resource config file $config_file_base in @INC";
-  }
+  my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource_class_name, $resource_mode);
   
   my $config = $self->load_config($config_file, @$resource_args);
   
