@@ -258,14 +258,10 @@ class ByteList : precompile {
       if ($new_length > $capacity) {
         $self->_extend_with_capacity($new_length);
       }
-      for (my $i = $length; $i < $new_length; $i++) {
-        $self->{values}[$i] = 0;
-      }
+      Fn->memset_byte($self->{values}, $length, 0, $new_length - $length);
     }
     elsif ($new_length < $length) {
-      for (my $i = $new_length; $i < $length; $i++) {
-        $self->{values}[$i] = 0;
-      }
+      Fn->memset_byte($self->{values}, $new_length, 0, $length - $new_length);
     }
     
     $self->{length} = $new_length;
