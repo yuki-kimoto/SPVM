@@ -503,9 +503,14 @@ sub get_spvm_core_header_file_names {
 }
 
 sub get_config_file_from_class_name {
-  my ($class_name) = @_;
+  my ($class_name, $mode) = @_;
   
-  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
+  my $ext = 'config';
+  if (defined $mode) {
+    $ext = "$mode.$ext";
+  }
+  
+  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, $ext);
   my $config_file;
   for my $inc (@INC) {
     my $config_file_tmp = "$inc/$config_file_base";
