@@ -1,4 +1,4 @@
-class ByteList : precompile {
+class ByteList {
   use Fn;
   
   has values   : byte[];
@@ -59,7 +59,7 @@ class ByteList : precompile {
     return $self;
   }
   
-  private method _extend_with_capacity : void ($new_capacity : int) {
+  precompile private method _extend_with_capacity : void ($new_capacity : int) {
     my $new_values = new byte [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
