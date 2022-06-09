@@ -605,6 +605,12 @@ t/default/lib/SPVM/TestCase/Ref.spvm
 t/default/lib/SPVM/TestCase/Refcnt.spvm
 t/default/lib/SPVM/TestCase/Refop.spvm
 t/default/lib/SPVM/TestCase/Remainder.spvm
+t/default/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.config
+t/default/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.native/include/bar1.h
+t/default/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.native/include/bar2.h
+t/default/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.native/src/bar1.c
+t/default/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.native/src/bar2.c
+t/default/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.native/src/extra.c
 t/default/lib/SPVM/TestCase/Return.spvm
 t/default/lib/SPVM/TestCase/Seqop.spvm
 t/default/lib/SPVM/TestCase/Simple.spvm
@@ -620,6 +626,10 @@ t/default/lib/SPVM/TestCase/TypeConversion.spvm
 t/default/lib/SPVM/TestCase/UnaryMinus.spvm
 t/default/lib/SPVM/TestCase/UnaryPlus.spvm
 t/default/lib/SPVM/TestCase/Unless.spvm
+t/default/lib/SPVM/TestCase/UseResource.spvm
+t/default/lib/SPVM/TestCase/UseResource/Foo1.c
+t/default/lib/SPVM/TestCase/UseResource/Foo1.config
+t/default/lib/SPVM/TestCase/UseResource/Foo1.spvm
 t/default/lib/SPVM/TestCase/Warn.spvm
 t/default/lib/SPVM/TestCase/Weaken.spvm
 t/default/lib/SPVM/TestCase/While.spvm
@@ -646,6 +656,7 @@ t/default/refcnt.t
 t/default/refop.t
 t/default/remainder.t
 t/default/require.t
+t/default/resource.t
 t/default/return.t
 t/default/seqop.t
 t/default/special_assign.t

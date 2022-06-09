@@ -1,0 +1,39 @@
+class TestCase::UseResource::Foo1 {
+  native static method bar1_baz1 : string ();
+  native static method bar1_baz2 : string ();
+  native static method bar2_baz1 : string ();
+  native static method bar2_baz2 : string ();
+  
+  static method test : int () {
+    
+    {
+      my $result = &bar1_baz1;
+      unless ($result eq "Foo1__V1_0_0__bar1_baz1") {
+        return 0;
+      }
+    }
+
+    {
+      my $result = &bar1_baz2;
+      unless ($result eq "Foo1__V1_0_0__bar1_baz2") {
+        return 0;
+      }
+    }
+    
+    {
+      my $result = &bar2_baz1;
+      unless ($result eq "Foo1__V1_0_0__bar2_baz1") {
+        return 0;
+      }
+    }
+
+    {
+      my $result = &bar2_baz2;
+      unless ($result eq "Foo1__V1_0_0__bar2_baz2") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}
