@@ -1,4 +1,14 @@
 Revision history for SPVM
+0.9606_01  2022-06-10
+        * Add the following methods to Fn class
+          static method memset_byte : void ($dest : byte[], $dest_offset : int, $value : byte, $length : int)
+          static method memset_double : void ($dest : double[], $dest_offset : int, $value : double, $length : int)
+          static method memset_float : void ($dest : float[], $dest_offset : int, $value : float, $length : int)
+          static method memset_int : void ($dest : int[], $dest_offset : int, $value : int, $length : int)
+          static method memset_long : void ($dest : long[], $dest_offset : int, $value : long, $length : int)
+          static method memset_short : void ($dest : short[], $dest_offset : int, $value : short, $length : int)
+          static method memset_object : void ($dest : object[], $dest_offset : int, $value : object, $length : int)
+
 0.9605_01  2022-06-10
         * Add build_dynamic_lib_dist_precompile method to SPVM::Builder::API.
           This is same as build_shared_lib_dist_precompile method.

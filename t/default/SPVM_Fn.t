@@ -407,6 +407,17 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn2->memmove_double);
 }
 
+# memset 
+{
+  ok(SPVM::TestCase::Lib::Fn2->memset_byte);
+  ok(SPVM::TestCase::Lib::Fn2->memset_short);
+  ok(SPVM::TestCase::Lib::Fn2->memset_int);
+  ok(SPVM::TestCase::Lib::Fn2->memset_long);
+  ok(SPVM::TestCase::Lib::Fn2->memset_float);
+  ok(SPVM::TestCase::Lib::Fn2->memset_double);
+  ok(SPVM::TestCase::Lib::Fn2->memset_object);
+}
+
 # new_array_proto
 {
   # copy_array_range_byte

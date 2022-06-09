@@ -1282,6 +1282,49 @@ class Fn : precompile {
     $$offset_ref = $save_offset;
     return $code_point;
   }
+
+  precompile static method memset_byte : void ($dest : byte[], $dest_offset : int, $value : byte, $length : int) {
+    my $offset_plus_length = $dest_offset + $length;
+    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
+      $dest->[$i] = $value;
+    }
+  }
+  precompile static method memset_double : void ($dest : double[], $dest_offset : int, $value : double, $length : int) {
+    my $offset_plus_length = $dest_offset + $length;
+    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
+      $dest->[$i] = $value;
+    }
+  }
+  precompile static method memset_float : void ($dest : float[], $dest_offset : int, $value : float, $length : int) {
+    my $offset_plus_length = $dest_offset + $length;
+    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
+      $dest->[$i] = $value;
+    }
+  }
+  precompile static method memset_int : void ($dest : int[], $dest_offset : int, $value : int, $length : int) {
+    my $offset_plus_length = $dest_offset + $length;
+    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
+      $dest->[$i] = $value;
+    }
+  }
+  precompile static method memset_long : void ($dest : long[], $dest_offset : int, $value : long, $length : int) {
+    my $offset_plus_length = $dest_offset + $length;
+    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
+      $dest->[$i] = $value;
+    }
+  }
+  precompile static method memset_short : void ($dest : short[], $dest_offset : int, $value : short, $length : int) {
+    my $offset_plus_length = $dest_offset + $length;
+    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
+      $dest->[$i] = $value;
+    }
+  }
+  precompile static method memset_object : void ($dest : object[], $dest_offset : int, $value : object, $length : int) {
+    my $offset_plus_length = $dest_offset + $length;
+    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
+      $dest->[$i] = $value;
+    }
+  }
   
   native static method memcpy : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
   native static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);

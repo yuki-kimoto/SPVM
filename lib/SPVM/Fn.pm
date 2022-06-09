@@ -1264,6 +1264,48 @@ Source offset + length must be within the range of the source array, otherwise a
 
 Create a new generic object array as the same type as the given array.
 
+=head2 memset_byte
+
+  static method memset_byte : void ($dest : byte[], $dest_offset : int, $value : byte, $length : int)
+
+Set each element of the C<byte> array to the value with the offset and the length.
+
+=head2 memset_double
+
+  static method memset_double : void ($dest : double[], $dest_offset : int, $value : double, $length : int)
+
+Set each element of the C<double> array to the value with the offset and the length.
+
+=head2 memset_float
+
+  static method memset_float : void ($dest : float[], $dest_offset : int, $value : float, $length : int)
+
+Set each element of the C<float> array to the value with the offset and the length.
+
+=head2 memset_int
+
+  static method memset_int : void ($dest : int[], $dest_offset : int, $value : int, $length : int)
+
+Set each element of the C<int> array to the value with the offset and the length.
+
+=head2 memset_long
+
+  static method memset_long : void ($dest : long[], $dest_offset : int, $value : long, $length : int)
+
+Set each element of the C<long> array to the value with the offset and the length.
+
+=head2 memset_short
+
+  static method memset_short : void ($dest : short[], $dest_offset : int, $value : short, $length : int)
+
+Set each element of the C<short> array to the value with the offset and the length.
+
+=head2 memset_object
+
+  static method memset_object : void ($dest : object[], $dest_offset : int : int, $value : object, $length)
+
+Set each element of the object array to the value with the offset and the length.
+
 =head2 ord
 
   static method ord : int ($utf8_character : string)
