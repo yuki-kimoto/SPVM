@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9604_01  2022-06-07
+0.9605  2022-06-10
         [CHANGE]
         * switch statement can have only default statement.
         * switch statement don't need to have case statements.
