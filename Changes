@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9605_01  2022-06-09
+0.9605_01  2022-06-10
         * Add build_dynamic_lib_dist_precompile method to SPVM::Builder::API.
           This is same as build_shared_lib_dist_precompile method.
           build_shared_lib_dist_precompile method is remained for backwards compatibility.
@@ -18,7 +18,7 @@ Revision history for SPVM
         * Remove is_lib_file field from SPVM::Builder::ObjectFileInfo.
         * Rename SPVM::Builder::ObjectFileInfo's "object_file" field to "file".
         
-0.9604_01  2022-06-07
+0.9605  2022-06-10
         [CHANGE]
         * switch statement can have only default statement.
         * switch statement don't need to have case statements.
