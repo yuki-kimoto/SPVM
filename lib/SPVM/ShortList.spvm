@@ -1,4 +1,4 @@
-class ShortList : precompile {
+class ShortList {
   use Fn;
   
   has values   : short[];
@@ -58,7 +58,7 @@ class ShortList : precompile {
     return $self;
   }
 
-  private method _extend_with_capacity : void ($new_capacity : int) {
+  precompile private method _extend_with_capacity : void ($new_capacity : int) {
     my $new_values = new short [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
@@ -181,15 +181,12 @@ class ShortList : precompile {
       if ($new_length > $capacity) {
         $self->_extend_with_capacity($new_length);
       }
-      for (my $i = $length; $i < $new_length; $i++) {
-        $self->{values}[$i] = 0;
-      }
+      Fn->memset_short($self->{values}, $length, 0, $new_length - $length);
     }
     elsif ($new_length < $length) {
-      for (my $i = $new_length; $i < $length; $i++) {
-        $self->{values}[$i] = 0;
-      }
+      Fn->memset_short($self->{values}, $new_length, 0, $length - $new_length);
     }
+    
     $self->{length} = $new_length;
   }
 
