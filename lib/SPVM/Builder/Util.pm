@@ -170,21 +170,6 @@ sub create_cfunc_name {
   return $cfunc_name;
 }
 
-sub load_config {
-  my ($config_file, @argv) = @_;
-  
-  unless (-f $config_file) {
-    confess "Can't find config file \"$config_file\"";
-  }
-  local @ARGV = @argv;
-  my $config = do File::Spec->rel2abs($config_file);
-  if ($@) {
-    confess "Can't parse config file \"$config_file\": $@";
-  }
-  
-  return $config;
-}
-
 sub unindent {
   my $str = shift;
   my $min = min map { m/^([ \t]*)/; length $1 || () } split "\n", $str;
@@ -515,6 +500,40 @@ sub get_spvm_core_header_file_names {
   );
   
   return \@spvm_core_header_file_names;
+}
+
+sub get_config_file_from_class_name {
+  my ($class_name) = @_;
+  
+  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
+  my $config_file;
+  for my $inc (@INC) {
+    my $config_file_tmp = "$inc/$config_file_base";
+    if (-f $config_file_tmp) {
+      $config_file = $config_file_tmp;
+      last;
+    }
+  }
+  unless (defined $config_file) {
+    confess "Can't find the config file \"$config_file_base\" in (@INC)";
+  }
+  
+  return $config_file;
+}
+
+sub load_config {
+  my ($config_file, @args) = @_;
+  
+  unless (-f $config_file) {
+    confess "Can't find config file \"$config_file\"";
+  }
+  local @ARGV = @args;
+  my $config = do File::Spec->rel2abs($config_file);
+  if ($@) {
+    confess "Can't parse config file \"$config_file\": $@";
+  }
+  
+  return $config;
 }
 
 1;
