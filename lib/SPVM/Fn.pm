@@ -1126,6 +1126,24 @@ Destnation offset + length must be within the range of the destnation array, oth
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
+=head2 memcpy_object
+
+  static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
+
+Copy source object array to destination object array with the each offset and a length.
+
+If source data range and destination data overlap, the result is not guaranteed.
+
+Destnation must be defined, otherwise an exception occurs.
+
+Source must be defined, otherwise an exception occurs.
+
+Length must be more than or equals to 0, otherwise an exception occurs.
+
+Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+
+Source offset + length must be within the range of the source array, otherwise an exception occurs.
+
 =head2 memmove
 
   static method memmove : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);

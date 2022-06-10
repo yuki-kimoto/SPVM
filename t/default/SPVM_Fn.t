@@ -387,7 +387,7 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn2->equals_array_object);
 }
 
-# memcpy_numeric
+# memcpy
 {
   ok(SPVM::TestCase::Lib::Fn2->memcpy_byte);
   ok(SPVM::TestCase::Lib::Fn2->memcpy_short);
@@ -395,6 +395,7 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn2->memcpy_long);
   ok(SPVM::TestCase::Lib::Fn2->memcpy_float);
   ok(SPVM::TestCase::Lib::Fn2->memcpy_double);
+  ok(SPVM::TestCase::Lib::Fn2->memcpy_object);
 }
 
 # memmove_numeric
