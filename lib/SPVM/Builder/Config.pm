@@ -489,15 +489,23 @@ sub use { shift->add_resources(@_) }
 sub use_resource {
   my ($self, @args) = @_;
   
-  my %resource_args;
-  if (@args == 1) {
-    $resource_args{class_name} = $args[0];
-  }
-  else {
-    %resource_args = @args;
+  my $first_arg;
+  unless (@args % 2 == 0) {
+    $first_arg = shift @args;
   }
   
-  my $resource = SPVM::Builder::Resource->new(%resource_args);
+  my $resource;
+  if (ref $first_arg) {
+    $resource = $first_arg;
+  }
+  else {
+    my $class_name = $first_arg;
+    my %args = @args;
+    if (exists $args{class_name}) {
+      $class_name = delete $args{class_name};
+    }
+    $resource = SPVM::Builder::Resource->new(class_name => $class_name, %args);
+  }
   
   my $resource_class_name = $resource->class_name;
   my $resource_mode = $resource->mode;
@@ -1221,4 +1229,10 @@ Get the library directory from the config file name.
   my $output_type = $config->output_type;
   $config->output_type($type);
 
-Get and set the output type. C<dynamic_lib>, C<static_lib>, or C<exe>. The default is C<dynamic_lib>.
+=head2 use_resource
+
+  $config->use_resource('Resource::Zlib::V1_0_0');
+  $config->use_resource('Resource::Zlib::V1_0_0', mode => 'prod', args => ['foo', 'bar']);
+  $config->use_resource($resouce_object);
+
+Use resource class. 
