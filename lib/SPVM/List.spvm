@@ -1,4 +1,4 @@
-class List : precompile {
+class List {
   use Fn;
   
   has values   : object[];
@@ -35,9 +35,8 @@ class List : precompile {
       $self->{values} = Fn->new_array_proto(new object[0], $capacity);
     }
     
-    for (my $i = 0; $i < @$objects; ++$i) {
-      $self->{values}[$i] = $objects->[$i];
-    }
+    Fn->memcpy_object($self->{values}, 0, $objects, 0, scalar @$objects);
+
     $self->{length} = @$objects;
 
     return $self;
@@ -79,9 +78,7 @@ class List : precompile {
     
     my $values = $self->{values};
     if ($index != $length) {
-      for (my $i = $length - 1; $i >= $index; $i--) {
-        $values->[$i + 1] = $values->[$i];
-      }
+      Fn->memmove_object($values, $index + 1, $values, $index, $length - $index);
     }
     $values->[$index] = $value;
     
@@ -99,9 +96,7 @@ class List : precompile {
     my $values = $self->{values};
     my $remove_value = $values->[$index];
 
-    for (my $i = $index; $i < $length - 1; $i++) {
-      $values->[$i] = $values->[$i + 1];
-    }
+    Fn->memmove_object($values, $index, $values, $index + 1, $length - 1 - $index);
     $values->[$length - 1] = undef;
     
     $self->{length}--;
@@ -147,9 +142,7 @@ class List : precompile {
     
     my $values = $self->{values};
     
-    for (my $i = 0; $i < $length; $i++) {
-      $values->[$length - $i] = $values->[$length - $i - 1];
-    }
+    Fn->memmove_object($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
@@ -167,9 +160,7 @@ class List : precompile {
     
     my $value = $values->[0];
     
-    for (my $i = 0; $i < $length - 1; $i++) {
-      $values->[$i] = $values->[$i + 1];
-    }
+    Fn->memmove_object($values, 0, $values, 1, $length - 1);
     $values->[$length - 1] = undef;
     
     $self->{length}--;
@@ -201,9 +192,7 @@ class List : precompile {
     }
     
     my $values = $self->{values};
-    for (my $i = 0; $i < $cur_length; $i++) {
-      $values->[$i] = $array->[$i];
-    }
+    Fn->memcpy_object($values, 0, $array, 0, $cur_length);
   }
 
   method get : object ($index : int) {
@@ -216,7 +205,7 @@ class List : precompile {
     return $self->{values}[$index];
   }
 
-  private method _extend_with_capacity : void ($new_capacity : int) {
+  precompile private method _extend_with_capacity : void ($new_capacity : int) {
     my $new_values = Fn->new_array_proto($self->{values}, $new_capacity);
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
@@ -236,9 +225,7 @@ class List : precompile {
     
     my $new_values = Fn->new_array_proto($self->{values}, $new_capacity);
     
-    for (my $i = 0; $i < $length; $i++) {
-      $new_values->[$i] = $values->[$i];
-    }
+    Fn->memcpy_object($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
@@ -258,9 +245,7 @@ class List : precompile {
       }
     }
     elsif ($new_length < $length) {
-      for (my $i = $new_length; $i < $length; $i++) {
-        $self->{values}[$i] = undef;
-      }
+      Fn->memset_object($self->{values}, $new_length, undef, $length - $new_length);
     }
     $self->{length} = $new_length;
   }
@@ -268,9 +253,7 @@ class List : precompile {
   method to_array : object[] () {
     my $length = $self->{length};
     my $objects = Fn->new_array_proto($self->{values}, $length);
-    for (my $i = 0; $i < $length; $i++) {
-      $objects->[$i] = $self->{values}[$i];
-    }
+    Fn->memcpy_object($objects, 0, $self->{values}, 0, $length);
     return $objects;
   }
 }
