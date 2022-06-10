@@ -1,4 +1,5 @@
-class StringList : precompile {
+class StringList {
+  use Fn;
   has values   : string[];
   has capacity : int;
   has length   : ro int;
@@ -29,9 +30,7 @@ class StringList : precompile {
     
     $self->{length} = $length;
     
-    for (my $i = 0; $i < $length; $i++) {
-      $values->[$i] = $array->[$i];
-    }
+    Fn->memcpy_object($values, 0, $array, 0, $length);
     
     $self->{values} = $values;
     
@@ -82,9 +81,7 @@ class StringList : precompile {
     
     my $values = $self->{values};
     if ($index != $length) {
-      for (my $i = $length - 1; $i >= $index; $i--) {
-        $values->[$i + 1] = $values->[$i];
-      }
+      Fn->memmove_object($values, $index + 1, $values, $index, $length - $index);
     }
     $values->[$index] = $value;
     
@@ -101,10 +98,9 @@ class StringList : precompile {
     
     my $values = $self->{values};
     my $remove_value = $values->[$index];
-
-    for (my $i = $index; $i < $length - 1; $i++) {
-      $values->[$i] = $values->[$i + 1];
-    }
+    
+    Fn->memmove_object($values, $index, $values, $index + 1, $length - 1);
+    
     $values->[$length - 1] = undef;
     
     $self->{length}--;
@@ -149,9 +145,7 @@ class StringList : precompile {
     
     my $values = $self->{values};
     
-    for (my $i = 0; $i < $length; $i++) {
-      $values->[$length - $i] = $values->[$length - $i - 1];
-    }
+    Fn->memmove_object($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
@@ -169,9 +163,7 @@ class StringList : precompile {
     
     my $value = $values->[0];
     
-    for (my $i = 0; $i < $length - 1; $i++) {
-      $values->[$i] = $values->[$i + 1];
-    }
+    Fn->memmove_object($values, 0, $values, 1, $length - 1);
     
     $self->{length}--;
     
@@ -192,9 +184,7 @@ class StringList : precompile {
       }
     }
     elsif ($new_length < $length) {
-      for (my $i = $new_length; $i < $length; $i++) {
-        $self->{values}[$i] = undef;
-      }
+      Fn->memset_object($self->{values}, $new_length, undef, $length);
     }
     $self->{length} = $new_length;
   }
@@ -223,12 +213,10 @@ class StringList : precompile {
     }
     
     my $values = $self->{values};
-    for (my $i = 0; $i < $cur_length; $i++) {
-      $values->[$i] = $array->[$i];
-    }
+    Fn->memcpy_object($values, 0, $array, 0, $cur_length);
   }
 
-  method grep : int ($search : string) {
+  precompile method grep : int ($search : string) {
     for (my $i = 0; $i < $self->length; ++$i) {
       if ($self->{values}->[$i] eq $search) {
         return 1;
@@ -244,9 +232,7 @@ class StringList : precompile {
     
     my $values = $self->{values};
     
-    for (my $i = 0; $i < $length; $i++) {
-      $array->[$i] = $values->[$i];
-    }
+    Fn->memcpy_object($array, 0, $values, 0, $length);
     
     return $array;
   }
@@ -260,16 +246,14 @@ class StringList : precompile {
     
     my $new_values = new string[$new_capacity];
     
-    for (my $i = 0; $i < $length; $i++) {
-      $new_values->[$i] = $values->[$i];
-    }
+    Fn->memcpy_object($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
   }
 
 
-  private method _extend_with_capacity : void ($new_capacity : int) {
+  precompile private method _extend_with_capacity : void ($new_capacity : int) {
     my $new_values = new string[$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
