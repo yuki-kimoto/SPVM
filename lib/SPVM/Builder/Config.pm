@@ -517,6 +517,7 @@ sub use_resource {
   my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource_class_name, $resource_mode);
   
   my $config = $self->load_config($config_file, @$resource_args);
+  $config->file($config_file);
   
   $resource->config($config);
   
