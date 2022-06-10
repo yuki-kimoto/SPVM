@@ -8406,6 +8406,18 @@ The above example is the same as the following codes.
     }
   }
 
+=head2 class_id Operator
+
+The C<class_id> operator to an L<operator|/"Operator"> to get the class id from a class name.
+
+  class_id CLASS_NAME
+
+The class name must be an existing class. Otherwise a compilation error occur.
+
+The return value is the class id.
+
+The return type is the L<int type|/"int Type">.
+
 =head1 Exception
 
 Explains exceptions.

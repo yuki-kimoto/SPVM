@@ -95,6 +95,11 @@ SPVM::Test - SPVM test module
   }
 
   static method main : int ($start_file : string, $args : string[]) {
+    
+    my $class_id = class_id TestCase;
+    
+    warn "$class_id";
+    
     # Only default
     {
       my $success : int;

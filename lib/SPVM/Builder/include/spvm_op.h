@@ -253,6 +253,7 @@ enum {
   SPVM_OP_C_ID_ALIAS,
   SPVM_OP_C_ID_OF,
   SPVM_OP_C_ID_REQUIRED,
+  SPVM_OP_C_ID_CLASS_ID,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -519,5 +520,7 @@ SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_ch
 SPVM_OP* SPVM_OP_build_any_object_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_element);
 
 SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_class, SPVM_OP* op_name_class_alias);
+
+SPVM_OP* SPVM_OP_build_class_id(SPVM_COMPILER* compiler, SPVM_OP* op_class_id, SPVM_OP* op_name_class);
 
 #endif

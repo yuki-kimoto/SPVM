@@ -280,6 +280,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_print_stderr,
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
+    SPVM_API_get_class_id,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -3590,6 +3591,12 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         break;
       }
+      case SPVM_OPCODE_C_ID_GET_CLASS_ID: {
+        int32_t class_id = opcode->operand1;
+        int_vars[opcode->operand0] = class_id;
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY: {
         int32_t length = int_vars[opcode->operand1];
         if (length >= 0) {
@@ -6695,6 +6702,25 @@ int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
   if (basic_type) {
     int32_t basic_type_id = basic_type->id;
     return basic_type_id;
+  }
+  else {
+    return -1;
+  }
+}
+
+int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  if (class_name == NULL) {
+    return -1;
+  }
+
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class_by_name(runtime, class_name);
+  if (class) {
+    int32_t class_id = class->id;
+    return class_id;
   }
   else {
     return -1;

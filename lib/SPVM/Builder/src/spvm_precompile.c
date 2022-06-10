@@ -2079,6 +2079,31 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
+      case SPVM_OPCODE_C_ID_GET_CLASS_ID: {
+        int32_t class_id = opcode->operand1;
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t access_class_id = env->get_class_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+                                              "    if (access_class_id < 0) {\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, \"Class not found:");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ":New object\");\n"
+                                              "      env->set_exception(env, exception);\n"
+                                              "      exception_flag = 1;\n"
+                                              "    }\n"
+                                              "    if (!exception_flag) {\n"
+                                              "      ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = access_class_id;\n"
+                                              "    }\n"
+                                              "  }\n");
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t length = *(int32_t*)&");

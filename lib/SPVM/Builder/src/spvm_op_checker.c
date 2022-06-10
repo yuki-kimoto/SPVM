@@ -408,6 +408,20 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
+
+            case SPVM_OP_C_ID_CLASS_ID: {
+              
+              SPVM_OP* op_name_class = op_cur->first;
+              const char* class_name = op_name_class->uv.name;
+              
+              SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+              if (!class) {
+                SPVM_COMPILER_error(compiler, "The class \"%s\" not found. The operand of the class_id operator must be a existing class type at %s line %d", class_name, op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_SWITCH: {
               
               SPVM_OP* op_switch_condition = op_cur->first;
@@ -3551,6 +3565,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_ARRAY_LENGTH:
                         case SPVM_OP_C_ID_STRING_LENGTH:
                         case SPVM_OP_C_ID_NEW:
+                        case SPVM_OP_C_ID_CLASS_ID:
                         case SPVM_OP_C_ID_CONCAT:
                         case SPVM_OP_C_ID_REFOP:
                         case SPVM_OP_C_ID_DUMP:
