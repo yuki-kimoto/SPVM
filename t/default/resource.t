@@ -20,7 +20,7 @@ is($resource->mode, 'mode1');
 is_deeply($resource->args, ['args1', 'args2']);
 is_deeply($resource->config->{_test_base_argv}, ['args1', 'args2']);
 is_deeply($resource->config->{_test_mode1_argv}, ['args1', 'args2']);
-is($resource->config->file, 't/default/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.mode1.config');
+like($resource->config->file, qr|t/.*?\Q/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.mode1.config|);
 
 
 # All object is freed
