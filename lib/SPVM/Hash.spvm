@@ -1,4 +1,4 @@
-class Hash : precompile {
+class Hash {
   use Hash::Entry;
   use Fn;
 
@@ -11,7 +11,7 @@ class Hash : precompile {
   }
   private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
 
-  static method new : Hash ($key_values : object[]...) {
+  precompile static method new : Hash ($key_values : object[]...) {
     my $self = new Hash;
     
     my $default_capacity = 32;
@@ -121,7 +121,7 @@ class Hash : precompile {
     }
   }
 
-  method keys : string[] () {
+  precompile method keys : string[] () {
     my $keys = new string[$self->{count}];
     # iterate entries
     my $count = 0;
@@ -135,7 +135,7 @@ class Hash : precompile {
     return $keys;
   }
 
-  method values : object[] () {
+  precompile method values : object[] () {
     my $retval = new object[$self->{count}];
     # iterate entries
     my $count = 0;
@@ -149,7 +149,7 @@ class Hash : precompile {
     return $retval;
   }
 
-  method copy : Hash () {
+  precompile method copy : Hash () {
     my $ret = Hash->new({});
     my $keys = $self->keys;
     for (my $i = 0; $i < @$keys; ++$i) {
@@ -269,7 +269,7 @@ class Hash : precompile {
     }
   }
 
-  method _rehash : void () {
+  precompile method _rehash : void () {
     my $new_bucket_count : int;
     $new_bucket_count = $self->{bucket_count} * 2;
     my $new_entries = new Hash::Entry [$new_bucket_count];
