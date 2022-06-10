@@ -718,8 +718,6 @@ t/exe/myexe.pl
 t/exe/SPVM_Builder_Exe.t
 t/exe/spvmcc.t
 t/get_native_api_indexes.pl
-t/lib/TestAuto.pm
-t/lib/TestFile.pm
 t/sort_method_name_native.pl
 t/sort_method_name_pod.pl
 t/sort_method_name_spvm.pl
@@ -731,5 +729,7 @@ t/test_files/fread.txt
 t/test_files/fread_eof.txt
 t/test_files/long_line.txt
 t/test_files/SPVM/Foo.config
+t/testlib/TestAuto.pm
+t/testlib/TestFile.pm
 yacc/bison.sh
 yacc/spvm_yacc.y

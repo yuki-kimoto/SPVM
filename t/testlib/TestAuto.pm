@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use FindBin;
-use lib "t/lib";
+use lib "t/testlib";
 use File::Find;
 use File::Basename 'basename', 'dirname';
 
