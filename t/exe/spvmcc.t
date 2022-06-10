@@ -81,11 +81,11 @@ rmtree "$build_dir/work";
 
   # no_precompile
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe_precompile -c t/exe/myexe.no_precompile.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe_no_precompile -c t/exe/myexe.no_precompile.config MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_precompile/);
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_no_precompile/);
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     system($execute_cmd_with_args) == 0
       or die "Can't execute command:$execute_cmd_with_args:$!";
@@ -103,11 +103,11 @@ rmtree "$build_dir/work";
 
   # no_precompile, no_compiler_api
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe_no_compiler_api -c t/exe/myexe.no_precompile_no_compiler_api.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe_no_precompile_no_compiler_api -c t/exe/myexe.no_precompile_no_compiler_api.config MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_no_compiler_api/);
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_no_precompile_no_compiler_api/);
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     system($execute_cmd_with_args) == 0
       or die "Can't execute command:$execute_cmd_with_args:$!";
