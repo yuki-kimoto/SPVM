@@ -1,0 +1,35 @@
+class TestCase::ClassId {
+  use Point;
+  static method basic : int () {
+    
+    {
+      my $class_id_byte = class_id Byte;
+      my $class_id_short = class_id Short;
+      my $class_id_int = class_id Int;
+      my $class_id_long = class_id Long;
+      
+      unless ($class_id_byte + 1 == $class_id_short) {
+        return 0;
+      }
+      unless ($class_id_short + 1 == $class_id_int) {
+        return 0;
+      }
+      unless ($class_id_int + 1 == $class_id_long) {
+        return 0;
+      }
+      
+      unless ($class_id_long < 10) {
+        return 0;
+      }
+    }
+    
+    {
+      my $class_id_point = class_id Point;
+      if ($class_id_point < 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

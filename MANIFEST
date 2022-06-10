@@ -325,6 +325,7 @@ t/default/begin.t
 t/default/bit_not.t
 t/default/bit_operator.t
 t/default/callback.t
+t/default/class_id.t
 t/default/class_var.t
 t/default/comment.t
 t/default/comparison_operator.t
@@ -372,6 +373,7 @@ t/default/lib/SPVM/TestCase/Callback/Callback.spvm
 t/default/lib/SPVM/TestCase/Callback/ImplementCallback1.spvm
 t/default/lib/SPVM/TestCase/Callback/ImplementCallback2.spvm
 t/default/lib/SPVM/TestCase/CLASS.spvm
+t/default/lib/SPVM/TestCase/ClassId.spvm
 t/default/lib/SPVM/TestCase/ClassVar.spvm
 t/default/lib/SPVM/TestCase/Comment/CR.spvm
 t/default/lib/SPVM/TestCase/Comment/CRLF.spvm
