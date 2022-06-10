@@ -1,4 +1,4 @@
-class StringBuffer : precompile {
+class StringBuffer {
   use Fn;
 
   has value : ro mutable string;
@@ -24,9 +24,7 @@ class StringBuffer : precompile {
       }
       $self->_reallocate($new_capacity);
     }
-    for (my $i = 0; $i < $length; ++$i) {
-      $self->{value}[$self->{length} + $i] = $string->[$i];
-    }
+    Fn->memcpy($self->{value}, $self->{length}, $string, 0, $length);
     $self->{length} += $length;
   }
 
@@ -50,9 +48,7 @@ class StringBuffer : precompile {
   # O($new_capacity)
   private method _reallocate : void ($new_capacity : int) {
     my $new_string = (mutable string)new_string_len($new_capacity);
-    for (my $i = 0; $i < $self->{length}; ++$i) {
-      $new_string->[$i] = $self->{value}[$i];
-    }
+    Fn->memcpy($new_string, 0, $self->{value}, 0, $self->{length});
     $self->{value} = $new_string;
   }
 }
