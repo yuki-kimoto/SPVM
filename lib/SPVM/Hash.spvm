@@ -59,7 +59,7 @@ class Hash {
     $self->{count} = $count;
   }
 
-  method get : object ($key : string) {
+  precompile method get : object ($key : string) {
     my $index = Hash->_index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
     unless ($ref) {
@@ -76,7 +76,7 @@ class Hash {
     }
   }
 
-  method exists : int ($key : string) {
+  precompile method exists : int ($key : string) {
     my $index = Hash->_index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
 
@@ -94,7 +94,7 @@ class Hash {
     }
   }
 
-  method delete : object ($key : string) {
+  precompile method delete : object ($key : string) {
     my $index = Hash->_index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
     my $prev : Hash::Entry = undef;
@@ -217,7 +217,7 @@ class Hash {
     return (int)(Hash->_murmur_hash($key, $default_seed) % $bucket_count);
   }
 
-  static method _set_to_container : void (
+  precompile static method _set_to_container : void (
     $entries : Hash::Entry[],
     $bucket_count : int,
     $count_ref : int*,
