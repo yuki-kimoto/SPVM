@@ -606,6 +606,7 @@ t/default/lib/SPVM/TestCase/Refcnt.spvm
 t/default/lib/SPVM/TestCase/Refop.spvm
 t/default/lib/SPVM/TestCase/Remainder.spvm
 t/default/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.config
+t/default/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.mode1.config
 t/default/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.native/include/bar1.h
 t/default/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.native/include/bar2.h
 t/default/lib/SPVM/TestCase/Resource/Foo1/V1_0_0.native/src/bar1.c
@@ -627,6 +628,9 @@ t/default/lib/SPVM/TestCase/UnaryMinus.spvm
 t/default/lib/SPVM/TestCase/UnaryPlus.spvm
 t/default/lib/SPVM/TestCase/Unless.spvm
 t/default/lib/SPVM/TestCase/UseResource.spvm
+t/default/lib/SPVM/TestCase/UseResource/Basic.c
+t/default/lib/SPVM/TestCase/UseResource/Basic.config
+t/default/lib/SPVM/TestCase/UseResource/Basic.spvm
 t/default/lib/SPVM/TestCase/UseResource/Foo1.c
 t/default/lib/SPVM/TestCase/UseResource/Foo1.config
 t/default/lib/SPVM/TestCase/UseResource/Foo1.spvm
