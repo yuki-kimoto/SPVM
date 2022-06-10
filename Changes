@@ -9,7 +9,7 @@ Revision history for SPVM
           static method memset_short : void ($dest : short[], $dest_offset : int, $value : short, $length : int)
           static method memset_object : void ($dest : object[], $dest_offset : int, $value : object, $length : int)
           static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
-
+          static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
 0.9605_01  2022-06-10
         * Add build_dynamic_lib_dist_precompile method to SPVM::Builder::API.
           This is same as build_shared_lib_dist_precompile method.

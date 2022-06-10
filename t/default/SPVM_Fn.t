@@ -406,6 +406,7 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn2->memmove_long);
   ok(SPVM::TestCase::Lib::Fn2->memmove_float);
   ok(SPVM::TestCase::Lib::Fn2->memmove_double);
+  ok(SPVM::TestCase::Lib::Fn2->memmove_object);
 }
 
 # memset 

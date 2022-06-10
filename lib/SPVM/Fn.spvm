@@ -1348,6 +1348,16 @@ class Fn : precompile {
   native static method memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
   native static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
   native static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
+  static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
+    if ($dest == $source) {
+      my $source_length = @$source;
+      my $source_copy = new object[$source_length];
+      my $source_offset_plus_length = $source_offset + $length;
+      &memcpy_object($source_copy, $source_offset, $source, $source_offset, $length);
+      $source = $source_copy;
+    }
+    &memcpy_object($dest, $dest_offset, $source, $source_offset, $length);
+  }
 
   native static method new_array_proto : object[] ($proto_array : object[], $length : int);
 
