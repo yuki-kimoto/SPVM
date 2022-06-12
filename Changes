@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9605_01  2022-06-10
+0.9606  2022-06-13
         * Add build_dynamic_lib_dist_precompile method to SPVM::Builder::API.
           This is same as build_shared_lib_dist_precompile method.
           build_shared_lib_dist_precompile method is remained for backwards compatibility.
