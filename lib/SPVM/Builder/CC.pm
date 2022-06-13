@@ -898,9 +898,9 @@ sub link {
     
     # Create shared library
     (undef, @tmp_files) = $cbuilder->link(
-      lib_file => $link_info_output_file,
       objects => $link_info_object_files,
       module_name => $link_info_class_name,
+      lib_file => $link_info_output_file,
       extra_linker_flags => $link_info_ldflags_str,
       dl_func_list => $dl_func_list,
     );

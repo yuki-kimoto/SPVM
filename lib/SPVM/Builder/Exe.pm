@@ -1009,6 +1009,7 @@ sub link {
     
     # Linker temporary files
     my @tmp_files;
+    my $dl_func_list = [];
     
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
@@ -1024,6 +1025,7 @@ sub link {
         module_name => $link_info_class_name,
         lib_file => $lib_file,
         extra_linker_flags => $link_info_ldflags_str,
+        dl_func_list => $dl_func_list,
       );
     }
     # Create a static library
