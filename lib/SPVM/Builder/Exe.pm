@@ -748,11 +748,8 @@ sub compile_spvm_core_sources {
   # Config
   my $config = $self->config;
 
-  # SPVM::Builder directory
-  my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_module();
-
   # SPVM src directory
-  my $builder_src_dir = "$builder_dir/src";
+  my $builder_src_dir = $config->builder_src_dir;
 
   # SPVM runtime source files
   my $no_compiler_api = $config->no_compiler_api;
