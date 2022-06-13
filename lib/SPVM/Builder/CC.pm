@@ -896,14 +896,34 @@ sub link {
     
     my @tmp_files;
     
-    # Create dynamic library
-    (undef, @tmp_files) = $cbuilder->link(
-      objects => $link_info_object_files,
-      module_name => $link_info_class_name,
-      lib_file => $link_info_output_file,
-      extra_linker_flags => $link_info_ldflags_str,
-      dl_func_list => $dl_func_list,
-    );
+    # Create a dynamic library
+    if ($output_type eq 'dynamic_lib') {
+      (undef, @tmp_files) = $cbuilder->link(
+        objects => $link_info_object_files,
+        module_name => $link_info_class_name,
+        lib_file => $link_info_output_file,
+        extra_linker_flags => $link_info_ldflags_str,
+        dl_func_list => $dl_func_list,
+      );
+    }
+    # Create a static library
+    elsif ($output_type eq 'static_lib') {
+      my @object_files = map { "$_" } @$link_info_object_files;
+      my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
+      $cbuilder->do_system(@ar_cmd);
+    }
+    # Create an executable file
+    elsif ($output_type eq 'exe') {
+      (undef, @tmp_files) = $cbuilder->link_executable(
+        objects => $link_info_object_files,
+        module_name => $link_info_class_name,
+        exe_file => $link_info_output_file,
+        extra_linker_flags => $link_info_ldflags_str,
+      );
+    }
+    else {
+      confess "Unknown output_type \"$output_type\"";
+    }
 
     if ($self->debug) {
       if ($^O eq 'MSWin32') {
