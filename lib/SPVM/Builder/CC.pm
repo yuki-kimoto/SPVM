@@ -626,7 +626,7 @@ sub link {
 
   # Shared library file
   my $dynamic_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_dynamic_lib_rel_file($class_name, $self->category);
-  my $dynamic_lib_file = "$output_dir/$dynamic_lib_rel_file";
+  my $output_file = "$output_dir/$dynamic_lib_rel_file";
 
   # Module file
   my $module_file = $self->builder->get_module_file($class_name);
@@ -857,7 +857,7 @@ sub link {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
 
   # Move temporary dynamic library file to blib directory
-  mkpath dirname $dynamic_lib_file;
+  mkpath dirname $output_file;
   
   my $input_files = [@$all_object_files];
   if (defined $config->file) {
@@ -865,7 +865,7 @@ sub link {
   }
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $self->force || $config->force,
-    output_file => $dynamic_lib_file,
+    output_file => $output_file,
     input_files => $input_files,
   });
 
@@ -874,7 +874,7 @@ sub link {
     object_file_infos => $all_object_file_infos,
     ld => $ld,
     ldflags => \@all_ldflags,
-    output_file => $dynamic_lib_file,
+    output_file => $output_file,
   );
 
   # Execute the callback before this link
@@ -953,7 +953,7 @@ sub link {
     }
   }
   
-  return $dynamic_lib_file;
+  return $output_file;
 }
 
 sub create_precompile_source_file {
