@@ -293,7 +293,8 @@ sub new {
   
   my $file_optional = $self->file_optional;
   
-  if (!$file_optional && !defined $self->file) {
+  my $file = $self->file;
+  if (!$file_optional && !defined $file) {
     confess "\"file\" option must be specified";
   }
   
@@ -334,6 +335,25 @@ sub new {
   # include_dirs
   unless (defined $self->{include_dirs}) {
     $self->include_dirs([]);
+  }
+
+  # Resource directory
+  if (defined $file) {
+    my $resource_dir = $self->remove_ext_from_config_file($file);
+    
+    $resource_dir .= '.native';
+    
+    # resource_include_dir
+    unless (defined $self->{resource_include_dir}) {
+      my $resource_include_dir = "$resource_dir/include";
+      $self->resource_include_dir($resource_include_dir);
+    }
+
+    # resource_src_dir
+    unless (defined $self->{resource_src_dir}) {
+      my $resource_src_dir = "$resource_dir/src";
+      $self->resource_src_dir($resource_src_dir);
+    }
   }
   
   # ccflags
