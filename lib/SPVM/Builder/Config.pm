@@ -558,6 +558,17 @@ sub load_config {
   return $config;
 }
 
+
+sub get_module_home_from_config_file {
+  my ($self, $config_file) = @_;
+  
+  my $module_home = $config_file;
+  
+  $module_home =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
+  
+  return $module_home;
+}
+
 sub load_mode_config {
   my ($self, $config_file, $mode, @argv) = @_;
   
