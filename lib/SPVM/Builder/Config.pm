@@ -445,10 +445,6 @@ sub new {
   # ldflags
   unless (defined $self->{ldflags}) {
     $self->ldflags([]);
-    if ($self->output_type eq 'dynamic_lib') {
-      my @default_ldflags = @{$self->dynamic_lib_ldflags};
-      $self->add_ldflags(@default_ldflags);
-    }
   }
   
   return $self;
@@ -1145,7 +1141,14 @@ If you want to link only static link library, you can use the following hash ref
   my ldflags = $config->ldflags;
   $config->ldflags(ldflags);
 
-Get and set linker flags. The default is emtpy array reference.
+Get and set linker flags. The default value is an emtpy array reference.
+
+=head2 dynamic_lib_ldflags
+
+  my dynamic_lib_ldflags = $config->dynamic_lib_ldflags;
+  $config->dynamic_lib_ldflags(dynamic_lib_ldflags);
+
+Get and set linker flags for dynamic link.
 
 B<Default:>
 

@@ -704,10 +704,18 @@ sub link {
 
   # All linker flags
   my @all_ldflags;
-
+  
+  my $output_type = $config->output_type;
+  
+  # Linker flags for dynamic link
+  if ($output_type eq 'dynamic_lib') {
+    my $dynamic_lib_ldflags = $config->dynamic_lib_ldflags;
+    push @all_ldflags, @$dynamic_lib_ldflags;
+  }
+  
   # Linker flags
   my $ldflags = $config->ldflags;
-  push @all_ldflags, @{$config->ldflags};
+  push @all_ldflags, @$ldflags;
   
   # Optimize
   my $ld_optimize = $config->ld_optimize;
