@@ -663,6 +663,41 @@ sub get_lib_dir {
 
 SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
 
+=head1 SYNOPSYS
+
+  use SPVM::Builder::Config;
+  
+  # Create a config
+  my $config = SPVM::Builder::Config->new;
+  
+  # Create a config with "GNU99" standard of "C" language
+  my $config = SPVM::Builder::Config->new_gnu99;
+
+  # Create a config with "C99" standard of "C" language
+  my $config = SPVM::Builder::Config->new_c99;
+
+  # Create a config as "C++"
+  my $config = SPVM::Builder::Config->new_new_cpp;
+
+  # Create a config with "C++11" standard of "C++"
+  my $config = SPVM::Builder::Config->new_new_cpp11;
+  
+  # Optimize
+  $config->optimize('-O2');
+  
+  # Optimize with debug mode
+  $config->optimize('-O0 -g');
+  
+  # Add source files
+  $config->add_source_files('foo.c', 'bar.c', 'baz/baz.c');
+  
+  # Use resource
+  $config->use_resource('TestCase::Resource::Zlib::V1_0_0');
+  $config->use_resource('TestCase::Resource::Foo1::V1_0_0', mode => 'mode1', args => ['args1', 'args2']);
+  
+  # Get resouce information
+  my $resource = $config->get_resource('TestCase::Resource::Zlib::V1_0_0');
+
 =head1 DESCRIPTION
 
 L<SPVM::Builder::Config> is configuration of c/c++ compile and link.
