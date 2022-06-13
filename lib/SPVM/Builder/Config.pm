@@ -288,16 +288,21 @@ sub new {
   unless (defined $self->{cc}) {
     $self->cc($Config{cc});
   }
-
+  
+  # builder_include_dir
+  unless (defined $self->{builder_include_dir}) {
+    # Add "include" directory of SPVM::Builder. This directory contains spvm_native.h
+    my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_module();
+    my $builder_include_dir = "$builder_dir/include";
+    $self->builder_include_dir($builder_include_dir);
+  }
+  
   # include_dirs
   unless (defined $self->{include_dirs}) {
     $self->include_dirs([]);
     
     my @default_include_dirs;
-
-    # Add "include" directory of SPVM::Builder. This directory contains spvm_native.h
-    my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_module();
-    my $builder_include_dir = "$builder_dir/include";
+    my $builder_include_dir = $self->builder_include_dir;
     push @default_include_dirs, $builder_include_dir;
     
     $self->add_include_dirs(@default_include_dirs);
