@@ -593,22 +593,20 @@ sub load_config {
 }
 
 
-sub get_module_home_from_config_file {
+sub remove_ext_from_config_file {
   my ($self, $config_file) = @_;
   
-  my $module_home = $config_file;
+  my $config_file_without_ext = $config_file;
   
-  $module_home =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
+  $config_file_without_ext =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
   
-  return $module_home;
+  return $config_file_without_ext;
 }
 
 sub load_mode_config {
   my ($self, $config_file, $mode, @argv) = @_;
   
-  my $module_home = $self->get_module_home_from_config_file($config_file);
-  
-  my $mode_config_file = $module_home;
+  my $mode_config_file = $self->remove_ext_from_config_file($config_file);
   if (defined $mode) {
     $mode_config_file .= ".$mode";
   }
