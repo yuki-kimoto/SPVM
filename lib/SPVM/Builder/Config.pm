@@ -5,6 +5,7 @@ use warnings;
 use Config;
 use Carp 'confess';
 use File::Basename 'dirname';
+use SPVM::Builder::Util;
 
 # Fields
 sub file {
@@ -295,12 +296,9 @@ sub new {
     my @default_include_dirs;
 
     # Add "include" directory of SPVM::Builder. This directory contains spvm_native.h
-    my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
-    my $spvm_builder_dir = $spvm_builder_config_dir;
-    $spvm_builder_dir =~ s/\/Config\.pm$//;
-    my $spvm_include_dir = $spvm_builder_dir;
-    $spvm_include_dir .= '/include';
-    push @default_include_dirs, $spvm_include_dir;
+    my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_module();
+    my $builder_include_dir = "$builder_dir/include";
+    push @default_include_dirs, $builder_include_dir;
     
     $self->add_include_dirs(@default_include_dirs);
   }

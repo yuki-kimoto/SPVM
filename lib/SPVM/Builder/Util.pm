@@ -526,6 +526,13 @@ sub get_config_file_from_class_name {
   return $config_file;
 }
 
+sub get_builder_dir_from_config_module {
+  my $builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
+  my $builder_dir = $builder_config_dir;
+  $builder_dir =~ s/\/Config\.pm$//;
+  return $builder_dir;
+}
+
 1;
 
 =head1 NAME
