@@ -1006,7 +1006,10 @@ sub link {
     
     # CBuilder
     my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
-
+    
+    # Linker temporary files
+    my @tmp_files;
+    
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
       my $link_info_output_dir = dirname $link_info_output_file;
@@ -1016,7 +1019,7 @@ sub link {
         $lib_file .= ".$Config{dlext}";
       }
       
-      $cbuilder->link(
+      (undef, @tmp_files) = $cbuilder->link(
         objects => $link_info_object_files,
         module_name => $link_info_class_name,
         lib_file => $lib_file,
@@ -1038,7 +1041,7 @@ sub link {
     }
     # Create an executable file
     elsif ($output_type eq 'exe') {
-      $cbuilder->link_executable(
+      (undef, @tmp_files) = $cbuilder->link_executable(
         objects => $link_info_object_files,
         module_name => $link_info_class_name,
         exe_file => $link_info_output_file,

@@ -894,8 +894,10 @@ sub link {
 
     my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
     
+    my @tmp_files;
+    
     # Create shared library
-    my (undef, @tmp_files) = $cbuilder->link(
+    (undef, @tmp_files) = $cbuilder->link(
       lib_file => $link_info_output_file,
       objects => $link_info_object_files,
       module_name => $link_info_class_name,
