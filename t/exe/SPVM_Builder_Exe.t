@@ -44,7 +44,7 @@ use FindBin;
     no warnings 'once';
     my $link_info = $main::MYEXE_LINK_INFO;
     
-    my $config = SPVM::Builder::Config->new_gnu99;
+    my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
     
     ok($link_info->class_name, 'TestCase::NativeAPI2');
     ok($link_info->ld, $config->ld);

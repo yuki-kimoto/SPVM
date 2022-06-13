@@ -8,6 +8,17 @@ use File::Basename 'dirname';
 use SPVM::Builder::Util;
 
 # Fields
+sub file_optional {
+  my $self = shift;
+  if (@_) {
+    $self->{file_optional} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{file_optional};
+  }
+}
+
 sub file {
   my $self = shift;
   if (@_) {
@@ -279,6 +290,12 @@ sub new {
   my $self = {@_};
 
   bless $self, ref $class || $class;
+  
+  my $file_optional = $self->file_optional;
+  
+  if (!$file_optional && !defined $self->file) {
+    confess "\"file\" option must be specified";
+  }
   
   # quiet
   unless (defined $self->{quiet}) {
@@ -736,19 +753,19 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
   use SPVM::Builder::Config;
   
   # Create a config
-  my $config = SPVM::Builder::Config->new;
+  my $config = SPVM::Builder::Config->new(file => __FILE__);
   
   # Create a config with "GNU99" standard of "C" language
-  my $config = SPVM::Builder::Config->new_gnu99;
+  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
   # Create a config with "C99" standard of "C" language
-  my $config = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
   # Create a config as "C++"
-  my $config = SPVM::Builder::Config->new_new_cpp;
+  my $config = SPVM::Builder::Config->new_new_cpp(file => __FILE__);
 
   # Create a config with "C++11" standard of "C++"
-  my $config = SPVM::Builder::Config->new_new_cpp11;
+  my $config = SPVM::Builder::Config->new_new_cpp11(file => __FILE__);
   
   # Optimize
   $config->optimize('-O2');
@@ -1145,17 +1162,35 @@ Get and set the flag if the compiler and the linker output the results.
 
 The default is C<1>.
 
+=head2 file
+
+  my $file = $config->file;
+  $config->file($file);
+
+Get and set the config file path.
+
+The default is C<1>.
+
+=head2 file_optional
+
+  my $file_optional = $config->file_optional;
+  $config->file_optional($file_optional);
+
+Get and set the value that indicates L<file|/"file"> field is needed for C<new|/"new"> method.
+
+The default is C<0>.
+
 =head1 CLASS METHODS
 
 =head2 new
 
-  my $config = SPVM::Builder::Config->new;
+  my $config = SPVM::Builder::Config->new(file => __FILE__);
   
 Create L<SPVM::Builder::Config> object.
 
 =head2 new_c
   
-  my $config = SPVM::Builder::Config->new_c;
+  my $config = SPVM::Builder::Config->new_c(file => __FILE__);
 
 Create default build config with C settings. This is L<SPVM::Builder::Config> object.
 
@@ -1165,13 +1200,13 @@ If you want to use the specific C version, use C<set_std> method.
 
 =head2 new_c99
   
-  my $config = SPVM::Builder::Config->new_gnu99;
+  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
 Create default build config with C99 settings. This is L<SPVM::Builder::Config> object.
 
 =head2 new_cpp
   
-  my $config = SPVM::Builder::Config->new_cpp;
+  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
 Create default build config with C++ settings. This is L<SPVM::Builder::Config> object.
 
@@ -1181,7 +1216,7 @@ If you want to use the specific C++ version, use C<set_std> method.
 
 =head2 new_cpp11
   
-  my $config = SPVM::Builder::Config->new_cpp11;
+  my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
 
 Create default build config with C++11 settings. This is L<SPVM::Builder::Config> object.
 

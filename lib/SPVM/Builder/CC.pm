@@ -308,7 +308,7 @@ sub compile {
       }
     }
     elsif ($category eq 'precompile') {
-      $config = SPVM::Builder::Config->new_gnu99;
+      $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
     }
     else { confess 'Unexpected Error' }
   }
@@ -593,7 +593,7 @@ use strict;
 use warnings;
 
 use SPVM::Builder::Config;
-my \$config = SPVM::Builder::Config->new_gnu99;
+my \$config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
 \$config;
 ----------------------------------------------
@@ -659,7 +659,7 @@ sub link {
       }
     }
     elsif ($category eq 'precompile') {
-      $config = SPVM::Builder::Config->new_gnu99;
+      $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
     }
     else { confess 'Unexpected Error' }
   }

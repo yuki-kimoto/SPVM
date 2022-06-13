@@ -21,7 +21,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   my $link_info = $main::NATIVE_API2_LINK_INFO;
   
-  my $config = SPVM::Builder::Config->new_gnu99;
+  my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
   
   ok($link_info->class_name, 'TestCase::NativeAPI2');
   ok($link_info->ld, $config->ld);
