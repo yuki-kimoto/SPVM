@@ -500,7 +500,7 @@ for my $test_index (0 .. 1) {
   
   my $basic_test_native_config_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.config";
   ok(-f $basic_test_native_config_file);
-  ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, 'my $config = SPVM::Builder::Config->new_gnu99;'));
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, 'my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);'));
   ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, q($config->use_resource('Foo');)));
 
 
@@ -557,7 +557,7 @@ for my $test_index (0 .. 1) {
   
   my $basic_test_native_config_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.config";
   ok(-f $basic_test_native_config_file);
-  ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, 'my $config = SPVM::Builder::Config->new_cpp;'));
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, 'my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);'));
   ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, q($config->use_resource('Foo');)));
 
 

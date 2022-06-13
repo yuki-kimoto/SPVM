@@ -314,7 +314,7 @@ use strict;
 use warnings;
 use SPVM::Builder::Config;
 
-my \$native_config = SPVM::Builder::Config->$new_method;
+my \$native_config = SPVM::Builder::Config->$new_method(file => __FILE__);
 
 \$native_config;
 EOS
@@ -651,7 +651,7 @@ sub generate_basic_test_native_config_file {
 use strict;
 use warnings;
 
-my \$config = SPVM::Builder::Config->$new_method;
+my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
 
 \$config->use_resource('$class_name');
 
