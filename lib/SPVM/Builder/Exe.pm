@@ -257,14 +257,14 @@ sub build_exe_file {
 }
 
 sub create_source_file {
-  my ($self, $opt) = @_;
+  my ($self, $options) = @_;
   
   # Config
   my $config = $self->config;
   
-  my $input_files = $opt->{input_files};
-  my $output_file = $opt->{output_file};
-  my $create_cb = $opt->{create_cb};
+  my $input_files = $options->{input_files};
+  my $output_file = $options->{output_file};
+  my $create_cb = $options->{create_cb};
   
   my $config_dependent_files = $config->dependent_files;
   my $need_generate_input_files = [@$input_files, @$config_dependent_files];
@@ -280,21 +280,21 @@ sub create_source_file {
 }
 
 sub compile_source_file {
-  my ($self, $opt) = @_;
+  my ($self, $options) = @_;
 
   # Config
   my $config = $self->config;
   
-  my $opt_ccflags = $opt->{ccflags};
-  $opt_ccflags = [] unless defined $opt_ccflags;
+  my $options_ccflags = $options->{ccflags};
+  $options_ccflags = [] unless defined $options_ccflags;
   
-  if (@$opt_ccflags) {
-    $config->add_ccflags(@$opt_ccflags);
+  if (@$options_ccflags) {
+    $config->add_ccflags(@$options_ccflags);
   }
 
-  my $source_file = $opt->{source_file};
-  my $output_file = $opt->{output_file};
-  my $depend_files = $opt->{depend_files};
+  my $source_file = $options->{source_file};
+  my $output_file = $options->{output_file};
+  my $depend_files = $options->{depend_files};
   unless ($depend_files) {
     $depend_files = [];
   }

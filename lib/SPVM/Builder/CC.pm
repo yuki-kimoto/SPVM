@@ -212,17 +212,17 @@ sub build_dynamic_lib_dist {
 }
 
 sub build_dynamic_lib {
-  my ($self, $class_name, $opt) = @_;
+  my ($self, $class_name, $options) = @_;
   
   # Compile source file and create object files
   my $compile_options = {};
-  $compile_options->{input_dir} = $opt->{compile_input_dir};
-  $compile_options->{output_dir} = $opt->{compile_output_dir};
+  $compile_options->{input_dir} = $options->{compile_input_dir};
+  $compile_options->{output_dir} = $options->{compile_output_dir};
   my $object_files = $self->compile($class_name, $compile_options);
   
   # Link object files and create dynamic library
   my $link_options = {};
-  $link_options->{output_dir} = $opt->{link_output_dir};
+  $link_options->{output_dir} = $options->{link_output_dir};
   my $build_dynamic_lib_file = $self->link(
     $class_name,
     $object_files,
@@ -255,7 +255,7 @@ sub get_resource_object_dir_from_class_name {
 }
 
 sub compile {
-  my ($self, $class_name, $opt) = @_;
+  my ($self, $class_name, $options) = @_;
 
   # Category
   my $category = $self->category;
@@ -270,10 +270,10 @@ sub compile {
   }
   
   # Source directory
-  my $input_dir = $opt->{input_dir};
+  my $input_dir = $options->{input_dir};
   
   # Object directory
-  my $output_dir = $opt->{output_dir};
+  my $output_dir = $options->{output_dir};
   unless (defined $output_dir && -d $output_dir) {
     confess "Temporary directory must exists for " . $self->category . " build";
   }
@@ -292,7 +292,7 @@ sub compile {
   }
   
   # Config
-  my $config = $opt->{config};
+  my $config = $options->{config};
   unless ($config) {
     my $config_file = $module_file;
     $config_file =~ s/\.spvm$/.config/;
@@ -357,7 +357,7 @@ sub compile {
     }
   }
   
-  my $is_resource = $opt->{is_resource};
+  my $is_resource = $options->{is_resource};
   my $native_module_file;
   unless ($is_resource) {
     # Native module file
@@ -601,7 +601,7 @@ EOS
 }
 
 sub link {
-  my ($self, $class_name, $object_file_infos, $opt) = @_;
+  my ($self, $class_name, $object_file_infos, $options) = @_;
   
   # All object file infos
   my $all_object_file_infos = [@$object_file_infos];
@@ -619,7 +619,7 @@ sub link {
   }
 
   # Shared library directory
-  my $output_dir = $opt->{output_dir};
+  my $output_dir = $options->{output_dir};
   unless (defined $output_dir && -d $output_dir) {
     confess "Shared lib directory must be specified for link";
   }
@@ -642,7 +642,7 @@ sub link {
   }
   
   # Config
-  my $config = $opt->{config};
+  my $config = $options->{config};
   unless ($config) {
     # Config file
     my $config_file = $module_file;
@@ -957,10 +957,10 @@ sub link {
 }
 
 sub create_precompile_source_file {
-  my ($self, $class_name, $opt) = @_;
+  my ($self, $class_name, $options) = @_;
   
   # Output - Precompile C source file
-  my $output_dir = $opt->{output_dir};
+  my $output_dir = $options->{output_dir};
   my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
   my $source_file = "$output_dir/$source_rel_file";
   
