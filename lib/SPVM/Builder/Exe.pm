@@ -250,7 +250,7 @@ sub build_exe_file {
   push @$object_files, $bootstrap_object_file;
   
   # Link and generate executable file
-  $self->link($object_files);
+  $self->link($class_name, $object_files);
 }
 
 sub create_source_file {
@@ -922,10 +922,8 @@ sub compile_native_sources {
 }
 
 sub link {
-  my ($self, $object_file_infos) = @_;
+  my ($self, $class_name, $object_file_infos) = @_;
 
-  my $class_name = $self->class_name;
-  
   my $config = $self->config;
 
   # CBuilder configs
