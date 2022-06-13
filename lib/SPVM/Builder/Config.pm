@@ -303,7 +303,7 @@ sub new {
 
   # resources
   unless (defined $self->{resources}) {
-    $self->resources({});
+    $self->{resources} = {};
   }
 
   # source_files
@@ -657,6 +657,22 @@ sub get_lib_dir {
   return $lib_dir;
 }
 
+sub get_resource {
+  my ($self, $resource_class_name) = @_;
+  
+  my $resource = $self->{resources}->{$resource_class_name};
+  
+  return $resource;
+}
+
+sub get_resource_names {
+  my ($self) = @_;
+  
+  my @resource_names = sort keys %{$self->{resources}};
+  
+  return \@resource_names;
+}
+
 1;
 
 =head1 NAME
@@ -1003,12 +1019,6 @@ If you want to link only static link library, you can use the following hash ref
 
   {type => 'static', name => 'gsl'}
 
-=head2 get_resource
-
-  my $resource = $config->get_resource('Resource::Zlib::V1_0_0');
-
-Get a resource. The resource is a L<SPVM::Builder::Resource> object.
-
 =head2 ldflags
 
   my ldflags = $config->ldflags;
@@ -1255,3 +1265,15 @@ If the rest arguments are used as the options of L<SPVM::Builder::Resource|/"new
     args => ['foo', 'bar'],
   );
   $config->use_resource($resource);
+
+=head2 get_resource
+
+  my $resource = $config->get_resource('Resource::Zlib::V1_0_0');
+
+Get a resource. The resource is a L<SPVM::Builder::Resource> object.
+
+=head2 get_resource_names
+
+  my $resource_names = $config->get_resource_names;
+
+Get resource names.

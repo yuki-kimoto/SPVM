@@ -329,8 +329,9 @@ sub compile {
   
   if ($category eq 'native') {
     
-    my $resources = $config->resources;
-    for my $resource (@$resources) {
+    my $resource_names = $config->get_resource_names;
+    for my $resource_name (@$resource_names) {
+      my $resource = $config->get_resource($resource_name);
       my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource);
       
       my $include_dir = $config_file;
@@ -714,8 +715,9 @@ sub link {
   # Add resource lib directories
   if ($category eq 'native') {
     my $symbol_names_h = {};
-    my $resources = $config->resources;
-    for my $resource (@$resources) {
+    my $resource_names = $config->get_resource_names;
+    for my $resource_name (@$resource_names) {
+      my $resource = $config->get_resource($resource_name);
       
       # Build native classes
       my $builder_cc_resource = SPVM::Builder::CC->new(
