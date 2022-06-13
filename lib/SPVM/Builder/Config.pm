@@ -183,17 +183,6 @@ sub source_files {
   }
 }
 
-sub resources {
-  my $self = shift;
-  if (@_) {
-    $self->{resources} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{resources};
-  }
-}
-
 sub force {
   my $self = shift;
   if (@_) {
@@ -314,7 +303,7 @@ sub new {
 
   # resources
   unless (defined $self->{resources}) {
-    $self->resources([]);
+    $self->resources({});
   }
 
   # source_files
@@ -513,7 +502,7 @@ sub use_resource {
   
   $resource->config($config);
   
-  push @{$self->{resources}}, $resource;
+  $self->{resources}->{$resource_class_name} = $resource;
   
   return $resource;
 }
@@ -979,19 +968,12 @@ If you want to link only static link library, you can use the following hash ref
 
   {type => 'static', name => 'gsl'}
 
-=head2 resources
+=head2 get_resource
 
-  my $resources = $config->resources;
-  $config->resources($resources);
+  my $resource = $config->get_resource('Resource::Zlib::V1_0_0');
 
-Get and get resouce module names.
+Get a resource. The resource is a L<SPVM::Builder::Resource> object.
 
-At runtime, each modules' native "include" directory is added before C<include_dirs>, and "lib" directory is added before C<lib_dirs>.
-
-B<Examples:>
-
-  $config->resources(['SPVM::Resouce::Zlib::V1_15']);
-  
 =head2 ldflags
 
   my ldflags = $config->ldflags;
@@ -1052,7 +1034,7 @@ Get and set the flag if the compiler and the linker output the results.
 
 The default is C<1>.
 
-=head1 Methods
+=head1 CLASS METHODS
 
 =head2 new
 
@@ -1091,6 +1073,8 @@ If you want to use the specific C++ version, use C<set_std> method.
   my $config = SPVM::Builder::Config->new_cpp11;
 
 Create default build config with C++11 settings. This is L<SPVM::Builder::Config> object.
+
+=head1 INSTANCE METHODS
 
 =head2 set_std
 
@@ -1215,8 +1199,24 @@ Get the library directory from the config file name.
 
 =head2 use_resource
 
+  $config->use_resource($resource);
   $config->use_resource('Resource::Zlib::V1_0_0');
   $config->use_resource('Resource::Zlib::V1_0_0', mode => 'prod', args => ['foo', 'bar']);
-  $config->use_resource($resouce_object);
 
-Use resource class. 
+Use a resource. 
+
+The first argument is a L<SPVM::Builder::Resource> object.
+
+If the first argument is a class name of the resource, a L<SPVM::Builder::Resource> object is created by L<SPVM::Builder::Resource|/"new"> method with C<class_name> option.
+
+  my $resource = SPVM::Builder::Resource->new(class_name => 'Resource::Zlib::V1_0_0');
+  $config->use_resource($resource);
+
+If the rest arguments are used as the options of L<SPVM::Builder::Resource|/"new"> of L<SPVM::Builder::Resource>.
+
+  my $resource = SPVM::Builder::Resource->new(
+    class_name => 'Resource::Zlib::V1_0_0',
+    mode => 'prod',
+    args => ['foo', 'bar'],
+  );
+  $config->use_resource($resource);
