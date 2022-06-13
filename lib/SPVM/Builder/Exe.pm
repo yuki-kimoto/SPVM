@@ -250,7 +250,10 @@ sub build_exe_file {
   push @$object_files, $bootstrap_object_file;
   
   # Link and generate executable file
-  $self->link($class_name, $object_files);
+  my $options = {
+    output_file => $self->{output_file}
+  };
+  $self->link($class_name, $object_files, $options);
 }
 
 sub create_source_file {
@@ -922,35 +925,39 @@ sub compile_native_sources {
 }
 
 sub link {
-  my ($self, $class_name, $object_file_infos) = @_;
-
+  my ($self, $class_name, $object_file_infos, $options) = @_;
+  
+  $options ||= {};
+  
   my $config = $self->config;
 
   # CBuilder configs
-  my $output_file = $self->{output_file};
+  my $output_file = $options->{output_file};
   
   # Output type
   my $output_type = $config->output_type;
   
   # Add output file extension
-  my $output_file_base = basename $output_file;
-  unless ($output_file_base =~ /\./) {
-    my $exe_ext;
-    
-    # Create a dynamic library
-    if ($output_type eq 'dynamic_lib') {
-      $exe_ext = ".$Config{dlext}"
+  if (defined $output_file) {
+    my $output_file_base = basename $output_file;
+    unless ($output_file_base =~ /\./) {
+      my $exe_ext;
+      
+      # Create a dynamic library
+      if ($output_type eq 'dynamic_lib') {
+        $exe_ext = ".$Config{dlext}"
+      }
+      # Create a static library
+      elsif ($output_type eq 'static_lib') {
+        $exe_ext = '.a';
+      }
+      # Create an executable file
+      elsif ($output_type eq 'exe') {
+        $exe_ext = $Config{exe_ext};
+      }
+      
+      $output_file .= $exe_ext;
     }
-    # Create a static library
-    elsif ($output_type eq 'static_lib') {
-      $exe_ext = '.a';
-    }
-    # Create an executable file
-    elsif ($output_type eq 'exe') {
-      $exe_ext = $Config{exe_ext};
-    }
-    
-    $output_file .= $exe_ext;
   }
   
   # Linker
