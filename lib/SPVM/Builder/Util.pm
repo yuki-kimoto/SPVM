@@ -317,7 +317,7 @@ sub create_make_rule {
     my $config_file = $noext_file;
     $config_file .= '.config';
     $config_file = "$lib_dir/$config_file";
-    my $config = &load_config($config_file);
+    my $config = SPVM::Builder::Config->load_config($config_file);
     
     my $native_file = $noext_file;
     my $native_file_ext = $config->ext;
@@ -524,21 +524,6 @@ sub get_config_file_from_class_name {
   }
   
   return $config_file;
-}
-
-sub load_config {
-  my ($config_file, @args) = @_;
-  
-  unless (-f $config_file) {
-    confess "Can't find config file \"$config_file\"";
-  }
-  local @ARGV = @args;
-  my $config = do File::Spec->rel2abs($config_file);
-  if ($@) {
-    confess "Can't parse config file \"$config_file\": $@";
-  }
-  
-  return $config;
 }
 
 1;

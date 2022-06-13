@@ -299,7 +299,7 @@ sub compile {
     if ($category eq 'native') {
       # Config file
       if (-f $config_file) {
-        $config = SPVM::Builder::Util::load_config($config_file);
+        $config = SPVM::Builder::Config->load_config($config_file);
         $config->file($config_file);
       }
       else {
@@ -646,7 +646,7 @@ sub link {
     $config_file =~ s/\.spvm$/.config/;
     if ($category eq 'native') {
       if (-f $config_file) {
-        $config = SPVM::Builder::Util::load_config($config_file);
+        $config = SPVM::Builder::Config->load_config($config_file);
         $config->file($config_file);
       }
       else {

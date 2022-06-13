@@ -527,9 +527,20 @@ sub use_resource {
 }
 
 sub load_config {
-  my ($self, $config_file, @argv) = @_;
+  my ($self, $config_file, @args) = @_;
+
+  unless (-f $config_file) {
+    confess "Can't find config file \"$config_file\"";
+  }
+  local @ARGV = @args;
+  my $config = do File::Spec->rel2abs($config_file);
+  if ($@) {
+    confess "Can't parse config file \"$config_file\": $@";
+  }
   
-  my $config = SPVM::Builder::Util::load_config($config_file, @argv);
+  unless (defined $config && $config->isa('SPVM::Builder::Config')) {
+    confess "The config file must be a SPVM::Builder::Config object";
+  }
   
   push @{$config->dependent_files}, $config_file;
   
