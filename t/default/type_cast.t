@@ -16,6 +16,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::TypeCast->to_numeric_type);
   ok(SPVM::TestCase::TypeCast->to_mulnum_type);
   ok(SPVM::TestCase::TypeCast->to_reference_type);
+  ok(SPVM::TestCase::TypeCast->to_string);
 }
 
 

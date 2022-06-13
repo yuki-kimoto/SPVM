@@ -683,4 +683,28 @@ class TestCase::TypeCast {
     
     return 1;
   }
+
+  static method to_string : int () {
+    
+    my $byte_array = ['a', 'b', 'c'];
+    unless ($byte_array isa byte[]) {
+      return 0;
+    }
+    
+    my $string = (string)$byte_array;
+    
+    unless ($string isa string) {
+      return 0;
+    }
+    
+    unless ($string eq "abc") {
+      return 0;
+    }
+    
+    if ($byte_array == $string) {
+      return 0;
+    }
+    
+    return 1;
+  }
 }
