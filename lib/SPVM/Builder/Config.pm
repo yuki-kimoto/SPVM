@@ -206,6 +206,17 @@ sub ldflags {
   }
 }
 
+sub dynamic_lib_ldflags {
+  my $self = shift;
+  if (@_) {
+    $self->{dynamic_lib_ldflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{dynamic_lib_ldflags};
+  }
+}
+
 sub lib_dirs {
   my $self = shift;
   if (@_) {
@@ -413,20 +424,29 @@ sub new {
     $self->output_type('dynamic_lib');
   }
 
-  # ldflags
-  unless (defined $self->{ldflags}) {
-    $self->ldflags([]);
+  # dynamic_lib_ldflags
+  unless (defined $self->{dynamic_lib_ldflags}) {
+    $self->dynamic_lib_ldflags([]);
     
     if ($self->output_type eq 'dynamic_lib') {
-      my @default_ldflags;
+      my @dynamic_lib_ldflags;
       
       # Dynamic link options
       if ($^O eq 'MSWin32') {
-        push @default_ldflags, '-mdll', '-s';
+        push @dynamic_lib_ldflags, '-mdll', '-s';
       }
       else {
-        push @default_ldflags, '-shared';
+        push @dynamic_lib_ldflags, '-shared';
       }
+      $self->dynamic_lib_ldflags(\@dynamic_lib_ldflags);
+    }
+  }
+
+  # ldflags
+  unless (defined $self->{ldflags}) {
+    $self->ldflags([]);
+    if ($self->output_type eq 'dynamic_lib') {
+      my @default_ldflags = @{$self->dynamic_lib_ldflags};
       $self->add_ldflags(@default_ldflags);
     }
   }
