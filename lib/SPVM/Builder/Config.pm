@@ -478,14 +478,6 @@ sub add_source_files {
   push @{$self->{source_files}}, @source_files;
 }
 
-sub add_resources {
-  my ($self, @resources) = @_;
-  
-  push @{$self->{resources}}, @resources;
-}
-
-sub use { shift->add_resources(@_) }
-
 sub use_resource {
   my ($self, @args) = @_;
   
@@ -521,7 +513,7 @@ sub use_resource {
   
   $resource->config($config);
   
-  $self->add_resources($resource);
+  push @{$self->{resources}}, $resource;
   
   return $resource;
 }
@@ -1173,26 +1165,6 @@ Add the values that each element is converted to the following hash reference af
 B<Examples:>
 
   $config->add_dynamic_libs('gsl');
-
-=head2 use
-
-  $config->use(@resources);
-
-This method is the alias for L<"add_resources"> to improve user experiences.
-
-B<Examples:>
-
-  $config->use('SPVM::Resouce::Zlib::V1_15');
-
-=head2 add_resources
-
-  $config->add_resources(@resources);
-
-Add the values after the last element of C<resources> field.
-
-B<Examples:>
-
-  $config->add_resources('SPVM::Resouce::Zlib::V1_15');
 
 =head2 to_hash
 

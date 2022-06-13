@@ -11,6 +11,9 @@ Revision history for SPVM
           static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
           static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
         * Add class_id operator.
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Remove add_resources and use from SPVM::Builder::Config. Instead, use use_resource method.
+        
 0.9606  2022-06-13
         * Add build_dynamic_lib_dist_precompile method to SPVM::Builder::API.
           This is same as build_shared_lib_dist_precompile method.
