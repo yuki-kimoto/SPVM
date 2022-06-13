@@ -140,6 +140,17 @@ sub builder_include_dir {
   }
 }
 
+sub builder_src_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{builder_src_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{builder_src_dir};
+  }
+}
+
 sub resource_include_dir {
   my $self = shift;
   if (@_) {
@@ -288,13 +299,19 @@ sub new {
   unless (defined $self->{cc}) {
     $self->cc($Config{cc});
   }
+
+  my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_module();
   
   # builder_include_dir
   unless (defined $self->{builder_include_dir}) {
-    # Add "include" directory of SPVM::Builder. This directory contains spvm_native.h
-    my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_module();
     my $builder_include_dir = "$builder_dir/include";
     $self->builder_include_dir($builder_include_dir);
+  }
+
+  # builder_src_dir
+  unless (defined $self->{builder_src_dir}) {
+    my $builder_src_dir = "$builder_dir/src";
+    $self->builder_src_dir($builder_src_dir);
   }
   
   # include_dirs
@@ -572,13 +589,16 @@ sub get_module_home_from_config_file {
 sub load_mode_config {
   my ($self, $config_file, $mode, @argv) = @_;
   
-  my $mode_config_file = $config_file;
+  my $module_home = $self->get_module_home_from_config_file($config_file);
   
-  $mode_config_file =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
-  $mode_config_file .= ".$mode.config";
+  my $mode_config_file = $module_home;
+  if (defined $mode) {
+    $mode_config_file .= ".$mode";
+  }
+  $mode_config_file .= ".config";
   
   unless (-f $mode_config_file) {
-    confess "Can't find the mode config file \"$mode_config_file\"";
+    confess "Can't find the config file \"$mode_config_file\"";
   }
   
   my $config = $self->load_config($mode_config_file, @argv);
@@ -587,19 +607,10 @@ sub load_mode_config {
 }
 
 sub load_base_config {
-  my ($self, $config_file, @argv) = @_;
+  my ($self, $config_file, @args) = @_;
   
-  my $base_config_file = $config_file;
-  
-  $base_config_file =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
-  $base_config_file .= ".config";
-  
-  unless (-f $base_config_file) {
-    confess "Can't find the base config file \"$base_config_file\"";
-  }
-  
-  my $config = $self->load_config($base_config_file, @argv);
-  
+  my $config = $self->load_mode_config($config_file, undef, @args);
+
   return $config;
 }
 
@@ -861,9 +872,18 @@ Get and set header including directories of the compiler. This is same as C<-I> 
   my $builder_include_dir = $config->builder_include_dir;
   $config->builder_include_dir($builder_include_dir);
 
-Get and set builder C<include> directories.
+Get and set the header including directory of L<SPVM::Builder>.
 
 The default value is C<SPVM/Builder/include> of one up of directory that C<SPVM::Buidler::Config> is loaded.
+
+=head2 builder_src_dir
+
+  my $builder_src_dir = $config->builder_src_dir;
+  $config->builder_src_dir($builder_src_dir);
+
+Get and set the source directory of L<SPVM::Builder>.
+
+The default value is C<SPVM/Builder/src> of one up of the directory that C<SPVM::Buidler::Config> is loaded.
 
 =head2 ccflags
 
