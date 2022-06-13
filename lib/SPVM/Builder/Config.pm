@@ -128,6 +128,39 @@ sub include_dirs {
   }
 }
 
+sub builder_include_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{builder_include_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{builder_include_dir};
+  }
+}
+
+sub resource_include_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{resource_include_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{resource_include_dir};
+  }
+}
+
+sub resource_src_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{resource_src_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{resource_src_dir};
+  }
+}
+
 sub ld {
   my $self = shift;
   if (@_) {
