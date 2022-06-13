@@ -614,6 +614,9 @@ t/default/lib/SPVM/TestCase/Resource/Mylib1/V1_0_0.native/include/mylib1_source2
 t/default/lib/SPVM/TestCase/Resource/Mylib1/V1_0_0.native/src/extra.c
 t/default/lib/SPVM/TestCase/Resource/Mylib1/V1_0_0.native/src/mylib1_source1.c
 t/default/lib/SPVM/TestCase/Resource/Mylib1/V1_0_0.native/src/mylib1_source2.c
+t/default/lib/SPVM/TestCase/Resource/Mylib2/V1_0_0.config
+t/default/lib/SPVM/TestCase/Resource/Mylib2/V1_0_0.native/include/mylib2_source1.h
+t/default/lib/SPVM/TestCase/Resource/Mylib2/V1_0_0.native/src/mylib2_source1.c
 t/default/lib/SPVM/TestCase/Return.spvm
 t/default/lib/SPVM/TestCase/Seqop.spvm
 t/default/lib/SPVM/TestCase/Simple.spvm
@@ -636,6 +639,9 @@ t/default/lib/SPVM/TestCase/UseResource/Basic.spvm
 t/default/lib/SPVM/TestCase/UseResource/Mylib1.c
 t/default/lib/SPVM/TestCase/UseResource/Mylib1.config
 t/default/lib/SPVM/TestCase/UseResource/Mylib1.spvm
+t/default/lib/SPVM/TestCase/UseResource/Mylib2.c
+t/default/lib/SPVM/TestCase/UseResource/Mylib2.config
+t/default/lib/SPVM/TestCase/UseResource/Mylib2.spvm
 t/default/lib/SPVM/TestCase/Warn.spvm
 t/default/lib/SPVM/TestCase/Weaken.spvm
 t/default/lib/SPVM/TestCase/While.spvm
