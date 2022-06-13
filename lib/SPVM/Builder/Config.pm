@@ -300,12 +300,6 @@ sub new {
   # include_dirs
   unless (defined $self->{include_dirs}) {
     $self->include_dirs([]);
-    
-    my @default_include_dirs;
-    my $builder_include_dir = $self->builder_include_dir;
-    push @default_include_dirs, $builder_include_dir;
-    
-    $self->add_include_dirs(@default_include_dirs);
   }
   
   # ccflags
@@ -851,9 +845,14 @@ B<Examples:>
 
 Get and set header including directories of the compiler. This is same as C<-I> option of C<gcc>. 
 
-The default value is "SPVM/Builder/include" of one up of directory that SPVM::Buidler::Config.pm is loaded.
+=head2 builder_include_dir
 
-At runtime, the "include" directory of the native module is added before C<include_dirs>.
+  my $builder_include_dir = $config->builder_include_dir;
+  $config->builder_include_dir($builder_include_dir);
+
+Get and set builder C<include> directories.
+
+The default value is C<SPVM/Builder/include> of one up of directory that C<SPVM::Buidler::Config> is loaded.
 
 =head2 ccflags
 

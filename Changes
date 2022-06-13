@@ -13,9 +13,11 @@ Revision history for SPVM
         * Add class_id operator.
         * Add "get_resource" method to "SPVM::Builder::Config" module.
         * Add "get_resource_names" method to "SPVM::Builder::Config" module.
+        * Add "builder_include_dir" field to "SPVM::Builder::Config" module.
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove "add_resources" and use from "SPVM::Builder::Config" module. Instead, use "use_resource" method.
         * Remove "resources" method from "SPVM::Builder::Config" module. Intead, use "get_resource" method and "get_resource_names" methods.
+        * The default value of "include_dirs" of "SPVM::Builder::Config" module becomes an empty array reference.
         
 0.9606  2022-06-13
         * Add build_dynamic_lib_dist_precompile method to SPVM::Builder::API.

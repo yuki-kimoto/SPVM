@@ -539,6 +539,9 @@ sub create_compile_command_info {
   
   my $cflags = '';
   
+  my $builder_include_dir = $config->builder_include_dir;
+  $cflags .= "-I$builder_include_dir ";
+  
   my $include_dirs = $config->include_dirs;
   my $inc = join(' ', map { "-I$_" } @$include_dirs);
   $cflags .= " $inc";
