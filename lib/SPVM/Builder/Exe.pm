@@ -929,13 +929,30 @@ sub link {
   # CBuilder configs
   my $output_file = $self->{output_file};
   
+  # Output type
+  my $output_type = $config->output_type;
+  
   # Add output file extension
   my $output_file_base = basename $output_file;
   unless ($output_file_base =~ /\./) {
-    my $exe_ext = $Config{exe_ext};
+    my $exe_ext;
+    
+    # Create a dynamic library
+    if ($output_type eq 'dynamic_lib') {
+      $exe_ext = ".$Config{dlext}"
+    }
+    # Create a static library
+    elsif ($output_type eq 'static_lib') {
+      $exe_ext = '.a';
+    }
+    # Create an executable file
+    elsif ($output_type eq 'exe') {
+      $exe_ext = $Config{exe_ext};
+    }
+    
     $output_file .= $exe_ext;
   }
-
+  
   # Linker
   my $ld = $config->ld;
   
@@ -1002,8 +1019,6 @@ sub link {
     my $link_info_object_files = [map { $_->to_string } @$link_info_object_file_infos];
     my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
     
-    my $output_type = $config->output_type;
-    
     # CBuilder
     my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
     
@@ -1013,32 +1028,18 @@ sub link {
     
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
-      my $link_info_output_dir = dirname $link_info_output_file;
-      my $link_info_output_file_base = basename $link_info_output_file;
-      my $lib_file = $link_info_output_file;
-      unless ($link_info_output_file_base =~ /\./) {
-        $lib_file .= ".$Config{dlext}";
-      }
-      
       (undef, @tmp_files) = $cbuilder->link(
         objects => $link_info_object_files,
         module_name => $link_info_class_name,
-        lib_file => $lib_file,
+        lib_file => $link_info_output_file,
         extra_linker_flags => $link_info_ldflags_str,
         dl_func_list => $dl_func_list,
       );
     }
     # Create a static library
     elsif ($output_type eq 'static_lib') {
-      my $link_info_output_dir = dirname $link_info_output_file;
-      my $link_info_output_file_base = basename $link_info_output_file;
-      my $lib_file = $link_info_output_file;
-      unless ($link_info_output_file_base =~ /\./) {
-        $lib_file .= ".a";
-      }
-    
       my @object_files = map { "$_" } @$link_info_object_files;
-      my @ar_cmd = ('ar', 'rc', $lib_file, @object_files);
+      my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
       $cbuilder->do_system(@ar_cmd);
     }
     # Create an executable file
