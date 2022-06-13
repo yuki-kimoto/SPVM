@@ -84,7 +84,7 @@ SPVM::Builder::Resource - Resourceurations of Compile and Link of Native Sources
 
 =head1 DESCRIPTION
 
-L<SPVM::Builder::Resource> is resourceuration of c/c++ compile and link.
+C<SPVM::Builder::Resource> is a resource that contains a set of C<C>/C<C++> source files and the headers.
 
 =head1 FIELDS
 
@@ -135,151 +135,26 @@ B<Examples:>
     args => ['foo', 'bar'],
   );
 
-
-
 =head1 INSTANCE METHODS
 
-=head2 set_std
+=head2 to_string
 
-  $resource->set_std($std);
+  my $string = $resource->to_string;
 
-Add the value that is converted to C<-std=$std> after the last element of C<ccflags> field.
+Get the string representation. This is the same as the value of C</"class_name">.
 
-B<Example:>
+=head1 OPERATORS
 
-  $resource->set_std('gnu99');
+C<SPVM::Builder::Resource> overloads the following operators.
 
-=head2 add_ccflags
+=head2 bool
 
-  $resource->add_ccflags(@ccflags);
+  my $bool = !!$object_file_info;
+  
+Always true.
 
-Add values after the last element of C<ccflags> field.
+=head2 stringify
 
-=head2 add_ldflags
-
-  $resource->add_ldflags(@ldflags);
-
-Add values after the last element of C<ldflags> field.
-
-=head2 add_include_dirs
-
-  $resource->add_include_dirs(@include_dirs);
-
-Add values after the last element of C<include_dirs> field.
-
-=head2 add_lib_dirs
-
-  $resource->add_lib_dirs(@lib_dirs);
-
-Add values after the last element of  C<lib_dirs> field.
-
-=head2 add_source_files
-
-  $resource->add_source_files(@source_files);
-
-Add the values after the last element of C<source_files> field.
-
-=head2 add_libs
-
-  $resource->add_libs(@libs);
-
-Add the values after the last element of C<libs> field.
-
-B<Examples:>
-
-  $resource->add_libs('gsl');
-
-=head2 add_static_libs
-
-  $resource->add_static_libs(@libs);
-
-Add the values that each element is converted to the following hash reference after the last element of C<libs> field.
-
-  {type => 'static', name => $lib}
-
-B<Examples:>
-
-  $resource->add_static_libs('gsl');
-
-=head2 add_dynamic_libs
-
-  $resource->add_dynamic_libs(@libs);
-
-Add the values that each element is converted to the following hash reference after the last element of C<libs> field.
-
-  {type => 'dynamic', name => $lib}
-
-B<Examples:>
-
-  $resource->add_dynamic_libs('gsl');
-
-=head2 to_hash
-
-  my $resource = $resource->to_hash;
-
-Convert L<SPVM::Builder::Resource> to a hash reference.
-
-=head2 search_lib_dirs_from_cc_info
-
-  my $lib_dirs = $resource->search_lib_dirs_from_cc_info;
-
-Get the library searching directories parsing the infomation the compiler has.
-
-=head2 search_lib_dirs_from_resource_libpth
-
-  my $lib_dirs = $resource->search_lib_dirs_from_resource_libpth;
-
-Get the library searching directories parsing C<libpth> of L<Resource>.
-
-=head2 search_include_dirs_from_resource_incpth
-
-  my $include_dirs = $resource->search_include_dirs_from_resource_incpth;
-
-Get the header searching directories parsing C<incpth> of L<Resource>.
-
-=head2 sub get_include_dir
-
-  my $include_dir = $resource->get_include_dir(__FILE__);
-
-Get the header include directory from the resource file name.
-
-=head2 get_src_dir
-
-  my $src_dir = $resource->get_src_dir(__FILE__);
-
-Get the source directory from the resource file name.
-
-=head2 get_lib_dir
-
-  my $lib_dir = $resource->get_lib_dir(__FILE__);
-
-Get the library directory from the resource file name.
-
-=head2 output_type
-
-  my $output_type = $resource->output_type;
-  $resource->output_type($type);
-
-=head2 use_resource
-
-  $resource->use_resource($resource);
-  $resource->use_resource('Resource::Zlib::V1_0_0');
-  $resource->use_resource('Resource::Zlib::V1_0_0', mode => 'prod', args => ['foo', 'bar']);
-
-Use a resource. 
-
-The first argument is a L<SPVM::Builder::Resource> object.
-
-If the first argument is a class name of the resource, a L<SPVM::Builder::Resource> object is created by L<SPVM::Builder::Resource|/"new"> method with C<class_name> option.
-
-  my $resource = SPVM::Builder::Resource->new(class_name => 'Resource::Zlib::V1_0_0');
-  $resource->use_resource($resource);
-
-If the rest arguments are used as the options of L<SPVM::Builder::Resource|/"new"> of L<SPVM::Builder::Resource>.
-
-  my $resource = SPVM::Builder::Resource->new(
-    class_name => 'Resource::Zlib::V1_0_0',
-    mode => 'prod',
-    args => ['foo', 'bar'],
-  );
-  $resource->use_resource($resource);
+  my $object_file_name = "$object_file_info";
+  
+Alias for L</"to_string">.
