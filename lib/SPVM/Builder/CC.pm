@@ -300,7 +300,6 @@ sub compile {
       # Config file
       if (-f $config_file) {
         $config = SPVM::Builder::Config->load_config($config_file);
-        $config->file($config_file);
       }
       else {
         my $error = $self->_error_message_find_config($config_file);
@@ -651,7 +650,6 @@ sub link {
     if ($category eq 'native') {
       if (-f $config_file) {
         $config = SPVM::Builder::Config->load_config($config_file);
-        $config->file($config_file);
       }
       else {
         my $error = $self->_error_message_find_config($config_file);
