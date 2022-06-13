@@ -618,13 +618,13 @@ sub link {
     confess "SPVM_BUILD_DIR environment variable must be set for link";
   }
 
-  # Shared library directory
+  # Dynamic library directory
   my $output_dir = $options->{output_dir};
   unless (defined $output_dir && -d $output_dir) {
     confess "Shared lib directory must be specified for link";
   }
 
-  # Shared library file
+  # Dynamic library file
   my $dynamic_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_dynamic_lib_rel_file($class_name, $self->category);
   my $output_file = "$output_dir/$dynamic_lib_rel_file";
 
