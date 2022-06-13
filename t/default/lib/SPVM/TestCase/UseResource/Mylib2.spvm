@@ -1,0 +1,24 @@
+class TestCase::UseResource::Mylib2 {
+  native static method mylib2_source1_func1 : string ();
+  native static method mylib2_source1_func2 : string ();
+  
+  static method test : int () {
+    
+    # Call mylib1_source1_func1 from mylib2
+    {
+      my $result = &mylib2_source1_func1;
+      unless ($result eq "Mylib1__V1_0_0__mylib1_source1_func1") {
+        return 0;
+      }
+    }
+
+    {
+      my $result = &mylib2_source1_func2;
+      unless ($result eq "Mylib2__V1_0_0__mylib2_source1_func2") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}
