@@ -24,25 +24,4 @@ use SPVM::Builder::Config;
   is($config->ld, 'ld_foo');
 }
 
-# resources
-{
-  my $config = SPVM::Builder::Config->new;
-  $config->resources(['SPVM::Resource::X1', 'SPVM::Resource::X2']);
-  is_deeply($config->resources, ['SPVM::Resource::X1', 'SPVM::Resource::X2']);
-}
-
-# add_resources
-{
-  my $config = SPVM::Builder::Config->new;
-  $config->add_resources('SPVM::Resource::X1', 'SPVM::Resource::X2');
-  is_deeply($config->resources, ['SPVM::Resource::X1', 'SPVM::Resource::X2']);
-}
-
-# use
-{
-  my $config = SPVM::Builder::Config->new;
-  $config->use('SPVM::Resource::X1', 'SPVM::Resource::X2');
-  is_deeply($config->resources, ['SPVM::Resource::X1', 'SPVM::Resource::X2']);
-}
-
 done_testing;
