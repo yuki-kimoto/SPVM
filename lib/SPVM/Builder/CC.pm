@@ -220,7 +220,7 @@ sub build_dynamic_lib {
   $compile_options->{output_dir} = $opt->{compile_output_dir};
   my $object_files = $self->compile($class_name, $compile_options);
   
-  # Link object files and create shared library
+  # Link object files and create dynamic library
   my $link_options = {};
   $link_options->{output_dir} = $opt->{link_output_dir};
   my $build_dynamic_lib_file = $self->link(
@@ -856,7 +856,7 @@ sub link {
   # ExtUtils::CBuilder object
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
 
-  # Move temporary shared library file to blib directory
+  # Move temporary dynamic library file to blib directory
   mkpath dirname $dynamic_lib_file;
   
   my $input_files = [@$all_object_files];
@@ -896,7 +896,7 @@ sub link {
     
     my @tmp_files;
     
-    # Create shared library
+    # Create dynamic library
     (undef, @tmp_files) = $cbuilder->link(
       objects => $link_info_object_files,
       module_name => $link_info_class_name,
