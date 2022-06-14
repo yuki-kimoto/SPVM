@@ -567,46 +567,6 @@ sub add_source_files {
   push @{$self->{source_files}}, @source_files;
 }
 
-sub use_resource {
-  my ($self, @args) = @_;
-  
-  my $first_arg;
-  unless (@args % 2 == 0) {
-    $first_arg = shift @args;
-  }
-  
-  my $resource;
-  if (ref $first_arg) {
-    $resource = $first_arg;
-  }
-  else {
-    my $class_name = $first_arg;
-    my %args = @args;
-    if (exists $args{class_name}) {
-      $class_name = delete $args{class_name};
-    }
-    $resource = SPVM::Builder::Resource->new(class_name => $class_name, %args);
-  }
-  
-  my $resource_class_name = $resource->class_name;
-  my $resource_mode = $resource->mode;
-  my $resource_args = $resource->args;
-  
-  my $ext = defined $resource_mode ? "$resource_mode.config" : 'config';
-  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, $ext);
-  
-  my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource_class_name, $resource_mode);
-  
-  my $config = $self->load_config($config_file, @$resource_args);
-  $config->file($config_file);
-  
-  $resource->config($config);
-  
-  $self->{resources}->{$resource_class_name} = $resource;
-  
-  return $resource;
-}
-
 sub load_config {
   my ($self, $config_file, @args) = @_;
 
@@ -681,10 +641,56 @@ sub add_dynamic_libs {
   $self->add_libs(@dynamic_lib_infos);
 }
 
+sub use_resource {
+  my ($self, @args) = @_;
+  
+  my $first_arg;
+  unless (@args % 2 == 0) {
+    $first_arg = shift @args;
+  }
+  
+  my $resource;
+  if (ref $first_arg) {
+    $resource = $first_arg;
+  }
+  else {
+    my $class_name = $first_arg;
+    my %args = @args;
+    if (exists $args{class_name}) {
+      $class_name = delete $args{class_name};
+    }
+    $resource = SPVM::Builder::Resource->new(class_name => $class_name, %args);
+  }
+  
+  my $resource_class_name = $resource->class_name;
+  my $resource_mode = $resource->mode;
+  my $resource_args = $resource->args;
+  
+  my $ext = defined $resource_mode ? "$resource_mode.config" : 'config';
+  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, $ext);
+  
+  my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource_class_name, $resource_mode);
+  
+  my $config = $self->load_config($config_file, @$resource_args);
+  $config->file($config_file);
+  
+  $resource->config($config);
+  
+  my $index = keys %{$self->{resources}};
+  
+  $self->{resources}->{$resource_class_name} = {resource => $resource, index => $index};
+  
+  return $resource;
+}
+
 sub get_resource {
   my ($self, $resource_class_name) = @_;
   
-  my $resource = $self->{resources}->{$resource_class_name};
+  unless (defined $self->{resources}{$resource_class_name}) {
+    return;
+  }
+  
+  my $resource = $self->{resources}{$resource_class_name}{resource};
   
   return $resource;
 }
@@ -692,7 +698,7 @@ sub get_resource {
 sub get_resource_names {
   my ($self) = @_;
   
-  my @resource_names = sort keys %{$self->{resources}};
+  my @resource_names = sort { $self->{resources}{$a}{index} <=> $self->{resources}{$b}{index} } keys %{$self->{resources}};
   
   return \@resource_names;
 }

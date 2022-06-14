@@ -27,6 +27,8 @@ ok(SPVM::TestCase::UseResource::Basic->test);
 
 {
   ok(SPVM::TestCase::UseResource::Mylib2->test);
+  my $config = $main::TEST_USE_RESOURCE_CONFIG;
+  is_deeply($config->get_resource_names, ['TestCase::Resource::Mylib1::V1_0_0', 'TestCase::Resource::Mylib2::V1_0_0']);
 }
 
 # All object is freed
