@@ -17,6 +17,7 @@
         * Add "file_optional" field to "SPVM::Builder::Config" module.
         * Add "own_include_dir" field to "SPVM::Builder::Config" module.
         * Add "own_src_dir" field to "SPVM::Builder::Config" module.
+        * Add "lib_link_abs" field to "SPVM::Builder::Config" module.
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove "add_resources" and use from "SPVM::Builder::Config" module. Instead, use "use_resource" method.
         * Remove "resources" method from "SPVM::Builder::Config" module. Intead, use "get_resource" method and "get_resource_names" methods.

@@ -737,8 +737,8 @@ sub link {
   push @all_ldflags, $ld_optimize;
 
   # Libraries
-  if ($output_type eq 'dynamic_lib') {
-    # Libraries are linked by absolute path because the linked libraries must be known at runtime.
+  if ($config->lib_link_abs) {
+    # Libraries are linked by absolute path
     my $lib_dirs = $config->lib_dirs;
     my @lib_files;
     {
@@ -808,7 +808,7 @@ sub link {
       }
     }
   }
-  elsif ($output_type eq 'exe') {
+  else {
     # Library directory
     my $lib_dirs = $config->lib_dirs;
     for my $lib_dir (@$lib_dirs) {
