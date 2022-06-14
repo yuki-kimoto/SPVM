@@ -199,7 +199,7 @@ sub build_dynamic_lib_dist {
   );
   
   my $method_names = $self->get_method_names($class_name, $category);
-  $cc_native->build_dynamic_lib_dist($class_name);
+  $cc_native->build_dist($class_name);
 }
 
 sub build_and_bind_dynamic_lib {
@@ -221,7 +221,7 @@ sub build_and_bind_dynamic_lib {
     
     # Try runtime compile if shared library is not found
     unless (-f $dynamic_lib_file) {
-      $dynamic_lib_file = $cc->build_dynamic_lib_runtime($class_name);
+      $dynamic_lib_file = $cc->build_runtime($class_name);
     }
     
     $self->bind_methods($cc, $dynamic_lib_file, $class_name, $category);

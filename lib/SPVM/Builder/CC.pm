@@ -122,7 +122,7 @@ sub new {
   return bless $self, $class;
 }
 
-sub build_dynamic_lib_runtime {
+sub build_runtime {
   my ($self, $class_name) = @_;
 
   my $category = $self->category;
@@ -162,7 +162,7 @@ sub build_dynamic_lib_runtime {
   my $build_lib_dir = $self->builder->create_build_lib_path;
   mkpath $build_lib_dir;
   
-  my $build_dynamic_lib_file = $self->build_dynamic_lib(
+  my $build_file = $self->build(
     $class_name,
     {
       compile_input_dir => $build_src_dir,
@@ -171,10 +171,10 @@ sub build_dynamic_lib_runtime {
     }
   );
   
-  return $build_dynamic_lib_file;
+  return $build_file;
 }
 
-sub build_dynamic_lib_dist {
+sub build_dist {
   my ($self, $class_name) = @_;
   
   my $category = $self->category;
@@ -201,7 +201,7 @@ sub build_dynamic_lib_dist {
   my $build_lib_dir = 'blib/lib';
   
   
-  $self->build_dynamic_lib(
+  $self->build(
     $class_name,
     {
       compile_input_dir => $build_src_dir,
@@ -211,7 +211,7 @@ sub build_dynamic_lib_dist {
   );
 }
 
-sub build_dynamic_lib {
+sub build {
   my ($self, $class_name, $options) = @_;
   
   # Module file
@@ -243,13 +243,13 @@ sub build_dynamic_lib {
     output_dir => $options->{link_output_dir},
     config => $config,
   };
-  my $build_dynamic_lib_file = $self->link(
+  my $output_file = $self->link(
     $class_name,
     $object_files,
     $link_options
   );
   
-  return $build_dynamic_lib_file;
+  return $output_file;
 }
 
 sub resource_src_dir_from_class_name {
