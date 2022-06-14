@@ -220,9 +220,13 @@ sub build_dynamic_lib {
   $compile_options->{output_dir} = $options->{compile_output_dir};
   my $object_files = $self->compile($class_name, $compile_options);
   
+  my $dl_func_list = $self->create_dl_func_list($class_name);
+  
   # Link object files and create dynamic library
-  my $link_options = {};
-  $link_options->{output_dir} = $options->{link_output_dir};
+  my $link_options = {
+    output_dir => $options->{link_output_dir},
+    dl_func_list => $dl_func_list,
+  };
   my $build_dynamic_lib_file = $self->link(
     $class_name,
     $object_files,
@@ -646,10 +650,7 @@ sub link {
   # All object file infos
   my $all_object_file_infos = [@$object_file_infos];
   
-  # Category
-  my $category = $self->category;
-  
-  my $dl_func_list = $self->create_dl_func_list($class_name);
+  my $dl_func_list = $options->{dl_func_list} || [];
   
   # Build directory
   my $build_dir = $self->builder->build_dir;
