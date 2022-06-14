@@ -747,49 +747,46 @@ sub link {
   my $ld_optimize = $config->ld_optimize;
   push @all_ldflags, $ld_optimize;
 
-  # Add resource lib directories
-  if ($category eq 'native') {
-    my $symbol_names_h = {};
-    my $resource_names = $config->get_resource_names;
-    for my $resource_name (@$resource_names) {
-      my $resource = $config->get_resource($resource_name);
-      
-      # Build native classes
-      my $builder_cc_resource = SPVM::Builder::CC->new(
-        build_dir => $self->builder->build_dir,
-        category => 'native',
-        builder => $self->builder,
-        quiet => $self->quiet,
-        force => $self->force,
-      );
-      
-      my $resource_src_dir = $self->resource_src_dir_from_class_name($resource);
-      my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
-      mkpath $resource_object_dir;
-      
-      my $resource_class_name;
-      my $resource_config;
-      if (ref $resource) {
-        $resource_class_name = $resource->class_name;
-        $resource_config = $resource->config;
-      }
-      else {
-        $resource_class_name = $resource;
-      }
-      
-      my $compile_options = {
-        input_dir => $resource_src_dir,
-        output_dir => $resource_object_dir,
-        is_resource => 1,
-      };
-      if ($resource_config) {
-        $compile_options->{config} = $resource_config;
-      }
-      
-      my $object_file_infos = $builder_cc_resource->compile($resource_class_name, $compile_options);
-      
-      push @$all_object_file_infos, @$object_file_infos;
+  # Use resources
+  my $resource_names = $config->get_resource_names;
+  for my $resource_name (@$resource_names) {
+    my $resource = $config->get_resource($resource_name);
+    
+    # Build native classes
+    my $builder_cc_resource = SPVM::Builder::CC->new(
+      build_dir => $self->builder->build_dir,
+      category => 'native',
+      builder => $self->builder,
+      quiet => $self->quiet,
+      force => $self->force,
+    );
+    
+    my $resource_src_dir = $self->resource_src_dir_from_class_name($resource);
+    my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
+    mkpath $resource_object_dir;
+    
+    my $resource_class_name;
+    my $resource_config;
+    if (ref $resource) {
+      $resource_class_name = $resource->class_name;
+      $resource_config = $resource->config;
     }
+    else {
+      $resource_class_name = $resource;
+    }
+    
+    my $compile_options = {
+      input_dir => $resource_src_dir,
+      output_dir => $resource_object_dir,
+      is_resource => 1,
+    };
+    if ($resource_config) {
+      $compile_options->{config} = $resource_config;
+    }
+    
+    my $object_file_infos = $builder_cc_resource->compile($resource_class_name, $compile_options);
+    
+    push @$all_object_file_infos, @$object_file_infos;
   }
 
   # Libraries
