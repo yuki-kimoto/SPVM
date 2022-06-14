@@ -162,25 +162,25 @@ sub builder_src_dir {
   }
 }
 
-sub resource_include_dir {
+sub own_include_dir {
   my $self = shift;
   if (@_) {
-    $self->{resource_include_dir} = $_[0];
+    $self->{own_include_dir} = $_[0];
     return $self;
   }
   else {
-    return $self->{resource_include_dir};
+    return $self->{own_include_dir};
   }
 }
 
-sub resource_src_dir {
+sub own_src_dir {
   my $self = shift;
   if (@_) {
-    $self->{resource_src_dir} = $_[0];
+    $self->{own_src_dir} = $_[0];
     return $self;
   }
   else {
-    return $self->{resource_src_dir};
+    return $self->{own_src_dir};
   }
 }
 
@@ -354,16 +354,16 @@ sub new {
     
     $resource_dir .= '.native';
     
-    # resource_include_dir
-    unless (defined $self->{resource_include_dir}) {
-      my $resource_include_dir = "$resource_dir/include";
-      $self->resource_include_dir($resource_include_dir);
+    # own_include_dir
+    unless (defined $self->{own_include_dir}) {
+      my $own_include_dir = "$resource_dir/include";
+      $self->own_include_dir($own_include_dir);
     }
 
-    # resource_src_dir
-    unless (defined $self->{resource_src_dir}) {
-      my $resource_src_dir = "$resource_dir/src";
-      $self->resource_src_dir($resource_src_dir);
+    # own_src_dir
+    unless (defined $self->{own_src_dir}) {
+      my $own_src_dir = "$resource_dir/src";
+      $self->own_src_dir($own_src_dir);
     }
   }
   
@@ -935,6 +935,24 @@ The default value is C<SPVM/Builder/include> of one up of directory that C<SPVM:
 Get and set the source directory of L<SPVM::Builder>.
 
 The default value is C<SPVM/Builder/src> of one up of the directory that C<SPVM::Buidler::Config> is loaded.
+
+=head2 own_include_dir
+
+  my $own_include_dir = $config->own_include_dir;
+  $config->own_include_dir($own_include_dir);
+
+Get and set the header including directory of this module.
+
+The default value is the name that removing C<[.mode].config> from the L<file|/"file"> and add C<.native/include>.
+
+=head2 own_src_dir
+
+  my $own_src_dir = $config->own_src_dir;
+  $config->own_src_dir($own_src_dir);
+
+Get and set the source directory of this module.
+
+The default value is the name that removing C<[.mode].config> from the L<file|/"file"> and add C<.native/src>.
 
 =head2 ccflags
 
