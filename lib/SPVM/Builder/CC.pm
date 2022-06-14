@@ -221,11 +221,26 @@ sub build_dynamic_lib {
   my $object_files = $self->compile($class_name, $compile_options);
   
   my $dl_func_list = $self->create_dl_func_list($class_name);
+
+  # Module file
+  my $module_file = $self->builder->get_module_file($class_name);
+  unless (defined $module_file) {
+    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
+    if ($config_file) {
+      $module_file = $config_file;
+      $module_file =~ s/\.config$/\.spvm/;
+    }
+    else {
+      confess "\"$module_file\" module is not loaded";
+    }
+  }
+  my $config = $self->create_config($module_file);
   
   # Link object files and create dynamic library
   my $link_options = {
     output_dir => $options->{link_output_dir},
     dl_func_list => $dl_func_list,
+    config => $config,
   };
   my $build_dynamic_lib_file = $self->link(
     $class_name,
@@ -661,23 +676,10 @@ sub link {
     confess "SPVM_BUILD_DIR environment variable must be set for link";
   }
   
-  # Module file
-  my $module_file = $self->builder->get_module_file($class_name);
-  unless (defined $module_file) {
-    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
-    if ($config_file) {
-      $module_file = $config_file;
-      $module_file =~ s/\.config$/\.spvm/;
-    }
-    else {
-      confess "\"$module_file\" module is not loaded";
-    }
-  }
-  
   # Config
   my $config = $options->{config};
   unless ($config) {
-    $config = $self->create_config($module_file);
+    confess "Need config option";
   }
 
   # Output type
