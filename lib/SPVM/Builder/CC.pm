@@ -254,6 +254,32 @@ sub get_resource_object_dir_from_class_name {
   return $resource_object_dir;
 }
 
+sub create_config {
+  my ($self, $module_file) = @_;
+  
+  my $category = $self->category;
+  
+  my $config;
+  my $config_file = $module_file;
+  $config_file =~ s/\.spvm$/.config/;
+  if ($category eq 'native') {
+    # Config file
+    if (-f $config_file) {
+      $config = SPVM::Builder::Config->load_config($config_file);
+    }
+    else {
+      my $error = $self->_error_message_find_config($config_file);
+      confess $error;
+    }
+  }
+  elsif ($category eq 'precompile') {
+    $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
+  }
+  else { confess 'Unexpected Error' }
+  
+  return $config;
+}
+
 sub compile {
   my ($self, $class_name, $options) = @_;
 
@@ -294,22 +320,7 @@ sub compile {
   # Config
   my $config = $options->{config};
   unless ($config) {
-    my $config_file = $module_file;
-    $config_file =~ s/\.spvm$/.config/;
-    if ($category eq 'native') {
-      # Config file
-      if (-f $config_file) {
-        $config = SPVM::Builder::Config->load_config($config_file);
-      }
-      else {
-        my $error = $self->_error_message_find_config($config_file);
-        confess $error;
-      }
-    }
-    elsif ($category eq 'precompile') {
-      $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
-    }
-    else { confess 'Unexpected Error' }
+    $config = $self->create_config($module_file);
   }
   
   # Resource directory
