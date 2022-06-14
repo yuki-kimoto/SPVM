@@ -608,15 +608,11 @@ EOS
   
 }
 
-sub link {
-  my ($self, $class_name, $object_file_infos, $options) = @_;
-  
-  # All object file infos
-  my $all_object_file_infos = [@$object_file_infos];
-  
-  # Category
-  my $category = $self->category;
+sub create_dl_func_list {
+  my ($self, $class_name) = @_;
 
+  my $category = $self->category;
+  
   # dl_func_list
   # This option is needed Windows DLL file
   my $dl_func_list = [];
@@ -641,6 +637,20 @@ sub link {
     push @$dl_func_list, '';
   }
 
+  return $dl_func_list;
+}
+
+sub link {
+  my ($self, $class_name, $object_file_infos, $options) = @_;
+  
+  # All object file infos
+  my $all_object_file_infos = [@$object_file_infos];
+  
+  # Category
+  my $category = $self->category;
+  
+  my $dl_func_list = $self->create_dl_func_list($class_name);
+  
   # Build directory
   my $build_dir = $self->builder->build_dir;
   if (defined $build_dir) {
