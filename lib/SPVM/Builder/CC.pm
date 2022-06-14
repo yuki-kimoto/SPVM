@@ -323,19 +323,16 @@ sub compile {
     $config = $self->create_config($module_file);
   }
   
-  # Resource directory
-  my $own_resource_dir = $module_file;
-  $own_resource_dir =~ s/\.spvm$//;
-  $own_resource_dir .= '.native';
-  
   # Runtime include directries
   my @runtime_include_dirs;
 
   # Include directory
-  my $own_resource_include_dir = "$own_resource_dir/include";
+  my $own_resource_include_dir = $config->resource_include_dir;
   
-  # Add native include dir
-  push @runtime_include_dirs, $own_resource_include_dir;
+  # Add own resource include dir
+  if (defined $own_resource_include_dir) {
+    push @runtime_include_dirs, $own_resource_include_dir;
+  }
   
   my $resource_names = $config->get_resource_names;
   for my $resource_name (@$resource_names) {
@@ -349,9 +346,6 @@ sub compile {
   }
   unshift @{$config->include_dirs}, @runtime_include_dirs;
 
-  # Source directory of own resource
-  my $own_resource_src_dir = "$own_resource_dir/src";
-  
   # Quiet output
   my $quiet = $config->quiet;
 
@@ -366,30 +360,10 @@ sub compile {
   }
   
   my $is_resource = $options->{is_resource};
-  my $native_module_file;
-  unless ($is_resource) {
-    # Native module file
-    my $native_module_ext = $config->ext;
-    unless (defined $native_module_ext) {
-      confess "Source extension is not specified";
-    }
-    my $native_module_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_module_ext);
-    $native_module_file = "$input_dir/$native_module_rel_file";
-    
-    unless (-f $native_module_file) {
-      confess "Can't find source file $native_module_file";
-    }
-  }
   
-  # Resource source files
-  my $source_files = $config->source_files;
-
-  # Own resource source files
-  my $resource_src_files = [map { "$own_resource_src_dir/$_" } @$source_files ];
-
   # Own resource header files
   my @include_file_names;
-  if (-d $own_resource_include_dir) {
+  if (defined $own_resource_include_dir && -d $own_resource_include_dir) {
     find(
       {
         wanted => sub {
@@ -419,6 +393,30 @@ sub compile {
     }
   }
 
+  # Native module file
+  my $native_module_file;
+  unless ($is_resource) {
+    # Native module file
+    my $native_module_ext = $config->ext;
+    unless (defined $native_module_ext) {
+      confess "Source extension is not specified";
+    }
+    my $native_module_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_module_ext);
+    $native_module_file = "$input_dir/$native_module_rel_file";
+    
+    unless (-f $native_module_file) {
+      confess "Can't find source file $native_module_file";
+    }
+  }
+  
+  # Own resource source files
+  my $own_resource_source_files = $config->source_files;
+  my $own_resource_src_dir = $config->resource_src_dir;
+  my $resource_src_files;
+  if (defined $own_resource_src_dir) {
+    $resource_src_files = [map { "$own_resource_src_dir/$_" } @$own_resource_source_files ];
+  }
+  
   # Compile source files
   my $object_file_infos = [];
   my $is_native_module = 1;
