@@ -323,29 +323,6 @@ sub compile {
     $config = $self->create_config($module_file);
   }
   
-  # Runtime include directries
-  my @runtime_include_dirs;
-
-  # Include directory
-  my $own_resource_include_dir = $config->resource_include_dir;
-  
-  # Add own resource include dir
-  if (defined $own_resource_include_dir) {
-    push @runtime_include_dirs, $own_resource_include_dir;
-  }
-  
-  my $resource_names = $config->get_resource_names;
-  for my $resource_name (@$resource_names) {
-    my $resource = $config->get_resource($resource_name);
-    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource);
-    
-    my $include_dir = $config_file;
-    $include_dir =~ s|\.config$|\.native/include|;
-    
-    push @runtime_include_dirs, $include_dir;
-  }
-  unshift @{$config->include_dirs}, @runtime_include_dirs;
-
   # Quiet output
   my $quiet = $config->quiet;
 
@@ -363,6 +340,7 @@ sub compile {
   
   # Own resource header files
   my @include_file_names;
+  my $own_resource_include_dir = $config->resource_include_dir;
   if (defined $own_resource_include_dir && -d $own_resource_include_dir) {
     find(
       {
@@ -531,10 +509,32 @@ sub create_compile_command_info {
   
   my $builder_include_dir = $config->builder_include_dir;
   $cflags .= "-I$builder_include_dir ";
-  
-  my $include_dirs = $config->include_dirs;
-  my $inc = join(' ', map { "-I$_" } @$include_dirs);
-  $cflags .= " $inc";
+
+  # Include directory
+  {
+    my @include_dirs = [@{$config->include_dirs}];
+
+    # Add own resource include directory
+    my $own_resource_include_dir = $config->resource_include_dir;
+    if (defined $own_resource_include_dir) {
+      push @include_dirs, $own_resource_include_dir;
+    }
+    
+    # Add resource include directories
+    my $resource_names = $config->get_resource_names;
+    for my $resource_name (@$resource_names) {
+      my $resource = $config->get_resource($resource_name);
+      my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource);
+      
+      my $include_dir = $config_file;
+      $include_dir =~ s|\.config$|\.native/include|;
+      
+      push @include_dirs, $include_dir;
+    }
+
+    my $inc = join(' ', map { "-I$_" } @include_dirs);
+    $cflags .= " $inc";
+  }
   
   my $ccflags_each = $config->ccflags_each;
   my $ccflags;
