@@ -2929,7 +2929,7 @@ B<Examples:>
 
 =head2 Native Method
 
-Native methods are the L<methods|/"Method"> that is written by native languages such as C, C++.
+A native method is the L<method|/"Method"> that is written by native languages such as C<C language>, C<C++>.
 
 A native method is defined by the C<native> L<method descriptor|/"Method Descriptors">.
 
@@ -2937,7 +2937,7 @@ A native method is defined by the C<native> L<method descriptor|/"Method Descrip
 
 A native method doesn't have its L<method block|/"Method Block">.
 
-See also the L<SPVM Native API|SPVM::Document::NativeAPI> to interface native methods.
+About the way to write native methods, please see L<SPVM Native Module|SPVM::Document::NativeModule> and L<SPVM Native API|SPVM::Document::NativeAPI>.
 
 =head2 Precompiled Method
 

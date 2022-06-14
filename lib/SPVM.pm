@@ -421,13 +421,13 @@ SPVM Exchange APIs is functions to convert between Perl data structures and SPVM
 
 =back
 
-=head2 Native Method
+=head2 Native Module
 
-Native methods are the methods that implementations are writen by native language such as C<C language> or C<C++>.
+The native module is the module that is implemented by native language such as C<C language> or C<C++>.
 
 =over 2
 
-=item * L<Native Method|SPVM::Document::NativeMethod>
+=item * L<Native Method|SPVM::Document::NativeModule>
 
 =back
 
