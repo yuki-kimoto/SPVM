@@ -747,6 +747,92 @@ sub link {
   my $ld_optimize = $config->ld_optimize;
   push @all_ldflags, $ld_optimize;
 
+  # Libraries
+  if ($output_type eq 'dynamic_lib') {
+    # Libraries are linked by absolute path because the linked libraries must be known at runtime.
+    my $lib_dirs = $config->lib_dirs;
+    my @lib_files;
+    {
+      my $libs = $config->libs;
+      for my $lib (@$libs) {
+        my $type;
+        my $lib_name;
+        if (ref $lib eq 'HASH') {
+          $type = $lib->{type};
+          $lib_name = $lib->{name};
+        }
+        else {
+          $lib_name = $lib;
+          $type = 'dynamic,static';
+        }
+        
+        my $found_lib_file;
+        my $lib_type;
+        for my $lib_dir (@$lib_dirs) {
+          $lib_dir =~ s|[\\/]$||;
+
+          my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
+          my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
+
+          my $static_lib_file_base = "lib$lib_name.a";
+          my $static_lib_file = "$lib_dir/$static_lib_file_base";
+          
+          if ($type eq 'dynamic,static') {
+            if (-f $dynamic_lib_file) {
+              $found_lib_file = $dynamic_lib_file;
+              $lib_type = 'dynamic';
+              last;
+            }
+            elsif (-f $static_lib_file) {
+              $found_lib_file = $static_lib_file;
+              $lib_type = 'static';
+              last;
+            }
+          }
+          elsif ($type eq 'dynamic') {
+            if (-f $dynamic_lib_file) {
+              $found_lib_file = $dynamic_lib_file;
+              $lib_type = 'dynamic';
+              last;
+            }
+          }
+          elsif ($type eq 'static') {
+            if (-f $static_lib_file) {
+              $found_lib_file = $static_lib_file;
+              $lib_type = 'static';
+              last;
+            }
+          }
+        }
+        
+        if (defined $found_lib_file) {
+          push @lib_files, $found_lib_file;
+          
+          my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
+            file => $found_lib_file,
+            class_name => $class_name,
+            lib_type => $lib_type,
+          );
+          
+          push @$all_object_file_infos, $object_file_info;
+        }
+      }
+    }
+  }
+  elsif ($output_type eq 'exe') {
+    # Library directory
+    my $lib_dirs = $config->lib_dirs;
+    for my $lib_dir (@$lib_dirs) {
+      if (-d $lib_dir) {
+        push @all_ldflags, "-L$lib_dir";
+      }
+    }
+    
+    # Libraries
+    my $libs = $config->libs;
+    push @all_ldflags, map { "-l$_" } @$libs;
+  }
+  
   # Use resources
   my $resource_names = $config->get_resource_names;
   for my $resource_name (@$resource_names) {
@@ -787,77 +873,6 @@ sub link {
     my $object_file_infos = $builder_cc_resource->compile($resource_class_name, $compile_options);
     
     push @$all_object_file_infos, @$object_file_infos;
-  }
-
-  # Libraries
-  # Libraries is linked using absolute path because the linked libraries must be known at runtime.
-  my $lib_dirs = $config->lib_dirs;
-  my @lib_files;
-  {
-    my $libs = $config->libs;
-    for my $lib (@$libs) {
-      my $type;
-      my $lib_name;
-      if (ref $lib eq 'HASH') {
-        $type = $lib->{type};
-        $lib_name = $lib->{name};
-      }
-      else {
-        $lib_name = $lib;
-        $type = 'dynamic,static';
-      }
-      
-      my $found_lib_file;
-      my $lib_type;
-      for my $lib_dir (@$lib_dirs) {
-        $lib_dir =~ s|[\\/]$||;
-
-        my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
-        my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
-
-        my $static_lib_file_base = "lib$lib_name.a";
-        my $static_lib_file = "$lib_dir/$static_lib_file_base";
-        
-        if ($type eq 'dynamic,static') {
-          if (-f $dynamic_lib_file) {
-            $found_lib_file = $dynamic_lib_file;
-            $lib_type = 'dynamic';
-            last;
-          }
-          elsif (-f $static_lib_file) {
-            $found_lib_file = $static_lib_file;
-            $lib_type = 'static';
-            last;
-          }
-        }
-        elsif ($type eq 'dynamic') {
-          if (-f $dynamic_lib_file) {
-            $found_lib_file = $dynamic_lib_file;
-            $lib_type = 'dynamic';
-            last;
-          }
-        }
-        elsif ($type eq 'static') {
-          if (-f $static_lib_file) {
-            $found_lib_file = $static_lib_file;
-            $lib_type = 'static';
-            last;
-          }
-        }
-      }
-      
-      if (defined $found_lib_file) {
-        push @lib_files, $found_lib_file;
-        
-        my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
-          file => $found_lib_file,
-          class_name => $class_name,
-          lib_type => $lib_type,
-        );
-        
-        push @$all_object_file_infos, $object_file_info;
-      }
-    }
   }
 
   my $all_object_files = [map { $_->to_string } @$all_object_file_infos];
