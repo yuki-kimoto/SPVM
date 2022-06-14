@@ -336,11 +336,11 @@ sub compile {
     }
   }
   
-  my $is_resource = $options->{is_resource};
+  my $used_as_resource = $options->{used_as_resource};
   
   # Native module file
   my $native_module_file;
-  unless ($is_resource) {
+  unless ($used_as_resource) {
     # Native module file
     my $native_module_ext = $config->ext;
     unless (defined $native_module_ext) {
@@ -432,7 +432,14 @@ sub compile {
     }
     
     # Compile-information
-    my $compile_info = $self->create_compile_command_info({class_name => $class_name, config => $config, output_file => $object_file, source_file => $source_file});
+    my $compile_info = $self->create_compile_command_info({
+      class_name => $class_name,
+      config => $config,
+      output_file => $object_file,
+      source_file => $source_file,
+      include_dirs => $options->{include_dirs},
+      used_as_resource => $used_as_resource,
+    });
     
     # Compile a source file
     if ($need_generate) {
@@ -516,7 +523,7 @@ sub create_compile_command_info {
 
   # Include directories
   {
-    my @include_dirs = [@{$config->include_dirs}];
+    my @include_dirs = @{$config->include_dirs};
 
     # Add own resource include directory
     my $own_resource_include_dir = $config->resource_include_dir;
@@ -525,14 +532,21 @@ sub create_compile_command_info {
     }
     
     # Add resource include directories
-    my $resource_names = $config->get_resource_names;
-    for my $resource_name (@$resource_names) {
-      my $resource = $config->get_resource($resource_name);
-      my $config = $resource->config;
-      my $resource_include_dir = $config->resource_include_dir;
-      if (defined $resource_include_dir) {
-        push @include_dirs, $resource_include_dir;
+    unless ($options->{used_as_resource}) {
+      my $resource_names = $config->get_resource_names;
+      for my $resource_name (@$resource_names) {
+        my $resource = $config->get_resource($resource_name);
+        my $config = $resource->config;
+        my $resource_include_dir = $config->resource_include_dir;
+        if (defined $resource_include_dir) {
+          push @include_dirs, $resource_include_dir;
+        }
       }
+    }
+    
+    # Add option include directories
+    if (defined $options->{include_dirs}) {
+      push @include_dirs, @{$options->{include_dirs}};
     }
     
     my $inc = join(' ', map { "-I$_" } @include_dirs);
@@ -829,6 +843,16 @@ sub link {
   
   # Use resources
   my $resource_names = $config->get_resource_names;
+  my $resource_include_dirs = [];
+  for my $resource_name (@$resource_names) {
+    my $resource = $config->get_resource($resource_name);
+    my $resource_config = $resource->config;
+    my $resource_include_dir = $resource_config->resource_include_dir;
+    if (defined $resource_include_dir) {
+      push @$resource_include_dirs, $resource_include_dir;
+    }
+  }
+  
   for my $resource_name (@$resource_names) {
     my $resource = $config->get_resource($resource_name);
     
@@ -858,12 +882,12 @@ sub link {
     my $compile_options = {
       input_dir => $resource_src_dir,
       output_dir => $resource_object_dir,
-      is_resource => 1,
+      used_as_resource => 1,
     };
     if ($resource_config) {
       $compile_options->{config} = $resource_config;
     }
-    
+    $compile_options->{include_dirs} = $resource_include_dirs;
     my $object_file_infos = $builder_cc_resource->compile($resource_class_name, $compile_options);
     
     push @$all_object_file_infos, @$object_file_infos;
