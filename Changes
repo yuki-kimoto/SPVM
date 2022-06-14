@@ -1,4 +1,4 @@
-0.9606_01 2022-06-14
+0.9607 2022-06-15
   [CHANGE]
   * Add the following methods to Fn class
     static method memset_byte : void ($dest : byte[], $dest_offset : int, $value : byte, $length : int)
