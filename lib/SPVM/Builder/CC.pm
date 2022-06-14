@@ -303,6 +303,33 @@ sub create_config {
   return $config;
 }
 
+sub create_native_config_from_module_file {
+  my ($self, $module_file) = @_;
+  
+  my $config;
+  my $config_file = $module_file;
+  $config_file =~ s/\.spvm$/.config/;
+
+  # Config file
+  if (-f $config_file) {
+    $config = SPVM::Builder::Config->load_config($config_file);
+  }
+  else {
+    my $error = $self->_error_message_find_config($config_file);
+    confess $error;
+  }
+  
+  return $config;
+}
+
+sub create_precompile_config {
+  my ($self) = @_;
+  
+  my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
+  
+  return $config;
+}
+
 sub compile {
   my ($self, $class_name, $options) = @_;
   
