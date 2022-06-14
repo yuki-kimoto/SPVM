@@ -324,18 +324,18 @@ sub compile {
   }
   
   # Resource directory
-  my $resource_dir = $module_file;
-  $resource_dir =~ s/\.spvm$//;
-  $resource_dir .= '.native';
+  my $own_resource_dir = $module_file;
+  $own_resource_dir =~ s/\.spvm$//;
+  $own_resource_dir .= '.native';
   
   # Runtime include directries
   my @runtime_include_dirs;
 
   # Include directory
-  my $resource_include_dir = "$resource_dir/include";
+  my $own_resource_include_dir = "$own_resource_dir/include";
   
   # Add native include dir
-  push @runtime_include_dirs, $resource_include_dir;
+  push @runtime_include_dirs, $own_resource_include_dir;
   
   my $resource_names = $config->get_resource_names;
   for my $resource_name (@$resource_names) {
@@ -349,8 +349,8 @@ sub compile {
   }
   unshift @{$config->include_dirs}, @runtime_include_dirs;
 
-  # Source directory
-  my $resource_src_dir = "$resource_dir/src";
+  # Source directory of own resource
+  my $own_resource_src_dir = "$own_resource_dir/src";
   
   # Quiet output
   my $quiet = $config->quiet;
@@ -384,12 +384,12 @@ sub compile {
   # Resource source files
   my $source_files = $config->source_files;
 
-  # Native source files
-  my $resource_src_files = [map { "$resource_src_dir/$_" } @$source_files ];
+  # Own resource source files
+  my $resource_src_files = [map { "$own_resource_src_dir/$_" } @$source_files ];
 
-  # Native header files
+  # Own resource header files
   my @include_file_names;
-  if (-d $resource_include_dir) {
+  if (-d $own_resource_include_dir) {
     find(
       {
         wanted => sub {
@@ -400,7 +400,7 @@ sub compile {
         },
         no_chdir => 1,
       },
-      $resource_include_dir,
+      $own_resource_include_dir,
     );
   }
   
@@ -439,7 +439,7 @@ sub compile {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
       
       my $object_file_base = $source_file;
-      $object_file_base =~ s/^\Q$resource_src_dir//;
+      $object_file_base =~ s/^\Q$own_resource_src_dir//;
       $object_file_base =~ s/^[\\\/]//;
       
       $object_file_base =~ s/\.[^\.]+$/.o/;
