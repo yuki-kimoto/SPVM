@@ -250,10 +250,18 @@ sub build_exe_file {
   push @$object_files, $bootstrap_object_file;
   
   # Link and generate executable file
+  my $cc_linker = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    category => 'native',
+    builder => $builder,
+    quiet => $self->quiet,
+    force => $self->force,
+  );
   my $options = {
-    output_file => $self->{output_file}
+    output_file => $self->{output_file},
+    config => $self->config,
   };
-  $self->link($class_name, $object_files, $options);
+  $cc_linker->link($class_name, $object_files, $options);
 }
 
 sub create_source_file {
@@ -922,148 +930,6 @@ sub compile_native_sources {
   }
   
   return $all_object_files;
-}
-
-sub link {
-  my ($self, $class_name, $object_file_infos, $options) = @_;
-  
-  $options ||= {};
-  
-  my $config = $self->config;
-
-  # CBuilder configs
-  my $output_file = $options->{output_file};
-  
-  # Output type
-  my $output_type = $config->output_type;
-  
-  # Add output file extension
-  if (defined $output_file) {
-    my $output_file_base = basename $output_file;
-    unless ($output_file_base =~ /\./) {
-      my $exe_ext;
-      
-      # Create a dynamic library
-      if ($output_type eq 'dynamic_lib') {
-        $exe_ext = ".$Config{dlext}"
-      }
-      # Create a static library
-      elsif ($output_type eq 'static_lib') {
-        $exe_ext = '.a';
-      }
-      # Create an executable file
-      elsif ($output_type eq 'exe') {
-        $exe_ext = $Config{exe_ext};
-      }
-      
-      $output_file .= $exe_ext;
-    }
-  }
-  
-  # Linker
-  my $ld = $config->ld;
-  
-  # All linker flags
-  my @all_ldflags;
-  
-  # Linker flags
-  my $ldflags = $config->ldflags;
-  push @all_ldflags, @{$config->ldflags};
-  
-  # Linker optimize
-  my $ld_optimize = $config->ld_optimize;
-  push @all_ldflags, $ld_optimize;
-  
-  # Library directory
-  my $lib_dirs = $config->lib_dirs;
-  for my $lib_dir (@$lib_dirs) {
-    if (-d $lib_dir) {
-      push @all_ldflags, "-L$lib_dir";
-    }
-  }
-  
-  # Libraries
-  my $libs = $config->libs;
-  push @all_ldflags, map { "-l$_" } @$libs;
-  
-  # ExeUtils::CBuilder config
-  my $cbuilder_config = {
-    ld => $ld,
-    ldflags => '',
-    shrpenv => '',
-    perllibs => '',
-    libpth => '',
-  };
-  
-  my $config_dependent_files = $config->dependent_files;
-  my $need_generate_input_files = [@$object_file_infos, @$config_dependent_files];
-  my $need_generate = SPVM::Builder::Util::need_generate({
-    force => $self->force || $config->force,
-    output_file => $output_file,
-    input_files => $need_generate_input_files,
-  });
-
-  my $link_info = SPVM::Builder::LinkInfo->new(
-    class_name => $class_name,
-    object_file_infos => $object_file_infos,
-    ld => $ld,
-    ldflags => \@all_ldflags,
-    config => $config,
-    output_file => $output_file,
-  );
-
-  my $before_link = $config->before_link;
-  if ($before_link) {
-    $before_link->($config, $link_info);
-  }
-  
-  if ($need_generate) {
-    my $link_info_ld = $link_info->ld;
-    my $link_info_ldflags = $link_info->ldflags;
-    my $link_info_class_name = $link_info->class_name;
-    my $link_info_output_file = $link_info->output_file;
-    my $link_info_object_file_infos = $link_info->object_file_infos;
-    my $link_info_object_files = [map { $_->to_string } @$link_info_object_file_infos];
-    my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
-    
-    # CBuilder
-    my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
-    
-    # Linker temporary files
-    my @tmp_files;
-    my $dl_func_list = [];
-    
-    # Create a dynamic library
-    if ($output_type eq 'dynamic_lib') {
-      (undef, @tmp_files) = $cbuilder->link(
-        objects => $link_info_object_files,
-        module_name => $link_info_class_name,
-        lib_file => $link_info_output_file,
-        extra_linker_flags => $link_info_ldflags_str,
-        dl_func_list => $dl_func_list,
-      );
-    }
-    # Create a static library
-    elsif ($output_type eq 'static_lib') {
-      my @object_files = map { "$_" } @$link_info_object_files;
-      my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
-      $cbuilder->do_system(@ar_cmd);
-    }
-    # Create an executable file
-    elsif ($output_type eq 'exe') {
-      (undef, @tmp_files) = $cbuilder->link_executable(
-        objects => $link_info_object_files,
-        module_name => $link_info_class_name,
-        exe_file => $link_info_output_file,
-        extra_linker_flags => $link_info_ldflags_str,
-      );
-    }
-    else {
-      confess "Unknown output_type \"$output_type\"";
-    }
-  }
-  
-  return $output_file;
 }
 
 1;
