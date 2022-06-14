@@ -713,16 +713,6 @@ sub search_lib_dirs_from_cc_info {
   return \@lib_dirs;
 }
 
-sub search_lib_dirs_from_config_libpth {
-  my ($self) = @_;
-  
-  my $libpth = $Config{libpth};
-  
-  my @lib_dirs = split(/ +/, $libpth);
-  
-  return \@lib_dirs;
-}
-
 sub search_include_dirs_from_config_incpth {
   my ($self) = @_;
   
@@ -1366,12 +1356,6 @@ Convert L<SPVM::Builder::Config> to a hash reference.
   my $lib_dirs = $config->search_lib_dirs_from_cc_info;
 
 Get the library searching directories parsing the infomation the compiler has.
-
-=head2 search_lib_dirs_from_config_libpth
-
-  my $lib_dirs = $config->search_lib_dirs_from_config_libpth;
-
-Get the library searching directories parsing C<libpth> of L<Config>.
 
 =head2 search_include_dirs_from_config_incpth
 

@@ -22,6 +22,7 @@ Revision history for SPVM
         * Remove "resources" method from "SPVM::Builder::Config" module. Intead, use "get_resource" method and "get_resource_names" methods.
         * The default value of "include_dirs" of "SPVM::Builder::Config" module becomes an empty array reference.
         * "new" method of "SPVM::Builder::Config" module must need "file" option.
+        * Remove "search_lib_dirs_from_config_libpth" from "SPVM::Builder::Config" module.
 0.9606  2022-06-13
         * Add build_dynamic_lib_dist_precompile method to SPVM::Builder::API.
           This is same as build_shared_lib_dist_precompile method.
