@@ -214,14 +214,6 @@ sub build_dynamic_lib_dist {
 sub build_dynamic_lib {
   my ($self, $class_name, $options) = @_;
   
-  # Compile source file and create object files
-  my $compile_options = {};
-  $compile_options->{input_dir} = $options->{compile_input_dir};
-  $compile_options->{output_dir} = $options->{compile_output_dir};
-  my $object_files = $self->compile($class_name, $compile_options);
-  
-  my $dl_func_list = $self->create_dl_func_list($class_name);
-
   # Module file
   my $module_file = $self->builder->get_module_file($class_name);
   unless (defined $module_file) {
@@ -234,8 +226,20 @@ sub build_dynamic_lib {
       confess "\"$module_file\" module is not loaded";
     }
   }
+  
   my $config = $self->create_config($module_file);
   
+  # Compile source file and create object files
+  my $compile_options = {
+    input_dir => $options->{compile_input_dir},
+    output_dir => $options->{compile_output_dir},
+    config => $config,
+  };
+
+  my $object_files = $self->compile($class_name, $compile_options);
+  
+  my $dl_func_list = $self->create_dl_func_list($class_name);
+
   # Link object files and create dynamic library
   my $link_options = {
     output_dir => $options->{link_output_dir},
@@ -323,24 +327,8 @@ sub compile {
     confess "Temporary directory must exists for " . $self->category . " build";
   }
   
-  # Module file
-  my $module_file = $self->builder->get_module_file($class_name);
-  unless (defined $module_file) {
-    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
-    if ($config_file) {
-      $module_file = $config_file;
-      $module_file =~ s/\.config$/\.spvm/;
-    }
-    else {
-      confess "\"$module_file\" module is not loaded";
-    }
-  }
-  
   # Config
   my $config = $options->{config};
-  unless ($config) {
-    $config = $self->create_config($module_file);
-  }
   
   # Quiet output
   my $quiet = $config->quiet;
@@ -881,6 +869,7 @@ sub link {
       input_dir => $resource_src_dir,
       output_dir => $resource_object_dir,
       used_as_resource => 1,
+      config => $resource_config,
     };
     if ($resource_config) {
       $compile_options->{config} = $resource_config;

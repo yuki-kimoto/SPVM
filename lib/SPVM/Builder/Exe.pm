@@ -869,11 +869,13 @@ sub compile_precompile_sources {
       my $build_object_dir = $self->builder->create_build_object_path;
       mkpath $build_object_dir;
       
+      my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
       my $precompile_object_files = $builder_c_precompile->compile(
         $class_name,
         {
           input_dir => $build_src_dir,
           output_dir => $build_object_dir,
+          config => $config,
         }
       );
       push @$object_files, @$precompile_object_files;
@@ -918,12 +920,27 @@ sub compile_native_sources {
       my $input_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
       my $build_object_dir = $self->builder->create_build_object_path;
       mkpath $build_object_dir;
+
+      # Module file
+      my $module_file = $builder->get_module_file($class_name);
+      unless (defined $module_file) {
+        my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
+        if ($config_file) {
+          $module_file = $config_file;
+          $module_file =~ s/\.config$/\.spvm/;
+        }
+        else {
+          confess "\"$module_file\" module is not loaded";
+        }
+      }
+      my $config = $builder_c_native->create_config($module_file);
       
       my $object_files = $builder_c_native->compile(
         $class_name,
         {
           input_dir => $input_dir,
           output_dir => $build_object_dir,
+          config => $config,
         }
       );
       push @$all_object_files, @$object_files;
