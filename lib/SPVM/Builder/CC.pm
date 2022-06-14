@@ -337,18 +337,15 @@ sub compile {
   # Add native include dir
   push @runtime_include_dirs, $resource_include_dir;
   
-  if ($category eq 'native') {
+  my $resource_names = $config->get_resource_names;
+  for my $resource_name (@$resource_names) {
+    my $resource = $config->get_resource($resource_name);
+    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource);
     
-    my $resource_names = $config->get_resource_names;
-    for my $resource_name (@$resource_names) {
-      my $resource = $config->get_resource($resource_name);
-      my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource);
-      
-      my $include_dir = $config_file;
-      $include_dir =~ s|\.config$|\.native/include|;
-      
-      push @runtime_include_dirs, $include_dir;
-    }
+    my $include_dir = $config_file;
+    $include_dir =~ s|\.config$|\.native/include|;
+    
+    push @runtime_include_dirs, $include_dir;
   }
   unshift @{$config->include_dirs}, @runtime_include_dirs;
 
