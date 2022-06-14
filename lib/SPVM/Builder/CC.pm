@@ -338,24 +338,6 @@ sub compile {
   
   my $is_resource = $options->{is_resource};
   
-  # Own resource header files
-  my @include_file_names;
-  my $own_resource_include_dir = $config->resource_include_dir;
-  if (defined $own_resource_include_dir && -d $own_resource_include_dir) {
-    find(
-      {
-        wanted => sub {
-          my $include_file_name = $File::Find::name;
-          if (-f $include_file_name) {
-            push @include_file_names, $include_file_name;
-          }
-        },
-        no_chdir => 1,
-      },
-      $own_resource_include_dir,
-    );
-  }
-  
   # Native module file
   my $native_module_file;
   unless ($is_resource) {
@@ -410,25 +392,44 @@ sub compile {
       mkpath $output_dir;
     }
     
-    # Do compile. This is same as make command
+    # Check if object file need to be generated
     my $need_generate;
-    my $input_files = [$source_file, @include_file_names];
-    if (defined $config->file) {
-      push @$input_files, $config->file;
-    };
-    if ($cur_is_native_module) {
-      my $module_file = $source_file;
-      $module_file =~ s/\.[^\/\\]+$//;
-      $module_file .= '.spvm';
-      
-      push @$input_files, $module_file;
+    {
+      # Own resource header files
+      my @own_resource_header_files;
+      my $own_resource_include_dir = $config->resource_include_dir;
+      if (defined $own_resource_include_dir && -d $own_resource_include_dir) {
+        find(
+          {
+            wanted => sub {
+              my $include_file_name = $File::Find::name;
+              if (-f $include_file_name) {
+                push @own_resource_header_files, $include_file_name;
+              }
+            },
+            no_chdir => 1,
+          },
+          $own_resource_include_dir,
+        );
+      }
+      my $input_files = [$source_file, @own_resource_header_files];
+      if (defined $config->file) {
+        push @$input_files, $config->file;
+      };
+      if ($cur_is_native_module) {
+        my $module_file = $source_file;
+        $module_file =~ s/\.[^\/\\]+$//;
+        $module_file .= '.spvm';
+        
+        push @$input_files, $module_file;
+      }
+      $need_generate = SPVM::Builder::Util::need_generate({
+        force => $self->force || $config->force,
+        output_file => $object_file,
+        input_files => $input_files,
+      });
     }
-    $need_generate = SPVM::Builder::Util::need_generate({
-      force => $self->force || $config->force,
-      output_file => $object_file,
-      input_files => $input_files,
-    });
-
+    
     my $compile_info = $self->create_compile_command_info({class_name => $class_name, config => $config, output_file => $object_file, source_file => $source_file});
 
     my $cc_cmd = $self->create_compile_command($compile_info);
