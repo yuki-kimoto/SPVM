@@ -929,7 +929,7 @@ sub compile_native_sources {
           confess "\"$module_file\" module is not loaded";
         }
       }
-      my $config = $builder_cc_native->create_config($module_file, {category => 'native'});
+      my $config = $builder_cc_native->create_native_config_from_module_file($module_file);
       
       my $object_files = $builder_cc_native->compile(
         $class_name,

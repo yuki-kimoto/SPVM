@@ -226,7 +226,13 @@ sub build {
     }
   }
   
-  my $config = $self->create_config($module_file, {category => $category});
+  my $config;
+  if ($category eq 'native') {
+    $config = $self->create_native_config_from_module_file($module_file);
+  }
+  elsif ($category eq 'precompile') {
+    $config = $self->create_precompile_config($module_file);
+  }
   
   # Compile source file and create object files
   my $compile_options = {
