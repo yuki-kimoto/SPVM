@@ -617,17 +617,7 @@ sub link {
   else {
     confess "SPVM_BUILD_DIR environment variable must be set for link";
   }
-
-  # Dynamic library directory
-  my $output_dir = $options->{output_dir};
-  unless (defined $output_dir && -d $output_dir) {
-    confess "Shared lib directory must be specified for link";
-  }
-
-  # Dynamic library file
-  my $dynamic_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_dynamic_lib_rel_file($class_name, $self->category);
-  my $output_file = "$output_dir/$dynamic_lib_rel_file";
-
+  
   # Module file
   my $module_file = $self->builder->get_module_file($class_name);
   unless (defined $module_file) {
@@ -660,6 +650,44 @@ sub link {
       $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
     }
     else { confess 'Unexpected Error' }
+  }
+
+  # Output type
+  my $output_type = $config->output_type;
+  
+  # output file
+  my $output_file = $options->{output_file};
+  if (defined $output_file) {
+    my $output_file_base = basename $output_file;
+    unless ($output_file_base =~ /\./) {
+      my $exe_ext;
+      
+      # Create a dynamic library
+      if ($output_type eq 'dynamic_lib') {
+        $exe_ext = ".$Config{dlext}"
+      }
+      # Create a static library
+      elsif ($output_type eq 'static_lib') {
+        $exe_ext = '.a';
+      }
+      # Create an executable file
+      elsif ($output_type eq 'exe') {
+        $exe_ext = $Config{exe_ext};
+      }
+      
+      $output_file .= $exe_ext;
+    }
+  }
+  else {
+    # Dynamic library directory
+    my $output_dir = $options->{output_dir};
+    unless (defined $output_dir && -d $output_dir) {
+      confess "Shared lib directory must be specified for link";
+    }
+    
+    # Dynamic library file
+    my $dynamic_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_dynamic_lib_rel_file($class_name, $self->category);
+    $output_file = "$output_dir/$dynamic_lib_rel_file";
   }
   
   # Quiet output
@@ -704,8 +732,6 @@ sub link {
 
   # All linker flags
   my @all_ldflags;
-  
-  my $output_type = $config->output_type;
   
   # Linker flags for dynamic link
   if ($output_type eq 'dynamic_lib') {
