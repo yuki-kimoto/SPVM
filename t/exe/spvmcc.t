@@ -60,8 +60,6 @@ rmtree "$build_dir/work";
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe --config t/exe/myexe.debug.config MyExe);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/\Q-O0 -g/);
-    like($spvmcc_output, qr/-lm\b/);
-    like($spvmcc_output, qr/-L\./);
     like($spvmcc_output, qr/-std=gnu99/);
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
