@@ -251,7 +251,6 @@ sub build_exe_file {
   # Link and generate executable file
   my $cc_linker = SPVM::Builder::CC->new(
     build_dir => $build_dir,
-    category => 'native',
     builder => $builder,
     quiet => $self->quiet,
     force => $self->force,
@@ -259,6 +258,7 @@ sub build_exe_file {
   my $options = {
     output_file => $self->{output_file},
     config => $self->config,
+    category => 'native',
   };
   $cc_linker->link($class_name, $object_files, $options);
 }
@@ -811,9 +811,8 @@ sub create_precompile_sources {
   mkpath $build_dir;
 
   # Build precompile classes
-  my $builder_c_precompile = SPVM::Builder::CC->new(
+  my $builder_cc_precompile = SPVM::Builder::CC->new(
     build_dir => $build_dir,
-    category => 'precompile',
     builder => $builder,
     quiet => $self->quiet,
     force => $self->force,
@@ -827,7 +826,7 @@ sub create_precompile_sources {
       
       my $build_src_dir = $self->builder->create_build_src_path;
       mkpath $build_src_dir;
-      $builder_c_precompile->create_precompile_source_file(
+      $builder_cc_precompile->create_precompile_source_file(
         $class_name,
         {
           output_dir => $build_src_dir,
@@ -847,9 +846,8 @@ sub compile_precompile_sources {
   my $build_dir = $self->builder->build_dir;
   
   # Build precompile classes
-  my $builder_c_precompile = SPVM::Builder::CC->new(
+  my $builder_cc_precompile = SPVM::Builder::CC->new(
     build_dir => $build_dir,
-    category => 'precompile',
     builder => $builder,
     quiet => $self->quiet,
     force => $self->force,
@@ -868,12 +866,13 @@ sub compile_precompile_sources {
       mkpath $build_object_dir;
       
       my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
-      my $precompile_object_files = $builder_c_precompile->compile(
+      my $precompile_object_files = $builder_cc_precompile->compile(
         $class_name,
         {
           input_dir => $build_src_dir,
           output_dir => $build_object_dir,
           config => $config,
+          category => 'precompile',
         }
       );
       push @$object_files, @$precompile_object_files;
@@ -893,9 +892,8 @@ sub compile_native_sources {
   mkpath $build_dir;
 
   # Compiler for native module
-  my $builder_c_native = SPVM::Builder::CC->new(
+  my $builder_cc_native = SPVM::Builder::CC->new(
     build_dir => $build_dir,
-    category => 'native',
     builder => $builder,
     quiet => $self->quiet,
     force => $self->force,
@@ -931,14 +929,15 @@ sub compile_native_sources {
           confess "\"$module_file\" module is not loaded";
         }
       }
-      my $config = $builder_c_native->create_config($module_file);
+      my $config = $builder_cc_native->create_config($module_file, {category => 'native'});
       
-      my $object_files = $builder_c_native->compile(
+      my $object_files = $builder_cc_native->compile(
         $class_name,
         {
           input_dir => $input_dir,
           output_dir => $build_object_dir,
           config => $config,
+          category => 'native',
         }
       );
       push @$all_object_files, @$object_files;

@@ -18,17 +18,6 @@ use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Resource;
 
-sub category {
-  my $self = shift;
-  if (@_) {
-    $self->{category} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{category};
-  }
-}
-
 sub builder {
   my $self = shift;
   if (@_) {
@@ -123,9 +112,11 @@ sub new {
 }
 
 sub build_runtime {
-  my ($self, $class_name) = @_;
-
-  my $category = $self->category;
+  my ($self, $class_name, $options) = @_;
+  
+  $options ||= {};
+  
+  my $category = $options->{category};
   
   # Build directory
   my $build_dir = $self->builder->build_dir;
@@ -168,6 +159,7 @@ sub build_runtime {
       compile_input_dir => $build_src_dir,
       compile_output_dir => $build_object_dir,
       link_output_dir => $build_lib_dir,
+      category => $category,
     }
   );
   
@@ -175,9 +167,11 @@ sub build_runtime {
 }
 
 sub build_dist {
-  my ($self, $class_name) = @_;
+  my ($self, $class_name, $options) = @_;
   
-  my $category = $self->category;
+  $options ||= {};
+  
+  my $category = $options->{category};
   
   my $build_src_dir;
   if ($category eq 'precompile') {
@@ -207,13 +201,18 @@ sub build_dist {
       compile_input_dir => $build_src_dir,
       compile_output_dir => $build_object_dir,
       link_output_dir => $build_lib_dir,
+      category => $category,
     }
   );
 }
 
 sub build {
   my ($self, $class_name, $options) = @_;
+
+  $options ||= {};
   
+  my $category = $options->{category};
+
   # Module file
   my $module_file = $self->builder->get_module_file($class_name);
   unless (defined $module_file) {
@@ -227,13 +226,14 @@ sub build {
     }
   }
   
-  my $config = $self->create_config($module_file);
+  my $config = $self->create_config($module_file, {category => $category});
   
   # Compile source file and create object files
   my $compile_options = {
     input_dir => $options->{compile_input_dir},
     output_dir => $options->{compile_output_dir},
     config => $config,
+    category => $category,
   };
 
   my $object_files = $self->compile($class_name, $compile_options);
@@ -242,6 +242,7 @@ sub build {
   my $link_options = {
     output_dir => $options->{link_output_dir},
     config => $config,
+    category => $category,
   };
   my $output_file = $self->link(
     $class_name,
@@ -275,9 +276,11 @@ sub get_resource_object_dir_from_class_name {
 }
 
 sub create_config {
-  my ($self, $module_file) = @_;
+  my ($self, $module_file, $options) = @_;
   
-  my $category = $self->category;
+  $options ||= {};
+  
+  my $category = $options->{category};
   
   my $config;
   my $config_file = $module_file;
@@ -302,9 +305,11 @@ sub create_config {
 
 sub compile {
   my ($self, $class_name, $options) = @_;
-
+  
+  $options ||= {};
+  
   # Category
-  my $category = $self->category;
+  my $category = $options->{category};
 
   # Build directory
   my $build_dir = $self->builder->build_dir;
@@ -321,7 +326,7 @@ sub compile {
   # Object directory
   my $output_dir = $options->{output_dir};
   unless (defined $output_dir && -d $output_dir) {
-    confess "Temporary directory must exists for " . $self->category . " build";
+    confess "Temporary directory must exists for " . $options->{category} . " build";
   }
   
   # Config
@@ -613,9 +618,11 @@ EOS
 }
 
 sub create_dl_func_list {
-  my ($self, $class_name) = @_;
-
-  my $category = $self->category;
+  my ($self, $class_name, $options) = @_;
+  
+  $options ||= {};
+  
+  my $category = $options->{category};
   
   # dl_func_list
   # This option is needed Windows DLL file
@@ -646,6 +653,8 @@ sub create_dl_func_list {
 
 sub link {
   my ($self, $class_name, $object_file_infos, $options) = @_;
+  
+  my $category = $options->{category};
   
   # All object file infos
   my $all_object_file_infos = [@$object_file_infos];
@@ -699,7 +708,7 @@ sub link {
     }
     
     # Dynamic library file
-    my $dynamic_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_dynamic_lib_rel_file($class_name, $self->category);
+    my $dynamic_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_dynamic_lib_rel_file($class_name, $options->{category});
     $output_file = "$output_dir/$dynamic_lib_rel_file";
   }
   
@@ -840,7 +849,6 @@ sub link {
     # Build native classes
     my $builder_cc_resource = SPVM::Builder::CC->new(
       build_dir => $self->builder->build_dir,
-      category => 'native',
       builder => $self->builder,
       quiet => $self->quiet,
       force => $self->force,
@@ -865,6 +873,7 @@ sub link {
       output_dir => $resource_object_dir,
       used_as_resource => 1,
       config => $resource_config,
+      category => $category,
     };
     if ($resource_config) {
       $compile_options->{config} = $resource_config;
@@ -936,7 +945,7 @@ sub link {
     
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
-      my $dl_func_list = $self->create_dl_func_list($class_name);
+      my $dl_func_list = $self->create_dl_func_list($class_name, {category => $category});
       (undef, @tmp_files) = $cbuilder->link(
         objects => $link_info_object_files,
         module_name => $link_info_class_name,
