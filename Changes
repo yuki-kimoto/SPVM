@@ -1,5 +1,5 @@
-Revision history for SPVM
-0.9606_01  2022-06-13
+0.9606_01 2022-06-13
+        [CHANGE]
         * Add the following methods to Fn class
           static method memset_byte : void ($dest : byte[], $dest_offset : int, $value : byte, $length : int)
           static method memset_double : void ($dest : double[], $dest_offset : int, $value : double, $length : int)
@@ -23,7 +23,10 @@ Revision history for SPVM
         * The default value of "include_dirs" of "SPVM::Builder::Config" module becomes an empty array reference.
         * "new" method of "SPVM::Builder::Config" module must need "file" option.
         * Remove "search_lib_dirs_from_config_libpth" from "SPVM::Builder::Config" module.
+        * Remove "get_include_dir", "get_lib_dir", "get_src_dir", "search_lib_dirs_from_cc_info"
+          "search_include_dirs_from_config_incpth", "to_hash" from "SPVM::Builder::Config" module.
 0.9606  2022-06-13
+        [CHANGE]
         * Add build_dynamic_lib_dist_precompile method to SPVM::Builder::API.
           This is same as build_shared_lib_dist_precompile method.
           build_shared_lib_dist_precompile method is remained for backwards compatibility.

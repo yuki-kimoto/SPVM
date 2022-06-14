@@ -681,75 +681,6 @@ sub add_dynamic_libs {
   $self->add_libs(@dynamic_lib_infos);
 }
 
-sub to_hash {
-  my ($self) = @_;
-  
-  my $hash = {%$self};
-  
-  return $hash;
-}
-
-sub search_lib_dirs_from_cc_info {
-  my ($self) = @_;
-  
-  my $cc = $self->cc;
-  
-  my $cmd = "$cc -print-search-dirs";
-  
-  my $output = `$cmd`;
-  
-  my $lib_dirs_str;
-  if ($output =~ /^libraries:\s+=(.+)/m) {
-    $lib_dirs_str = $1;
-  }
-  
-  my $sep = $Config{path_sep};
-  
-  my @lib_dirs;
-  if (defined $lib_dirs_str) {
-    @lib_dirs = split($sep, $lib_dirs_str);
-  }
-  
-  return \@lib_dirs;
-}
-
-sub search_include_dirs_from_config_incpth {
-  my ($self) = @_;
-  
-  my $incpth = $Config{incpth};
-  
-  my @include_dirs = split(/ +/, $incpth);
-  
-  return \@include_dirs;
-}
-
-sub get_include_dir {
-  my ($self, $file) = @_;
-  
-  my $include_dir = $file;
-  $include_dir =~ s|\.config$|.native/include|;
-  
-  return $include_dir;
-}
-
-sub get_src_dir {
-  my ($self, $file) = @_;
-  
-  my $src_dir = $file;
-  $src_dir =~ s|\.config$|.native/src|;
-  
-  return $src_dir;
-}
-
-sub get_lib_dir {
-  my ($self, $file) = @_;
-  
-  my $lib_dir = $file;
-  $lib_dir =~ s|\.config$|.native/lib|;
-  
-  return $lib_dir;
-}
-
 sub get_resource {
   my ($self, $resource_class_name) = @_;
   
@@ -1229,6 +1160,11 @@ Get and set the value that indicates L<file|/"file"> field is needed for C<new|/
 
 The default is C<0>.
 
+=head2 output_type
+
+  my $output_type = $config->output_type;
+  $config->output_type($type);
+
 =head1 CLASS METHODS
 
 =head2 new
@@ -1344,47 +1280,6 @@ Add the values that each element is converted to the following hash reference af
 B<Examples:>
 
   $config->add_dynamic_libs('gsl');
-
-=head2 to_hash
-
-  my $config = $config->to_hash;
-
-Convert L<SPVM::Builder::Config> to a hash reference.
-
-=head2 search_lib_dirs_from_cc_info
-
-  my $lib_dirs = $config->search_lib_dirs_from_cc_info;
-
-Get the library searching directories parsing the infomation the compiler has.
-
-=head2 search_include_dirs_from_config_incpth
-
-  my $include_dirs = $config->search_include_dirs_from_config_incpth;
-
-Get the header searching directories parsing C<incpth> of L<Config>.
-
-=head2 sub get_include_dir
-
-  my $include_dir = $config->get_include_dir(__FILE__);
-
-Get the header include directory from the config file name.
-
-=head2 get_src_dir
-
-  my $src_dir = $config->get_src_dir(__FILE__);
-
-Get the source directory from the config file name.
-
-=head2 get_lib_dir
-
-  my $lib_dir = $config->get_lib_dir(__FILE__);
-
-Get the library directory from the config file name.
-
-=head2 output_type
-
-  my $output_type = $config->output_type;
-  $config->output_type($type);
 
 =head2 use_resource
 
