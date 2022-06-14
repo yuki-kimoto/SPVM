@@ -1030,7 +1030,7 @@ B<Examples:>
   my $source_files = $config->source_files;
   $config->source_files($source_files);
 
-Get and get source files. These sourceraries are linked by the compiler.
+Get and get source files. The file name is the relative pass from L</"own_src_dir">.
 
 B<Examples:>
 
