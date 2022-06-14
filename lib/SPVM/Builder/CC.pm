@@ -295,7 +295,7 @@ sub compile {
     confess "Build directory is not specified. Maybe forget to set \"SPVM_BUILD_DIR\" environment variable?";
   }
   
-  # Source directory
+  # Input directory
   my $input_dir = $options->{input_dir};
   
   # Object directory
@@ -372,12 +372,13 @@ sub compile {
     next unless defined $source_file;
     
     my $object_file;
-    # Native object file name
+    
+    # Object file of native module
     if ($cur_is_native_module) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
       $object_file = "$output_dir/$object_rel_file";
     }
-    # SPVM method object file name
+    # Object file of resource source file
     else {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
       
@@ -430,13 +431,10 @@ sub compile {
       });
     }
     
+    # Compile-information
     my $compile_info = $self->create_compile_command_info({class_name => $class_name, config => $config, output_file => $object_file, source_file => $source_file});
-
-    my $cc_cmd = $self->create_compile_command($compile_info);
     
-    my $compile_info_cc = $compile_info->{cc};
-    my $compile_info_ccflags = $compile_info->{ccflags};
-    
+    # Compile a source file
     if ($need_generate) {
       my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
       my $work_output_dir = "$output_dir/$class_rel_dir";
@@ -444,6 +442,7 @@ sub compile {
       
       # Execute compile command
       my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
+      my $cc_cmd = $self->create_compile_command($compile_info);
       $cbuilder->do_system(@$cc_cmd)
         or confess "Can't compile $source_file: @$cc_cmd";
       unless ($quiet) {
@@ -451,6 +450,9 @@ sub compile {
       }
     }
     
+    # Object file information
+    my $compile_info_cc = $compile_info->{cc};
+    my $compile_info_ccflags = $compile_info->{ccflags};
     my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
       class_name => $class_name,
       file => $object_file,
@@ -461,6 +463,7 @@ sub compile {
       source_type => $cur_is_native_module ? 'native_module' : 'resource',
     );
     
+    # Add object file information
     push @$object_file_infos, $object_file_info;
   }
   
