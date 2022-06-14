@@ -238,12 +238,9 @@ sub build_dynamic_lib {
 
   my $object_files = $self->compile($class_name, $compile_options);
   
-  my $dl_func_list = $self->create_dl_func_list($class_name);
-
   # Link object files and create dynamic library
   my $link_options = {
     output_dir => $options->{link_output_dir},
-    dl_func_list => $dl_func_list,
     config => $config,
   };
   my $build_dynamic_lib_file = $self->link(
@@ -653,8 +650,6 @@ sub link {
   # All object file infos
   my $all_object_file_infos = [@$object_file_infos];
   
-  my $dl_func_list = $options->{dl_func_list} || [];
-  
   # Build directory
   my $build_dir = $self->builder->build_dir;
   if (defined $build_dir) {
@@ -941,6 +936,7 @@ sub link {
     
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
+      my $dl_func_list = $self->create_dl_func_list($class_name);
       (undef, @tmp_files) = $cbuilder->link(
         objects => $link_info_object_files,
         module_name => $link_info_class_name,

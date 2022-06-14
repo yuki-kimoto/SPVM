@@ -256,11 +256,9 @@ sub build_exe_file {
     quiet => $self->quiet,
     force => $self->force,
   );
-  my $dl_func_list = $cc_linker->create_dl_func_list($class_name);
   my $options = {
     output_file => $self->{output_file},
     config => $self->config,
-    dl_func_list => $dl_func_list,
   };
   $cc_linker->link($class_name, $object_files, $options);
 }
