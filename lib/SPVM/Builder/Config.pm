@@ -796,10 +796,10 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
   my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
   # Create a config as "C++"
-  my $config = SPVM::Builder::Config->new_new_cpp(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
   # Create a config with "C++11" standard of "C++"
-  my $config = SPVM::Builder::Config->new_new_cpp11(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
   
   # Optimize
   $config->optimize('-O2');
