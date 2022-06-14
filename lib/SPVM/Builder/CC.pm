@@ -95,6 +95,17 @@ sub global_optimize_each {
   }
 }
 
+sub output_type {
+  my $self = shift;
+  if (@_) {
+    $self->{output_type} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{output_type};
+  }
+}
+
 sub new {
   my $class = shift;
   
@@ -680,7 +691,7 @@ sub link {
   }
 
   # Output type
-  my $output_type = $config->output_type;
+  my $output_type = $self->output_type || $config->output_type;
   
   # output file
   my $output_file = $options->{output_file};
