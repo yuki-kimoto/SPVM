@@ -514,7 +514,7 @@ sub create_compile_command_info {
   my $builder_include_dir = $config->builder_include_dir;
   $cflags .= "-I$builder_include_dir ";
 
-  # Include directory
+  # Include directories
   {
     my @include_dirs = [@{$config->include_dirs}];
 
@@ -528,14 +528,13 @@ sub create_compile_command_info {
     my $resource_names = $config->get_resource_names;
     for my $resource_name (@$resource_names) {
       my $resource = $config->get_resource($resource_name);
-      my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource);
-      
-      my $include_dir = $config_file;
-      $include_dir =~ s|\.config$|\.native/include|;
-      
-      push @include_dirs, $include_dir;
+      my $config = $resource->config;
+      my $resource_include_dir = $config->resource_include_dir;
+      if (defined $resource_include_dir) {
+        push @include_dirs, $resource_include_dir;
+      }
     }
-
+    
     my $inc = join(' ', map { "-I$_" } @include_dirs);
     $cflags .= " $inc";
   }
