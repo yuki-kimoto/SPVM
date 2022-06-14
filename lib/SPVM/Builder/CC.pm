@@ -676,22 +676,7 @@ sub link {
   # Config
   my $config = $options->{config};
   unless ($config) {
-    # Config file
-    my $config_file = $module_file;
-    $config_file =~ s/\.spvm$/.config/;
-    if ($category eq 'native') {
-      if (-f $config_file) {
-        $config = SPVM::Builder::Config->load_config($config_file);
-      }
-      else {
-        my $error = $self->_error_message_find_config($config_file);
-        confess $error;
-      }
-    }
-    elsif ($category eq 'precompile') {
-      $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
-    }
-    else { confess 'Unexpected Error' }
+    $config = $self->create_config($module_file);
   }
 
   # Output type
