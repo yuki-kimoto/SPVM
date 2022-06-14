@@ -378,21 +378,6 @@ sub compile {
     );
   }
   
-  my $mod_time_config_file;
-  if (defined $config->file && -f $config->file) {
-     $mod_time_config_file = (stat($config->file))[9];
-  }
-  else {
-    $mod_time_config_file = 0;
-  }
-  my $mod_time_header_files_max = 0;
-  for my $header_file (@include_file_names) {
-    my $mod_time_header_file = (stat($header_file))[9];
-    if ($mod_time_header_file > $mod_time_header_files_max) {
-      $mod_time_header_files_max = $mod_time_header_file;
-    }
-  }
-
   # Native module file
   my $native_module_file;
   unless ($is_resource) {
