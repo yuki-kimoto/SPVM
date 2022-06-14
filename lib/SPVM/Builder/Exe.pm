@@ -10,7 +10,6 @@ use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config::Exe;
-use SPVM::Builder::LinkInfo;
 
 use File::Spec;
 use File::Find 'find';
