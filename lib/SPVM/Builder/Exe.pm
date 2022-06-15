@@ -272,7 +272,7 @@ sub get_dependent_resource_lines {
     my $resource_mode = $resource->mode;
     my $resource_args = $resource->args || [];
     
-    my $line = qq(class_name:"$class_name",resource_class_name:"$resource_class_name",resource_mode:);
+    my $line = qq({class_name:"$class_name",resource_class_name:"$resource_class_name",resource_mode:);
     if (defined $resource_mode) {
       $line .= qq("$resource_mode");
     }
@@ -283,7 +283,7 @@ sub get_dependent_resource_lines {
     
     $line .= join(",", map { qq("$_") } @$resource_args);
     
-    $line .= "]\n";
+    $line .= "]}";
     
     push @lines, $line;
   }

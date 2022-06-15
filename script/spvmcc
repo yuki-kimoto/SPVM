@@ -16,6 +16,7 @@ SPVM::Builder::Util::getopt
   'q|quiet'   => \my $quiet,
   'f|force' => \my $force,
   'c|config=s' => \my $config_file,
+  'p|print-dependent-resources' => \my $print_dependent_resources,
 ;
 
 if ($help) {
@@ -42,7 +43,13 @@ else {
     force => $force,
     config_file => $config_file,
   );
-  $build_exe->build_exe_file;
+  if ($print_dependent_resources) {
+    my $lines = $build_exe->get_dependent_resource_lines;
+    print "$_\n" for @$lines;
+  }
+  else {
+    $build_exe->build_exe_file;
+  }
 }
 
 
