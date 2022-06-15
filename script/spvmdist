@@ -17,6 +17,7 @@ SPVM::Builder::Util::getopt
   'resource' => \my $resource,
   'only-lib-files' => \my $only_lib_files,
   'no-pm-file' => \my $no_pm_file,
+  'genlib' => \my $genlib,
 ;
 
 if ($help) {
@@ -30,6 +31,11 @@ else {
   my ($class_name, $output_dir) = @ARGV;
   unless (defined $class_name) {
     die SPVM::Builder::Util::extract_usage;
+  }
+  
+  if ($genlib) {
+    $only_lib_files = 1;
+    $no_pm_file = 1;
   }
   
   my $gendist= SPVM::Dist->new(
@@ -75,6 +81,7 @@ spvmdist - Generating SPVM Distribution
     --only-lib-files               Output only the files in "lib" directory
     --no-pm-file                   Don't output Perl module(.pm) file
     --resource                     Output files for resource distribution
+    --genlib                       Shorcut for --only-lib-files --no-pm-file
 
 =head1 DESCRIPTION
 

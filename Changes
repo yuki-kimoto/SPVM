@@ -1,3 +1,7 @@
+0.9607_01 2022-06-15
+  [CHANGE]
+  * Add "--genlib" option to "spvmdist" command
+  
 0.9607 2022-06-15
   [CHANGE]
   * Add the following methods to Fn class
