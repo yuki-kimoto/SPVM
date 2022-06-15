@@ -361,11 +361,11 @@ sub compile {
     }
   }
   
-  my $used_as_resource = $options->{used_as_resource};
+  my $ignore_use_resource = $options->{ignore_use_resource};
   
   # Native module file
   my $native_module_file;
-  unless ($used_as_resource) {
+  unless ($ignore_use_resource) {
     # Native module file
     my $native_module_ext = $config->ext;
     unless (defined $native_module_ext) {
@@ -463,7 +463,7 @@ sub compile {
       output_file => $object_file,
       source_file => $source_file,
       include_dirs => $options->{include_dirs},
-      used_as_resource => $used_as_resource,
+      ignore_use_resource => $ignore_use_resource,
     });
     
     # Compile a source file
@@ -557,7 +557,7 @@ sub create_compile_command_info {
     }
     
     # Add resource include directories
-    unless ($options->{used_as_resource}) {
+    unless ($options->{ignore_use_resource}) {
       my $resource_names = $config->get_resource_names;
       for my $resource_name (@$resource_names) {
         my $resource = $config->get_resource($resource_name);
@@ -887,7 +887,7 @@ sub link {
     my $compile_options = {
       input_dir => $resource_src_dir,
       output_dir => $resource_object_dir,
-      used_as_resource => 1,
+      ignore_use_resource => 1,
       config => $resource_config,
       category => $category,
     };
