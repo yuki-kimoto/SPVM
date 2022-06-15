@@ -720,10 +720,6 @@ sub link {
     elsif ($output_type eq 'static_lib') {
       $exe_ext = '.a';
     }
-    # Combined object file
-    elsif ($output_type eq 'combined_object_file') {
-      $exe_ext = '.o';
-    }
     # Executable file
     elsif ($output_type eq 'exe') {
       $exe_ext = $Config{exe_ext};
@@ -978,13 +974,8 @@ sub link {
     elsif ($output_type eq 'static_lib') {
       my @object_files = map { "$_" } @$link_info_object_files;
       my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
-      $cbuilder->do_system(@ar_cmd);
-    }
-    # Create a combined object file
-    elsif ($output_type eq 'combined_object_file') {
-      my @object_files = map { "$_" } @$link_info_object_files;
-      my @combine_cmd = ($link_info_ld, '-r', '-o', $link_info_output_file, @object_files);
-      $cbuilder->do_system(@combine_cmd);
+      $cbuilder->do_system(@ar_cmd)
+        or confess "Can't execute command @ar_cmd";
     }
     # Create an executable file
     elsif ($output_type eq 'exe') {
