@@ -8,6 +8,8 @@ class MyExe {
     my $ret2 = TestCase::NativeAPI2->src_bar;
     
     my $ret3 = MyExe::Precompile->anon_method_sum;
+
+    my $ret4 = TestCase::NativeAPI2->mylib2_source1_func1;
     
     print "AAA $start_file $sum $ret1 $ret2 $ret3 $args->[0] $args->[1]\n";
   }

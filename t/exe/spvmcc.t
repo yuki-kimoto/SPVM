@@ -129,7 +129,7 @@ rmtree "$build_dir/work";
   $ENV{SPVM_BUILD_DIR} = $build_dir;
   
   my $spvm_script = File::Spec->catfile(qw/t exe myexe.pl/);
-  my $execute_cmd = qq($^X -Mblib -I t/exe/lib $spvm_script);
+  my $execute_cmd = qq($^X -Mblib -I t/exe/lib -I t/default/lib $spvm_script);
   my $execute_cmd_with_args = "$execute_cmd args1 args2";
   system($execute_cmd_with_args) == 0
     or die "Can't execute SPVM script: $execute_cmd_with_args:$!";

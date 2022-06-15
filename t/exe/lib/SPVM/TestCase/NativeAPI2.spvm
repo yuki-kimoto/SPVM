@@ -14,4 +14,6 @@ class TestCase::NativeAPI2 : precompile {
   native static method src_foo : int ();
 
   native static method src_bar : int ();
+
+  native static method mylib2_source1_func1 : string ();
 }

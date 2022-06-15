@@ -931,6 +931,15 @@ sub compile_native_sources {
       }
       my $config = $builder_cc_native->create_native_config_from_module_file($module_file);
       
+      my $include_dirs = [];
+      my $exe_config = $self->config;
+      my $resource_names = $exe_config->get_resource_names;
+      for my $resource_name (@$resource_names) {
+        my $resource = $exe_config->get_resource($resource_name);
+        my $resource_include_dir = $resource->config->own_include_dir;
+        push @$include_dirs, $resource_include_dir;
+      }
+      
       my $object_files = $builder_cc_native->compile(
         $class_name,
         {
@@ -939,6 +948,7 @@ sub compile_native_sources {
           config => $config,
           category => 'native',
           ignore_use_resource => 1,
+          include_dirs => $include_dirs,
         }
       );
       push @$all_object_files, @$object_files;
