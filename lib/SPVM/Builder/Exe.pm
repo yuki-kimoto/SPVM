@@ -290,19 +290,11 @@ sub get_dependent_resource_lines {
 sub build_exe_file {
   my ($self) = @_;
   
+  # Builder
   my $builder = $self->builder;
   
-  my $config = $self->config;
-  
-  # Target class name
+  # Class name
   my $class_name = $self->{class_name};
-  
-  # Excutable file name
-  my $output_file = $self->{output_file};
-  
-  # Build directory
-  my $build_dir = $self->builder->build_dir;
-  mkpath $build_dir;
   
   # Compile SPVM
   my $compile_success = $builder->compile_spvm($class_name, __FILE__, __LINE__);
@@ -323,6 +315,8 @@ sub build_exe_file {
   # Compile SPVM core source files
   my $spvm_core_objects = $self->compile_spvm_core_sources;
   push @$object_files, @$spvm_core_objects;
+  
+  my $config = $self->config;
   
   my $no_precompile = $config->no_precompile;
 
@@ -346,6 +340,10 @@ sub build_exe_file {
   my $bootstrap_object_file = $self->compile_bootstrap_source;
   push @$object_files, $bootstrap_object_file;
   
+  # Build directory
+  my $build_dir = $self->builder->build_dir;
+  mkpath $build_dir;
+
   # Link and generate executable file
   my $cc_linker = SPVM::Builder::CC->new(
     build_dir => $build_dir,
