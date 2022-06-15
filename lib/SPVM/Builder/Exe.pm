@@ -189,13 +189,111 @@ sub new {
   return bless $self, $class;
 }
 
+sub get_dependent_resources {
+  my ($self) = @_;
+  
+  my $dependent_resources = [];
+  
+  my $builder = $self->builder;
+
+  my $build_dir = $self->builder->build_dir;
+
+  # Compiler for native module
+  my $builder_cc_native = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    builder => $builder,
+    quiet => $self->quiet,
+    force => $self->force,
+  );
+  
+  my $class_names = $builder->get_class_names;
+  my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
+  my $all_object_files = [];
+  for my $class_name (@$class_names_without_anon) {
+
+    my $perl_class_name = "SPVM::$class_name";
+    
+    my $native_method_names = $builder->get_method_names($class_name, 'native');
+    if (@$native_method_names) {
+      my $native_module_file = $builder->get_module_file($class_name);
+      my $native_dir = $native_module_file;
+      
+      $native_dir =~ s/\.spvm$//;
+      $native_dir .= 'native';
+      my $input_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
+      my $build_object_dir = $self->builder->create_build_object_path;
+      mkpath $build_object_dir;
+
+      # Module file
+      my $module_file = $builder->get_module_file($class_name);
+      unless (defined $module_file) {
+        my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
+        if ($config_file) {
+          $module_file = $config_file;
+          $module_file =~ s/\.config$/\.spvm/;
+        }
+        else {
+          confess "\"$module_file\" module is not loaded";
+        }
+      }
+      my $config = $builder_cc_native->create_native_config_from_module_file($module_file);
+      
+      my $resource_names = $config->get_resource_names;
+      for my $resource_name (@$resource_names) {
+        my $resource = $config->get_resource($resource_name);
+        
+        my $resource_info = {
+          class_name => $class_name,
+          resource => $resource
+        };
+        
+        push @$dependent_resources, $resource_info;
+      }
+    }
+  }
+  
+  return $dependent_resources;
+}
+
+sub get_dependent_resource_lines {
+  my ($self) = @_;
+  
+  my $dependent_resources = $self->get_dependent_resources;
+  
+  my @lines;
+  for my $dependent_resource (@$dependent_resources) {
+    my $class_name = $dependent_resource->{class_name};
+    my $resource = $dependent_resource->{resource};
+    my $resource_class_name = $resource->class_name;
+    my $resource_mode = $resource->mode;
+    my $resource_args = $resource->args || [];
+    
+    my $line = qq(class_name:"$class_name",resource_class_name:"$resource_class_name",resource_mode:);
+    if (defined $resource_mode) {
+      $line .= qq("$resource_mode");
+    }
+    else {
+      $line .= 'undefined';
+    }
+    $line .= ",resource_args:[";
+    
+    $line .= join(",", map { qq("$_") } @$resource_args);
+    
+    $line .= "]\n";
+    
+    push @lines, $line;
+  }
+  
+  return \@lines;
+}
+
 sub build_exe_file {
   my ($self) = @_;
   
   my $builder = $self->builder;
   
   my $config = $self->config;
-
+  
   # Target class name
   my $class_name = $self->{class_name};
   
@@ -218,7 +316,7 @@ sub build_exe_file {
   
   # Config file
   my $module_file = $builder->get_module_file($class_name);
-  
+
   # Object files
   my $object_files = [];
 
