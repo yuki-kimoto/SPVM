@@ -4,6 +4,7 @@
   * Add "--print-dependent-resources" and "-p" options to "spvmcc" command.
   [BUG FIX]
   * Fix the bug that spvmcc don't set @INC to the value of -I.
+  * Fix many bugs of the resource sysmtem of "spvmcc" command.
   [NON BACKWORD COMPATIBLE CHANGES]
   * remove "dynamic-lib" option form "spvmcc" command.
   * remove "static-lib" option form "spvmcc" command.
