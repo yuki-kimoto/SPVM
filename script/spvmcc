@@ -16,8 +16,6 @@ SPVM::Builder::Util::getopt
   'q|quiet'   => \my $quiet,
   'f|force' => \my $force,
   'c|config=s' => \my $config_file,
-  'dynamic-lib' => \my $dynamic_lib,
-  'static-lib' => \my $static_lib,
 ;
 
 if ($help) {
@@ -43,8 +41,6 @@ else {
     quiet => $quiet,
     force => $force,
     config_file => $config_file,
-    dynamic_lib => $dynamic_lib,
-    static_lib => $static_lib,
   );
   $build_exe->build_exe_file;
 }
@@ -72,8 +68,6 @@ spvmcc - SPVM compiler to create exe file
     -q, --quiet                    Quiet output
     -f, --force                    Force compile and link
     -c, --config                   Config file
-    --dynamic-lib                  The output file is a dynamic library
-    --static-lib                   The output file is a static library
     
 =head1 DESCRIPTION
 

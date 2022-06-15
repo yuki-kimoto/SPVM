@@ -1,6 +1,9 @@
 0.9607_01 2022-06-15
   [CHANGE]
-  * Add "--genlib" option to "spvmdist" command
+  * Add "--genlib" option to "spvmdist" command.
+  [NON BACKWORD COMPATIBLE CHANGES]
+  * remove "dynamic-lib" option form "spvmcc" command.
+  * remove "static-lib" option form "spvmcc" command.
   
 0.9607 2022-06-15
   [CHANGE]
