@@ -342,7 +342,7 @@ sub compile {
   # Object directory
   my $output_dir = $options->{output_dir};
   unless (defined $output_dir && -d $output_dir) {
-    confess "Temporary directory must exists for " . $options->{category} . " build";
+    confess "Output directory must exists for " . $options->{category} . " build";
   }
   
   # Config
@@ -693,34 +693,9 @@ sub link {
   # Output type
   my $output_type = $self->output_type || $config->output_type;
   
-  # output file
+  # Output file
   my $output_file = $options->{output_file};
-  if (defined $output_file) {
-    my $output_file_base = basename $output_file;
-    unless ($output_file_base =~ /\./) {
-      my $exe_ext;
-      
-      # Create a dynamic library
-      if ($output_type eq 'dynamic_lib') {
-        $exe_ext = ".$Config{dlext}"
-      }
-      # Create a static library
-      elsif ($output_type eq 'static_lib') {
-        $exe_ext = '.a';
-      }
-      # Create a combined object file
-      elsif ($output_type eq 'combined_object_file') {
-        $exe_ext = '.o';
-      }
-      # Create an executable file
-      elsif ($output_type eq 'exe') {
-        $exe_ext = $Config{exe_ext};
-      }
-      
-      $output_file .= $exe_ext;
-    }
-  }
-  else {
+  unless (defined $output_file) {
     # Dynamic library directory
     my $output_dir = $options->{output_dir};
     unless (defined $output_dir && -d $output_dir) {
@@ -728,8 +703,33 @@ sub link {
     }
     
     # Dynamic library file
-    my $dynamic_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_dynamic_lib_rel_file($class_name, $options->{category});
-    $output_file = "$output_dir/$dynamic_lib_rel_file";
+    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $options->{category});
+    $output_file = "$output_dir/$output_rel_file";
+  }
+  
+  # Add output file extension
+  my $output_file_base = basename $output_file;
+  if ($output_file_base =~ /\.precompile$/ || $output_file_base !~ /\./) {
+    my $exe_ext;
+    
+    # Dynamic library
+    if ($output_type eq 'dynamic_lib') {
+      $exe_ext = ".$Config{dlext}"
+    }
+    # Static library
+    elsif ($output_type eq 'static_lib') {
+      $exe_ext = '.a';
+    }
+    # Combined object file
+    elsif ($output_type eq 'combined_object_file') {
+      $exe_ext = '.o';
+    }
+    # Executable file
+    elsif ($output_type eq 'exe') {
+      $exe_ext = $Config{exe_ext};
+    }
+    
+    $output_file .= $exe_ext;
   }
   
   # Quiet output
