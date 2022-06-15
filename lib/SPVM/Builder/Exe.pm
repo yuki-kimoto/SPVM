@@ -947,6 +947,35 @@ sub compile_native_sources {
   return $all_object_files;
 }
 
+sub compile_native_sources_combined {
+  my ($self) = @_;
+  
+  my $builder = $self->builder;
+
+  # Build directory
+  my $build_dir = $self->builder->build_dir;
+  mkpath $build_dir;
+
+  # Compiler for native module
+  my $builder_cc = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    builder => $builder,
+    quiet => $self->quiet,
+    force => $self->force,
+    output_type => 'combined_object_file',
+  );
+  
+  my $class_names = $builder->get_class_names;
+  my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
+  my $all_object_files = [];
+  for my $class_name (@$class_names_without_anon) {
+    my $combined_object_file = $builder_cc->build($class_name, {category => 'native'});
+    push @$all_object_files, $combined_object_file;
+  }
+  
+  return $all_object_files;
+}
+
 1;
 
 =head1 NAME
