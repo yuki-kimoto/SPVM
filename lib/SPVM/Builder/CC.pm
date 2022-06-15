@@ -362,10 +362,11 @@ sub compile {
   }
   
   my $ignore_use_resource = $options->{ignore_use_resource};
+  my $ignore_native_module = $options->{ignore_native_module};
   
   # Native module file
   my $native_module_file;
-  unless ($ignore_use_resource) {
+  unless ($ignore_native_module) {
     # Native module file
     my $native_module_ext = $config->ext;
     unless (defined $native_module_ext) {
@@ -888,6 +889,7 @@ sub link {
       input_dir => $resource_src_dir,
       output_dir => $resource_object_dir,
       ignore_use_resource => 1,
+      ignore_native_module => 1,
       config => $resource_config,
       category => $category,
     };

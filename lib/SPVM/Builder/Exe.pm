@@ -938,6 +938,7 @@ sub compile_native_sources {
           output_dir => $build_object_dir,
           config => $config,
           category => 'native',
+          ignore_use_resource => 1,
         }
       );
       push @$all_object_files, @$object_files;
