@@ -441,6 +441,16 @@ SPVM native APIs are public APIs that are used in native language sources such a
 
 =back
 
+=head2 Resource
+
+A resource is a L<native module|SPVM::Document::NativeModule> that contains a set of sources and headers of native language such as C<C language> or C<C++>.
+
+=over 2
+
+=item * L<Resource|SPVM::Document::Resource>
+
+=back
+
 =head2 Creating Executable File
 
 C<spvmcc> is the compiler and linker to create the executable file from SPVM source codes.
