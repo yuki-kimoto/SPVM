@@ -1,4 +1,4 @@
-0.9607_01 2022-06-15
+0.9608 2022-06-16
   [CHANGE]
   * Add "--genlib" option to "spvmdist" command.
   * Add "--print-dependent-resources" and "-p" options to "spvmcc" command.
