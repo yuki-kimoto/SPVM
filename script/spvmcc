@@ -32,7 +32,9 @@ else {
     die SPVM::Builder::Util::extract_usage;
   }
   
+  my @original_module_dirs = @module_dirs;
   push @module_dirs, map { "$_/SPVM" } @INC;
+  unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_module_dirs;
 
   my $build_exe = SPVM::Builder::Exe->new(
     build_dir => $build_dir,

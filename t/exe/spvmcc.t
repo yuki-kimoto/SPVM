@@ -26,6 +26,14 @@ rmtree "$build_dir/work";
 {
   mkpath $exe_dir;
 
+  # --print-dependent-resources, -p
+  for my $option ('--print-dependent-resources', '-p'){
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/exe/lib/SPVM -I t/default/lib/SPVM $option MyExe);
+    my @lines = `$spvmcc_cmd`;
+    is($lines[0], '{class_name:"TestCase::NativeAPI2",resource_class_name:"TestCase::Resource::Mylib1::V1_0_0",resource_mode:"mode1",resource_args:["args1","args2"]}' . "\n");
+    is($lines[1], '{class_name:"TestCase::NativeAPI2",resource_class_name:"TestCase::Resource::Mylib2::V1_0_0",resource_mode:undefined,resource_args:[]}' . "\n");
+  }
+  
   # Basic
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe -c t/exe/myexe.config MyExe);
@@ -123,13 +131,6 @@ rmtree "$build_dir/work";
     unlike($myexe_bootstarp_source_content, qr/SPVMPRECOMPILE/);
   }
 
-  # --print-dependent-resources, -p
-  for my $option ('--print-dependent-resources', '-p'){
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/exe/lib/SPVM -c t/exe/myexe.config $option MyExe);
-    my @lines = `$spvmcc_cmd`;
-    is($lines[0], '{class_name:"TestCase::NativeAPI2",resource_class_name:"TestCase::Resource::Mylib1::V1_0_0",resource_mode:"mode1",resource_args:["args1","args2"]}' . "\n");
-    is($lines[1], '{class_name:"TestCase::NativeAPI2",resource_class_name:"TestCase::Resource::Mylib2::V1_0_0",resource_mode:undefined,resource_args:[]}' . "\n");
-  }
 }
 
 # SPVM script
