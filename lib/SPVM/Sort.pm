@@ -72,7 +72,7 @@ SPVM::Sort - Sorting Functions
 
 =head1 DESCRIPTION
 
-C<Sort> provides sorting functions.
+C<Sort> provides sorting functions. The sorting algorithm is a stable merge sort.
 
 =head1 Class Methods
 
@@ -82,7 +82,7 @@ C<Sort> provides sorting functions.
 
 Sort the elements of C<byte> array in-place with the offset, the length, and the L<Comparator::Byte|SPVM::Comparator::Byte> comparator.
 
-The values must be defined.. Otherwise an exception will be thrown.
+The values must be defined. Otherwise an exception will be thrown.
 
 The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -112,7 +112,7 @@ Alias for the following code.
 
 Sort the elements of C<double> array in-place with the offset, the length, and the L<Comparator::Double|SPVM::Comparator::Double> comparator.
 
-The values must be defined.. Otherwise an exception will be thrown.
+The values must be defined. Otherwise an exception will be thrown.
 
 The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -142,7 +142,7 @@ Alias for the following code.
 
 Sort the elements of float array in-place with the offset, the length, and the L<Comparator::Float|SPVM::Comparator::Float> comparator.
 
-The values must be defined.. Otherwise an exception will be thrown.
+The values must be defined. Otherwise an exception will be thrown.
 
 The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -172,7 +172,7 @@ Alias for the following code.
 
 Sort the elements of C<int> array in-place with the offset, the length, and the L<Comparator::Int|SPVM::Comparator::Int> comparator.
 
-The values must be defined.. Otherwise an exception will be thrown.
+The values must be defined. Otherwise an exception will be thrown.
 
 The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -202,7 +202,7 @@ Alias for the following code.
 
 Sort the elements of long array in-place with the offset, the length, and the L<Comparator::Long|SPVM::Comparator::Long> comparator.
 
-The values must be defined.. Otherwise an exception will be thrown.
+The values must be defined. Otherwise an exception will be thrown.
 
 The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -232,7 +232,7 @@ Alias for the following code.
 
 Sort the elements of object array in-place with the offset, the length, and the L<Comparator|SPVM::Comparator> comparator.
 
-The values must be defined.. Otherwise an exception will be thrown.
+The values must be defined. Otherwise an exception will be thrown.
 
 The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -246,7 +246,7 @@ The offset + length must be less than or equal to the length of the values. Othe
 
 Sort the elements of short array in-place with the offset, the length, and the L<Comparator::Short|SPVM::Comparator::Short> comparator.
 
-The values must be defined.. Otherwise an exception will be thrown.
+The values must be defined. Otherwise an exception will be thrown.
 
 The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -276,7 +276,7 @@ Alias for the following code.
 
 Sort the elements of C<string> array in-place with the offset, the length, and the L<Comparator::String|SPVM::Comparator::String> comparator.
 
-The values must be defined.. Otherwise an exception will be thrown.
+The values must be defined. Otherwise an exception will be thrown.
 
 The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
 
