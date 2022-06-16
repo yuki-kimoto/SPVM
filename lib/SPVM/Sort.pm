@@ -78,7 +78,7 @@ C<Sort> provides sorting functions.
 
 =head2 sort_byte
 
-    static method sort_byte : void ($nums : byte[], $offset : int, $length : int, $comparator : Comparator::Byte)
+    static method sort_byte : void ($values : byte[], $offset : int, $length : int, $comparator : Comparator::Byte)
 
 Sort byte array itself with a offset, a length, and a L<Comparator::Byte|SPVM::Comparator::Byte> comparator.
 
@@ -92,7 +92,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
 =head2 sort_double
 
-    static method sort_double : void ($nums : double[], $offset : int, $length : int, $comparator : Comparator::Double)
+    static method sort_double : void ($values : double[], $offset : int, $length : int, $comparator : Comparator::Double)
 
 Sort double array itself with a offset, a length, and a L<Comparator::Double|SPVM::Comparator::Double> comparator.
 
@@ -106,7 +106,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
 =head2 sort_float
 
-    static method static method sort_float : void ($nums : float[], $offset : int, $length : int, $comparator : Comparator::Float)
+    static method static method sort_float : void ($values : float[], $offset : int, $length : int, $comparator : Comparator::Float)
 
 Sort float array itself with a offset, a length, and a L<Comparator::Float|SPVM::Comparator::Float> comparator.
 
@@ -120,7 +120,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
 =head2 sort_int
 
-    static method sort_int : void ($nums : int[], $offset : int, $length : int, $comparator : Comparator::Int)
+    static method sort_int : void ($values : int[], $offset : int, $length : int, $comparator : Comparator::Int)
 
 Sort int array itself with a offset, a length, and a L<Comparator::Int|SPVM::Comparator::Int> comparator.
 
@@ -134,7 +134,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
 =head2 sort_long
 
-    static method sort_long : void ($nums : long[], $offset : int, $length : int, $comparator : Comparator::Long)
+    static method sort_long : void ($values : long[], $offset : int, $length : int, $comparator : Comparator::Long)
 
 Sort long array itself with a offset, a length, and a L<Comparator::Long|SPVM::Comparator::Long> comparator.
 
@@ -162,7 +162,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
 =head2 sort_short
 
-    static method sort_short : void ($nums : short[], $offset : int, $length : int, $comparator : Comparator::Short)
+    static method sort_short : void ($values : short[], $offset : int, $length : int, $comparator : Comparator::Short)
 
 Sort short array itself with a offset, a length, and a L<Comparator::Short|SPVM::Comparator::Short> comparator.
 
@@ -176,7 +176,7 @@ Offset + Length must be in the array range. Otherwise an exception occurs.
 
 =head2 sort_string
 
-    static method sort_string : void ($nums : string[], $offset : int, $length : int, $comparator : Comparator::Double)
+    static method sort_string : void ($values : string[], $offset : int, $length : int, $comparator : Comparator::Double)
 
 Sort string array itself with a offset, a length, and a L<Comparator::String|SPVM::Comparator::String> comparator.
 

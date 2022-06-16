@@ -9,23 +9,23 @@ class Sort {
   use Comparator;
   use Fn;
   
-  static method sort_byte : void ($nums : byte[], $offset : int, $length : int, $comparator : Comparator::Byte) {
-    if ($nums == undef) {
-      die "Array must be not undef";
+  static method sort_byte : void ($values : byte[], $offset : int, $length : int, $comparator : Comparator::Byte) {
+    unless ($values) {
+      die "The values must be defined";
     }
     
-    my $nums_length = @$nums;
-    
-    if ($offset < 0) {
-      die "Offset must be more than or equals to 0";
+    unless ($offset >= 0) {
+      die "The offset must be more than or equal to 0";
     }
     
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
+    unless ($length >= 0) {
+      die "The length must be more than or equal to 0";
     }
     
-    if ($offset + $length > $nums_length) {
-      die "Offset + Length must be in the array range";
+    my $values_length = @$values;
+    
+    unless ($offset + $length <= $values_length) {
+      die "The offset + length must be less than or equal to the length of the values";
     }
     
     if ($length == 0) {
@@ -33,26 +33,26 @@ class Sort {
     }
     
     my $b = new byte[$length];
-    Sort->_sort_byte_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_byte_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
-  static method sort_double : void ($nums : double[], $offset : int, $length : int, $comparator : Comparator::Double) {
-    if ($nums == undef) {
-      die "Array must be not undef";
+  static method sort_double : void ($values : double[], $offset : int, $length : int, $comparator : Comparator::Double) {
+    unless ($values) {
+      die "The values must be defined";
     }
     
-    my $nums_length = @$nums;
-    
-    if ($offset < 0) {
-      die "Offset must be more than or equals to 0";
+    unless ($offset >= 0) {
+      die "The offset must be more than or equal to 0";
     }
     
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
+    unless ($length >= 0) {
+      die "The length must be more than or equal to 0";
     }
     
-    if ($offset + $length > $nums_length) {
-      die "Offset + Length must be in the array range";
+    my $values_length = @$values;
+    
+    unless ($offset + $length <= $values_length) {
+      die "The offset + length must be less than or equal to the length of the values";
     }
     
     if ($length == 0) {
@@ -60,26 +60,26 @@ class Sort {
     }
     
     my $b = new double[$length];
-    Sort->_sort_double_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_double_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
-  static method sort_float : void ($nums : float[], $offset : int, $length : int, $comparator : Comparator::Float) {
-    if ($nums == undef) {
-      die "Array must be not undef";
+  static method sort_float : void ($values : float[], $offset : int, $length : int, $comparator : Comparator::Float) {
+    unless ($values) {
+      die "The values must be defined";
     }
     
-    my $nums_length = @$nums;
-    
-    if ($offset < 0) {
-      die "Offset must be more than or equals to 0";
+    unless ($offset >= 0) {
+      die "The offset must be more than or equal to 0";
     }
     
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
+    unless ($length >= 0) {
+      die "The length must be more than or equal to 0";
     }
     
-    if ($offset + $length > $nums_length) {
-      die "Offset + Length must be in the array range";
+    my $values_length = @$values;
+    
+    unless ($offset + $length <= $values_length) {
+      die "The offset + length must be less than or equal to the length of the values";
     }
     
     if ($length == 0) {
@@ -87,26 +87,26 @@ class Sort {
     }
     
     my $b = new float[$length];
-    Sort->_sort_float_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_float_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_int : void ($nums : int[], $offset : int, $length : int, $comparator : Comparator::Int) {
-    if ($nums == undef) {
-      die "Array must be not undef";
+  static method sort_int : void ($values : int[], $offset : int, $length : int, $comparator : Comparator::Int) {
+    unless ($values) {
+      die "The values must be defined";
     }
     
-    my $nums_length = @$nums;
+    my $values_length = @$values;
     
-    if ($offset < 0) {
-      die "Offset must be more than or equals to 0";
+    unless ($offset >= 0) {
+      die "The offset must be more than or equal to 0";
     }
     
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
+    unless ($length >= 0) {
+      die "The length must be more than or equal to 0";
     }
     
-    if ($offset + $length > $nums_length) {
-      die "Offset + Length must be in the array range";
+    unless ($offset + $length <= $values_length) {
+      die "The offset + length must be less than or equal to the length of the values";
     }
     
     if ($length == 0) {
@@ -114,26 +114,26 @@ class Sort {
     }
     
     my $b = new int[$length];
-    Sort->_sort_int_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_int_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_long : void ($nums : long[], $offset : int, $length : int, $comparator : Comparator::Long) {
-    if ($nums == undef) {
-      die "Array must be not undef";
+  static method sort_long : void ($values : long[], $offset : int, $length : int, $comparator : Comparator::Long) {
+    unless ($values) {
+      die "The values must be defined";
     }
     
-    my $nums_length = @$nums;
-    
-    if ($offset < 0) {
-      die "Offset must be more than or equals to 0";
+    unless ($offset >= 0) {
+      die "The offset must be more than or equal to 0";
     }
     
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
+    unless ($length >= 0) {
+      die "The length must be more than or equal to 0";
     }
     
-    if ($offset + $length > $nums_length) {
-      die "Offset + Length must be in the array range";
+    my $values_length = @$values;
+    
+    unless ($offset + $length <= $values_length) {
+      die "The offset + length must be less than or equal to the length of the values";
     }
     
     if ($length == 0) {
@@ -141,81 +141,77 @@ class Sort {
     }
     
     my $b = new long[$length];
-    Sort->_sort_long_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_long_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_object : void ($objects : object[], $offset : int, $length : int, $comparator : Comparator) {
-    if ($objects == undef) {
-      die "Array must be not undef";
+  static method sort_object : void ($values : object[], $offset : int, $length : int, $comparator : Comparator) {
+    if ($values == undef) {
+      die "The values must be defined";
     }
     
-    my $objects_length = @$objects;
-    
-    if ($offset < 0) {
-      die "Offset must be more than or equals to 0";
+    unless ($offset >= 0) {
+      die "The offset must be more than or equal to 0";
     }
     
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
+    unless ($length >= 0) {
+      die "The length must be more than or equal to 0";
     }
     
-    if ($offset + $length > $objects_length) {
-      die "Offset + Length must be in the array range";
+    my $values_length = @$values;
+    
+    unless ($offset + $length <= $values_length) {
+      die "The offset + length must be less than or equal to the length of the values";
     }
     
-    my $b = Fn->new_array_proto($objects, $length);
+    my $b = Fn->new_array_proto($values, $length);
     
-    Sort->_sort_object_merge_sort($objects, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_object_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
-  static method sort_short : void ($nums : short[], $offset : int, $length : int, $comparator : Comparator::Short) {
-    if ($nums == undef) {
-      die "Array must be not undef";
+  static method sort_short : void ($values : short[], $offset : int, $length : int, $comparator : Comparator::Short) {
+    unless ($values) {
+      die "The values must be defined";
     }
     
-    my $nums_length = @$nums;
-    
-    if ($offset < 0) {
-      die "Offset must be more than or equals to 0";
+    unless ($offset >= 0) {
+      die "The offset must be more than or equal to 0";
     }
     
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
+    unless ($length >= 0) {
+      die "The length must be more than or equal to 0";
     }
     
-    if ($offset + $length > $nums_length) {
-      die "Offset + Length must be in the array range";
-    }
+    my $values_length = @$values;
     
-    if ($length == 0) {
-      return;
+    unless ($offset + $length <= $values_length) {
+      die "The offset + length must be less than or equal to the length of the values";
     }
     
     my $b = new short[$length];
-    Sort->_sort_short_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_short_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
-  static method sort_string : void ($strings : string[], $offset : int, $length : int, $comparator : Comparator::String) {
-    if ($strings == undef) {
-      die "Array must be not undef";
+  static method sort_string : void ($values : string[], $offset : int, $length : int, $comparator : Comparator::String) {
+    if ($values == undef) {
+      die "The values must be defined";
     }
     
-    my $strings_length = @$strings;
-    
-    if ($offset < 0) {
-      die "Offset must be more than or equals to 0";
+    unless ($offset >= 0) {
+      die "The offset must be more than or equal to 0";
     }
     
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
+    unless ($length >= 0) {
+      die "The length must be more than or equal to 0";
     }
     
-    if ($offset + $length > $strings_length) {
-      die "Offset + Length must be in the array range";
+    my $values_length = @$values;
+    
+    unless ($offset + $length <= $values_length) {
+      die "The offset + length must be less than or equal to the length of the values";
     }
     
     my $b = new string[$length];
-    Sort->_sort_string_merge_sort($strings, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_string_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   precompile private static method _sort_byte_merge : void($a : byte[], $b : byte[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Byte) {
     my $i = $left;

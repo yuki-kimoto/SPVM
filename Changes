@@ -5,6 +5,7 @@
   * Improve Changes of spvmdist command.
   * Improve Time doucment.
   * Add Sort class.
+  * Improve exception messages of Sort class.
   
   [NON BACKWORD COMPATIBLE CHANGES]
   * The following methods are moved from Fn class to Sort class.
