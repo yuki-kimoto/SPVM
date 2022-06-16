@@ -7,6 +7,98 @@ class Time {
   native static method gmtime : Time::Info ($time : long);
   
   native static method timelocal : long ($time_info : Time::Info);
-  native static method timegm : long ($time_info : Time::Info);
+  static method timegm : long ($time_info : Time::Info) {
+      
+    my $sec = $time_info->sec;
+    my $min = $time_info->min;
+    my $hour = $time_info->hour;
+    my $mday = $time_info->mday;
+    my $month = $time_info->mon;
+    my $year = $time_info->year;
+    
+    if ($month > 11 || $month < 0) {
+      die "Month '$month' out of range 0..11";
+    }
+    
+    my $monthDays = Time->_MonthDays();
+
+    my $md = $monthDays->[$month];
+    if ($month == 1 && Time->_is_leap_year( $year + 1900 )) {
+      ++$md;
+    }
+
+    if ($mday > $md || $mday < 1) {
+      die "Day '$mday' out of range 1..$md";
+    }
+    if ($hour > 23 || $hour < 0) {
+      die "Hour '$hour' out of range 0..23";
+    }
+    if ($min > 59 || $min < 0) {
+      die "Minute '$min' out of range 0..59";
+    }
+    
+    if ($sec >= 60 || $sec < 0) {
+      die "Second '$sec' out of range 0..59";
+    }
+    
+    my $epoc_time_info = Time->gmtime(0);
+    my $epoc_days = Time->_daygm($epoc_time_info->mday, $epoc_time_info->mon, $epoc_time_info->year);
+    my $days = Time->_daygm($mday, $month, $year) - $epoc_days + 1;
+    
+    my $maxDay = 365 * Fn->powl(2, 31);
+    
+    unless (Fn->labs($days) < $maxDay) {
+      my $msg = "";
+      if ($days > $maxDay) {
+        $msg .= "Day too big - $days > $maxDay\n";
+      }
+
+      $msg .= "Cannot handle date ($sec, $min, $hour, $mday, $month, $year)";
+
+      die $msg;
+    }
+
+    return $sec
+        + ( Time->SECS_PER_MINUTE() * $min )
+        + ( Time->SECS_PER_HOUR() * $hour )
+        + ( Time->SECS_PER_DAY() * $days );
+  }
+
+  private static method SECS_PER_MINUTE : int () { return 60; }
+  private static method SECS_PER_HOUR : int () { return 3600; }
+  private static method SECS_PER_DAY : int () { return 86400; }
+
+  private static method _MonthDays : int[] () {
+    return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  }
+  
+  private static method _is_leap_year : int ($year : int) {
+    if ($year % 4) {
+      return 0;
+    }
+    
+    if ($year % 100) {
+      return 1;
+    }
+    
+    if ($year % 400) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  private static method _daygm : long ($mday : int, $month : int, $year : int) {
+   
+    my $shift : long;
+    {
+      my $month = ( $month + 10 ) % 12;
+      my $year  = $year - ($month / 10);
+
+      $shift = ( ( 365 * $year ) + ( $year / 4 ) - ( $year / 100 ) + ( $year / 400 ) + ( ( ( $month * 306 ) + 5 ) / 10 ) ) ;
+    }
+    
+    return $mday + $shift;
+  }
 }
 
