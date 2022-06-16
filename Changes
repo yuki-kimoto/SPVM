@@ -21,6 +21,7 @@
     sort_short_desc
     sort_string_asc
     sort_string_desc
+  * Time->timegm is implemented using timegm on UNIX/Linux or _mkgmtime on Windows.
   
   [NON BACKWORD COMPATIBLE CHANGES]
   * The following methods are moved from Fn class to Sort class.
