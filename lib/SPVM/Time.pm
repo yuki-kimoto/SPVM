@@ -4,107 +4,79 @@ package SPVM::Time;
 
 =head1 NAME
 
-SPVM::Time - Time manipulation
+SPVM::Time - Time Manipulation
 
 =head1 SYNOPSYS
   
   use Time;
   
-  # Get Current Epoch time
-  my $time = Time->time;
+  # Get the current epoch time
+  my $epoch = Time->time;
   
-  # Get Local time information
-  my $time_info = Time->localtime(Time->time);
+  # Convert a epoch time to the Time::Info object that is local time
+  my $time_info_local = Time->localtime($epoch);
   
-  # Get GMT time information
-  my $time_info = Time->gmtime(Time->time);
+  # Convert a epoch time to the Time::Info object that is UTC
+  my $time_info_utc = Time->gmtime($epoch);
   
-  # Convert Time::Info to which is local time zone to calender time as same as time method format.
-  my $time = Time->timelocal($time_info);
+  # Convert a Time::Info object that is local time to the epoch time
+  my $epoch = Time->timelocal($time_info_local);
   
-  # Convert Time::Info which is the standard Greenwich time zone to calender time as same as time method format.
-  my $time = Time->timegm($time_info);
+  # Convert a Time::Info object that is UTC to the epoch time
+  my $epoch = Time->timegm($time_info_utc);
 
 =head1 DESCRIPTION
 
-Time manipulation.
+C<Time> is a module to manipulate time.
 
 =head1 CLASS METHODS
 
 =head2 time
 
-  static method time : long ();
+  static method time : long ()
 
-Returns the number of non-leap seconds since whatever time the system considers
-to be the epoch, suitable for feeding to "gmtime" and "localtime".
-On most systems the epoch is 00:00:00 UTC, January 1, 1970;
+Get the current epoch time. 
 
-Example:
+This method is the same as C<time> function of C<Linux>.
 
-  my $time = Time->time;
+  my $epoch = Time->time;
 
 =head2 localtime
 
   static method localtime : Time::Info ($time : long)
 
-Converts a time as returned by the time method to a L<Time::Info|SPVM::Time::Info> object
-with the time analyzed for the local time zone.
+Convert an epoch time to the L<Time::Info|SPVM::Time::Info> object that is local time.
 
-Example:
+This method is the same as C<localtime> function of C<Linux>.
 
-  my $time_info = Time->localtime(Time->time);
-
-"mday" is the day of the month and "mon" the month in the range
-0..11, with 0 indicating January and 11 indicating December.
-
-"year" contains the number of years since 1900. To get a 4-digit
-year write:
-
-    my $year = $time_info->year + 1900;
-
-"wday" is the day of the week, with 0 indicating Sunday and 3
-indicating Wednesday. "yday" is the day of the year, in the range
-0..364 (or 0..365 in leap years.)
-
-"isdst" is true if the specified time occurs during Daylight Saving
-Time, false otherwise.
-
-If you get current time information, pass return value of "time" method.
-
-  my $time_info = Time->localtime(Time->time)
-
-See also the "timelocal" method. (for converting seconds,
-minutes, hours, and such back to the integer value returned by
-time()).
+  my $time_info = Time->localtime($epoch);
 
 =head2 gmtime
 
   static method gmtime : Time::Info ($time : long)
 
-Works just like "localtime" but the returned values are localized
-for the standard Greenwich time zone.
+Convert an epoch time to the L<Time::Info|SPVM::Time::Info> object that is C<UTC>.
 
-See also the "timegm" method. (for converting seconds,
-minutes, hours, and such back to the integer value returned by
-time()).
+This method is the same as C<gmtime> function of C<Linux>.
+
+  my $time_info = Time->gmtime($epoch);
 
 =head2 timelocal
 
   static method timelocal : long ($time_info : Time::Info)
 
-timelocal method convert L<Time::Info|SPVM::Time::Info> which is local time zone to calender time as same as time method format.
+Convert a L<Time::Info|SPVM::Time::Info> object that is local time to the epoch time.
 
-wday and yday is ignored.
+This method is the same as C<timelocal> function of C<Linux>.
 
-  my $time = Time->timelocal($time_info);
+  my $epoch = Time::Local->timelocal($time_info);
 
 =head2 timegm
 
   static method timegm : long ($time_info : Time::Info)
 
-timegm method convert L<Time::Info|SPVM::Time::Info> which is the standard Greenwich time zone to calender time as same as time method format.
+Convert a L<Time::Info|SPVM::Time::Info> object that is C<UTC> to the epoch time.
 
-wday and yday is ignored.
+This method is the same as C<timegm> function of C<Linux>.
 
-  my $time = Time->timegm($time_info);
-
+  my $epoch = Time::Local->timegm($time_info);
