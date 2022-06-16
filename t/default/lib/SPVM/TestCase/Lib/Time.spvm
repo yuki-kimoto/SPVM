@@ -1,25 +1,36 @@
 class TestCase::Lib::Time {
   use Time;
+  use Time::Info;
   
-  static method test_time : long () {
+  static method time_info : int () {
+    my $time_info = Time::Info->new;
+    
+    unless ($time_info isa Time::Info) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method time : long () {
     my $time = Time->time;
     
     return $time;
   }
 
-  static method test_localtime : Time::Info ($time : long) {
+  static method localtime : Time::Info ($time : long) {
     my $time_info = Time->localtime($time);
     
     return $time_info;
   }
 
-  static method test_gmtime : Time::Info ($time : long) {
+  static method gmtime : Time::Info ($time : long) {
     my $time_info = Time->gmtime($time);
     
     return $time_info;
   }
 
-  static method test_timelocal : int () {
+  static method timelocal : int () {
     {
       my $time = Time->time();
       
@@ -38,7 +49,7 @@ class TestCase::Lib::Time {
     return 1;
   }
 
-  static method test_timegm : int () {
+  static method timegm : int () {
     {
       my $time = Time->time();
       

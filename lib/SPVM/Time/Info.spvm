@@ -1,16 +1,26 @@
-class Time::Info {
+class Time::Info : pointer_t {
   
-  has sec : rw int;
-  has min : rw int;
-  has hour : rw int;
-  has mday : rw int;
-  has mon : rw int;
-  has year : rw int;
-  has wday : rw int;
-  has yday : rw int;
-  has isdst : rw int;
+  native static method new : Time::Info ();
 
-  static method new : Time::Info () {
-    return new Time::Info;
-  }
+  native method DESTROY : void ();
+  
+  native method sec : int ();
+  native method min : int ();
+  native method hour : int ();
+  native method mday : int ();
+  native method mon : int ();
+  native method year : int ();
+  native method wday : int ();
+  native method yday : int ();
+  native method isdst : int ();
+
+  native method set_sec : int ($sec : int);
+  native method set_min : int ($min : int);
+  native method set_hour : int ($hour : int);
+  native method set_mday : int ($mday : int);
+  native method set_mon : int ($mon : int);
+  native method set_year : int ($year : int);
+  native method set_wday : int ($wday : int);
+  native method set_yday : int ($yday : int);
+  native method set_isdst : int ($isdst : int);
 }

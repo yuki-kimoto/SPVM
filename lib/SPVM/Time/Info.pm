@@ -51,7 +51,7 @@ SPVM::Time::Info - Time information
 
 =head1 DESCRIPTION
 
-Time information
+C<Time::Info> is the time information that date structure is C<struct tm> of C<C language>.
 
 =head1 CLASS METHODS
 
@@ -69,7 +69,7 @@ Create a new L<Time::Info|SPVM::Time::Info> object.
 
   method sec : int ()
 
-Get second.
+Get second. This is same as getting C<tm_sec> of C<struct tm>.
 
   my $sec = $time_info->sec;
 
@@ -77,7 +77,7 @@ Get second.
 
   method set_sec : void ($sec : int)
 
-Set second.
+Set second. This is same as setting C<tm_sec> of C<struct tm>.
 
   $time_info->set_sec(12);
 
@@ -85,7 +85,7 @@ Set second.
   
   method min : int ()
 
-Get minutes.
+Get minutes. This is same as getting C<tm_min> of C<struct tm>.
 
   my $min = $time_info->min;
 
@@ -93,23 +93,23 @@ Get minutes.
 
   method set_min : void ($min : int)
 
-Set minutes.
+Set minutes. This is same as setting C<tm_min> of C<struct tm>.
 
   $time_info->set_min(34);
 
 =head2 hour
 
-  method min : int ()
+  method hour : int ()
 
-Get hour.
+Get hour. This is same as getting C<tm_hour> of C<struct tm>.
 
   my $hour = $time_info->hour;
 
 =head2 set_hour
 
-  method set_min : void ($min : int)
+  method set_hour : void ($hour : int)
 
-Set hour.
+Set hour. This is same as setting C<tm_hour> of C<struct tm>.
 
   $time_info->set_hour(12);
 
@@ -117,7 +117,7 @@ Set hour.
 
   method mday : int ()
 
-Get day of month.
+Get day of month. This is same as getting C<tm_mday> of C<struct tm>.
 
   my $mday = $time_info->mday;
 
@@ -125,7 +125,7 @@ Get day of month.
 
   method set_mday : void ($mday : int)
 
-Set day of month.
+Set day of month. This is same as setting C<tm_mday> of C<struct tm>.
 
   $time_info->set_mday(4);
 
@@ -133,7 +133,7 @@ Set day of month.
 
   method mon : int ()
 
-Get month.
+Get month. This is same as getting C<tm_mon> of C<struct tm>.
 
   my $mon = $time_info->mon;
 
@@ -141,7 +141,7 @@ Get month.
 
   method set_mon : void ($mon : int)
 
-Set month.
+Set month. This is same as setting C<tm_mon> of C<struct tm>.
 
   $time_info->set_mon(3);
 
@@ -149,7 +149,7 @@ Set month.
 
   method year : int ()
 
-Get year.
+Get year. This is same as getting C<tm_year> of C<struct tm>.
 
   my $year = $time_info->year;
 
@@ -157,7 +157,7 @@ Get year.
 
   method set_year : void ($year : int)
 
-Set year.
+Set year. This is same as setting C<tm_year> of C<struct tm>.
 
   $time_info->set_year(1);
 
@@ -165,7 +165,7 @@ Set year.
 
   method wday : int ()
 
-Get weekday.
+Get weekday. This is same as getting C<tm_wday> of C<struct tm>.
 
   my $wday = $time_info->wday;
 
@@ -173,15 +173,15 @@ Get weekday.
 
   method set_wday : void ($wday : int)
 
-Set weekday.
+Set weekday. This is same as setting C<tm_wday> of C<struct tm>.
 
   $time_info->set_wday(12);
 
 =head2 yday
 
-  method wday : int ()
+  method yday : int ()
 
-Get day of year.
+Get day of year. This is same as getting C<tm_yday> of C<struct tm>.
 
   my $yday = $time_info->yday;
 
@@ -189,7 +189,7 @@ Get day of year.
 
   method set_wday : void ($wday : int)
 
-Set day of year.
+Set day of year. This is same as setting C<tm_yday> of C<struct tm>.
 
   $time_info->set_yday(234);
 
@@ -197,7 +197,7 @@ Set day of year.
 
   method isdst : int ()
 
-Set the value if the specified time occurs during Daylight Saving Time
+Get the flag whether the time is daylight saving time. This is same as getting C<tm_yday> of C<struct tm>.
 
   my $isdst = $time_info->isdst;
 
@@ -205,6 +205,6 @@ Set the value if the specified time occurs during Daylight Saving Time
 
   method set_isdst : void ($isdst : int)
 
-Get the value if the specified time occurs during Daylight Saving Time.
+Set the flag whether the time is daylight saving time.  This is same as getting C<tm_isdst> of C<struct tm>.
 
   $time_info->set_isdst(1);
