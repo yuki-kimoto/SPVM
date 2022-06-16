@@ -4,6 +4,19 @@
   * Improve Time::Info document.
   * Improve Changes of spvmdist command.
   * Improve Time doucment.
+  * Add Sort class.
+  
+  [NON BACKWORD COMPATIBLE CHANGES]
+  * The following methods are moved from Fn class to Sort class.
+    sort_byte
+    sort_double
+    sort_float
+    sort_int
+    sort_long
+    sort_object
+    sort_short
+    sort_string
+
 0.9608 2022-06-16
   [CHANGE]
   * Add "--genlib" option to "spvmdist" command.

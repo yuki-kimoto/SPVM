@@ -426,18 +426,6 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Lib::Fn2->new_array_proto);
 }
 
-# sort
-{
-  ok(SPVM::TestCase::Lib::Fn1->sort_byte);
-  ok(SPVM::TestCase::Lib::Fn1->sort_short);
-  ok(SPVM::TestCase::Lib::Fn1->sort_int);
-  ok(SPVM::TestCase::Lib::Fn1->sort_long);
-  ok(SPVM::TestCase::Lib::Fn1->sort_float);
-  ok(SPVM::TestCase::Lib::Fn1->sort_double);
-  ok(SPVM::TestCase::Lib::Fn1->sort_string);
-  ok(SPVM::TestCase::Lib::Fn1->sort_object);
-}
-
 # is_array
 {
   ok(SPVM::TestCase::Lib::Fn3->is_array);

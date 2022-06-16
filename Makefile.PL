@@ -152,6 +152,7 @@ sub MY::postamble {
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Hash');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Time');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Time::Info');
+  $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Sort');
   
   # Precompile make rule
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn');
@@ -165,6 +166,7 @@ sub MY::postamble {
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('StringList');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('StringBuffer');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Hash');
+  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Sort');
   
   # Create precompile tests
   {
