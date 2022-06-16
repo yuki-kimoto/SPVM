@@ -200,6 +200,7 @@ lib/SPVM/Document/NativeAPI/Precompile.pm
 lib/SPVM/Document/NativeAPI/Runtime.pm
 lib/SPVM/Document/NativeAPI/StringBuffer.pm
 lib/SPVM/Document/NativeModule.pm
+lib/SPVM/Document/Resource.pm
 lib/SPVM/Document/Tutorial.pm
 lib/SPVM/Document/Tutorial/Complex.pm
 lib/SPVM/Double.pm
@@ -248,6 +249,8 @@ lib/SPVM/Time.c
 lib/SPVM/Time.config
 lib/SPVM/Time.pm
 lib/SPVM/Time.spvm
+lib/SPVM/Time/Info.c
+lib/SPVM/Time/Info.config
 lib/SPVM/Time/Info.pm
 lib/SPVM/Time/Info.spvm
 Makefile.PL
