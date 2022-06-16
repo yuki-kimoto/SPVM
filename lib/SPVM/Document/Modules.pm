@@ -2,11 +2,11 @@
 
 SPVM::Document::Modules - SPVM Standard Modules
 
-=head1 DESCRIPTION
+=head1 Description
 
 The list of SPVM Standard Modules.
 
-=head1 STANDARD MODULES
+=head1 Standard Modules
 
 =over 2
 
@@ -84,7 +84,7 @@ The list of SPVM Standard Modules.
 
 =back
 
-=head1 CPAN MODULES
+=head1 CPAN Modules
 
 The list of some CPAN modules.
 
@@ -98,4 +98,10 @@ The list of some CPAN modules.
 
 =item * L<Unicode|SPVM::Unicode> - Unicode Utilities
 
+=item * L<Base64|SPVM::Base64> - Base 64
+
 =back
+
+=head2 Resource Modules
+
+See L<SPVM::Document::Resource|/"Resource Modules">.
