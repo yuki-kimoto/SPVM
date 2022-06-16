@@ -9,6 +9,12 @@ class Sort {
   use Comparator;
   use Fn;
   
+  static method sort_byte_asc : void ($values : byte[], $offset : int, $length : int) {
+    &sort_byte($values, $offset, $length, method : int ($a : byte, $b : byte) { return $a <=> $b; });
+  }
+  static method sort_byte_desc : void ($values : byte[], $offset : int, $length : int) {
+    &sort_byte($values, $offset, $length, method : int ($a : byte, $b : byte) { return $b <=> $a; });
+  }
   static method sort_byte : void ($values : byte[], $offset : int, $length : int, $comparator : Comparator::Byte) {
     unless ($values) {
       die "The values must be defined";
@@ -36,6 +42,12 @@ class Sort {
     Sort->_sort_byte_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
+  static method sort_double_asc : void ($values : double[], $offset : int, $length : int) {
+    &sort_double($values, $offset, $length, method : int ($a : double, $b : double) { return $a <=> $b; });
+  }
+  static method sort_double_desc : void ($values : double[], $offset : int, $length : int) {
+    &sort_double($values, $offset, $length, method : int ($a : double, $b : double) { return $b <=> $a; });
+  }
   static method sort_double : void ($values : double[], $offset : int, $length : int, $comparator : Comparator::Double) {
     unless ($values) {
       die "The values must be defined";
@@ -63,6 +75,12 @@ class Sort {
     Sort->_sort_double_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
+  static method sort_float_asc : void ($values : float[], $offset : int, $length : int) {
+    &sort_float($values, $offset, $length, method : int ($a : float, $b : float) { return $a <=> $b; });
+  }
+  static method sort_float_desc : void ($values : float[], $offset : int, $length : int) {
+    &sort_float($values, $offset, $length, method : int ($a : float, $b : float) { return $b <=> $a; });
+  }
   static method sort_float : void ($values : float[], $offset : int, $length : int, $comparator : Comparator::Float) {
     unless ($values) {
       die "The values must be defined";
@@ -90,6 +108,12 @@ class Sort {
     Sort->_sort_float_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
+  static method sort_int_asc : void ($values : int[], $offset : int, $length : int) {
+    &sort_int($values, $offset, $length, method : int ($a : int, $b : int) { return $a <=> $b; });
+  }
+  static method sort_int_desc : void ($values : int[], $offset : int, $length : int) {
+    &sort_int($values, $offset, $length, method : int ($a : int, $b : int) { return $b <=> $a; });
+  }
   static method sort_int : void ($values : int[], $offset : int, $length : int, $comparator : Comparator::Int) {
     unless ($values) {
       die "The values must be defined";
@@ -117,6 +141,12 @@ class Sort {
     Sort->_sort_int_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
+  static method sort_long_asc : void ($values : long[], $offset : int, $length : int) {
+    &sort_long($values, $offset, $length, method : int ($a : long, $b : long) { return $a <=> $b; });
+  }
+  static method sort_long_desc : void ($values : long[], $offset : int, $length : int) {
+    &sort_long($values, $offset, $length, method : int ($a : long, $b : long) { return $b <=> $a; });
+  }
   static method sort_long : void ($values : long[], $offset : int, $length : int, $comparator : Comparator::Long) {
     unless ($values) {
       die "The values must be defined";
@@ -172,6 +202,12 @@ class Sort {
     Sort->_sort_object_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
+  static method sort_short_asc : void ($values : short[], $offset : int, $length : int) {
+    &sort_short($values, $offset, $length, method : int ($a : short, $b : short) { return $a <=> $b; });
+  }
+  static method sort_short_desc : void ($values : short[], $offset : int, $length : int) {
+    &sort_short($values, $offset, $length, method : int ($a : short, $b : short) { return $b <=> $a; });
+  }
   static method sort_short : void ($values : short[], $offset : int, $length : int, $comparator : Comparator::Short) {
     unless ($values) {
       die "The values must be defined";
@@ -199,6 +235,12 @@ class Sort {
     Sort->_sort_short_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
+  static method sort_string_asc : void ($values : string[], $offset : int, $length : int) {
+    &sort_string($values, $offset, $length, method : int ($a : string, $b : string) { return $a cmp $b; });
+  }
+  static method sort_string_desc : void ($values : string[], $offset : int, $length : int) {
+    &sort_string($values, $offset, $length, method : int ($a : string, $b : string) { return $b cmp $a; });
+  }
   static method sort_string : void ($values : string[], $offset : int, $length : int, $comparator : Comparator::String) {
     if ($values == undef) {
       die "The values must be defined";

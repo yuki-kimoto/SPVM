@@ -6,6 +6,21 @@
   * Improve Time doucment.
   * Add Sort class.
   * Improve exception messages of Sort class.
+  * Add the following method to Sort class
+    sort_byte_asc
+    sort_byte_desc
+    sort_double_asc
+    sort_double_desc
+    sort_float
+    sort_float_asc
+    sort_int_asc
+    sort_int_desc
+    sort_long_asc
+    sort_long_desc
+    sort_short_asc
+    sort_short_desc
+    sort_string_asc
+    sort_string_desc
   
   [NON BACKWORD COMPATIBLE CHANGES]
   * The following methods are moved from Fn class to Sort class.
