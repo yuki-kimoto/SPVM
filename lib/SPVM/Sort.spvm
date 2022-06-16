@@ -163,6 +163,10 @@ class Sort {
       die "The offset + length must be less than or equal to the length of the values";
     }
     
+    if ($length == 0) {
+      return;
+    }
+    
     my $b = Fn->new_array_proto($values, $length);
     
     Sort->_sort_object_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
@@ -186,6 +190,10 @@ class Sort {
     unless ($offset + $length <= $values_length) {
       die "The offset + length must be less than or equal to the length of the values";
     }
+
+    if ($length == 0) {
+      return;
+    }
     
     my $b = new short[$length];
     Sort->_sort_short_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
@@ -208,6 +216,10 @@ class Sort {
     
     unless ($offset + $length <= $values_length) {
       die "The offset + length must be less than or equal to the length of the values";
+    }
+
+    if ($length == 0) {
+      return;
     }
     
     my $b = new string[$length];
