@@ -1,5 +1,6 @@
 0.9608_01 2022-06-16
-  
+  [CHANGE]
+  * Improve error messages of compilation.
 0.9608 2022-06-16
   [CHANGE]
   * Add "--genlib" option to "spvmdist" command.

@@ -351,6 +351,14 @@ sub print_error_messages {
       compile_not_ok($source, qr|The class name "Tmp::::Foo" can't contains "::::"|);
     }
   }
+
+  # Class descriptor
+  {
+    {
+      my $source = 'class Tmp : pointer_t { has x : int; }';
+      compile_not_ok($source, qr|The class that has "pointer_t" descriptor can't have its fields|);
+    }
+  }
 }
 
 # Method

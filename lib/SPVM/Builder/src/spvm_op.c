@@ -2146,7 +2146,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
 
       if (class->is_pointer) {
-        SPVM_COMPILER_error(compiler, "class which has pointer_t descriptor can't have fields at %s line %d", field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "The class that has \"pointer_t\" descriptor can't have its fields at %s line %d", field->op_field->file, field->op_field->line);
         continue;
       }
 
