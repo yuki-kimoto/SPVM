@@ -2,6 +2,7 @@
   [CHANGE]
   * Improve error messages of compilation.
   * Improve Time::Info document.
+  * Improve Changes of spvmdist command
 0.9608 2022-06-16
   [CHANGE]
   * Add "--genlib" option to "spvmdist" command.
