@@ -2242,7 +2242,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_OBJECT != 14) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT != 15) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT != 16) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT != 17) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_ID_TYPE_CONVERSION_CONDITINAL_OBJECT != 17) { stack[0].ival = 0; return 0; }
   }
 
   // Constant Values of Basic Type Categories

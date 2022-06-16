@@ -2045,7 +2045,7 @@ L<SPVM::Document::NativeAPI::Allocator>
   14 SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_OBJECT
   15 SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT
   16 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT
-  17 SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT
+  17 SPVM_NATIVE_C_BASIC_TYPE_ID_TYPE_CONVERSION_CONDITINAL_OBJECT
 
 These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 
@@ -2117,7 +2117,7 @@ The basic type ID of L<Float|SPVM::Float> type.
 
 The basic type ID of L<Double|SPVM::Double> type.
 
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_TYPE_CONVERSION_CONDITINAL_OBJECT
 
 The basic type ID of L<BOOL|SPVM::BOOL> type.
 

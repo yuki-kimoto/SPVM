@@ -323,7 +323,7 @@ SPVM_TYPE* SPVM_TYPE_new_double_object_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_new_bool_object_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_TYPE_CONVERSION_CONDITINAL_OBJECT);
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
@@ -589,7 +589,7 @@ int32_t SPVM_TYPE_is_double_object_type(SPVM_COMPILER* compiler, int32_t basic_t
 int32_t SPVM_TYPE_is_bool_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_TYPE_CONVERSION_CONDITINAL_OBJECT) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
