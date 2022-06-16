@@ -237,6 +237,8 @@ lib/SPVM/Point.spvm
 lib/SPVM/Short.pm
 lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm
+lib/SPVM/Sort.pm
+lib/SPVM/Sort.spvm
 lib/SPVM/Stringable.pm
 lib/SPVM/Stringable.spvm
 lib/SPVM/StringBuffer.pm
@@ -541,6 +543,7 @@ t/default/lib/SPVM/TestCase/Lib/Long.spvm
 t/default/lib/SPVM/TestCase/Lib/LongList.spvm
 t/default/lib/SPVM/TestCase/Lib/Short.spvm
 t/default/lib/SPVM/TestCase/Lib/ShortList.spvm
+t/default/lib/SPVM/TestCase/Lib/Sort.spvm
 t/default/lib/SPVM/TestCase/Lib/StringBuffer.spvm
 t/default/lib/SPVM/TestCase/Lib/StringList.spvm
 t/default/lib/SPVM/TestCase/Lib/Time.spvm
@@ -692,6 +695,7 @@ t/default/SPVM_LongList.t
 t/default/SPVM_Point.t
 t/default/SPVM_Short.t
 t/default/SPVM_ShortList.t
+t/default/SPVM_Sort.t
 t/default/SPVM_StringBuffer.t
 t/default/SPVM_StringList.t
 t/default/SPVM_Time.t
