@@ -1234,6 +1234,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
   
   int32_t exception_flag = 0;
+  env->set_errno(env, -1);
   
   // Call native method
   if (method->is_native) {

@@ -3,6 +3,9 @@ class TestCase::Errno {
     
     {
       my $errno = errno;
+      unless ($errno == -1) {
+        return 0;
+      }
       
       set_errno $errno;
     }
