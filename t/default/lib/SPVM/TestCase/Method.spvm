@@ -10,6 +10,7 @@ class TestCase::Method {
   use TestCase::Simple as TS;
   use Complex_2d;
   use Fn;
+  use Array;
 
   # Use keyword name as method name
   static method int : int () {

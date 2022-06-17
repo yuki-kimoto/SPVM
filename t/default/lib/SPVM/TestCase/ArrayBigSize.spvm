@@ -1,6 +1,7 @@
 class TestCase::ArrayBigSize {
   use TestCase::Minimal;
   use Fn;
+  use Array;
   
   our $BIG_INDEX : int;
   INIT {

@@ -1,3 +1,4 @@
 class TestCase::CompileError::Class::NotClosed {
   use Fn;
+  use Array;
 

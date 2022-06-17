@@ -1,5 +1,6 @@
 class TestCase::UnaryPlus {
   use Fn;
+  use Array;
   
   static method unary_plus_byte : int () {
     my $value = +(byte)Fn->INT8_MAX();

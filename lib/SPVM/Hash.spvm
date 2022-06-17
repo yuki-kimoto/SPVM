@@ -1,6 +1,7 @@
 class Hash {
   use Hash::Entry;
   use Fn;
+  use Array;
 
   has bucket_count : int;
   has count : ro int;

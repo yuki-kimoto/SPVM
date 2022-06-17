@@ -8,6 +8,7 @@ class Sort {
   use Comparator::String;
   use Comparator;
   use Fn;
+  use Array;
   
   static method sort_byte_asc : void ($values : byte[], $offset : int, $length : int) {
     &sort_byte($values, $offset, $length, method : int ($a : byte, $b : byte) { return $a <=> $b; });
@@ -197,7 +198,7 @@ class Sort {
       return;
     }
     
-    my $b = Fn->new_array_proto($values, $length);
+    my $b = Array->new_proto($values, $length);
     
     Sort->_sort_object_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }

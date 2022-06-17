@@ -1,5 +1,6 @@
 class TestCase::Remainder {
   use Fn;
+  use Array;
   
   #
   # Spec tests

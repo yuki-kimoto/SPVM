@@ -8,6 +8,7 @@ class TestCase::SpecialAssign {
   use TestCase::Point_3f;
   use TestCase::Point_3d;
   use Fn;
+  use Array;
   
   our $BYTE_VALUE : byte;
   our $SHORT_VALUE : short;

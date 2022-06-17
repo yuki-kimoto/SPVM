@@ -2,6 +2,7 @@ class TestCase::Lib::List {
   use Int;
   use List;
   use Fn;
+  use Array;
   use EqualityChecker::SameObject;
   
   static method new : int () {
@@ -47,7 +48,7 @@ class TestCase::Lib::List {
       
       my $list = List->new([(object)$x1, $x2, $x3]);
       $list->insert(0 => $x4);
-      unless (Fn->equals_array_object($list->to_array, [$x4, $x1, $x2, $x3], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object($list->to_array, [$x4, $x1, $x2, $x3], EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -61,7 +62,7 @@ class TestCase::Lib::List {
       
       my $list = List->new([(object)$x1, $x2, $x3]);
       $list->insert(2 => $x4);
-      unless (Fn->equals_array_object($list->to_array, [$x1, $x2, $x4, $x3], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object($list->to_array, [$x1, $x2, $x4, $x3], EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -75,7 +76,7 @@ class TestCase::Lib::List {
       
       my $list = List->new([(object)$x1, $x2, $x3]);
       $list->insert(3 => $x4);
-      unless (Fn->equals_array_object($list->to_array, [$x1, $x2, $x3, $x4], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object($list->to_array, [$x1, $x2, $x3, $x4], EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -124,7 +125,7 @@ class TestCase::Lib::List {
       
       my $list = List->new([(object)$x1, $x2, $x3, $x4]);
       my $value = $list->remove(1);
-      unless (Fn->equals_array_object($list->to_array, [$x1, $x3, $x4], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object($list->to_array, [$x1, $x3, $x4], EqualityChecker::SameObject->new)) {
         return 0;
       }
       unless ($value == $x2) {
@@ -141,7 +142,7 @@ class TestCase::Lib::List {
       
       my $list = List->new([(object)$x1, $x2, $x3]);
       $list->remove(2);
-      unless (Fn->equals_array_object($list->to_array, [$x1, $x2], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object($list->to_array, [$x1, $x2], EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -155,7 +156,7 @@ class TestCase::Lib::List {
 
       my $list = List->new([(object)$x1, $x2, $x3]);
       $list->remove(0);
-      unless (Fn->equals_array_object($list->to_array, [$x2, $x3], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object($list->to_array, [$x2, $x3], EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -373,7 +374,7 @@ class TestCase::Lib::List {
     {
       my $list = List->new(["1", "2", "3"]);
       $list->set_array(["3", "4", "5"]);
-      unless (Fn->equals_array_string((string[])$list->to_array, ["3", "4", "5"])) {
+      unless (Array->equals_string((string[])$list->to_array, ["3", "4", "5"])) {
         return 0;
       }
     }

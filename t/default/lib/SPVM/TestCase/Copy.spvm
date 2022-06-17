@@ -1,5 +1,6 @@
 class TestCase::Copy {
   use Fn;
+  use Array;
   use Complex_2d;
   use TestCase::Minimal;
   
@@ -61,7 +62,7 @@ class TestCase::Copy {
           return 0;
         }
         
-        unless (Fn->equals_array_byte($nums_copy, $nums)) {
+        unless (Array->equals_byte($nums_copy, $nums)) {
           return 0;
         }
       }
@@ -79,7 +80,7 @@ class TestCase::Copy {
           return 0;
         }
         
-        unless (Fn->equals_array_double($nums_copy, $nums)) {
+        unless (Array->equals_double($nums_copy, $nums)) {
           return 0;
         }
       }

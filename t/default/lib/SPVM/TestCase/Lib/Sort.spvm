@@ -1,6 +1,7 @@
 class TestCase::Lib::Sort {
   use Sort;
   use Fn;
+  use Array;
   use TestCase::Minimal;
   
   static method sort_byte : int () {
@@ -12,7 +13,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_byte($nums, [(byte)1, 2, 3])) {
+      unless (Array->equals_byte($nums, [(byte)1, 2, 3])) {
         return 0;
       }
     }
@@ -23,7 +24,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_byte_asc($nums, 0, scalar @$nums);
       
-      unless (Fn->equals_array_byte($nums, [(byte)1, 2, 3])) {
+      unless (Array->equals_byte($nums, [(byte)1, 2, 3])) {
         return 0;
       }
     }
@@ -36,7 +37,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_byte($nums, [(byte)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_byte($nums, [(byte)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -49,7 +50,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_byte($nums, [(byte)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_byte($nums, [(byte)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -62,7 +63,7 @@ class TestCase::Lib::Sort {
         return $b <=> $a;
       });
       
-      unless (Fn->equals_array_byte($nums, [(byte)3, 2, 1])) {
+      unless (Array->equals_byte($nums, [(byte)3, 2, 1])) {
         return 0;
       }
     }
@@ -71,7 +72,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_byte_desc($nums, 0, scalar @$nums);
       
-      unless (Fn->equals_array_byte($nums, [(byte)3, 2, 1])) {
+      unless (Array->equals_byte($nums, [(byte)3, 2, 1])) {
         return 0;
       }
     }
@@ -84,7 +85,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_byte($nums, [(byte)2, 3, 1])) {
+      unless (Array->equals_byte($nums, [(byte)2, 3, 1])) {
         return 0;
       }
     }
@@ -97,7 +98,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_byte($nums, [(byte)5, 1, 2, 3, -10])) {
+      unless (Array->equals_byte($nums, [(byte)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -158,7 +159,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_short($nums, [(short)1, 2, 3])) {
+      unless (Array->equals_short($nums, [(short)1, 2, 3])) {
         return 0;
       }
     }
@@ -167,7 +168,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_short_asc($nums, 0, scalar @$nums);
       
-      unless (Fn->equals_array_short($nums, [(short)1, 2, 3])) {
+      unless (Array->equals_short($nums, [(short)1, 2, 3])) {
         return 0;
       }
     }
@@ -180,7 +181,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_short($nums, [(short)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_short($nums, [(short)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -193,7 +194,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_short($nums, [(short)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_short($nums, [(short)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -206,7 +207,7 @@ class TestCase::Lib::Sort {
         return $b <=> $a;
       });
       
-      unless (Fn->equals_array_short($nums, [(short)3, 2, 1])) {
+      unless (Array->equals_short($nums, [(short)3, 2, 1])) {
         return 0;
       }
     }
@@ -215,7 +216,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_short_desc($nums, 0, scalar @$nums);
       
-      unless (Fn->equals_array_short($nums, [(short)3, 2, 1])) {
+      unless (Array->equals_short($nums, [(short)3, 2, 1])) {
         return 0;
       }
     }
@@ -228,7 +229,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_short($nums, [(short)2, 3, 1])) {
+      unless (Array->equals_short($nums, [(short)2, 3, 1])) {
         return 0;
       }
     }
@@ -241,7 +242,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_short($nums, [(short)5, 1, 2, 3, -10])) {
+      unless (Array->equals_short($nums, [(short)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -316,7 +317,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_int($nums, [(int)1, 2, 3])) {
+      unless (Array->equals_int($nums, [(int)1, 2, 3])) {
         return 0;
       }
     }
@@ -325,7 +326,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_int_asc($nums, 0, scalar @$nums);
       
-      unless (Fn->equals_array_int($nums, [(int)1, 2, 3])) {
+      unless (Array->equals_int($nums, [(int)1, 2, 3])) {
         return 0;
       }
     }
@@ -338,7 +339,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_int($nums, [(int)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_int($nums, [(int)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -351,7 +352,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_int($nums, [(int)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_int($nums, [(int)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -364,7 +365,7 @@ class TestCase::Lib::Sort {
         return $b <=> $a;
       });
       
-      unless (Fn->equals_array_int($nums, [(int)3, 2, 1])) {
+      unless (Array->equals_int($nums, [(int)3, 2, 1])) {
         return 0;
       }
     }
@@ -373,7 +374,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_int_desc($nums, 0, scalar @$nums);
       
-      unless (Fn->equals_array_int($nums, [(int)3, 2, 1])) {
+      unless (Array->equals_int($nums, [(int)3, 2, 1])) {
         return 0;
       }
     }
@@ -386,7 +387,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_int($nums, [(int)2, 3, 1])) {
+      unless (Array->equals_int($nums, [(int)2, 3, 1])) {
         return 0;
       }
     }
@@ -399,7 +400,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_int($nums, [(int)5, 1, 2, 3, -10])) {
+      unless (Array->equals_int($nums, [(int)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -474,7 +475,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_long($nums, [(long)1, 2, 3])) {
+      unless (Array->equals_long($nums, [(long)1, 2, 3])) {
         return 0;
       }
     }
@@ -483,7 +484,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_long_asc($nums, 0, scalar @$nums);
       
-      unless (Fn->equals_array_long($nums, [(long)1, 2, 3])) {
+      unless (Array->equals_long($nums, [(long)1, 2, 3])) {
         return 0;
       }
     }
@@ -496,7 +497,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_long($nums, [(long)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_long($nums, [(long)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -509,7 +510,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_long($nums, [(long)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_long($nums, [(long)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -522,7 +523,7 @@ class TestCase::Lib::Sort {
         return $b <=> $a;
       });
       
-      unless (Fn->equals_array_long($nums, [(long)3, 2, 1])) {
+      unless (Array->equals_long($nums, [(long)3, 2, 1])) {
         return 0;
       }
     }
@@ -531,7 +532,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_long_desc($nums, 0, scalar @$nums);
       
-      unless (Fn->equals_array_long($nums, [(long)3, 2, 1])) {
+      unless (Array->equals_long($nums, [(long)3, 2, 1])) {
         return 0;
       }
     }
@@ -544,7 +545,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_long($nums, [(long)2, 3, 1])) {
+      unless (Array->equals_long($nums, [(long)2, 3, 1])) {
         return 0;
       }
     }
@@ -557,7 +558,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_long($nums, [(long)5, 1, 2, 3, -10])) {
+      unless (Array->equals_long($nums, [(long)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -632,7 +633,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_float($nums, [(float)1, 2, 3])) {
+      unless (Array->equals_float($nums, [(float)1, 2, 3])) {
         return 0;
       }
     }
@@ -641,7 +642,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_float_asc($nums, 0, scalar @$nums);
       
-      unless (Fn->equals_array_float($nums, [(float)1, 2, 3])) {
+      unless (Array->equals_float($nums, [(float)1, 2, 3])) {
         return 0;
       }
     }
@@ -654,7 +655,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_float($nums, [(float)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_float($nums, [(float)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -667,7 +668,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_float($nums, [(float)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_float($nums, [(float)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -680,7 +681,7 @@ class TestCase::Lib::Sort {
         return $b <=> $a;
       });
       
-      unless (Fn->equals_array_float($nums, [(float)3, 2, 1])) {
+      unless (Array->equals_float($nums, [(float)3, 2, 1])) {
         return 0;
       }
     }
@@ -689,7 +690,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_float_desc($nums, 0, scalar @$nums);
       
-      unless (Fn->equals_array_float($nums, [(float)3, 2, 1])) {
+      unless (Array->equals_float($nums, [(float)3, 2, 1])) {
         return 0;
       }
     }
@@ -702,7 +703,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_float($nums, [(float)2, 3, 1])) {
+      unless (Array->equals_float($nums, [(float)2, 3, 1])) {
         return 0;
       }
     }
@@ -715,7 +716,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_float($nums, [(float)5, 1, 2, 3, -10])) {
+      unless (Array->equals_float($nums, [(float)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -790,7 +791,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_double($nums, [(double)1, 2, 3])) {
+      unless (Array->equals_double($nums, [(double)1, 2, 3])) {
         return 0;
       }
     }
@@ -800,7 +801,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_double_asc($nums, 0, scalar @$nums);
       
-      unless (Fn->equals_array_double($nums, [(double)1, 2, 3])) {
+      unless (Array->equals_double($nums, [(double)1, 2, 3])) {
         return 0;
       }
     }
@@ -813,7 +814,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_double($nums, [(double)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_double($nums, [(double)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -826,7 +827,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_double($nums, [(double)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_double($nums, [(double)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -839,7 +840,7 @@ class TestCase::Lib::Sort {
         return $b <=> $a;
       });
       
-      unless (Fn->equals_array_double($nums, [(double)3, 2, 1])) {
+      unless (Array->equals_double($nums, [(double)3, 2, 1])) {
         return 0;
       }
     }
@@ -848,7 +849,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_double_desc($nums, 0, scalar @$nums);
       
-      unless (Fn->equals_array_double($nums, [(double)3, 2, 1])) {
+      unless (Array->equals_double($nums, [(double)3, 2, 1])) {
         return 0;
       }
     }
@@ -861,7 +862,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_double($nums, [(double)2, 3, 1])) {
+      unless (Array->equals_double($nums, [(double)2, 3, 1])) {
         return 0;
       }
     }
@@ -874,7 +875,7 @@ class TestCase::Lib::Sort {
         return $a <=> $b;
       });
       
-      unless (Fn->equals_array_double($nums, [(double)5, 1, 2, 3, -10])) {
+      unless (Array->equals_double($nums, [(double)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -949,7 +950,7 @@ class TestCase::Lib::Sort {
         return $a cmp $b;
       });
       
-      unless (Fn->equals_array_string($strings, [(string)1, 2, 3])) {
+      unless (Array->equals_string($strings, [(string)1, 2, 3])) {
         return 0;
       }
     }
@@ -958,7 +959,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_string_asc($strings, 0, scalar @$strings);
       
-      unless (Fn->equals_array_string($strings, [(string)1, 2, 3])) {
+      unless (Array->equals_string($strings, [(string)1, 2, 3])) {
         return 0;
       }
     }
@@ -971,7 +972,7 @@ class TestCase::Lib::Sort {
         return $a cmp $b;
       });
       
-      unless (Fn->equals_array_string($strings, [(string)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_string($strings, [(string)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -984,7 +985,7 @@ class TestCase::Lib::Sort {
         return $a cmp $b;
       });
       
-      unless (Fn->equals_array_string($strings, [(string)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (Array->equals_string($strings, [(string)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -997,7 +998,7 @@ class TestCase::Lib::Sort {
         return $b cmp $a;
       });
       
-      unless (Fn->equals_array_string($strings, [(string)3, 2, 1])) {
+      unless (Array->equals_string($strings, [(string)3, 2, 1])) {
         return 0;
       }
     }
@@ -1006,7 +1007,7 @@ class TestCase::Lib::Sort {
       
       Sort->sort_string_desc($strings, 0, scalar @$strings);
       
-      unless (Fn->equals_array_string($strings, [(string)3, 2, 1])) {
+      unless (Array->equals_string($strings, [(string)3, 2, 1])) {
         return 0;
       }
     }
@@ -1019,7 +1020,7 @@ class TestCase::Lib::Sort {
         return $a cmp $b;
       });
       
-      unless (Fn->equals_array_string($strings, [(string)2, 3, 1])) {
+      unless (Array->equals_string($strings, [(string)2, 3, 1])) {
         return 0;
       }
     }
@@ -1032,7 +1033,7 @@ class TestCase::Lib::Sort {
         return $a cmp $b;
       });
       
-      unless (Fn->equals_array_string($strings, [(string)5, 1, 2, 3, -10])) {
+      unless (Array->equals_string($strings, [(string)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -1045,7 +1046,7 @@ class TestCase::Lib::Sort {
         return $a cmp $b;
       });
       
-      unless (Fn->equals_array_string($strings, [(string)undef, "", "1", "11", "2"])) {
+      unless (Array->equals_string($strings, [(string)undef, "", "1", "11", "2"])) {
         return 0;
       }
     }
@@ -1129,7 +1130,7 @@ class TestCase::Lib::Sort {
         return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
       });
       
-      my $is_equals = Fn->equals_array_object($objs, [&new_minimal(1, 0), &new_minimal(2, 0), &new_minimal(3, 0)], method : int ($a : object, $b : object) {
+      my $is_equals = Array->equals_object($objs, [&new_minimal(1, 0), &new_minimal(2, 0), &new_minimal(3, 0)], method : int ($a : object, $b : object) {
         return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
       });
       
@@ -1146,7 +1147,7 @@ class TestCase::Lib::Sort {
         return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x || $a->(TestCase::Minimal)->y <=> $b->(TestCase::Minimal)->y;
       });
 
-      my $is_equals = Fn->equals_array_object($objs, [&new_minimal(1, 3), &new_minimal(2, 1), &new_minimal(2, 2)], method : int ($a : object, $b : object) {
+      my $is_equals = Array->equals_object($objs, [&new_minimal(1, 3), &new_minimal(2, 1), &new_minimal(2, 2)], method : int ($a : object, $b : object) {
         return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x && ($a->(TestCase::Minimal)->y == $b->(TestCase::Minimal)->y);
       });
       
@@ -1163,7 +1164,7 @@ class TestCase::Lib::Sort {
         return $b->(TestCase::Minimal)->x <=> $a->(TestCase::Minimal)->x;
       });
       
-      my $is_equals = Fn->equals_array_object($objs, [&new_minimal(3, 0), &new_minimal(2, 0), &new_minimal(1, 0)], method : int ($a : object, $b : object) {
+      my $is_equals = Array->equals_object($objs, [&new_minimal(3, 0), &new_minimal(2, 0), &new_minimal(1, 0)], method : int ($a : object, $b : object) {
         return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
       });
       
@@ -1180,7 +1181,7 @@ class TestCase::Lib::Sort {
         return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
       });
       
-      my $is_equals = Fn->equals_array_object($objs, [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)], method : int ($a : object, $b : object) {
+      my $is_equals = Array->equals_object($objs, [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)], method : int ($a : object, $b : object) {
         return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
       });
       unless ($is_equals) {
@@ -1196,7 +1197,7 @@ class TestCase::Lib::Sort {
         return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
       });
       
-      my $is_equals = Fn->equals_array_object(
+      my $is_equals = Array->equals_object(
         $objs,
         [&new_minimal(5, 0), &new_minimal(1, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(-10, 0)],
         method : int ($a : object, $b : object) {

@@ -1,5 +1,6 @@
 class TestCase::Literal::Integer {
   use Fn;
+  use Array;
 
   static method integer_literal_decimal_notation : int () {
     

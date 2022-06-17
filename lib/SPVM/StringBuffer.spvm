@@ -1,5 +1,6 @@
 class StringBuffer {
   use Fn;
+  use Array;
 
   has value : ro mutable string;
   has length : ro int;

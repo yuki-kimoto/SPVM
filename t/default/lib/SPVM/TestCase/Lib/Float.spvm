@@ -1,5 +1,6 @@
 class TestCase::Lib::Float {
   use Fn;
+  use Array;
   
   static method basic : int () {
     my $oval = Float->new(Fn->FLT_MIN());

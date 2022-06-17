@@ -1,5 +1,6 @@
 class TestCase::Lib::Short {
   use Fn;
+  use Array;
   static method basic : int () {
     my $oval = Short->new(Fn->INT16_MIN());
     my $value1 = $oval->value;

@@ -1,5 +1,6 @@
 class TestCase::Lib::Long {
   use Fn;
+  use Array;
   static method basic : int () {
     my $oval = Long->new(Fn->INT64_MIN());
     my $value1 = $oval->value;

@@ -1,6 +1,7 @@
 class TestCase::Lib::StringBuffer {
   use StringBuffer;
   use Fn;
+  use Array;
 
   static method read_write_value : int () {
     

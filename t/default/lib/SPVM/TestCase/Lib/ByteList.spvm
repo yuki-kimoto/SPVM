@@ -1,7 +1,9 @@
 class TestCase::Lib::ByteList {
   use ByteList;
   use Fn;
+  use Array;
   use Fn;
+  use Array;
   
   static method new : int () {
     # new with array
@@ -70,7 +72,7 @@ class TestCase::Lib::ByteList {
     {
       my $list = ByteList->new([(byte)1, 2, 3]);
       $list->insert(0 => 4);
-      unless (Fn->equals_array_byte($list->to_array, [(byte)4, 1, 2, 3])) {
+      unless (Array->equals_byte($list->to_array, [(byte)4, 1, 2, 3])) {
         return 0;
       }
     }
@@ -79,7 +81,7 @@ class TestCase::Lib::ByteList {
     {
       my $list = ByteList->new([(byte)1, 2, 3]);
       $list->insert(2 => 4);
-      unless (Fn->equals_array_byte($list->to_array, [(byte)1, 2, 4, 3])) {
+      unless (Array->equals_byte($list->to_array, [(byte)1, 2, 4, 3])) {
         return 0;
       }
     }
@@ -88,7 +90,7 @@ class TestCase::Lib::ByteList {
     {
       my $list = ByteList->new([(byte)1, 2, 3]);
       $list->insert(3 => 4);
-      unless (Fn->equals_array_byte($list->to_array, [(byte)1, 2, 3, 4])) {
+      unless (Array->equals_byte($list->to_array, [(byte)1, 2, 3, 4])) {
         return 0;
       }
     }
@@ -127,7 +129,7 @@ class TestCase::Lib::ByteList {
     {
       my $list = ByteList->new([(byte)1, 2, 3, 4]);
       my $value = $list->remove(1);
-      unless (Fn->equals_array_byte($list->to_array, [(byte)1, 3, 4])) {
+      unless (Array->equals_byte($list->to_array, [(byte)1, 3, 4])) {
         return 0;
       }
       unless ($value == 2) {
@@ -139,7 +141,7 @@ class TestCase::Lib::ByteList {
     {
       my $list = ByteList->new([(byte)1, 2, 3]);
       $list->remove(2);
-      unless (Fn->equals_array_byte($list->to_array, [(byte)1, 2])) {
+      unless (Array->equals_byte($list->to_array, [(byte)1, 2])) {
         return 0;
       }
     }
@@ -148,7 +150,7 @@ class TestCase::Lib::ByteList {
     {
       my $list = ByteList->new([(byte)1, 2, 3]);
       $list->remove(0);
-      unless (Fn->equals_array_byte($list->to_array, [(byte)2, 3])) {
+      unless (Array->equals_byte($list->to_array, [(byte)2, 3])) {
         return 0;
       }
     }
@@ -314,7 +316,7 @@ class TestCase::Lib::ByteList {
     {
       my $list = ByteList->new([(byte)1, 2, 3]);
       $list->set_array([(byte)3, 4, 5]);
-      unless (Fn->equals_array_byte($list->to_array, [(byte)3, 4, 5])) {
+      unless (Array->equals_byte($list->to_array, [(byte)3, 4, 5])) {
         return 0;
       }
     }

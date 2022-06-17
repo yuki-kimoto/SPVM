@@ -3,6 +3,7 @@ class TestCase::TypeConversion {
   use TestCase::Callback::Callback;
   use Comparator;
   use Fn;
+  use Array;
 
   static method convert_undef_to_object : int () {
     

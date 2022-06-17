@@ -1,5 +1,6 @@
 class LongList {
   use Fn;
+  use Array;
   
   has values   : long[];
   has capacity : int;
@@ -32,7 +33,7 @@ class LongList {
     $self->{length} = $length;
     
     if ($array) {
-      Fn->memcpy_long($values, 0, $array, 0, $length);
+      Array->memcpy_long($values, 0, $array, 0, $length);
     }
     
     $self->{values} = $values;
@@ -78,7 +79,7 @@ class LongList {
     
     my $new_values = new long[$new_capacity];
     
-    Fn->memcpy_long($new_values, 0, $values, 0, $length);
+    Array->memcpy_long($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
@@ -100,7 +101,7 @@ class LongList {
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
-      Fn->memmove_long($values, $dist_index, $values, $index, $move_length);
+      Array->memmove_long($values, $dist_index, $values, $index, $move_length);
     }
     $values->[$index] = $value;
     
@@ -121,7 +122,7 @@ class LongList {
     my $dist_index = $index;
     my $src_index = $index + 1;
     my $move_length = $length - $index - 1;
-    Fn->memmove_long($values, $dist_index, $values, $src_index, $move_length);
+    Array->memmove_long($values, $dist_index, $values, $src_index, $move_length);
     
     $self->{length}--;
     
@@ -167,7 +168,7 @@ class LongList {
     
     my $values = $self->{values};
     
-    Fn->memmove_long($values, 1, $values, 0, $length);
+    Array->memmove_long($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
@@ -185,7 +186,7 @@ class LongList {
     
     my $value = $values->[0];
     
-    Fn->memmove_long($values, 0, $values, 1, $length - 1);
+    Array->memmove_long($values, 0, $values, 1, $length - 1);
     
     $values->[$length - 1] = 0;
     
@@ -217,7 +218,7 @@ class LongList {
       die "The length of argument array must be same as the length of current list array";
     }
     
-    Fn->memcpy_long($self->{values}, 0, $array, 0, $cur_length);
+    Array->memcpy_long($self->{values}, 0, $array, 0, $cur_length);
   }
 
   method get : long ($index : int) {
@@ -239,7 +240,7 @@ class LongList {
     
     my $values = $self->{values};
     
-    Fn->memcpy_long($array, 0, $values, 0, $length);
+    Array->memcpy_long($array, 0, $values, 0, $length);
     
     return $array;
   }
@@ -256,10 +257,10 @@ class LongList {
       if ($new_length > $capacity) {
         $self->_extend_with_capacity($new_length);
       }
-      Fn->memset_long($self->{values}, $length, 0, $new_length - $length);
+      Array->memset_long($self->{values}, $length, 0, $new_length - $length);
     }
     elsif ($new_length < $length) {
-      Fn->memset_long($self->{values}, $new_length, 0, $length - $new_length);
+      Array->memset_long($self->{values}, $new_length, 0, $length - $new_length);
     }
     
     $self->{length} = $new_length;

@@ -1,5 +1,6 @@
 class TestCase::Lib::Double {
   use Fn;
+  use Array;
   
   static method basic : int () {
     my $oval = Double->new(Fn->DBL_MIN());

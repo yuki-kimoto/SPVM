@@ -6,6 +6,7 @@ class TestCase::Mulnum {
   use TestCase::Matrix4_16f;
   use TestCase::Matrix4_16d;
   use Fn;
+  use Array;
 
   static method value_max_fields_byte : int () {
     my $mat1 : TestCase::Matrix4_16b;

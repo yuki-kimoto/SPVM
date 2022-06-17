@@ -6,6 +6,7 @@ class TestCase::Ref {
   use TestCase::Point_3f;
   use TestCase::Point_3d;
   use Fn;
+  use Array;
 
   static method numeric_ref_deref_byte : int () {
     my $num1 = (byte)Fn->INT8_MIN();

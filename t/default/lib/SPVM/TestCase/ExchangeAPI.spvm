@@ -8,10 +8,12 @@ class TestCase::ExchangeAPI {
   use TestCase::Minimal;
   use Complex_2d;
   use Fn;
+  use Array;
   
   static method FLOAT_PRECICE : float () { return 16384.5f; }
   static method DOUBLE_PRECICE : double () { return 65536.5; }
   use Fn;
+  use Array;
 
   static method return_object : TestCase::Minimal () {
     
@@ -525,7 +527,7 @@ class TestCase::ExchangeAPI {
   
   static method argument_perl_array_ref_to_spvm_byte_array : int ($values : byte[], $undef : byte[]) {
     
-    unless (Fn->equals_array_byte($values, [(byte)1, Fn->INT8_MAX(), Fn->INT8_MIN()])) {
+    unless (Array->equals_byte($values, [(byte)1, Fn->INT8_MAX(), Fn->INT8_MIN()])) {
       return 0;
     }
     
@@ -538,7 +540,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_perl_array_ref_to_spvm_short_array : int ($values : short[], $undef : short[]) {
     
-    unless (Fn->equals_array_short($values, [(short)1, Fn->INT16_MAX(), Fn->INT16_MIN()])) {
+    unless (Array->equals_short($values, [(short)1, Fn->INT16_MAX(), Fn->INT16_MIN()])) {
       return 0;
     }
     
@@ -551,7 +553,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_perl_array_ref_to_spvm_int_array : int ($values : int[], $undef : int[]) {
     
-    unless (Fn->equals_array_int($values, [(int)1, Fn->INT32_MAX(), Fn->INT32_MIN()])) {
+    unless (Array->equals_int($values, [(int)1, Fn->INT32_MAX(), Fn->INT32_MIN()])) {
       return 0;
     }
     
@@ -564,7 +566,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_perl_array_ref_to_spvm_long_array : int ($values : long[], $undef : long[]) {
     
-    unless (Fn->equals_array_long($values, [(long)1, Fn->INT64_MAX(), Fn->INT64_MIN()])) {
+    unless (Array->equals_long($values, [(long)1, Fn->INT64_MAX(), Fn->INT64_MIN()])) {
       return 0;
     }
     
@@ -577,7 +579,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_perl_array_ref_to_spvm_float_array : int ($values : float[], $undef : float[]) {
     
-    unless (Fn->equals_array_float($values, [(float)0.5, Fn->FLT_MAX(), Fn->FLT_MIN()])) {
+    unless (Array->equals_float($values, [(float)0.5, Fn->FLT_MAX(), Fn->FLT_MIN()])) {
       return 0;
     }
     
@@ -590,7 +592,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_perl_array_ref_to_spvm_double_array : int ($values : double[], $undef : double[]) {
     
-    unless (Fn->equals_array_double($values, [(double)0.5, Fn->DBL_MAX(), Fn->DBL_MIN()])) {
+    unless (Array->equals_double($values, [(double)0.5, Fn->DBL_MAX(), Fn->DBL_MIN()])) {
       return 0;
     }
     
@@ -603,7 +605,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_byte_array : int ($values : byte[], $undef : byte[]) {
     
-    unless (Fn->equals_array_byte($values, [(byte)1, Fn->INT8_MAX(), Fn->INT8_MIN()])) {
+    unless (Array->equals_byte($values, [(byte)1, Fn->INT8_MAX(), Fn->INT8_MIN()])) {
       return 0;
     }
     
@@ -616,7 +618,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_short_array : int ($values : short[], $undef : short[]) {
     
-    unless (Fn->equals_array_short($values, [(short)1, Fn->INT16_MAX(), Fn->INT16_MIN()])) {
+    unless (Array->equals_short($values, [(short)1, Fn->INT16_MAX(), Fn->INT16_MIN()])) {
       return 0;
     }
     
@@ -629,7 +631,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_int_array : int ($values : int[], $undef : int[]) {
     
-    unless (Fn->equals_array_int($values, [(int)1, Fn->INT32_MAX(), Fn->INT32_MIN()])) {
+    unless (Array->equals_int($values, [(int)1, Fn->INT32_MAX(), Fn->INT32_MIN()])) {
       return 0;
     }
     
@@ -642,7 +644,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_long_array : int ($values : long[], $undef : long[]) {
     
-    unless (Fn->equals_array_long($values, [(long)1, Fn->INT64_MAX(), Fn->INT64_MIN()])) {
+    unless (Array->equals_long($values, [(long)1, Fn->INT64_MAX(), Fn->INT64_MIN()])) {
       return 0;
     }
     
@@ -655,7 +657,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_float_array : int ($values : float[], $undef : float[]) {
     
-    unless (Fn->equals_array_float($values, [(float)0.5, Fn->FLT_MAX(), Fn->FLT_MIN()])) {
+    unless (Array->equals_float($values, [(float)0.5, Fn->FLT_MAX(), Fn->FLT_MIN()])) {
       return 0;
     }
     
@@ -668,7 +670,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_double_array : int ($values : double[], $undef : double[]) {
     
-    unless (Fn->equals_array_double($values, [(double)0.5, Fn->DBL_MAX(), Fn->DBL_MIN()])) {
+    unless (Array->equals_double($values, [(double)0.5, Fn->DBL_MAX(), Fn->DBL_MIN()])) {
       return 0;
     }
     

@@ -1,5 +1,6 @@
 class TestCase::Divide {
   use Fn;
+  use Array;
   
   #
   # Spec tests

@@ -4,7 +4,9 @@ class TestCase::Lib::Hash {
   use Comparator;
   use List;
   use Fn;
+  use Array;
   use Fn;
+  use Array;
   use Comparator;
   use Comparator::Int;
   use Sort;

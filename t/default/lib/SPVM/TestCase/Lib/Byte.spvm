@@ -1,5 +1,6 @@
 class TestCase::Lib::Byte {
   use Fn;
+  use Array;
   
   static method basic : int () {
     my $oval = Byte->new(Fn->INT8_MIN());

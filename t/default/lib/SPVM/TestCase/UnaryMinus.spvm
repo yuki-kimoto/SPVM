@@ -1,5 +1,6 @@
 class TestCase::UnaryMinus {
   use Fn;
+  use Array;
 
   static method unary_minus_byte : int () {
     my $value = -(byte)Fn->INT8_MAX();

@@ -2,6 +2,7 @@ class TestCase {
   use TestCase::Minimal;
   use TestCase::Simple;
   use Fn;
+  use Array;
 
   our $CLASS_VAR_INT : int;
   our $CLASS_VAR_LONG : long;

@@ -7,6 +7,7 @@ class TestCase::NativeAPI {
   use TestCase::Callback::ImplementCallback1;
   use TestCase::Callback::ImplementCallback2;
   use Fn;
+  use Array;
   
   our $BYTE_VALUE : byte;
   our $SHORT_VALUE : short;

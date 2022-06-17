@@ -1,5 +1,6 @@
 class StringList {
   use Fn;
+  use Array;
   has values   : string[];
   has capacity : int;
   has length   : ro int;
@@ -30,7 +31,7 @@ class StringList {
     
     $self->{length} = $length;
     
-    Fn->memcpy_object($values, 0, $array, 0, $length);
+    Array->memcpy_object($values, 0, $array, 0, $length);
     
     $self->{values} = $values;
     
@@ -81,7 +82,7 @@ class StringList {
     
     my $values = $self->{values};
     if ($index != $length) {
-      Fn->memmove_object($values, $index + 1, $values, $index, $length - $index);
+      Array->memmove_object($values, $index + 1, $values, $index, $length - $index);
     }
     $values->[$index] = $value;
     
@@ -99,7 +100,7 @@ class StringList {
     my $values = $self->{values};
     my $remove_value = $values->[$index];
     
-    Fn->memmove_object($values, $index, $values, $index + 1, $length - 1);
+    Array->memmove_object($values, $index, $values, $index + 1, $length - 1);
     
     $values->[$length - 1] = undef;
     
@@ -145,7 +146,7 @@ class StringList {
     
     my $values = $self->{values};
     
-    Fn->memmove_object($values, 1, $values, 0, $length);
+    Array->memmove_object($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
@@ -163,7 +164,7 @@ class StringList {
     
     my $value = $values->[0];
     
-    Fn->memmove_object($values, 0, $values, 1, $length - 1);
+    Array->memmove_object($values, 0, $values, 1, $length - 1);
     
     $self->{length}--;
     
@@ -184,7 +185,7 @@ class StringList {
       }
     }
     elsif ($new_length < $length) {
-      Fn->memset_object($self->{values}, $new_length, undef, $length);
+      Array->memset_object($self->{values}, $new_length, undef, $length);
     }
     $self->{length} = $new_length;
   }
@@ -213,7 +214,7 @@ class StringList {
     }
     
     my $values = $self->{values};
-    Fn->memcpy_object($values, 0, $array, 0, $cur_length);
+    Array->memcpy_object($values, 0, $array, 0, $cur_length);
   }
 
   precompile method grep : int ($search : string) {
@@ -232,7 +233,7 @@ class StringList {
     
     my $values = $self->{values};
     
-    Fn->memcpy_object($array, 0, $values, 0, $length);
+    Array->memcpy_object($array, 0, $values, 0, $length);
     
     return $array;
   }
@@ -246,7 +247,7 @@ class StringList {
     
     my $new_values = new string[$new_capacity];
     
-    Fn->memcpy_object($new_values, 0, $values, 0, $length);
+    Array->memcpy_object($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;

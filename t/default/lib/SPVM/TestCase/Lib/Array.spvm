@@ -5,6 +5,7 @@ class TestCase::Lib::Array {
   use EqualityChecker;
   use EqualityChecker::SameObject;
   use Fn;
+  use Array;
   
   static method copy_byte : int () {
     # Copy array

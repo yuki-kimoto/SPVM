@@ -1,7 +1,9 @@
 class TestCase::Lib::ShortList {
   use ShortList;
   use Fn;
+  use Array;
   use Fn;
+  use Array;
 
   static method new : int () {
     {
@@ -63,7 +65,7 @@ class TestCase::Lib::ShortList {
     {
       my $list = ShortList->new([(short)1, 2, 3]);
       $list->insert(0 => 4);
-      unless (Fn->equals_array_short($list->to_array, [(short)4, 1, 2, 3])) {
+      unless (Array->equals_short($list->to_array, [(short)4, 1, 2, 3])) {
         return 0;
       }
     }
@@ -72,7 +74,7 @@ class TestCase::Lib::ShortList {
     {
       my $list = ShortList->new([(short)1, 2, 3]);
       $list->insert(2 => 4);
-      unless (Fn->equals_array_short($list->to_array, [(short)1, 2, 4, 3])) {
+      unless (Array->equals_short($list->to_array, [(short)1, 2, 4, 3])) {
         return 0;
       }
     }
@@ -81,7 +83,7 @@ class TestCase::Lib::ShortList {
     {
       my $list = ShortList->new([(short)1, 2, 3]);
       $list->insert(3 => 4);
-      unless (Fn->equals_array_short($list->to_array, [(short)1, 2, 3, 4])) {
+      unless (Array->equals_short($list->to_array, [(short)1, 2, 3, 4])) {
         return 0;
       }
     }
@@ -120,7 +122,7 @@ class TestCase::Lib::ShortList {
     {
       my $list = ShortList->new([(short)1, 2, 3, 4]);
       my $value = $list->remove(1);
-      unless (Fn->equals_array_short($list->to_array, [(short)1, 3, 4])) {
+      unless (Array->equals_short($list->to_array, [(short)1, 3, 4])) {
         return 0;
       }
       unless ($value == 2) {
@@ -132,7 +134,7 @@ class TestCase::Lib::ShortList {
     {
       my $list = ShortList->new([(short)1, 2, 3]);
       $list->remove(2);
-      unless (Fn->equals_array_short($list->to_array, [(short)1, 2])) {
+      unless (Array->equals_short($list->to_array, [(short)1, 2])) {
         return 0;
       }
     }
@@ -141,7 +143,7 @@ class TestCase::Lib::ShortList {
     {
       my $list = ShortList->new([(short)1, 2, 3]);
       $list->remove(0);
-      unless (Fn->equals_array_short($list->to_array, [(short)2, 3])) {
+      unless (Array->equals_short($list->to_array, [(short)2, 3])) {
         return 0;
       }
     }
@@ -295,7 +297,7 @@ class TestCase::Lib::ShortList {
     {
       my $list = ShortList->new([(short)1, 2, 3]);
       $list->set_array([(short)3, 4, 5]);
-      unless (Fn->equals_array_short($list->to_array, [(short)3, 4, 5])) {
+      unless (Array->equals_short($list->to_array, [(short)3, 4, 5])) {
         return 0;
       }
     }

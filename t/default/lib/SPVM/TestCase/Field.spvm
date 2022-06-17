@@ -5,6 +5,7 @@ class TestCase::Field {
   
   use TestCase::Destructor;
   use Fn;
+  use Array;
   
   has INT32_MAX : int;
   has next : int;

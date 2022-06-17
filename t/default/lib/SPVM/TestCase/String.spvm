@@ -1,5 +1,6 @@
 class TestCase::String {
   use Fn;
+  use Array;
   static method string_access : int () {
     # Read-only strings can't be converted to mutable strings
     {

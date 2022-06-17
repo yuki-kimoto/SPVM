@@ -4,6 +4,7 @@ class TestCase::Assign {
   use Complex_2f;
   use Complex_2d;
   use Fn;
+  use Array;
   
   static method assign_ref : int () {
     my $num = 1;

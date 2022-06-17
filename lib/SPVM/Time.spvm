@@ -1,6 +1,7 @@
 class Time {
   use Time::Info;
   use Fn;
+  use Array;
   
   native static method time : long ();
   native static method localtime : Time::Info ($time : long);

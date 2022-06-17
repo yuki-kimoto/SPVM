@@ -1,5 +1,6 @@
 class List {
   use Fn;
+  use Array;
   
   has values   : object[];
   has capacity : int;
@@ -29,13 +30,13 @@ class List {
     $self->{capacity} = $capacity;
     
     if ($objects) {
-      $self->{values} = Fn->new_array_proto($objects, $capacity);
+      $self->{values} = Array->new_proto($objects, $capacity);
     }
     else {
-      $self->{values} = Fn->new_array_proto(new object[0], $capacity);
+      $self->{values} = Array->new_proto(new object[0], $capacity);
     }
     
-    Fn->memcpy_object($self->{values}, 0, $objects, 0, scalar @$objects);
+    Array->memcpy_object($self->{values}, 0, $objects, 0, scalar @$objects);
 
     $self->{length} = @$objects;
 
@@ -60,7 +61,7 @@ class List {
     }
     $self->{capacity} = $capacity;
     $self->{length} = $length;
-    $self->{values} = Fn->new_array_proto($proto_array, $capacity);
+    $self->{values} = Array->new_proto($proto_array, $capacity);
     return $self;
   }
   
@@ -78,7 +79,7 @@ class List {
     
     my $values = $self->{values};
     if ($index != $length) {
-      Fn->memmove_object($values, $index + 1, $values, $index, $length - $index);
+      Array->memmove_object($values, $index + 1, $values, $index, $length - $index);
     }
     $values->[$index] = $value;
     
@@ -96,7 +97,7 @@ class List {
     my $values = $self->{values};
     my $remove_value = $values->[$index];
 
-    Fn->memmove_object($values, $index, $values, $index + 1, $length - 1 - $index);
+    Array->memmove_object($values, $index, $values, $index + 1, $length - 1 - $index);
     $values->[$length - 1] = undef;
     
     $self->{length}--;
@@ -142,7 +143,7 @@ class List {
     
     my $values = $self->{values};
     
-    Fn->memmove_object($values, 1, $values, 0, $length);
+    Array->memmove_object($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
@@ -160,7 +161,7 @@ class List {
     
     my $value = $values->[0];
     
-    Fn->memmove_object($values, 0, $values, 1, $length - 1);
+    Array->memmove_object($values, 0, $values, 1, $length - 1);
     $values->[$length - 1] = undef;
     
     $self->{length}--;
@@ -192,7 +193,7 @@ class List {
     }
     
     my $values = $self->{values};
-    Fn->memcpy_object($values, 0, $array, 0, $cur_length);
+    Array->memcpy_object($values, 0, $array, 0, $cur_length);
   }
 
   method get : object ($index : int) {
@@ -206,7 +207,7 @@ class List {
   }
 
   precompile private method _extend_with_capacity : void ($new_capacity : int) {
-    my $new_values = Fn->new_array_proto($self->{values}, $new_capacity);
+    my $new_values = Array->new_proto($self->{values}, $new_capacity);
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
       if ($target < 0) { $target += $self->{capacity}; };
@@ -223,9 +224,9 @@ class List {
     
     my $new_capacity = $capacity * 2;
     
-    my $new_values = Fn->new_array_proto($self->{values}, $new_capacity);
+    my $new_values = Array->new_proto($self->{values}, $new_capacity);
     
-    Fn->memcpy_object($new_values, 0, $values, 0, $length);
+    Array->memcpy_object($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
@@ -245,15 +246,15 @@ class List {
       }
     }
     elsif ($new_length < $length) {
-      Fn->memset_object($self->{values}, $new_length, undef, $length - $new_length);
+      Array->memset_object($self->{values}, $new_length, undef, $length - $new_length);
     }
     $self->{length} = $new_length;
   }
   
   method to_array : object[] () {
     my $length = $self->{length};
-    my $objects = Fn->new_array_proto($self->{values}, $length);
-    Fn->memcpy_object($objects, 0, $self->{values}, 0, $length);
+    my $objects = Array->new_proto($self->{values}, $length);
+    Array->memcpy_object($objects, 0, $self->{values}, 0, $length);
     return $objects;
   }
 }

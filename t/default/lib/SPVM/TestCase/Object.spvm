@@ -4,6 +4,7 @@ class TestCase::Object {
   
   use TestCase::Destructor;
   use Fn;
+  use Array;
   
   has INT32_MAX : int;
   has next : int;

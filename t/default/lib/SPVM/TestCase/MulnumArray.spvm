@@ -14,6 +14,7 @@ class TestCase::MulnumArray {
   use TestCase::Matrix4_16d;
   
   use Fn;
+  use Array;
   
   static method value_array_max_fields_byte : int () {
     my $mat = new TestCase::Matrix4_16b[3];
