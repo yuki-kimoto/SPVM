@@ -970,15 +970,15 @@ isa
 logical_operator
   : operator LOGICAL_OR operator
     {
-      $$ = SPVM_OP_build_or(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_logical_or(compiler, $2, $1, $3);
     }
   | operator LOGICAL_AND operator
     {
-      $$ = SPVM_OP_build_and(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_logical_and(compiler, $2, $1, $3);
     }
   | LOGICAL_NOT operator
     {
-      $$ = SPVM_OP_build_not(compiler, $1, $2);
+      $$ = SPVM_OP_build_logical_not(compiler, $1, $2);
     }
 
 assign
