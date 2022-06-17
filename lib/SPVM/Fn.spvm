@@ -335,7 +335,7 @@ class Fn {
       die "Offset + length must not be in the array range";
     }
 
-    my $range = Fn->new_array_proto($objects, $length);
+    my $range = &new_array_proto($objects, $length);
 
     my $pos = 0;
     for (my $i = $offset; $i < $offset + $length; $i++) {
@@ -636,7 +636,7 @@ class Fn {
     my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
-      my $string = Fn->sprintf("%u", (int)$nums->[$i] & 0xFF);
+      my $string = &sprintf("%u", (int)$nums->[$i] & 0xFF);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";
@@ -660,7 +660,7 @@ class Fn {
     my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
-      my $string = Fn->sprintf("%u", $nums->[$i]);
+      my $string = &sprintf("%u", $nums->[$i]);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";
@@ -684,7 +684,7 @@ class Fn {
     my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
-      my $string = Fn->sprintf("%lu", $nums->[$i]);
+      my $string = &sprintf("%lu", $nums->[$i]);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";
@@ -708,7 +708,7 @@ class Fn {
     my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
-      my $string = Fn->sprintf("%u", (int)$nums->[$i] & 0xFFFF);
+      my $string = &sprintf("%u", (int)$nums->[$i] & 0xFFFF);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";
@@ -971,7 +971,7 @@ class Fn {
       elsif ($ascii_code >= 'A' && $ascii_code <= 'F') {
         $digit_value = $ascii_code - 55;
       }
-      $value += $digit_value * Fn->powi(16, $digit);
+      $value += $digit_value * &powi(16, $digit);
       
       $digit += 1;
     }
@@ -1389,7 +1389,7 @@ class Fn {
   static method rand : double ($seed : int*) {
     
     # 0 <= random_number < 1
-    my $random_number = (double)Fn->crand($seed) / ((double)Fn->RAND_MAX() + 1);
+    my $random_number = (double)&crand($seed) / ((double)&RAND_MAX() + 1);
     
     return $random_number;
   }
@@ -1478,7 +1478,7 @@ class Fn {
           }
         }
         if ($match) {
-          my $separated_string = Fn->substr($string, $string_base, $string_index - $string_base);
+          my $separated_string = &substr($string, $string_base, $string_index - $string_base);
           $separated_strings_list->push($separated_string);
           $string_base = $string_index + $sep_length;
           $string_index += $sep_length - 1;
@@ -1489,7 +1489,7 @@ class Fn {
       $separated_strings_list->push("");
     }
     else {
-      my $separated_string = Fn->substr($string, $string_base, $string_length - $string_base);
+      my $separated_string = &substr($string, $string_base, $string_length - $string_base);
       $separated_strings_list->push($separated_string);
     }
 
@@ -1519,7 +1519,7 @@ class Fn {
 
         # Add constant string
         if ($constant_string_length > 0) {
-          my $format_part = Fn->substr($format, $index, $constant_string_length);
+          my $format_part = &substr($format, $index, $constant_string_length);
           
           $buffer->push($format_part);
           $index += $constant_string_length;
@@ -1535,7 +1535,7 @@ class Fn {
       else {
         # Add constant string
         if ($constant_string_length > 0) {
-          my $format_part = Fn->substr($format, $index, $constant_string_length);
+          my $format_part = &substr($format, $index, $constant_string_length);
           $buffer->push($format_part);
           $index += $constant_string_length;
           $constant_string_length = 0;
@@ -1619,7 +1619,7 @@ class Fn {
 
         unless ($index < $format_length) {
           die "Invalid conversion in sprintf: \""
-              . Fn->substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
+              . &substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
         }
         
         my $specifier_first_char = $format->[$index];
@@ -1698,7 +1698,7 @@ class Fn {
           else {
             $arg_value = $arg->(Int)->value;
           }
-          my $formatted_value = Fn->chr($arg_value);
+          my $formatted_value = &chr($arg_value);
           &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
         elsif ($specifier eq "s") {
@@ -1755,7 +1755,7 @@ class Fn {
           my $formatted_value = &_native_snprintf_x($arg);
 
           if ($specifier eq "X") {
-            $formatted_value = Fn->uc($formatted_value);
+            $formatted_value = &uc($formatted_value);
           }
           
           &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
@@ -1765,7 +1765,7 @@ class Fn {
           my $formatted_value = &_native_snprintf_lx($arg);
 
           if ($specifier eq "lX") {
-            $formatted_value = Fn->uc($formatted_value);
+            $formatted_value = &uc($formatted_value);
           }
           
           &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
@@ -1780,7 +1780,7 @@ class Fn {
 
     # Add constant string
     if ($constant_string_length > 0) {
-      my $format_part = Fn->substr($format, $index, $constant_string_length);
+      my $format_part = &substr($format, $index, $constant_string_length);
       $buffer->push($format_part);
       $index += $constant_string_length;
       $constant_string_length = 0;
@@ -1882,13 +1882,13 @@ class Fn {
   native static method to_float : float ($string : string);
 
   static method to_int : int ($string : string) {
-    return Fn->to_int_with_base($string, 10);
+    return &to_int_with_base($string, 10);
   }
   
   native static method to_int_with_base : int ($string : string, $digit : int);
   
   static method to_long : long ($string : string) {
-    return Fn->to_long_with_base($string, 10);
+    return &to_long_with_base($string, 10);
   }
   native static method to_long_with_base : long ($string : string, $digit : int);
 
@@ -1920,7 +1920,7 @@ class Fn {
     
     for (my $i = 0; $i < $length; $i++) {
       if ($start_string_index == -1) {
-        if (Fn->is_space($string->[$i])) {
+        if (&is_space($string->[$i])) {
           # Skip
         }
         else {
@@ -1932,7 +1932,7 @@ class Fn {
 
     for (my $i = $length - 1; $i >= 0; $i--) {
       if ($end_string_index == -1) {
-        if (Fn->is_space($string->[$i])) {
+        if (&is_space($string->[$i])) {
           # Skip
         }
         else {
@@ -1947,13 +1947,13 @@ class Fn {
       return "";
     }
     elsif ($end_string_index == -1) {
-      $trimed_string = Fn->substr($string, $start_string_index, $length - $start_string_index);
+      $trimed_string = &substr($string, $start_string_index, $length - $start_string_index);
     }
     elsif ($end_string_index == -1) {
-      $trimed_string = Fn->substr($string, 0, $end_string_index + 1);
+      $trimed_string = &substr($string, 0, $end_string_index + 1);
     }
     else {
-      $trimed_string = Fn->substr($string, $start_string_index, $end_string_index - $start_string_index + 1);
+      $trimed_string = &substr($string, $start_string_index, $end_string_index - $start_string_index + 1);
     }
     
     return $trimed_string;
