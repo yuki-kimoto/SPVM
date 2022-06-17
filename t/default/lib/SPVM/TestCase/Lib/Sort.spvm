@@ -1126,11 +1126,11 @@ class TestCase::Lib::Sort {
       my $objs = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
       
       Sort->sort_object($objs, 0, scalar @$objs, method : int ($a : object, $b : object) {
-        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+        return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
       });
       
       my $is_equals = Fn->equals_array_object($objs, [&new_minimal(1, 0), &new_minimal(2, 0), &new_minimal(3, 0)], method : int ($a : object, $b : object) {
-        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
+        return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
       });
       
       unless ($is_equals) {
@@ -1143,29 +1143,11 @@ class TestCase::Lib::Sort {
       my $objs = [&new_minimal(2, 1), &new_minimal(2, 2), &new_minimal(1, 3)];
 
       Sort->sort_object($objs, 0, scalar @$objs, method : int ($a : object, $b : object) {
-        my $a_x = ((TestCase::Minimal)$a)->x;
-        my $a_y = ((TestCase::Minimal)$a)->y;
-        my $b_x = ((TestCase::Minimal)$b)->x;
-        my $b_y = ((TestCase::Minimal)$b)->y;
-        
-        my $cmp = ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
-        if ($cmp != 0) {
-          return $cmp;
-        }
-        else {
-          $cmp = ((TestCase::Minimal)$a)->y <=> ((TestCase::Minimal)$b)->y;
-        }
-        
-        return $cmp;
+        return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x || $a->(TestCase::Minimal)->y <=> $b->(TestCase::Minimal)->y;
       });
 
       my $is_equals = Fn->equals_array_object($objs, [&new_minimal(1, 3), &new_minimal(2, 1), &new_minimal(2, 2)], method : int ($a : object, $b : object) {
-        if (((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x && ((TestCase::Minimal)$a)->y == ((TestCase::Minimal)$b)->y) {
-          return 1;
-        }
-        else {
-          return 0;
-        }
+        return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x && ($a->(TestCase::Minimal)->y == $b->(TestCase::Minimal)->y);
       });
       
       unless ($is_equals) {
@@ -1178,11 +1160,11 @@ class TestCase::Lib::Sort {
       my $objs = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
       
       Sort->sort_object($objs, 0, scalar @$objs, method : int ($a : object, $b : object) {
-        return ((TestCase::Minimal)$b)->x <=> ((TestCase::Minimal)$a)->x;
+        return $b->(TestCase::Minimal)->x <=> $a->(TestCase::Minimal)->x;
       });
       
       my $is_equals = Fn->equals_array_object($objs, [&new_minimal(3, 0), &new_minimal(2, 0), &new_minimal(1, 0)], method : int ($a : object, $b : object) {
-        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
+        return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
       });
       
       unless ($is_equals) {
@@ -1195,11 +1177,11 @@ class TestCase::Lib::Sort {
       my $objs = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
       
       Sort->sort_object($objs, 0, 0, method : int ($a : object, $b : object) {
-        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+        return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
       });
       
       my $is_equals = Fn->equals_array_object($objs, [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)], method : int ($a : object, $b : object) {
-        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
+        return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
       });
       unless ($is_equals) {
         return 0;
@@ -1211,14 +1193,14 @@ class TestCase::Lib::Sort {
       my $objs = [&new_minimal(5, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0), &new_minimal(-10, 0)];
       
       Sort->sort_object($objs, 1, 3, method : int ($a : object, $b : object) {
-        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+        return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
       });
       
       my $is_equals = Fn->equals_array_object(
         $objs,
         [&new_minimal(5, 0), &new_minimal(1, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(-10, 0)],
         method : int ($a : object, $b : object) {
-          return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
+          return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
         }
       );
       unless ($is_equals) {
@@ -1232,7 +1214,7 @@ class TestCase::Lib::Sort {
       
       eval {
         Sort->sort_object(undef, 0, scalar @$objs, method : int ($a : object, $b : object) {
-          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+          return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
         });
       };
       unless ($@) {
@@ -1246,7 +1228,7 @@ class TestCase::Lib::Sort {
       
       eval {
         Sort->sort_object($objs, -1, 3, method : int ($a : object, $b : object) {
-          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+          return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
         });
       };
       unless ($@) {
@@ -1260,7 +1242,7 @@ class TestCase::Lib::Sort {
       
       eval {
         Sort->sort_object($objs, 1, -1, method : int ($a : object, $b : object) {
-          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+          return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
         });
       };
       unless ($@) {
@@ -1274,7 +1256,7 @@ class TestCase::Lib::Sort {
       
       eval {
         Sort->sort_object($objs, 3, 3, method : int ($a : object, $b : object) {
-          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+          return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
         });
       };
       unless ($@) {
