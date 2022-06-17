@@ -2048,6 +2048,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_STRING_EQ);
                   keyword_token = STREQ;
                 }
+                else if (strcmp(symbol_name, "errno") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ERRNO);
+                  keyword_token = ERRNO;
+                }
                 else if (strcmp(symbol_name, "eval") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_EVAL);
                   keyword_token = EVAL;
@@ -2294,7 +2298,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 's' : {
-                if (strcmp(symbol_name, "static") == 0) {
+                if (strcmp(symbol_name, "set_errno") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SET_ERRNO);
+                  keyword_token = SET_ERRNO;
+                }
+                else if (strcmp(symbol_name, "static") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
                   keyword_token = DESCRIPTOR;

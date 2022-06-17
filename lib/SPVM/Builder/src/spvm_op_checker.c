@@ -422,6 +422,17 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
+            case SPVM_OP_C_ID_SET_ERRNO: {
+              
+              SPVM_OP* op_number = op_cur->first;
+              
+              SPVM_TYPE* number_type = SPVM_OP_get_type(compiler, op_number);
+              if (!SPVM_TYPE_is_int_type(compiler, number_type->basic_type->id, number_type->dimension, number_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand of the set_errno operator must be the int type", op_number->file, op_number->line);
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_SWITCH: {
               
               SPVM_OP* op_switch_condition = op_cur->first;
@@ -3566,6 +3577,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_STRING_LENGTH:
                         case SPVM_OP_C_ID_NEW:
                         case SPVM_OP_C_ID_CLASS_ID:
+                        case SPVM_OP_C_ID_ERRNO:
+                        case SPVM_OP_C_ID_SET_ERRNO:
                         case SPVM_OP_C_ID_CONCAT:
                         case SPVM_OP_C_ID_REFOP:
                         case SPVM_OP_C_ID_DUMP:

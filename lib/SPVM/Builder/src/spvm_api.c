@@ -281,6 +281,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
     SPVM_API_get_class_id,
+    SPVM_API_get_errno,
+    SPVM_API_set_errno,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -3597,6 +3599,15 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         break;
       }
+      case SPVM_OPCODE_C_ID_GET_ERRNO: {
+        int_vars[opcode->operand0] = env->get_errno(env);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_ERRNO: {
+        int32_t number = opcode->operand1;
+        int_vars[opcode->operand0] = env->set_errno(env, number);
+        break;
+      }
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY: {
         int32_t length = int_vars[opcode->operand1];
         if (length >= 0) {
@@ -6725,6 +6736,22 @@ int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
   else {
     return -1;
   }
+}
+
+int32_t SPVM_API_get_errno(SPVM_ENV* env) {
+  (void)env;
+  
+  int32_t errno_value = (int32_t)(intptr_t)env->errno_value;
+  
+  return errno_value;
+}
+
+int32_t SPVM_API_set_errno(SPVM_ENV* env, int32_t number) {
+  (void)env;
+  
+  env->errno_value = (void*)(intptr_t)number;
+  
+  return number;
 }
 
 int32_t SPVM_API_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {

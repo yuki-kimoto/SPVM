@@ -2104,6 +2104,28 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
+      case SPVM_OPCODE_C_ID_GET_ERRNO: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "      ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_errno(env);\n"
+                                              "  }\n");
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_ERRNO: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t number = ");
+        SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+        
+                                              "      ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->set_errno(env, number);\n"
+                                              "  }\n");
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    int32_t length = *(int32_t*)&");

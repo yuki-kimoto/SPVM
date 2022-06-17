@@ -1,0 +1,12 @@
+class TestCase::Errno {
+  static method basic : int () {
+    
+    {
+      my $errno = errno;
+      
+      set_errno $errno;
+    }
+    
+    return 1;
+  }
+}
