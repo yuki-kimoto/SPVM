@@ -70,6 +70,10 @@ The list of SPVM Standard Modules.
 
 =item * L<ShortList|SPVM::ShortList> - Dynamic short Array
 
+=item * L<Sort|SPVM::Sort> - Sorting Utilities
+
+=item * L<Format|SPVM::Format> - Format Utilities
+
 =item * L<StringBuffer|SPVM::StringBuffer> - String Buffer
 
 =item * L<Stringable|SPVM::Stringable> - Interface Type to Stringify a Object

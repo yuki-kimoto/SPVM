@@ -222,6 +222,10 @@ lib/SPVM/Fn.c
 lib/SPVM/Fn.config
 lib/SPVM/Fn.pm
 lib/SPVM/Fn.spvm
+lib/SPVM/Format.c
+lib/SPVM/Format.config
+lib/SPVM/Format.pm
+lib/SPVM/Format.spvm
 lib/SPVM/Hash.c
 lib/SPVM/Hash.config
 lib/SPVM/Hash.pm
@@ -540,6 +544,7 @@ t/default/lib/SPVM/TestCase/Lib/FloatList.spvm
 t/default/lib/SPVM/TestCase/Lib/Fn1.spvm
 t/default/lib/SPVM/TestCase/Lib/Fn2.spvm
 t/default/lib/SPVM/TestCase/Lib/Fn3.spvm
+t/default/lib/SPVM/TestCase/Lib/Format.spvm
 t/default/lib/SPVM/TestCase/Lib/Hash.spvm
 t/default/lib/SPVM/TestCase/Lib/Int.spvm
 t/default/lib/SPVM/TestCase/Lib/IntList.spvm
@@ -692,6 +697,7 @@ t/default/SPVM_DoubleList.t
 t/default/SPVM_Float.t
 t/default/SPVM_FloatList.t
 t/default/SPVM_Fn.t
+t/default/SPVM_Format.t
 t/default/SPVM_Hash.t
 t/default/SPVM_Int.t
 t/default/SPVM_IntList.t

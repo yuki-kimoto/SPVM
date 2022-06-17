@@ -1,0 +1,352 @@
+class Format {
+  use StringBuffer;
+  use Fn;
+  
+  precompile static method sprintf : string ($format : string, $args : object[]...) {
+    my $format_length = length $format;
+    my $index = 0;
+
+    my $buffer = StringBuffer->new;
+    my $arg_count = 0;
+    my $constant_string_length = 0;
+
+    while ($index + $constant_string_length < $format_length) {
+
+      if ($format->[$index + $constant_string_length] != '%') {
+        # Read constant string
+        ++$constant_string_length;
+      }
+      elsif ($index + $constant_string_length + 1 < $format_length &&
+          $format->[$index + $constant_string_length + 1] == '%') {
+        # Read %%
+        ++$constant_string_length;
+
+        # Add constant string
+        if ($constant_string_length > 0) {
+          my $format_part = Fn->substr($format, $index, $constant_string_length);
+          
+          $buffer->push($format_part);
+          $index += $constant_string_length;
+          $constant_string_length = 0;
+        }
+
+        # Skip second %
+        ++$index;
+      }
+      elsif ($index + $constant_string_length + 1 >= $format_length) {
+        die "Invalid conversion in sprintf: end of string";
+      }
+      else {
+        # Add constant string
+        if ($constant_string_length > 0) {
+          my $format_part = Fn->substr($format, $index, $constant_string_length);
+          $buffer->push($format_part);
+          $index += $constant_string_length;
+          $constant_string_length = 0;
+        }
+
+        # Read format string
+
+        # Check the next element of @$args corresponding to the specifier
+        unless ($arg_count < @$args) {
+          die "Missing argument in sprintf";
+        }
+
+        # Read specifier %[flags][width][.precision][length]type
+
+        my $specifier_base_index = $index;
+        ++$index; # '%'
+
+        # Read `flags`
+        my $pad_char = ' ';
+        my $plus_sign = 0;
+        my $left_justified = 0;
+
+        while ($index < $format_length) {
+          my $flag = (int)($format->[$index]);
+          switch($flag) {
+            case '0': {
+              ++$index;
+              $pad_char = '0';
+              break;
+            }
+            case '+': {
+              ++$index;
+              $plus_sign = 1;
+              break;
+            }
+            case '-': {
+              ++$index;
+              $left_justified = 1;
+              break;
+            }
+            default: {
+              last;
+              break;
+            }
+          }
+        }
+        
+        if ($left_justified) {
+          $pad_char = ' ';
+        }
+
+        # Width
+        my $width = 0;
+        while ($index < $format_length) {
+          my $c = $format->[$index];
+          if ($c < '0' || '9' < $c) {
+            last;
+          }
+          $width = $width * 10 + $c - '0';
+          ++$index;
+        }
+
+        # Precision
+        my $precision = 0;
+        my $has_precision = 0;
+        if ($index < $format_length && $format->[$index] == '.') {
+          ++$index;
+          while ($index < $format_length) {
+            my $c = $format->[$index];
+            if ($c < '0' || '9' < $c) {
+              last;
+            }
+            $has_precision = 1;
+            $precision = $precision * 10 + $c - '0';
+            ++$index;
+          }
+        }
+        unless ($has_precision) {
+          $precision = -1;
+        }
+
+        unless ($index < $format_length) {
+          die "Invalid conversion in sprintf: \""
+              . Fn->substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
+        }
+        
+        my $specifier_first_char = $format->[$index];
+        $index++;
+        
+        my $specifier = (string)"";
+        switch ((int) $specifier_first_char) {
+          case 'c' : {
+            $specifier = "c";
+            break;
+          }
+          case 's' : {
+            $specifier = "s";
+            break;
+          }
+          case 'd' : {
+            $specifier = "d";
+            break;
+          }
+          case 'u' : {
+            $specifier = "u";
+            break;
+          }
+          case 'l' : {
+            if ($index < length $format) {
+              if ($format->[$index] == 'd') {
+                $index++;
+                $specifier = "ld";
+              }
+              elsif ($format->[$index] == 'u') {
+                $index++;
+                $specifier = "lu";
+              }
+              elsif ($format->[$index] == 'x') {
+                $index++;
+                $specifier = "lx";
+              }
+              elsif ($format->[$index] == 'X') {
+                $index++;
+                $specifier = "lX";
+              }
+            }
+            break;
+          }
+          case 'f' : {
+            $specifier = "f";
+            break;
+          }
+          case 'g' : {
+            $specifier = "g";
+            break;
+          }
+          case 'U' : {
+            $specifier = "U";
+            break;
+          }
+          case 'x' : {
+            $specifier = "x";
+            break;
+          }
+          case 'X' : {
+            $specifier = "X";
+            break;
+          }
+          default: {
+
+          }
+        }
+        
+        if ($specifier eq "c") {
+          my $arg_value : int;
+          my $arg = $args->[$arg_count];
+          if ($arg isa Byte) {
+            $arg_value = $arg->(Byte)->value;
+          }
+          else {
+            $arg_value = $arg->(Int)->value;
+          }
+          my $formatted_value = Fn->chr($arg_value);
+          &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
+        }
+        elsif ($specifier eq "s") {
+          my $arg = (string)$args->[$arg_count];
+          my $formatted_value = $arg;
+          &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
+        }
+        elsif ($specifier eq "d") {
+          my $arg = (Int)$args->[$arg_count];
+          my $formatted_value = &_native_snprintf_d($arg);
+          &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
+        }
+        elsif ($specifier eq "u") {
+          my $arg = (Int)$args->[$arg_count];
+          my $formatted_value = &_native_snprintf_u($arg);
+          &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
+        }
+        elsif ($specifier eq "ld") {
+          my $arg = (Long)$args->[$arg_count];
+          my $formatted_value = &_native_snprintf_ld($arg);
+          &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
+        }
+        elsif ($specifier eq "lu") {
+          my $arg = (Long)$args->[$arg_count];
+          my $formatted_value = &_native_snprintf_lu($arg);
+          &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
+        }
+        elsif ($specifier eq "f") {
+          my $arg_value : double;
+          my $arg = $args->[$arg_count];
+          if ($arg isa Float) {
+            $arg_value = $arg->(Float)->value;
+          }
+          else {
+            $arg_value = $arg->(Double)->value;
+          }
+          my $formatted_value = &_native_snprintf_f($arg_value, $precision);
+          &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
+        }
+        elsif ($specifier eq "g") {
+          my $arg_value : double;
+          my $arg = $args->[$arg_count];
+          if ($arg isa Float) {
+            $arg_value = $arg->(Float)->value;
+          }
+          else {
+            $arg_value = $arg->(Double)->value;
+          }
+          my $formatted_value = &_native_snprintf_g($arg_value, $precision);
+          &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
+        }
+        elsif ($specifier eq "x" || $specifier eq "X") {
+          my $arg = (Int)$args->[$arg_count];
+          my $formatted_value = &_native_snprintf_x($arg);
+
+          if ($specifier eq "X") {
+            $formatted_value = Fn->uc($formatted_value);
+          }
+          
+          &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
+        }
+        elsif ($specifier eq "lx" || $specifier eq "lX") {
+          my $arg = (Long)$args->[$arg_count];
+          my $formatted_value = &_native_snprintf_lx($arg);
+
+          if ($specifier eq "lX") {
+            $formatted_value = Fn->uc($formatted_value);
+          }
+          
+          &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
+        }
+        else {
+          die "Invalid specifier \"%$specifier\"";
+        }
+
+        ++$arg_count;
+      }
+    }
+
+    # Add constant string
+    if ($constant_string_length > 0) {
+      my $format_part = Fn->substr($format, $index, $constant_string_length);
+      $buffer->push($format_part);
+      $index += $constant_string_length;
+      $constant_string_length = 0;
+    }
+
+    my $result = $buffer->to_string;
+    return $result;
+  }
+  
+  native static method _native_snprintf_d : string ($value : int);
+  native static method _native_snprintf_ld : string ($value : long);
+  native static method _native_snprintf_lu : string ($value : long);
+  native static method _native_snprintf_u : string ($value : int);
+  native static method _native_snprintf_x : string ($value : int);
+  native static method _native_snprintf_lx : string ($value : long);
+  native static method _native_snprintf_f : string ($value : double, $precision : int);
+  native static method _native_snprintf_g : string ($value : double, $precision : int);
+  
+  static method _push_formatted_string_unsigned : void($buffer : StringBuffer, $formatted_value : string, $width : int, $pad_char : byte, $left_justified : int) {
+    
+    # "+" sign is always ignored.
+    my $plus_sign = 0;
+    
+    &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
+  }
+
+  precompile static method _push_formatted_string_signed : void($buffer : StringBuffer, $formatted_value : string, $width : int, $pad_char : byte, $left_justified : int, $plus_sign : int) {
+    my $is_minus = 0;
+    if ($formatted_value->[0] == '-') {
+       $is_minus = 1;
+    }
+    
+    my $space_count = $width - length $formatted_value;
+    if (!$is_minus && $plus_sign) {
+      --$space_count;
+    }
+
+    if ($left_justified) {
+      if (!$is_minus && $plus_sign) {
+        $buffer->push_char('+');
+      }
+
+      $buffer->push($formatted_value);
+
+      if ($space_count > 0) {
+        for (; $space_count > 0; --$space_count) {
+          $buffer->push_char($pad_char);
+        }
+      }
+    }
+    else {
+      if ($space_count > 0) {
+        for (; $space_count > 0; --$space_count) {
+          $buffer->push_char($pad_char);
+        }
+      }
+
+      if (!$is_minus && $plus_sign) {
+        $buffer->push_char('+');
+      }
+
+      $buffer->push($formatted_value);
+    }
+  }
+}

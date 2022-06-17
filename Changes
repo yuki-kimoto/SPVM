@@ -1,4 +1,4 @@
-0.9608_01 2022-06-17
+0.9608_02 2022-06-17
   [CHANGE]
   * Improve error messages of compilation.
   * Improve Time::Info document.
@@ -23,6 +23,7 @@
     sort_string_desc
   * Time->timegm is implemented using timegm on UNIX/Linux or _mkgmtime on Windows.
   * Add Array class.
+  * Add Format class.
   [DEPRECATION]
   * The following methods are depracated.
     Fn->copy_array_byte is deprecated. Use Array->copy_byte instead
