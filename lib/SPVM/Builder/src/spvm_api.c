@@ -281,6 +281,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
     SPVM_API_get_class_id,
+    NULL, // errno_value,
     SPVM_API_get_errno,
     SPVM_API_set_errno,
   };
