@@ -225,6 +225,7 @@ The list of keywords:
   case
   cmp
   class
+  class_id
   copy
   default
   die
@@ -1141,7 +1142,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
-  %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF
+  %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF CLASS_ID
   %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
   %type <opval> opt_classes classes class class_block
@@ -1411,6 +1412,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | is_read_only
     | has_impl
     | logical_operator
+    | CLASS_ID class_name
 
   operators
     : operators ',' operator
@@ -1646,6 +1648,9 @@ The list of syntax parsing tokens:
   </tr>
   <tr>
     <td>CLASS</td><td>class</td>
+  </tr>
+  <tr>
+    <td>CLASS_ID</td><td>class_id</td>
   </tr>
   <tr>
     <td>VAR_NAME</td><td>A variable name</td>
