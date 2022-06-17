@@ -511,7 +511,7 @@ class Array {
     my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
-      my $string = Fn->sprintf("%u", (int)$nums->[$i] & 0xFF);
+      my $string = Format->sprintf("%u", (int)$nums->[$i] & 0xFF);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";
@@ -535,7 +535,7 @@ class Array {
     my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
-      my $string = Fn->sprintf("%u", $nums->[$i]);
+      my $string = Format->sprintf("%u", $nums->[$i]);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";
@@ -559,7 +559,7 @@ class Array {
     my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
-      my $string = Fn->sprintf("%lu", $nums->[$i]);
+      my $string = Format->sprintf("%lu", $nums->[$i]);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";
@@ -583,7 +583,7 @@ class Array {
     my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
-      my $string = Fn->sprintf("%u", (int)$nums->[$i] & 0xFFFF);
+      my $string = Format->sprintf("%u", (int)$nums->[$i] & 0xFFFF);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";
