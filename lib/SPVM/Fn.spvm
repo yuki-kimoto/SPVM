@@ -126,73 +126,73 @@ class Fn {
   }
   
   static method copy_array_byte : byte[] ($nums : byte[]) {
-    warn "Fn->copy_array_byte is deprecated. Use Array->copy_byte instead.";
+    warn "Fn->copy_array_byte is deprecated. Use Array->copy_byte instead";
     return Array->copy_byte($nums);
   }
 
   static method copy_array_double : double[] ($nums : double[]) {
-    warn "Fn->copy_array_double is deprecated. Use Array->copy_double instead.";
+    warn "Fn->copy_array_double is deprecated. Use Array->copy_double instead";
     return Array->copy_double($nums);
   }
 
   static method copy_array_float : float[] ($nums : float[]) {
-    warn "Fn->copy_array_float is deprecated. Use Array->copy_float instead.";
+    warn "Fn->copy_array_float is deprecated. Use Array->copy_float instead";
     return Array->copy_float($nums);
   }
 
   static method copy_array_int : int[] ($nums : int[]) {
-    warn "Fn->copy_array_int is deprecated. Use Array->copy_int instead.";
+    warn "Fn->copy_array_int is deprecated. Use Array->copy_int instead";
     return Array->copy_int($nums);
   }
 
   static method copy_array_long : long[] ($nums : long[]) {
-    warn "Fn->copy_array_long is deprecated. Use Array->copy_long instead.";
+    warn "Fn->copy_array_long is deprecated. Use Array->copy_long instead";
     return Array->copy_long($nums);
   }
 
   static method copy_array_object : object[] ($objects : object[], $cloner : Cloner) {
-    warn "Fn->copy_array_object is deprecated. Use Array->copy_object instead.";
+    warn "Fn->copy_array_object is deprecated. Use Array->copy_object instead";
     return Array->copy_object($objects, $cloner);
   }
 
   static method copy_array_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
-    warn "Fn->copy_array_range_byte is deprecated. Use Array->copy_range_byte instead.";
+    warn "Fn->copy_array_range_byte is deprecated. Use Array->copy_range_byte instead";
     return Array->copy_range_byte($nums, $offset, $length);
   }
 
   static method copy_array_range_double : double[] ($nums : double[], $offset : int, $length : int) {
-    warn "Fn->copy_array_range_double is deprecated. Use Array->copy_range_double instead.";
+    warn "Fn->copy_array_range_double is deprecated. Use Array->copy_range_double instead";
     return Array->copy_range_double($nums, $offset, $length);
   }
 
   static method copy_array_range_float : float[] ($nums : float[], $offset : int, $length : int) {
-    warn "Fn->copy_array_range_float is deprecated. Use Array->copy_range_float instead.";
+    warn "Fn->copy_array_range_float is deprecated. Use Array->copy_range_float instead";
     return Array->copy_range_float($nums, $offset, $length);
   }
 
   static method copy_array_range_int : int[] ($nums : int[], $offset : int, $length : int) {
-    warn "Fn->copy_array_range_int is deprecated. Use Array->copy_range_int instead.";
+    warn "Fn->copy_array_range_int is deprecated. Use Array->copy_range_int instead";
     return Array->copy_range_int($nums, $offset, $length);
   }
 
   static method copy_array_range_long : long[] ($nums : long[], $offset : int, $length : int) {
-    warn "Fn->copy_array_range_long is deprecated. Use Array->copy_range_long instead.";
+    warn "Fn->copy_array_range_long is deprecated. Use Array->copy_range_long instead";
     return Array->copy_range_long($nums, $offset, $length);
   }
 
   static method copy_array_range_object : object[] ($objects : object[], $offset : int, $length : int) {
-    warn "Fn->copy_array_range_object is deprecated. Use Array->copy_range_object instead.";
+    warn "Fn->copy_array_range_object is deprecated. Use Array->copy_range_object instead";
     return Array->copy_range_object($objects, $offset, $length);
   }
 
   static method copy_array_range_short : short[] ($nums : short[], $offset : int, $length : int) {
-    warn "Fn->copy_array_range_short is deprecated. Use Array->copy_range_short instead.";
+    warn "Fn->copy_array_range_short is deprecated. Use Array->copy_range_short instead";
     return Array->copy_range_short($nums, $offset, $length);
   }
 
 
   precompile static method copy_array_range_string : string[] ($strings : string[], $offset : int, $length : int) {
-    warn "Fn->copy_array_range_string is deprecated. Use Array->copy_range_string instead.";
+    warn "Fn->copy_array_range_string is deprecated. Use Array->copy_range_string instead";
     return Array->copy_range_string($strings, $offset, $length);
   }
 
@@ -201,7 +201,7 @@ class Fn {
   }
 
   precompile static method copy_array_string : string[] ($strings : string[]) {
-    warn "Fn->copy_array_string is deprecated. Use Array->copy_tring instead.";
+    warn "Fn->copy_array_string is deprecated. Use Array->copy_tring instead";
     return Array->copy_string($strings);
   }
   
@@ -212,42 +212,42 @@ class Fn {
   native static method crand : int ($seed : int*);
 
   static method dump_array_byte : string ($nums : byte[]) {
-    warn "Fn->dump_array_byte is deprecated. Use Array->dump_byte instead.";
+    warn "Fn->dump_array_byte is deprecated. Use Array->dump_byte instead";
     return Array->dump_byte($nums);
   }
 
   static method dump_array_double : string ($nums : double[]) {
-    warn "Fn->dump_array_double is deprecated. Use Array->dump_double instead.";
+    warn "Fn->dump_array_double is deprecated. Use Array->dump_double instead";
     return Array->dump_double($nums);
   }
 
   static method dump_array_float : string ($nums : float[]) {
-    warn "Fn->dump_array_float is deprecated. Use Array->dump_float instead.";
+    warn "Fn->dump_array_float is deprecated. Use Array->dump_float instead";
     return Array->dump_float($nums);
   }
 
   static method dump_array_int : string ($nums : int[]) {
-    warn "Fn->dump_array_int is deprecated. Use Array->dump_int instead.";
+    warn "Fn->dump_array_int is deprecated. Use Array->dump_int instead";
     return Array->dump_int($nums);
   }
 
   static method dump_array_long : string ($nums : long[]) {
-    warn "Fn->dump_array_long is deprecated. Use Array->dump_long instead.";
+    warn "Fn->dump_array_long is deprecated. Use Array->dump_long instead";
     return Array->dump_long($nums);
   }
 
   static method dump_array_object : string ($objects : object[], $stringer : Stringer) {
-    warn "Fn->dump_array_object is deprecated. Use Array->dump_object instead.";
+    warn "Fn->dump_array_object is deprecated. Use Array->dump_object instead";
     return Array->dump_object($objects, $stringer);
   }
 
   static method dump_array_short : string ($nums : short[]) {
-    warn "Fn->dump_array_short is deprecated. Use Array->dump_short instead.";
+    warn "Fn->dump_array_short is deprecated. Use Array->dump_short instead";
     return Array->dump_short($nums);
   }
 
   static method dump_array_string : string ($strings : string[]) {
-    warn "Fn->dump_array_string is deprecated. Use Array->dump_string instead.";
+    warn "Fn->dump_array_string is deprecated. Use Array->dump_string instead";
     return Array->dump_string($strings);
   }
 
