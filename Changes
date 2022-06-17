@@ -81,6 +81,7 @@
     Fn->memset_object is deprecated. Use Array->memset_object instead
     Fn->memset_short is deprecated. Use Array->memset_short instead
     Fn->new_array_proto is deprecated. Use Array->new_proto instead
+    Fn->sprintf is deprecated. Use Format->sprintf instead
   [BUG FIX]
   * Fix the bug that logical and operater and logical or operator don't return the evaluated value.
   [SPECIFICATION BUG FIX]
