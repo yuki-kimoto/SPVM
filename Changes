@@ -22,6 +22,7 @@
     sort_string_asc
     sort_string_desc
   * Time->timegm is implemented using timegm on UNIX/Linux or _mkgmtime on Windows.
+  * Add Array class.
   [BUG FIX]
   * Fix the bug that logical and operater and logical or operator don't return the evaluated value.
   [SPECIFICATION BUG FIX]

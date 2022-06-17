@@ -45,6 +45,10 @@ examples/spvmcc/basic/myapp
 examples/spvmcc/basic/README.txt
 examples/spvmcc/basic/SPVM/MyApp.spvm
 lib/SPVM.pm
+lib/SPVM/Array.c
+lib/SPVM/Array.config
+lib/SPVM/Array.pm
+lib/SPVM/Array.spvm
 lib/SPVM/BlessedObject.pm
 lib/SPVM/BlessedObject/Array.pm
 lib/SPVM/BlessedObject/Class.pm
@@ -525,6 +529,7 @@ t/default/lib/SPVM/TestCase/Inline.spvm
 t/default/lib/SPVM/TestCase/Interface.spvm
 t/default/lib/SPVM/TestCase/InterfaceType.spvm
 t/default/lib/SPVM/TestCase/Isa.spvm
+t/default/lib/SPVM/TestCase/Lib/Array.spvm
 t/default/lib/SPVM/TestCase/Lib/Bool.spvm
 t/default/lib/SPVM/TestCase/Lib/Byte.spvm
 t/default/lib/SPVM/TestCase/Lib/ByteList.spvm
@@ -678,6 +683,7 @@ t/default/resource.t
 t/default/return.t
 t/default/seqop.t
 t/default/special_assign.t
+t/default/SPVM_Array.t
 t/default/SPVM_Bool.t
 t/default/SPVM_Byte.t
 t/default/SPVM_ByteList.t
