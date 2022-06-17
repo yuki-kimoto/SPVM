@@ -22,6 +22,8 @@
     sort_string_asc
     sort_string_desc
   * Time->timegm is implemented using timegm on UNIX/Linux or _mkgmtime on Windows.
+  [BUG FIX]
+  * Fix the bug that logical and operater and logical or operator don't return the last evaluated value.
   
   [NON BACKWORD COMPATIBLE CHANGES]
   * The following methods are moved from Fn class to Sort class.
