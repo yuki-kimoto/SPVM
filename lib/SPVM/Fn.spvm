@@ -4,6 +4,7 @@ class Fn {
   use Stringer;
   use Cloner;
   use EqualityChecker;
+  use Array;
   
   # C-like max and minimal constants
   static method INT8_MAX : byte () { return 127; }
@@ -125,288 +126,74 @@ class Fn {
   }
   
   static method copy_array_byte : byte[] ($nums : byte[]) {
-    return copy $nums;
+    warn "Fn->copy_array_byte is deprecated. Use Array->copy_byte instead.";
+    return Array->copy_byte($nums);
   }
 
   static method copy_array_double : double[] ($nums : double[]) {
-    return copy $nums;
+    warn "Fn->copy_array_double is deprecated. Use Array->copy_double instead.";
+    return Array->copy_double($nums);
   }
 
   static method copy_array_float : float[] ($nums : float[]) {
-    return copy $nums;
+    warn "Fn->copy_array_float is deprecated. Use Array->copy_float instead.";
+    return Array->copy_float($nums);
   }
 
   static method copy_array_int : int[] ($nums : int[]) {
-    return copy $nums;
+    warn "Fn->copy_array_int is deprecated. Use Array->copy_int instead.";
+    return Array->copy_int($nums);
   }
 
   static method copy_array_long : long[] ($nums : long[]) {
-    return copy $nums;
+    warn "Fn->copy_array_long is deprecated. Use Array->copy_long instead.";
+    return Array->copy_long($nums);
   }
 
-  precompile static method copy_array_object : object[] ($objects : object[], $cloner : Cloner) {
-    if ($objects == undef) {
-      return undef;
-    }
-    
-    my $length = @$objects;
-
-    my $new_objects = new object[$length];
-
-    for (my $i = 0; $i < $length; $i++) {
-      $new_objects->[$i] = $cloner->($objects->[$i]);
-    }
-
-    return $new_objects;
+  static method copy_array_object : object[] ($objects : object[], $cloner : Cloner) {
+    warn "Fn->copy_array_object is deprecated. Use Array->copy_object instead.";
+    return Array->copy_object($objects, $cloner);
   }
 
-  precompile static method copy_array_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
-
-    if ($nums == undef) {
-      die "The argument array must be defined";
-    }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Offset must be in the array range";
-    }
-
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
-    }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must be in the array range";
-    }
-
-    my $range = new byte[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $range->[$pos] = $nums->[$i];
-      $pos++;
-    }
-
-    return $range;
+  static method copy_array_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
+    warn "Fn->copy_array_range_byte is deprecated. Use Array->copy_range_byte instead.";
+    return Array->copy_range_byte($nums, $offset, $length);
   }
 
-  precompile static method copy_array_range_double : double[] ($nums : double[], $offset : int, $length : int) {
-
-    if ($nums == undef) {
-      die "The argument array must be defined";
-    }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Offset must be in the array range";
-    }
-
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
-    }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be in the array range";
-    }
-
-    my $range = new double[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $range->[$pos] = $nums->[$i];
-      $pos++;
-    }
-
-    return $range;
+  static method copy_array_range_double : double[] ($nums : double[], $offset : int, $length : int) {
+    warn "Fn->copy_array_range_double is deprecated. Use Array->copy_range_double instead.";
+    return Array->copy_range_double($nums, $offset, $length);
   }
 
-  precompile static method copy_array_range_float : float[] ($nums : float[], $offset : int, $length : int) {
-
-    if ($nums == undef) {
-      die "The argument array must be defined";
-    }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Offset must be in the array range";
-    }
-
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
-    }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be in the array range";
-    }
-
-    my $range = new float[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $range->[$pos] = $nums->[$i];
-      $pos++;
-    }
-
-    return $range;
+  static method copy_array_range_float : float[] ($nums : float[], $offset : int, $length : int) {
+    warn "Fn->copy_array_range_float is deprecated. Use Array->copy_range_float instead.";
+    return Array->copy_range_float($nums, $offset, $length);
   }
 
-  precompile static method copy_array_range_int : int[] ($nums : int[], $offset : int, $length : int) {
-
-    if ($nums == undef) {
-      die "The argument array must be defined";
-    }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Offset must be in the array range";
-    }
-
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
-    }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must be in the array range";
-    }
-
-    my $range = new int[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $range->[$pos] = $nums->[$i];
-      $pos++;
-    }
-
-    return $range;
+  static method copy_array_range_int : int[] ($nums : int[], $offset : int, $length : int) {
+    warn "Fn->copy_array_range_int is deprecated. Use Array->copy_range_int instead.";
+    return Array->copy_range_int($nums, $offset, $length);
   }
 
-  precompile static method copy_array_range_long : long[] ($nums : long[], $offset : int, $length : int) {
-
-    if ($nums == undef) {
-      die "The argument array must be defined";
-    }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Offset must be in the array range";
-    }
-
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
-    }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be in the array range";
-    }
-
-    my $range = new long[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $range->[$pos] = $nums->[$i];
-      $pos++;
-    }
-
-    return $range;
+  static method copy_array_range_long : long[] ($nums : long[], $offset : int, $length : int) {
+    warn "Fn->copy_array_range_long is deprecated. Use Array->copy_range_long instead.";
+    return Array->copy_range_long($nums, $offset, $length);
   }
 
-  precompile static method copy_array_range_object : object[] ($objects : object[], $offset : int, $length : int) {
-
-    if ($objects == undef) {
-      die "The argument array must be defined";
-    }
-
-    my $array_length = @$objects;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Offset must be in the array range";
-    }
-
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
-    }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be in the array range";
-    }
-
-    my $range = &new_array_proto($objects, $length);
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $range->[$pos] = $objects->[$i];
-      $pos++;
-    }
-
-    return $range;
+  static method copy_array_range_object : object[] ($objects : object[], $offset : int, $length : int) {
+    warn "Fn->copy_array_range_object is deprecated. Use Array->copy_range_object instead.";
+    return Array->copy_range_object($objects, $offset, $length);
   }
 
-  precompile static method copy_array_range_short : short[] ($nums : short[], $offset : int, $length : int) {
-
-    if ($nums == undef) {
-      die "The argument array must be defined";
-    }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Offset must be in the array range";
-    }
-
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
-    }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must be in the array range";
-    }
-
-    my $range = new short[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $range->[$pos] = $nums->[$i];
-      $pos++;
-    }
-
-    return $range;
+  static method copy_array_range_short : short[] ($nums : short[], $offset : int, $length : int) {
+    warn "Fn->copy_array_range_short is deprecated. Use Array->copy_range_short instead.";
+    return Array->copy_range_short($nums, $offset, $length);
   }
 
 
   precompile static method copy_array_range_string : string[] ($strings : string[], $offset : int, $length : int) {
-
-    if ($strings == undef) {
-      die "The argument array must be defined";
-    }
-
-    my $array_length = @$strings;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Offset must be in the array range";
-    }
-
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
-    }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be in the array range";
-    }
-
-    my $range = new string[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $range->[$pos] = $strings->[$i];
-      $pos++;
-    }
-
-    return $range;
+    warn "Fn->copy_array_range_string is deprecated. Use Array->copy_range_string instead.";
+    return Array->copy_range_string($strings, $offset, $length);
   }
 
   static method copy_array_short : short[] ($nums : short[]) {
@@ -414,19 +201,8 @@ class Fn {
   }
 
   precompile static method copy_array_string : string[] ($strings : string[]) {
-    if ($strings == undef) {
-      return undef;
-    }
-    
-    my $length = @$strings;
-
-    my $new_strings = new string[$length];
-
-    for (my $i = 0; $i < $length; $i++) {
-      $new_strings->[$i] = copy $strings->[$i];
-    }
-
-    return $new_strings;
+    warn "Fn->copy_array_string is deprecated. Use Array->copy_tring instead.";
+    return Array->copy_string($strings);
   }
   
   static method copy_string : string ($string : string) {
@@ -435,510 +211,105 @@ class Fn {
 
   native static method crand : int ($seed : int*);
 
-  precompile static method dump_array_byte : string ($nums : byte[]) {
-    
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = (string)$nums->[$i];
-      $dump .= "  $string";
-      if ($i != @$nums - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+  static method dump_array_byte : string ($nums : byte[]) {
+    warn "Fn->dump_array_byte is deprecated. Use Array->dump_byte instead.";
+    return Array->dump_byte($nums);
   }
 
-  precompile static method dump_array_double : string ($nums : double[]) {
-    
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = (string)$nums->[$i];
-      $dump .= "  $string";
-      if ($i != @$nums - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+  static method dump_array_double : string ($nums : double[]) {
+    warn "Fn->dump_array_double is deprecated. Use Array->dump_double instead.";
+    return Array->dump_double($nums);
   }
 
-  precompile static method dump_array_float : string ($nums : float[]) {
-    
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = (string)$nums->[$i];
-      $dump .= "  $string";
-      if ($i != @$nums - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+  static method dump_array_float : string ($nums : float[]) {
+    warn "Fn->dump_array_float is deprecated. Use Array->dump_float instead.";
+    return Array->dump_float($nums);
   }
 
-  precompile static method dump_array_int : string ($nums : int[]) {
-    
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = (string)$nums->[$i];
-      $dump .= "  $string";
-      if ($i != @$nums - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+  static method dump_array_int : string ($nums : int[]) {
+    warn "Fn->dump_array_int is deprecated. Use Array->dump_int instead.";
+    return Array->dump_int($nums);
   }
 
-  precompile static method dump_array_long : string ($nums : long[]) {
-    
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = (string)$nums->[$i];
-      $dump .= "  $string";
-      if ($i != @$nums - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+  static method dump_array_long : string ($nums : long[]) {
+    warn "Fn->dump_array_long is deprecated. Use Array->dump_long instead.";
+    return Array->dump_long($nums);
   }
 
-  precompile static method dump_array_object : string ($objects : object[], $stringer : Stringer) {
-    
-    if ($objects == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$objects; $i++) {
-      my $string = $stringer->($objects->[$i]);
-      $dump .= "  $string";
-      if ($i != @$objects - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+  static method dump_array_object : string ($objects : object[], $stringer : Stringer) {
+    warn "Fn->dump_array_object is deprecated. Use Array->dump_object instead.";
+    return Array->dump_object($objects, $stringer);
   }
 
-  precompile static method dump_array_short : string ($nums : short[]) {
-    
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = (string)$nums->[$i];
-      $dump .= "  $string";
-      if ($i != @$nums - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+  static method dump_array_short : string ($nums : short[]) {
+    warn "Fn->dump_array_short is deprecated. Use Array->dump_short instead.";
+    return Array->dump_short($nums);
   }
 
-  precompile static method dump_array_string : string ($strings : string[]) {
-    
-    if ($strings == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$strings; $i++) {
-      my $string = $strings->[$i];
-      $dump .= "  $string";
-      if ($i != @$strings - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+  static method dump_array_string : string ($strings : string[]) {
+    warn "Fn->dump_array_string is deprecated. Use Array->dump_string instead.";
+    return Array->dump_string($strings);
   }
 
-  precompile static method dump_array_unsigned_byte : string ($nums : byte[]) {
-    
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = &sprintf("%u", (int)$nums->[$i] & 0xFF);
-      $dump .= "  $string";
-      if ($i != @$nums - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+  static method dump_array_unsigned_byte : string ($nums : byte[]) {
+    warn "Fn->dump_array_unsigned_byte is deprecated. Use Array->dump_unsigned_byte.";
+    return Array->dump_unsigned_byte($nums);
   }
 
-  precompile static method dump_array_unsigned_int : string ($nums : int[]) {
-    
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = &sprintf("%u", $nums->[$i]);
-      $dump .= "  $string";
-      if ($i != @$nums - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+  static method dump_array_unsigned_int : string ($nums : int[]) {
+    warn "Fn->dump_array_unsigned_int is deprecated. Use Array->dump_unsigned_int.";
+    return Array->dump_unsigned_int($nums);
   }
 
-  precompile static method dump_array_unsigned_long : string ($nums : long[]) {
-    
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = &sprintf("%lu", $nums->[$i]);
-      $dump .= "  $string";
-      if ($i != @$nums - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+  static method dump_array_unsigned_long : string ($nums : long[]) {
+    warn "Fn->dump_array_unsigned_long is deprecated. Use Array->dump_unsigned_long.";
+    return Array->dump_unsigned_long($nums);
   }
 
-  precompile static method dump_array_unsigned_short : string ($nums : short[]) {
-    
-    if ($nums == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = &sprintf("%u", (int)$nums->[$i] & 0xFFFF);
-      $dump .= "  $string";
-      if ($i != @$nums - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+  static method dump_array_unsigned_short : string ($nums : short[]) {
+    warn "Fn->dump_array_unsigned_short is deprecated. Use Array->dump_unsigned_short.";
+    return Array->dump_unsigned_short($nums);
   }
 
   native static method get_next_code_point : int ($str : string, $offset_ref : int*);
   
-  precompile static method equals_array_byte : int ($nums1 : byte[], $nums2 : byte[]) {
-    
-    if ($nums1 == undef && $nums2 == undef) {
-      return 1;
-    }
-    elsif ($nums1 != undef && $nums2 == undef) {
-      return 0;
-    }
-    elsif ($nums1 == undef && $nums2 != undef) {
-      return 0;
-    }
-    
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-
-    return $is_equals;
+  static method equals_array_byte : int ($nums1 : byte[], $nums2 : byte[]) {
+    warn "Fn->equals_array_byte is deprecated. Use Array->equals_byte.";
+    return Array->equals_byte($nums1, $nums2);
   }
 
-  precompile static method equals_array_double : int ($nums1 : double[], $nums2 : double[]) {
-    if ($nums1 == undef && $nums2 == undef) {
-      return 1;
-    }
-    elsif ($nums1 != undef && $nums2 == undef) {
-      return 0;
-    }
-    elsif ($nums1 == undef && $nums2 != undef) {
-      return 0;
-    }
-    
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-
-    return $is_equals;
+  static method equals_array_double : int ($nums1 : double[], $nums2 : double[]) {
+    warn "Fn->equals_array_double is deprecated. Use Array->equals_double.";
+    return Array->equals_double($nums1, $nums2);
   }
 
-  precompile static method equals_array_float : int ($nums1 : float[], $nums2 : float[]) {
-    if ($nums1 == undef && $nums2 == undef) {
-      return 1;
-    }
-    elsif ($nums1 != undef && $nums2 == undef) {
-      return 0;
-    }
-    elsif ($nums1 == undef && $nums2 != undef) {
-      return 0;
-    }
-    
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-
-    return $is_equals;
+  static method equals_array_float : int ($nums1 : float[], $nums2 : float[]) {
+    warn "Fn->equals_array_float is deprecated. Use Array->equals_float.";
+    return Array->equals_float($nums1, $nums2);
   }
 
-  precompile static method equals_array_int : int ($nums1 : int[], $nums2 : int[]) {
-    if ($nums1 == undef && $nums2 == undef) {
-      return 1;
-    }
-    elsif ($nums1 != undef && $nums2 == undef) {
-      return 0;
-    }
-    elsif ($nums1 == undef && $nums2 != undef) {
-      return 0;
-    }
-    
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-
-    return $is_equals;
+  static method equals_array_int : int ($nums1 : int[], $nums2 : int[]) {
+    warn "Fn->equals_array_int is deprecated. Use Array->equals_int.";
+    return Array->equals_int($nums1, $nums2);
   }
-  precompile static method equals_array_long : int ($nums1 : long[], $nums2 : long[]) {
-    if ($nums1 == undef && $nums2 == undef) {
-      return 1;
-    }
-    elsif ($nums1 != undef && $nums2 == undef) {
-      return 0;
-    }
-    elsif ($nums1 == undef && $nums2 != undef) {
-      return 0;
-    }
-    
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-
-    return $is_equals;
+  static method equals_array_long : int ($nums1 : long[], $nums2 : long[]) {
+    warn "Fn->equals_array_long is deprecated. Use Array->equals_long.";
+    return Array->equals_long($nums1, $nums2);
   }
 
-  precompile static method equals_array_object : int ($objects1 : object[], $objects2 : object[], $equality_checker : EqualityChecker) {
-    if ($objects1 == undef && $objects2 == undef) {
-      return 1;
-    }
-    elsif ($objects1 != undef && $objects2 == undef) {
-      return 0;
-    }
-    elsif ($objects1 == undef && $objects2 != undef) {
-      return 0;
-    }
-    
-    my $is_equals = 1;
-    if (@$objects1 == @$objects2) {
-      for (my $i = 0; $i < @$objects1; $i++) {
-        if (!$equality_checker->($objects1->[$i], $objects2->[$i])) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-
-    return $is_equals;
+  static method equals_array_object : int ($objects1 : object[], $objects2 : object[], $equality_checker : EqualityChecker) {
+    warn "Fn->equals_array_object is deprecated. Use Array->equals_object.";
+    return Array->equals_object($objects1, $objects2, $equality_checker);
   }
 
-  precompile static method equals_array_short : int ($nums1 : short[], $nums2 : short[]) {
-    if ($nums1 == undef && $nums2 == undef) {
-      return 1;
-    }
-    elsif ($nums1 != undef && $nums2 == undef) {
-      return 0;
-    }
-    elsif ($nums1 == undef && $nums2 != undef) {
-      return 0;
-    }
-    
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-
-    return $is_equals;
+  static method equals_array_short : int ($nums1 : short[], $nums2 : short[]) {
+    warn "Fn->equals_array_short is deprecated. Use Array->equals_short.";
+    return Array->equals_short($nums1, $nums2);
   }
 
-  precompile static method equals_array_string : int ($strings1 : string[], $strings2 : string[]) {
-    if ($strings1 == undef && $strings2 == undef) {
-      return 1;
-    }
-    elsif ($strings1 != undef && $strings2 == undef) {
-      return 0;
-    }
-    elsif ($strings1 == undef && $strings2 != undef) {
-      return 0;
-    }
-    
-    my $is_equals = 1;
-    if (@$strings1 == @$strings2) {
-      for (my $i = 0; $i < @$strings1; $i++) {
-        if ($strings1->[$i] ne $strings2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-
-    return $is_equals;
+  static method equals_array_string : int ($strings1 : string[], $strings2 : string[]) {
+    warn "Fn->equals_array_string is deprecated. Use Array->equals_string.";
+    return Array->equals_string($strings1, $strings2);
   }
 
   precompile static method hex : int ($hex_string : string) {
@@ -1273,56 +644,61 @@ class Fn {
     return $code_point;
   }
 
-  precompile static method memset_byte : void ($dest : byte[], $dest_offset : int, $value : byte, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $value;
-    }
+  static method memset_byte : void ($dest : byte[], $dest_offset : int, $value : byte, $length : int) {
+    warn "Fn->memset_byte is deprecated. Use Array->memset_byte.";
+    Array->memset_byte($dest, $dest_offset, $value, $length);
   }
-  precompile static method memset_double : void ($dest : double[], $dest_offset : int, $value : double, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $value;
-    }
+  static method memset_double : void ($dest : double[], $dest_offset : int, $value : double, $length : int) {
+    warn "Fn->memset_double is deprecated. Use Array->memset_double.";
+    Array->memset_double($dest, $dest_offset, $value, $length);
   }
-  precompile static method memset_float : void ($dest : float[], $dest_offset : int, $value : float, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $value;
-    }
+  static method memset_float : void ($dest : float[], $dest_offset : int, $value : float, $length : int) {
+    warn "Fn->memset_float is deprecated. Use Array->memset_float.";
+    Array->memset_float($dest, $dest_offset, $value, $length);
   }
-  precompile static method memset_int : void ($dest : int[], $dest_offset : int, $value : int, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $value;
-    }
+  static method memset_int : void ($dest : int[], $dest_offset : int, $value : int, $length : int) {
+    warn "Fn->memset_int is deprecated. Use Array->memset_int.";
+    Array->memset_int($dest, $dest_offset, $value, $length);
   }
-  precompile static method memset_long : void ($dest : long[], $dest_offset : int, $value : long, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $value;
-    }
+  static method memset_long : void ($dest : long[], $dest_offset : int, $value : long, $length : int) {
+    warn "Fn->memset_long is deprecated. Use Array->memset_long.";
+    Array->memset_long($dest, $dest_offset, $value, $length);
   }
-  precompile static method memset_short : void ($dest : short[], $dest_offset : int, $value : short, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $value;
-    }
+  static method memset_short : void ($dest : short[], $dest_offset : int, $value : short, $length : int) {
+    warn "Fn->memset_short is deprecated. Use Array->memset_short.";
+    Array->memset_short($dest, $dest_offset, $value, $length);
   }
-  precompile static method memset_object : void ($dest : object[], $dest_offset : int, $value : object, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $value;
-    }
+  static method memset_object : void ($dest : object[], $dest_offset : int, $value : object, $length : int) {
+    warn "Fn->memset_object is deprecated. Use Array->memset_object.";
+    Array->memset_object($dest, $dest_offset, $value, $length);
   }
   
   native static method memcpy : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
-  native static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
-  native static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
-  native static method memcpy_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
-  native static method memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
-  native static method memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
-  native static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
+  
+  static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int) {
+    warn "Fn->memcpy_byte is deprecated. Use Array->memcpy_byte.";
+    Array->memcpy_byte($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int) {
+    warn "Fn->memcpy_double is deprecated. Use Array->memcpy_double.";
+    Array->memcpy_double($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memcpy_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int) {
+    warn "Fn->memcpy_float is deprecated. Use Array->memcpy_float.";
+    Array->memcpy_float($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int) {
+    warn "Fn->memcpy_int is deprecated. Use Array->memcpy_int.";
+    Array->memcpy_int($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int) {
+    warn "Fn->memcpy_long is deprecated. Use Array->memcpy_long.";
+    Array->memcpy_long($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int) {
+    warn "Fn->memcpy_short is deprecated. Use Array->memcpy_short.";
+    Array->memcpy_short($dest, $dest_offset, $source, $source_offset, $length);
+  }
   precompile static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     for (my $i = 0; $i < $length; $i++) {
       my $dist_index = $dest_offset + $i;
@@ -1332,12 +708,31 @@ class Fn {
   }
 
   native static method memmove : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
-  native static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
-  native static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
-  native static method memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
-  native static method memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
-  native static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
-  native static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
+
+  static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int) {
+    warn "Fn->memmove_byte is deprecated. Use Array->memmove_byte.";
+    Array->memmove_byte($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int) {
+    warn "Fn->memmove_double is deprecated. Use Array->memmove_double.";
+    Array->memmove_double($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int) {
+    warn "Fn->memmove_float is deprecated. Use Array->memmove_float.";
+    Array->memmove_float($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int) {
+    warn "Fn->memmove_int is deprecated. Use Array->memmove_int.";
+    Array->memmove_int($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int) {
+    warn "Fn->memmove_long is deprecated. Use Array->memmove_long.";
+    Array->memmove_long($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int) {
+    warn "Fn->memmove_short is deprecated. Use Array->memmove_short.";
+    Array->memmove_short($dest, $dest_offset, $source, $source_offset, $length);
+  }
   static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     if ($dest == $source) {
       my $source_length = @$source;
@@ -1349,8 +744,11 @@ class Fn {
     &memcpy_object($dest, $dest_offset, $source, $source_offset, $length);
   }
 
-  native static method new_array_proto : object[] ($proto_array : object[], $length : int);
-
+  static method new_array_proto : object[] ($proto_array : object[], $length : int) {
+    warn "Fn->new_array_proto is deprecated. Use Array->new_proto.";
+    return Array->new_proto($proto_array, $length);
+  }
+  
   static method ord : int ($utf8_character : string) {
     unless ($utf8_character) {
       return -1;
