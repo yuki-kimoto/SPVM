@@ -58,7 +58,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL SET_ERRNO
+%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL SET_ERROR_CODE
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -742,9 +742,9 @@ operator
     {
       $$ = SPVM_OP_build_errno(compiler, $1);
     }
-  | SET_ERRNO operator
+  | SET_ERROR_CODE operator
     {
-      $$ = SPVM_OP_build_set_errno(compiler, $1, $2);
+      $$ = SPVM_OP_build_set_error_code(compiler, $1, $2);
     }
 
 operators

@@ -283,7 +283,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_class_id,
     NULL, // errno_value,
     SPVM_API_get_errno,
-    SPVM_API_set_errno,
+    SPVM_API_set_error_code,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -2710,7 +2710,7 @@ int32_t SPVM_API_get_errno(SPVM_ENV* env) {
   return errno_value;
 }
 
-int32_t SPVM_API_set_errno(SPVM_ENV* env, int32_t number) {
+int32_t SPVM_API_set_error_code(SPVM_ENV* env, int32_t number) {
   (void)env;
   
   env->errno_value = (void*)(intptr_t)number;
@@ -5979,7 +5979,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int_vars[opcode->operand0] = error_code;
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_ERRNO: {
+      case SPVM_OPCODE_C_ID_SET_ERROR_CODE: {
         error_code = int_vars[opcode->operand1];
         int_vars[opcode->operand0] = error_code;
         break;

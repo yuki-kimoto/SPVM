@@ -283,7 +283,7 @@ struct spvm_env {
   int32_t (*get_class_id)(SPVM_ENV* env, const char* class_name);
   void* errno_value;
   int32_t (*get_errno)(SPVM_ENV* env);
-  int32_t (*set_errno)(SPVM_ENV* env, int32_t number);
+  int32_t (*set_error_code)(SPVM_ENV* env, int32_t number);
 };
 
 

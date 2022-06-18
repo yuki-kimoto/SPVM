@@ -255,7 +255,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "REQUIRED",
     "CLASS_ID",
     "ERRNO",
-    "SET_ERRNO",
+    "SET_ERROR_CODE",
   };
   
   return id_names;
@@ -1409,7 +1409,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_HAS_IMPL:
     case SPVM_OP_C_ID_CLASS_ID:
     case SPVM_OP_C_ID_ERRNO:
-    case SPVM_OP_C_ID_SET_ERRNO:
+    case SPVM_OP_C_ID_SET_ERROR_CODE:
     {
       type = SPVM_TYPE_new_int_type(compiler);
       break;
@@ -3196,11 +3196,11 @@ SPVM_OP* SPVM_OP_build_errno(SPVM_COMPILER* compiler, SPVM_OP* op_errno) {
   return op_errno;
 }
 
-SPVM_OP* SPVM_OP_build_set_errno(SPVM_COMPILER* compiler, SPVM_OP* op_set_errno, SPVM_OP* op_number) {
+SPVM_OP* SPVM_OP_build_set_error_code(SPVM_COMPILER* compiler, SPVM_OP* op_set_error_code, SPVM_OP* op_number) {
   
-  SPVM_OP_insert_child(compiler, op_set_errno, op_set_errno->last, op_number);
+  SPVM_OP_insert_child(compiler, op_set_error_code, op_set_error_code->last, op_number);
   
-  return op_set_errno;
+  return op_set_error_code;
 }
 
 SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* op_term) {

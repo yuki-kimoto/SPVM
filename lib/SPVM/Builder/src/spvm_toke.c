@@ -2298,9 +2298,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 's' : {
-                if (strcmp(symbol_name, "set_errno") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SET_ERRNO);
-                  keyword_token = SET_ERRNO;
+                if (strcmp(symbol_name, "set_error_code") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SET_ERROR_CODE);
+                  keyword_token = SET_ERROR_CODE;
                 }
                 else if (strcmp(symbol_name, "static") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_STATIC, compiler->cur_file, compiler->cur_line);

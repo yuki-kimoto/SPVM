@@ -2,11 +2,11 @@ class TestCase::Errno {
   use Point;
   static method basic : int () {
     {
-      set_errno 5;
+      set_error_code 5;
       unless (errno == 5) {
         return 0;
       }
-      set_errno 6;
+      set_error_code 6;
       eval {
         die;
       };
@@ -17,19 +17,19 @@ class TestCase::Errno {
     
     
     {
-      set_errno 7;
+      set_error_code 7;
       &foo();
       unless (errno == 7) {
         return 0;
       }
-      set_errno 8;
+      set_error_code 8;
       eval {
         &foo_die();
       };
       unless (errno == 9) {
         return 0;
       }
-      set_errno 900;
+      set_error_code 900;
       eval {
         &foo_bar_die();
       };
@@ -44,21 +44,21 @@ class TestCase::Errno {
   }
   
   static method foo : int () {
-    set_errno 12;
+    set_error_code 12;
   }
   
   static method foo_die : int () {
-    set_errno 9;
+    set_error_code 9;
     die;
   }
 
   static method foo_bar_die : int () {
-    set_errno 200;
+    set_error_code 200;
     &bar_die;
   }
   
   static method bar_die : int () {
-    set_errno 100;
+    set_error_code 100;
     die "Died at bar_die";
   }
 }

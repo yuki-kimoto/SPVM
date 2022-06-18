@@ -2115,7 +2115,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_ERRNO: {
+      case SPVM_OPCODE_C_ID_SET_ERROR_CODE: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "    error_code = ");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);

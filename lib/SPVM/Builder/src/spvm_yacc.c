@@ -229,7 +229,7 @@ extern int SPVM_yydebug;
     IS_READ_ONLY = 364,
     COPY = 365,
     HAS_IMPL = 366,
-    SET_ERRNO = 367,
+    SET_ERROR_CODE = 367,
     INC = 368,
     DEC = 369,
     ARROW = 370
@@ -607,9 +607,9 @@ static const char *const yytname[] =
   "REMAINDER_UNSIGNED_INT", "REMAINDER_UNSIGNED_LONG", "LOGICAL_NOT",
   "BIT_NOT", "'@'", "CREATE_REF", "DEREF", "PLUS", "MINUS", "CONVERT",
   "SCALAR", "STRING_LENGTH", "ISWEAK", "REFCNT", "REFOP", "DUMP",
-  "NEW_STRING_LEN", "IS_READ_ONLY", "COPY", "HAS_IMPL", "SET_ERRNO", "INC",
-  "DEC", "ARROW", "':'", "';'", "'}'", "','", "')'", "']'", "$accept",
-  "grammar", "opt_classes", "classes", "class", "class_block",
+  "NEW_STRING_LEN", "IS_READ_ONLY", "COPY", "HAS_IMPL", "SET_ERROR_CODE",
+  "INC", "DEC", "ARROW", "':'", "';'", "'}'", "','", "')'", "']'",
+  "$accept", "grammar", "opt_classes", "classes", "class", "class_block",
   "opt_declarations", "declarations", "declaration", "init_block", "use",
   "require", "alias", "allow", "interface", "enumeration",
   "enumeration_block", "opt_enumeration_values", "enumeration_values",
@@ -3280,7 +3280,7 @@ yyreduce:
   case 143:
 #line 746 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_set_errno(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
+      (yyval.opval) = SPVM_OP_build_set_error_code(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
 #line 3286 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

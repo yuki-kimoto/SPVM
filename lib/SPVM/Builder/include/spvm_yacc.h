@@ -154,7 +154,7 @@ extern int SPVM_yydebug;
     IS_READ_ONLY = 364,
     COPY = 365,
     HAS_IMPL = 366,
-    SET_ERRNO = 367,
+    SET_ERROR_CODE = 367,
     INC = 368,
     DEC = 369,
     ARROW = 370

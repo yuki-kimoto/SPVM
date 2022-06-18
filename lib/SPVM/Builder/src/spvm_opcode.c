@@ -479,7 +479,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "SET_MULNUM_FIELD_DEREF_DOUBLE",
     "GET_CLASS_ID",
     "GET_ERRNO",
-    "SET_ERRNO",
+    "SET_ERROR_CODE",
   };
   
   return id_names;
