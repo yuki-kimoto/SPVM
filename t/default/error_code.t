@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Errno';
+use SPVM 'TestCase::ErrorCode';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Local variable
 {
-  ok(SPVM::TestCase::Errno->basic);
+  ok(SPVM::TestCase::ErrorCode->basic);
 }
 
 # All object is freed

@@ -1,4 +1,4 @@
-class TestCase::Errno {
+class TestCase::ErrorCode {
   use Point;
   static method basic : int () {
     {

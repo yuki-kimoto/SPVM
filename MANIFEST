@@ -350,6 +350,7 @@ t/default/default_loaded_modules.t
 t/default/divide.t
 t/default/dump.t
 t/default/enum.t
+t/default/error_code.t
 t/default/examples.t
 t/default/exception.t
 t/default/exchange_api.t
@@ -519,6 +520,7 @@ t/default/lib/SPVM/TestCase/DumpTest1.spvm
 t/default/lib/SPVM/TestCase/Empty.spvm
 t/default/lib/SPVM/TestCase/Enum.spvm
 t/default/lib/SPVM/TestCase/Enum/Data1.spvm
+t/default/lib/SPVM/TestCase/ErrorCode.spvm
 t/default/lib/SPVM/TestCase/Examples.spvm
 t/default/lib/SPVM/TestCase/Exception.spvm
 t/default/lib/SPVM/TestCase/ExchangeAPI.spvm
