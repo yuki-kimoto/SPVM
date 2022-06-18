@@ -1234,7 +1234,6 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
   
   int32_t exception_flag = 0;
-  env->set_errno(env, -1);
   
   // Call native method
   if (method->is_native) {
@@ -1311,7 +1310,10 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
 
   // Exception flag
   int32_t exception_flag = 0;
-
+  
+  // Error code value
+  int32_t error_code_value = 1;
+  
   // Operation code base
   int32_t method_opcodes_base_id = method->opcodes_base_id;
 
@@ -4342,7 +4344,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DIE_FLAG_TRUE: {
-        exception_flag = 1;
+        exception_flag = error_code_value;
         break;
       }
       case SPVM_OPCODE_C_ID_PRINT: {

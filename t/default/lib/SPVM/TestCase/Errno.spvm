@@ -3,11 +3,6 @@ class TestCase::Errno {
   static method basic : int () {
     
     {
-      my $errno = errno;
-      unless ($errno == -1) {
-        return 0;
-      }
-
       set_errno -128;
       unless (errno == -128) {
         return 0;
@@ -19,7 +14,7 @@ class TestCase::Errno {
         return 0;
       }
     }
-    
+
     set_errno -2;
     
     my $default_errno = -128;
@@ -27,9 +22,6 @@ class TestCase::Errno {
       &foo(\$default_errno);
     };
     
-    unless ($default_errno == -1) {
-      return 0;
-    }
     unless (errno == class_id Point) {
       return 0;
     }
