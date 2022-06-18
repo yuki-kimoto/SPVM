@@ -1,29 +1,41 @@
 class TestCase::Errno {
   use Point;
   static method basic : int () {
-    
     {
-      set_errno -128;
-      unless (errno == -128) {
+      set_errno 5;
+      unless (errno == 5) {
         return 0;
       }
-      
-      set_errno class_id Point;
-      
-      unless (errno >= 0) {
+      set_errno 6;
+      eval {
+        die;
+      };
+      unless (errno == 6) {
         return 0;
       }
     }
-
-    set_errno -2;
     
-    my $default_errno = -128;
-    eval {
-      &foo(\$default_errno);
-    };
     
-    unless (errno == class_id Point) {
-      return 0;
+    {
+      set_errno 7;
+      &foo();
+      unless (errno == 7) {
+        return 0;
+      }
+      set_errno 8;
+      eval {
+        &foo_die();
+      };
+      unless (errno == 9) {
+        return 0;
+      }
+      set_errno 900;
+      eval {
+        &foo_bar_die();
+      };
+      unless (errno == 100) {
+        return 0;
+      }
     }
     
     $@ = undef;
@@ -31,13 +43,22 @@ class TestCase::Errno {
     return 1;
   }
   
-  static method foo : int ($default_errno : int*) {
-    my $errno = errno;
-    
-    $$default_errno = $errno;
-    
-    set_errno class_id Point;
-    
+  static method foo : int () {
+    set_errno 12;
+  }
+  
+  static method foo_die : int () {
+    set_errno 9;
     die;
+  }
+
+  static method foo_bar_die : int () {
+    set_errno 200;
+    &bar_die;
+  }
+  
+  static method bar_die : int () {
+    set_errno 100;
+    die "Died at bar_die";
   }
 }

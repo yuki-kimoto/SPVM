@@ -267,7 +267,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   // in double pointer logic. volatile attribute fixed the test "ref.t" "SPVM::TestCase::Ref->test_pass_value_ref_byte".
   SPVM_STRING_BUFFER_add(string_buffer, "  volatile int32_t exception_flag = 0;\n");
 
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t error_code_value = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t error_code = 1;\n");
 
   int32_t method_mortal_stack_length = SPVM_API_RUNTIME_get_method_mortal_stack_length(runtime, method_id);
   if (method_mortal_stack_length > 0) {
@@ -2110,20 +2110,20 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "      ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_errno(env);\n"
+        SPVM_STRING_BUFFER_add(string_buffer, " = error_code;\n"
                                               "  }\n");
         
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERRNO: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t number = ");
+                                              "    error_code = ");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
         
                                               "      ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->set_errno(env, number);\n"
+        SPVM_STRING_BUFFER_add(string_buffer, " = error_code;\n"
                                               "  }\n");
         
         break;
@@ -3005,12 +3005,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "->");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\n"
-                                              "  {\n");
+                                              "  {\n"
+                                              "    int32_t return_value;\n");
         
         // Method inline expantion in same class
         if (decl_method_class_id == class_id && decl_method_has_precompile_flag) {
           
-          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVMPRECOMPILE__");
+          SPVM_STRING_BUFFER_add(string_buffer, "    return_value = SPVMPRECOMPILE__");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
           SPVM_STRING_BUFFER_add(string_buffer, (char*)"__");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
@@ -3074,11 +3075,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                                 "      exception_flag = 1;\n"
                                                 "    }\n");
 
-          SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) { exception_flag = env->call_spvm_method(env, call_method_id, stack); }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) { return_value = env->call_spvm_method(env, call_method_id, stack); }\n");
         }
         
         // Call method
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (return_value != 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      error_code = return_value;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    } else {\n");
         if (decl_method_return_type_dimension == 0) {
           switch (decl_method_return_basic_type_category) {
             case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID: {
@@ -3287,7 +3291,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DIE_FLAG_TRUE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  exception_flag = error_code_value;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  exception_flag = 1;\n");
         break;
       }
       case SPVM_OPCODE_C_ID_PRINT: {
@@ -4620,13 +4624,18 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   }
   
   // No exception
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t return_value = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (exception_flag) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      return_value = error_code;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    } else {\n");
   int32_t method_return_type_check_runtime_assignability_to_any_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method_return_type_id);
   if (method_return_type_check_runtime_assignability_to_any_object) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    if (stack[0].oval != NULL) { SPVM_API_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "      if (stack[0].oval != NULL) { SPVM_API_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n"
-  "  return exception_flag;\n"
+  SPVM_STRING_BUFFER_add(string_buffer, "    }\n"
+  "  return return_value;\n"
+                                        "  }\n"
                                         "}\n"
                                         "\n");
 }

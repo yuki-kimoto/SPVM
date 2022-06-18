@@ -3670,8 +3670,12 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   // Runtime method
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
   
+  const char* method_name =  SPVM_API_RUNTIME_get_name(runtime, method->name_id);
+  
   // Runtime class
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, method->class_id);
+
+  const char* class_name =  SPVM_API_RUNTIME_get_name(runtime, class->name_id);
 
   // Operation codes
   SPVM_OPCODE* opcodes = runtime->opcodes;
@@ -3680,7 +3684,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   int32_t exception_flag = 0;
   
   // Error code value
-  int32_t error_code_value = 1;
+  int32_t error_code = 1;
   
   // Operation code base
   int32_t method_opcodes_base_id = method->opcodes_base_id;
@@ -5972,12 +5976,12 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ERRNO: {
-        int_vars[opcode->operand0] = env->get_errno(env);
+        int_vars[opcode->operand0] = error_code;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERRNO: {
-        int32_t number = int_vars[opcode->operand1];
-        int_vars[opcode->operand0] = env->set_errno(env, number);
+        error_code = int_vars[opcode->operand1];
+        int_vars[opcode->operand0] = error_code;
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY: {
@@ -6404,9 +6408,12 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       {
         int32_t call_method_id = opcode->operand1;
         stack_index = 0;
-        exception_flag = env->call_spvm_method(env, call_method_id, stack);
-
-        if (!exception_flag) {
+        int32_t return_value = env->call_spvm_method(env, call_method_id, stack);
+        if (return_value != 0) {
+          exception_flag = 1;
+          error_code = return_value;
+        }
+        else {
           SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_RUNTIME_get_method(runtime, call_method_id);
           SPVM_RUNTIME_TYPE* call_spvm_method_return_type =SPVM_API_RUNTIME_get_type(runtime, call_spvm_method->return_type_id);
           int32_t call_spvm_method_return_basic_type_id = call_spvm_method_return_type->basic_type_id;
@@ -6548,9 +6555,12 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           exception_flag = 1;
         }
         else {
-          exception_flag = env->call_spvm_method(env, call_method_id, stack);
-          
-          if (!exception_flag) {
+          int32_t return_value = env->call_spvm_method(env, call_method_id, stack);
+          if (return_value != 0) {
+            exception_flag = 1;
+            error_code = return_value;
+          }
+          else {
             SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_RUNTIME_get_method(runtime, call_method_id);
             SPVM_RUNTIME_TYPE* call_spvm_method_return_type =SPVM_API_RUNTIME_get_type(runtime, call_spvm_method->return_type_id);
             int32_t call_spvm_method_return_basic_type_id = call_spvm_method_return_type->basic_type_id;
@@ -6712,7 +6722,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DIE_FLAG_TRUE: {
-        exception_flag = error_code_value;
+        exception_flag = 1;
         break;
       }
       case SPVM_OPCODE_C_ID_PRINT: {
@@ -7479,7 +7489,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         break;
       }
       case SPVM_OPCODE_C_ID_END_METHOD: {
-        goto label_END_METHOD;
+        goto label_END_OF_METHOD;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT: {
         int8_t value = byte_vars[opcode->operand1];
@@ -7680,20 +7690,26 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
     opcode_rel_index++;
   }
 
-  label_END_METHOD:
+  label_END_OF_METHOD: {
   
-  // Decrement ref count of return value
-  if (!exception_flag) {
-    int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method->return_type_id);
-    if (method_return_type_is_object) {
-      if (*(void**)&stack[0] != NULL) {
-        SPVM_API_DEC_REF_COUNT_ONLY(*(void**)&stack[0]);
+    // Decrement ref count of return value
+    int32_t return_value = 0;
+    if (exception_flag) {
+      assert(error_code > 0);
+      return_value = error_code;
+    }
+    else {
+      int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method->return_type_id);
+      if (method_return_type_is_object) {
+        if (*(void**)&stack[0] != NULL) {
+          SPVM_API_DEC_REF_COUNT_ONLY(*(void**)&stack[0]);
+        }
       }
     }
+    
+    SPVM_API_free_memory_block(env, call_stack);
+    call_stack = NULL;
+    
+    return return_value;
   }
-  
-  SPVM_API_free_memory_block(env, call_stack);
-  call_stack = NULL;
-  
-  return exception_flag;
 }
