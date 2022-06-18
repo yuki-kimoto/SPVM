@@ -254,7 +254,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "OF",
     "REQUIRED",
     "CLASS_ID",
-    "ERRNO",
+    "ERROR_CODE",
     "SET_ERROR_CODE",
   };
   
@@ -1408,7 +1408,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_IS_READ_ONLY:
     case SPVM_OP_C_ID_HAS_IMPL:
     case SPVM_OP_C_ID_CLASS_ID:
-    case SPVM_OP_C_ID_ERRNO:
+    case SPVM_OP_C_ID_ERROR_CODE:
     case SPVM_OP_C_ID_SET_ERROR_CODE:
     {
       type = SPVM_TYPE_new_int_type(compiler);

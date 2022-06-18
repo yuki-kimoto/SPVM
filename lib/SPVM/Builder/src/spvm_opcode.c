@@ -478,7 +478,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "SET_MULNUM_FIELD_DEREF_FLOAT",
     "SET_MULNUM_FIELD_DEREF_DOUBLE",
     "GET_CLASS_ID",
-    "GET_ERRNO",
+    "GET_ERROR_CODE",
     "SET_ERROR_CODE",
   };
   

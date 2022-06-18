@@ -5975,7 +5975,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ERRNO: {
+      case SPVM_OPCODE_C_ID_GET_ERROR_CODE: {
         int_vars[opcode->operand0] = error_code;
         break;
       }

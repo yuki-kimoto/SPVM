@@ -61,7 +61,7 @@ extern int SPVM_yydebug;
     DESCRIPTOR = 271,
     MAKE_READ_ONLY = 272,
     INTERFACE = 273,
-    ERRNO = 274,
+    ERROR_CODE = 274,
     IF = 275,
     UNLESS = 276,
     ELSIF = 277,

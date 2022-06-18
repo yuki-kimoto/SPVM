@@ -3577,7 +3577,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_STRING_LENGTH:
                         case SPVM_OP_C_ID_NEW:
                         case SPVM_OP_C_ID_CLASS_ID:
-                        case SPVM_OP_C_ID_ERRNO:
+                        case SPVM_OP_C_ID_ERROR_CODE:
                         case SPVM_OP_C_ID_SET_ERROR_CODE:
                         case SPVM_OP_C_ID_CONCAT:
                         case SPVM_OP_C_ID_REFOP:
