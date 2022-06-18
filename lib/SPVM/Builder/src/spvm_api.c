@@ -6721,7 +6721,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_DIE_FLAG_TRUE: {
+      case SPVM_OPCODE_C_ID_SET_EXCEPTION_FLAG_TRUE: {
         exception_flag = 1;
         break;
       }

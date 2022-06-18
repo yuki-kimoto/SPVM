@@ -3290,7 +3290,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_DIE_FLAG_TRUE: {
+      case SPVM_OPCODE_C_ID_SET_EXCEPTION_FLAG_TRUE: {
         SPVM_STRING_BUFFER_add(string_buffer, "  exception_flag = 1;\n");
         break;
       }
