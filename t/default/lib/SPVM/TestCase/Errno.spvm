@@ -7,6 +7,11 @@ class TestCase::Errno {
       unless ($errno == -1) {
         return 0;
       }
+
+      set_errno -128;
+      unless (errno == -128) {
+        return 0;
+      }
       
       set_errno class_id Point;
       
@@ -15,6 +20,32 @@ class TestCase::Errno {
       }
     }
     
+    set_errno -2;
+    
+    my $default_errno = -128;
+    eval {
+      &foo(\$default_errno);
+    };
+    
+    unless ($default_errno == -1) {
+      return 0;
+    }
+    unless (errno == class_id Point) {
+      return 0;
+    }
+    
+    $@ = undef;
+    
     return 1;
+  }
+  
+  static method foo : int ($default_errno : int*) {
+    my $errno = errno;
+    
+    $$default_errno = $errno;
+    
+    set_errno class_id Point;
+    
+    die;
   }
 }

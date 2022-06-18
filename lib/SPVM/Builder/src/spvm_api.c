@@ -3606,7 +3606,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERRNO: {
-        int32_t number = opcode->operand1;
+        int32_t number = int_vars[opcode->operand1];
         int_vars[opcode->operand0] = env->set_errno(env, number);
         break;
       }
