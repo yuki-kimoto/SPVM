@@ -1,8 +1,8 @@
-0.9609_01 2022-06-18
+0.9609_01 2022-06-19
   [CHANGE]
   * Add errno operator
   * Add set_errno operator
-0.9608_02 2022-06-17
+0.9609 2022-06-19
   [CHANGE]
   * Improve error messages of compilation.
   * Improve Time::Info document.
