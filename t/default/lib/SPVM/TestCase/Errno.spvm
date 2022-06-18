@@ -3,14 +3,14 @@ class TestCase::Errno {
   static method basic : int () {
     {
       set_error_code 5;
-      unless (errno == 5) {
+      unless (error_code == 5) {
         return 0;
       }
       set_error_code 6;
       eval {
         die;
       };
-      unless (errno == 6) {
+      unless (error_code == 6) {
         return 0;
       }
     }
@@ -19,21 +19,21 @@ class TestCase::Errno {
     {
       set_error_code 7;
       &foo();
-      unless (errno == 7) {
+      unless (error_code == 7) {
         return 0;
       }
       set_error_code 8;
       eval {
         &foo_die();
       };
-      unless (errno == 9) {
+      unless (error_code == 9) {
         return 0;
       }
       set_error_code 900;
       eval {
         &foo_bar_die();
       };
-      unless (errno == 100) {
+      unless (error_code == 100) {
         return 0;
       }
     }
