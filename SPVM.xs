@@ -3897,6 +3897,13 @@ prepare_env(...)
   // Initialize env
   env->init_env(env);
 
+  // Create stack
+  SPVM_VALUE* stack = env->new_stack(env);
+  size_t iv_stack = PTR2IV(stack);
+  SV* sviv_stack = sv_2mortal(newSViv(iv_stack));
+  SV* sv_stack = sv_2mortal(newRV_inc(sviv_stack));
+  (void)hv_store(hv_self, "stack", strlen("stack"), SvREFCNT_inc(sv_stack), 0);
+
   XSRETURN(0);
 }
 
