@@ -4010,11 +4010,19 @@ DESTROY(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-  
+
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   if (SvOK(sv_env)) {
     SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // Free stack
+    SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+    SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+    if (SvOK(sv_stack)) {
+      void* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
+      env->free_stack(env, stack);
+    }
     
     // Cleanup global variables
     if (env->runtime) {
