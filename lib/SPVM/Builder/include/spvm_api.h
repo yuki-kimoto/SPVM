@@ -302,9 +302,6 @@ int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, int32_t cast_basic_t
 
 int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name);
 
-int32_t SPVM_API_get_errno(SPVM_ENV* env);
-int32_t SPVM_API_set_error_code(SPVM_ENV* env, int32_t number);
-
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 

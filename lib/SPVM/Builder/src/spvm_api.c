@@ -281,9 +281,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
     SPVM_API_get_class_id,
-    NULL, // errno_value,
-    SPVM_API_get_errno,
-    SPVM_API_set_error_code,
     SPVM_API_new_stack,
     SPVM_API_free_stack,
   };
@@ -2719,22 +2716,6 @@ int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
   else {
     return -1;
   }
-}
-
-int32_t SPVM_API_get_errno(SPVM_ENV* env) {
-  (void)env;
-  
-  int32_t errno_value = (int32_t)(intptr_t)env->errno_value;
-  
-  return errno_value;
-}
-
-int32_t SPVM_API_set_error_code(SPVM_ENV* env, int32_t number) {
-  (void)env;
-  
-  env->errno_value = (void*)(intptr_t)number;
-  
-  return number;
 }
 
 int32_t SPVM_API_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
