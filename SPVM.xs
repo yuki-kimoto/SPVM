@@ -215,7 +215,8 @@ call_spvm_method(...)
   else if (items - spvm_args_base > method_args_length) {
     croak("Too many arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
-
+  
+  // 0-255 are used as arguments and return values. 256 is used as exception variable. 257 is used as mortal stack.
   SPVM_VALUE stack[256];
   int32_t stack_index = 0;
 
