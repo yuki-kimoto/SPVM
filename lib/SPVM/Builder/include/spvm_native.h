@@ -284,6 +284,8 @@ struct spvm_env {
   void* errno_value;
   int32_t (*get_errno)(SPVM_ENV* env);
   int32_t (*set_error_code)(SPVM_ENV* env, int32_t number);
+  SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
+  void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 

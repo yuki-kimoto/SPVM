@@ -284,6 +284,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     NULL, // errno_value,
     SPVM_API_get_errno,
     SPVM_API_set_error_code,
+    SPVM_API_new_stack,
+    SPVM_API_free_stack,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -1222,6 +1224,23 @@ void SPVM_API_free_env_raw(SPVM_ENV* env) {
   // Free env
   free(env);
   env = NULL;
+}
+
+SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
+  
+  // Argument and return value stack 0-255
+  // Exception message 256
+  // Mortal stack 257
+  
+  SPVM_VALUE* stack = env->alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * 257);
+  
+  return stack;
+}
+
+void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  env->free_memory_block(env, stack);
+  stack = NULL;
 }
 
 int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* stack) {
