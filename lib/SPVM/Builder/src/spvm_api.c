@@ -1229,9 +1229,9 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   // Exception message 256
   // Mortal stack 257
   
-  SPVM_VALUE* stack = env->alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * 257);
+  SPVM_VALUE* stack_real = env->alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * 257);
   
-  return stack;
+  return stack_real;
 }
 
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
