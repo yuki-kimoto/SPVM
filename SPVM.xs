@@ -3899,6 +3899,14 @@ DESTROY(...)
   SV* sv_builder = sv_builder_ptr ? *sv_builder_ptr : &PL_sv_undef;
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_builder, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack;
+  if (SvOK(sv_stack)) {
+    stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
+  }
+
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
