@@ -11,7 +11,6 @@
 int32_t SPVM_API_get_method_id_cache(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
 int32_t SPVM_API_get_field_id_cache(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
 int32_t SPVM_API_get_class_var_id_cache(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
-int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_OBJECT* object);
 int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name);
 
 // ID
@@ -262,6 +261,7 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth, SPVM_STRING_BUFFER* string_buffer, SPVM_HASH* address_symtable);
 
 // Runtime type checking
+int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_OBJECT* object);
 int32_t SPVM_API_check_runtime_assignability_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPVM_OBJECT* element);
 
 //  "& ~(intptr_t)1" means dropping weaken flag
