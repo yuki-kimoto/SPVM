@@ -9,9 +9,7 @@ use Test::More;
 # SPVM::Fn tests is separated multiple files(smaller than 50KB)
 # The reason is gcc can't compile the precompile code for the insufficient memory
 # in some environment of CPAN testers.
-use SPVM 'TestCase::Lib::Fn1';
-use SPVM 'TestCase::Lib::Fn2';
-use SPVM 'TestCase::Lib::Fn3';
+use SPVM 'TestCase::Lib::Fn';
 
 use SPVM 'Fn';
 
@@ -41,23 +39,23 @@ my $nan_re = qr/(nan|ind)/i;
 
 # crand
 {
-  ok(SPVM::TestCase::Lib::Fn3->crand);
+  ok(SPVM::TestCase::Lib::Fn->crand);
 }
 
 # rand
 {
-  ok(SPVM::TestCase::Lib::Fn3->rand);
+  ok(SPVM::TestCase::Lib::Fn->rand);
 }
 
 # RAND_MAX
 {
-  ok(SPVM::TestCase::Lib::Fn3->RAND_MAX);
+  ok(SPVM::TestCase::Lib::Fn->RAND_MAX);
 }
 
 # Copy
 {
   # copy_string
-  ok(SPVM::TestCase::Lib::Fn3->copy_str);
+  ok(SPVM::TestCase::Lib::Fn->copy_str);
 }
 
 # Constant integral functions
@@ -85,10 +83,10 @@ my $nan_re = qr/(nan|ind)/i;
 }
 
 {
-  ok(SPVM::TestCase::Lib::Fn3->byte_constant);
-  ok(SPVM::TestCase::Lib::Fn3->short_constant);
-  ok(SPVM::TestCase::Lib::Fn3->int_constant);
-  ok(SPVM::TestCase::Lib::Fn3->spvm_like_constants);
+  ok(SPVM::TestCase::Lib::Fn->byte_constant);
+  ok(SPVM::TestCase::Lib::Fn->short_constant);
+  ok(SPVM::TestCase::Lib::Fn->int_constant);
+  ok(SPVM::TestCase::Lib::Fn->spvm_like_constants);
 }
 
 {
@@ -109,240 +107,240 @@ my $nan_re = qr/(nan|ind)/i;
 
 # hex
 {
-  ok(SPVM::TestCase::Lib::Fn3->hex);
+  ok(SPVM::TestCase::Lib::Fn->hex);
 }
 
 # trim_ascii_space
 {
-  ok(SPVM::TestCase::Lib::Fn3->trim_ascii_space);
+  ok(SPVM::TestCase::Lib::Fn->trim_ascii_space);
 }
 
 # split
 {
-  ok(SPVM::TestCase::Lib::Fn3->split);
+  ok(SPVM::TestCase::Lib::Fn->split);
 }
 
 # abs
 {
-  ok(SPVM::TestCase::Lib::Fn3->abs);
+  ok(SPVM::TestCase::Lib::Fn->abs);
 }
 
 # labs
 {
-  ok(SPVM::TestCase::Lib::Fn3->labs);
+  ok(SPVM::TestCase::Lib::Fn->labs);
 }
 
 # to_int_with_base
 {
-  ok(SPVM::TestCase::Lib::Fn3->to_int);
-  ok(SPVM::TestCase::Lib::Fn3->to_int_with_base);
-  ok(SPVM::TestCase::Lib::Fn3->to_long);
-  ok(SPVM::TestCase::Lib::Fn3->to_long_with_base);
-  ok(SPVM::TestCase::Lib::Fn3->to_float);
-  ok(SPVM::TestCase::Lib::Fn3->to_double);
+  ok(SPVM::TestCase::Lib::Fn->to_int);
+  ok(SPVM::TestCase::Lib::Fn->to_int_with_base);
+  ok(SPVM::TestCase::Lib::Fn->to_long);
+  ok(SPVM::TestCase::Lib::Fn->to_long_with_base);
+  ok(SPVM::TestCase::Lib::Fn->to_float);
+  ok(SPVM::TestCase::Lib::Fn->to_double);
 }
 # chompr
 {
-  ok(SPVM::TestCase::Lib::Fn3->chompr);
+  ok(SPVM::TestCase::Lib::Fn->chompr);
 }
 # is_alnum
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_alnum);
+  ok(SPVM::TestCase::Lib::Fn->is_alnum);
 }
 
 # is_alpha
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_alpha);
+  ok(SPVM::TestCase::Lib::Fn->is_alpha);
 }
 
 # is_alpha
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_blank);
+  ok(SPVM::TestCase::Lib::Fn->is_blank);
 }
 
 # is_cntrl
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_cntrl);
+  ok(SPVM::TestCase::Lib::Fn->is_cntrl);
 }
 
 # is_digit
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_digit);
+  ok(SPVM::TestCase::Lib::Fn->is_digit);
 }
 
 # is_graph
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_graph);
+  ok(SPVM::TestCase::Lib::Fn->is_graph);
 }
 
 # is_lower
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_lower);
+  ok(SPVM::TestCase::Lib::Fn->is_lower);
 }
 
 # is_print
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_print);
+  ok(SPVM::TestCase::Lib::Fn->is_print);
 }
 
 # is_print
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_print);
+  ok(SPVM::TestCase::Lib::Fn->is_print);
 }
 
 # is_punct
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_punct);
+  ok(SPVM::TestCase::Lib::Fn->is_punct);
 }
 
 # is_space
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_space);
+  ok(SPVM::TestCase::Lib::Fn->is_space);
 }
 
 # is_upper
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_upper);
+  ok(SPVM::TestCase::Lib::Fn->is_upper);
 }
 
 # is_xdigit
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_xdigit);
+  ok(SPVM::TestCase::Lib::Fn->is_xdigit);
 }
 
 # to_lower
 {
-  ok(SPVM::TestCase::Lib::Fn3->to_lower);
+  ok(SPVM::TestCase::Lib::Fn->to_lower);
 }
 
 # to_upper
 {
-  ok(SPVM::TestCase::Lib::Fn3->to_upper);
+  ok(SPVM::TestCase::Lib::Fn->to_upper);
 }
 
 # is_perl_space
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_perl_space);
+  ok(SPVM::TestCase::Lib::Fn->is_perl_space);
 }
 
 # is_perl_word
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_perl_word);
+  ok(SPVM::TestCase::Lib::Fn->is_perl_word);
 }
 # uc
 {
-  ok(SPVM::TestCase::Lib::Fn3->uc);
+  ok(SPVM::TestCase::Lib::Fn->uc);
 }
 
 # lcfirst
 {
-  ok(SPVM::TestCase::Lib::Fn3->lcfirst);
+  ok(SPVM::TestCase::Lib::Fn->lcfirst);
 }
 
 # lc
 {
-  ok(SPVM::TestCase::Lib::Fn3->lc);
+  ok(SPVM::TestCase::Lib::Fn->lc);
 }
 
 # index
 {
-  ok(SPVM::TestCase::Lib::Fn3->index);
+  ok(SPVM::TestCase::Lib::Fn->index);
 }
 
 # contains
 {
-  ok(SPVM::TestCase::Lib::Fn3->contains);
+  ok(SPVM::TestCase::Lib::Fn->contains);
 }
 
 # rindex
 {
-  ok(SPVM::TestCase::Lib::Fn3->rindex);
+  ok(SPVM::TestCase::Lib::Fn->rindex);
 }
 
 # join
 {
-  ok(SPVM::TestCase::Lib::Fn3->join);
+  ok(SPVM::TestCase::Lib::Fn->join);
 }
 
 # copy_string
 {
   # copy_string
-  ok(SPVM::TestCase::Lib::Fn3->copy_string);
+  ok(SPVM::TestCase::Lib::Fn->copy_string);
 }
 
 # is_array
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_array);
+  ok(SPVM::TestCase::Lib::Fn->is_array);
 }
 
 # is_numeric_array
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_numeric_array);
+  ok(SPVM::TestCase::Lib::Fn->is_numeric_array);
 }
 
 # is_mulnum_array
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_mulnum_array);
+  ok(SPVM::TestCase::Lib::Fn->is_mulnum_array);
 }
 
 # is_object_array
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_object_array);
+  ok(SPVM::TestCase::Lib::Fn->is_object_array);
 }
 
 # chomp
 {
-  ok(SPVM::TestCase::Lib::Fn3->chomp);
+  ok(SPVM::TestCase::Lib::Fn->chomp);
 }
 
 # memcpy
 {
-  ok(SPVM::TestCase::Lib::Fn3->memcpy);
+  ok(SPVM::TestCase::Lib::Fn->memcpy);
 }
 
 # memmove
 {
-  ok(SPVM::TestCase::Lib::Fn3->memmove);
+  ok(SPVM::TestCase::Lib::Fn->memmove);
 }
 
 # index_len
 {
-  ok(SPVM::TestCase::Lib::Fn3->index_len);
+  ok(SPVM::TestCase::Lib::Fn->index_len);
 }
 
 # rindex_len
 {
-  ok(SPVM::TestCase::Lib::Fn3->rindex_len);
+  ok(SPVM::TestCase::Lib::Fn->rindex_len);
 }
 
 # chr
 {
-  ok(SPVM::TestCase::Lib::Fn1->chr);
+  ok(SPVM::TestCase::Lib::Fn->chr);
 }
 
 # ord
 {
-  ok(SPVM::TestCase::Lib::Fn1->ord);
+  ok(SPVM::TestCase::Lib::Fn->ord);
 }
 
 # repeat
 {
-  ok(SPVM::TestCase::Lib::Fn1->repeat);
+  ok(SPVM::TestCase::Lib::Fn->repeat);
 }
 
 # is_hex_digit
 {
-  ok(SPVM::TestCase::Lib::Fn3->is_hex_digit);
+  ok(SPVM::TestCase::Lib::Fn->is_hex_digit);
 }
 
 # get_next_code_point
 {
-  ok(SPVM::TestCase::Lib::Fn1->get_next_code_point);
+  ok(SPVM::TestCase::Lib::Fn->get_next_code_point);
 }
 
 # look_next_code_point
 {
-  ok(SPVM::TestCase::Lib::Fn1->get_next_code_point);
+  ok(SPVM::TestCase::Lib::Fn->get_next_code_point);
 }
 
 # All object is freed

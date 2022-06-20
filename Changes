@@ -1,22 +1,79 @@
 0.9609_01 2022-06-19
   [CHANGE]
-  * Add errno operator
-  * Add set_errno operator
+  * Add error_code operator
+  * Add set_error_code operator
   [NON BACKWORD COMPATIBLE CHANGES]
   * Change the definitions of the following native APIs
-  [Before]
-  int32_t (*call_class_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
-  int32_t (*call_class_method_by_name)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack_unused, const char* file, int32_t line);
-  int32_t (*call_instance_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
-  int32_t (*call_instance_method_by_name)(SPVM_ENV* env, void* object, const char* method_name, const char* signature, SPVM_VALUE* stack_unused, const char* file, int32_t line);
-  int32_t (*call_spvm_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
-  
-  [After]
-  int32_t (*call_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
-  int32_t (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, const char* signature, const char* file, int32_t line);
-  int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
-  int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name, const char* signature, const char* file, int32_t line);
-  int32_t (*call_spvm_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
+    [Before]
+    int32_t (*call_class_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
+    int32_t (*call_class_method_by_name)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack_unused, const char* file, int32_t line);
+    int32_t (*call_instance_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
+    int32_t (*call_instance_method_by_name)(SPVM_ENV* env, void* object, const char* method_name, const char* signature, SPVM_VALUE* stack_unused, const char* file, int32_t line);
+    int32_t (*call_spvm_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
+    
+    [After]
+    int32_t (*call_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
+    int32_t (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, const char* signature, const char* file, int32_t line);
+    int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
+    int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name, const char* signature, const char* file, int32_t line);
+    int32_t (*call_spvm_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
+  * The following depracated methods are removed.
+    Fn->copy_array_byte is removed. Use Array->copy_byte instead
+    Fn->copy_array_double is removed. Use Array->copy_double instead
+    Fn->copy_array_float is removed. Use Array->copy_float instead
+    Fn->copy_array_int is removed. Use Array->copy_int instead
+    Fn->copy_array_long is removed. Use Array->copy_long instead
+    Fn->copy_array_object is removed. Use Array->copy_object instead
+    Fn->copy_array_range_byte is removed. Use Array->copy_range_byte instead
+    Fn->copy_array_range_double is removed. Use Array->copy_range_double instead
+    Fn->copy_array_range_float is removed. Use Array->copy_range_float instead
+    Fn->copy_array_range_int is removed. Use Array->copy_range_int instead
+    Fn->copy_array_range_long is removed. Use Array->copy_range_long instead
+    Fn->copy_array_range_object is removed. Use Array->copy_range_object instead
+    Fn->copy_array_range_short is removed. Use Array->copy_range_short instead
+    Fn->copy_array_range_string is removed. Use Array->copy_range_string instead
+    Fn->copy_array_string is removed. Use Array->copy_tring instead
+    Fn->dump_array_byte is removed. Use Array->dump_byte instead
+    Fn->dump_array_double is removed. Use Array->dump_double instead
+    Fn->dump_array_float is removed. Use Array->dump_float instead
+    Fn->dump_array_int is removed. Use Array->dump_int instead
+    Fn->dump_array_long is removed. Use Array->dump_long instead
+    Fn->dump_array_object is removed. Use Array->dump_object instead
+    Fn->dump_array_short is removed. Use Array->dump_short instead
+    Fn->dump_array_string is removed. Use Array->dump_string instead
+    Fn->dump_array_unsigned_byte is removed. Use Array->dump_unsigned_byte instead
+    Fn->dump_array_unsigned_int is removed. Use Array->dump_unsigned_int instead
+    Fn->dump_array_unsigned_long is removed. Use Array->dump_unsigned_long instead
+    Fn->dump_array_unsigned_short is removed. Use Array->dump_unsigned_short instead
+    Fn->equals_array_byte is removed. Use Array->equals_byte instead
+    Fn->equals_array_double is removed. Use Array->equals_double instead
+    Fn->equals_array_float is removed. Use Array->equals_float instead
+    Fn->equals_array_int is removed. Use Array->equals_int instead
+    Fn->equals_array_long is removed. Use Array->equals_long instead
+    Fn->equals_array_object is removed. Use Array->equals_object instead
+    Fn->equals_array_short is removed. Use Array->equals_short instead
+    Fn->equals_array_string is removed. Use Array->equals_string instead
+    Fn->memcpy_byte is removed. Use Array->memcpy_byte instead
+    Fn->memcpy_double is removed. Use Array->memcpy_double instead
+    Fn->memcpy_float is removed. Use Array->memcpy_float instead
+    Fn->memcpy_int is removed. Use Array->memcpy_int instead
+    Fn->memcpy_long is removed. Use Array->memcpy_long instead
+    Fn->memcpy_short is removed. Use Array->memcpy_short instead
+    Fn->memmove_byte is removed. Use Array->memmove_byte instead
+    Fn->memmove_double is removed. Use Array->memmove_double instead
+    Fn->memmove_float is removed. Use Array->memmove_float instead
+    Fn->memmove_int is removed. Use Array->memmove_int instead
+    Fn->memmove_long is removed. Use Array->memmove_long instead
+    Fn->memmove_short is removed. Use Array->memmove_short instead
+    Fn->memset_byte is removed. Use Array->memset_byte instead
+    Fn->memset_double is removed. Use Array->memset_double instead
+    Fn->memset_float is removed. Use Array->memset_float instead
+    Fn->memset_int is removed. Use Array->memset_int instead
+    Fn->memset_long is removed. Use Array->memset_long instead
+    Fn->memset_object is removed. Use Array->memset_object instead
+    Fn->memset_short is removed. Use Array->memset_short instead
+    Fn->new_array_proto is removed. Use Array->new_proto instead
+    Fn->sprintf is removed. Use Format->sprintf instead
   
 0.9609 2022-06-19
   [CHANGE]

@@ -543,9 +543,7 @@ t/default/lib/SPVM/TestCase/Lib/Double.spvm
 t/default/lib/SPVM/TestCase/Lib/DoubleList.spvm
 t/default/lib/SPVM/TestCase/Lib/Float.spvm
 t/default/lib/SPVM/TestCase/Lib/FloatList.spvm
-t/default/lib/SPVM/TestCase/Lib/Fn1.spvm
-t/default/lib/SPVM/TestCase/Lib/Fn2.spvm
-t/default/lib/SPVM/TestCase/Lib/Fn3.spvm
+t/default/lib/SPVM/TestCase/Lib/Fn.spvm
 t/default/lib/SPVM/TestCase/Lib/Format.spvm
 t/default/lib/SPVM/TestCase/Lib/Hash.spvm
 t/default/lib/SPVM/TestCase/Lib/Int.spvm
