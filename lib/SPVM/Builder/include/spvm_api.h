@@ -15,9 +15,14 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, void* block);
   Runtime information APIs
 */
 
-SPVM_METHOD* SPVM_API_method(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* method_name);
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type_with_name(SPVM_ENV* env,  const char* basic_type_name);
 SPVM_CLASS_VAR* SPVM_API_class_var(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* class_var_name);
+
+int32_t SPVM_API_get_method_id_cache(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
+int32_t SPVM_API_get_field_id_cache(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
+int32_t SPVM_API_get_class_var_id_cache(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
+int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_OBJECT* object);
+int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name);
 
 // ID
 int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* name);
@@ -38,6 +43,9 @@ int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env);
 /*
   Stack manipulation APIs
 */
+
+SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
+void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 
 /*
   Object information APIs
@@ -306,14 +314,5 @@ void SPVM_API_free_env_prepared(SPVM_ENV* env);
 
 int32_t SPVM_API_check_runtime_assignability_array_element(SPVM_ENV* env, SPVM_OBJECT* array, SPVM_OBJECT* element);
 
-int32_t SPVM_API_get_method_id_cache(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
-int32_t SPVM_API_get_field_id_cache(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
-int32_t SPVM_API_get_class_var_id_cache(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
-int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_OBJECT* object);
-
-int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name);
-
-SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
-void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 
 #endif
