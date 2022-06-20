@@ -326,7 +326,7 @@ sub get_memory_blocks_count {
 
 sub call_spvm_method {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::call_spvm_method($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::call_spvm_method($BUILDER, $BUILDER->{env}, @_);
 }
 
 1;

@@ -173,13 +173,17 @@ call_spvm_method(...)
   (void)RETVAL;
   
   // Arguments
-  SV* sv_env = ST(0);
-  SV* sv_class_name = ST(1);
-  SV* sv_method_name = ST(2);
+  SV* sv_builder = ST(0);
+  SV* sv_env = ST(1);
+  SV* sv_class_name = ST(2);
+  SV* sv_method_name = ST(3);
+  
+  // Builder
+  HV* hv_builder = (HV*)SvRV(sv_builder);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-
+  
   // Runtime
   void* runtime = env->runtime;
   
@@ -196,7 +200,7 @@ call_spvm_method(...)
   }
   
   // Base index of SPVM arguments
-  int32_t spvm_args_base = 3;
+  int32_t spvm_args_base = 4;
 
   int32_t method_is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method_id);
   int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, method_id);
@@ -217,7 +221,10 @@ call_spvm_method(...)
   }
   
   // 0-255 are used as arguments and return values. 256 is used as exception variable. 257 is used as mortal stack.
-  SPVM_VALUE stack[256];
+  SV** sv_stack_ptr = hv_fetch(hv_builder, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  assert(SvOK(sv_stack));
+  SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   int32_t stack_index = 0;
 
   // Arguments have reference type
