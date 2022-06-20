@@ -4063,6 +4063,14 @@ create_precompile_source(...)
   SV* sv_builder = sv_builder_ptr ? *sv_builder_ptr : &PL_sv_undef;
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_builder, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack;
+  if (SvOK(sv_stack)) {
+    stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
+  }
+  
   // Runtime
   SV** sv_runtime_ptr = hv_fetch(hv_builder, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
