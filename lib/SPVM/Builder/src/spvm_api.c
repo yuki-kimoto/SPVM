@@ -190,7 +190,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_set_class_var_float,
     SPVM_API_set_class_var_double,
     SPVM_API_set_class_var_object,
-    SPVM_API_pointer,
+    SPVM_API_get_pointer,
     SPVM_API_set_pointer,
     SPVM_API_call_spvm_method,
     SPVM_API_exception,
@@ -2560,7 +2560,7 @@ void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index, 
   SPVM_API_OBJECT_ASSIGN(object_address, oval);
 }
 
-void* SPVM_API_pointer(SPVM_ENV* env, SPVM_OBJECT* object) {
+void* SPVM_API_get_pointer(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size);

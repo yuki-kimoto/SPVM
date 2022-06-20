@@ -5,9 +5,53 @@
 #include "spvm_native.h"
 
 /*
-  "& ~(intptr_t)1" means dropping weaken flag
+  General utilities
 */
 
+void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size);
+void SPVM_API_free_memory_block(SPVM_ENV* env, void* block);
+
+/*
+  Runtime information APIs
+*/
+
+SPVM_METHOD* SPVM_API_method(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* method_name);
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type_with_name(SPVM_ENV* env,  const char* basic_type_name);
+SPVM_CLASS_VAR* SPVM_API_class_var(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* class_var_name);
+
+// ID
+int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* name);
+int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
+int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature);
+int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* type_signature);
+int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* class_name, const char* field_name, const char* signature);
+int32_t SPVM_API_get_field_index(SPVM_ENV* env, int32_t field_id);
+int32_t SPVM_API_get_field_offset(SPVM_ENV* env, int32_t field_id);
+
+
+/*
+  Environment APIs
+*/
+
+int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env);
+
+/*
+  Stack manipulation APIs
+*/
+
+/*
+  Object information APIs
+*/
+
+int32_t SPVM_API_object_header_byte_size(SPVM_ENV* env);
+int32_t SPVM_API_length(SPVM_ENV* env, SPVM_OBJECT* array);
+
+/*
+  Object manipulating APIs
+  These APIs need stack variable
+*/
+
+//  "& ~(intptr_t)1" means dropping weaken flag
 #define SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(object) ((void*)((intptr_t)object & ~(intptr_t)1))
 #define SPVM_API_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))
 #define SPVM_API_INC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)
@@ -42,16 +86,8 @@ do {\
   *(void**)(dist_address) = tmp_object;\
 } while (0)\
 
-void* SPVM_API_new_object_by_name(SPVM_ENV* env, const char* class_name, int32_t* exception_flag, const char* file, int32_t line);
-
-int32_t SPVM_API_die(SPVM_ENV* env, const char* message, ...);
-
-int32_t SPVM_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object);
-
+// Check type
 int32_t SPVM_API_is_utf8(SPVM_ENV* env, SPVM_OBJECT* object);
-
-void SPVM_API_free_env_raw(SPVM_ENV* env);
-
 int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension);
 int32_t SPVM_API_is_array(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_API_is_string(SPVM_ENV* env, SPVM_OBJECT* object);
@@ -60,25 +96,16 @@ int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_OBJECT* array);
 int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id);
 
-SPVM_METHOD* SPVM_API_method(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* method_name);
-
-SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type_with_name(SPVM_ENV* env,  const char* basic_type_name);
-SPVM_CLASS_VAR* SPVM_API_class_var(SPVM_ENV* env, SPVM_RUNTIME_CLASS* class, const char* class_var_name);
-
 // Get
-int32_t SPVM_API_object_header_byte_size(SPVM_ENV* env);
-int32_t SPVM_API_length(SPVM_ENV* env, SPVM_OBJECT* array);
-
 int8_t* SPVM_API_get_elems_byte(SPVM_ENV* env, SPVM_OBJECT* array);
 int16_t* SPVM_API_get_elems_short(SPVM_ENV* env, SPVM_OBJECT* array);
 int32_t* SPVM_API_get_elems_int(SPVM_ENV* env, SPVM_OBJECT* array);
 int64_t* SPVM_API_get_elems_long(SPVM_ENV* env, SPVM_OBJECT* array);
 float* SPVM_API_get_elems_float(SPVM_ENV* env, SPVM_OBJECT* array);
 double* SPVM_API_get_elems_double(SPVM_ENV* env, SPVM_OBJECT* array);
-
-
 SPVM_OBJECT* SPVM_API_get_elem_object(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index);
-void* SPVM_API_pointer(SPVM_ENV* env, SPVM_OBJECT* object);
+
+// Get
 int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
 int16_t SPVM_API_get_field_short(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
 int32_t SPVM_API_get_field_int(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
@@ -86,6 +113,12 @@ int64_t SPVM_API_get_field_long(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fiel
 float SPVM_API_get_field_float(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
 double SPVM_API_get_field_double(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
 SPVM_OBJECT* SPVM_API_get_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
+
+// Get
+void* SPVM_API_get_pointer(SPVM_ENV* env, SPVM_OBJECT* object);
+
+// Get Bool object
+int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_OBJECT* bool_object);
 
 // Set
 void SPVM_API_set_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int8_t value);
@@ -98,15 +131,27 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
 void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* value);
 void SPVM_API_set_pointer(SPVM_ENV* env, SPVM_OBJECT* object, void* ptr);
 
+// Get Class variable
+int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, int32_t class_var_id);
+int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, int32_t class_var_id);
+int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, int32_t class_var_id);
+int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, int32_t class_var_id);
+float SPVM_API_get_class_var_float(SPVM_ENV* env, int32_t class_var_id);
+double SPVM_API_get_class_var_double(SPVM_ENV* env, int32_t class_var_id);
+SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, int32_t class_var_id);
+
+// Set class variable
+void SPVM_API_set_class_var_byte(SPVM_ENV* env, int32_t class_var_id, int8_t value);
+void SPVM_API_set_class_var_short(SPVM_ENV* env, int32_t class_var_id, int16_t value);
+void SPVM_API_set_class_var_int(SPVM_ENV* env, int32_t class_var_id, int32_t value);
+void SPVM_API_set_class_var_long(SPVM_ENV* env, int32_t class_var_id, int64_t value);
+void SPVM_API_set_class_var_float(SPVM_ENV* env, int32_t class_var_id, float value);
+void SPVM_API_set_class_var_double(SPVM_ENV* env, int32_t class_var_id, double value);
+void SPVM_API_set_class_var_object(SPVM_ENV* env, int32_t class_var_id, SPVM_OBJECT* value);
+
 // Call Method
-void SPVM_API_call_void_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
-int8_t SPVM_API_call_byte_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
-int16_t SPVM_API_call_short_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
-int32_t SPVM_API_call_int_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
-int64_t SPVM_API_call_long_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
-float SPVM_API_call_float_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
-double SPVM_API_call_double_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
-SPVM_OBJECT* SPVM_API_call_object_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
+int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
+int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
 
 // String
 int32_t SPVM_API_string_length(SPVM_ENV* env, SPVM_OBJECT* object);
@@ -115,16 +160,7 @@ void SPVM_API_print(SPVM_ENV* env, SPVM_OBJECT* string);
 SPVM_OBJECT* SPVM_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2);
 SPVM_OBJECT* SPVM_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2);
 
-// ID
-int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* name);
-int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
-int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature);
-int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* type_signature);
-int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* class_name, const char* field_name, const char* signature);
-int32_t SPVM_API_get_field_index(SPVM_ENV* env, int32_t field_id);
-int32_t SPVM_API_get_field_offset(SPVM_ENV* env, int32_t field_id);
-
-// New
+// New object
 SPVM_OBJECT* SPVM_API_new_object(SPVM_ENV* env, int32_t class_id);
 SPVM_OBJECT* SPVM_API_new_pointer(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
 SPVM_OBJECT* SPVM_API_new_byte_array(SPVM_ENV* env, int32_t length);
@@ -139,9 +175,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array(SPVM_ENV* env, int32_t basic_type_id, int
 SPVM_OBJECT* SPVM_API_new_string_nolen(SPVM_ENV* env, const char* bytes);
 SPVM_OBJECT* SPVM_API_new_string(SPVM_ENV* env, const char* bytes, int32_t length);
 
-int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_OBJECT* bool_object);
-
-// New raw
+// New object raw
 SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t class_id);
 SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
 SPVM_OBJECT* SPVM_API_new_byte_array_raw(SPVM_ENV* env, int32_t length);
@@ -156,11 +190,15 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
 SPVM_OBJECT* SPVM_API_new_string_nolen_raw(SPVM_ENV* env, const char* bytes);
 SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t length);
 
+// New object by name
+void* SPVM_API_new_object_by_name(SPVM_ENV* env, const char* class_name, int32_t* exception_flag, const char* file, int32_t line);
+
 // Exception
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception);
 SPVM_OBJECT* SPVM_API_exception(SPVM_ENV* env);
 SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, int32_t method_id, int32_t line);
 SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, int32_t method_id, int32_t line);
+int32_t SPVM_API_die(SPVM_ENV* env, const char* message, ...);
 
 // Reference count
 void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
@@ -172,22 +210,11 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address);
 void SPVM_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address);
 int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_OBJECT** object_address);
 
-// Global information
-SPVM_ENV* SPVM_API_env_runtime();
-int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env);
-
 // Scope
 int32_t SPVM_API_enter_scope(SPVM_ENV* env);
 int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_top);
-
-// Call method
-int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
-int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
-
-void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size);
-void SPVM_API_free_memory_block(SPVM_ENV* env, void* block);
-void* SPVM_API_safe_malloc_zero(int64_t byte_size);
+int32_t SPVM_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object);
 
 SPVM_OBJECT* SPVM_API_i_to_string_raw(SPVM_ENV* env, int32_t value);
 SPVM_OBJECT* SPVM_API_i_to_string(SPVM_ENV* env, int32_t value);
@@ -197,22 +224,6 @@ SPVM_OBJECT* SPVM_API_f_to_string_raw(SPVM_ENV* env, float value);
 SPVM_OBJECT* SPVM_API_f_to_string(SPVM_ENV* env, float value);
 SPVM_OBJECT* SPVM_API_d_to_string_raw(SPVM_ENV* env, double value);
 SPVM_OBJECT* SPVM_API_d_to_string(SPVM_ENV* env, double value);
-
-// Class variable access
-int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, int32_t class_var_id);
-int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, int32_t class_var_id);
-int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, int32_t class_var_id);
-int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, int32_t class_var_id);
-float SPVM_API_get_class_var_float(SPVM_ENV* env, int32_t class_var_id);
-double SPVM_API_get_class_var_double(SPVM_ENV* env, int32_t class_var_id);
-SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, int32_t class_var_id);
-void SPVM_API_set_class_var_byte(SPVM_ENV* env, int32_t class_var_id, int8_t value);
-void SPVM_API_set_class_var_short(SPVM_ENV* env, int32_t class_var_id, int16_t value);
-void SPVM_API_set_class_var_int(SPVM_ENV* env, int32_t class_var_id, int32_t value);
-void SPVM_API_set_class_var_long(SPVM_ENV* env, int32_t class_var_id, int64_t value);
-void SPVM_API_set_class_var_float(SPVM_ENV* env, int32_t class_var_id, float value);
-void SPVM_API_set_class_var_double(SPVM_ENV* env, int32_t class_var_id, double value);
-void SPVM_API_set_class_var_object(SPVM_ENV* env, int32_t class_var_id, SPVM_OBJECT* value);
 
 SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object);
 SPVM_OBJECT* SPVM_API_get_type_name(SPVM_ENV* env, SPVM_OBJECT* object);
@@ -285,7 +296,7 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack);
 void SPVM_API_cleanup_global_vars(SPVM_ENV* env);
 
 SPVM_ENV* SPVM_API_new_env_raw();
-
+void SPVM_API_free_env_raw(SPVM_ENV* env);
 SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env);
 void SPVM_API_free_env(SPVM_ENV* env);
 
