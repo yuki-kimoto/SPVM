@@ -24,7 +24,7 @@ use Carp 'confess';
 # For the reason, this variable is needed.
 my $SPVM_INITED;
 
-my $BUILDER;
+our $BUILDER;
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
@@ -173,155 +173,155 @@ sub bind_to_perl {
 
 sub new_byte_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_byte_array($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_byte_array($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_byte_array_unsigned {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_byte_array_unsigned($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_byte_array_unsigned($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_byte_array_len {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_byte_array_len($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_byte_array_len($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_byte_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_byte_array_from_bin($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_byte_array_from_bin($BUILDER, $BUILDER->{env}, @_);
 }
 sub new_byte_array_from_string {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_byte_array_from_string($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_byte_array_from_string($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_short_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_short_array($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_short_array($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_short_array_unsigned {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_short_array_unsigned($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_short_array_unsigned($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_short_array_len {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_short_array_len($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_short_array_len($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_short_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_short_array_from_bin($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_short_array_from_bin($BUILDER, $BUILDER->{env}, @_);
 }
 sub new_int_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_int_array($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_int_array($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_int_array_unsigned {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_int_array_unsigned($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_int_array_unsigned($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_int_array_len {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_int_array_len($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_int_array_len($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_int_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_int_array_from_bin($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_int_array_from_bin($BUILDER, $BUILDER->{env}, @_);
 }
 sub new_long_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_long_array($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_long_array($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_long_array_unsigned {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_long_array_unsigned($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_long_array_unsigned($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_long_array_len {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_long_array_len($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_long_array_len($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_long_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_long_array_from_bin($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_long_array_from_bin($BUILDER, $BUILDER->{env}, @_);
 }
 sub new_float_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_float_array($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_float_array($BUILDER, $BUILDER->{env}, @_);
 }
 sub new_float_array_len {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_float_array_len($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_float_array_len($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_float_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_float_array_from_bin($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_float_array_from_bin($BUILDER, $BUILDER->{env}, @_);
 }
 sub new_double_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_double_array($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_double_array($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_double_array_len {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_double_array_len($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_double_array_len($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_double_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_double_array_from_bin($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_double_array_from_bin($BUILDER, $BUILDER->{env}, @_);
 }
 sub new_string {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_string($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_string($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_string_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_string_from_bin($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_string_from_bin($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_object_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_object_array($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_object_array($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_mulnum_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_mulnum_array($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_mulnum_array($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_mulnum_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_mulnum_array_from_bin($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_mulnum_array_from_bin($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub new_string_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_string_array($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::new_string_array($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub get_exception {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::get_exception($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::get_exception($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub set_exception {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::set_exception($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::set_exception($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub get_memory_blocks_count {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::get_memory_blocks_count($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::get_memory_blocks_count($BUILDER, $BUILDER->{env}, @_);
 }
 
 sub call_spvm_method {

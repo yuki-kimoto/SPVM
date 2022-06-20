@@ -11,7 +11,7 @@ sub to_string {
   
   my $env = $self->{env};
   
-  SPVM::ExchangeAPI::string_object_to_string($env, $self);
+  SPVM::ExchangeAPI::string_object_to_string($SPVM::BUILDER, $env, $self);
 }
 
 1;

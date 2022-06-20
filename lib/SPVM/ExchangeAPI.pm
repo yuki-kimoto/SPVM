@@ -6,15 +6,15 @@ use warnings;
 use Carp 'confess';
 
 sub new_byte_array_from_string {
-  my ($env, $string) = @_;
+  my ($builder, $env, $string) = @_;
   
   utf8::encode($string);
   
-  return SPVM::ExchangeAPI::new_byte_array_from_bin($env, $string);
+  return SPVM::ExchangeAPI::new_byte_array_from_bin($SPVM::BUILDER, $env, $string);
 }
 
 sub new_object_array {
-  my ($env, $type_name, $elems) = @_;
+  my ($builder, $env, $type_name, $elems) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -44,15 +44,15 @@ sub new_object_array {
   }
   
   if ($type_dimension == 1) {
-    SPVM::ExchangeAPI::_new_object_array($env, $basic_type_name, $elems);
+    SPVM::ExchangeAPI::_new_object_array($SPVM::BUILDER, $env, $basic_type_name, $elems);
   }
   else {
-    SPVM::ExchangeAPI::_new_muldim_array($env, $basic_type_name, $type_dimension - 1, $elems);
+    SPVM::ExchangeAPI::_new_muldim_array($SPVM::BUILDER, $env, $basic_type_name, $type_dimension - 1, $elems);
   }
 }
 
 sub new_mulnum_array {
-  my ($env, $type_name, $elems) = @_;
+  my ($builder, $env, $type_name, $elems) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -81,11 +81,11 @@ sub new_mulnum_array {
     confess "Second argument of SPVM::new_mulnum_array must be array reference";
   }
   
-  SPVM::ExchangeAPI::_new_mulnum_array($env, $basic_type_name, $elems);
+  SPVM::ExchangeAPI::_new_mulnum_array($SPVM::BUILDER, $env, $basic_type_name, $elems);
 }
 
 sub new_mulnum_array_from_bin {
-  my ($env, $type_name, $elems) = @_;
+  my ($builder, $env, $type_name, $elems) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -109,17 +109,17 @@ sub new_mulnum_array_from_bin {
     return undef;
   }
   
-  SPVM::ExchangeAPI::_new_mulnum_array_from_bin($env, $basic_type_name, $elems);
+  SPVM::ExchangeAPI::_new_mulnum_array_from_bin($SPVM::BUILDER, $env, $basic_type_name, $elems);
 }
 
 sub set_exception {
-  my ($env, $exception) = @_;
+  my ($builder, $env, $exception) = @_;
   
   if (defined $exception && !ref $exception) {
-    $exception = SPVM::ExchangeAPI::new_string($env, $exception);
+    $exception = SPVM::ExchangeAPI::new_string($SPVM::BUILDER, $env, $exception);
   }
   
-  _set_exception($env, $exception);
+  _set_exception($SPVM::BUILDER, $env, $exception);
 }
 
 # other functions is implemented in SPVM.xs
