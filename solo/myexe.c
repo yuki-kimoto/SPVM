@@ -37,7 +37,7 @@ int32_t main(int32_t argc, const char *argv[]) {
     env->set_elem_object(env, cmd_args_obj, arg_index - 1, cmd_arg_obj);
   }
   
-  SPVM_VALUE stack[255];
+  SPVM_VALUE* stack = env->new_stack(env);
   stack[0].oval = cmd_start_file_obj;
   stack[1].oval = cmd_args_obj;
 
@@ -56,6 +56,8 @@ int32_t main(int32_t argc, const char *argv[]) {
 
   // Leave scope
   env->leave_scope(env, scope_id);
+  
+  env->free_stack(env, stack);
   
   env->free_env_prepared(env);
   
