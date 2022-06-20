@@ -60,35 +60,35 @@ int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object);
 */
 
 //  "& ~(intptr_t)1" means dropping weaken flag
-#define SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(object) ((void*)((intptr_t)object & ~(intptr_t)1))
-#define SPVM_API_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))
-#define SPVM_API_INC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)
-#define SPVM_API_INC_REF_COUNT(object)\
+#define SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, object) ((void*)((intptr_t)object & ~(intptr_t)1))
+#define SPVM_API_GET_REF_COUNT(env, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))
+#define SPVM_API_INC_REF_COUNT_ONLY(env, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)
+#define SPVM_API_INC_REF_COUNT(env, object)\
 do {\
   if (object != NULL) {\
-    SPVM_API_INC_REF_COUNT_ONLY(object);\
+    SPVM_API_INC_REF_COUNT_ONLY(env, object);\
   }\
 } while (0)\
 
-#define SPVM_API_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)
-#define SPVM_API_DEC_REF_COUNT(object)\
+#define SPVM_API_DEC_REF_COUNT_ONLY(env, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)
+#define SPVM_API_DEC_REF_COUNT(env, object)\
 do {\
   if (object != NULL) {\
-    if (SPVM_API_GET_REF_COUNT(object) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(object); }\
+    if (SPVM_API_GET_REF_COUNT(env, object) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(env, object); }\
     else { env->dec_ref_count(env, object); }\
   }\
 } while (0)\
 
 #define SPVM_API_ISWEAK(dist_address) (((intptr_t)*(void**)dist_address) & 1)
-#define SPVM_API_OBJECT_ASSIGN(dist_address, src_object) \
+#define SPVM_API_OBJECT_ASSIGN(env, dist_address, src_object) \
 do {\
-  void* tmp_object = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(src_object);\
+  void* tmp_object = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, src_object);\
   if (tmp_object != NULL) {\
-    SPVM_API_INC_REF_COUNT_ONLY(tmp_object);\
+    SPVM_API_INC_REF_COUNT_ONLY(env, tmp_object);\
   }\
   if (*(void**)(dist_address) != NULL) {\
     if (__builtin_expect(SPVM_API_ISWEAK(dist_address), 0)) { env->unweaken(env, (void**)dist_address); }\
-    if (SPVM_API_GET_REF_COUNT(*(void**)(dist_address)) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(*(void**)(dist_address)); }\
+    if (SPVM_API_GET_REF_COUNT(env, *(void**)(dist_address)) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(env, *(void**)(dist_address)); }\
     else { env->dec_ref_count(env, *(void**)(dist_address)); }\
   }\
   *(void**)(dist_address) = tmp_object;\
