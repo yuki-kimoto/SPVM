@@ -56,7 +56,7 @@ int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object);
 
 /*
   Object manipulating APIs
-  These APIs need stack variable
+  These APIs need stack argument
 */
 
 //  "& ~(intptr_t)1" means dropping weaken flag
@@ -95,7 +95,6 @@ do {\
 } while (0)\
 
 // Check type
-int32_t SPVM_API_is_utf8(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension);
 int32_t SPVM_API_is_array(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_API_is_string(SPVM_ENV* env, SPVM_OBJECT* object);
