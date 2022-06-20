@@ -1086,7 +1086,7 @@ If you specify a pointer type object and a C language pointer, the C language po
 
 =head2 call_spvm_method
 
-  int32_t (*call_spvm_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
+  int32_t (*call_spvm_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
 
 Call a method by specifying the method ID and argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
@@ -1776,8 +1776,8 @@ B<Examples:>
 
 =head2 call_class_method_by_name
 
-  int32_t (*call_class_method_by_name)(SPVM_ENV* env,
-    const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack,
+  int32_t (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* class_name, const char* method_name, const char* signature,
     const char* file, int32_t line);
 
 This is same as C<call_spvm_method> function, but you can specify the class name and sub name directry.
@@ -1787,7 +1787,7 @@ B<Examples:>
   int32_t output;
   {
     stack[0].ival = 5;
-    int32_t exception_flag = env->call_class_method_by_name(env, "TestCase::NativeAPI", "my_value", "int(int)", stack, __FILE__, __LINE__);
+    int32_t exception_flag = env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", "int(int)", __FILE__, __LINE__);
     if (exception_flag) {
       return exception_flag;
     }
@@ -1796,8 +1796,8 @@ B<Examples:>
 
 =head2 call_instance_method_by_name
 
-  int32_t (*call_instance_method_by_name)(SPVM_ENV* env, void* object,
-    const char* method_name, const char* signature, SPVM_VALUE* stack,
+  int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
+    const char* method_name, const char* signature,
     const char* file, int32_t line);
 
 B<Examples:>

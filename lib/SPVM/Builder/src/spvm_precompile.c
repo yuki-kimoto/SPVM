@@ -3075,7 +3075,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                                 "      exception_flag = 1;\n"
                                                 "    }\n");
 
-          SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) { return_value = env->call_spvm_method(env, call_method_id, stack); }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) { return_value = env->call_spvm_method(env, stack, call_method_id); }\n");
         }
         
         // Call method

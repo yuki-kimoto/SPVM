@@ -2,6 +2,22 @@
   [CHANGE]
   * Add errno operator
   * Add set_errno operator
+  [NON BACKWORD COMPATIBLE CHANGES]
+  * Change the definitions of the following native APIs
+  [Before]
+  int32_t (*call_class_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
+  int32_t (*call_class_method_by_name)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack_unused, const char* file, int32_t line);
+  int32_t (*call_instance_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
+  int32_t (*call_instance_method_by_name)(SPVM_ENV* env, void* object, const char* method_name, const char* signature, SPVM_VALUE* stack_unused, const char* file, int32_t line);
+  int32_t (*call_spvm_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
+  
+  [After]
+  int32_t (*call_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
+  int32_t (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, const char* signature, const char* file, int32_t line);
+  int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
+  int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name, const char* signature, const char* file, int32_t line);
+  int32_t (*call_spvm_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
+  
 0.9609 2022-06-19
   [CHANGE]
   * Improve error messages of compilation.

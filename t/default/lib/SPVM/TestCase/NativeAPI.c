@@ -1614,7 +1614,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_spvm_method(SPVM_ENV* env, SPVM_V
   int32_t output;
   {
     stack[0].ival = 5;
-    int32_t exception_flag = env->call_spvm_method(env, method_id, stack);
+    int32_t exception_flag = env->call_spvm_method(env, stack, method_id);
     if (exception_flag) {
       return 1;
     }
@@ -1641,7 +1641,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method(SPVM_ENV* env, SPVM_
   int32_t output;
   {
     stack[0].ival = 5;
-    int32_t exception_flag = env->call_class_method(env, method_id, stack);
+    int32_t exception_flag = env->call_class_method(env, stack, method_id);
     if (exception_flag) {
       return 1;
     }
@@ -1668,7 +1668,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_instance_method(SPVM_ENV* env, SP
   int32_t output;
   {
     stack[0].ival = 5;
-    int32_t exception_flag = env->call_instance_method(env, method_id, stack);
+    int32_t exception_flag = env->call_instance_method(env, stack, method_id);
     if (exception_flag) {
       return 1;
     }
@@ -1691,7 +1691,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* en
   int32_t output;
   {
     stack[0].ival = 5;
-    int32_t exception_flag = env->call_class_method_by_name(env, "TestCase::NativeAPI", "my_value", "int(int)", stack, MFILE, __LINE__);
+    int32_t exception_flag = env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", "int(int)", MFILE, __LINE__);
     if (exception_flag) {
       return exception_flag;
     }
@@ -1714,7 +1714,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name_exception(SP
   int32_t output;
   {
     stack[0].ival = 5;
-    int32_t exception_flag = env->call_class_method_by_name(env, "TestCase::NativeAPI", "not_found", "int(int)", stack, MFILE, __LINE__);
+    int32_t exception_flag = env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "not_found", "int(int)", MFILE, __LINE__);
     if (exception_flag) {
       return exception_flag;
     }
@@ -1741,7 +1741,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
   int32_t output;
   {
     stack[0].oval = minimal;
-    int32_t exception_flag = env->call_instance_method_by_name(env, minimal, "x", "int(self)", stack, MFILE, __LINE__);
+    int32_t exception_flag = env->call_instance_method_by_name(env, stack, minimal, "x", "int(self)", MFILE, __LINE__);
     if (e) { return e; }
     output = stack[0].ival;
   }
@@ -1762,7 +1762,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_exception_native
   int32_t output;
   {
     stack[0].oval = minimal;
-    e = env->call_instance_method_by_name(env, minimal, "not_found", "int(self)", stack, MFILE, __LINE__);
+    e = env->call_instance_method_by_name(env, stack, minimal, "not_found", "int(self)", MFILE, __LINE__);
     if (e) { return e; };
     output = stack[0].ival;
   }
@@ -1801,7 +1801,7 @@ int32_t SPVM__TestCase__NativeAPI__get_instance_method_id_static_native(SPVM_ENV
   
   int32_t ret;
   {
-    env->call_spvm_method(env, method_id, stack);
+    env->call_spvm_method(env, stack, method_id);
     if (e) { return e; }
     ret = stack[0].ival;
   }

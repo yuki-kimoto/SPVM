@@ -694,14 +694,14 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* 
   }
 }
 
-int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack_unused, const char* file, int32_t line) {
+int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, const char* signature, const char* file, int32_t line) {
   
   int32_t method_id = env->get_class_method_id(env, class_name, method_name, signature);
   if (method_id < 0) {
     env->die(env, "Method not found, class name:%s, sub name:%s, signature:%s", class_name, method_name, signature, file, line);
     return 1;
   }
-  int32_t e = env->call_class_method(env, method_id, stack_unused);
+  int32_t e = env->call_class_method(env, stack, method_id);
   if (e) {
     const char* message = env->get_chars(env, env->get_exception(env));
     env->die(env, "%s", message, file, line);
@@ -711,7 +711,7 @@ int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, const char* class_name
   return 0;
 }
 
-int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature, SPVM_VALUE* stack_unused, const char* file, int32_t line) {
+int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name, const char* signature, const char* file, int32_t line) {
   
   if (object == NULL) {
     env->die(env, "Object must not be NULL", file, line);
@@ -723,7 +723,7 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object
     env->die(env, "Method not found, object:%p, sub name:%s, signature:%s", object, method_name, signature, file, line);
     return 1;
   };
-  int32_t e = env->call_instance_method(env, method_id, stack_unused);
+  int32_t e = env->call_instance_method(env, stack, method_id);
   
   if (e) {
     const char* message = env->get_chars(env, env->get_exception(env));
@@ -1240,7 +1240,7 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   stack = NULL;
 }
 
-int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* stack) {
+int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id) {
   (void)env;
   
   // Runtime
@@ -2622,7 +2622,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         if (object->flag & SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR) {
           SPVM_VALUE args[1];
           args[0].oval = object;
-          int32_t exception_flag = SPVM_API_call_spvm_method(env, class->destructor_method_id, args);
+          int32_t exception_flag = SPVM_API_call_spvm_method(env, args, class->destructor_method_id);
           
           // Exception in destructor is changed to warning
           if (exception_flag) {
@@ -3551,7 +3551,7 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env) {
     if (class->has_init_block) {
       SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, "INIT");
       assert(init_method);
-      env->call_spvm_method(env, init_method->id, stack);
+      env->call_spvm_method(env, stack, init_method->id);
     }
   }
 }
@@ -6408,7 +6408,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
       {
         int32_t call_method_id = opcode->operand1;
         stack_index = 0;
-        int32_t return_value = env->call_spvm_method(env, call_method_id, stack);
+        int32_t return_value = env->call_spvm_method(env, stack, call_method_id);
         if (return_value != 0) {
           exception_flag = 1;
           error_code = return_value;
@@ -6555,7 +6555,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           exception_flag = 1;
         }
         else {
-          int32_t return_value = env->call_spvm_method(env, call_method_id, stack);
+          int32_t return_value = env->call_spvm_method(env, stack, call_method_id);
           if (return_value != 0) {
             exception_flag = 1;
             error_code = return_value;

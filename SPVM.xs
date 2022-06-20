@@ -1017,7 +1017,7 @@ call_spvm_method(...)
   int32_t method_return_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, method_return_basic_type_id);
   
   // Call method
-  int32_t excetpion_flag = excetpion_flag = env->call_spvm_method(env, method_id, stack);
+  int32_t excetpion_flag = excetpion_flag = env->call_spvm_method(env, stack, method_id);
   
   // Create Perl return value
   if (excetpion_flag) {

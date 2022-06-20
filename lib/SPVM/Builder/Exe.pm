@@ -593,7 +593,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   stack[1].oval = cmd_args_obj;
   
   // Run
-  int32_t exception_flag = env->call_spvm_method(env, method_id, stack);
+  int32_t exception_flag = env->call_spvm_method(env, stack, method_id);
   
   int32_t status;
   if (exception_flag) {
