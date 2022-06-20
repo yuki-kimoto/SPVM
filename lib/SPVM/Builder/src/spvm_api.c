@@ -1299,7 +1299,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
     }
     // Call sub virtual machine
     else {
-      exception_flag = SPVM_API_call_spvm_method_vm(env, method_id, stack);
+      exception_flag = SPVM_API_call_spvm_method_vm(env, stack, method_id);
     }
   }
   
@@ -3658,7 +3658,7 @@ int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, int32_t cast_basic_t
   return runtime_assignability;
 }
 
-int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* stack) {
+int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id) {
   (void)env;
 
   // Opcode relative index

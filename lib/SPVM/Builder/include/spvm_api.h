@@ -183,7 +183,7 @@ void SPVM_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_top);
 
 // Call method
 int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* stack);
-int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* stack);
+int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
 
 void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size);
 void SPVM_API_free_memory_block(SPVM_ENV* env, void* block);
