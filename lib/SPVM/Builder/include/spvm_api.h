@@ -281,7 +281,7 @@ void SPVM_API_fprint(SPVM_ENV* env, FILE* fh, SPVM_OBJECT* string);
 void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_OBJECT* string);
 
 int32_t SPVM_API_init_env(SPVM_ENV* env);
-void SPVM_API_call_init_blocks(SPVM_ENV* env);
+void SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack);
 void SPVM_API_cleanup_global_vars(SPVM_ENV* env);
 
 SPVM_ENV* SPVM_API_new_env_raw();

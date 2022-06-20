@@ -4526,7 +4526,7 @@ call_init_blocks(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  env->call_init_blocks(env);
+  env->call_init_blocks(env, stack);
 
   XSRETURN(0);
 }

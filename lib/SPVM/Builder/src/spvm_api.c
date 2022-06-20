@@ -3535,7 +3535,7 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_OBJECT* string, int32_t new_length) {
   }
 }
 
-void SPVM_API_call_init_blocks(SPVM_ENV* env) {
+void SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   // Runtime
@@ -3567,9 +3567,6 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
   
   // Initialize env
   new_env->init_env(new_env);
-  
-  // Call init blocks
-  new_env->call_init_blocks(new_env);
   
   return new_env;
 }

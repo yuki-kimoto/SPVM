@@ -42,7 +42,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   stack[1].oval = cmd_args_obj;
 
   // Call INIT blocks
-  env->call_init_blocks(env);
+  env->call_init_blocks(env, stack);
   
   // Run
   int32_t exception_flag = env->call_spvm_method(env, stack, method_id);

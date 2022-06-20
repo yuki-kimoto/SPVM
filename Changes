@@ -17,6 +17,13 @@
     int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
     int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name, const char* signature, const char* file, int32_t line);
     int32_t (*call_spvm_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id);
+  * Change the definitions of the following native API
+    [Before]
+    void (*call_init_blocks)(SPVM_ENV* env);
+    
+    [After]
+    void (*call_init_blocks)(SPVM_ENV* env, SPVM_VALUE* stack);
+  * Native API new_env don't call call_init_blocks.
   * The following depracated methods are removed.
     Fn->copy_array_byte is removed. Use Array->copy_byte instead
     Fn->copy_array_double is removed. Use Array->copy_double instead

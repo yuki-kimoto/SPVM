@@ -1258,11 +1258,11 @@ Create a new environment that is ready to call methods.
 
 3. Initialize the environment using the L<"init_env"> native API
 
-4. Call C<INIT> blocks using the L<"call_init_blocks"> native API.
-
 The number of memory blocks is shared with the original execution environment.
 
 If this method can't allocate memory for the new environment, return NULL.
+
+Note that L</"call_init_blocks"> need to be called before calling user methods by yourself.
 
 =head2 free_env
 
