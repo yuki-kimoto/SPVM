@@ -3901,7 +3901,12 @@ DESTROY(...)
   // Get object
   void* object = SPVM_XS_UTIL_get_object(sv_object);
 
-  SV** sv_env_ptr = hv_fetch(hv_object, "env", strlen("env"), 0);
+  SV** sv_builder_ptr = hv_fetch(hv_object, "builder", strlen("builder"), 0);
+  SV* sv_builder = sv_builder_ptr ? *sv_builder_ptr : &PL_sv_undef;
+  HV* hv_builder = (HV*)SvRV(sv_builder);
+
+  // The environment
+  SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
