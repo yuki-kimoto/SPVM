@@ -694,14 +694,14 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* 
   }
 }
 
-int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line) {
+int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack_unused, const char* file, int32_t line) {
   
   int32_t method_id = env->get_class_method_id(env, class_name, method_name, signature);
   if (method_id < 0) {
     env->die(env, "Method not found, class name:%s, sub name:%s, signature:%s", class_name, method_name, signature, file, line);
     return 1;
   }
-  int32_t e = env->call_class_method(env, method_id, stack);
+  int32_t e = env->call_class_method(env, method_id, stack_unused);
   if (e) {
     const char* message = env->get_chars(env, env->get_exception(env));
     env->die(env, "%s", message, file, line);
@@ -711,7 +711,7 @@ int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, const char* class_name
   return 0;
 }
 
-int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line) {
+int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature, SPVM_VALUE* stack_unused, const char* file, int32_t line) {
   
   if (object == NULL) {
     env->die(env, "Object must not be NULL", file, line);
@@ -723,7 +723,7 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object
     env->die(env, "Method not found, object:%p, sub name:%s, signature:%s", object, method_name, signature, file, line);
     return 1;
   };
-  int32_t e = env->call_instance_method(env, method_id, stack);
+  int32_t e = env->call_instance_method(env, method_id, stack_unused);
   
   if (e) {
     const char* message = env->get_chars(env, env->get_exception(env));
