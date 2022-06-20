@@ -4,6 +4,7 @@ class Array {
   use Stringer;
   use Cloner;
   use EqualityChecker;
+  use Format;
   
   static method copy_byte : byte[] ($nums : byte[]) {
     return copy $nums;
