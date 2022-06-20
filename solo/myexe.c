@@ -41,6 +41,9 @@ int32_t main(int32_t argc, const char *argv[]) {
   stack[0].oval = cmd_start_file_obj;
   stack[1].oval = cmd_args_obj;
 
+  // Call INIT blocks
+  env->call_init_blocks(env);
+  
   // Run
   int32_t exception_flag = env->call_spvm_method(env, stack, method_id);
 
@@ -118,9 +121,6 @@ SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
   
   // Initialize env
   env->init_env(env);
-  
-  // Call INIT blocks
-  env->call_init_blocks(env);
   
   return env;
 }
