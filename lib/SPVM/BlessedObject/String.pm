@@ -9,9 +9,7 @@ use SPVM::ExchangeAPI;
 sub to_string {
   my $self = shift;
   
-  my $env = $self->{env};
-  
-  SPVM::ExchangeAPI::string_object_to_string($SPVM::BUILDER, $env, $self);
+  SPVM::ExchangeAPI::string_object_to_string($SPVM::BUILDER, $self);
 }
 
 1;

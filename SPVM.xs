@@ -184,8 +184,8 @@ call_spvm_method(...)
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
 
-  SV* sv_class_name = ST(2);
-  SV* sv_method_name = ST(3);
+  SV* sv_class_name = ST(1);
+  SV* sv_method_name = ST(2);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -206,7 +206,7 @@ call_spvm_method(...)
   }
   
   // Base index of SPVM arguments
-  int32_t spvm_args_base = 4;
+  int32_t spvm_args_base = 3;
 
   int32_t method_is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method_id);
   int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, method_id);
@@ -1347,7 +1347,7 @@ array_to_elems(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_array = ST(2);
+  SV* sv_array = ST(1);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -1565,7 +1565,7 @@ array_to_bin(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_array = ST(2);
+  SV* sv_array = ST(1);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -1720,7 +1720,7 @@ string_object_to_string(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_string = ST(2);
+  SV* sv_string = ST(1);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -1770,7 +1770,7 @@ array_length(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_array = ST(2);
+  SV* sv_array = ST(1);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -1815,9 +1815,9 @@ array_set(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_array = ST(2);
-  SV* sv_index = ST(3);
-  SV* sv_value = ST(4);
+  SV* sv_array = ST(1);
+  SV* sv_index = ST(2);
+  SV* sv_value = ST(3);
 
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -1944,8 +1944,8 @@ array_get(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_array = ST(2);
-  SV* sv_index = ST(3);
+  SV* sv_array = ST(1);
+  SV* sv_index = ST(2);
 
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -2070,7 +2070,7 @@ new_string_array(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(1);
 
   // Environment
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -2140,7 +2140,7 @@ new_byte_array(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2197,7 +2197,7 @@ new_byte_array_unsigned(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2254,7 +2254,7 @@ new_byte_array_len(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_length = ST(2);
+  SV* sv_length = ST(1);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -2295,7 +2295,7 @@ new_byte_array_from_bin(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_binary = ST(2);
+  SV* sv_binary = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_binary)) {
@@ -2343,7 +2343,7 @@ new_string(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_value = ST(2);
+  SV* sv_value = ST(1);
   
   SV* sv_string;
   if (SvOK(sv_value)) {
@@ -2398,7 +2398,7 @@ new_string_from_bin(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_binary = ST(2);
+  SV* sv_binary = ST(1);
   
   SV* sv_string;
   if (SvOK(sv_binary)) {
@@ -2451,7 +2451,7 @@ new_short_array(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2508,7 +2508,7 @@ new_short_array_unsigned(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2565,7 +2565,7 @@ new_short_array_len(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_length = ST(2);
+  SV* sv_length = ST(1);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -2606,7 +2606,7 @@ new_short_array_from_bin(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_binary = ST(2);
+  SV* sv_binary = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_binary)) {
@@ -2654,7 +2654,7 @@ new_int_array(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2710,7 +2710,7 @@ new_int_array_unsigned(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2766,7 +2766,7 @@ new_int_array_len(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_length = ST(2);
+  SV* sv_length = ST(1);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -2807,7 +2807,7 @@ new_int_array_from_bin(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_binary = ST(2);
+  SV* sv_binary = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_binary)) {
@@ -2855,7 +2855,7 @@ new_long_array(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2912,7 +2912,7 @@ new_long_array_unsigned(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2969,7 +2969,7 @@ new_long_array_len(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_length = ST(2);
+  SV* sv_length = ST(1);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -3010,7 +3010,7 @@ new_long_array_from_bin(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_binary = ST(2);
+  SV* sv_binary = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_binary)) {
@@ -3058,7 +3058,7 @@ new_float_array(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -3114,7 +3114,7 @@ new_float_array_len(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_length = ST(2);
+  SV* sv_length = ST(1);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -3155,7 +3155,7 @@ new_float_array_from_bin(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_binary = ST(2);
+  SV* sv_binary = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_binary)) {
@@ -3203,7 +3203,7 @@ new_double_array(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -3258,7 +3258,7 @@ new_double_array_len(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_length = ST(2);
+  SV* sv_length = ST(1);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -3299,7 +3299,7 @@ new_double_array_from_bin(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_binary = ST(2);
+  SV* sv_binary = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_binary)) {
@@ -3347,7 +3347,7 @@ new_string_array_len(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_length = ST(2);
+  SV* sv_length = ST(1);
 
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -3393,8 +3393,8 @@ new_object_array_len(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_basic_type_name = ST(2);
-  SV* sv_length = ST(3);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_length = ST(2);
 
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -3441,8 +3441,8 @@ _new_object_array(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_basic_type_name = ST(2);
-  SV* sv_elems = ST(3);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_elems = ST(2);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
     croak("Second argument of SPVM::new_object_array must be array reference at %s line %d\n", MFILE, __LINE__);
@@ -3523,9 +3523,9 @@ _new_muldim_array(...)
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   
-  SV* sv_basic_type_name = ST(2);
-  SV* sv_element_type_dimension = ST(3);
-  SV* sv_elems = ST(4);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_element_type_dimension = ST(2);
+  SV* sv_elems = ST(3);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
     croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
@@ -3603,8 +3603,8 @@ _new_mulnum_array(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_basic_type_name = ST(2);
-  SV* sv_elems = ST(3);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_elems = ST(2);
 
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
@@ -3644,8 +3644,8 @@ _new_mulnum_array_from_bin(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_basic_type_name = ST(2);
-  SV* sv_binary = ST(3);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_binary = ST(2);
   
   if (!SvOK(sv_binary)) {
     croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
@@ -3832,7 +3832,7 @@ _set_exception(...)
   // The environment
   SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SV* sv_exception = ST(2);
+  SV* sv_exception = ST(1);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));

@@ -15,41 +15,31 @@ use SPVM::ExchangeAPI;
 sub length {
   my $self = shift;
   
-  my $env = $self->{env};
-  
-  SPVM::ExchangeAPI::array_length($SPVM::BUILDER, $env, $self);
+  SPVM::ExchangeAPI::array_length($SPVM::BUILDER, $self);
 }
 
 sub to_elems {
   my $self = shift;
   
-  my $env = $self->{env};
-  
-  SPVM::ExchangeAPI::array_to_elems($SPVM::BUILDER, $env, $self);
+  SPVM::ExchangeAPI::array_to_elems($SPVM::BUILDER, $self);
 }
 
 sub to_bin {
   my $self = shift;
 
-  my $env = $self->{env};
-  
-  SPVM::ExchangeAPI::array_to_bin($SPVM::BUILDER, $env, $self);
+  SPVM::ExchangeAPI::array_to_bin($SPVM::BUILDER, $self);
 }
 
 sub set {
   my $self = shift;
   
-  my $env = $self->{env};
-  
-  SPVM::ExchangeAPI::array_set($SPVM::BUILDER, $env, $self, @_);
+  SPVM::ExchangeAPI::array_set($SPVM::BUILDER, $self, @_);
 }
 
 sub get {
   my $self = shift;
   
-  my $env = $self->{env};
-  
-  SPVM::ExchangeAPI::array_get($SPVM::BUILDER, $env, $self, @_);
+  SPVM::ExchangeAPI::array_get($SPVM::BUILDER, $self, @_);
 }
 
 1;
