@@ -24,6 +24,7 @@
     [After]
     void (*call_init_blocks)(SPVM_ENV* env, SPVM_VALUE* stack);
   * Native API new_env don't call call_init_blocks.
+  * Native API free_env and free_env_prepared don't call cleanup_global_vars.
   * The following depracated methods are removed.
     Fn->copy_array_byte is removed. Use Array->copy_byte instead
     Fn->copy_array_double is removed. Use Array->copy_double instead

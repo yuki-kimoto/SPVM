@@ -3574,8 +3574,6 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
 void SPVM_API_free_env(SPVM_ENV* env) {
   (void)env;
   
-  env->cleanup_global_vars(env);
-  
   SPVM_RUNTIME* runtime = env->runtime;
   SPVM_ALLOCATOR* allocator = runtime->allocator;
   SPVM_ALLOCATOR_free(allocator);
@@ -3588,9 +3586,6 @@ void SPVM_API_free_env(SPVM_ENV* env) {
 void SPVM_API_free_env_prepared(SPVM_ENV* env) {
 
   SPVM_RUNTIME* runtime = env->runtime;
-
-  // Cleanup global variables
-  env->cleanup_global_vars(env);
 
   // Free runtime
   SPVM_API_RUNTIME_free_runtime(runtime);

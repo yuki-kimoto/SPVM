@@ -610,11 +610,16 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   // Leave scope
   env->leave_scope(env, scope_id);
-
+  
+  // Cleanup global vars
+  env->cleanup_global_vars(env);
+  
+  // Free stack
   env->free_stack(env, stack);
-
+  
+  // Free env
   env->free_env_prepared(env);
-
+  
   return status;
 }
 EOS
