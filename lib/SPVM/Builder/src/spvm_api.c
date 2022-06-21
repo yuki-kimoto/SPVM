@@ -6748,7 +6748,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERROR: {
-        error = 1;
+        error = error_code;
         break;
       }
       case SPVM_OPCODE_C_ID_PRINT: {
