@@ -33,6 +33,7 @@
 #include "spvm_use.h"
 #include "spvm_interface.h"
 #include "spvm_constant_string.h"
+#include "spvm_descriptor.h"
 
 int SPVM_OP_CHECKER_method_name_cmp(const void* method1_ptr, const void* method2_ptr) {
   
@@ -1195,7 +1196,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   // Access control
                   int32_t is_private;
-                  if (class->is_public) {
+                  if (class->access_control_type == SPVM_DESCRIPTOR_C_ID_PUBLIC) {
                     is_private = 0;
                   }
                   // Default
@@ -2483,7 +2484,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Access control
               int32_t is_private;
-              if (call_method->method->is_private) {
+              if (call_method->method->access_control_type == SPVM_DESCRIPTOR_C_ID_PRIVATE) {
                 is_private = 1;
               }
               // Default
@@ -2852,7 +2853,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               int32_t is_private;
               // Public flag
-              if (class_var->is_public) {
+              if (class_var->access_control_type == SPVM_DESCRIPTOR_C_ID_PUBLIC) {
                 is_private = 0;
               }
               // Default is private
@@ -3031,7 +3032,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Access control
               int32_t is_private;
-              if (field->is_public) {
+              if (field->access_control_type == SPVM_DESCRIPTOR_C_ID_PUBLIC) {
                 is_private = 0;
               }
               // Default

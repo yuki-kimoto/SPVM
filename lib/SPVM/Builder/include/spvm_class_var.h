@@ -13,7 +13,6 @@ struct spvm_class_var {
   int32_t id;
   int8_t has_setter;
   int8_t has_getter;
-  int8_t is_public;
   int8_t access_control_type;
 };
 
