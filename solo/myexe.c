@@ -50,7 +50,7 @@ int32_t main(int32_t argc, const char *argv[]) {
 
   int32_t status;
   if (exception_flag) {
-    env->print_stderr(env, stack, env->exception_object);
+    env->print_stderr(env, stack, env->get_exception(env, stack));
     printf("\n");
     status = 255;
   }
