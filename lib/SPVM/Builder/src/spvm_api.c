@@ -304,6 +304,8 @@ int32_t SPVM_API_init_env(SPVM_ENV* env) {
   if (native_mortal_stack == NULL) {
     return 1;
   }
+  env->native_mortal_stack_capacity = (void*)(intptr_t)native_mortal_stack_capacity;
+  env->native_mortal_stack = native_mortal_stack;
 
   // Initialize Class Variables
   void* class_vars_heap = calloc(sizeof(SPVM_VALUE), ((int64_t)runtime->class_vars_length + 1));
@@ -311,8 +313,6 @@ int32_t SPVM_API_init_env(SPVM_ENV* env) {
     return 2;
   }
   
-  env->native_mortal_stack_capacity = (void*)(intptr_t)native_mortal_stack_capacity;
-  env->native_mortal_stack = native_mortal_stack;
   env->class_vars_heap = class_vars_heap;
 
   // Adjust alignment SPVM_VALUE
