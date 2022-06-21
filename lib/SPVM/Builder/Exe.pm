@@ -572,6 +572,9 @@ int32_t main(int32_t argc, const char *argv[]) {
     return -1;
   }
   
+  
+  SPVM_VALUE* stack = env->new_stack(env);
+  
   // Enter scope
   int32_t scope_id = env->enter_scope(env);
   
@@ -588,7 +591,6 @@ int32_t main(int32_t argc, const char *argv[]) {
     env->set_elem_object(env, cmd_args_obj, arg_index - 1, cmd_arg_obj);
   }
   
-  SPVM_VALUE* stack = env->new_stack(env);
   stack[0].oval = cmd_start_file_obj;
   stack[1].oval = cmd_args_obj;
   
