@@ -2,6 +2,7 @@
   [CHANGE]
   * Add error_code operator
   * Add set_error_code operator
+  * exception become stack variable from env variable.
   [NON BACKWORD COMPATIBLE CHANGES]
   * Change the definitions of the following native APIs
     [Before]
@@ -369,7 +370,7 @@
     int32_t (*has_interface)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t interface_basic_type_id);
     void (*print)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
     void (*print_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
-  
+  * Native API exception_object is renamed to reserved16
 0.9609 2022-06-19
   [CHANGE]
   * Improve error messages of compilation.

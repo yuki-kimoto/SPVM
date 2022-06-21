@@ -113,7 +113,7 @@ struct spvm_env {
   int32_t (*check_runtime_assignability)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
   int32_t (*check_runtime_assignability_array_element)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
   void* runtime;
-  void* exception_object;
+  void* reserved16;
   void* native_mortal_stack;
   void* native_mortal_stack_top;
   void* native_mortal_stack_capacity;

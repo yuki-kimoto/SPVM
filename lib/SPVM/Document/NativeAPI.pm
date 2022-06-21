@@ -30,7 +30,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   13 check_runtime_assignability
   14 check_runtime_assignability_array_element
   15 runtime
-  16 exception_object
+  16 reserved16
   17 native_mortal_stack
   18 native_mortal_stack_top
   19 native_mortal_stack_capacity
@@ -313,11 +313,11 @@ Check the runtime type assignability of an array element.
 
 A pointer to the runtime information. This is used internally.
 
-=head2 exception_object
+=head2 reserved16
 
-  void* exception_object;
+  void* reserved16;
 
-Exception object. This is used internally.
+Reserved.
 
 =head2 native_mortal_stack
 

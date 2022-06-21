@@ -1966,14 +1966,17 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_ad
 }
 
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception) {
-  if (env->exception_object != NULL) {
-    SPVM_API_dec_ref_count(env, stack, (SPVM_OBJECT*)env->exception_object);
+  
+  SPVM_OBJECT** cur_excetpion_ptr = (SPVM_OBJECT**)&stack[STACK_INDEX_EXCEPTION];
+  
+  if (*cur_excetpion_ptr != NULL) {
+    SPVM_API_dec_ref_count(env, stack, *cur_excetpion_ptr);
   }
   
-  SPVM_API_OBJECT_ASSIGN(env, stack, &env->exception_object, exception);
+  SPVM_API_OBJECT_ASSIGN(env, stack, cur_excetpion_ptr, exception);
   
-  if (env->exception_object != NULL) {
-    ((SPVM_OBJECT*)env->exception_object)->ref_count++;
+  if (*cur_excetpion_ptr != NULL) {
+    (*cur_excetpion_ptr)->ref_count++;
   }
   
   return 1;
@@ -1981,8 +1984,11 @@ int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ex
 
 SPVM_OBJECT* SPVM_API_exception(SPVM_ENV* env, SPVM_VALUE* stack){
   (void)env;
+
+  SPVM_OBJECT** cur_excetpion_ptr = (SPVM_OBJECT**)&stack[STACK_INDEX_EXCEPTION];
+  SPVM_OBJECT* cur_excetpion = *cur_excetpion_ptr;
   
-  return env->exception_object;
+  return cur_excetpion;
 }
 
 SPVM_OBJECT* SPVM_API_new_byte_array(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
