@@ -113,7 +113,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_check_runtime_assignability,
     SPVM_API_check_runtime_assignability_array_element,
     NULL, // runtime
-    NULL, // exception_object
+    NULL, // reserved16
     NULL, // native_mortal_stack
     NULL, // native_mortal_stack_top
     NULL, // native_mortal_stack_capacity
