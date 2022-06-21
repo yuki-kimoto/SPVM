@@ -256,6 +256,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "CLASS_ID",
     "ERROR_CODE",
     "SET_ERROR_CODE",
+    "EXTENDS",
   };
   
   return id_names;
@@ -375,6 +376,13 @@ SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
   SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_var_name);
   
   return op_var;
+}
+
+SPVM_OP* SPVM_OP_build_extends(SPVM_COMPILER* compiler, SPVM_OP* op_extends, SPVM_OP* op_name_parent_class) {
+  
+  SPVM_OP_insert_child(compiler, op_extends, op_extends->last, op_name_parent_class);
+  
+  return op_extends;
 }
 
 SPVM_OP* SPVM_OP_new_op_descriptor(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line) {
@@ -1745,7 +1753,7 @@ SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPV
   return op_convert;
 }
 
-SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_descriptors) {
+SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_descriptors, SPVM_OP* op_extends) {
   
   // Class
   SPVM_CLASS* class = SPVM_CLASS_new(compiler);
@@ -1753,6 +1761,16 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   class->module_dir = compiler->cur_dir;
   class->module_rel_file = compiler->cur_rel_file;
   class->module_file = compiler->cur_file;
+  
+  if (op_extends) {
+    SPVM_OP* op_name_parent_class = op_extends->first;
+    class->parent_class_name = op_name_parent_class->uv.name;
+    // add use stack
+    SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_parent_class->file, op_name_parent_class->line);
+    SPVM_OP* op_name_class_alias = NULL;
+    int32_t is_require = 0;
+    SPVM_OP_build_use(compiler, op_use, op_name_parent_class, op_name_class_alias, is_require);
+  }
   
   if (class->module_dir) {
     SPVM_CONSTANT_STRING_new(compiler, class->module_dir, strlen(class->module_dir));

@@ -2056,6 +2056,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_EVAL);
                   keyword_token = EVAL;
                 }
+                else if (strcmp(symbol_name, "extends") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_EXTENDS);
+                  keyword_token = EXTENDS;
+                }
                 break;
               }
               case 'f' : {
