@@ -38,10 +38,10 @@
 #  include "spvm_api_precompile.h"
 #endif
 
-
-
-
-
+static int32_t STACK_INDEX_EXCEPTION = 511;
+static int32_t STACK_INDEX_MORTAL_STACK = 510;
+static int32_t STACK_INDEX_MORTAL_STACK_TOP = 509;
+static int32_t STACK_INDEX_MORTAL_STACK_CAPACITY = 508;
 
 
 
