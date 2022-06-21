@@ -12,6 +12,7 @@ const char* const* SPVM_DESCRIPTOR_C_ID_NAMES(void) {
     "native",
     "precompile",
     "public",
+    "protected",
     "private",
     "rw",
     "ro",

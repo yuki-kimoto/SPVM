@@ -2239,6 +2239,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   keyword_token = DESCRIPTOR;
                 }
+                else if (strcmp(symbol_name, "protected") == 0) {
+                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_PROTECTED, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_descriptor;
+                  
+                  keyword_token = DESCRIPTOR;
+                }
                 else if (strcmp(symbol_name, "public") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_PUBLIC, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
