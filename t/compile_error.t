@@ -666,7 +666,7 @@ sub print_error_messages {
   }
   {
     my $source = q|class Tmp { public private enum { ONE } }|;
-    compile_not_ok($source, qr/Only one of "public" and "private" enumeration descriptors can be specified/);
+    compile_not_ok($source, qr/Only one of "private", "protected", or "public" enumeration descriptors can be specified/);
   }
 }
 
@@ -696,7 +696,7 @@ sub print_error_messages {
     }
     {
       my $source = 'class Tmp { our $FOO : public private int; }';
-      compile_not_ok($source, qr/Only one of "private", "public" class variable descriptors can be specifed/);
+      compile_not_ok($source, qr/Only one of "private", "protected", or "public" class variable descriptors can be specified/);
     }
     {
       my $source = 'class Tmp { our $FOO : int; our $FOO : int; }';
