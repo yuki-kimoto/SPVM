@@ -46,10 +46,10 @@ int32_t main(int32_t argc, const char *argv[]) {
   env->call_init_blocks(env, stack);
   
   // Run
-  int32_t exception_flag = env->call_spvm_method(env, stack, method_id);
+  int32_t error = env->call_spvm_method(env, stack, method_id);
 
   int32_t status;
-  if (exception_flag) {
+  if (error) {
     env->print_stderr(env, stack, env->get_exception(env, stack));
     printf("\n");
     status = 255;

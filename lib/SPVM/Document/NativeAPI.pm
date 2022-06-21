@@ -1302,11 +1302,11 @@ B<Examples:>
 
 =head2 new_object_by_name
 
-  void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* exception_flag, const char* file, int32_t line);
+  void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* file, int32_t line);
 
 This is same as C<new_object> function, but you can specify class name directry.
 
-If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
@@ -1316,11 +1316,11 @@ B<Examples:>
 
 =head2 new_pointer_by_name
 
-  void* (*new_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* exception_flag, const char* file, int32_t line);
+  void* (*new_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* file, int32_t line);
 
 This is same as C<new_pointer> function, but you can specify class name directry.
 
-If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
   int32_t e;
   void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &e, __FILE__, __LINE__);
@@ -1330,11 +1330,11 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 
   void (*set_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name, int8_t value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_field_byte> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
@@ -1346,11 +1346,11 @@ B<Examples:>
 
   void (*set_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name, int16_t value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_field_short> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
@@ -1362,11 +1362,11 @@ B<Examples:>
 
   void (*set_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name, int32_t value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_field_int> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
@@ -1378,11 +1378,11 @@ B<Examples:>
 
   void (*set_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name, int64_t value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_field_long> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
@@ -1394,11 +1394,11 @@ B<Examples:>
 
   void (*set_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name, float value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_field_float> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
@@ -1410,11 +1410,11 @@ B<Examples:>
 
   void (*set_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name, double value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_field_double> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
@@ -1426,11 +1426,11 @@ B<Examples:>
 
   void (*set_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name, const char* signature, void* value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_field_object> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
@@ -1442,11 +1442,11 @@ B<Examples:>
 
   int8_t (*get_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_field_byte> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1458,11 +1458,11 @@ B<Examples:>
 
   int16_t (*get_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_field_short> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1474,11 +1474,11 @@ B<Examples:>
 
   int32_t (*get_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_field_int> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1490,11 +1490,11 @@ B<Examples:>
 
   int64_t (*get_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_field_long> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1506,11 +1506,11 @@ B<Examples:>
 
   float (*get_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_field_float> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1522,11 +1522,11 @@ B<Examples:>
 
   double (*get_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_field_double> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1538,11 +1538,11 @@ B<Examples:>
 
   void* (*get_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name, const char* signature,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_field_object> function, but you can specify class name and field name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1554,11 +1554,11 @@ B<Examples:>
 
   void (*set_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, int8_t value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_class_var_byte> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1570,11 +1570,11 @@ B<Examples:>
 
   void (*set_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, int16_t value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_class_var_short> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1586,11 +1586,11 @@ B<Examples:>
 
   void (*set_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, int32_t value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_class_var_int> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1602,11 +1602,11 @@ B<Examples:>
 
   void (*set_class_var_long_by_name)(SPVM_ENV* env
     const char* class_name, const char* class_var_name, int64_t value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_class_var_long> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1618,11 +1618,11 @@ B<Examples:>
 
   void (*set_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, float value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_class_var_float> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1634,11 +1634,11 @@ B<Examples:>
 
   void (*set_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, double value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_class_var_double> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1650,11 +1650,11 @@ B<Examples:>
 
   void (*set_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, const char* signature, void* value,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_class_var_object> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1666,11 +1666,11 @@ B<Examples:>
 
   int8_t (*get_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_class_var_byte> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1682,11 +1682,11 @@ B<Examples:>
 
   int16_t (*get_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_class_var_short> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1698,11 +1698,11 @@ B<Examples:>
 
   int32_t (*get_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_class_var_int> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1714,11 +1714,11 @@ B<Examples:>
 
   int64_t (*get_class_var_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_class_var_long> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1730,11 +1730,11 @@ B<Examples:>
 
   float (*get_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_class_var_float> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1746,11 +1746,11 @@ B<Examples:>
 
   double (*get_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_class_var_double> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
@@ -1762,11 +1762,11 @@ B<Examples:>
 
   void* (*get_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, const char* signature,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_class_var_object> function, but you can specify the class name directry.
 
-If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
   
@@ -1787,9 +1787,9 @@ B<Examples:>
   int32_t output;
   {
     stack[0].ival = 5;
-    int32_t exception_flag = env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", "int(int)", __FILE__, __LINE__);
-    if (exception_flag) {
-      return exception_flag;
+    int32_t error = env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", "int(int)", __FILE__, __LINE__);
+    if (error) {
+      return error;
     }
     output = stack[0].ival;
   }
@@ -1806,7 +1806,7 @@ B<Examples:>
 
   const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
     const char* class_name, const char* field_name,
-    int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* error, const char* file, int32_t line);
 
 B<Examples:>
 
