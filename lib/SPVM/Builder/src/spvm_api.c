@@ -1288,7 +1288,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t meth
     }
     
     // Set default exception message
-    if (exception_flag && env->exception_object == NULL) {
+    if (exception_flag && env->get_exception(env, stack) == NULL) {
       void* exception = env->new_string_nolen_raw(env, stack, "Error");
       env->set_exception(env, stack, exception);
     }
