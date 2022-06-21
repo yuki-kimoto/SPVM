@@ -3,6 +3,7 @@
   * Add error_code operator
   * Add set_error_code operator
   * exception become stack variable from env variable.
+  * native mortal stack become stack variable from env variable.
   [NON BACKWORD COMPATIBLE CHANGES]
   * Change the definitions of the following native APIs
     [Before]
@@ -371,6 +372,9 @@
     void (*print)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
     void (*print_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
   * Native API exception_object is renamed to reserved16
+  * Native API native_mortal_stack is renamed to reserved17
+  * Native API native_mortal_stack_top is renamed to reserved18
+  * Native API native_mortal_stack_capacity is renamed to reserved19
 0.9609 2022-06-19
   [CHANGE]
   * Improve error messages of compilation.

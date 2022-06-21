@@ -114,9 +114,9 @@ struct spvm_env {
   int32_t (*check_runtime_assignability_array_element)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
   void* runtime;
   void* reserved16;
-  void* native_mortal_stack;
-  void* native_mortal_stack_top;
-  void* native_mortal_stack_capacity;
+  void* reserved17;
+  void* reserved18;
+  void* reserved19;
   int32_t (*get_basic_type_id)(SPVM_ENV* env, const char* basic_type_name);
   int32_t (*get_field_id)(SPVM_ENV* env, const char* class_name, const char* field_name, const char* signature);
   int32_t (*get_field_offset)(SPVM_ENV* env, int32_t field_id);

@@ -31,9 +31,9 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   14 check_runtime_assignability_array_element
   15 runtime
   16 reserved16
-  17 native_mortal_stack
-  18 native_mortal_stack_top
-  19 native_mortal_stack_capacity
+  17 reserved17
+  18 reserved18
+  19 reserved19
   20 get_basic_type_id
   21 get_field_id
   22 get_field_offset
@@ -319,23 +319,23 @@ A pointer to the runtime information. This is used internally.
 
 Reserved.
 
-=head2 native_mortal_stack
+=head2 reserved17
 
-  void* native_mortal_stack;
+  void* reserved17;
 
-Mortal stack used for native calls. This is used internally.
+Reserved.
 
-=head2 native_mortal_stack_top
+=head2 reserved18
 
-  void* native_mortal_stack_top;
+  void* reserved18;
 
-The top position of the mortal stack used for native calls. This is used internally.
+Reserved.
 
-=head2 native_mortal_stack_capacity
+=head2 reserved19
 
-  void* native_mortal_stack_capacity;
+  void* reserved19;
 
-The amount of mortal stack used for native calls. This is used internally.
+Reserved.
 
 =head2 get_basic_type_id
 

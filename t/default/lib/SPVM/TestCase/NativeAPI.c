@@ -32,9 +32,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->check_runtime_assignability_array_element != &env_array[14]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->runtime != &env_array[15]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved16 != &env_array[16]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->native_mortal_stack != &env_array[17]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->native_mortal_stack_top != &env_array[18]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->native_mortal_stack_capacity != &env_array[19]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved17 != &env_array[17]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved18 != &env_array[18]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved19 != &env_array[19]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_basic_type_id != &env_array[20]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_id != &env_array[21]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_offset != &env_array[22]) { stack[0].ival = 0; return 0; }
