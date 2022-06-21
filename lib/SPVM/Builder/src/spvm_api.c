@@ -2658,9 +2658,8 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         
         // Call destructor
         if (object->flag & SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR) {
-          SPVM_VALUE stack_unused[1];
-          stack_unused[0].oval = object;
-          int32_t exception_flag = SPVM_API_call_spvm_method(env, stack_unused, class->destructor_method_id);
+          stack[0].oval = object;
+          int32_t exception_flag = SPVM_API_call_spvm_method(env, stack, class->destructor_method_id);
           
           // Exception in destructor is changed to warning
           if (exception_flag) {
