@@ -123,6 +123,18 @@ void SPVM_LIST_push(SPVM_LIST* list, void* value) {
   list->length++;
 }
 
+void SPVM_LIST_unshift(SPVM_LIST* list, void* value) {
+  
+  SPVM_LIST_maybe_extend(list);
+  
+  int32_t length = list->length;
+  
+  memmove(list->values + 1, list->values, length);
+  
+  *(void**)&list->values[0] = value;
+  list->length++;
+}
+
 void* SPVM_LIST_get(SPVM_LIST* list, int32_t index) {
   assert(list);
   assert(index >= 0);
