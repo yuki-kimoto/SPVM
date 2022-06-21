@@ -1237,6 +1237,17 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
 
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
+  // Free exception
+  env->set_exception(env, stack, NULL);
+  
+  // Free mortal stack
+  SPVM_OBJECT** mortal_stack = stack[STACK_INDEX_MORTAL_STACK].oval;
+  
+  if (mortal_stack != NULL) {
+    env->free_memory_block(env, mortal_stack);
+    mortal_stack = NULL;
+  }
+  
   env->free_memory_block(env, stack);
   stack = NULL;
 }
