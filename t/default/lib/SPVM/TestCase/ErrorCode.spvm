@@ -1,5 +1,6 @@
 class TestCase::ErrorCode {
   use Point;
+  use Fn;
   static method basic : int () {
     {
       set_error_code 5;
@@ -36,6 +37,20 @@ class TestCase::ErrorCode {
       unless (error_code == 100) {
         return 0;
       }
+    }
+    
+    eval {
+      set_error_code 0;
+    };
+    unless ($@ && Fn->contains($@, "The error code must be more than or equal to 1")) {
+      return 0;
+    }
+
+    eval {
+      set_error_code -1;
+    };
+    unless ($@ && Fn->contains($@, "The error code must be more than or equal to 1")) {
+      return 0;
     }
     
     $@ = undef;

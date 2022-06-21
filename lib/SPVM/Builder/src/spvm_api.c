@@ -6006,8 +6006,16 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERROR_CODE: {
-        error_code = int_vars[opcode->operand1];
-        int_vars[opcode->operand0] = error_code;
+        int32_t tmp_error_code = int_vars[opcode->operand1];
+        if (tmp_error_code < 1) {
+          void* exception = env->new_string_nolen_raw(env, stack, "The error code must be more than or equal to 1");
+          env->set_exception(env, stack, exception);
+          error = 1;
+        }
+        else {
+          error_code = tmp_error_code;
+          int_vars[opcode->operand0] = error_code;
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY: {
