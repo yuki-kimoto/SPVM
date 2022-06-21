@@ -104,6 +104,8 @@ The list of some CPAN modules.
 
 =item * L<Base64|SPVM::Base64> - Base 64
 
+=item * L<Time::Local|SPVM::Time::Local> - Time Reverse Manipulation
+
 =back
 
 =head2 Resource Modules

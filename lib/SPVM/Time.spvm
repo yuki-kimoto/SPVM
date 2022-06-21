@@ -6,8 +6,5 @@ class Time {
   native static method time : long ();
   native static method localtime : Time::Info ($time : long);
   native static method gmtime : Time::Info ($time : long);
-  
-  native static method timelocal : long ($time_info : Time::Info);
-  native static method timegm : long ($time_info : Time::Info);
 }
 
