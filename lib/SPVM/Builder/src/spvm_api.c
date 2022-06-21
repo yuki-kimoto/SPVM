@@ -1225,13 +1225,16 @@ void SPVM_API_free_env_raw(SPVM_ENV* env) {
 
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   
-  // Argument and return value stack 0-255
-  // Exception message 256
-  // Mortal stack 257
+  // Arguments and return values : 0-255
+  // Stack local varialbe : 256-511
+  //   Exception message 511
+  //   Mortal stack 510
+  //   Motal stack top 509
+  //   Motal stack capacity 508
   
-  SPVM_VALUE* stack_real = env->alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * 257);
+  SPVM_VALUE* stack = env->alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * 512);
   
-  return stack_real;
+  return stack;
 }
 
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
