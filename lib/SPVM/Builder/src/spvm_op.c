@@ -1841,6 +1841,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   class->name = op_name_class->uv.name;
 
+  // Default is private
+  class->access_control_type = SPVM_DESCRIPTOR_C_ID_PRIVATE;
+
   // Class descriptors
   int32_t class_descriptors_count = 0;
   int32_t access_control_descriptors_count = 0;
@@ -1861,16 +1864,17 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_PRIVATE: {
-          // Default is private
+          // Default
           access_control_descriptors_count++;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_PROTECTED: {
-          class->is_public = 1;
+          class->access_control_type = SPVM_DESCRIPTOR_C_ID_PROTECTED;
           access_control_descriptors_count++;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
+          class->access_control_type = SPVM_DESCRIPTOR_C_ID_PUBLIC;
           class->is_public = 1;
           access_control_descriptors_count++;
           break;
@@ -2409,7 +2413,9 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
 
   op_class_var->uv.class_var = class_var;
 
-  // Check descriptors
+  class_var->access_control_type = SPVM_DESCRIPTOR_C_ID_PRIVATE;
+
+  // Class variable descriptors
   if (op_descriptors) {
     int32_t accessor_descriptors_count = 0;
     int32_t access_control_descriptors_count = 0;
@@ -2424,10 +2430,12 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_PROTECTED: {
+         class_var->access_control_type = SPVM_DESCRIPTOR_C_ID_PROTECTED;
           access_control_descriptors_count++;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
+          class_var->access_control_type = SPVM_DESCRIPTOR_C_ID_PUBLIC;
           class_var->is_public = 1;
           access_control_descriptors_count++;
           break;
@@ -2482,8 +2490,10 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   
   // Set field informaiton
   op_field->uv.field = field;
+
+  field->access_control_type = SPVM_DESCRIPTOR_C_ID_PRIVATE;
   
-  // Check descriptors
+  // Field descriptors
   if (op_descriptors) {
     SPVM_OP* op_descriptor = op_descriptors->first;
     int32_t accessor_descriptors_count = 0;
@@ -2498,10 +2508,12 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_PROTECTED: {
+          field->access_control_type = SPVM_DESCRIPTOR_C_ID_PROTECTED;
           access_control_descriptors_count++;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
+          field->access_control_type = SPVM_DESCRIPTOR_C_ID_PUBLIC;
           field->is_public = 1;
           access_control_descriptors_count++;
           break;
@@ -2578,7 +2590,9 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_COMPILER_error(compiler, "\"INIT\" is reserved for INIT block at %s line %d", op_name_method->file, op_name_method->line);
   }
 
-  // Descriptors
+  method->access_control_type = SPVM_DESCRIPTOR_C_ID_PUBLIC;
+
+  // Method descriptors
   int32_t access_control_descriptors_count = 0;
   if (op_descriptors) {
     SPVM_OP* op_descriptor = op_descriptors->first;
@@ -2587,11 +2601,13 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       
       switch (descriptor->id) {
         case SPVM_DESCRIPTOR_C_ID_PRIVATE: {
+          method->access_control_type = SPVM_DESCRIPTOR_C_ID_PRIVATE;
           method->is_private = 1;
           access_control_descriptors_count++;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_PROTECTED: {
+          method->access_control_type = SPVM_DESCRIPTOR_C_ID_PROTECTED;
           access_control_descriptors_count++;
           break;
         }
@@ -2814,7 +2830,9 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
   while ((op_method = SPVM_OP_sibling(compiler, op_method))) {
     SPVM_METHOD* method = op_method->uv.method;
 
-    // Descriptors
+    method->access_control_type = SPVM_DESCRIPTOR_C_ID_PUBLIC;
+
+    // Enumeration descriptors
     int32_t access_control_descriptors_count = 0;
     if (op_descriptors) {
       SPVM_OP* op_descriptor = op_descriptors->first;
@@ -2823,11 +2841,13 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
         
         switch (descriptor->id) {
           case SPVM_DESCRIPTOR_C_ID_PRIVATE: {
+            method->access_control_type = SPVM_DESCRIPTOR_C_ID_PRIVATE;
             method->is_private = 1;
             access_control_descriptors_count++;
             break;
           }
           case SPVM_DESCRIPTOR_C_ID_PROTECTED: {
+            method->access_control_type = SPVM_DESCRIPTOR_C_ID_PROTECTED;
             access_control_descriptors_count++;
             break;
           }

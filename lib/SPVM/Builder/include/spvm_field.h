@@ -17,6 +17,7 @@ struct spvm_field {
   int8_t has_setter;
   int8_t has_getter;
   int8_t is_public;
+  int8_t access_control_type;
 };
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);

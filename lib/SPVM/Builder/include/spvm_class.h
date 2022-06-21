@@ -43,6 +43,7 @@ struct spvm_class {
   int8_t is_precompile;
   int8_t is_public;
   int8_t is_pointer;
+  int8_t access_control_type;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);
