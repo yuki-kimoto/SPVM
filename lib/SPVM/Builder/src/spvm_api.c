@@ -3581,15 +3581,12 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Call INIT blocks
   int32_t classes_length = runtime->classes_length;
-  SPVM_VALUE stack_unused[256];
   for (int32_t class_id = 0; class_id < classes_length; class_id++) {
-    
     SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-    
     if (class->has_init_block) {
       SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, "INIT");
       assert(init_method);
-      env->call_spvm_method(env, stack_unused, init_method->id);
+      env->call_spvm_method(env, stack, init_method->id);
     }
   }
 }
