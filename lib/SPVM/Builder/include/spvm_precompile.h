@@ -36,7 +36,7 @@ enum {
 #define SPVM_PRECOMPILE_INLINE_SET_EXCEPTION_NULL() \
   do { \
     if ((*(void**)((intptr_t)SPVM_PRECOMPILE_RUNTIME + SPVM_PRECOMPILE_RUNTIME_EXCEPTION_BYTE_OFFSET)) != NULL) { \
-      env->dec_ref_count(env, (*(void**)((intptr_t)SPVM_PRECOMPILE_RUNTIME + SPVM_PRECOMPILE_RUNTIME_EXCEPTION_BYTE_OFFSET))); \
+      env->dec_ref_count(env, stack, (*(void**)((intptr_t)SPVM_PRECOMPILE_RUNTIME + SPVM_PRECOMPILE_RUNTIME_EXCEPTION_BYTE_OFFSET))); \
     } \
     (*(void**)((intptr_t)SPVM_PRECOMPILE_RUNTIME + SPVM_PRECOMPILE_RUNTIME_EXCEPTION_BYTE_OFFSET)) = NULL; \
   } \

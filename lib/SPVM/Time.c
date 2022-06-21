@@ -28,7 +28,7 @@ int32_t SPVM__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   localtime_r(&time, st_tm);
 #endif
   
-  void* obj_time_info = env->new_pointer_by_name(env, "Time::Info", st_tm, &e, FILE_NAME, __LINE__);
+  void* obj_time_info = env->new_pointer_by_name(env, stack, "Time::Info", st_tm, &e, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = obj_time_info;
@@ -49,7 +49,7 @@ int32_t SPVM__Time__gmtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   gmtime_r(&time, st_tm);
 #endif
   
-  void* obj_time_info = env->new_pointer_by_name(env, "Time::Info", st_tm, &e, FILE_NAME, __LINE__);
+  void* obj_time_info = env->new_pointer_by_name(env, stack, "Time::Info", st_tm, &e, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = obj_time_info;
@@ -61,9 +61,9 @@ int32_t SPVM__Time__timelocal(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t e;
   
   void* obj_time_info = stack[0].oval;
-  if (!obj_time_info) { return env->die(env, "Time::Info object must be defined", FILE_NAME, __LINE__); }
+  if (!obj_time_info) { return env->die(env, stack, "Time::Info object must be defined", FILE_NAME, __LINE__); }
   
-  struct tm* st_tm = env->get_pointer(env, obj_time_info);
+  struct tm* st_tm = env->get_pointer(env, stack, obj_time_info);
 
   int64_t ltime = (int64_t)mktime(st_tm);
   
@@ -76,9 +76,9 @@ int32_t SPVM__Time__timegm(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t e;
   
   void* obj_time_info = stack[0].oval;
-  if (!obj_time_info) { return env->die(env, "Time::Info object must be defined", FILE_NAME, __LINE__); }
+  if (!obj_time_info) { return env->die(env, stack, "Time::Info object must be defined", FILE_NAME, __LINE__); }
   
-  struct tm* st_tm = env->get_pointer(env, obj_time_info);
+  struct tm* st_tm = env->get_pointer(env, stack, obj_time_info);
   
 #ifdef _WIN32
   int64_t time = (int64_t)_mkgmtime(st_tm);

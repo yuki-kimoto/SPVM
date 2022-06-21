@@ -6,8 +6,8 @@
 int32_t SPVM__MyZlib__test(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* obj_out_file = stack[0].oval;
-  if (!obj_out_file){ return env->die(env, "File name must be specified", "MyZlib.c", __LINE__); }
-  const char* out_file = (const char*)env->get_elems_byte(env, obj_out_file);
+  if (!obj_out_file){ return env->die(env, stack, "File name must be specified", "MyZlib.c", __LINE__); }
+  const char* out_file = (const char*)env->get_elems_byte(env, stack, obj_out_file);
   
   char buf[]="0123456789abcdefghijklmnopqrstuvwxyz\n";
   int cnt = 0;

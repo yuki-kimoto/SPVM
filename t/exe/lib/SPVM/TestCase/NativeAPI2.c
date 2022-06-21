@@ -64,7 +64,7 @@ int32_t SPVM__TestCase__NativeAPI2__mylib2_source1_func1(SPVM_ENV* env, SPVM_VAL
   
   const char* string = mylib2_source1_func1();
   
-  stack[0].oval = env->new_string_nolen(env, string);
+  stack[0].oval = env->new_string_nolen(env, stack, string);
   
   return 0;
 }

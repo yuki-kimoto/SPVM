@@ -6,7 +6,7 @@ int32_t SPVM__TestCase__UseResource__Mylib2__mylib2_source1_func1 (SPVM_ENV* env
   
   const char* string = mylib2_source1_func1();
   
-  stack[0].oval = env->new_string_nolen(env, string);
+  stack[0].oval = env->new_string_nolen(env, stack, string);
   
   return 0;
 }
@@ -15,7 +15,7 @@ int32_t SPVM__TestCase__UseResource__Mylib2__mylib2_source1_func2 (SPVM_ENV* env
   
   const char* string = mylib2_source1_func2();
   
-  stack[0].oval = env->new_string_nolen(env, string);
+  stack[0].oval = env->new_string_nolen(env, stack, string);
 
   return 0;
 }

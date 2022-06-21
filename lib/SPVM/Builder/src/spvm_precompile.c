@@ -119,37 +119,37 @@ void SPVM_PRECOMPILE_build_head(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER*
     "#include <string.h>\n"
     "#include <stdio.h>\n"
     "#include <inttypes.h>\n"
-    "#define SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, object) ((void*)((intptr_t)object & ~(intptr_t)1))\n"
-    "#define SPVM_API_GET_REF_COUNT(env, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))\n"
-    "#define SPVM_API_INC_REF_COUNT_ONLY(env, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)\n"
-    "#define SPVM_API_INC_REF_COUNT(env, object)\\\n"
+    "#define SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))\n"
+    "#define SPVM_API_GET_REF_COUNT(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))\n"
+    "#define SPVM_API_INC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)\n"
+    "#define SPVM_API_INC_REF_COUNT(env, stack, object)\\\n"
     "do {\\\n"
     "  if (object != NULL) {\\\n"
-    "    SPVM_API_INC_REF_COUNT_ONLY(env, object);\\\n"
+    "    SPVM_API_INC_REF_COUNT_ONLY(env, stack, object);\\\n"
     "  }\\\n"
     "} while (0)\\\n"
     "\n"
-    "#define SPVM_API_DEC_REF_COUNT_ONLY(env, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)\n"
-    "#define SPVM_API_DEC_REF_COUNT(env, object)\\\n"
+    "#define SPVM_API_DEC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)\n"
+    "#define SPVM_API_DEC_REF_COUNT(env, stack, object)\\\n"
     "do {\\\n"
     "  if (object != NULL) {\\\n"
-    "    if (SPVM_API_GET_REF_COUNT(env, object) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(env, object); }\\\n"
-    "    else { env->dec_ref_count(env, object); }\\\n"
+    "    if (SPVM_API_GET_REF_COUNT(env, stack, object) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(env, stack, object); }\\\n"
+    "    else { env->dec_ref_count(env, stack, object); }\\\n"
     "  }\\\n"
     "} while (0)\\\n"
     "\n"
-    "#define SPVM_API_ISWEAK(env, dist_address) (((intptr_t)*(void**)dist_address) & 1)\n"
+    "#define SPVM_API_ISWEAK(env, stack, dist_address) (((intptr_t)*(void**)dist_address) & 1)\n"
     "\n"
-    "#define SPVM_API_OBJECT_ASSIGN(env, dist_address, src_object) \\\n"
+    "#define SPVM_API_OBJECT_ASSIGN(env, stack, dist_address, src_object) \\\n"
     "do {\\\n"
-    "  void* tmp_object = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, src_object);\\\n"
+    "  void* tmp_object = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, src_object);\\\n"
     "  if (tmp_object != NULL) {\\\n"
-    "    SPVM_API_INC_REF_COUNT_ONLY(env, tmp_object);\\\n"
+    "    SPVM_API_INC_REF_COUNT_ONLY(env, stack, tmp_object);\\\n"
     "  }\\\n"
     "  if (*(void**)(dist_address) != NULL) {\\\n"
-    "    if (__builtin_expect(SPVM_API_ISWEAK(env, dist_address), 0)) { env->unweaken(env, dist_address); }\\\n"
-    "    if (SPVM_API_GET_REF_COUNT(env, *(void**)(dist_address)) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(env, *(void**)(dist_address)); }\\\n"
-    "    else { env->dec_ref_count(env, *(void**)(dist_address)); }\\\n"
+    "    if (__builtin_expect(SPVM_API_ISWEAK(env, stack, dist_address), 0)) { env->unweaken(env, stack, dist_address); }\\\n"
+    "    if (SPVM_API_GET_REF_COUNT(env, stack, *(void**)(dist_address)) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(env, stack, *(void**)(dist_address)); }\\\n"
+    "    else { env->dec_ref_count(env, stack, *(void**)(dist_address)); }\\\n"
     "  }\\\n"
     "  *(void**)(dist_address) = tmp_object;\\\n"
     "} while (0)\\\n"
@@ -402,7 +402,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    object_vars[arg_mem_id] = *(void**)&stack[stack_index];\n"
                                               "    void* object = *(void**)&object_vars[arg_mem_id];\n"
                                               "    if (object != NULL) {\n"
-                                              "      SPVM_API_INC_REF_COUNT_ONLY(env, object);\n"
+                                              "      SPVM_API_INC_REF_COUNT_ONLY(env, stack, object);\n"
                                               "    }\n"
                                               "  }\n");
         break;
@@ -694,10 +694,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (access_basic_type_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Basic type not found:");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"Basic type not found:");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ":Is type\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -714,7 +714,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "        int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n"
                                               "        int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->is_type(env, object, cast_basic_type, cast_type_dimension);\n"
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->is_type(env, stack, object, cast_basic_type, cast_type_dimension);\n"
                                               "      }\n"
                                               "      else {\n");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
@@ -738,10 +738,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_basic_type_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Basic type not found:");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Basic type not found:");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ":Has interface\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -757,7 +757,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "      if (object) {\n"
                                               "        int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, "      = env->has_interface(env, object, interface_basic_type_id);\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "      = env->has_interface(env, stack, object, interface_basic_type_id);\n"
                                               "      }\n"
                                               "      else {\n");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
@@ -891,8 +891,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    else {\n"
                                               "      int32_t length1 = *(int32_t*)((intptr_t)object1 + (intptr_t)env->object_length_offset);\n"
                                               "      int32_t lenght2 = *(int32_t*)((intptr_t)object2 + (intptr_t)env->object_length_offset);\n"
-                                              "      const char* bytes1 = env->get_chars(env, object1);\n"
-                                              "      const char* bytes2 = env->get_chars(env, object2);\n"
+                                              "      const char* bytes1 = env->get_chars(env, stack, object1);\n"
+                                              "      const char* bytes2 = env->get_chars(env, stack, object2);\n"
                                               "      int32_t short_string_length = length1 < lenght2 ? length1 : lenght2;\n"
                                               "      int32_t retval = memcmp(bytes1, bytes2, short_string_length);\n"
                                               "      int32_t cmp;\n"
@@ -1227,12 +1227,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    void* src_string = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "    int32_t src_string_length = env->length(env, src_string);"
-                                              "    const char* src_string_data = env->get_chars(env, src_string);"
-                                              "    void* byte_array = env->new_byte_array_raw(env, src_string_length);"
-                                              "    int8_t* byte_array_data = env->get_elems_byte(env, byte_array);"
+                                              "    int32_t src_string_length = env->length(env, stack, src_string);"
+                                              "    const char* src_string_data = env->get_chars(env, stack, src_string);"
+                                              "    void* byte_array = env->new_byte_array_raw(env, stack, src_string_length);"
+                                              "    int8_t* byte_array_data = env->get_elems_byte(env, stack, byte_array);"
                                               "    memcpy(byte_array_data, src_string_data, src_string_length);"
-                                              "    SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "    SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", byte_array);\n"
                                               "  }\n");
@@ -1243,10 +1243,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    void* src_byte_array = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "    int32_t src_byte_array_length = env->length(env, src_byte_array);"
-                                              "    int8_t* src_byte_array_data = env->get_elems_byte(env, src_byte_array);"
-                                              "    void* string = env->new_string_raw(env, (const char*)src_byte_array_data, src_byte_array_length);"
-                                              "    SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "    int32_t src_byte_array_length = env->length(env, stack, src_byte_array);"
+                                              "    int8_t* src_byte_array_data = env->get_elems_byte(env, stack, src_byte_array);"
+                                              "    void* string = env->new_string_raw(env, stack, (const char*)src_byte_array_data, src_byte_array_length);"
+                                              "    SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", string);\n"
                                               "  }\n");
@@ -1294,8 +1294,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string_length = strlen(convert_string_buffer);\n"
-                                              "    void* string = env->new_string_raw(env, convert_string_buffer, string_length);\n"
-                                              "    SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "    void* string = env->new_string_raw(env, stack, convert_string_buffer, string_length);\n"
+                                              "    SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", string);\n"
                                               "  }\n");
@@ -1339,7 +1339,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_UNDEF: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(env, &");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", NULL);\n");
         break;
@@ -1511,17 +1511,17 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (__builtin_expect(array == NULL, 0)) { \n"
-                                              "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                              "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Array must not be undef\")); \n"
                                               "      exception_flag = 1;\n"
                                               "    } \n"
                                               "    else { \n"
                                               "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
-                                              "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                              "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Index is out of range\")); \n"
                                               "        exception_flag = 1;\n"
                                               "      } \n"
                                               "      else { \n"
                                               "        void* object = ((void**)((intptr_t)array + object_header_byte_size))[index];\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object); \n"
                                               "      } \n"
@@ -1592,17 +1592,17 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (__builtin_expect(array == NULL, 0)) { \n"
-                                              "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                              "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Array must not be undef\")); \n"
                                               "      exception_flag = 1;\n"
                                               "    } \n"
                                               "    else { \n"
                                               "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
-                                              "          env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                              "          env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Index is out of range\")); \n"
                                               "          exception_flag = 1;\n"
                                               "      } \n"
                                               "      else {\n"
                                               "        void** element_address = &((void**)((intptr_t)array + object_header_byte_size))[index];\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, \n"
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, \n"
                                               "          element_address, "
                                               "        ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
@@ -1624,12 +1624,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (__builtin_expect(array == NULL, 0)) { \n"
-                                              "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                              "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Array must not be undef\")); \n"
                                               "      exception_flag = 1;\n"
                                               "    } \n"
                                               "    else { \n"
                                               "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
-                                              "          env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                              "          env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Index is out of range\")); \n"
                                               "          exception_flag = 1;\n"
                                               "      } \n"
                                               "      else {\n"
@@ -1637,13 +1637,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "        void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "        int32_t runtime_assignability = env->check_runtime_assignability_array_element(env, array, object);\n"
+                                              "        int32_t runtime_assignability = env->check_runtime_assignability_array_element(env, stack, array, object);\n"
                                               "        if (runtime_assignability) {\n"
-                                              "          SPVM_API_OBJECT_ASSIGN(env, element_address, object);\n"
+                                              "          SPVM_API_OBJECT_ASSIGN(env, stack, element_address, object);\n"
                                               "        }\n"
                                               "        else {\n"
-                                              "          void* exception = env->new_string_nolen_raw(env, \"Assigned element type is invalid\");\n"
-                                              "          env->set_exception(env, exception);\n"
+                                              "          void* exception = env->new_string_nolen_raw(env, stack, \"Assigned element type is invalid\");\n"
+                                              "          env->set_exception(env, stack, exception);\n"
                                               "          exception_flag = 1;\n"
                                               "        }\n"
                                               "      }\n"
@@ -1664,7 +1664,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n"
-                                              "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                              "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Array must not be undef\")); \n"
                                               "      exception_flag = 1;\n"
                                               "    } \n"
                                               "    else { \n"
@@ -1675,12 +1675,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  >= *(int32_t*)((intptr_t)");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_length_offset), 0)) { \n"
-                                              "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                              "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Index is out of range\")); \n"
                                               "        exception_flag = 1;\n"
                                               "      } \n"
                                               "      else {\n"
                                               "        void* object_address = &((void**)((intptr_t)array + object_header_byte_size))[index];\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, \n"
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, \n"
                                               "          object_address,\n"
                                               "          NULL"
                                               "        );\n"
@@ -1781,7 +1781,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT: {
-          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(env, &");
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(env, stack, &");
           SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, ", ");
           SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
@@ -1793,13 +1793,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                                 "    void* string = ");
           SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                                "    if (env->is_read_only(env, string)) {\n"
-                                                "      void* exception = env->new_string_nolen_raw(env, \"Read-only strings can't be converted to mutable strings.\");\n"
-                                                "      env->set_exception(env, exception);\n"
+                                                "    if (env->is_read_only(env, stack, string)) {\n"
+                                                "      void* exception = env->new_string_nolen_raw(env, stack, \"Read-only strings can't be converted to mutable strings.\");\n"
+                                                "      env->set_exception(env, stack, exception);\n"
                                                 "      exception_flag = 1;\n"
                                                 "    }\n"
                                                 "    else {\n"
-                                                "  SPVM_API_OBJECT_ASSIGN(env, &");
+                                                "  SPVM_API_OBJECT_ASSIGN(env, stack, &");
           SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, ", string);\n"
                                                 "    }\n"
@@ -1812,20 +1812,20 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
           SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                                 "    if (object) {\n"
-                                                "      if (!(env->is_string(env, object) || env->is_numeric_array(env, object) || env->is_mulnum_array(env, object))) {\n"
-                                                "        void* exception = env->new_string_nolen_raw(env, \"The operand of the copy operator must be a string type, a numeric type, or a multi numeric type\");\n"
-                                                "        env->set_exception(env, exception);\n"
+                                                "      if (!(env->is_string(env, stack, object) || env->is_numeric_array(env, stack, object) || env->is_mulnum_array(env, stack, object))) {\n"
+                                                "        void* exception = env->new_string_nolen_raw(env, stack, \"The operand of the copy operator must be a string type, a numeric type, or a multi numeric type\");\n"
+                                                "        env->set_exception(env, stack, exception);\n"
                                                 "        exception_flag = 1;\n"
                                                 "      }\n"
                                                 "      else {\n"
-                                                "        void* new_object_raw = env->copy_raw(env, object);\n"
-                                                "  SPVM_API_OBJECT_ASSIGN(env, &");
+                                                "        void* new_object_raw = env->copy_raw(env, stack, object);\n"
+                                                "  SPVM_API_OBJECT_ASSIGN(env, stack, &");
           SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, ", new_object_raw);\n"
                                                   "    }\n"
                                                   "  }\n"
                                                   "  else {\n"
-                                                "      SPVM_API_OBJECT_ASSIGN(env, &");
+                                                "      SPVM_API_OBJECT_ASSIGN(env, stack, &");
           SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, ", NULL);\n"
                                                   "  }\n"
@@ -1833,7 +1833,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_UNDEF: {
-          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(env, &");
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(env, stack, &");
           SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, ", NULL);");
         break;
@@ -2036,8 +2036,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                                 "        int32_t var_index = mortal_stack[mortal_stack_index];\n"
                                                 "        void** object_address = (void**)&object_vars[var_index];\n"
                                                 "        if (*object_address != NULL) {\n"
-                                                "          if (SPVM_API_GET_REF_COUNT(env, *object_address) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(env, *object_address); }\n"
-                                                "          else { env->dec_ref_count(env, *object_address); }\n"
+                                                "          if (SPVM_API_GET_REF_COUNT(env, stack, *object_address) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(env, stack, *object_address); }\n"
+                                                "          else { env->dec_ref_count(env, stack, *object_address); }\n"
                                                 "          *object_address = NULL;\n"
                                                 "        }\n"
                                                 "      }\n"
@@ -2057,22 +2057,22 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_basic_type_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Basic type not found:");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Basic type not found:");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ":New object\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
                                               "      int32_t basic_type_id = access_basic_type_id;\n"
-                                              "      void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "      void* object = env->new_object_raw(env, stack, basic_type_id);\n"
                                               "      if (object == NULL) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for object\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Can't allocate memory for object\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "      }\n"
@@ -2091,10 +2091,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_class_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Class not found:");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Class not found:");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, ":New object\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -2134,21 +2134,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (length >= 0) {\n"
-                                              "      void* object = env->new_byte_array_raw(env, length);\n"
+                                              "      void* object = env->new_byte_array_raw(env, stack, length);\n"
                                               "      if (object == NULL) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for byte array\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Can't allocate memory for byte array\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, (void**)&");
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "      }\n"
                                               "    }\n"
                                               "    else {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Array length must be more than or equal to 0\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Array length must be more than or equal to 0\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "  }\n");
@@ -2160,21 +2160,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (length >= 0) {\n"
-                                              "      void* object = env->new_short_array_raw(env, length);\n"
+                                              "      void* object = env->new_short_array_raw(env, stack, length);\n"
                                               "      if (object == NULL) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for short array\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Can't allocate memory for short array\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, (void**)&");
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "      }\n"
                                               "    }\n"
                                               "    else {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Array length must be more than or equal to 0\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Array length must be more than or equal to 0\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "  }\n");
@@ -2186,21 +2186,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (length >= 0) {\n"
-                                              "      void* object = env->new_int_array_raw(env, length);\n"
+                                              "      void* object = env->new_int_array_raw(env, stack, length);\n"
                                               "      if (object == NULL) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for int array\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Can't allocate memory for int array\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, (void**)&");
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "      }\n"
                                               "    }\n"
                                               "    else {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Array length must be more than or equal to 0\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Array length must be more than or equal to 0\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "  }\n");
@@ -2212,21 +2212,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (length >= 0) {\n"
-                                              "      void* object = env->new_long_array_raw(env, length);\n"
+                                              "      void* object = env->new_long_array_raw(env, stack, length);\n"
                                               "      if (object == NULL) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for long array\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Can't allocate memory for long array\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, (void**)&");
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "      }\n"
                                               "    }\n"
                                               "    else {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Array length must be more than or equal to 0\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Array length must be more than or equal to 0\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "  }\n");
@@ -2238,21 +2238,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (length >= 0) {\n"
-                                              "      void* object = env->new_float_array_raw(env, length);\n"
+                                              "      void* object = env->new_float_array_raw(env, stack, length);\n"
                                               "      if (object == NULL) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for float array\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Can't allocate memory for float array\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, (void**)&");
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "      }\n"
                                               "    }\n"
                                               "    else {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Array length must be more than or equal to 0\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Array length must be more than or equal to 0\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "  }\n");
@@ -2264,21 +2264,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (length >= 0) {\n"
-                                              "      void* object = env->new_double_array_raw(env, length);\n"
+                                              "      void* object = env->new_double_array_raw(env, stack, length);\n"
                                               "      if (object == NULL) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for double array\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Can't allocate memory for double array\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, (void**)&");
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "      }\n"
                                               "    }\n"
                                               "    else {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Array length must be more than or equal to 0\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Array length must be more than or equal to 0\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "  }\n");
@@ -2297,10 +2297,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "    if (");
         SPVM_STRING_BUFFER_add(string_buffer, "access_basic_type_id");
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Basic type not found:");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"Basic type not found:");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ":New object array\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -2311,21 +2311,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "      if (length >= 0) {\n"
-                                              "        void* object = env->new_object_array_raw(env, basic_type_id, length);\n"
+                                              "        void* object = env->new_object_array_raw(env, stack, basic_type_id, length);\n"
                                               "        if (object == NULL) {\n"
-                                              "          void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for object array\");\n"
-                                              "          env->set_exception(env, exception);\n"
+                                              "          void* exception = env->new_string_nolen_raw(env, stack, \"Can't allocate memory for object array\");\n"
+                                              "          env->set_exception(env, stack, exception);\n"
                                               "          exception_flag = 1;\n"
                                               "        }\n"
                                               "        else {\n"
-                                              "          SPVM_API_OBJECT_ASSIGN(env, (void**)&");
+                                              "          SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "        }\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Array length must be more than or equal to 0\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Array length must be more than or equal to 0\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "    }\n"
@@ -2343,10 +2343,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_basic_type_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Basic type not found:");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Basic type not found:");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ":New multi dimentional array\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -2357,23 +2357,23 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "      if (length >= 0) {\n"
-                                              "        void* object = env->new_muldim_array_raw(env, basic_type_id, ");
+                                              "        void* object = env->new_muldim_array_raw(env, stack, basic_type_id, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, element_dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ", length);\n"
                                               "        if (object == NULL) {\n"
-                                              "          void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for multi dimention array\");\n"
-                                              "          env->set_exception(env, exception);\n"
+                                              "          void* exception = env->new_string_nolen_raw(env, stack, \"Can't allocate memory for multi dimention array\");\n"
+                                              "          env->set_exception(env, stack, exception);\n"
                                               "          exception_flag = 1;\n"
                                               "        }\n"
                                               "        else {\n"
-                                              "          SPVM_API_OBJECT_ASSIGN(env, (void**)&");
+                                              "          SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "        }\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Array length must be more than or equal to 0\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Array length must be more than or equal to 0\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "    }\n"
@@ -2391,10 +2391,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_basic_type_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Basic type not found:");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Basic type not found:");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "New multi numeric array\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -2405,21 +2405,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "      if (length >= 0) {\n"
-                                              "        void* object = env->new_mulnum_array_raw(env, basic_type_id, length);\n"
+                                              "        void* object = env->new_mulnum_array_raw(env, stack, basic_type_id, length);\n"
                                               "        if (object == NULL) {\n"
-                                              "          void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for multi dimention array\");\n"
-                                              "          env->set_exception(env, exception);\n"
+                                              "          void* exception = env->new_string_nolen_raw(env, stack, \"Can't allocate memory for multi dimention array\");\n"
+                                              "          env->set_exception(env, stack, exception);\n"
                                               "          exception_flag = 1;\n"
                                               "        }\n"
                                               "        else {\n"
-                                              "          SPVM_API_OBJECT_ASSIGN(env, (void**)&");
+                                              "          SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "        }\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Array length must be more than or equal to 0\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Array length must be more than or equal to 0\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "    }\n"
@@ -2435,7 +2435,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
 
         SPVM_STRING_BUFFER_add(string_buffer,
           "  {\n"
-          "    void* string = env->new_string_raw(env, \""
+          "    void* string = env->new_string_raw(env, stack, \""
         );
         for (int32_t i = 0; i < constant_string_length; i++) {
           SPVM_STRING_BUFFER_add_hex_char(string_buffer, constant_string_value[i]);
@@ -2447,13 +2447,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer,
           ");\n"
           "    if (string == NULL) {\n"
-          "      void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for string\");\n"
-          "      env->set_exception(env, exception);\n"
+          "      void* exception = env->new_string_nolen_raw(env, stack, \"Can't allocate memory for string\");\n"
+          "      env->set_exception(env, stack, exception);\n"
           "      exception_flag = 1;\n"
           "    }\n"
           "    else {\n"
-          "      env->make_read_only(env, string);\n"
-          "      SPVM_API_OBJECT_ASSIGN(env, &"
+          "      env->make_read_only(env, stack, string);\n"
+          "      SPVM_API_OBJECT_ASSIGN(env, stack, &"
         );
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer,
@@ -2468,7 +2468,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  if (");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, " == NULL) {\n"
-                                              "    env->set_exception(env, env->new_string_nolen_raw(env, \"Can't get array length of undef value.\"));\n"
+                                              "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Can't get array length of undef value.\"));\n"
                                               "    exception_flag = 1;\n"
                                               "  }\n"
                                               "  else {\n"
@@ -2485,7 +2485,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    void* string = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "    int32_t is_read_only = env->is_read_only(env, string);\n");
+                                              "    int32_t is_read_only = env->is_read_only(env, stack, string);\n");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
         SPVM_STRING_BUFFER_add(string_buffer, " = is_read_only;\n"
                                               "  }\n");
@@ -2514,12 +2514,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_field_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -2528,16 +2528,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "      if (object == NULL) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Object to weaken an object field must not be undefined.\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Object to weaken an object field must not be undefined.\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
                                               "        void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + access_field_offset);\n"
-                                              "        int32_t status = env->weaken(env, get_field_object_address);\n"
+                                              "        int32_t status = env->weaken(env, stack, get_field_object_address);\n"
                                               "        if (status != 0) {\n"
-                                              "          void* exception = env->new_string_nolen_raw(env, \"Can't allocate memory for weaken back reference\");\n"
-                                              "          env->set_exception(env, exception);\n"
+                                              "          void* exception = env->new_string_nolen_raw(env, stack, \"Can't allocate memory for weaken back reference\");\n"
+                                              "          env->set_exception(env, stack, exception);\n"
                                               "          exception_flag = 1;\n"
                                               "        }\n"
                                               "      }\n"
@@ -2568,12 +2568,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_field_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -2585,13 +2585,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "      if (object == NULL) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Object to weaken an object field must not be undefined.\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Object to weaken an object field must not be undefined.\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
                                               "        void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + access_field_offset);\n"
-                                              "        env->unweaken(env, get_field_object_address);\n"
+                                              "        env->unweaken(env, stack, get_field_object_address);\n"
                                               "      }\n"
                                               "    }\n"
                                               "  }\n");
@@ -2620,12 +2620,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_field_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -2634,8 +2634,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "      if (object == NULL) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Object to weaken an object field must not be undefined.\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Object to weaken an object field must not be undefined.\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
@@ -2643,7 +2643,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "access_field_offset"
                                               ");\n");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->isweak(env, get_field_object_address);\n"
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->isweak(env, stack, get_field_object_address);\n"
                                               "      }\n"
                                               "    }\n"
                                               "  }\n");
@@ -2662,7 +2662,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    else {\n"
                                               "      ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, "    = env->get_ref_count(env, object);\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "    = env->get_ref_count(env, stack, object);\n"
                                               "    }\n"
                                               "  }\n");
         break;
@@ -2677,18 +2677,18 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (string1 == NULL) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"\\\".\\\" operater left value must be defined\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"\\\".\\\" operater left value must be defined\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    else if (string2 == NULL) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"\\\".\\\" operater right value must be defined\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"\\\".\\\" operater right value must be defined\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    else {\n"
-                                              "      void* string3 = env->concat_raw(env, string1, string2);\n"
-                                              "      SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "      void* string3 = env->concat_raw(env, stack, string1, string2);\n"
+                                              "      SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", string3);\n"
                                               "    }\n"
@@ -2707,8 +2707,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n"
                                               "    }\n"
                                               "    else {\n"
-                                              "      void* type_name = env->get_type_name_raw(env, object);\n"
-                                              "      SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "      void* type_name = env->get_type_name_raw(env, stack, object);\n"
+                                              "      SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", type_name);\n"
                                               "    }\n"
@@ -2720,8 +2720,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "    void* dump = env->dump_raw(env, object);\n"
-                                              "    SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "    void* dump = env->dump_raw(env, stack, object);\n"
+                                              "    SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", dump);\n"
                                               "  }\n");
@@ -2733,21 +2733,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (length >= 0) {\n"
-                                              "      void* object = env->new_string_raw(env, NULL, length);\n"
+                                              "      void* object = env->new_string_raw(env, stack, NULL, length);\n"
                                               "      if (object == NULL) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"The new_string_len operator can't allocate enough memory\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"The new_string_len operator can't allocate enough memory\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, (void**)&");
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "      }\n"
                                               "    }\n"
                                               "    else {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"The length of the new_string_len operator must be a positive number\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The length of the new_string_len operator must be a positive number\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "  }\n");
@@ -2948,10 +2948,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_basic_type_id < 0) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Basic type not found:");
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Basic type not found:");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "Checking object type\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -2962,17 +2962,17 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "      void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "      int32_t runtime_assignability = env->check_runtime_assignability(env, cast_basic_type_id, cast_type_dimension, object);\n"
+                                              "      int32_t runtime_assignability = env->check_runtime_assignability(env, stack, cast_basic_type_id, cast_type_dimension, object);\n"
                                               "      if (runtime_assignability) {\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"Can't perform the type cast to imcompatible object type.\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"Can't perform the type cast to imcompatible object type.\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "    }\n"
@@ -3064,14 +3064,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
           }
           
           SPVM_STRING_BUFFER_add(string_buffer, "    if (call_method_id < 0) {\n"
-                                                "      void* exception = env->new_string_nolen_raw(env, \"Can't find the \\\"");
+                                                "      void* exception = env->new_string_nolen_raw(env, stack, \"Can't find the \\\"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\\\" method with the signature \\\"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_signature);
           SPVM_STRING_BUFFER_add(string_buffer, "\\\" that is declared in \\\"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\\\"\");\n"
-                                                "      env->set_exception(env, exception);"
+                                                "      env->set_exception(env, stack, exception);"
                                                 "      exception_flag = 1;\n"
                                                 "    }\n");
 
@@ -3231,7 +3231,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
             case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
             case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
             {
-              SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(env, &");
+              SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(env, stack, &");
               SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, var_id);
               SPVM_STRING_BUFFER_add(string_buffer, ", stack[0].oval);\n");
               break;
@@ -3242,7 +3242,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
           }
         }
         else if (decl_method_return_type_dimension > 0) {
-          SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(env, &");
+          SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_API_OBJECT_ASSIGN(env, stack, &");
           SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, var_id);
           SPVM_STRING_BUFFER_add(string_buffer, ", stack[0].oval);\n");
         }
@@ -3267,7 +3267,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    exception_flag = 0;\n"
                                               "    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, CURRENT_CLASS_NAME, CURRENT_METHOD_NAME);\n"
-                                              "    env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), method_id, line));\n"
+                                              "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), method_id, line));\n"
                                               "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -3283,7 +3283,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, CURRENT_CLASS_NAME, CURRENT_METHOD_NAME);\n"
-                                              "    env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), method_id, line));\n"
+                                              "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), method_id, line));\n"
                                               "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
@@ -3300,8 +3300,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (object) {\n"
-                                              "      const char* bytes = env->get_chars(env, object);\n"
-                                              "      int32_t string_length = env->length(env, object);\n"
+                                              "      const char* bytes = env->get_chars(env, stack, object);\n"
+                                              "      int32_t string_length = env->length(env, stack, object);\n"
                                               "      if (string_length > 0) {\n"
                                               "        size_t ret = fwrite(bytes, 1, string_length, stdout);\n"
                                               "      }\n"
@@ -3315,7 +3315,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    void* string = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "    env->make_read_only(env, string);\n"
+                                              "    env->make_read_only(env, stack, string);\n"
                                               "  }\n");
         
         break;
@@ -3343,8 +3343,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t empty_or_undef = 0;\n"
                                               "    if (object) {\n"
-                                              "      const char* bytes = env->get_chars(env, object);\n"
-                                              "      int32_t string_length = env->length(env, object);\n"
+                                              "      const char* bytes = env->get_chars(env, stack, object);\n"
+                                              "      int32_t string_length = env->length(env, stack, object);\n"
                                               "      if (string_length > 0) {\n"
                                               "        size_t ret = fwrite(bytes, 1, string_length, stderr);\n"
                                               "        int32_t add_line_file;\n"
@@ -3567,7 +3567,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "  if (*(void**)&stack[0] != NULL) {\n"
-                                              "    SPVM_API_INC_REF_COUNT_ONLY(env, *(void**)&stack[0]);\n"
+                                              "    SPVM_API_INC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);\n"
                                               "  }\n"
                                               "  goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
@@ -3808,12 +3808,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
 
                                               "    if (access_field_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -3823,14 +3823,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "      if (__builtin_expect(object == NULL, 0)) {\n"
-                                              "        env->set_exception(env, env->new_string_nolen_raw(env, \"Object must be not undef.\"));\n"
+                                              "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Object must be not undef.\"));\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
                                               "        void* get_field_object = *(void**)((intptr_t)object + object_header_byte_size + "
                                               "access_field_offset"
                                               ");\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", get_field_object);\n"
                                               "      }\n"
@@ -3892,12 +3892,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_field_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -3909,14 +3909,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";"
                                               "      if (__builtin_expect(object == NULL, 0)) {\n"
-                                              "        env->set_exception(env, env->new_string_nolen_raw(env, \"Object must be not undef.\"));\n"
+                                              "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Object must be not undef.\"));\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
                                               "        void* get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + "
                                               "access_field_offset"
                                               ");\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, "
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, "
                                               "get_field_object_address,");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, "    );\n"
@@ -3950,12 +3950,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, field_cache_name_length);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_field_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -3967,14 +3967,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";"
                                               "      if (__builtin_expect(object == NULL, 0)) {\n"
-                                              "      env->set_exception(env, env->new_string_nolen_raw(env, \"Object must be not undef.\"));\n"
+                                              "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Object must be not undef.\"));\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "      else {\n"
                                               "        void* get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + "
                                               "access_field_offset"
                                               ");\n"
-                                              "        SPVM_API_OBJECT_ASSIGN(env, get_field_object_address, NULL);"
+                                              "        SPVM_API_OBJECT_ASSIGN(env, stack, get_field_object_address, NULL);"
                                               "      }\n"
                                               "    }\n"
                                               "  }\n");
@@ -4083,12 +4083,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, class_var_cache_name_length);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_class_var_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Class variable not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -4125,16 +4125,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, class_var_cache_name_length);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n"
                                               "    if (access_class_var_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Class variable not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
-                                              "      SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "      SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", *(void**)&((SPVM_VALUE*)env->class_vars_heap)[access_class_var_id]);\n"
                                               "    }\n"
@@ -4197,12 +4197,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    if ("
                                               "access_class_var_id"
                                               " < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Class variable not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
@@ -4241,16 +4241,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    if ("
                                               "access_class_var_id"
                                               " < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Class variable not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
-                                              "      SPVM_API_OBJECT_ASSIGN(env, (void**)&((SPVM_VALUE*)env->class_vars_heap)["
+                                              "      SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)["
                                               "access_class_var_id"
                                               "],\n");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
@@ -4285,16 +4285,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    if ("
                                               "access_class_var_id"
                                               " < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Class variable not found ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Class variable not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    if (!exception_flag) {\n"
-                                              "      SPVM_API_OBJECT_ASSIGN(env, (void**)&((SPVM_VALUE*)env->class_vars_heap)["
+                                              "      SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)["
                                               "access_class_var_id"
                                               "], NULL);\n"
                                               "    }\n"
@@ -4303,19 +4303,19 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(env, &");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", env->get_exception(env));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", env->get_exception(env, stack));\n");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  env->set_exception(env, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  env->set_exception(env, stack, ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR_UNDEF: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  env->set_exception(env, NULL);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  env->set_exception(env, stack, NULL);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_END_METHOD: {
@@ -4327,10 +4327,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_OBJECT;\n"
-                                              "    void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "    void* object = env->new_object_raw(env, stack, basic_type_id);\n"
                                               "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
                                               "    *(int8_t*)&fields[0] = value;\n"
-                                              "    SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "    SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "  }\n");
@@ -4343,10 +4343,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_OBJECT;\n"
-                                              "    void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "    void* object = env->new_object_raw(env, stack, basic_type_id);\n"
                                               "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
                                               "    *(int16_t*)&fields[0] = value;\n"
-                                              "    SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "    SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "  }\n");
@@ -4359,10 +4359,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_INT_OBJECT;\n"
-                                              "    void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "    void* object = env->new_object_raw(env, stack, basic_type_id);\n"
                                               "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
                                               "    *(int32_t*)&fields[0] = value;\n"
-                                              "    SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "    SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "  }\n");
@@ -4375,10 +4375,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_OBJECT;\n"
-                                              "    void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "    void* object = env->new_object_raw(env, stack, basic_type_id);\n"
                                               "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
                                               "    *(int64_t*)&fields[0] = value;\n"
-                                              "    SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "    SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -4391,10 +4391,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT;\n"
-                                              "    void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "    void* object = env->new_object_raw(env, stack, basic_type_id);\n"
                                               "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
                                               "    *(float*)&fields[0] = value;\n"
-                                              "    SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "    SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
                                               "  }\n");
@@ -4407,10 +4407,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT;\n"
-                                              "    void* object = env->new_object_raw(env, basic_type_id);\n"
+                                              "    void* object = env->new_object_raw(env, stack, basic_type_id);\n"
                                               "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
                                               "    *(double*)&fields[0] = value;\n"
-                                              "    SPVM_API_OBJECT_ASSIGN(env, &");
+                                              "    SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -4423,8 +4423,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (object == NULL) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Can't convert undef value.\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    else {\n"
@@ -4437,8 +4437,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, " = *(int8_t*)&fields[0];\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"The source type must be Byte.\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"The source type must be Byte.\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "    }\n"
@@ -4451,8 +4451,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (object == NULL) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Can't convert undef value.\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    else {\n"
@@ -4465,8 +4465,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, " = *(int16_t*)&fields[0];\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"The source type must be Short.\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"The source type must be Short.\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "    }\n"
@@ -4479,8 +4479,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (object == NULL) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Can't convert undef value.\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    else {\n"
@@ -4493,8 +4493,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, " = *(int32_t*)&fields[0];\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"The source type must be Int.\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"The source type must be Int.\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "    }\n"
@@ -4507,8 +4507,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (object == NULL) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Can't convert undef value.\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    else {\n"
@@ -4521,8 +4521,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, " = *(int64_t*)&fields[0];\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"The source type must be Long.\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"The source type must be Long.\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "    }\n"
@@ -4535,8 +4535,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (object == NULL) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Can't convert undef value.\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    else {\n"
@@ -4549,8 +4549,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, " = *(float*)&fields[0];\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"The source type must be Float.\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"The source type must be Float.\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "    }\n"
@@ -4563,8 +4563,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    if (object == NULL) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, \"Can't convert undef value.\");\n"
-                                              "      env->set_exception(env, exception);\n"
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Can't convert undef value.\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      exception_flag = 1;\n"
                                               "    }\n"
                                               "    else {\n"
@@ -4577,8 +4577,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, " = *(double*)&fields[0];\n"
                                               "      }\n"
                                               "      else {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, \"The source type must be Double.\");\n"
-                                              "        env->set_exception(env, exception);\n"
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"The source type must be Double.\");\n"
+                                              "        env->set_exception(env, stack, exception);\n"
                                               "        exception_flag = 1;\n"
                                               "      }\n"
                                               "    }\n"
@@ -4631,7 +4631,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "    } else {\n");
   int32_t method_return_type_check_runtime_assignability_to_any_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method_return_type_id);
   if (method_return_type_check_runtime_assignability_to_any_object) {
-    SPVM_STRING_BUFFER_add(string_buffer, "      if (stack[0].oval != NULL) { SPVM_API_DEC_REF_COUNT_ONLY(env, stack[0].oval); }\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "      if (stack[0].oval != NULL) { SPVM_API_DEC_REF_COUNT_ONLY(env, stack, stack[0].oval); }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n"
   "  return return_value;\n"
@@ -4823,7 +4823,7 @@ void SPVM_PRECOMPILE_add_bool(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* s
     SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
   else if (ctype_id == SPVM_PRECOMPILE_C_CTYPE_ID_TYPE_CONVERSION_CONDITINAL_OBJECT) {
-    SPVM_STRING_BUFFER_add(string_buffer, " = !!env->get_bool_object_value(env, ");
+    SPVM_STRING_BUFFER_add(string_buffer, " = !!env->get_bool_object_value(env, stack, ");
     SPVM_PRECOMPILE_add_operand(precompile, string_buffer, ctype_id, in_index);
     SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   }
@@ -4966,7 +4966,7 @@ void SPVM_PRECOMPILE_add_divide_integral(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, ctype_id, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n"
-                                        "    env->set_exception(env, env->new_string_nolen_raw(env, \"0 division\"));\n"
+                                        "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"0 division\"));\n"
                                         "    exception_flag = 1;\n"
                                         "  } else {\n"
                                         "    ");
@@ -4985,7 +4985,7 @@ void SPVM_PRECOMPILE_add_divide_unsigned_int(SPVM_PRECOMPILE* precompile, SPVM_S
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n"
-                                        "    env->set_exception(env, env->new_string_nolen_raw(env, \"0 division\"));\n"
+                                        "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"0 division\"));\n"
                                         "    exception_flag = 1;\n"
                                         "  } else {\n"
                                         "    ");
@@ -5004,7 +5004,7 @@ void SPVM_PRECOMPILE_add_divide_unsigned_long(SPVM_PRECOMPILE* precompile, SPVM_
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n"
-                                        "    env->set_exception(env, env->new_string_nolen_raw(env, \"0 division\"));\n"
+                                        "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"0 division\"));\n"
                                         "    exception_flag = 1;\n"
                                         "  } else {\n"
                                         "    ");
@@ -5035,8 +5035,8 @@ void SPVM_PRECOMPILE_add_remainder_integral(SPVM_PRECOMPILE* precompile, SPVM_ST
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, ctype_id, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n"
-                                        "    void* exception = env->new_string_nolen_raw(env, \"0 division\");\n"
-                                        "    env->set_exception(env, exception);\n"
+                                        "    void* exception = env->new_string_nolen_raw(env, stack, \"0 division\");\n"
+                                        "    env->set_exception(env, stack, exception);\n"
                                         "    exception_flag = 1;\n"
                                         "  }\n"
                                         "  else {\n"
@@ -5056,8 +5056,8 @@ void SPVM_PRECOMPILE_add_remainder_unsigned_int(SPVM_PRECOMPILE* precompile, SPV
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n"
-                                        "    void* exception = env->new_string_nolen_raw(env, \"0 division\");\n"
-                                        "    env->set_exception(env, exception);\n"
+                                        "    void* exception = env->new_string_nolen_raw(env, stack, \"0 division\");\n"
+                                        "    env->set_exception(env, stack, exception);\n"
                                         "    exception_flag = 1;\n"
                                         "  }\n"
                                         "  else {\n"
@@ -5077,8 +5077,8 @@ void SPVM_PRECOMPILE_add_remainder_unsigned_long(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n"
-                                        "    void* exception = env->new_string_nolen_raw(env, \"0 division\");\n"
-                                        "    env->set_exception(env, exception);\n"
+                                        "    void* exception = env->new_string_nolen_raw(env, stack, \"0 division\");\n"
+                                        "    env->set_exception(env, stack, exception);\n"
                                         "    exception_flag = 1;\n"
                                         "  }\n"
                                         "  else {\n"
@@ -5258,12 +5258,12 @@ void SPVM_PRECOMPILE_add_array_fetch(SPVM_PRECOMPILE* precompile, SPVM_STRING_BU
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, index_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                         "    if (__builtin_expect(array == NULL, 0)) { \n"
-                                        "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                        "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Array must not be undef\")); \n"
                                         "      exception_flag = 1;\n"
                                         "    } \n"
                                         "    else { \n"
                                         "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
-                                        "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                        "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Index is out of range\")); \n"
                                         "        exception_flag = 1;\n"
                                         "      } \n"
                                         "      else { \n"
@@ -5288,12 +5288,12 @@ void SPVM_PRECOMPILE_add_array_store(SPVM_PRECOMPILE* precompile, SPVM_STRING_BU
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, index_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                         "    if (__builtin_expect(array == NULL, 0)) { \n"
-                                        "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                        "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Array must not be undef\")); \n"
                                         "      exception_flag = 1;\n"
                                         "    } \n"
                                         "    else { \n"
                                         "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
-                                        "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                        "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Index is out of range\")); \n"
                                         "        exception_flag = 1;\n"
                                         "      } \n"
                                         "      else { \n"
@@ -5318,12 +5318,12 @@ void SPVM_PRECOMPILE_add_mulnum_array_fetch(SPVM_PRECOMPILE* precompile, SPVM_ST
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, index_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                         "    if (__builtin_expect(array == NULL, 0)) { \n"
-                                        "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                        "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Array must not be undef\")); \n"
                                         "      exception_flag = 1;\n"
                                         "    } \n"
                                         "    else { \n"
                                         "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
-                                        "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                        "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Index is out of range\")); \n"
                                         "        exception_flag = 1;\n"
                                         "      } \n"
                                         "      else { \n");
@@ -5357,12 +5357,12 @@ void SPVM_PRECOMPILE_add_mulnum_array_field_fetch(SPVM_PRECOMPILE* precompile, S
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, index_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                         "    if (__builtin_expect(array == NULL, 0)) { \n"
-                                        "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                        "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Array must not be undef\")); \n"
                                         "      exception_flag = 1;\n"
                                         "    } \n"
                                         "    else { \n"
                                         "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
-                                        "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                        "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Index is out of range\")); \n"
                                         "        exception_flag = 1;\n"
                                         "      } \n"
                                         "      else { \n"
@@ -5391,12 +5391,12 @@ void SPVM_PRECOMPILE_add_mulnum_array_store(SPVM_PRECOMPILE* precompile, SPVM_ST
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, index_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                         "    if (__builtin_expect(array == NULL, 0)) { \n"
-                                        "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                        "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Array must not be undef\")); \n"
                                         "      exception_flag = 1;\n"
                                         "    } \n"
                                         "    else { \n"
                                         "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
-                                        "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                        "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Index is out of range\")); \n"
                                         "        exception_flag = 1;\n"
                                         "      } \n"
                                         "      else { \n");
@@ -5432,12 +5432,12 @@ void SPVM_PRECOMPILE_add_mulnum_array_field_store(SPVM_PRECOMPILE* precompile, S
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, index_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                         "    if (__builtin_expect(array == NULL, 0)) { \n"
-                                        "      env->set_exception(env, env->new_string_nolen_raw(env, \"Array must not be undef\")); \n"
+                                        "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Array must not be undef\")); \n"
                                         "      exception_flag = 1;\n"
                                         "    } \n"
                                         "    else { \n"
                                         "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
-                                        "        env->set_exception(env, env->new_string_nolen_raw(env, \"Index is out of range\")); \n"
+                                        "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Index is out of range\")); \n"
                                         "        exception_flag = 1;\n"
                                         "      } \n"
                                         "      else { \n"
@@ -5727,12 +5727,12 @@ void SPVM_PRECOMPILE_add_get_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
                                         "    if ("
                                         "access_field_id");
   SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
+  SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"Field not found ");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
   SPVM_STRING_BUFFER_add(string_buffer, " ");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                        "      env->set_exception(env, exception);\n"
+                                        "      env->set_exception(env, stack, exception);\n"
                                         "      exception_flag = 1;\n"
                                         "    }\n"
                                         "    if (!exception_flag) {\n"
@@ -5744,7 +5744,7 @@ void SPVM_PRECOMPILE_add_get_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, object_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                         "      if (__builtin_expect(object == NULL, 0)) {\n"
-                                        "        env->set_exception(env, env->new_string_nolen_raw(env, \"The invocants of getting fields must not be undefined values\"));\n"
+                                        "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"The invocants of getting fields must not be undefined values\"));\n"
                                         "        exception_flag = 1;\n"
                                         "      }\n"
                                         "      else {\n"
@@ -5785,12 +5785,12 @@ void SPVM_PRECOMPILE_add_set_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
                                         "    if ("
                                         "access_field_id"
                                         " < 0) {\n"
-                                        "      void* exception = env->new_string_nolen_raw(env, \"Field not found ");
+                                        "      void* exception = env->new_string_nolen_raw(env, stack, \"Field not found ");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
   SPVM_STRING_BUFFER_add(string_buffer, " ");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                        "      env->set_exception(env, exception);\n"
+                                        "      env->set_exception(env, stack, exception);\n"
                                         "      exception_flag = 1;\n"
                                         "    }\n"
                                         "    if (!exception_flag) {\n"
@@ -5802,7 +5802,7 @@ void SPVM_PRECOMPILE_add_set_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, object_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                         "      if (__builtin_expect(object == NULL, 0)) {\n"
-                                        "        env->set_exception(env, env->new_string_nolen_raw(env, \"Invocants of setting fields must not be undefined values\"));\n"
+                                        "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Invocants of setting fields must not be undefined values\"));\n"
                                         "        exception_flag = 1;\n"
                                         "      }\n"
                                         "      else {\n"

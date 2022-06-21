@@ -446,7 +446,7 @@ L<get_instance_method_id|"get_instance_method_id"> get a method id of a instance
 
 If method_id is less than 0, it means that the method was not found. It is safe to handle exceptions as follows.
 
-  if (method_id < 0) { return env->die(env, "Can't find method id", "Foo/Bar.c", __LINE__); }
+  if (method_id < 0) { return env->die(env, stack, "Can't find method id", "Foo/Bar.c", __LINE__); }
 
 Set the SPVM method argument to stack before calling the method.
 
@@ -471,21 +471,21 @@ Objects added to the mortal stack will automatically have their reference count 
 
 Use push_mortal to add objects to the mortal stack.
 
-  env->push_mortal(env, object);
+  env->push_mortal(env, stack, object);
 
 Native APIs that normally create an object such as "new_object" will add the automatically created object to the mortal stack so you don't need to use this.
 
 Use "enter_scope" to create a scope. The return value is the ID of that scope.
 
-  int32_t scope_id = env->enter_scope (env);
+  int32_t scope_id = env->enter_scope(env, stack);
 
 Use "leave_scope" to leave the scope. For the argument, it is necessary to specify the scope ID obtained in "enter_scope".
 
-  env->leave_scope(env, scope_id);
+  env->leave_scope(env, stack, scope_id);
 
 Use "remove_mortal" to remove the object from the mortal stack. For the argument, specify the scope ID obtained by "enter_scope" and the object you want to remove. The object is removed from the mortal stack and the reference count is automatically decremented by 1. When the reference count reaches 0, it is released.
 
-  env->remove_mortal(env, scope_id, object);
+  env->remove_mortal(env, stack, scope_id, object);
 
 Information about the mortal stack is stored in env.
 
@@ -503,7 +503,7 @@ If an exception occurs, "1" is returned. It is defined as a value other than "0"
 
 If you want to set the exception message yourself, you can create an exception message with "new_string_nolen" and set it with "set_exception".
 
-  env->set_exception(env, env->new_string_nolen(env, "Exception occur");
+  env->set_exception(env, stack, env->new_string_nolen(env, stack, "Exception occur");
   return 1;
 
 If no exception message is set, a default exception message will be set.
@@ -547,7 +547,7 @@ Next is the definition on the C language side.
     void* tm_ptr = env->alloc_memory_block_zero (sizeof (struct tm));
 
     // Create strcut tm instance
-    void* tm_obj = env->new_pointer(env, "MyTimeInfo", tm_ptr);
+    void* tm_obj = env->new_pointer(env, stack, "MyTimeInfo", tm_ptr);
 
     stack[0].oval = tm_obj;
 
@@ -557,7 +557,7 @@ Next is the definition on the C language side.
   int32_t SPVM__MyTimeInfo__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
     void* tm_obj = stack[0].oval;
 
-    strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
+    strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
 
     stack[0].ival = tm_ptr-> tm_sec;
 
@@ -567,7 +567,7 @@ Next is the definition on the C language side.
   int32_t SPVM__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     void* tm_obj = stack[0].oval;
-    strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
+    strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
 
     env->free_memory_block (tm_ptr);
 
@@ -582,7 +582,7 @@ In the constructor new, the memory of "struct tm" is first allocated by the allo
 Next, use the new_pointer function to create a new pointer type object with MyTimeInfo associated with it in the allocated memory.
 
   // Create strcut tm instance
-  void* tm_obj = env->new_pointer(env, "MyTimeInfo", tm_ptr);
+  void* tm_obj = env->new_pointer(env, stack, "MyTimeInfo", tm_ptr);
 
 If you return this as a return value, the constructor is complete.
 
@@ -594,7 +594,7 @@ Next, let's get the value of tm_sec. sec method. The get_pointer function can be
 
   void* tm_obj = stack[0].oval;
 
-  strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
+  strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
 
   stack[0].ival = tm_ptr-> tm_sec;
 
@@ -604,7 +604,7 @@ The last is the destructor. Be sure to define a destructor, as the allocated mem
 
     void* tm_obj = stack[0].oval;
 
-    strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
+    strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
 
     env->free_memory_block (tm_ptr);
 

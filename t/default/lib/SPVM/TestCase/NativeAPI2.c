@@ -65,20 +65,20 @@ int32_t SPVM__TestCase__NativeAPI2__get_string_field_native(SPVM_ENV* env, SPVM_
   
   int32_t e = 0;
   
-  void* sv_text = env->get_field_object_by_name(env, sv_self, "TestCase::NativeAPI2", "text", "string", &e, __FILE__, __LINE__);
+  void* sv_text = env->get_field_object_by_name(env, stack, sv_self, "TestCase::NativeAPI2", "text", "string", &e, __FILE__, __LINE__);
   if (e) {
     stack[0].ival = 0;
     return 0;
   }
   
-  int32_t length = env->length(env, sv_text);
+  int32_t length = env->length(env, stack, sv_text);
   
   if (length != 5) {
     stack[0].ival = 0;
     return 0;
   }
 
-  const char* text_chars = env->get_chars(env, sv_text);
+  const char* text_chars = env->get_chars(env, stack, sv_text);
 
   if (strcmp(text_chars, "Hello") != 0) {
     stack[0].ival = 0;

@@ -542,9 +542,9 @@ SPVM Native Method. This means SPVM method call C/C++ native method:
     
     void* sv_nums = stack[0].oval;
     
-    int32_t length = env->length(env, sv_nums);
+    int32_t length = env->length(env, stack, sv_nums);
     
-    int32_t* nums = env->get_elems_int(env, sv_nums);
+    int32_t* nums = env->get_elems_int(env, stack, sv_nums);
     
     int32_t total = 0;
     for (int32_t i = 0; i < length; i++) {
@@ -671,9 +671,9 @@ Call C library from C program.
     
     void* sv_nums = stack[0].oval;
     
-    int32_t length = env->length(env, sv_nums);
+    int32_t length = env->length(env, stack, sv_nums);
     
-    int32_t* nums = env->get_elems_int(env, sv_nums);
+    int32_t* nums = env->get_elems_int(env, stack, sv_nums);
     
     int32_t total = bind_clib_sum(nums, length);
     
