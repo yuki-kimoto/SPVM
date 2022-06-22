@@ -4566,11 +4566,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     // mulnum_t class limitation
     if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-      // Can't have methods
-      if (class->methods->length > 0) {
-        SPVM_COMPILER_error(compiler, "mulnum_t class can't have methods at %s line %d", class->op_class->file, class->op_class->line);
-        return;
-      }
       // Can't have class variables
       if (class->class_vars->length > 0) {
         SPVM_COMPILER_error(compiler, "mulnum_t class can't have class variables at %s line %d", class->op_class->file, class->op_class->line);

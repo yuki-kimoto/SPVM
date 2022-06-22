@@ -359,6 +359,17 @@ sub print_error_messages {
       compile_not_ok($source, qr|The class that has "pointer_t" descriptor can't have its fields|);
     }
   }
+  
+  # Field declaration
+  {
+    # mulnum_t
+    {
+      {
+        my $source = 'class Tmp_2i : mulnum_t { static method foo : void () {} }';
+        compile_not_ok($source, qr|The class that has "mulnum_t" class descriptor can't have methods|);
+      }
+    }
+  }
 }
 
 # Method
