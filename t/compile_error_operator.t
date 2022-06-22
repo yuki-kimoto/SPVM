@@ -198,6 +198,29 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::Add::RightIsNotNumeric');
 }
 
+# Multiply
+{
+  compile_not_ok_file('TestCase::CompileError::Multiply::LeftIsNotNumeric');
+  compile_not_ok_file('TestCase::CompileError::Multiply::RightIsNotNumeric');
+}
+
+# Subtract
+{
+  compile_not_ok_file('TestCase::CompileError::Subtract::LeftIsNotNumeric');
+  compile_not_ok_file('TestCase::CompileError::Subtract::RightIsNotNumeric');
+}
+
+
+# Unary minus
+{
+  compile_not_ok_file('TestCase::CompileError::UnaryMinus::NotNumeric');
+}
+
+# Unary plus
+{
+  compile_not_ok_file('TestCase::CompileError::UnaryPlus::NotNumeric');
+}
+
 # New operator - new
 {
   compile_not_ok_file('TestCase::CompileError::New::Private');

@@ -35,20 +35,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(SPVM::TestCase::Multiply->multiply_double_double);
     ok(SPVM::TestCase::Multiply->multiply_double_double_big);
   }
-
-  # Multiply - Compile Error
-  {
-    {
-      my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('TestCase::CompileError::Multiply::LeftIsNotNumeric', __LINE__, __FILE__);
-      ok($success == 0);
-    }
-    {
-      my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('TestCase::CompileError::Multiply::RightIsNotNumeric', __LINE__, __FILE__);
-      ok($success == 0);
-    }
-  }
 }
 
 # Optional tests

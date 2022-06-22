@@ -28,15 +28,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(SPVM::TestCase::UnaryMinus->unary_minus_float);
     ok(SPVM::TestCase::UnaryMinus->unary_minus_double);
   }
-
-  # Unary minus - Compile Error
-  {
-    {
-      my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('TestCase::CompileError::UnaryMinus::NotNumeric', __LINE__, __FILE__);
-      ok($success == 0);
-    }
-  }
 }
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
