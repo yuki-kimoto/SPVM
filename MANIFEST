@@ -316,8 +316,13 @@ t/builder_config_exe.t
 t/builder_link_info.pl
 t/builder_object_file_info.t
 t/compile_error.t
+t/compile_error_definition.t
 t/compile_error_dist.pl
+t/compile_error_literal.t
+t/compile_error_operator.t
 t/compile_error_perl_program.pl
+t/compile_error_statement.t
+t/compile_error_type.t
 t/copy_default_to_precompile.pl
 t/default/000_use_spvm.t
 t/default/001_use_empty_class.t
