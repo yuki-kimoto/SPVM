@@ -38,8 +38,6 @@ struct spvm_class {
   SPVM_METHOD* destructor_method;
   const char* parent_class_name;
   int32_t id;
-  int32_t object_fields_length;
-  int32_t object_fields_offset;
   int32_t fields_byte_size;
   int8_t has_init_block;
   int8_t is_anon;

@@ -4536,8 +4536,6 @@ void SPVM_OP_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* c
   }
   assert(offset % 8 == 0);
 
-  class->object_fields_offset = offset;
-  
   // address data
   int32_t object_fields_length = 0;
   for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
@@ -4549,7 +4547,6 @@ void SPVM_OP_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* c
       object_fields_length++;
     }
   }
-  class->object_fields_length = object_fields_length;
   class->fields_byte_size = offset;
 }
 
