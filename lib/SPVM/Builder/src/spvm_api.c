@@ -3708,6 +3708,9 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
 
   // Exception flag
   int32_t error = 0;
+
+  // Exception flag
+  int32_t before_error = 0;
   
   // Error code value
   int32_t error_code = 1;
@@ -6720,6 +6723,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
       }
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH: {
         if (error) {
+          before_error = error;
           error = 0;
           
           int32_t method_id = opcode->operand1;
