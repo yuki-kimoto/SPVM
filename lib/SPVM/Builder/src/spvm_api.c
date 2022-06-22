@@ -6021,6 +6021,18 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         }
         break;
       }
+      case SPVM_OPCODE_C_ID_SET_ERROR: {
+        error = error_code;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CLEAR_BEFORE_ERROR: {
+        before_error = 0;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_BEFORE_ERROR: {
+        int_vars[opcode->operand0] = before_error;
+        break;
+      }
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY: {
         int32_t length = int_vars[opcode->operand1];
         if (length >= 0) {
@@ -6757,10 +6769,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           opcode_rel_index = opcode->operand0;
           continue;
         }
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_ERROR: {
-        error = error_code;
         break;
       }
       case SPVM_OPCODE_C_ID_PRINT: {

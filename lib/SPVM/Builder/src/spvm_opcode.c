@@ -480,6 +480,8 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "GET_CLASS_ID",
     "GET_ERROR_CODE",
     "SET_ERROR_CODE",
+    "CLEAR_BEFORE_ERROR",
+    "GET_BEFORE_ERROR",
   };
   
   return id_names;
