@@ -192,6 +192,12 @@ sub print_error_messages {
   compile_not_ok_file('TestCase::CompileError::ComparisonOperator::LeNotNumeric');
 }
 
+# Add
+{
+  compile_not_ok_file('TestCase::CompileError::Add::LeftIsNotNumeric');
+  compile_not_ok_file('TestCase::CompileError::Add::RightIsNotNumeric');
+}
+
 # New operator - new
 {
   compile_not_ok_file('TestCase::CompileError::New::Private');
