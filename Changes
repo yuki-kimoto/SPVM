@@ -1,10 +1,7 @@
-<<<<<<< HEAD
-0.9610_01 2022-06-21
+0.9612_01 2022-06-22
   [CHANGE]
   * Fix descriptor error message.
   
-0.9609_01 2022-06-21
-=======
 0.961101_01 2022-06-22
   [CHANGE]
   * set_error_code throw an exception when the value is not more than or equal to 1.
@@ -17,7 +14,6 @@
   * Remove Time->timegm and Time->timelocal because of Windows/MinGW compatibility.
     Use CPAN's SPVM::Time::Local module instead.
 0.9610 2022-06-22
->>>>>>> master
   [CHANGE]
   * Add error_code operator
   * Add set_error_code operator
