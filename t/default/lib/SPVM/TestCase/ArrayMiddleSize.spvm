@@ -29,6 +29,8 @@ class TestCase::ArrayMiddleSize {
       return 0;
     }
     
+    $@ = undef;
+    
     return 1;
   }
 
@@ -53,6 +55,8 @@ class TestCase::ArrayMiddleSize {
     unless ($@) {
       return 0;
     }
+    
+    $@ = undef;
     
     return 1;
   }
@@ -79,6 +83,8 @@ class TestCase::ArrayMiddleSize {
       return 0;
     }
     
+    $@ = undef;
+    
     return 1;
   }
 
@@ -103,6 +109,8 @@ class TestCase::ArrayMiddleSize {
     unless ($@) {
       return 0;
     }
+    
+    $@ = undef;
     
     return 1;
   }
@@ -129,6 +137,8 @@ class TestCase::ArrayMiddleSize {
       return 0;
     }
     
+    $@ = undef;
+    
     return 1;
   }
 
@@ -153,6 +163,8 @@ class TestCase::ArrayMiddleSize {
     unless ($@) {
       return 0;
     }
+    
+    $@ = undef;
     
     return 1;
   }

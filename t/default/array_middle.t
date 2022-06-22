@@ -12,13 +12,13 @@ use SPVM 'TestCase::ArrayMiddleSize';
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 my $free_result = `free`;
-my $at_least_memory_size = '';
-if ($at_least_memory_size =~ /Mem: +(\d+)/) {
+my $at_least_memory_size;
+if ($free_result =~ /Mem: +(\d+)/) {
   $at_least_memory_size = $1;
 }
 
 SKIP: {
-  if ($at_least_memory_size < 1_026_060) {
+  unless (defined $at_least_memory_size && $at_least_memory_size > 1_026_060) {
     skip "Memory must need at least $at_least_memory_size", 6;
   }
   
