@@ -20,7 +20,6 @@ if ($ENV{SPVM_TEST_PRECOMPILE}) {
   ok(-f $precompile_module_file);
 }
 else {
-  warn $precompile_module_file;
   ok(!-f $precompile_module_file);
 }
 
