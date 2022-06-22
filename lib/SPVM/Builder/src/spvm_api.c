@@ -2672,17 +2672,22 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         }
         
         // Free object fields
-        int32_t object_fields_offset = class->object_fields_offset;
-        int32_t object_fields_length = class->object_fields_length;
-        for (int32_t index = 0; index < object_fields_length; index++) {
-          SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + object_fields_offset))[index]);
-          if (*get_field_object_address != NULL) {
-            // If object is weak, unweaken
-            if (SPVM_API_isweak(env, stack, get_field_object_address)) {
-              SPVM_API_unweaken(env, stack, get_field_object_address);
+        int32_t object_fields_base = SPVM_API_RUNTIME_get_class_fields_base_id(runtime, class->id);
+        int32_t object_fields_length = SPVM_API_RUNTIME_get_class_fields_length(runtime, class->id);
+        for (int32_t field_id = object_fields_base; field_id < object_fields_base + object_fields_length; field_id++) {
+          int32_t field_type_id = SPVM_API_RUNTIME_get_field_type_id(runtime, field_id);
+          int32_t field_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, field_type_id);
+          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
+          if (field_type_is_object) {
+            SPVM_OBJECT** get_field_object_address = (SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + field->offset);
+            if (*get_field_object_address != NULL) {
+              // If object is weak, unweaken
+              if (SPVM_API_isweak(env, stack, get_field_object_address)) {
+                SPVM_API_unweaken(env, stack, get_field_object_address);
+              }
+              
+              SPVM_API_dec_ref_count(env, stack, *get_field_object_address);
             }
-            
-            SPVM_API_dec_ref_count(env, stack, *get_field_object_address);
           }
         }
       }
