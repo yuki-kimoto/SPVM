@@ -4487,66 +4487,67 @@ void SPVM_OP_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* c
     return;
   }
   
+  int32_t alignment_byte_size;
+  if (sizeof(void*) > sizeof(int64_t)) {
+    alignment_byte_size = sizeof(void*);
+  }
+  else {
+    alignment_byte_size = sizeof(int64_t);
+  }
+  
+  int32_t alignment_index = 0;
   int32_t offset = 0;
+  int32_t offset_byte_size;
   // 8 byte data
   for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
     SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
     SPVM_TYPE* field_type = field->type;
+    
+    int32_t next_offset;
     if (SPVM_TYPE_is_double_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
       || SPVM_TYPE_is_long_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
-      field->offset = offset;
-      offset += 8;
+      offset_byte_size = 8;
     }
-  }
-  
-  // 4 byte data
-  for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-    SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
-    SPVM_TYPE* field_type = field->type;
-    if (SPVM_TYPE_is_float_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
+    else if (SPVM_TYPE_is_float_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
       || SPVM_TYPE_is_int_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
-      field->offset = offset;
-      offset += 4;
+      offset_byte_size = 4;
     }
-  }
-  
-  // 2 byte data
-  for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-    SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
-    SPVM_TYPE* field_type = field->type;
-    if (SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
-      field->offset = offset;
-      offset += 2;
+    else if (SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+      offset_byte_size = 2;
     }
-  }
-  
-  // 1 byte data
-  for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-    SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
-    SPVM_TYPE* field_type = field->type;
-    if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
-      field->offset = offset;
-      offset += 1;
+    else if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+      offset_byte_size = 1;
     }
-  }
-  
-  // Fix allignment
-  if (offset % 8 != 0) {
-    offset += (8 - offset % 8);
-  }
-  assert(offset % 8 == 0);
+    else if (SPVM_TYPE_is_object_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+      offset_byte_size = sizeof(void*);
+    }
+    else {
+      assert(0);
+    }
+    
+    next_offset = offset + offset_byte_size;
+    
+    if (next_offset % offset_byte_size != 0) {
+      offset += (offset_byte_size - offset % offset_byte_size);
+    }
+    
+    if (next_offset == alignment_byte_size * (alignment_index + 1)) {
+      alignment_index++;
+    }
+    else if (next_offset > alignment_byte_size * (alignment_index + 1)) {
+      alignment_index++;
+      // Next alignment
+      offset += (alignment_byte_size - offset % alignment_byte_size);
+      
+      assert(offset % alignment_byte_size == 0);
+    }
 
-  // address data
-  int32_t object_fields_length = 0;
-  for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-    SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
-    SPVM_TYPE* field_type = field->type;
-    if (SPVM_TYPE_is_object_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
-      field->offset = offset;
-      offset += sizeof(void*);
-      object_fields_length++;
-    }
+    field->offset = offset;
+    
+    offset += offset_byte_size;
   }
+  
+  
   class->fields_byte_size = offset;
 }
 

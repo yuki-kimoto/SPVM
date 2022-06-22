@@ -2461,7 +2461,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t b
   // Alloc body length + 1
   int32_t fields_length = class->fields_length;
 
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * ((int64_t)fields_length + 1);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + class->fields_byte_size + 1;
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
@@ -7231,7 +7231,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_id = opcode->operand1;
         SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
         int32_t field_offset = field->offset;
-
+        
         if (__builtin_expect(object == NULL, 0)) {
           void* exception = env->new_string_nolen_raw(env, stack, "Invocants of setting fields must not be undefined values");
           env->set_exception(env, stack, exception);
