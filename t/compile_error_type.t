@@ -57,7 +57,6 @@ sub compile_not_ok_file {
   if ($error_message_re) {
     like($first_error_message, $error_message_re);
   }
-  print_error_messages($builder);
 }
 
 sub compile_not_ok {
