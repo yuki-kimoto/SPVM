@@ -20,7 +20,7 @@
 %}
 
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-%token <opval> DESCRIPTOR MAKE_READ_ONLY INTERFACE ERROR_CODE
+%token <opval> DESCRIPTOR MAKE_READ_ONLY INTERFACE ERROR_CODE ERROR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -41,7 +41,7 @@
 %type <opval> call_spvm_method opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow has_impl
-%type <opval> new array_init opt_extends
+%type <opval> new array_init die opt_extends
 %type <opval> var_decl var interface
 %type <opval> operator opt_operators operators opt_operator logical_operator
 %type <opval> field_name method_name class_name class_alias_name is_read_only
@@ -490,14 +490,7 @@ statement
     {
       $$ = SPVM_OP_build_return(compiler, $1, $2);
     }
-  | DIE operator ';'
-    {
-      $$ = SPVM_OP_build_die(compiler, $1, $2);
-    }
-  | DIE ';'
-    {
-      $$ = SPVM_OP_build_die(compiler, $1, NULL);
-    }
+  | die
   | WARN operator ';'
     {
       $$ = SPVM_OP_build_warn(compiler, $1, $2);
@@ -515,6 +508,16 @@ statement
   | MAKE_READ_ONLY operator ';'
     {
       $$ = SPVM_OP_build_make_read_only(compiler, $1, $2);
+    }
+
+die
+  : DIE operator ';'
+    {
+      $$ = SPVM_OP_build_die(compiler, $1, $2);
+    }
+  | DIE ';'
+    {
+      $$ = SPVM_OP_build_die(compiler, $1, NULL);
     }
 
 for_statement
@@ -749,13 +752,11 @@ operator
       $$ = SPVM_OP_build_class_id(compiler, $1, $2);
     }
   | ERROR_CODE
-    {
-      $$ = SPVM_OP_build_errno(compiler, $1);
-    }
   | SET_ERROR_CODE operator
     {
       $$ = SPVM_OP_build_set_error_code(compiler, $1, $2);
     }
+  | ERROR
 
 operators
   : operators ',' operator

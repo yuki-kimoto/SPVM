@@ -19,17 +19,11 @@ SPVM::Time - Time Manipulation
   # Convert a epoch time to the Time::Info object that is UTC
   my $time_info_utc = Time->gmtime($epoch);
   
-  # Convert a Time::Info object that is local time to the epoch time
-  my $epoch = Time->timelocal($time_info_local);
-  
-  # Convert a Time::Info object that is UTC to the epoch time
-  my $epoch = Time->timegm($time_info_utc);
-
 =head1 DESCRIPTION
 
 C<Time> is a module to manipulate time.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 time
 
@@ -61,22 +55,6 @@ This method is the same as C<gmtime> function of C<Linux>.
 
   my $time_info = Time->gmtime($epoch);
 
-=head2 timelocal
+=head1 See Also
 
-  static method timelocal : long ($time_info : Time::Info)
-
-Convert a L<Time::Info|SPVM::Time::Info> object that is local time to the epoch time.
-
-This method is the same as C<timelocal> function of C<Linux>.
-
-  my $epoch = Time::Local->timelocal($time_info);
-
-=head2 timegm
-
-  static method timegm : long ($time_info : Time::Info)
-
-Convert a L<Time::Info|SPVM::Time::Info> object that is C<UTC> to the epoch time.
-
-This method is the same as C<timegm> function of C<Linux>.
-
-  my $epoch = Time::Local->timegm($time_info);
+See L<Time::Local|SPVM::Time::Local> about C<timelocal> and C<timegm> methods.

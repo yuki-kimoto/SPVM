@@ -30,42 +30,4 @@ class TestCase::Lib::Time {
     return $time_info;
   }
 
-  static method timelocal : int () {
-    {
-      my $time = Time->time();
-      
-      my $time_info = Time->localtime($time);
-      
-      my $time_ret = Time->timelocal($time_info);
-      
-      unless ($time_ret isa long) {
-        return 0;
-      }
-      unless ($time == $time_ret) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-  static method timegm : int () {
-    {
-      my $time = Time->time();
-      
-      my $time_info = Time->gmtime($time);
-      
-      my $time_ret = Time->timegm($time_info);
-
-      unless ($time_ret isa long) {
-        return 0;
-      }
-      unless ($time == $time_ret) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
 }

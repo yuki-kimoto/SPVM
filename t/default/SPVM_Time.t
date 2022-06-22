@@ -66,16 +66,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($perl_gmtime[8], $time_info->isdst);
 }
 
-# timelocal
-{
-  ok(SPVM::TestCase::Lib::Time->timelocal);
-}
-
-# timegm
-{
-  ok(SPVM::TestCase::Lib::Time->timegm);
-}
-
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

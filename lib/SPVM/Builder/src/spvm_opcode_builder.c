@@ -399,10 +399,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_LIST_push(push_eval_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
 
                   // Set exception var to undef in eval block start
-                  SPVM_OPCODE opcode = {0};
-                  
-                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR_UNDEF);
-                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                  {
+                    SPVM_OPCODE opcode = {0};
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CLEAR_BEFORE_ERROR);
+                    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                  }
+                  {
+                    SPVM_OPCODE opcode = {0};
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR_UNDEF);
+                    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                  }
                 }
                 
                 int32_t mortal_top = mortal_stack->length;
@@ -3474,6 +3480,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           break;
                         }
+                        case SPVM_OP_C_ID_ERROR : {
+                          
+                          SPVM_OPCODE opcode = {0};
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_BEFORE_ERROR);
+                          
+                          int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                          opcode.operand0 = mem_id_out;
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          
+                          break;
+                        }
                         case SPVM_OP_C_ID_ERROR_CODE : {
                           
                           SPVM_OPCODE opcode = {0};
@@ -3497,6 +3514,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode.operand0 = mem_id_out;
                           opcode.operand1 = mem_id_in;
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+
+                          SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, method->op_method, op_cur->line);
 
                           break;
                         }
@@ -4222,12 +4241,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                         case SPVM_OP_C_ID_DIE: {
                           
-                          // SET_EXCEPTION_FLAG_TRUE
+                          // SET_ERROR
                           {
                             SPVM_OPCODE opcode = {0};
                             
                             
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_EXCEPTION_FLAG_TRUE);
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_ERROR);
                             
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
