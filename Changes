@@ -1,3 +1,6 @@
+0.961101 2022-06-22
+  [NON BACKWORD COMPATIBLE CHANGES]
+  * Fixed rest bugs that Remove Time->timegm and Time->timelocal because of Windows/MinGW compatibility.
 0.9611 2022-06-22
   [NON BACKWORD COMPATIBLE CHANGES]
   * Remove Time->timegm and Time->timelocal because of Windows/MinGW compatibility.
