@@ -20,7 +20,7 @@
 %}
 
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-%token <opval> DESCRIPTOR MAKE_READ_ONLY INTERFACE ERROR_CODE
+%token <opval> DESCRIPTOR MAKE_READ_ONLY INTERFACE ERROR_CODE ERROR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -742,13 +742,11 @@ operator
       $$ = SPVM_OP_build_class_id(compiler, $1, $2);
     }
   | ERROR_CODE
-    {
-      $$ = SPVM_OP_build_errno(compiler, $1);
-    }
   | SET_ERROR_CODE operator
     {
       $$ = SPVM_OP_build_set_error_code(compiler, $1, $2);
     }
+  | ERROR
 
 operators
   : operators ',' operator

@@ -6457,12 +6457,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
       {
         int32_t call_method_id = opcode->operand1;
         stack_index = 0;
-        int32_t return_value = env->call_spvm_method(env, stack, call_method_id);
-        if (return_value != 0) {
-          error = 1;
-          error_code = return_value;
-        }
-        else {
+        error = env->call_spvm_method(env, stack, call_method_id);
+        if (error == 0) {
           SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_RUNTIME_get_method(runtime, call_method_id);
           SPVM_RUNTIME_TYPE* call_spvm_method_return_type =SPVM_API_RUNTIME_get_type(runtime, call_spvm_method->return_type_id);
           int32_t call_spvm_method_return_basic_type_id = call_spvm_method_return_type->basic_type_id;
@@ -6604,12 +6600,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           error = 1;
         }
         else {
-          int32_t return_value = env->call_spvm_method(env, stack, call_method_id);
-          if (return_value != 0) {
-            error = 1;
-            error_code = return_value;
-          }
-          else {
+          error = env->call_spvm_method(env, stack, call_method_id);
+          if (error == 0) {
             SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_RUNTIME_get_method(runtime, call_method_id);
             SPVM_RUNTIME_TYPE* call_spvm_method_return_type =SPVM_API_RUNTIME_get_type(runtime, call_spvm_method->return_type_id);
             int32_t call_spvm_method_return_basic_type_id = call_spvm_method_return_type->basic_type_id;
@@ -7741,8 +7733,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
     // Decrement ref count of return value
     int32_t return_value = 0;
     if (error) {
-      assert(error_code > 0);
-      return_value = error_code;
+      return_value = error;
     }
     else {
       int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method->return_type_id);

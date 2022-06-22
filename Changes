@@ -1,6 +1,7 @@
 0.961101_01 2022-06-22
   [CHANGE]
   * set_error_code throw an exception when the value is not more than or equal to 1.
+  * Add error operator to check the code of the excetpion
 0.961101 2022-06-22
   [NON BACKWORD COMPATIBLE CHANGES]
   * Fixed rest bugs that Remove Time->timegm and Time->timelocal because of Windows/MinGW compatibility.

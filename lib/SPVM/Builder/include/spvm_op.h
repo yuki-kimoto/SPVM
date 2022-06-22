@@ -256,6 +256,7 @@ enum {
   SPVM_OP_C_ID_CLASS_ID,
   SPVM_OP_C_ID_ERROR_CODE,
   SPVM_OP_C_ID_SET_ERROR_CODE,
+  SPVM_OP_C_ID_ERROR,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -525,7 +526,6 @@ SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* 
 
 SPVM_OP* SPVM_OP_build_class_id(SPVM_COMPILER* compiler, SPVM_OP* op_class_id, SPVM_OP* op_name_class);
 
-SPVM_OP* SPVM_OP_build_errno(SPVM_COMPILER* compiler, SPVM_OP* op_errno);
 SPVM_OP* SPVM_OP_build_set_error_code(SPVM_COMPILER* compiler, SPVM_OP* op_set_error_code, SPVM_OP* op_number);
 
 #endif
