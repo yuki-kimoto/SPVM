@@ -107,6 +107,9 @@ SPVM::Test - SPVM test module
       my $string = "$minimal_extend->{x},$minimal_extend->{y},$minimal_extend->{z}";
       
       warn $string;
+      
+      my $common_interface = (TestCase::CommonInterface)$minimal_extend;
+      
     }
     
     my $class_id = class_id TestCase;

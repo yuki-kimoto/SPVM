@@ -297,16 +297,26 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_bas
   assert(interface->required_method);
   SPVM_METHOD* method_interface = interface->required_method;
 
-  SPVM_METHOD* method_class = SPVM_HASH_get(class->method_symtable, method_interface->name, strlen(method_interface->name));
-  if (method_class) {
-    if (strcmp(method_class->signature, method_interface->signature) == 0) {
-      return 1;
-    }
-    else {
+  SPVM_CLASS* parent_class = class;
+  while (1) {
+    if (!parent_class) {
       return 0;
     }
-  }
-  else {
-    return 0;
+    
+    SPVM_METHOD* method_class = SPVM_HASH_get(parent_class->method_symtable, method_interface->name, strlen(method_interface->name));
+    if (method_class) {
+      if (strcmp(method_class->signature, method_interface->signature) == 0) {
+        return 1;
+      }
+    }
+    
+    const char* parent_class_name = parent_class->parent_class_name;
+    if (parent_class_name) {
+      parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class_name, strlen(parent_class_name));
+      assert(parent_class);
+    }
+    else {
+      parent_class = NULL;
+    }
   }
 }

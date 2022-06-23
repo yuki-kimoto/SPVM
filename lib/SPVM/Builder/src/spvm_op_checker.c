@@ -4896,6 +4896,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_LIST_push(class_stack, class);
 
     SPVM_LIST* all_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+    SPVM_LIST* all_interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
     
     const char* parent_class_name = class->parent_class_name;
     while (1) {
@@ -4912,10 +4913,19 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     for (int32_t class_index = class_stack->length - 1; class_index >= 0; class_index--) {
       SPVM_CLASS* class = SPVM_LIST_get(class_stack, class_index);
+      
+      // All fields
       SPVM_LIST* fields = class->fields;
       for (int32_t field_index = 0; field_index < fields->length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
         SPVM_LIST_push(all_fields, field);
+      }
+      
+      // All interfaces
+      SPVM_LIST* interfaces = class->interfaces;
+      for (int32_t interface_index = 0; interface_index < interfaces->length; interface_index++) {
+        SPVM_CLASS* interface = SPVM_LIST_get(interfaces, interface_index);
+        SPVM_LIST_push(all_interfaces, interface);
       }
     }
     
@@ -4924,6 +4934,17 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     for (int32_t i = 0; i < all_fields->length; i++) {
       SPVM_FIELD* field = SPVM_LIST_get(all_fields, i);
       SPVM_HASH_set(class->field_symtable, field->name, strlen(field->name), field);
+    }
+
+    // Add parent interfaces
+    class->interfaces = all_interfaces;
+    for (int32_t i = 0; i < all_interfaces->length; i++) {
+      SPVM_CLASS* interface = SPVM_LIST_get(all_interfaces, i);
+      SPVM_CLASS* found_interface = SPVM_HASH_get(class->interface_symtable, interface->name, strlen(interface->name));
+      if (!found_interface) {
+        SPVM_LIST_push(class->interfaces, interface);
+        SPVM_HASH_set(class->interface_symtable, interface->name, strlen(interface->name), interface);
+      }
     }
     
     SPVM_LIST_free(class_stack);
