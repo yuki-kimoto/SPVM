@@ -1247,6 +1247,43 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t clas
   return has_interface;
 }
 
+int32_t SPVM_API_RUNTIME_is_super_class_by_id(SPVM_RUNTIME* runtime, int32_t super_class_basic_type_id, int32_t child_class_basic_type_id) {
+
+  int32_t is_super_class = 0;
+  
+  SPVM_RUNTIME_BASIC_TYPE* super_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, super_class_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* child_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, child_class_basic_type_id);
+  
+  if (super_class_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  if (child_class_basic_type->class_id < 0) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS* super_class = SPVM_API_RUNTIME_get_class(runtime, super_class_basic_type->class_id);
+  SPVM_RUNTIME_CLASS* child_class = SPVM_API_RUNTIME_get_class(runtime, child_class_basic_type->class_id);
+  
+  int32_t parent_class_id = child_class->parent_class_id;
+  while (1) {
+    if (parent_class_id > 0) {
+      SPVM_RUNTIME_CLASS* parent_class = SPVM_API_RUNTIME_get_class(runtime, parent_class_id);
+      if (parent_class->id == super_class->id) {
+        is_super_class = 1;
+      }
+      else {
+        parent_class_id = parent_class->parent_class_id;
+      }
+    }
+    else {
+      is_super_class = 0;
+    }
+  }
+  
+  return is_super_class;
+}
+
 SPVM_ALLOCATOR* SPVM_API_RUNTIME_get_allocator(SPVM_RUNTIME* runtime) {
   return SPVM_RUNTIME_get_allocator(runtime);
 }

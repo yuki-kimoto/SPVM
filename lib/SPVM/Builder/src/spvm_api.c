@@ -1581,6 +1581,27 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   return has_interface;
 }
 
+int32_t SPVM_API_is_child_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t super_class_basic_type_id) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  // Object must be not null
+  assert(object);
+  
+  int32_t object_type_dimension = object->type_dimension;
+  int32_t is_child_class;
+  if (object->type_dimension > 0) {
+    is_child_class = 0;
+  }
+  else {
+    int32_t object_basic_type_id = object->basic_type_id;
+    is_child_class = SPVM_API_RUNTIME_is_super_class_by_id(runtime, super_class_basic_type_id, object_basic_type_id);
+  }
+  
+  return is_child_class;
+}
+
 int32_t SPVM_API_enter_scope(SPVM_ENV* env, SPVM_VALUE* stack){
   (void)env;
 
