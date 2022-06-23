@@ -1680,3 +1680,40 @@ int32_t SPVM_TYPE_check_castability(
   
   return castability;
 }
+
+int32_t SPVM_TYPE_is_super_class(SPVM_COMPILER* compiler,
+  int32_t super_basic_type_id, int32_t super_dimension, int32_t super_flag,
+  int32_t child_basic_type_id, int32_t child_dimension, int32_t child_flag)
+{
+  int32_t super_class_is_class = SPVM_TYPE_is_class_type(compiler, super_basic_type_id, super_dimension, super_flag);
+  if (!super_class_is_class) {
+    return 0;
+  }
+  int32_t child_class_is_class = SPVM_TYPE_is_class_type(compiler, child_basic_type_id, child_dimension, child_flag);
+  if (!child_class_is_class) {
+    return 0;
+  }
+  
+  SPVM_BASIC_TYPE* super_basic_type = SPVM_LIST_get(compiler->basic_types, super_basic_type_id);
+  SPVM_BASIC_TYPE* child_basic_type = SPVM_LIST_get(compiler->basic_types, child_basic_type_id);
+  
+  SPVM_CLASS* super_class = super_basic_type->class;
+  SPVM_CLASS* child_class = child_basic_type->class;
+  
+  const char* parent_class_name = child_class->parent_class_name;
+  while (1) {
+    if (parent_class_name) {
+      if (strcmp(super_class->name, parent_class_name) == 0) {
+        return 1;
+      }
+      else {
+        SPVM_CLASS* parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class->name, strlen(parent_class->name));
+        assert(parent_class);
+        parent_class_name = parent_class->name;
+      }
+    }
+    else {
+      return 0;
+    }
+  }
+}
