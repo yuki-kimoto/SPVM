@@ -1,0 +1,15 @@
+class TestCase::MinimalExtend extends TestCase::Minimal : public {
+  
+  has z : public rw int;
+  
+  static method new : TestCase::MinimalExtend () {
+    
+    my $self = new TestCase::MinimalExtend;
+    
+    $self->{x} = 0;
+    $self->{y} = 0;
+    $self->{z} = 0;
+    
+    return $self;
+  }
+}

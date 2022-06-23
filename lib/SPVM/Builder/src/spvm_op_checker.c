@@ -4888,6 +4888,47 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
   }
   
+  // Resove inheritance
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    
+    SPVM_LIST* class_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+    SPVM_LIST_push(class_stack, class);
+
+    SPVM_LIST* all_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+    
+    const char* parent_class_name = class->parent_class_name;
+    while (1) {
+      if (parent_class_name) {
+        SPVM_CLASS* parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class_name, strlen(parent_class_name));
+        assert(parent_class);
+        SPVM_LIST_push(class_stack, parent_class);
+        parent_class_name = parent_class->parent_class_name;
+      }
+      else {
+        break;
+      }
+    }
+    
+    for (int32_t class_index = class_stack->length - 1; class_index >= 0; class_index--) {
+      SPVM_CLASS* class = SPVM_LIST_get(class_stack, class_index);
+      SPVM_LIST* fields = class->fields;
+      for (int32_t field_index = 0; field_index < fields->length; field_index++) {
+        SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
+        SPVM_LIST_push(all_fields, field);
+      }
+    }
+    
+    // Replace fields
+    class->fields = all_fields;
+    for (int32_t i = 0; i < all_fields->length; i++) {
+      SPVM_FIELD* field = SPVM_LIST_get(all_fields, i);
+      SPVM_HASH_set(class->field_symtable, field->name, strlen(field->name), field);
+    }
+    
+    SPVM_LIST_free(class_stack);
+  }
+  
   // Resove field
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);

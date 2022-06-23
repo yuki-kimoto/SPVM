@@ -25,6 +25,7 @@ class TestCase {
   use TestCase::Complex_2f;
   use TestCase::Complex_2d;
   use TestCase::CommonInterface;
+  use TestCase::MinimalExtend;
   
 =pod
 
@@ -95,6 +96,18 @@ SPVM::Test - SPVM test module
   }
 
   static method main : int ($start_file : string, $args : string[]) {
+    
+    {
+      my $minimal_extend = TestCase::MinimalExtend->new;
+      
+      $minimal_extend->{x} = 1;
+      $minimal_extend->{y} = 2;
+      $minimal_extend->{z} = 3;
+      
+      my $string = "$minimal_extend->{x},$minimal_extend->{y},$minimal_extend->{z}";
+      
+      warn $string;
+    }
     
     my $class_id = class_id TestCase;
     
