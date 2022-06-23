@@ -2633,7 +2633,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   char place[50];
                   sprintf(place, "%dth argument", call_method_args_count);
                   
-                  op_term = SPVM_OP_CHECKER_check_assign(compiler, arg_var_decl_type, op_term, place, op_cur->file, op_cur->line);
+                  // Invocant is not checked.
+                  if (!(!call_method->is_class_method_call && call_method_args_count == 1)) {
+                    op_term = SPVM_OP_CHECKER_check_assign(compiler, arg_var_decl_type, op_term, place, op_cur->file, op_cur->line);
+                  }
+                  
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -4385,11 +4389,26 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
     assert(class);
     
-    SPVM_METHOD* found_method = SPVM_HASH_get(
-      class->method_symtable,
-      method_name,
-      strlen(method_name)
-    );
+    SPVM_METHOD* found_method = NULL;
+    SPVM_CLASS* parent_class = class;
+    while (1) {
+      found_method = SPVM_HASH_get(
+        parent_class->method_symtable,
+        method_name,
+        strlen(method_name)
+      );
+      if (found_method) {
+        break;
+      }
+      const char* parent_class_name = parent_class->parent_class_name;
+      if (parent_class_name) {
+        parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class_name, strlen(parent_class_name));
+      }
+      else {
+        parent_class = NULL;
+      }
+    }
+    
     if (found_method && found_method->is_class_method) {
       found_method = NULL;
     }

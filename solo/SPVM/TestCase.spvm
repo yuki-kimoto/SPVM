@@ -104,6 +104,8 @@ SPVM::Test - SPVM test module
       $minimal_extend->{y} = 2;
       $minimal_extend->{z} = 3;
       
+      my $shared1 = $minimal_extend->shared1;
+      
       my $string = "$minimal_extend->{x},$minimal_extend->{y},$minimal_extend->{z}";
       
       warn $string;
