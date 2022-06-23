@@ -47,15 +47,17 @@ sub compile_not_ok_file {
     unshift @{$builder->module_dirs}, $module_dir;
   }
   
-  my $success = $builder->compile_spvm($class_name, $file, $line);
-  ok($success == 0);
-  unless ($success == 0) {
-    warn "  at $file line $line\n";
-  }
+  my $status_code = $builder->compile_spvm($class_name, $file, $line);
+  ok($status_code == 0);
   my $error_messages = $builder->get_error_messages;
   my $first_error_message = $error_messages->[0];
+  my $message_ok;
   if ($error_message_re) {
-    like($first_error_message, $error_message_re);
+    $message_ok = like($first_error_message, $error_message_re);
+  }
+  
+  if ($status_code != 0 || ($error_message_re && !$message_ok)) {
+    warn "  at $file line $line\n";
   }
 }
 
@@ -104,6 +106,14 @@ sub print_error_messages {
   {
     my $source = 'class Tmp { static method main : int () { my $num = 1; $num->foo; }  }';
     compile_not_ok($source, qr/The invocant type of the "foo" method must be a class type or a interface type/);
+  }
+  {
+    my $source = 'class Tmp { static method main : int () { &foo; } method foo : void () {} }';
+    compile_not_ok($source, qr/The "Tmp->foo" class method is not defined/);
+  }
+  {
+    my $source = 'class Tmp { static method main : int () { my $object = new Tmp; $object->foo; } static method foo : void () {} }';
+    compile_not_ok($source, qr/The "Tmp->foo" instance method is not defined/);
   }
 }
 

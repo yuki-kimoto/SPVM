@@ -4332,38 +4332,35 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
   // Class method call
   if (call_method->is_class_method_call) {
     SPVM_METHOD* found_method = NULL;
-    SPVM_CLASS* found_class = NULL;
     // Class name + method name
-    if (call_method->op_invocant) {
-      const char* class_name;
-      if (call_method->op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
-        class_name = op_class_current->uv.class->name;
+    assert(call_method->op_invocant);
+    const char* class_name;
+    if (call_method->op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
+      class_name = op_class_current->uv.class->name;
+    }
+    else {
+      const char* class_name_maybe = call_method->op_invocant->uv.name;
+      SPVM_CLASS* class_current = op_class_current->uv.class;
+      class_name = SPVM_HASH_get(class_current->class_alias_symtable, class_name_maybe, strlen(class_name_maybe));
+      if (class_name == NULL) {
+        class_name = class_name_maybe;
       }
-      else {
-        const char* class_name_maybe = call_method->op_invocant->uv.name;
-        SPVM_CLASS* class_current = op_class_current->uv.class;
-        class_name = SPVM_HASH_get(class_current->class_alias_symtable, class_name_maybe, strlen(class_name_maybe));
-        if (class_name == NULL) {
-          class_name = class_name_maybe;
-        }
-      }
+    }
+    
+    SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+    if (found_class) {
+      found_method = SPVM_HASH_get(
+        found_class->method_symtable,
+        method_name,
+        strlen(method_name)
+      );
       
-      found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
-      
-      if (found_class) {
-        found_method = SPVM_HASH_get(
-          found_class->method_symtable,
-          method_name,
-          strlen(method_name)
-        );
-      }
-      else {
-        SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded at %s line %d", class_name, op_call_method->file, op_call_method->line);
-        return;
+      if (found_method && !found_method->is_class_method) {
+        found_method = NULL;
       }
     }
     else {
-      SPVM_COMPILER_error(compiler, "A method name must be qualified by a class name or the current class name \"&\" \"%s\" at %s line %d", method_name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded at %s line %d", class_name, op_call_method->file, op_call_method->line);
       return;
     }
   
@@ -4393,6 +4390,9 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       method_name,
       strlen(method_name)
     );
+    if (found_method && found_method->is_class_method) {
+      found_method = NULL;
+    }
 
     if (found_method) {
       call_method->method = found_method;
