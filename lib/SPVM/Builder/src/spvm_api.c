@@ -3687,7 +3687,7 @@ int32_t SPVM_API_check_runtime_assignability_array_element(SPVM_ENV* env, SPVM_V
   return runtime_assignability;
 }
 
-int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, SPVM_VALUE* stack, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_OBJECT* object) {
+int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, SPVM_VALUE* stack, int32_t dist_basic_type_id, int32_t dist_type_dimension, SPVM_OBJECT* object) {
   
   SPVM_RUNTIME* runtime = env->runtime;
 
@@ -3696,19 +3696,19 @@ int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, SPVM_VALUE* stack, i
     runtime_assignability = 1;
   }
   else {
-    int32_t cast_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, cast_basic_type_id);
+    int32_t dist_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, dist_basic_type_id);
     int32_t object_basic_type_id = object->basic_type_id;
     int32_t object_type_dimension = object->type_dimension;
     int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
     
-    if (cast_basic_type_id == object_basic_type_id && cast_type_dimension == object_type_dimension) {
+    if (dist_basic_type_id == object_basic_type_id && dist_type_dimension == object_type_dimension) {
       runtime_assignability = 1;
     }
-    else if (cast_type_dimension == 0 && cast_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
+    else if (dist_type_dimension == 0 && dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
       assert(object_type_dimension >= 0);
       runtime_assignability = 1;
     }
-    else if (cast_type_dimension == 1 && cast_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
+    else if (dist_type_dimension == 1 && dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
       if (object_type_dimension >= 1) {
         runtime_assignability = 1;
       }
@@ -3716,8 +3716,13 @@ int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, SPVM_VALUE* stack, i
         runtime_assignability = 0;
       }
     }
-    else if (cast_type_dimension == object_type_dimension && cast_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-      runtime_assignability = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, cast_basic_type_id);
+    else if (dist_type_dimension == object_type_dimension) {
+      if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+        runtime_assignability = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, dist_basic_type_id);
+      }
+      else {
+        runtime_assignability = 0;
+      }
     }
     else {
       runtime_assignability = 0;
