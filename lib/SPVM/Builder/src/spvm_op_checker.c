@@ -2634,9 +2634,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   sprintf(place, "%dth argument", call_method_args_count);
                   
                   // Invocant is not checked.
-                  if (!(!call_method->is_class_method_call && call_method_args_count == 1)) {
-                    op_term = SPVM_OP_CHECKER_check_assign(compiler, arg_var_decl_type, op_term, place, op_cur->file, op_cur->line);
-                  }
+                  op_term = SPVM_OP_CHECKER_check_assign(compiler, arg_var_decl_type, op_term, place, op_cur->file, op_cur->line);
                   
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;

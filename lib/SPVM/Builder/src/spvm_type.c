@@ -1154,6 +1154,9 @@ int32_t SPVM_TYPE_check_assignability(
       if (dist_type_basic_type_id == src_type_basic_type_id) {
         assignability = 1;
       }
+      else if (SPVM_TYPE_is_super_class(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+        assignability = 1;
+      }
       else {
         assignability = 0;
       }
