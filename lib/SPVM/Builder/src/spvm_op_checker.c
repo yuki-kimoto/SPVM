@@ -1239,22 +1239,22 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               break;
             }
             case SPVM_OP_C_ID_ISA: {
-              SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* left_operand_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_OP* op_type = op_cur->last;
               
-              SPVM_TYPE* check_type = op_type->uv.type;
+              SPVM_TYPE* right_type = op_type->uv.type;
               
               int32_t compile_time_check;
-              if (SPVM_TYPE_is_numeric_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
+              if (SPVM_TYPE_is_numeric_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
                 compile_time_check = 1;
               }
-              else if (SPVM_TYPE_is_mulnum_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
+              else if (SPVM_TYPE_is_mulnum_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
                 compile_time_check = 1;
               }
-              else if (SPVM_TYPE_is_any_object_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
+              else if (SPVM_TYPE_is_any_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
                 compile_time_check = 1;
               }
-              else if (SPVM_TYPE_is_ref_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
+              else if (SPVM_TYPE_is_ref_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
                 compile_time_check = 1;
               }
               else {
@@ -1262,7 +1262,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               if (compile_time_check) {
                 // If left type is same as right type, this return true, otherwise return false
-                if (operand_type->basic_type->id == check_type->basic_type->id && operand_type->dimension == check_type->dimension) {
+                if (left_operand_type->basic_type->id == right_type->basic_type->id && left_operand_type->dimension == right_type->dimension) {
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
                   SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_true, op_cur->file, op_cur->line);
@@ -1286,15 +1286,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               else {
-                // Left operand must be object type
-                if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                // Left left_operand must be object type
+                if (!SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
                   SPVM_COMPILER_error(compiler, "The left operand of the isa operator must be a object type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
                 
                 // Right type must be object type
-                if (!SPVM_TYPE_is_object_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The right operand of the isa operator must be a object type at %s line %d", op_cur->file, op_cur->line);
+                if (!SPVM_TYPE_is_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The right type of the isa operator must be a object type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
