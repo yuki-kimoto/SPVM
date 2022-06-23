@@ -4400,7 +4400,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     }
     
     SPVM_METHOD* found_method = NULL;
-    SPVM_CLASS* parent_class;
+    SPVM_CLASS* parent_class = NULL;
     if (call_parent_method) {
       const char* parent_class_name = class->parent_class_name;
       if (parent_class_name) {
@@ -4413,6 +4413,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     else {
       parent_class = class;
     }
+    
     while (1) {
       found_method = SPVM_HASH_get(
         parent_class->method_symtable,
@@ -4427,7 +4428,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
         parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class_name, strlen(parent_class_name));
       }
       else {
-        parent_class = NULL;
+        break;
       }
     }
     

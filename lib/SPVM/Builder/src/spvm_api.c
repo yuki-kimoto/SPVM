@@ -3134,10 +3134,16 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
   
   // Class
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
-  if (class) {
+  
+  SPVM_RUNTIME_CLASS* parent_class = class;
+  
+  while (1) {
+    if (!parent_class) {
+      break;
+    }
+    
     // Method
-    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_name);
-
+    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, parent_class->id, method_name);
     if (method) {
       // Instance method
       if (!method->is_class_method) {
@@ -3146,10 +3152,21 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
         if (strcmp(signature, method_signature) == 0) {
           method_id = method->id;
         }
+        break;
+      }
+      else {
+        break;
       }
     }
+    
+    if (parent_class->parent_class_id != -1) {
+      parent_class = SPVM_API_RUNTIME_get_class(runtime, parent_class->parent_class_id);
+    }
+    else {
+      parent_class = NULL;
+    }
   }
-
+  
   return method_id;
 }
 
