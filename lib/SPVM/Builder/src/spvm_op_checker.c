@@ -4339,17 +4339,13 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       return;
     }
     
-    const char* basic_type_name = type->basic_type->name;
+    const char* class_name = type->basic_type->name;
     
-    found_class = SPVM_HASH_get(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
-    
-    if (!found_class) {
-      SPVM_COMPILER_error(compiler, "Unknown instance method \"%s->%s\" at %s line %d", basic_type_name, method_name, op_call_method->file, op_call_method->line);
-      return;
-    }
+    SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+    assert(class);
     
     found_method = SPVM_HASH_get(
-      found_class->method_symtable,
+      class->method_symtable,
       method_name,
       strlen(method_name)
     );
