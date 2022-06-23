@@ -4566,28 +4566,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     // mulnum_t class limitation
     if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-      // Can't have class variables
-      if (class->class_vars->length > 0) {
-        SPVM_COMPILER_error(compiler, "mulnum_t class can't have class variables at %s line %d", class->op_class->file, class->op_class->line);
-        return;
-      }
-      
-      // At least have one field
-      if (class->fields->length == 0) {
-        SPVM_COMPILER_error(compiler, "mulnum_t class have at least one field at %s line %d", class->op_class->file, class->op_class->line);
-        return;
-      }
-      // Minilal mulnum_t fields length is 1
-      else if (class->fields->length < 1) {
-        SPVM_COMPILER_error(compiler, "Neet at least one field at %s line %d", class->op_class->file, class->op_class->line);
-        return;
-      }
-      // Max fields length is 255
-      else if (class->fields->length > 255) {
-        SPVM_COMPILER_error(compiler, "Too many mulnum_t fields. Max count of mulnum_t fields is 255 at %s line %d", class->op_class->file, class->op_class->line);
-        return;
-      }
-      else {
+      if (1) {
         SPVM_LIST* fields = class->fields;
         SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
         SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);

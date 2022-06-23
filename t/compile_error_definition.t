@@ -47,15 +47,17 @@ sub compile_not_ok_file {
     unshift @{$builder->module_dirs}, $module_dir;
   }
   
-  my $success = $builder->compile_spvm($class_name, $file, $line);
-  ok($success == 0);
-  unless ($success == 0) {
-    warn "  at $file line $line\n";
-  }
+  my $status_code = $builder->compile_spvm($class_name, $file, $line);
+  ok($status_code == 0);
   my $error_messages = $builder->get_error_messages;
   my $first_error_message = $error_messages->[0];
+  my $message_ok;
   if ($error_message_re) {
-    like($first_error_message, $error_message_re);
+    $message_ok = like($first_error_message, $error_message_re);
+  }
+  
+  if ($status_code != 0 || ($error_message_re && !$message_ok)) {
+    warn "  at $file line $line\n";
   }
 }
 
@@ -234,7 +236,15 @@ sub print_error_messages {
       compile_not_ok_file('TestCase::CompileError::MultiNumeric::Fields17');
       {
         my $source = 'class Tmp_2i : mulnum_t { static method foo : void () {} }';
-        compile_not_ok($source, qr|The class that has "mulnum_t" class descriptor can't have methods|);
+        compile_not_ok($source, qr|The class that has the "mulnum_t" class descriptor can't have methods|);
+      }
+      {
+        my $source = 'class Tmp_2i : mulnum_t { our $foo : int; }';
+        compile_not_ok($source, qr|The class that has the "mulnum_t" class descriptor can't have class variables|);
+      }
+      {
+        my $source = 'class Tmp_2i : mulnum_t { }';
+        compile_not_ok($source, qr|The class that has the "mulnum_t" class descriptor must have at least one field|);
       }
     }
     # Access control

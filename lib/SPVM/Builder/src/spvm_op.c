@@ -2335,9 +2335,17 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     }
     // mulnum_t
     else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-      // Can't have methods
       if (class->methods->length > 0) {
-        SPVM_COMPILER_error(compiler, "The class that has \"mulnum_t\" class descriptor can't have methods at %s line %d", op_class->file, op_class->line);
+        SPVM_COMPILER_error(compiler, "The class that has the \"mulnum_t\" class descriptor can't have methods at %s line %d", op_class->file, op_class->line);
+      }
+      if (class->class_vars->length > 0) {
+        SPVM_COMPILER_error(compiler, "The class that has the \"mulnum_t\" class descriptor can't have class variables at %s line %d", op_class->file, op_class->line);
+      }
+      if (class->fields->length == 0) {
+        SPVM_COMPILER_error(compiler, "The class that has the \"mulnum_t\" class descriptor must have at least one field at %s line %d", class->op_class->file, class->op_class->line);
+      }
+      else if (class->fields->length > 255) {
+        SPVM_COMPILER_error(compiler, "The class that has the \"mulnum_t\" class descriptor must have fields that length is less than or equal to 255. at %s line %d", class->op_class->file, class->op_class->line);
       }
     }
   }
