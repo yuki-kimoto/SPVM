@@ -4331,27 +4331,8 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
   SPVM_METHOD* found_method;
   
   const char* method_name = call_method->op_name->uv.name;
-  // Instance method call
-  if (!call_method->is_class_method_call) {
-    SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_method->op_invocant);
-    if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-      SPVM_COMPILER_error(compiler, "The invocant type of the \"%s\" method must be a class type or a interface type at %s line %d", method_name, op_call_method->file, op_call_method->line);
-      return;
-    }
-    
-    const char* class_name = type->basic_type->name;
-    
-    SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
-    assert(class);
-    
-    found_method = SPVM_HASH_get(
-      class->method_symtable,
-      method_name,
-      strlen(method_name)
-    );
-  }
   // Class method call
-  else {
+  if (call_method->is_class_method_call) {
     // Class name + method name
     if (call_method->op_invocant) {
       const char* class_name;
@@ -4385,6 +4366,25 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       SPVM_COMPILER_error(compiler, "A method name must be qualified by a class name or the current class name \"&\" \"%s\" at %s line %d", method_name, op_call_method->file, op_call_method->line);
       return;
     }
+  }
+  // Instance method call
+  else if (!call_method->is_class_method_call) {
+    SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_method->op_invocant);
+    if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+      SPVM_COMPILER_error(compiler, "The invocant type of the \"%s\" method must be a class type or a interface type at %s line %d", method_name, op_call_method->file, op_call_method->line);
+      return;
+    }
+    
+    const char* class_name = type->basic_type->name;
+    
+    SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+    assert(class);
+    
+    found_method = SPVM_HASH_get(
+      class->method_symtable,
+      method_name,
+      strlen(method_name)
+    );
   }
   
   if (found_method) {
