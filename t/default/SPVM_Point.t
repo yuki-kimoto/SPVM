@@ -18,6 +18,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Point
 {
   ok(SPVM::TestCase::Lib::Point->basic);
+  ok(SPVM::TestCase::Lib::Point->extra);
 }
 
 # All object is freed
