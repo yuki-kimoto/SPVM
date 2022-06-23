@@ -599,6 +599,13 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
     runtime_class->has_init_block = class->has_init_block;
     runtime_class->is_anon = class->is_anon;
     runtime_class->is_pointer = class->is_pointer;
+    if (class->parent_class_name) {
+      SPVM_CLASS* parent_class = SPVM_HASH_get(compiler->class_symtable, class->parent_class_name, strlen(class->parent_class_name));
+      runtime_class->parent_class_id = parent_class->id;
+    }
+    else {
+      runtime_class->parent_class_id = -1;
+    }
     
     runtime_class->fields_byte_size = class->fields_byte_size;
 
