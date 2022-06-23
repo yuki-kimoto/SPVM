@@ -4376,7 +4376,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     }
   }
   // Instance method call
-  else if (!call_method->is_class_method_call) {
+  else {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_method->op_invocant);
     if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
       SPVM_COMPILER_error(compiler, "The invocant type of the \"%s\" method must be a class type or a interface type at %s line %d", method_name, op_call_method->file, op_call_method->line);
