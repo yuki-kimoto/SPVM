@@ -4327,12 +4327,12 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     return;
   }
   
-  SPVM_CLASS* found_class;
-  SPVM_METHOD* found_method;
-  
   const char* method_name = call_method->op_name->uv.name;
+  
   // Class method call
   if (call_method->is_class_method_call) {
+    SPVM_METHOD* found_method = NULL;
+    SPVM_CLASS* found_class = NULL;
     // Class name + method name
     if (call_method->op_invocant) {
       const char* class_name;
@@ -4366,6 +4366,14 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       SPVM_COMPILER_error(compiler, "A method name must be qualified by a class name or the current class name \"&\" \"%s\" at %s line %d", method_name, op_call_method->file, op_call_method->line);
       return;
     }
+  
+    if (found_method) {
+      call_method->method = found_method;
+    }
+    else {
+      SPVM_COMPILER_error(compiler, "The \"%s->%s\" class method is not defined at %s line %d", found_class->name, method_name, op_call_method->file, op_call_method->line);
+      return;
+    }
   }
   // Instance method call
   else if (!call_method->is_class_method_call) {
@@ -4380,20 +4388,19 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
     assert(class);
     
-    found_method = SPVM_HASH_get(
+    SPVM_METHOD* found_method = SPVM_HASH_get(
       class->method_symtable,
       method_name,
       strlen(method_name)
     );
-  }
-  
-  if (found_method) {
-    call_method->method = found_method;
-  }
-  else {
-    assert(found_class);
-    SPVM_COMPILER_error(compiler, "The \"%s->%s\" method is not defined at %s line %d", found_class->name, method_name, op_call_method->file, op_call_method->line);
-    return;
+
+    if (found_method) {
+      call_method->method = found_method;
+    }
+    else {
+      SPVM_COMPILER_error(compiler, "The \"%s->%s\" instance method is not defined at %s line %d", class->name, method_name, op_call_method->file, op_call_method->line);
+      return;
+    }
   }
 }
 
