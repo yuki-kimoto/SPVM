@@ -1,10 +1,10 @@
-0.9612_01 2022-06-22
+0.9612_01 2022-06-23
   [CHANGE]
   * Fix descriptor error message.
   * Fields alignment size become the bigger byte size of sizeof(void*) and sizeof(int64_t).
   * Fields alignment rule become the same as C language.
   * Improve compilation error messages.
-0.961101_01 2022-06-22
+0.9612 2022-06-23
   [CHANGE]
   * set_error_code throw an exception when the value is not more than or equal to 1.
   * Add error operator to check the code of the excetpion
