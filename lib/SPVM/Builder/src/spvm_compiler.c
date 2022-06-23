@@ -309,7 +309,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
       }
       case SPVM_OP_C_ID_FIELD_ACCESS: {
         SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
-        field_access->op_term = NULL;
+        field_access->op_invocant = NULL;
         field_access->op_name = NULL;
         field_access->field = NULL;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, field_access);
