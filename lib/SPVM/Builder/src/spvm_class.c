@@ -27,10 +27,6 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   class->fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->field_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
 
-  // Merged fields
-  class->merged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  class->merged_field_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
-  
   // Class variables
   class->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->class_var_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
@@ -43,10 +39,6 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   class->interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->interface_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
 
-  // Merged interfaces
-  class->merged_interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  class->merged_interface_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
-  
   class->allows = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->interface_decls = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->anon_methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
