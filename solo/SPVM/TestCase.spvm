@@ -110,6 +110,8 @@ SPVM::Test - SPVM test module
       
       warn $string;
       
+      $minimal_extend->clear;
+      
       my $common_interface = (TestCase::CommonInterface)$minimal_extend;
       
     }

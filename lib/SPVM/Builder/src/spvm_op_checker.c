@@ -4389,13 +4389,35 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
     assert(class);
     
+    const char* real_method_name;
+    int32_t call_parent_method = 0;
+    if (strstr(method_name, "SUPER::")) {
+      real_method_name = method_name + 7;
+      call_parent_method = 1;
+    }
+    else {
+      real_method_name = method_name;
+    }
+    
     SPVM_METHOD* found_method = NULL;
-    SPVM_CLASS* parent_class = class;
+    SPVM_CLASS* parent_class;
+    if (call_parent_method) {
+      const char* parent_class_name = class->parent_class_name;
+      if (parent_class_name) {
+        parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class_name, strlen(parent_class_name));
+      }
+      else {
+        return;
+      }
+    }
+    else {
+      parent_class = class;
+    }
     while (1) {
       found_method = SPVM_HASH_get(
         parent_class->method_symtable,
-        method_name,
-        strlen(method_name)
+        real_method_name,
+        strlen(real_method_name)
       );
       if (found_method) {
         break;
