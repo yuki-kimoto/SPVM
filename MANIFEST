@@ -560,6 +560,7 @@ t/default/lib/SPVM/TestCase/Lib/List.spvm
 t/default/lib/SPVM/TestCase/Lib/Long.spvm
 t/default/lib/SPVM/TestCase/Lib/LongList.spvm
 t/default/lib/SPVM/TestCase/Lib/Point.spvm
+t/default/lib/SPVM/TestCase/Lib/Point3D.spvm
 t/default/lib/SPVM/TestCase/Lib/Short.spvm
 t/default/lib/SPVM/TestCase/Lib/ShortList.spvm
 t/default/lib/SPVM/TestCase/Lib/Sort.spvm
@@ -713,6 +714,7 @@ t/default/SPVM_List.t
 t/default/SPVM_Long.t
 t/default/SPVM_LongList.t
 t/default/SPVM_Point.t
+t/default/SPVM_Point3D.t
 t/default/SPVM_Short.t
 t/default/SPVM_ShortList.t
 t/default/SPVM_Sort.t

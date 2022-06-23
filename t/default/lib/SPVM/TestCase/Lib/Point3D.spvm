@@ -1,0 +1,94 @@
+class TestCase::Lib::Point3D {
+  use Point3D;
+  
+  static method basic : int () {
+    
+    # Basic
+    {
+      my $point3d = Point3D->new;
+      unless ($point3d isa Point3D) {
+        return 0;
+      }
+      if ($point3d isa Point) {
+        return 0;
+      }
+      
+      unless ($point3d->x == 0) {
+        return 0;
+      }
+      
+      unless ($point3d->y == 0) {
+        return 0;
+      }
+      unless ($point3d->z == 0) {
+        return 0;
+      }
+      
+      $point3d->set_x(1);
+      unless ($point3d->x == 1) {
+        return 0;
+      }
+      
+      $point3d->set_y(2);
+      unless ($point3d->y == 2) {
+        return 0;
+      }
+
+      $point3d->set_z(3);
+      unless ($point3d->z == 3) {
+        return 0;
+      }
+
+      my $string = $point3d->to_string;
+      unless ($string eq "(1,2,3)") {
+        return 0;
+      }
+      
+      $point3d->clear;
+      unless ($point3d->x == 0 && $point3d->y == 0 && $point3d->z == 0) {
+        return 0;
+      }
+    }
+    
+    # new_xyz
+    {
+      my $point3d = Point3D->new_xyz(1, 2, 3);
+      unless ($point3d->x == 1) {
+        return 0;
+      }
+      unless ($point3d->y == 2) {
+        return 0;
+      }
+      unless ($point3d->z == 3) {
+        return 0;
+      }
+    }
+    
+    # Interface
+    {
+      my $point3d = Point3D->new;
+      unless ($point3d isa Stringable) {
+        return 0;
+      }
+      unless ($point3d isa Cloneable) {
+        return 0;
+      }
+    }
+
+    # Cloneable
+    {
+      my $point3d = Point3D->new_xyz(1, 2, 3);
+      my $cloneable = (Cloneable)$point3d;
+      my $point3d_clone = (Point3D)$cloneable->cloneable_clone;
+      unless ($point3d_clone->x == $point3d->x && $point3d_clone->y == $point3d->y && $point3d_clone->z == $point3d->z) {
+        return 0;
+      }
+      
+      if ($point3d_clone == $point3d) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

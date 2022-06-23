@@ -19,9 +19,7 @@ SPVM::Point - Point
   my $x = $point->x;
   my $y = $point->y;
   
-  # (1,2)
-  my $stringable = (Stringable)$point;
-  my $point_string = $stringable->to_string;
+  my $point_string = $point->to_string;
 
 =head1 DESCRIPTION
 
