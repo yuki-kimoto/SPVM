@@ -4,6 +4,7 @@
   * Fields alignment size become the bigger byte size of sizeof(void*) and sizeof(int64_t).
   * Fields alignment rule become the same as C language.
   * Improve compilation error messages.
+  * Add clear method to Point class.
   [BUG FIX]
   * Fix the bug that the name of method call doesn't distinguish class methods and instance methods.
 0.9612 2022-06-23

@@ -1,0 +1,127 @@
+class TestCase::Lib::Point {
+  use Point;
+  
+  static method basic : int () {
+    
+    # Basic
+    {
+      my $point = Point->new;
+      unless ($point isa Point) {
+        return 0;
+      }
+      
+      unless ($point->x == 0) {
+        return 0;
+      }
+      
+      unless ($point->y == 0) {
+        return 0;
+      }
+      
+      $point->set_x(1);
+      unless ($point->x == 1) {
+        return 0;
+      }
+      
+      $point->set_y(2);
+      unless ($point->y == 2) {
+        return 0;
+      }
+
+      my $string = $point->to_string;
+      unless ($string eq "(1,2)") {
+        return 0;
+      }
+      
+      $point->clear;
+      unless ($point->x == 0 && $point->y == 0) {
+        return 0;
+      }
+    }
+    
+    # new_xy
+    {
+      my $point = Point->new_xy(1, 2);
+      unless ($point->x == 1) {
+        return 0;
+      }
+      unless ($point->y == 2) {
+        return 0;
+      }
+    }
+    
+    # Interface
+    {
+      my $point = Point->new;
+      unless ($point isa Stringable) {
+        return 0;
+      }
+      unless ($point isa Cloneable) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method extra : int () {
+    {
+      my $point = Point->new;
+      $point->set_x(1);
+      $point->set_y(2);
+      
+      my $x = $point->x;
+      my $y = $point->y;
+      
+      unless ($x == 1) {
+        return 0;
+      }
+      
+      unless ($y == 2) {
+        return 0;
+      }
+    }
+    
+    
+    {
+      my $point = Point->new_xy(1, 2);
+      
+      my $x = $point->x;
+      my $y = $point->y;
+      
+      unless ($x == 1) {
+        return 0;
+      }
+      
+      unless ($y == 2) {
+        return 0;
+      }
+    }
+    
+    # Stringable
+    {
+      my $point = Point->new_xy(1, 2);
+      my $stringable = (Stringable)$point;
+      my $point_string = $stringable->to_string;
+      unless ($point_string eq "(1,2)") {
+        return 0;
+      }
+    }
+
+    # Cloneable
+    {
+      my $point = Point->new_xy(1, 2);
+      my $cloneable = (Cloneable)$point;
+      my $point_clone = (Point)$cloneable->cloneable_clone;
+      unless ($point_clone->x == $point->x && $point_clone->y == $point->y) {
+        return 0;
+      }
+      
+      if ($point_clone == $point) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}
