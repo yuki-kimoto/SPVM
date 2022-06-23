@@ -4566,62 +4566,60 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     // mulnum_t class limitation
     if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-      if (1) {
-        SPVM_LIST* fields = class->fields;
-        SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
-        SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-        if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
-          SPVM_COMPILER_error(compiler, "mulnum_t class must have numeric field at %s line %d", first_field->op_field->file, first_field->op_field->line);
-          return;
+      SPVM_LIST* fields = class->fields;
+      SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
+      SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+      if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
+        SPVM_COMPILER_error(compiler, "mulnum_t class must have numeric field at %s line %d", first_field->op_field->file, first_field->op_field->line);
+        return;
+      }
+      else {
+        int32_t field_index;
+        for (field_index = 0; field_index < class->fields->length; field_index++) {
+          SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
+          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
+          if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
+            SPVM_COMPILER_error(compiler, "field must have %s type at %s line %d", field_type->basic_type->name, field->op_field->file, field->op_field->line);
+            return;
+          }
         }
-        else {
-          int32_t field_index;
-          for (field_index = 0; field_index < class->fields->length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
-            SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
-            if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
-              SPVM_COMPILER_error(compiler, "field must have %s type at %s line %d", field_type->basic_type->name, field->op_field->file, field->op_field->line);
-              return;
-            }
-          }
-          
-          // Check type name
-          char* tail_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 255);
-          switch (first_field_type->basic_type->id) {
-            case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE:
-              sprintf(tail_name, "_%db", fields->length);
-              break;
-            case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT:
-              sprintf(tail_name, "_%ds", fields->length);
-              break;
-            case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
-              sprintf(tail_name, "_%di", fields->length);
-              break;
-            case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
-              sprintf(tail_name, "_%dl", fields->length);
-              break;
-            case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
-              sprintf(tail_name, "_%df", fields->length);
-              break;
-            case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
-              sprintf(tail_name, "_%dd", fields->length);
-              break;
-            default:
-              assert(0);
-          }
-          int32_t tail_name_length = (int32_t)strlen(tail_name);
-          
-          char* found_pos_ptr = strstr(class_name, tail_name);
-          if (found_pos_ptr) {
-            if (*(found_pos_ptr + tail_name_length) != '\0') {
-              SPVM_COMPILER_error(compiler, "class name must end with %s at %s line %d", tail_name, class->op_class->file, class->op_class->line);
-              return;
-            }
-          }
-          else {
+        
+        // Check type name
+        char* tail_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 255);
+        switch (first_field_type->basic_type->id) {
+          case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE:
+            sprintf(tail_name, "_%db", fields->length);
+            break;
+          case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT:
+            sprintf(tail_name, "_%ds", fields->length);
+            break;
+          case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
+            sprintf(tail_name, "_%di", fields->length);
+            break;
+          case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
+            sprintf(tail_name, "_%dl", fields->length);
+            break;
+          case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
+            sprintf(tail_name, "_%df", fields->length);
+            break;
+          case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
+            sprintf(tail_name, "_%dd", fields->length);
+            break;
+          default:
+            assert(0);
+        }
+        int32_t tail_name_length = (int32_t)strlen(tail_name);
+        
+        char* found_pos_ptr = strstr(class_name, tail_name);
+        if (found_pos_ptr) {
+          if (*(found_pos_ptr + tail_name_length) != '\0') {
             SPVM_COMPILER_error(compiler, "class name must end with %s at %s line %d", tail_name, class->op_class->file, class->op_class->line);
             return;
           }
+        }
+        else {
+          SPVM_COMPILER_error(compiler, "class name must end with %s at %s line %d", tail_name, class->op_class->file, class->op_class->line);
+          return;
         }
       }
     }
@@ -4659,8 +4657,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       const char* field_signature = SPVM_COMPILER_create_field_signature(compiler, field);
       field->signature = field_signature;
     }
-    
-    SPVM_OP_CHECKER_resolve_field_offset(compiler, class);
     
     // Check methods
     for (int32_t i = 0; i < class->methods->length; i++) {
@@ -4881,16 +4877,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
 
-    for (int32_t i = 0; i < class->fields->length; i++) {
-      SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
-
-      // Set field id
-      field->id = compiler->fields->length;
-
-      // Add the field to the compiler
-      SPVM_LIST_push(compiler->fields, field);
-    }
-
     for (int32_t i = 0; i < class->class_vars->length; i++) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, i);
 
@@ -4900,5 +4886,21 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       // Add the class_var to the compiler
       SPVM_LIST_push(compiler->class_vars, class_var);
     }
+  }
+  
+  // Resove field
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    for (int32_t i = 0; i < class->fields->length; i++) {
+      SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
+
+      // Set field id
+      field->id = compiler->fields->length;
+
+      // Add the field to the compiler
+      SPVM_LIST_push(compiler->fields, field);
+    }
+    
+    SPVM_OP_CHECKER_resolve_field_offset(compiler, class);
   }
 }
