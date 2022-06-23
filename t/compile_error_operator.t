@@ -99,8 +99,8 @@ sub print_error_messages {
 
 # Call method
 {
-  compile_not_ok_file('TestCase::CompileError::CallMethod::NotFound');
-  compile_not_ok_file('TestCase::CompileError::CallMethod::ClassNotFound');
+  compile_not_ok_file('TestCase::CompileError::CallMethod::NotFound', qr/The "TestCase::CompileError::CallMethod::NotFound->NOT_FOUND_METHOD" method is not defined/);
+  compile_not_ok_file('TestCase::CompileError::CallMethod::ClassNotFound', qr/The "NotFoundClass" class is not yet loaded/);
 }
 
 # Assign

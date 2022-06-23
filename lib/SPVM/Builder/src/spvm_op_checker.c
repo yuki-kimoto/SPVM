@@ -4334,27 +4334,25 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
   // Instance method call
   if (!call_method->is_class_method_call) {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_method->op_invocant);
-    if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-      SPVM_COMPILER_error(compiler, "Unknown instance method \"%s->%s\" at %s line %d", type_name, method_name, op_call_method->file, op_call_method->line);
+    if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+      SPVM_COMPILER_error(compiler, "The invocant type of the \"%s\" method must be a class type or a interface type at %s line %d", method_name, op_call_method->file, op_call_method->line);
       return;
     }
-    else {
-      const char* basic_type_name = type->basic_type->name;
-      
-      found_class = SPVM_HASH_get(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
-      
-      if (!found_class) {
-        SPVM_COMPILER_error(compiler, "Unknown instance method \"%s->%s\" at %s line %d", basic_type_name, method_name, op_call_method->file, op_call_method->line);
-        return;
-      }
-      
-      found_method = SPVM_HASH_get(
-        found_class->method_symtable,
-        method_name,
-        strlen(method_name)
-      );
+    
+    const char* basic_type_name = type->basic_type->name;
+    
+    found_class = SPVM_HASH_get(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
+    
+    if (!found_class) {
+      SPVM_COMPILER_error(compiler, "Unknown instance method \"%s->%s\" at %s line %d", basic_type_name, method_name, op_call_method->file, op_call_method->line);
+      return;
     }
+    
+    found_method = SPVM_HASH_get(
+      found_class->method_symtable,
+      method_name,
+      strlen(method_name)
+    );
   }
   // Class method call
   else {
@@ -4383,7 +4381,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
         );
       }
       else {
-        SPVM_COMPILER_error(compiler, "The class \"%s\" is not yet loaded at %s line %d", class_name, op_call_method->file, op_call_method->line);
+        SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded at %s line %d", class_name, op_call_method->file, op_call_method->line);
         return;
       }
     }
@@ -4398,7 +4396,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
   }
   else {
     assert(found_class);
-    SPVM_COMPILER_error(compiler, "The method \"%s->%s\" is not found at %s line %d", found_class->name, method_name, op_call_method->file, op_call_method->line);
+    SPVM_COMPILER_error(compiler, "The \"%s->%s\" method is not defined at %s line %d", found_class->name, method_name, op_call_method->file, op_call_method->line);
     return;
   }
 }
