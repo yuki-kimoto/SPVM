@@ -4954,14 +4954,29 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
     
+    SPVM_CLASS* cur_class = class;
     for (int32_t class_index = class_stack->length - 1; class_index >= 0; class_index--) {
       SPVM_CLASS* class = SPVM_LIST_get(class_stack, class_index);
       
       // All fields
       SPVM_LIST* fields = class->fields;
-      for (int32_t field_index = 0; field_index < fields->length; field_index++) {
+      int32_t field_index = 0;
+      int32_t fields_length = fields->length;
+      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
-        SPVM_LIST_push(all_fields, field);
+        if (strcmp(field->class->name, cur_class->name) == 0) {
+          SPVM_LIST_push(all_fields, field);
+        }
+        // Clone field
+        else {
+          SPVM_FIELD* new_field = SPVM_FIELD_new(compiler);
+          new_field->name = field->name;
+          new_field->signature = field->signature;
+          new_field->class = cur_class;
+          new_field->type = field->type;
+          new_field->access_control_type = field->access_control_type;
+          SPVM_LIST_push(all_fields, new_field);
+        }
       }
       
       // All interfaces
@@ -4972,13 +4987,8 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
     
-    // Replace fields
-    class->fields = all_fields;
-    for (int32_t i = 0; i < all_fields->length; i++) {
-      SPVM_FIELD* field = SPVM_LIST_get(all_fields, i);
-      SPVM_HASH_set(class->field_symtable, field->name, strlen(field->name), field);
-    }
-
+    class->tmp_merged_fields = all_fields;
+    
     // Add parent interfaces
     class->interfaces = all_interfaces;
     for (int32_t i = 0; i < all_interfaces->length; i++) {
@@ -4991,6 +5001,19 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     SPVM_LIST_free(class_stack);
+  }
+
+  // Replace fields
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+
+    class->fields = class->tmp_merged_fields;
+    
+    for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
+      field->index = field_index;
+      SPVM_HASH_set(class->field_symtable, field->name, strlen(field->name), field);
+    }
   }
   
   // Resove field

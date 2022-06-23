@@ -22,6 +22,7 @@ struct spvm_class {
   SPVM_HASH* class_var_symtable;
   SPVM_LIST* fields;
   SPVM_HASH* field_symtable;
+  SPVM_LIST* tmp_merged_fields;
   SPVM_LIST* methods;
   SPVM_HASH* method_symtable;
   SPVM_LIST* interfaces;
