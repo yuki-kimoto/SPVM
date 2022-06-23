@@ -103,6 +103,7 @@ Runtime native APIs have its IDs.
   79 object_length_offset
   80 get_allocator
   81 build
+  82 get_class_parent_class_id
 
 =head1 Runtime Native APIs
 
@@ -433,3 +434,7 @@ Runtime native APIs have its IDs.
 =head2 build
 
   void (*build)(void* runtime, int32_t* spvm_32bit_codes);
+
+=head2 get_class_parent_class_id
+
+  int32_t (*get_class_parent_class_id)(void* runtime, int32_t class_id);

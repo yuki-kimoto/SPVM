@@ -179,6 +179,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
     SPVM_API_RUNTIME_get_allocator,
     SPVM_API_RUNTIME_build,
+    SPVM_API_RUNTIME_get_class_parent_class_id,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -593,6 +594,17 @@ int32_t SPVM_API_RUNTIME_get_class_class_vars_length(SPVM_RUNTIME* runtime, int3
   int32_t class_class_vars_length = class->class_vars_length;
   
   return class_class_vars_length;
+}
+
+int32_t SPVM_API_RUNTIME_get_class_parent_class_id(SPVM_RUNTIME* runtime, int32_t class_id) {
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  
+  assert(class);
+  
+  int32_t class_parent_class_id = class->parent_class_id;
+  
+  return class_parent_class_id;
 }
 
 SPVM_RUNTIME_CLASS* SPVM_API_RUNTIME_get_class(SPVM_RUNTIME* runtime, int32_t class_id) {
