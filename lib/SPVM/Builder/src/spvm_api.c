@@ -4139,33 +4139,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         
         break;
       }
-      case SPVM_OPCODE_C_ID_IS_TYPE: {
-        void* object = *(void**)&object_vars[opcode->operand1];
-        int32_t cast_basic_type_id = opcode->operand2;
-        int32_t cast_type_dimension = opcode->operand3;
-
-        if (object) {
-          int_vars[0] = env->is_type(env, stack, object, cast_basic_type_id, cast_type_dimension);
-        }
-        else {
-          int_vars[0] = 0;
-        }
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_HAS_INTERFACE: {
-        void* object = *(void**)&object_vars[opcode->operand1];
-        int32_t interface_basic_type_id = opcode->operand2;
-        
-        if (object) {
-          int_vars[0] = env->has_interface(env, stack, object, interface_basic_type_id);
-        }
-        else {
-          int_vars[0] = 0;
-        }
-        
-        break;
-      }
       case SPVM_OPCODE_C_ID_STRING_EQ:
       case SPVM_OPCODE_C_ID_STRING_NE:
       case SPVM_OPCODE_C_ID_STRING_GT:

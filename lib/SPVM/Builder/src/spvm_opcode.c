@@ -317,8 +317,6 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "SET_FIELD_OBJECT",
     "SET_FIELD_UNDEF",
     "ISA",
-    "IS_TYPE",
-    "HAS_INTERFACE",
     "HAS_IMPL",
     "ENTER_SCOPE",
     "PUSH_MORTAL",
