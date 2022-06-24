@@ -29,7 +29,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->new_env_raw != &env_array[11]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->free_env_raw != &env_array[12]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->isa != &env_array[13]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->check_runtime_assignability_array_element != &env_array[14]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->elem_isa != &env_array[14]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->runtime != &env_array[15]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved16 != &env_array[16]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved17 != &env_array[17]) { stack[0].ival = 0; return 0; }

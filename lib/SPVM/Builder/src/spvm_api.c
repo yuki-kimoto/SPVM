@@ -111,7 +111,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_new_env_raw,
     SPVM_API_free_env_raw,
     SPVM_API_isa,
-    SPVM_API_check_runtime_assignability_array_element,
+    SPVM_API_elem_isa,
     NULL, // runtime
     NULL, // reserved16
     NULL, // native_mortal_stack
@@ -3672,7 +3672,7 @@ void SPVM_API_free_env_prepared(SPVM_ENV* env) {
   env->free_env_raw(env);
 }
 
-int32_t SPVM_API_check_runtime_assignability_array_element(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, SPVM_OBJECT* element) {
+int32_t SPVM_API_elem_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, SPVM_OBJECT* element) {
   
   SPVM_RUNTIME* runtime = env->runtime;
 
@@ -5101,8 +5101,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           else {
             void** element_address = &((void**)((intptr_t)array + object_header_byte_size))[index];
             void* object = *(void**)&object_vars[opcode->operand2];
-            int32_t runtime_assignability = env->check_runtime_assignability_array_element(env, stack, array, object);
-            if (runtime_assignability) {
+            int32_t elem_isa = env->elem_isa(env, stack, array, object);
+            if (elem_isa) {
               SPVM_API_OBJECT_ASSIGN(env, stack, element_address, object);
             }
             else {

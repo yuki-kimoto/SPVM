@@ -1596,8 +1596,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "        void* object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "        int32_t runtime_assignability = env->check_runtime_assignability_array_element(env, stack, array, object);\n"
-                                              "        if (runtime_assignability) {\n"
+                                              "        int32_t elem_isa = env->elem_isa(env, stack, array, object);\n"
+                                              "        if (elem_isa) {\n"
                                               "          SPVM_API_OBJECT_ASSIGN(env, stack, element_address, object);\n"
                                               "        }\n"
                                               "        else {\n"
