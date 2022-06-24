@@ -2,7 +2,6 @@ class TestCase::Lib::Point3D {
   use Point3D;
   
   static method basic : int () {
-    
     # Basic
     {
       my $point3d = Point3D->new;
@@ -107,13 +106,37 @@ class TestCase::Lib::Point3D {
       }
       
       {
-        my $point3d_array : Point3D[];
+        my $point3d_array : Point3D[] = new Point3D[4];;
         (Point[])$point3d_array;
         
-        my $point_array : Point[];
+        my $point_array : Point[] = new Point[3];
         
         $point_array = $point3d_array;
 
+        my $foo = (Point3D[])$point_array;
+      }
+
+      {
+        my $point3d_array : Point3D[] = new Point3D[4];;
+        (Point[])$point3d_array;
+        
+        my $point_array : Point[] = new Point[3];
+        
+        $point_array = $point3d_array;
+
+        my $foo = (Point3D[])$point_array;
+      }
+      
+      eval { (Point3D[])new Point[3]; };
+      unless ($@) {
+        return 0;
+      }
+
+      (Point[][])new Point3D[][3];
+      
+      eval { (Point3D[][])new Point[][3]; };
+      unless ($@) {
+        return 0;
       }
     }
     
