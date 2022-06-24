@@ -1271,6 +1271,7 @@ int32_t SPVM_API_RUNTIME_is_super_class_by_id(SPVM_RUNTIME* runtime, int32_t sup
       SPVM_RUNTIME_CLASS* parent_class = SPVM_API_RUNTIME_get_class(runtime, parent_class_id);
       if (parent_class->id == super_class->id) {
         is_super_class = 1;
+        break;
       }
       else {
         parent_class_id = parent_class->parent_class_id;
@@ -1278,6 +1279,7 @@ int32_t SPVM_API_RUNTIME_is_super_class_by_id(SPVM_RUNTIME* runtime, int32_t sup
     }
     else {
       is_super_class = 0;
+      break;
     }
   }
   

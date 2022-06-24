@@ -9,7 +9,7 @@ class TestCase::Lib::Point3D {
       unless ($point3d isa Point3D) {
         return 0;
       }
-      if ($point3d isa Point) {
+      unless ($point3d isa Point) {
         return 0;
       }
       
@@ -47,6 +47,63 @@ class TestCase::Lib::Point3D {
       $point3d->clear;
       unless ($point3d->x == 0 && $point3d->y == 0 && $point3d->z == 0) {
         return 0;
+      }
+    }
+    
+    # Assign and cast
+    {
+      my $point3d = Point3D->new_xyz(1, 2, 3);
+      my $point = (Point)$point3d;
+      $point->clear;
+      unless ($point3d->x == 0) {
+        return 0;
+      }
+      
+      unless ($point3d->y == 0) {
+        return 0;
+      }
+      unless ($point3d->z == 3) {
+        return 0;
+      }
+      
+      unless ($point isa Point3D) {
+        return 0;
+      }
+      
+      my $point_string = $point->to_string;
+      unless ($point_string eq "(0,0)") {
+        return 0;
+      }
+      
+      my $point3d_string = $point->(Stringable)->to_string;
+      unless ($point3d_string eq "(0,0,3)") {
+        return 0;
+      }
+      
+      {
+        my $point3d_2 = (Point3D)$point;
+        $point3d->set_x(1);
+        $point3d->set_y(2);
+        $point3d->set_z(3);
+        $point3d_2->clear;
+        unless ($point3d->x == 0) {
+          return 0;
+        }
+        
+        unless ($point3d->y == 0) {
+          return 0;
+        }
+        unless ($point3d->z == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $point = Point->new;
+        eval { (Point3D)$point; };
+        unless ($@) {
+          return 0;
+        }
       }
     }
     
@@ -88,6 +145,8 @@ class TestCase::Lib::Point3D {
         return 0;
       }
     }
+    
+    $@ = undef;
     
     return 1;
   }
