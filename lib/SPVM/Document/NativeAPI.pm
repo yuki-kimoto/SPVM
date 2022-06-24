@@ -27,7 +27,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   10 allocator
   11 new_env_raw
   12 free_env_raw
-  13 check_runtime_assignability
+  13 isa
   14 check_runtime_assignability_array_element
   15 runtime
   16 reserved16
@@ -295,11 +295,11 @@ Create a new raw envriment.
 
 Free the raw environemt that is created by L</"new_env_raw">.
 
-=head2 check_runtime_assignability
+=head2 isa
 
-  int32_t (*check_runtime_assignability)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
+  int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t cast_basic_type_id, int32_t cast_type_dimension);
 
-Check the runtime type assignability of an object.
+Perform C<isa> operation.
 
 =head2 check_runtime_assignability_array_element
 

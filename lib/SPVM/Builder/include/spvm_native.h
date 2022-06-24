@@ -110,7 +110,7 @@ struct spvm_env {
   void* allocator;
   SPVM_ENV* (*new_env_raw)();
   void (*free_env_raw)(SPVM_ENV* env);
-  int32_t (*check_runtime_assignability)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
+  int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t cast_basic_type_id, int32_t cast_type_dimension);
   int32_t (*check_runtime_assignability_array_element)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
   void* runtime;
   void* reserved16;

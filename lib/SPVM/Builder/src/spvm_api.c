@@ -110,7 +110,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     allocator, // allocator
     SPVM_API_new_env_raw,
     SPVM_API_free_env_raw,
-    SPVM_API_check_runtime_assignability,
+    SPVM_API_isa,
     SPVM_API_check_runtime_assignability_array_element,
     NULL, // runtime
     NULL, // reserved16
@@ -3682,12 +3682,12 @@ int32_t SPVM_API_check_runtime_assignability_array_element(SPVM_ENV* env, SPVM_V
   int32_t array_type_dimension = array->type_dimension;
   
   assert(array_type_dimension > 0);
-  int32_t runtime_assignability = SPVM_API_check_runtime_assignability(env, stack, array_basic_type_id, array_type_dimension - 1, element);
+  int32_t runtime_assignability = SPVM_API_isa(env, stack, element, array_basic_type_id, array_type_dimension - 1);
 
   return runtime_assignability;
 }
 
-int32_t SPVM_API_check_runtime_assignability(SPVM_ENV* env, SPVM_VALUE* stack, int32_t dist_basic_type_id, int32_t dist_type_dimension, SPVM_OBJECT* object) {
+int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t dist_basic_type_id, int32_t dist_type_dimension) {
   
   SPVM_RUNTIME* runtime = env->runtime;
 
@@ -4131,7 +4131,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t dist_type_dimension = opcode->operand3;
 
         if (object) {
-          int_vars[0] = env->check_runtime_assignability(env, stack, dist_basic_type_id, dist_type_dimension, object);
+          int_vars[0] = env->isa(env, stack, object, dist_basic_type_id, dist_type_dimension);
         }
         else {
           int_vars[0] = 0;
@@ -6475,8 +6475,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t cast_basic_type_id = opcode->operand2;
         int32_t cast_type_dimension = opcode->operand3;
         
-        int32_t runtime_assignability = env->check_runtime_assignability(env, stack, cast_basic_type_id, cast_type_dimension, object);
-        if (runtime_assignability) {
+        int32_t isa = env->isa(env, stack, object, cast_basic_type_id, cast_type_dimension);
+        if (isa) {
           SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
         }
         else {

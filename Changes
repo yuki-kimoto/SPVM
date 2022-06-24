@@ -11,6 +11,13 @@
     Add SUPER:: method call.
   [BUG FIX]
   * Fix the bug that the name of method call doesn't distinguish class methods and instance methods.
+  [NON BACKWORD COMPATIBLE CHANGES]
+  * Change the definitions of the following native API.
+    [Beofre]
+    int32_t (*check_runtime_assignability)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
+    [After]
+    int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t cast_basic_type_id, int32_t cast_type_dimension);
+    
 0.9612 2022-06-23
   [CHANGE]
   * set_error_code throw an exception when the value is not more than or equal to 1.
