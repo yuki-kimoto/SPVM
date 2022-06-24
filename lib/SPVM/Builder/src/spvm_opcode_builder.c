@@ -4133,12 +4133,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode = {0};
                           
                           
-                          if (SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_HAS_INTERFACE);
-                          }
-                          else {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_TYPE);
-                          }
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ISA);
 
                           opcode.operand1 = mem_id_in;
 

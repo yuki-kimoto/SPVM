@@ -4127,11 +4127,11 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
       }
       case SPVM_OPCODE_C_ID_ISA: {
         void* object = *(void**)&object_vars[opcode->operand1];
-        int32_t cast_basic_type_id = opcode->operand2;
-        int32_t cast_type_dimension = opcode->operand3;
+        int32_t dist_basic_type_id = opcode->operand2;
+        int32_t dist_type_dimension = opcode->operand3;
 
         if (object) {
-          int_vars[0] = env->check_runtime_assignability(env, stack, cast_basic_type_id, cast_type_dimension, object);
+          int_vars[0] = env->check_runtime_assignability(env, stack, dist_basic_type_id, dist_type_dimension, object);
         }
         else {
           int_vars[0] = 0;

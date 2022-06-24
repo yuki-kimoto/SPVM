@@ -727,6 +727,50 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
+      case SPVM_OPCODE_C_ID_ISA:
+      {
+        int32_t dist_basic_type = opcode->operand2;
+        int32_t dist_type_dimension = opcode->operand3;
+        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, dist_basic_type);
+        const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
+        int32_t dimension = dist_type_dimension;
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t dist_basic_type_id = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (dist_basic_type_id < 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"Basic type not found:");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ":Is type\");\n"
+                                              "      env->set_exception(env, stack, exception);\n"
+                                              "      error = 1;\n"
+                                              "    }\n"
+                                              "    if (!error) {\n"
+                                              "      int32_t dist_basic_type = "
+                                              "dist_basic_type_id"
+                                              ";\n"
+                                              "      int32_t dist_type_dimension = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, dimension);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "      void* object = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "      if (object) {\n"
+                                              "        int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n"
+                                              "        int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->check_runtime_assignability(env, stack, dist_basic_type_id, dist_type_dimension, object);\n"
+                                              "      }\n"
+                                              "      else {\n");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n"
+                                              "      }\n"
+                                              "    }\n"
+                                              "  }\n");
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_HAS_INTERFACE:
       {
         int32_t cast_basic_type = opcode->operand2;
