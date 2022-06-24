@@ -105,6 +105,16 @@ class TestCase::Lib::Point3D {
           return 0;
         }
       }
+      
+      {
+        my $point3d_array : Point3D[];
+        (Point[])$point3d_array;
+        
+        my $point_array : Point[];
+        
+        $point_array = $point3d_array;
+
+      }
     }
     
     # new_xyz
