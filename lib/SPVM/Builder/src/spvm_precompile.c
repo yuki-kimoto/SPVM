@@ -2967,6 +2967,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       {
         int32_t var_id = opcode->operand0;
         int32_t decl_method_id = opcode->operand1;
+        int32_t is_call_super = opcode->operand2;
 
         int32_t decl_method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, decl_method_id);
         const char* decl_method_name = SPVM_API_RUNTIME_get_name(runtime, decl_method_name_id);
@@ -3029,8 +3030,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
               break;
             }
             case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE: {
-              SPVM_STRING_BUFFER_add(string_buffer, "    void* object = stack[0].oval;\n"
-                                                    "    int32_t call_method_id = env->get_instance_method_id(env, object, \"");
+              SPVM_STRING_BUFFER_add(string_buffer, "    void* object = stack[0].oval;\n");
+              if (is_call_super) {
+                SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = env->get_instance_method_id_super(env, object, \"");
+              }
+              else {
+                SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = env->get_instance_method_id(env, object, \"");
+              }
               SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
               SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
               SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_signature);
