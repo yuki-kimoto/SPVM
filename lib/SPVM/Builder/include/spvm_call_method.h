@@ -9,6 +9,7 @@ struct spvm_call_method {
   SPVM_METHOD* method;
   int8_t is_class_method_call;
   int8_t call_super;
+  int8_t is_static_instance_method_call;
 };
 
 SPVM_CALL_METHOD* SPVM_CALL_METHOD_new(SPVM_COMPILER* compiler);
