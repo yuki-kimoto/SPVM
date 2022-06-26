@@ -283,7 +283,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_class_id,
     SPVM_API_new_stack,
     SPVM_API_free_stack,
-    SPVM_API_get_instance_method_id_parent,
+    SPVM_API_get_instance_method_id_super,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -3126,7 +3126,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
   return SPVM_API_get_instance_method_id_common(env, object, method_name, signature, is_parent);
 }
 
-int32_t SPVM_API_get_instance_method_id_parent(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature) {
+int32_t SPVM_API_get_instance_method_id_super(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature) {
   int32_t is_parent = 1;
   return SPVM_API_get_instance_method_id_common(env, object, method_name, signature, is_parent);
 }

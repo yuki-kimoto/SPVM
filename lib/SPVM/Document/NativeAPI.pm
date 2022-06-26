@@ -197,6 +197,10 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   180 print_stderr
   181 init_env,
   182 call_init_blocks
+  183 get_class_id
+  184 new_stack
+  185 free_stack
+  186 get_instance_method_id_super
 
 =head2 class_vars_heap
 
@@ -2016,9 +2020,9 @@ Call C<INIT> blocks.
 
   void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
 
-=head2 get_instance_method_id_parent
+=head2 get_instance_method_id_super
 
-  int32_t (*get_instance_method_id_parent)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+  int32_t (*get_instance_method_id_super)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
 
 =head1 Compiler Native API
 
