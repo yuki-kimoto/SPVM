@@ -4392,6 +4392,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     if (strstr(method_name, "SUPER::")) {
       real_method_name = method_name + 7;
       call_parent_method = 1;
+      call_method->call_super = 1;
     }
     else {
       real_method_name = method_name;

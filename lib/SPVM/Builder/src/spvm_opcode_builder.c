@@ -1415,6 +1415,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             opcode.operand1 = call_method->method->id;
                           }
                           
+                          opcode.operand2 = call_method->call_super;
+                          
                           int32_t call_method_return_type_width = SPVM_TYPE_get_width(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
                           int32_t operand3 = call_method_return_type_width;
                           assert(operand3 < 0xFFFF);
