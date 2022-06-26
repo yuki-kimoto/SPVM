@@ -17,6 +17,7 @@ int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name);
 int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* name);
 int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
 int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature);
+int32_t SPVM_API_get_instance_method_id_common(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature, int32_t is_parent);
 int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* type_signature);
 int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* class_name, const char* field_name, const char* signature);
 int32_t SPVM_API_get_field_index(SPVM_ENV* env, int32_t field_id);

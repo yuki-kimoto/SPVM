@@ -3121,6 +3121,16 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_
 
 
 int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature) {
+  int32_t is_parent = 0;
+  return SPVM_API_get_instance_method_id_common(env, object, method_name, signature, is_parent);
+}
+
+int32_t SPVM_API_get_instance_method_id_parent(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature) {
+  int32_t is_parent = 1;
+  return SPVM_API_get_instance_method_id_common(env, object, method_name, signature, is_parent);
+}
+
+int32_t SPVM_API_get_instance_method_id_common(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature, int32_t is_parent) {
   (void)env;
   
   // Method ID
@@ -3136,6 +3146,10 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
   
   SPVM_RUNTIME_CLASS* parent_class = class;
+  
+  if (is_parent) {
+    parent_class = SPVM_API_RUNTIME_get_class(runtime, parent_class->parent_class_id);
+  }
   
   while (1) {
     if (!parent_class) {
