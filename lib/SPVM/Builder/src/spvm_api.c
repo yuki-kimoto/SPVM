@@ -283,6 +283,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_class_id,
     SPVM_API_new_stack,
     SPVM_API_free_stack,
+    SPVM_API_get_instance_method_id_parent,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));

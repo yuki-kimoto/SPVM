@@ -2004,6 +2004,22 @@ Initialize the environment.
 
 Call C<INIT> blocks.
 
+=head2 get_class_id
+
+  int32_t (*get_class_id)(SPVM_ENV* env, const char* class_name);
+
+=head2 new_stack
+
+  SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
+
+=head2 free_stack
+
+  void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+=head2 get_instance_method_id_parent
+
+  int32_t (*get_instance_method_id_parent)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+
 =head1 Compiler Native API
 
 L<SPVM::Document::NativeAPI::Compiler>
