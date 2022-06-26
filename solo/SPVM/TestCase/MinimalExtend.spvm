@@ -15,8 +15,6 @@ class TestCase::MinimalExtend extends TestCase::Minimal : public {
   
   method clear : void () {
     
-    warn "BBBBBBB";
-    
     $self->SUPER::clear;
     $self->{z} = 0;
   }

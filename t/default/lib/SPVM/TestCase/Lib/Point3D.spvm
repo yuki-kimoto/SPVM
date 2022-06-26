@@ -61,7 +61,7 @@ class TestCase::Lib::Point3D {
       unless ($point3d->y == 0) {
         return 0;
       }
-      unless ($point3d->z == 3) {
+      unless ($point3d->z == 0) {
         return 0;
       }
       
@@ -70,12 +70,12 @@ class TestCase::Lib::Point3D {
       }
       
       my $point_string = $point->to_string;
-      unless ($point_string eq "(0,0)") {
+      unless ($point_string eq "(0,0,0)") {
         return 0;
       }
       
       my $point3d_string = $point->(Stringable)->to_string;
-      unless ($point3d_string eq "(0,0,3)") {
+      unless ($point3d_string eq "(0,0,0)") {
         return 0;
       }
       
@@ -96,6 +96,7 @@ class TestCase::Lib::Point3D {
           return 0;
         }
       }
+    
       
       {
         my $point = Point->new;
