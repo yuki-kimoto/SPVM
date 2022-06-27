@@ -5035,17 +5035,23 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Resove field
+  // Resove fields
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    // Class
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    
     for (int32_t i = 0; i < class->fields->length; i++) {
+      // Field
       SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
+
+      // Create field id
       field->id = compiler->fields->length;
 
-      // Add the field to the compiler
+      // Add field to compiler
       SPVM_LIST_push(compiler->fields, field);
     }
     
+    // Resove field offset
     SPVM_OP_CHECKER_resolve_field_offset(compiler, class);
   }
 
