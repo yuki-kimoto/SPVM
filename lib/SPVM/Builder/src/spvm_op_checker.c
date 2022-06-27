@@ -4976,6 +4976,11 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_CLASS* parent_class = class->parent_class;
     while (1) {
       if (parent_class) {
+        if (parent_class->name == class->name) {
+          SPVM_COMPILER_error(compiler, "The all super classes must be different from its own class at %s line %d", class->op_extends->file, class->op_extends->line);
+          return;
+        }
+        
         SPVM_LIST_push(class_stack, parent_class);
         parent_class = parent_class->parent_class;
       }

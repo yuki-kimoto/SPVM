@@ -2237,6 +2237,8 @@ The parant class must be a non-L<pointer type|/"Pointer Type">. Otherwise a comp
 
 The name of the parant class must be different from the name of the class. Otherwise a compilation error will occur.
 
+The all super classes must be different from its own class. Otherwise a compilation error will occur.
+
 B<Examples:>
 
   class Point3D extends Point {

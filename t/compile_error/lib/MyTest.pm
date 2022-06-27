@@ -7,31 +7,42 @@ use Test::More;
 our @EXPORT_OK = qw(compile_not_ok_file compile_not_ok);
 
 sub compile_not_ok {
-  my ($source, $error_message_re) = @_;
+  my ($sources, $error_message_re) = @_;
+  
+  unless (ref $sources eq 'ARRAY') {
+    $sources = [$sources];
+  }
   
   my (undef, $file, $line) = caller;
   
   my $builder = SPVM::Builder->new;
   
-  my $class_name;
-  if ($source =~ /\bclass\s+([\w+:]+)\s*/) {
-    $class_name = $1;
-  }
-  unless (defined $class_name) {
-    die "Can't find class name in the source";
-  }
-  
   my $tmp_module_dir = File::Temp->newdir;
-  
-  my $module_file = "$tmp_module_dir/$class_name.spvm";
-  $module_file =~ s|::|/|g;
-  
-  if (open my $module_fh, '>', $module_file) {
-    print $module_fh $source;
-    close $module_fh;
+    
+  my $first_class_name;
+  for my $source (@$sources) {
+    my $class_name;
+    if ($source =~ /\bclass\s+([\w+:]+)\s*/) {
+      $class_name = $1;
+    }
+    unless (defined $class_name) {
+      die "Can't find class name in the source";
+    }
+    
+    unless (defined $first_class_name) {
+      $first_class_name = $class_name;
+    }
+    
+    my $module_file = "$tmp_module_dir/$class_name.spvm";
+    $module_file =~ s|::|/|g;
+    
+    if (open my $module_fh, '>', $module_file) {
+      print $module_fh $source;
+      close $module_fh;
+    }
   }
   
-  compile_not_ok_file($class_name, $error_message_re, {module_dir => "$tmp_module_dir", file => $file, line => $line});
+  compile_not_ok_file($first_class_name, $error_message_re, {module_dir => "$tmp_module_dir", file => $file, line => $line});
 }
 
 sub compile_not_ok_file {
