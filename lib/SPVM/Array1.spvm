@@ -26,7 +26,7 @@ class Array1 {
     return copy $nums;
   }
 
-  precompile static method copy_object : object[] ($objects : object[], $cloner : Cloner) {
+  static method copy_object : object[] ($objects : object[], $cloner : Cloner) {
     if ($objects == undef) {
       return undef;
     }
@@ -42,7 +42,7 @@ class Array1 {
     return $new_objects;
   }
 
-  precompile static method copy_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
+  static method copy_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
@@ -73,7 +73,7 @@ class Array1 {
     return $range;
   }
 
-  precompile static method copy_range_double : double[] ($nums : double[], $offset : int, $length : int) {
+  static method copy_range_double : double[] ($nums : double[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
@@ -104,7 +104,7 @@ class Array1 {
     return $range;
   }
 
-  precompile static method copy_range_float : float[] ($nums : float[], $offset : int, $length : int) {
+  static method copy_range_float : float[] ($nums : float[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
@@ -135,7 +135,7 @@ class Array1 {
     return $range;
   }
 
-  precompile static method copy_range_int : int[] ($nums : int[], $offset : int, $length : int) {
+  static method copy_range_int : int[] ($nums : int[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
@@ -166,7 +166,7 @@ class Array1 {
     return $range;
   }
 
-  precompile static method copy_range_long : long[] ($nums : long[], $offset : int, $length : int) {
+  static method copy_range_long : long[] ($nums : long[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
@@ -197,7 +197,7 @@ class Array1 {
     return $range;
   }
 
-  precompile static method copy_range_object : object[] ($objects : object[], $offset : int, $length : int) {
+  static method copy_range_object : object[] ($objects : object[], $offset : int, $length : int) {
 
     if ($objects == undef) {
       die "The argument array must be defined";
@@ -228,7 +228,7 @@ class Array1 {
     return $range;
   }
 
-  precompile static method copy_range_short : short[] ($nums : short[], $offset : int, $length : int) {
+  static method copy_range_short : short[] ($nums : short[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
@@ -260,7 +260,7 @@ class Array1 {
   }
 
 
-  precompile static method copy_range_string : string[] ($strings : string[], $offset : int, $length : int) {
+  static method copy_range_string : string[] ($strings : string[], $offset : int, $length : int) {
 
     if ($strings == undef) {
       die "The argument array must be defined";
@@ -295,7 +295,7 @@ class Array1 {
     return copy $nums;
   }
 
-  precompile static method copy_string : string[] ($strings : string[]) {
+  static method copy_string : string[] ($strings : string[]) {
     if ($strings == undef) {
       return undef;
     }
@@ -311,7 +311,7 @@ class Array1 {
     return $new_strings;
   }
   
-  precompile static method dump_byte : string ($nums : byte[]) {
+  static method dump_byte : string ($nums : byte[]) {
     
     if ($nums == undef) {
       return undef;
@@ -335,7 +335,7 @@ class Array1 {
     return $dump;
   }
 
-  precompile static method dump_double : string ($nums : double[]) {
+  static method dump_double : string ($nums : double[]) {
     
     if ($nums == undef) {
       return undef;
@@ -359,7 +359,7 @@ class Array1 {
     return $dump;
   }
 
-  precompile static method dump_float : string ($nums : float[]) {
+  static method dump_float : string ($nums : float[]) {
     
     if ($nums == undef) {
       return undef;
@@ -383,7 +383,7 @@ class Array1 {
     return $dump;
   }
 
-  precompile static method dump_int : string ($nums : int[]) {
+  static method dump_int : string ($nums : int[]) {
     
     if ($nums == undef) {
       return undef;
@@ -407,7 +407,7 @@ class Array1 {
     return $dump;
   }
 
-  precompile static method dump_long : string ($nums : long[]) {
+  static method dump_long : string ($nums : long[]) {
     
     if ($nums == undef) {
       return undef;
@@ -431,7 +431,7 @@ class Array1 {
     return $dump;
   }
 
-  precompile static method dump_object : string ($objects : object[], $stringer : Stringer) {
+  static method dump_object : string ($objects : object[], $stringer : Stringer) {
     
     if ($objects == undef) {
       return undef;
@@ -455,7 +455,7 @@ class Array1 {
     return $dump;
   }
 
-  precompile static method dump_short : string ($nums : short[]) {
+  static method dump_short : string ($nums : short[]) {
     
     if ($nums == undef) {
       return undef;
@@ -479,7 +479,7 @@ class Array1 {
     return $dump;
   }
 
-  precompile static method dump_string : string ($strings : string[]) {
+  static method dump_string : string ($strings : string[]) {
     
     if ($strings == undef) {
       return undef;
@@ -503,7 +503,7 @@ class Array1 {
     return $dump;
   }
 
-  precompile static method dump_unsigned_byte : string ($nums : byte[]) {
+  static method dump_unsigned_byte : string ($nums : byte[]) {
     
     if ($nums == undef) {
       return undef;
@@ -527,7 +527,7 @@ class Array1 {
     return $dump;
   }
 
-  precompile static method dump_unsigned_int : string ($nums : int[]) {
+  static method dump_unsigned_int : string ($nums : int[]) {
     
     if ($nums == undef) {
       return undef;
@@ -551,7 +551,7 @@ class Array1 {
     return $dump;
   }
 
-  precompile static method dump_unsigned_long : string ($nums : long[]) {
+  static method dump_unsigned_long : string ($nums : long[]) {
     
     if ($nums == undef) {
       return undef;
@@ -575,7 +575,7 @@ class Array1 {
     return $dump;
   }
 
-  precompile static method dump_unsigned_short : string ($nums : short[]) {
+  static method dump_unsigned_short : string ($nums : short[]) {
     
     if ($nums == undef) {
       return undef;
@@ -599,7 +599,7 @@ class Array1 {
     return $dump;
   }
 
-  precompile static method equals_byte : int ($nums1 : byte[], $nums2 : byte[]) {
+  static method equals_byte : int ($nums1 : byte[], $nums2 : byte[]) {
     
     if ($nums1 == undef && $nums2 == undef) {
       return 1;
@@ -627,7 +627,7 @@ class Array1 {
     return $is_equals;
   }
 
-  precompile static method equals_double : int ($nums1 : double[], $nums2 : double[]) {
+  static method equals_double : int ($nums1 : double[], $nums2 : double[]) {
     if ($nums1 == undef && $nums2 == undef) {
       return 1;
     }
@@ -654,7 +654,7 @@ class Array1 {
     return $is_equals;
   }
 
-  precompile static method equals_float : int ($nums1 : float[], $nums2 : float[]) {
+  static method equals_float : int ($nums1 : float[], $nums2 : float[]) {
     if ($nums1 == undef && $nums2 == undef) {
       return 1;
     }
@@ -681,7 +681,7 @@ class Array1 {
     return $is_equals;
   }
 
-  precompile static method equals_int : int ($nums1 : int[], $nums2 : int[]) {
+  static method equals_int : int ($nums1 : int[], $nums2 : int[]) {
     if ($nums1 == undef && $nums2 == undef) {
       return 1;
     }
@@ -707,7 +707,7 @@ class Array1 {
 
     return $is_equals;
   }
-  precompile static method equals_long : int ($nums1 : long[], $nums2 : long[]) {
+  static method equals_long : int ($nums1 : long[], $nums2 : long[]) {
     if ($nums1 == undef && $nums2 == undef) {
       return 1;
     }
@@ -734,7 +734,7 @@ class Array1 {
     return $is_equals;
   }
 
-  precompile static method equals_object : int ($objects1 : object[], $objects2 : object[], $equality_checker : EqualityChecker) {
+  static method equals_object : int ($objects1 : object[], $objects2 : object[], $equality_checker : EqualityChecker) {
     if ($objects1 == undef && $objects2 == undef) {
       return 1;
     }
@@ -761,7 +761,7 @@ class Array1 {
     return $is_equals;
   }
 
-  precompile static method equals_short : int ($nums1 : short[], $nums2 : short[]) {
+  static method equals_short : int ($nums1 : short[], $nums2 : short[]) {
     if ($nums1 == undef && $nums2 == undef) {
       return 1;
     }
@@ -788,7 +788,7 @@ class Array1 {
     return $is_equals;
   }
 
-  precompile static method equals_string : int ($strings1 : string[], $strings2 : string[]) {
+  static method equals_string : int ($strings1 : string[], $strings2 : string[]) {
     if ($strings1 == undef && $strings2 == undef) {
       return 1;
     }
@@ -815,43 +815,43 @@ class Array1 {
     return $is_equals;
   }
 
-  precompile static method memset_byte : void ($dest : byte[], $dest_offset : int, $value : byte, $length : int) {
+  static method memset_byte : void ($dest : byte[], $dest_offset : int, $value : byte, $length : int) {
     my $offset_plus_length = $dest_offset + $length;
     for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
       $dest->[$i] = $value;
     }
   }
-  precompile static method memset_double : void ($dest : double[], $dest_offset : int, $value : double, $length : int) {
+  static method memset_double : void ($dest : double[], $dest_offset : int, $value : double, $length : int) {
     my $offset_plus_length = $dest_offset + $length;
     for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
       $dest->[$i] = $value;
     }
   }
-  precompile static method memset_float : void ($dest : float[], $dest_offset : int, $value : float, $length : int) {
+  static method memset_float : void ($dest : float[], $dest_offset : int, $value : float, $length : int) {
     my $offset_plus_length = $dest_offset + $length;
     for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
       $dest->[$i] = $value;
     }
   }
-  precompile static method memset_int : void ($dest : int[], $dest_offset : int, $value : int, $length : int) {
+  static method memset_int : void ($dest : int[], $dest_offset : int, $value : int, $length : int) {
     my $offset_plus_length = $dest_offset + $length;
     for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
       $dest->[$i] = $value;
     }
   }
-  precompile static method memset_long : void ($dest : long[], $dest_offset : int, $value : long, $length : int) {
+  static method memset_long : void ($dest : long[], $dest_offset : int, $value : long, $length : int) {
     my $offset_plus_length = $dest_offset + $length;
     for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
       $dest->[$i] = $value;
     }
   }
-  precompile static method memset_short : void ($dest : short[], $dest_offset : int, $value : short, $length : int) {
+  static method memset_short : void ($dest : short[], $dest_offset : int, $value : short, $length : int) {
     my $offset_plus_length = $dest_offset + $length;
     for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
       $dest->[$i] = $value;
     }
   }
-  precompile static method memset_object : void ($dest : object[], $dest_offset : int, $value : object, $length : int) {
+  static method memset_object : void ($dest : object[], $dest_offset : int, $value : object, $length : int) {
     my $offset_plus_length = $dest_offset + $length;
     for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
       $dest->[$i] = $value;
@@ -864,7 +864,7 @@ class Array1 {
   native static method memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
   native static method memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
   native static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
-  precompile static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
+  static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     for (my $i = 0; $i < $length; $i++) {
       my $dist_index = $dest_offset + $i;
       my $source_index = $source_offset + $i;
