@@ -1,5 +1,4 @@
 class Array1 {
-  use StringBuffer;
   use StringList;
   use Stringer;
   use Cloner;
