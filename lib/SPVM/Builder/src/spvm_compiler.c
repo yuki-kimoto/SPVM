@@ -619,7 +619,7 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
       runtime_class->destructor_method_id = -1;
     }
     
-    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE || class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
+    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
       assert(class->required_method);
     }
   

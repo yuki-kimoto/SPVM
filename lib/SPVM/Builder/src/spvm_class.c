@@ -12,9 +12,8 @@ const char* const* SPVM_CLASS_C_CATEGORY_NAMES(void) {
   
   static const char* const category_names[] = {
     "class",
-    "callback_t",
-    "mulnum_t",
     "interface_t"
+    "mulnum_t",
   };
   
   return category_names;
