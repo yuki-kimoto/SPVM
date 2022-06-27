@@ -26,7 +26,7 @@ class Array1 {
     return copy $nums;
   }
 
-  static method copy_object : object[] ($objects : object[], $cloner : Cloner) {
+  precompile static method copy_object : object[] ($objects : object[], $cloner : Cloner) {
     if ($objects == undef) {
       return undef;
     }
@@ -42,7 +42,7 @@ class Array1 {
     return $new_objects;
   }
 
-  static method copy_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
+  precompile static method copy_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
@@ -73,7 +73,7 @@ class Array1 {
     return $range;
   }
 
-  static method copy_range_double : double[] ($nums : double[], $offset : int, $length : int) {
+  precompile static method copy_range_double : double[] ($nums : double[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
@@ -104,7 +104,7 @@ class Array1 {
     return $range;
   }
 
-  static method copy_range_float : float[] ($nums : float[], $offset : int, $length : int) {
+  precompile static method copy_range_float : float[] ($nums : float[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
@@ -135,7 +135,7 @@ class Array1 {
     return $range;
   }
 
-  static method copy_range_int : int[] ($nums : int[], $offset : int, $length : int) {
+  precompile static method copy_range_int : int[] ($nums : int[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
@@ -166,7 +166,7 @@ class Array1 {
     return $range;
   }
 
-  static method copy_range_long : long[] ($nums : long[], $offset : int, $length : int) {
+  precompile static method copy_range_long : long[] ($nums : long[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
@@ -197,7 +197,7 @@ class Array1 {
     return $range;
   }
 
-  static method copy_range_object : object[] ($objects : object[], $offset : int, $length : int) {
+  precompile static method copy_range_object : object[] ($objects : object[], $offset : int, $length : int) {
 
     if ($objects == undef) {
       die "The argument array must be defined";
@@ -228,7 +228,7 @@ class Array1 {
     return $range;
   }
 
-  static method copy_range_short : short[] ($nums : short[], $offset : int, $length : int) {
+  precompile static method copy_range_short : short[] ($nums : short[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
@@ -260,7 +260,7 @@ class Array1 {
   }
 
 
-  static method copy_range_string : string[] ($strings : string[], $offset : int, $length : int) {
+  precompile static method copy_range_string : string[] ($strings : string[], $offset : int, $length : int) {
 
     if ($strings == undef) {
       die "The argument array must be defined";
@@ -295,7 +295,7 @@ class Array1 {
     return copy $nums;
   }
 
-  static method copy_string : string[] ($strings : string[]) {
+  precompile static method copy_string : string[] ($strings : string[]) {
     if ($strings == undef) {
       return undef;
     }
@@ -311,7 +311,7 @@ class Array1 {
     return $new_strings;
   }
   
-  static method dump_byte : string ($nums : byte[]) {
+  precompile static method dump_byte : string ($nums : byte[]) {
     
     if ($nums == undef) {
       return undef;
@@ -335,7 +335,7 @@ class Array1 {
     return $dump;
   }
 
-  static method dump_double : string ($nums : double[]) {
+  precompile static method dump_double : string ($nums : double[]) {
     
     if ($nums == undef) {
       return undef;
@@ -359,7 +359,7 @@ class Array1 {
     return $dump;
   }
 
-  static method dump_float : string ($nums : float[]) {
+  precompile static method dump_float : string ($nums : float[]) {
     
     if ($nums == undef) {
       return undef;
@@ -383,7 +383,7 @@ class Array1 {
     return $dump;
   }
 
-  static method dump_int : string ($nums : int[]) {
+  precompile static method dump_int : string ($nums : int[]) {
     
     if ($nums == undef) {
       return undef;
@@ -407,7 +407,7 @@ class Array1 {
     return $dump;
   }
 
-  static method dump_long : string ($nums : long[]) {
+  precompile static method dump_long : string ($nums : long[]) {
     
     if ($nums == undef) {
       return undef;
@@ -431,7 +431,7 @@ class Array1 {
     return $dump;
   }
 
-  static method dump_object : string ($objects : object[], $stringer : Stringer) {
+  precompile static method dump_object : string ($objects : object[], $stringer : Stringer) {
     
     if ($objects == undef) {
       return undef;
@@ -455,7 +455,7 @@ class Array1 {
     return $dump;
   }
 
-  static method dump_short : string ($nums : short[]) {
+  precompile static method dump_short : string ($nums : short[]) {
     
     if ($nums == undef) {
       return undef;
@@ -479,7 +479,7 @@ class Array1 {
     return $dump;
   }
 
-  static method dump_string : string ($strings : string[]) {
+  precompile static method dump_string : string ($strings : string[]) {
     
     if ($strings == undef) {
       return undef;
