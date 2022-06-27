@@ -1,4 +1,4 @@
-name: windows
+name: windows-latest
 
 on:
   push:
