@@ -12,8 +12,8 @@ use Test::More;
 
 my $file = 't/' . basename $0;
 
-use FindBin;
-use lib "$FindBin::Bin/default/lib";
+use lib "$FindBin::Bin/../default/lib";
+use lib "$FindBin::Bin/lib";
 
 sub compile_not_ok_file {
   my ($class_name, $error_message_re, $options) = @_;

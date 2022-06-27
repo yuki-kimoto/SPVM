@@ -12,8 +12,8 @@ use Test::More;
 
 my $file = 't/' . basename $0;
 
-use FindBin;
-use lib "$FindBin::Bin/default/lib";
+use lib "$FindBin::Bin/../default/lib";
+use lib "$FindBin::Bin/lib";
 
 sub compile_not_ok_file {
   my ($class_name, $error_message_re, $options) = @_;
@@ -57,7 +57,6 @@ sub compile_not_ok_file {
   if ($error_message_re) {
     like($first_error_message, $error_message_re);
   }
-  print_error_messages($builder);
 }
 
 sub compile_not_ok {
@@ -98,18 +97,44 @@ sub print_error_messages {
   }
 }
 
-# SPVM compile error
+# Array of any object - object[]
 {
-  my $command = "$^X -Mblib $FindBin::Bin/compile_error_perl_program.pl 2>&1";
-  my $output = `$command 2>&1`;
-  like($output, qr/CompileError/);
+  compile_not_ok_file('TestCase::CompileError::OArray::AssignNumeric');
+  compile_not_ok_file('TestCase::CompileError::OArray::AssignNumericArray');
 }
 
-# SPVM dist compile error
+# String
 {
-  my $command = "$^X -Mblib $FindBin::Bin/compile_error_dist.pl 2>&1";
-  my $output = `$command 2>&1`;
-  like($output, qr/CompileError/);
+  compile_not_ok_file('TestCase::CompileError::String::CharacterAssign');
+  compile_not_ok_file('TestCase::CompileError::String::AssignNonMutableToMutable');
+}
+
+# Bool
+{
+  compile_not_ok_file('TestCase::CompileError::Bool::NotNumericObject');
+}
+{
+  compile_not_ok_file('TestCase::CompileError::InvalidType');
+}
+
+{
+  compile_not_ok_file('TestCase::CompileError::TypeCantBeDetectedUndef');
+}
+
+{
+  compile_not_ok_file('TestCase::CompileError::TypeCantBeDetectedUndefDefault');
+}
+
+# Type
+{
+  compile_not_ok_file('TestCase::CompileError::Type::MutableNoStringCaseStringArray');
+  compile_not_ok_file('TestCase::CompileError::Type::MutableNoStringCaseInt');
+  compile_not_ok_file('TestCase::CompileError::Type::MultiDimensionalAnyObject', qr/Multi dimensional array of any object/i);
+}
+
+# Type comment
+{
+  compile_not_ok_file('TestCase::CompileError::TypeComment::NotExistType', qr/NotExists::XXXX/);
 }
 
 
