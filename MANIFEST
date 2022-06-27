@@ -321,6 +321,7 @@ t/builder_object_file_info.t
 t/compile_error/definition.t
 t/compile_error/dist.pl
 t/compile_error/extra.t
+t/compile_error/lib/MyTest.pm
 t/compile_error/lib/SPVM/CompileError/Add/LeftIsNotNumeric.spvm
 t/compile_error/lib/SPVM/CompileError/Add/RightIsNotNumeric.spvm
 t/compile_error/lib/SPVM/CompileError/Assign/BoxingDifferentType.spvm
