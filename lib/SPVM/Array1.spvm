@@ -21,7 +21,7 @@ class Array1 {
     return copy $nums;
   }
 
-  precompile static method copy_object : object[] ($objects : object[], $cloner : Cloner) {
+  static method copy_object : object[] ($objects : object[], $cloner : Cloner) {
     if ($objects == undef) {
       return undef;
     }
@@ -37,7 +37,7 @@ class Array1 {
     return $new_objects;
   }
 
-  static method copy_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
+  precompile static method copy_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
