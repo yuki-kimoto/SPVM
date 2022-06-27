@@ -1,4 +1,4 @@
-name: windows
+name: windows-2019
 
 on:
   push:
