@@ -1,33 +1,7 @@
 class Array1 {
   precompile static method copy_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
 
-    if ($nums == undef) {
-      die "The argument array must be defined";
-    }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Offset must be in the array range";
-    }
-
-    if ($length < 0) {
-      die "Length must be more than or equals to 0";
-    }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must be in the array range";
-    }
-
-    my $range = new byte[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $range->[$pos] = $nums->[$i];
-      $pos++;
-    }
-
-    return $range;
+    return [(byte)1];
   }
 
   native static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
