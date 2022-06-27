@@ -13,6 +13,7 @@ enum {
 struct spvm_class {
   SPVM_OP* op_class;
   SPVM_OP* op_name;
+  SPVM_OP* op_extends;
   const char* name;
   const char* module_file;
   const char* module_dir;
