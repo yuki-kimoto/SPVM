@@ -11,6 +11,14 @@ use lib "$FindBin::Bin/lib";
 
 use SPVM 'Array1';
 
+use Data::Dumper;
+my @source_files = glob '.spvm_build/work/src/SPVM/*';
+my @object_files = glob '.spvm_build/work/object/SPVM/*';
+warn Dumper {
+  source_files => \@source_files,
+  object_files => \@object_files
+};
+
 use SPVM 'Array';
 use SPVM 'Bool';
 use SPVM 'ByteList';
