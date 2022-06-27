@@ -4395,7 +4395,33 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       call_method->call_super = 1;
     }
     else {
-      real_method_name = method_name;
+      // Static instance method call
+      char* last_colon_pos = strrchr(method_name, ':');
+      if (last_colon_pos) {
+        call_method->is_static_instance_method_call = 1;
+        real_method_name = last_colon_pos + 1;
+        int32_t class_name_static_length = (last_colon_pos - 1) - method_name;
+        SPVM_CLASS* class_static = SPVM_HASH_get(compiler->class_symtable, method_name, class_name_static_length);
+        if (!class_static) {
+          SPVM_COMPILER_error(compiler, "The \"%s->%s\" instance method is not defined at %s line %d", class->name, method_name, op_call_method->file, op_call_method->line);
+          return;
+        }
+        SPVM_METHOD* found_method = SPVM_HASH_get(
+          class_static->method_symtable,
+          real_method_name,
+          strlen(real_method_name)
+        );
+        if (found_method) {
+          call_method->method = found_method;
+        }
+        else {
+          SPVM_COMPILER_error(compiler, "The \"%s->%s\" instance method is not defined at %s line %d", class->name, method_name, op_call_method->file, op_call_method->line);
+          return;
+        }
+      }
+      else {
+        real_method_name = method_name;
+      }
     }
     
     SPVM_METHOD* found_method = NULL;

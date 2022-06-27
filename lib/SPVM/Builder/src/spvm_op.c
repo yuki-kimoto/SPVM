@@ -2941,14 +2941,6 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
   
   const char* method_name = op_name_method->uv.name;
   
-  // SUPER:: is ok
-  if (strstr(method_name, "SUPER::") == &method_name[0]) {
-    // OK
-  }
-  else if (strstr(method_name, "::")) {
-    SPVM_COMPILER_error(compiler, "method name can't conatin :: except for \"SUPER::\" at %s line %d", op_name_method->file, op_name_method->line);
-  }
-  
   // Class method call
   if (op_invocant->id == SPVM_OP_C_ID_NAME || op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
     call_method->is_class_method_call = 1;

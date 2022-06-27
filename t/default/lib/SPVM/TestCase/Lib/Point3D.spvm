@@ -139,6 +139,27 @@ class TestCase::Lib::Point3D {
       unless ($@) {
         return 0;
       }
+      
+      {
+        my $point3d = Point3D->new_xyz(1, 2, 3);
+        my $point = (Point)$point3d;
+        $point->Point::clear;
+        unless ($point3d->x == 0) {
+          return 0;
+        }
+        
+        unless ($point3d->y == 0) {
+          return 0;
+        }
+        unless ($point3d->z == 3) {
+          return 0;
+        }
+        
+        my $point_string = $point->Point::to_string;
+        unless ($point_string eq "(0,0)") {
+          return 0;
+        }
+      }
     }
     
     # new_xyz
