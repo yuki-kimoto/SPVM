@@ -2223,6 +2223,56 @@ L<Examples:>
   # The name of the anon class
   Foo::Bar::anon::3::23;
 
+=head1 Inheritance
+
+A class inherits a super class using the C<extends> keyword.
+
+  class CLASS_NAME extends SUPER_CLASS_NAME {
+    
+  }
+
+B<Examples:>
+
+  class Point3D extends Point {
+    
+    has z : rw int;
+
+    static method new : Point3D () {
+      return new Point3D;
+    }
+    
+    static method new_xyz : Point3D ($x : int, $y : int, $z : int) {
+      my $self = Point3D->new;
+      
+      $self->set_x($x);
+      $self->set_y($y);
+      $self->set_z($z);
+      
+      return $self;
+    }
+
+    method clear : void () {
+      $self->SUPER::clear;
+      $self->{z} = 0;
+    }
+    
+    method to_string : string () {
+      my $x = $self->x;
+      my $y = $self->y;
+      my $z = $self->z;
+      
+      my $string = "($x,$y,$z)";
+      
+      return $string;
+    }
+    
+    method cloneable_clone : object () {
+      my $self_clone = Point3D->new_xyz($self->x, $self->y, $self->z);
+      
+      return $self_clone;
+    }
+  }
+
 =head1 Interface
 
 Explains interfaces.
@@ -8115,6 +8165,14 @@ If the types of arguments have no type compatible, a compilation error will occu
 B<Examples:>
   
   $object->bar(5, 3. 6);
+
+C<SUPER::> qualifier call the method of the super class.
+
+  $object->SUPER::bar(5, 3. 6);
+
+A instance method can be called statically by specifing the calss name.
+
+  $point3d->Point::clear;
 
 =head3 Current Class
 
