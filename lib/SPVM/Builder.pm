@@ -215,11 +215,12 @@ sub build_and_bind_dynamic_lib {
   if (@$method_names) {
     # Shared library which is already installed in distribution directory
     my $dynamic_lib_file = $self->get_dynamic_lib_file_dist($class_name, $category);
-
+    warn "AAAAAAAAAA $dynamic_lib_file";
     
     # Try runtime compile if shared library is not found
     unless (-f $dynamic_lib_file) {
       $dynamic_lib_file = $cc->build_runtime($class_name, {category => $category});
+      warn "BBBBBBBB $dynamic_lib_file";
     }
     
     $self->bind_methods($cc, $dynamic_lib_file, $class_name, $category);
