@@ -783,8 +783,5 @@ class Fn {
     }
     return $new_string;
   }
-
-
-  native static method _snsprintf_double : string ($format : string, $value : double);
 }
 
