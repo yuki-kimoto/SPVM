@@ -4427,11 +4427,8 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     SPVM_METHOD* found_method = NULL;
     SPVM_CLASS* parent_class = NULL;
     if (call_parent_method) {
-      const char* parent_class_name = class->parent_class_name;
-      if (parent_class_name) {
-        parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class_name, strlen(parent_class_name));
-      }
-      else {
+      parent_class = class->parent_class;
+      if (!parent_class) {
         return;
       }
     }
@@ -4448,11 +4445,8 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       if (found_method) {
         break;
       }
-      const char* parent_class_name = parent_class->parent_class_name;
-      if (parent_class_name) {
-        parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class_name, strlen(parent_class_name));
-      }
-      else {
+      parent_class = class->parent_class;
+      if (!parent_class) {
         break;
       }
     }
@@ -4979,13 +4973,11 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_LIST* all_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
     SPVM_LIST* all_interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
     
-    const char* parent_class_name = class->parent_class_name;
+    SPVM_CLASS* parent_class = class->parent_class;
     while (1) {
-      if (parent_class_name) {
-        SPVM_CLASS* parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class_name, strlen(parent_class_name));
-        assert(parent_class);
+      if (parent_class) {
         SPVM_LIST_push(class_stack, parent_class);
-        parent_class_name = parent_class->parent_class_name;
+        parent_class = parent_class->parent_class;
       }
       else {
         break;
