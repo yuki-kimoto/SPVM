@@ -49,6 +49,9 @@ lib/SPVM/Array.c
 lib/SPVM/Array.config
 lib/SPVM/Array.pm
 lib/SPVM/Array.spvm
+lib/SPVM/Array1.c
+lib/SPVM/Array1.config
+lib/SPVM/Array1.spvm
 lib/SPVM/BlessedObject.pm
 lib/SPVM/BlessedObject/Array.pm
 lib/SPVM/BlessedObject/Class.pm
@@ -331,6 +334,7 @@ t/default/000_use_spvm.t
 t/default/001_use_empty_class.t
 t/default/002_use_minimal_method_class.t
 t/default/003_call_minimal_method.t
+t/default/004_use_core_modules.t
 t/default/__CLASS__.t
 t/default/__FILE__.t
 t/default/__LINE__.t

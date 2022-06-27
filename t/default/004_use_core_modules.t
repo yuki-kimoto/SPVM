@@ -9,6 +9,8 @@ use Test::More;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+use SPVM 'Array1';
+
 use SPVM 'Array';
 use SPVM 'Bool';
 use SPVM 'ByteList';
