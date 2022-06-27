@@ -138,6 +138,18 @@ use Test::More;
         compile_not_ok($source, qr/Redeclaration of the class variable "\$FOO" in the class "Tmp"/);
       }
     }
+    
+    # Inheritance - extends syntax
+    {
+      {
+        my $source = 'class Tmp extends Stringable {}';
+        compile_not_ok($source, qr/The parant class must be a class type/);
+      }
+      {
+        my $source = 'class Tmp extends PointerTypeEmpty {}';
+        compile_not_ok($source, qr/The parant class must be a non-pointer type/);
+      }
+    }
   }
 
   
