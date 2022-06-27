@@ -36,11 +36,5 @@ class Array1 {
   native static method memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
   native static method memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
   native static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
-  native static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
-  native static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
-  native static method memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
-  native static method memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
-  native static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
-  native static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
 }
 
