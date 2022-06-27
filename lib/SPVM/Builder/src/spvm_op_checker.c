@@ -4621,12 +4621,6 @@ void SPVM_OP_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* c
 
 void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   
-  // Set class id
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    class->id = class_index;
-  }
-  
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
     
@@ -5046,8 +5040,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
     for (int32_t i = 0; i < class->fields->length; i++) {
       SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
-
-      // Set field id
       field->id = compiler->fields->length;
 
       // Add the field to the compiler
@@ -5055,5 +5047,11 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     SPVM_OP_CHECKER_resolve_field_offset(compiler, class);
+  }
+
+  // Create class id
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    class->id = class_index;
   }
 }
