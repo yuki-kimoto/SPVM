@@ -1,5 +1,5 @@
 class Array1 {
-  precompile static method copy_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
+  precompile static method copy_range_byte : void () {
 
     return [(byte)1];
   }
