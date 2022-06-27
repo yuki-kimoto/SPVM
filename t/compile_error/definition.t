@@ -21,19 +21,19 @@ use Test::More;
 {
   # A symbol name can't conatain "__"
   {
-    my $source = 'class Tmp { use Int as Foo__Bar; static method main : void () { } }';
+    my $source = 'class MyClass { use Int as Foo__Bar; static method main : void () { } }';
     compile_not_ok($source, qr/\QThe symbol name "Foo__Bar" can't constain "__"/);
   }
 
   # A symbol name can't end with "::"
   {
-    my $source = 'class Tmp { use Int as Foo::; static method main : void () { } }';
+    my $source = 'class MyClass { use Int as Foo::; static method main : void () { } }';
     compile_not_ok($source, qr/\QThe symbol name "Foo::" can't end with "::"/);
   }
 
   # A symbol name can't contains "::::".
   {
-    my $source = 'class Tmp { use Int as Foo::::Bar; static method main : void () { } }';
+    my $source = 'class MyClass { use Int as Foo::::Bar; static method main : void () { } }';
     compile_not_ok($source, qr/\QThe symbol name "Foo::::Bar" can't contains "::::"/);
   }
 }
@@ -42,7 +42,7 @@ use Test::More;
 {
   # The string literal of the left operand of the fat camma can't contains "::".
   {
-    my $source = 'class Tmp { static method main : void () { {Foo::Bar => 1}; } }';
+    my $source = 'class MyClass { static method main : void () { {Foo::Bar => 1}; } }';
     compile_not_ok($source, qr/\QThe string literal "Foo::Bar" of the left operand of the fat camma can't contains "::"/);
   }
 }
@@ -53,7 +53,7 @@ use Test::More;
   {
     compile_not_ok_file('CompileError::Class::NotClosed');
     {
-      my $source = 'class Tmp { static method main : void () {} } class Tmp2 { static method main : void () {} }';
+      my $source = 'class MyClass { static method main : void () {} } class MyClass2 { static method main : void () {} }';
       compile_not_ok($source, qr/Unexpected token "class"/);
     }
   }
@@ -65,23 +65,23 @@ use Test::More;
     compile_not_ok_file('foo', qr/The class name "foo" must begin with a upper case character/);
     compile_not_ok_file('4foo', qr/The class name "4foo" can't begin with a number/);
     {
-      my $source = 'class Tmp:: { static method main : void () {} }';
-      compile_not_ok($source, qr|The class name "Tmp::" can't end with "::"|);
+      my $source = 'class MyClass:: { static method main : void () {} }';
+      compile_not_ok($source, qr|The class name "MyClass::" can't end with "::"|);
     }
     {
-      my $source = 'class ::Tmp { static method main : void () {} }';
-      compile_not_ok($source, qr|The class name "::Tmp" can't begin with "::"|);
+      my $source = 'class ::MyClass { static method main : void () {} }';
+      compile_not_ok($source, qr|The class name "::MyClass" can't begin with "::"|);
     }
     {
-      my $source = 'class Tmp::::Foo { static method main : void () {} }';
-      compile_not_ok($source, qr|The class name "Tmp::::Foo" can't contains "::::"|);
+      my $source = 'class MyClass::::Foo { static method main : void () {} }';
+      compile_not_ok($source, qr|The class name "MyClass::::Foo" can't contains "::::"|);
     }
   }
   
   # Class descriptor
   {
     {
-      my $source = 'class Tmp : pointer_t { has x : int; }';
+      my $source = 'class MyClass : pointer_t { has x : int; }';
       compile_not_ok($source, qr|The class that has "pointer_t" descriptor can't have its fields|);
     }
   }
@@ -118,39 +118,39 @@ use Test::More;
       compile_not_ok_file('CompileError::ClassVar::OurClassVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
       compile_not_ok_file('CompileError::ClassVar::OurClassVarNameColon2Twice', qr/The variable name "\$FOO::::BAR" can't contain "::::"/);
       {
-        my $source = 'class Tmp { our $NAME : int; static method main : void () { ${NAME = 1; } }';
+        my $source = 'class MyClass { our $NAME : int; static method main : void () { ${NAME = 1; } }';
         compile_not_ok($source, qr/Need a closing brace "}" at the end of the variable name/);
       }
       {
-        my $source = 'class Tmp { our $Tmp::NAME : int; static method main : void () {  } }';
-        compile_not_ok($source, qr/The class varaible name "\$Tmp::NAME" in the class variable definition can't contain "::"/);
+        my $source = 'class MyClass { our $MyClass::NAME : int; static method main : void () {  } }';
+        compile_not_ok($source, qr/The class varaible name "\$MyClass::NAME" in the class variable definition can't contain "::"/);
       }
       {
-        my $source = 'class Tmp { our $FOO : required int; }';
+        my $source = 'class MyClass { our $FOO : required int; }';
         compile_not_ok($source, qr/Invalid class variable descriptor "required"/);
       }
       {
-        my $source = 'class Tmp { our $FOO : public private int; }';
+        my $source = 'class MyClass { our $FOO : public private int; }';
         compile_not_ok($source, qr/Only one of "private", "protected", or "public" class variable descriptors can be specified/);
       }
       {
-        my $source = 'class Tmp { our $FOO : int; our $FOO : int; }';
-        compile_not_ok($source, qr/Redeclaration of the class variable "\$FOO" in the class "Tmp"/);
+        my $source = 'class MyClass { our $FOO : int; our $FOO : int; }';
+        compile_not_ok($source, qr/Redeclaration of the class variable "\$FOO" in the class "MyClass"/);
       }
     }
     
     # Inheritance - extends syntax
     {
       {
-        my $source = 'class Tmp extends Stringable {}';
+        my $source = 'class MyClass extends Stringable {}';
         compile_not_ok($source, qr/The parant class must be a class type/);
       }
       {
-        my $source = ['class Tmp extends PointerType {}', 'class PointerType : pointer_t {}'];
+        my $source = ['class MyClass extends PointerType {}', 'class PointerType : pointer_t {}'];
         compile_not_ok($source, qr/The parant class must be a non-pointer type/);
       }
       {
-        my $source = 'class Tmp extends Tmp {}';
+        my $source = 'class MyClass extends MyClass {}';
         compile_not_ok($source, qr/The name of the parant class must be different from the name of the class/);
       }
     }
@@ -164,15 +164,15 @@ use Test::More;
       compile_not_ok_file('CompileError::MultiNumeric::FieldsZero');
       compile_not_ok_file('CompileError::MultiNumeric::Fields17');
       {
-        my $source = 'class Tmp_2i : mulnum_t { static method foo : void () {} }';
+        my $source = 'class MyClass_2i : mulnum_t { static method foo : void () {} }';
         compile_not_ok($source, qr|The class that has the "mulnum_t" class descriptor can't have methods|);
       }
       {
-        my $source = 'class Tmp_2i : mulnum_t { our $foo : int; }';
+        my $source = 'class MyClass_2i : mulnum_t { our $foo : int; }';
         compile_not_ok($source, qr|The class that has the "mulnum_t" class descriptor can't have class variables|);
       }
       {
-        my $source = 'class Tmp_2i : mulnum_t { }';
+        my $source = 'class MyClass_2i : mulnum_t { }';
         compile_not_ok($source, qr|The class that has the "mulnum_t" class descriptor must have at least one field|);
       }
     }
@@ -186,7 +186,7 @@ use Test::More;
       compile_not_ok_file('CompileError::Field::HasFieldNameContainsUnderScoreTwice', qr/The symbol name "Foo__Bar" can't constain "__"/);
       compile_not_ok_file('CompileError::Field::HasFieldNameStartDigit',qr/Unexpected token "3f"/);
       {
-        my $source = 'class Tmp { has foo::x : int; }';
+        my $source = 'class MyClass { has foo::x : int; }';
         compile_not_ok($source, qr/The field name "foo::x" can't contain "::"/);
       }
     }
@@ -203,7 +203,7 @@ use Test::More;
       compile_not_ok_file('CompileError::Method::MethodNameStartDigit', qr/Unexpected token "3f"/);
       compile_not_ok_file('CompileError::Method::MethodNameContainsUnderScoreTwice', qr/The symbol name "Foo__Bar" can't constain "__"/);
       {
-        my $source = 'class Tmp { static method foo::main : void () { } }';
+        my $source = 'class MyClass { static method foo::main : void () { } }';
         compile_not_ok($source, qr/The method name "foo::main" can't contain "::"/);
       }
     }
@@ -213,11 +213,11 @@ use Test::More;
   {
     compile_not_ok_file('CompileError::Enum::PrivateAccess', qr/Can't call the private method "TestCase::Enum->PRIVATE_VALUE"/);
     {
-      my $source = q|class Tmp { interface_t enum { ONE } }|;
+      my $source = q|class MyClass { interface_t enum { ONE } }|;
       compile_not_ok($source, qr/Invalid enumeration descriptor "interface_t"/);
     }
     {
-      my $source = q|class Tmp { public private enum { ONE } }|;
+      my $source = q|class MyClass { public private enum { ONE } }|;
       compile_not_ok($source, qr/Only one of "private", "protected", or "public" enumeration descriptors can be specified/);
     }
   }
@@ -233,11 +233,11 @@ use Test::More;
     compile_not_ok_file('CompileError::LocalVar::LocalVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
     compile_not_ok_file('CompileError::LocalVar::LocalVarNameColon2Twice', qr/The variable name "\$FOO::::BAR" can't contain "::::"/);
     {
-      my $source = 'class Tmp { static method main : void () { my ${name : int; } }';
+      my $source = 'class MyClass { static method main : void () { my ${name : int; } }';
       compile_not_ok($source, qr/Need a closing brace "}"/);
     }
     {
-      my $source = 'class Tmp { static method main : void () { my $Foo::name : int; } }';
+      my $source = 'class MyClass { static method main : void () { my $Foo::name : int; } }';
       compile_not_ok($source, qr/The local variable "\$Foo::name" can't contain "::"/);
     }
   }
