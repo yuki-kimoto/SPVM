@@ -42,7 +42,7 @@ class Array1 {
     return $new_objects;
   }
 
-  precompile static method copy_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
+  static method copy_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "The argument array must be defined";
