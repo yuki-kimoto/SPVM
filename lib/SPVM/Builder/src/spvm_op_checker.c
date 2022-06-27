@@ -4833,6 +4833,10 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "The parant class must be a non-pointer type at %s line %d", class->op_extends->file, class->op_extends->line);
         return;
       }
+      if (strcmp(class->name, parent_class->name) == 0) {
+        SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class at %s line %d", class->op_extends->file, class->op_extends->line);
+        return;
+      }
       class->parent_class = parent_class;
     }
   }
