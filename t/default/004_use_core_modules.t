@@ -14,9 +14,11 @@ use SPVM 'Array1';
 use Data::Dumper;
 my @source_files = glob '.spvm_build/work/src/SPVM/*';
 my @object_files = glob '.spvm_build/work/object/SPVM/*';
+my @dynamic_lib_files = glob 'blib/lib/SPVM/*';
 warn Dumper {
   source_files => \@source_files,
-  object_files => \@object_files
+  object_files => \@object_files,
+  dynamic_lib_files => \@dynamic_lib_files,
 };
 
 use SPVM 'Array';
