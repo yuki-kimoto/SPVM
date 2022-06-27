@@ -146,7 +146,7 @@ use Test::More;
         compile_not_ok($source, qr/The parant class must be a class type/);
       }
       {
-        my $source = 'class Tmp extends PointerTypeEmpty {}';
+        my $source = ['class Tmp extends PointerType {}', 'class PointerType : pointer_t {}'];
         compile_not_ok($source, qr/The parant class must be a non-pointer type/);
       }
       {
