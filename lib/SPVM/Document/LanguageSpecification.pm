@@ -8450,7 +8450,7 @@ The above example is the same as the following codes.
 
 =head2 class_id Operator
 
-The C<class_id> operator to an L<operator|/"Operator"> to get the class id from a class name.
+The C<class_id> operator is an L<operator|/"Operator"> to get the class id from a class name.
 
   class_id CLASS_NAME
 
@@ -8459,6 +8459,30 @@ The class name must be an existing class. Otherwise a compilation error occur.
 The return value is the class id.
 
 The return type is the L<int type|/"int Type">.
+
+=head2 error_code
+
+The C<error_code> is an L<operator|/"Operator"> to get the value of the error code.
+
+  error_code
+
+=head2 set_error_code
+
+The C<set_error_code> operator is an L<operator|/"Operator"> to set the value of the error code.
+
+  set_error_code OPERAND
+
+The type of the operand must be the L<int type|/"int Type">.
+
+=head2 error
+
+The C<error> operatoer is an L<operator|/"Operator"> to get the current error code.
+
+  error
+
+This value is set to C<0> at the beginning of the L<eval block|eval Block>.
+
+If A L<exception|/"Exception"> is catched, the current error code is set to the value of L<error_code|/"error_code">.
 
 =head1 Exception
 
