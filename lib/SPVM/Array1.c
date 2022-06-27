@@ -466,22 +466,3 @@ int32_t SPVM__Array1__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Array1__new_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  void* array = stack[0].oval;
-  int32_t length = stack[1].ival;
-  
-  if (array == NULL) {
-    return env->die(env, stack, "Prototype array must be defined", MFILE, __LINE__);
-  }
-
-  if (length < 0) {
-    return env->die(env, stack, "The length must be greater than or equals to 0", MFILE, __LINE__);
-  }
-  
-  void* new_object_array = env->new_array_proto(env, stack, array, length);
-  
-  stack[0].oval = new_object_array;
-  
-  return 0;
-}
