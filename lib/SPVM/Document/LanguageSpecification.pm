@@ -2225,11 +2225,15 @@ L<Examples:>
 
 =head1 Inheritance
 
-A class inherits a super class using the C<extends> keyword.
+A class inherits a class using the C<extends> keyword.
 
-  class CLASS_NAME extends SUPER_CLASS_NAME {
+  class CLASS_NAME extends PARENT_CLASS_NAME {
     
   }
+
+The parant class must be a L<class type|/"Class Type">. Otherwise a compilation error will occur.
+
+The parant class must be a non-L<pointer type|/"Pointer Type">. Otherwise a compilation error will occur.
 
 B<Examples:>
 
