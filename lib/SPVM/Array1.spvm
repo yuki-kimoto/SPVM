@@ -1,5 +1,4 @@
 class Array1 {
-  use Stringer;
   use Cloner;
   
   static method copy_byte : byte[] ($nums : byte[]) {
@@ -415,30 +414,6 @@ class Array1 {
       my $string = (string)$nums->[$i];
       $dump .= "  $string";
       if ($i != @$nums - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
-  }
-
-  static method dump_object : string ($objects : object[], $stringer : Stringer) {
-    
-    if ($objects == undef) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$objects; $i++) {
-      my $string = $stringer->($objects->[$i]);
-      $dump .= "  $string";
-      if ($i != @$objects - 1) {
         $dump .= ",\n";
       }
       else {
