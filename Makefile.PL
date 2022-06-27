@@ -171,6 +171,7 @@ sub MY::postamble {
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('StringList');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('StringBuffer');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Sort');
+  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Array1');
   
   # Create precompile tests
   {
