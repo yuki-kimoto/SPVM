@@ -1,7 +1,6 @@
 class Array1 {
   use Stringer;
   use Cloner;
-  use EqualityChecker;
   
   static method copy_byte : byte[] ($nums : byte[]) {
     return copy $nums;
@@ -623,33 +622,6 @@ class Array1 {
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {
         if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-
-    return $is_equals;
-  }
-
-  static method equals_object : int ($objects1 : object[], $objects2 : object[], $equality_checker : EqualityChecker) {
-    if ($objects1 == undef && $objects2 == undef) {
-      return 1;
-    }
-    elsif ($objects1 != undef && $objects2 == undef) {
-      return 0;
-    }
-    elsif ($objects1 == undef && $objects2 != undef) {
-      return 0;
-    }
-    
-    my $is_equals = 1;
-    if (@$objects1 == @$objects2) {
-      for (my $i = 0; $i < @$objects1; $i++) {
-        if (!$equality_checker->($objects1->[$i], $objects2->[$i])) {
           $is_equals = 0;
           last;
         }
