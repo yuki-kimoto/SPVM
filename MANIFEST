@@ -318,9 +318,9 @@ t/builder_config/zlib.def
 t/builder_config_exe.t
 t/builder_link_info.pl
 t/builder_object_file_info.t
-t/compile_error.t
 t/compile_error_definition.t
 t/compile_error_dist.pl
+t/compile_error_extra.t
 t/compile_error_literal.t
 t/compile_error_operator.t
 t/compile_error_perl_program.pl
