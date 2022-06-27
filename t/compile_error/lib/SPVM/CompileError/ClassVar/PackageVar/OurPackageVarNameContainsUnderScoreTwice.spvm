@@ -1,0 +1,3 @@
+class CompileError::ClassVar::OurClassVarNameContainsUnderScoreTwice {
+  our $Foo__Bar : int;
+}

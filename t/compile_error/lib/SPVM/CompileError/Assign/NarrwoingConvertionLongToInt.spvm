@@ -1,0 +1,5 @@
+class CompileError::Assign::NarrwoingConvertionLongToInt {
+  static method main : int () {
+    my $num : int = 2147483648L;
+  }
+}

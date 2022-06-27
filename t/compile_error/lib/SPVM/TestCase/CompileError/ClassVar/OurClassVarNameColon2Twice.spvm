@@ -1,3 +1,0 @@
-class TestCase::CompileError::ClassVar::OurClassVarNameColon2Twice {
-  our $FOO::::BAR : int;
-}

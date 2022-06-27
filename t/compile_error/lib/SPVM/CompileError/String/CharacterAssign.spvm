@@ -1,0 +1,7 @@
+class CompileError::String::CharacterAssign {
+  static method main : int () {
+    my $string = "abc";
+    
+    $string->[0] = 'd';
+  }
+}

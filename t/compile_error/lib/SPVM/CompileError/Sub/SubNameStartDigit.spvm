@@ -1,0 +1,3 @@
+class CompileError::Method::MethodNameStartDigit {
+  static method 3foo : int () { }
+}

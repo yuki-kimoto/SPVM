@@ -1,0 +1,5 @@
+class CompileError::OArray::AssignNumeric {
+  static method error : void () {
+    my $obj_elems : object[] = 1;
+  }
+}

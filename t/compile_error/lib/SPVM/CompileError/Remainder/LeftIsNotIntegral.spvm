@@ -1,0 +1,5 @@
+class CompileError::Remainder::LeftIsNotIntegral {
+  static method main : int () {
+    0.5 % 2;
+  }
+}

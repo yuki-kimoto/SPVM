@@ -1,0 +1,7 @@
+class CompileError::Convert::ConvertFromStringToByteArray {
+  use TestCase::Minimal;
+
+  static method main : int () {
+    my $nums : byte[] = "abc";
+  }
+}

@@ -1,0 +1,3 @@
+class CompileError::ClassVar::OurClassVarNameColon2Twice {
+  our $FOO::::BAR : int;
+}

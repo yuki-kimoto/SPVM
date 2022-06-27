@@ -1,0 +1,7 @@
+class CompileError::Assign::NotNumericToNumeric {
+  use TestCase::Minimal;
+
+  static method main : int () {
+    my $num : int = new TestCase::Minimal;
+  }
+}

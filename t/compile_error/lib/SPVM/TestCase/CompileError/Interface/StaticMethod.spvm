@@ -1,3 +1,0 @@
-class TestCase::CompileError::Interface::StaticMethod : interface_t {
-  static method main : int ($start_file : string, $args : string[]);
-}

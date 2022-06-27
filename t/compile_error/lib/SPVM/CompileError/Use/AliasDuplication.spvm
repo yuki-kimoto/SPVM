@@ -1,0 +1,4 @@
+class CompileError::Use::AliasDuplication {
+  use Byte as By;
+  use Short as By;
+}

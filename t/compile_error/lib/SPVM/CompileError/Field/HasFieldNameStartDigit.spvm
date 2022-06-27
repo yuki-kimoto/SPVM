@@ -1,0 +1,3 @@
+class CompileError::Field::HasFieldNameStartDigit {
+  has 3foo : int;
+}

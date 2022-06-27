@@ -1,0 +1,5 @@
+class CompileError::Literal::Character::InvalidCharacterLiteral {
+  static method main : int () {
+    '\A';
+  }
+}

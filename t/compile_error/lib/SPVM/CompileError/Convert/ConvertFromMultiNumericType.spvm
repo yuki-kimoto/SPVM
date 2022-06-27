@@ -1,0 +1,9 @@
+class CompileError::Convert::ConvertFromMultiNumericType {
+  use TestCase::Minimal;
+  use Complex_2d;
+
+  static method main : int () {
+    my $z : Complex_2d;
+    (TestCase::Minimal)$z;
+  }
+}

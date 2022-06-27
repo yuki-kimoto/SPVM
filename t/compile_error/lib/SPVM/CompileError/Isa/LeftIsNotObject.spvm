@@ -1,0 +1,9 @@
+class CompileError::Isa::LeftIsNotObject {
+  use TestCase::Minimal;
+  static method main : int () {
+    my $num = 3;
+    if ($num isa TestCase::Minimal) {
+      
+    }
+  }
+}

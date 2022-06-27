@@ -1,0 +1,3 @@
+class CompileError::ClassVar::OurClassVarEndColon2 {
+  our $FOO::::BAR : int;
+}

@@ -1,0 +1,7 @@
+class CompileError::Add::LeftIsNotNumeric {
+  use TestCase::Minimal;
+  static method main : int () {
+    my $minimal = TestCase::Minimal->new;
+    $minimal + 1;
+  }
+}

@@ -1,0 +1,3 @@
+class CompileError::Field::HasFieldNameContainsUnderScoreTwice {
+  has Foo__Bar : int;
+}

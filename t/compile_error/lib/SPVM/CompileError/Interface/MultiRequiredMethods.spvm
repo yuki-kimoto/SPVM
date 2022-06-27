@@ -1,0 +1,4 @@
+class CompileError::Interface::MultiRequiredMethods : interface_t {
+  required method x : int ();
+  required method y : int ();
+}

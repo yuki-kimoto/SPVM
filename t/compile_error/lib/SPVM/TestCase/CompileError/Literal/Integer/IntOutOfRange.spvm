@@ -1,5 +1,0 @@
-class TestCase::CompileError::Literal::Integer::IntOutOfRange {
-  static method main : int () {
-    my $value : long = 8232624535311216194;
-  }
-}

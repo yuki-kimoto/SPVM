@@ -1,9 +1,0 @@
-class TestCase::CompileError::Syntax::LineNumber {
-  use TestCase::Minimal; }
-  
-=pod
-
-=cut
-  
-  our $FOO : int;
-}

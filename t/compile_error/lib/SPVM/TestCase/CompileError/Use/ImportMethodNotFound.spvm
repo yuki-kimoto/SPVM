@@ -1,3 +1,0 @@
-class TestCase::CompileError::Use::ImportMethodNotFound {
-  use Byte(not_found);
-}

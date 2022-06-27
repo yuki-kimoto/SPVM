@@ -1,0 +1,5 @@
+class CompileError::Literal::Character::NotEnd {
+  static method main : int () {
+    'a;
+  }
+}

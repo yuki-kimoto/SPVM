@@ -1,5 +1,0 @@
-class TestCase::CompileError::InvalidType {
-  static method main : int () {
-    my $num : aaa;
-  }
-}

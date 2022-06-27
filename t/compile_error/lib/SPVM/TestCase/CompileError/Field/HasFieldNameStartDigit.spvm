@@ -1,3 +1,0 @@
-class TestCase::CompileError::Field::HasFieldNameStartDigit {
-  has 3foo : int;
-}

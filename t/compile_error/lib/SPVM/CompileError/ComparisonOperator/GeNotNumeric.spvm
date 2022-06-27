@@ -1,0 +1,10 @@
+class CompileError::ComparisonOperator::GeNotNumeric {
+  use TestCase::Minimal;
+  
+  static method main : int () {
+    my $minimal = new TestCase::Minimal;
+    if ($minimal >= $minimal) {
+      
+    }
+  }
+}

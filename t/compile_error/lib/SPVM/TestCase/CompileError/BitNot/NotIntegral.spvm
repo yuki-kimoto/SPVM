@@ -1,5 +1,0 @@
-class TestCase::CompileError::BitNot::NotIntegral {
-  static method main : int () {
-    ~0.5;
-  }
-}

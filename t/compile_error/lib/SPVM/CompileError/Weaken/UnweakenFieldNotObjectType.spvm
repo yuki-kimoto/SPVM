@@ -1,0 +1,8 @@
+class CompileError::Weaken::UnweakenFieldNotObjectType {
+  use TestCase::Minimal;
+  
+  static method main : int () {
+    my $num = new TestCase::Minimal;
+    unweaken $num->{x};
+  }
+}

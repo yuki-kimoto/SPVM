@@ -1,0 +1,7 @@
+class CompileError::Divide::RightIsNotNumeric {
+  use TestCase::Minimal;
+  static method main : int () {
+    my $minimal = TestCase::Minimal->new;
+    1 / $minimal;
+  }
+}

@@ -1,5 +1,0 @@
-class TestCase::CompileError::Assign::NarrwoingConvertionLongToShort {
-  static method main : int () {
-    my $num : short = 32768L;
-  }
-}

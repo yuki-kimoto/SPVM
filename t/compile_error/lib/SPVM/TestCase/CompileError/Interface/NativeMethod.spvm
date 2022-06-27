@@ -1,3 +1,0 @@
-class TestCase::CompileError::Interface::NativeMethod : interface_t {
-  native method main : int ($start_file : string, $args : string[]);
-}

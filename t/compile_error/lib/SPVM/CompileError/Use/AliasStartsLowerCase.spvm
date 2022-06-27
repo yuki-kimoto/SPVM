@@ -1,0 +1,3 @@
+class CompileError::Use::AliasStartsLowerCase {
+  use Byte as byte;
+}

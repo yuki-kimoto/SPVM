@@ -1,0 +1,5 @@
+class CompileError::Method::Begin {
+  static method INIT : int () {
+    
+  }
+}

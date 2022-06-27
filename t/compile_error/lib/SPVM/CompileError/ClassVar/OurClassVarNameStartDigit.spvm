@@ -1,0 +1,3 @@
+class CompileError::ClassVar::OurClassVarNameStartDigit {
+  our $3foo : int;
+}

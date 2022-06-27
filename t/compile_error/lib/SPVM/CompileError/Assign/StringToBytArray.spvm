@@ -1,0 +1,6 @@
+class CompileError::Assign::StringToBytArray {
+
+  static method main : int () {
+    my $str : byte[] = "abc";
+  }
+}

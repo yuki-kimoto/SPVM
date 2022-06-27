@@ -1,0 +1,9 @@
+class CompileError::Convert::ConvertFromRef {
+  use TestCase::Minimal;
+
+  static method main : int () {
+    my $num_int = 1;
+    my $num_int_ref = \$num_int;
+    (TestCase::Minimal)$num_int_ref;
+  }
+}

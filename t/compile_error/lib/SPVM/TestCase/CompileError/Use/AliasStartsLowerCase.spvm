@@ -1,3 +1,0 @@
-class TestCase::CompileError::Use::AliasStartsLowerCase {
-  use Byte as byte;
-}

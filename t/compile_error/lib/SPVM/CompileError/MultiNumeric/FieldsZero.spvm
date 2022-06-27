@@ -1,0 +1,2 @@
+class CompileError::MultiNumeric::FieldsZero : mulnum_t {
+}

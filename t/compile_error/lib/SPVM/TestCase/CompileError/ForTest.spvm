@@ -1,5 +1,0 @@
-class TestCase::CompileError::ForTest {
-  static method main : int () {
-    my $num : aaa;
-  }
-}

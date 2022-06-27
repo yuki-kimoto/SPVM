@@ -1,5 +1,0 @@
-class TestCase::CompileError::Literal::Character::InvalidCharacterLiteral {
-  static method main : int () {
-    '\A';
-  }
-}

@@ -1,0 +1,5 @@
+class CompileError::LocalVar::LocalVarNameColon2Twice {
+  static method foo : void () {
+    my $FOO::::BAR = 0;
+  }
+}

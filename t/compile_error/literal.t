@@ -103,7 +103,7 @@ sub print_error_messages {
   {
     # Integer literal decimal notation
     {
-      compile_not_ok_file('TestCase::CompileError::Literal::Integer::IntOutOfRange', qr/The numeric literal "8232624535311216194" is out of range of maximum and minimum values of int type/);
+      compile_not_ok_file('CompileError::Literal::Integer::IntOutOfRange', qr/The numeric literal "8232624535311216194" is out of range of maximum and minimum values of int type/);
       {
         # Greater than int max value
         my $source = 'class Tmp { static method main : void () { 2147483648; } }';
@@ -267,11 +267,11 @@ sub print_error_messages {
 
   # Caharater literal
   {
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty', qr/A character literal can't be empty/);
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidCharacterLiteral', qr/\QInvalid charater literal escape character "\A"/);
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::NotEnd', qr/A character literal must ends with "'"/);
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii1', qr/\QAfter "\x" of the hexadecimal escape character, one or tow hexadecimal numbers must follow/);
-    compile_not_ok_file('TestCase::CompileError::Literal::Character::InvalidHexAscii2', qr/A character literal must ends with "'"/);
+    compile_not_ok_file('CompileError::Literal::Character::InvalidCharacterLiteralEmpty', qr/A character literal can't be empty/);
+    compile_not_ok_file('CompileError::Literal::Character::InvalidCharacterLiteral', qr/\QInvalid charater literal escape character "\A"/);
+    compile_not_ok_file('CompileError::Literal::Character::NotEnd', qr/A character literal must ends with "'"/);
+    compile_not_ok_file('CompileError::Literal::Character::InvalidHexAscii1', qr/\QAfter "\x" of the hexadecimal escape character, one or tow hexadecimal numbers must follow/);
+    compile_not_ok_file('CompileError::Literal::Character::InvalidHexAscii2', qr/A character literal must ends with "'"/);
     {
       my $source = q|class Tmp { static method main : void () { '\x{a' } }|;
       compile_not_ok($source, qr/The hexadecimal escape character that has the opening "\{" must have the closing "\}"/);

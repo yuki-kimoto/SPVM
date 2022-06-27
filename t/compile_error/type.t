@@ -99,42 +99,42 @@ sub print_error_messages {
 
 # Array of any object - object[]
 {
-  compile_not_ok_file('TestCase::CompileError::OArray::AssignNumeric');
-  compile_not_ok_file('TestCase::CompileError::OArray::AssignNumericArray');
+  compile_not_ok_file('CompileError::OArray::AssignNumeric');
+  compile_not_ok_file('CompileError::OArray::AssignNumericArray');
 }
 
 # String
 {
-  compile_not_ok_file('TestCase::CompileError::String::CharacterAssign');
-  compile_not_ok_file('TestCase::CompileError::String::AssignNonMutableToMutable');
+  compile_not_ok_file('CompileError::String::CharacterAssign');
+  compile_not_ok_file('CompileError::String::AssignNonMutableToMutable');
 }
 
 # Bool
 {
-  compile_not_ok_file('TestCase::CompileError::Bool::NotNumericObject');
+  compile_not_ok_file('CompileError::Bool::NotNumericObject');
 }
 {
-  compile_not_ok_file('TestCase::CompileError::InvalidType');
-}
-
-{
-  compile_not_ok_file('TestCase::CompileError::TypeCantBeDetectedUndef');
+  compile_not_ok_file('CompileError::InvalidType');
 }
 
 {
-  compile_not_ok_file('TestCase::CompileError::TypeCantBeDetectedUndefDefault');
+  compile_not_ok_file('CompileError::TypeCantBeDetectedUndef');
+}
+
+{
+  compile_not_ok_file('CompileError::TypeCantBeDetectedUndefDefault');
 }
 
 # Type
 {
-  compile_not_ok_file('TestCase::CompileError::Type::MutableNoStringCaseStringArray');
-  compile_not_ok_file('TestCase::CompileError::Type::MutableNoStringCaseInt');
-  compile_not_ok_file('TestCase::CompileError::Type::MultiDimensionalAnyObject', qr/Multi dimensional array of any object/i);
+  compile_not_ok_file('CompileError::Type::MutableNoStringCaseStringArray');
+  compile_not_ok_file('CompileError::Type::MutableNoStringCaseInt');
+  compile_not_ok_file('CompileError::Type::MultiDimensionalAnyObject', qr/Multi dimensional array of any object/i);
 }
 
 # Type comment
 {
-  compile_not_ok_file('TestCase::CompileError::TypeComment::NotExistType', qr/NotExists::XXXX/);
+  compile_not_ok_file('CompileError::TypeComment::NotExistType', qr/NotExists::XXXX/);
 }
 
 

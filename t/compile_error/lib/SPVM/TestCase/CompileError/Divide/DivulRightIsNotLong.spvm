@@ -1,5 +1,0 @@
-class TestCase::CompileError::Divide::DivulRightIsNotLong {
-  static method main : int () {
-    1L divul 3;
-  }
-}

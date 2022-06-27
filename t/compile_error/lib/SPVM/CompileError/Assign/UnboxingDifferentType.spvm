@@ -1,0 +1,6 @@
+class CompileError::Assign::UnboxingDifferentType {
+
+  static method main : int () {
+    my $num : long = Int->new(3);
+  }
+}

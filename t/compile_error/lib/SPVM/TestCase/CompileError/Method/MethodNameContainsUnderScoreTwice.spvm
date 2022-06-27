@@ -1,3 +1,0 @@
-class TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice {
-  static method Foo__Bar : int () {}
-}

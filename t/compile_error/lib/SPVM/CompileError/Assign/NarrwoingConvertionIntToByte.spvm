@@ -1,0 +1,5 @@
+class CompileError::Assign::NarrwoingConvertionIntToByte {
+  static method main : int () {
+    my $num : byte = 128;
+  }
+}

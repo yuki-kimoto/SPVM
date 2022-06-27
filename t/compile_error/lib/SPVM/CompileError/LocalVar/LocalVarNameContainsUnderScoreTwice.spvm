@@ -1,0 +1,5 @@
+class CompileError::LocalVar::LocalVarNameContainsUnderScoreTwice {
+  static method foo : void () {
+    my $Foo__Bar = 0;
+  }
+}

@@ -1,0 +1,5 @@
+class CompileError::Interface::HaveBlock : interface_t {
+  method main : int ($start_file : string, $args : string[]) {
+
+  }
+}

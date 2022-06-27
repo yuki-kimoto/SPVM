@@ -1,0 +1,5 @@
+class CompileError::LocalVar::LocalVarNameInvalidColon {
+  static method foo : void () {
+    my $FOO:BAR = 0;
+  }
+}

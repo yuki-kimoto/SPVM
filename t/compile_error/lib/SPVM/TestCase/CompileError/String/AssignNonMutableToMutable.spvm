@@ -1,5 +1,0 @@
-class TestCase::CompileError::String::AssignNonMutableToMutable {
-  static method main : int () {
-    my $string : mutable string = "abc";
-  }
-}

@@ -1,0 +1,5 @@
+class CompileError::Remainder::RemuiLeftIsNotInt {
+  static method main : int () {
+    1L remui 3;
+  }
+}

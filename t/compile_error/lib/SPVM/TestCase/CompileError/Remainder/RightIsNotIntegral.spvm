@@ -1,5 +1,0 @@
-class TestCase::CompileError::Remainder::RightIsNotIntegral {
-  static method main : int () {
-    1 % 0.5;
-  }
-}

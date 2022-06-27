@@ -1,5 +1,0 @@
-class TestCase::CompileError::Method::Begin {
-  static method INIT : int () {
-    
-  }
-}
