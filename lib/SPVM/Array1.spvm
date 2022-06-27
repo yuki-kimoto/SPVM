@@ -4,6 +4,6 @@ class Array1 {
     return [(byte)1];
   }
 
-  native static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
+  native static method memcpy_byte : void ();
 }
 
