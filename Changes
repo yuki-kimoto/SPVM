@@ -1,3 +1,7 @@
+0.9613_1 2022-06-28
+  [NON BACKWORD COMPATIBLE CHANGES]
+  * The parent class must be a class type and non-pointer type.
+  
 0.9613 2022-06-27
   [CHANGE]
   * Fix descriptor error message.
