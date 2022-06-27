@@ -1,6 +1,4 @@
 class Array1 {
-  use Cloner;
-  
   static method copy_byte : byte[] ($nums : byte[]) {
     return copy $nums;
   }
@@ -19,22 +17,6 @@ class Array1 {
 
   static method copy_long : long[] ($nums : long[]) {
     return copy $nums;
-  }
-
-  static method copy_object : object[] ($objects : object[], $cloner : Cloner) {
-    if ($objects == undef) {
-      return undef;
-    }
-    
-    my $length = @$objects;
-
-    my $new_objects = new object[$length];
-
-    for (my $i = 0; $i < $length; $i++) {
-      $new_objects->[$i] = $cloner->($objects->[$i]);
-    }
-
-    return $new_objects;
   }
 
   precompile static method copy_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
