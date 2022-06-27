@@ -4820,6 +4820,12 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         class->is_precompile = anon_method_defined_class->is_precompile;
       }
     }
+    
+    const char* parent_class_name = class->parent_class_name;
+    if (parent_class_name) {
+      SPVM_CLASS* parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class_name, strlen(parent_class_name));
+      class->parent_class = parent_class;
+    }
   }
   
   // Add anon methods

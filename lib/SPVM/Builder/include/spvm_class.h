@@ -34,6 +34,7 @@ struct spvm_class {
   SPVM_METHOD* required_method;
   SPVM_METHOD* destructor_method;
   const char* parent_class_name;
+  SPVM_CLASS* parent_class;
   int32_t id;
   int32_t fields_byte_size;
   int8_t has_init_block;
