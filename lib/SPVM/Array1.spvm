@@ -1,7 +1,7 @@
 class Array1 {
   precompile static method copy_range_byte : void () {
 
-    return [(byte)1];
+    return undef;
   }
 
   native static method memcpy_byte : void ();
