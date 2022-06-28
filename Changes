@@ -1,7 +1,8 @@
 0.9613_1 2022-06-28
-  [NON BACKWORD COMPATIBLE CHANGES]
+  [CHANGES]
   * The parent class must be a class type and non-pointer type.
   * The name of the parant class must be different from the name of the class.
+  * The all super classes must be different from its own class. Recursive inheritance isn't allowed
   
 0.9613 2022-06-27
   [CHANGE]
