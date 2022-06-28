@@ -127,7 +127,7 @@ SPVM::Builder::ObjectFileInfo - Object file information
 
 =head1 DESCRIPTION
 
-B<SPVM::Builder::ObjectFileInfo> is a object file information. This infromation is used by the linker.
+B<SPVM::Builder::ObjectFileInfo> is a object file information.
 
 =head1 FIELDS
 
