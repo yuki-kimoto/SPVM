@@ -91,7 +91,7 @@ SPVM::Builder::Config::Exe - Configurations of creating excutable files.
 
 SPVM::Builder::Config::Exe is configuration of creating excutable files of L<spvmcc>.
 
-=head1 Fields
+=head1 Field Methods
 
 Fields of B<SPVM::Builder::Config::Exe>.
 

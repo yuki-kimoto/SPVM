@@ -19,7 +19,7 @@ This module is multi numeric type.
     has im : float;
   }
 
-=head1 Fields
+=head1 Field Methods
 
 =head2 re
 

@@ -86,7 +86,7 @@ SPVM::Builder::Resource - Resourceurations of Compile and Link of Native Sources
 
 C<SPVM::Builder::Resource> is a resource that contains a set of C<C>/C<C++> source files and the headers.
 
-=head1 Fields
+=head1 Field Methods
 
 Fields.
 
