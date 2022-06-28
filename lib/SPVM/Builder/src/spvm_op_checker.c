@@ -4978,7 +4978,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     while (1) {
       if (parent_class) {
         if (strcmp(parent_class->name, class->name) == 0) {
-          SPVM_COMPILER_error(compiler, "The all super classes must be different from its own class at %s line %d", class->op_extends->file, class->op_extends->line);
+          SPVM_COMPILER_error(compiler, "The all super classes must be different from its own class. Recursive inheritance isn't allowed at %s line %d", class->op_extends->file, class->op_extends->line);
           compile_error = 1;
           break;
         }

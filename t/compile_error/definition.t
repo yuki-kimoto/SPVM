@@ -155,7 +155,7 @@ use Test::More;
       }
       {
         my $source = ['class MyClass extends MyClass2 {}', 'class MyClass2 extends MyClass {}'];
-        compile_not_ok($source, qr/The all super classes must be different from its own class/);
+        compile_not_ok($source, qr/The all super classes must be different from its own class. Recursive inheritance isn't allowed/);
       }
     }
   }
