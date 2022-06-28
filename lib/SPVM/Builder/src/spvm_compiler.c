@@ -379,7 +379,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
 
   SPVM_LIST_free(compiler->ops);
   compiler->ops = NULL;
-
+  
   assert(compiler->allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
   
   return error_code;

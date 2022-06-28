@@ -153,6 +153,10 @@ use Test::More;
         my $source = 'class MyClass extends MyClass {}';
         compile_not_ok($source, qr/The name of the parant class must be different from the name of the class/);
       }
+      {
+        my $source = ['class MyClass extends MyClass2 {}', 'class MyClass2 extends MyClass {}'];
+        compile_not_ok($source, qr/The all super classes must be different from its own class/);
+      }
     }
   }
 

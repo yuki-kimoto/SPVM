@@ -4964,6 +4964,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   }
   
   // Resove inheritance
+  int32_t compile_error = 0;
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
     
@@ -4976,9 +4977,10 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_CLASS* parent_class = class->parent_class;
     while (1) {
       if (parent_class) {
-        if (parent_class->name == class->name) {
+        if (strcmp(parent_class->name, class->name) == 0) {
           SPVM_COMPILER_error(compiler, "The all super classes must be different from its own class at %s line %d", class->op_extends->file, class->op_extends->line);
-          return;
+          compile_error = 1;
+          break;
         }
         
         SPVM_LIST_push(class_stack, parent_class);
@@ -5036,6 +5038,9 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     SPVM_LIST_free(class_stack);
+    if (compile_error) {
+      return;
+    }
   }
 
   // Replace fields
