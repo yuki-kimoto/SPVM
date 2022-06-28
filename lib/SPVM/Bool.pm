@@ -2,11 +2,11 @@ package SPVM::Bool;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Bool - Bool object
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use Bool;
   
@@ -16,7 +16,7 @@ SPVM::Bool - Bool object
   my $true_value = $true->value;
   my $false_value = $false->value;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Bool|SPVM::Bool> object stores a C<long> value.
 
@@ -24,7 +24,7 @@ This object is immutable and its value cannot be changed.
 
 L<Bool|SPVM::Bool> is automatically loaded just after the program starts.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 TRUE
 
@@ -38,7 +38,7 @@ true singleton. This is created by INIT block when the program start.
 
 false singleton. This is created by INIT block when the program start.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 value
 
@@ -50,7 +50,7 @@ If L<Bool|SPVM::Bool> object express true, this method return C<1>.
 
 If L<Bool|SPVM::Bool> object express false, this method return C<1>.
 
-=head1 BOOL CONTEXT
+=head1 Bool Context
 
 the object of Bool class is different behavior in bool context.
 
@@ -66,7 +66,7 @@ If the C<value> of Bool object is 0, it is evaluated as false.
     # Not run
   }
 
-=head1 KEYWORDS
+=head1 Keywords
 
 C<true> keyword means Bool->TRUE. C<false> keyword means Bool->FALSE.
 

@@ -1,8 +1,8 @@
-=head1 NAME
+=head1 Name
 
 SPVM::Document::NativeAPI::Runtime - SPVM Runtime Native APIs
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   // Runtime API
   void* runtime_api = env->api->runtime;
@@ -13,11 +13,11 @@ SPVM::Document::NativeAPI::Runtime - SPVM Runtime Native APIs
   // Free runtime
   runtime_api->free_runtime(runtime);
 
-=head1 DESCRIPTION
+=head1 Description
 
 SPVM runtime native APIs are the public APIs to manipulate the runtime information.
 
-=head1 IDs of Runtime Native APIs
+=head1 Ids Of Runtime Native APIs
 
 Runtime native APIs have its IDs.
 

@@ -1,12 +1,12 @@
-=head1 NAME
+=head1 Name
 
 SPVM::Document::Tutorial::Complex - complex tutorial.
 
-=head1 DESCRIPTION
+=head1 Description
 
 This document is complex tutorial.
 
-=head1 EXAMPELS
+=head1 Exampels
 
 =begin html
 

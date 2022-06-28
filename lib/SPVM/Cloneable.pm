@@ -2,11 +2,11 @@ package SPVM::Cloneable;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Cloneable - A Interface Type to Clone a Object
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   class Point {
     interface Cloneable;
@@ -18,11 +18,11 @@ SPVM::Cloneable - A Interface Type to Clone a Object
     }
   }
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Cloneable|SPVM::Cloneable> is a callback interface to clone a object.
 
-=head1 INTERFACE METHODS
+=head1 Interface Methods
 
 Interface methods.
 

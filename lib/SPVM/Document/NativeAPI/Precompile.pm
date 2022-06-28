@@ -1,8 +1,8 @@
-=head1 NAME
+=head1 Name
 
 SPVM::Document::NativeAPI::Precompile - SPVM Precompile Native APIs
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   // Precompile API
   void* precompile_api = env->api->precompile;
@@ -13,11 +13,11 @@ SPVM::Document::NativeAPI::Precompile - SPVM Precompile Native APIs
   // Free precompile
   precompile_api->free_precompile(precompile);
 
-=head1 DESCRIPTION
+=head1 Description
 
 SPVM Precompile Native APIs are public APIs to create precompile-source.
 
-=head1 IDs of Precompile Native APIs
+=head1 Ids Of Precompile Native APIs
 
 Precompile native APIs have its IDs.
 

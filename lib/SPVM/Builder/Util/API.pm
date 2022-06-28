@@ -9,11 +9,11 @@ sub create_make_rule_precompile { SPVM::Builder::Util::create_make_rule_precompi
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Builder::Util::API - Public APIs of the utility of SPVM Builder
 
-=head1 SYNOPSYS
+=head1 Synopsys
     
   # Create native make rule
   my $native_make_rule
@@ -23,7 +23,7 @@ SPVM::Builder::Util::API - Public APIs of the utility of SPVM Builder
   my $precompile_make_rule
     = SPVM::Builder::Util::API::create_make_rule_precompile('Foo');
 
-=head1 DESCRIPTION
+=head1 Description
 
 B<SPVM::Builder::Util::API> is the public APIs of the utilities of SPVM Builder. 
 
@@ -35,7 +35,7 @@ However, the functions is useful to create the content of Makefile.
 
 B<SPVM::Builder::Util::API> provides the public APIs to call the functions of L<SPVM::Builder::Util>. These APIs is public and stable.
 
-=head1 FUNCTIONS
+=head1 Functions
 
 =head2 create_make_rule_native
 

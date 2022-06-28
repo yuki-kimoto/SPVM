@@ -70,11 +70,11 @@ sub to_string {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Builder::Resource - Resourceurations of Compile and Link of Native Sources
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   my $resource = SPVM::Builder::Resource->new(
     class_name => 'Resource::Zlib::V1_0_0',
@@ -82,11 +82,11 @@ SPVM::Builder::Resource - Resourceurations of Compile and Link of Native Sources
     args => ['foo', 'bar'],
   );
 
-=head1 DESCRIPTION
+=head1 Description
 
 C<SPVM::Builder::Resource> is a resource that contains a set of C<C>/C<C++> source files and the headers.
 
-=head1 FIELDS
+=head1 Field Methods
 
 Fields.
 
@@ -118,7 +118,7 @@ Get and set the arguments of the config file of the resource.
 
 Get and set the config of the resource. The config is a L<SPVM::Builder::Config> object.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -135,7 +135,7 @@ B<Examples:>
     args => ['foo', 'bar'],
   );
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 to_string
 
@@ -143,7 +143,7 @@ B<Examples:>
 
 Get the string representation. This is the same as the value of C</"class_name">.
 
-=head1 OPERATORS
+=head1 Operators
 
 C<SPVM::Builder::Resource> overloads the following operators.
 

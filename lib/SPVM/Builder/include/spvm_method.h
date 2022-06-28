@@ -15,7 +15,7 @@ struct spvm_method {
   SPVM_LIST* captures;
   const char* abs_name;
   SPVM_CLASS* class;
-  const char* accessor_original_name;
+  const char* field_method_original_name;
   const char* anon_method_defined_class_name;
   SPVM_OP* op_inline;
   int32_t args_length;

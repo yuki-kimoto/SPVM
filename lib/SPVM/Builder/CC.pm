@@ -1059,6 +1059,6 @@ sub create_precompile_source_file {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Builder::CC - Compiler and Linker of Native Sources

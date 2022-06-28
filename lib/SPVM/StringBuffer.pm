@@ -2,11 +2,11 @@ package SPVM::StringBuffer;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::StringBuffer - String buffer
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use StringBuffer;
   
@@ -20,11 +20,11 @@ SPVM::StringBuffer - String buffer
   # Convert to string - abcdef
   my $string = $buffer->to_string;
   
-=head1 DESCRIPTION
+=head1 Description
 
 String buffer.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -32,7 +32,7 @@ String buffer.
 
 Create new L<StringBuffer|SPVM::StringBuffer> object.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 value
 

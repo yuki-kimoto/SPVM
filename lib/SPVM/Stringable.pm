@@ -2,11 +2,11 @@ package SPVM::Stringable;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Stringable - A Interface Type to Stringify a Object
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   class Point {
     interface Stringable;
@@ -21,11 +21,11 @@ SPVM::Stringable - A Interface Type to Stringify a Object
     };
   }
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Stringable|SPVM::Stringable> is a interface type to stringify a object.
 
-=head1 INTERFACE METHODS
+=head1 Interface Methods
 
 Interface methods.
 

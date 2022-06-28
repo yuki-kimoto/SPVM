@@ -2711,7 +2711,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   assert(op_invocant);
                   SPVM_OP_cut_op(compiler, op_invocant);
                   
-                  const char* field_name = call_method->method->accessor_original_name;
+                  const char* field_name = call_method->method->field_method_original_name;
 
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 
@@ -2747,7 +2747,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                   op_operand_value->no_need_check = 1;
 
-                  const char* field_name = call_method->method->accessor_original_name;
+                  const char* field_name = call_method->method->field_method_original_name;
                   SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
                   SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
                   SPVM_OP_build_field_access(compiler, op_field_access, op_invocant, op_name_field_access);
@@ -2772,7 +2772,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
                   const char* class_name = call_method->method->class->name;
-                  const char* class_var_base_name = call_method->method->accessor_original_name;
+                  const char* class_var_base_name = call_method->method->field_method_original_name;
                   char* class_var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
                   memcpy(class_var_name_tmp, "$", 1);
                   memcpy(class_var_name_tmp + 1, class_name, strlen(class_name));
@@ -2810,7 +2810,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   op_operand_value->no_need_check = 1;
                   
                   const char* class_name = call_method->method->class->name;
-                  const char* class_var_base_name = call_method->method->accessor_original_name;
+                  const char* class_var_base_name = call_method->method->field_method_original_name;
                   char* class_var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
                   memcpy(class_var_name_tmp, "$", 1);
                   memcpy(class_var_name_tmp + 1, class_name, strlen(class_name));

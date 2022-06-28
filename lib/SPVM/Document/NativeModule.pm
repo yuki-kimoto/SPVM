@@ -1,8 +1,8 @@
-=head1 NAME
+=head1 Name
 
 SPVM::Document::NativeModule - How to write the native module
 
-=head1 DESCRIPTION
+=head1 Description
 
 The native module is the module that is implemented by native language such as C<C language> or C<C++>.
 

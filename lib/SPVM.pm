@@ -333,15 +333,15 @@ sub call_spvm_method {
 
 =encoding utf8
 
-=head1 NAME
+=head1 Name
 
 SPVM - SPVM Language
 
-=head1 CAUTHION
+=head1 Cauthion
 
 B<C<SPVM> is not yet 1.0 release. C<SPVM> is quit often changed without warnings until I feel the implementation is enough good.>
 
-=head1 SYNOPSIS
+=head1 Synopsis
 
 Write a SPVM Module:
 
@@ -373,11 +373,11 @@ Call the SPVM method from Perl:
 
   print "$total\n";
 
-=head1 DESCRIPTION
+=head1 Description
 
 B<SPVM>(Static Perl Virtual Machine) is a perl-ish static typed programing language. SPVM provides fast calculation, fast array operations, easy C/C++ binding, and creating executable files.
 
-=head1 DOCUMENT
+=head1 Document
 
 SPVM documents.
 
@@ -481,7 +481,7 @@ SPVM performance benchmarks.
 
 =back
 
-=head1 ENVIRONMENT VARIABLES
+=head1 Environment Variables
 
 =head2 SPVM_BUILD_DIR
 
@@ -503,27 +503,27 @@ Print debug messages of L<SPVM::Builder::CC> to stderr.
 
 Force the compilation and the link of L<SPVM::Builder::CC>.
 
-=head1 REPOSITORY
+=head1 Repository
 
 L<Github|https://github.com/yuki-kimoto/SPVM>
 
-=head1 BUG REPORT
+=head1 Bug Report
 
 L<GitHub Issue|https://github.com/yuki-kimoto/SPVM/issues>
 
-=head1 SUPPORT
+=head1 Support
 
 L<Github Discussions|https://github.com/yuki-kimoto/SPVM/discussions>
 
-=head1 AUTHOR
+=head1 Author
 
 Yuki Kimoto E<lt>kimoto.yuki@gmail.comE<gt>
 
-=head1 CORE DEVELOPERS
+=head1 Core Developers
 
 motiE<lt>motohiko.ave@gmail.comE<gt>
 
-=head1 CONTRIBUTORS
+=head1 Contributors
 
 =over 2
 
@@ -545,7 +545,7 @@ motiE<lt>motohiko.ave@gmail.comE<gt>
 
 =back
 
-=head1 COPYRIGHT & LICENSE
+=head1 Copyright & LICENSE
 
 Copyright 2018-2022 Yuki Kimoto, all rights reserved.
 

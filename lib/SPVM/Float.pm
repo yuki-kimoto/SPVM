@@ -2,18 +2,18 @@ package SPVM::Float;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Float - Float object
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use Float;
 
   my $float_object = Float->new(0.25f);
   my $float_value = $float_object->value;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Float|SPVM::Float> object stores a C<float> value.
 
@@ -21,7 +21,7 @@ This object is immutable and its value cannot be changed.
 
 L<Float|SPVM::Float> is automatically loaded just after the program starts.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -29,7 +29,7 @@ L<Float|SPVM::Float> is automatically loaded just after the program starts.
 
 Create a new L<Float|SPVM::Float> object with a C<float> value.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 value
 

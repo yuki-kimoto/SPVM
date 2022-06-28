@@ -2,11 +2,11 @@ package SPVM::Time::Info;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Time::Info - Time information
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Time::Info;
   
@@ -49,11 +49,11 @@ SPVM::Time::Info - Time information
   my $isdst = $time_info->isdst;
   $time_info->set_isdst(1);
 
-=head1 DESCRIPTION
+=head1 Description
 
 C<Time::Info> is the time information that date structure is C<struct tm> of C<C language>.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -63,7 +63,7 @@ Create a new L<Time::Info|SPVM::Time::Info> object.
 
   my $time_info = Time::Info->new;
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 sec
 

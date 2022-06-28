@@ -97,7 +97,7 @@ class TestCase::ClassVar {
     return 1;
   }
 
-  static method accessor : int () {
+  static method field_method : int () {
     
     TestCase::ClassVar->SET_ACCESSOR(3);
     unless ($TestCase::ClassVar::ACCESSOR == 3) {

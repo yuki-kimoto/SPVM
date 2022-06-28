@@ -2,11 +2,11 @@ package SPVM::Point3D;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Point3D - Point 3D
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use Point3D;
   
@@ -23,7 +23,7 @@ SPVM::Point3D - Point 3D
   
   my $point_string = $point->to_string;
 
-=head1 DESCRIPTION
+=head1 Description
 
 C<Point3D> is a class for a point 3D.
 
@@ -35,7 +35,7 @@ L<Point|SPVM::Point> is the super class of C<Point3D>.
 
 C<Point3D> inherits the interfaces of L<Point|SPVM::Point>.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -49,7 +49,7 @@ Create a new C<Point3D> object.
 
 Create a new C<Point3D> object with x, y, and z.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 C<Point3D> inherits the methods of L<Point|SPVM::Point>, and implements the following methods.
 

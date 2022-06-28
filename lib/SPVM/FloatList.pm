@@ -2,11 +2,11 @@ package SPVM::FloatList;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::FloatList - Dynamic float array
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use FloatList;
 
@@ -47,11 +47,11 @@ SPVM::FloatList - Dynamic float array
   # Convert FloatList to float array.
   my $float_array = $float_list->to_array;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<FloatList|SPVM::FloatList> is dynamic float array.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -72,7 +72,7 @@ If the array of the argument is C<undef>, 0-length internal array is created.
 
 Create a new L<FloatList|SPVM::FloatList> object with array length.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 get
 

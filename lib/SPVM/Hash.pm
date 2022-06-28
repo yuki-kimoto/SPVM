@@ -2,11 +2,11 @@ package SPVM::Hash;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Hash - Hash Data Structure
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Hash;
   
@@ -23,11 +23,11 @@ SPVM::Hash - Hash Data Structure
   my $name = (string)$book->get_string("name");
   my $price = (double)$book->get_double("price");
   
-=head1 DESCRIPTION
+=head1 Description
 
 L<Hash|SPVM::Hash> is Hash Data Structure. This is generally called associative array.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -39,7 +39,7 @@ Create a new L<Hash|SPVM::Hash> object with key value pairs.
   my $book = Hash->new({});
   my $book = Hash->new({id => 4, name => "Perl"});
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 count
 

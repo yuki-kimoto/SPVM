@@ -2,11 +2,11 @@ package SPVM::LongList;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::LongList - Dynamic long array
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use LongList;
   
@@ -47,11 +47,11 @@ SPVM::LongList - Dynamic long array
   # Convert LongList to long array.
   my $long_array = $long_list->to_array;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<LongList|SPVM::LongList> is dynamic long array.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -72,7 +72,7 @@ If the array of the argument is C<undef>, 0-length internal array is created.
 
 Create a new L<LongList|SPVM::LongList> object with array length.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 get
 

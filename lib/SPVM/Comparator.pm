@@ -2,11 +2,11 @@ package SPVM::Comparator;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Comparator - Interface Type for Object Comparation Callback
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Comparator;
   use Point;
@@ -30,11 +30,11 @@ SPVM::Comparator - Interface Type for Object Comparation Callback
   my $point2 = Point->new_xy(5, 6);
   my $result = $comparator->($point1, $point2);
 
-=head1 DESCRIPTION
+=head1 Description
 
 C<Comparator> is the interface type for the object comparation callback.
 
-=head1 INTERFACE METHODS
+=head1 Interface Methods
 
   required method : int ($object1 : object, $object2 : object);
 

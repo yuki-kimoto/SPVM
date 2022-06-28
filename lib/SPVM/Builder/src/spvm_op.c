@@ -1989,7 +1989,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, op_list_descriptors, op_block, NULL, NULL, 0, 0);
 
           op_method->uv.method->is_class_var_getter = 1;
-          op_method->uv.method->accessor_original_name = class_var->name;
+          op_method->uv.method->field_method_original_name = class_var->name;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
@@ -2041,7 +2041,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, op_list_descriptors, op_block, NULL, NULL, 0, 0);
           
           op_method->uv.method->is_class_var_setter = 1;
-          op_method->uv.method->accessor_original_name = class_var->name;
+          op_method->uv.method->field_method_original_name = class_var->name;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
@@ -2085,7 +2085,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
           
           op_method->uv.method->is_field_getter = 1;
-          op_method->uv.method->accessor_original_name = field->name;
+          op_method->uv.method->field_method_original_name = field->name;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
@@ -2134,7 +2134,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
           
           op_method->uv.method->is_field_setter = 1;
-          op_method->uv.method->accessor_original_name = field->name;
+          op_method->uv.method->field_method_original_name = field->name;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
@@ -2435,7 +2435,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
 
   // Class variable descriptors
   if (op_descriptors) {
-    int32_t accessor_descriptors_count = 0;
+    int32_t field_method_descriptors_count = 0;
     int32_t access_control_descriptors_count = 0;
     SPVM_OP* op_descriptor = op_descriptors->first;
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
@@ -2460,24 +2460,24 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
         case SPVM_DESCRIPTOR_C_ID_RW: {
           class_var->has_setter = 1;
           class_var->has_getter = 1;
-          accessor_descriptors_count++;
+          field_method_descriptors_count++;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_RO: {
           class_var->has_getter = 1;
-          accessor_descriptors_count++;
+          field_method_descriptors_count++;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_WO: {
           class_var->has_setter = 1;
-          accessor_descriptors_count++;
+          field_method_descriptors_count++;
           break;
         }
         default: {
           SPVM_COMPILER_error(compiler, "Invalid class variable descriptor \"%s\" at %s line %d", SPVM_DESCRIPTOR_get_name(compiler, descriptor->id), op_descriptors->file, op_descriptors->line);
         }
       }
-      if (accessor_descriptors_count > 1) {
+      if (field_method_descriptors_count > 1) {
         SPVM_COMPILER_error(compiler, "Only one of \"rw\", \"ro\", \"wo\" class variable descriptors can be specifed at %s line %d", op_class_var->file, op_class_var->line);
       }
       if (access_control_descriptors_count > 1) {
@@ -2513,7 +2513,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   // Field descriptors
   if (op_descriptors) {
     SPVM_OP* op_descriptor = op_descriptors->first;
-    int32_t accessor_descriptors_count = 0;
+    int32_t field_method_descriptors_count = 0;
     int32_t access_control_descriptors_count = 0;
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
@@ -2537,17 +2537,17 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
         case SPVM_DESCRIPTOR_C_ID_RW: {
           field->has_setter = 1;
           field->has_getter = 1;
-          accessor_descriptors_count++;
+          field_method_descriptors_count++;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_RO: {
           field->has_getter = 1;
-          accessor_descriptors_count++;
+          field_method_descriptors_count++;
           break;
         }
         case SPVM_DESCRIPTOR_C_ID_WO: {
           field->has_setter = 1;
-          accessor_descriptors_count++;
+          field_method_descriptors_count++;
           break;
         }
         default: {
@@ -2555,7 +2555,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
         }
       }
       
-      if (accessor_descriptors_count > 1) {
+      if (field_method_descriptors_count > 1) {
         SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in field declaration at %s line %d", op_field->file, op_field->line);
       }
       if (access_control_descriptors_count > 1) {

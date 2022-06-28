@@ -2,11 +2,11 @@ package SPVM::ShortList;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::ShortList - Dynamic short array
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use ShortList;
   
@@ -47,11 +47,11 @@ SPVM::ShortList - Dynamic short array
   # Convert ShortList to short array.
   my $short_array = $short_list->to_array;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<ShortList|SPVM::ShortList> is dynamic  short array.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -72,7 +72,7 @@ If the array of the argument is C<undef>, 0-length internal array is created.
 
 Create a new L<ShortList|SPVM::ShortList> object with array length.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 get
 

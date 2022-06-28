@@ -2,14 +2,14 @@ package SPVM::Hash::Entry;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Hash::Entry - Hash entry
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Hash::Entry;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Hash::Entry|SPVM::Hash::Entry> is used for L<Hash|SPVM::Hash> internally.

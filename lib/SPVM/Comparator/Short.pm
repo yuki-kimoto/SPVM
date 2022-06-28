@@ -2,11 +2,11 @@ package SPVM::Comparator::Short;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Comparator::Short - Interface Type for short Comparation Callback
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Comparator::Short;
   
@@ -16,11 +16,11 @@ SPVM::Comparator::Short - Interface Type for short Comparation Callback
   
   my $result = $comparator->(3, 5);
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Comparator::Short|SPVM::Comparator::Short> is the interface type for the short comparation callback.
 
-=head1 INTERFACE METHODS
+=head1 Interface Methods
 
   required method : int ($a : short, $b : short);
 

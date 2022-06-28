@@ -2,11 +2,11 @@ package SPVM::Stringer;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Stringer -  Interface Type for Stringing Callback
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Stringer;
   use Point;
@@ -22,11 +22,11 @@ SPVM::Stringer -  Interface Type for Stringing Callback
   my $point = Point->new_xy(1, 2);
   my $string = $stringer->($point);
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Stringer|SPVM::Stringer> is the interface type for the stringing callback.
 
-=head1 INTERFACE METHODS
+=head1 Interface Methods
 
   required method : string ($object : object)
 

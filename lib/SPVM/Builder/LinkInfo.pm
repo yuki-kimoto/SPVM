@@ -101,15 +101,15 @@ sub new {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Builder::LinkInfo - Object file information
 
-=head1 DESCRIPTION
+=head1 Description
 
 B<SPVM::Builder::LinkInfo> is a object file information. This infromation is used by the linker.
 
-=head1 FIELDS
+=head1 Field Methods
 
 Fields of B<SPVM::Builder::LinkInfo>.
 
@@ -155,7 +155,7 @@ Get and set the class name.
 
 Get and set the L<config|SPVM::Builder::Config> that is used to link the objects.
 
-=head1 METHODS
+=head1 Methods
 
 Methods of B<SPVM::Builder::LinkInfo>.
 

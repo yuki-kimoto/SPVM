@@ -2,11 +2,11 @@ package SPVM::EqualityChecker::SameObject;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::EqualityChecker::SameObject - a callback implementation of L<EqualityChecker|SPVM::EqualityChecker> to check if the memory addresses of the two objects are equal.
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use EqualityChecker::SameObject;
   
@@ -22,11 +22,11 @@ SPVM::EqualityChecker::SameObject - a callback implementation of L<EqualityCheck
   # Not equals
   my $is_equal = $equality_checker->($point1, $point3);
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> is a callback implementation of L<EqualityChecker|SPVM::EqualityChecker> to check if the memory addresses of the two objects are equal.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -34,7 +34,7 @@ L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> is a callback i
 
 Create a new L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> object.
 
-=head1 INTERFACE METHOD IMPLEMENTATION
+=head1 Interface Method IMPLEMENTATION
 
   method : int ($object1 : object, $object2 : object)
 

@@ -30,7 +30,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Accessor
 {
-  ok(SPVM::TestCase::ClassVar->accessor);
+  ok(SPVM::TestCase::ClassVar->field_method);
 }
 
 # All object is freed

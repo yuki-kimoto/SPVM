@@ -4,11 +4,11 @@ use base 'SPVM::BlessedObject';
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::BlessedObject::Class - Class based blessed object
 
-=head1 DESCRIPTION
+=head1 Description
 
 SPVM::BlessedObject::Class is class based blessed object.
 
@@ -16,7 +16,7 @@ This object contains class based SPVM object.
 
 You can call all methods declaraed in the class.
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   # lib/SPVM/Point.spvm
   class Point {

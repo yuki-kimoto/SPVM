@@ -77,21 +77,21 @@ sub no_compiler_api {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Builder::Config::Exe - Configurations of creating excutable files.
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use SPVM::Builder::Config::Exe;
   
   my $config = SPVM::Builder::Config::Exe->new_gnu99;
 
-=head1 DESCRIPTION
+=head1 Description
 
 SPVM::Builder::Config::Exe is configuration of creating excutable files of L<spvmcc>.
 
-=head1 FIELDS
+=head1 Field Methods
 
 Fields of B<SPVM::Builder::Config::Exe>.
 
@@ -281,7 +281,7 @@ If C<no_precompile> is a true value, precompiling is not performed.
 
 If C<no_compiler_api> is a true value, the source codes of the L<compiler native APIs|SPVM::Document::NativeAPI::Compiler> and the L<precompile native APIs|SPVM::Document::NativeAPI::Precompile> is not linked.
 
-=head1 METHODS
+=head1 Methods
 
 Methods of B<SPVM::Builder::Config::Exe>.
 

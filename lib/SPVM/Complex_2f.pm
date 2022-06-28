@@ -1,14 +1,14 @@
-=head1 NAME
+=head1 Name
 
 SPVM::Complex_2f - float complex type
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   my $z : Complex_2f;
   $z->{re} = 1;
   $z->{im} = 2;
   
-=head1 DESCRIPTION
+=head1 Description
 
 Complex_2f is float complex type.
 
@@ -19,7 +19,7 @@ This module is multi numeric type.
     has im : float;
   }
 
-=head1 FIELDS
+=head1 Field Methods
 
 =head2 re
 

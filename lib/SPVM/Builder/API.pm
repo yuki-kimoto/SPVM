@@ -93,11 +93,11 @@ sub build_shared_lib_dist_native { shift->build_dynamic_lib_dist_native(@_) }
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Builder::API - SPVM Builder Public APIs
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   # Builder API
   my $api = SPVM::Builder::API->new(
@@ -130,7 +130,7 @@ SPVM::Builder::API - SPVM Builder Public APIs
     }
   }
   
-=head1 DESCRIPTION
+=head1 Description
 
 B<SPVM::Builder::API> is the public APIs of SPVM Builder. 
 
@@ -142,7 +142,7 @@ However, the methods is useful to get the information of SPVM modules.
 
 B<SPVM::Builder::API> provides the public APIs to call the methods. These APIs is public and stable.
 
-=head1 METHODS
+=head1 Methods
 
 =head2 new
 

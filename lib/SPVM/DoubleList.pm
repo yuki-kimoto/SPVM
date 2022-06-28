@@ -2,11 +2,11 @@ package SPVM::DoubleList;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::DoubleList - Dynamic double array
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use DoubleList;
   
@@ -47,11 +47,11 @@ SPVM::DoubleList - Dynamic double array
   # Convert DoubleList to double array.
   my $double_array = $double_list->to_array;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<DoubleList|SPVM::DoubleList> is dynamic double array.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -72,7 +72,7 @@ If the array of the argument is C<undef>, 0-length internal array is created.
 
 Create a new L<DoubleList|SPVM::DoubleList> object with array length.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 unshift
 

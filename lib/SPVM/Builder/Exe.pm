@@ -1087,6 +1087,6 @@ sub compile_native_sources {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Builder::Exe - Create a Executable File

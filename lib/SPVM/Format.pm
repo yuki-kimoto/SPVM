@@ -4,11 +4,11 @@ package SPVM::Format;
 
 =encoding utf8
 
-=head1 NAME
+=head1 Name
 
 SPVM::Format - Format Utilities
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use Format;
   
@@ -54,11 +54,11 @@ SPVM::Format - Format Utilities
   # %x - "ffffffff"
   my $formatted_string = Format->sprintf("%x", -1) eq "ffffffff");
 
-=head1 DESCRIPTION
+=head1 Description
 
 C<Format> is a formatting utilities such as C<sprintf> method.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 Class method of B<Format> module.
 
