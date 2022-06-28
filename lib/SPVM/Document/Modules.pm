@@ -1,4 +1,4 @@
-=head1 NAME
+=head1 Name
 
 SPVM::Document::Modules - SPVM Standard Modules
 
@@ -88,7 +88,7 @@ The list of SPVM Standard Modules.
 
 =back
 
-=head1 CPAN Modules
+=head1 Cpan Modules
 
 The list of some CPAN modules.
 

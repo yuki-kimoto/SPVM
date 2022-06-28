@@ -2,18 +2,18 @@ package SPVM::Int;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Int - Int object
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use Int;
 
   my $int_object = Int->new(5);
   my $int_value = $int_object->value;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Int|SPVM::Int> object stores a C<int> value.
 
@@ -21,7 +21,7 @@ This object is immutable and its value cannot be changed.
 
 L<Int|SPVM::Int> is automatically loaded just after the program starts.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -29,7 +29,7 @@ L<Int|SPVM::Int> is automatically loaded just after the program starts.
 
 Create a new L<Int|SPVM::Int> object with a C<int> value.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 value
 

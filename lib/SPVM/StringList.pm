@@ -2,11 +2,11 @@ package SPVM::StringList;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::StringList - Dynamic string array
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use StringList;
   
@@ -47,11 +47,11 @@ SPVM::StringList - Dynamic string array
   # Convert StringList to string array.
   my $string_array = $string_list->to_array;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<StringList|SPVM::StringList> is dynamic string array.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -72,7 +72,7 @@ If the array of the argument is C<undef>, 0-length internal array is created.
 
 Create a new L<StringList|SPVM::StringList> object with array length.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 get
 

@@ -2,11 +2,11 @@ package SPVM::Point;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Point - Point
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use Point;
   
@@ -21,11 +21,11 @@ SPVM::Point - Point
   
   my $point_string = $point->to_string;
 
-=head1 DESCRIPTION
+=head1 Description
 
 C<Point> is a class for a point.
 
-=head1 INTERFACES
+=head1 Interfaces
 
 C<Point> class has the following interfaces.
 
@@ -37,7 +37,7 @@ C<Point> class has the following interfaces.
 
 =back
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -51,7 +51,7 @@ Create a new C<Point> object.
 
 Create a new C<Point> object with x and y.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 x
 

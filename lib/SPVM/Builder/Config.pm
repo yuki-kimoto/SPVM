@@ -723,11 +723,11 @@ sub get_resource_names {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use SPVM::Builder::Config;
   
@@ -762,11 +762,11 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
   # Get resouce information
   my $resource = $config->get_resource('TestCase::Resource::Zlib::V1_0_0');
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<SPVM::Builder::Config> is configuration of c/c++ compile and link.
 
-=head1 FIELDS
+=head1 Fields
 
 Fields.
 
@@ -1189,7 +1189,7 @@ The default is C<0>.
   my $output_type = $config->output_type;
   $config->output_type($type);
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -1229,7 +1229,7 @@ If you want to use the specific C++ version, use C<set_std> method.
 
 Create default build config with C++11 settings. This is L<SPVM::Builder::Config> object.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 set_std
 

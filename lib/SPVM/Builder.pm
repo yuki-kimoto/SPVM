@@ -304,10 +304,10 @@ EOS
 
 =encoding utf8
 
-=head1 NAME
+=head1 Name
 
 SPVM::Builder - Build SPVM program
 
-=head1 DESCRIPTION
+=head1 Description
 
 Build SPVM program. Compile SPVM source codes. Bind native and precompile methods. Generate Perl subrotuines correspoing to SPVM methods. After that, run SPVM program.

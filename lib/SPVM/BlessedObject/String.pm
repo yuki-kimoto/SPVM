@@ -14,7 +14,7 @@ sub to_string {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::BlessedObject::String - String based blessed object
 
@@ -24,12 +24,12 @@ SPVM::BlessedObject::String is array based blessed object.
 
 This object contains SPVM array object.
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   # Convert to Perl decoded String
   my $string = $spvm_string->to_string;
   
-=head1 METHODS
+=head1 Methods
 
 =head2 to_string
 
@@ -37,7 +37,7 @@ This object contains SPVM array object.
 
 Convert to Perl decoded String
 
-=head1 OPERATORS
+=head1 Operators
 
 L<SPVM::BlessedObject::String> overloads the following operators.
 

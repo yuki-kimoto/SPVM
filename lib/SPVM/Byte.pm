@@ -2,18 +2,18 @@ package SPVM::Byte;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Byte - Byte object
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Byte;
   
   my $byte_object = Byte->new(5);
   my $byte_value = $byte_object->value;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Byte|SPVM::Byte> object holds a byte type value.
 
@@ -21,7 +21,7 @@ This object is immutable and its value cannot be changed.
 
 L<Byte|SPVM::Byte> is automatically loaded just after the program starts.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -29,7 +29,7 @@ L<Byte|SPVM::Byte> is automatically loaded just after the program starts.
 
 Create a new L<Byte|SPVM::Byte> object with a C<byte> value.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 value
 

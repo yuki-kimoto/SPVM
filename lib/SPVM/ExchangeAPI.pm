@@ -126,7 +126,7 @@ sub set_exception {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::ExchangeAPI - SPVM Exchange API
 

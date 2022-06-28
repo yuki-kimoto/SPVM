@@ -2,18 +2,18 @@ package SPVM::Long;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Long - Long object
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use Long;
   
   my $long_object = Long->new(5L);
   my $long_value = $long_object->value;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Long|SPVM::Long> object stores a C<long> value.
 
@@ -21,7 +21,7 @@ This object is immutable and its value cannot be changed.
 
 L<Long|SPVM::Long> is automatically loaded just after the program starts.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -29,7 +29,7 @@ L<Long|SPVM::Long> is automatically loaded just after the program starts.
 
 Create a new L<Long|SPVM::Long> object with a C<long> value.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 value
 

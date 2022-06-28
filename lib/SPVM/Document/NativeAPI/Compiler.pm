@@ -1,8 +1,8 @@
-=head1 NAME
+=head1 Name
 
 SPVM::Document::NativeAPI::Compiler - SPVM Compiler Native APIs
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   // Compiler API
   void* compiler_api = env->api->compiler;
@@ -16,11 +16,11 @@ SPVM::Document::NativeAPI::Compiler - SPVM Compiler Native APIs
   // Free compiler
   compiler_api->free_compiler(compiler);
 
-=head1 DESCRIPTION
+=head1 Description
 
 SPVM compiler native APIs are the public APIs to use compile SPVM modules.
 
-=head1 IDs of Compiler Native APIs
+=head1 Ids Of Compiler Native APIs
 
 Compiler native APIs have its IDs.
 

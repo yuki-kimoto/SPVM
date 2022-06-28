@@ -1,10 +1,10 @@
 =encoding utf8
 
-=head1 NAME
+=head1 Name
 
 SPVM::Document::LanguageSpecification - SPVM Language Specification
 
-=head1 DESCRIPTION
+=head1 Description
 
 B<SPVM::Document::LanguageSpecification> defines SPVM language specification.
 
@@ -8610,7 +8610,7 @@ Even if there are 3 circular references, you can release them correctly by setti
 
 As a syntax related to Weak Reference, Weak Reference can be destroyed L</"weaken Statement">, and it can be confirmed whether Field is Weak Reference the L<isweak operator|/"isweak Operator">.
 
-=head1 SEE ALSO
+=head1 See Also
 
 =head2 Examples
 

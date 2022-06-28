@@ -2,11 +2,11 @@ package SPVM::Comparator::Float;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Comparator::Float - Interface Type for float Comparation Callback
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Comparator::Float;
   
@@ -16,11 +16,11 @@ SPVM::Comparator::Float - Interface Type for float Comparation Callback
   
   my $result = $comparator->(3, 5);
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Comparator::Float|SPVM::Comparator::Float> is the interface type for the float comparation callback.
 
-=head1 INTERFACE METHODS
+=head1 Interface Methods
 
   required method : int ($a : float, $b : float);
 

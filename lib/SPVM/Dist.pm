@@ -241,43 +241,43 @@ our \$VERSION = '0.01';
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::$class_name - $class_name is a SPVM module
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use $class_name;
   
-=head1 DESCRIPTION
+=head1 Description
 
 $class_name is a SPVM module.
 
-=head1 STATIC METHODS
+=head1 Static Methods
 
 
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 
 
-=head1 REPOSITORY
+=head1 Repository
 
 
 
-=head1 BUG REPORT
+=head1 Bug Report
 
 
 
-=head1 SUPPORT
+=head1 Support
 
 
 
-=head1 AUTHOR
+=head1 Author
 
 
 
-=head1 COPYRIGHT & LICENSE
+=head1 Copyright & LICENSE
 
 Copyright YYYY-YYYY AUTHOR_NAME, all rights reserved.
 
@@ -797,7 +797,7 @@ sub generate_dist {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Dist - Generating SPVM Distrubution
 

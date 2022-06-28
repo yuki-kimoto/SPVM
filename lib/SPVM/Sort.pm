@@ -4,11 +4,11 @@ package SPVM::Sort;
 
 =encoding utf8
 
-=head1 NAME
+=head1 Name
 
 SPVM::Sort - Sorting Functions
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   # Sort a byte array in-place by asc order
   my $nums = [(byte)2, 3, 1];
@@ -70,7 +70,7 @@ SPVM::Sort - Sorting Functions
     return $minimal1->{x} <=> $minimal2->{x} || $minimal1->{y} <=> $minimal2->{y};
   };
 
-=head1 DESCRIPTION
+=head1 Description
 
 C<Sort> provides sorting functions. The sorting algorithm is a stable merge sort.
 

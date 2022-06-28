@@ -2,11 +2,11 @@ package SPVM::ByteList;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::ByteList - Dynamic Byte Array
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use ByteList;
   
@@ -47,11 +47,11 @@ SPVM::ByteList - Dynamic Byte Array
   # Convert ByteList to byte array.
   my $byte_array = $byte_list->to_array;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<ByteList|SPVM::ByteList> is Dynamic Byte Array.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -70,7 +70,7 @@ Internally, new array is created, and each element of argument array is copied t
 
 Create a new L<ByteList|SPVM::ByteList> object with array length.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 get
 

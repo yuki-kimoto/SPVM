@@ -1,8 +1,8 @@
-=head1 NAME
+=head1 Name
 
 SPVM::Document::NativeAPI::Allocator - SPVM Allocator Native APIs
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   // Allocator API
   void* allocator_api = env->api->allocator;
@@ -13,11 +13,11 @@ SPVM::Document::NativeAPI::Allocator - SPVM Allocator Native APIs
   // Free allocator
   allocator_api->free_allocator(allocator);
 
-=head1 DESCRIPTION
+=head1 Description
 
 SPVM Allocator Native APIs are the public APIs to alloc/free memories.
 
-=head1 IDs of Allocator Native APIs
+=head1 Ids Of Allocator Native APIs
 
 Allocator native APIs have its IDs.
 

@@ -1,12 +1,12 @@
-=head1 NAME
+=head1 Name
 
 SPVM::Document::Benchmark - SPVM Performance Benchmark
 
-=head1 DESCRIPTION
+=head1 Description
 
 SPVM Performance Benchmark.
 
-=head1 BENCHMARK
+=head1 Benchmark
 
 =head2 for loop addition
 

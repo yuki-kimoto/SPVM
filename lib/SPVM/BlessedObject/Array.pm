@@ -44,7 +44,7 @@ sub get {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::BlessedObject::Array - Array based blessed object
 
@@ -54,7 +54,7 @@ SPVM::BlessedObject::Array is array based blessed object.
 
 This object contains SPVM array object.
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   # Get the value of a array element
   my $value = $spvm_nums->get(2);
@@ -68,7 +68,7 @@ This object contains SPVM array object.
   # Convert SPVM array to Perl binary data
   my $binary = $spvm_nums->to_bin;
   
-=head1 METHODS
+=head1 Methods
 
 =head2 get
 
@@ -100,7 +100,7 @@ An exmaple when array is int array:
 
   my @nums = unpack 'l*', $binary;
 
-=head1 OPERATORS
+=head1 Operators
 
 L<SPVM::BlessedObject::Array> overloads the following operators.
 

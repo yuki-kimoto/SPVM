@@ -2,11 +2,11 @@ package SPVM::Comparator::Double;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Comparator::Double - Interface Type for double Comparation Callback
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Comparator::Double;
   
@@ -16,11 +16,11 @@ SPVM::Comparator::Double - Interface Type for double Comparation Callback
   
   my $result = $comparator->(3, 5);
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Comparator::Double|SPVM::Comparator::Double> is the interface type for the double comparation callback.
 
-=head1 INTERFACE METHODS
+=head1 Interface Methods
 
   required method : int ($a : double, $b : double);
 

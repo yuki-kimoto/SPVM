@@ -2,11 +2,11 @@ package SPVM::Cloner;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Cloner - Interface Type for the Callback to Clone a Object
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Cloner;
   use Point;
@@ -22,11 +22,11 @@ SPVM::Cloner - Interface Type for the Callback to Clone a Object
   my $point = Point->new_xy(1, 2);
   my $cloned_point = $cloner->($point);
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Cloner|SPVM::Cloner> is the interface type for the callback to clone a object.
 
-=head1 INTERFACE METHODSS
+=head1 Interface Methodss
 
   required method : object ($object : object);
 

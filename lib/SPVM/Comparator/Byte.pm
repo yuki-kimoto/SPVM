@@ -2,11 +2,11 @@ package SPVM::Comparator::Byte;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Comparator::Byte - Interface Type for byte Comparation Callback
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Comparator::Byte;
   
@@ -16,11 +16,11 @@ SPVM::Comparator::Byte - Interface Type for byte Comparation Callback
   
   my $result = $comparator->(3, 5);
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Comparator::Byte|SPVM::Comparator::Byte> is the interface type for the byte comparation callback.
 
-=head1 INTERFACE METHODS
+=head1 Interface Methods
 
   required method : int ($a : byte, $b : byte);
 

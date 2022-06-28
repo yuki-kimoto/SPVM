@@ -2,11 +2,11 @@ package SPVM::EqualityChecker;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::EqualityChecker - Interface Type for Object Equality Checking Callback
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use EqualityChecker;
   use Point;
@@ -28,11 +28,11 @@ SPVM::EqualityChecker - Interface Type for Object Equality Checking Callback
   
   my $is_equal = $equality_checker->($point1, $point2);
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<EqualityChecker|SPVM::EqualityChecker> is the interface type for the object equality checking callback.
 
-=head1 INTERFACE METHODS
+=head1 Interface Methods
 
   required method : int ($object1 : object, $object2 : object)
 

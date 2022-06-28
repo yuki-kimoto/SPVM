@@ -2,11 +2,11 @@ package SPVM::Comparator::Int;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Comparator::Int - Interface Type for int Comparation Callback
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Comparator::Int;
   
@@ -16,11 +16,11 @@ SPVM::Comparator::Int - Interface Type for int Comparation Callback
   
   my $result = $comparator->(3, 5);
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Comparator::Int|SPVM::Comparator::Int> is the interface type for the int comparation callback.
 
-=head1 INTERFACE METHODS
+=head1 Interface Methods
 
   required method : int ($a : int, $b : int);
 

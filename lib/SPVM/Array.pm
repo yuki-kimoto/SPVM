@@ -4,11 +4,11 @@ package SPVM::Array;
 
 =encoding utf8
 
-=head1 NAME
+=head1 Name
 
 SPVM::Array - Array Utilities
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use Array;
   
@@ -111,11 +111,11 @@ SPVM::Array - Array Utilities
     return $new_int_obj;
   });
 
-=head1 DESCRIPTION
+=head1 Description
 
 C<Array> provides array utilities.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 copy_byte
 

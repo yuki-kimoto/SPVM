@@ -2,11 +2,11 @@ package SPVM::Comparator::Long;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Comparator::Long - Interface Type for long Comparation Callback
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Comparator::Long;
   
@@ -16,11 +16,11 @@ SPVM::Comparator::Long - Interface Type for long Comparation Callback
   
   my $result = $comparator->(3, 5);
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Comparator::Long|SPVM::Comparator::Long> is the interface type for the long comparation callback.
 
-=head1 INTERFACE METHODS
+=head1 Interface Methods
 
   required method : int ($a : long, $b : long);
 

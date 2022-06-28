@@ -2,11 +2,11 @@ package SPVM::Comparator::String;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Comparator::String - Interface Type for String Comparation Callback
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Comparator::String;
   
@@ -16,11 +16,11 @@ SPVM::Comparator::String - Interface Type for String Comparation Callback
   
   my $result = $comparator->(3, 5);
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Comparator::String|SPVM::Comparator::String> is the interface type for the string comparation callback.
 
-=head1 INTERFACE METHODS
+=head1 Interface Methods
 
   required method : int ($a : string, $b : string);
 

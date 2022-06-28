@@ -2,18 +2,18 @@ package SPVM::Short;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Short - Short object
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Short;
   
   my $short_object = Short->new(5);
   my $short_value = $short_object->value;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Short|SPVM::Short> object stores a C<short> value.
 
@@ -21,7 +21,7 @@ This object is immutable and its value cannot be changed.
 
 L<Short|SPVM::Short> is automatically loaded just after the program starts.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -29,7 +29,7 @@ L<Short|SPVM::Short> is automatically loaded just after the program starts.
 
 Create a new L<Short|SPVM::Short> object with a C<short> value.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 value
 

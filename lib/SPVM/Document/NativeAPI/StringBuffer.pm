@@ -1,8 +1,8 @@
-=head1 NAME
+=head1 Name
 
 SPVM::Document::NativeAPI::StringBuffer - SPVM String Buffer Native APIs
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   // String Buffer API
   void* string_buffer_api = env->api->string_buffer;
@@ -13,11 +13,11 @@ SPVM::Document::NativeAPI::StringBuffer - SPVM String Buffer Native APIs
   // Free string_buffer
   string_buffer_api->free_string_buffer(string_buffer);
 
-=head1 DESCRIPTION
+=head1 Description
 
 SPVM String Buffer Native APIs are the public APIs for string buffers.
 
-=head1 IDs of String Buffer Native APIs
+=head1 Ids Of String Buffer Native APIs
 
 String buffer native APIs have its IDs.
 

@@ -121,15 +121,15 @@ sub new {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Builder::ObjectFileInfo - Object file information
 
-=head1 DESCRIPTION
+=head1 Description
 
 B<SPVM::Builder::ObjectFileInfo> is a object file information. This infromation is used by the linker.
 
-=head1 FIELDS
+=head1 Fields
 
 Fields of B<SPVM::Builder::ObjectFileInfo>.
 
@@ -191,7 +191,7 @@ Get and set source type. C<native_module> or C<resource>.
 
 Get and set the L<config|SPVM::Builder::Config> that is used to compile the source file.
 
-=head1 METHODS
+=head1 Methods
 
 Methods of B<SPVM::Builder::ObjectFileInfo>.
 
@@ -205,7 +205,7 @@ Methods of B<SPVM::Builder::ObjectFileInfo>.
 
 Get the object file name. This is same as C<object_file> field.
 
-=head1 OPERATORS
+=head1 Operators
 
 L<SPVM::BlessedObject::String> overloads the following operators.
 

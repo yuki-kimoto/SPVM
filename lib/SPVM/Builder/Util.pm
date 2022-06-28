@@ -535,10 +535,10 @@ sub get_builder_dir_from_config_module {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Builder::Util - Build Utilities
 
-=head1 DESCRIPTION
+=head1 Description
 
 SPVM::Builder::Util is building utilities.

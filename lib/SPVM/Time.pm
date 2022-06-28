@@ -2,11 +2,11 @@ package SPVM::Time;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Time - Time Manipulation
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use Time;
   
@@ -19,7 +19,7 @@ SPVM::Time - Time Manipulation
   # Convert a epoch time to the Time::Info object that is UTC
   my $time_info_utc = Time->gmtime($epoch);
   
-=head1 DESCRIPTION
+=head1 Description
 
 C<Time> is a module to manipulate time.
 

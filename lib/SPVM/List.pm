@@ -2,11 +2,11 @@ package SPVM::List;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::List - Dynamic object array
 
-=head1 SYNOPSYS
+=head1 Synopsys
   
   use List;
   
@@ -56,11 +56,11 @@ SPVM::List - Dynamic object array
   # Convert List to Int array.
   my $int_array = (Int[])$list->to_array;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<List|SPVM::List> is dynamic object array.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -81,7 +81,7 @@ If the array of the argument is C<undef>, 0-length internal array is created.
 
 Create a new L<List|SPVM::List> object with prototype array and array length. Prototype array is used to decide the array type of internal values.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 get
 

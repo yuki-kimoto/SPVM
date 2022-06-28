@@ -4,11 +4,11 @@ package SPVM::Fn;
 
 =encoding utf8
 
-=head1 NAME
+=head1 Name
 
 SPVM::Fn - SPVM Starndard Functions
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use Fn;
   
@@ -136,11 +136,11 @@ SPVM::Fn - SPVM Starndard Functions
     return $new_int_obj;
   });
 
-=head1 DESCRIPTION
+=head1 Description
 
 B<Fn> module provides SPVM Starndard Functions. B<Fn> contains number, string and array utilities.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 Class method of B<Fn> module.
 

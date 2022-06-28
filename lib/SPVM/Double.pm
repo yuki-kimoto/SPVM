@@ -2,18 +2,18 @@ package SPVM::Double;
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Double - Double object
 
-=head1 SYNOPSYS
+=head1 Synopsys
 
   use Double;
   
   my $double_object = Double->new(0.25);
   my $double_value = $double_object->value;
 
-=head1 DESCRIPTION
+=head1 Description
 
 L<Double|SPVM::Double> object stores a C<double> value.
 
@@ -21,7 +21,7 @@ This object is immutable and its value cannot be changed.
 
 L<Double|SPVM::Double> is automatically loaded just after the program starts.
 
-=head1 CLASS METHODS
+=head1 Class Methods
 
 =head2 new
 
@@ -29,7 +29,7 @@ L<Double|SPVM::Double> is automatically loaded just after the program starts.
 
 Create a new L<Double|SPVM::Double> object with a C<double> value.
 
-=head1 INSTANCE METHODS
+=head1 Instance Methods
 
 =head2 value
 
