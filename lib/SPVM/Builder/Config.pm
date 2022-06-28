@@ -294,17 +294,6 @@ sub output_type {
   }
 }
 
-sub lib_link_abs {
-  my $self = shift;
-  if (@_) {
-    $self->{lib_link_abs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{lib_link_abs};
-  }
-}
-
 # Methods
 sub new {
   my $class = shift;
@@ -456,13 +445,6 @@ sub new {
   # ldflags
   unless (defined $self->{ldflags}) {
     $self->ldflags([]);
-  }
-  
-  # lib_link_abs
-  unless (defined $self->lib_link_abs) {
-    if ($self->output_type eq 'dynamic_lib') {
-      $self->lib_link_abs(1);
-    }
   }
   
   return $self;

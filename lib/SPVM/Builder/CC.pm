@@ -763,7 +763,7 @@ sub link {
   push @all_ldflags, $ld_optimize;
 
   # Libraries
-  if ($config->lib_link_abs) {
+  if (0) {
     # Libraries are linked by absolute path
     my $lib_dirs = $config->lib_dirs;
     my @lib_files;
