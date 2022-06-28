@@ -2120,7 +2120,7 @@ The list of class descriptors.
       <b>precompile</b>
     </td>
     <td>
-      Perform <a href="#Precompiled-Method">precompile</a> to all methods in this class, except for accessors, and enumurations. 
+      Perform <a href="#Precompiled-Method">precompile</a> to all methods in this class, except for getting methods, setting methods, and enumurations. 
     </td>
   </tr>
 </table>
@@ -2550,7 +2550,7 @@ The list of class variable descriptors.
       <b>ro</b>
     </td>
     <td>
-      The class variable has its <a href="#Class-Variable-Read-Accessor">read-accessor</a>.
+      The class variable has its <a href="#Class-Variable-Getting-Method">getting method</a>.
     </td>
   </tr>
   <tr>
@@ -2558,7 +2558,7 @@ The list of class variable descriptors.
       <b>wo</b>
     </td>
     <td>
-      The class variable has its <a href="#Class-Variable-Write-Accessor">write-accessor</a>.
+      The class variable has its <a href="#Class-Variable-Setting-Method">setting method</a>.
     </td>
   </tr>
   <tr>
@@ -2566,7 +2566,7 @@ The list of class variable descriptors.
       <b>rw</b>
     </td>
     <td>
-      The class variable has its <a href="#Class-Variable-Read-Accessor">read-accessor</a> and <a href="#Class-Variable-Write-Accessor">write-accessor</a>.
+      The class variable has its <a href="#Class-Variable-Getting-Method">getting method</a> and <a href="#Class-Variable-Setting-Method">setting method</a>.
     </td>
   </tr>
 </table>
@@ -2577,25 +2577,25 @@ If both C<public> and C<private> descriptors are specified, a compilation error 
 
 If more than one of C<ro>, C<wo>, and C<rw> are specified, a compilation error will occur
 
-=head2 Class Variable Accessor
+=head2 Class Variable Method
 
-A class variable accessor is a L<method|/"Method"> that gets and sets a class variable.
+A class variable method is a L<method|/"Method"> that gets and sets a class variable.
 
-=head3 Class Variable Read-Accessor
+=head3 Class Variable Getting Method
 
-A class variable read-accessor is a L<method|/"Method"> to perform the L<getting class variable|/"Getting Class Variable">.
+A class variable getting method is a L<method|/"Method"> to perform the L<getting class variable|/"Getting Class Variable">.
 
 It has no arguments and the return type is the same as the type of the class variable.
 
 It is defined by the C<ro> or C<rw> L<class variable descriptors|/"Class Variable Descriptors">.
 
-It is a L<method|/"Method"> that name is the same as the class variable name removing C<$>. For example, if the class variable name is C<$FOO>, its read-accessor name is C<FOO>.
+It is a L<method|/"Method"> that name is the same as the class variable name removing C<$>. For example, if the class variable name is C<$FOO>, its getting method name is C<FOO>.
 
-Inline expantion to the L<getting class variable|/"Getting Class Variable"> is performed to each class variable read-accessor.
+Inline expantion to the L<getting class variable|/"Getting Class Variable"> is performed to each class variable getting method.
 
 B<Examples:>
 
-  # Class variable read-accessor
+  # Class variable getting method
   class Foo {
     our $NUM : ro int;
     
@@ -2604,21 +2604,21 @@ B<Examples:>
     }
   }
 
-=head3 Class Variable Write-Accessor
+=head3 Class Variable Setting Method
 
-A class variable write-accessor is a L<method|/"Method"> to perform the L<setting class variable|/"Setting Class Variable">.
+A class variable setting method is a L<method|/"Method"> to perform the L<setting class variable|/"Setting Class Variable">.
 
 It has an argument that type is the same as the type of the class variable. The return type is the L<void type/"void Type">.
 
 It is defined by the C<wo>  or C<rw> L<class variable descriptors|/"Class Variable Descriptors">.
 
-It is a L<method|/"Method"> that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is C<$FOO>, its write-accessor name is C<SET_FOO>.
+It is a L<method|/"Method"> that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is C<$FOO>, its setting method name is C<SET_FOO>.
 
-Inline expantion to the L<setting class variable|/"Setting Class Variable"> is performed to each class variable write-accessor.
+Inline expantion to the L<setting class variable|/"Setting Class Variable"> is performed to each class variable setting method.
 
 B<Examples:>
 
-  # Class variable write-accessor
+  # Class variable setting method
   class Foo {
     our $NUM : wo int;
     
@@ -2709,7 +2709,7 @@ The list of field descriptors.
       <b>ro</b>
     </td>
     <td>
-      This Field has Read-Accessor. Read-Accessor name is the same as field mames. For example, If the field names is "foo", Read-Accessor name is "foo".
+      This field has its getting method. The getting method name is the same as the field name. For example, If the field names is <code>foo</code>, The getting method name is C<foo>.
     </td>
   </tr>
   <tr>
@@ -2717,7 +2717,7 @@ The list of field descriptors.
       <b>wo</b>
     </td>
     <td>
-      This Field has Write-Accessor. Write-Accessor name is the same as field names adding "set_" to top. For example, If the field names is "foo", Read-Accessor name is "set_foo".
+      This field has its setting method. The setting method name is the same as field names adding <code>set_</code> to top. For example, If the field names is <code>foo</code>, The setting method name is <code>set_foo</code>.
     </td>
   </tr>
   <tr>
@@ -2725,7 +2725,7 @@ The list of field descriptors.
       <b>rw</b>
     </td>
     <td>
-      This Field has Read-Accessor and Write-Accessor.
+      This field has its getting method and its setting method.
     </td>
   </tr>
 </table>
@@ -2736,11 +2736,11 @@ If both C<public> and C<private> Descriptors are specified, a compilation error 
 
 If more than one of C<ro>, C<wo>, and C<rw> are specified at the same time, a compilation error will occur
 
-Read-Accessor of Field has one argument that is L</"self Type"> and the return type is the same as the type of Field.
+A field getting method is an L<instance method|/"Instance Method">. It has no arguments. The return type of a field getting method is the same as its field type.
 
-Write Acessor of Class Variable has two arguments. First argument is L</"self Type"> and second argument is the same as the type of Field. The return type is the L<void type/"void Type">.
+A field setting method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the L<void type/"void Type">.
 
-Inline Expansion optimization is performed to Read-Accessor and Write-Accessor. You don't have to worry about the performance penalty of using Field Accessors.
+Inline expansion to the field access is performed to field getting and setting methods. The performance penalty using field methods is nothing.
 
 B<Examples:>
 
@@ -3603,13 +3603,13 @@ Multi-Numeric Type are defined by specifying mulnum_t L</"Class Descriptor"> in 
     y : double;
   }
 
-Multi-Numeric Type must end with C<_>, Number of Fields, L</"Multi-Numeric Type Suffix">.
+Multi-Numeric Type must end with C<_>, Number of the fields, L</"Multi-Numeric Type Suffix">.
 
 The suffix must correspond to a L<numeric type|/"Numeric Type">.
 
 All Fields must be the same a L<numeric type|/"Numeric Type">.
 
-The maximum number of Fields is 255.
+The maximum number of the fields is 255.
 
 Multi-Numeric Type can be used as L</"Type"> of L</"Local Variable Declaration">.
 
@@ -4425,7 +4425,7 @@ Reference Type can be used as Type of argument in the L<method definition|/"Meth
 
 Reference Type cannot be used as Return Value Type in the L<method definition|/"Method Definition">.
 
-Reference Type cannot be used as the type of Field in the L<class definition|/"Class Definition">.
+Reference Type cannot be used as the field type in the L<class definition|/"Class Definition">.
 
 Reference Type cannot be used as the type of Class Variable in the L<class definition|/"Class Definition">.
 
@@ -6487,7 +6487,7 @@ If there is a Return Value, L</"Expressions"> can be specified.
 
 If the Return Value Type in the L<method definition|/"Method Definition"> is the L<void type/"void Type">, Expression Must not exist, otherwise a compilation error will occur.
 
-the L<method definition|/"Method Definition">, if the Return Value Type is other than the L<void type/"void Type">, Expression Must match the type of, otherwise a compilation error will occur.
+the L<method definition|/"Method Definition">, if the The return type is other than the L<void type/"void Type">, Expression Must match the type of, otherwise a compilation error will occur.
 
 =head2 next Statement
 
@@ -7918,7 +7918,7 @@ If the assignment does not satisfy the L<type assignability|/"Type Assignability
 
 The return value is the value after the setting. 
 
-The return type is the type of the field.
+The return type is the field type.
 
 If the type of assigned value is a L<basic object type|/"Object Type">, Reference Count of the object is incremented by C<1>.
 
@@ -7958,11 +7958,11 @@ Invocant Expression is L</"Multi-Numeric Type">.
 
 If the field names does not found in the L</"Class">, a compilation error will occur.
 
-Setting Multi-Numeric Field Expression returns the value of Field after setting. 
+Setting Multi-Numeric Field Expression returns the value of the field after setting. 
 
 The assignment must satisfy the L<type assignability|/"Type Assignability">.
 
-Return Value Type is the type of Field.
+The return type is the field type.
 
 B<Examples:>
 
@@ -8301,11 +8301,11 @@ Invocant Expression is L</"Multi-Numeric Reference Type">.
 
 If the field names does not found in the L</"Class">, a compilation error will occur
 
-Setting Multi-Numeric Field via Dereference Expression returns the value of Field after setting.
+Setting Multi-Numeric Field via Dereference Expression returns the value of the field after setting.
 
 The assignment must satisfy the L<type assignability|/"Type Assignability">.
 
-Return Value Type is the type of Field.
+The return type is the field type.
 
 B<Examples:>
 
