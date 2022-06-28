@@ -421,7 +421,6 @@ SPVM-*
 *.bak
 *.BAK
 *.tmp
-MANIFEST
 EOS
   
   # Generate file
