@@ -9,6 +9,7 @@
   * Remove non-documented lib_link_abs from SPVM::Builder::Config.
   * native library is linked as relative path, not absolute pass by default.
   * Remove add_dynamic_libs from SPVM::Builder::Config.
+  * Remove type option of the hash reference of add_libs method of SPVM::Builder::Config.
 0.9613 2022-06-27
   [CHANGE]
   * Fix descriptor error message.

@@ -866,21 +866,21 @@ sub create_link_info {
   # Libraries
   my $libs = $config->libs;
   for my $lib (@$libs) {
-    if (ref $lib && $lib->{abs}) {
-      # Libraries are linked by absolute path
-      my $type;
-      my $lib_name;
-      if (ref $lib eq 'HASH') {
-        $type = $lib->{type};
-        $lib_name = $lib->{name};
-      }
-      else {
-        $lib_name = $lib;
-        $type = 'dynamic,static';
-      }
+    # Libraries are linked by absolute path
+    my $static;
+    my $lib_name;
+    my $abs;
+    if (ref $lib) {
+      $static = $lib->{static};
+      $lib_name = $lib->{name};
+      $abs = $lib->{abs};
+    }
+    else {
+      $lib_name = "$lib";
+    }
       
+    if ($abs) {
       my $found_lib_file;
-      my $lib_type;
       for my $lib_dir (@$lib_dirs) {
         $lib_dir =~ s|[\\/]$||;
 
@@ -890,29 +890,19 @@ sub create_link_info {
         my $static_lib_file_base = "lib$lib_name.a";
         my $static_lib_file = "$lib_dir/$static_lib_file_base";
         
-        if ($type eq 'dynamic,static') {
+        if ($static) {
+          if (-f $static_lib_file) {
+            $found_lib_file = $static_lib_file;
+            last;
+          }
+        }
+        else {
           if (-f $dynamic_lib_file) {
             $found_lib_file = $dynamic_lib_file;
-            $lib_type = 'dynamic';
             last;
           }
           elsif (-f $static_lib_file) {
             $found_lib_file = $static_lib_file;
-            $lib_type = 'static';
-            last;
-          }
-        }
-        elsif ($type eq 'dynamic') {
-          if (-f $dynamic_lib_file) {
-            $found_lib_file = $dynamic_lib_file;
-            $lib_type = 'dynamic';
-            last;
-          }
-        }
-        elsif ($type eq 'static') {
-          if (-f $static_lib_file) {
-            $found_lib_file = $static_lib_file;
-            $lib_type = 'static';
             last;
           }
         }
@@ -922,7 +912,7 @@ sub create_link_info {
         my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
           file => $found_lib_file,
           class_name => $class_name,
-          lib_type => $lib_type,
+          lib => 1,
         );
         
         push @$all_object_file_infos, $object_file_info;
@@ -931,8 +921,14 @@ sub create_link_info {
     else {
       # Libraries
       # gcc -o main main.c -L. -static-libgcc -Wl,-Bdynamic,-lc,-Bstatic,-lA
-      my $libs = $config->libs;
-      push @all_ldflags, map { "-l$_" } @$libs;
+      my @libs_ldflags;
+      if ($static) {
+        push @libs_ldflags, ('-Wl,-Bstatic', "-l$lib", '-Wl,-Bdynamic');
+      }
+      else {
+        push @libs_ldflags, ("-l$lib");
+      }
+      push @all_ldflags, @libs_ldflags;
     }
   }
   
