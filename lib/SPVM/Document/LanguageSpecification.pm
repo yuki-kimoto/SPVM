@@ -4767,7 +4767,7 @@ Otherwise, the assignability is false.
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td></tr>
-  <tr><td>Conditional True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>None</td></tr>
+  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -4792,7 +4792,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<box
 
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>True</td><td>object</td><td>OBJECT_X</td><td>None</td></tr>
+  <tr><td>True</td><td>object</td><td>OBJECT_Y</td><td>None</td></tr>
   <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
   <tr><td>True</td><td>object</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>object</td><td>OTHER</td><td>None</td></tr>
@@ -4931,7 +4931,7 @@ Otherwise, the assignability is false.
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_HAVING_Y[]</td><td>None</td></tr>
   <tr><td>False</td><td>INTERFACE_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
@@ -4955,7 +4955,7 @@ Otherwise, the assignability is false.
 
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>True</td><td>object[]</td><td>OBJECT_X[]</td><td>None</td></tr>
+  <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -4993,9 +4993,9 @@ Otherwise, the assignability is false.
 
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>None</td></tr>
+  <tr><td>True</td><td>X[][]...</td><td>X[][]...</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>None</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[][]...</td><td>INTERFACE_HAVING_Y[][]...</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
@@ -5320,7 +5320,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>Copying</td></tr>
-  <tr><td>Conditional True</td><td>INTERFACE_X</td><td>CLASS_Y</td><td>Copying</td></tr>
+  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>Copying</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_Y</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>Copying</td></tr>
@@ -5358,7 +5358,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<box
 
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
-  <tr><td>True</td><td>object</td><td>OBJECT_X</td><td>Copying</td></tr>
+  <tr><td>True</td><td>object</td><td>OBJECT_Y</td><td>Copying</td></tr>
   <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
   <tr><td>True</td><td>object</td><td>undef</td><td>Copying</td></tr>
   <tr><td>False</td><td>object</td><td>OTHER</td><td>None</td></tr>
@@ -5533,7 +5533,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
-  <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>CLASS_Y[]</td><td>Copying</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFAECE_HAVING_Y[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>Copying</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_Y[]</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>object</td><td>Copying with the runtime type checking</td></tr>
@@ -5568,7 +5568,7 @@ If the type of the right operand is an L<any object type|/"Any Object Type">, th
 
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
-  <tr><td>True</td><td>object[]</td><td>OBJECT_X[]</td><td>Copying</td></tr>
+  <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>Copying</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>Copying</td></tr>
   <tr><td>True</td><td>object[]</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
@@ -5614,11 +5614,11 @@ Otherwise, the type castability is false.
 
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
-  <tr><td>True</td><td>MULDIM_X</td><td>MULDIM_X</td><td>Copying</td></tr>
-  <tr><td>True</td><td>MULDIM_X</td><td>object</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>MULDIM_X</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>MULDIM_X</td><td>undef</td><td>Copying</td></tr>
-  <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X[]</td><td>CLASS_MULDIM_Y[]</td><td>Copying</td></tr>
+  <tr><td>True</td><td>X[][]...</td><td>X[][]...</td><td>Copying</td></tr>
+  <tr><td>True</td><td>X[][]...</td><td>object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>X[][]...</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>X[][]...</td><td>undef</td><td>Copying</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[][]...</td><td>INTERFACE_HAVING_Y[][]...</td><td>Copying</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
@@ -6042,11 +6042,13 @@ The operand of the L<logical NOT operator|/"Logical NOT Operator">:
 
 The runtime type cheking is the type cheking that is performed at runtime.
 
-Some L<type cast|/"Type Cast"> operators performe the runtime type checking using L<runtime type assignability/"Runtime Type Assignability">.
+The L<type cast|/"Type Cast"> operators that operand is an L<object type|/"object Type"> performe the runtime type checking by the rule of the L<runtime type assignability/"Runtime Type Assignability">.
 
 =head2 Runtime Type Assignability
 
 The runtime type assignability is the type assignalibility at runtime.
+
+The L<isa operator|/"isa L<operator|/"Operator">"> checks the L<runtime type assignability/"Runtime Type Assignability">
 
 The runtime assignability is false, an exception will be thrown.
 
@@ -6058,6 +6060,8 @@ If the type of the distribution is the L<any object type|/"Any Object Type"> C<o
 
 If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Type">, the runtime type assignability is true.
 
+If the type of distribution is an L<class type|/"Class Type">, an L<class array type|/"Class Array Type">, an L<class multi-dimensional array type|/"Class Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution is a super class of the basic type of the source, the runtime type assignability is true.
+
 If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime type assignability is true.
 
 =begin html
@@ -6065,12 +6069,16 @@ If the type of distribution is an L<interface type|/"Interface Type">, an L<inte
 <table>
   <tr><th>Runtime Assignability</th><th>To</th><th>From</th></tr>
   <tr><td>True</td><td>OBJECT_X</td><td>undef</td></tr>
-  <tr><td>True</td><td>object</td><td>OBJECT_X</td></tr>
-  <tr><td>True</td><td>object[]</td><td>OBJECT_X[]</td></tr>
-  <tr><td>Conditional True</td><td>INTERFACE_X</td><td>OBJECT_Y</td></tr>
-  <tr><td>Conditional True</td><td>INTERFACE_X[]</td><td>OBJECT_Y</td></tr>
-  <tr><td>Conditional True</td><td>INTERFACE_MULDIM_X</td><td>OBJECT_Y</td></tr>
-  <tr><td>False</td><td>object[]</td><td>OTHER</td></tr>
+  <tr><td>True</td><td>OBJECT_X</td><td>OBJECT_X</td></tr>
+  <tr><td>True</td><td>object</td><td>OBJECT_Y</td></tr>
+  <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[][]...</td><td>CLASS_Y[][]...</td></tr>
+  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_HAVING_Y[]</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[][]...</td><td>INTERFACE_HAVING_Y[][]...</td></tr>
+  <tr><td>False</td><td>OBJECT_X</td><td>OTHER</td></tr>
 </table>
 
 =end html
@@ -7163,11 +7171,11 @@ The comparison operator is the L<operator|/"Operator"> to compare the left opera
 
   LEFT_OPERAND COMPARISON_OPERATOR RIGHT_OPERAND
 
-Comparison operators are the L<numeric comparison operators|/"Numeric Comparison Operator">, the L<string comparison operators|/"String Comparison Operator">, and the L<isa operator|/"isa Operator">.
+Comparison operators are the L<numeric comparison operators|/"Numeric Comparison Operator">, the L<string comparison operators|/"String Comparison Operator">, and the L<isa operator|/"isa L<operator|/"Operator">">.
 
 =head2 Numeric Comparison Operator
 
-B<Numeric Comparison Operator> is a L</"Comparison Operator"> that is placed between The left operand and the right operand to compare the size of number or check the equqlity of objects.
+The numeric comparison operator is a L<comparison operator|/"Comparison Operator"> that is placed between The left operand and the right operand to compare the size of number or check the equqlity of objects.
 
   LEFT_OPERAND NUMERIC_COMPARISON_OPERATOR RIGHT_OPERAND
 
@@ -7366,39 +7374,43 @@ The list of string comparison operators.
 
 =head2 isa Operator
 
-B<isa Operator> is a L</"Comparison Operator"> to check whether The left operand satisfies Right Type.
+The C<isa> operator is a L<comparison operator|/"Comparison Operator"> to check whether the left operand can be assigned to the right type.
 
   LEFT_OPERAND isa RIGHT_TYPE
 
-isa Operator has three behaviors, depending on Right Type.
+The isa L<operator|/"Operator"> has three behaviors, depending on the type of the right type.
 
-1. If the right type is a L<numeric type|/"Numeric Type">, L</"Multi-Numeric Type">, L</"Any Object Type">, L</"Reference Type">, isa operator checks whether the type of the left operand is the same as Right Type. This check is done at compile-time and isa operator is replaced by the L<int type|/"int Type"> value. If their types is the same, replaced by 1, otherwise by 0.
+1. If the right type is a L<numeric type|/"Numeric Type">, L</"Multi-Numeric Type">, L</"Any Object Type">, L</"Reference Type">, isa operator checks whether the type of the left operand is the same as the type of the right type. This check is done at compile-time and isa operator is replaced by the L<int type|/"int Type"> value. If their types is the same, replaced by 1, otherwise by 0.
 
-2. If the right type is L</"Class Type">, isa operator checks whether the type of the left operand is the same as Right Type at Run Time. If their types are same, the L<int type|/"int Type"> 1 is return, otherwise 0. The type of the left operand must be an L<object type|/"Object Type">, otherwise a compilation error will occur.
+2. If the right type is L</"Class Type">, isa operator checks whether the type of the left operand is the same as the type of the right type at Run Time. If their types are same, the L<int type|/"int Type"> 1 is return, otherwise 0. The type of the left operand must be an L<object type|/"Object Type">, otherwise a compilation error will occur.
 
-3. If the right type is L</"Interface Type">, isa Operator checks whether the type of the left operand satisfy the Interface Type at Run Time. If the left operand satisfies the Interface Type, returns the L<int type|/"int Type"> 1, otherwise 0. The type of the left operand must be an L<object type|/"Object Type">, otherwise a compilation error will occur.
+3. If the right type is L</"Interface Type">, isa L<operator|/"Operator"> checks whether the type of the left operand satisfy the Interface Type at Run Time. If the left operand satisfies the Interface Type, returns the L<int type|/"int Type"> 1, otherwise 0. The type of the left operand must be an L<object type|/"Object Type">, otherwise a compilation error will occur.
 
 =head2 ref Operator
 
-B<ref Operator> is a Operator to get type name of the object.
+The C<ref> operator is an L<operator|/"Operator"> to get the type name of the object.
 
   ref OPERAND
 
-ref Operator return type name if the object defined. Otherwise return undef.
+If the operand is defined, it returns the type name of the object. If not, return L<undef|/"Undefined Value">.
 
-If OPERAND is not a object type, a compilation error will occur.
+The return type is the L<string type|/"string Type">.
+
+If the operand is not an L<object type|/"Object Type">, a compilation error will occur.
 
 =head2 dump Operator
 
-B<dump Operator> is a Operator to dump object value.
+The C<dump> operator is an L<operator|/"Operator"> to get the string representation of the object.
 
   dump OPERAND
 
-dump Operator return the dump string.
+It returns the the string representation of the object.
 
-If OPERAND is not a object type, a compilation error will occur.
+The return type is the L<string type|/"string Type">.
 
-The contents of the dumped string may vary from SPVM version to version. Please use dump operator only for viewing the content of object data.
+If the operand is not an L<object type|/"Object Type">, a compilation error will occur.
+
+The string representation may be changed from SPVM version to version. Please don't use C<dump> operator for the purpose of the data serialization.
 
 =head2 Logical Operator
 
