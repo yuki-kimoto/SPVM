@@ -762,6 +762,14 @@ sub link {
   my $ld_optimize = $config->ld_optimize;
   push @all_ldflags, $ld_optimize;
 
+  # Library directory
+  my $lib_dirs = $config->lib_dirs;
+  for my $lib_dir (@$lib_dirs) {
+    if (-d $lib_dir) {
+      push @all_ldflags, "-L$lib_dir";
+    }
+  }
+  
   # Libraries
   if (0) {
     # Libraries are linked by absolute path
@@ -835,14 +843,6 @@ sub link {
     }
   }
   else {
-    # Library directory
-    my $lib_dirs = $config->lib_dirs;
-    for my $lib_dir (@$lib_dirs) {
-      if (-d $lib_dir) {
-        push @all_ldflags, "-L$lib_dir";
-      }
-    }
-    
     # Libraries
     my $libs = $config->libs;
     push @all_ldflags, map { "-l$_" } @$libs;
