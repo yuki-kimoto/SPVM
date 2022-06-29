@@ -904,36 +904,9 @@ sub link {
 
   my $all_object_files = [map { $_->to_string } @$all_object_file_infos];
 
-  my $cbuilder_config = {
-    ld => $ld,
-    lddlflags => '',
-    shrpenv => '',
-    libpth => '',
-    libperl => '',
-    
-    # "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
-    # Linker Script File(.lds) when "perllibs" is empty string.
-    # This is syntax error in Linker Script File(.lds)
-    # For the reason, libm is linked which seems to have no effect.
-    perllibs => '-lm',
-  };
-
-  # ExtUtils::CBuilder object
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
-
   # Move temporary dynamic library file to blib directory
   mkpath dirname $output_file;
   
-  my $input_files = [@$all_object_files];
-  if (defined $config->file) {
-    push @$input_files, $config->file;
-  }
-  my $need_generate = SPVM::Builder::Util::need_generate({
-    force => $self->force || $config->force,
-    output_file => $output_file,
-    input_files => $input_files,
-  });
-
   my $link_info = SPVM::Builder::LinkInfo->new(
     class_name => $class_name,
     object_file_infos => $all_object_file_infos,
@@ -947,8 +920,35 @@ sub link {
   if ($before_link) {
     $before_link->($config, $link_info);
   }
-
+  
+  my $input_files = [@$all_object_files];
+  if (defined $config->file) {
+    push @$input_files, $config->file;
+  }
+  my $need_generate = SPVM::Builder::Util::need_generate({
+    force => $self->force || $config->force,
+    output_file => $output_file,
+    input_files => $input_files,
+  });
+  
   if ($need_generate) {
+    my $cbuilder_config = {
+      ld => $ld,
+      lddlflags => '',
+      shrpenv => '',
+      libpth => '',
+      libperl => '',
+      
+      # "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
+      # Linker Script File(.lds) when "perllibs" is empty string.
+      # This is syntax error in Linker Script File(.lds)
+      # For the reason, libm is linked which seems to have no effect.
+      perllibs => '-lm',
+    };
+
+    # ExtUtils::CBuilder object
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
+    
     my $link_info_ld = $link_info->ld;
     my $link_info_ldflags = $link_info->ldflags;
     my $link_info_class_name = $link_info->class_name;
