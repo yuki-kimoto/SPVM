@@ -691,44 +691,6 @@ sub link {
     confess "Need config option";
   }
 
-  # Output type
-  my $output_type = $self->output_type || $config->output_type;
-  
-  # Output file
-  my $output_file = $options->{output_file};
-  unless (defined $output_file) {
-    # Dynamic library directory
-    my $output_dir = $options->{output_dir};
-    unless (defined $output_dir && -d $output_dir) {
-      confess "Shared lib directory must be specified for link";
-    }
-    
-    # Dynamic library file
-    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $options->{category});
-    $output_file = "$output_dir/$output_rel_file";
-  }
-  
-  # Add output file extension
-  my $output_file_base = basename $output_file;
-  if ($output_file_base =~ /\.precompile$/ || $output_file_base !~ /\./) {
-    my $exe_ext;
-    
-    # Dynamic library
-    if ($output_type eq 'dynamic_lib') {
-      $exe_ext = ".$Config{dlext}"
-    }
-    # Static library
-    elsif ($output_type eq 'static_lib') {
-      $exe_ext = '.a';
-    }
-    # Executable file
-    elsif ($output_type eq 'exe') {
-      $exe_ext = $Config{exe_ext};
-    }
-    
-    $output_file .= $exe_ext;
-  }
-  
   # Quiet output
   my $quiet = $config->quiet;
 
@@ -744,9 +706,12 @@ sub link {
   
   # Linker
   my $ld = $config->ld;
-
+  
   # All linker flags
   my @all_ldflags;
+  
+  # Output type
+  my $output_type = $self->output_type || $config->output_type;
   
   # Linker flags for dynamic link
   if ($output_type eq 'dynamic_lib') {
@@ -904,8 +869,40 @@ sub link {
 
   my $all_object_files = [map { $_->to_string } @$all_object_file_infos];
 
-  # Move temporary dynamic library file to blib directory
-  mkpath dirname $output_file;
+  # Output file
+  my $output_file = $options->{output_file};
+  unless (defined $output_file) {
+    # Dynamic library directory
+    my $output_dir = $options->{output_dir};
+    unless (defined $output_dir && -d $output_dir) {
+      confess "Shared lib directory must be specified for link";
+    }
+    
+    # Dynamic library file
+    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $options->{category});
+    $output_file = "$output_dir/$output_rel_file";
+  }
+  
+  # Add output file extension
+  my $output_file_base = basename $output_file;
+  if ($output_file_base =~ /\.precompile$/ || $output_file_base !~ /\./) {
+    my $exe_ext;
+    
+    # Dynamic library
+    if ($output_type eq 'dynamic_lib') {
+      $exe_ext = ".$Config{dlext}"
+    }
+    # Static library
+    elsif ($output_type eq 'static_lib') {
+      $exe_ext = '.a';
+    }
+    # Executable file
+    elsif ($output_type eq 'exe') {
+      $exe_ext = $Config{exe_ext};
+    }
+    
+    $output_file .= $exe_ext;
+  }
   
   my $link_info = SPVM::Builder::LinkInfo->new(
     class_name => $class_name,
@@ -932,6 +929,9 @@ sub link {
   });
   
   if ($need_generate) {
+    # Move temporary dynamic library file to blib directory
+    mkpath dirname $output_file;
+  
     my $cbuilder_config = {
       ld => $ld,
       lddlflags => '',
