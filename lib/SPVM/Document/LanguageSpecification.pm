@@ -7378,14 +7378,32 @@ The C<isa> operator is a L<comparison operator|/"Comparison Operator"> to check 
 
   LEFT_OPERAND isa RIGHT_TYPE
 
-The isa L<operator|/"Operator"> has three behaviors, depending on the type of the right type.
+The return type is L<int type|/"int Type">.
 
-1. If the right type is a L<numeric type|/"Numeric Type">, L</"Multi-Numeric Type">, L</"Any Object Type">, L</"Reference Type">, isa operator checks whether the type of the left operand is the same as the type of the right type. This check is done at compile-time and isa operator is replaced by the L<int type|/"int Type"> value. If their types is the same, replaced by 1, otherwise by 0.
+If the right type is a L<numeric type|/"Numeric Type">, L</"Multi-Numeric Type">, L</"Any Object Type">, L</"Reference Type">, it checks the L<type assignability|/"Type Assignability"> at compile-time.
 
-2. If the right type is L</"Class Type">, isa operator checks whether the type of the left operand is the same as the type of the right type at Run Time. If their types are same, the L<int type|/"int Type"> 1 is return, otherwise 0. The type of the left operand must be an L<object type|/"Object Type">, otherwise a compilation error will occur.
+If the type assignability is true, it is replaced with C<1>. Otherwise it is replaced with C<0>.
 
-3. If the right type is L</"Interface Type">, isa L<operator|/"Operator"> checks whether the type of the left operand satisfy the Interface Type at Run Time. If the left operand satisfies the Interface Type, returns the L<int type|/"int Type"> 1, otherwise 0. The type of the left operand must be an L<object type|/"Object Type">, otherwise a compilation error will occur.
+If the right type is other type, it checks the L<runtime type assignability|/"Runtime Type Assignability"> at runtime. If the runtime type assignability is true, it returns C<1>. Otherwise return C<0>.
 
+B<Examples:>
+
+  if ($object isa Point) {
+    
+  }
+  
+  if ($object isa Point3D) {
+    
+  }
+  
+  if ($object isa Stringable) {
+    
+  }
+  
+  if ($value isa int) {
+    
+  }
+  
 =head2 ref Operator
 
 The C<ref> operator is an L<operator|/"Operator"> to get the type name of the object.
@@ -7397,6 +7415,12 @@ If the operand is defined, it returns the type name of the object. If not, retur
 The return type is the L<string type|/"string Type">.
 
 If the operand is not an L<object type|/"Object Type">, a compilation error will occur.
+
+B<Examples:>
+  
+  # "Point"
+  my $poitn = Point->new;
+  my $type_name = ref $point;
 
 =head2 dump Operator
 
