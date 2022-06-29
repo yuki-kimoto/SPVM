@@ -20,6 +20,17 @@ sub name {
   }
 }
 
+sub file {
+  my $self = shift;
+  if (@_) {
+    $self->{file} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{file};
+  }
+}
+
 sub resolution_order {
   my $self = shift;
   if (@_) {
@@ -84,6 +95,15 @@ The list of field methods.
   $lib_info->name($name);
 
 Get and set the library name. C<z>, C<png>, etc.
+
+=head2 file
+
+  my $file = $lib_info->file;
+  $lib_info->file($file);
+
+Get and set the library file. C</path/libz.so>, C</path/libpng.a>, etc.
+
+This field has the meaning when L</"abs"> is set to a true value.
 
 =head2 resolution_order
 
