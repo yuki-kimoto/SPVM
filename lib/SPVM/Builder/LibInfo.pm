@@ -53,6 +53,28 @@ sub file_flag {
   }
 }
 
+sub config {
+  my $self = shift;
+  if (@_) {
+    $self->{config} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{config};
+  }
+}
+
+sub static_name_cb {
+  my $self = shift;
+  if (@_) {
+    $self->{static_name_cb} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{static_name_cb};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -60,6 +82,17 @@ sub new {
   my $self = {@_};
 
   bless $self, $class;
+  
+  unless (defined $self->static_name_cb) {
+    my $default_static_name_cb = sub {
+      my ($self, $name) = @_;
+      
+      $name = "-Wl,-Bstatic -l$name -Wl,-Bdynamic";
+      
+      return $name;
+    };
+    $self->static_name_cb($default_static_name_cb);
+  }
   
   return $self;
 }
@@ -70,10 +103,21 @@ sub to_string {
   
   my $string;
   if ($self->file_flag) {
-    $string = $self->name;
+    if (defined $self->file) {
+      $string = $self->file;
+    }
+    else {
+      $string = "";
+    }
   }
   else {
-    $string = $self->file;
+    my $name = $self->name;
+    if ($self->static) {
+      $string = $self->static_name_cb->($self, $name);
+    }
+    else {
+      $string = "-l$name";
+    }
   }
   
   return $string;
@@ -127,6 +171,23 @@ Get and set the flag if the library is linked by the file path such as C<path/li
 
 The default is a false value.
 
+=head2 static_name_cb
+
+  my $static_name_cb = $lib_info->static_name_cb;
+  $lib_info->static_name_cb($static_name_cb);
+
+Get and set the callback for a static link name.
+
+Default:
+
+  sub {
+    my ($self, $name) = @_;
+    
+    $name = "-Wl,-Bstatic -l$name -Wl,-Bdynamic";
+    
+    return $name;
+  };
+
 =head2 config
 
   my $config = $lib_info->config;
@@ -148,7 +209,9 @@ The list of class methods.
 
   my $lib = $lib_info->to_string;
 
-If L</"file_flag"> is false value, get the library flag such as C<-lfoo> from L<"/name">.
+If L</"file_flag"> is false value and L</"static"> is false value, get the library flag such as C<-lfoo> from L<"/name">.
+
+If L</"file_flag"> is false value and L</"static"> is true value, get the library flag that L<"/static_name_cb"> is performed to L<"/name"> such as C<-Wl,-Bstatic -lfoo -Wl,-Bdynamic>.
 
 If L</"file_flag"> is true value, get the library file path from L<"/file">.
 

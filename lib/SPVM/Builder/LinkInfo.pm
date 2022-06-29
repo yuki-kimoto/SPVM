@@ -51,6 +51,17 @@ sub object_file_infos {
   }
 }
 
+sub lib_infos {
+  my $self = shift;
+  if (@_) {
+    $self->{lib_infos} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{lib_infos};
+  }
+}
+
 sub class_name {
   my $self = shift;
   if (@_) {
@@ -90,6 +101,10 @@ sub new {
   
   unless (defined $self->object_file_infos) {
     $self->object_file_infos([]);
+  }
+
+  unless (defined $self->lib_infos) {
+    $self->lib_infos([]);
   }
 
   unless (defined $self->ldflags) {
@@ -139,7 +154,14 @@ Get and set the linker flags.  The default value is C<[]>.
   my $object_file_infos = $link_info->object_file_infos;
   $link_info->object_file_infos($object_file_infos);
 
-Get and set the object file informations to be linked. Each object file is L<SPVM::Builder::ObjectFileInfo>.
+Get and set the object file informations to be linked. Each object file is a L<SPVM::Builder::ObjectFileInfo> object.
+
+=head2 lib_infos
+
+  my $lib_infos = $link_info->lib_infos;
+  $link_info->lib_infos($lib_infos);
+
+Get and set the library informations to be linked. Each object file is a L<SPVM::Builder::LibInfo> object.
 
 =head2 class_name
 

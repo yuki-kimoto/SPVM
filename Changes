@@ -7,12 +7,14 @@
   * lib_dirs of SPVM::Builder::Config is always added to link command.
   * Add SPVM::Builder::LibInfo module.
   * libs, add_libs, add_static_libs of SPVM::Builder::Config can receive SPVM::Builder::LibInfo object.
+  * Add lib_infos to SPVM::Builder::LinkInfo.
   [NON BACKWORD COMPATIBLE CHANGES]
   * Remove non-documented lib_link_abs from SPVM::Builder::Config.
   * native library is linked as relative path, not absolute pass by default.
   * Remove add_dynamic_libs from SPVM::Builder::Config.
   * Remove type option of the hash reference of add_libs method of SPVM::Builder::Config.
   * libs, add_libs, add_static_libs of SPVM::Builder::Config can't receive a hash reference.
+  * object_infos of SPVM::Builder::LinkInfo don't contains library files.
 0.9613 2022-06-27
   [CHANGE]
   * Fix descriptor error message.

@@ -752,10 +752,18 @@ sub link {
     my $link_info_class_name = $link_info->class_name;
     my $link_info_output_file = $link_info->output_file;
     my $link_info_object_file_infos = $link_info->object_file_infos;
-
+    my $link_info_lib_infos = $link_info->lib_infos;
+    
+    my $all_ldflags_str = '';
+    
+    my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
+    $all_ldflags_str .= $link_info_ldflags_str;
+    
+    my $lib_ldflags_str = join(' ', map { my $tmp = $_->to_string; $tmp } @$link_info_lib_infos);
+    
     my $link_info_object_files = [map { my $tmp = $_->to_string; $tmp } @$link_info_object_file_infos];
 
-    my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
+    my $cbuilder_extra_linker_flags = "$link_info_ldflags_str $lib_ldflags_str";
     
     my @tmp_files;
     
@@ -768,7 +776,7 @@ sub link {
         objects => $link_info_object_files,
         module_name => $link_info_class_name,
         lib_file => $link_info_output_file,
-        extra_linker_flags => $link_info_ldflags_str,
+        extra_linker_flags => $cbuilder_extra_linker_flags,
         dl_func_list => $dl_func_list,
       );
     }
@@ -785,7 +793,7 @@ sub link {
         objects => $link_info_object_files,
         module_name => $link_info_class_name,
         exe_file => $link_info_output_file,
-        extra_linker_flags => $link_info_ldflags_str,
+        extra_linker_flags => $cbuilder_extra_linker_flags,
       );
     }
     else {
@@ -864,8 +872,11 @@ sub create_link_info {
   }
   
   # Libraries
+  my $lib_infos = [];
   my $libs = $config->libs;
   for my $lib (@$libs) {
+    my $lib_info;
+    
     # Library is linked by file path
     my $static;
     my $lib_name;
@@ -874,62 +885,46 @@ sub create_link_info {
       $static = $lib->static;
       $lib_name = $lib->name;
       $file_flag = $lib->file_flag;
+      $lib_info = $lib;
     }
     else {
-      $lib_name = "$lib";
+      $lib_name = $lib;
+      $lib_info = SPVM::Builder::LibInfo->new;
+      $lib_info->name($lib_name);
     }
+    $lib_info->config($config);
     
     if ($file_flag) {
       my $found_lib_file;
       for my $lib_dir (@$lib_dirs) {
         $lib_dir =~ s|[\\/]$||;
-
-        my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
-        my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
-
-        my $static_lib_file_base = "lib$lib_name.a";
-        my $static_lib_file = "$lib_dir/$static_lib_file_base";
         
-        if ($static) {
-          if (-f $static_lib_file) {
-            $found_lib_file = $static_lib_file;
-            last;
-          }
-        }
-        else {
+        # Search dynamic library
+        unless ($static) {
+          my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
+          my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
+
           if (-f $dynamic_lib_file) {
             $found_lib_file = $dynamic_lib_file;
             last;
           }
-          elsif (-f $static_lib_file) {
-            $found_lib_file = $static_lib_file;
-            last;
-          }
+        }
+        
+        # Search static library
+        my $static_lib_file_base = "lib$lib_name.a";
+        my $static_lib_file = "$lib_dir/$static_lib_file_base";
+        if (-f $static_lib_file) {
+          $found_lib_file = $static_lib_file;
+          last;
         }
       }
       
       if (defined $found_lib_file) {
-        my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
-          file => $found_lib_file,
-          class_name => $class_name,
-          lib => 1,
-        );
-        
-        push @$all_object_file_infos, $object_file_info;
+        $lib_info->file = $found_lib_file;
       }
     }
-    else {
-      # Libraries
-      # gcc -o main main.c -L. -static-libgcc -Wl,-Bdynamic,-lc,-Bstatic,-lA
-      my @libs_ldflags;
-      if ($static) {
-        push @libs_ldflags, ('-Wl,-Bstatic', "-l$lib", '-Wl,-Bdynamic');
-      }
-      else {
-        push @libs_ldflags, ("-l$lib");
-      }
-      push @all_ldflags, @libs_ldflags;
-    }
+    
+    push @$lib_infos, $lib_info;
   }
   
   # Use resources
@@ -1025,9 +1020,10 @@ sub create_link_info {
   
   my $link_info = SPVM::Builder::LinkInfo->new(
     class_name => $class_name,
-    object_file_infos => $all_object_file_infos,
     ld => $ld,
     ldflags => \@all_ldflags,
+    lib_infos => $lib_infos,
+    object_file_infos => $all_object_file_infos,
     output_file => $output_file,
   );
   return $link_info;
