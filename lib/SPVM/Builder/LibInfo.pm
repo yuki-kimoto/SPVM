@@ -31,14 +31,14 @@ sub file {
   }
 }
 
-sub resolution_order {
+sub static {
   my $self = shift;
   if (@_) {
-    $self->{resolution_order} = $_[0];
+    $self->{static} = $_[0];
     return $self;
   }
   else {
-    return $self->{resolution_order};
+    return $self->{static};
   }
 }
 
@@ -60,10 +60,6 @@ sub new {
   my $self = {@_};
 
   bless $self, $class;
-  
-  unless (defined $self->resolution_order) {
-    $self->resolution_order(['dynamic', 'static']);
-  }
   
   return $self;
 }
@@ -105,14 +101,14 @@ Get and set the library file. C</path/libz.so>, C</path/libpng.a>, etc.
 
 This field has the meaning when L</"abs"> is set to a true value.
 
-=head2 resolution_order
+=head2 static
 
-  my $resolution_order = $lib_info->resolution_order;
-  $lib_info->resolution_order($resolution_order);
+  my $static = $lib_info->static;
+  $lib_info->static($static);
 
-Get and set the resolution order of library. This field is an array reference.
+Get and set the flag if the library is linked statically such as C<libfoo.a>.
 
-The default is C<['dynamic', 'static']>. C<['dynamic']>, C<['static']>, C<['dynamic', 'static']> can be specified.
+The default is a false value.
 
 =head2 abs
 
