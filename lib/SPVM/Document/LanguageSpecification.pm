@@ -4736,6 +4736,8 @@ B<Examples:>
 
 If the type of the left operand is a L<class type|/"Class Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the assignability is true.
 
+If the type of the left operand is a super class of the type of the right operand, the assignability is true.
+
 Otherwise, the assignability is false.
 
 =begin html
@@ -4744,6 +4746,7 @@ Otherwise, the assignability is false.
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS</td><td>undef</td><td>None</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>None</td></tr>
   <tr><td>False</td><td>CLASS</td><td>OTHER</td><td>None</td></tr>
 </table>
 
@@ -4899,6 +4902,8 @@ B<Examples:>
 
 If the type of the left operand is a L<class array type|/"Class Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
+If the L<basic type|/"Basic Type"> of the left operand is an super class of the type of the right operand, the assignability is true.
+
 Otherwise, the assignability is false.
 
 =begin html
@@ -4906,6 +4911,7 @@ Otherwise, the assignability is false.
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>None</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>CLASS_X[]</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -4985,7 +4991,9 @@ B<Examples:>
 
 If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is the same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the assignability is true.
+If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the left operand is a super class of the L<basic type|/"Basic Type"> of the right operand, the assignability is true.
+
+If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the right operand has the L<basic type|/"Basic Type"> of the left operand, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -4995,6 +5003,7 @@ Otherwise, the assignability is false.
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>X[][]...</td><td>X[][]...</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[][]...</td><td>CLASS_Y[][]...</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[][]...</td><td>INTERFACE_HAVING_Y[][]...</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -5274,6 +5283,10 @@ If the type of the left operand is a L<class type|/"Class Type"> and the types o
 
 If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
 
+If the type of the left operand is a super class of the type of right operand, the type castability is true.
+
+If the type of the right operand is a super class of the type of left operand, the type castability is true.
+
 Otherwise, the type castability is false.
 
 If the type of the right operand is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
@@ -5283,6 +5296,8 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>Copying</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>Copying</td></tr>
+  <tr><td>True</td><td>CLASS_X</td><td>SUPER_CLASS_Y</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS_X</td><td>INTERFACE_Y</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS_X</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS</td><td>undef</td><td>Copying</td></tr>
@@ -5479,7 +5494,11 @@ B<Examples:>
 =head2 Type Castability to Class Array
 
 If the type of the left operand is a L<class array type|/"Class Array Type"> and the types of the right operands are the following cases:
- 
+
+If the L<basic type|/"Basic Type"> of the left operand is a super class of the L<basic type|/"Basic Type"> of the right operand, the type castability is true.
+
+If the L<basic type|/"Basic Type"> of the right operand is a super class of the L<basic type|/"Basic Type"> of the left operand, the type castability is true.
+
 If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the type castability is true.
 
 Otherwise, the type castability is false.
@@ -5491,6 +5510,8 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>Copying</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>Copying</td></tr>
+  <tr><td>True</td><td>CLASS_X[]</td><td>SUPER_CLASS_Y[]</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>object</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>undef</td><td>Copying</td></tr>
@@ -5606,6 +5627,10 @@ If the type of the right operand is the same type of the left operand or the L<u
 
 If the type of the right operand is an L<any object type|/"Any Object Type">, the type castability is true.
 
+If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the left operand is a super class of the L<basic type|/"Basic Type"> of the right operand, the type castability is true.
+
+If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the right operand is a super class of the L<basic type|/"Basic Type"> of the left operand, the type castability is true.
+
 If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is the same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the type castability is true.
 
 Otherwise, the type castability is false.
@@ -5614,10 +5639,12 @@ Otherwise, the type castability is false.
 
 <table>
   <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Type Conversion or Copying</a></th></tr>
-  <tr><td>True</td><td>X[][]...</td><td>X[][]...</td><td>Copying</td></tr>
-  <tr><td>True</td><td>X[][]...</td><td>object</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>X[][]...</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
-  <tr><td>True</td><td>X[][]...</td><td>undef</td><td>Copying</td></tr>
+  <tr><td>True</td><td>ANY_X[][]...</td><td>ANY_X[][]...</td><td>Copying</td></tr>
+  <tr><td>True</td><td>ANY_X[][]...</td><td>object</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>ANY_X[][]...</td><td>object[]</td><td>Copying with the runtime type checking</td></tr>
+  <tr><td>True</td><td>ANY_X[][]...</td><td>undef</td><td>Copying</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[][]...</td><td>CLASS_Y[][]...</td><td>Copying</td></tr>
+  <tr><td>True</td><td>CLASS_X[][]...</td><td>SUPER_CLASS_Y[][]...</td><td>Copying with the runtime type checking</td></tr>
   <tr><td>True</td><td>INTERFACE_X[][]...</td><td>INTERFACE_HAVING_Y[][]...</td><td>Copying</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
