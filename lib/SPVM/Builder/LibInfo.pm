@@ -42,14 +42,14 @@ sub static {
   }
 }
 
-sub abs {
+sub file_flag {
   my $self = shift;
   if (@_) {
-    $self->{abs} = $_[0];
+    $self->{file_flag} = $_[0];
     return $self;
   }
   else {
-    return $self->{abs};
+    return $self->{file_flag};
   }
 }
 
@@ -69,7 +69,7 @@ sub to_string {
   my ($self) = @_;
   
   my $string;
-  if ($self->abs) {
+  if ($self->file_flag) {
     $string = $self->name;
   }
   else {
@@ -107,7 +107,7 @@ Get and set the library name. C<z>, C<png>, etc.
 
 Get and set the library file. C</path/libz.so>, C</path/libpng.a>, etc.
 
-This field has the meaning when L</"abs"> is set to a true value.
+This field has the meaning when L</"file_flag"> is set to a true value.
 
 =head2 static
 
@@ -118,12 +118,14 @@ Get and set the flag if the library is linked statically such as C<libfoo.a>.
 
 The default is a false value.
 
-=head2 abs
+=head2 file_flag
 
-  my $abs = $lib_info->abs;
-  $lib_info->abs($abs);
+  my $file_flag = $lib_info->file_flag;
+  $lib_info->file_flag($file_flag);
 
-Get and set the flag if the library is linked as ablosulte path. The default is a false value.
+Get and set the flag if the library is linked by the file path such as C<path/libfoo.so>, not the name such as C<-lfoo>.
+
+The default is a false value.
 
 =head2 config
 
@@ -146,9 +148,9 @@ The list of class methods.
 
   my $lib = $lib_info->to_string;
 
-If L</"abs"> is false value, get the library flag such as C<-lfoo> from L<"/name">.
+If L</"file_flag"> is false value, get the library flag such as C<-lfoo> from L<"/name">.
 
-If L</"abs"> is true value, get the library file path from L<"/file">.
+If L</"file_flag"> is true value, get the library file path from L<"/file">.
 
 =head1 Operators
 

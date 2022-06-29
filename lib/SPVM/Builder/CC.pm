@@ -866,20 +866,20 @@ sub create_link_info {
   # Libraries
   my $libs = $config->libs;
   for my $lib (@$libs) {
-    # Libraries are linked by absolute path
+    # Library is linked by file path
     my $static;
     my $lib_name;
-    my $abs;
+    my $file_flag;
     if (ref $lib) {
-      $static = $lib->{static};
-      $lib_name = $lib->{name};
-      $abs = $lib->{abs};
+      $static = $lib->static;
+      $lib_name = $lib->name;
+      $file_flag = $lib->file_flag;
     }
     else {
       $lib_name = "$lib";
     }
     
-    if ($abs) {
+    if ($file_flag) {
       my $found_lib_file;
       for my $lib_dir (@$lib_dirs) {
         $lib_dir =~ s|[\\/]$||;
