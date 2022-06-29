@@ -5018,7 +5018,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_LIST_push(all_fields, new_field);
         SPVM_FIELD* found_field = SPVM_HASH_get(all_field_symtable, new_field->name, strlen(new_field->name));
         if (found_field) {
-          SPVM_COMPILER_error(compiler, "Can't define the field that name is the same as the field of the super class at %s line %d", class->op_extends->file, class->op_extends->line);
+          SPVM_COMPILER_error(compiler, "The field that name is the same as the field of the super class can't be defined at %s line %d", class->op_extends->file, class->op_extends->line);
           compile_error = 1;
           break;
         }

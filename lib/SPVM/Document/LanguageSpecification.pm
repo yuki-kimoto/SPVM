@@ -2239,6 +2239,8 @@ The name of the parant class must be different from the name of the class. Other
 
 The all super classes must be different from its own class. Otherwise a compilation error will occur.
 
+The field that name is the same as the field of the super class can't be defined. Otherwise a compilation error will occur.
+
 B<Examples:>
 
   class Point3D extends Point {

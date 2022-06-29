@@ -159,7 +159,7 @@ use Test::More;
       }
       {
         my $source = ['class MyClass extends MyParentClass { has x : int; }', 'class MyParentClass { has x : int; }'];
-        compile_not_ok($source, qr/Can't define the field that name is the same as the field of the super class/);
+        compile_not_ok($source, qr/The field that name is the same as the field of the super class can't be defined/);
       }
     }
   }
