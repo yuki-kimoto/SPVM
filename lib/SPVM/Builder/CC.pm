@@ -878,7 +878,7 @@ sub create_link_info {
     else {
       $lib_name = "$lib";
     }
-      
+    
     if ($abs) {
       my $found_lib_file;
       for my $lib_dir (@$lib_dirs) {

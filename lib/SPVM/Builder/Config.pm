@@ -633,14 +633,6 @@ sub add_static_libs {
   $self->add_libs(@static_lib_infos);
 }
 
-sub add_dynamic_libs {
-  my ($self, @dynamic_libs) = @_;
-  
-  my @dynamic_lib_infos = map { {type => 'dynamic', name => $_ } } @dynamic_libs;
-  
-  $self->add_libs(@dynamic_lib_infos);
-}
-
 sub use_resource {
   my ($self, @args) = @_;
   
