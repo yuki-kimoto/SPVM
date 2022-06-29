@@ -15,6 +15,7 @@
   * Remove type option of the hash reference of add_libs method of SPVM::Builder::Config.
   * libs, add_libs, add_static_libs of SPVM::Builder::Config can't receive a hash reference.
   * object_infos of SPVM::Builder::LinkInfo don't contains library files.
+  * Remove unused and undocumented protected descriptor.
 0.9613 2022-06-27
   [CHANGE]
   * Fix descriptor error message.

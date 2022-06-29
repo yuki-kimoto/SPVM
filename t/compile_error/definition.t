@@ -131,7 +131,7 @@ use Test::More;
       }
       {
         my $source = 'class MyClass { our $FOO : public private int; }';
-        compile_not_ok($source, qr/Only one of "private", "protected", or "public" class variable descriptors can be specified/);
+        compile_not_ok($source, qr/Only one of "private" or "public" class variable descriptors can be specified/);
       }
       {
         my $source = 'class MyClass { our $FOO : int; our $FOO : int; }';
@@ -226,7 +226,7 @@ use Test::More;
     }
     {
       my $source = q|class MyClass { public private enum { ONE } }|;
-      compile_not_ok($source, qr/Only one of "private", "protected", or "public" enumeration descriptors can be specified/);
+      compile_not_ok($source, qr/Only one of "private" or "public" enumeration descriptors can be specified/);
     }
   }
 }

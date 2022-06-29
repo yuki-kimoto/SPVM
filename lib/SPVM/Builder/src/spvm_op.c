@@ -1876,11 +1876,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           access_control_descriptors_count++;
           break;
         }
-        case SPVM_DESCRIPTOR_C_ID_PROTECTED: {
-          class->access_control_type = SPVM_DESCRIPTOR_C_ID_PROTECTED;
-          access_control_descriptors_count++;
-          break;
-        }
         case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
           class->access_control_type = SPVM_DESCRIPTOR_C_ID_PUBLIC;
           access_control_descriptors_count++;
@@ -1904,7 +1899,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_COMPILER_error(compiler, "mulnum_t, pointer_t interface_t can be specified only one at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of \"private\", \"protected\", or \"public\" class descriptors can be specified at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
+      SPVM_COMPILER_error(compiler, "Only one of \"private\" or \"public\" class descriptors can be specified at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
     }
   }
   
@@ -2447,11 +2442,6 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
           access_control_descriptors_count++;
           break;
         }
-        case SPVM_DESCRIPTOR_C_ID_PROTECTED: {
-         class_var->access_control_type = SPVM_DESCRIPTOR_C_ID_PROTECTED;
-          access_control_descriptors_count++;
-          break;
-        }
         case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
           class_var->access_control_type = SPVM_DESCRIPTOR_C_ID_PUBLIC;
           access_control_descriptors_count++;
@@ -2481,7 +2471,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
         SPVM_COMPILER_error(compiler, "Only one of \"rw\", \"ro\", \"wo\" class variable descriptors can be specifed at %s line %d", op_class_var->file, op_class_var->line);
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of \"private\", \"protected\", or \"public\" class variable descriptors can be specified at %s line %d", op_class_var->file, op_class_var->line);
+        SPVM_COMPILER_error(compiler, "Only one of \"private\" or \"public\" class variable descriptors can be specified at %s line %d", op_class_var->file, op_class_var->line);
       }
     }
   }
@@ -2524,11 +2514,6 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
           access_control_descriptors_count++;
           break;
         }
-        case SPVM_DESCRIPTOR_C_ID_PROTECTED: {
-          field->access_control_type = SPVM_DESCRIPTOR_C_ID_PROTECTED;
-          access_control_descriptors_count++;
-          break;
-        }
         case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
           field->access_control_type = SPVM_DESCRIPTOR_C_ID_PUBLIC;
           access_control_descriptors_count++;
@@ -2559,7 +2544,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
         SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in field declaration at %s line %d", op_field->file, op_field->line);
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of \"private\", \"protected\", or \"public\" field descriptors can be specified at %s line %d", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "Only one of \"private\" or \"public\" field descriptors can be specified at %s line %d", op_field->file, op_field->line);
       }
     }
   }
@@ -2621,11 +2606,6 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
           access_control_descriptors_count++;
           break;
         }
-        case SPVM_DESCRIPTOR_C_ID_PROTECTED: {
-          method->access_control_type = SPVM_DESCRIPTOR_C_ID_PROTECTED;
-          access_control_descriptors_count++;
-          break;
-        }
         case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
           // Default is public
           access_control_descriptors_count++;
@@ -2657,7 +2637,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       SPVM_COMPILER_error(compiler, "Only one of \"native\" and \"precompile\" method descriptors can be specified at %s line %d", op_descriptors->file, op_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of \"private\", \"protected\", or \"public\" method descriptors can be specified at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "Only one of \"private\" or \"public\" method descriptors can be specified at %s line %d", op_method->file, op_method->line);
     }
   }
 
@@ -2860,11 +2840,6 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
             access_control_descriptors_count++;
             break;
           }
-          case SPVM_DESCRIPTOR_C_ID_PROTECTED: {
-            method->access_control_type = SPVM_DESCRIPTOR_C_ID_PROTECTED;
-            access_control_descriptors_count++;
-            break;
-          }
           case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
             // Default is public
             access_control_descriptors_count++;
@@ -2876,7 +2851,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
         }
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of \"private\", \"protected\", or \"public\" enumeration descriptors can be specified at %s line %d", op_method->file, op_method->line);
+        SPVM_COMPILER_error(compiler, "Only one of \"private\" or \"public\" enumeration descriptors can be specified at %s line %d", op_method->file, op_method->line);
       }
     }
   }
