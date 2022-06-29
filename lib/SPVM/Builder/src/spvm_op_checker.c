@@ -4992,6 +4992,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     SPVM_CLASS* cur_class = class;
+    SPVM_HASH* all_field_symtable = SPVM_HASH_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
     for (int32_t class_index = class_stack->length - 1; class_index >= 0; class_index--) {
       SPVM_CLASS* class = SPVM_LIST_get(class_stack, class_index);
       
@@ -5015,6 +5016,15 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           new_field->access_control_type = field->access_control_type;
         }
         SPVM_LIST_push(all_fields, new_field);
+        SPVM_FIELD* found_field = SPVM_HASH_get(all_field_symtable, new_field->name, strlen(new_field->name));
+        if (found_field) {
+          SPVM_COMPILER_error(compiler, "Can't define the field that name is the same as the field of the super class at %s line %d", class->op_extends->file, class->op_extends->line);
+          compile_error = 1;
+          break;
+        }
+        else {
+          SPVM_HASH_set(all_field_symtable, new_field->name, strlen(new_field->name), new_field);
+        }
       }
       
       // All interfaces
@@ -5026,6 +5036,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     class->tmp_merged_fields = all_fields;
+    SPVM_HASH_free(all_field_symtable);
     
     // Add parent interfaces
     class->interfaces = all_interfaces;

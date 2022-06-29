@@ -157,6 +157,10 @@ use Test::More;
         my $source = ['class MyClass extends MyClass2 {}', 'class MyClass2 extends MyClass {}'];
         compile_not_ok($source, qr/The all super classes must be different from its own class. Recursive inheritance isn't allowed/);
       }
+      {
+        my $source = ['class MyClass extends MyParentClass { has x : int; }', 'class MyParentClass { has x : int; }'];
+        compile_not_ok($source, qr/Can't define the field that name is the same as the field of the super class/);
+      }
     }
   }
 
