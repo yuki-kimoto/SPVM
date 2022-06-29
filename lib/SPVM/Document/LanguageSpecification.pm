@@ -2241,6 +2241,16 @@ The all super classes must be different from its own class. Otherwise a compilat
 
 The field that name is the same as the field of the super class can't be defined. Otherwise a compilation error will occur.
 
+The parts of the definitions of the fields of the all super classes are copied to the class.
+
+The copied parts of the definitions are the field name, the type, the access controll.
+
+The the definitions of the interfaces of the all super classes are copied to the class.
+
+The copied order is from the beginning of the super class at the top level to the current class.
+
+The class can call instance methods of the super classes. The searching order is from the current class to the super class at the top level.
+
 B<Examples:>
 
   class Point3D extends Point {
