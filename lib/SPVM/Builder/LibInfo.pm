@@ -68,7 +68,15 @@ sub new {
 sub to_string {
   my ($self) = @_;
   
-  return $self->name;
+  my $string;
+  if ($self->abs) {
+    $string = $self->name;
+  }
+  else {
+    $string = $self->file;
+  }
+  
+  return $string;
 }
 
 1;
@@ -138,7 +146,9 @@ The list of class methods.
 
   my $lib = $lib_info->to_string;
 
-Get the object file name. This is same as C<lib> field.
+If L</"abs"> is false value, get the library flag such as C<-lfoo> from L<"/name">.
+
+If L</"abs"> is true value, get the library file path from L<"/file">.
 
 =head1 Operators
 
