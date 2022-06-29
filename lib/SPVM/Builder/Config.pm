@@ -1269,23 +1269,11 @@ B<Examples:>
 
 Add the values that each element is converted to the following hash reference after the last element of C<libs> field.
 
-  {type => 'static', name => $lib}
+  {static => 1, name => $lib}
 
 B<Examples:>
 
   $config->add_static_libs('gsl');
-
-=head2 add_dynamic_libs
-
-  $config->add_dynamic_libs(@libs);
-
-Add the values that each element is converted to the following hash reference after the last element of C<libs> field.
-
-  {type => 'dynamic', name => $lib}
-
-B<Examples:>
-
-  $config->add_dynamic_libs('gsl');
 
 =head2 use_resource
 
