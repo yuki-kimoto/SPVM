@@ -116,6 +116,7 @@ lib/SPVM/Builder/include/spvm_var_decl.h
 lib/SPVM/Builder/include/spvm_weaken_backref.h
 lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
+lib/SPVM/Builder/LibInfo.pm
 lib/SPVM/Builder/LinkInfo.pm
 lib/SPVM/Builder/ObjectFileInfo.pm
 lib/SPVM/Builder/Resource.pm

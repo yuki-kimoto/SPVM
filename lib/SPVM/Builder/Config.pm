@@ -6,6 +6,7 @@ use Config;
 use Carp 'confess';
 use File::Basename 'dirname';
 use SPVM::Builder::Util;
+use SPVM::Builder::LibInfo;
 
 # Fields
 sub file_optional {
@@ -561,6 +562,27 @@ sub add_libs {
   push @{$self->{libs}}, @libs;
 }
 
+sub add_static_libs {
+  my ($self, @libs) = @_;
+  
+  my @static_libs;
+  for my $lib (@libs) {
+    my $static_lib;
+    if (ref $lib eq 'SPVM::Builder::LibInfo') {
+      $static_lib = $lib->static(1);
+    }
+    else {
+      my $lib_name = $lib;
+      $static_lib = SPVM::Builder::LibInfo->new;
+      $static_lib->name($lib_name);
+      $static_lib->static(1);
+    }
+    push @static_libs, $static_lib;
+  }
+  
+  $self->add_libs(@static_libs);
+}
+
 sub add_source_files {
   my ($self, @source_files) = @_;
   
@@ -623,14 +645,6 @@ sub load_base_config {
   my $config = $self->load_mode_config($config_file, undef, @args);
 
   return $config;
-}
-
-sub add_static_libs {
-  my ($self, @static_libs) = @_;
-  
-  my @static_lib_infos = map { {type => 'static', name => $_ } } @static_libs;
-  
-  $self->add_libs(@static_lib_infos);
 }
 
 sub use_resource {
@@ -1057,21 +1071,7 @@ Not Windows
   my $libs = $config->libs;
   $config->libs($libs);
 
-Get and set libraries. These libraries are linked by the linker.
-
-If a dynamic link library is found from L<"lib_dirs">, this is linked. Otherwise if a static link library is found from L<"lib_dirs">, this is linked.
-
-B<Examples:>
-
-  $config->libs(['gsl', 'png']);
-
-If you want to link only dynamic link library, you can use the following hash reference as the value of the element instead of the library name.
-
-  {type => 'dynamic', name => 'gsl'}
-
-If you want to link only static link library, you can use the following hash reference as the value of the element instead of the library name.
-
-  {type => 'static', name => 'gsl'}
+Get and set library names or L<SPVM::Builder::LibInfo> objects. These libraries are linked by L<SPVM::Builder::CC/"link"> method.
 
 =head2 ldflags
 
@@ -1249,23 +1249,33 @@ Add the values after the last element of C<source_files> field.
 
   $config->add_libs(@libs);
 
-Add the values after the last element of C<libs> field.
+Add library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
 
 B<Examples:>
 
   $config->add_libs('gsl');
+  $config->add_libs('gsl', 'z');
+  $config->add_libs(
+    SPVM::Builder::LibInfo->new(name => 'gsl'),
+    SPVM::Builder::LibInfo->new(name => 'z', abs => 1),
+  );
 
 =head2 add_static_libs
 
   $config->add_static_libs(@libs);
 
-Add the values that each element is converted to the following hash reference after the last element of C<libs> field.
+Add library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
 
-  {static => 1, name => $lib}
+C<static> field is set to a true value.
 
 B<Examples:>
 
   $config->add_static_libs('gsl');
+  $config->add_static_libs('gsl', 'z');
+  $config->add_static_libs(
+    SPVM::Builder::LibInfo->new(name => 'gsl'),
+    SPVM::Builder::LibInfo->new(name => 'z', abs => 1),
+  );
 
 =head2 use_resource
 
