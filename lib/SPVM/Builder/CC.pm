@@ -864,81 +864,76 @@ sub create_link_info {
   }
   
   # Libraries
-  if (0) {
-    # Libraries are linked by absolute path
-    my $lib_dirs = $config->lib_dirs;
-    my @lib_files;
-    {
-      my $libs = $config->libs;
-      for my $lib (@$libs) {
-        my $type;
-        my $lib_name;
-        if (ref $lib eq 'HASH') {
-          $type = $lib->{type};
-          $lib_name = $lib->{name};
-        }
-        else {
-          $lib_name = $lib;
-          $type = 'dynamic,static';
-        }
-        
-        my $found_lib_file;
-        my $lib_type;
-        for my $lib_dir (@$lib_dirs) {
-          $lib_dir =~ s|[\\/]$||;
+  my $libs = $config->libs;
+  for my $lib (@$libs) {
+    if (ref $lib && $lib->{abs}) {
+      # Libraries are linked by absolute path
+      my $type;
+      my $lib_name;
+      if (ref $lib eq 'HASH') {
+        $type = $lib->{type};
+        $lib_name = $lib->{name};
+      }
+      else {
+        $lib_name = $lib;
+        $type = 'dynamic,static';
+      }
+      
+      my $found_lib_file;
+      my $lib_type;
+      for my $lib_dir (@$lib_dirs) {
+        $lib_dir =~ s|[\\/]$||;
 
-          my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
-          my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
+        my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
+        my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
 
-          my $static_lib_file_base = "lib$lib_name.a";
-          my $static_lib_file = "$lib_dir/$static_lib_file_base";
-          
-          if ($type eq 'dynamic,static') {
-            if (-f $dynamic_lib_file) {
-              $found_lib_file = $dynamic_lib_file;
-              $lib_type = 'dynamic';
-              last;
-            }
-            elsif (-f $static_lib_file) {
-              $found_lib_file = $static_lib_file;
-              $lib_type = 'static';
-              last;
-            }
+        my $static_lib_file_base = "lib$lib_name.a";
+        my $static_lib_file = "$lib_dir/$static_lib_file_base";
+        
+        if ($type eq 'dynamic,static') {
+          if (-f $dynamic_lib_file) {
+            $found_lib_file = $dynamic_lib_file;
+            $lib_type = 'dynamic';
+            last;
           }
-          elsif ($type eq 'dynamic') {
-            if (-f $dynamic_lib_file) {
-              $found_lib_file = $dynamic_lib_file;
-              $lib_type = 'dynamic';
-              last;
-            }
-          }
-          elsif ($type eq 'static') {
-            if (-f $static_lib_file) {
-              $found_lib_file = $static_lib_file;
-              $lib_type = 'static';
-              last;
-            }
+          elsif (-f $static_lib_file) {
+            $found_lib_file = $static_lib_file;
+            $lib_type = 'static';
+            last;
           }
         }
-        
-        if (defined $found_lib_file) {
-          push @lib_files, $found_lib_file;
-          
-          my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
-            file => $found_lib_file,
-            class_name => $class_name,
-            lib_type => $lib_type,
-          );
-          
-          push @$all_object_file_infos, $object_file_info;
+        elsif ($type eq 'dynamic') {
+          if (-f $dynamic_lib_file) {
+            $found_lib_file = $dynamic_lib_file;
+            $lib_type = 'dynamic';
+            last;
+          }
+        }
+        elsif ($type eq 'static') {
+          if (-f $static_lib_file) {
+            $found_lib_file = $static_lib_file;
+            $lib_type = 'static';
+            last;
+          }
         }
       }
+      
+      if (defined $found_lib_file) {
+        my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
+          file => $found_lib_file,
+          class_name => $class_name,
+          lib_type => $lib_type,
+        );
+        
+        push @$all_object_file_infos, $object_file_info;
+      }
     }
-  }
-  else {
-    # Libraries
-    my $libs = $config->libs;
-    push @all_ldflags, map { "-l$_" } @$libs;
+    else {
+      # Libraries
+      # gcc -o main main.c -L. -static-libgcc -Wl,-Bdynamic,-lc,-Bstatic,-lA
+      my $libs = $config->libs;
+      push @all_ldflags, map { "-l$_" } @$libs;
+    }
   }
   
   # Use resources
