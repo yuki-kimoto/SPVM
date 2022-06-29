@@ -237,7 +237,10 @@ The list of keywords:
   else
   enum
   eq
+  error
+  error_code
   eval
+  extends
   for
   float
   false
@@ -284,6 +287,7 @@ The list of keywords:
   required
   rw
   ro
+  set_error_code
   static
   switch
   string
@@ -1138,11 +1142,11 @@ The SPVM language is assumed to be parsed by yacc/bison.
 The definition of syntax parsing of SPVM language. This is written by yacc/bison syntax.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-  %token <opval> DESCRIPTOR MAKE_READ_ONLY INTERFACE
+  %token <opval> DESCRIPTOR MAKE_READ_ONLY INTERFACE ERROR_CODE ERROR
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
-  %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF CLASS_ID
+  %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF CLASS_ID EXTENDS SUPER
   %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
   %type <opval> opt_classes classes class class_block
@@ -1158,7 +1162,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> call_spvm_method opt_vaarg
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow has_impl
-  %type <opval> new array_init
+  %type <opval> new array_init die opt_extends
   %type <opval> var_decl var interface
   %type <opval> operator opt_operators operators opt_operator logical_operator
   %type <opval> field_name method_name class_name class_alias_name is_read_only
@@ -1174,7 +1178,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL SET_ERROR_CODE
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -1190,10 +1194,14 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | class
 
   class
-    : CLASS basic_type class_block END_OF_FILE
-    | CLASS basic_type ':' opt_descriptors class_block END_OF_FILE
-    | CLASS basic_type ';' END_OF_FILE
-    | CLASS basic_type ':' opt_descriptors ';' END_OF_FILE
+    : CLASS basic_type opt_extends class_block END_OF_FILE
+    | CLASS basic_type opt_extends ':' opt_descriptors class_block END_OF_FILE
+    | CLASS basic_type opt_extends ';' END_OF_FILE
+    | CLASS basic_type opt_extends ':' opt_descriptors ';' END_OF_FILE
+
+  opt_extends
+    : /* Empty */
+    | EXTENDS class_name
 
   class_block
     : '{' opt_declarations '}'
@@ -1319,14 +1327,17 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | BREAK ';'
     | RETURN ';'
     | RETURN operator ';'
-    | DIE operator ';'
-    | DIE ';'
+    | die
     | WARN operator ';'
     | PRINT operator ';'
     | weaken_field ';'
     | unweaken_field ';'
     | ';'
     | MAKE_READ_ONLY operator ';'
+
+  die
+    : DIE operator ';'
+    | DIE ';'
 
   for_statement
     : FOR '(' opt_operator ';' operator ';' opt_operator ')' block
@@ -1413,6 +1424,9 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | has_impl
     | logical_operator
     | CLASS_ID class_name
+    | ERROR_CODE
+    | SET_ERROR_CODE operator
+    | ERROR
 
   operators
     : operators ',' operator
@@ -1716,6 +1730,18 @@ The list of syntax parsing tokens:
     <td>ENUM</td><td>enum</td>
   </tr>
   <tr>
+    <td>ERROR</td><td>error</td>
+  </tr>
+  <tr>
+    <td>ERROR_CODE</td><td>error_code</td>
+  </tr>
+  <tr>
+    <td>EXTENDS</td><td>extends</td>
+  </tr>
+  <tr>
+    <td>SET_ERROR_CODE</td><td>set_error_code</td>
+  </tr>
+  <tr>
     <td>EVAL</td><td>eval</td>
   </tr>
   <tr>
@@ -1963,7 +1989,7 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL SET_ERROR_CODE
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
