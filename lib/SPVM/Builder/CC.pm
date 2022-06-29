@@ -673,9 +673,6 @@ sub link {
   
   my $category = $options->{category};
   
-  # All object file infos
-  my $all_object_file_infos = [@$object_file_infos];
-  
   # Build directory
   my $build_dir = $self->builder->build_dir;
   if (defined $build_dir) {
@@ -703,6 +700,137 @@ sub link {
       $quiet = $self->quiet;
     }
   }
+  
+  # Link information
+  my $link_info = $self->create_link_info($class_name, $object_file_infos, $config, $options);
+  
+  # Output file
+  my $output_file = $link_info->output_file;
+  
+  # Execute the callback before this link
+  my $before_link = $config->before_link;
+  if ($before_link) {
+    $before_link->($config, $link_info);
+  }
+  
+  my @object_files = map { "$_" } @{$link_info->object_file_infos};
+  my $input_files = [@object_files];
+  if (defined $config->file) {
+    push @$input_files, $config->file;
+  }
+  my $need_generate = SPVM::Builder::Util::need_generate({
+    force => $self->force || $config->force,
+    output_file => $output_file,
+    input_files => $input_files,
+  });
+  
+  if ($need_generate) {
+    # Move temporary dynamic library file to blib directory
+    mkpath dirname $output_file;
+    
+    my $ld = $link_info->ld;
+    
+    my $cbuilder_config = {
+      ld => $ld,
+      lddlflags => '',
+      shrpenv => '',
+      libpth => '',
+      libperl => '',
+      
+      # "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
+      # Linker Script File(.lds) when "perllibs" is empty string.
+      # This is syntax error in Linker Script File(.lds)
+      # For the reason, libm is linked which seems to have no effect.
+      perllibs => '-lm',
+    };
+
+    # ExtUtils::CBuilder object
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
+    
+    my $link_info_ld = $link_info->ld;
+    my $link_info_ldflags = $link_info->ldflags;
+    my $link_info_class_name = $link_info->class_name;
+    my $link_info_output_file = $link_info->output_file;
+    my $link_info_object_file_infos = $link_info->object_file_infos;
+
+    my $link_info_object_files = [map { my $tmp = $_->to_string; $tmp } @$link_info_object_file_infos];
+
+    my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
+    
+    my @tmp_files;
+    
+    my $output_type = $config->output_type;
+    
+    # Create a dynamic library
+    if ($output_type eq 'dynamic_lib') {
+      my $dl_func_list = $self->create_dl_func_list($class_name, {category => $category});
+      (undef, @tmp_files) = $cbuilder->link(
+        objects => $link_info_object_files,
+        module_name => $link_info_class_name,
+        lib_file => $link_info_output_file,
+        extra_linker_flags => $link_info_ldflags_str,
+        dl_func_list => $dl_func_list,
+      );
+    }
+    # Create a static library
+    elsif ($output_type eq 'static_lib') {
+      my @object_files = map { "$_" } @$link_info_object_files;
+      my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
+      $cbuilder->do_system(@ar_cmd)
+        or confess "Can't execute command @ar_cmd";
+    }
+    # Create an executable file
+    elsif ($output_type eq 'exe') {
+      (undef, @tmp_files) = $cbuilder->link_executable(
+        objects => $link_info_object_files,
+        module_name => $link_info_class_name,
+        exe_file => $link_info_output_file,
+        extra_linker_flags => $link_info_ldflags_str,
+      );
+    }
+    else {
+      confess "Unknown output_type \"$output_type\"";
+    }
+
+    if ($self->debug) {
+      if ($^O eq 'MSWin32') {
+        my $def_file;
+        my $lds_file;
+        for my $tmp_file (@tmp_files) {
+          # Remove double quote
+          $tmp_file =~ s/^"//;
+          $tmp_file =~ s/"$//;
+
+          if ($tmp_file =~ /\.def$/) {
+            $def_file = $tmp_file;
+            $lds_file = $def_file;
+            $lds_file =~ s/\.def$/.lds/;
+            last;
+          }
+        }
+        if (defined $def_file && -f $def_file) {
+          my $def_content = SPVM::Builder::Util::slurp_binary($def_file);
+          print "[$def_file]\n$def_content\n";
+        }
+        if (defined $lds_file && -f $lds_file) {
+          my $lds_content = SPVM::Builder::Util::slurp_binary($lds_file);
+          print "[$lds_file]\n$lds_content\n";
+        }
+      }
+    }
+  }
+  
+  return $output_file;
+}
+
+sub create_link_info {
+  my ($self, $class_name, $object_file_infos, $config, $options) = @_;
+
+  my $category = $options->{category};
+
+  my $all_object_file_infos = [@$object_file_infos];
+  
+  $options ||= {};
   
   # Linker
   my $ld = $config->ld;
@@ -911,116 +1039,7 @@ sub link {
     ldflags => \@all_ldflags,
     output_file => $output_file,
   );
-
-  # Execute the callback before this link
-  my $before_link = $config->before_link;
-  if ($before_link) {
-    $before_link->($config, $link_info);
-  }
-  
-  my $input_files = [@$all_object_files];
-  if (defined $config->file) {
-    push @$input_files, $config->file;
-  }
-  my $need_generate = SPVM::Builder::Util::need_generate({
-    force => $self->force || $config->force,
-    output_file => $output_file,
-    input_files => $input_files,
-  });
-  
-  if ($need_generate) {
-    # Move temporary dynamic library file to blib directory
-    mkpath dirname $output_file;
-  
-    my $cbuilder_config = {
-      ld => $ld,
-      lddlflags => '',
-      shrpenv => '',
-      libpth => '',
-      libperl => '',
-      
-      # "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
-      # Linker Script File(.lds) when "perllibs" is empty string.
-      # This is syntax error in Linker Script File(.lds)
-      # For the reason, libm is linked which seems to have no effect.
-      perllibs => '-lm',
-    };
-
-    # ExtUtils::CBuilder object
-    my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
-    
-    my $link_info_ld = $link_info->ld;
-    my $link_info_ldflags = $link_info->ldflags;
-    my $link_info_class_name = $link_info->class_name;
-    my $link_info_output_file = $link_info->output_file;
-    my $link_info_object_file_infos = $link_info->object_file_infos;
-
-    my $link_info_object_files = [map { my $tmp = $_->to_string; $tmp } @$link_info_object_file_infos];
-
-    my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
-    
-    my @tmp_files;
-    
-    # Create a dynamic library
-    if ($output_type eq 'dynamic_lib') {
-      my $dl_func_list = $self->create_dl_func_list($class_name, {category => $category});
-      (undef, @tmp_files) = $cbuilder->link(
-        objects => $link_info_object_files,
-        module_name => $link_info_class_name,
-        lib_file => $link_info_output_file,
-        extra_linker_flags => $link_info_ldflags_str,
-        dl_func_list => $dl_func_list,
-      );
-    }
-    # Create a static library
-    elsif ($output_type eq 'static_lib') {
-      my @object_files = map { "$_" } @$link_info_object_files;
-      my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
-      $cbuilder->do_system(@ar_cmd)
-        or confess "Can't execute command @ar_cmd";
-    }
-    # Create an executable file
-    elsif ($output_type eq 'exe') {
-      (undef, @tmp_files) = $cbuilder->link_executable(
-        objects => $link_info_object_files,
-        module_name => $link_info_class_name,
-        exe_file => $link_info_output_file,
-        extra_linker_flags => $link_info_ldflags_str,
-      );
-    }
-    else {
-      confess "Unknown output_type \"$output_type\"";
-    }
-
-    if ($self->debug) {
-      if ($^O eq 'MSWin32') {
-        my $def_file;
-        my $lds_file;
-        for my $tmp_file (@tmp_files) {
-          # Remove double quote
-          $tmp_file =~ s/^"//;
-          $tmp_file =~ s/"$//;
-
-          if ($tmp_file =~ /\.def$/) {
-            $def_file = $tmp_file;
-            $lds_file = $def_file;
-            $lds_file =~ s/\.def$/.lds/;
-            last;
-          }
-        }
-        if (defined $def_file && -f $def_file) {
-          my $def_content = SPVM::Builder::Util::slurp_binary($def_file);
-          print "[$def_file]\n$def_content\n";
-        }
-        if (defined $lds_file && -f $lds_file) {
-          my $lds_content = SPVM::Builder::Util::slurp_binary($lds_file);
-          print "[$lds_file]\n$lds_content\n";
-        }
-      }
-    }
-  }
-  
-  return $output_file;
+  return $link_info;
 }
 
 sub create_precompile_source_file {
