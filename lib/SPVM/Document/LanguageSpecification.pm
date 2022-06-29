@@ -4488,17 +4488,17 @@ Omitting L</"Type"> when L</"Local Variable Declaration"> by Type Inference can.
   # Foo
   my $foo = new Foo;
 
-=head1 Type Assignability
+=head1 Assignability
 
-The type assignability at compile-time is explained.
+The assignability at compile-time is explained.
 
 The assignability is false, a compilation error will occur.
 
-=head2 Type Assignability to Numeric
+=head2 Assignability to Numeric
 
-Explains the type assignability to the L<numeric types|"Numeric Type">.
+Explains the assignability to the L<numeric types|"Numeric Type">.
 
-=head3 Type Assignability from Numeric to Numeric
+=head3 Assignability from Numeric to Numeric
 
 If the L<nemric type order|/"Numeric Type Order"> of the left operand is greater than or equal to the L<nemric type order|/"Numeric Type Order"> of the right operand, the assignability is true.
 
@@ -4547,7 +4547,7 @@ B<Examples:>
   # float to double
   my $num : double = 4.5f;
 
-If the L<nemric type order|/"Numeric Type Order"> of the left operand is less than the L<nemric type order|/"Numeric Type Order"> of the right operand, the type assignability is conditional true.
+If the L<nemric type order|/"Numeric Type Order"> of the left operand is less than the L<nemric type order|/"Numeric Type Order"> of the right operand, the assignability is conditional true.
 
 The condition is that the right operand is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of the left operand.
 
@@ -4581,7 +4581,7 @@ B<Examples:>
   # int to byte
   my $num : byte = 127;
 
-=head3 Type Assignability from NumericObject to Numeric
+=head3 Assignability from NumericObject to Numeric
 
 If the type of the left operand is a L<numeric type|/"Numeric Type"> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|/"Numeric Object Type">, the assignability is true.
 
@@ -4605,7 +4605,7 @@ B<Examples:>
 
   my $double : double = Double->new(3.5);
 
-=head3 Type Assignability from Any Object to Numeric
+=head3 Assignability from Any Object to Numeric
 
 If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is a L<any object type|/"Any Object Type"> C<object>, the assignability is true.
 
@@ -4626,11 +4626,11 @@ B<Examples:>
 
   my $double : double = (object)Double->new(3.5);
 
-=head3 Type Assignability from Others to Numeric
+=head3 Assignability from Others to Numeric
 
 If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is other than the types described above, the assignability is false.
 
-=head2 Type Assignability to Multi-Numeric
+=head2 Assignability to Multi-Numeric
 
 If the type of the left operand is a L<multi-numeric type|/"Multi-Numeric Type"> and the type of the right operand is the same type of the left operand, the assignability is true.
 
@@ -4651,7 +4651,7 @@ B<Examples:>
   my $z1 : Complex_2d;
   my $z2 : Complex_2d = $z1;
 
-=head2 Type Assignability to Referenece
+=head2 Assignability to Referenece
 
 If the type of the left operand is a L<reference type|/"Reference Type"> and the type of the right operand is the same type of the left operand, the assignability is true.
 
@@ -4672,7 +4672,7 @@ B<Examples:>
   my $num : int = 5;
   my $num_ref : int* = \num;
 
-=head2 Type Assignability to String
+=head2 Assignability to String
 
 If the type of the left operand is the L<string type|/"String Type"> without the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type">, the assignability is true.
 
@@ -4706,7 +4706,7 @@ B<Examples:>
   my $num_string : string = 3;
   my $string : string = undef;
 
-=head2 Type Assignability to NumericObject
+=head2 Assignability to NumericObject
 
 If the type of the left operand is a L<numeric object type|/"Numeric Object Type"> and the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Type"> that is corresponding to the numeric object type, or the L<undef type|/"Undefined Type">, the assignability is true.
 
@@ -4732,7 +4732,7 @@ B<Examples:>
   my $num_object : Int = 3;
   my $num_object : Int = undef;
 
-=head2 Type Assignability to Class
+=head2 Assignability to Class
 
 If the type of the left operand is a L<class type|/"Class Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the assignability is true.
 
@@ -4757,7 +4757,7 @@ B<Examples:>
   my $point : Point = Point->new;
   my $point : Point = undef;
 
-=head2 Type Assignability to Interface
+=head2 Assignability to Interface
 
 If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the assignability is true.
 
@@ -4783,7 +4783,7 @@ B<Examples:>
   my $stringable : Stringable = Point->new_xy(1, 2);
   my $stringable : Stringable = undef;
 
-=head2 Type Assignability to Any Object
+=head2 Assignability to Any Object
 
 If the type of the left operand is the L<any object type|/"Any Object Type"> and the type of the right operand is an L<object type|/"Object Type">, a L<numeric type|/"Numeric Type"> or the L<undef type|/"Undefined Type">, the assignability is true.
 
@@ -4809,7 +4809,7 @@ B<Examples:>
   my $num_object : object = 3;
   my $object : object = undef;
 
-=head2 Type Assignability to Undefined
+=head2 Assignability to Undefined
 
 If the type of the left operand is the L<undefined type|/"Undefined Type">, the assignability is false.
 
@@ -4827,7 +4827,7 @@ B<Examples:>
   # The assignability is false
   undef = Point->new;
   
-=head2 Type Assignability to Numeric Array
+=head2 Assignability to Numeric Array
 
 If the type of the left operand is a L<numeric array type|/"Numeric Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
@@ -4854,7 +4854,7 @@ B<Examples:>
   my $nums : int[] = new int[3];
   my $nums : int[] = undef;
 
-=head2 Type Assignability to Multi-Numeric Array
+=head2 Assignability to Multi-Numeric Array
 
 If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
@@ -4876,7 +4876,7 @@ B<Examples:>
   my $nums : Complex_2d[] = new Complex_2d[3];
   my $nums : Complex_2d[] = undef;
 
-=head2 Type Assignability to String Array
+=head2 Assignability to String Array
 
 If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
@@ -4898,7 +4898,7 @@ B<Examples:>
   my $strings : string[] = ["abc", "def"];
   my $strings : string[] = undef;
 
-=head2 Type Assignability to Class Array
+=head2 Assignability to Class Array
 
 If the type of the left operand is a L<class array type|/"Class Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
@@ -4923,7 +4923,7 @@ B<Examples:>
   my $points : Point[] = new Point[3];
   my $points : Point[] = undef;
 
-=head2 Type Assignability to Interface Array
+=head2 Assignability to Interface Array
 
 If the type of the left operand is an L<interface array type|/"Interface Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
@@ -4951,7 +4951,7 @@ B<Examples:>
   
   my $stringables : Stringable[] = undef;
 
-=head2 Type Assignability to Any Object Array
+=head2 Assignability to Any Object Array
 
 If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the assignability is true.
 
@@ -4987,7 +4987,7 @@ B<Examples:>
   my $strings : string[];
   my $any_object : object[] = $strings;
   
-=head2 Type Assignability to Multi-Dimensional Array
+=head2 Assignability to Multi-Dimensional Array
 
 If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
 
@@ -5028,19 +5028,19 @@ B<Examples:>
     my $muldim_array : Stringer[][] = [[$cb]];
   }
 
-=head1 Type Castability
+=head1 Castability
 
-The type castability at compile-time is explained.
+The castability at compile-time is explained.
 
 The castability is false, a compilation error will occur.
 
-=head2 Type Castability to Numeric
+=head2 Castability to Numeric
 
-The type castability to the L<numeric types|/"Numeric Type"> is explained.
+The castability to the L<numeric types|/"Numeric Type"> is explained.
 
-=head3 Type Castability from Numeric to Numeric
+=head3 Castability from Numeric to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is a L<numeric type|/"Numeric Type">, the type castability is true.
+If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is a L<numeric type|/"Numeric Type">, the castability is true.
 
 If the L<nemric type order|/"Numeric Type Order"> of the left operand is greater than the L<nemric type order|/"Numeric Type Order"> of the right operand, the L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
 
@@ -5051,7 +5051,7 @@ If the L<nemric type order|/"Numeric Type Order"> of the left operand is equal t
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>byte</td><td>byte</td><td>None</td></tr>
   <tr><td>True</td><td>short</td><td>short</td><td>None</td></tr>
   <tr><td>True</td><td>int</td><td>int</td><td>None</td></tr>
@@ -5113,14 +5113,14 @@ B<Examples:>
   # double to int
   my $num = (int)2.5;
 
-=head3 Type Castability from NumericObject to Numeric
+=head3 Castability from NumericObject to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Type"> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|/"Numeric Object Type">, the type castability is true.
+If the type of the left operand is a L<numeric type|/"Numeric Type"> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|/"Numeric Object Type">, the castability is true.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td></tr>
   <tr><td>True</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td></tr>
   <tr><td>True</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td></tr>
@@ -5137,16 +5137,16 @@ B<Examples:>
 
   my $double = (double)Double->new(3.5);
 
-=head3 Type Castability from Any Object to Numeric
+=head3 Castability from Any Object to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is a L<any object type|/"Any Object Type"> C<object>, the type castability is true.
+If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is a L<any object type|/"Any Object Type"> C<object>, the castability is true.
 
 The L<unboxing type conversion|/"Unboxing Type Conversion"> corresponding to the numeric type is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td></tr>
 </table>
 
@@ -5160,20 +5160,20 @@ B<Examples:>
   my $object : object = Double->new(3.5);
   my $double = (double)$object;
 
-=head3 Type Castability from Others to Numeric
+=head3 Castability from Others to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is other than the types described above, the type castability is false.
+If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is other than the types described above, the castability is false.
 
-=head2 Type Castability to Multi-Numeric
+=head2 Castability to Multi-Numeric
 
-If the type of the left operand is a L<multi-numeric type|/"Multi-Numeric Type"> and the type of the right operand is the same type of the left operand, the type castability is true.
+If the type of the left operand is a L<multi-numeric type|/"Multi-Numeric Type"> and the type of the right operand is the same type of the left operand, the castability is true.
 
-Otherwise, the type castability is false.
+Otherwise, the castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td></tr>
   <tr><td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -5185,16 +5185,16 @@ B<Examples:>
   my $z1 : Complex_2d;
   my $z2 = (Complex_2d)$z1;
 
-=head2 Type Castability to Referenece
+=head2 Castability to Referenece
 
-If the type of the left operand is a L<reference type|/"Reference Type"> and the type of the right operand is the same type of the left operand, the type castability is true.
+If the type of the left operand is a L<reference type|/"Reference Type"> and the type of the right operand is the same type of the left operand, the castability is true.
 
-Otherwise, the type castability is false.
+Otherwise, the castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>REF_X</td><td>REF_X</td><td>None</td></tr>
   <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -5206,24 +5206,24 @@ B<Examples:>
   my $num : int = 5;
   my $num_ref = (int*)\num;
 
-=head2 Type Castability to String
+=head2 Castability to String
 
-If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is the L<string type|/"String Type">, the type castability is true.
+If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is the L<string type|/"String Type">, the castability is true.
 
 If the type of the left operand is the L<string type|/"String Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<Numeric-to-String type conversion|/"Numeric-to-String Type Conversion"> is performed.
 
-If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is a L<numeric type|/"Numeric Type">, the L<undef type|/"Undefined Type">, or the L<any object type|/"Any Object Type"> C<object>, the type castability is true.
+If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is a L<numeric type|/"Numeric Type">, the L<undef type|/"Undefined Type">, or the L<any object type|/"Any Object Type"> C<object>, the castability is true.
 
 If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<Numeric-to-String type conversion|/"Numeric-to-String Type Conversion"> is performed.
 
-If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, the type castability is true and the runtime type checking is performed.
+If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, the castability is true and the runtime type checking is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
   <tr><td>True</td><td>string</td><td>mutable string</td><td>None</td></tr>
   <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>None</td></tr>
@@ -5243,13 +5243,13 @@ B<Examples:>
   my $num_string = (string)3;
   my $string : string = undef;
 
-=head2 Type Castability to NumericObject
+=head2 Castability to NumericObject
 
 If the type of the left operand is a L<numeric object type|/"Numeric Object Type"> and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Type"> that is corresponding to the numeric object type, the L<any object type|/"Any Object Type"> C<object>, or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Type"> that is corresponding to the numeric object type, the L<any object type|/"Any Object Type"> C<object>, or the L<undef type|/"Undefined Type">, the castability is true.
 
-The type of the right operand is other than above, the type castability is false.
+The type of the right operand is other than above, the castability is false.
 
 If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
 
@@ -5258,7 +5258,7 @@ If the type of the left operand is the type of the right operand is the L<any ob
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -5277,24 +5277,24 @@ B<Examples:>
   my $object : object = Int->new(3);
   my $num_object = (Int)$object;
 
-=head2 Type Castability to Class
+=head2 Castability to Class
 
 If the type of the left operand is a L<class type|/"Class Type"> and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type"> or the L<undef type|/"Undefined Type">, the castability is true.
 
-If the type of the left operand is a super class of the type of right operand, the type castability is true.
+If the type of the left operand is a super class of the type of right operand, the castability is true.
 
-If the type of the right operand is a super class of the type of left operand, the type castability is true.
+If the type of the right operand is a super class of the type of left operand, the castability is true.
 
-Otherwise, the type castability is false.
+Otherwise, the castability is false.
 
 If the type of the right operand is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS_X</td><td>SUPER_CLASS_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -5318,22 +5318,22 @@ B<Examples:>
 
   my $point = (Point)undef;
 
-=head2 Type Castability to Interface
+=head2 Castability to Interface
 
 If the type of the left operand is an L<interface type|/"Interface Type">, and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Type"> or the L<undef type|/"Undefined Type">, the castability is true.
 
-If the type of the right operand is a L<class type|/"Class Type"> and the class has the interface of the left operand, the type castability is true.
+If the type of the right operand is a L<class type|/"Class Type"> and the class has the interface of the left operand, the castability is true.
 
-Otherwise, the type castability is false.
+Otherwise, the castability is false.
 
 If the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -5359,20 +5359,20 @@ B<Examples:>
   
   my $stringable : Stringable = undef;
 
-=head2 Type Castability to Any Object
+=head2 Castability to Any Object
 
 If the type of the left operand is the L<any object type|/"Any Object Type"> and the types of the right operands are the following cases:
  
-If the type of the right operand is an L<object type|/"Object Type">, a L<numeric type|/"Numeric Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is an L<object type|/"Object Type">, a L<numeric type|/"Numeric Type"> or the L<undef type|/"Undefined Type">, the castability is true.
 
-Otherwise, the type castability is false.
+Otherwise, the castability is false.
 
 If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>object</td><td>OBJECT_Y</td><td>None</td></tr>
   <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
   <tr><td>True</td><td>object</td><td>undef</td><td>None</td></tr>
@@ -5387,15 +5387,15 @@ B<Examples:>
   my $num_object : object = 3;
   my $object : object = undef;
 
-=head2 Type Castability to Numeric Array
+=head2 Castability to Numeric Array
 
-If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the L<string type|/"String Type">, the type castability is true.
+If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the L<string type|/"String Type">, the castability is true.
 
 If the type of the left operand is a L<numeric array type|/"Numeric Array Type"> and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the castability is true.
 
-Otherwise, the type castability is false.
+Otherwise, the castability is false.
 
 If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the L<string type|/"String Type">, L<String-to-byte[] Type Conversion> is performed.
 
@@ -5404,7 +5404,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Type Conversion</a></td></tr>
   <tr><td>True</td><td>NUMERIC_X[]</td><td>NUMERIC_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>NUMERIC[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -5425,20 +5425,20 @@ B<Examples:>
   
   my $nums = (int[])undef;
 
-=head2 Type Castability to Multi-Numeric Array
+=head2 Castability to Multi-Numeric Array
 
 If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the types of the right operands are the following cases:
  
-If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the castability is true.
 
-Otherwise, the type castability is false.
+Otherwise, the castability is false.
 
 If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>undef</td><td>None</td></tr>
@@ -5456,20 +5456,20 @@ B<Examples:>
 
   my $nums = (Complex_2d[])undef;
 
-=head2 Type Castability to String Array
+=head2 Castability to String Array
 
 If the type of the left operand is a L<string array type|/"String Array Type"> and the types of the right operands are the following cases:
  
-If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the castability is true.
 
-Otherwise, the type castability is false.
+Otherwise, the castability is false.
 
 If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>string[]</td><td>string[]</td><td>None</td></tr>
   <tr><td>True</td><td>string[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>True</td><td>string[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -5491,24 +5491,24 @@ B<Examples:>
 
   my $strings  = (string[])undef;
 
-=head2 Type Castability to Class Array
+=head2 Castability to Class Array
 
 If the type of the left operand is a L<class array type|/"Class Array Type"> and the types of the right operands are the following cases:
 
-If the L<basic type|/"Basic Type"> of the left operand is a super class of the L<basic type|/"Basic Type"> of the right operand, the type castability is true.
+If the L<basic type|/"Basic Type"> of the left operand is a super class of the L<basic type|/"Basic Type"> of the right operand, the castability is true.
 
-If the L<basic type|/"Basic Type"> of the right operand is a super class of the L<basic type|/"Basic Type"> of the left operand, the type castability is true.
+If the L<basic type|/"Basic Type"> of the right operand is a super class of the L<basic type|/"Basic Type"> of the left operand, the castability is true.
 
-If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the castability is true.
 
-Otherwise, the type castability is false.
+Otherwise, the castability is false.
 
 If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>SUPER_CLASS_Y[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -5532,19 +5532,19 @@ B<Examples:>
 
   my $points = (Point[])undef;
 
-=head2 Type Castability to Interface Array
+=head2 Castability to Interface Array
 
 If the type of the left operand is an L<interface array type|/"Interface Array Type"> and the types of the right operands are the following cases:
 
-If the type of the right operand is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Type"> has the interface of the basic type of the left operand, the type castability is true.
+If the type of the right operand is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Type"> has the interface of the basic type of the left operand, the castability is true.
 
-If the type of the right operand is the same type of the left operand, the type castability is true.
+If the type of the right operand is the same type of the left operand, the castability is true.
 
-If the type of the right operand is an differnt type of L<interface array type|/"Interface Array Type">, the type castability is also true.
+If the type of the right operand is an differnt type of L<interface array type|/"Interface Array Type">, the castability is also true.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]>  or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]>  or the L<undef type|/"Undefined Type">, the castability is true.
 
-Otherwise, the type castability is false.
+Otherwise, the castability is false.
 
 If the type of the right operand is an differnt type of  L<interface array type|/"Interface Array Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
@@ -5553,7 +5553,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFAECE_HAVING_Y[]</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_Y[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -5573,22 +5573,22 @@ B<Examples:>
   
   my $stringables = (Stringable[])undef;
 
-=head2 Type Castability to Any Object Array
+=head2 Castability to Any Object Array
 
 If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the types of the right operands are the following cases:
 
-If the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the castability is true.
 
-If the type of the right operand is an L<any object type|/"Any Object Type">, the type castability is true.
+If the type of the right operand is an L<any object type|/"Any Object Type">, the castability is true.
 
-Otherwise, the type castability is false.
+Otherwise, the castability is false.
 
 If the type of the right operand is an L<any object type|/"Any Object Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -5619,26 +5619,26 @@ B<Examples:>
   my $strings : string[];
   my $any_object = (object[])$strings;
   
-=head2 Type Castability to Multi-Dimensional Array
+=head2 Castability to Multi-Dimensional Array
 
 If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and  and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the type castability is true.
+If the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the castability is true.
 
-If the type of the right operand is an L<any object type|/"Any Object Type">, the type castability is true.
+If the type of the right operand is an L<any object type|/"Any Object Type">, the castability is true.
 
-If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the left operand is a super class of the L<basic type|/"Basic Type"> of the right operand, the type castability is true.
+If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the left operand is a super class of the L<basic type|/"Basic Type"> of the right operand, the castability is true.
 
-If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the right operand is a super class of the L<basic type|/"Basic Type"> of the left operand, the type castability is true.
+If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the right operand is a super class of the L<basic type|/"Basic Type"> of the left operand, the castability is true.
 
-If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is the same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the type castability is true.
+If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is the same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the castability is true.
 
-Otherwise, the type castability is false.
+Otherwise, the castability is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>ANY_X[][]...</td><td>ANY_X[][]...</td><td>None</td></tr>
   <tr><td>True</td><td>ANY_X[][]...</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>True</td><td>ANY_X[][]...</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -5692,7 +5692,7 @@ B<Examples:>
 
 The implicite type conversion is the L<type conversion|/"Type Conversion"> performed implicitly when a value is assigned using L<assignment operator|/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Call">, or set a return value using the L<return statement|/"return Statement">.
 
-See L<"Type Assignability"> if you know when implicite type conversion is performed.
+See L<"Assignability"> if you know when implicite type conversion is performed.
 
 B<Examples:>
   
@@ -6069,27 +6069,27 @@ The operand of the L<logical NOT operator|/"Logical NOT Operator">:
 
 The runtime type cheking is the type cheking that is performed at runtime.
 
-The L<type cast|/"Type Cast"> operators that operand is an L<object type|/"object Type"> performe the runtime type checking by the rule of the L<runtime type assignability/"Runtime Type Assignability">.
+The L<type cast|/"Type Cast"> operators that operand is an L<object type|/"object Type"> performe the runtime type checking by the rule of the L<runtime assignability/"Runtime Assignability">.
 
-=head2 Runtime Type Assignability
+=head2 Runtime Assignability
 
-The runtime type assignability is the type assignalibility at runtime.
+The runtime assignability is the assignability at runtime.
 
-The L<isa operator|/"isa Operator"> checks the L<runtime type assignability/"Runtime Type Assignability">
+The L<isa operator|/"isa Operator"> checks the L<runtime assignability/"Runtime Assignability">
 
 The runtime assignability is false, an exception will be thrown.
 
-If the type of the distribution is an L<object type|/"Object Type"> and the type of the source is L<undef|/"Undefined Type">, the runtime type assignability is true.
+If the type of the distribution is an L<object type|/"Object Type"> and the type of the source is L<undef|/"Undefined Type">, the runtime assignability is true.
 
-If the type of the distribution is the same as the type of the source, the runtime type assignability is true.
+If the type of the distribution is the same as the type of the source, the runtime assignability is true.
 
-If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Type">, the runtime type assignability is true.
+If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Type">, the runtime assignability is true.
 
-If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Type">, the runtime type assignability is true.
+If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Type">, the runtime assignability is true.
 
-If the type of distribution is an L<class type|/"Class Type">, an L<class array type|/"Class Array Type">, an L<class multi-dimensional array type|/"Class Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution is a super class of the basic type of the source, the runtime type assignability is true.
+If the type of distribution is an L<class type|/"Class Type">, an L<class array type|/"Class Array Type">, an L<class multi-dimensional array type|/"Class Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution is a super class of the basic type of the source, the runtime assignability is true.
 
-If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime type assignability is true.
+If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime assignability is true.
 
 =begin html
 
@@ -7407,11 +7407,11 @@ The C<isa> operator is a L<comparison operator|/"Comparison Operator"> to check 
 
 The return type is L<int type|/"int Type">.
 
-If the right type is a L<numeric type|/"Numeric Type">, L</"Multi-Numeric Type">, L</"Any Object Type">, L</"Reference Type">, it checks the L<type assignability|/"Type Assignability"> at compile-time.
+If the right type is a L<numeric type|/"Numeric Type">, L</"Multi-Numeric Type">, L</"Any Object Type">, L</"Reference Type">, it checks the L<assignability|/"Assignability"> at compile-time.
 
-If the type assignability is true, it is replaced with C<1>. Otherwise it is replaced with C<0>.
+If the assignability is true, it is replaced with C<1>. Otherwise it is replaced with C<0>.
 
-If the right type is other type, it checks the L<runtime type assignability|/"Runtime Type Assignability"> at runtime. If the runtime type assignability is true, it returns C<1>. Otherwise return C<0>.
+If the right type is other type, it checks the L<runtime assignability|/"Runtime Assignability"> at runtime. If the runtime assignability is true, it returns C<1>. Otherwise return C<0>.
 
 B<Examples:>
 
@@ -7824,11 +7824,11 @@ The type cast is the L<operator|/"Operator"> to perform an L<explicite type conv
   # Postfix Type Cast
   OPERAND->(TYPE)
 
-If the type cast doesn't have the L<type castability|"Type Castability">, a compilation error will occur.
+If the type cast doesn't have the L<castability|"Castability">, a compilation error will occur.
 
 A type cast performs a L<type conversion|/"Type Conversion">, merely copying, or copying with a runtime type checking.
 
-The behavior of type casts are explains in L<Type Castability>.
+The behavior of type casts are explains in L<Castability>.
 
 B<Examples:>
   
@@ -7861,7 +7861,7 @@ The setting local variable is an L<operator|/"Operator"> to set the value of L</
 
   $var = VALUE
 
-The assignment of the value must satisfy the L<type assignability|/"Type Assignability">, otherwise a compilation error will occur.
+The assignment of the value must satisfy the L<assignability|/"Assignability">, otherwise a compilation error will occur.
 
 The return value is the value after the assignment.
 
@@ -7906,7 +7906,7 @@ B<Setting Class Variable Expression> is an L<operator|/"Operator"> to set L</"Cl
 
   $CLASS_VARIABLE_NAME = VALUE
 
-If the assignment does not satisfy the L<type assignability|/"Type Assignability">, a compilation error will occur.
+If the assignment does not satisfy the L<assignability|/"Assignability">, a compilation error will occur.
 
 The return value is the value after the setting.
 
@@ -7989,7 +7989,7 @@ The setting field is an L<operator|/"Operator"> to set the L<field|/"Field"> of 
 
 The type of invocant is a L<class type|/"Class Type">.
 
-If the assignment does not satisfy the L<type assignability|/"Type Assignability">, a compilation error will occur.
+If the assignment does not satisfy the L<assignability|/"Assignability">, a compilation error will occur.
 
 The return value is the value after the setting. 
 
@@ -8035,7 +8035,7 @@ If the field names does not found in the L</"Class">, a compilation error will o
 
 Setting Multi-Numeric Field Expression returns the value of the field after setting. 
 
-The assignment must satisfy the L<type assignability|/"Type Assignability">.
+The assignment must satisfy the L<assignability|/"Assignability">.
 
 The return type is the field type.
 
@@ -8081,7 +8081,7 @@ The array must be L</"Array Type">.
 
 The index must be the L<int type|/"int Type"> or the type that become the L<int type|/"int Type"> by L</"Numeric Widening Type Conversion">.
 
-The assignment must satisfy the L<type assignability|/"Type Assignability">.
+The assignment must satisfy the L<assignability|/"Assignability">.
 
 Setting Array Element Expression returns the value of the element after setting.
 
@@ -8378,7 +8378,7 @@ If the field names does not found in the L</"Class">, a compilation error will o
 
 Setting Multi-Numeric Field via Dereference Expression returns the value of the field after setting.
 
-The assignment must satisfy the L<type assignability|/"Type Assignability">.
+The assignment must satisfy the L<assignability|/"Assignability">.
 
 The return type is the field type.
 
