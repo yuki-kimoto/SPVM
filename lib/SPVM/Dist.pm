@@ -269,19 +269,11 @@ C<$class_name> is a L<SPVM> module.
 
 
 
-=head1 Bug Report
-
-
-
-=head1 Support
-
-
-
 =head1 Author
 
 
 
-=head1 Copyright & LICENSE
+=head1 Copyright & License
 
 Copyright YYYY-YYYY AUTHOR_NAME, all rights reserved.
 
