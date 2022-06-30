@@ -24,4 +24,10 @@ use SPVM::Builder::Config;
   is($config->ld, 'ld_foo');
 }
 
+# extra
+{
+  ok(SPVM::Builder::LibInfo->can('new'));
+  ok(SPVM::Builder::Resource->can('new'));
+}
+
 done_testing;

@@ -1,6 +1,8 @@
-0.9615 2022-06-29
+0.9615 2022-06-30
   [CHANGES]
   * Improve the pod that spvmdist generates.
+  [BUG FIX]
+  * Fix the bug that SPVM::Builder::Config doesn't use SPVM::Builder::Resource.
   [NON BACKWORD COMPATIBLE CHANGES]
   * Remove unused and undocumented protected descriptor.
 0.9614 2022-06-29

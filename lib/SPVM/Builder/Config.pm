@@ -7,6 +7,7 @@ use Carp 'confess';
 use File::Basename 'dirname';
 use SPVM::Builder::Util;
 use SPVM::Builder::LibInfo;
+use SPVM::Builder::Resource;
 
 # Fields
 sub file_optional {
