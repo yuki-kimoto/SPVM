@@ -1,11 +1,13 @@
+0.9616 2022-07-01
+  [CHANGES]
+    * Removed "Bug Report" and "Support" section from the output of spvmdist command.
 0.9615 2022-06-30
   [CHANGES]
-  * Improve the pod that spvmdist generates.
-  * Removed "Bug Report" and "Support" section from the output of spvmdist command.
+    * Improve the pod that spvmdist generates.
   [BUG FIX]
-  * Fix the bug that SPVM::Builder::Config doesn't use SPVM::Builder::Resource.
+    * Fix the bug that SPVM::Builder::Config doesn't use SPVM::Builder::Resource.
   [NON BACKWORD COMPATIBLE CHANGES]
-  * Remove unused and undocumented protected descriptor.
+    * Remove unused and undocumented protected descriptor.
 0.9614 2022-06-29
   [CHANGES]
   * The parent class must be a class type and non-pointer type.
