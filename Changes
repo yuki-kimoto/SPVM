@@ -1,4 +1,6 @@
 0.9615 2022-06-29
+  [CHANGES]
+  * Improve the pod that spvmdist generates.
   [NON BACKWORD COMPATIBLE CHANGES]
   * Remove unused and undocumented protected descriptor.
 0.9614 2022-06-29
