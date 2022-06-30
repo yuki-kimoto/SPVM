@@ -318,9 +318,9 @@ use strict;
 use warnings;
 use SPVM::Builder::Config;
 
-my \$native_config = SPVM::Builder::Config->$new_method(file => __FILE__);
+my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
 
-\$native_config;
+\$config;
 EOS
 
   # Generate file
