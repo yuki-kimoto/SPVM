@@ -1162,6 +1162,15 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
+# Pass 8-bit characters
+{
+  my $chars_8bit = "\xff\xfe";
+  my $string = SPVM::TestCase::ExchangeAPI->pass_and_return_string($chars_8bit);
+  my $bytes = $string->to_bin;
+  is($chars_8bit, $bytes);
+}
+
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

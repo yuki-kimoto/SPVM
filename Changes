@@ -1,6 +1,11 @@
 0.9616 2022-07-01
+  [New Featres]
+    * Add to_bin method to SPVM::BlessedObject::String.
   [CHANGES]
     * Removed "Bug Report" and "Support" section from the output of spvmdist command.
+  [NON BACKWORD COMPATIBLE CHANGES]
+    * If a Perl scalar value is passed to SPVM string type, sv_utf8_encode don't be performed
+      because this is needed to pass 8bit character(128-255) such as "\xff" to SPVM as it is.
 0.9615 2022-06-30
   [CHANGES]
     * Improve the pod that spvmdist generates.

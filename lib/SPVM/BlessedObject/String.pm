@@ -1,5 +1,7 @@
 package SPVM::BlessedObject::String;
 
+use Carp 'confess';
+
 use base 'SPVM::BlessedObject';
 
 use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
@@ -9,7 +11,23 @@ use SPVM::ExchangeAPI;
 sub to_string {
   my $self = shift;
   
-  SPVM::ExchangeAPI::string_object_to_string($SPVM::BUILDER, $self);
+  my $string = SPVM::ExchangeAPI::string_object_to_bin($SPVM::BUILDER, $self);
+  
+  my $success = utf8::decode($string);
+  
+  unless ($success) {
+    confess "This string can't be decoded to Perl string";
+  }
+  
+  return $string;
+}
+
+sub to_bin {
+  my $self = shift;
+  
+  my $bin = SPVM::ExchangeAPI::string_object_to_bin($SPVM::BUILDER, $self);
+  
+  return $bin;
 }
 
 1;
@@ -35,7 +53,13 @@ This object contains SPVM array object.
 
   my $string = $spvm_string->to_string;
 
-Convert to Perl decoded String
+Return the string as Perl decoded String. If the docoding fails, an exception will thrown.
+
+=head2 to_bin
+
+  my $string = $spvm_string->to_bin;
+
+Return the string value as bytes.
 
 =head1 Operators
 

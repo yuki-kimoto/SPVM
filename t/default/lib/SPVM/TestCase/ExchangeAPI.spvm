@@ -48,6 +48,11 @@ class TestCase::ExchangeAPI {
     return;
   }
 
+  static method pass_and_return_string : string ($string : string) {
+    
+    return $string;
+  }
+
   static method return_string : string () {
     
     return "あいう";

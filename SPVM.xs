@@ -541,7 +541,6 @@ call_spvm_method(...)
                 if (!SvROK(sv_value)) {
                   // Convert Perl decoded string to loose UTF-8 bytes.
                   SV* sv_value_copy = sv_2mortal(newSVsv(sv_value));
-                  sv_utf8_encode(sv_value_copy);
                   const char* chars = SvPV_nolen(sv_value_copy);
                   int32_t length = SvCUR(sv_value_copy);
                   void* string = env->new_string(env, stack, chars, length);
@@ -854,7 +853,6 @@ call_spvm_method(...)
                   else {
                     if (!SvROK(sv_elem)) {
                       SV* sv_elem_copy = sv_2mortal(newSVsv(sv_elem));
-                      sv_utf8_encode(sv_elem_copy);
                       const char* chars = SvPV_nolen(sv_elem_copy);
                       int32_t length = SvCUR(sv_elem_copy);
                       void* string = env->new_string(env, stack, chars, length);
@@ -944,7 +942,6 @@ call_spvm_method(...)
               else {
                 if (!SvROK(sv_elem)) {
                   SV* sv_elem_copy = sv_2mortal(newSVsv(sv_elem));
-                  sv_utf8_encode(sv_elem_copy);
                   const char* chars = SvPV_nolen(sv_elem_copy);
                   int32_t length = SvCUR(sv_elem_copy);
                   void* string = env->new_string(env, stack, chars, length);
@@ -1698,7 +1695,7 @@ array_to_bin(...)
 }
 
 SV*
-string_object_to_string(...)
+string_object_to_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1737,11 +1734,6 @@ string_object_to_string(...)
   const char* chars = env->get_chars(env, stack, string);
 
   SV* sv_return_value = sv_2mortal(newSVpv(chars, length));
-
-  int32_t is_valid_utf8 = sv_utf8_decode(sv_return_value);
-  if (!is_valid_utf8) {
-    croak("String is invalid UTF-8 at %s line %d\n", MFILE, __LINE__);
-  }
 
   XPUSHs(sv_return_value);
   XSRETURN(1);
@@ -2092,9 +2084,6 @@ new_string_array(...)
         // Copy
         SV* sv_str_value_copy = sv_2mortal(newSVsv(sv_str_value));
         
-        // Encode to UTF-8
-        sv_utf8_encode(sv_str_value_copy);
-        
         int32_t length = sv_len(sv_str_value_copy);
         const char* chars = SvPV_nolen(sv_str_value_copy);
         
@@ -2356,7 +2345,6 @@ new_string(...)
       SV* sv_value_tmp = sv_2mortal(newSVsv(sv_value));
       
       // Encode to UTF-8
-      sv_utf8_encode(sv_value_tmp);
       
       int32_t length = sv_len(sv_value_tmp);
       
