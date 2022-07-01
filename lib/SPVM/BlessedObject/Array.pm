@@ -10,6 +10,8 @@ use overload '@{}' => sub {
   return $elements;
 };
 
+use overload fallback => 1;
+
 use SPVM::ExchangeAPI;
 
 sub length {
@@ -22,6 +24,16 @@ sub to_elems {
   my $self = shift;
   
   SPVM::ExchangeAPI::array_to_elems($SPVM::BUILDER, $self);
+}
+
+sub to_string {
+  my $self = shift;
+  
+  my $elems = SPVM::ExchangeAPI::array_to_elems($SPVM::BUILDER, $self);
+  
+  my $string = join(" ", @$elems);
+  
+  return $string;
 }
 
 sub to_bin {
