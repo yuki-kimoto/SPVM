@@ -26,6 +26,7 @@ int32_t SPVM__TestCase__NativeAPICpp__call_native_func(SPVM_ENV* env, SPVM_VALUE
   value = Foo::mul3((int)value);
 
   spvm_warn("Foo %s %d", "aaa", 3);
+  spvm_warn("Foo");
 
   stack[0].ival = value;
   

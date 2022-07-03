@@ -457,6 +457,6 @@ struct spvm_env_api {
   SPVM_ENV_RUNTIME* runtime;
 };
 
-#define spvm_warn(format, ...) fprintf(stderr, format "\n", __VA_ARGS__)
+#define spvm_warn(format, ...) fprintf(stderr, format "\n", ##__VA_ARGS__)
 
 #endif

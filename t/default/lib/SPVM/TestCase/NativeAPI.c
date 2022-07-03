@@ -2436,6 +2436,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->build != &env_array[81]) { stack[0].ival = 0; return 0; }
   
   spvm_warn("Foo %s %d", "aaa", 3);
+  spvm_warn("Foo");
   
   stack[0].ival = 1;
 
