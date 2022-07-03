@@ -2196,6 +2196,14 @@ The basic type category for the interface types.
 
 The basic type category for the any object type.
 
+=head1 Utility Functions
+
+=head2 spvm_warn
+
+  #define spvm_warn(format, ...) fprintf(stderr, format "\n", __VA_ARGS__)
+
+Print the formatted message to C<stderr> with a new line.
+
 =head1 Examples
 
 =over 2

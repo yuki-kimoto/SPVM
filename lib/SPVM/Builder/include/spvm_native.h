@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 
 struct spvm_env;
 typedef struct spvm_env SPVM_ENV;
@@ -455,5 +456,7 @@ struct spvm_env_api {
   SPVM_ENV_PRECOMPILE* precompile;
   SPVM_ENV_RUNTIME* runtime;
 };
+
+#define spvm_warn(format, ...) fprintf(stderr, format "\n", __VA_ARGS__)
 
 #endif

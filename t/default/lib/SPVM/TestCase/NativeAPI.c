@@ -2435,6 +2435,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_allocator != &env_array[80]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->build != &env_array[81]) { stack[0].ival = 0; return 0; }
   
+  spvm_warn("Foo %s %d", "aaa", 3);
+  
   stack[0].ival = 1;
 
   return 0;
