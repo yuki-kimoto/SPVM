@@ -330,6 +330,24 @@ sub create_precompile_config {
   return $config;
 }
 
+sub detect_force {
+  my ($self, $config) = @_;
+  
+  my $force;
+  
+  if (defined $self->force) {
+    $force = $self->force;
+  }
+  elsif (defined $config && defined $config->force) {
+    $force = $config->force;
+  }
+  else {
+    $force = 0;
+  }
+  
+  return $force;
+}
+
 sub detect_quiet {
   my ($self, $config) = @_;
   
@@ -385,6 +403,9 @@ sub compile {
   
   # Quiet output
   my $quiet = $self->detect_quiet($config);
+
+  # Force compile
+  my $force = $self->detect_force($config);
 
   my $ignore_use_resource = $options->{ignore_use_resource};
   my $ignore_native_module = $options->{ignore_native_module};
@@ -476,7 +497,7 @@ sub compile {
         push @$input_files, $module_file;
       }
       $need_generate = SPVM::Builder::Util::need_generate({
-        force => $self->force || $config->force,
+        force => $force,
         output_file => $object_file,
         input_files => $input_files,
       });
@@ -715,6 +736,9 @@ sub link {
 
   # Quiet output
   my $quiet = $self->detect_quiet($config);
+
+  # Force link
+  my $force = $self->detect_force($config);
   
   # Link information
   my $link_info = $self->create_link_info($class_name, $object_file_infos, $config, $options);
@@ -734,7 +758,7 @@ sub link {
     push @$input_files, $config->file;
   }
   my $need_generate = SPVM::Builder::Util::need_generate({
-    force => $self->force || $config->force,
+    force => $force,
     output_file => $output_file,
     input_files => $input_files,
   });
@@ -1045,6 +1069,12 @@ sub create_link_info {
 sub create_precompile_source_file {
   my ($self, $class_name, $options) = @_;
   
+  # Config
+  my $config = $options->{config};
+  
+  # Force
+  my $force = $self->detect_force($config);
+  
   # Output - Precompile C source file
   my $output_dir = $options->{output_dir};
   my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
@@ -1060,7 +1090,7 @@ sub create_precompile_source_file {
     confess "Can't find $spvm_precompile_soruce_file";
   }
   my $need_generate = SPVM::Builder::Util::need_generate({
-    force => $self->force,
+    force => $force,
     output_file => $source_file,
     input_files => [$module_file, $spvm_precompile_soruce_file],
   });
