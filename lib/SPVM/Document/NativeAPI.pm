@@ -2200,9 +2200,14 @@ The basic type category for the any object type.
 
 =head2 spvm_warn
 
-  #define spvm_warn(format, ...) fprintf(stderr, format "\n", __VA_ARGS__)
+  void spvm_warn(const char* format, ...)
 
 Print the formatted message to C<stderr> with a new line.
+
+B<Examples:>
+
+  spvm_warn("Hello");
+  spvm_warn("Hello %s%d", "Foo", 3);
 
 =head1 Examples
 
