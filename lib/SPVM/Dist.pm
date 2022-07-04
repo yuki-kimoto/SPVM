@@ -608,6 +608,7 @@ EOS
   else {
     $basic_test_spvm_module_content = <<"EOS";
 class TestCase::$class_name {
+  use $class_name;
   static method test : int () {
     
     return 1;
