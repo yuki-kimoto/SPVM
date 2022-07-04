@@ -56,7 +56,6 @@ lib/SPVM/BlessedObject/String.pm
 lib/SPVM/Bool.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/API.pm
-lib/SPVM/Builder/CBuilder.pm
 lib/SPVM/Builder/CBuilder.spvm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
