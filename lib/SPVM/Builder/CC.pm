@@ -479,7 +479,7 @@ sub compile {
       $cbuilder->do_system(@$cc_cmd)
         or confess "Can't compile $source_file: @$cc_cmd";
       unless ($quiet) {
-        print "@$cc_cmd\n";
+        warn "@$cc_cmd\n";
       }
     }
     
@@ -818,11 +818,11 @@ sub link {
         }
         if (defined $def_file && -f $def_file) {
           my $def_content = SPVM::Builder::Util::slurp_binary($def_file);
-          print "[$def_file]\n$def_content\n";
+          warn "[$def_file]\n$def_content\n";
         }
         if (defined $lds_file && -f $lds_file) {
           my $lds_content = SPVM::Builder::Util::slurp_binary($lds_file);
-          print "[$lds_file]\n$lds_content\n";
+          warn "[$lds_file]\n$lds_content\n";
         }
       }
     }
