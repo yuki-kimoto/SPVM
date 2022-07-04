@@ -319,6 +319,7 @@ t/builder/config.t
 t/builder/config_exe.t
 t/builder/link_info.pl
 t/builder/object_file_info.t
+t/builder_cc.t
 t/compile_error/definition.t
 t/compile_error/dist.pl
 t/compile_error/extra.t
