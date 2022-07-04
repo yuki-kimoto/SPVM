@@ -51,6 +51,17 @@ sub quiet {
   }
 }
 
+sub runtime {
+  my $self = shift;
+  if (@_) {
+    $self->{runtime} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{runtime};
+  }
+}
+
 sub debug {
   my $self = shift;
   if (@_) {
@@ -319,6 +330,30 @@ sub create_precompile_config {
   return $config;
 }
 
+sub detect_quiet {
+  my ($self, $config) = @_;
+  
+  my $quiet;
+  
+  if (defined $self->debug) {
+    $quiet = 0;
+  }
+  elsif (defined $self->quiet) {
+    $quiet = $self->quiet;
+  }
+  elsif (defined $config && defined $config->quiet) {
+    $quiet = $config->quiet;
+  }
+  elsif ($self->runtime) {
+    $quiet = 1;
+  }
+  else {
+    $quiet = 0;
+  }
+  
+  return $quiet;
+}
+
 sub compile {
   my ($self, $class_name, $options) = @_;
   
@@ -349,18 +384,8 @@ sub compile {
   my $config = $options->{config};
   
   # Quiet output
-  my $quiet = $config->quiet;
+  my $quiet = $self->detect_quiet($config);
 
-  # Debug mode
-  if ($self->debug) {
-    $quiet = 0;
-  }
-  else {
-    if (defined $self->quiet) {
-      $quiet = $self->quiet;
-    }
-  }
-  
   my $ignore_use_resource = $options->{ignore_use_resource};
   my $ignore_native_module = $options->{ignore_native_module};
   
@@ -474,7 +499,7 @@ sub compile {
       mkpath dirname $object_file;
       
       # Execute compile command
-      my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
+      my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet);
       my $cc_cmd = $self->create_compile_command($compile_info);
       $cbuilder->do_system(@$cc_cmd)
         or confess "Can't compile $source_file: @$cc_cmd";
@@ -689,17 +714,7 @@ sub link {
   }
 
   # Quiet output
-  my $quiet = $config->quiet;
-
-  # If quiet field exists, overwrite it
-  if ($self->debug) {
-    $quiet = 0;
-  }
-  else {
-    if (defined $self->quiet) {
-      $quiet = $self->quiet;
-    }
-  }
+  my $quiet = $self->detect_quiet($config);
   
   # Link information
   my $link_info = $self->create_link_info($class_name, $object_file_infos, $config, $options);
@@ -942,28 +957,10 @@ sub create_link_info {
   for my $resource_name (@$resource_names) {
     my $resource = $config->get_resource($resource_name);
     
-    my $resource_quiet;
-    if (defined $self->quiet) {
-      $resource_quiet = $self->quiet;
-    }
-    else {
-      $resource_quiet = $resource->config->quiet;
-    }
-
-    my $resource_force;
-    if (defined $self->force) {
-      $resource_force = $self->force;
-    }
-    else {
-      $resource_force = $resource->config->force;
-    }
-    
     # Build native classes
     my $builder_cc_resource = SPVM::Builder::CC->new(
       build_dir => $self->builder->build_dir,
       builder => $self->builder,
-      quiet => $resource_quiet,
-      force => $resource_force,
     );
     
     my $resource_src_dir = $self->resource_src_dir_from_class_name($resource);

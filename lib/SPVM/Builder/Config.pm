@@ -313,12 +313,12 @@ sub new {
   
   # quiet
   unless (defined $self->{quiet}) {
-    $self->quiet(1);
+    $self->quiet(undef);
   }
 
   # force
   unless (defined $self->{force}) {
-    $self->force(0);
+    $self->force(undef);
   }
   
   # ext
@@ -1112,7 +1112,9 @@ The default is C<-O2>.
   my $force = $config->force;
   $config->force($force);
 
-Get and set the flag to force compiles and links without caching.
+Get and set the flag to force compiles and links without caching. The default is C<undef>.
+
+C<undef> means forcing is not determined by config.
 
 =head2 before_link
 
@@ -1139,7 +1141,7 @@ B<Examples:>
 
 Get and set the flag if the compiler and the linker output the results.
 
-The default is C<1>.
+The default is C<undef>. C<undef> means quietness is not determined by config.
 
 =head2 file
 

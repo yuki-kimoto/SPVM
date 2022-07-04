@@ -2,7 +2,10 @@
   [New Featres]
     * Add spvm_warn to native API
   [BUG FIX]
-    * Fix the bug that quiet and force option of the config of resource don't work well.
+    * Fix the bug that quiet decting order bug.
+  [NON BACKWORD COMPATIBLE CHANGES]
+    * The default value of quiet and force of SPVM::Builder::Config become undef.
+      undef means don't determin quiet and force in SPVM::Builder::Config.
 0.9616 2022-07-01
   [New Featres]
     * Add to_bin method to SPVM::BlessedObject::String.
