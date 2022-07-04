@@ -942,12 +942,28 @@ sub create_link_info {
   for my $resource_name (@$resource_names) {
     my $resource = $config->get_resource($resource_name);
     
+    my $resource_quiet;
+    if (defined $self->quiet) {
+      $resource_quiet = $self->quiet;
+    }
+    else {
+      $resource_quiet = $resource->config->quiet;
+    }
+
+    my $resource_force;
+    if (defined $self->force) {
+      $resource_force = $self->force;
+    }
+    else {
+      $resource_force = $resource->config->force;
+    }
+    
     # Build native classes
     my $builder_cc_resource = SPVM::Builder::CC->new(
       build_dir => $self->builder->build_dir,
       builder => $self->builder,
-      quiet => $self->quiet,
-      force => $self->force,
+      quiet => $resource_quiet,
+      force => $resource_force,
     );
     
     my $resource_src_dir = $self->resource_src_dir_from_class_name($resource);
