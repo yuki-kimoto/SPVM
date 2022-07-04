@@ -10,7 +10,7 @@ use SPVM::Builder::Util;
 
 # Documented function check
 {
-  my $lib_dir = "$FindBin::Bin/test_files";
+  my $lib_dir = "t/test_files";
   {
     my $make_rule = SPVM::Builder::Util::create_make_rule_native('Foo', {lib_dir => $lib_dir});
     ok($make_rule);
@@ -21,7 +21,5 @@ use SPVM::Builder::Util;
     ok($make_rule);
   }
 }
-
-1;
 
 done_testing;

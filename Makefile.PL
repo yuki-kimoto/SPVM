@@ -196,7 +196,7 @@ sub MY::postamble {
     $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
 
     $make_rule .= "$time_stamp_file :: $test_files_str\n";
-    $make_rule .= "\tperl t/copy_default_to_precompile.pl\n";
+    $make_rule .= "\tperl t/utils/copy_default_to_precompile.pl\n";
   }
   
   return $make_rule;
