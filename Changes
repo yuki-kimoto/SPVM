@@ -1,6 +1,8 @@
 0.9616_02 2022-07-04
   [New Featres]
     * Add spvm_warn to native API
+  [CHANGES]
+    * All spvmcc compilation and link output is printed to stderr
   [BUG FIX]
     * Fix the bug that quiet decting order bug.
   [NON BACKWORD COMPATIBLE CHANGES]

@@ -7,6 +7,7 @@ use Pod::Usage 'pod2usage';
 use Config;
 
 use SPVM::Builder;
+use SPVM::Builder::CBuilder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config::Exe;
@@ -16,7 +17,6 @@ use File::Find 'find';
 
 use Getopt::Long 'GetOptions';
 
-use ExtUtils::CBuilder;
 use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
 use DynaLoader;
@@ -442,7 +442,7 @@ sub compile_source_file {
 
   if ($need_generate) {
     # Execute compile command
-    my $cbuilder = ExtUtils::CBuilder->new;
+    my $cbuilder = SPVM::Builder::CBuilder->new;
     $cbuilder->do_system(@$cc_cmd)
       or confess "Can't compile $source_file: @$cc_cmd";
   }
