@@ -5,13 +5,13 @@ use warnings;
 use Carp 'confess';
 use Config;
 
+use ExtUtils::CBuilder;
 use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
 use File::Find 'find';
 use File::Basename 'dirname', 'basename';
 
 use SPVM::Builder;
-use SPVM::Builder::CBuilder;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
 use SPVM::Builder::ObjectFileInfo;
@@ -520,7 +520,7 @@ sub compile {
       mkpath dirname $object_file;
       
       # Execute compile command
-      my $cbuilder = SPVM::Builder::CBuilder->new(quiet => $quiet);
+      my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet);
       my $cc_cmd = $self->create_compile_command($compile_info);
       $cbuilder->do_system(@$cc_cmd)
         or confess "Can't compile $source_file: @$cc_cmd";
@@ -653,7 +653,7 @@ sub create_compile_command_info {
   }
   $cflags .= " $optimize";
   
-  my @cflags = SPVM::Builder::CBuilder->new->split_like_shell($cflags);
+  my @cflags = ExtUtils::CBuilder->new->split_like_shell($cflags);
   
   my $compile_info = {cc => $cc, ccflags => \@cflags, object_file => $output_file, source_file => $source_file};
   
@@ -783,8 +783,8 @@ sub link {
       perllibs => '-lm',
     };
 
-    # SPVM::Builder::CBuilder object
-    my $cbuilder = SPVM::Builder::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
+    # ExtUtils::CBuilder object
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
     
     my $link_info_ld = $link_info->ld;
     my $link_info_ldflags = $link_info->ldflags;

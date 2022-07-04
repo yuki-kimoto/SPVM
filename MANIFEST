@@ -56,7 +56,6 @@ lib/SPVM/BlessedObject/String.pm
 lib/SPVM/Bool.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/API.pm
-lib/SPVM/Builder/CBuilder.spvm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
@@ -320,7 +319,6 @@ t/builder/config.t
 t/builder/config_exe.t
 t/builder/link_info.pl
 t/builder/object_file_info.t
-t/builder_cc.t
 t/compile_error/definition.t
 t/compile_error/dist.pl
 t/compile_error/extra.t
