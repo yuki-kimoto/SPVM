@@ -144,11 +144,6 @@ sub new {
     $self->{output_file} = $output_file;
   }
   
-  # Quiet output
-  unless (defined $self->{quiet}) {
-    $self->{quiet} = 0;
-  }
-  
   # Build directory
   my $build_dir = delete $self->{build_dir};
   
