@@ -1,3 +1,6 @@
+0.9618 2022-07-05
+  [CHANGES]
+    * All output of compiler and linker print to stderr.
 0.9617 2022-07-05
   [New Featres]
     * Add spvm_warn to native API

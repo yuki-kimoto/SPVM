@@ -431,23 +431,18 @@ sub compile_source_file {
 
   # Build directory
   my $build_dir = $self->builder->build_dir;
-
+  
   # Compile command
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     builder => $builder,
     quiet => $self->quiet,
     force => $self->force,
-  );;
-
+  );
   my $compile_info = $builder_cc->create_compile_command_info({config => $config, output_file => $output_file, source_file => $source_file});
-  my $cc_cmd = $builder_cc->create_compile_command($compile_info);
-
+    
   if ($need_generate) {
-    # Execute compile command
-    my $cbuilder = ExtUtils::CBuilder->new;
-    $cbuilder->do_system(@$cc_cmd)
-      or confess "Can't compile $source_file: @$cc_cmd";
+    $builder_cc->compile_single($compile_info, $config);
   }
   
   my $compile_info_cc = $compile_info->{cc};

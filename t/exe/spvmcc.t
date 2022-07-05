@@ -59,14 +59,14 @@ rmtree "$build_dir/work";
   # Compile and link cached
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe -c t/exe/myexe.config MyExe);
-    my $spvmcc_output = `$spvmcc_cmd`;
+    my $spvmcc_output = `$spvmcc_cmd 2>&1 1>/dev/null`;
     ok(length $spvmcc_output == 0);
   }
   
   # debug config -O0 -g
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe --config t/exe/myexe.debug.config MyExe);
-    my $spvmcc_output = `$spvmcc_cmd`;
+    my $spvmcc_output = `$spvmcc_cmd 2>&1 1>/dev/null`;
     like($spvmcc_output, qr/\Q-O0 -g/);
     like($spvmcc_output, qr/-lm\b/);
     like($spvmcc_output, qr/-L\./);

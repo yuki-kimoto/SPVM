@@ -837,6 +837,10 @@ sub link {
         extra_linker_flags => $cbuilder_extra_linker_flags,
         dl_func_list => $dl_func_list,
       );
+      unless ($quiet) {
+        my $link_command = $self->create_link_command($ld, $link_info_output_file, $link_info_object_files, $cbuilder_extra_linker_flags);
+        warn "$link_command\n";
+      }
     }
     # Create a static library
     elsif ($output_type eq 'static_lib') {
@@ -844,6 +848,9 @@ sub link {
       my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
       $cbuilder->do_system(@ar_cmd)
         or confess "Can't execute command @ar_cmd";
+      unless ($quiet) {
+        warn "@ar_cmd\n";
+      }
     }
     # Create an executable file
     elsif ($output_type eq 'exe') {
@@ -853,6 +860,10 @@ sub link {
         exe_file => $link_info_output_file,
         extra_linker_flags => $cbuilder_extra_linker_flags,
       );
+      unless ($quiet) {
+        my $link_command = $self->create_link_command($ld, $link_info_output_file, $link_info_object_files, $cbuilder_extra_linker_flags);
+        warn "$link_command\n";
+      }
     }
     else {
       confess "Unknown output_type \"$output_type\"";
