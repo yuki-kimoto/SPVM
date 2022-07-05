@@ -10,7 +10,7 @@ The native APIs are writen in C<C language>, but the languages that have compati
 
 The native APIs is used when L<native methods|SPVM::Document::NativeModule> are implemented.
 
-=head1 Native Apis
+=head1 Native APIs
 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 

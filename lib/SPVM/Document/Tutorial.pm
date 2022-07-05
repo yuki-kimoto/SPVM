@@ -6,7 +6,7 @@ SPVM::Document::Tutorial - SPVM Performance Tutorial
 
 This document is SPVM Tutorial. Describes SPVM basic grammers, how to get more performance, how to bind C/C++ libraries.
 
-=head1 Spvm Installation
+=head1 SPVM Installation
 
 
 SPMV Installation is described. SPVM is a programing language, but also SPVM is a CPAN module writen by Perl and C language. You can install SPVM from CPAN using cpan or cpanm command.
@@ -36,7 +36,7 @@ Binary compatibility is kept in upgrading unlike Perl in this point.
 SPVM has a Native API for operating SPVM in cooperation with C language. In the C language level, SPVM has a way to keep the backward compatibility when upgrading.
 
 
-=head1 Spvm Getting Started
+=head1 SPVM Getting Started
 
 
 Let's take SPVM for the first time. Then, let's improve the performance of the SPVM code.
@@ -450,7 +450,7 @@ See How to improve SPVM Performance.
 
 If you're searching SPVM for performance reasons, here's what you really want to see.
 
-=head1 How To improve SPVM Performance using SPVM Precompile and SPVM Native API
+=head1 How To Improve SPVM Performance using SPVM Precompile and SPVM Native API
 
 SPVM Module:
 

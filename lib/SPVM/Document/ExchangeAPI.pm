@@ -8,7 +8,7 @@ SPVM::Document::ExchangeAPI - SPVM Exchange API
 
 SPVM Exchange API is APIs to convert Perl data structures to/from SPVM data structures, and call SPVM Method from Perl.
 
-=head1 Functions And METHODS
+=head1 Functions And Methods
 
 Funtions and methods which create SPVM datas and convert SVPM datas to/from Perl data.
 
@@ -496,7 +496,7 @@ You can check the memory leaks by this method.
     die"Memroy leak";
   }
 
-=head1 Load Spvm MODULE
+=head1 Load SPVM Module
 
 If you load SVPM module from Perl, use the following syntax.
 
@@ -530,7 +530,7 @@ Note that at this point a SPVM runtime has not yet been created.
 
 A default SPVM runtime is created the first time you call a method of SPVM module or call a function or method of the Exchange API.
 
-=head1 Call Spvm METHOD
+=head1 Call SPVM Method
 
 The method of SPVM module can be called from Perl directory.
 
@@ -1314,7 +1314,7 @@ B<Example:>
   my $value = {x => 1.2, y => 2.3};
   SPVM::My->foo(\$value);
 
-=head1 Return Value CONVERSION
+=head1 Return Value Conversion
 
 a SPVM return value is converted to a Perl value by the following rules.
 
