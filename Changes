@@ -1,3 +1,7 @@
+0.9618_01 2022-07-06
+  [CHANGES]
+    * spvm_dist command add date information to the generated documents.
+    * Need Time::Piece 1.12
 0.9618 2022-07-05
   [CHANGES]
     * All output of compiler and linker print to stderr.

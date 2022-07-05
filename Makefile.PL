@@ -108,7 +108,6 @@ my @header_files = ('ppport.h', @spvm_header_files);
 WriteMakefile(
     NAME              => 'SPVM',
     VERSION_FROM      => 'lib/SPVM.pm', # finds $VERSION
-    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
     LICENSE           => 'perl_5',
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/SPVM.pm', # retrieve abstract from module
@@ -135,9 +134,10 @@ WriteMakefile(
     EXE_FILES => ['script/spvmcc', 'script/spvmdist'],
     PREREQ_PM => {
         'ExtUtils::CBuilder' => '0.2602',
+        'Time::Piece' => '1.12'
     },
     TEST_REQUIRES => {
-        'Test::More' => 0.92,
+        'Test::More' => '0.92',
     },
 );
 

@@ -10,6 +10,7 @@ use File::Find 'find';
 use File::Basename 'dirname', 'basename';
 use SPVM::Builder::Util;
 use Getopt::Long 'GetOptions';
+use Time::Piece();
 
 # Fields
 sub force {
@@ -233,6 +234,10 @@ sub generate_perl_module_file {
   # Class name
   my $class_name = $self->class_name;
   
+  # Year
+  my $today_tp = Time::Piece::localtime;
+  my $year = $today_tp->year;
+  
   # Content
   my $perl_module_content = <<"EOS";
 package SPVM::$class_name;
@@ -275,7 +280,7 @@ C<$class_name> is a L<SPVM> module.
 
 =head1 Copyright & License
 
-Copyright YYYY-YYYY AUTHOR_NAME, all rights reserved.
+Copyright $year-$year AUTHOR_NAME, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
@@ -453,10 +458,14 @@ EOS
 
 sub generate_changes_file {
   my ($self) = @_;
+
+  # Year
+  my $today_tp = Time::Piece::localtime;
+  my $today = $today_tp->strftime('%Y-%m-%d');
   
   # Content
   my $changes_content = <<"EOS";
-0.01 YYYY-MM-DD
+0.01 $today
   
   * 
   

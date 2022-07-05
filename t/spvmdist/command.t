@@ -11,6 +11,7 @@ use File::Spec;
 use SPVM::Builder::Util;
 use File::Temp();
 use Cwd 'getcwd';
+use Time::Piece();
 
 use SPVM::Builder;
 
@@ -37,6 +38,9 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(-f $perl_module_file);
   ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
   ok(SPVM::Builder::Util::file_contains($perl_module_file, q(our $VERSION = '0.01')));
+  my $today_tp = Time::Piece::localtime;
+  my $year = $today_tp->year;
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, $year));
   
   my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_module_file);
@@ -54,6 +58,8 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $changes_file = "$tmp_dir/SPVM-Foo/Changes";
   ok(-f $changes_file);
   ok(SPVM::Builder::Util::file_contains($changes_file, "0.01 "));
+  my $today = $today_tp->strftime('%Y-%m-%d');
+  ok(SPVM::Builder::Util::file_contains($changes_file, $today));
   
   my $gitignore_file = "$tmp_dir/SPVM-Foo/.gitignore";
   ok(-f $gitignore_file);
