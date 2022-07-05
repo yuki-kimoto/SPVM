@@ -714,6 +714,17 @@ sub create_dl_func_list {
   return $dl_func_list;
 }
 
+# This is used only for linker output for debug
+sub create_link_command {
+  my ($self, $ld, $output_file, $object_files, $cbuilder_extra_linker_flags) = @_;
+  
+  my @link_command = ($ld, '-o', $output_file, @$object_files, $cbuilder_extra_linker_flags);
+  
+  my $link_command = join(' ', @link_command);
+  
+  return $link_command;
+}
+
 sub link {
   my ($self, $class_name, $object_file_infos, $options) = @_;
   
