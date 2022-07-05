@@ -16,15 +16,11 @@ jobs:
     - uses: shogo82148/actions-setup-perl@v1
       with:
         perl-version: '5.8.9'
-    - name: perl -V
-      run: perl -V
-    - name: perl %Config
-      run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
+    - run: perl -V
+    - run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
     - run: cpanm -v IPC::Cmd
     - run: cpanm ExtUtils::CBuilder
-    - name: perl Makefile.PL
-      run: perl Makefile.PL
-    - name: make
-      run: make
-    - name: make disttest
-      run: make disttest
+    - run: cpanm Time::Piece
+    - run: perl Makefile.PL
+    - run: make
+    - run: make disttest

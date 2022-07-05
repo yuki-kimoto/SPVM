@@ -12,7 +12,7 @@ use SPVM::Builder::Util;
 use Getopt::Long 'GetOptions';
 use Time::Piece();
 
-# Fields
+# Field metods
 sub force {
   my $self = shift;
   if (@_) {
@@ -112,6 +112,68 @@ sub lib_dir {
   }
 }
 
+sub user_name {
+  my $self = shift;
+  if (@_) {
+    $self->{user_name} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{user_name};
+  }
+}
+
+sub user_email {
+  my $self = shift;
+  if (@_) {
+    $self->{user_email} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{user_email};
+  }
+}
+
+# Class methods
+sub new {
+  my $class = shift;
+  
+  my $self = {@_};
+  
+  bless $self, $class;
+
+  # Class name
+  my $class_name = $self->class_name;
+  unless (defined $self->class_name) {
+    confess "Class name must be specified";
+  }
+  
+  if (defined $self->output_dir) {
+    # Remove tailing / or \
+    my $output_dir = $self->output_dir;
+    $output_dir =~ s|[/\\]$||;
+    $self->output_dir($output_dir);
+  }
+  else {
+    my $default_output_dir = "SPVM::$class_name";
+    $default_output_dir =~ s/::/-/g;
+    $self->output_dir($default_output_dir);
+  }
+  
+  my $native = $self->native;
+  if (defined $native && !($native eq 'c' || $native eq 'c++')) {
+    confess "Can't support native \"$native\"";
+  }
+  
+  my $resource = $self->resource;
+  if ($resource && !defined $native) {
+    $self->native('c');
+  }
+  
+  return $self;
+}
+
+# Instance methods
 sub create_path {
   my ($self, $file_base_name) = @_;
   
@@ -171,44 +233,6 @@ sub generate_dir {
   }
 }
 
-sub new {
-  my $class = shift;
-  
-  my $self = {@_};
-  
-  bless $self, $class;
-
-  # Class name
-  my $class_name = $self->class_name;
-  unless (defined $self->class_name) {
-    confess "Class name must be specified";
-  }
-  
-  if (defined $self->output_dir) {
-    # Remove tailing / or \
-    my $output_dir = $self->output_dir;
-    $output_dir =~ s|[/\\]$||;
-    $self->output_dir($output_dir);
-  }
-  else {
-    my $default_output_dir = "SPVM::$class_name";
-    $default_output_dir =~ s/::/-/g;
-    $self->output_dir($default_output_dir);
-  }
-  
-  my $native = $self->native;
-  if (defined $native && !($native eq 'c' || $native eq 'c++')) {
-    confess "Can't support native \"$native\"";
-  }
-  
-  my $resource = $self->resource;
-  if ($resource && !defined $native) {
-    $self->native('c');
-  }
-  
-  return $self;
-}
-
 sub generate_spvm_module_file {
   my ($self) = @_;
   
@@ -237,6 +261,18 @@ sub generate_perl_module_file {
   # Year
   my $today_tp = Time::Piece::localtime;
   my $year = $today_tp->year;
+  
+  # User name
+  my $user_name = $self->user_name;
+  unless (defined $user_name) {
+    $user_name = '[--user-name]'
+  }
+  
+  # User email
+  my $user_email = $self->user_email;
+  unless (defined $user_email) {
+    $user_email = '[--user-email]'
+  }
   
   # Content
   my $perl_module_content = <<"EOS";
@@ -276,11 +312,11 @@ C<$class_name> is a L<SPVM> module.
 
 =head1 Author
 
-
+$user_name C<$user_email>
 
 =head1 Copyright & License
 
-Copyright $year-$year AUTHOR_NAME, all rights reserved.
+Copyright $year-$year $user_name, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

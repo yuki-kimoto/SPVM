@@ -18,6 +18,8 @@ SPVM::Builder::Util::getopt
   'only-lib-files' => \my $only_lib_files,
   'no-pm-file' => \my $no_pm_file,
   'genlib' => \my $genlib,
+  'user-name=s' => \my $user_name,
+  'user-email=s' => \my $user_email,
 ;
 
 if ($help) {
@@ -48,17 +50,19 @@ else {
     only_lib_files => $only_lib_files,
     no_pm_file => $no_pm_file,
     resource => $resource,
+    user_name => $user_name,
+    user_email => $user_email,
   );
   $gendist->generate_dist;
 }
 
 =encoding utf8
 
-=head1 NAME
+=head1 Name
 
 spvmdist - Generating SPVM Distribution
 
-=head1 SYNOPSIS
+=head1 Synopsis
 
   usage: spvmdist [<options>] <class_name> [<dir>]
     
@@ -75,14 +79,15 @@ spvmdist - Generating SPVM Distribution
     -v, --version                  Show the version
     -q, --quiet                    Quiet output
     -f, --force                    Force to generate files
-    --output-dir                   Output directory
-    --native LANGUAGE              Add native files and setting
+    --native=<language>            Add native files and setting
     --precompile                   Add precompile setting
     --only-lib-files               Output only the files in "lib" directory
     --no-pm-file                   Don't output Perl module(.pm) file
     --resource                     Output files for resource distribution
     --genlib                       Shorcut for --only-lib-files --no-pm-file
+    --user-name=<name>             User name
+    --user-email=<email>           User email
 
-=head1 DESCRIPTION
+=head1 Description
 
 C<spvmdist> is the command to generate a SPVM distribution.

@@ -1,7 +1,11 @@
 0.9618_01 2022-07-06
+  [New Featres]
+    * Add --user-name option to spvmdist command.
+    * Add --user-email option to spvmdist command.
   [CHANGES]
     * spvm_dist command add date information to the generated documents.
     * Need Time::Piece 1.12
+    * Removed --output_dir option of spvmdist command from document. This was removed in past.
 0.9618 2022-07-05
   [CHANGES]
     * All output of compiler and linker print to stderr.
