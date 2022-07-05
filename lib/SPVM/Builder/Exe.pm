@@ -432,9 +432,6 @@ sub compile_source_file {
   my $compile_info = $builder_cc->create_compile_command_info({config => $config, output_file => $output_file, source_file => $source_file});
   my $cc_cmd = $builder_cc->create_compile_command($compile_info);
 
-  my $compile_info_cc = $compile_info->{cc};
-  my $compile_info_ccflags = $compile_info->{ccflags};
-
   if ($need_generate) {
     # Execute compile command
     my $cbuilder = ExtUtils::CBuilder->new;
@@ -442,6 +439,8 @@ sub compile_source_file {
       or confess "Can't compile $source_file: @$cc_cmd";
   }
   
+  my $compile_info_cc = $compile_info->{cc};
+  my $compile_info_ccflags = $compile_info->{ccflags};
   my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
     file => $output_file,
     source_file => $source_file,
