@@ -520,7 +520,7 @@ sub compile {
       mkpath dirname $object_file;
       
       # Execute compile command
-      my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet);
+      my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
       my $cc_cmd = $self->create_compile_command($compile_info);
       $cbuilder->do_system(@$cc_cmd)
         or confess "Can't compile $source_file: @$cc_cmd";
