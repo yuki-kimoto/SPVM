@@ -23,6 +23,14 @@ my $exe_dir = "$build_dir/work/exe";
 
 rmtree "$build_dir/work";
 
+my $dev_null;
+if ($^O eq 'MSWin32') {
+  $dev_null = 'nul';
+}
+else {
+  $dev_null = '/dev/null';
+}
+
 {
   mkpath $exe_dir;
 
@@ -59,14 +67,14 @@ rmtree "$build_dir/work";
   # Compile and link cached
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe -c t/exe/myexe.config MyExe);
-    my $spvmcc_output = `$spvmcc_cmd 2>&1 1>/dev/null`;
+    my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
     ok(length $spvmcc_output == 0);
   }
   
   # debug config -O0 -g
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe --config t/exe/myexe.debug.config MyExe);
-    my $spvmcc_output = `$spvmcc_cmd 2>&1 1>/dev/null`;
+    my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
     like($spvmcc_output, qr/\Q-O0 -g/);
     like($spvmcc_output, qr/-lm\b/);
     like($spvmcc_output, qr/-L\./);
