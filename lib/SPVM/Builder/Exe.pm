@@ -426,8 +426,19 @@ sub compile_source_file {
     input_files => $need_generate_input_files,
   });
 
+
+  my $builder = $self->builder;
+
+  # Build directory
+  my $build_dir = $self->builder->build_dir;
+
   # Compile command
-  my $builder_cc = SPVM::Builder::CC->new;
+  my $builder_cc = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    builder => $builder,
+    quiet => $self->quiet,
+    force => $self->force,
+  );;
 
   my $compile_info = $builder_cc->create_compile_command_info({config => $config, output_file => $output_file, source_file => $source_file});
   my $cc_cmd = $builder_cc->create_compile_command($compile_info);
