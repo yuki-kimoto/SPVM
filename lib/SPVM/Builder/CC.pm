@@ -372,6 +372,24 @@ sub detect_quiet {
   return $quiet;
 }
 
+sub compile_single {
+  my ($self, $compile_info, $config) = @_;
+
+  # Quiet output
+  my $quiet = $self->detect_quiet($config);
+  
+  my $source_file = $compile_info->{source_file};
+
+  # Execute compile command
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
+  my $cc_cmd = $self->create_compile_command($compile_info);
+  $cbuilder->do_system(@$cc_cmd)
+    or confess "Can't compile $source_file: @$cc_cmd";
+  unless ($quiet) {
+    warn "@$cc_cmd\n";
+  }
+}
+
 sub compile {
   my ($self, $class_name, $options) = @_;
   
@@ -401,9 +419,6 @@ sub compile {
   # Config
   my $config = $options->{config};
   
-  # Quiet output
-  my $quiet = $self->detect_quiet($config);
-
   # Force compile
   my $force = $self->detect_force($config);
 
@@ -519,14 +534,7 @@ sub compile {
       my $work_output_dir = "$output_dir/$class_rel_dir";
       mkpath dirname $object_file;
       
-      # Execute compile command
-      my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
-      my $cc_cmd = $self->create_compile_command($compile_info);
-      $cbuilder->do_system(@$cc_cmd)
-        or confess "Can't compile $source_file: @$cc_cmd";
-      unless ($quiet) {
-        warn "@$cc_cmd\n";
-      }
+      $self->compile_single($compile_info, $config);
     }
     
     # Object file information
@@ -745,9 +753,6 @@ sub link {
     confess "Need config option";
   }
 
-  # Quiet output
-  my $quiet = $self->detect_quiet($config);
-
   # Force link
   my $force = $self->detect_force($config);
   
@@ -793,6 +798,9 @@ sub link {
       # For the reason, libm is linked which seems to have no effect.
       perllibs => '-lm',
     };
+
+    # Quiet output
+    my $quiet = $self->detect_quiet($config);
 
     # ExtUtils::CBuilder object
     my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
