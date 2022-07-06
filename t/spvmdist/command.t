@@ -62,6 +62,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($changes_file, "0.01 "));
   my $today = $today_tp->strftime('%Y-%m-%d');
   ok(SPVM::Builder::Util::file_contains($changes_file, $today));
+  ok(SPVM::Builder::Util::file_contains($changes_file, '[Changes]'));
   
   my $gitignore_file = "$tmp_dir/SPVM-Foo/.gitignore";
   ok(-f $gitignore_file);

@@ -502,8 +502,8 @@ sub generate_changes_file {
   # Content
   my $changes_content = <<"EOS";
 0.01 $today
-  
-  * 
+  [Changes]
+    * First release.
   
 EOS
 
