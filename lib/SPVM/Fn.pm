@@ -8,7 +8,7 @@ package SPVM::Fn;
 
 SPVM::Fn - SPVM Starndard Functions
 
-=head1 Synopsys
+=head1 Usage
 
   use Fn;
   

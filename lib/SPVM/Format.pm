@@ -8,7 +8,7 @@ package SPVM::Format;
 
 SPVM::Format - Format Utilities
 
-=head1 Synopsys
+=head1 Usage
 
   use Format;
   

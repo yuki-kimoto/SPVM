@@ -6,7 +6,7 @@ package SPVM::Hash::Entry;
 
 SPVM::Hash::Entry - Hash entry
 
-=head1 Synopsys
+=head1 Usage
   
   use Hash::Entry;
 

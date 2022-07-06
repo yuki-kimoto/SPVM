@@ -6,7 +6,7 @@ package SPVM::Short;
 
 SPVM::Short - Short object
 
-=head1 Synopsys
+=head1 Usage
   
   use Short;
   

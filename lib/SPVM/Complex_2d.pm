@@ -2,7 +2,7 @@
 
 SPVM::Complex_2d - double complex type
 
-=head1 Synopsys
+=head1 Usage
 
   my $z : Complex_2d;
   $z->{re} = 1;

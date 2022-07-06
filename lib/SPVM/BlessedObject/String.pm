@@ -42,7 +42,7 @@ SPVM::BlessedObject::String is array based blessed object.
 
 This object contains SPVM array object.
 
-=head1 Synopsys
+=head1 Usage
 
   # Convert to Perl decoded String
   my $string = $spvm_string->to_string;

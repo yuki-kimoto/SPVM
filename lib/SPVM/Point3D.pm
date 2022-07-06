@@ -6,7 +6,7 @@ package SPVM::Point3D;
 
 SPVM::Point3D - Point 3D
 
-=head1 Synopsys
+=head1 Usage
 
   use Point3D;
   

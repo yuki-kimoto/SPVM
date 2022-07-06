@@ -2,7 +2,7 @@
 
 SPVM::Complex_2f - float complex type
 
-=head1 Synopsys
+=head1 Usage
 
   my $z : Complex_2f;
   $z->{re} = 1;

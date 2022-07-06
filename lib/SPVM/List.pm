@@ -6,7 +6,7 @@ package SPVM::List;
 
 SPVM::List - Dynamic object array
 
-=head1 Synopsys
+=head1 Usage
   
   use List;
   

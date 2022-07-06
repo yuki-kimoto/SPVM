@@ -286,7 +286,7 @@ our \$VERSION = '0.01';
 
 SPVM::$class_name - $class_name is a SPVM module
 
-=head1 Synopsys
+=head1 Usage
 
   use $class_name;
   

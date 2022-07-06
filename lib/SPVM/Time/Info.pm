@@ -6,7 +6,7 @@ package SPVM::Time::Info;
 
 SPVM::Time::Info - Time information
 
-=head1 Synopsys
+=head1 Usage
   
   use Time::Info;
   

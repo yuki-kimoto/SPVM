@@ -81,7 +81,7 @@ sub no_compiler_api {
 
 SPVM::Builder::Config::Exe - Configurations of creating excutable files.
 
-=head1 Synopsys
+=head1 Usage
 
   use SPVM::Builder::Config::Exe;
   

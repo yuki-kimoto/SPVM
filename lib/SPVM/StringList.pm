@@ -6,7 +6,7 @@ package SPVM::StringList;
 
 SPVM::StringList - Dynamic string array
 
-=head1 Synopsys
+=head1 Usage
   
   use StringList;
   

@@ -8,7 +8,7 @@ package SPVM::Sort;
 
 SPVM::Sort - Sorting Functions
 
-=head1 Synopsys
+=head1 Usage
 
   # Sort a byte array in-place by asc order
   my $nums = [(byte)2, 3, 1];

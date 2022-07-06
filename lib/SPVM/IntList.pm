@@ -6,7 +6,7 @@ package SPVM::IntList;
 
 SPVM::IntList - Dynamic int array
 
-=head1 Synopsys
+=head1 Usage
   
   use IntList;
   

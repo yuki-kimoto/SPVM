@@ -6,7 +6,7 @@ package SPVM::Long;
 
 SPVM::Long - Long object
 
-=head1 Synopsys
+=head1 Usage
 
   use Long;
   

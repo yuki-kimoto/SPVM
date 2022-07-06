@@ -6,7 +6,7 @@ package SPVM::LongList;
 
 SPVM::LongList - Dynamic long array
 
-=head1 Synopsys
+=head1 Usage
   
   use LongList;
   

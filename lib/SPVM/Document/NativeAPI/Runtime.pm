@@ -2,7 +2,7 @@
 
 SPVM::Document::NativeAPI::Runtime - SPVM Runtime Native APIs
 
-=head1 Synopsys
+=head1 Usage
 
   // Runtime API
   void* runtime_api = env->api->runtime;

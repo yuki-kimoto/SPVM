@@ -8,7 +8,7 @@ package SPVM::Array;
 
 SPVM::Array - Array Utilities
 
-=head1 Synopsys
+=head1 Usage
 
   use Array;
   

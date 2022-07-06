@@ -2,7 +2,7 @@
 
 SPVM::Document::NativeAPI::Compiler - SPVM Compiler Native APIs
 
-=head1 Synopsys
+=head1 Usage
 
   // Compiler API
   void* compiler_api = env->api->compiler;

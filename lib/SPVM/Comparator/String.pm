@@ -6,7 +6,7 @@ package SPVM::Comparator::String;
 
 SPVM::Comparator::String - Interface Type for String Comparation Callback
 
-=head1 Synopsys
+=head1 Usage
   
   use Comparator::String;
   

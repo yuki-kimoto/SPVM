@@ -6,7 +6,7 @@ package SPVM::Stringer;
 
 SPVM::Stringer -  Interface Type for Stringing Callback
 
-=head1 Synopsys
+=head1 Usage
   
   use Stringer;
   use Point;

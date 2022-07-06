@@ -6,7 +6,7 @@ package SPVM::Comparator::Float;
 
 SPVM::Comparator::Float - Interface Type for float Comparation Callback
 
-=head1 Synopsys
+=head1 Usage
   
   use Comparator::Float;
   

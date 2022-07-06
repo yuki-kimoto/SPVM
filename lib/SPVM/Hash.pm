@@ -6,7 +6,7 @@ package SPVM::Hash;
 
 SPVM::Hash - Hash Data Structure
 
-=head1 Synopsys
+=head1 Usage
   
   use Hash;
   

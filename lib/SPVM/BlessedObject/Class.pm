@@ -16,7 +16,7 @@ This object contains class based SPVM object.
 
 You can call all methods declaraed in the class.
 
-=head1 Synopsys
+=head1 Usage
 
   # lib/SPVM/Point.spvm
   class Point {

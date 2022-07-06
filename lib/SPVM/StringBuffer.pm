@@ -6,7 +6,7 @@ package SPVM::StringBuffer;
 
 SPVM::StringBuffer - String buffer
 
-=head1 Synopsys
+=head1 Usage
   
   use StringBuffer;
   

@@ -6,7 +6,7 @@ package SPVM::EqualityChecker;
 
 SPVM::EqualityChecker - Interface Type for Object Equality Checking Callback
 
-=head1 Synopsys
+=head1 Usage
   
   use EqualityChecker;
   use Point;

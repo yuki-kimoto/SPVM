@@ -6,7 +6,7 @@ package SPVM::EqualityChecker::SameObject;
 
 SPVM::EqualityChecker::SameObject - a callback implementation of L<EqualityChecker|SPVM::EqualityChecker> to check if the memory addresses of the two objects are equal.
 
-=head1 Synopsys
+=head1 Usage
   
   use EqualityChecker::SameObject;
   

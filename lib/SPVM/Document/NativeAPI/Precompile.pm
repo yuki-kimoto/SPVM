@@ -2,7 +2,7 @@
 
 SPVM::Document::NativeAPI::Precompile - SPVM Precompile Native APIs
 
-=head1 Synopsys
+=head1 Usage
 
   // Precompile API
   void* precompile_api = env->api->precompile;

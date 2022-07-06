@@ -6,7 +6,7 @@ package SPVM::Stringable;
 
 SPVM::Stringable - A Interface Type to Stringify a Object
 
-=head1 Synopsys
+=head1 Usage
   
   class Point {
     interface Stringable;

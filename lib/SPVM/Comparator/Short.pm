@@ -6,7 +6,7 @@ package SPVM::Comparator::Short;
 
 SPVM::Comparator::Short - Interface Type for short Comparation Callback
 
-=head1 Synopsys
+=head1 Usage
   
   use Comparator::Short;
   

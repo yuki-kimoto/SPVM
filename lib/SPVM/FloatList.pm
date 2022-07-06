@@ -6,7 +6,7 @@ package SPVM::FloatList;
 
 SPVM::FloatList - Dynamic float array
 
-=head1 Synopsys
+=head1 Usage
   
   use FloatList;
 

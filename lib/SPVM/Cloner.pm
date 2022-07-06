@@ -6,7 +6,7 @@ package SPVM::Cloner;
 
 SPVM::Cloner - Interface Type for the Callback to Clone a Object
 
-=head1 Synopsys
+=head1 Usage
   
   use Cloner;
   use Point;

@@ -6,7 +6,7 @@ package SPVM::Byte;
 
 SPVM::Byte - Byte object
 
-=head1 Synopsys
+=head1 Usage
   
   use Byte;
   

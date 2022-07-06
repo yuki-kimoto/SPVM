@@ -97,7 +97,7 @@ sub build_shared_lib_dist_native { shift->build_dynamic_lib_dist_native(@_) }
 
 SPVM::Builder::API - SPVM Builder Public APIs
 
-=head1 Synopsys
+=head1 Usage
   
   # Builder API
   my $api = SPVM::Builder::API->new(

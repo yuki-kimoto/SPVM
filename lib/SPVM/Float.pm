@@ -6,7 +6,7 @@ package SPVM::Float;
 
 SPVM::Float - Float object
 
-=head1 Synopsys
+=head1 Usage
 
   use Float;
 

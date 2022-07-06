@@ -6,7 +6,7 @@ package SPVM::DoubleList;
 
 SPVM::DoubleList - Dynamic double array
 
-=head1 Synopsys
+=head1 Usage
   
   use DoubleList;
   

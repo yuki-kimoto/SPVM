@@ -6,7 +6,7 @@ package SPVM::Comparator::Int;
 
 SPVM::Comparator::Int - Interface Type for int Comparation Callback
 
-=head1 Synopsys
+=head1 Usage
   
   use Comparator::Int;
   

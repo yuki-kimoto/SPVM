@@ -2,7 +2,7 @@
 
 SPVM::Document::NativeAPI::StringBuffer - SPVM String Buffer Native APIs
 
-=head1 Synopsys
+=head1 Usage
 
   // String Buffer API
   void* string_buffer_api = env->api->string_buffer;

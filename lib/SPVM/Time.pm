@@ -6,7 +6,7 @@ package SPVM::Time;
 
 SPVM::Time - Time Manipulation
 
-=head1 Synopsys
+=head1 Usage
   
   use Time;
   

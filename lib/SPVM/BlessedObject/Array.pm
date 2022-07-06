@@ -66,7 +66,7 @@ SPVM::BlessedObject::Array is array based blessed object.
 
 This object contains SPVM array object.
 
-=head1 Synopsys
+=head1 Usage
 
   # Get the value of a array element
   my $value = $spvm_nums->get(2);

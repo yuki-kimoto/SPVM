@@ -6,7 +6,7 @@ package SPVM::Comparator;
 
 SPVM::Comparator - Interface Type for Object Comparation Callback
 
-=head1 Synopsys
+=head1 Usage
   
   use Comparator;
   use Point;

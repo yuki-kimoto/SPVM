@@ -6,7 +6,7 @@ package SPVM::Int;
 
 SPVM::Int - Int object
 
-=head1 Synopsys
+=head1 Usage
 
   use Int;
 

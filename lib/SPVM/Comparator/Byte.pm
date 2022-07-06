@@ -6,7 +6,7 @@ package SPVM::Comparator::Byte;
 
 SPVM::Comparator::Byte - Interface Type for byte Comparation Callback
 
-=head1 Synopsys
+=head1 Usage
   
   use Comparator::Byte;
   

@@ -6,7 +6,7 @@ package SPVM::Bool;
 
 SPVM::Bool - Bool object
 
-=head1 Synopsys
+=head1 Usage
 
   use Bool;
   

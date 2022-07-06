@@ -6,7 +6,7 @@ package SPVM::Double;
 
 SPVM::Double - Double object
 
-=head1 Synopsys
+=head1 Usage
 
   use Double;
   

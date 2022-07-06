@@ -6,7 +6,7 @@ package SPVM::Cloneable;
 
 SPVM::Cloneable - A Interface Type to Clone a Object
 
-=head1 Synopsys
+=head1 Usage
   
   class Point {
     interface Cloneable;

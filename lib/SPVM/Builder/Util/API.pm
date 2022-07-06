@@ -13,7 +13,7 @@ sub create_make_rule_precompile { SPVM::Builder::Util::create_make_rule_precompi
 
 SPVM::Builder::Util::API - Public APIs of the utility of SPVM Builder
 
-=head1 Synopsys
+=head1 Usage
     
   # Create native make rule
   my $native_make_rule

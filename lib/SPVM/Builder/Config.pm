@@ -716,7 +716,7 @@ sub get_resource_names {
 
 SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
 
-=head1 Synopsys
+=head1 Usage
 
   use SPVM::Builder::Config;
   

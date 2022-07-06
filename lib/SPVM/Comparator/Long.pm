@@ -6,7 +6,7 @@ package SPVM::Comparator::Long;
 
 SPVM::Comparator::Long - Interface Type for long Comparation Callback
 
-=head1 Synopsys
+=head1 Usage
   
   use Comparator::Long;
   

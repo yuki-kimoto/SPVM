@@ -6,7 +6,7 @@ package SPVM::Comparator::Double;
 
 SPVM::Comparator::Double - Interface Type for double Comparation Callback
 
-=head1 Synopsys
+=head1 Usage
   
   use Comparator::Double;
   

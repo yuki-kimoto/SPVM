@@ -6,7 +6,7 @@ package SPVM::Point;
 
 SPVM::Point - Point
 
-=head1 Synopsys
+=head1 Usage
 
   use Point;
   

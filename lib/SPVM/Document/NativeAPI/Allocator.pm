@@ -2,7 +2,7 @@
 
 SPVM::Document::NativeAPI::Allocator - SPVM Allocator Native APIs
 
-=head1 Synopsys
+=head1 Usage
 
   // Allocator API
   void* allocator_api = env->api->allocator;

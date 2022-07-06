@@ -74,7 +74,7 @@ sub to_string {
 
 SPVM::Builder::Resource - Resourceurations of Compile and Link of Native Sources
 
-=head1 Synopsys
+=head1 Usage
 
   my $resource = SPVM::Builder::Resource->new(
     class_name => 'Resource::Zlib::V1_0_0',

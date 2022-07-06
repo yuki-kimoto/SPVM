@@ -6,7 +6,7 @@ package SPVM::ByteList;
 
 SPVM::ByteList - Dynamic Byte Array
 
-=head1 Synopsys
+=head1 Usage
   
   use ByteList;
   

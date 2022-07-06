@@ -6,7 +6,7 @@ package SPVM::ShortList;
 
 SPVM::ShortList - Dynamic short array
 
-=head1 Synopsys
+=head1 Usage
   
   use ShortList;
   
