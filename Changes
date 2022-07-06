@@ -2,10 +2,17 @@
   [New Featres]
     * Add --user-name option to spvmdist command.
     * Add --user-email option to spvmdist command.
-  [CHANGES]
+    * Add new_c11 method to SPVM::Builder::Config
+    * Add new_gnu11 method to SPVM::Builder::Config
+    * Add new_cpp14 method to SPVM::Builder::Config
+    * Add new_cpp17 method to SPVM::Builder::Config
+  [Changes]
     * spvm_dist command add date information to the generated documents.
     * Need Time::Piece 1.12
     * Removed --output_dir option of spvmdist command from document. This was removed in past.
+  [Document Fix]
+    * Add new_gnu99 method to SPVM::Builder::Config
+    
 0.9618 2022-07-05
   [CHANGES]
     * All output of compiler and linker print to stderr.
