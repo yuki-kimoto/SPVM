@@ -1,4 +1,4 @@
-0.9618_01 2022-07-06
+0.9618_02 2022-07-06
   [New Featres]
     * Add --user-name option to spvmdist command.
     * Add --user-email option to spvmdist command.
