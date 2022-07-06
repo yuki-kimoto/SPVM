@@ -803,7 +803,7 @@ sub link {
     my $quiet = $self->detect_quiet($config);
 
     # ExtUtils::CBuilder object
-    my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
     
     my $link_info_ld = $link_info->ld;
     my $link_info_ldflags = $link_info->ldflags;
