@@ -474,6 +474,17 @@ sub new_c99 {
   return $self;
 }
 
+sub new_c11 {
+  my $class = shift;
+  
+  my $self = $class->new_c(@_);
+  
+  # C99
+  $self->set_std('c11');
+  
+  return $self;
+}
+
 sub new_gnu99 {
   my $class = shift;
   
@@ -484,6 +495,18 @@ sub new_gnu99 {
   
   return $self;
 }
+
+sub new_gnu11 {
+  my $class = shift;
+  
+  my $self = $class->new_c(@_);
+  
+  # C99
+  $self->set_std('gnu11');
+  
+  return $self;
+}
+
 
 sub new_cpp {
   my $class = shift;
@@ -516,6 +539,28 @@ sub new_cpp11 {
   
   # C++11
   $self->set_std('c++11');
+  
+  return $self;
+}
+
+sub new_cpp14 {
+  my $class = shift;
+  
+  my $self = $class->new_cpp(@_);
+  
+  # C++11
+  $self->set_std('c++14');
+  
+  return $self;
+}
+
+sub new_cpp17 {
+  my $class = shift;
+  
+  my $self = $class->new_cpp(@_);
+  
+  # C++11
+  $self->set_std('c++17');
   
   return $self;
 }
@@ -723,16 +768,16 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
   # Create a config
   my $config = SPVM::Builder::Config->new(file => __FILE__);
   
-  # Create a config with "GNU99" standard of "C" language
+  # Create a C<SPVM::Builder::Config> object with "GNU99" standard of "C" language
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-  # Create a config with "C99" standard of "C" language
+  # Create a C<SPVM::Builder::Config> object with "C99" standard of "C" language
   my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
   # Create a config as "C++"
   my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
-  # Create a config with "C++11" standard of "C++"
+  # Create a C<SPVM::Builder::Config> object with "C++11" standard of "C++"
   my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
   
   # Optimize
@@ -753,7 +798,7 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
 
 =head1 Description
 
-L<SPVM::Builder::Config> is configuration of c/c++ compile and link.
+C<SPVM::Builder::Config> is configuration of c/c++ compile and link.
 
 =head1 Field Methods
 
@@ -1121,7 +1166,7 @@ C<undef> means forcing is not determined by config.
   my $before_link = $config->before_link;
   $config->before_link($before_link);
 
-Get and set the callback that is executed before the link. The callback receives L<SPVM::Builder::Config> object and the L<SPVM::Builder::LinkInfo> object used by the linker.
+Get and set the callback that is executed before the link. The callback receives C<SPVM::Builder::Config> object and the L<SPVM::Builder::LinkInfo> object used by the linker.
 
 B<Examples:>
 
@@ -1171,40 +1216,64 @@ The default is C<0>.
 =head2 new
 
   my $config = SPVM::Builder::Config->new(file => __FILE__);
-  
-Create L<SPVM::Builder::Config> object.
+
+Create a C<SPVM::Builder::Config> object.
+
+L</"file"> must be specified except for the case that L</"file_optional"> is set to a true value.
 
 =head2 new_c
   
   my $config = SPVM::Builder::Config->new_c(file => __FILE__);
 
-Create default build config with C settings. This is L<SPVM::Builder::Config> object.
+Call L</"new">. After that, call L<ext('c')|/"ext">.
 
-If you want to use the specific C version, use C<set_std> method.
-
-  $config->set_std('c99');
-
-=head2 new_c99
+=head2 new_gnu99
   
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-Create default build config with C99 settings. This is L<SPVM::Builder::Config> object.
+Call L</"new_c">. After that, call L<set_std('gnu99')|/"set_std">.
+
+=head2 new_gnu11
+  
+  my $config = SPVM::Builder::Config->new_gnu11(file => __FILE__);
+
+Call L</"new_c">. After that, call L<set_std('gnu11')|/"set_std">.
+
+=head2 new_c99
+  
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
+
+Call L</"new_c">. After that, call L<set_std('c99')|/"set_std">.
+
+=head2 new_c11
+  
+  my $config = SPVM::Builder::Config->new_c11(file => __FILE__);
+
+Call L</"new_c">. After that, call L<set_std('c11')|/"set_std">.
 
 =head2 new_cpp
   
   my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
-Create default build config with C++ settings. This is L<SPVM::Builder::Config> object.
-
-If you want to use the specific C++ version, use C<set_std> method.
-
-  $config->set_std('c++11');
+Call L</"new">. After that, call L<ext('cpp')|/"ext"> and set L</"cc"> to C<C++> compiler, and set L</"ld"> to C<C++> linker.
 
 =head2 new_cpp11
   
   my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
 
-Create default build config with C++11 settings. This is L<SPVM::Builder::Config> object.
+Call L</"new_cpp">. After that, call L<set_std('c++11')|/"set_std">.
+
+=head2 new_cpp14
+  
+  my $config = SPVM::Builder::Config->new_cpp14(file => __FILE__);
+
+Call L</"new_cpp">. After that, call L<set_std('c++14')|/"set_std">.
+
+=head2 new_cpp17
+  
+  my $config = SPVM::Builder::Config->new_cpp17(file => __FILE__);
+
+Call L</"new_cpp">. After that, call L<set_std('c++17')|/"set_std">.
 
 =head1 Instance Methods
 
