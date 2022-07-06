@@ -768,16 +768,16 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
   # Create a config
   my $config = SPVM::Builder::Config->new(file => __FILE__);
   
-  # Create a C<SPVM::Builder::Config> object with "GNU99" standard of "C" language
+  # Create a SPVM::Builder::Config object with "GNU99"
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-  # Create a C<SPVM::Builder::Config> object with "C99" standard of "C" language
+  # Create a SPVM::Builder::Config object with "C99"
   my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
-  # Create a config as "C++"
+  # Create a SPVM::Builder::Config object as "C++"
   my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
-  # Create a C<SPVM::Builder::Config> object with "C++11" standard of "C++"
+  # Create a SPVM::Builder::Config object with "C++11" standard of "C++"
   my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
   
   # Optimize
@@ -1226,6 +1226,18 @@ L</"file"> must be specified except for the case that L</"file_optional"> is set
   my $config = SPVM::Builder::Config->new_c(file => __FILE__);
 
 Call L</"new">. After that, call L<ext('c')|/"ext">.
+
+=head2 new_gnu99
+  
+  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+
+Call L</"new_c">. After that, call L<set_std('gnu99')|/"set_std">.
+
+=head2 new_gnu11
+  
+  my $config = SPVM::Builder::Config->new_gnu11(file => __FILE__);
+
+Call L</"new_c">. After that, call L<set_std('gnu11')|/"set_std">.
 
 =head2 new_gnu99
   
