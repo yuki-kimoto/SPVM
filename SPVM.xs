@@ -1,3 +1,4 @@
+#define PERL_NO_GET_CONTEXT     /* For performance */
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
