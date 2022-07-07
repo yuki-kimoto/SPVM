@@ -215,6 +215,10 @@ use Test::More;
         compile_not_ok($source, qr/The method name "foo::main" can't contain "::"/);
       }
     }
+    {
+      my $source = 'class MyClass { static method main : void (); }';
+      compile_not_ok($source, qr/Non-native method must have its block/);
+    }
   }
 
   # Enumeration definition
