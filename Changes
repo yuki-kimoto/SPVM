@@ -1,4 +1,4 @@
-0.9619_01 2022-07-07
+0.9619_01 2022-07-08
   [New Featres]
     * Add Error class that class id is 1.
     * Add a constant value SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS in native API.
