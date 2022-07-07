@@ -1132,7 +1132,7 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   
   env->set_exception(env, stack, exception);
   
-  return 1;
+  return SPVM_NATIVE_C_CLASS_ID_ERROR;
 }
 
 int32_t SPVM_API_remove_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object) {

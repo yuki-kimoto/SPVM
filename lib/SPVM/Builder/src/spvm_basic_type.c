@@ -31,6 +31,7 @@ const char* const* SPVM_NATIVE_C_BASIC_TYPE_ID_NAMES(void) {
     "Float",
     "Double",
     "Bool",
+    "Error",
   };
   
   return id_names;

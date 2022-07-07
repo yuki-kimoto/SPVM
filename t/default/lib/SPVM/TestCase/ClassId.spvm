@@ -30,6 +30,14 @@ class TestCase::ClassId {
       }
     }
     
+    # Error
+    {
+      my $class_id_error = class_id Error;
+      unless ($class_id_error == 1) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 }

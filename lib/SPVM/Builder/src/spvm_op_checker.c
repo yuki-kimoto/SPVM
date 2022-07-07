@@ -5087,7 +5087,19 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     // Resove field offset
     SPVM_OP_CHECKER_resolve_field_offset(compiler, class);
   }
-
+  
+  // Error class id is 1
+  // Create class id
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    if (strcmp(class->name, "Error") == 0) {
+      SPVM_CLASS* originla_1 = compiler->classes->values[1];
+      compiler->classes->values[1] = class;
+      compiler->classes->values[class_index] = originla_1;
+      
+    }
+  }
+  
   // Create class id
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);

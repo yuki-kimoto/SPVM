@@ -2443,23 +2443,6 @@ You can create an alias at the same time as loading a module by C<use>.
   
   use Foo::Bar as FB;
 
-=head2 Automatically Loaded Module
-
-The followings are Automatically Loaded Modules. They can be used without L</"Loading Module">.
-
-=begin html
-
-<ul>
-  <li>Byte</li>
-  <li>Short</li>
-  <li>Int</li>
-  <li>Long</li>
-  <li>Float</li>
-  <li>Double</li>
-</ul>
-
-=end html
-
 =head2 Load Module Selective
 
 In SPVM, there is an if require Statement that loads a Module only if it exists in the module path, and if it does not exist, the block does not exist.
@@ -2499,19 +2482,25 @@ In the other hand, the else block exists, so a warning is issued.
 
 The following modules are loaded by default. These modules are deeply related to the features of SPVM language itself, such as L<type conversion|/"Type Conversion">.
 
-=begin html
+=over 2
 
-<ul>
-  <li><a href="https://metacpan.org/pod/SPVM::Byte">Byte</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Short">Short</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Int">Int</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Long">Long</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Float">Float</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Double">Double</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Bool">Bool</a></li>
-</ul>
+=item * L<Byte|SPVM::Byte>
 
-=end html
+=item * L<Short|SPVM::Short>
+
+=item * L<Int|SPVM::Int>
+
+=item * L<Long|SPVM::Long>
+
+=item * L<Float|SPVM::Float>
+
+=item * L<Double|SPVM::Double>
+
+=item * L<Bool|SPVM::Bool>
+
+=item * L<Error|SPVM::Error>
+
+=back
 
 =head1 Class Variable
 
@@ -4124,15 +4113,15 @@ The list of numeric object types:
 <table>
   <tr>
     <th>
-      <b>Numeric Object Type</b>
-   </th>
+      Numeric Object Type
+    </th>
     <th>
       Corresponding Numeric Type
-   </th>
+    </th>
   </tr>
   <tr>
     <td>
-      Byte
+      <a href="https://metacpan.org/pod/SPVM::Byte">Byte</a>
     </td>
     <td>
       byte
@@ -4140,7 +4129,7 @@ The list of numeric object types:
   </tr>
   <tr>
     <td>
-      Short
+      <a href="https://metacpan.org/pod/SPVM::Short">Short</a>
     </td>
     <td>
       short
@@ -4148,7 +4137,7 @@ The list of numeric object types:
   </tr>
   <tr>
     <td>
-      Int
+      <a href="https://metacpan.org/pod/SPVM::Int">Int</a>
     </td>
     <td>
       int
@@ -4156,7 +4145,7 @@ The list of numeric object types:
   </tr>
   <tr>
     <td>
-      Long
+      <a href="https://metacpan.org/pod/SPVM::Long">Long</a>
     </td>
     <td>
       long
@@ -4164,7 +4153,7 @@ The list of numeric object types:
   </tr>
   <tr>
     <td>
-      Float
+      <a href="https://metacpan.org/pod/SPVM::Float">Float</a>
     </td>
     <td>
       float
@@ -4172,29 +4161,13 @@ The list of numeric object types:
   </tr>
   <tr>
     <td>
-      Double
+      <a href="https://metacpan.org/pod/SPVM::Double">Double</a>
     </td>
     <td>
       double
     </td>
   </tr>
 </table>
-
-=end html
-
-The document of numeric object types:
-
-=begin html
-
-<ul>
-  <li><a href="https://metacpan.org/pod/SPVM::Byte">Byte</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Short">Short</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Int">Int</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Long">Long</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Float">Float</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Double">Double</a></li>
-  <li><a href="https://metacpan.org/pod/SPVM::Bool">Bool</a></li>
-</ul>
 
 =end html
 

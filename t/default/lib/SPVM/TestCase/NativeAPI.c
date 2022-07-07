@@ -2243,6 +2243,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_OBJECT != 15) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_OBJECT != 16) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_OBJECT != 17) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_OBJECT != 18) { stack[0].ival = 0; return 0; }
   }
 
   // Constant Values of Basic Type Categories
@@ -2257,6 +2258,11 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
     if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS != 7) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE != 8) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT != 9) { stack[0].ival = 0; return 0; }
+  }
+
+  // Constant Values of Class IDs
+  {
+    if (SPVM_NATIVE_C_CLASS_ID_ERROR != 1) { stack[0].ival = 0; return 0; }
   }
   
   stack[0].ival = 1;
