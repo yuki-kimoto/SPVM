@@ -474,12 +474,16 @@ call_spvm_method(...)
           }
         }
       }
+      // Non reference
       else {
         switch (arg_basic_type_category) {
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
             switch(arg_basic_type_id) {
               // Perl scalar to SPVM byte
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+                if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
+                  croak("%dth argument of %s->%s must be a defined number compatible value at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                }
                 int8_t value = (int8_t)SvIV(sv_value);
                 stack[stack_index].bval = value;
                 stack_index++;
@@ -487,6 +491,9 @@ call_spvm_method(...)
               }
               // Perl scalar to SPVM short
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+                if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
+                  croak("%dth argument of %s->%s must be a defined number compatible value at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                }
                 int16_t value = (int16_t)SvIV(sv_value);
                 stack[stack_index].sval = value;
                 stack_index++;
@@ -494,6 +501,9 @@ call_spvm_method(...)
               }
               // Perl scalar to SPVM int
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+                if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
+                  croak("%dth argument of %s->%s must be a defined number compatible value at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                }
                 int32_t value = (int32_t)SvIV(sv_value);
                 stack[stack_index].ival = value;
                 stack_index++;
@@ -501,6 +511,9 @@ call_spvm_method(...)
               }
               // Perl scalar to SPVM long
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+                if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
+                  croak("%dth argument of %s->%s must be a defined number compatible value at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                }
                 int64_t value = (int64_t)SvIV(sv_value);
                 stack[stack_index].lval = value;
                 stack_index++;
@@ -508,6 +521,9 @@ call_spvm_method(...)
               }
               // Perl scalar to SPVM float
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+                if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
+                  croak("%dth argument of %s->%s must be a defined number compatible value at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                }
                 float value = (float)SvNV(sv_value);
                 stack[stack_index].fval = value;
                 stack_index++;
@@ -515,6 +531,9 @@ call_spvm_method(...)
               }
               // Perl scalar to SPVM double
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+                if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
+                  croak("%dth argument of %s->%s must be a defined number compatible value at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                }
                 double value = (double)SvNV(sv_value);
                 stack[stack_index].dval = value;
                 stack_index++;

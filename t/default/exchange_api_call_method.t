@@ -1170,6 +1170,51 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($chars_8bit, $bytes);
 }
 
+# Numeric type exception
+{
+  eval { SPVM::Byte->new(undef) };
+  ok($@);
+  eval { SPVM::Short->new(undef) };
+  ok($@);
+  eval { SPVM::Int->new(undef) };
+  ok($@);
+  eval { SPVM::Long->new(undef) };
+  ok($@);
+  eval { SPVM::Float->new(undef) };
+  ok($@);
+  eval { SPVM::Double->new(undef) };
+  ok($@);
+  
+  my $bool = SPVM::Bool->TRUE;
+  
+  eval { SPVM::Byte->new($bool) };
+  ok($@);
+  eval { SPVM::Short->new($bool) };
+  ok($@);
+  eval { SPVM::Int->new($bool) };
+  ok($@);
+  eval { SPVM::Long->new($bool) };
+  ok($@);
+  eval { SPVM::Float->new($bool) };
+  ok($@);
+  eval { SPVM::Double->new($bool) };
+  ok($@);
+
+  my $ref = {};
+  
+  eval { SPVM::Byte->new($ref) };
+  ok($@);
+  eval { SPVM::Short->new($ref) };
+  ok($@);
+  eval { SPVM::Int->new($ref) };
+  ok($@);
+  eval { SPVM::Long->new($ref) };
+  ok($@);
+  eval { SPVM::Float->new($ref) };
+  ok($@);
+  eval { SPVM::Double->new($ref) };
+  ok($@);
+}
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();

@@ -24,6 +24,8 @@
       SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS
       SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS
       SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_CLASS
+    * The numeric argument of the method call using exchange API must be a defined numeric or floating-point compatible value.
+      Otherwise an exception is thrown.
   [Bug Fix]
     * Fix the bug that the linker output twice to stdout and stderr. Suppress stdout.
   [Incompatible Bug Fix]
