@@ -2588,7 +2588,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   
   method->is_init = is_init;
   if (!is_init && strcmp(method_name, "INIT") == 0) {
-    SPVM_COMPILER_error(compiler, "\"INIT\" is reserved for INIT block at %s line %d", op_name_method->file, op_name_method->line);
+    SPVM_COMPILER_error(compiler, "\"INIT\" can't be used as a method name at %s line %d", op_name_method->file, op_name_method->line);
   }
 
   method->access_control_type = SPVM_DESCRIPTOR_C_ID_PUBLIC;

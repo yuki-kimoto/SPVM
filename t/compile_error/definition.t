@@ -202,7 +202,7 @@ use Test::More;
 
   # Method definition
   {
-    compile_not_ok_file('CompileError::Method::INIT');
+    compile_not_ok_file('CompileError::Method::INIT', qr/"INIT" can't be used as a method name/);
     compile_not_ok_file('CompileError::Method::TooManyArguments', qr/Too many arguments/i);
     compile_not_ok_file('CompileError::Method::TooManyArgumentsMulnum'. qr/Too many arguments/i);
     
