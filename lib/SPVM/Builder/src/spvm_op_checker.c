@@ -4274,7 +4274,7 @@ void SPVM_OP_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
     const char* basic_type_name = type->basic_type->name;
     
     // Check if type name is class
-    if (type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_OBJECT) {
+    if (type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS) {
       
       // Unknonw class
       SPVM_HASH* class_symtable = compiler->class_symtable;
