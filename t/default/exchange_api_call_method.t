@@ -1172,6 +1172,20 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Numeric type exception
 {
+  is(SPVM::Byte->new(5)->value, 5);
+  is(SPVM::Short->new(5)->value, 5);
+  is(SPVM::Int->new(5)->value, 5);
+  is(SPVM::Long->new(5)->value, 5);
+  is(SPVM::Float->new(5)->value, 5);
+  is(SPVM::Double->new(5)->value, 5);
+
+  is(SPVM::Byte->new(1.5)->value, 1);
+  is(SPVM::Short->new(1.5)->value, 1);
+  is(SPVM::Int->new(1.5)->value, 1);
+  is(SPVM::Long->new(1.5)->value, 1);
+  is(SPVM::Float->new(1.5)->value, 1.5);
+  is(SPVM::Double->new(1.5)->value, 1.5);
+
   eval { SPVM::Byte->new(undef) };
   ok($@);
   eval { SPVM::Short->new(undef) };
