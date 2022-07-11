@@ -422,7 +422,7 @@ sub compile {
   # Force compile
   my $force = $self->detect_force($config);
 
-  my $ignore_use_resource = $options->{ignore_use_resource};
+  my $no_use_resource = $options->{no_use_resource};
   my $ignore_native_module = $options->{ignore_native_module};
   
   # Native module file
@@ -525,7 +525,7 @@ sub compile {
       output_file => $object_file,
       source_file => $source_file,
       include_dirs => $options->{include_dirs},
-      ignore_use_resource => $ignore_use_resource,
+      no_use_resource => $no_use_resource,
     });
     
     # Compile a source file
@@ -612,7 +612,7 @@ sub create_compile_command_info {
     }
     
     # Add resource include directories
-    unless ($options->{ignore_use_resource}) {
+    unless ($options->{no_use_resource}) {
       my $resource_names = $config->get_resource_names;
       for my $resource_name (@$resource_names) {
         my $resource = $config->get_resource($resource_name);
@@ -1023,7 +1023,7 @@ sub create_link_info {
     my $compile_options = {
       input_dir => $resource_src_dir,
       output_dir => $resource_object_dir,
-      ignore_use_resource => 1,
+      no_use_resource => 1,
       ignore_native_module => 1,
       config => $resource_config,
       category => $category,
