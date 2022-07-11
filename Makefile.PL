@@ -139,6 +139,7 @@ WriteMakefile(
     TEST_REQUIRES => {
         'Test::More' => '0.92',
     },
+    NORECURS => 1,
 );
 
 # Add Build shared library make rule
