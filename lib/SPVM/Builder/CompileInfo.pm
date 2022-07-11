@@ -40,6 +40,17 @@ sub ccflags {
   }
 }
 
+sub include_dirs {
+  my $self = shift;
+  if (@_) {
+    $self->{ldflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{ldflags};
+  }
+}
+
 sub source_files {
   my $self = shift;
   if (@_) {
@@ -59,6 +70,17 @@ sub class_name {
   }
   else {
     return $self->{class_name};
+  }
+}
+
+sub no_use_resource {
+  my $self = shift;
+  if (@_) {
+    $self->{no_use_resource} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{no_use_resource};
   }
 }
 
@@ -121,6 +143,10 @@ sub new {
   unless (defined $self->ccflags) {
     $self->ccflags([]);
   }
+
+  unless (defined $self->include_dirs) {
+    $self->include_dirs([]);
+  }
   
   return $self;
 }
@@ -158,6 +184,13 @@ Get and set the compileer name.
 
 Get and set the compileer flags.  The default value is C<[]>.
 
+=head2 include_dirs
+
+  my $include_dirs = $source_file->include_dirs;
+  $source_file->include_dirs($include_dirs);
+
+Get and set the compileer flags.  The default value is C<[]>.
+
 =head2 source_files
 
   my $source_files = $compile_info->source_files;
@@ -171,6 +204,15 @@ Get and set the source file informations to be compileed. Each source file is a 
   $compile_info->class_name($class_name);
 
 Get and set the class name.
+
+=head2 no_use_resource
+
+  my $no_use_resource = $compile_info->no_use_resource;
+  $compile_info->no_use_resource($no_use_resource);
+
+Get and set the flag whether the compiler doesn't use resources that is used by L<"use_resource"|SPVM::Builder::Config/"use_resource">.
+
+The default is false value.
 
 =head2 config
 
