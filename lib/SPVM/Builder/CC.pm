@@ -724,7 +724,25 @@ sub create_dl_func_list {
 
 # This is used only for linker output for debug
 sub create_link_command {
-  my ($self, $ld, $output_file, $object_files, $cbuilder_extra_linker_flags) = @_;
+  my ($self, $link_info) = @_;
+
+  my $ld = $link_info->ld;
+  my $ldflags = $link_info->ldflags;
+  my $class_name = $link_info->class_name;
+  my $output_file = $link_info->output_file;
+  my $object_file_infos = $link_info->object_file_infos;
+  my $lib_infos = $link_info->lib_infos;
+  
+  my $all_ldflags_str = '';
+  
+  my $ldflags_str = join(' ', @$ldflags);
+  $all_ldflags_str .= $ldflags_str;
+  
+  my $lib_ldflags_str = join(' ', map { my $tmp = $_->to_string; $tmp } @$lib_infos);
+  
+  my $object_files = [map { my $tmp = $_->to_string; $tmp } @$object_file_infos];
+
+  my $cbuilder_extra_linker_flags = "$ldflags_str $lib_ldflags_str";
   
   my @link_command = ($ld, '-o', $output_file, @$object_files, $cbuilder_extra_linker_flags);
   
@@ -838,8 +856,9 @@ sub link {
         dl_func_list => $dl_func_list,
       );
       unless ($quiet) {
-        my $link_command = $self->create_link_command($ld, $link_info_output_file, $link_info_object_files, $cbuilder_extra_linker_flags);
+        my $link_command = $self->create_link_command($link_info);
         warn "$link_command\n";
+        die;
       }
     }
     # Create a static library
@@ -861,7 +880,7 @@ sub link {
         extra_linker_flags => $cbuilder_extra_linker_flags,
       );
       unless ($quiet) {
-        my $link_command = $self->create_link_command($ld, $link_info_output_file, $link_info_object_files, $cbuilder_extra_linker_flags);
+        my $link_command = $self->create_link_command($link_info);
         warn "$link_command\n";
       }
     }
