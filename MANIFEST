@@ -57,6 +57,7 @@ lib/SPVM/Bool.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/API.pm
 lib/SPVM/Builder/CC.pm
+lib/SPVM/Builder/CompileInfo.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
 lib/SPVM/Builder/Exe.pm
@@ -215,6 +216,7 @@ lib/SPVM/EqualityChecker.pm
 lib/SPVM/EqualityChecker.spvm
 lib/SPVM/EqualityChecker/SameObject.pm
 lib/SPVM/EqualityChecker/SameObject.spvm
+lib/SPVM/Error.pm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/Float.pm
 lib/SPVM/FloatList.pm

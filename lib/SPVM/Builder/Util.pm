@@ -351,13 +351,15 @@ sub get_spvm_builder_module_file_names {
   my @spvm_builder_module_file_names = qw(
     SPVM/Builder/API.pm
     SPVM/Builder/CC.pm
+    SPVM/Builder/CompileInfo.pm
     SPVM/Builder/Config/Exe.pm
     SPVM/Builder/Config.pm
     SPVM/Builder/Exe.pm
+    SPVM/Builder/LibInfo.pm
     SPVM/Builder/LinkInfo.pm
     SPVM/Builder/ObjectFileInfo.pm
-    SPVM/Builder/Resource.pm
     SPVM/Builder.pm
+    SPVM/Builder/Resource.pm
     SPVM/Builder/Util/API.pm
     SPVM/Builder/Util.pm
   );

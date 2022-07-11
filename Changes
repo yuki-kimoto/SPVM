@@ -41,7 +41,7 @@
       is changed from the output file to the link command.
   [Document]
     * Add the document of SPVM::LinkInfo to_string method.
-
+    * Add the doucment of Error class.
 0.9620 2022-07-09
   [New Featres]
     * Add Error class that class id is 1.
