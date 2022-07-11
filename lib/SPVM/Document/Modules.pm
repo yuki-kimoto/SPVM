@@ -4,7 +4,7 @@ SPVM::Document::Modules - SPVM Standard Modules
 
 =head1 Description
 
-The list of SPVM Standard Modules.
+The list of SPVM Standard Modules. All Standard modules are yet experimental status.
 
 =head1 Standard Modules
 
@@ -88,9 +88,9 @@ The list of SPVM Standard Modules.
 
 =back
 
-=head1 Cpan Modules
+=head1 CPAN Modules
 
-The list of some CPAN modules.
+The list of some CPAN modules. All CPAN modules are yet experimental status.
 
 =over 2
 
@@ -105,6 +105,18 @@ The list of some CPAN modules.
 =item * L<Base64|SPVM::Base64> - Base 64
 
 =item * L<Time::Local|SPVM::Time::Local> - Time Reverse Manipulation
+
+=item * L<SPVM::Errno> - Error Number
+
+=item * L<SPVM::Resource::Re2::V2022_06_01> - Resource of Google RE2 release 2022-06-01.
+
+=item * L<SPVM::Resource::Zlib::V1_2_11> - zlib v1.2.11 Resource
+
+=item * L<SPVM::Cwd> - get pathname of current working directory
+
+=item * L<SPVM::IO> - File IO, Socket, Select/Polling.
+
+=item * L<SPVM::Digest::MD5> - SPVM interface to the MD5 Algorithm
 
 =back
 
