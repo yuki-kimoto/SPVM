@@ -189,7 +189,7 @@ Get and set the compileer flags.  The default value is C<[]>.
   my $include_dirs = $source_file->include_dirs;
   $source_file->include_dirs($include_dirs);
 
-Get and set the compileer flags.  The default value is C<[]>.
+Get and set the include directories. The default is C<[]>.
 
 =head2 source_files
 
