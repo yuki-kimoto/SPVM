@@ -6,7 +6,7 @@ use Config;
 use Carp 'confess';
 use File::Basename 'dirname';
 
-# Fields
+# Field Methods
 sub output_file {
   my $self = shift;
   if (@_) {
@@ -84,8 +84,31 @@ sub config {
   }
 }
 
-# Methods
-sub to_string {
+# Class Methods
+sub new {
+  my $class = shift;
+  
+  my $self = {@_};
+
+  bless $self, $class;
+  
+  unless (defined $self->object_file_infos) {
+    $self->object_file_infos([]);
+  }
+
+  unless (defined $self->lib_infos) {
+    $self->lib_infos([]);
+  }
+
+  unless (defined $self->ldflags) {
+    $self->ldflags([]);
+  }
+  
+  return $self;
+}
+
+# Instance Methods
+sub create_link_command {
   my ($self) = @_;
 
   my $ld = $self->ld;
@@ -108,32 +131,16 @@ sub to_string {
   
   my @link_command = ($ld, '-o', $output_file, @$object_files, $cbuilder_extra_linker_flags);
   
-  my $link_command = join(' ', @link_command);
-  
-  return $link_command;
+  return \@link_command;
 }
 
-# Methods
-sub new {
-  my $class = shift;
-  
-  my $self = {@_};
+sub to_string {
+  my ($self) = @_;
 
-  bless $self, $class;
+  my $link_command = $self->create_link_command;;
+  my $link_command_string = "@$link_command";
   
-  unless (defined $self->object_file_infos) {
-    $self->object_file_infos([]);
-  }
-
-  unless (defined $self->lib_infos) {
-    $self->lib_infos([]);
-  }
-
-  unless (defined $self->ldflags) {
-    $self->ldflags([]);
-  }
-  
-  return $self;
+  return $link_command_string;
 }
 
 1;
@@ -211,11 +218,21 @@ Get and set the L<config|SPVM::Builder::Config> that is used to link the objects
 
 Create a new C<SPVM::Builder::LinkInfo> object.
 
+=head2 create_link_command
+
+  my $link_command = $link_info->create_link_command;
+
+Get the link command as an array reference.
+
+B<Examples:>
+
+  [qw(cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz)]
+
 =head2 to_string
 
   my $string = $link_info->to_string;
 
-Get the string information of the link information.
+Get the string representation of the L<link command|/"create_link_command">.
 
 B<Examples:>
 
