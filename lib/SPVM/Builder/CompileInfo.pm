@@ -100,10 +100,10 @@ sub create_compile_command {
 sub to_string {
   my ($self) = @_;
 
-  my @compile_command = $self->create_compile_command;
-  my $compile_command = "@$compile_command";
+  my $compile_command = $self->create_compile_command;
+  my $compile_command_string = "@$compile_command";
   
-  return $compile_command;
+  return $compile_command_string;
 }
 
 # Methods
@@ -193,11 +193,21 @@ Get and set the L<config|SPVM::Builder::Config> that is used to compile the sour
 
 Create a new C<SPVM::Builder::CompileInfo> object.
 
+=head2 create_compile_command
+
+  my $compile_command = $compile_info->create_compile_command;
+
+Get the compile command as an array reference.
+
+B<Examples:>
+
+  [qw(cc foo.o foo.c -O2 -Iinclude_dir)]
+
 =head2 to_string
 
   my $string = $compile_info->to_string;
 
-Get the string representaion of the compile information.
+Get the string representaion of the L<compile command|/"create_compile_command">.
 
 B<Examples:>
 
