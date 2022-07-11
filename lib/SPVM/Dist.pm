@@ -443,7 +443,7 @@ sub generate_gitkeep_file_for_native_module_src_dir {
 sub generate_gitignore_file {
   my ($self) = @_;
   
-  my $gitignore_content = <<"EOS";
+  my $gitignore_content = <<'EOS';
 blib/*
 Makefile
 Makefile.old
@@ -469,22 +469,24 @@ sub generate_manifest_skip_file {
   my ($self) = @_;
   
   # Content
-  my $manifest_skip_content = <<"EOS";
-^blib/
-^Makefile\$
-^Makefile\.old\$
-^MYMETA.yml\$
-^MYMETA.json\$
-^pm_to_blib\$
-^\.spvm_build/
-^t/\.spvm_build/
-^SPVM-
-^core\.
-^core\$
-\.bak\$
-\.tmp\$
-\.BAK\$
-^\.git/
+  my $manifest_skip_content = <<'EOS';
+(^|\/)blib/
+(^|\/)Makefile$
+(^|\/)Makefile.old$
+(^|\/)MYMETA.yml$
+(^|\/)MYMETA.json$
+(^|\/)pm_to_blib$
+(^|\/).spvm_build/
+(^|\/)t/.spvm_build/
+(^|\/)SPVM-
+(^|\/)core\.
+(^|\/)core$
+(^|\/)\.git/
+\.bak$
+\.tmp$
+\.BAK$
+\.o$
+\.bs$
 EOS
 
   # Generate file
