@@ -1074,7 +1074,7 @@ sub compile_native_sources {
           output_dir => $build_object_dir,
           config => $config,
           category => 'native',
-          ignore_use_resource => 1,
+          no_use_resource => 1,
           include_dirs => $include_dirs,
         }
       );
