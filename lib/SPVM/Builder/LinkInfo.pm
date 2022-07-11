@@ -40,6 +40,17 @@ sub ldflags {
   }
 }
 
+sub lib_dirs {
+  my $self = shift;
+  if (@_) {
+    $self->{ldflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{ldflags};
+  }
+}
+
 sub object_file_infos {
   my $self = shift;
   if (@_) {
@@ -102,6 +113,10 @@ sub new {
 
   unless (defined $self->ldflags) {
     $self->ldflags([]);
+  }
+
+  unless (defined $self->lib_dirs) {
+    $self->lib_dirs([]);
   }
   
   return $self;
@@ -175,6 +190,13 @@ Get and set the linker name.
   $object_file_info->ldflags($ldflags);
 
 Get and set the linker flags.  The default value is C<[]>.
+
+=head2 lib_dirs
+
+  my $lib_dirs = $source_file->lib_dirs;
+  $source_file->lib_dirs($lib_dirs);
+
+Get and set the library directories. The default is C<[]>.
 
 =head2 object_file_infos
 
