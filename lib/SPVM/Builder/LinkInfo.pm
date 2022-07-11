@@ -140,15 +140,13 @@ sub new {
 
 =head1 Name
 
-SPVM::Builder::LinkInfo - Object file information
+SPVM::Builder::LinkInfo - Link Information
 
 =head1 Description
 
-B<SPVM::Builder::LinkInfo> is a object file information. This infromation is used by the linker.
+C<SPVM::Builder::LinkInfo> is a link information. This infromation is used by the linker.
 
 =head1 Field Methods
-
-Fields of B<SPVM::Builder::LinkInfo>.
 
 =head2 output_file
 
@@ -199,10 +197,26 @@ Get and set the class name.
 
 Get and set the L<config|SPVM::Builder::Config> that is used to link the objects.
 
-=head1 Methods
-
-Methods of B<SPVM::Builder::LinkInfo>.
+=head1 Class Methods
 
 =head2 new
 
   my $link_info = SPVM::Builder::LinkInfo->new;
+
+=head1 Instance Methods
+
+=head2 new
+
+  my $link_info = SPVM::Builder::LinkInfo->new;
+
+Create a new C<SPVM::Builder::LinkInfo> object.
+
+=head2 to_string
+
+  my $string = $link_info->to_string;
+
+Get the string information of the link information.
+
+B<Examples:>
+
+  cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz
