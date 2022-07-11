@@ -87,8 +87,30 @@ sub config {
 # Methods
 sub to_string {
   my ($self) = @_;
+
+  my $ld = $self->ld;
+  my $ldflags = $self->ldflags;
+  my $class_name = $self->class_name;
+  my $output_file = $self->output_file;
+  my $object_file_infos = $self->object_file_infos;
+  my $lib_infos = $self->lib_infos;
   
-  return $self->output_file;
+  my $all_ldflags_str = '';
+  
+  my $ldflags_str = join(' ', @$ldflags);
+  $all_ldflags_str .= $ldflags_str;
+  
+  my $lib_ldflags_str = join(' ', map { my $tmp = $_->to_string; $tmp } @$lib_infos);
+  
+  my $object_files = [map { my $tmp = $_->to_string; $tmp } @$object_file_infos];
+
+  my $cbuilder_extra_linker_flags = "$ldflags_str $lib_ldflags_str";
+  
+  my @link_command = ($ld, '-o', $output_file, @$object_files, $cbuilder_extra_linker_flags);
+  
+  my $link_command = join(' ', @link_command);
+  
+  return $link_command;
 }
 
 # Methods

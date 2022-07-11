@@ -856,9 +856,8 @@ sub link {
         dl_func_list => $dl_func_list,
       );
       unless ($quiet) {
-        my $link_command = $self->create_link_command($link_info);
+        my $link_command = $link_info->to_string;
         warn "$link_command\n";
-        die;
       }
     }
     # Create a static library
@@ -880,7 +879,7 @@ sub link {
         extra_linker_flags => $cbuilder_extra_linker_flags,
       );
       unless ($quiet) {
-        my $link_command = $self->create_link_command($link_info);
+        my $link_command = $link_info->to_string;
         warn "$link_command\n";
       }
     }
