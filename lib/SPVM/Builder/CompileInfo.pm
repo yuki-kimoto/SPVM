@@ -65,11 +65,11 @@ sub builder_include_dir {
 sub include_dirs {
   my $self = shift;
   if (@_) {
-    $self->{ccflags} = $_[0];
+    $self->{include_dirs} = $_[0];
     return $self;
   }
   else {
-    return $self->{ccflags};
+    return $self->{include_dirs};
   }
 }
 
@@ -115,11 +115,10 @@ sub create_merged_ccflags {
     push @merged_ccflags, $self->optimize;
   }
   
-  my $ccflags = $self->ccflags;
   push @merged_ccflags, @{$self->ccflags};
 
   my $builder_include_dir = $self->builder_include_dir;
-  push @merged_ccflags, $builder_include_dir;
+  push @merged_ccflags, "-I$builder_include_dir";
 
   my $include_dirs = $self->include_dirs;
   my @include_dirs_ccflags = map { "-I$_" } @$include_dirs;
