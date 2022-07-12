@@ -58,6 +58,18 @@ use FindBin;
     }
     ok($is_object_file_infos);
   }
+
+  {
+    no warnings 'once';
+    my $compile_info = $main::MYEXE_COMPILE_INFO_BEFORE_COMPILE;
+    ok(ref $compile_info eq 'SPVM::Builder::CompileInfo');
+  }
+
+  {
+    no warnings 'once';
+    my $compile_info = $main::MYEXE_COMPILE_INFO_GLOBAL_BEFORE_COMPILE;
+    ok(ref $compile_info eq 'SPVM::Builder::CompileInfo');
+  }
 }
 
 # Exe name contain sub directory

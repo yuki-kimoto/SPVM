@@ -8,81 +8,19 @@ use File::Basename 'dirname';
 
 use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
 
-# Fields
-sub file {
+# Field methods
+sub compile_info {
   my $self = shift;
   if (@_) {
-    $self->{file} = $_[0];
+    $self->{compile_info} = $_[0];
     return $self;
   }
   else {
-    return $self->{file};
+    return $self->{compile_info};
   }
 }
 
-sub source_file {
-  my $self = shift;
-  if (@_) {
-    $self->{source_file} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{source_file};
-  }
-}
-
-sub cc {
-  my $self = shift;
-  if (@_) {
-    $self->{cc} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{cc};
-  }
-}
-
-sub ccflags {
-  my $self = shift;
-  if (@_) {
-    $self->{ccflags} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ccflags};
-  }
-}
-
-sub class_name {
-  my $self = shift;
-  if (@_) {
-    $self->{class_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{class_name};
-  }
-}
-
-sub config {
-  my $self = shift;
-  if (@_) {
-    $self->{config} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{config};
-  }
-}
-
-# Methods
-sub to_string {
-  my ($self) = @_;
-  
-  return $self->file;
-}
-
-# Methods
+# Class methods
 sub new {
   my $class = shift;
   
@@ -90,11 +28,14 @@ sub new {
 
   bless $self, $class;
   
-  unless (defined $self->ccflags) {
-    $self->ccflags([]);
-  }
-  
   return $self;
+}
+
+# Instance methods
+sub to_string {
+  my ($self) = @_;
+  
+  return $self->compile_info->output_file;
 }
 
 1;
@@ -111,61 +52,26 @@ B<SPVM::Builder::ObjectFileInfo> is a object file information.
 
 Fields of B<SPVM::Builder::ObjectFileInfo>.
 
-=head2 file
+=head2 compile_info
 
-  my $file = $object_file_info->file;
-  $object_file_info->file($file);
+  my $compile_info = $object_file_info->compile_info;
+  $object_file_info->compile_info($compile_info);
 
-Get and set the path of the object file.
+Get and set the L<SPVM::Builder::CompileInfo> object.
 
-=head2 source_file
-
-  my $source_file = $object_file_info->source_file;
-  $object_file_info->source_file($source_file);
-
-Get and set the path of source file.
-
-=head2 cc
-
-  my $cc = $object_file_info->cc;
-  $object_file_info->cc($cc);
-
-Get and set the compiler name that compiled the object file.
-
-=head2 ccflags
-
-  my $ccflags = $object_file_info->ccflags;
-  $object_file_info->ccflags($ccflags);
-
-Get and set the compiler flags that compiled the object file. The default value is C<[]>.
-
-=head2 class_name
-
-  my $class_name = $object_file_info->class_name;
-  $object_file_info->class_name($class_name);
-
-Get and set the class name belonged to when the object file was compiled.
-
-=head2 config
-
-  my $config = $object_file_info->config;
-  $object_file_info->config($config);
-
-Get and set the L<config|SPVM::Builder::Config> that is used to compile the source file.
-
-=head1 Methods
-
-Methods of B<SPVM::Builder::ObjectFileInfo>.
+=head1 Class Methods
 
 =head2 new
 
   my $object_file_info = SPVM::Builder::ObjectFileInfo->new;
 
+=head1 Instance Methods
+
 =head2 to_string
 
   my $object_file = $object_file_info->to_string;
 
-Get the object file name. This is same as C<object_file> field.
+Get the object file name. This is same as C<$object_file->compile_info->output_file>.
 
 =head1 Operators
 

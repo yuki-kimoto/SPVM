@@ -529,13 +529,7 @@ sub compile {
     my $compile_info_cc = $compile_info->{cc};
     my $compile_info_ccflags = $compile_info->{ccflags};
     my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
-      class_name => $class_name,
-      file => $object_file,
-      source_file => $source_file,
-      cc => $compile_info_cc,
-      ccflags => $compile_info_ccflags,
-      config => $config,
-      source_type => $cur_is_native_module ? 'native_module' : 'resource',
+      compile_info => $compile_info,
     );
     
     # Add object file information
