@@ -1,4 +1,4 @@
-0.9620_01 2022-07-12
+0.9621 2022-07-13
   [New Features]
     * Add SPVM::Builder::LinkInfo create_link_command instance method.
     * Add SPVM::Builder::LinkInfo output_type field method.
