@@ -795,23 +795,14 @@ sub link {
     my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
     
     my $link_info_ld = $link_info->ld;
-    my $link_info_ldflags = $link_info->ldflags;
     my $link_info_class_name = $link_info->class_name;
     my $link_info_output_file = $link_info->output_file;
     my $link_info_object_file_infos = $link_info->object_file_infos;
-    my $link_info_lib_infos = $link_info->lib_infos;
     
-    my $all_ldflags_str = '';
-    
-    my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
-    $all_ldflags_str .= $link_info_ldflags_str;
-    
-    my $lib_ldflags_str = join(' ', map { my $tmp = $_->to_string; $tmp } @$link_info_lib_infos);
+    my $merged_ldflags = $link_info->create_merged_ldflags;
     
     my $link_info_object_files = [map { my $tmp = $_->to_string; $tmp } @$link_info_object_file_infos];
 
-    my $cbuilder_extra_linker_flags = "$link_info_ldflags_str $lib_ldflags_str";
-    
     my @tmp_files;
     
     my $output_type = $config->output_type;
@@ -823,7 +814,7 @@ sub link {
         objects => $link_info_object_files,
         module_name => $link_info_class_name,
         lib_file => $link_info_output_file,
-        extra_linker_flags => $cbuilder_extra_linker_flags,
+        extra_linker_flags => "@$merged_ldflags",
         dl_func_list => $dl_func_list,
       );
       unless ($quiet) {
@@ -847,7 +838,7 @@ sub link {
         objects => $link_info_object_files,
         module_name => $link_info_class_name,
         exe_file => $link_info_output_file,
-        extra_linker_flags => $cbuilder_extra_linker_flags,
+        extra_linker_flags => "@$merged_ldflags",
       );
       unless ($quiet) {
         my $link_command = $link_info->to_string;
@@ -901,37 +892,13 @@ sub create_link_info {
   # Linker
   my $ld = $config->ld;
   
-  # All linker flags
-  my @all_ldflags;
-  
   # Output type
   my $output_type = $self->output_type || $config->output_type;
-  
-  # Linker flags for dynamic link
-  if ($output_type eq 'dynamic_lib') {
-    my $dynamic_lib_ldflags = $config->dynamic_lib_ldflags;
-    push @all_ldflags, @$dynamic_lib_ldflags;
-  }
-  
-  # Linker flags
-  my $ldflags = $config->ldflags;
-  push @all_ldflags, @$ldflags;
-  
-  # Optimize
-  my $ld_optimize = $config->ld_optimize;
-  push @all_ldflags, $ld_optimize;
-
-  # Library directory
-  my $lib_dirs = $config->lib_dirs;
-  for my $lib_dir (@$lib_dirs) {
-    if (-d $lib_dir) {
-      push @all_ldflags, "-L$lib_dir";
-    }
-  }
   
   # Libraries
   my $lib_infos = [];
   my $libs = $config->libs;
+  my $lib_dirs = $config->lib_dirs;
   for my $lib (@$libs) {
     my $lib_info;
     
@@ -1073,15 +1040,29 @@ sub create_link_info {
     
     $output_file .= $exe_ext;
   }
+
+  # Linker flags for dynamic link
+  my $dynamic_lib_ldflags = $config->dynamic_lib_ldflags;
+  
+  # Linker flags
+  my $ldflags = $config->ldflags;
+  
+  # Optimize
+  my $ld_optimize = $config->ld_optimize;
   
   my $link_info = SPVM::Builder::LinkInfo->new(
     class_name => $class_name,
     ld => $ld,
-    ldflags => \@all_ldflags,
+    ldflags => $ldflags,
     lib_infos => $lib_infos,
     object_file_infos => $all_object_file_infos,
     output_file => $output_file,
+    lib_dirs => $lib_dirs,
+    ld_optimize => $ld_optimize,
+    dynamic_lib_ldflags => $dynamic_lib_ldflags,
+    output_type => $output_type,
   );
+  
   return $link_info;
 }
 

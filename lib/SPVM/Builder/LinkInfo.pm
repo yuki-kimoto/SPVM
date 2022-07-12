@@ -18,6 +18,17 @@ sub output_file {
   }
 }
 
+sub output_type {
+  my $self = shift;
+  if (@_) {
+    $self->{output_type} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{output_type};
+  }
+}
+
 sub ld {
   my $self = shift;
   if (@_) {
@@ -26,6 +37,17 @@ sub ld {
   }
   else {
     return $self->{ld};
+  }
+}
+
+sub ld_optimize {
+  my $self = shift;
+  if (@_) {
+    $self->{ld_optimize} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{ld_optimize};
   }
 }
 
@@ -40,14 +62,25 @@ sub ldflags {
   }
 }
 
-sub lib_dirs {
+sub dynamic_lib_ldflags {
   my $self = shift;
   if (@_) {
-    $self->{ldflags} = $_[0];
+    $self->{dynamic_lib_ldflags} = $_[0];
     return $self;
   }
   else {
-    return $self->{ldflags};
+    return $self->{dynamic_lib_ldflags};
+  }
+}
+
+sub lib_dirs {
+  my $self = shift;
+  if (@_) {
+    $self->{lib_dirs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{lib_dirs};
   }
 }
 
@@ -115,6 +148,10 @@ sub new {
     $self->ldflags([]);
   }
 
+  unless (defined $self->dynamic_lib_ldflags) {
+    $self->dynamic_lib_ldflags([]);
+  }
+
   unless (defined $self->lib_dirs) {
     $self->lib_dirs([]);
   }
@@ -122,29 +159,47 @@ sub new {
   return $self;
 }
 
+sub create_merged_ldflags {
+  my ($self) = @_;
+  
+  my @merged_ldflags;
+  
+  if (defined $self->ld_optimize) {
+    push @merged_ldflags, $self->ld_optimize;
+  }
+  
+  my $output_type = $self->output_type;
+  if ($output_type eq 'dynamic_lib') {
+    push @merged_ldflags, @{$self->dynamic_lib_ldflags};
+  }
+  
+  my $ldflags = $self->ldflags;
+  push @merged_ldflags, @{$self->ldflags};
+  
+  my $lib_dirs = $self->lib_dirs;
+  
+  my @lib_dirs_ldflags = map { "-L$_" } @$lib_dirs;
+  push @merged_ldflags, @lib_dirs_ldflags;
+  
+  my $lib_infos = $self->lib_infos;
+  my @lib_ldflags = map { my $tmp = $_->to_string; $tmp } @$lib_infos;
+  push @merged_ldflags, @lib_ldflags;
+  
+  return \@merged_ldflags;
+}
+
 # Instance Methods
 sub create_link_command {
   my ($self) = @_;
-
+  
   my $ld = $self->ld;
-  my $ldflags = $self->ldflags;
-  my $class_name = $self->class_name;
   my $output_file = $self->output_file;
   my $object_file_infos = $self->object_file_infos;
-  my $lib_infos = $self->lib_infos;
-  
-  my $all_ldflags_str = '';
-  
-  my $ldflags_str = join(' ', @$ldflags);
-  $all_ldflags_str .= $ldflags_str;
-  
-  my $lib_ldflags_str = join(' ', map { my $tmp = $_->to_string; $tmp } @$lib_infos);
-  
   my $object_files = [map { my $tmp = $_->to_string; $tmp } @$object_file_infos];
-
-  my $cbuilder_extra_linker_flags = "$ldflags_str $lib_ldflags_str";
   
-  my @link_command = ($ld, '-o', $output_file, @$object_files, $cbuilder_extra_linker_flags);
+  my $merged_ldflags = $self->create_merged_ldflags;
+  
+  my @link_command = ($ld, '-o', $output_file, @$object_files, @$merged_ldflags);
   
   return \@link_command;
 }
@@ -177,6 +232,13 @@ C<SPVM::Builder::LinkInfo> is a link information. This infromation is used by th
 
 Get and set the object file that is compiled.
 
+=head2 output_type
+
+  my $output_type = $link_info->output_type;
+  $link_info->output_type($output_type);
+
+Get and set the output type.
+
 =head2 ld
 
   my $ld = $link_info->ld;
@@ -184,12 +246,26 @@ Get and set the object file that is compiled.
 
 Get and set the linker name.
 
+=head2 ld_optimize
+
+  my $ld_optimize = $link_info->ld_optimize;
+  $link_info->ld_optimize($ld_optimize);
+
+Get and set the linker optimization option.
+
 =head2 ldflags
 
   my $ldflags = $object_file_info->ldflags;
   $object_file_info->ldflags($ldflags);
 
 Get and set the linker flags.  The default value is C<[]>.
+
+=head2 dynamic_lib_ldflags
+
+  my $dynamic_lib_ldflags = $object_file_info->dynamic_lib_ldflags;
+  $object_file_info->dynamic_lib_ldflags($dynamic_lib_ldflags);
+
+Get and set the linker flags for dynamic library.  The default value is C<[]>.
 
 =head2 lib_dirs
 
@@ -240,11 +316,21 @@ Get and set the L<config|SPVM::Builder::Config> that is used to link the objects
 
 Create a new C<SPVM::Builder::LinkInfo> object.
 
+=head2 create_merged_ldflags
+
+  my $merged_ldflags = $link_info->create_merged_ldflags;
+
+Create the merged ldflags as an array reference.
+
+B<Examples:>
+
+  [qw(-shared -O2 -Llibdir -lz)]
+
 =head2 create_link_command
 
   my $link_command = $link_info->create_link_command;
 
-Get the link command as an array reference.
+Create the link command as an array reference.
 
 B<Examples:>
 
