@@ -137,7 +137,7 @@ sub create_compile_command {
   
   my $merged_ccflags = $self->create_merged_ccflags;;
   
-  my @compile_command = ($cc, '-o', $output_file, @$merged_ccflags, $source_file);
+  my @compile_command = ($cc, '-c', '-o', $output_file, @$merged_ccflags, $source_file);
   
   return \@compile_command;
 }
@@ -278,7 +278,7 @@ Get the compile command as an array reference.
 
 B<Examples:>
 
-  [qw(cc foo.o foo.c -O2 -Iinclude_dir)]
+  [qw(cc -c -o foo.o -O2 -Iinclude_dir foo.c)]
 
 =head2 to_string
 
@@ -288,4 +288,4 @@ Get the string representaion of the L<compile command|/"create_compile_command">
 
 B<Examples:>
 
-  cc foo.o foo.c -O2 -Iinclude_dir
+  cc -c -O2 -Iinclude_dir -o foo.o foo.c 
