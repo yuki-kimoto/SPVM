@@ -40,6 +40,17 @@ sub ccflags {
   }
 }
 
+sub optimize {
+  my $self = shift;
+  if (@_) {
+    $self->{optimize} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{optimize};
+  }
+}
+
 sub builder_include_dir {
   my $self = shift;
   if (@_) {
@@ -199,6 +210,20 @@ Get and set the compileer name.
   $source_file->ccflags($ccflags);
 
 Get and set the compileer flags.  The default value is C<[]>.
+
+=head2 optimize
+
+  my $optimize = $compile_info->optimize;
+  $compile_info->optimize($optimize);
+
+Get and set the optimize.
+
+=head2 builder_include_dir
+
+  my $builder_include_dir = $compile_info->builder_include_dir;
+  $compile_info->builder_include_dir($builder_include_dir);
+
+Get and set the builder include directory.
 
 =head2 include_dirs
 
