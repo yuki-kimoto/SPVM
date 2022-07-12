@@ -50,6 +50,7 @@
       global_ccflags_each, global_optimize_each from SPVM::Builder::CC.
     * Remove cc_each, ccflags_each, optimize_each.
     * Remove lib_type from SPVM::Builder::ObjectFileInfo.
+    * Remove source_type from SPVM::Builder::ObjectFileInfo.
   [Document]
     * Add the document of SPVM::Builder::LinkInfo to_string method.
     * Add the doucment of Error class.

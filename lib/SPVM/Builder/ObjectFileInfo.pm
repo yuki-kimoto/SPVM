@@ -64,17 +64,6 @@ sub class_name {
   }
 }
 
-sub source_type {
-  my $self = shift;
-  if (@_) {
-    $self->{source_type} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{source_type};
-  }
-}
-
 sub config {
   my $self = shift;
   if (@_) {
@@ -156,13 +145,6 @@ Get and set the compiler flags that compiled the object file. The default value 
   $object_file_info->class_name($class_name);
 
 Get and set the class name belonged to when the object file was compiled.
-
-=head2 source_type
-
-  my $source_type = $object_file_info->source_type;
-  $object_file_info->source_type($source_type);
-
-Get and set source type. C<native_module> or C<resource>.
 
 =head2 config
 
