@@ -255,22 +255,22 @@ Get and set the linker optimization option.
 
 =head2 ldflags
 
-  my $ldflags = $object_file_info->ldflags;
-  $object_file_info->ldflags($ldflags);
+  my $ldflags = $link_info->ldflags;
+  $link_info->ldflags($ldflags);
 
 Get and set the linker flags.  The default value is C<[]>.
 
 =head2 dynamic_lib_ldflags
 
-  my $dynamic_lib_ldflags = $object_file_info->dynamic_lib_ldflags;
-  $object_file_info->dynamic_lib_ldflags($dynamic_lib_ldflags);
+  my $dynamic_lib_ldflags = $link_info->dynamic_lib_ldflags;
+  $link_info->dynamic_lib_ldflags($dynamic_lib_ldflags);
 
 Get and set the linker flags for dynamic library.  The default value is C<[]>.
 
 =head2 lib_dirs
 
-  my $lib_dirs = $source_file->lib_dirs;
-  $source_file->lib_dirs($lib_dirs);
+  my $lib_dirs = $link_info->lib_dirs;
+  $link_info->$link_info->lib_dirs($lib_dirs);
 
 Get and set the library directories. The default is C<[]>.
 
