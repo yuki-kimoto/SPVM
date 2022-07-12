@@ -603,8 +603,9 @@ sub create_compile_command_info {
   $cflags .= "-I$builder_include_dir ";
 
   # Include directories
+  my $no_use_resource = $options->{no_use_resource};
+  my @include_dirs = @{$config->include_dirs};
   {
-    my @include_dirs = @{$config->include_dirs};
 
     # Add own resource include directory
     my $own_include_dir = $config->own_include_dir;
@@ -668,7 +669,11 @@ sub create_compile_command_info {
     cc => $cc,
     ccflags => \@cflags,
     object_file => $output_file,
-    source_file => $source_file
+    source_file => $source_file,
+    optimize => $optimize,
+    include_dirs => \@include_dirs,
+    no_use_resource => $no_use_resource,
+    ccflags_v2 => $ccflags,
   );
   
   return $compile_info;
