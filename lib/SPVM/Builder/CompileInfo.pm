@@ -21,22 +21,22 @@ sub output_file {
 sub cc {
   my $self = shift;
   if (@_) {
-    $self->{ld} = $_[0];
+    $self->{cc} = $_[0];
     return $self;
   }
   else {
-    return $self->{ld};
+    return $self->{cc};
   }
 }
 
 sub ccflags {
   my $self = shift;
   if (@_) {
-    $self->{ldflags} = $_[0];
+    $self->{ccflags} = $_[0];
     return $self;
   }
   else {
-    return $self->{ldflags};
+    return $self->{ccflags};
   }
 }
 
@@ -65,11 +65,11 @@ sub builder_include_dir {
 sub include_dirs {
   my $self = shift;
   if (@_) {
-    $self->{ldflags} = $_[0];
+    $self->{ccflags} = $_[0];
     return $self;
   }
   else {
-    return $self->{ldflags};
+    return $self->{ccflags};
   }
 }
 
