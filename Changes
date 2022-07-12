@@ -48,6 +48,7 @@
       is changed from the output file to the link command.
     * (This feature is not work well from now)Remove non-worked global_cc_each,
       global_ccflags_each, global_optimize_each from SPVM::Builder::CC.
+    * Remove cc_each, ccflags_each, optimize_each.
   [Document]
     * Add the document of SPVM::Builder::LinkInfo to_string method.
     * Add the doucment of Error class.
