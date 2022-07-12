@@ -112,7 +112,7 @@ sub create_merged_ccflags {
   my @merged_ccflags;
   
   if (defined $self->optimize) {
-    push @merged_ccflags, $self->optimize;
+    push @merged_ccflags, split(/ +/, $self->optimize);
   }
   
   push @merged_ccflags, @{$self->ccflags};
@@ -135,7 +135,7 @@ sub create_compile_command {
   my $output_file = $self->output_file;
   my $source_file = $self->source_file;
   
-  my $merged_ccflags = $self->create_merged_ccflags;;
+  my $merged_ccflags = $self->create_merged_ccflags;
   
   my @compile_command = ($cc, '-c', '-o', $output_file, @$merged_ccflags, $source_file);
   

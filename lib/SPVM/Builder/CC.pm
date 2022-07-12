@@ -346,11 +346,12 @@ sub compile_single {
   # Quiet output
   my $quiet = $self->detect_quiet($config);
   
-  my $source_file = $compile_info->{source_file};
+  my $source_file = $compile_info->source_file;
 
   # Execute compile command
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
-  my $cc_cmd = $self->create_compile_command($compile_info);
+  my $cc_cmd = $compile_info->create_compile_command;
+  
   $cbuilder->do_system(@$cc_cmd)
     or confess "Can't compile $source_file: @$cc_cmd";
   unless ($quiet) {
@@ -529,11 +530,11 @@ sub create_compile_command {
   my ($self, $compile_info) = @_;
 
   my $cc = $compile_info->{cc};
-  my $ccflags = $compile_info->{ccflags};
+  my $merged_ccflags = $compile_info->create_merged_ccflags;
   my $object_file = $compile_info->{object_file};
   my $source_file = $compile_info->{source_file};
   
-  my $cc_cmd = [$cc, '-c', @$ccflags, '-o', $object_file, $source_file];
+  my $cc_cmd = [$cc, '-c', @$merged_ccflags, '-o', $object_file, $source_file];
   
   return $cc_cmd;
 }
@@ -551,19 +552,8 @@ sub create_compile_command_info {
   my $output_file = $options->{output_file};
   my $source_file = $options->{source_file};
   
-  my $cc_each = $config->cc_each;
-  my $cc;
-  if ($cc_each) {
-    $cc = $cc_each->($config, {class_name => $class_name, source_file => $source_file});
-  }
-  else {
-    $cc = $config->cc;
-  }
-  my $cflags = '';
+  my $cc = $config->cc;
   
-  my $builder_include_dir = $config->builder_include_dir;
-  $cflags .= "-I$builder_include_dir ";
-
   # Include directories
   my $no_use_resource = $options->{no_use_resource};
   my @include_dirs = @{$config->include_dirs};
@@ -592,42 +582,23 @@ sub create_compile_command_info {
     if (defined $options->{include_dirs}) {
       push @include_dirs, @{$options->{include_dirs}};
     }
-    
-    my $inc = join(' ', map { "-I$_" } @include_dirs);
-    $cflags .= " $inc";
   }
   
-  my $ccflags_each = $config->ccflags_each;
-  my $ccflags;
-  if ($ccflags_each) {
-    $ccflags = $ccflags_each->($config, {cc => $cc, class_name => $class_name, source_file => $source_file});
-  }
-  else {
-    $ccflags = $config->ccflags;
-  }
-  $cflags .= " " . join(' ', @$ccflags);
+  my $ccflags = $config->ccflags;
   
-  my $optimize_each = $config->optimize_each;
-  my $optimize;
-  if ($optimize_each) {
-    $optimize = $optimize_each->($config, {cc => $cc, class_name => $class_name, source_file => $source_file});
-  }
-  else {
-    $optimize = $config->optimize;
-  }
-  $cflags .= " $optimize";
+  my $optimize = $config->optimize;
   
-  my @cflags = ExtUtils::CBuilder->new->split_like_shell($cflags);
-  
+  my $builder_include_dir = $config->builder_include_dir;
+
   my $compile_info = SPVM::Builder::CompileInfo->new(
     cc => $cc,
-    ccflags => \@cflags,
-    object_file => $output_file,
+    ccflags => $ccflags,
+    output_file => $output_file,
     source_file => $source_file,
     optimize => $optimize,
+    builder_include_dir => $builder_include_dir,
     include_dirs => \@include_dirs,
-    no_use_resource => $no_use_resource,
-    ccflags_v2 => $ccflags,
+    config => $config,
   );
   
   return $compile_info;
@@ -1076,3 +1047,4 @@ sub create_precompile_source_file {
 =head1 Name
 
 SPVM::Builder::CC - Compiler and Linker of Native Sources
+

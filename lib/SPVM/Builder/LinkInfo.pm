@@ -165,7 +165,7 @@ sub create_merged_ldflags {
   my @merged_ldflags;
   
   if (defined $self->ld_optimize) {
-    push @merged_ldflags, $self->ld_optimize;
+    push @merged_ldflags, split(/ +/, $self->ld_optimize);
   }
   
   my $output_type = $self->output_type;
