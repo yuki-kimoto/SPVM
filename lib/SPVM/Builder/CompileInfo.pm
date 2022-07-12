@@ -248,6 +248,16 @@ Get and set the L<config|SPVM::Builder::Config> that is used to compile the sour
 
 Create a new C<SPVM::Builder::CompileInfo> object.
 
+=head2 create_merged_ccflags
+
+  my $merged_ccflags = $compile_info->create_merged_ccflags;
+
+Get the merged ccflags as an array reference.
+
+B<Examples:>
+
+  [qw(-O2 -Iinclude_dir)]
+
 =head2 create_compile_command
 
   my $compile_command = $compile_info->create_compile_command;
