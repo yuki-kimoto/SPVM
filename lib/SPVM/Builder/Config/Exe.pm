@@ -20,6 +20,17 @@ sub new {
   return $self;
 }
 
+sub global_before_compile {
+  my $self = shift;
+  if (@_) {
+    $self->{global_before_compile} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{global_before_compile};
+  }
+}
+
 sub global_cc_each {
   my $self = shift;
   if (@_) {
@@ -96,6 +107,40 @@ SPVM::Builder::Config::Exe is configuration of creating excutable files of L<spv
 Fields of B<SPVM::Builder::Config::Exe>.
 
 Fields are inherited from L<SPVM::Builder::Config> and you can use the following fields.
+
+=head2 global_before_compile
+
+  my $global_before_compile = $config->global_before_compile;
+  $config->global_before_compile($global_before_compile);
+
+Get and set a callback that is called before each compile.
+
+The call back receives L<SPVM::Bulder::Config> object and L<SPVM::Builder::CompileInfo> object.
+
+B<Examples:>
+  
+  $config->global_before_compile(sub {
+    my ($config, $compile_info) = @_;
+
+    # Source file
+    my $source_file = $compile_info->source_file;
+    
+    # Class name
+    my $class_name = $compile_info->class_name;
+
+    # The compiler name
+    my $cc = $compile_info->cc;
+    
+    my $global_cc;
+    # C source file
+    if ($source_file =~ /\.c$/) {
+      $compile_info->cc('clang');
+    }
+    # C++ source file
+    elsif ($source_file =~ /\.cpp$/) {
+      $compile_info->cc('clang++');
+    }
+  });
 
 =head2 global_cc_each
 
