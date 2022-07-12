@@ -64,17 +64,6 @@ sub class_name {
   }
 }
 
-sub lib_type {
-  my $self = shift;
-  if (@_) {
-    $self->{lib_type} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{lib_type};
-  }
-}
-
 sub source_type {
   my $self = shift;
   if (@_) {
@@ -167,15 +156,6 @@ Get and set the compiler flags that compiled the object file. The default value 
   $object_file_info->class_name($class_name);
 
 Get and set the class name belonged to when the object file was compiled.
-
-=head2 lib_type
-
-  my $lib_type = $object_file_info->lib_type;
-  $object_file_info->lib_type($lib_type);
-
-Get and set the library type if the object is a static library or a dynamic library.
-
-The values are C<static>, or C<dynamic>.
 
 =head2 source_type
 
