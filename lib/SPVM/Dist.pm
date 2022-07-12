@@ -629,7 +629,7 @@ done_testing;
 EOS
   
   # Generate file
-  my $basic_test_rel_file = 't/basic.t';
+  my $basic_test_rel_file = 't/use_spvm_class.t';
   $self->generate_file($basic_test_rel_file, $basic_test_content);
 }
 
@@ -823,7 +823,7 @@ sub generate_dist {
     # Generate Makefile.PL file
     $self->generate_makefile_pl_file;
     
-    # Generate t/basic.t file
+    # Generate t/use_spvm_class.t file
     $self->generate_basic_test_file;
 
     # Generate basic test SPVM module file
