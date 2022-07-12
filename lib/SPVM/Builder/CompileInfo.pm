@@ -95,30 +95,43 @@ sub config {
   }
 }
 
+sub create_merged_ccflags {
+  my ($self) = @_;
+  
+  my @merged_ccflags;
+  
+  if (defined $self->optimize) {
+    push @merged_ccflags, $self->optimize;
+  }
+  
+  my $ccflags = $self->ccflags;
+  push @merged_ccflags, @{$self->ccflags};
+  
+  my $include_dirs = $self->include_dirs;
+  my @include_dirs_ccflags = map { "-I$_" } @$include_dirs;
+  push @merged_ccflags, @include_dirs_ccflags;
+  
+  return \@merged_ccflags;
+}
+
 sub create_compile_command {
   my ($self) = @_;
 
   my $cc = $self->cc;
-  my $ccflags = $self->ccflags;
   my $class_name = $self->class_name;
   my $output_file = $self->output_file;
   my $source_files = $self->source_files;
   
-  my $all_ldflags_str = '';
-  
-  my $ccflags_str = join(' ', @$ccflags);
-  $all_ldflags_str .= $ccflags_str;
-  
   my $source_files = [map { my $tmp = $_->to_string; $tmp } @$source_files];
 
-  my $cbuilder_extra_compileer_flags = $ccflags_str;
+  my $merged_ccflags = $self->create_merged_ccflags;;
   
-  my @compile_command = ($cc, '-o', $output_file, @$source_files, $cbuilder_extra_compileer_flags);
+  my @compile_command = ($cc, '-o', $output_file, @$merged_ccflags, @$source_files);
   
   return \@compile_command;
 }
 
-# Methods
+# Instance methods
 sub to_string {
   my ($self) = @_;
 
@@ -128,7 +141,7 @@ sub to_string {
   return $compile_command_string;
 }
 
-# Methods
+# Class methods
 sub new {
   my $class = shift;
   
