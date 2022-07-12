@@ -458,6 +458,8 @@ SPVM-*
 *.bak
 *.BAK
 *.tmp
+*.o
+*.bs
 EOS
   
   # Generate file

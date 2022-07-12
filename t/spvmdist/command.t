@@ -66,11 +66,25 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   
   my $gitignore_file = "$tmp_dir/SPVM-Foo/.gitignore";
   ok(-f $gitignore_file);
-  ok(SPVM::Builder::Util::file_contains($gitignore_file, "Makefile"));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, 'blib/*'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, 'Makefile'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, 'Makefile.old'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, 'MYMETA.yml'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, 'MYMETA.json'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, 'pm_to_blib'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, '.spvm_build'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, 't/.spvm_build'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, 'core.*'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, 'core'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, 'SPVM-*'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, '*.bak'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, '*.BAK'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, '*.tmp'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, '*.o'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, '*.bs'));
   
   my $manifest_skip_file = "$tmp_dir/SPVM-Foo/MANIFEST.SKIP";
   ok(-f $manifest_skip_file);
-  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, "Makefile"));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '(^|\\/)blib/'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '(^|\\/)Makefile$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '(^|\\/)Makefile.old$'));
