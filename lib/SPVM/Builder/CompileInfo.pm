@@ -40,6 +40,17 @@ sub ccflags {
   }
 }
 
+sub builder_include_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{builder_include_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{builder_include_dir};
+  }
+}
+
 sub include_dirs {
   my $self = shift;
   if (@_) {
