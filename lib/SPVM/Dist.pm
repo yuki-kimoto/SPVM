@@ -771,6 +771,14 @@ sub generate_dist {
   
   my $class_name = $self->class_name;
   
+  unless (length $class_name) {
+    confess "The class name must be specified";
+  }
+  
+  if ($class_name =~ /-/) {
+    confess "The class name can't contain \"-\"";
+  }
+  
   my $native = $self->native;
   my $resource = $self->resource;
   
