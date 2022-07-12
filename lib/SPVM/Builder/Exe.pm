@@ -187,6 +187,8 @@ sub new {
 sub get_dependent_resources {
   my ($self) = @_;
   
+  my $config = $self->config;
+  
   unless ($self->{finish_build_runtime}) {
     $self->build_runtime;
   }
@@ -199,6 +201,7 @@ sub get_dependent_resources {
 
   # Compiler for native module
   my $builder_cc_native = SPVM::Builder::CC->new(
+    global_before_compile => $config->global_before_compile,
     build_dir => $build_dir,
     builder => $builder,
     quiet => $self->quiet,
@@ -931,6 +934,8 @@ sub compile_spvm_core_sources {
 sub create_precompile_sources {
   my ($self) = @_;
 
+  my $config = $self->config;
+
   my $builder = $self->builder;
 
   # Build directory
@@ -965,6 +970,8 @@ sub create_precompile_sources {
 
 sub compile_precompile_sources {
   my ($self) = @_;
+
+  my $config = $self->config;
   
   # Builer
   my $builder = $self->builder;
@@ -1011,6 +1018,8 @@ sub compile_precompile_sources {
 
 sub compile_native_sources {
   my ($self) = @_;
+
+  my $config = $self->config;
   
   my $builder = $self->builder;
 

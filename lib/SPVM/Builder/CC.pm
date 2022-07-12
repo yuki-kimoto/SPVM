@@ -19,6 +19,17 @@ use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Resource;
 
+sub global_before_compile {
+  my $self = shift;
+  if (@_) {
+    $self->{global_before_compile} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{global_before_compile};
+  }
+}
+
 sub builder {
   my $self = shift;
   if (@_) {
@@ -497,6 +508,14 @@ sub compile {
       no_use_resource => $no_use_resource,
     });
     
+    if (defined $config->before_compile) {
+      $config->before_compile->($config, $compile_info);
+    }
+
+    if (defined $self->global_before_compile) {
+      $self->global_before_compile->($config, $compile_info);
+    }
+
     # Compile a source file
     if ($need_generate) {
       my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);

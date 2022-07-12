@@ -230,6 +230,17 @@ sub force {
   }
 }
 
+sub before_compile {
+  my $self = shift;
+  if (@_) {
+    $self->{before_compile} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{before_compile};
+  }
+}
+
 sub before_link {
   my $self = shift;
   if (@_) {
@@ -966,6 +977,23 @@ The default is C<-O2>.
 Get and set the flag to force compiles and links without caching. The default is C<undef>.
 
 C<undef> means forcing is not determined by config.
+
+=head2 before_compile
+
+  my $before_compile = $config->before_compile;
+  $config->before_compile($before_compile);
+
+Get and set the callback that is executed before the compile. The callback receives C<SPVM::Builder::Config> object and the L<SPVM::Builder::CompileInfo> object used by the compileer.
+
+B<Examples:>
+
+  $config->before_compile(sub {
+    my ($config, $compile_info) = @_;
+    
+    my $cc = $compile_info->cc;
+    
+    # Do something
+  });
 
 =head2 before_link
 
