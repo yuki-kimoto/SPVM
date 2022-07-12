@@ -74,39 +74,6 @@ sub debug {
   }
 }
 
-sub global_cc_each {
-  my $self = shift;
-  if (@_) {
-    $self->{global_cc_each} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{global_cc_each};
-  }
-}
-
-sub global_ccflags_each {
-  my $self = shift;
-  if (@_) {
-    $self->{global_ccflags_each} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{global_ccflags_each};
-  }
-}
-
-sub global_optimize_each {
-  my $self = shift;
-  if (@_) {
-    $self->{global_optimize_each} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{global_optimize_each};
-  }
-}
-
 sub output_type {
   my $self = shift;
   if (@_) {
@@ -592,11 +559,6 @@ sub create_compile_command_info {
   else {
     $cc = $config->cc;
   }
-  my $global_cc_each = $self->global_cc_each;
-  if ($global_cc_each) {
-    $cc = $global_cc_each->($config, {class_name => $class_name, source_file => $source_file, cc => $cc});
-  }
-  
   my $cflags = '';
   
   my $builder_include_dir = $config->builder_include_dir;
@@ -643,10 +605,6 @@ sub create_compile_command_info {
   else {
     $ccflags = $config->ccflags;
   }
-  my $global_ccflags_each = $self->global_ccflags_each;
-  if ($global_ccflags_each) {
-    $ccflags = $global_ccflags_each->($config, {cc => $cc, class_name => $class_name, source_file => $source_file, ccflags => $ccflags});
-  }
   $cflags .= " " . join(' ', @$ccflags);
   
   my $optimize_each = $config->optimize_each;
@@ -656,10 +614,6 @@ sub create_compile_command_info {
   }
   else {
     $optimize = $config->optimize;
-  }
-  my $global_optimize_each = $self->global_optimize_each;
-  if ($global_optimize_each) {
-    $optimize = $global_optimize_each->($config, {cc => $cc, class_name => $class_name, source_file => $source_file, optimize => $optimize});
   }
   $cflags .= " $optimize";
   

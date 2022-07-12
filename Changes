@@ -46,9 +46,12 @@
   [Imcompative Changes]
     * (This is undocumented feature)The return value of SPVM::LinkInfo to_string
       is changed from the output file to the link command.
+    * (This feature is not work well from now)Remove non-worked global_cc_each,
+      global_ccflags_each, global_optimize_each from SPVM::Builder::CC.
   [Document]
     * Add the document of SPVM::Builder::LinkInfo to_string method.
     * Add the doucment of Error class.
+    * Remove non-worked global_cc_each, global_ccflags_each, global_optimize_each doc.
 0.9620 2022-07-09
   [New Featres]
     * Add Error class that class id is 1.
