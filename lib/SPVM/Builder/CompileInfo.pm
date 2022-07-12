@@ -106,7 +106,10 @@ sub create_merged_ccflags {
   
   my $ccflags = $self->ccflags;
   push @merged_ccflags, @{$self->ccflags};
-  
+
+  my $builder_include_dir = $self->builder_include_dir;
+  push @merged_ccflags, $builder_include_dir;
+
   my $include_dirs = $self->include_dirs;
   my @include_dirs_ccflags = map { "-I$_" } @$include_dirs;
   push @merged_ccflags, @include_dirs_ccflags;
