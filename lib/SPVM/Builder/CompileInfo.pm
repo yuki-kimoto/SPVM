@@ -122,7 +122,7 @@ sub create_compile_command {
   my $output_file = $self->output_file;
   my $source_files = $self->source_files;
   
-  my $source_files = [map { my $tmp = $_->to_string; $tmp } @$source_files];
+  $source_files = [map { my $tmp = $_->to_string; $tmp } @$source_files];
 
   my $merged_ccflags = $self->create_merged_ccflags;;
   

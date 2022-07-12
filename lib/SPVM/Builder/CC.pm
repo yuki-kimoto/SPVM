@@ -14,6 +14,7 @@ use File::Basename 'dirname', 'basename';
 use SPVM::Builder;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
+use SPVM::Builder::CompileInfo;
 use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Resource;
@@ -663,7 +664,12 @@ sub create_compile_command_info {
   
   my @cflags = ExtUtils::CBuilder->new->split_like_shell($cflags);
   
-  my $compile_info = {cc => $cc, ccflags => \@cflags, object_file => $output_file, source_file => $source_file};
+  my $compile_info = SPVM::Builder::CompileInfo->new(
+    cc => $cc,
+    ccflags => \@cflags,
+    object_file => $output_file,
+    source_file => $source_file
+  );
   
   return $compile_info;
 }
