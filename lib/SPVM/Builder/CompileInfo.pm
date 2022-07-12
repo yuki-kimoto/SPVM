@@ -73,14 +73,14 @@ sub include_dirs {
   }
 }
 
-sub source_files {
+sub source_file {
   my $self = shift;
   if (@_) {
-    $self->{source_files} = $_[0];
+    $self->{source_file} = $_[0];
     return $self;
   }
   else {
-    return $self->{source_files};
+    return $self->{source_file};
   }
 }
 
@@ -134,13 +134,11 @@ sub create_compile_command {
   my $cc = $self->cc;
   my $class_name = $self->class_name;
   my $output_file = $self->output_file;
-  my $source_files = $self->source_files;
+  my $source_file = $self->source_file;
   
-  $source_files = [map { my $tmp = $_->to_string; $tmp } @$source_files];
-
   my $merged_ccflags = $self->create_merged_ccflags;;
   
-  my @compile_command = ($cc, '-o', $output_file, @$merged_ccflags, @$source_files);
+  my @compile_command = ($cc, '-o', $output_file, @$merged_ccflags, $source_file);
   
   return \@compile_command;
 }
@@ -163,10 +161,6 @@ sub new {
 
   bless $self, $class;
   
-  unless (defined $self->source_files) {
-    $self->source_files([]);
-  }
-
   unless (defined $self->ccflags) {
     $self->ccflags([]);
   }
@@ -206,8 +200,8 @@ Get and set the compileer name.
 
 =head2 ccflags
 
-  my $ccflags = $source_file->ccflags;
-  $source_file->ccflags($ccflags);
+  my $ccflags = $compile_info->ccflags;
+  $compile_info->ccflags($ccflags);
 
 Get and set the compileer flags.  The default value is C<[]>.
 
@@ -232,12 +226,12 @@ Get and set the builder include directory.
 
 Get and set the include directories. The default is C<[]>.
 
-=head2 source_files
+=head2 source_file
 
-  my $source_files = $compile_info->source_files;
-  $compile_info->source_files($source_files);
+  my $source_file = $compile_info->source_file;
+  $compile_info->source_file($source_file);
 
-Get and set the source file informations to be compileed. Each source file is a L<SPVM::Builder::ObjectFileInfo> object.
+Get and set the source file.
 
 =head2 class_name
 
