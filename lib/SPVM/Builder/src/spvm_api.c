@@ -3427,7 +3427,7 @@ void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t byte_si
 #ifdef SPVM_DEBUG_MEMORY
     SPVM_ALLOCATOR* allocator = env->allocator;
     assert(allocator->memory_blocks_count_permanent == 0);
-    fprintf(stderr, "[new_memory_stack %p (Env:%d, Stack:%d)]\n", block, allocator->memory_blocks_count_tmp, stack[STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
+    fprintf(stderr, "[Debug]new_memory_stack Mem, %p Env(%p):%d, Stack(%p):%d\n", block, env, allocator->memory_blocks_count_tmp, stack, stack[STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
 #endif
   
   return block;
@@ -3441,7 +3441,7 @@ void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
 #ifdef SPVM_DEBUG_MEMORY
     SPVM_ALLOCATOR* allocator = env->allocator;
     assert(allocator->memory_blocks_count_permanent == 0);
-    fprintf(stderr, "[free_memory_stack %p (Env:%d, Stack:%d)]\n", block, allocator->memory_blocks_count_tmp, stack[STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
+    fprintf(stderr, "[Debug]free_memory_stack Mem %p, Env(%p):%d, Stack(%p):%d\n", block, env, allocator->memory_blocks_count_tmp, stack, stack[STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
 #endif
   }
 }
