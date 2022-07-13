@@ -3380,7 +3380,7 @@ void* SPVM_API_new_memory_env(SPVM_ENV* env, size_t byte_size) {
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
     SPVM_ALLOCATOR* allocator = env->allocator;
     assert(allocator->memory_blocks_count_permanent == 0);
-    fprintf(stderr, "[NEW_MEMORY %p (Env:%d)]\n", block, allocator->memory_blocks_count_tmp);
+    fprintf(stderr, "[NEW_MEMORY_ENV %p (Env:%d)]\n", block, allocator->memory_blocks_count_tmp);
 #endif
 
   return block;
@@ -3393,7 +3393,7 @@ void SPVM_API_free_memory_env(SPVM_ENV* env, void* block) {
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
     SPVM_ALLOCATOR* allocator = env->allocator;
     assert(allocator->memory_blocks_count_permanent == 0);
-    fprintf(stderr, "[NEW_MEMORY %p (Env:%d)]\n", block, allocator->memory_blocks_count_tmp);
+    fprintf(stderr, "[FREE_MEMORY_ENV %p (Env:%d)]\n", block, allocator->memory_blocks_count_tmp);
 #endif
   }
 }
