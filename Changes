@@ -36,7 +36,8 @@
       *.o
       *.bs
     * spvmdist checks the class name is specified and doesn't contains "-".
-
+  [Document Bug Fix]
+    * Remove the description that "Module can contain multiple Classes". This is wrong.
 0.9621 2022-07-13
   [New Features]
     * Add SPVM::Builder::LinkInfo create_link_command instance method.

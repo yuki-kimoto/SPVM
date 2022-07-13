@@ -2383,17 +2383,6 @@ Module is a single file that can be read as SPVM source code.
   
   }
 
-Module can contain multiple Classes.
-
-  # lib/path/SPVM/Foo/Bar.spvm
-  class Foo::Bar {
-  
-  }
-  
-  class Foo::Bar::Baz {
-  
-  }
-
 =head2 class file Name
 
 Modules must be placed in the class loading path with the following file name.
