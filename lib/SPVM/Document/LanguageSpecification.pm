@@ -2376,7 +2376,7 @@ C<new> operator can't create the objects from interfaces.
 
 =head1 Module
 
-A module means the content in a module file. A module is one of a L<class|/"Class">, an L<interface|/"Interface"> or, a L<multi-numeric type|/"Multi-Numeric Type">.
+A module means a user defined L<type/"Type"> in a module file. A module is one of a L<class|/"Class">, an L<interface|/"Interface"> or, a L<multi-numeric type|/"Multi-Numeric Type">.
 
   # lib/path/SPVM/Foo/Bar.spvm
   class Foo::Bar {
