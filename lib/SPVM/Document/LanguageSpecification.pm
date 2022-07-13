@@ -2660,7 +2660,7 @@ This initial value can be changed by using the L<INIT block|/"INIT Block">.
 
 =head2 Class Variable Access
 
-The class variable access is an operation to set or get a class variable.
+The class variable access is an L<operator|/"Operator"> to set or get a class variable.
 
 See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting class varialbe|/"Setting Class Variable">.
 
@@ -3279,7 +3279,7 @@ The local variable is initialized by the L<initial value/"Initial Value">.
 
 =head2 Local Variable Access
 
-The local variable Access is an operation to access Local Variable to get or set the value.
+The local variable Access is an L<operator|/"Operator"> to access Local Variable to get or set the value.
 
 See L</"Getting Local Variable"> to get Local Variable value.
 
@@ -3590,7 +3590,7 @@ See L</"Creating Array"> to create Array.
 
 =head2 Array Access
 
-Array Access is an operation to access the element of Array to get or set the value.
+Array Access is an L<operator|/"Operator"> to access the element of Array to get or set the value.
 
   ARRAY->[INDEX]
 
@@ -3600,7 +3600,7 @@ See L</"Setting Array Element"> to set the element value of Array.
 
 =head1 Multi-Numeric Value
 
-=head2the multi-numeric type Definition
+=head2 Multi-Numeric Type Definition
 
 The multi-numeric type represents continuous numeric values. For example, there are three consecutive 32-bit signed integers, two consecutive double-precision floating point numbers. It isplaned to use 3D points, complex numbers, quaternions, etc.
 
@@ -3646,7 +3646,7 @@ L<undef|/"Undefined Value"> cannot be assigned tothe multi-numeric type value.
 
 See L</"Multi-Numeric Type Field Access"> to get and set the value of field ofthe multi-numeric type Value.
 
-=head2the multi-numeric type Suffix
+=head2 Multi-Numeric Type Suffix
 
 List ofthe multi-numeric type Suffix.
 
@@ -3713,7 +3713,7 @@ List ofthe multi-numeric type Suffix.
 
 =end html
 
-=head2the Using Multi-Numeric Type
+=head2 Using Multi-Numeric Type
 
 A multi-numeric type can be loaded using the L<use statement|/"use Statement">.
 
@@ -3725,9 +3725,9 @@ A multi-numeric value is declared by the L<local variable declaration|/"Local Va
 
 The value is initialized by the L<initial value/"Initial Value">.
 
-=head2the multi-numeric type Field Access
+=head2 Multi-Numeric Type Field Access
 
-B<Multi-Numeric Type Field Access> is an operation to accessthe multi-numeric type Field to get or set a value.
+The C<multi-numeric type field access> is an L<operator|/"Operator"> to accessthe multi-numeric type Field to get or set a value.
 
   MULTI_NUMERIC_TYPE_VALUE->{FIELD_NAME}
 
@@ -3753,7 +3753,7 @@ the L<type|/"Type"> of Multi-Numeric Array is L</"Array Type">.
 
 =head2 Multi-Numeric Array Access
 
-Multi-Numeric Array Access is an operation to access Multi-Numeric Array to get and set the element value.
+Multi-Numeric Array Access is an L<operator|/"Operator"> to access Multi-Numeric Array to get and set the element value.
 
   Array->[INDEX]
 
@@ -4391,7 +4391,7 @@ B<Examples:>
 
 The multi-numeric type are a type that can represent continuous numerical values.
 
-The multi-numeric type can be defined by specifying C<mulnum_t> Descriptor in the the L<class definition|/"Class Definition">.
+The multi-numeric type can be defined by specifying C<mulnum_t> Descriptor in the L<class definition|/"Class Definition">.
 
   class Complex_2d : mulnum_t {
     has x : int;
@@ -5863,7 +5863,7 @@ The numeric narrowing type conversion is performed in some of the L<type casts|/
 
 =head2 Binary Numeric Type Conversion
 
-The binary numeric type conversion is a L<type conversion|/"Type Conversion"> to upgrade the type of the left operand or the right operand of the binary operator that operands are L<numeric types|/"Numeric Type >.
+The binary numeric type conversion is a L<type conversion|/"Type Conversion"> to upgrade the type of the left operand or the right operand of the binary operator that operands are L<numeric types|/"Numeric Type">.
 
 The following rules apply in order.
 
@@ -5934,7 +5934,7 @@ Boxing Type Conversion is the operation to convert the value of Numeric Type to 
 
 =head2 Unboxing Type Conversion
 
-Unboxing Type Conversion is an operation to convert the value of Numeric Object Type to the corresponding value of Numeric Type.
+Unboxing Type Conversion is an L<operator|/"Operator"> to convert the value of Numeric Object Type to the corresponding value of Numeric Type.
 
 =head2 Conditional Type Conversion
 
@@ -6124,7 +6124,7 @@ An empty statement is a L<statement|/"Statement"> that do nothing and ends with 
 
 =head2 Operation Statement
 
-The operation statement is the L<statement|/"Statement"> to execute an operation.
+The operation statement is the L<statement|/"Statement"> to execute an L<operator|/"Operator">.
 
 A operation statement is composed of an L<operator|/"Operator"> and C<;>.
 
@@ -6409,7 +6409,7 @@ The C<while> statement is a L<statement|/"Statement"> for repeating.
   
   }
 
-The L<operator|/"Operator"> can be described in the condition Expression. The L<conditional type conversion|/"Conditional Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
+The L<operator|/"Operator"> can be described in the condition operator. The L<conditional type conversion|/"Conditional Type Conversion"> is executed for condition operator, and if the value is not 0, Block is executed. Exit the otherwise Block.
 
 B<Examples:>
 
@@ -6429,7 +6429,7 @@ Inside the while block, you can leave the while block by using L</"last Statemen
     last;
   }
 
-Inside a while block, you can use L</"next Statement"> to move to the condition immediately before the next condition Expression.
+Inside a while block, you can use L</"next Statement"> to move to the condition immediately before the next condition operator.
 
   my $i = 0;
   while ($i <5) {
@@ -6467,13 +6467,13 @@ The C<for> Statement is a L<statement|/"Statement"> for repeating.
   
   }
 
-The L<operator|/"Operator"> can be described in the initialization Expression. Generally, write Expression such as initialization of loop variable. Initialization Expression can be omitted.
+The L<operator|/"Operator"> can be described in the initialization operator. Generally, write operator such as initialization of loop variable. Initialization operator can be omitted.
 
-Condition Expression, the L<operator|/"Operator"> can be described. The L<conditional type conversion|/"Conditional Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise block.
+Condition operator, the L<operator|/"Operator"> can be described. The L<conditional type conversion|/"Conditional Type Conversion"> is executed for the condition operator, and if the value is not 0, Block is executed. Exit the otherwise block.
 
-The L<operator|/"Operator"> can be described in INCREMENT_STATEMENT. Generally, Expression of Increment of loop variable is described. INCREMENT_STATEMENT can be omitted.
+The L<operator|/"Operator"> can be described in INCREMENT_STATEMENT. Generally, operator of Increment of loop variable is described. INCREMENT_STATEMENT can be omitted.
 
-for Statement has the same meaning as the following while Statement. INCREMENT_STATEMENT is executed at the end of Block. Initialization Expression is enclosed in L</"Simple Block">.
+for Statement has the same meaning as the following while Statement. INCREMENT_STATEMENT is executed at the end of Block. Initialization operator is enclosed in L</"Simple Block">.
 
   {
     INIT_STATEMENT;
@@ -6514,9 +6514,9 @@ If there is a Return Value, the L<operator|/"Operator"> can be specified.
 
   return EXPRESSION;
 
-If the Return Value Type in the L<method definition|/"Method Definition"> is the L<void type/"void Type">, Expression Must not exist, otherwise a compilation error will occur.
+If the Return Value Type in the L<method definition|/"Method Definition"> is the L<void type/"void Type">, operator Must not exist, otherwise a compilation error will occur.
 
-the L<method definition|/"Method Definition">, if the The return type is other than the L<void type/"void Type">, Expression Must match the type of, otherwise a compilation error will occur.
+the L<method definition|/"Method Definition">, if the The return type is other than the L<void type/"void Type">, operator Must match the type of, otherwise a compilation error will occur.
 
 =head2 next Statement
 
@@ -6657,7 +6657,7 @@ B<Examples:>
 
 =head1 Operator
 
-An operator performs an operation.
+An operator performs an L<operator|/"Operator">.
 
 Operators are L<unary operators/"Unary Operator">, L<binary operators|/"Binary Operator">, L<increment operators|/"Increment Operator">, L<decrement operators|/"Decrement Operator">, L<comparison operators|/"Comparison Operator">, L<logical operators|/"Logical Operator">, and L<assignment operators|/"Assignment Operator">.
 
@@ -7437,7 +7437,7 @@ The C<dump> operator is an L<operator|/"Operator"> to get the string representat
 
   dump OPERAND
 
-It returns the the string representation of the object.
+It returns the string representation of the object.
 
 The return type is the L<string type|/"string Type">.
 
@@ -7628,7 +7628,7 @@ The array length operator is an L<unary operator|/"Unary Operator"> to get the l
 
   @OPERAND
 
-The operand must be a L<Expression|/"Expressions"> that type is an L</"Array Type">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operator"> that type is an L</"Array Type">, otherwise a compilation error will occur.
 
 The array length operator returns the L<int type|/"int Type"> value that is the length of the L</"Array">.
 
@@ -7880,7 +7880,7 @@ B<Examples:>
 
 =head2 Setting Class Variable
 
-B<Setting Class Variable Expression> is an L<operator|/"Operator"> to set L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
+B<Setting Class Variable operator> is an L<operator|/"Operator"> to set L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
 
   $CLASS_NAME::CLASS_VARIABLE_NAME = VALUE
 
@@ -7956,7 +7956,7 @@ The getting field is an L<operator|/"Operator"> to get the L<field|/"Field"> of 
 
 The type of invocant is a L<class type|/"Class Type">.
 
-The retrun type is the L<type|/"Type"> of the Field.
+The retrun type is the L<type|/"Type"> of the field.
 
 B<Examples:>
 
@@ -7988,7 +7988,7 @@ B<Examples:>
 
 =head2 Getting Multi-Numeric Field
 
-B<Getting Multi-Numeric Field Expression> is an L<operator|/"Operator"> to get Field of L</"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
+B<Getting Multi-Numeric Field operator> is an L<operator|/"Operator"> to get Field of L</"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
@@ -7996,9 +7996,9 @@ The invocant is the L<multi-numeric type|/"Multi-Numeric Type">.
   
 If the field names does not found in the L</"Class">, a compilation error will occur
 
-Getting Multi-Numeric Field Expression returns the field value in the Multi-Numeric Value.
+Getting Multi-Numeric Field operator returns the field value in the multi-numeric value.
 
-Retrun Type is The the L<type|/"Type"> of the Field.
+The retrun type is the L<type|/"Type"> of the field.
 
 B<Examples:>
 
@@ -8007,7 +8007,7 @@ B<Examples:>
 
 =head2 Setting Multi-Numeric Field
 
-Setting Multi-Numeric Field Expression is an L<operator|/"Operator"> to set Field of L</"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+Setting Multi-Numeric Field operator is an L<operator|/"Operator"> to set Field of L</"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
@@ -8015,7 +8015,7 @@ The invocant is the L<multi-numeric type|/"Multi-Numeric Type">.
 
 If the field names does not found in the L</"Class">, a compilation error will occur.
 
-Setting Multi-Numeric Field Expression returns the value of the field after setting. 
+Setting Multi-Numeric Field operator returns the value of the field after setting. 
 
 The assignment must satisfy the L<assignability|/"Assignability">.
 
@@ -8028,15 +8028,15 @@ B<Examples:>
 
 =head2 Getting Array Element
 
-B<Getting Array Element Expression> is an L<operator|/"Operator"> to get a Element Value of L</"Array">.
+B<Getting Array Element operator> is an L<operator|/"Operator"> to get a Element Value of L</"Array">.
 
   ARRAY->[INDEX]
 
-Array Expression must be L</"Array Type">.
+Array operator must be L</"Array Type">.
 
 the index must be the L<int type|/"int Type"> or the type that become the L<int type|/"int Type"> by L</"Numeric Widening Type Conversion">.
 
-Getting Array Element Expression returns the Element Value of the Index.
+Getting Array Element operator returns the Element Value of the Index.
 
 If the array is L<undef|/"Undefined Value">, a Runtime Exception occurs.
 
@@ -8055,7 +8055,7 @@ B<Examples:>
 
 =head2 Setting Array Element
 
-Setting Array Element Expression is an L<operator|/"Operator"> to set a Element Value of a Array using L</"Assignment Operator">.
+Setting Array Element operator is an L<operator|/"Operator"> to set a Element Value of a Array using L</"Assignment Operator">.
 
   ARRAY->[INDEX] = RIGHT_OPERAND
 
@@ -8065,7 +8065,7 @@ The index must be the L<int type|/"int Type"> or the type that become the L<int 
 
 The assignment must satisfy the L<assignability|/"Assignability">.
 
-Setting Array Element Expression returns the value of the element after setting.
+Setting Array Element operator returns the value of the element after setting.
 
 If the array is L<undef|/"Undefined Value">, a Runtime Exception occurs.
 
@@ -8262,7 +8262,7 @@ B<Examples:>
 
 The reference operator C<\> is the L<operator|/"Operator"> to create a L<reference|/"Reference">.
 
-  \ OPERAND
+  \OPERAND
 
 The operand must be a L<local variable|/"Local Variable"> that type is a L<numeric type|/"Numeric Type"> or a L<multi-numeric type|/"Multi-Numeric Type">. Otherwise a compilation error will occur.
 
@@ -8284,15 +8284,15 @@ The dereference operators are the L<operatoers|/"Operator"> to perform a deferen
 
 =head3 Getting value by Dereference
 
-Obtaining a value by Dereference is an operation to obtain the actual value from Reference. It was designed to realize the C joint operator C<*>.
+Obtaining a value by Dereference is an L<operator|/"Operator"> to obtain the actual value from Reference. It was designed to realize the C joint operator C<*>.
 
-  $ VARIABLE
+  $VARIABLE
 
 The variable Type must be Reference Type, otherwise a compilation error will occur.
 
 The value obtained by Dereference returns the L<operator|/"Operator">.
 
-    B<Example of getting value by Dereference>
+B<Examples:>
 
   my $num : int;
   my $num_ref : int* = \$num;
@@ -8304,17 +8304,17 @@ The value obtained by Dereference returns the L<operator|/"Operator">.
 
 =head3 Setting the value with Dereference
 
-Setting a value with Dereference is an operation to set the actual value from Reference. It was designed to realize the C joint operator C<*>.
+Setting a value with Dereference is an L<operator|/"Operator"> to set the actual value from Reference. It was designed to realize the C joint operator C<*>.
 
-  $ VARIABLE = OPERAND
+  $VARIABLE = OPERAND
 
 The variable Type must be Reference Type, otherwise a compilation error will occur.
 
-The type of Expression must match the type of the variable when dereferenced, otherwise a compilation error will occur.
+The type of operator must match the type of the variable when dereferenced, otherwise a compilation error will occur.
 
 Setting a value with Dereference returns the set value. This is the L<operator|/"Operator">.
 
-    B<Example of setting values ​​with Dereference>
+B<Examples:>
 
   my $num : int;
   my $num_ref : int* = \$num;
@@ -8329,7 +8329,7 @@ Setting a value with Dereference returns the set value. This is the L<operator|/
 
 =head3 Getting Multi-Numeric Field via Dereference
 
-B<Getting Multi-Numeric Field via Dereference Expression> is an L<operator|/"Operator"> to get Field of L</"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
+B<Getting Multi-Numeric Field via Dereference operator> is an L<operator|/"Operator"> to get Field of L</"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
 
   INVOCANT->{FIELD_NAME}
 
@@ -8337,9 +8337,9 @@ The invocant is L</"Multi-Numeric Reference Type">.
 
 If the field names does not found in the L</"Class">, a compilation error will occur
 
-Getting Multi-Numeric Field via Dereference Expression returns the field value in the Multi-Numeric Value.
+The getting multi-numeric field via dereference operator returns the field value in the multi-numeric value.
 
-Retrun Type is The the L<type|/"Type"> of the Field.
+The retrun type is the L<type|/"Type"> of the field.
 
 B<Examples:>
 
@@ -8349,7 +8349,7 @@ B<Examples:>
 
 =head3 Setting Multi-Numeric Field via Dereference
 
-Setting Multi-Numeric Field Expression via Dereference is an L<operator|/"Operator"> to set Field of L</"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+The setting multi-numeric field via dereference operator is an L<operator|/"Operator"> to set Field of L</"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
@@ -8357,7 +8357,7 @@ The invocant is L</"Multi-Numeric Reference Type">.
 
 If the field names does not found in the L</"Class">, a compilation error will occur
 
-Setting Multi-Numeric Field via Dereference Expression returns the value of the field after setting.
+The setting multi-numeric field via dereference operator returns the value of the field after setting.
 
 The assignment must satisfy the L<assignability|/"Assignability">.
 
@@ -8616,7 +8616,7 @@ Weak Reference is a reference that does not increase the reference count. Weak R
 
 SPVM has GC of Reference Count Type. In the GC of Reference Count Type, the object is automatically destroyed when the reference count becomes 0, but when the circular reference occurs, the reference count does not become 0 and the object is automatically destroyed. not.
 
-This is an Example when the Field of the object is circularly referenced.
+This is an example when the field of the object is circularly referenced.
 
   {
     my $foo = new Foo;
