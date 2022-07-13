@@ -44,6 +44,7 @@
       *.o
       *.bs
     * spvmdist checks the class name is specified and doesn't contains "-".
+    * The count of created objects are managed by the stack of the environment.
   [Document Bug Fix]
     * Remove the description that "Module can contain multiple Classes". This was wrong.
     * The type of second argument of native API alloc_memory_block_zero is size_t. int64_t was wrong.
