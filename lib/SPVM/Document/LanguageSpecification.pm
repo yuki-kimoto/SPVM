@@ -7375,7 +7375,7 @@ The list of string comparison operators.
       LEFT_OPERAND lt RIGHT_OPERAND
     </td>
     <td>
-      The left operand is smaller than the right operand when compared in dictionary Expression order
+      The left operand is less than the right operand when compared in dictionary Expression order
     </td>
   </tr>
   <tr>
