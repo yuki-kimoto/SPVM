@@ -4184,7 +4184,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     }
   }
 
-#ifdef SPVM_DEBUG_DUMP
+#ifdef SPVM_DEBUG_COMPILE
 #include "spvm_dumper.h"
   if (SPVM_COMPILER_get_error_messages_length(compiler) == 0) {
     printf("\n[Basic types]\n");

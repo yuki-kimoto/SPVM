@@ -5127,7 +5127,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
     }
   }
   
-#ifdef SPVM_DEBUG_DUMP
+#ifdef SPVM_DEBUG_COMPILE
 #include "spvm_dumper.h"
   printf("\n[OP codes]\n");
   SPVM_DUMPER_dump_classes_opcode_array(compiler, compiler->classes);
