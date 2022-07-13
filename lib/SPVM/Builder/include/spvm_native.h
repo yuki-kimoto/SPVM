@@ -288,6 +288,9 @@ struct spvm_env {
   void* (*new_memory_env)(SPVM_ENV* env, size_t byte_size);
   void (*free_memory_env)(SPVM_ENV* env, void* block);
   int32_t (*get_memory_blocks_count_env)(SPVM_ENV* env);
+  void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t byte_size);
+  void (*free_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
+  int32_t (*get_memory_blocks_count_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 

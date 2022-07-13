@@ -39,11 +39,6 @@ void SPVM_API_free_env_prepared(SPVM_ENV* env);
 void* SPVM_API_new_memory_env(SPVM_ENV* env, size_t byte_size);
 void SPVM_API_free_memory_env(SPVM_ENV* env, void* block);
 int32_t SPVM_API_get_memory_blocks_count_env(SPVM_ENV* env);
-
-/*
-  Stack manipulation APIs
-*/
-
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 
@@ -51,6 +46,12 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
   Object manipulating APIs
   These APIs need stack argument
 */
+
+// Manipulate memory
+void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t byte_size);
+void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
+int32_t SPVM_API_get_memory_blocks_count_stack(SPVM_ENV* env, SPVM_VALUE* stack);
+
 
 // Call INIT blocks
 void SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack);

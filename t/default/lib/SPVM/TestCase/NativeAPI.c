@@ -205,6 +205,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->new_memory_env != &env_array[187]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->free_memory_env != &env_array[188]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_memory_blocks_count_env!= &env_array[189]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->new_memory_stack != &env_array[190]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->free_memory_stack != &env_array[191]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_memory_blocks_count_stack!= &env_array[192]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 
@@ -2496,6 +2499,59 @@ int32_t SPVM__TestCase__NativeAPI__new_memory_apis(SPVM_ENV* env, SPVM_VALUE* st
       stack[0].ival = 0;
       return 0;
     }
+  }
+  
+  {
+    void* new_stack = env->new_stack(env);
+    env->free_stack(env, new_stack);
+  }
+
+  {
+    void* new_stack = env->new_stack(env);
+
+    int32_t memory_blocks_count_env_start = env->get_memory_blocks_count_env(env);
+    
+    int32_t memory_blocks_count_stack_start = env->get_memory_blocks_count_stack(env, stack);
+    int32_t memory_blocks_count_new_stack_start = env->get_memory_blocks_count_stack(env, new_stack);
+    
+    void* memory_block_stack = env->new_memory_stack(env, stack, sizeof(SPVM_ENV));
+    void* memory_block_new_stack = env->new_memory_stack(env, new_stack, sizeof(SPVM_ENV));
+
+    if (!(env->get_memory_blocks_count_env(env) == memory_blocks_count_env_start + 2)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    if (!(env->get_memory_blocks_count_stack(env, stack) == memory_blocks_count_stack_start + 1)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+
+    if (!(env->get_memory_blocks_count_stack(env, new_stack) == memory_blocks_count_new_stack_start + 1)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    
+    env->free_memory_stack(env, stack, memory_block_stack);
+    env->free_memory_stack(env, new_stack, memory_block_new_stack);
+
+    if (!(env->get_memory_blocks_count_env(env) == memory_blocks_count_env_start)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    if (!(env->get_memory_blocks_count_stack(env, stack) == memory_blocks_count_stack_start)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    if (!(env->get_memory_blocks_count_stack(env, new_stack) == memory_blocks_count_new_stack_start)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    env->free_stack(env, new_stack);
   }
   
   stack[0].ival = 1;

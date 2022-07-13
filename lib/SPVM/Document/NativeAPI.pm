@@ -204,6 +204,9 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   187 new_memory_env
   188 free_memory_env
   189 get_memory_blocks_count_env
+  190 new_memory_stack
+  191 free_memory_stack
+  192 get_memory_blocks_count_stack
 
 =head2 class_vars_heap
 
@@ -1223,21 +1226,23 @@ Specifying the address of the object releases the weak reference to the object.
 
   void* (*alloc_memory_block_zero)(SPVM_ENV* env, size_t byte_size);
 
-If you specify the size in bytes, the memory block is allocated and the pointer of the allocated memory block is returned. If fail to alloc memory, return NULL. If success, all bits in the memory block are initialized with C<0> and the memory block count (memory_blocks_count)is incremented by C<1>.
+Create a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
+
+The count of the memory block that is managed by the environment is incremented by C<1>.
 
 =head2 free_memory_block
 
   void (*free_memory_block)(SPVM_ENV* env, void* block);
 
-If block is not NULL, free the memory and memory blocks count(memory_blocks_count) is decremented by C<1>.
+Free the memory block that is managed by the environment.
+
+The count of the memory block that is managed by the environment is decremented by C<1>.
 
 =head2 get_memory_blocks_count
 
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
 
-Returns the current number of memory blocks of thie environment.
-
-The memory block is increased by 1 when an object is created, when the alloc_memory_block_zero function is called, and when a back reference is added by the weaken function.
+Return the count of the memory blocks on the environment.
 
 =head2 get_type_name_raw
 
@@ -2031,11 +2036,19 @@ Call C<INIT> blocks.
 
   void* (*new_memory_env)(SPVM_ENV* env, size_t byte_size);
 
+Create a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
+
+The count of the memory block that is managed by the environment is incremented by C<1>.
+
 This is the same as L</"alloc_memory_block_zero">. This is more understandable name that memories are managed by the environment.
 
 =head2 free_memory_env
 
   void (*free_memory_env)(SPVM_ENV* env, void* block);
+
+Free the memory block that is managed by the environment.
+
+The count of the memory block that is managed by the environment is decremented by C<1>.
 
 This is the same as L</"free_memory_block">. This is more understandable name that memories are managed by the environment.
 
@@ -2043,7 +2056,35 @@ This is the same as L</"free_memory_block">. This is more understandable name th
 
   int32_t (*get_memory_blocks_count_env)(SPVM_ENV* env);
 
+Return the count of the memory blocks on the environment.
+
 This is the same as L</"get_memory_blocks_count">. This is more understandable name that memories are managed by the environment.
+
+=head2 new_memory_stack
+
+  void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t byte_size);
+
+Create a new memory block that is managed by the stack of the environment with the byte size and return the address. If it fails, return C<NULL>.
+
+The count of the memory block that is managed by the stack is incremented by C<1>.
+
+The count of the memory block that is managed by the environment is incremented by C<1>.
+
+=head2 free_memory_stack
+
+  void (*free_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
+
+Free the memory block that is managed by the environment.
+
+The count of the memory block that is managed by the stack is decremented by C<1>.
+
+The count of the memory block that is managed by the environment is decremented by C<1>.
+
+=head2 get_memory_blocks_count_stack
+
+  int32_t (*get_memory_blocks_count_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+Return the count of the memory blocks on the stack.
 
 =head1 Compiler Native API
 
