@@ -21,6 +21,8 @@ class TestCase::NativeAPI {
     return new TestCase::NativeAPI;
   }
 
+  native static method new_memory_apis : int ();
+
   native static method check_native_api_indexes : int ();
   native static method check_native_api_precompile_indexes : int ();
   native static method check_native_api_string_buffer_indexes : int ();

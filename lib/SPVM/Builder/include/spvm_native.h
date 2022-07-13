@@ -285,6 +285,9 @@ struct spvm_env {
   SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
   void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*get_instance_method_id_super)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+  void* (*new_memory_env)(SPVM_ENV* env, size_t byte_size);
+  void (*free_memory_env)(SPVM_ENV* env, void* block);
+  int32_t (*get_memory_blocks_count_env)(SPVM_ENV* env);
 };
 
 

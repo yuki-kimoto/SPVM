@@ -201,6 +201,9 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   184 new_stack
   185 free_stack
   186 get_instance_method_id_super
+  187 new_memory_env
+  188 free_memory_env
+  189 get_memory_blocks_count_env
 
 =head2 class_vars_heap
 
@@ -1218,7 +1221,7 @@ Specifying the address of the object releases the weak reference to the object.
 
 =head2 alloc_memory_block_zero
 
-  void* (*alloc_memory_block_zero)(SPVM_ENV* env, int64_t byte_size);
+  void* (*alloc_memory_block_zero)(SPVM_ENV* env, size_t byte_size);
 
 If you specify the size in bytes, the memory block is allocated and the pointer of the allocated memory block is returned. If fail to alloc memory, return NULL. If success, all bits in the memory block are initialized with C<0> and the memory block count (memory_blocks_count)is incremented by C<1>.
 
@@ -2023,6 +2026,24 @@ Call C<INIT> blocks.
 =head2 get_instance_method_id_super
 
   int32_t (*get_instance_method_id_super)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+
+=head2 new_memory_env
+
+  void* (*new_memory_env)(SPVM_ENV* env, size_t byte_size);
+
+This is the same as L</"alloc_memory_block_zero">. This is more understandable name that memories are managed by the environment.
+
+=head2 free_memory_env
+
+  void (*free_memory_env)(SPVM_ENV* env, void* block);
+
+This is the same as L</"free_memory_block">. This is more understandable name that memories are managed by the environment.
+
+=head2 get_memory_blocks_count_env
+
+  int32_t (*get_memory_blocks_count_env)(SPVM_ENV* env);
+
+This is the same as L</"get_memory_blocks_count">. This is more understandable name that memories are managed by the environment.
 
 =head1 Compiler Native API
 

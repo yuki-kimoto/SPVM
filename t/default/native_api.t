@@ -252,6 +252,8 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
   ok(SPVM::TestCase::NativeAPI->new_string_nolen);
 }
 
+ok(SPVM::TestCase::NativeAPI->new_memory_apis);
+
 # Clear exception
 SPVM::set_exception(undef);
 
