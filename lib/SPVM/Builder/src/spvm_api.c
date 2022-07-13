@@ -3379,7 +3379,7 @@ void* SPVM_API_new_memory_env(SPVM_ENV* env, size_t byte_size) {
   
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
     SPVM_ALLOCATOR* allocator = runtime->allocator;
-    fprintf(stderr, "[ALLOC_MEMORY %p (All:%d, Tmp:%d, Perm: %d]\n", block,
+    fprintf(stderr, "[NEW_MEMORY %p (All:%d, Tmp:%d, Perm: %d]\n", block,
       (int32_t)(intptr_t)env->get_memory_blocks_count(env), allocator->memory_blocks_count_tmp, allocator->memory_blocks_count_permanent);
 #endif
 
