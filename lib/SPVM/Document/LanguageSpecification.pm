@@ -2478,9 +2478,9 @@ In the other hand, the else block exists, so a warning is issued.
     warn "Warning: Can't load Foo";
   }
 
-=head2 Default Loaded Modules
+=head2 Default Loaded Classes
 
-The following modules are loaded by default. These modules are deeply related to the features of SPVM language itself, such as L<type conversion|/"Type Conversion">.
+The following classes are loaded by default. These classes are deeply related to the features of SPVM language itself, such as L<type conversion|/"Type Conversion">.
 
 =over 2
 
@@ -2809,7 +2809,7 @@ See L</"Getting Field"> to get the field of the L<class|/"Class">.
 
 See L</"Setting Field"> to set the field of the L<class|/"Class">.
 
-=head3 Field Access of the Multi-Numeric Type
+=head3 Field Access of thethe multi-numeric type
 
 The field access of the L<multi-numeric type|/"Multi-Numeric Type">.
 
@@ -2860,9 +2860,9 @@ The argument names must be follow the rule of L</"Local Variable Name">.
 
 The minimal length of arguments is C<0>. The max length of arguments is C<255>.
 
-The types of the arguments must be a L<numeric type|/"Numeric Type">, L</"Multi-Numeric Type">, an L<object type|/"Object Type">, or L</"Reference Type">, otherwise a compilation error will occur.
+The types of the arguments must be a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, an L<object type|/"Object Type">, or L</"Reference Type">, otherwise a compilation error will occur.
 
-The type of the return value must be the L<void type/"void Type">, a L<numeric type|/"Numeric Type">, L</"Multi-Numeric Type"> or an L<object type|/"Object Type">, otherwise a compilation error will occur.
+The type of the return value must be the L<void type/"void Type">, a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type"> or an L<object type|/"Object Type">, otherwise a compilation error will occur.
 
 Defined methods can be called using L</"Method Call"> syntax.
 
@@ -3229,7 +3229,7 @@ Local Variable is declared using B<my> L</"Keyword">.
 
 The local variable name must be follow the rule of L</"Local Variable Name">.
 
-L</"Type"> must be specified. Type must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type">, L</"Multi-Numeric Type">, or L</"Reference Type">.
+L</"Type"> must be specified. Type must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type">, the L<multi-numeric type|/"Multi-Numeric Type">, or L</"Reference Type">.
 
   # Local Variable Declaration Examples
   my $var : int;
@@ -3611,11 +3611,11 @@ See L</"Setting Array Element"> to set the element value of Array.
 
 =head1 Multi-Numeric Value
 
-=head2 Multi-Numeric Type Definition
+=head2the multi-numeric type Definition
 
-Multi-Numeric type represents continuous numeric values. For example, there are three consecutive 32-bit signed integers, two consecutive double-precision floating point numbers. It isplaned to use 3D points, complex numbers, quaternions, etc.
+The multi-numeric type represents continuous numeric values. For example, there are three consecutive 32-bit signed integers, two consecutive double-precision floating point numbers. It isplaned to use 3D points, complex numbers, quaternions, etc.
 
-Multi-Numeric Type are defined by specifying mulnum_t L</"Class Descriptor"> in the L<class definition|/"Class Definition">.
+The multi-numeric type are defined by specifying mulnum_t L</"Class Descriptor"> in the L<class definition|/"Class Definition">.
 
   # Three consecutive 32bit signed integers
   class Complex_2d : mulnum_t {
@@ -3630,7 +3630,7 @@ Multi-Numeric Type are defined by specifying mulnum_t L</"Class Descriptor"> in 
     y : double;
   }
 
-Multi-Numeric Type must end with C<_>, Number of the fields, L</"Multi-Numeric Type Suffix">.
+The multi-numeric type must end with C<_>, Number of the fields, L</"Multi-Numeric Type Suffix">.
 
 The suffix must correspond to a L<numeric type|/"Numeric Type">.
 
@@ -3638,28 +3638,28 @@ All Fields must be the same a L<numeric type|/"Numeric Type">.
 
 The maximum number of the fields is 255.
 
-Multi-Numeric Type can be used as L</"Type"> of L</"Local Variable Declaration">.
+The multi-numeric type can be used as L</"Type"> of L</"Local Variable Declaration">.
 
-Multi-Numeric Type can be used as an argument L</"Type"> in the L<method definition|/"Method Definition"> .
+The multi-numeric type can be used as an argument L</"Type"> in the L<method definition|/"Method Definition"> .
 
-Multi-Numeric Type can be used as L</"Type"> of Return Value in the L<method definition|/"Method Definition">.
+The multi-numeric type can be used as L</"Type"> of Return Value in the L<method definition|/"Method Definition">.
 
-Multi-Numeric Type can be used as L</"Basic Type"> of L</"Array Type"> .
+The multi-numeric type can be used as L</"Basic Type"> of L</"Array Type"> .
 
   my $points = new Complex_2d[5];
 
-Reference can be created for Multi-Numeric Type value.
+Reference can be created forthe multi-numeric type value.
 
   my $z : Complex_2d;
   my $z_ref = \$z;
 
-L<undef|/"Undefined Value"> cannot be assigned to Multi-Numeric Type value.
+L<undef|/"Undefined Value"> cannot be assigned tothe multi-numeric type value.
 
-See L</"Multi-Numeric Type Field Access"> to get and set the value of field of Multi-Numeric Type Value.
+See L</"Multi-Numeric Type Field Access"> to get and set the value of field ofthe multi-numeric type Value.
 
-=head2 Multi-Numeric Type Suffix
+=head2the multi-numeric type Suffix
 
-List of Multi-Numeric Type Suffix.
+List ofthe multi-numeric type Suffix.
 
 =begin html
 
@@ -3669,7 +3669,7 @@ List of Multi-Numeric Type Suffix.
       <b>Numeric Type</b>
    </th>
     <th>
-      Multi-Numeric Type Suffix
+     the multi-numeric type Suffix
    </th>
   </tr>
   <tr>
@@ -3724,29 +3724,29 @@ List of Multi-Numeric Type Suffix.
 
 =end html
 
-=head2 Multi-Numeric Type Usage
+=head2the multi-numeric type Usage
 
-To use Multi-Numeric Type, load a Module using L</"use Statement">.
+To usethe multi-numeric type, load a Module using L</"use Statement">.
 
   use Complex_2d;
   use Complex_2d;
 
-Next is L</"Local Variable Declaration">. Local Variable Declaration create continuous area for fields of Multi-Numeric Type Value. All fields of of Multi-Numeric Type Value are initialized by the L<initial value/"Initial Value">.
+Next is L</"Local Variable Declaration">. Local Variable Declaration create continuous area for fields ofthe multi-numeric type Value. All fields of ofthe multi-numeric type Value are initialized by the L<initial value/"Initial Value">.
 
   my $z : Complex_2d;
   my $z : Complex_2d;
 
-Note that Multi-Numeric Type value are not object, so cannot create a Object by L</"new"> syntax.
+Note thatthe multi-numeric type value are not object, so cannot create a Object by L</"new"> syntax.
 
-=head2 Multi-Numeric Type Field Access
+=head2the multi-numeric type Field Access
 
-B<Multi-Numeric Type Field Access> is an operation to access Multi-Numeric Type Field to get or set a value.
+B<Multi-Numeric Type Field Access> is an operation to accessthe multi-numeric type Field to get or set a value.
 
   MULTI_NUMERIC_TYPE_VALUE->{FIELD_NAME}
 
-See L</"Getting Multi-Numeric Field"> to get Multi-Numeric Type Field.
+See L</"Getting Multi-Numeric Field"> to getthe multi-numeric type Field.
 
-See L</"Setting Multi-Numeric Field"> to set Multi-Numeric Type Field.
+See L</"Setting Multi-Numeric Field"> to setthe multi-numeric type Field.
 
 =head1 Multi-Numeric Array
 
@@ -3758,7 +3758,7 @@ L</"Multi-Numeric Value"> can be an element of L</"Array">.
 
 Multi-Numeric Array has continuous Multi-Numeric Values.
 
-The Element Type is L</"Multi-Numeric Type">, not an L<object type|/"Object Type">.
+The Element Type is the L<multi-numeric type|/"Multi-Numeric Type">, not an L<object type|/"Object Type">.
 
 For example, Complex_2d[5] is continuous 15 (= 3 * 5) count the L<int type|/"int Type"> Value.
 
@@ -4404,9 +4404,9 @@ B<Examples:>
 
 =head2 Multi-Numeric Type
 
-Multi-Numeric Type are a type that can represent continuous numerical values.
+The multi-numeric type are a type that can represent continuous numerical values.
 
-Multi-Numeric Type can be defined by specifying C<mulnum_t> Descriptor in the the L<class definition|/"Class Definition">.
+The multi-numeric type can be defined by specifying C<mulnum_t> Descriptor in the the L<class definition|/"Class Definition">.
 
   class Complex_2d : mulnum_t {
     has x : int;
@@ -4414,11 +4414,11 @@ Multi-Numeric Type can be defined by specifying C<mulnum_t> Descriptor in the th
     has z : int;
   }
 
-See L</"Values ​​"> for a detailed explanation of Multi-Numeric Type.
+See L</"Values ​​"> for a detailed explanation ofthe multi-numeric type.
 
 =head2 Reference Type
 
-Reference Type is a Type that can store the address of a variable. Add C<*> after a L<numeric type|/"Numeric Type"> or L</"Multi-Numeric Type"> You can define it.
+Reference Type is a Type that can store the address of a variable. Add C<*> after a L<numeric type|/"Numeric Type"> or the L<multi-numeric type|/"Multi-Numeric Type"> You can define it.
 
   my $num : int;
   my $num_ref : int* = \$num;
@@ -4454,7 +4454,7 @@ Numeric Reference Type means a L<numeric type|/"Numeric Type"> for L</"Reference
 
 =head2 Multi-Numeric Reference Type
 
-Multi-Numeric Reference Type means L</"Reference Type"> for L</"Multi-Numeric Type"> variables. > Means.
+Multi-Numeric Reference Type means L</"Reference Type"> for the L<multi-numeric type|/"Multi-Numeric Type"> variables. > Means.
 
 =head2 Type Qualifier
 
@@ -7406,7 +7406,7 @@ The C<isa> operator is a L<comparison operator|/"Comparison Operator"> to check 
 
 The return type is L<int type|/"int Type">.
 
-If the right type is a L<numeric type|/"Numeric Type">, L</"Multi-Numeric Type">, L</"Any Object Type">, L</"Reference Type">, it checks the L<assignability|/"Assignability"> at compile-time.
+If the right type is a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, L</"Any Object Type">, L</"Reference Type">, it checks the L<assignability|/"Assignability"> at compile-time.
 
 If the assignability is true, it is replaced with C<1>. Otherwise it is replaced with C<0>.
 
@@ -8009,7 +8009,7 @@ B<Getting Multi-Numeric Field Expression> is an L<operator|/"Operator"> to get F
 
   INVOCANT->{FIELD_NAME}
 
-Invocant Expression is L</"Multi-Numeric Type">.
+The invocant is the L<multi-numeric type|/"Multi-Numeric Type">.
   
 If the field names does not found in the L</"Class">, a compilation error will occur
 
@@ -8028,7 +8028,7 @@ Setting Multi-Numeric Field Expression is an L<operator|/"Operator"> to set Fiel
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
-Invocant Expression is L</"Multi-Numeric Type">.
+The invocant is the L<multi-numeric type|/"Multi-Numeric Type">.
 
 If the field names does not found in the L</"Class">, a compilation error will occur.
 
@@ -8344,14 +8344,13 @@ Setting a value with Dereference returns the set value. This is L</"Expressions"
   
   $$z_ref = $z2;
 
-
 =head3 Getting Multi-Numeric Field via Dereference
 
 B<Getting Multi-Numeric Field via Dereference Expression> is an L<operator|/"Operator"> to get Field of L</"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
 
   INVOCANT->{FIELD_NAME}
 
-Invocant Expression is L</"Multi-Numeric Reference Type">.
+The invocant is L</"Multi-Numeric Reference Type">.
 
 If the field names does not found in the L</"Class">, a compilation error will occur
 
@@ -8371,7 +8370,7 @@ Setting Multi-Numeric Field Expression via Dereference is an L<operator|/"Operat
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
-Invocant Expression is L</"Multi-Numeric Reference Type">.
+The invocant is L</"Multi-Numeric Reference Type">.
 
 If the field names does not found in the L</"Class">, a compilation error will occur
 
