@@ -368,7 +368,7 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
   (void)compiler;
   
   if (field) {
-    printf("      name => \"%s\"\n", field->op_name->uv.name);
+    printf("      name => \"%s\"\n", field->name);
     
     printf("      index => \"%" PRId32 "\"\n", field->index);
     
