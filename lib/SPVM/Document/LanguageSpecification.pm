@@ -6148,7 +6148,7 @@ The C<if> statement is a L<statement|/"Statement"> for conditional branch.
 
 The condition the L<conditional type conversion|/"Conditional Type Conversion"> is executed and Block is executed if the value is non-zero.
 
-If you want to write more than one condition, you can continue with "elsif Statement". The condition determination is performed from above, and each Expression is the L<conditional type conversion|/"Conditional Type Conversion"> is executed, and a corresponding Block is executed if the value is non-zero.
+If you want to write more than one condition, you can continue with "elsif Statement". The condition determination is performed from above, and each operand is the L<conditional type conversion|/"Conditional Type Conversion"> is executed, and a corresponding Block is executed if the value is non-zero.
 
   if (CONDITION) {
   
@@ -6409,7 +6409,7 @@ The C<while> statement is a L<statement|/"Statement"> for repeating.
   
   }
 
-L</"Expressions"> can be described in the condition Expression. The L<conditional type conversion|/"Conditional Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
+The L<operator|/"Operator"> can be described in the condition Expression. The L<conditional type conversion|/"Conditional Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise Block.
 
 B<Examples:>
 
@@ -6467,11 +6467,11 @@ The C<for> Statement is a L<statement|/"Statement"> for repeating.
   
   }
 
-L</"Expressions"> can be described in the initialization Expression. Generally, write Expression such as initialization of loop variable. Initialization Expression can be omitted.
+The L<operator|/"Operator"> can be described in the initialization Expression. Generally, write Expression such as initialization of loop variable. Initialization Expression can be omitted.
 
-Condition Expression, L</"Expressions"> can be described. The L<conditional type conversion|/"Conditional Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise block.
+Condition Expression, the L<operator|/"Operator"> can be described. The L<conditional type conversion|/"Conditional Type Conversion"> is executed for condition Expression, and if the value is not 0, Block is executed. Exit the otherwise block.
 
-L</"Expressions"> can be described in INCREMENT_STATEMENT. Generally, Expression of Increment of loop variable is described. INCREMENT_STATEMENT can be omitted.
+The L<operator|/"Operator"> can be described in INCREMENT_STATEMENT. Generally, Expression of Increment of loop variable is described. INCREMENT_STATEMENT can be omitted.
 
 for Statement has the same meaning as the following while Statement. INCREMENT_STATEMENT is executed at the end of Block. Initialization Expression is enclosed in L</"Simple Block">.
 
@@ -6510,7 +6510,7 @@ The C<return> statement is a L<statement|/"Statement"> to get out of the method.
 
   return;
 
-If there is a Return Value, L</"Expressions"> can be specified.
+If there is a Return Value, the L<operator|/"Operator"> can be specified.
 
   return EXPRESSION;
 
@@ -7632,7 +7632,7 @@ The operand must be a L<Expression|/"Expressions"> that type is an L</"Array Typ
 
 The array length operator returns the L<int type|/"int Type"> value that is the length of the L</"Array">.
 
-Array Length Operator returns L</"Expressions">
+Array Length Operator returns the L<operator|/"Operator">
 
 B<Examples:>
   
@@ -8290,7 +8290,7 @@ Obtaining a value by Dereference is an operation to obtain the actual value from
 
 The variable Type must be Reference Type, otherwise a compilation error will occur.
 
-The value obtained by Dereference returns L</"Expressions">.
+The value obtained by Dereference returns the L<operator|/"Operator">.
 
     B<Example of getting value by Dereference>
 
@@ -8312,7 +8312,7 @@ The variable Type must be Reference Type, otherwise a compilation error will occ
 
 The type of Expression must match the type of the variable when dereferenced, otherwise a compilation error will occur.
 
-Setting a value with Dereference returns the set value. This is L</"Expressions">.
+Setting a value with Dereference returns the set value. This is the L<operator|/"Operator">.
 
     B<Example of setting values ​​with Dereference>
 
