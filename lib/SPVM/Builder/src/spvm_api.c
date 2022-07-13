@@ -1868,16 +1868,6 @@ SPVM_OBJECT* SPVM_API_concat(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* stri
   return str;
 }
 
-int32_t SPVM_API_get_memory_blocks_count_env(SPVM_ENV* env) {
-  (void)env;
-  
-  SPVM_ALLOCATOR* allocator = env->allocator;
-  
-  int32_t memory_blocks_count = SPVM_ALLOCATOR_get_memory_blocks_count(allocator);
-  
-  return memory_blocks_count;
-}
-
 void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
   (void)env;
   
@@ -3406,6 +3396,16 @@ void SPVM_API_free_memory_env(SPVM_ENV* env, void* block) {
       (int32_t)(intptr_t)env->get_memory_blocks_count(env), allocator->memory_blocks_count_tmp, allocator->memory_blocks_count_permanent);
 #endif
   }
+}
+
+int32_t SPVM_API_get_memory_blocks_count_env(SPVM_ENV* env) {
+  (void)env;
+  
+  SPVM_ALLOCATOR* allocator = env->allocator;
+  
+  int32_t memory_blocks_count = SPVM_ALLOCATOR_get_memory_blocks_count(allocator);
+  
+  return memory_blocks_count;
 }
 
 int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
