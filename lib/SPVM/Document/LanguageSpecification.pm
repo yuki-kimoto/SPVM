@@ -58,14 +58,14 @@ A class name is a L<symbol name|/"Symbol Name">.
 
 The part names of a class name must begin uppercase letter. If the class name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
 
-A class name must be the name that the relative L<module|/"Module"> file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative module file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
+A class name must be the name that the relative L<module|/"Module"> file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative class file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
 
-  # Valid class name in the module file "Foo/Bar/Baz.spvm"
+  # Valid class name in the class file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Baz {
     
   }
 
-  # Invalid class name in the module file "Foo/Bar/Baz.spvm"
+  # Invalid class name in the class file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Hello {
     
   }
@@ -2394,9 +2394,9 @@ Module can contain multiple Classes.
   
   }
 
-=head2 Module File Name
+=head2 class file Name
 
-Modules must be placed in the module loading path with the following File Name.
+Modules must be placed in the class loading path with the following file name.
 
 Change C<::> to C</>. Add ".spvm" at the end.
 
@@ -2408,10 +2408,10 @@ Change C<::> to C</>. Add ".spvm" at the end.
 
 The C<use> syntax loads a Module.
   
-  # Load a module
+  # Load a class
   use Foo;
 
-If the module does not exist, a compilation error will occur.
+If the class does not exist, a compilation error will occur.
 
 Modules are loaded at compile-time.
 
@@ -2439,7 +2439,7 @@ C<alias> syntax must be defined directly under the L<class definition|/"Class De
     alias Foo::Bar as FB;
   }
 
-You can create an alias at the same time as loading a module by C<use>.
+You can create an alias at the same time as loading a class by C<use>.
   
   use Foo::Bar as FB;
 
@@ -3638,7 +3638,7 @@ All Fields must be the same a L<numeric type|/"Numeric Type">.
 
 The maximum number of the fields is 255.
 
-The multi-numeric type can be used as the L<type|/"Type"> of L</"Local Variable Declaration">.
+The multi-numeric type can be used as the L<type|/"Type"> of the L<local variable declaration|/"Local Variable Declaration">.
 
 The multi-numeric type can be used as an argument the L<type|/"Type"> in the L<method definition|/"Method Definition"> .
 
@@ -3724,19 +3724,17 @@ List ofthe multi-numeric type Suffix.
 
 =end html
 
-=head2the multi-numeric type Usage
+=head2the Using Multi-Numeric Type
 
-To usethe multi-numeric type, load a Module using L</"use Statement">.
+A multi-numeric type can be loaded using the L<use statement|/"use Statement">.
 
   use Complex_2d;
-  use Complex_2d;
 
-Next is L</"Local Variable Declaration">The local variable Declaration create continuous area for fields ofthe multi-numeric type Value. All fields of ofthe multi-numeric type Value are initialized by the L<initial value/"Initial Value">.
+A multi-numeric value is declared by the L<local variable declaration|/"Local Variable Declaration">.
 
   my $z : Complex_2d;
-  my $z : Complex_2d;
 
-Note thatthe multi-numeric type value are not object, so cannot create a Object by L</"new"> syntax.
+The value is initialized by the L<initial value/"Initial Value">.
 
 =head2the multi-numeric type Field Access
 
@@ -4428,7 +4426,7 @@ Only the address of the Local Variable acquired by L</"Reference Operator"> can 
 
 If only Local Variable Declaration of Reference Type is performed, a compilation error will occur
 
-Reference Type can be used as Type of L</"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error will occur
+Reference Type can be used as Type of the L<local variable declaration|/"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error will occur
 
 Reference Type can be used as Type of argument in the L<method definition|/"Method Definition">.
 
@@ -4474,7 +4472,7 @@ B<Examples:>
 
 =head1 Type Inference
 
-Omitting the L<type|/"Type"> when L</"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
+Omitting the L<type|/"Type"> when the L<local variable declaration|/"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
 
   # int
   my $num = 1;
@@ -8405,7 +8403,7 @@ The getting current file name C<__FILE__> is an L<operator|/"Operator"> to get t
 
   __FILE__
 
-Current File Name means the relative path from the base path of the module file. For example, if the Module Loaded Path is "/mypath" and the Module name is "Foo::Bar", the absolute path is "/mypath/SPVM/Foo/Bar.spvm" and the relative path is "SPVM/Foo/Bar.spvm". "SPVM/Foo/Bar.spvm" is Current File Name.
+The current file name means the relative path from the base path of the class file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
 
 B<Examples:>
 
