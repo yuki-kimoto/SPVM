@@ -5863,19 +5863,17 @@ The numeric narrowing type conversion is performed in some of the L<type casts|/
 
 =head2 Binary Numeric Type Conversion
 
-Binary Numeric Type Conversion is performed to the left operand and the right operand in Binary Operator that takes Numeric Type on the Left and Right sides. L</"Numeric Widening Type Conversion">.
+The binary numeric type conversion is a L<type conversion|/"Type Conversion"> to upgrade the type of the left operand or the right operand of the binary operator that operands are L<numeric types|/"Numeric Type >.
 
-The following rules apply.
+The following rules apply in order.
 
-1. When one Expression is L</"double Type">, the other Type is L</"double Type"> Is converted to>.
+1. If the left operand or the right operand is the L<double type|/"double Type">, the operand of the small type is converted to the big type using the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
 
-2. If one Expression is L</"float Type">, the other Type is L</"float Type"> Is converted to>.
+2. If the left operand or the right operand is the L<float type|/"float Type">, the operand of the small type is converted to the big type using the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
 
-3. When one Expression is L</"long Type">, the other Type is L</"long Type"> Is converted to>.
+3. If the left operand or the right operand is the L<long type|/"long Type">, the operand of the small type is converted to the big type using the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
 
-4, otherwise, it will be converted to the L<int type|/"int Type">.
-
-Binary Numeric Type Conversion is performed in the following cases.
+4, Otherwise, both the left operand and the right operand are converted to the L<int type|/"int Type"> using the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
 
 =head2 Numeric-to-String Type Conversion
 
@@ -7298,7 +7296,7 @@ the Numeric Comparison Operation is performed that exactly same as the following
   (int32_t)(x <= y);
   (int32_t)(x > y ? 1 : x < y ? -1 : 0);
 
-For Numeric Type Operation(==, !=, >, >=, <, <=), the L<int type|/"int Type"> Operation, L</"long Type"> Operation, L</"float Type"> Operation, L</"double Type"> Operation is defined.
+For Numeric Type Operation(==, !=, >, >=, <, <=), the L<int type|/"int Type"> Operation, L</"long Type"> Operation, L</"float Type"> Operation, the L<double type|/"double Type"> Operation is defined.
 
 And Object Type Operation(==, !=) is defined.
 
