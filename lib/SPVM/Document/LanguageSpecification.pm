@@ -2687,7 +2687,7 @@ C<has> keyword defines a field.
 
 Field must be defined directly under the L<class definition|/"Class Definition">.
 
-Field Definition must be specify L</"Type">. The Type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">.
+Field Definition must be specify the L<type|/"Type">. The Type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">.
 
 Field names must follows the rule specified in L</"Field Name">.
 
@@ -3221,15 +3221,15 @@ In special cases, a value of an enumeration can be used as the operand of a L<ca
 
 =head2 Local Variable Declaration
 
-B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has L</"Scope">. This is the same as Local Variable in C Language.
+B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has the L<scope|/"Scope">. This is the same as Local Variable in C Language.
 
-Local Variable is declared using B<my> L</"Keyword">.
+The local variable is declared using B<my> L</"Keyword">.
 
   my LOCAL_VARIABLE_NAME : TYPE;
 
 The local variable name must be follow the rule of L</"Local Variable Name">.
 
-L</"Type"> must be specified. Type must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type">, the L<multi-numeric type|/"Multi-Numeric Type">, or L</"Reference Type">.
+the L<type|/"Type"> must be specified. Type must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type">, the L<multi-numeric type|/"Multi-Numeric Type">, or L</"Reference Type">.
 
   # Local Variable Declaration Examples
   my $var : int;
@@ -3237,7 +3237,7 @@ L</"Type"> must be specified. Type must be a L<numeric type|/"Numeric Type">, an
   my $var : Complex_2d;
   my $var : int*;
 
-Local Variable is initialized by L</"Local Variable Initial Value">.
+The local variable is initialized by L</"Local Variable Initial Value">.
 
   # Initialized by 0
   my $num : int;
@@ -3251,7 +3251,7 @@ Local Variable is initialized by L</"Local Variable Initial Value">.
   # x is initialized by 0. y is initialized by 0.
   my $z : Complex_2d;
 
-Initialization can be done at the same time as Local Variable Declaration.
+The initialization of the local variable can be written at the same time as the local variable declaration.
 
   # Initialized by 1
   my $num : int = 1;
@@ -3262,15 +3262,15 @@ Initialization can be done at the same time as Local Variable Declaration.
   # Initialized by Point object
   my $point : Point = new Point;
 
-Using L</"Type Inference">, you omit L</"Type"> in Local Variable Declaration.
+The L<type|/"Type"> can be omitted using the L<type inference|/"Type Inference">, 
 
-  # int
+  # Type inference - int
   my $num = 1;
   
-  # double
+  # Type inference - double
   my $num = 1.0;
 
-Local Variable Declaration returns the value of Local Variable. This is a L</"Expressions">.
+The local variable declaration returns the value of the local variable. The return type is the type of the local variable.
 
   my $ppp = my $bar = 4;
   
@@ -3282,15 +3282,15 @@ Local Variable Declaration returns the value of Local Variable. This is a L</"Ex
   
   }
 
-See L</"Scope"> about Local Variable Scope.
+See the L<scope|/"Scope"> about the scope of the local variable.
 
 =head2 Local Variable Initial Value
 
-Local Variable is initialized by the L<initial value/"Initial Value">.
+The local variable is initialized by the L<initial value/"Initial Value">.
 
 =head2 Local Variable Access
 
-Local Variable Access is an operation to access Local Variable to get or set the value.
+The local variable Access is an operation to access Local Variable to get or set the value.
 
 See L</"Getting Local Variable"> to get Local Variable value.
 
@@ -3638,11 +3638,11 @@ All Fields must be the same a L<numeric type|/"Numeric Type">.
 
 The maximum number of the fields is 255.
 
-The multi-numeric type can be used as L</"Type"> of L</"Local Variable Declaration">.
+The multi-numeric type can be used as the L<type|/"Type"> of L</"Local Variable Declaration">.
 
-The multi-numeric type can be used as an argument L</"Type"> in the L<method definition|/"Method Definition"> .
+The multi-numeric type can be used as an argument the L<type|/"Type"> in the L<method definition|/"Method Definition"> .
 
-The multi-numeric type can be used as L</"Type"> of Return Value in the L<method definition|/"Method Definition">.
+The multi-numeric type can be used as the L<type|/"Type"> of Return Value in the L<method definition|/"Method Definition">.
 
 The multi-numeric type can be used as L</"Basic Type"> of L</"Array Type"> .
 
@@ -3731,7 +3731,7 @@ To usethe multi-numeric type, load a Module using L</"use Statement">.
   use Complex_2d;
   use Complex_2d;
 
-Next is L</"Local Variable Declaration">. Local Variable Declaration create continuous area for fields ofthe multi-numeric type Value. All fields of ofthe multi-numeric type Value are initialized by the L<initial value/"Initial Value">.
+Next is L</"Local Variable Declaration">The local variable Declaration create continuous area for fields ofthe multi-numeric type Value. All fields of ofthe multi-numeric type Value are initialized by the L<initial value/"Initial Value">.
 
   my $z : Complex_2d;
   my $z : Complex_2d;
@@ -3762,7 +3762,7 @@ The Element Type is the L<multi-numeric type|/"Multi-Numeric Type">, not an L<ob
 
 For example, Complex_2d[5] is continuous 15 (= 3 * 5) count the L<int type|/"int Type"> Value.
 
-L</"Type"> of Multi-Numeric Array is L</"Array Type">.
+the L<type|/"Type"> of Multi-Numeric Array is L</"Array Type">.
 
 =head2 Multi-Numeric Array Access
 
@@ -3841,9 +3841,7 @@ See L<Data type - Wikipedia|https://en.wikipedia.org/wiki/Type_system> about dat
 
 =head2 Initial Value
 
-Local Variable Initial Value are described in L</"Class Variable Initial Value">.
-
-A list of Initial Value. All Bit columns in the data are set to 0.
+The list of initial values.
 
 =begin html
 
@@ -3893,7 +3891,7 @@ A list of Initial Value. All Bit columns in the data are set to 0.
       <b>float</b>
     </td>
     <td>
-      0
+      0 (All bits are <code>0</code>)
     </td>
   </tr>
   <tr>
@@ -3901,7 +3899,7 @@ A list of Initial Value. All Bit columns in the data are set to 0.
       <b>double</b>
     </td>
     <td>
-      0
+      0 (All bits are <code>0</code>)
     </td>
   </tr>
   <tr>
@@ -3917,7 +3915,7 @@ A list of Initial Value. All Bit columns in the data are set to 0.
       <b>Multi-Numeric Type</b>
     </td>
     <td>
-      All Field is 0
+      All fields are set to <code>0</code> (All bits are <code>0</code>)
     </td>
   </tr>
 </table>
@@ -3926,7 +3924,7 @@ A list of Initial Value. All Bit columns in the data are set to 0.
 
 =head2 Numeric Type
 
-Numeric Type are L</"Integral Type"> and L</"Floating Point Type">.
+The numeric type are the L<integral type|/"Integral Type"> and L</"Floating Point Type">.
 
 =head3 Numeric Type Order
 
@@ -4004,19 +4002,19 @@ Note that SPVM has only B<singed> integral types, and doesn't have B<unsigned> i
 
 =head2 byte Type
 
-C<byte> type is a L</"Integral Type"> that represents a signed 8-bit integer. This is the same type as C<int8_t> type of C language.
+C<byte> type is the L<integral type|/"Integral Type"> that represents a signed 8-bit integer. This is the same type as C<int8_t> type of C language.
 
 =head2 short Type
 
-C<short> type  is a L</"Integral Type"> that represents a signed 16-bit integer. This is the same type as C<int16_t> type of C language.
+C<short> type  is the L<integral type|/"Integral Type"> that represents a signed 16-bit integer. This is the same type as C<int16_t> type of C language.
 
 =head2 int Type
 
-C<int> type is  is a L</"Integral Type"> that represents signed 32-bit integer. This is the same as C<int32_t> type of C language.
+C<int> type is  is the L<integral type|/"Integral Type"> that represents signed 32-bit integer. This is the same as C<int32_t> type of C language.
 
 =head2 long Type
 
-C<long> type is a L</"Integral Type"> that represents a signed 64-bit integer. This is the same type as C<int64_t> type of C language.
+C<long> type is the L<integral type|/"Integral Type"> that represents a signed 64-bit integer. This is the same type as C<int64_t> type of C language.
 
 =head2 Floating Point Type
 
@@ -4476,7 +4474,7 @@ B<Examples:>
 
 =head1 Type Inference
 
-Omitting L</"Type"> when L</"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
+Omitting the L<type|/"Type"> when L</"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
 
   # int
   my $num = 1;
@@ -7133,11 +7131,11 @@ The left shift operator C<E<lt>E<lt>> is a L<binary operator|/"Binary Operator">
 
   LEFT_OPERAND << RIGHT_OPERAND
 
-The left operand must be L</"Integral Type">, otherwise a compilation error will occur.
+The left operand must be the L<integral type|/"Integral Type">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed to the left operand.
 
-The right operand must be L</"Integral Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
+The right operand must be the L<integral type|/"Integral Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed to the right operand.
 
@@ -7153,11 +7151,11 @@ The arithmetic right shift operator C<E<gt>E<gt>> is a L<binary operator|/"Binar
 
   LEFT_OPERAND >> RIGHT_OPERAND
 
-The left operand must be L</"Integral Type">, otherwise a compilation error will occur.
+The left operand must be the L<integral type|/"Integral Type">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed to the left operand.
 
-The right operand must be L</"Integral Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
+The right operand must be the L<integral type|/"Integral Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed to the right operand.
 
@@ -7173,11 +7171,11 @@ The logical right shift operator C<E<gt>E<gt>E<gt>>is a L<binary operator|/"Bina
 
   LEFT_OPERAND >>> RIGHT_OPERAND
 
-The left operand must be L</"Integral Type">, otherwise a compilation error will occur.
+The left operand must be the L<integral type|/"Integral Type">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed to the left operand.
 
-The right operand must be L</"Integral Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
+The right operand must be the L<integral type|/"Integral Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed to the right operand.
 
@@ -7647,7 +7645,7 @@ The array length operator is an L<unary operator|/"Unary Operator"> to get the l
 
 The operand must be a L<Expression|/"Expressions"> that type is an L</"Array Type">, otherwise a compilation error will occur.
 
-The array length operator returns a the L<int type|/"int Type"> value that is the length of the L</"Array">.
+The array length operator returns the L<int type|/"int Type"> value that is the length of the L</"Array">.
 
 Array Length Operator returns L</"Expressions">
 
@@ -7669,7 +7667,7 @@ The string creation operator C<new_string_len> is an L<unary operator|/"Unary Op
 
   new_string_len OPERAND
 
-The operand must be an L<operator|/"Operator"> that type is a L</"Integral Type"> except for a L<long type|/"long Type">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operator"> that type is the L<integral type|/"Integral Type"> except for a L<long type|/"long Type">, otherwise a compilation error will occur.
 
 The string creation operator returns the string that is created with the lenght.
 
@@ -8015,7 +8013,7 @@ If the field names does not found in the L</"Class">, a compilation error will o
 
 Getting Multi-Numeric Field Expression returns the field value in the Multi-Numeric Value.
 
-Retrun Type is The L</"Type"> of the Field.
+Retrun Type is The the L<type|/"Type"> of the Field.
 
 B<Examples:>
 
@@ -8356,7 +8354,7 @@ If the field names does not found in the L</"Class">, a compilation error will o
 
 Getting Multi-Numeric Field via Dereference Expression returns the field value in the Multi-Numeric Value.
 
-Retrun Type is The L</"Type"> of the Field.
+Retrun Type is The the L<type|/"Type"> of the Field.
 
 B<Examples:>
 
