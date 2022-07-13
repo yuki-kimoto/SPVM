@@ -7359,7 +7359,7 @@ The list of string comparison operators.
       LEFT_OPERAND gt RIGHT_OPERAND
     </td>
     <td>
-      The left operand is greater than the right operand in dictionary Expression order.
+      The left operand is greater than the right operand in the dictionary order.
     </td>
   </tr>
   <tr>
@@ -7367,7 +7367,7 @@ The list of string comparison operators.
       LEFT_OPERAND ge RIGHT_OPERAND
     </td>
     <td>
-      The left operand is greater than or equal to the right operand compared in dictionary Expression order
+      The left operand is greater than or equal to the right operand compared in the dictionary order
     </td>
   </tr>
   <tr>
@@ -7375,7 +7375,7 @@ The list of string comparison operators.
       LEFT_OPERAND lt RIGHT_OPERAND
     </td>
     <td>
-      The left operand is less than the right operand when compared in dictionary Expression order
+      The left operand is less than the right operand when compared in the dictionary order
     </td>
   </tr>
   <tr>
@@ -7383,7 +7383,7 @@ The list of string comparison operators.
       LEFT_OPERAND le RIGHT_OPERAND
     </td>
     <td>
-      The left operand is less than or equal to the right operand compared in dictionary Expression order
+      The left operand is less than or equal to the right operand compared in the dictionary order
     </td>
   </tr>
   <tr>
