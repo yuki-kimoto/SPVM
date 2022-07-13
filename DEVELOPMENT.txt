@@ -29,7 +29,7 @@ DEVELOPERS NOTE
        # Normal run
        yacc/bison.sh && perl solo/solo_Makefile.PL --OPTIMIZE="-O0 -g" && make -f solo/Makefile && ./solo/work/myexe foo bar
 
-       # Debug run
+       # Debug run - Print memory count
        yacc/bison.sh && perl solo/solo_Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_MEMORY && make -f solo/Makefile && ./solo/work/myexe foo bar
 
        # Debug run - Print AST, package information, operaion codes
