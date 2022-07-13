@@ -58,14 +58,14 @@ A class name is a L<symbol name|/"Symbol Name">.
 
 The part names of a class name must begin uppercase letter. If the class name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
 
-A class name must be the name that the relative L<module|/"Module"> file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative class file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
+A class name must be the name that the relative L<module|/"Module"> file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative module file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
 
-  # Valid class name in the class file "Foo/Bar/Baz.spvm"
+  # Valid class name in the module file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Baz {
     
   }
 
-  # Invalid class name in the class file "Foo/Bar/Baz.spvm"
+  # Invalid class name in the module file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Hello {
     
   }
@@ -2376,14 +2376,14 @@ C<new> operator can't create the objects from interfaces.
 
 =head1 Module
 
-Module is a single file that can be read as SPVM source code.
+A module means the content in a module file. A module is one of a L<class|/"Class">, an L<interface|/"Interface"> or, a L<multi-numeric type|/"Multi-Numeric Type">.
 
   # lib/path/SPVM/Foo/Bar.spvm
   class Foo::Bar {
   
   }
 
-=head2 class file Name
+=head2 Module File Name
 
 Modules must be placed in the class loading path with the following file name.
 
@@ -2395,7 +2395,7 @@ Change C<::> to C</>. Add ".spvm" at the end.
 
 =head2 Loading Module
 
-The C<use> syntax loads a Module.
+The C<use> syntax loads a module.
   
   # Load a class
   use Foo;
@@ -2410,9 +2410,9 @@ C<use> syntax must be defined directly under the L<class definition|/"Class Defi
     use Foo;
   }
 
-=head2 Class Alias
+=head2 Module Alias
 
-C<alias> syntax create an alias name for a class name.
+C<alias> syntax create an alias name for a module name.
   
   # Create alias
   alias Foo::Bar as FB;
@@ -2434,7 +2434,7 @@ You can create an alias at the same time as loading a class by C<use>.
 
 =head2 Load Module Selective
 
-In SPVM, there is an if require Statement that loads a Module only if it exists in the module path, and if it does not exist, the block does not exist.
+In SPVM, there is an if require Statement that loads a module only if it exists in the module path, and if it does not exist, the block does not exist.
 
 It was designed to implement a part of features of "#ifdef" in C language.
 
@@ -2467,9 +2467,9 @@ In the other hand, the else block exists, so a warning is issued.
     warn "Warning: Can't load Foo";
   }
 
-=head2 Default Loaded Classes
+=head2 Default Loaded Modules
 
-The following classes are loaded by default. These classes are deeply related to the features of SPVM language itself, such as L<type conversion|/"Type Conversion">.
+The following modules are loaded by default. These modules are deeply related to the features of SPVM language itself, such as L<type conversion|/"Type Conversion">.
 
 =over 2
 
@@ -8392,7 +8392,7 @@ The getting current file name C<__FILE__> is an L<operator|/"Operator"> to get t
 
   __FILE__
 
-The current file name means the relative path from the base path of the class file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
+The current file name means the relative path from the base path of the module file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
 
 B<Examples:>
 
