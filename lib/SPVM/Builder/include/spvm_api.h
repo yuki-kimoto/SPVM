@@ -36,9 +36,9 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env);
 int32_t SPVM_API_init_env(SPVM_ENV* env);
 void SPVM_API_free_env(SPVM_ENV* env);
 void SPVM_API_free_env_prepared(SPVM_ENV* env);
-void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size);
-void SPVM_API_free_memory_block(SPVM_ENV* env, void* block);
-int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env);
+void* SPVM_API_new_memory_env(SPVM_ENV* env, size_t byte_size);
+void SPVM_API_free_memory_env(SPVM_ENV* env, void* block);
+int32_t SPVM_API_get_memory_blocks_count_env(SPVM_ENV* env);
 
 /*
   Stack manipulation APIs
