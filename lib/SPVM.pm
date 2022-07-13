@@ -341,7 +341,7 @@ SPVM - SPVM Language
 
 C<SPVM> is not yet 1.0 release. C<SPVM> is quit often changed without warnings until I feel the implementation is enough good.>
 
-=head1 Synopsis
+=head1 Usage
 
 Write a SPVM Module:
 
