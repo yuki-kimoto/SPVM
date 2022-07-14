@@ -79,13 +79,13 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
 
-  // Add Error source
-  const char* spvm_error_module_source = "class Error;";
-  SPVM_HASH_set(compiler->module_source_symtable, "Error", strlen("Error"), (void*)spvm_error_module_source);
-
   // Add Bool source
   const char* spvm_bool_module_source = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
   SPVM_HASH_set(compiler->module_source_symtable, "Bool", strlen("Bool"), (void*)spvm_bool_module_source);
+
+  // Add Error source
+  const char* spvm_error_module_source = "class Error;";
+  SPVM_HASH_set(compiler->module_source_symtable, "Error", strlen("Error"), (void*)spvm_error_module_source);
 
   // Add Byte source
   const char* spvm_byte_module_source = "class Byte {\n  has value : ro byte;\n  static method new : Byte ($value : byte) {\n    my $self = new Byte;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
@@ -110,6 +110,10 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // Add Double source
   const char* spvm_double_module_source = "class Double {\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_set(compiler->module_source_symtable, "Double", strlen("Double"), (void*)spvm_double_module_source);
+
+  // Add CommandInfo source
+  const char* spvm_command_info_module_source = "class CommandInfo {\n  has PROGRAM_NAME : ro string;\n  has ARGV : ro string[];\n  }";
+  SPVM_HASH_set(compiler->module_source_symtable, "CommandInfo", strlen("CommandInfo"), (void*)spvm_command_info_module_source);
 
   return compiler;
 }
@@ -233,6 +237,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   SPVM_COMPILER_use(compiler, "Long", "Long", 0);
   SPVM_COMPILER_use(compiler, "Float", "Float", 0);
   SPVM_COMPILER_use(compiler, "Double", "Double", 0);
+  SPVM_COMPILER_use(compiler, "CommandInfo", "CommandInfo", 0);
   
   // Use the module that is specified at the argument
   SPVM_COMPILER_use(compiler, class_name, start_file, start_line);
