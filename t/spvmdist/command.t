@@ -52,6 +52,10 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(-f $makefile_pl_file);
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'SPVM::Foo'"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'lib/SPVM/Foo.pm'"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "t/*.t t/*/*.t t/*/*/*.t"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "NORECURS => 1"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "TEST_REQUIRES"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "no_index"));
   
   my $readme_markdown_file = "$tmp_dir/SPVM-Foo/README.md";
   ok(-f $readme_markdown_file);
