@@ -571,7 +571,7 @@ WriteMakefile(
   (\$] >= 5.005 ?     ## Add these new keywords supported since 5.005
     (ABSTRACT_FROM  => '$perl_module_rel_file',
      AUTHOR         => 'USER_NAME<USER_MAIL>') : ()),
-  test => {TESTS => 't/*.t'},
+  test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
   clean => {FILES => ['.spvm_build', 't/.spvm_build']},
   META_MERGE => {
     'meta-spec' => { version => 2 },
