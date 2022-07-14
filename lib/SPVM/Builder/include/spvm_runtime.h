@@ -102,6 +102,12 @@ struct spvm_runtime {
 
   // Class variable cache symbol table
   SPVM_HASH* class_var_cache_symtable;
+
+  // Program name - same as Perl's $0
+  const char* program_name;
+  
+  // Command line arguments - same as Perl's @ARGV
+  const char** argv;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
