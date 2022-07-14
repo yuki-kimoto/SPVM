@@ -580,7 +580,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   int32_t scope_id = env->enter_scope(env, stack);
   
   // Starting file name
-  void* cmd_start_file_obj = env->new_string(env, stack, argv[0], strlen(argv[0]));
+  void* obj_program_name = env->new_string(env, stack, argv[0], strlen(argv[0]));
   
   // new byte[][args_length] object
   int32_t arg_type_basic_id = env->get_basic_type_id(env, "byte");
@@ -592,7 +592,7 @@ int32_t main(int32_t argc, const char *argv[]) {
     env->set_elem_object(env, stack, cmd_args_obj, arg_index - 1, cmd_arg_obj);
   }
   
-  stack[0].oval = cmd_start_file_obj;
+  stack[0].oval = obj_program_name;
   stack[1].oval = cmd_args_obj;
   
   // Call INIT blocks
