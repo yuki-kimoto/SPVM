@@ -208,6 +208,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->new_memory_stack != &env_array[190]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->free_memory_stack != &env_array[191]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_memory_blocks_count_stack!= &env_array[192]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_command_info_program_name!= &env_array[193]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_command_info_argv!= &env_array[194]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 
@@ -2254,6 +2256,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS != 16) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_CLASS != 17) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS != 18) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS != 19) { stack[0].ival = 0; return 0; }
   }
 
   // Constant Values of Basic Type Categories

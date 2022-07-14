@@ -207,6 +207,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   190 new_memory_stack
   191 free_memory_stack
   192 get_memory_blocks_count_stack
+  193 set_command_info_program_name
+  194 set_command_info_argv
 
 =head2 class_vars_heap
 
@@ -2086,6 +2088,26 @@ The count of the memory block that is managed by the environment is decremented 
 
 Return the count of the memory blocks on the stack.
 
+=head2 set_command_info_program_name
+
+  int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);
+
+Set L<CommandInfo PROGRAM_NAME class variable|SPVM::CommandInfo/"PROGRAM_NAME">.
+
+If it succeed, return C<0>.
+
+The program name must be a C<string> object. Otherwise return non-zero value.
+
+=head2 set_command_info_argv
+
+  int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);
+
+Set L<CommandInfo ARGV class variable|SPVM::CommandInfo/"ARGV">.
+
+If it succeed, return C<0>.
+
+The argv must be a C<string[]> object. Otherwise return non-zero value.
+
 =head1 Compiler Native API
 
 L<SPVM::Document::NativeAPI::Compiler>
@@ -2129,6 +2151,7 @@ L<SPVM::Document::NativeAPI::Allocator>
   16 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS
   17 SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_CLASS
   18 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS
+  19 SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS
 
 These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 
