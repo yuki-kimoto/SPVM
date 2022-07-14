@@ -108,6 +108,9 @@ struct spvm_runtime {
   
   // Command line arguments - same as Perl's @ARGV
   const char** argv;
+
+  // Length of command line arguments
+  int32_t argv_length;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
