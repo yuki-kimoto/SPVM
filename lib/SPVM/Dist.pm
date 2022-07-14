@@ -581,6 +581,9 @@ WriteMakefile(
         web  => '',
       },
     },
+    no_index => {
+      directory => [],
+    }
   },
   NORECURS => 1,
   CONFIGURE_REQUIRES => {
