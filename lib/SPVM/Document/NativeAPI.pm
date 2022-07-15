@@ -2092,7 +2092,7 @@ Return the count of the memory blocks on the stack.
 
   int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);
 
-Set L<CommandInfo PROGRAM_NAME class variable|SPVM::CommandInfo/"PROGRAM_NAME">.
+Set the program name. This value is got by L<CommandInfo->PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME">.
 
 If it succeed, return C<0>.
 
@@ -2102,7 +2102,7 @@ The program name must be a C<string> object. Otherwise return non-zero value.
 
   int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);
 
-Set L<CommandInfo ARGV class variable|SPVM::CommandInfo/"ARGV">.
+Set the argv. This value is got by L<CommandInfo->ARGV|SPVM::CommandInfo/"ARGV">.
 
 If it succeed, return C<0>.
 

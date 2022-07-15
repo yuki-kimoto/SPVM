@@ -3691,7 +3691,7 @@ int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack,
     return env->die(env, stack, "The type of the program name must be the string type", __FILE__, __LINE__);
   }
   
-  env->set_class_var_object_by_name(env, stack, "CommandInfo", "PROGRAM_NAME", "string", obj_program_name, &e, __FILE__, __LINE__);
+  env->set_class_var_object_by_name(env, stack, "CommandInfo", "$PROGRAM_NAME", "string", obj_program_name, &e, __FILE__, __LINE__);
   if (e) { return e; }
   
   return 0;
@@ -3701,12 +3701,12 @@ int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   (void)env;
   
   int32_t e;
-
-  if (obj_argv && !(obj_argv->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && obj_argv->type_dimension == 0)) {
+  
+  if (obj_argv && !(obj_argv->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && obj_argv->type_dimension == 1)) {
     return env->die(env, stack, "The type of the argv must be the string[] type", __FILE__, __LINE__);
   }
   
-  env->set_class_var_object_by_name(env, stack, "CommandInfo", "ARGV", "string[]", obj_argv, &e, __FILE__, __LINE__);
+  env->set_class_var_object_by_name(env, stack, "CommandInfo", "$ARGV", "string[]", obj_argv, &e, __FILE__, __LINE__);
   if (e) { return e; }
   
   return 0;

@@ -26,14 +26,11 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   // Enter scope
   int32_t scope_id = env->enter_scope(env, stack);
   
-  // Starting file name
+  // Program name - string
   void* obj_program_name = env->new_string(env, stack, command_args[0], strlen(command_args[0]));
   
-  // new byte[][args_length] object
-  int32_t arg_type_basic_id = env->get_basic_type_id(env, "byte");
-  void* obj_argv = env->new_muldim_array(env, stack, arg_type_basic_id, 1, command_args_length - 1);
-  
-  // Set command line arguments
+  // ARGV - string[]
+  void* obj_argv = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, command_args_length - 1);
   for (int32_t arg_index = 1; arg_index < command_args_length; arg_index++) {
     void* obj_arg = env->new_string(env, stack, command_args[arg_index], strlen(command_args[arg_index]));
     env->set_elem_object(env, stack, obj_argv, arg_index - 1, obj_arg);
@@ -44,6 +41,15 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
 
   // Call INIT blocks
   env->call_init_blocks(env, stack);
+  
+  // Set command info
+  {
+    int32_t e;
+    e = env->set_command_info_program_name(env, stack, obj_program_name);
+    assert(e == 0);
+    e = env->set_command_info_argv(env, stack, obj_argv);
+    assert(e == 0);
+  }
   
   // Run
   int32_t error = env->call_spvm_method(env, stack, method_id);
