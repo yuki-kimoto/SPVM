@@ -118,6 +118,8 @@ The list of some CPAN modules. All CPAN modules are yet experimental status.
 
 =item * L<SPVM::Digest::MD5> - SPVM interface to the MD5 Algorithm
 
+=item * L<SPVM::Digest::SHA> - SPVM extension for SHA-1/224/256/384/512
+
 =back
 
 =head2 Resource Modules
