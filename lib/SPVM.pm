@@ -113,6 +113,9 @@ sub init {
 
       # Call INIT blocks
       $builder->call_init_blocks;
+      
+      # Set command line info
+      $builder->set_command_info($0, \@ARGV);
     }
     $SPVM_INITED = 1;
   }
