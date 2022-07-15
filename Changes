@@ -17,7 +17,7 @@
   [Bug Fix]
     * Fix the bug that tyep type of the program name of the command line argument is "byte". This is fixed to "string".
     * Fix the bug that tyep type of the argv of the command line argument is "byte[]". This is fixed to "string[]".
-
+    * Fix the bug that when any SPVM moudle are not yet loaded (only use SPVM(); or use SPVM;) and call SPVM exchange API, segfault occurs.
 0.9622 2022-07-14
   [New Features]
     * Add the following native APIs.
