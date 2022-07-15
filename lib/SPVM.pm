@@ -88,34 +88,34 @@ sub import {
 
 sub init {
   unless ($SPVM_INITED) {
-    if (my $builder = $BUILDER) {
+    if ($BUILDER) {
       
       # Prepare runtime environment
-      $builder->prepare_env;
+      $BUILDER->prepare_env;
 
       # Set native method addresses
-      for my $class_name (keys %{$builder->native_address_info}) {
-        my $address_of_methods = $builder->native_address_info->{$class_name};
+      for my $class_name (keys %{$BUILDER->native_address_info}) {
+        my $address_of_methods = $BUILDER->native_address_info->{$class_name};
         for my $method_name (keys %$address_of_methods) {
           my $address = $address_of_methods->{$method_name};
-          $builder->set_native_method_address($class_name, $method_name, $address);
+          $BUILDER->set_native_method_address($class_name, $method_name, $address);
         }
       }
 
       # Set precompile method addresses
-      for my $class_name (keys %{$builder->precompile_address_info}) {
-        my $address_of_methods = $builder->precompile_address_info->{$class_name};
+      for my $class_name (keys %{$BUILDER->precompile_address_info}) {
+        my $address_of_methods = $BUILDER->precompile_address_info->{$class_name};
         for my $method_name (keys %$address_of_methods) {
           my $address = $address_of_methods->{$method_name};
-          $builder->set_precompile_method_address($class_name, $method_name, $address);
+          $BUILDER->set_precompile_method_address($class_name, $method_name, $address);
         }
       }
 
       # Call INIT blocks
-      $builder->call_init_blocks;
+      $BUILDER->call_init_blocks;
       
       # Set command line info
-      $builder->set_command_info($0, \@ARGV);
+      $BUILDER->set_command_info($0, \@ARGV);
     }
     $SPVM_INITED = 1;
   }
