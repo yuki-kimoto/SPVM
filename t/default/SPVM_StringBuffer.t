@@ -13,11 +13,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::StringBuffer
 {
-  ok(SPVM::TestCase::Lib::StringBuffer->test_new);
-  ok(SPVM::TestCase::Lib::StringBuffer->test_length);
-  ok(SPVM::TestCase::Lib::StringBuffer->test_push);
-  ok(SPVM::TestCase::Lib::StringBuffer->test_push_char);
-  ok(SPVM::TestCase::Lib::StringBuffer->test_to_string);
+  ok(SPVM::TestCase::Lib::StringBuffer->new);
+  ok(SPVM::TestCase::Lib::StringBuffer->length);
+  ok(SPVM::TestCase::Lib::StringBuffer->push);
+  ok(SPVM::TestCase::Lib::StringBuffer->push_char);
+  ok(SPVM::TestCase::Lib::StringBuffer->to_string);
   ok(SPVM::TestCase::Lib::StringBuffer->read_write_value);
   ok(SPVM::TestCase::Lib::StringBuffer->replace);
 }
