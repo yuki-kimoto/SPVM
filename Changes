@@ -1,4 +1,4 @@
-0.9622_01 2022-07-15
+0.9623 2022-07-15
   [New Features]
     * Add CommandInfo class.
     * Add Native API "SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS" constant value.
