@@ -1,3 +1,7 @@
+0.9624 2022-07-19
+  [New Features]
+    * Add the following replace method to StringBuffer class.
+      method replace : void ($offset : int, $length : int, $replace : string)
 0.9623 2022-07-15
   [New Features]
     * Add CommandInfo class.
