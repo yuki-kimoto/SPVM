@@ -292,6 +292,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_memory_blocks_count_stack,
     SPVM_API_set_command_info_program_name,
     SPVM_API_set_command_info_argv,
+    SPVM_API_get_class_id_by_name,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -3812,6 +3813,18 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int3
   }
   
   return isa;
+}
+
+int32_t SPVM_API_get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* file, int32_t line) {
+  *error = 0;
+  
+  int32_t class_id = env->get_class_id(env, class_name);
+  if (class_id < 0) {
+    *error = 1;
+    env->die(env, stack, "The class \"%s\" is not loaded", class_name, file, line);
+    return class_id;
+  };
+  return class_id;
 }
 
 int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id) {

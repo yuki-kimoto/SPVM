@@ -1,3 +1,8 @@
+0.9626 2022-07-21
+  [New Featuires][
+    * Add the following native API
+      int32_t (*get_class_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* file, int32_t line);
+
 0.9625 2022-07-20
   [New Features]
     * Add Error::System class.

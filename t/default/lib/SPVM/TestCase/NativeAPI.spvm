@@ -8,6 +8,7 @@ class TestCase::NativeAPI {
   use TestCase::Callback::ImplementCallback2;
   use Fn;
   use Array;
+  use Error;
   
   our $BYTE_VALUE : byte;
   our $SHORT_VALUE : short;
@@ -1224,4 +1225,6 @@ class TestCase::NativeAPI {
 
   native static method new_string_nolen : int ();
   
+  native static method get_class_id : int ();
+  native static method get_class_id_by_name : int ();
 }

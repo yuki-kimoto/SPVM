@@ -209,6 +209,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   192 get_memory_blocks_count_stack
   193 set_command_info_program_name
   194 set_command_info_argv
+  195 get_class_id_by_name
 
 =head2 class_vars_heap
 
@@ -2107,6 +2108,14 @@ Set the argv. This value is got by L<CommandInfo->ARGV|SPVM::CommandInfo/"ARGV">
 If it succeed, return C<0>.
 
 The argv must be a C<string[]> object. Otherwise return non-zero value.
+
+=head2 get_class_id_by_name
+
+  int32_t (*get_class_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* file, int32_t line);
+
+Get class id by the class name.
+
+If the class is not found, C<error> is set to C<1>. Otherwise set to C<0>.
 
 =head1 Compiler Native API
 
