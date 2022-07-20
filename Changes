@@ -1,3 +1,6 @@
+0.9625 2022-07-20
+  [New Features]
+    * Add Error::System class.
 0.9624 2022-07-19
   [New Features]
     * Add the following replace method to StringBuffer class.
