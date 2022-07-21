@@ -3405,28 +3405,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_CLASS* class = method->class;
           SPVM_TYPE* class_type = class->type;
           
-          // Destructor must receive own class object
-          if (method->is_destructor) {
-            // DESTROY argument must be 0
-            int32_t error = 0;
-            if (method->args_length != 1) {
-              error = 1;
-            }
-            else {
-              SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, 0);
-              SPVM_TYPE* arg_type = arg_var_decl->type;
-              
-              if (!(arg_type->basic_type->id == class_type->basic_type->id && arg_type->dimension == class_type->dimension)) {
-                error = 1;
-              }
-            }
-            
-            if (error) {
-              SPVM_COMPILER_error(compiler, "DESTROY argument must be self at %s line %d", method->op_method->file, method->op_method->line);
-              return;
-            }
-          }
-          
           // Check method
           if (!(method->is_native)) {
             SPVM_CHECK_AST_INFO check_ast_info_struct = {0};

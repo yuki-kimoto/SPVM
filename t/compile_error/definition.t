@@ -219,6 +219,22 @@ use Test::More;
       my $source = 'class MyClass { static method main : void (); }';
       compile_not_ok($source, qr/Non-native method must have its block/);
     }
+
+    # Destructor(DESTORY)
+    {
+      {
+        my $source = 'class MyClass { static method DESTROY : void () { } }';
+        compile_not_ok($source, qr/\QThe destructor(the DESTROY method) must be an instance method/);
+      }
+      {
+        my $source = 'class MyClass { method DESTROY : int () { } }';
+        compile_not_ok($source, qr/\QThe return type of the destructor(the DESTROY method) must be the void type/);
+      }
+      {
+        my $source = 'class MyClass { method DESTROY : void ($num : int) { } }';
+        compile_not_ok($source, qr/\QThe destructor(the DESTROY method) can't have arguments/);
+      }
+    }
   }
 
   # Enumeration definition

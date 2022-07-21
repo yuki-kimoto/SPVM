@@ -2711,7 +2711,17 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     
     // DESTROY return type must be void
     if (!(method->return_type->dimension == 0 && method->return_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_VOID)) {
-      SPVM_COMPILER_error(compiler, "DESTROY return type must be void at %s line %d", op_block->file, op_block->line);
+      SPVM_COMPILER_error(compiler, "The return type of the destructor(the DESTROY method) must be the void type at %s line %d", op_method->file, op_method->line);
+    }
+    
+    // DESTROY is instance method
+    if (method->is_class_method) {
+      SPVM_COMPILER_error(compiler, "The destructor(the DESTROY method) must be an instance method at %s line %d", op_method->file, op_method->line);
+    }
+
+    // DESTROY doesn't have arguments without invocant
+    if (method->args_length != 1) {
+      SPVM_COMPILER_error(compiler, "The destructor(the DESTROY method) can't have arguments at %s line %d", op_method->file, op_method->line);
     }
   }
   
