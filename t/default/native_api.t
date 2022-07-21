@@ -268,6 +268,11 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
   is(SPVM::TestCase::NativeAPI->strerror_value(Errno::EAGAIN), $! = Errno::EAGAIN);
 }
 
+# new_object_array_raw
+{
+  ok(SPVM::TestCase::NativeAPI->new_object_array_raw);
+}
+
 ok(SPVM::TestCase::NativeAPI->new_memory_apis);
 
 # Clear exception
