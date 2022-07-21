@@ -2657,3 +2657,26 @@ int32_t SPVM__TestCase__NativeAPI__new_object_array_raw(SPVM_ENV* env, SPVM_VALU
   stack[0].ival = 1;
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__new_object_array(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_object_array = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, 2);
+  
+  if (!(env->is_type(env, stack, obj_object_array, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, 1))) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  if (!(env->get_ref_count(env, stack, obj_object_array) == 1)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  if (!(env->length(env, stack, obj_object_array) == 2)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  return 0;
+}
