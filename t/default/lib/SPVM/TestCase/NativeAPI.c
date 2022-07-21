@@ -2618,3 +2618,15 @@ int32_t SPVM__TestCase__NativeAPI__get_class_id_by_name(SPVM_ENV* env, SPVM_VALU
   stack[0].ival = 1;
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__strerror_value(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t errno_value = stack[0].ival;
+  
+  const char* strerror_value = env->strerror(env, stack, errno_value, 0);
+  void* obj_strerror_value = env->new_string(env, stack, strerror_value, strlen(strerror_value));
+  
+  stack[0].oval = obj_strerror_value;
+  
+  return 0;
+}

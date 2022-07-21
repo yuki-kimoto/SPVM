@@ -1227,4 +1227,6 @@ class TestCase::NativeAPI {
   
   native static method get_class_id : int ();
   native static method get_class_id_by_name : int ();
+
+  native static method strerror_value : string ($errno_value : int);
 }

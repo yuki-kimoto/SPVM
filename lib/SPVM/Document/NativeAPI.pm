@@ -2117,6 +2117,14 @@ Get class id by the class name.
 
 If the class is not found, C<error> is set to C<1>. Otherwise set to C<0>.
 
+=head2 strerror
+
+  const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
+
+Get the value of C<strerror> of C<C language> on thread-safely.
+
+If the length is C<0>, the length is set to C<64>.
+
 =head1 Compiler Native API
 
 L<SPVM::Document::NativeAPI::Compiler>

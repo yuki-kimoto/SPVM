@@ -293,6 +293,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_set_command_info_program_name,
     SPVM_API_set_command_info_argv,
     SPVM_API_get_class_id_by_name,
+    SPVM_API_strerror,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -3825,6 +3826,35 @@ int32_t SPVM_API_get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const ch
     return class_id;
   };
   return class_id;
+}
+
+const char* SPVM_API_strerror(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length) {
+  
+  if (length < 0) {
+    return NULL;
+  }
+  
+  if (length == 0) {
+    length = 64;
+  }
+  
+  void* obj_strerror_value = env->new_string(env, stack, NULL, length);
+  char* strerror_value = (char*)env->get_chars(env, stack, obj_strerror_value);
+  
+  int32_t status;
+  
+#ifdef _WIN32
+  status = strerror_s(strerror_value, length, errno_value);
+#else
+  status = strerror_r(errno_value, strerror_value, length);
+#endif
+  
+  if (status == 0) {
+    return strerror_value;
+  }
+  else {
+    return NULL;
+  }
 }
 
 int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id) {

@@ -8,6 +8,7 @@ use Test::More;
 
 use FindBin;
 use Config;
+use Errno;
 
 use SPVM 'TestCase::NativeAPI';
 use SPVM 'TestCase::NativeAPI2';
@@ -260,6 +261,11 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
 # get_class_id_by_name
 {
   ok(SPVM::TestCase::NativeAPI->get_class_id_by_name);
+}
+
+# strerror
+{
+  is(SPVM::TestCase::NativeAPI->strerror_value(Errno::EAGAIN), $! = Errno::EAGAIN);
 }
 
 ok(SPVM::TestCase::NativeAPI->new_memory_apis);
