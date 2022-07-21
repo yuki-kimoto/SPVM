@@ -2159,7 +2159,7 @@ If more than one of C<interface_t>, C<mulnum_t>, and C<pointer_t> are specified,
 
 =head2 Destructor
 
-A L<class|/"Class"> can have the destructor.
+A L<class|/"Class"> can have a destructor.
 
   method DESTROY : void () {
   
