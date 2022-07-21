@@ -1,3 +1,6 @@
+// This is for XSI strerror_r
+#define _POSIX_C_SOURCE 200112L
+
 #include <stdint.h>
 #include <assert.h>
 #include <string.h>
