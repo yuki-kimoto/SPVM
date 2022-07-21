@@ -218,6 +218,8 @@ lib/SPVM/EqualityChecker.spvm
 lib/SPVM/EqualityChecker/SameObject.pm
 lib/SPVM/EqualityChecker/SameObject.spvm
 lib/SPVM/Error.pm
+lib/SPVM/Error/System.pm
+lib/SPVM/Error/System.spvm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/Float.pm
 lib/SPVM/FloatList.pm
@@ -693,6 +695,7 @@ t/default/module/ByteList.t
 t/default/module/CommandInfo.t
 t/default/module/Double.t
 t/default/module/DoubleList.t
+t/default/module/Error_System.t
 t/default/module/Float.t
 t/default/module/FloatList.t
 t/default/module/Fn.t
