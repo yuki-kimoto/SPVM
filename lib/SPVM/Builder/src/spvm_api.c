@@ -1,7 +1,3 @@
-// This is for XSI strerror_r
-#define _POSIX_C_SOURCE 200112L
-#undef _GNU_SOURCE
-
 #include <stdint.h>
 #include <assert.h>
 #include <string.h>
@@ -36,6 +32,8 @@
 #include "spvm_api_string_buffer.h"
 #include "spvm_api_allocator.h"
 #include "spvm_api_runtime.h"
+
+#include "spvm_strerror.h"
 
 #ifndef SPVM_NO_COMPILER_API
 #  include "spvm_api_compiler.h"
@@ -3845,13 +3843,7 @@ const char* SPVM_API_strerror(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_va
   void* obj_strerror_value = env->new_string(env, stack, NULL, length);
   char* strerror_value = (char*)env->get_chars(env, stack, obj_strerror_value);
   
-  int32_t status;
-  
-#ifdef _WIN32
-  status = strerror_s(strerror_value, length, errno_value);
-#else
-  status = strerror_r(errno_value, strerror_value, length);
-#endif
+  int32_t status = SPVM_STRERROR_strerror(errno_value, strerror_value, length);
   
   if (status == 0) {
     return strerror_value;

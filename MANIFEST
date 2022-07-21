@@ -106,6 +106,7 @@ lib/SPVM/Builder/include/spvm_runtime_constant_string.h
 lib/SPVM/Builder/include/spvm_runtime_field.h
 lib/SPVM/Builder/include/spvm_runtime_method.h
 lib/SPVM/Builder/include/spvm_runtime_type.h
+lib/SPVM/Builder/include/spvm_strerror.h
 lib/SPVM/Builder/include/spvm_string_buffer.h
 lib/SPVM/Builder/include/spvm_switch_info.h
 lib/SPVM/Builder/include/spvm_toke.h
@@ -156,6 +157,7 @@ lib/SPVM/Builder/src/spvm_opcode_array.c
 lib/SPVM/Builder/src/spvm_opcode_builder.c
 lib/SPVM/Builder/src/spvm_precompile.c
 lib/SPVM/Builder/src/spvm_runtime.c
+lib/SPVM/Builder/src/spvm_strerror.c
 lib/SPVM/Builder/src/spvm_string_buffer.c
 lib/SPVM/Builder/src/spvm_switch_info.c
 lib/SPVM/Builder/src/spvm_toke.c

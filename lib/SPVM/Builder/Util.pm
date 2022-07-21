@@ -434,6 +434,7 @@ sub get_spvm_core_common_source_file_names {
     spvm_native.c
     spvm_opcode.c
     spvm_runtime.c
+    spvm_strerror.c
     spvm_string_buffer.c
   );
   
@@ -462,6 +463,7 @@ sub get_spvm_core_header_file_names {
     spvm_class_var.h
     spvm_compiler.h
     spvm_constant.h
+    spvm_constant_string.h
     spvm_descriptor.h
     spvm_dumper.h
     spvm_field_access.h
@@ -482,13 +484,13 @@ sub get_spvm_core_header_file_names {
     spvm_runtime_basic_type.h
     spvm_runtime_class.h
     spvm_runtime_class_var.h
+    spvm_runtime_constant_string.h
     spvm_runtime_field.h
     spvm_runtime.h
     spvm_runtime_method.h
-    spvm_runtime_constant_string.h
     spvm_runtime_type.h
+    spvm_strerror.h
     spvm_string_buffer.h
-    spvm_constant_string.h
     spvm_switch_info.h
     spvm_toke.h
     spvm_typedecl.h
