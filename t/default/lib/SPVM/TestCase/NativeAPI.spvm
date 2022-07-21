@@ -1231,4 +1231,5 @@ class TestCase::NativeAPI {
   native static method strerror_value : string ($errno_value : int);
   native static method new_object_array_raw : int ();
   native static method new_object_array : int ();
+  native static method new_string_array : int ();
 }

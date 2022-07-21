@@ -211,6 +211,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->set_command_info_program_name!= &env_array[193]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->set_command_info_argv!= &env_array[194]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_class_id_by_name!= &env_array[195]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->strerror!= &env_array[196]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->new_string_array!= &env_array[197]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 
@@ -2673,6 +2675,29 @@ int32_t SPVM__TestCase__NativeAPI__new_object_array(SPVM_ENV* env, SPVM_VALUE* s
   }
   
   if (!(env->length(env, stack, obj_object_array) == 2)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__new_string_array(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_string_array = env->new_string_array(env, stack, 2);
+  
+  if (!(env->is_type(env, stack, obj_string_array, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, 1))) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  if (!(env->get_ref_count(env, stack, obj_string_array) == 1)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  if (!(env->length(env, stack, obj_string_array) == 2)) {
     stack[0].ival = 0;
     return 0;
   }

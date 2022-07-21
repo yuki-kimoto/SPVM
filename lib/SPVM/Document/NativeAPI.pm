@@ -210,6 +210,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   193 set_command_info_program_name
   194 set_command_info_argv
   195 get_class_id_by_name
+  196 strerror
+  197 new_string_array
 
 =head2 class_vars_heap
 
@@ -2116,6 +2118,14 @@ The argv must be a C<string[]> object. Otherwise return non-zero value.
 Get class id by the class name.
 
 If the class is not found, C<error> is set to C<1>. Otherwise set to C<0>.
+
+=head2 new_string_array
+
+  void* (*new_string_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+
+Create a new string array. This is alias for the following code using L</"new_object_array">.
+
+  void* obj_string_array = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, length);
 
 =head2 strerror
 

@@ -51,8 +51,6 @@ static int32_t STACK_INDEX_MEMORY_BLOCKS_COUNT = 507;
 
 
 
-
-
 SPVM_ENV* SPVM_API_new_env_raw() {
 
   // Env Allocator
@@ -296,6 +294,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_set_command_info_argv,
     SPVM_API_get_class_id_by_name,
     SPVM_API_strerror,
+    SPVM_API_new_string_array,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -2089,6 +2088,14 @@ SPVM_OBJECT* SPVM_API_new_object_array(SPVM_ENV* env, SPVM_VALUE* stack, int32_t
   SPVM_OBJECT* object = SPVM_API_new_object_array_raw(env, stack, basic_type_id, length);
   
   SPVM_API_push_mortal(env, stack, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_API_new_string_array(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_API_new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, length);
   
   return object;
 }
