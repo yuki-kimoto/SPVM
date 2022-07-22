@@ -100,7 +100,7 @@ The length must be greater than or equal to C<0>. Otherwise an excpetion will be
 
   method get : byte ($index : int)
 
-Get the value with index.
+Get the element of the position of the index.
 
 The index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
 

@@ -6,7 +6,7 @@ class TestCase::Module::ByteList {
   static method new : int () {
     # new with array
     {
-      my $list = ByteList->new([(byte)3, 5, Fn->INT8_MAX()]);
+      my $list = ByteList->new([(byte)3, 5, Fn->BYTE_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -16,7 +16,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
       
-      unless ($list->get(2) == Fn->INT8_MAX()) {
+      unless ($list->get(2) == Fn->BYTE_MAX()) {
         return 0;
       }
       
@@ -67,7 +67,7 @@ class TestCase::Module::ByteList {
   
   static method get : int () {
     {
-      my $list = ByteList->new([(byte)3, 5, Fn->INT8_MAX()]);
+      my $list = ByteList->new([(byte)3, 5, Fn->BYTE_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -81,7 +81,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
 
-      unless ($list->get(2) == Fn->INT8_MAX()) {
+      unless ($list->get(2) == Fn->BYTE_MAX()) {
         return 0;
       }
       
@@ -246,7 +246,7 @@ class TestCase::Module::ByteList {
 
   static method to_array : int () {
     {
-      my $list = ByteList->new([(byte)3, 5, Fn->INT8_MAX()]);
+      my $list = ByteList->new([(byte)3, 5, Fn->BYTE_MAX()]);
       
       my $array = $list->to_array;
       
@@ -262,7 +262,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
 
-      unless ($array->[2] == Fn->INT8_MAX()) {
+      unless ($array->[2] == Fn->BYTE_MAX()) {
         return 0;
       }
       
@@ -281,7 +281,7 @@ class TestCase::Module::ByteList {
       
       $list->set(0 => 3);
       $list->set(1 => 5);
-      $list->set(2 => Fn->INT8_MAX());
+      $list->set(2 => Fn->BYTE_MAX());
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -291,7 +291,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
 
-      unless ($list->get(2) == Fn->INT8_MAX()) {
+      unless ($list->get(2) == Fn->BYTE_MAX()) {
         return 0;
       }
       
@@ -360,14 +360,14 @@ class TestCase::Module::ByteList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(Fn->INT8_MAX());
+      $list->push(Fn->BYTE_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->INT8_MAX()) {
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->BYTE_MAX()) {
         return 0;
       }
     }
@@ -403,10 +403,10 @@ class TestCase::Module::ByteList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(Fn->INT8_MAX());
+      $list->push(Fn->BYTE_MAX());
       
       my $pop0 = $list->pop;
-      unless ($pop0 == Fn->INT8_MAX()) {
+      unless ($pop0 == Fn->BYTE_MAX()) {
         return 0;
       }
       unless ($pop0 isa byte) {
@@ -445,14 +445,14 @@ class TestCase::Module::ByteList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->INT8_MAX());
+      $list->unshift(Fn->BYTE_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == Fn->INT8_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
+      unless ($list->get(0) == Fn->BYTE_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
         return 0;
       }
     }
@@ -487,9 +487,9 @@ class TestCase::Module::ByteList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->INT8_MAX());
+      $list->unshift(Fn->BYTE_MAX());
       
-      unless ($list->shift == Fn->INT8_MAX()) {
+      unless ($list->shift == Fn->BYTE_MAX()) {
         return 0;
       }
 
@@ -525,7 +525,7 @@ class TestCase::Module::ByteList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->INT8_MAX());
+      $list->unshift(Fn->BYTE_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
