@@ -21,6 +21,14 @@ This object is immutable and its value cannot be changed.
 
 L<Short|SPVM::Short> is automatically loaded just after the program starts.
 
+=head1 Fields
+
+=head2 value
+
+  has value : ro short;
+
+The value.
+
 =head1 Class Methods
 
 =head2 new
@@ -29,10 +37,3 @@ L<Short|SPVM::Short> is automatically loaded just after the program starts.
 
 Create a new L<Short|SPVM::Short> object with a C<short> value.
 
-=head1 Instance Methods
-
-=head2 value
-
-  method value : short ()
-
-Get a C<short> value.

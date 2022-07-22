@@ -21,6 +21,14 @@ This object is immutable and its value cannot be changed.
 
 L<Long|SPVM::Long> is automatically loaded just after the program starts.
 
+=head1 Fields
+
+=head2 value
+
+  has value : ro long;
+
+The value.
+
 =head1 Class Methods
 
 =head2 new
@@ -29,10 +37,3 @@ L<Long|SPVM::Long> is automatically loaded just after the program starts.
 
 Create a new L<Long|SPVM::Long> object with a C<long> value.
 
-=head1 Instance Methods
-
-=head2 value
-
-  method value : long ()
-
-Get a C<long> value.

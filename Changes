@@ -57,6 +57,9 @@
     
   [Bug Fix]
     * Fix the StringList->remove bug.
+  [Document]
+    * Add Fields doc to Byte, Short, Int, Long, Float, Double class.
+    
 0.9627 2022-07-22
   [New Feature]
     * Add new_string_array native API.

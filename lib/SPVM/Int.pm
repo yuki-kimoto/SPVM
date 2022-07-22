@@ -21,6 +21,14 @@ This object is immutable and its value cannot be changed.
 
 L<Int|SPVM::Int> is automatically loaded just after the program starts.
 
+=head1 Fields
+
+=head2 value
+
+  has value : ro int;
+
+The value.
+
 =head1 Class Methods
 
 =head2 new
@@ -29,10 +37,3 @@ L<Int|SPVM::Int> is automatically loaded just after the program starts.
 
 Create a new L<Int|SPVM::Int> object with a C<int> value.
 
-=head1 Instance Methods
-
-=head2 value
-
-  method value : int ()
-
-Get a C<int> value.

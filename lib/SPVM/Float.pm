@@ -21,6 +21,14 @@ This object is immutable and its value cannot be changed.
 
 L<Float|SPVM::Float> is automatically loaded just after the program starts.
 
+=head1 Fields
+
+=head2 value
+
+  has value : ro float;
+
+The value.
+
 =head1 Class Methods
 
 =head2 new
@@ -29,10 +37,3 @@ L<Float|SPVM::Float> is automatically loaded just after the program starts.
 
 Create a new L<Float|SPVM::Float> object with a C<float> value.
 
-=head1 Instance Methods
-
-=head2 value
-
-  method value : float ()
-
-Get a C<float> value.
