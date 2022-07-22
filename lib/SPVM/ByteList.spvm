@@ -57,7 +57,7 @@ class ByteList {
     }
     
     unless ($index < $length) {
-      die "The index must be less than the length";
+      die "The index must be less than the length of the list";
     }
     
     my $value = $self->{values}[$index];
