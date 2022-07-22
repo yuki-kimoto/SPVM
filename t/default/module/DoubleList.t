@@ -28,6 +28,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Lib::DoubleList->to_array);
   ok(SPVM::TestCase::Lib::DoubleList->insert);
   ok(SPVM::TestCase::Lib::DoubleList->remove);
+  ok(SPVM::TestCase::Lib::DoubleList->replace);
 }
 
 # All object is freed

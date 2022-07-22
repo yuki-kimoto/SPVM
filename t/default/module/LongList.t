@@ -28,6 +28,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Lib::LongList->to_array);
   ok(SPVM::TestCase::Lib::LongList->insert);
   ok(SPVM::TestCase::Lib::LongList->remove);
+  ok(SPVM::TestCase::Lib::LongList->replace);
 }
 
 # All object is freed
