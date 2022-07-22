@@ -281,6 +281,7 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
 # new_string_array
 {
   ok(SPVM::TestCase::NativeAPI->new_string_array);
+  is_deeply(SPVM::TestCase::NativeAPI->new_string_array_value->to_elems, ['abc', 'def']);
 }
 
 ok(SPVM::TestCase::NativeAPI->new_memory_apis);

@@ -2705,3 +2705,13 @@ int32_t SPVM__TestCase__NativeAPI__new_string_array(SPVM_ENV* env, SPVM_VALUE* s
   stack[0].ival = 1;
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__new_string_array_value(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_string_array = env->new_string_array(env, stack, 2);
+  env->set_elem_object(env, stack, obj_string_array, 0, env->new_string_nolen(env, stack, "abc"));
+  env->set_elem_object(env, stack, obj_string_array, 1, env->new_string_nolen(env, stack, "def"));
+  
+  stack[0].oval = obj_string_array;
+  return 0;
+}
