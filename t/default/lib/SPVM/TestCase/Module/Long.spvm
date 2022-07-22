@@ -1,12 +1,11 @@
-class TestCase::Lib::Double {
+class TestCase::Module::Long {
   use Fn;
   use Array;
-  
   static method basic : int () {
-    my $oval = Double->new(Fn->DBL_MIN());
+    my $oval = Long->new(Fn->INT64_MIN());
     my $value1 = $oval->value;
     
-    unless ($value1 == Fn->DBL_MIN()) {
+    unless ($value1 == Fn->INT64_MIN()) {
       return 0;
     }
     

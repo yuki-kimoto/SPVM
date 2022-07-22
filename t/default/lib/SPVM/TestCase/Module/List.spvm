@@ -1,4 +1,4 @@
-class TestCase::Lib::List {
+class TestCase::Module::List {
   use Int;
   use List;
   use Fn;
@@ -229,26 +229,26 @@ class TestCase::Lib::List {
 
     my $v1 = Int->new(1);
     $list->push($v1);
-    unless (TestCase::Lib::List->equals_list_deeply($list, List->new([$v1]))) {
+    unless (TestCase::Module::List->equals_list_deeply($list, List->new([$v1]))) {
       return 0;
     }
     
     my $v2 = Int->new(2);
     $list->push($v2);
-    unless (TestCase::Lib::List->equals_list_deeply($list, List->new([$v1, $v2]))) {
+    unless (TestCase::Module::List->equals_list_deeply($list, List->new([$v1, $v2]))) {
       return 0;
     }
 
     my $v3 = Int->new(3);
     $list->push($v3);
-    unless (TestCase::Lib::List->equals_list_deeply($list, List->new([$v1, $v2, $v3]))) {
+    unless (TestCase::Module::List->equals_list_deeply($list, List->new([$v1, $v2, $v3]))) {
       return 0;
     }
 
     # no reallocation
     my $v4 = Int->new(3);
     $list->push($v4);
-    unless (TestCase::Lib::List->equals_list_deeply($list, List->new([$v1, $v2, $v3, $v4]))) {
+    unless (TestCase::Module::List->equals_list_deeply($list, List->new([$v1, $v2, $v3, $v4]))) {
       return 0;
     }
 
@@ -266,7 +266,7 @@ class TestCase::Lib::List {
     unless (((Int)$list->pop)->value == 1) {
       return 0;
     }
-    unless (TestCase::Lib::List->equals_list_deeply($list, List->new_len([], 0))) {
+    unless (TestCase::Module::List->equals_list_deeply($list, List->new_len([], 0))) {
       return 0;
     }
     eval {
@@ -298,7 +298,7 @@ class TestCase::Lib::List {
     my $v5 = Int->new(5);
     $list->unshift($v5);
 
-    unless (TestCase::Lib::List->equals_list_deeply($list, List->new([$v5, $v4, $v3, $v2, $v1]))) {
+    unless (TestCase::Module::List->equals_list_deeply($list, List->new([$v5, $v4, $v3, $v2, $v1]))) {
       return 0;
     }
 
@@ -324,7 +324,7 @@ class TestCase::Lib::List {
     }
     $@ = undef;
     
-    unless (TestCase::Lib::List->equals_list_deeply($list, List->new(new object[0]))) {
+    unless (TestCase::Module::List->equals_list_deeply($list, List->new(new object[0]))) {
       return 0;
     }
     return 1;
@@ -356,7 +356,7 @@ class TestCase::Lib::List {
     $list->set(1, $v1);
     my $expected = new Int[2];
     $expected->[1] = $v1;
-    unless (TestCase::Lib::List->equals_list_deeply($list, List->new($expected))) {
+    unless (TestCase::Module::List->equals_list_deeply($list, List->new($expected))) {
       return 0;
     }
     

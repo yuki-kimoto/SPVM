@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Lib::Time';
+use SPVM 'TestCase::Module::Time';
 
 
 
@@ -15,12 +15,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Time::Info
 {
-  my $time = SPVM::TestCase::Lib::Time->time_info;
+  my $time = SPVM::TestCase::Module::Time->time_info;
 }
 
 # time
 {
-  my $time = SPVM::TestCase::Lib::Time->time;
+  my $time = SPVM::TestCase::Module::Time->time;
   my $perl_time = time;
   if ($time > $perl_time - 2 && $time < $perl_time + 2) {
     pass();
@@ -35,7 +35,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   my $time = time;
   my @perl_localtime = localtime($time);
   
-  my $time_info = SPVM::TestCase::Lib::Time->localtime($time);
+  my $time_info = SPVM::TestCase::Module::Time->localtime($time);
   
   is($perl_localtime[0], $time_info->sec);
   is($perl_localtime[1], $time_info->min);
@@ -53,7 +53,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   my $time = time;
   my @perl_gmtime = gmtime($time);
   
-  my $time_info = SPVM::TestCase::Lib::Time->gmtime($time);
+  my $time_info = SPVM::TestCase::Module::Time->gmtime($time);
   
   is($perl_gmtime[0], $time_info->sec);
   is($perl_gmtime[1], $time_info->min);

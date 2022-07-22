@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Lib::LongList';
+use SPVM 'TestCase::Module::LongList';
 
 
 
@@ -15,20 +15,20 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::LongList
 {
-  ok(SPVM::TestCase::Lib::LongList->push);
-  ok(SPVM::TestCase::Lib::LongList->pop);
-  ok(SPVM::TestCase::Lib::LongList->new);
-  ok(SPVM::TestCase::Lib::LongList->new_len);
-  ok(SPVM::TestCase::Lib::LongList->unshift);
-  ok(SPVM::TestCase::Lib::LongList->shift);
-  ok(SPVM::TestCase::Lib::LongList->length);
-  ok(SPVM::TestCase::Lib::LongList->get);
-  ok(SPVM::TestCase::Lib::LongList->set);
-  ok(SPVM::TestCase::Lib::LongList->set_array);
-  ok(SPVM::TestCase::Lib::LongList->to_array);
-  ok(SPVM::TestCase::Lib::LongList->insert);
-  ok(SPVM::TestCase::Lib::LongList->remove);
-  ok(SPVM::TestCase::Lib::LongList->replace);
+  ok(SPVM::TestCase::Module::LongList->push);
+  ok(SPVM::TestCase::Module::LongList->pop);
+  ok(SPVM::TestCase::Module::LongList->new);
+  ok(SPVM::TestCase::Module::LongList->new_len);
+  ok(SPVM::TestCase::Module::LongList->unshift);
+  ok(SPVM::TestCase::Module::LongList->shift);
+  ok(SPVM::TestCase::Module::LongList->length);
+  ok(SPVM::TestCase::Module::LongList->get);
+  ok(SPVM::TestCase::Module::LongList->set);
+  ok(SPVM::TestCase::Module::LongList->set_array);
+  ok(SPVM::TestCase::Module::LongList->to_array);
+  ok(SPVM::TestCase::Module::LongList->insert);
+  ok(SPVM::TestCase::Module::LongList->remove);
+  ok(SPVM::TestCase::Module::LongList->replace);
 }
 
 # All object is freed

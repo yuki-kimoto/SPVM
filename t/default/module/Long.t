@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Lib::Long';
+use SPVM 'TestCase::Module::Long';
 
 
 
@@ -15,7 +15,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::Long
 {
-  ok(SPVM::TestCase::Lib::Long->basic());
+  ok(SPVM::TestCase::Module::Long->basic());
 }
 
 

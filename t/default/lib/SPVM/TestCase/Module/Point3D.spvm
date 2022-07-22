@@ -1,4 +1,4 @@
-class TestCase::Lib::Point3D {
+class TestCase::Module::Point3D {
   use Point3D;
   
   static method basic : int () {

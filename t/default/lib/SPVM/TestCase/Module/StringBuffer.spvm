@@ -1,4 +1,4 @@
-class TestCase::Lib::StringBuffer {
+class TestCase::Module::StringBuffer {
   use StringBuffer;
   use Fn;
   use Array;

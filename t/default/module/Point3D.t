@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Lib::Point3D';
+use SPVM 'TestCase::Module::Point3D';
 
 use SPVM 'TestCase::ModuleContainsMultiClass';
 
@@ -17,7 +17,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Point3D
 {
-  ok(SPVM::TestCase::Lib::Point3D->basic);
+  ok(SPVM::TestCase::Module::Point3D->basic);
 }
 
 # All object is freed

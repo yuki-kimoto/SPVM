@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Lib::Bool';
+use SPVM 'TestCase::Module::Bool';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::Bool
 {
-  ok(SPVM::TestCase::Lib::Bool->basic());
+  ok(SPVM::TestCase::Module::Bool->basic());
 }
 
 

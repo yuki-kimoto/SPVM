@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Lib::Float';
+use SPVM 'TestCase::Module::Float';
 
 
 
@@ -15,7 +15,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::Float
 {
-  ok(SPVM::TestCase::Lib::Float->basic());
+  ok(SPVM::TestCase::Module::Float->basic());
 }
 
 # All object is freed

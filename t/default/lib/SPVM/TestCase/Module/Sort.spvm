@@ -1,4 +1,4 @@
-class TestCase::Lib::Sort {
+class TestCase::Module::Sort {
   use Sort;
   use Fn;
   use Array;

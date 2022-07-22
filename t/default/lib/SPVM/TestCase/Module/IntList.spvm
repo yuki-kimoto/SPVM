@@ -1,24 +1,22 @@
-class TestCase::Lib::DoubleList {
-  use DoubleList;
-  use Fn;
-  use Array;
+class TestCase::Module::IntList {
+  use IntList;
   use Fn;
   use Array;
 
   static method new : int () {
     # new with array
     {
-      my $list = DoubleList->new([(double)3, 5, Fn->DBL_MIN()]);
+      my $list = IntList->new([3, 5, Fn->INT32_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
       }
-      
+
       unless ($list->get(1) == 5) {
         return 0;
       }
 
-      unless ($list->get(2) == Fn->DBL_MIN()) {
+      unless ($list->get(2) == Fn->INT32_MAX()) {
         return 0;
       }
       
@@ -30,7 +28,7 @@ class TestCase::Lib::DoubleList {
 
     # new with undef
     {
-      my $list = DoubleList->new((double[])undef);
+      my $list = IntList->new((int[])undef);
       
       unless ($list->length == 0) {
         return 0;
@@ -39,7 +37,7 @@ class TestCase::Lib::DoubleList {
 
     # new without arguments
     {
-      my $list = DoubleList->new;
+      my $list = IntList->new;
       
       unless ($list->length == 0) {
         return 0;
@@ -51,7 +49,7 @@ class TestCase::Lib::DoubleList {
 
   static method new_len : int () {
     {
-      my $list = DoubleList->new_len(32);
+      my $list = IntList->new_len(32);
       
       unless ($list->length == 32) {
         return 0;
@@ -64,40 +62,40 @@ class TestCase::Lib::DoubleList {
   static method insert : int () {
     # Insert to first
     {
-      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $list = IntList->new([(int)1, 2, 3]);
       $list->insert(0 => 4);
-      unless (Array->equals_double($list->to_array, [(double)4, 1, 2, 3])) {
+      unless (Array->equals_int($list->to_array, [(int)4, 1, 2, 3])) {
         return 0;
       }
     }
 
     # Insert
     {
-      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $list = IntList->new([(int)1, 2, 3]);
       $list->insert(2 => 4);
-      unless (Array->equals_double($list->to_array, [(double)1, 2, 4, 3])) {
+      unless (Array->equals_int($list->to_array, [(int)1, 2, 4, 3])) {
         return 0;
       }
     }
 
     # Insert to last
     {
-      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $list = IntList->new([(int)1, 2, 3]);
       $list->insert(3 => 4);
-      unless (Array->equals_double($list->to_array, [(double)1, 2, 3, 4])) {
+      unless (Array->equals_int($list->to_array, [(int)1, 2, 3, 4])) {
         return 0;
       }
     }
 
     # Extend
     {
-      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $list = IntList->new([(int)1, 2, 3]);
       $list->insert(0 => 4);
     }
     
     # Exception - insert to -1
     eval {
-      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $list = IntList->new([(int)1, 2, 3]);
       $list->insert(-1 => 2);
     };
     unless ($@) {
@@ -107,7 +105,7 @@ class TestCase::Lib::DoubleList {
 
     # Exception - insert to length + 1
     eval {
-      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $list = IntList->new([(int)1, 2, 3]);
       $list->insert(4 => 2);
     };
     unless ($@) {
@@ -121,9 +119,9 @@ class TestCase::Lib::DoubleList {
   static method remove : int () {
     # Remove
     {
-      my $list = DoubleList->new([(double)1, 2, 3, 4]);
+      my $list = IntList->new([(int)1, 2, 3, 4]);
       my $value = $list->remove(1);
-      unless (Array->equals_double($list->to_array, [(double)1, 3, 4])) {
+      unless (Array->equals_int($list->to_array, [(int)1, 3, 4])) {
         return 0;
       }
       unless ($value == 2) {
@@ -133,25 +131,25 @@ class TestCase::Lib::DoubleList {
 
     # Remove last
     {
-      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $list = IntList->new([(int)1, 2, 3]);
       $list->remove(2);
-      unless (Array->equals_double($list->to_array, [(double)1, 2])) {
+      unless (Array->equals_int($list->to_array, [(int)1, 2])) {
         return 0;
       }
     }
 
     # Remove first
     {
-      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $list = IntList->new([(int)1, 2, 3]);
       $list->remove(0);
-      unless (Array->equals_double($list->to_array, [(double)2, 3])) {
+      unless (Array->equals_int($list->to_array, [(int)2, 3])) {
         return 0;
       }
     }
 
     # Exception - remove to -1
     eval {
-      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $list = IntList->new([(int)1, 2, 3]);
       $list->remove(-1);
     };
     unless ($@) {
@@ -161,7 +159,7 @@ class TestCase::Lib::DoubleList {
 
     # Exception - remove to length
     eval {
-      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $list = IntList->new([(int)1, 2, 3]);
       $list->remove(3);
     };
     unless ($@) {
@@ -175,11 +173,11 @@ class TestCase::Lib::DoubleList {
 
   static method to_array : int () {
     {
-      my $list = DoubleList->new([(double)3, 5, Fn->DBL_MIN()]);
+      my $list = IntList->new([3, 5, Fn->INT32_MAX()]);
       
       my $array = $list->to_array;
       
-      unless ($array isa double[]) {
+      unless ($array isa int[]) {
         return 0;
       }
       
@@ -191,7 +189,7 @@ class TestCase::Lib::DoubleList {
         return 0;
       }
 
-      unless ($array->[2] == Fn->DBL_MIN()) {
+      unless ($array->[2] == Fn->INT32_MAX()) {
         return 0;
       }
       
@@ -206,13 +204,9 @@ class TestCase::Lib::DoubleList {
 
   static method get : int () {
     {
-      my $list = DoubleList->new([(double)3, 5, Fn->DBL_MIN()]);
+      my $list = IntList->new([3, 5, Fn->INT32_MAX()]);
       
       unless ($list->get(0) == 3) {
-        return 0;
-      }
-
-      unless ($list->get(0) isa double) {
         return 0;
       }
 
@@ -220,7 +214,7 @@ class TestCase::Lib::DoubleList {
         return 0;
       }
 
-      unless ($list->get(2) == Fn->DBL_MIN()) {
+      unless ($list->get(2) == Fn->INT32_MAX()) {
         return 0;
       }
       
@@ -251,11 +245,11 @@ class TestCase::Lib::DoubleList {
 
   static method set : int () {
     {
-      my $list = DoubleList->new([(double)0, 0, 0]);
+      my $list = IntList->new([0, 0, 0]);
       
       $list->set(0 => 3);
       $list->set(1 => 5);
-      $list->set(2 => Fn->DBL_MIN());
+      $list->set(2 => Fn->INT32_MAX());
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -265,7 +259,7 @@ class TestCase::Lib::DoubleList {
         return 0;
       }
 
-      unless ($list->get(2) == Fn->DBL_MIN()) {
+      unless ($list->get(2) == Fn->INT32_MAX()) {
         return 0;
       }
       
@@ -297,16 +291,16 @@ class TestCase::Lib::DoubleList {
   static method set_array : int () {
     # Set array
     {
-      my $list = DoubleList->new([(double)1, 2, 3]);
-      $list->set_array([(double)3, 4, 5]);
-      unless (Array->equals_double($list->to_array, [(double)3, 4, 5])) {
+      my $list = IntList->new([(int)1, 2, 3]);
+      $list->set_array([(int)3, 4, 5]);
+      unless (Array->equals_int($list->to_array, [(int)3, 4, 5])) {
         return 0;
       }
     }
     
     # Exception - Array must be defined
     {
-      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $list = IntList->new([(int)1, 2, 3]);
       eval { $list->set_array(undef); };
       unless ($@) {
         return 0;
@@ -315,8 +309,8 @@ class TestCase::Lib::DoubleList {
 
     # Exception - The length of argument array must be same as the length of current list array
     {
-      my $list = DoubleList->new([(double)1, 2, 3]);
-      eval { $list->set_array([(double)1, 2, 3, 4]); };
+      my $list = IntList->new([(int)1, 2, 3]);
+      eval { $list->set_array([(int)1, 2, 3, 4]); };
       unless ($@) {
         return 0;
       }
@@ -326,29 +320,29 @@ class TestCase::Lib::DoubleList {
     
     return 1;
   }
-
+  
   static method push : int () {
     # push
     {
-      my $list = DoubleList->new_len(0);
+      my $list = IntList->new_len(0);
       
       $list->push(3);
       $list->push(5);
-      $list->push(Fn->DBL_MIN());
+      $list->push(Fn->INT32_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->DBL_MIN()) {
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->INT32_MAX()) {
         return 0;
       }
     }
     
     # internal _extend tests
     {
-      my $list = DoubleList->new_len(0);
+      my $list = IntList->new_len(0);
       
       for (my $i = 0; $i < 100; $i++) {
         $list->push(1);
@@ -373,17 +367,13 @@ class TestCase::Lib::DoubleList {
   static method pop : int () {
     # pop
     {
-      my $list = DoubleList->new_len(0);
+      my $list = IntList->new_len(0);
       
       $list->push(3);
       $list->push(5);
-      $list->push(Fn->DBL_MIN());
+      $list->push(Fn->INT32_MAX());
       
-      my $pop0 = $list->pop;
-      unless ($pop0 == Fn->DBL_MIN()) {
-        return 0;
-      }
-      unless ($pop0 isa double) {
+      unless ($list->pop == Fn->INT32_MAX()) {
         return 0;
       }
 
@@ -415,25 +405,25 @@ class TestCase::Lib::DoubleList {
   static method unshift : int () {
     # unshift
     {
-      my $list = DoubleList->new_len(0);
+      my $list = IntList->new_len(0);
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->DBL_MIN());
+      $list->unshift(Fn->INT32_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == Fn->DBL_MIN() && $list->get(1) == 5 && $list->get(2) == 3) {
+      unless ($list->get(0) == Fn->INT32_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
         return 0;
       }
     }
     
     # internal _extend tests
     {
-      my $list = DoubleList->new_len(0);
+      my $list = IntList->new_len(0);
       
       for (my $i = 0; $i < 100; $i++) {
         $list->unshift(1);
@@ -457,13 +447,13 @@ class TestCase::Lib::DoubleList {
   static method shift : int () {
     # shift
     {
-      my $list = DoubleList->new_len(0);
+      my $list = IntList->new_len(0);
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->DBL_MIN());
+      $list->unshift(Fn->INT32_MAX());
       
-      unless ($list->shift == Fn->DBL_MIN()) {
+      unless ($list->shift == Fn->INT32_MAX()) {
         return 0;
       }
 
@@ -495,11 +485,11 @@ class TestCase::Lib::DoubleList {
   static method length : int () {
     # length
     {
-      my $list = DoubleList->new_len(0);
+      my $list = IntList->new_len(0);
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->DBL_MIN());
+      $list->unshift(Fn->INT32_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
@@ -511,13 +501,13 @@ class TestCase::Lib::DoubleList {
   }
 
   static method resize : int () {
-    my $a = (double)1;
-    my $b = (double)2;
-    my $c = (double)3;
+    my $a = (int)1;
+    my $b = (int)2;
+    my $c = (int)3;
 
     # 3 to 3
     {
-      my $list = DoubleList->new(new double[0]);
+      my $list = IntList->new(new int[0]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -532,7 +522,7 @@ class TestCase::Lib::DoubleList {
     
     # 3 to 0
     {
-      my $list = DoubleList->new(new double[0]);
+      my $list = IntList->new(new int[0]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -545,7 +535,7 @@ class TestCase::Lib::DoubleList {
     
     # 3 to 4
     {
-      my $list = DoubleList->new(new double[0]);
+      my $list = IntList->new(new int[0]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -560,7 +550,7 @@ class TestCase::Lib::DoubleList {
     
     # 3 to 32(over capacity)
     {
-      my $list = DoubleList->new(new double[0]);
+      my $list = IntList->new(new int[0]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -575,7 +565,7 @@ class TestCase::Lib::DoubleList {
 
     # 3 to 2 and 2 to 3 again
     {
-      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $list = IntList->new([(int)1, 2, 3]);
       $list->resize(2);
       unless ($list->length == 2) {
         return 0;
@@ -592,7 +582,7 @@ class TestCase::Lib::DoubleList {
     
     # Exception - New length must be more than or equals to 0
     {
-      my $list = DoubleList->new(new double[0]);
+      my $list = IntList->new(new int[0]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -608,87 +598,86 @@ class TestCase::Lib::DoubleList {
 
   static method replace : int () {
     {
-      my $list = DoubleList->new([(double)1, 2, 3, 4]);
+      my $list = IntList->new([(int)1, 2, 3, 4]);
       $list->replace(1, 2, undef);
-      unless (Array->equals_double($list->to_array, [(double)1, 4])) {
+      unless (Array->equals_int($list->to_array, [(int)1, 4])) {
         return 0;
       }
     }
-    
     {
-      my $list = DoubleList->new([(double)1, 2, 3, 4]);
-      $list->replace(1, 2, [(double)20, 30]);
-      unless (Array->equals_double($list->to_array, [(double)1, 20, 30, 4])) {
-        return 0;
-      }
-    }
-
-    {
-      my $list = DoubleList->new([(double)1, 2, 3, 4]);
-      $list->replace(0, 2, [(double)10, 20]);
-      unless (Array->equals_double($list->to_array, [(double)10, 20, 3, 4])) {
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      $list->replace(1, 2, [(int)20, 30]);
+      unless (Array->equals_int($list->to_array, [(int)1, 20, 30, 4])) {
         return 0;
       }
     }
 
     {
-      my $list = DoubleList->new([(double)1, 2, 3, 4]);
-      $list->replace(2, 2, [(double)30, 40]);
-      unless (Array->equals_double($list->to_array, [(double)1, 2, 30, 40])) {
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      $list->replace(0, 2, [(int)10, 20]);
+      unless (Array->equals_int($list->to_array, [(int)10, 20, 3, 4])) {
         return 0;
       }
     }
 
     {
-      my $list = DoubleList->new([(double)1, 2, 3, 4]);
-      $list->replace(4, 0, [(double)50, 60]);
-      unless (Array->equals_double($list->to_array, [(double)1, 2, 3, 4, 50, 60])) {
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      $list->replace(2, 2, [(int)30, 40]);
+      unless (Array->equals_int($list->to_array, [(int)1, 2, 30, 40])) {
         return 0;
       }
     }
 
     {
-      my $list = DoubleList->new([(double)1, 2, 3, 4]);
-      eval { $list->replace(-1, 3, [(double)30, 40]); };
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      $list->replace(4, 0, [(int)50, 60]);
+      unless (Array->equals_int($list->to_array, [(int)1, 2, 3, 4, 50, 60])) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      eval { $list->replace(-1, 3, [(int)30, 40]); };
       unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
         return 0;
       }
     }
 
     {
-      my $list = DoubleList->new([(double)1, 2, 3, 4]);
-      eval { $list->replace(2, 3, [(double)30, 40, 50]); };
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      eval { $list->replace(2, 3, [(int)30, 40, 50]); };
       unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
         return 0;
       }
     }
 
     {
-      my $list = DoubleList->new([(double)1]);
-      $list->replace(1, 0, [(double)2, 3]);
-      unless (Array->equals_double($list->to_array, [(double)1, 2, 3])) {
+      my $list = IntList->new([(int)1]);
+      $list->replace(1, 0, [(int)2, 3]);
+      unless (Array->equals_int($list->to_array, [(int)1, 2, 3])) {
         return 0;
       }
     }
 
     {
-      my $list = DoubleList->new([(double)1]);
-      eval { $list->replace(2, 0, [(double)1, 2]); };
+      my $list = IntList->new([(int)1]);
+      eval { $list->replace(2, 0, [(int)1, 2]); };
       unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
         return 0;
       }
     }
     {
-      my $list = DoubleList->new([(double)1]);
-      eval { $list->replace(1, 2, [(double)1, 2]); };
+      my $list = IntList->new([(int)1]);
+      eval { $list->replace(1, 2, [(int)1, 2]); };
       unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
         return 0;
       }
     }
 
     {
-      my $list = DoubleList->new([(double)1]);
-      eval { $list->replace(2, 2, [(double)1, 2]); };
+      my $list = IntList->new([(int)1]);
+      eval { $list->replace(2, 2, [(int)1, 2]); };
       unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
         return 0;
       }

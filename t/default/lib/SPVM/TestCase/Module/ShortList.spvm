@@ -1,14 +1,13 @@
-class TestCase::Lib::LongList {
-  use LongList;
+class TestCase::Module::ShortList {
+  use ShortList;
   use Fn;
   use Array;
   use Fn;
   use Array;
 
   static method new : int () {
-    # new with array
     {
-      my $list = LongList->new([(long)3, 5, Fn->INT64_MAX()]);
+      my $list = ShortList->new([(short)3, 5, Fn->INT16_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -18,7 +17,7 @@ class TestCase::Lib::LongList {
         return 0;
       }
 
-      unless ($list->get(2) == Fn->INT64_MAX()) {
+      unless ($list->get(2) == Fn->INT16_MAX()) {
         return 0;
       }
       
@@ -30,29 +29,28 @@ class TestCase::Lib::LongList {
 
     # new with undef
     {
-      my $list = LongList->new((long[])undef);
-      
-      unless ($list->length == 0) {
-        return 0;
-      }
-    }
-
-    # new without arguments
-    {
-      my $list = LongList->new;
+      my $list = ShortList->new((short[])undef);
       
       unless ($list->length == 0) {
         return 0;
       }
     }
     
+    # new without arguments
+    {
+      my $list = ShortList->new;
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
     
     return 1;
   }
 
   static method new_len : int () {
     {
-      my $list = LongList->new_len(32);
+      my $list = ShortList->new_len(32);
       
       unless ($list->length == 32) {
         return 0;
@@ -65,40 +63,40 @@ class TestCase::Lib::LongList {
   static method insert : int () {
     # Insert to first
     {
-      my $list = LongList->new([(long)1, 2, 3]);
+      my $list = ShortList->new([(short)1, 2, 3]);
       $list->insert(0 => 4);
-      unless (Array->equals_long($list->to_array, [(long)4, 1, 2, 3])) {
+      unless (Array->equals_short($list->to_array, [(short)4, 1, 2, 3])) {
         return 0;
       }
     }
 
     # Insert
     {
-      my $list = LongList->new([(long)1, 2, 3]);
+      my $list = ShortList->new([(short)1, 2, 3]);
       $list->insert(2 => 4);
-      unless (Array->equals_long($list->to_array, [(long)1, 2, 4, 3])) {
+      unless (Array->equals_short($list->to_array, [(short)1, 2, 4, 3])) {
         return 0;
       }
     }
 
     # Insert to last
     {
-      my $list = LongList->new([(long)1, 2, 3]);
+      my $list = ShortList->new([(short)1, 2, 3]);
       $list->insert(3 => 4);
-      unless (Array->equals_long($list->to_array, [(long)1, 2, 3, 4])) {
+      unless (Array->equals_short($list->to_array, [(short)1, 2, 3, 4])) {
         return 0;
       }
     }
 
     # Extend
     {
-      my $list = LongList->new([(long)1, 2, 3]);
+      my $list = ShortList->new([(short)1, 2, 3]);
       $list->insert(0 => 4);
     }
     
     # Exception - insert to -1
     eval {
-      my $list = LongList->new([(long)1, 2, 3]);
+      my $list = ShortList->new([(short)1, 2, 3]);
       $list->insert(-1 => 2);
     };
     unless ($@) {
@@ -108,7 +106,7 @@ class TestCase::Lib::LongList {
 
     # Exception - insert to length + 1
     eval {
-      my $list = LongList->new([(long)1, 2, 3]);
+      my $list = ShortList->new([(short)1, 2, 3]);
       $list->insert(4 => 2);
     };
     unless ($@) {
@@ -122,9 +120,9 @@ class TestCase::Lib::LongList {
   static method remove : int () {
     # Remove
     {
-      my $list = LongList->new([(long)1, 2, 3, 4]);
+      my $list = ShortList->new([(short)1, 2, 3, 4]);
       my $value = $list->remove(1);
-      unless (Array->equals_long($list->to_array, [(long)1, 3, 4])) {
+      unless (Array->equals_short($list->to_array, [(short)1, 3, 4])) {
         return 0;
       }
       unless ($value == 2) {
@@ -134,25 +132,25 @@ class TestCase::Lib::LongList {
 
     # Remove last
     {
-      my $list = LongList->new([(long)1, 2, 3]);
+      my $list = ShortList->new([(short)1, 2, 3]);
       $list->remove(2);
-      unless (Array->equals_long($list->to_array, [(long)1, 2])) {
+      unless (Array->equals_short($list->to_array, [(short)1, 2])) {
         return 0;
       }
     }
 
     # Remove first
     {
-      my $list = LongList->new([(long)1, 2, 3]);
+      my $list = ShortList->new([(short)1, 2, 3]);
       $list->remove(0);
-      unless (Array->equals_long($list->to_array, [(long)2, 3])) {
+      unless (Array->equals_short($list->to_array, [(short)2, 3])) {
         return 0;
       }
     }
 
     # Exception - remove to -1
     eval {
-      my $list = LongList->new([(long)1, 2, 3]);
+      my $list = ShortList->new([(short)1, 2, 3]);
       $list->remove(-1);
     };
     unless ($@) {
@@ -162,7 +160,7 @@ class TestCase::Lib::LongList {
 
     # Exception - remove to length
     eval {
-      my $list = LongList->new([(long)1, 2, 3]);
+      my $list = ShortList->new([(short)1, 2, 3]);
       $list->remove(3);
     };
     unless ($@) {
@@ -173,14 +171,13 @@ class TestCase::Lib::LongList {
     return 1;
   }
 
-
   static method to_array : int () {
     {
-      my $list = LongList->new([(long)3, 5, Fn->INT64_MAX()]);
+      my $list = ShortList->new([(short)3, 5, Fn->INT16_MAX()]);
       
       my $array = $list->to_array;
       
-      unless ($array isa long[]) {
+      unless ($array isa short[]) {
         return 0;
       }
       
@@ -192,7 +189,7 @@ class TestCase::Lib::LongList {
         return 0;
       }
 
-      unless ($array->[2] == Fn->INT64_MAX()) {
+      unless ($array->[2] == Fn->INT16_MAX()) {
         return 0;
       }
       
@@ -207,13 +204,13 @@ class TestCase::Lib::LongList {
 
   static method get : int () {
     {
-      my $list = LongList->new([(long)3, 5, Fn->INT64_MAX()]);
+      my $list = ShortList->new([(short)3, 5, Fn->INT16_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
       }
 
-      unless ($list->get(0) isa long) {
+      unless ($list->get(0) isa short) {
         return 0;
       }
 
@@ -221,7 +218,7 @@ class TestCase::Lib::LongList {
         return 0;
       }
 
-      unless ($list->get(2) == Fn->INT64_MAX()) {
+      unless ($list->get(2) == Fn->INT16_MAX()) {
         return 0;
       }
       
@@ -252,11 +249,11 @@ class TestCase::Lib::LongList {
 
   static method set : int () {
     {
-      my $list = LongList->new([(long)0, 0, 0]);
+      my $list = ShortList->new([(short)0, 0, 0]);
       
       $list->set(0 => 3);
       $list->set(1 => 5);
-      $list->set(2 => Fn->INT64_MAX());
+      $list->set(2 => Fn->INT16_MAX());
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -266,7 +263,7 @@ class TestCase::Lib::LongList {
         return 0;
       }
 
-      unless ($list->get(2) == Fn->INT64_MAX()) {
+      unless ($list->get(2) == Fn->INT16_MAX()) {
         return 0;
       }
       
@@ -298,16 +295,16 @@ class TestCase::Lib::LongList {
   static method set_array : int () {
     # Set array
     {
-      my $list = LongList->new([(long)1, 2, 3]);
-      $list->set_array([(long)3, 4, 5]);
-      unless (Array->equals_long($list->to_array, [(long)3, 4, 5])) {
+      my $list = ShortList->new([(short)1, 2, 3]);
+      $list->set_array([(short)3, 4, 5]);
+      unless (Array->equals_short($list->to_array, [(short)3, 4, 5])) {
         return 0;
       }
     }
     
     # Exception - Array must be defined
     {
-      my $list = LongList->new([(long)1, 2, 3]);
+      my $list = ShortList->new([(short)1, 2, 3]);
       eval { $list->set_array(undef); };
       unless ($@) {
         return 0;
@@ -316,8 +313,8 @@ class TestCase::Lib::LongList {
 
     # Exception - The length of argument array must be same as the length of current list array
     {
-      my $list = LongList->new([(long)1, 2, 3]);
-      eval { $list->set_array([(long)1, 2, 3, 4]); };
+      my $list = ShortList->new([(short)1, 2, 3]);
+      eval { $list->set_array([(short)1, 2, 3, 4]); };
       unless ($@) {
         return 0;
       }
@@ -331,25 +328,25 @@ class TestCase::Lib::LongList {
   static method push : int () {
     # push
     {
-      my $list = LongList->new_len(0);
+      my $list = ShortList->new_len(0);
       
       $list->push(3);
       $list->push(5);
-      $list->push(Fn->INT64_MAX());
+      $list->push(Fn->INT16_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->INT64_MAX()) {
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->INT16_MAX()) {
         return 0;
       }
     }
     
     # internal _extend tests
     {
-      my $list = LongList->new_len(0);
+      my $list = ShortList->new_len(0);
       
       for (my $i = 0; $i < 100; $i++) {
         $list->push(1);
@@ -374,17 +371,17 @@ class TestCase::Lib::LongList {
   static method pop : int () {
     # pop
     {
-      my $list = LongList->new_len(0);
+      my $list = ShortList->new_len(0);
       
       $list->push(3);
       $list->push(5);
-      $list->push(Fn->INT64_MAX());
+      $list->push(Fn->INT16_MAX());
       
       my $pop0 = $list->pop;
-      unless ($pop0 == Fn->INT64_MAX()) {
+      unless ($pop0 == Fn->INT16_MAX()) {
         return 0;
       }
-      unless ($pop0 isa long) {
+      unless ($pop0 isa short) {
         return 0;
       }
 
@@ -416,25 +413,25 @@ class TestCase::Lib::LongList {
   static method unshift : int () {
     # unshift
     {
-      my $list = LongList->new_len(0);
+      my $list = ShortList->new_len(0);
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->INT64_MAX());
+      $list->unshift(Fn->INT16_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == Fn->INT64_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
+      unless ($list->get(0) == Fn->INT16_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
         return 0;
       }
     }
     
     # internal _extend tests
     {
-      my $list = LongList->new_len(0);
+      my $list = ShortList->new_len(0);
       
       for (my $i = 0; $i < 100; $i++) {
         $list->unshift(1);
@@ -458,13 +455,13 @@ class TestCase::Lib::LongList {
   static method shift : int () {
     # shift
     {
-      my $list = LongList->new_len(0);
+      my $list = ShortList->new_len(0);
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->INT64_MAX());
+      $list->unshift(Fn->INT16_MAX());
       
-      unless ($list->shift == Fn->INT64_MAX()) {
+      unless ($list->shift == Fn->INT16_MAX()) {
         return 0;
       }
 
@@ -496,11 +493,11 @@ class TestCase::Lib::LongList {
   static method length : int () {
     # length
     {
-      my $list = LongList->new_len(0);
+      my $list = ShortList->new_len(0);
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->INT64_MAX());
+      $list->unshift(Fn->INT16_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
@@ -512,13 +509,13 @@ class TestCase::Lib::LongList {
   }
 
   static method resize : int () {
-    my $a = (long)1;
-    my $b = (long)2;
-    my $c = (long)3;
+    my $a = (short)1;
+    my $b = (short)2;
+    my $c = (short)3;
 
     # 3 to 3
     {
-      my $list = LongList->new(new long[0]);
+      my $list = ShortList->new(new short[0]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -533,7 +530,7 @@ class TestCase::Lib::LongList {
     
     # 3 to 0
     {
-      my $list = LongList->new(new long[0]);
+      my $list = ShortList->new(new short[0]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -546,7 +543,7 @@ class TestCase::Lib::LongList {
     
     # 3 to 4
     {
-      my $list = LongList->new(new long[0]);
+      my $list = ShortList->new(new short[0]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -561,7 +558,7 @@ class TestCase::Lib::LongList {
     
     # 3 to 32(over capacity)
     {
-      my $list = LongList->new(new long[0]);
+      my $list = ShortList->new(new short[0]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -576,7 +573,7 @@ class TestCase::Lib::LongList {
 
     # 3 to 2 and 2 to 3 again
     {
-      my $list = LongList->new([(long)1, 2, 3]);
+      my $list = ShortList->new([(short)1, 2, 3]);
       $list->resize(2);
       unless ($list->length == 2) {
         return 0;
@@ -593,7 +590,7 @@ class TestCase::Lib::LongList {
     
     # Exception - New length must be more than or equals to 0
     {
-      my $list = LongList->new(new long[0]);
+      my $list = ShortList->new(new short[0]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -609,86 +606,86 @@ class TestCase::Lib::LongList {
 
   static method replace : int () {
     {
-      my $list = LongList->new([(long)1, 2, 3, 4]);
+      my $list = ShortList->new([(short)1, 2, 3, 4]);
       $list->replace(1, 2, undef);
-      unless (Array->equals_long($list->to_array, [(long)1, 4])) {
+      unless (Array->equals_short($list->to_array, [(short)1, 4])) {
         return 0;
       }
     }
     {
-      my $list = LongList->new([(long)1, 2, 3, 4]);
-      $list->replace(1, 2, [(long)20, 30]);
-      unless (Array->equals_long($list->to_array, [(long)1, 20, 30, 4])) {
-        return 0;
-      }
-    }
-
-    {
-      my $list = LongList->new([(long)1, 2, 3, 4]);
-      $list->replace(0, 2, [(long)10, 20]);
-      unless (Array->equals_long($list->to_array, [(long)10, 20, 3, 4])) {
+      my $list = ShortList->new([(short)1, 2, 3, 4]);
+      $list->replace(1, 2, [(short)20, 30]);
+      unless (Array->equals_short($list->to_array, [(short)1, 20, 30, 4])) {
         return 0;
       }
     }
 
     {
-      my $list = LongList->new([(long)1, 2, 3, 4]);
-      $list->replace(2, 2, [(long)30, 40]);
-      unless (Array->equals_long($list->to_array, [(long)1, 2, 30, 40])) {
+      my $list = ShortList->new([(short)1, 2, 3, 4]);
+      $list->replace(0, 2, [(short)10, 20]);
+      unless (Array->equals_short($list->to_array, [(short)10, 20, 3, 4])) {
         return 0;
       }
     }
 
     {
-      my $list = LongList->new([(long)1, 2, 3, 4]);
-      $list->replace(4, 0, [(long)50, 60]);
-      unless (Array->equals_long($list->to_array, [(long)1, 2, 3, 4, 50, 60])) {
+      my $list = ShortList->new([(short)1, 2, 3, 4]);
+      $list->replace(2, 2, [(short)30, 40]);
+      unless (Array->equals_short($list->to_array, [(short)1, 2, 30, 40])) {
         return 0;
       }
     }
 
     {
-      my $list = LongList->new([(long)1, 2, 3, 4]);
-      eval { $list->replace(-1, 3, [(long)30, 40]); };
+      my $list = ShortList->new([(short)1, 2, 3, 4]);
+      $list->replace(4, 0, [(short)50, 60]);
+      unless (Array->equals_short($list->to_array, [(short)1, 2, 3, 4, 50, 60])) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = ShortList->new([(short)1, 2, 3, 4]);
+      eval { $list->replace(-1, 3, [(short)30, 40]); };
       unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
         return 0;
       }
     }
 
     {
-      my $list = LongList->new([(long)1, 2, 3, 4]);
-      eval { $list->replace(2, 3, [(long)30, 40, 50]); };
+      my $list = ShortList->new([(short)1, 2, 3, 4]);
+      eval { $list->replace(2, 3, [(short)30, 40, 50]); };
       unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
         return 0;
       }
     }
 
     {
-      my $list = LongList->new([(long)1]);
-      $list->replace(1, 0, [(long)2, 3]);
-      unless (Array->equals_long($list->to_array, [(long)1, 2, 3])) {
+      my $list = ShortList->new([(short)1]);
+      $list->replace(1, 0, [(short)2, 3]);
+      unless (Array->equals_short($list->to_array, [(short)1, 2, 3])) {
         return 0;
       }
     }
 
     {
-      my $list = LongList->new([(long)1]);
-      eval { $list->replace(2, 0, [(long)1, 2]); };
+      my $list = ShortList->new([(short)1]);
+      eval { $list->replace(2, 0, [(short)1, 2]); };
       unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
         return 0;
       }
     }
     {
-      my $list = LongList->new([(long)1]);
-      eval { $list->replace(1, 2, [(long)1, 2]); };
+      my $list = ShortList->new([(short)1]);
+      eval { $list->replace(1, 2, [(short)1, 2]); };
       unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
         return 0;
       }
     }
 
     {
-      my $list = LongList->new([(long)1]);
-      eval { $list->replace(2, 2, [(long)1, 2]); };
+      my $list = ShortList->new([(short)1]);
+      eval { $list->replace(2, 2, [(short)1, 2]); };
       unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
         return 0;
       }

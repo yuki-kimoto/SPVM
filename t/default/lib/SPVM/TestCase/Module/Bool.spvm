@@ -1,4 +1,4 @@
-class TestCase::Lib::Bool {
+class TestCase::Module::Bool {
   static method basic : int () {
     
     # true

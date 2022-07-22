@@ -1,4 +1,4 @@
-class TestCase::Lib::Point {
+class TestCase::Module::Point {
   use Point;
   
   static method basic : int () {

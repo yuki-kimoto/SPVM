@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Lib::DoubleList';
+use SPVM 'TestCase::Module::DoubleList';
 
 
 
@@ -15,20 +15,20 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::DoubleList
 {
-  ok(SPVM::TestCase::Lib::DoubleList->push);
-  ok(SPVM::TestCase::Lib::DoubleList->pop);
-  ok(SPVM::TestCase::Lib::DoubleList->new);
-  ok(SPVM::TestCase::Lib::DoubleList->new_len);
-  ok(SPVM::TestCase::Lib::DoubleList->unshift);
-  ok(SPVM::TestCase::Lib::DoubleList->shift);
-  ok(SPVM::TestCase::Lib::DoubleList->length);
-  ok(SPVM::TestCase::Lib::DoubleList->get);
-  ok(SPVM::TestCase::Lib::DoubleList->set);
-  ok(SPVM::TestCase::Lib::DoubleList->set_array);
-  ok(SPVM::TestCase::Lib::DoubleList->to_array);
-  ok(SPVM::TestCase::Lib::DoubleList->insert);
-  ok(SPVM::TestCase::Lib::DoubleList->remove);
-  ok(SPVM::TestCase::Lib::DoubleList->replace);
+  ok(SPVM::TestCase::Module::DoubleList->push);
+  ok(SPVM::TestCase::Module::DoubleList->pop);
+  ok(SPVM::TestCase::Module::DoubleList->new);
+  ok(SPVM::TestCase::Module::DoubleList->new_len);
+  ok(SPVM::TestCase::Module::DoubleList->unshift);
+  ok(SPVM::TestCase::Module::DoubleList->shift);
+  ok(SPVM::TestCase::Module::DoubleList->length);
+  ok(SPVM::TestCase::Module::DoubleList->get);
+  ok(SPVM::TestCase::Module::DoubleList->set);
+  ok(SPVM::TestCase::Module::DoubleList->set_array);
+  ok(SPVM::TestCase::Module::DoubleList->to_array);
+  ok(SPVM::TestCase::Module::DoubleList->insert);
+  ok(SPVM::TestCase::Module::DoubleList->remove);
+  ok(SPVM::TestCase::Module::DoubleList->replace);
 }
 
 # All object is freed

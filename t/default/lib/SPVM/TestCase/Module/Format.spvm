@@ -1,4 +1,4 @@
-class TestCase::Lib::Format {
+class TestCase::Module::Format {
   use Format;
   use TestCase::Minimal;
 

@@ -1,4 +1,4 @@
-class TestCase::Lib::Time {
+class TestCase::Module::Time {
   use Time;
   use Time::Info;
   

@@ -1,4 +1,4 @@
-class TestCase::Lib::Fn {
+class TestCase::Module::Fn {
   use TestCase::Minimal;
   use Fn;
   use TestCase::Minimal;

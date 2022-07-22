@@ -1,4 +1,4 @@
-class TestCase::Lib::StringList {
+class TestCase::Module::StringList {
   use StringList;
   use Fn;
   use Array;

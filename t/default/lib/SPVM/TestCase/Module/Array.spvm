@@ -1,4 +1,4 @@
-class TestCase::Lib::Array {
+class TestCase::Module::Array {
   use Array;
   use TestCase::Minimal;
   use Point;
