@@ -114,7 +114,7 @@ Insert a element to the position of the index.
 
 The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
-The index must be less than the length of the list. Otherwise an excpetion will be thrown.
+The index must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 pop
 
