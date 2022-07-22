@@ -83,8 +83,9 @@ class List {
     
     my $values = $self->{values};
     my $remove_value = $values->[$index];
-
-    Array->memmove_object($values, $index, $values, $index + 1, $length - 1 - $index);
+    
+    my $move_length = $length - $index - 1;
+    Array->memmove_object($values, $index, $values, $index + 1, $move_length);
     $values->[$length - 1] = undef;
     
     $self->{length}--;

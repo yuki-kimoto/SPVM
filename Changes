@@ -36,6 +36,8 @@
       [After]
       has values : ro byte[];
     * Improve Array->memmove performance
+  [Bug Fix]
+    * Fix the StringList->remove bug.
 0.9627 2022-07-22
   [New Feature]
     * Add new_string_array native API.
