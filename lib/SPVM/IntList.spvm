@@ -7,11 +7,6 @@ class IntList {
   has length   : ro int;
   has values   : ro int[];
   
-  # Enumerations
-  private enum {
-    DEFAULT_CAPACITY = 16,
-  }
-  
   # Class methods
   static method new : IntList ($array : int[]...) {
     my $self = new IntList;
@@ -23,13 +18,7 @@ class IntList {
       $length = 0;
     }
     
-    my $capacity = 0;
-    if ($length < IntList->DEFAULT_CAPACITY()) {
-      $capacity = IntList->DEFAULT_CAPACITY();
-    }
-    else {
-      $capacity = $length;
-    }
+    my $capacity = $length;
     $self->{capacity} = $capacity;
     my $values = new int[$capacity];
     
@@ -49,13 +38,7 @@ class IntList {
     unless ($length >= 0) {
       die "The length must be greater than or equal to 0";
     }
-    my $capacity = 0;
-    if ($length < IntList->DEFAULT_CAPACITY()) {
-      $capacity = IntList->DEFAULT_CAPACITY();
-    }
-    else {
-      $capacity = $length;
-    }
+    my $capacity = $length;
     $self->{capacity} = $capacity;
     $self->{length} = $length;
     $self->{values} = new int[$capacity];
@@ -87,9 +70,8 @@ class IntList {
       die "Out of range";
     }
     
-    if ($length >= $capacity) {
-      $self->_extend;
-    }
+    my $new_length = $length + 1;
+    $self->_maybe_extend($new_length);
     
     my $values = $self->{values};
     if ($index != $length) {
@@ -127,9 +109,8 @@ class IntList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length >= $capacity) {
-      $self->_extend;
-    }
+    my $new_length = $length + 1;
+    $self->_maybe_extend($new_length);
     
     $self->{values}[$length] = $value;
     
@@ -156,9 +137,8 @@ class IntList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length >= $capacity) {
-      $self->_extend;
-    }
+    my $new_length = $length + 1;
+    $self->_maybe_extend($new_length);
     
     my $values = $self->{values};
     
@@ -237,9 +217,7 @@ class IntList {
     my $capacity = $self->{capacity};
     
     if ($new_length > $length) {
-      if ($new_length > $capacity) {
-        $self->_extend_with_capacity($new_length);
-      }
+      $self->_maybe_extend($new_length);
       Array->memset_int($self->{values}, $length, 0, $new_length - $length);
     }
     elsif ($new_length < $length) {
@@ -249,26 +227,22 @@ class IntList {
     $self->{length} = $new_length;
   }
   
-  precompile private method _extend_with_capacity : void ($new_capacity : int) {
-    my $new_values = new int [$new_capacity];
-    for (my $i = 0; $i < $self->{length}; ++$i) {
-      my $target = $i;
-      if ($target < 0) { $target += $self->{capacity}; };
-      $new_values->[$i] = $self->{values}[$target];
-    }
-    $self->{capacity} = $new_capacity;
-    $self->{values} = $new_values;
-  }
-  
-  private method _extend : void () {
+  private method _maybe_extend : void ($min_capacity : int) {
     my $capacity = $self->{capacity};
-    my $length = $self->{length};
-    my $values = $self->{values};
+    
+    unless ($min_capacity > $capacity) {
+      return;
+    }
+    
+    if ($capacity < $min_capacity) {
+      $capacity = $min_capacity;
+    }
     
     my $new_capacity = $capacity * 2;
-    
     my $new_values = new int[$new_capacity];
     
+    my $length = $self->{length};
+    my $values = $self->{values};
     Array->memcpy_int($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
