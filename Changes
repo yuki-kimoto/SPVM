@@ -35,6 +35,16 @@
       has values : byte[];
       [After]
       has values : ro byte[];
+    * Change the following List field definitions.
+      [Before]
+      has values : object[];
+      [After]
+      has values : ro string[];
+    * Change the following StringList field definitions.
+      [Before]
+      has values : byte[];
+      [After]
+      has values : ro byte[];
     * Improve Array->memmove performance
   [Bug Fix]
     * Fix the StringList->remove bug.
