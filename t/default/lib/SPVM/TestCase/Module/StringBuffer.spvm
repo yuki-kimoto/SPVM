@@ -112,6 +112,14 @@ class TestCase::Module::StringBuffer {
     {
       my $target = StringBuffer->new;
       $target->push("abcd");
+      $target->replace(1, 2, undef);
+      unless ($target->to_string eq "ad") {
+        return 0;
+      }
+    }
+    {
+      my $target = StringBuffer->new;
+      $target->push("abcd");
       $target->replace(1, 2, "xyz");
       unless ($target->to_string eq "axyzd") {
         return 0;

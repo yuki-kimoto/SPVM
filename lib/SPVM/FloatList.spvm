@@ -154,11 +154,10 @@ class FloatList {
       die("The offset + the removing lenght must be less than or equal to the length of the values of the list");
     }
     
-    unless ($replace) {
-      $replace = new float[0];
+    my $replace_length = 0;
+    if ($replace) {
+      $replace_length = @$replace;
     }
-    
-    my $replace_length = @$replace;
     
     my $new_length = $self->{length} - $remove_length + $replace_length;
     $self->_maybe_extend($new_length);
@@ -166,8 +165,9 @@ class FloatList {
     my $move_length = $self->{length} - $offset - $remove_length;
     Array->memmove_float($self->{values}, $offset + $replace_length, $self->{values}, $offset + $remove_length, $move_length);
     
-    # replace with new array
-    Array->memcpy_float($self->{values}, $offset, $replace, 0, $replace_length);
+    if ($replace) {
+      Array->memcpy_float($self->{values}, $offset, $replace, 0, $replace_length);
+    }
     
     $self->{length} = $new_length;
   }
