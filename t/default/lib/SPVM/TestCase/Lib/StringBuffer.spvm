@@ -147,11 +147,10 @@ class TestCase::Lib::StringBuffer {
       my $target = StringBuffer->new;
       $target->push("abcd");
       eval { $target->replace(2, 3, "xyz"); };
-      unless (Fn->contains($@, "The offset + the lenght must be less than or equal to the length of the string that the string buffer has")) {
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the value of the string buffer")) {
         return 0;
       }
     }
-    
     {
       my $target = StringBuffer->new;
       $target->push("a");
@@ -165,7 +164,7 @@ class TestCase::Lib::StringBuffer {
       my $target = StringBuffer->new;
       $target->push("a");
       eval { $target->replace(2, 0, "xy"); };
-      unless (Fn->contains($@, "The offset + the lenght must be less than or equal to the length of the string that the string buffer has")) {
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the value of the string buffer")) {
         return 0;
       }
     }
@@ -174,7 +173,7 @@ class TestCase::Lib::StringBuffer {
       my $target = StringBuffer->new;
       $target->push("a");
       eval { $target->replace(1, 2, "xy"); };
-      unless (Fn->contains($@, "The offset + the lenght must be less than or equal to the length of the string that the string buffer has")) {
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the value of the string buffer")) {
         return 0;
       }
     }
@@ -183,7 +182,7 @@ class TestCase::Lib::StringBuffer {
       my $target = StringBuffer->new;
       $target->push("a");
       eval { $target->replace(2, 2, "xy"); };
-      unless (Fn->contains($@, "The offset + the lenght must be less than or equal to the length of the string that the string buffer has")) {
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the value of the string buffer")) {
         return 0;
       }
     }
