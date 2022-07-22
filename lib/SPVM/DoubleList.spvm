@@ -2,14 +2,17 @@ class DoubleList {
   use Fn;
   use Array;
   
-  has values   : double[];
-  has capacity : int;
+  # Fields
+  has capacity : ro int;
   has length   : ro int;
+  has values   : ro double[];
   
+  # Enumerations
   private enum {
     DEFAULT_CAPACITY = 16,
   }
-
+  
+  # Class methods
   static method new : DoubleList ($array : double[]...) {
     my $self = new DoubleList;
     my $length : int;
@@ -40,11 +43,11 @@ class DoubleList {
     
     return $self;
   }
-
+  
   static method new_len : DoubleList ($length : int) {
     my $self = new DoubleList;
     unless ($length >= 0) {
-      die "length must be more than or equals to zero";
+      die "The length must be greater than or equal to 0";
     }
     my $capacity = 0;
     if ($length < DoubleList->DEFAULT_CAPACITY()) {
@@ -59,30 +62,21 @@ class DoubleList {
     return $self;
   }
   
-  precompile private method _extend_with_capacity : void ($new_capacity : int) {
-    my $new_values = new double [$new_capacity];
-    for (my $i = 0; $i < $self->{length}; ++$i) {
-      my $target = $i;
-      if ($target < 0) { $target += $self->{capacity}; };
-      $new_values->[$i] = $self->{values}[$target];
+  # Instance methods
+  method get : double ($index : int) {
+    my $length = $self->length;
+    
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
     }
-    $self->{capacity} = $new_capacity;
-    $self->{values} = $new_values;
-  }
-
-  private method _extend : void () {
-    my $capacity = $self->{capacity};
-    my $length = $self->{length};
-    my $values = $self->{values};
     
-    my $new_capacity = $capacity * 2;
+    unless ($index < $length) {
+      die "The index must be less than the length";
+    }
     
-    my $new_values = new double[$new_capacity];
+    my $value = $self->{values}[$index];
     
-    Array->memcpy_double($new_values, 0, $values, 0, $length);
-    
-    $self->{values} = $new_values;
-    $self->{capacity} = $new_capacity;
+    return $value;
   }
   
   method insert : void ($index : int, $value : double) {
@@ -221,18 +215,6 @@ class DoubleList {
     Array->memcpy_double($self->{values}, 0, $array, 0, $cur_length);
   }
 
-  method get : double ($index : int) {
-    my $length = $self->length;
-    
-    if ($index < 0 || $index > $length - 1) {
-      die "Out of range";
-    }
-    
-    my $value = $self->{values}[$index];
-    
-    return $value;
-  }
-  
   method to_array : double[] () {
     my $length = $self->length;
     
@@ -264,5 +246,31 @@ class DoubleList {
     }
     
     $self->{length} = $new_length;
+  }
+  
+  precompile private method _extend_with_capacity : void ($new_capacity : int) {
+    my $new_values = new double [$new_capacity];
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      my $target = $i;
+      if ($target < 0) { $target += $self->{capacity}; };
+      $new_values->[$i] = $self->{values}[$target];
+    }
+    $self->{capacity} = $new_capacity;
+    $self->{values} = $new_values;
+  }
+  
+  private method _extend : void () {
+    my $capacity = $self->{capacity};
+    my $length = $self->{length};
+    my $values = $self->{values};
+    
+    my $new_capacity = $capacity * 2;
+    
+    my $new_values = new double[$new_capacity];
+    
+    Array->memcpy_double($new_values, 0, $values, 0, $length);
+    
+    $self->{values} = $new_values;
+    $self->{capacity} = $new_capacity;
   }
 }

@@ -622,4 +622,32 @@ class TestCase::Lib::ByteList {
     $@ = undef;
     return 1;
   }
+
+  static method fields : int () {
+    my $nums = ByteList->new([(byte)1, 2, 3]);
+    
+    # length
+    my $length = $nums->length;
+    unless ($length == 3) {
+      return 0;
+    }
+    
+    warn "AAAAA";
+    
+    # values
+    my $values = $nums->values;
+    $values->[2] = 4;
+    
+    unless ($nums->values->[0] == 1) {
+      return 0;
+    }
+    unless ($nums->values->[1] == 2) {
+      return 0;
+    }
+    unless ($nums->values->[2] == 4) {
+      return 0;
+    }
+    
+    return 1;
+  }
 }

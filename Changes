@@ -5,6 +5,48 @@
       =head1 Field Methods
       [After]
       =head1 Fields
+    * Change the following ByteList field definitions.
+      [Before]
+      has capacity : int;
+      has values : byte[];
+      [After]
+      has capacity : ro int;
+      has values : ro byte[];
+    * Change the following ShortList field definitions.
+      [Before]
+      has capacity : int;
+      has values : byte[];
+      [After]
+      has capacity : ro int;
+      has values : ro byte[];
+    * Change the following IntList field definitions.
+      [Before]
+      has capacity : int;
+      has values : byte[];
+      [After]
+      has capacity : ro int;
+      has values : ro byte[];
+    * Change the following LongList field definitions.
+      [Before]
+      has capacity : int;
+      has values : byte[];
+      [After]
+      has capacity : ro int;
+      has values : ro byte[];
+    * Change the following FloatList field definitions.
+      [Before]
+      has capacity : int;
+      has values : byte[];
+      [After]
+      has capacity : ro int;
+      has values : ro byte[];
+    * Change the following DoubleList field definitions.
+      [Before]
+      has capacity : int;
+      has values : byte[];
+      [After]
+      has capacity : ro int;
+      has values : ro byte[];
       
 0.9627 2022-07-22
   [New Feature]

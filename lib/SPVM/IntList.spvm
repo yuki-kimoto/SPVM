@@ -2,14 +2,17 @@ class IntList {
   use Fn;
   use Array;
   
-  has values   : int[];
-  has capacity : int;
+  # Fields
+  has capacity : ro int;
   has length   : ro int;
+  has values   : ro int[];
   
+  # Enumerations
   private enum {
     DEFAULT_CAPACITY = 16,
   }
-
+  
+  # Class methods
   static method new : IntList ($array : int[]...) {
     my $self = new IntList;
     my $length : int;
@@ -44,7 +47,7 @@ class IntList {
   static method new_len : IntList ($length : int) {
     my $self = new IntList;
     unless ($length >= 0) {
-      die "length must be more than or equals to zero";
+      die "The length must be greater than or equal to 0";
     }
     my $capacity = 0;
     if ($length < IntList->DEFAULT_CAPACITY()) {
@@ -59,32 +62,23 @@ class IntList {
     return $self;
   }
   
-  precompile private method _extend_with_capacity : void ($new_capacity : int) {
-    my $new_values = new int [$new_capacity];
-    for (my $i = 0; $i < $self->{length}; ++$i) {
-      my $target = $i;
-      if ($target < 0) { $target += $self->{capacity}; };
-      $new_values->[$i] = $self->{values}[$target];
+  # Instance methods
+  method get : int ($index : int) {
+    my $length = $self->length;
+    
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
     }
-    $self->{capacity} = $new_capacity;
-    $self->{values} = $new_values;
+    
+    unless ($index < $length) {
+      die "The index must be less than the length";
+    }
+    
+    my $value = $self->{values}[$index];
+    
+    return $value;
   }
-
-  private method _extend : void () {
-    my $capacity = $self->{capacity};
-    my $length = $self->{length};
-    my $values = $self->{values};
-    
-    my $new_capacity = $capacity * 2;
-    
-    my $new_values = new int[$new_capacity];
-    
-    Array->memcpy_int($new_values, 0, $values, 0, $length);
-    
-    $self->{values} = $new_values;
-    $self->{capacity} = $new_capacity;
-  }
-
+  
   method insert : void ($index : int, $value : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
@@ -107,7 +101,7 @@ class IntList {
     
     $self->{length}++;
   }
-
+  
   method remove : int ($index : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
@@ -118,7 +112,7 @@ class IntList {
     
     my $values = $self->{values};
     my $remove_value = $values->[$index];
-
+    
     my $dist_index = $index;
     my $src_index = $index + 1;
     my $move_length = $length - $index - 1;
@@ -150,7 +144,7 @@ class IntList {
     }
     
     my $value = $self->{values}[$length - 1];
-
+    
     $self->{values}[$length - 1] = 0;
     
     $self->{length}--;
@@ -204,7 +198,7 @@ class IntList {
     
     $self->{values}[$index] = $value;
   }
-
+  
   method set_array : void ($array : int[]) {
     unless ($array) {
       die "Array must be defined";
@@ -221,18 +215,6 @@ class IntList {
     
     Array->memcpy_int($self->{values}, 0, $array, 0, $cur_length);
   }
-
-  method get : int ($index : int) {
-    my $length = $self->length;
-    
-    if ($index < 0 || $index > $length - 1) {
-      die "Out of range";
-    }
-    
-    my $value = $self->{values}[$index];
-    
-    return $value;
-  }
   
   method to_array : int[] () {
     my $length = $self->length;
@@ -248,7 +230,7 @@ class IntList {
 
   method resize : void ($new_length : int) {
     if ($new_length < 0) {
-      die "New length must be more than or equals to 0";
+      die "New length must be greater than or equal to 0";
     }
     
     my $length = $self->{length};
@@ -265,5 +247,31 @@ class IntList {
     }
     
     $self->{length} = $new_length;
+  }
+  
+  precompile private method _extend_with_capacity : void ($new_capacity : int) {
+    my $new_values = new int [$new_capacity];
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      my $target = $i;
+      if ($target < 0) { $target += $self->{capacity}; };
+      $new_values->[$i] = $self->{values}[$target];
+    }
+    $self->{capacity} = $new_capacity;
+    $self->{values} = $new_values;
+  }
+  
+  private method _extend : void () {
+    my $capacity = $self->{capacity};
+    my $length = $self->{length};
+    my $values = $self->{values};
+    
+    my $new_capacity = $capacity * 2;
+    
+    my $new_values = new int[$new_capacity];
+    
+    Array->memcpy_int($new_values, 0, $values, 0, $length);
+    
+    $self->{values} = $new_values;
+    $self->{capacity} = $new_capacity;
   }
 }

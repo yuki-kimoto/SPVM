@@ -49,7 +49,27 @@ SPVM::ByteList - Dynamic Byte Array
 
 =head1 Description
 
-L<ByteList|SPVM::ByteList> is Dynamic Byte Array.
+L<ByteList|SPVM::ByteList> is a dynamic C<byte> array.
+
+=head1 Fields
+
+=head2 capacity
+
+  has capacity : ro int;
+
+The capacity.
+
+=head2 length
+
+  has length : ro int;
+
+The length.
+
+=head2 values
+
+  has values : ro byte[];
+
+The values.
 
 =head1 Class Methods
 
@@ -57,9 +77,11 @@ L<ByteList|SPVM::ByteList> is Dynamic Byte Array.
 
     static method new : ByteList ($array : byte[]...)
 
-Create a new L<ByteList|SPVM::ByteList> object with a byte array.
+Create a new L<ByteList|SPVM::ByteList> object with a C<byte> array.
 
-Internally, new array is created, and each element of argument array is copied to internal array.
+Internally, a new array is created, and each element of the specified array is copied to the new array.
+
+If the specified array is C<undef>, a new array that length is C<0> is created.
 
   my $byte_list = ByteList->new;
   my $byte_list = ByteList->new([(byte)1, 2, 3]);
@@ -68,7 +90,9 @@ Internally, new array is created, and each element of argument array is copied t
 
     static method new_len : ByteList ($length : int)
 
-Create a new L<ByteList|SPVM::ByteList> object with array length.
+Create a new L<ByteList|SPVM::ByteList> object by the length.
+
+The length must be greater than or equal to 0. Otherwise an excpetion will be thrown.
 
 =head1 Instance Methods
 
@@ -83,18 +107,6 @@ Get the value with index.
   method insert : void ($index : int, $value : byte)
 
 Insert a element to the specific index.
-
-=head2 length
-  
-  static method length : int ()
-
-Get list length.
-           
-=head2 remove
-
-  method remove : byte ($index : int)
-
-Remove and return the element which is specified by the index.
 
 =head2 set
 
@@ -124,6 +136,12 @@ If there are no elements in the list, exception occur.
   method push : void ($value : byte)
 
 Appending the value to the end of list.
+
+=head2 remove
+
+  method remove : byte ($index : int)
+
+Remove and return the element which is specified by the index.
 
 =head2 resize
 
