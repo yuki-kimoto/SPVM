@@ -44,7 +44,7 @@ class StringBuffer {
     }
     
     unless ($offset + $length <= $self->{length}) {
-      die("The offset + the lenght must be less than or equal to the length of the value of the string buffer");
+      die("The offset + the lenght must be less than or equal to the length of the string that the string buffer has");
     }
     
     if ($length > $self->{length} - $offset) {
@@ -78,10 +78,7 @@ class StringBuffer {
     }
     
     # replace with new array
-    for (my $i = 0; $i < $replace_length; ++$i) {
-      my $target = $offset + $i;
-      $self->{value}[$target] = $replace->[$i];
-    }
+    Fn->memcpy($self->{value}, $offset, $replace, 0, $replace_length);
     
     $self->{length} += $replace_length - $length;
   }
