@@ -69,8 +69,12 @@ class ByteList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    unless ($index >= 0 && $index <= $length) {
-      die "Out of range";
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
+    }
+    
+    unless ($index <= $length) {
+      die "The index must be less than or equal to the length";
     }
     
     my $new_length = $length + 1;

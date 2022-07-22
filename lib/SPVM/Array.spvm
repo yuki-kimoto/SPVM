@@ -879,14 +879,20 @@ class Array {
   native static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
   native static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
   static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
-    if ($dest == $source) {
-      my $source_length = @$source;
-      my $source_copy = new object[$source_length];
-      my $source_offset_plus_length = $source_offset + $length;
-      &memcpy_object($source_copy, $source_offset, $source, $source_offset, $length);
-      $source = $source_copy;
+    if ($dest_offset < $source_offset) {
+      for (my $i = 0; $i < $length; $i++) {
+        my $dist_index = $dest_offset + $i;
+        my $source_index = $source_offset + $i;
+        $dest->[$dist_index] = $source->[$source_index];
+      }
     }
-    &memcpy_object($dest, $dest_offset, $source, $source_offset, $length);
+    else {
+      for (my $i = $length - 1; $i >= 0; $i--) {
+        my $dist_index = $dest_offset + $i;
+        my $source_index = $source_offset + $i;
+        $dest->[$dist_index] = $source->[$source_index];
+      }
+    }
   }
 
   native static method new_proto : object[] ($proto_array : object[], $length : int);
