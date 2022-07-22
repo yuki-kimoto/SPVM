@@ -80,7 +80,7 @@ class StringBuffer {
     # replace with new array
     Fn->memcpy($self->{value}, $offset, $replace, 0, $replace_length);
     
-    $self->{length} += $replace_length - $length;
+    $self->{length} = $new_length;
   }
   
   method to_string : string () {
