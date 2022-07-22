@@ -157,7 +157,7 @@ class ByteList {
     }
     
     unless ($replace) {
-      die("The replacement array must be defined");
+      $replace = new byte[0];
     }
     
     my $replace_length = @$replace;

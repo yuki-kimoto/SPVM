@@ -54,7 +54,10 @@ class StringBuffer {
       die("The replacement string must be defined");
     }
     
-    my $replace_length = length $replace;
+    my $replace_length = 0;
+    if ($replace) {
+      $replace_length = length $replace;
+    }
     
     my $new_length = $self->{length} - $remove_length + $replace_length;
     $self->_maybe_extend($new_length);

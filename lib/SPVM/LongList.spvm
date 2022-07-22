@@ -156,7 +156,7 @@ class LongList {
     }
     
     unless ($replace) {
-      die("The replacement array must be defined");
+      $replace = new long[0];
     }
     
     my $replace_length = @$replace;

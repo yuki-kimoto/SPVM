@@ -155,7 +155,7 @@ class FloatList {
     }
     
     unless ($replace) {
-      die("The replacement array must be defined");
+      $replace = new float[0];
     }
     
     my $replace_length = @$replace;

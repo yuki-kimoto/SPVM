@@ -158,7 +158,7 @@ class StringList {
     }
     
     unless ($replace) {
-      die("The replacement array must be defined");
+      $replace = new string[0];
     }
     
     my $replace_length = @$replace;

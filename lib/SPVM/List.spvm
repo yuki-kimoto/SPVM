@@ -155,7 +155,7 @@ class List {
     }
     
     unless ($replace) {
-      die("The replacement array must be defined");
+      $replace = Array->new_proto($self->{values}, 0);
     }
     
     my $replace_length = @$replace;
@@ -274,7 +274,7 @@ class List {
     }
     
     my $new_capacity = $capacity * 2;
-    my $new_values = new object[$new_capacity];
+    my $new_values = Array->new_proto($self->{values}, $new_capacity);
     
     my $length = $self->{length};
     my $values = $self->{values};
