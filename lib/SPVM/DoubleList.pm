@@ -51,6 +51,20 @@ SPVM::DoubleList - Dynamic double array
 
 L<DoubleList|SPVM::DoubleList> is dynamic double array.
 
+=head1 Fields
+
+=head2 length
+
+  has length : ro int;
+
+The length.
+
+=head2 values
+
+  has values : ro double[];
+
+The values.
+
 =head1 Class Methods
 
 =head2 new
@@ -91,12 +105,6 @@ Get the value with index.
   method insert : void ($index : int, $value : double)
 
 Insert a element to the specific index.
-
-=head2 length
-  
-  static method length : int ()
-
-Get list length.
 
 =head2 remove
 

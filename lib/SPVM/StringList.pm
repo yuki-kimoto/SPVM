@@ -51,6 +51,20 @@ SPVM::StringList - Dynamic string array
 
 L<StringList|SPVM::StringList> is dynamic string array.
 
+=head1 Fields
+
+=head2 length
+
+  has length : ro int;
+
+The length.
+
+=head2 values
+
+  has values : ro string[];
+
+The values.
+
 =head1 Class Methods
 
 =head2 new
@@ -79,12 +93,6 @@ Create a new L<StringList|SPVM::StringList> object with array length.
   method get : string ($index : int)
 
 Get the value with index.
-
-=head2 length
-  
-  static method length : int ()
-
-Get list length.
 
 =head2 insert
 

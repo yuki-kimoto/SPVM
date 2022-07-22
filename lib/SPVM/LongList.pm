@@ -51,6 +51,20 @@ SPVM::LongList - Dynamic long array
 
 L<LongList|SPVM::LongList> is dynamic long array.
 
+=head1 Fields
+
+=head2 length
+
+  has length : ro int;
+
+The length.
+
+=head2 values
+
+  has values : ro long[];
+
+The values.
+
 =head1 Class Methods
 
 =head2 new
@@ -85,12 +99,6 @@ Get the value with index.
   method insert : void ($index : int, $value : long)
 
 Insert a element to the specific index.
-
-=head2 length
-  
-  static method length : int ()
-
-Get list length.
 
 =head2 pop
 

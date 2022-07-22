@@ -51,6 +51,20 @@ SPVM::FloatList - Dynamic float array
 
 L<FloatList|SPVM::FloatList> is dynamic float array.
 
+=head1 Fields
+
+=head2 length
+
+  has length : ro int;
+
+The length.
+
+=head2 values
+
+  has values : ro float[];
+
+The values.
+
 =head1 Class Methods
 
 =head2 new
@@ -85,12 +99,6 @@ Get the value with index.
   method insert : void ($index : int, $value : float)
 
 Insert a element to the specific index.
-
-=head2 length
-  
-  static method length : int ()
-
-Get list length.
 
 =head2 pop
 
