@@ -30,6 +30,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Lib::ByteList->insert);
   ok(SPVM::TestCase::Lib::ByteList->remove);
   ok(SPVM::TestCase::Lib::ByteList->resize);
+  ok(SPVM::TestCase::Lib::ByteList->replace);
 }
 
 # All object is freed
