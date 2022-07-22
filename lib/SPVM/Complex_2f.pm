@@ -1,6 +1,6 @@
 =head1 Name
 
-SPVM::Complex_2f - float complex type
+SPVM::Complex_2f - float Complex Type
 
 =head1 Usage
 
@@ -19,7 +19,7 @@ This module is multi numeric type.
     has im : float;
   }
 
-=head1 Field Methods
+=head1 Fields
 
 =head2 re
 

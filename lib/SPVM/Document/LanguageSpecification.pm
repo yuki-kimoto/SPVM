@@ -2873,7 +2873,7 @@ C<...> after the type of the argument indicates the argument is a variable lengt
   
   }
 
-The type of the variable length argument must be L</"Array Type">.
+The type of the variable length argument must be the L<array type|/"Array Type">.
 
 A variable length argument can recieve multiple values.
 
@@ -2890,7 +2890,7 @@ A variable length argument can recieve an array.
   # Pass array to a variable lenght argument
   sprintf("Value  %d %f", [(object)1, 2.0]);
 
-If you want to treat the value as an individual element, cast it to type other than L</"Array Type">..
+If you want to treat the value as an individual element, cast it to type other than the L<array type|/"Array Type">..
 
   sprintf("aaa %p", (object)[(object)1, 2.0]);
 
@@ -3602,65 +3602,47 @@ See L</"Setting Array Element"> to set the element value of Array.
 
 =head1 Multi-Numeric Value
 
+A multi-numeric value is a value that represents continuous multiple numeric values in memory.
+
 =head2 Multi-Numeric Type Definition
 
-The multi-numeric type represents continuous numeric values. For example, there are three consecutive 32-bit signed integers, two consecutive double-precision floating point numbers. It isplaned to use 3D points, complex numbers, quaternions, etc.
+A L<multi-numeric type|/"Multi-Numeric Type"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class descriptor|/"Class Descriptor">.
 
-The multi-numeric type are defined by specifying mulnum_t L</"Class Descriptor"> in the L<class definition|/"Class Definition">.
-
-  # Three consecutive 32bit signed integers
+  # Continuous two 64bit floating point
   class Complex_2d : mulnum_t {
-    has x : int;
-    has y : int;
-    has z : int;
-  }
-  
-  # Tow consecutive 64bit floating point numbers
-  class Complex_2d : mulnum_t {
-    x : double;
-    y : double;
+    re : double;
+    im : double;
   }
 
-The multi-numeric type must end with C<_>, Number of the fields, L</"Multi-Numeric Type Suffix">.
+The type of a field must be a L<numeric type|/"Numeric Type">.
 
-The suffix must correspond to a L<numeric type|/"Numeric Type">.
+The types of all fields must be the same types.
 
-All Fields must be the same a L<numeric type|/"Numeric Type">.
+The length of the fields must be less than or equal to C<255>.
 
-The maximum number of the fields is 255.
+The multi-numeric type must end with the following suffix.
 
-The multi-numeric type can be used as the L<type|/"Type"> of the L<local variable declaration|/"Local Variable Declaration">.
+  _[FieldsLength][TypeSuffix]
 
-The multi-numeric type can be used as an argument the L<type|/"Type"> in the L<method definition|/"Method Definition"> .
+The length of the fields in the suffix must be the same as the length of the fields.
 
-The multi-numeric type can be used as the L<type|/"Type"> of Return Value in the L<method definition|/"Method Definition">.
+The type suffix in the suffix must correspond to the L<numeric type|/"Numeric Type"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Type Suffix">.
 
-The multi-numeric type can be used as L</"Basic Type"> of L</"Array Type"> .
-
-  my $points = new Complex_2d[5];
-
-Reference can be created forthe multi-numeric type value.
-
-  my $z : Complex_2d;
-  my $z_ref = \$z;
-
-L<undef|/"Undefined Value"> cannot be assigned tothe multi-numeric type value.
-
-See L</"Multi-Numeric Type Field Access"> to get and set the value of field ofthe multi-numeric type Value.
+See the L<multi-numeric type field access|/"Multi-Numeric Type Field Access"> to get and set the field of the multi-numeric type.
 
 =head2 Multi-Numeric Type Suffix
 
-List ofthe multi-numeric type Suffix.
+The list of the multi-numeric type suffix.
 
 =begin html
 
 <table>
   <tr>
     <th>
-      <b>Numeric Type</b>
+      Numeric Type
    </th>
     <th>
-     the multi-numeric type Suffix
+     Type Suffix
    </th>
   </tr>
   <tr>
@@ -3715,53 +3697,36 @@ List ofthe multi-numeric type Suffix.
 
 =end html
 
-=head2 Using Multi-Numeric Type
-
-A multi-numeric type can be loaded using the L<use statement|/"use Statement">.
-
-  use Complex_2d;
-
-A multi-numeric value is declared by the L<local variable declaration|/"Local Variable Declaration">.
-
-  my $z : Complex_2d;
-
-The value is initialized by the L<initial value/"Initial Value">.
-
 =head2 Multi-Numeric Type Field Access
 
-The C<multi-numeric type field access> is an L<operator|/"Operator"> to accessthe multi-numeric type Field to get or set a value.
+The multi-numeric type field access is an syntax to access the field of the multi-numeric value.
 
-  MULTI_NUMERIC_TYPE_VALUE->{FIELD_NAME}
+  MULTI_NUMERIC_VALUE->{FIELD_NAME}
 
-See L</"Getting Multi-Numeric Field"> to getthe multi-numeric type Field.
+See L</"Getting Multi-Numeric Field"> to get the field of the multi-numeric value.
 
-See L</"Setting Multi-Numeric Field"> to setthe multi-numeric type Field.
+See L</"Setting Multi-Numeric Field"> to set the field of the multi-numeric value.
 
 =head1 Multi-Numeric Array
 
-L</"Multi-Numeric Value"> can be an element of L</"Array">.
+The L<multi-numeric values|/"Multi-Numeric Value"> can be the elements of the L<array|/"Array">.
 
-  my $points = new Complex_2d[5];
+  my $zs = new Complex_2d[3];
+
+The elements of the multi-numeric array is continuous multi-numeric values.
   
-  my $zs = new Complex_2d[5];
-
-Multi-Numeric Array has continuous Multi-Numeric Values.
-
-The Element Type is the L<multi-numeric type|/"Multi-Numeric Type">, not an L<object type|/"Object Type">.
-
-For example, Complex_2d[5] is continuous 15 (= 3 * 5) count the L<int type|/"int Type"> Value.
-
-the L<type|/"Type"> of Multi-Numeric Array is L</"Array Type">.
+  | Complex_2d  | Complex_2d  | Complex_2d  |
+  |  re  |  im  |  re  |  im  |  re  |  im  |
 
 =head2 Multi-Numeric Array Access
 
-Multi-Numeric Array Access is an L<operator|/"Operator"> to access Multi-Numeric Array to get and set the element value.
+The multi-numeric array access is a syntax to access the element of the multi-numeric array.
 
-  Array->[INDEX]
+  ARRAY->[INDEX]
 
-See L</"Getting Array Element"> to get Array Element Value.
+See L</"Getting Array Element"> to get the element of the array.
 
-See L</"Setting Array Element"> to get Array Element Value.
+See L</"Setting Array Element"> to set the element of the array.
 
 =head1 Reference
 
@@ -4190,7 +4155,7 @@ You can methodstitute the value of "Object Type" for Any Object Type.
 
 =head2 void Type
 
-B<void Type> is a special Type that can only be used in the return type of the L<method definition|/"Method Definition"> and indicates the method has no Return Value.
+B<void Type> is a special Type that can only be used in the return type of the L<method definition|/"Method Definition"> and indicates the method has no return value.
 
   void
 
@@ -4202,7 +4167,7 @@ Another definition of basic types are the types that is not L<array types|"Array
 
 =head2 Array Type
 
-Array Type represents multiple continuous data areas. L</"Basic Type"> can be an Array.
+Array Type represents multiple continuous data areas. The L<basic type|/"Basic Type"> can be an Array.
 
   int[]
   double[]
@@ -4230,7 +4195,7 @@ my $nums = new int[] [3];
 
 =head3 Numeric Array Type
 
-Numeric Array Type means a L<numeric type|/"Numeric Type"> with the element L</"Array Type"> It is.
+Numeric Array Type means a L<numeric type|/"Numeric Type"> with the element the L<array type|/"Array Type"> It is.
 
 B<Numeric Array Type list>
 
@@ -4259,7 +4224,7 @@ B<Numeric Array Type list>
 
 =end html
 
-Data represented by Numeric Array Type must have elements whose size is a L<numeric type|/"Numeric Type">, and must be consecutive by the number of Array Length.
+Data represented by Numeric Array Type must have elements whose size is a L<numeric type|/"Numeric Type">, and must be continuous by the number of Array Length.
 
 All elements of Numeric Array Type are initialized by the L<initial value/"Initial Value"> when the L<creating array|/"Creating Array"> is performed.
 
@@ -4271,7 +4236,7 @@ The C<byte[]> type is an L<array type|/"Array Type"> that the element type is C<
 
 =head3 Object Array Type
 
-Object array types are L</"Array Type"> that the type of the element is an L<object type|/"Object Type">.
+Object array types are the L<array type|/"Array Type"> that the type of the element is an L<object type|/"Object Type">.
 
 B<Examples:>
 
@@ -4284,7 +4249,7 @@ B<Examples:>
 
 =head3 String Array Type
 
-String array types are L</"Array Type"> that the type of the element is the L<string type|/"String Type">.
+String array types are the L<array type|/"Array Type"> that the type of the element is the L<string type|/"String Type">.
 
 B<Examples:>
 
@@ -4293,7 +4258,7 @@ B<Examples:>
 
 =head3 Class Array Type
 
-Class array types are L</"Array Type"> that the type of the element is the L<class type|/"Class Type">.
+Class array types are the L<array type|/"Array Type"> that the type of the element is the L<class type|/"Class Type">.
 
 B<Examples:>
 
@@ -4302,7 +4267,7 @@ B<Examples:>
 
 =head3 Interface Array Type
 
-Interface array types are L</"Array Type"> that the type of the element is the L<interface type|/"Interface Type">.
+Interface array types are the L<array type|/"Array Type"> that the type of the element is the L<interface type|/"Interface Type">.
 
 B<Examples:>
 
@@ -4391,17 +4356,30 @@ B<Examples:>
 
 =head2 Multi-Numeric Type
 
-The multi-numeric type are a type that can represent continuous numerical values.
+The multi-numeric type is the type to represent a L<multi-numeric value|/"Multi-Numeric Value">.
 
-The multi-numeric type can be defined by specifying C<mulnum_t> Descriptor in the L<class definition|/"Class Definition">.
+The multi-numeric type can be used as the L<type|/"Type"> of the L<local variable declaration|/"Local Variable Declaration">.
 
-  class Complex_2d : mulnum_t {
-    has x : int;
-    has y : int;
-    has z : int;
-  }
+  my $z : Complex_2d;
 
-See L</"Values ​​"> for a detailed explanation ofthe multi-numeric type.
+The value is initialized by the L<initial value/"Initial Value">.
+
+The multi-numeric type can be used as an argument the L<type|/"Type"> in the L<method definition|/"Method Definition">.
+
+The multi-numeric type can be used as the return L<type|/"Type"> of the L<method definition|/"Method Definition">.
+
+  static method add_double_complex : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d) { ... }
+
+The multi-numeric type can be used as a L<basic type|/"Basic Type"> of the L<array type|/"Array Type"> .
+
+  my $points = new Complex_2d[5];
+
+The reference can be created for the value of the multi-numeric type.
+
+  my $z : Complex_2d;
+  my $z_ref = \$z;
+
+L<undef|/"Undefined Value"> cannot be assigned to the multi-numeric type.
 
 =head2 Reference Type
 
@@ -4421,7 +4399,7 @@ Reference Type can be used as Type of the L<local variable declaration|/"Local V
 
 Reference Type can be used as Type of argument in the L<method definition|/"Method Definition">.
 
-Reference Type cannot be used as Return Value Type in the L<method definition|/"Method Definition">.
+Reference Type cannot be used as return value Type in the L<method definition|/"Method Definition">.
 
 Reference Type cannot be used as the field type in the L<class definition|/"Class Definition">.
 
@@ -6180,7 +6158,7 @@ B<Examples:>
     print "One\n";
   }
   elsif ($flag == 2) {
-    print "Tow\n";
+    print "Two\n";
   }
   else {
     print "Other";
@@ -6508,17 +6486,21 @@ Inside the for Block, you can use L</"next Statement"> to move immediately befor
 
 =head2 return Statement
 
-The C<return> statement is a L<statement|/"Statement"> to get out of the method. The object assigned to the mortal variable is automatically destroyed.
-
+The C<return> statement is a L<statement|/"Statement"> to return a value.
+  
+  // void
   return;
+  
+  // non-void
+  return OPERAND;
 
-If there is a Return Value, the L<operator|/"Operator"> can be specified.
+If the return type of the method is the L<void type/"void Type">, the operand cannot exist.
 
-  return EXPRESSION;
+If the return type of the method is the non-void type, the operand must be exist.
 
-If the Return Value Type in the L<method definition|/"Method Definition"> is the L<void type/"void Type">, operator Must not exist, otherwise a compilation error will occur.
+The type of the operand must be able to L<assign|/"Assignability"> to the return type of the method.
 
-the L<method definition|/"Method Definition">, if the The return type is other than the L<void type/"void Type">, operator Must match the type of, otherwise a compilation error will occur.
+If the syntax of the return statement is invalid, an compilation error will occur.
 
 =head2 next Statement
 
@@ -7630,9 +7612,9 @@ The array length operator is an L<unary operator|/"Unary Operator"> to get the l
 
   @OPERAND
 
-The operand must be an L<operator|/"Operator"> that type is an L</"Array Type">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operator"> that type is an the L<array type|/"Array Type">, otherwise a compilation error will occur.
 
-The array length operator returns the L<int type|/"int Type"> value that is the length of the L</"Array">.
+The array length operator returns the L<int type|/"int Type"> value that is the length of the L<array|/"Array">.
 
 Array Length Operator returns the L<operator|/"Operator">
 
@@ -7990,7 +7972,7 @@ B<Examples:>
 
 =head2 Getting Multi-Numeric Field
 
-B<Getting Multi-Numeric Field operator> is an L<operator|/"Operator"> to get Field of L</"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
+B<Getting Multi-Numeric Field operator> is an L<operator|/"Operator"> to get Field of the L<multi-numeric value|/"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
@@ -8009,7 +7991,7 @@ B<Examples:>
 
 =head2 Setting Multi-Numeric Field
 
-Setting Multi-Numeric Field operator is an L<operator|/"Operator"> to set Field of L</"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+Setting Multi-Numeric Field operator is an L<operator|/"Operator"> to set Field of the L<multi-numeric value|/"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
@@ -8030,11 +8012,11 @@ B<Examples:>
 
 =head2 Getting Array Element
 
-B<Getting Array Element operator> is an L<operator|/"Operator"> to get a Element Value of L</"Array">.
+B<Getting Array Element operator> is an L<operator|/"Operator"> to get a Element Value of the L<array|/"Array">.
 
   ARRAY->[INDEX]
 
-Array operator must be L</"Array Type">.
+Array operator must be the L<array type|/"Array Type">.
 
 the index must be the L<int type|/"int Type"> or the type that become the L<int type|/"int Type"> by L</"Numeric Widening Type Conversion">.
 
@@ -8061,7 +8043,7 @@ Setting Array Element operator is an L<operator|/"Operator"> to set a Element Va
 
   ARRAY->[INDEX] = RIGHT_OPERAND
 
-The array must be L</"Array Type">.
+The array must be the L<array type|/"Array Type">.
 
 The index must be the L<int type|/"int Type"> or the type that become the L<int type|/"int Type"> by L</"Numeric Widening Type Conversion">.
 
@@ -8331,7 +8313,7 @@ B<Examples:>
 
 =head3 Getting Multi-Numeric Field via Dereference
 
-B<Getting Multi-Numeric Field via Dereference operator> is an L<operator|/"Operator"> to get Field of L</"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
+B<Getting Multi-Numeric Field via Dereference operator> is an L<operator|/"Operator"> to get Field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
 
   INVOCANT->{FIELD_NAME}
 
@@ -8351,7 +8333,7 @@ B<Examples:>
 
 =head3 Setting Multi-Numeric Field via Dereference
 
-The setting multi-numeric field via dereference operator is an L<operator|/"Operator"> to set Field of L</"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+The setting multi-numeric field via dereference operator is an L<operator|/"Operator"> to set Field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
@@ -8606,9 +8588,9 @@ The object is destroyed when the reference count becomes C<0>.
 
 If the object is an Array that has Object Type values ​​as elements, the reference count of all Array elements that are not Undefined Value is decremented by C<1> before Garbage Collection
 
-When an object is a L<class type|/"Class Type"> and has a field of Object Type, the reference count of the objects owned by all Fields of Object Type that are not Undefined Value is decremented by C<1> before Garbage Collection. If Weak Reference is set to the object saved in Field, Weak Reference is destroyed before Reference Count is decremented by C<1>.
+When an object is a L<class type|/"Class Type"> and has a field of Object Type, the reference count of the objects owned by all fields of Object Type that are not Undefined Value is decremented by C<1> before Garbage Collection. If Weak Reference is set to the object saved in Field, Weak Reference is destroyed before Reference Count is decremented by C<1>.
 
-When the object has Back references of Weak Reference, Undefined Value is assigned to all Fields registered as back References and all back References are deleted.
+When the object has Back references of Weak Reference, Undefined Value is assigned to all fields registered as back References and all back References are deleted.
 
 The above process is done recursively.
 

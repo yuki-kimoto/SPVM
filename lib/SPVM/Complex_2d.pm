@@ -1,6 +1,6 @@
 =head1 Name
 
-SPVM::Complex_2d - double complex type
+SPVM::Complex_2d - double Complex Type
 
 =head1 Usage
 
@@ -10,16 +10,9 @@ SPVM::Complex_2d - double complex type
   
 =head1 Description
 
-Complex_2d is double complex type.
+C<Complex_2d> is a multi-numeric type to represent the double complex type.
 
-This module is multi numeric type.
-
-  class Complex_2d : mulnum_t {
-    has re : double;
-    has im : double;
-  }
-
-=head1 Field Methods
+=head1 Fields
 
 =head2 re
 
