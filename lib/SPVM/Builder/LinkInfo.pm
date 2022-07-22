@@ -6,7 +6,7 @@ use Config;
 use Carp 'confess';
 use File::Basename 'dirname';
 
-# Field Methods
+# Fields
 sub output_file {
   my $self = shift;
   if (@_) {
@@ -223,7 +223,7 @@ SPVM::Builder::LinkInfo - Link Information
 
 C<SPVM::Builder::LinkInfo> is a link information. This infromation is used by the linker.
 
-=head1 Field Methods
+=head1 Fields
 
 =head2 output_file
 

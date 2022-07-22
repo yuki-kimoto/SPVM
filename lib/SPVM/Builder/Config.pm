@@ -778,9 +778,7 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
 
 C<SPVM::Builder::Config> is configuration of c/c++ compile and link.
 
-=head1 Field Methods
-
-Fields.
+=head1 Fields
 
 =head2 ext
 

@@ -181,7 +181,7 @@ SPVM::Builder::CompileInfo - Link Information
 
 C<SPVM::Builder::CompileInfo> is a compile information. This infromation is used by the compileer.
 
-=head1 Field Methods
+=head1 Fields
 
 =head2 output_file
 

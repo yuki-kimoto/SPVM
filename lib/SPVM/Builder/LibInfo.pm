@@ -8,7 +8,7 @@ use File::Basename 'dirname';
 
 use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
 
-# Field Methods
+# Fields
 sub name {
   my $self = shift;
   if (@_) {
@@ -133,9 +133,7 @@ SPVM::Builder::LibInfo - Library Information
 
 C<SPVM::Builder::LibInfo> is a library file information.
 
-=head1 Field Methods
-
-The list of field methods.
+=head1 Fields
 
 =head2 name
 
