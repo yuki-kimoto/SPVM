@@ -3,9 +3,11 @@ class ShortList {
   use Array;
   
   # Fields
-  has capacity : ro int;
   has length   : ro int;
   has values   : ro short[];
+  
+  # Private fields
+  has capacity : int;
   
   # Class methods
   static method new : ShortList ($array : short[]...) {
@@ -112,27 +114,6 @@ class ShortList {
     return $value;
   }
   
-  method remove : short ($index : int) {
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
-    
-    unless ($index >= 0 && $index < $length) {
-      die "Out of range";
-    }
-    
-    my $values = $self->{values};
-    my $remove_value = $values->[$index];
-
-    my $dist_index = $index;
-    my $src_index = $index + 1;
-    my $move_length = $length - $index - 1;
-    Array->memmove_short($values, $dist_index, $values, $src_index, $move_length);
-    
-    $self->{length}--;
-    
-    return $remove_value;
-  }
-  
   method resize : void ($new_length : int) {
     if ($new_length < 0) {
       die "New length must be greater than or equal to 0";
@@ -151,7 +132,28 @@ class ShortList {
     
     $self->{length} = $new_length;
   }
-
+  
+  method remove : short ($index : int) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    unless ($index >= 0 && $index < $length) {
+      die "Out of range";
+    }
+    
+    my $values = $self->{values};
+    my $remove_value = $values->[$index];
+    
+    my $dist_index = $index;
+    my $src_index = $index + 1;
+    my $move_length = $length - $index - 1;
+    Array->memmove_short($values, $dist_index, $values, $src_index, $move_length);
+    
+    $self->{length}--;
+    
+    return $remove_value;
+  }
+  
   method set : void ($index : int, $value : short) {
     my $length = $self->length;
     
@@ -161,7 +163,7 @@ class ShortList {
     
     $self->{values}[$index] = $value;
   }
-
+  
   method set_array : void ($array : short[]) {
     unless ($array) {
       die "Array must be defined";

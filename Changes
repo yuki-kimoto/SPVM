@@ -7,54 +7,35 @@
       =head1 Fields
     * Change the following ByteList field definitions.
       [Before]
-      has capacity : int;
       has values : byte[];
       [After]
-      has capacity : ro int;
       has values : ro byte[];
     * Change the following ShortList field definitions.
       [Before]
-      has capacity : int;
       has values : byte[];
       [After]
-      has capacity : ro int;
       has values : ro byte[];
     * Change the following IntList field definitions.
       [Before]
-      has capacity : int;
       has values : byte[];
       [After]
-      has capacity : ro int;
       has values : ro byte[];
     * Change the following LongList field definitions.
       [Before]
-      has capacity : int;
       has values : byte[];
       [After]
-      has capacity : ro int;
       has values : ro byte[];
     * Change the following FloatList field definitions.
       [Before]
-      has capacity : int;
       has values : byte[];
       [After]
-      has capacity : ro int;
       has values : ro byte[];
     * Change the following DoubleList field definitions.
       [Before]
-      has capacity : int;
       has values : byte[];
       [After]
-      has capacity : ro int;
       has values : ro byte[];
 
-    * Change the ByteList default capacity from 16 to the length.
-    * Change the ShortList default capacity from 16 to the length.
-    * Change the IntList default capacity from 16 to the length.
-    * Change the LongList default capacity from 16 to the length.
-    * Change the FloatList default capacity from 16 to the length.
-    * Change the DoubleList default capacity from 16 to the length.
-      
 0.9627 2022-07-22
   [New Feature]
     * Add new_string_array native API.

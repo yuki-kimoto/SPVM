@@ -3,14 +3,11 @@ class LongList {
   use Array;
   
   # Fields
-  has capacity : ro int;
   has length   : ro int;
   has values   : ro long[];
   
-  # Enumerations
-  private enum {
-    DEFAULT_CAPACITY = 16,
-  }
+  # Private fields
+  has capacity : int;
   
   # Class methods
   static method new : LongList ($array : long[]...) {
@@ -23,13 +20,7 @@ class LongList {
       $length = 0;
     }
     
-    my $capacity = 0;
-    if ($length < LongList->DEFAULT_CAPACITY()) {
-      $capacity = LongList->DEFAULT_CAPACITY();
-    }
-    else {
-      $capacity = $length;
-    }
+    my $capacity = $length
     $self->{capacity} = $capacity;
     my $values = new long[$capacity];
     
@@ -49,13 +40,7 @@ class LongList {
     unless ($length >= 0) {
       die "The length must be greater than or equal to 0";
     }
-    my $capacity = 0;
-    if ($length < LongList->DEFAULT_CAPACITY()) {
-      $capacity = LongList->DEFAULT_CAPACITY();
-    }
-    else {
-      $capacity = $length;
-    }
+    my $capacity = $length;
     $self->{capacity} = $capacity;
     $self->{length} = $length;
     $self->{values} = new long[$capacity];
@@ -101,25 +86,20 @@ class LongList {
     $self->{length}++;
   }
 
-  method remove : long ($index : int) {
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
+  method pop : long () {
+    my $length = $self->length;
     
-    unless ($index >= 0 && $index < $length) {
-      die "Out of range";
+    if ($length == 0) {
+      die "Can't pop";
     }
     
-    my $values = $self->{values};
-    my $remove_value = $values->[$index];
-
-    my $dist_index = $index;
-    my $src_index = $index + 1;
-    my $move_length = $length - $index - 1;
-    Array->memmove_long($values, $dist_index, $values, $src_index, $move_length);
+    my $value = $self->{values}[$length - 1];
+    
+    $self->{values}[$length - 1] = 0;
     
     $self->{length}--;
     
-    return $remove_value;
+    return $value;
   }
   
   method push : void ($value : long) {
@@ -134,56 +114,25 @@ class LongList {
     $self->{length}++;
   }
   
-  method pop : long () {
-    my $length = $self->length;
-    
-    if ($length == 0) {
-      die "Can't pop";
-    }
-    
-    my $value = $self->{values}[$length - 1];
-
-    $self->{values}[$length - 1] = 0;
-    
-    $self->{length}--;
-    
-    return $value;
-  }
-  
-  method unshift : void ($value : long) {
+  method remove : long ($index : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    my $new_length = $length + 1;
-    $self->_maybe_extend($new_length);
-    
-    my $values = $self->{values};
-    
-    Array->memmove_long($values, 1, $values, 0, $length);
-    
-    $values->[0] = $value;
-    $self->{length}++;
-  }
-  
-  method shift : long () {
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
-    
-    if ($length == 0) {
-      die "Can't shift";
+    unless ($index >= 0 && $index < $length) {
+      die "Out of range";
     }
     
     my $values = $self->{values};
+    my $remove_value = $values->[$index];
     
-    my $value = $values->[0];
-    
-    Array->memmove_long($values, 0, $values, 1, $length - 1);
-    
-    $values->[$length - 1] = 0;
+    my $dist_index = $index;
+    my $src_index = $index + 1;
+    my $move_length = $length - $index - 1;
+    Array->memmove_long($values, $dist_index, $values, $src_index, $move_length);
     
     $self->{length}--;
     
-    return $value;
+    return $remove_value;
   }
   
   method set : void ($index : int, $value : long) {
@@ -211,19 +160,28 @@ class LongList {
     
     Array->memcpy_long($self->{values}, 0, $array, 0, $cur_length);
   }
-
-  method to_array : long[] () {
-    my $length = $self->length;
+  
+  method shift : long () {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
     
-    my $array = new long[$length];
+    if ($length == 0) {
+      die "Can't shift";
+    }
     
     my $values = $self->{values};
     
-    Array->memcpy_long($array, 0, $values, 0, $length);
+    my $value = $values->[0];
     
-    return $array;
+    Array->memmove_long($values, 0, $values, 1, $length - 1);
+    
+    $values->[$length - 1] = 0;
+    
+    $self->{length}--;
+    
+    return $value;
   }
-
+  
   method resize : void ($new_length : int) {
     if ($new_length < 0) {
       die "New length must be greater than or equal to 0";
@@ -241,6 +199,33 @@ class LongList {
     }
     
     $self->{length} = $new_length;
+  }
+  
+  method to_array : long[] () {
+    my $length = $self->length;
+    
+    my $array = new long[$length];
+    
+    my $values = $self->{values};
+    
+    Array->memcpy_long($array, 0, $values, 0, $length);
+    
+    return $array;
+  }
+  
+  method unshift : void ($value : long) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    my $new_length = $length + 1;
+    $self->_maybe_extend($new_length);
+    
+    my $values = $self->{values};
+    
+    Array->memmove_long($values, 1, $values, 0, $length);
+    
+    $values->[0] = $value;
+    $self->{length}++;
   }
   
   private method _maybe_extend : void ($min_capacity : int) {

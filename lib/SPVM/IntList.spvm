@@ -3,9 +3,11 @@ class IntList {
   use Array;
   
   # Fields
-  has capacity : ro int;
   has length   : ro int;
   has values   : ro int[];
+  
+  # Private fields
+  has capacity : int;
   
   # Class methods
   static method new : IntList ($array : int[]...) {
@@ -84,27 +86,6 @@ class IntList {
     $self->{length}++;
   }
   
-  method remove : int ($index : int) {
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
-    
-    unless ($index >= 0 && $index < $length) {
-      die "Out of range";
-    }
-    
-    my $values = $self->{values};
-    my $remove_value = $values->[$index];
-    
-    my $dist_index = $index;
-    my $src_index = $index + 1;
-    my $move_length = $length - $index - 1;
-    Array->memmove_int($values, $dist_index, $values, $src_index, $move_length);
-    
-    $self->{length}--;
-    
-    return $remove_value;
-  }
-  
   method push : void ($value : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
@@ -133,40 +114,25 @@ class IntList {
     return $value;
   }
   
-  method unshift : void ($value : int) {
+  method remove : int ($index : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    my $new_length = $length + 1;
-    $self->_maybe_extend($new_length);
-    
-    my $values = $self->{values};
-    
-    Array->memmove_int($values, 1, $values, 0, $length);
-    
-    $values->[0] = $value;
-    $self->{length}++;
-  }
-  
-  method shift : int () {
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
-    
-    if ($length == 0) {
-      die "Can't shift";
+    unless ($index >= 0 && $index < $length) {
+      die "Out of range";
     }
     
     my $values = $self->{values};
+    my $remove_value = $values->[$index];
     
-    my $value = $values->[0];
-    
-    Array->memmove_int($values, 0, $values, 1, $length - 1);
-    
-    $values->[$length - 1] = 0;
+    my $dist_index = $index;
+    my $src_index = $index + 1;
+    my $move_length = $length - $index - 1;
+    Array->memmove_int($values, $dist_index, $values, $src_index, $move_length);
     
     $self->{length}--;
     
-    return $value;
+    return $remove_value;
   }
   
   method set : void ($index : int, $value : int) {
@@ -196,18 +162,27 @@ class IntList {
     Array->memcpy_int($self->{values}, 0, $array, 0, $cur_length);
   }
   
-  method to_array : int[] () {
-    my $length = $self->length;
+  method shift : int () {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
     
-    my $array = new int[$length];
+    if ($length == 0) {
+      die "Can't shift";
+    }
     
     my $values = $self->{values};
     
-    Array->memcpy_int($array, 0, $values, 0, $length);
+    my $value = $values->[0];
     
-    return $array;
+    Array->memmove_int($values, 0, $values, 1, $length - 1);
+    
+    $values->[$length - 1] = 0;
+    
+    $self->{length}--;
+    
+    return $value;
   }
-
+  
   method resize : void ($new_length : int) {
     if ($new_length < 0) {
       die "New length must be greater than or equal to 0";
@@ -225,6 +200,33 @@ class IntList {
     }
     
     $self->{length} = $new_length;
+  }
+  
+  method to_array : int[] () {
+    my $length = $self->length;
+    
+    my $array = new int[$length];
+    
+    my $values = $self->{values};
+    
+    Array->memcpy_int($array, 0, $values, 0, $length);
+    
+    return $array;
+  }
+  
+  method unshift : void ($value : int) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    my $new_length = $length + 1;
+    $self->_maybe_extend($new_length);
+    
+    my $values = $self->{values};
+    
+    Array->memmove_int($values, 1, $values, 0, $length);
+    
+    $values->[0] = $value;
+    $self->{length}++;
   }
   
   private method _maybe_extend : void ($min_capacity : int) {

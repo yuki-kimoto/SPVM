@@ -53,12 +53,6 @@ L<ByteList|SPVM::ByteList> is a dynamic C<byte> array.
 
 =head1 Fields
 
-=head2 capacity
-
-  has capacity : ro int;
-
-The capacity.
-
 =head2 length
 
   has length : ro int;

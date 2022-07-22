@@ -3,9 +3,11 @@ class ByteList {
   use Array;
   
   # Fields
-  has capacity : ro int;
   has length : ro int;
   has values : ro byte[];
+  
+  # Private fields
+  has capacity : int;
   
   # Class methods
   static method new : ByteList ($array : byte[]...) {
@@ -72,7 +74,6 @@ class ByteList {
     }
     
     my $new_length = $length + 1;
-    
     $self->_maybe_extend($new_length);
     
     my $values = $self->{values};
