@@ -294,7 +294,7 @@ SPVM::$class_name - $class_name is a SPVM module
 
 C<$class_name> is a L<SPVM> module.
 
-=head1 Field Methods
+=head1 Fields
 
 
 
