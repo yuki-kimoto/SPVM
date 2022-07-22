@@ -92,7 +92,7 @@ B<Examples:>
 
 Create a new L<ByteList|SPVM::ByteList> object with the length.
 
-The length must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head1 Instance Methods
 
@@ -108,7 +108,7 @@ Get the value with index.
 
 Insert a element to the position of the index.
 
-The index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 The index must be less than the length of the list. Otherwise an excpetion will be thrown.
 
@@ -118,7 +118,7 @@ The index must be less than the length of the list. Otherwise an excpetion will 
 
 Remove the last element and return it.
 
-The length of the list must be greater than 0. Otherwise an excpetion will be thrown.
+The length of the list must be greater than C<0>. Otherwise an excpetion will be thrown.
 
 =head2 push
   
@@ -132,7 +132,7 @@ Add a element just after the end of the list.
 
 Remove the element at the position of the index and return it.
 
-The index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 The index must be less than the length of the list. Otherwise an excpetion will be thrown.
 
@@ -142,9 +142,9 @@ The index must be less than the length of the list. Otherwise an excpetion will 
 
 Replace the elements of the range specified by the offset and the lenght with the replacement array.
 
-The offset must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+The offset must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
-The removing length must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+The removing length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 The offset + the removing lenght must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
 
@@ -154,7 +154,7 @@ The offset + the removing lenght must be less than or equal to the length of the
 
 Resize the list.
 
-The new length must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+The new length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head2 set
 
@@ -162,7 +162,7 @@ The new length must be greater than or equal to 0. Otherwise an excpetion will b
 
 Set the element at the position of the index.
 
-The index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 The index must be less than the length of the list. Otherwise an excpetion will be thrown.
 
@@ -182,7 +182,7 @@ The length of the array must be the same as the length of the list. Otherwise an
 
 Remove the first element and return it.
 
-The length of the list must be greater than 0. Otherwise an excpetion will be thrown.
+The length of the list must be greater than C<0>. Otherwise an excpetion will be thrown.
 
 =head2 to_array
 

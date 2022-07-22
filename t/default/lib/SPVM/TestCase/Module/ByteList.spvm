@@ -2,8 +2,6 @@ class TestCase::Module::ByteList {
   use ByteList;
   use Fn;
   use Array;
-  use Fn;
-  use Array;
   
   static method new : int () {
     # new with array
@@ -17,7 +15,7 @@ class TestCase::Module::ByteList {
       unless ($list->get(1) == 5) {
         return 0;
       }
-
+      
       unless ($list->get(2) == Fn->INT8_MAX()) {
         return 0;
       }
@@ -36,7 +34,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     # new without argument
     {
       my $list = ByteList->new;
@@ -45,7 +43,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     # extra
     {
       {
@@ -66,7 +64,34 @@ class TestCase::Module::ByteList {
     
     return 1;
   }
+  
+  static method new_len : int () {
+    {
+      my $list = ByteList->new_len(32);
+      
+      unless ($list->length == 32) {
+        return 0;
+      }
+    }
 
+    {
+      my $list = ByteList->new_len(0);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      eval { ByteList->new_len(-1); };
+      unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method insert : int () {
     # Insert to first
     {
@@ -174,18 +199,6 @@ class TestCase::Module::ByteList {
       return 0;
     }
     $@ = undef;
-    
-    return 1;
-  }
-
-  static method new_len : int () {
-    {
-      my $list = ByteList->new_len(32);
-      
-      unless ($list->length == 32) {
-        return 0;
-      }
-    }
     
     return 1;
   }
