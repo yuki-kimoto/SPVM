@@ -73,7 +73,7 @@ class DoubleList {
     }
     
     unless ($index <= $length) {
-      die "The index must be less than or equal to the length";
+      die "The index must be less than or equal to the length of the array";
     }
     
     my $new_length = $length + 1;
@@ -93,8 +93,8 @@ class DoubleList {
   method pop : double () {
     my $length = $self->length;
     
-    if ($length == 0) {
-      die "Can't pop";
+    unless ($length > 0) {
+      die "The length of the array must be greater than 0";
     }
     
     my $value = $self->{values}[$length - 1];
@@ -122,8 +122,12 @@ class DoubleList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    unless ($index >= 0 && $index < $length) {
-      die "Out of range";
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
+    }
+    
+    unless ($index < $length) {
+      die "The index must be less than the length of the array";
     }
     
     my $values = $self->{values};
@@ -139,56 +143,9 @@ class DoubleList {
     return $remove_value;
   }
   
-  method set : void ($index : int, $value : double) {
-    my $length = $self->length;
-    
-    if ($index < 0 || $index > $length - 1) {
-      die "Out of range";
-    }
-    
-    $self->{values}[$index] = $value;
-  }
-  
-  method set_array : void ($array : double[]) {
-    unless ($array) {
-      die "Array must be defined";
-    }
-    
-    my $cur_length = $self->length;
-    
-    my $set_length = @$array;
-    
-    unless ($set_length == $cur_length) {
-      die "The length of argument array must be same as the length of current list array";
-    }
-    
-    Array->memcpy_double($self->{values}, 0, $array, 0, $cur_length);
-  }
-  
-  method shift : double () {
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
-    
-    if ($length == 0) {
-      die "Can't shift";
-    }
-    
-    my $values = $self->{values};
-    
-    my $value = $values->[0];
-    
-    Array->memmove_double($values, 0, $values, 1, $length - 1);
-    
-    $values->[$length - 1] = 0;
-    
-    $self->{length}--;
-    
-    return $value;
-  }
-  
   method resize : void ($new_length : int) {
-    if ($new_length < 0) {
-      die "New length must be more than or equals to 0";
+    unless ($new_length >= 0) {
+      die "The new length must be greater than or equal to 0";
     }
     
     my $length = $self->{length};
@@ -203,6 +160,57 @@ class DoubleList {
     }
     
     $self->{length} = $new_length;
+  }
+  
+  method set : void ($index : int, $value : double) {
+    my $length = $self->length;
+    
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
+    }
+    
+    unless ($index < $length) {
+      die "The index must be less than the length";
+    }
+    
+    $self->{values}[$index] = $value;
+  }
+  
+  method set_array : void ($array : double[]) {
+    unless ($array) {
+      die "The array must be defined";
+    }
+    
+    my $cur_length = $self->length;
+    
+    my $set_length = @$array;
+    
+    unless ($set_length == $cur_length) {
+      die "The length of the array must be same as the length of the current array";
+    }
+    
+    Array->memcpy_double($self->{values}, 0, $array, 0, $cur_length);
+  }
+  
+  method shift : double () {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    unless ($length > 0) {
+      die "The length of the array must be greater than 0";
+    }
+    
+    my $values = $self->{values};
+    
+    my $value = $values->[0];
+    
+    Array->memmove_double($values, 0, $values, 1, $length - 1);
+    
+    $values->[$length - 1] = 0;
+    
+    $self->{length}--;
+    
+    return $value;
   }
   
   method to_array : double[] () {

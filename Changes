@@ -46,6 +46,15 @@
       [After]
       has values : ro byte[];
     * Improve Array->memmove performance
+    * Improve ByteList exception messages.
+    * Improve ShortList exception messages.
+    * Improve IntList exception messages.
+    * Improve LongList exception messages.
+    * Improve FloatList exception messages.
+    * Improve DoubleList exception messages.
+    * Improve StringList exception messages.
+    * Improve List exception messages.
+    
   [Bug Fix]
     * Fix the StringList->remove bug.
 0.9627 2022-07-22

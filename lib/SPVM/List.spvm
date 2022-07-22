@@ -9,6 +9,7 @@ class List {
   # Private fields
   has capacity : int;
   
+  # Class methods
   static method new : List ($objects : object[]...) {
     my $self = new List;
     
@@ -44,7 +45,7 @@ class List {
     
     my $self = new List;
     unless ($length >= 0) {
-      die "length must be greater than or equal to zero";
+      die "The length must be greater than or equal to 9";
     }
     my $capacity = $length;
     $self->{capacity} = $capacity;
@@ -53,12 +54,27 @@ class List {
     return $self;
   }
   
+  # Instance methods
+  method get : object ($index : int) {
+    my $length = $self->length;
+    
+    if ($index < 0 || $index > $length - 1) {
+      die "Out of range";
+    }
+    
+    return $self->{values}[$index];
+  }
+  
   method insert : void ($index : int, $value : object) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    unless ($index >= 0 && $index <= $length) {
-      die "Out of range";
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
+    }
+    
+    unless ($index <= $length) {
+      die "The index must be less than or equal to the length of the array";
     }
     
     my $new_length = $length + 1;
@@ -72,13 +88,46 @@ class List {
     
     $self->{length}++;
   }
-
+  
+  method pop : object () {
+    my $length = $self->length;
+    
+    unless ($length > 0) {
+      die "The length of the array must be greater than 0";
+    }
+    
+    my $index = $self->{length};
+    
+    my $ret = $self->{values}[$index - 1];
+    
+    $self->{values}[$index - 1] = undef;
+    
+    --$self->{length};
+    
+    return $ret;
+  }
+  
+  method push : void ($value : object) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    my $new_length = $length + 1;
+    $self->_maybe_extend($new_length);
+    my $index = $self->{length};
+    $self->{values}[$index] = $value;
+    ++$self->{length};
+  }
+  
   method remove : object ($index : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    unless ($index >= 0 && $index < $length) {
-      die "Out of range";
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
+    }
+    
+    unless ($index < $length) {
+      die "The index must be less than the length of the array";
     }
     
     my $values = $self->{values};
@@ -92,32 +141,80 @@ class List {
     
     return $remove_value;
   }
-
-  method push : void ($value : object) {
+  
+  method resize : void ($new_length : int) {
+    unless ($new_length >= 0) {
+      die "The new length must be greater than or equal to 0";
+    }
+    
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    my $new_length = $length + 1;
-    $self->_maybe_extend($new_length);
-    my $index = $self->{length};
-    $self->{values}[$index] = $value;
-    ++$self->{length};
+    if ($new_length > $length) {
+      $self->_maybe_extend($new_length);
+    }
+    elsif ($new_length < $length) {
+      Array->memset_object($self->{values}, $new_length, undef, $length - $new_length);
+    }
+    $self->{length} = $new_length;
   }
   
-  method pop : object () {
-    if ($self->{length} <= 0) {
-      die "The length must be greater than 0";
+  method set : void ($index : int, $value : object) {
+    my $length = $self->length;
+    
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
     }
     
-    my $index = $self->{length};
+    unless ($index < $length) {
+      die "The index must be less than the length";
+    }
     
-    my $ret = $self->{values}[$index - 1];
+    $self->{values}[$index] = $value;
+  }
+  
+  method set_array : void ($array : object[]) {
+    unless ($array) {
+      die "The array must be defined";
+    }
     
-    $self->{values}[$index - 1] = undef;
+    my $cur_length = $self->length;
     
-    --$self->{length};
+    my $set_length = @$array;
     
-    return $ret;
+    unless ($set_length == $cur_length) {
+      die "The length of the array must be same as the length of the current array";
+    }
+    
+    my $values = $self->{values};
+    Array->memcpy_object($values, 0, $array, 0, $cur_length);
+  }
+  
+  method shift : object () {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    unless ($length > 0) {
+      die "The length of the array must be greater than 0";
+    }
+    
+    my $values = $self->{values};
+    
+    my $value = $values->[0];
+    
+    Array->memmove_object($values, 0, $values, 1, $length - 1);
+    $values->[$length - 1] = undef;
+    
+    $self->{length}--;
+    
+    return $value;
+  }
+  
+  method to_array : object[] () {
+    my $length = $self->{length};
+    my $objects = Array->new_proto($self->{values}, $length);
+    Array->memcpy_object($objects, 0, $self->{values}, 0, $length);
+    return $objects;
   }
   
   method unshift : void ($value : object) {
@@ -133,87 +230,6 @@ class List {
     
     $values->[0] = $value;
     $self->{length}++;
-  }
-  
-  method shift : object () {
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
-    
-    if ($length == 0) {
-      die "The length must be greater than 0";
-    }
-    
-    my $values = $self->{values};
-    
-    my $value = $values->[0];
-    
-    Array->memmove_object($values, 0, $values, 1, $length - 1);
-    $values->[$length - 1] = undef;
-    
-    $self->{length}--;
-    
-    return $value;
-  }
-
-  method set : void ($index : int, $value : object) {
-    my $length = $self->length;
-
-    if ($index < 0 || $index > $length - 1) {
-      die "Out of range";
-    }
-    
-    $self->{values}[$index] = $value;
-  }
-
-  method set_array : void ($array : object[]) {
-    unless ($array) {
-      die "Array must be defined";
-    }
-    
-    my $cur_length = $self->length;
-    
-    my $set_length = @$array;
-    
-    unless ($set_length == $cur_length) {
-      die "The length of argument array must be same as the length of current list array";
-    }
-    
-    my $values = $self->{values};
-    Array->memcpy_object($values, 0, $array, 0, $cur_length);
-  }
-
-  method get : object ($index : int) {
-    my $length = $self->length;
-
-    if ($index < 0 || $index > $length - 1) {
-      die "Out of range";
-    }
-    
-    return $self->{values}[$index];
-  }
-  
-  method resize : void ($new_length : int) {
-    if ($new_length < 0) {
-      die "New length must be greater than or equal to 0";
-    }
-    
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
-    
-    if ($new_length > $length) {
-      $self->_maybe_extend($new_length);
-    }
-    elsif ($new_length < $length) {
-      Array->memset_object($self->{values}, $new_length, undef, $length - $new_length);
-    }
-    $self->{length} = $new_length;
-  }
-  
-  method to_array : object[] () {
-    my $length = $self->{length};
-    my $objects = Array->new_proto($self->{values}, $length);
-    Array->memcpy_object($objects, 0, $self->{values}, 0, $length);
-    return $objects;
   }
   
   private method _maybe_extend : void ($min_capacity : int) {

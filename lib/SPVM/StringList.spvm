@@ -9,6 +9,7 @@ class StringList {
   # Private fields
   has capacity : int;
   
+  # Class methods
   static method new : StringList ($array : string[]...) {
     my $self = new StringList;
     my $length : int;
@@ -35,7 +36,7 @@ class StringList {
   static method new_len : StringList ($length : int) {
     my $self = new StringList;
     unless ($length >= 0) {
-      die "The length must be greater than or equal to zero";
+      die "The length must be greater than or equal to 0";
     }
     my $capacity = $length;
     $self->{capacity} = $capacity;
@@ -47,8 +48,12 @@ class StringList {
   method get : string ($index : int) {
     my $length = $self->length;
     
-    if ($index < 0 || $index > $length - 1) {
-      die "Out of range";
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
+    }
+    
+    unless ($index < $length) {
+      die "The index must be less than the length";
     }
     
     my $value = $self->{values}[$index];
@@ -56,12 +61,25 @@ class StringList {
     return $value;
   }
   
+  precompile method grep : int ($search : string) {
+    for (my $i = 0; $i < $self->length; ++$i) {
+      if ($self->{values}->[$i] eq $search) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+  
   method insert : void ($index : int, $value : string) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    unless ($index >= 0 && $index <= $length) {
-      die "Out of range";
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
+    }
+    
+    unless ($index <= $length) {
+      die "The index must be less than or equal to the length of the array";
     }
     
     my $new_length = $length + 1;
@@ -76,12 +94,42 @@ class StringList {
     $self->{length}++;
   }
 
+  method pop : string () {
+    my $length = $self->length;
+    
+    unless ($length > 0) {
+      die "The length of the array must be greater than 0";
+    }
+    
+    my $value = $self->{values}[$length - 1];
+    
+    $self->{length}--;
+    
+    return $value;
+  }
+  
+  method push : void ($value : string) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    my $new_length = $length + 1;
+    $self->_maybe_extend($new_length);
+    
+    $self->{values}[$length] = $value;
+    
+    $self->{length}++;
+  }
+  
   method remove : string ($index : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    unless ($index >= 0 && $index < $length) {
-      die "Out of range";
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
+    }
+    
+    unless ($index < $length) {
+      die "The index must be less than the length of the array";
     }
     
     my $values = $self->{values};
@@ -97,30 +145,83 @@ class StringList {
     return $remove_value;
   }
   
-  method push : void ($value : string) {
+  method resize : void ($new_length : int) {
+    unless ($new_length >= 0) {
+      die "The new length must be greater than or equal to 0";
+    }
+    
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    my $new_length = $length + 1;
-    $self->_maybe_extend($new_length);
-    
-    $self->{values}[$length] = $value;
-    
-    $self->{length}++;
+    if ($new_length > $length) {
+      $self->_maybe_extend($new_length);
+    }
+    elsif ($new_length < $length) {
+      Array->memset_object($self->{values}, $new_length, undef, $length);
+    }
+    $self->{length} = $new_length;
   }
   
-  method pop : string () {
+  method set : void ($index : int, $value : string) {
     my $length = $self->length;
     
-    if ($length == 0) {
-      die "The length must be greater than 0";
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
     }
     
-    my $value = $self->{values}[$length - 1];
+    unless ($index < $length) {
+      die "The index must be less than the length";
+    }
+    
+    $self->{values}[$index] = $value;
+  }
+  
+  method set_array : void ($array : string[]) {
+    unless ($array) {
+      die "The array must be defined";
+    }
+    
+    my $cur_length = $self->length;
+    
+    my $set_length = @$array;
+    
+    unless ($set_length == $cur_length) {
+      die "The length of the array must be same as the length of the current array";
+    }
+    
+    my $values = $self->{values};
+    Array->memcpy_object($values, 0, $array, 0, $cur_length);
+  }
+  
+  method shift : string () {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    unless ($length > 0) {
+      die "The length of the array must be greater than 0";
+    }
+    
+    my $values = $self->{values};
+    
+    my $value = $values->[0];
+    
+    Array->memmove_object($values, 0, $values, 1, $length - 1);
     
     $self->{length}--;
     
     return $value;
+  }
+  
+  method to_array : string[] () {
+    my $length = $self->length;
+    
+    my $array = new string[$length];
+    
+    my $values = $self->{values};
+    
+    Array->memcpy_object($array, 0, $values, 0, $length);
+    
+    return $array;
   }
   
   method unshift : void ($value : string) {
@@ -138,90 +239,6 @@ class StringList {
     $self->{length}++;
   }
   
-  method shift : string () {
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
-    
-    if ($length == 0) {
-      die "The length must be greater than 0";
-    }
-    
-    my $values = $self->{values};
-    
-    my $value = $values->[0];
-    
-    Array->memmove_object($values, 0, $values, 1, $length - 1);
-    
-    $self->{length}--;
-    
-    return $value;
-  }
-
-  method resize : void ($new_length : int) {
-    if ($new_length < 0) {
-      die "New length must be greater than or equal to 0";
-    }
-    
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
-    
-    if ($new_length > $length) {
-      $self->_maybe_extend($new_length);
-    }
-    elsif ($new_length < $length) {
-      Array->memset_object($self->{values}, $new_length, undef, $length);
-    }
-    $self->{length} = $new_length;
-  }
-
-  method set : void ($index : int, $value : string) {
-    my $length = $self->length;
-    
-    if ($index < 0 || $index > $length - 1) {
-      die "Out of range";
-    }
-    
-    $self->{values}[$index] = $value;
-  }
-  
-  method set_array : void ($array : string[]) {
-    unless ($array) {
-      die "Array must be defined";
-    }
-    
-    my $cur_length = $self->length;
-    
-    my $set_length = @$array;
-    
-    unless ($set_length == $cur_length) {
-      die "The length of argument array must be same as the length of current list array";
-    }
-    
-    my $values = $self->{values};
-    Array->memcpy_object($values, 0, $array, 0, $cur_length);
-  }
-
-  precompile method grep : int ($search : string) {
-    for (my $i = 0; $i < $self->length; ++$i) {
-      if ($self->{values}->[$i] eq $search) {
-        return 1;
-      }
-    }
-    return 0;
-  }
-  
-  method to_array : string[] () {
-    my $length = $self->length;
-    
-    my $array = new string[$length];
-    
-    my $values = $self->{values};
-    
-    Array->memcpy_object($array, 0, $values, 0, $length);
-    
-    return $array;
-  }
-
   private method _maybe_extend : void ($min_capacity : int) {
     my $capacity = $self->{capacity};
     

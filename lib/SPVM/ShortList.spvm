@@ -73,7 +73,7 @@ class ShortList {
     }
     
     unless ($index <= $length) {
-      die "The index must be less than or equal to the length";
+      die "The index must be less than or equal to the length of the array";
     }
     
     my $new_length = $length + 1;
@@ -105,8 +105,8 @@ class ShortList {
   method pop : short () {
     my $length = $self->length;
     
-    if ($length == 0) {
-      die "Can't pop";
+    unless ($length > 0) {
+      die "The length of the array must be greater than 0";
     }
     
     my $value = $self->{values}[$length - 1];
@@ -118,9 +118,34 @@ class ShortList {
     return $value;
   }
   
+  method remove : short ($index : int) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
+    }
+    
+    unless ($index < $length) {
+      die "The index must be less than the length of the array";
+    }
+    
+    my $values = $self->{values};
+    my $remove_value = $values->[$index];
+    
+    my $dist_index = $index;
+    my $src_index = $index + 1;
+    my $move_length = $length - $index - 1;
+    Array->memmove_short($values, $dist_index, $values, $src_index, $move_length);
+    
+    $self->{length}--;
+    
+    return $remove_value;
+  }
+  
   method resize : void ($new_length : int) {
-    if ($new_length < 0) {
-      die "New length must be greater than or equal to 0";
+    unless ($new_length >= 0) {
+      die "The new length must be greater than or equal to 0";
     }
     
     my $length = $self->{length};
@@ -137,32 +162,15 @@ class ShortList {
     $self->{length} = $new_length;
   }
   
-  method remove : short ($index : int) {
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
-    
-    unless ($index >= 0 && $index < $length) {
-      die "Out of range";
-    }
-    
-    my $values = $self->{values};
-    my $remove_value = $values->[$index];
-    
-    my $dist_index = $index;
-    my $src_index = $index + 1;
-    my $move_length = $length - $index - 1;
-    Array->memmove_short($values, $dist_index, $values, $src_index, $move_length);
-    
-    $self->{length}--;
-    
-    return $remove_value;
-  }
-  
   method set : void ($index : int, $value : short) {
     my $length = $self->length;
     
-    if ($index < 0 || $index > $length - 1) {
-      die "Out of range";
+    unless ($index >= 0) {
+      die "The index must be greater than or equal to 0";
+    }
+    
+    unless ($index < $length) {
+      die "The index must be less than the length";
     }
     
     $self->{values}[$index] = $value;
@@ -170,7 +178,7 @@ class ShortList {
   
   method set_array : void ($array : short[]) {
     unless ($array) {
-      die "Array must be defined";
+      die "The array must be defined";
     }
     
     my $cur_length = $self->length;
@@ -178,19 +186,18 @@ class ShortList {
     my $set_length = @$array;
     
     unless ($set_length == $cur_length) {
-      die "The length of argument array must be same as the length of current list array";
+      die "The length of the array must be same as the length of the current array";
     }
-    
     
     Array->memcpy_short($self->{values}, 0, $array, 0, $cur_length);
   }
-
+  
   method shift : short () {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length == 0) {
-      die "Can't shift";
+    unless ($length > 0) {
+      die "The length of the array must be greater than 0";
     }
     
     my $values = $self->{values};
@@ -198,7 +205,7 @@ class ShortList {
     my $value = $values->[0];
     
     Array->memmove_short($values, 0, $values, 1, $length - 1);
-
+    
     $values->[$length - 1] = 0;
     
     $self->{length}--;
