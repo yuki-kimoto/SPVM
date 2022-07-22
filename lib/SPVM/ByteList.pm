@@ -4,49 +4,49 @@ package SPVM::ByteList;
 
 =head1 Name
 
-SPVM::ByteList - Dynamic Byte Array
+SPVM::ByteList - Dynamic byte Array
 
 =head1 Usage
   
   use ByteList;
   
   # Create a byte list
-  my $byte_list = ByteList->new;
-  my $byte_list = ByteList->new([(byte)1, 2, 3]);
+  my $list = ByteList->new;
+  my $list = ByteList->new([(byte)1, 2, 3]);
   
   # Create a byte list with array length
-  my $byte_list = ByteList->new_len(10);
-
+  my $list = ByteList->new_len(10);
+  
   # Get list length
-  my $length = $byte_list->length;
+  my $length = $list->length;
   
-  # Push byte value
-  $byte_list->push((byte)3);
-
-  # Pop byte value.
-  my $byte_value = $byte_list->pop;
-
-  # Unshift byte value.
-  $byte_list->unshift((byte)3);
+  # Push value
+  $list->push((byte)3);
   
-  # Shift byte value.
-  my $byte_value = $byte_list->shift;
+  # Pop value.
+  my $value = $list->pop;
   
-  # Set byte value.
-  $byte_list->set(2, (byte)3);
+  # Unshift value.
+  $list->unshift((byte)3);
   
-  # Get byte value.
-  my $byte_value = $byte_list->get(2);
-
-  # Insert byte value
-  $byte_list->insert(1, 3);
-
-  # Remove byte value
-  my $byte_value = $byte_list->remove(1);
-
-  # Convert ByteList to byte array.
-  my $byte_array = $byte_list->to_array;
-
+  # Shift value.
+  my $value = $list->shift;
+  
+  # Set value.
+  $list->set(2, (byte)3);
+  
+  # Get value.
+  my $value = $list->get(2);
+  
+  # Insert value
+  $list->insert(1, 3);
+  
+  # Remove value
+  my $value = $list->remove(1);
+  
+  # Convert list to array.
+  my $array = $list->to_array;
+  
 =head1 Description
 
 L<ByteList|SPVM::ByteList> is a dynamic C<byte> array.
@@ -63,7 +63,10 @@ The length.
 
   has values : ro byte[];
 
-The values.
+The values. This is the internally used array, but it can be manipulated directly.
+
+  my $values = $list->values;
+  $valeus->[0] = 5;
 
 =head1 Class Methods
 
@@ -75,16 +78,19 @@ Create a new L<ByteList|SPVM::ByteList> object with a C<byte> array.
 
 Internally, a new array is created, and each element of the specified array is copied to the new array.
 
-If the specified array is C<undef>, a new array that length is C<0> is created.
+If the array is C<undef>, a new array that length is C<0> is created.
 
-  my $byte_list = ByteList->new;
-  my $byte_list = ByteList->new([(byte)1, 2, 3]);
+B<Examples:>
+
+  my $list = ByteList->new;
+  my $list = ByteList->new([(byte)1, 2, 3]);
+  my $list = ByteList->new(undef);
 
 =head2 new_len
 
     static method new_len : ByteList ($length : int)
 
-Create a new L<ByteList|SPVM::ByteList> object by the length.
+Create a new L<ByteList|SPVM::ByteList> object with the length.
 
 The length must be greater than or equal to 0. Otherwise an excpetion will be thrown.
 
@@ -100,68 +106,92 @@ Get the value with index.
 
   method insert : void ($index : int, $value : byte)
 
-Insert a element to the specific index.
+Insert a element to the position of the index.
 
-=head2 set
+The index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
 
-  method set : void ($index : int, $value : byte)
-
-Set the value with index.
-
-=head2 set_array
-
-  method set_array : void ($array : byte[])
-
-Set a array. Each elements of the array is copied to the correspoinding index of the array this list has.
-
-Array must be defined, otherwise a exception occurs.
-
-The length of argument array must be same as the length of current list array, otherwise a exception occures.
+The index must be less than the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 pop
 
   method pop : byte ()
 
-Pops and returns the last value of the list, shortening the array by one element
-If there are no elements in the list, exception occur.
+Remove the last element and return it.
+
+The length of the list must be greater than 0. Otherwise an excpetion will be thrown.
 
 =head2 push
   
   method push : void ($value : byte)
 
-Appending the value to the end of list.
+Add a element just after the end of the list.
 
 =head2 remove
 
   method remove : byte ($index : int)
 
-Remove and return the element which is specified by the index.
+Remove the element at the position of the index and return it.
+
+The index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+
+The index must be less than the length of the list. Otherwise an excpetion will be thrown.
+
+=head2 replace
+
+  method replace : void ($offset : int, $remove_length : int, $replace : byte[])
+
+Replace the elements of the range specified by the offset and the lenght with the replacement array.
+
+The offset must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+
+The removing length must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+
+The offset + the removing lenght must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 resize
 
   method resize : void ($new_length : int)
 
-Resize this list. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is same as the current length, there is nothing to do. If the new length is longer than the current length, the list grows to the new length, and the values of the added elements are set to 0.
+Resize the list.
 
-New length must be more than or equals to 0, otherwise a exception occur.
+The new length must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+
+=head2 set
+
+  method set : void ($index : int, $value : byte)
+
+Set the element at the position of the index.
+
+The index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+
+The index must be less than the length of the list. Otherwise an excpetion will be thrown.
+
+=head2 set_array
+
+  method set_array : void ($array : byte[])
+
+Set a array. Each element of the array is copied to the element of the list.
+
+The array must be defined. Otherwise an excpetion will be thrown.
+
+The length of the array must be the same as the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 shift
 
   method shift : byte ()
 
-Shifts the first value of the list off and returns it, shortening
-the array by 1 and moving everything down.
-If there are no elements in the list, exception occur.
+Remove the first element and return it.
+
+The length of the list must be greater than 0. Otherwise an excpetion will be thrown.
 
 =head2 to_array
 
   method to_array : byte[] ()
 
-Convert L<ByteList|SPVM::ByteList> to byte array.
+Convert the list to an array.
 
 =head2 unshift
 
   method unshift : void ($value : byte)
 
-Appending the value to the top of list.
-
+Insert a element at the beginning of the list.

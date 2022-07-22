@@ -67,14 +67,13 @@ class ByteList {
   
   method insert : void ($index : int, $value : byte) {
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     unless ($index >= 0) {
       die "The index must be greater than or equal to 0";
     }
     
     unless ($index <= $length) {
-      die "The index must be less than or equal to the length of the array";
+      die "The index must be less than or equal to the length of the list";
     }
     
     my $new_length = $length + 1;
@@ -95,7 +94,7 @@ class ByteList {
     my $length = $self->length;
     
     unless ($length > 0) {
-      die "The length of the array must be greater than 0";
+      die "The length of the list must be greater than 0";
     }
     
     my $value = $self->{values}[$length - 1];
@@ -109,7 +108,6 @@ class ByteList {
   
   method push : void ($value : byte) {
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
@@ -121,14 +119,13 @@ class ByteList {
   
   method remove : byte ($index : int) {
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     unless ($index >= 0) {
       die "The index must be greater than or equal to 0";
     }
     
     unless ($index < $length) {
-      die "The index must be less than the length of the array";
+      die "The index must be less than the length of the list";
     }
     
     my $values = $self->{values};
@@ -153,7 +150,7 @@ class ByteList {
       die("The removing length must be greater than or equal to 0");
     }
     unless ($offset + $remove_length <= $self->{length}) {
-      die("The offset + the removing lenght must be less than or equal to the length of the values of the list");
+      die("The offset + the removing lenght must be less than or equal to the length of the list");
     }
     
     my $replace_length = 0;
@@ -180,7 +177,6 @@ class ByteList {
     }
     
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     if ($new_length > $length) {
       $self->_maybe_extend($new_length);
@@ -201,7 +197,7 @@ class ByteList {
     }
     
     unless ($index < $length) {
-      die "The index must be less than the length";
+      die "The index must be less than the length of the list";
     }
     
     $self->{values}[$index] = $value;
@@ -217,7 +213,7 @@ class ByteList {
     my $set_length = @$array;
     
     unless ($set_length == $cur_length) {
-      die "The length of the array must be same as the length of the current array";
+      die "The length of the array must be the same as the length of the list";
     }
     
     Array->memcpy_byte($self->{values}, 0, $array, 0, $cur_length);
@@ -225,10 +221,9 @@ class ByteList {
   
   method shift : byte () {
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     unless ($length > 0) {
-      die "The length of the array must be greater than 0";
+      die "The length of the list must be greater than 0";
     }
     
     my $values = $self->{values};
@@ -258,7 +253,6 @@ class ByteList {
   
   method unshift : void ($value : byte) {
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     my $new_length = $length + 1;
 

@@ -700,7 +700,7 @@ class TestCase::Module::ByteList {
     {
       my $list = ByteList->new([(byte)1, 2, 3, 4]);
       eval { $list->replace(2, 3, [(byte)30, 40, 50]); };
-      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the list")) {
         return 0;
       }
     }
@@ -716,14 +716,14 @@ class TestCase::Module::ByteList {
     {
       my $list = ByteList->new([(byte)1]);
       eval { $list->replace(2, 0, [(byte)1, 2]); };
-      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the list")) {
         return 0;
       }
     }
     {
       my $list = ByteList->new([(byte)1]);
       eval { $list->replace(1, 2, [(byte)1, 2]); };
-      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the list")) {
         return 0;
       }
     }
@@ -731,7 +731,7 @@ class TestCase::Module::ByteList {
     {
       my $list = ByteList->new([(byte)1]);
       eval { $list->replace(2, 2, [(byte)1, 2]); };
-      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the list")) {
         return 0;
       }
     }
