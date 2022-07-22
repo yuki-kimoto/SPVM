@@ -1,43 +1,43 @@
 class StringBuffer {
   use Fn;
   use Array;
-
+  
+  # Fields
   has value : ro mutable string;
   has length : ro int;
   
+  # Private fields
+  has capacity : int;
+  
+  # Class methods
   static method new : StringBuffer () {
     my $self = new StringBuffer;
-    my $default_capacity = StringBuffer->DEFAULT_CAPACITY();
-    $self->{value} = (mutable string)new_string_len($default_capacity);
+    $self->{value} = (mutable string)new_string_len(0);
     $self->{length} = 0;
     return $self;
   }
   
+  # Instance methods
   method push : void ($string : string) {
-    my $length = length($string);
-    my $capacity = length $self->{value};
-    if ($self->{length} + $length > $capacity) {
-      my $new_capacity : int;
-      if ($self->{length} + $length > $capacity * 2) {
-        $new_capacity = $self->{length} + $length;
-      } else {
-        $new_capacity = $capacity * 2;
-      }
-      $self->_reallocate($new_capacity);
-    }
-    Fn->memcpy($self->{value}, $self->{length}, $string, 0, $length);
-    $self->{length} += $length;
+    my $length = $self->{length};
+    my $string_length = length $string;
+    
+    my $new_length = $length + $string_length;
+    $self->_maybe_extend($new_length);
+    
+    Fn->memcpy($self->{value}, $length, $string, 0, $string_length);
+    $self->{length} += $string_length;
   }
-
+  
   method push_char : void ($char : byte) {
-    my $capacity = length $self->{value};
-    if ($self->{length} + 1 > $capacity) {
-      my $new_capacity = $capacity * 2;
-      $self->_reallocate($new_capacity);
-    }
+    my $length = $self->{length};
+    
+    my $new_length = $length + 1;
+    $self->_maybe_extend($new_length);
+    
     $self->{value}[$self->{length}++] = $char;
   }
-
+  
   method replace : void ($offset : int, $length : int, $replace : string) {
     unless ($offset >= 0) {
       die("The offset must be greater than or equal to 0");
@@ -46,22 +46,19 @@ class StringBuffer {
     unless ($offset + $length <= $self->{length}) {
       die("The offset + the lenght must be less than or equal to the length of the string that the string buffer has");
     }
-
+    
     if ($length > $self->{length} - $offset) {
       $length = $self->{length} - $offset;
     }
-
+    
     my $replace_length = 0;
     if ($replace) {
       $replace_length = length($replace);
     }
-
-    my $capacity = length $self->{value};
-    if ($self->{length} - $length + $replace_length > $capacity) {
-      # O($new_string_length)
-      $self->_reallocate($self->{length} - $length + $replace_length);
-    }
-
+    
+    my $new_length = $self->{length} - $length + $replace_length;
+    $self->_maybe_extend($new_length);
+    
     my $last_sequence_length = $self->{length} - $offset - $length;
     if ($length > $replace_length) {
       # move last sequence to forward
@@ -79,28 +76,41 @@ class StringBuffer {
         $self->{value}[$target] = $self->{value}[$origin];
       }
     }
-
+    
     # replace with new array
     for (my $i = 0; $i < $replace_length; ++$i) {
       my $target = $offset + $i;
       $self->{value}[$target] = $replace->[$i];
     }
-
+    
     $self->{length} += $replace_length - $length;
   }
-
+  
   method to_string : string () {
-    return (Fn->substr($self->{value}, 0, $self->{length}));
-  }
-
-  private enum {
-    DEFAULT_CAPACITY = 16,
+    my $string = Fn->substr($self->{value}, 0, $self->{length});
+    return $string;
   }
   
-  # O($new_capacity)
-  private method _reallocate : void ($new_capacity : int) {
-    my $new_string = (mutable string)new_string_len($new_capacity);
-    Fn->memcpy($new_string, 0, $self->{value}, 0, $self->{length});
-    $self->{value} = $new_string;
+  private method _maybe_extend : void ($min_capacity : int) {
+    my $capacity = $self->{capacity};
+    
+    unless ($min_capacity > $capacity) {
+      return;
+    }
+    
+    if ($capacity < $min_capacity) {
+      $capacity = $min_capacity;
+    }
+    
+    my $new_capacity = $capacity * 2;
+    my $new_value = (mutable string)new_string_len $new_capacity;
+    
+    my $length = $self->{length};
+    my $value = $self->{value};
+    
+    Fn->memcpy($new_value, 0, $value, 0, $length);
+    
+    $self->{value} = $new_value;
+    $self->{capacity} = $new_capacity;
   }
 }

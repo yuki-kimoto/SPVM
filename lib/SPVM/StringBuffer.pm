@@ -24,6 +24,20 @@ SPVM::StringBuffer - String Buffer
 
 String buffer.
 
+=head1 Fields
+
+=head2 length
+
+  has length : ro int;
+
+The length.
+
+=head2 value
+
+  has value : ro mutable string;
+
+The value.
+
 =head1 Class Methods
 
 =head2 new
@@ -40,12 +54,6 @@ Create new L<StringBuffer|SPVM::StringBuffer> object.
 
 Get the value of the string buffer.
 
-=head2 length
-
-  method length : int ()
-
-Get the string length.
-
 =head2 push
 
   method push  : void ($string : string)
@@ -60,7 +68,7 @@ Push a character to the string buffer.
 
 =head2 replace
 
-  method replace : void ($offset : int, $length : int, $replace : string) {
+  method replace : void ($offset : int, $length : int, $replace : string)
 
 Replace the range(from the offset to the offeset + the lenth) of the string buffer with the replacement string.
 

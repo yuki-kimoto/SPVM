@@ -58,7 +58,7 @@
   [Bug Fix]
     * Fix the StringList->remove bug.
   [Document]
-    * Add Fields doc to Byte, Short, Int, Long, Float, Double class.
+    * Add Fields doc to Byte, Short, Int, Long, Float, Double, ByteList, ShortList, IntList, LongList, FloatList, DoubleList, List, StringBuffer class.
     
 0.9627 2022-07-22
   [New Feature]
