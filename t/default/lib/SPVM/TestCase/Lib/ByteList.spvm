@@ -632,8 +632,6 @@ class TestCase::Lib::ByteList {
       return 0;
     }
     
-    warn "AAAAA";
-    
     # values
     my $values = $nums->values;
     $values->[2] = 4;
