@@ -4,52 +4,52 @@ package SPVM::ShortList;
 
 =head1 Name
 
-SPVM::ShortList - Dynamic short array
+SPVM::ShortList - Dynamic short Array
 
 =head1 Usage
   
   use ShortList;
   
   # Create a short list
-  my $short_list = ShortList->new;
-  my $short_list = ShortList->new([(short)1, 2, 3]);
+  my $list = ShortList->new;
+  my $list = ShortList->new([(short)1, 2, 3]);
   
   # Create a short list with array length
-  my $short_list = ShortList->new_len(10);
-
+  my $list = ShortList->new_len(10);
+  
   # Get list length
-  my $length = $short_list->length;
+  my $length = $list->length;
   
-  # Push short value
-  $short_list->push((short)3);
-
-  # Pop short value.
-  my $short_value = $short_list->pop;
-
-  # Unshift short value.
-  $short_list->unshift((short)3);
+  # Push value
+  $list->push((short)3);
   
-  # Shift short value.
-  my $short_value = $short_list->shift;
+  # Pop value.
+  my $value = $list->pop;
   
-  # Set short value.
-  $short_list->set(2, (short)3);
-
-  # Get short value.
-  my $short_value = $short_list->get(2);
-
-  # Insert byte value
-  $byte_list->insert(1, 3);
-
-  # Remove byte value
-  my $byte_value = $byte_list->remove(1);
-
-  # Convert ShortList to short array.
-  my $short_array = $short_list->to_array;
-
+  # Unshift value.
+  $list->unshift((short)3);
+  
+  # Shift value.
+  my $value = $list->shift;
+  
+  # Set value.
+  $list->set(2, (short)3);
+  
+  # Get value.
+  my $value = $list->get(2);
+  
+  # Insert value
+  $list->insert(1, 3);
+  
+  # Remove value
+  my $value = $list->remove(1);
+  
+  # Convert list to array.
+  my $array = $list->to_array;
+  
 =head1 Description
 
-L<ShortList|SPVM::ShortList> is dynamic  short array.
+L<ShortList|SPVM::ShortList> is a dynamic C<short> array.
 
 =head1 Fields
 
@@ -63,28 +63,36 @@ The length.
 
   has values : ro short[];
 
-The values.
+The values. This is the internally used array, but it can be manipulated directly.
+
+  my $values = $list->values;
+  $valeus->[0] = 5;
 
 =head1 Class Methods
 
 =head2 new
 
-  static method new : ShortList ($array : short[]...)
+    static method new : ShortList ($array : short[]...)
 
-Create a new L<ShortList|SPVM::ShortList> object with specific C<short> array.
+Create a new L<ShortList|SPVM::ShortList> object with a C<short> array.
 
-Internally, new array is created, and each element of argument array is copied to internal array.
+Internally, a new array is created, and each element of the specified array is copied to the new array.
 
-If the array of the argument is C<undef>, 0-length internal array is created.
+If the array is C<undef>, a new array that length is C<0> is created.
 
-  my $short_list = ShortList->new;
-  my $short_list = ShortList->new([(short)1, 2, 3]);
+B<Examples:>
+
+  my $list = ShortList->new;
+  my $list = ShortList->new([(short)1, 2, 3]);
+  my $list = ShortList->new(undef);
 
 =head2 new_len
 
-  static method new_len : ShortList ($length : int)
+    static method new_len : ShortList ($length : int)
 
-Create a new L<ShortList|SPVM::ShortList> object with array length.
+Create a new L<ShortList|SPVM::ShortList> object with the length.
+
+The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head1 Instance Methods
 
@@ -92,74 +100,102 @@ Create a new L<ShortList|SPVM::ShortList> object with array length.
 
   method get : short ($index : int)
 
-Get the value with index.
+Get the element of the position of the index.
+
+The index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+
+The index must be less than the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 insert
 
   method insert : void ($index : int, $value : short)
 
-Insert a element to the specific index.
+Insert a element to the position of the index.
+
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The index must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 pop
 
   method pop : short ()
 
-Pops and returns the last value of the list, shortening the array by one element
-If there are no elements in the list, exception occur.
+Remove the last element and return it.
+
+The length of the list must be greater than C<0>. Otherwise an excpetion will be thrown.
 
 =head2 push
   
   method push : void ($value : short)
 
-Appending the value to the end of list.
+Add a element after the end of the list.
 
 =head2 remove
 
   method remove : short ($index : int)
 
-Remove and return the element which is specified by the index.
+Remove the element at the position of the index and return it.
+
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The index must be less than the length of the list. Otherwise an excpetion will be thrown.
+
+=head2 replace
+
+  method replace : void ($offset : int, $remove_length : int, $replace : short[])
+
+Replace the elements of the range specified by the offset and the lenght with the replacement array.
+
+The offset must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The removing length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The offset + the removing lenght must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 resize
 
   method resize : void ($new_length : int)
 
-Resize this list. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is same as the current length, there is nothing to do. If the new length is longer than the current length, the list grows to the new length, and the values of the added elements are set to 0.
+Resize the list.
 
-New length must be more than or equals to 0, otherwise a exception occur.
+The new length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head2 set
 
   method set : void ($index : int, $value : short)
 
-Set the value with index.
+Set the element at the position of the index.
+
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The index must be less than the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 set_array
 
   method set_array : void ($array : short[])
 
-Set a array. Each elements of the array is copied to the correspoinding index of the array this list has.
+Set a array. Each element of the array is copied to the element of the list.
 
-Array must be defined, otherwise a exception occurs.
+The array must be defined. Otherwise an excpetion will be thrown.
 
-The length of argument array must be same as the length of current list array, otherwise a exception occures.
+The length of the array must be the same as the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 shift
 
   method shift : short ()
 
-Shifts the first value of the list off and returns it, shortening
-the array by 1 and moving everything down.
-If there are no elements in the list, exception occur.
+Remove the first element and return it.
+
+The length of the list must be greater than C<0>. Otherwise an excpetion will be thrown.
 
 =head2 to_array
 
   method to_array : short[] ()
 
-Convert L<ShortList|SPVM::ShortList> to short array.
+Convert the list to an array.
 
 =head2 unshift
 
   method unshift : void ($value : short)
 
-Appending the value to the top of list.
-
+Insert a element at the beginning of the list.
