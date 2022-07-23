@@ -2,21 +2,49 @@ class TestCase::Module::IntList {
   use IntList;
   use Fn;
   use Array;
-
+  
+  # Fields
+  static method fields : int () {
+    my $nums = IntList->new([(int)1, 2, 3]);
+    
+    # length
+    my $length = $nums->length;
+    unless ($length == 3) {
+      return 0;
+    }
+    
+    # values
+    my $values = $nums->values;
+    $values->[2] = 4;
+    
+    unless ($nums->values->[0] == 1) {
+      return 0;
+    }
+    unless ($nums->values->[1] == 2) {
+      return 0;
+    }
+    unless ($nums->values->[2] == 4) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  # Class methods
   static method new : int () {
     # new with array
     {
-      my $list = IntList->new([3, 5, Fn->INT32_MAX()]);
+      my $list = IntList->new([(int)3, 5, Fn->INT_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
       }
-
+      
       unless ($list->get(1) == 5) {
         return 0;
       }
-
-      unless ($list->get(2) == Fn->INT32_MAX()) {
+      
+      unless ($list->get(2) == Fn->INT_MAX()) {
         return 0;
       }
       
@@ -25,7 +53,7 @@ class TestCase::Module::IntList {
         return 0;
       }
     }
-
+    
     # new with undef
     {
       my $list = IntList->new((int[])undef);
@@ -34,8 +62,8 @@ class TestCase::Module::IntList {
         return 0;
       }
     }
-
-    # new without arguments
+    
+    # new without argument
     {
       my $list = IntList->new;
       
@@ -44,9 +72,40 @@ class TestCase::Module::IntList {
       }
     }
     
+    # extra
+    {
+      {
+        my $list = IntList->new(3);
+        
+        unless ($list->get(0) == 3) {
+          return 0;
+        }
+      }
+      {
+        my $list = IntList->new(3, 4);
+        
+        unless ($list->get(0) == 3 && $list->get(1) == 4) {
+          return 0;
+        }
+      }
+    }
+    # length
+    {
+      my $list = IntList->new_len(0);
+      
+      $list->unshift(3);
+      $list->unshift(5);
+      $list->unshift(Fn->INT_MAX());
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
-
+  
   static method new_len : int () {
     {
       my $list = IntList->new_len(32);
@@ -55,10 +114,67 @@ class TestCase::Module::IntList {
         return 0;
       }
     }
+
+    {
+      my $list = IntList->new_len(0);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      eval { IntList->new_len(-1); };
+      unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        return 0;
+      }
+    }
     
     return 1;
   }
+  
+  # Instance methods
+  static method get : int () {
+    {
+      my $list = IntList->new([(int)3, 5, Fn->INT_MAX()]);
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
 
+      unless ($list->get(0) isa int) {
+        return 0;
+      }
+
+      unless ($list->get(1) == 5) {
+        return 0;
+      }
+
+      unless ($list->get(2) == Fn->INT_MAX()) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      eval { $list->get(-1); };
+      unless (Fn->contains($@, "The index must be greater than or equal to 0")) {
+        return 0;
+      }
+      
+      eval { $list->get(3); };
+      unless (Fn->contains($@, "The index must be less than the length of the list")) {
+        return 0;
+      }
+      
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+  
   static method insert : int () {
     # Insert to first
     {
@@ -68,7 +184,7 @@ class TestCase::Module::IntList {
         return 0;
       }
     }
-
+    
     # Insert
     {
       my $list = IntList->new([(int)1, 2, 3]);
@@ -77,7 +193,7 @@ class TestCase::Module::IntList {
         return 0;
       }
     }
-
+    
     # Insert to last
     {
       my $list = IntList->new([(int)1, 2, 3]);
@@ -86,7 +202,7 @@ class TestCase::Module::IntList {
         return 0;
       }
     }
-
+    
     # Extend
     {
       my $list = IntList->new([(int)1, 2, 3]);
@@ -94,28 +210,113 @@ class TestCase::Module::IntList {
     }
     
     # Exception - insert to -1
-    eval {
+    {
       my $list = IntList->new([(int)1, 2, 3]);
-      $list->insert(-1 => 2);
-    };
-    unless ($@) {
-      return 0;
+      eval {  $list->insert(-1 => 2); };
+      unless (Fn->contains($@, "The index must be greater than or equal to 0")) {
+        return 0;
+      }
     }
-    $@ = undef;
-
+    
     # Exception - insert to length + 1
-    eval {
+    {
       my $list = IntList->new([(int)1, 2, 3]);
-      $list->insert(4 => 2);
-    };
-    unless ($@) {
-      return 0;
+      eval { $list->insert(4 => 2); };
+      unless (Fn->contains($@, "The index must be less than or equal to the length of the list")) {
+        return 0;
+      }
     }
+    
     $@ = undef;
     
     return 1;
   }
-
+  
+  static method pop : int () {
+    {
+      my $list = IntList->new_len(0);
+      
+      $list->push(3);
+      $list->push(5);
+      $list->push(Fn->INT_MAX());
+      
+      my $pop0 = $list->pop;
+      unless ($pop0 == Fn->INT_MAX()) {
+        return 0;
+      }
+      unless ($pop0 isa int) {
+        return 0;
+      }
+      
+      unless ($list->pop == 5) {
+        return 0;
+      }
+      
+      unless ($list->pop == 3) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 0) {
+        return 0;
+      }
+      
+      {
+        my $list = IntList->new_len(0);
+        eval { $list->pop; };
+        unless (Fn->contains($@, "The length of the list must be greater than 0")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method push : int () {
+    {
+      my $list = IntList->new_len(0);
+      
+      $list->push(3);
+      $list->push(5);
+      $list->push(Fn->INT_MAX());
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->INT_MAX()) {
+        return 0;
+      }
+    }
+    
+    # internal _extend tests
+    {
+      my $list = IntList->new_len(0);
+      
+      for (my $i = 0; $i < 100; $i++) {
+        $list->push(1);
+      }
+      
+      my $length = $list->length;
+      unless ($length == 100) {
+        return 0;
+      }
+      
+      for (my $i = 0; $i < 100; $i++) {
+        unless ($list->get($i) == 1) {
+          return 0;
+        }
+      }
+    }
+    
+    
+    return 1;
+  }
+  
   static method remove : int () {
     # Remove
     {
@@ -148,170 +349,20 @@ class TestCase::Module::IntList {
     }
 
     # Exception - remove to -1
-    eval {
+    {
       my $list = IntList->new([(int)1, 2, 3]);
-      $list->remove(-1);
-    };
-    unless ($@) {
-      return 0;
+      eval { $list->remove(-1); };
+      unless (Fn->contains($@, "The index must be greater than or equal to 0")) {
+        return 0;
+      }
     }
     $@ = undef;
 
     # Exception - remove to length
-    eval {
-      my $list = IntList->new([(int)1, 2, 3]);
-      $list->remove(3);
-    };
-    unless ($@) {
-      return 0;
-    }
-    $@ = undef;
-    
-    return 1;
-  }
-
-
-  static method to_array : int () {
-    {
-      my $list = IntList->new([3, 5, Fn->INT32_MAX()]);
-      
-      my $array = $list->to_array;
-      
-      unless ($array isa int[]) {
-        return 0;
-      }
-      
-      unless ($array->[0] == 3) {
-        return 0;
-      }
-
-      unless ($array->[1] == 5) {
-        return 0;
-      }
-
-      unless ($array->[2] == Fn->INT32_MAX()) {
-        return 0;
-      }
-      
-      my $length = @$array;
-      unless ($length == 3) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-  static method get : int () {
-    {
-      my $list = IntList->new([3, 5, Fn->INT32_MAX()]);
-      
-      unless ($list->get(0) == 3) {
-        return 0;
-      }
-
-      unless ($list->get(1) == 5) {
-        return 0;
-      }
-
-      unless ($list->get(2) == Fn->INT32_MAX()) {
-        return 0;
-      }
-      
-      my $length = $list->length;
-      unless ($length == 3) {
-        return 0;
-      }
-      
-      eval {
-        $list->get(-1);
-      };
-      unless ($@) {
-        return 0;
-      }
-      
-      eval {
-        $list->get(3);
-      };
-      unless ($@) {
-        return 0;
-      }
-      
-      $@ = undef;
-    }
-    
-    return 1;
-  }
-
-  static method set : int () {
-    {
-      my $list = IntList->new([0, 0, 0]);
-      
-      $list->set(0 => 3);
-      $list->set(1 => 5);
-      $list->set(2 => Fn->INT32_MAX());
-      
-      unless ($list->get(0) == 3) {
-        return 0;
-      }
-
-      unless ($list->get(1) == 5) {
-        return 0;
-      }
-
-      unless ($list->get(2) == Fn->INT32_MAX()) {
-        return 0;
-      }
-      
-      my $length = $list->length;
-      unless ($length == 3) {
-        return 0;
-      }
-      
-      eval {
-        $list->get(-1);
-      };
-      unless ($@) {
-        return 0;
-      }
-      
-      eval {
-        $list->get(3);
-      };
-      unless ($@) {
-        return 0;
-      }
-      
-      $@ = undef;
-    }
-    
-    return 1;
-  }
-
-  static method set_array : int () {
-    # Set array
     {
       my $list = IntList->new([(int)1, 2, 3]);
-      $list->set_array([(int)3, 4, 5]);
-      unless (Array->equals_int($list->to_array, [(int)3, 4, 5])) {
-        return 0;
-      }
-    }
-    
-    # Exception - Array must be defined
-    {
-      my $list = IntList->new([(int)1, 2, 3]);
-      eval { $list->set_array(undef); };
-      unless ($@) {
-        return 0;
-      }
-    }
-
-    # Exception - The length of argument array must be same as the length of current list array
-    {
-      my $list = IntList->new([(int)1, 2, 3]);
-      eval { $list->set_array([(int)1, 2, 3, 4]); };
-      unless ($@) {
+      eval { $list->remove(3); };
+      unless (Fn->contains($@, "The index must be less than the length of the list")) {
         return 0;
       }
     }
@@ -321,185 +372,98 @@ class TestCase::Module::IntList {
     return 1;
   }
   
-  static method push : int () {
-    # push
+  static method replace : int () {
     {
-      my $list = IntList->new_len(0);
-      
-      $list->push(3);
-      $list->push(5);
-      $list->push(Fn->INT32_MAX());
-      
-      my $length = $list->length;
-      unless ($length == 3) {
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      $list->replace(1, 2, undef);
+      unless (Array->equals_int($list->to_array, [(int)1, 4])) {
         return 0;
       }
-      
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->INT32_MAX()) {
+    }
+    {
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      $list->replace(1, 2, [(int)20, 30]);
+      unless (Array->equals_int($list->to_array, [(int)1, 20, 30, 4])) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      $list->replace(0, 2, [(int)10, 20]);
+      unless (Array->equals_int($list->to_array, [(int)10, 20, 3, 4])) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      $list->replace(2, 2, [(int)30, 40]);
+      unless (Array->equals_int($list->to_array, [(int)1, 2, 30, 40])) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      $list->replace(4, 0, [(int)50, 60]);
+      unless (Array->equals_int($list->to_array, [(int)1, 2, 3, 4, 50, 60])) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      eval { $list->replace(-1, 3, [(int)30, 40]); };
+      unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = IntList->new([(int)1, 2, 3, 4]);
+      eval { $list->replace(2, 3, [(int)30, 40, 50]); };
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the list")) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = IntList->new([(int)1]);
+      $list->replace(1, 0, [(int)2, 3]);
+      unless (Array->equals_int($list->to_array, [(int)1, 2, 3])) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = IntList->new([(int)1]);
+      eval { $list->replace(2, 0, [(int)1, 2]); };
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the list")) {
+        return 0;
+      }
+    }
+    {
+      my $list = IntList->new([(int)1]);
+      eval { $list->replace(1, 2, [(int)1, 2]); };
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the list")) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = IntList->new([(int)1]);
+      eval { $list->replace(2, 2, [(int)1, 2]); };
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the list")) {
         return 0;
       }
     }
     
-    # internal _extend tests
-    {
-      my $list = IntList->new_len(0);
-      
-      for (my $i = 0; $i < 100; $i++) {
-        $list->push(1);
-      }
-      
-      my $length = $list->length;
-      unless ($length == 100) {
-        return 0;
-      }
-      
-      for (my $i = 0; $i < 100; $i++) {
-        unless ($list->get($i) == 1) {
-          return 0;
-        }
-      }
-    }
-    
+    $@ = undef;
     
     return 1;
   }
-
-  static method pop : int () {
-    # pop
-    {
-      my $list = IntList->new_len(0);
-      
-      $list->push(3);
-      $list->push(5);
-      $list->push(Fn->INT32_MAX());
-      
-      unless ($list->pop == Fn->INT32_MAX()) {
-        return 0;
-      }
-
-      unless ($list->pop == 5) {
-        return 0;
-      }
-
-      unless ($list->pop == 3) {
-        return 0;
-      }
-      
-      my $length = $list->length;
-      unless ($length == 0) {
-        return 0;
-      }
-      
-      eval {
-        $list->pop;
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-    
-    return 1;
-  }
-
-  static method unshift : int () {
-    # unshift
-    {
-      my $list = IntList->new_len(0);
-      
-      $list->unshift(3);
-      $list->unshift(5);
-      $list->unshift(Fn->INT32_MAX());
-      
-      my $length = $list->length;
-      unless ($length == 3) {
-        return 0;
-      }
-      
-      unless ($list->get(0) == Fn->INT32_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
-        return 0;
-      }
-    }
-    
-    # internal _extend tests
-    {
-      my $list = IntList->new_len(0);
-      
-      for (my $i = 0; $i < 100; $i++) {
-        $list->unshift(1);
-      }
-      
-      my $length = $list->length;
-      unless ($length == 100) {
-        return 0;
-      }
-      
-      for (my $i = 0; $i < 100; $i++) {
-        unless ($list->get($i) == 1) {
-          return 0;
-        }
-      }
-    }
-    
-    return 1;
-  }
-
-  static method shift : int () {
-    # shift
-    {
-      my $list = IntList->new_len(0);
-      
-      $list->unshift(3);
-      $list->unshift(5);
-      $list->unshift(Fn->INT32_MAX());
-      
-      unless ($list->shift == Fn->INT32_MAX()) {
-        return 0;
-      }
-
-      unless ($list->shift == 5) {
-        return 0;
-      }
-
-      unless ($list->shift == 3) {
-        return 0;
-      }
-      
-      my $length = $list->length;
-      unless ($length == 0) {
-        return 0;
-      }
-      
-      eval {
-        $list->shift;
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-    
-    return 1;
-  }
-
-  static method length : int () {
-    # length
-    {
-      my $list = IntList->new_len(0);
-      
-      $list->unshift(3);
-      $list->unshift(5);
-      $list->unshift(Fn->INT32_MAX());
-      
-      my $length = $list->length;
-      unless ($length == 3) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
+  
   static method resize : int () {
     my $a = (int)1;
     my $b = (int)2;
@@ -587,7 +551,7 @@ class TestCase::Module::IntList {
       $list->push($b);
       $list->push($c);
       eval { $list->resize(-1); };
-      unless ($@) {
+      unless (Fn->contains($@, "The new length must be greater than or equal to 0")) {
         return 0;
       }
     }
@@ -595,96 +559,192 @@ class TestCase::Module::IntList {
     $@ = undef;
     return 1;
   }
+  
+  static method set : int () {
+    {
+      my $list = IntList->new([(int)0, 0, 0]);
+      
+      $list->set(0 => 3);
+      $list->set(1 => 5);
+      $list->set(2 => Fn->INT_MAX());
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
 
-  static method replace : int () {
-    {
-      my $list = IntList->new([(int)1, 2, 3, 4]);
-      $list->replace(1, 2, undef);
-      unless (Array->equals_int($list->to_array, [(int)1, 4])) {
+      unless ($list->get(1) == 5) {
         return 0;
       }
-    }
-    {
-      my $list = IntList->new([(int)1, 2, 3, 4]);
-      $list->replace(1, 2, [(int)20, 30]);
-      unless (Array->equals_int($list->to_array, [(int)1, 20, 30, 4])) {
-        return 0;
-      }
-    }
 
+      unless ($list->get(2) == Fn->INT_MAX()) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      eval { $list->get(-1); };
+      unless (Fn->contains($@,"The index must be greater than or equal to 0")) {
+        return 0;
+      }
+      
+      eval { $list->get(3); };
+      unless (Fn->contains($@, "The index must be less than the length of the list")) {
+        return 0;
+      }
+      
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+  
+  static method set_array : int () {
+    # Set array
     {
-      my $list = IntList->new([(int)1, 2, 3, 4]);
-      $list->replace(0, 2, [(int)10, 20]);
-      unless (Array->equals_int($list->to_array, [(int)10, 20, 3, 4])) {
+      my $list = IntList->new([(int)1, 2, 3]);
+      $list->set_array([(int)3, 4, 5]);
+      unless (Array->equals_int($list->to_array, [(int)3, 4, 5])) {
         return 0;
       }
     }
-
+    
+    # Exception - Array must be defined
     {
-      my $list = IntList->new([(int)1, 2, 3, 4]);
-      $list->replace(2, 2, [(int)30, 40]);
-      unless (Array->equals_int($list->to_array, [(int)1, 2, 30, 40])) {
+      my $list = IntList->new([(int)1, 2, 3]);
+      eval { $list->set_array(undef); };
+      unless (Fn->contains($@, "The array must be defined")) {
         return 0;
       }
     }
-
+    
+    # Exception - The length of argument array must be same as the length of current list array
     {
-      my $list = IntList->new([(int)1, 2, 3, 4]);
-      $list->replace(4, 0, [(int)50, 60]);
-      unless (Array->equals_int($list->to_array, [(int)1, 2, 3, 4, 50, 60])) {
-        return 0;
-      }
-    }
-
-    {
-      my $list = IntList->new([(int)1, 2, 3, 4]);
-      eval { $list->replace(-1, 3, [(int)30, 40]); };
-      unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
-        return 0;
-      }
-    }
-
-    {
-      my $list = IntList->new([(int)1, 2, 3, 4]);
-      eval { $list->replace(2, 3, [(int)30, 40, 50]); };
-      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
-        return 0;
-      }
-    }
-
-    {
-      my $list = IntList->new([(int)1]);
-      $list->replace(1, 0, [(int)2, 3]);
-      unless (Array->equals_int($list->to_array, [(int)1, 2, 3])) {
-        return 0;
-      }
-    }
-
-    {
-      my $list = IntList->new([(int)1]);
-      eval { $list->replace(2, 0, [(int)1, 2]); };
-      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
-        return 0;
-      }
-    }
-    {
-      my $list = IntList->new([(int)1]);
-      eval { $list->replace(1, 2, [(int)1, 2]); };
-      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
-        return 0;
-      }
-    }
-
-    {
-      my $list = IntList->new([(int)1]);
-      eval { $list->replace(2, 2, [(int)1, 2]); };
-      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the values of the list")) {
+      my $list = IntList->new([(int)1, 2, 3]);
+      eval { $list->set_array([(int)1, 2, 3, 4]); };
+      unless (Fn->contains($@, "The length of the array must be the same as the length of the list")) {
         return 0;
       }
     }
     
     $@ = undef;
     
+    return 1;
+  }
+  
+  static method shift : int () {
+    # shift
+    {
+      my $list = IntList->new_len(0);
+      
+      $list->unshift(3);
+      $list->unshift(5);
+      $list->unshift(Fn->INT_MAX());
+      
+      unless ($list->shift == Fn->INT_MAX()) {
+        return 0;
+      }
+      
+      unless ($list->shift == 5) {
+        return 0;
+      }
+      
+      unless ($list->shift == 3) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 0) {
+        return 0;
+      }
+      
+      eval { $list->shift; };
+      unless (Fn->contains($@, "The length of the list must be greater than 0")) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+  
+  static method to_array : int () {
+    {
+      my $list = IntList->new([(int)3, 5, Fn->INT_MAX()]);
+      
+      my $array = $list->to_array;
+      
+      unless ($array isa int[]) {
+        return 0;
+      }
+      
+      unless ($array->[0] == 3) {
+        return 0;
+      }
+
+      unless ($array->[1] == 5) {
+        return 0;
+      }
+
+      unless ($array->[2] == Fn->INT_MAX()) {
+        return 0;
+      }
+      
+      my $length = @$array;
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unshift : int () {
+    # unshift
+    {
+      my $list = IntList->new_len(0);
+      
+      $list->unshift(3);
+      $list->unshift(5);
+      $list->unshift(Fn->INT_MAX());
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0) == Fn->INT_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
+        return 0;
+      }
+    }
+    
+    # internal _extend tests
+    {
+      my $list = IntList->new_len(0);
+      
+      for (my $i = 0; $i < 100; $i++) {
+        $list->unshift(1);
+      }
+      
+      my $length = $list->length;
+      unless ($length == 100) {
+        return 0;
+      }
+      
+      for (my $i = 0; $i < 100; $i++) {
+        unless ($list->get($i) == 1) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  # Unneeded
+  static method length : int () {
     return 1;
   }
 }
