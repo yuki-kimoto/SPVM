@@ -128,7 +128,7 @@ The length of the list must be greater than C<0>. Otherwise an excpetion will be
   
   method push : void ($value : byte)
 
-Add a element just after the end of the list.
+Add a element after the end of the list.
 
 =head2 remove
 

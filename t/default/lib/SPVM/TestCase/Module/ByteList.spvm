@@ -3,6 +3,33 @@ class TestCase::Module::ByteList {
   use Fn;
   use Array;
   
+  # Fields
+  static method fields : int () {
+    my $nums = ByteList->new([(byte)1, 2, 3]);
+    
+    # length
+    my $length = $nums->length;
+    unless ($length == 3) {
+      return 0;
+    }
+    
+    # values
+    my $values = $nums->values;
+    $values->[2] = 4;
+    
+    unless ($nums->values->[0] == 1) {
+      return 0;
+    }
+    unless ($nums->values->[1] == 2) {
+      return 0;
+    }
+    unless ($nums->values->[2] == 4) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   # Class methods
   static method new : int () {
     # new with array
@@ -60,6 +87,19 @@ class TestCase::Module::ByteList {
         unless ($list->get(0) == 3 && $list->get(1) == 4) {
           return 0;
         }
+      }
+    }
+    # length
+    {
+      my $list = ByteList->new_len(0);
+      
+      $list->unshift(3);
+      $list->unshift(5);
+      $list->unshift(Fn->BYTE_MAX());
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
       }
     }
     
@@ -309,353 +349,25 @@ class TestCase::Module::ByteList {
     }
 
     # Exception - remove to -1
-    eval {
+    {
       my $list = ByteList->new([(byte)1, 2, 3]);
-      $list->remove(-1);
-    };
-    unless ($@) {
-      return 0;
+      eval { $list->remove(-1); };
+      unless (Fn->contains($@, "The index must be greater than or equal to 0")) {
+        return 0;
+      }
     }
     $@ = undef;
 
     # Exception - remove to length
-    eval {
-      my $list = ByteList->new([(byte)1, 2, 3]);
-      $list->remove(3);
-    };
-    unless ($@) {
-      return 0;
-    }
-    $@ = undef;
-    
-    return 1;
-  }
-
-  static method to_array : int () {
-    {
-      my $list = ByteList->new([(byte)3, 5, Fn->BYTE_MAX()]);
-      
-      my $array = $list->to_array;
-      
-      unless ($array isa byte[]) {
-        return 0;
-      }
-      
-      unless ($array->[0] == 3) {
-        return 0;
-      }
-
-      unless ($array->[1] == 5) {
-        return 0;
-      }
-
-      unless ($array->[2] == Fn->BYTE_MAX()) {
-        return 0;
-      }
-      
-      my $length = @$array;
-      unless ($length == 3) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-  
-  static method set : int () {
-    {
-      my $list = ByteList->new([(byte)0, 0, 0]);
-      
-      $list->set(0 => 3);
-      $list->set(1 => 5);
-      $list->set(2 => Fn->BYTE_MAX());
-      
-      unless ($list->get(0) == 3) {
-        return 0;
-      }
-
-      unless ($list->get(1) == 5) {
-        return 0;
-      }
-
-      unless ($list->get(2) == Fn->BYTE_MAX()) {
-        return 0;
-      }
-      
-      my $length = $list->length;
-      unless ($length == 3) {
-        return 0;
-      }
-      
-      eval {
-        $list->get(-1);
-      };
-      unless ($@) {
-        return 0;
-      }
-      
-      eval {
-        $list->get(3);
-      };
-      unless ($@) {
-        return 0;
-      }
-      
-      $@ = undef;
-    }
-    
-    return 1;
-  }
-  
-  static method set_array : int () {
-    # Set array
     {
       my $list = ByteList->new([(byte)1, 2, 3]);
-      $list->set_array([(byte)3, 4, 5]);
-      unless (Array->equals_byte($list->to_array, [(byte)3, 4, 5])) {
-        return 0;
-      }
-    }
-    
-    # Exception - Array must be defined
-    {
-      my $list = ByteList->new([(byte)1, 2, 3]);
-      eval { $list->set_array(undef); };
-      unless ($@) {
-        return 0;
-      }
-    }
-
-    # Exception - The length of argument array must be same as the length of current list array
-    {
-      my $list = ByteList->new([(byte)1, 2, 3]);
-      eval { $list->set_array([(byte)1, 2, 3, 4]); };
-      unless ($@) {
+      eval { $list->remove(3); };
+      unless (Fn->contains($@, "The index must be less than the length of the list")) {
         return 0;
       }
     }
     
     $@ = undef;
-    
-    return 1;
-  }
-
-  static method unshift : int () {
-    # unshift
-    {
-      my $list = ByteList->new_len(0);
-      
-      $list->unshift(3);
-      $list->unshift(5);
-      $list->unshift(Fn->BYTE_MAX());
-      
-      my $length = $list->length;
-      unless ($length == 3) {
-        return 0;
-      }
-      
-      unless ($list->get(0) == Fn->BYTE_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
-        return 0;
-      }
-    }
-    
-    # internal _extend tests
-    {
-      my $list = ByteList->new_len(0);
-      
-      for (my $i = 0; $i < 100; $i++) {
-        $list->unshift(1);
-      }
-      
-      my $length = $list->length;
-      unless ($length == 100) {
-        return 0;
-      }
-      
-      for (my $i = 0; $i < 100; $i++) {
-        unless ($list->get($i) == 1) {
-          return 0;
-        }
-      }
-    }
-    
-    return 1;
-  }
-
-  static method shift : int () {
-    # shift
-    {
-      my $list = ByteList->new_len(0);
-      
-      $list->unshift(3);
-      $list->unshift(5);
-      $list->unshift(Fn->BYTE_MAX());
-      
-      unless ($list->shift == Fn->BYTE_MAX()) {
-        return 0;
-      }
-
-      unless ($list->shift == 5) {
-        return 0;
-      }
-
-      unless ($list->shift == 3) {
-        return 0;
-      }
-      
-      my $length = $list->length;
-      unless ($length == 0) {
-        return 0;
-      }
-      
-      eval {
-        $list->shift;
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-    
-    return 1;
-  }
-
-  static method length : int () {
-    # length
-    {
-      my $list = ByteList->new_len(0);
-      
-      $list->unshift(3);
-      $list->unshift(5);
-      $list->unshift(Fn->BYTE_MAX());
-      
-      my $length = $list->length;
-      unless ($length == 3) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-  static method resize : int () {
-    my $a = (byte)1;
-    my $b = (byte)2;
-    my $c = (byte)3;
-
-    # 3 to 3
-    {
-      my $list = ByteList->new(new byte[0]);
-      $list->push($a);
-      $list->push($b);
-      $list->push($c);
-      $list->resize(3);
-      unless ($list->length == 3) {
-        return 0;
-      }
-      unless ($list->get(0) == $a && $list->get(1) == $b && $list->get(2) == $c) {
-        return 0;
-      }
-    }
-    
-    # 3 to 0
-    {
-      my $list = ByteList->new(new byte[0]);
-      $list->push($a);
-      $list->push($b);
-      $list->push($c);
-      $list->resize(0);
-      unless ($list->length == 0) {
-        return 0;
-      }
-    }
-
-    
-    # 3 to 4
-    {
-      my $list = ByteList->new(new byte[0]);
-      $list->push($a);
-      $list->push($b);
-      $list->push($c);
-      $list->resize(4);
-      unless ($list->length == 4) {
-        return 0;
-      }
-      unless ($list->get(3) == 0 && $list->get(0) == $a && $list->get(1) == $b && $list->get(2) == $c) {
-        return 0;
-      }
-    }
-    
-    # 3 to 32(over capacity)
-    {
-      my $list = ByteList->new(new byte[0]);
-      $list->push($a);
-      $list->push($b);
-      $list->push($c);
-      $list->resize(32);
-      unless ($list->length == 32) {
-        return 0;
-      }
-      unless ($list->get(3) == 0 && $list->get(31) == 0) {
-        return 0;
-      }
-    }
-
-    # 3 to 2 and 2 to 3 again
-    {
-      my $list = ByteList->new([(byte)1, 2, 3]);
-      $list->resize(2);
-      unless ($list->length == 2) {
-        return 0;
-      }
-      
-      $list->resize(3);
-      unless ($list->length == 3) {
-        return 0;
-      }
-      unless ($list->get(2) == 0) {
-        return 0;
-      }
-    }
-    
-    # Exception - New length must be more than or equals to 0
-    {
-      my $list = ByteList->new(new byte[0]);
-      $list->push($a);
-      $list->push($b);
-      $list->push($c);
-      eval { $list->resize(-1); };
-      unless ($@) {
-        return 0;
-      }
-    }
-    
-    $@ = undef;
-    return 1;
-  }
-
-  static method fields : int () {
-    my $nums = ByteList->new([(byte)1, 2, 3]);
-    
-    # length
-    my $length = $nums->length;
-    unless ($length == 3) {
-      return 0;
-    }
-    
-    # values
-    my $values = $nums->values;
-    $values->[2] = 4;
-    
-    unless ($nums->values->[0] == 1) {
-      return 0;
-    }
-    unless ($nums->values->[1] == 2) {
-      return 0;
-    }
-    unless ($nums->values->[2] == 4) {
-      return 0;
-    }
     
     return 1;
   }
@@ -749,6 +461,290 @@ class TestCase::Module::ByteList {
     
     $@ = undef;
     
+    return 1;
+  }
+  
+  static method resize : int () {
+    my $a = (byte)1;
+    my $b = (byte)2;
+    my $c = (byte)3;
+
+    # 3 to 3
+    {
+      my $list = ByteList->new(new byte[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(3);
+      unless ($list->length == 3) {
+        return 0;
+      }
+      unless ($list->get(0) == $a && $list->get(1) == $b && $list->get(2) == $c) {
+        return 0;
+      }
+    }
+    
+    # 3 to 0
+    {
+      my $list = ByteList->new(new byte[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(0);
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+
+    
+    # 3 to 4
+    {
+      my $list = ByteList->new(new byte[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(4);
+      unless ($list->length == 4) {
+        return 0;
+      }
+      unless ($list->get(3) == 0 && $list->get(0) == $a && $list->get(1) == $b && $list->get(2) == $c) {
+        return 0;
+      }
+    }
+    
+    # 3 to 32(over capacity)
+    {
+      my $list = ByteList->new(new byte[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(32);
+      unless ($list->length == 32) {
+        return 0;
+      }
+      unless ($list->get(3) == 0 && $list->get(31) == 0) {
+        return 0;
+      }
+    }
+
+    # 3 to 2 and 2 to 3 again
+    {
+      my $list = ByteList->new([(byte)1, 2, 3]);
+      $list->resize(2);
+      unless ($list->length == 2) {
+        return 0;
+      }
+      
+      $list->resize(3);
+      unless ($list->length == 3) {
+        return 0;
+      }
+      unless ($list->get(2) == 0) {
+        return 0;
+      }
+    }
+    
+    # Exception - New length must be more than or equals to 0
+    {
+      my $list = ByteList->new(new byte[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      eval { $list->resize(-1); };
+      unless (Fn->contains($@, "The new length must be greater than or equal to 0")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  
+  static method set : int () {
+    {
+      my $list = ByteList->new([(byte)0, 0, 0]);
+      
+      $list->set(0 => 3);
+      $list->set(1 => 5);
+      $list->set(2 => Fn->BYTE_MAX());
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
+
+      unless ($list->get(1) == 5) {
+        return 0;
+      }
+
+      unless ($list->get(2) == Fn->BYTE_MAX()) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      eval { $list->get(-1); };
+      unless (Fn->contains($@,"The index must be greater than or equal to 0")) {
+        return 0;
+      }
+      
+      eval { $list->get(3); };
+      unless (Fn->contains($@, "The index must be less than the length of the list")) {
+        return 0;
+      }
+      
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+  
+  static method set_array : int () {
+    # Set array
+    {
+      my $list = ByteList->new([(byte)1, 2, 3]);
+      $list->set_array([(byte)3, 4, 5]);
+      unless (Array->equals_byte($list->to_array, [(byte)3, 4, 5])) {
+        return 0;
+      }
+    }
+    
+    # Exception - Array must be defined
+    {
+      my $list = ByteList->new([(byte)1, 2, 3]);
+      eval { $list->set_array(undef); };
+      unless (Fn->contains($@, "The array must be defined")) {
+        return 0;
+      }
+    }
+    
+    # Exception - The length of argument array must be same as the length of current list array
+    {
+      my $list = ByteList->new([(byte)1, 2, 3]);
+      eval { $list->set_array([(byte)1, 2, 3, 4]); };
+      unless (Fn->contains($@, "The length of the array must be the same as the length of the list")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method shift : int () {
+    # shift
+    {
+      my $list = ByteList->new_len(0);
+      
+      $list->unshift(3);
+      $list->unshift(5);
+      $list->unshift(Fn->BYTE_MAX());
+      
+      unless ($list->shift == Fn->BYTE_MAX()) {
+        return 0;
+      }
+      
+      unless ($list->shift == 5) {
+        return 0;
+      }
+      
+      unless ($list->shift == 3) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 0) {
+        return 0;
+      }
+      
+      eval { $list->shift; };
+      unless (Fn->contains($@, "The length of the list must be greater than 0")) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+  
+  static method to_array : int () {
+    {
+      my $list = ByteList->new([(byte)3, 5, Fn->BYTE_MAX()]);
+      
+      my $array = $list->to_array;
+      
+      unless ($array isa byte[]) {
+        return 0;
+      }
+      
+      unless ($array->[0] == 3) {
+        return 0;
+      }
+
+      unless ($array->[1] == 5) {
+        return 0;
+      }
+
+      unless ($array->[2] == Fn->BYTE_MAX()) {
+        return 0;
+      }
+      
+      my $length = @$array;
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unshift : int () {
+    # unshift
+    {
+      my $list = ByteList->new_len(0);
+      
+      $list->unshift(3);
+      $list->unshift(5);
+      $list->unshift(Fn->BYTE_MAX());
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0) == Fn->BYTE_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
+        return 0;
+      }
+    }
+    
+    # internal _extend tests
+    {
+      my $list = ByteList->new_len(0);
+      
+      for (my $i = 0; $i < 100; $i++) {
+        $list->unshift(1);
+      }
+      
+      my $length = $list->length;
+      unless ($length == 100) {
+        return 0;
+      }
+      
+      for (my $i = 0; $i < 100; $i++) {
+        unless ($list->get($i) == 1) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  # Unneeded
+  static method length : int () {
     return 1;
   }
 }
