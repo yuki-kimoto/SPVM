@@ -3,8 +3,8 @@ class DoubleList {
   use Array;
   
   # Fields
-  has length   : ro int;
-  has values   : ro double[];
+  has length : ro int;
+  has values : ro double[];
   
   # Private fields
   has capacity : int;
@@ -12,6 +12,7 @@ class DoubleList {
   # Class methods
   static method new : DoubleList ($array : double[]...) {
     my $self = new DoubleList;
+    
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -21,9 +22,9 @@ class DoubleList {
     }
     
     my $capacity = $length;
-    $self->{capacity} = $capacity;
     my $values = new double[$capacity];
     
+    $self->{capacity} = $capacity;
     $self->{length} = $length;
     
     if ($array) {
@@ -56,7 +57,7 @@ class DoubleList {
     }
     
     unless ($index < $length) {
-      die "The index must be less than the length";
+      die "The index must be less than the length of the list";
     }
     
     my $value = $self->{values}[$index];
@@ -66,14 +67,13 @@ class DoubleList {
   
   method insert : void ($index : int, $value : double) {
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     unless ($index >= 0) {
       die "The index must be greater than or equal to 0";
     }
     
     unless ($index <= $length) {
-      die "The index must be less than or equal to the length of the array";
+      die "The index must be less than or equal to the length of the list";
     }
     
     my $new_length = $length + 1;
@@ -87,14 +87,14 @@ class DoubleList {
     }
     $values->[$index] = $value;
     
-    $self->{length}++;
+    $self->{length} = $new_length;
   }
-
+  
   method pop : double () {
     my $length = $self->length;
     
     unless ($length > 0) {
-      die "The length of the array must be greater than 0";
+      die "The length of the list must be greater than 0";
     }
     
     my $value = $self->{values}[$length - 1];
@@ -108,26 +108,24 @@ class DoubleList {
   
   method push : void ($value : double) {
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
     $self->{values}[$length] = $value;
     
-    $self->{length}++;
+    $self->{length} = $new_length;
   }
   
   method remove : double ($index : int) {
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     unless ($index >= 0) {
       die "The index must be greater than or equal to 0";
     }
     
     unless ($index < $length) {
-      die "The index must be less than the length of the array";
+      die "The index must be less than the length of the list";
     }
     
     my $values = $self->{values};
@@ -152,7 +150,7 @@ class DoubleList {
       die("The removing length must be greater than or equal to 0");
     }
     unless ($offset + $remove_length <= $self->{length}) {
-      die("The offset + the removing lenght must be less than or equal to the length of the values of the list");
+      die("The offset + the removing lenght must be less than or equal to the length of the list");
     }
     
     my $replace_length = 0;
@@ -179,7 +177,6 @@ class DoubleList {
     }
     
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     if ($new_length > $length) {
       $self->_maybe_extend($new_length);
@@ -200,7 +197,7 @@ class DoubleList {
     }
     
     unless ($index < $length) {
-      die "The index must be less than the length";
+      die "The index must be less than the length of the list";
     }
     
     $self->{values}[$index] = $value;
@@ -216,7 +213,7 @@ class DoubleList {
     my $set_length = @$array;
     
     unless ($set_length == $cur_length) {
-      die "The length of the array must be same as the length of the current array";
+      die "The length of the array must be the same as the length of the list";
     }
     
     Array->memcpy_double($self->{values}, 0, $array, 0, $cur_length);
@@ -224,10 +221,9 @@ class DoubleList {
   
   method shift : double () {
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     unless ($length > 0) {
-      die "The length of the array must be greater than 0";
+      die "The length of the list must be greater than 0";
     }
     
     my $values = $self->{values};
@@ -257,9 +253,9 @@ class DoubleList {
   
   method unshift : void ($value : double) {
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     my $new_length = $length + 1;
+
     $self->_maybe_extend($new_length);
     
     my $values = $self->{values};
@@ -267,7 +263,7 @@ class DoubleList {
     Array->memmove_double($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
-    $self->{length}++;
+    $self->{length} = $new_length;
   }
   
   private method _maybe_extend : void ($min_capacity : int) {
