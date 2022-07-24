@@ -265,7 +265,9 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
 
 # strerror
 {
-  is(SPVM::TestCase::NativeAPI->strerror_value(Errno::EAGAIN), $! = Errno::EAGAIN);
+  if ($!{EAGAIN}) {
+    is(SPVM::TestCase::NativeAPI->strerror_value(Errno::EAGAIN), $! = Errno::EAGAIN);
+  }
 }
 
 # new_object_array_raw

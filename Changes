@@ -1,4 +1,4 @@
-0.9628 2022-07-22
+0.9628 2022-07-25
   [New Features]
     * Add replace method to ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, List.
   [Changes]
@@ -62,6 +62,9 @@
   [Document]
     * Add Fields doc to Byte, Short, Int, Long, Float, Double, ByteList, ShortList, IntList, LongList, FloatList, DoubleList, List, StringBuffer class.
     
+0.962701 2022-07-25
+  [Test Fix]
+    * Fix the test that strerror test failed when EAGAIN is not defined.
 0.9627 2022-07-22
   [New Feature]
     * Add new_string_array native API.
