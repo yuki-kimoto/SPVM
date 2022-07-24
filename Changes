@@ -1,3 +1,6 @@
+0.962701 2022-07-25
+  [Test Fix]
+    * Fix the test that strerror test failed when EAGAIN is not defined.
 0.9627 2022-07-22
   [New Feature]
     * Add new_string_array native API.
