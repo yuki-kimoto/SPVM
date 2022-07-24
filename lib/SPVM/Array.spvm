@@ -864,21 +864,69 @@ class Array {
   native static method memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
   native static method memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
   native static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
+  static method memcpy_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
+    &memcpy_object($dest, $dest_offset, $source, $source_offset, $length);
+  }
   precompile static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
+    unless ($dest) {
+      die "The destination must be defined";
+    }
+    unless ($source) {
+      die "The source must be defined";
+    }
+    unless ($length >= 0) {
+      die "The length must be greater than or equal to 0";
+    }
+    
+    my $dest_length = @$dest;
+    my $source_length = @$source;
+    
+    if ($dest_offset + $length > $dest_length) {
+      die "The offset of the destnation + the length specified by the argument must be greater than the length of the destination";
+    }
+    
+    if ($source_offset + $length > $source_length) {
+      die "The offset of the source + the length specified by the argument must be greater than the length of the source";
+    }
+    
     for (my $i = 0; $i < $length; $i++) {
       my $dist_index = $dest_offset + $i;
       my $source_index = $source_offset + $i;
       $dest->[$dist_index] = $source->[$source_index];
     }
   }
-
+  
   native static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
   native static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
   native static method memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
   native static method memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
   native static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
   native static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
+  static method memmove_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
+    &memmove_object($dest, $dest_offset, $source, $source_offset, $length);
+  }
   static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
+    unless ($dest) {
+      die "The destination must be defined";
+    }
+    unless ($source) {
+      die "The source must be defined";
+    }
+    unless ($length >= 0) {
+      die "The length must be greater than or equal to 0";
+    }
+    
+    my $dest_length = @$dest;
+    my $source_length = @$source;
+    
+    if ($dest_offset + $length > $dest_length) {
+      die "The offset of the destnation + the length specified by the argument must be greater than the length of the destination";
+    }
+    
+    if ($source_offset + $length > $source_length) {
+      die "The offset of the source + the length specified by the argument must be greater than the length of the source";
+    }
+    
     if ($dest_offset < $source_offset) {
       for (my $i = 0; $i < $length; $i++) {
         my $dist_index = $dest_offset + $i;
@@ -894,7 +942,7 @@ class Array {
       }
     }
   }
-
+  
   native static method new_proto : object[] ($proto_array : object[], $length : int);
 }
 

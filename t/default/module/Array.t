@@ -119,10 +119,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Array->memcpy_long);
   ok(SPVM::TestCase::Module::Array->memcpy_float);
   ok(SPVM::TestCase::Module::Array->memcpy_double);
+  ok(SPVM::TestCase::Module::Array->memcpy_string);
   ok(SPVM::TestCase::Module::Array->memcpy_object);
 }
 
-# memmove_numeric
+# memmove
 {
   ok(SPVM::TestCase::Module::Array->memmove_byte);
   ok(SPVM::TestCase::Module::Array->memmove_short);
@@ -130,6 +131,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Array->memmove_long);
   ok(SPVM::TestCase::Module::Array->memmove_float);
   ok(SPVM::TestCase::Module::Array->memmove_double);
+  ok(SPVM::TestCase::Module::Array->memmove_string);
   ok(SPVM::TestCase::Module::Array->memmove_object);
 }
 
