@@ -143,6 +143,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Array->memset_long);
   ok(SPVM::TestCase::Module::Array->memset_float);
   ok(SPVM::TestCase::Module::Array->memset_double);
+  ok(SPVM::TestCase::Module::Array->memset_string);
   ok(SPVM::TestCase::Module::Array->memset_object);
 }
 

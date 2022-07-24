@@ -1394,6 +1394,50 @@ class TestCase::Module::Array {
     return 1;
   }
 
+  static method memset_string : int () {
+    
+    # Basic
+    {
+      my $values = [(string)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 2;
+      my $new_value = (string)5;
+      Array->memset_string($values, $offset, $new_value, $length);
+      unless (Array->equals_string($values, [(string)1, 5, 5, 4])) {
+        return 0;
+      }
+      unless ($values->[1] == $new_value) {
+        return 0;
+      }
+    }
+    
+    # Zero length
+    {
+      my $values = [(string)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 0;
+      my $new_value = (string)5;
+      Array->memset_string($values, $offset, $new_value, $length);
+      unless (Array->equals_string($values, [(string)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+    
+    # All
+    {
+      my $values = [(string)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = @$values;
+      my $new_value = (string)5;
+      Array->memset_string($values, $offset, $new_value, $length);
+      unless (Array->equals_string($values, [(string)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method memset_object : object () {
     
     # Basic

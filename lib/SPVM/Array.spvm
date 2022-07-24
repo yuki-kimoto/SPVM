@@ -851,6 +851,9 @@ class Array {
       $dest->[$i] = $value;
     }
   }
+  static method memset_string : void ($dest : object[], $dest_offset : int, $value : object, $length : int) {
+    &memset_object($dest, $dest_offset, $value, $length);
+  }
   precompile static method memset_object : void ($dest : object[], $dest_offset : int, $value : object, $length : int) {
     my $offset_plus_length = $dest_offset + $length;
     for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
