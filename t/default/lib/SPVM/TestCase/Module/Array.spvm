@@ -1504,7 +1504,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
@@ -1599,7 +1599,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
@@ -1694,7 +1694,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
@@ -1789,7 +1789,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
@@ -1884,7 +1884,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
@@ -2071,7 +2071,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
@@ -2166,7 +2166,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new string[4];
       my $source = [(string)1, 3, 5];
@@ -2270,7 +2270,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
@@ -2374,7 +2374,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
@@ -2478,7 +2478,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
@@ -2582,7 +2582,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
@@ -2686,7 +2686,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
@@ -2925,7 +2925,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
@@ -3029,7 +3029,7 @@ class TestCase::Module::Array {
       }
     }
     
-    # Exception - Destnation offset + length must be within the range of the destnation array
+    # Exception - Destnation offset + length must be within the range of the destination array
     {
       my $dest = new string[4];
       my $source = [(string)1, 3, 5];

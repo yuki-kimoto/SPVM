@@ -537,7 +537,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_byte_length = source_elem_byte_size * source_len;
   
   if (dest_byte_offset + byte_length > dest_byte_length) {
-    return env->die(env, stack, "Destnation byte_offset + byte_length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation byte_offset + byte_length must be within the range of the destination array", MFILE, __LINE__);
   }
 
   if (source_byte_offset + byte_length > source_byte_length) {
@@ -595,7 +595,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_byte_length = source_elem_byte_size * source_len;
   
   if (dest_byte_offset + byte_length > dest_byte_length) {
-    return env->die(env, stack, "Destnation byte_offset + byte_length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation byte_offset + byte_length must be within the range of the destination array", MFILE, __LINE__);
   }
 
   if (source_byte_offset + byte_length > source_byte_length) {
@@ -637,7 +637,7 @@ int32_t SPVM__Fn__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_len = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_len) {
-    return env->die(env, stack, "Destnation offset + length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation offset + length must be within the range of the destination array", MFILE, __LINE__);
   }
 
   if (source_offset + length > source_len) {
@@ -675,7 +675,7 @@ int32_t SPVM__Fn__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_len = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_len) {
-    return env->die(env, stack, "Destnation offset + length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation offset + length must be within the range of the destination array", MFILE, __LINE__);
   }
 
   if (source_offset + length > source_len) {
@@ -713,7 +713,7 @@ int32_t SPVM__Fn__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_len = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_len) {
-    return env->die(env, stack, "Destnation offset + length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation offset + length must be within the range of the destination array", MFILE, __LINE__);
   }
   
   if (source_offset + length > source_len) {
@@ -751,7 +751,7 @@ int32_t SPVM__Fn__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_len = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_len) {
-    return env->die(env, stack, "Destnation offset + length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation offset + length must be within the range of the destination array", MFILE, __LINE__);
   }
 
   if (source_offset + length > source_len) {
@@ -789,7 +789,7 @@ int32_t SPVM__Fn__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_len = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_len) {
-    return env->die(env, stack, "Destnation offset + length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation offset + length must be within the range of the destination array", MFILE, __LINE__);
   }
   
   if (source_offset + length > source_len) {
@@ -827,7 +827,7 @@ int32_t SPVM__Fn__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_len = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_len) {
-    return env->die(env, stack, "Destnation offset + length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation offset + length must be within the range of the destination array", MFILE, __LINE__);
   }
 
   if (source_offset + length > source_len) {
@@ -865,7 +865,7 @@ int32_t SPVM__Fn__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_len = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_len) {
-    return env->die(env, stack, "Destnation offset + length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation offset + length must be within the range of the destination array", MFILE, __LINE__);
   }
   
   if (source_offset + length > source_len) {
@@ -903,7 +903,7 @@ int32_t SPVM__Fn__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_len = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_len) {
-    return env->die(env, stack, "Destnation offset + length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation offset + length must be within the range of the destination array", MFILE, __LINE__);
   }
 
   if (source_offset + length > source_len) {
@@ -941,7 +941,7 @@ int32_t SPVM__Fn__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_len = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_len) {
-    return env->die(env, stack, "Destnation offset + length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation offset + length must be within the range of the destination array", MFILE, __LINE__);
   }
   
   if (source_offset + length > source_len) {
@@ -980,7 +980,7 @@ int32_t SPVM__Fn__memmove_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_len = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_len) {
-    return env->die(env, stack, "Destnation offset + length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation offset + length must be within the range of the destination array", MFILE, __LINE__);
   }
 
   if (source_offset + length > source_len) {
@@ -1019,7 +1019,7 @@ int32_t SPVM__Fn__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_len = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_len) {
-    return env->die(env, stack, "Destnation offset + length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation offset + length must be within the range of the destination array", MFILE, __LINE__);
   }
   
   if (source_offset + length > source_len) {
@@ -1057,7 +1057,7 @@ int32_t SPVM__Fn__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_len = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_len) {
-    return env->die(env, stack, "Destnation offset + length must be within the range of the destnation array", MFILE, __LINE__);
+    return env->die(env, stack, "Destnation offset + length must be within the range of the destination array", MFILE, __LINE__);
   }
 
   if (source_offset + length > source_len) {

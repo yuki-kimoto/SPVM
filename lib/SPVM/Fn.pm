@@ -948,13 +948,13 @@ Copy the source to the destination with the given each offset and the given leng
 
 If source data range and destination data overlap, the result is not guaranteed.
 
-The destnation must be defined, otherwise an exception occurs.
+The destination must be defined, otherwise an exception occurs.
 
 The source must be defined, otherwise an exception occurs.
 
 The length must be more than or equals to 0, otherwise an exception occurs.
 
-The destnation byte offset + byte length must be within the byte range of the destnation, otherwise an exception occurs.
+The destination byte offset + byte length must be within the byte range of the destination, otherwise an exception occurs.
 
 The source byte offset + byte length must be within the byte range of the source, otherwise an exception occurs.
 
@@ -974,7 +974,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -992,7 +992,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -1010,7 +1010,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -1026,7 +1026,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -1044,7 +1044,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -1062,7 +1062,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -1080,7 +1080,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -1098,13 +1098,13 @@ Copy the source to the destination with the given each offset and the given leng
 
 If source data range and destination data overlap, the result is not guaranteed.
 
-The destnation must be defined, otherwise an exception occurs.
+The destination must be defined, otherwise an exception occurs.
 
 The source must be defined, otherwise an exception occurs.
 
 The length must be more than or equals to 0, otherwise an exception occurs.
 
-The destnation byte offset + byte length must be within the byte range of the destnation, otherwise an exception occurs.
+The destination byte offset + byte length must be within the byte range of the destination, otherwise an exception occurs.
 
 The source byte offset + byte length must be within the byte range of the source, otherwise an exception occurs.
 
@@ -1122,7 +1122,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -1140,7 +1140,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -1158,7 +1158,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -1176,7 +1176,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -1194,7 +1194,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -1212,7 +1212,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
@@ -1230,7 +1230,7 @@ Source must be defined, otherwise an exception occurs.
 
 Length must be more than or equals to 0, otherwise an exception occurs.
 
-Destnation offset + length must be within the range of the destnation array, otherwise an exception occurs.
+Destnation offset + length must be within the range of the destination array, otherwise an exception occurs.
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
