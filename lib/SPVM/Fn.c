@@ -333,11 +333,11 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t byte_length = stack[4].ival;
 
   if (!dest) {
-    return env->die(env, stack, "Destnation must be defined", MFILE, __LINE__);
+    return env->die(env, stack, "The destination must be defined", MFILE, __LINE__);
   }
   
   if (!(env->is_string(env, stack, dest) || env->is_numeric_array(env, stack, dest) || env->is_mulnum_array(env, stack, dest))) {
-    return env->die(env, stack, "Destnation must be a string type, a numeric arrya type, or a multi numeric array", MFILE, __LINE__);
+    return env->die(env, stack, "The destination must be a string type, a numeric arrya type, or a multi numeric array", MFILE, __LINE__);
   }
   
   if (!source) {
@@ -349,7 +349,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
 
   if (env->is_read_only(env, stack, dest)) {
-    return env->die(env, stack, "Destnation must not be a read-only string", MFILE, __LINE__);
+    return env->die(env, stack, "The destination must not be a read-only string", MFILE, __LINE__);
   }
   
   if (byte_length == 0) {
@@ -370,7 +370,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_byte_length = source_elem_byte_size * source_len;
   
   if (dest_byte_offset + byte_length > dest_byte_length) {
-    return env->die(env, stack, "Destnation byte_offset + byte_length must be within the range of the destination array", MFILE, __LINE__);
+    return env->die(env, stack, "The destination byte_offset + byte_length must be within the range of the destination array", MFILE, __LINE__);
   }
 
   if (source_byte_offset + byte_length > source_byte_length) {
@@ -391,11 +391,11 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t byte_length = stack[4].ival;
 
   if (!dest) {
-    return env->die(env, stack, "Destnation must be defined", MFILE, __LINE__);
+    return env->die(env, stack, "The destination must be defined", MFILE, __LINE__);
   }
   
   if (!(env->is_string(env, stack, dest) || env->is_numeric_array(env, stack, dest) || env->is_mulnum_array(env, stack, dest))) {
-    return env->die(env, stack, "Destnation must be a string type, a numeric arrya type, or a multi numeric array", MFILE, __LINE__);
+    return env->die(env, stack, "The destination must be a string type, a numeric arrya type, or a multi numeric array", MFILE, __LINE__);
   }
   
   if (!source) {
@@ -407,7 +407,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
 
   if (env->is_read_only(env, stack, dest)) {
-    return env->die(env, stack, "Destnation must not be a read-only string", MFILE, __LINE__);
+    return env->die(env, stack, "The destination must not be a read-only string", MFILE, __LINE__);
   }
   
   if (byte_length == 0) {
@@ -428,7 +428,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_byte_length = source_elem_byte_size * source_len;
   
   if (dest_byte_offset + byte_length > dest_byte_length) {
-    return env->die(env, stack, "Destnation byte_offset + byte_length must be within the range of the destination array", MFILE, __LINE__);
+    return env->die(env, stack, "The destination byte_offset + byte_length must be within the range of the destination array", MFILE, __LINE__);
   }
 
   if (source_byte_offset + byte_length > source_byte_length) {
