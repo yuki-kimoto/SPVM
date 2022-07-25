@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-    static method new : FloatList ($array : float[]...)
+  static method new : FloatList ($array : float[]...)
 
 Create a new L<FloatList|SPVM::FloatList> object with a C<float> array.
 
@@ -88,7 +88,7 @@ B<Examples:>
 
 =head2 new_len
 
-    static method new_len : FloatList ($length : int)
+  static method new_len : FloatList ($length : int)
 
 Create a new L<FloatList|SPVM::FloatList> object with the length.
 

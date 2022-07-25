@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-    static method new : LongList ($array : long[]...)
+  static method new : LongList ($array : long[]...)
 
 Create a new L<LongList|SPVM::LongList> object with a C<long> array.
 
@@ -88,7 +88,7 @@ B<Examples:>
 
 =head2 new_len
 
-    static method new_len : LongList ($length : int)
+  static method new_len : LongList ($length : int)
 
 Create a new L<LongList|SPVM::LongList> object with the length.
 

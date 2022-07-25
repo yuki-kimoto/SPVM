@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-    static method new : ByteList ($array : byte[]...)
+  static method new : ByteList ($array : byte[]...)
 
 Create a new L<ByteList|SPVM::ByteList> object with a C<byte> array.
 
@@ -88,7 +88,7 @@ B<Examples:>
 
 =head2 new_len
 
-    static method new_len : ByteList ($length : int)
+  static method new_len : ByteList ($length : int)
 
 Create a new L<ByteList|SPVM::ByteList> object with the length.
 

@@ -11,45 +11,45 @@ SPVM::StringList - Dynamic string array
   use StringList;
   
   # Create a string list
-  my $string_list = StringList->new;
-  my $string_list = StringList->new(["abc", "def", "ghi"]);
+  my $list = StringList->new;
+  my $list = StringList->new(["abc", "def", "ghi"]);
   
   # Create a string list
-  my $string_list = StringList->new_len(10);
+  my $list = StringList->new_len(10);
 
   # Get list length
-  my $length = $string_list->length;
+  my $length = $list->length;
   
   # Push string value
-  $string_list->push("abc");
+  $list->push("abc");
 
   # Pop string value.
-  my $string_value = $string_list->pop;
+  my $value = $list->pop;
 
   # Unshift string value.
-  $string_list->unshift("abc");
+  $list->unshift("abc");
   
   # Shift string value.
-  my $string_value = $string_list->shift;
+  my $value = $list->shift;
   
   # Set string value.
-  $string_list->set(2, "abc");
+  $list->set(2, "abc");
 
   # Get string value.
-  my $string_value = $string_list->get(2);
+  my $value = $list->get(2);
 
   # Insert string value
-  $string_list->insert(1, "abc");
+  $list->insert(1, "abc");
 
   # Remove string value
-  my $string_value = $string_list->remove(1);
+  my $value = $list->remove(1);
 
   # Convert StringList to string array.
-  my $string_array = $string_list->to_array;
+  my $array = $list->to_array;
 
 =head1 Description
 
-L<StringList|SPVM::StringList> is dynamic string array.
+L<StringList|SPVM::StringList> is a dynamic C<string> array.
 
 =head1 Fields
 
@@ -63,7 +63,10 @@ The length.
 
   has values : ro string[];
 
-The values.
+The values. This is the internally used array, but it can be manipulated directly.
+
+  my $values = $list->values;
+  $valeus->[0] = "5";
 
 =head1 Class Methods
 
@@ -71,20 +74,25 @@ The values.
 
   static method new : StringList ($array : string[]...)
 
-Create a new L<StringList|SPVM::StringList> object with specific C<string> array.
+Create a new L<StringList|SPVM::StringList> object with a C<string> array.
 
-Internally, new array is created, and each element of argument array is copied to internal array.
+Internally, a new array is created, and each element of the specified array is copied to the new array.
 
-If the array of the argument is C<undef>, 0-length internal array is created.
+If the array is C<undef>, a new array that length is C<0> is created.
 
-  my $string_list = StringList->new;
-  my $string_list = StringList->new(["abc", "def", "ghi"]);
+B<Examples:>
+
+  my $list = StringList->new;
+  my $list = StringList->new(["abc", "def", "ghi"]);
+  my $list = StringList->new(undef);
 
 =head2 new_len
 
   static method new_len : StringList ($length : int)
 
-Create a new L<StringList|SPVM::StringList> object with array length.
+Create a new L<StringList|SPVM::StringList> object with the length.
+
+The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head1 Instance Methods
 
@@ -92,72 +100,102 @@ Create a new L<StringList|SPVM::StringList> object with array length.
 
   method get : string ($index : int)
 
-Get the value with index.
+Get the element of the position of the index.
+
+The index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+
+The index must be less than the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 insert
 
   method insert : void ($index : int, $value : string)
 
-Insert a element to the specific index.
+Insert a element to the position of the index.
+
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The index must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 pop
 
   method pop : string ()
 
-Pops and returns the last value of the list, shortening the array by one element
-If there are no elements in the list, exception occur.
+Remove the last element and return it.
+
+The length of the list must be greater than C<0>. Otherwise an excpetion will be thrown.
 
 =head2 push
   
   method push : void ($value : string)
 
-Appending the value to the end of list.
+Add a element after the end of the list.
 
 =head2 remove
 
   method remove : string ($index : int)
 
-Remove and return the element which is specified by the index.
+Remove the element at the position of the index and return it.
+
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The index must be less than the length of the list. Otherwise an excpetion will be thrown.
+
+=head2 replace
+
+  method replace : void ($offset : int, $remove_length : int, $replace : string[])
+
+Replace the elements of the range specified by the offset and the lenght with the replacement array.
+
+The offset must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The removing length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The offset + the removing lenght must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 resize
 
   method resize : void ($new_length : int)
 
-Resize this list. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is same as the current length, there is nothing to do. If the new length is longer than the current length, the list grows to the new length, and the values of the added elements are set to undef.
+Resize the list.
 
-New length must be more than or equals to 0, otherwise a exception occur.
+The new length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head2 set
 
   method set : void ($index : int, $value : string)
 
-Set the value with index.
+Set the element at the position of the index.
+
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The index must be less than the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 set_array
 
   method set_array : void ($array : string[])
 
-Set a array. Each elements of the array is copied to the correspoinding index of the array this list has. Note that this copy is address copy.
-Array must be defined, otherwise a exception occurs.
+Set a array. Each element of the array is copied to the element of the list.
 
-The length of argument array must be same as the length of current list array, otherwise a exception occures.
+The array must be defined. Otherwise an excpetion will be thrown.
+
+The length of the array must be the same as the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 shift
 
   method shift : string ()
 
-Shifts the first value of the list off and returns it, shortening
-the array by 1 and moving everything down.
-If there are no elements in the list, exception occur.
+Remove the first element and return it.
+
+The length of the list must be greater than C<0>. Otherwise an excpetion will be thrown.
 
 =head2 to_array
 
   method to_array : string[] ()
 
-Convert L<StringList|SPVM::StringList> to string array.
+Convert the list to an array.
 
 =head2 unshift
 
   method unshift : void ($value : string)
 
-Appending the value to the top of list.
+Insert a element at the beginning of the list.

@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-    static method new : DoubleList ($array : double[]...)
+  static method new : DoubleList ($array : double[]...)
 
 Create a new L<DoubleList|SPVM::DoubleList> object with a C<double> array.
 
@@ -88,7 +88,7 @@ B<Examples:>
 
 =head2 new_len
 
-    static method new_len : DoubleList ($length : int)
+  static method new_len : DoubleList ($length : int)
 
 Create a new L<DoubleList|SPVM::DoubleList> object with the length.
 

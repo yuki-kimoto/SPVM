@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-    static method new : IntList ($array : int[]...)
+  static method new : IntList ($array : int[]...)
 
 Create a new L<IntList|SPVM::IntList> object with a C<int> array.
 
@@ -88,7 +88,7 @@ B<Examples:>
 
 =head2 new_len
 
-    static method new_len : IntList ($length : int)
+  static method new_len : IntList ($length : int)
 
 Create a new L<IntList|SPVM::IntList> object with the length.
 

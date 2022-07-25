@@ -66,6 +66,8 @@
     * Fix the StringList->remove bug.
   [Document]
     * Add Fields doc to Byte, Short, Int, Long, Float, Double, ByteList, ShortList, IntList, LongList, FloatList, DoubleList, List, StringBuffer class.
+  [NON BACKWORD COMPATIBLE CHANGES]
+    * Remove undocumented and untested grep method from StringList
     
 0.962701 2022-07-25
   [Test Fix]

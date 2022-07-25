@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-    static method new : ShortList ($array : short[]...)
+  static method new : ShortList ($array : short[]...)
 
 Create a new L<ShortList|SPVM::ShortList> object with a C<short> array.
 
@@ -88,7 +88,7 @@ B<Examples:>
 
 =head2 new_len
 
-    static method new_len : ShortList ($length : int)
+  static method new_len : ShortList ($length : int)
 
 Create a new L<ShortList|SPVM::ShortList> object with the length.
 
