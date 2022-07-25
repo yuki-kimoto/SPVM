@@ -4,7 +4,7 @@ package SPVM::List;
 
 =head1 Name
 
-SPVM::List - Dynamic object array
+SPVM::List - Dynamic Object Array
 
 =head1 Usage
   
@@ -15,7 +15,7 @@ SPVM::List - Dynamic object array
   my $list = List->new([(object)Byte->new(1), Int->new(2), Long->new(3)]);
 
   # Create a Int list
-  my $list = List->new([Byte->new(1), Int->new(2), Int->new(3)]);
+  my $list = List->new([Int->new(1), Int->new(2), Int->new(3)]);
   
   # Create a object list with length
   my $list = List->new_len([], 3);
@@ -30,25 +30,25 @@ SPVM::List - Dynamic object array
   $list->push(Int->new(3));
 
   # Pop object value.
-  my $object_value = $list->pop;
+  my $value = $list->pop;
 
   # Unshift object value.
   $list->unshift(Int->new(3));
   
   # Shift object value.
-  my $object_value = $list->shift;
+  my $value = $list->shift;
   
   # Set object value.
   $list->set(2, Int->new(3));
   
   # Get object value.
-  my $object_value = $list->get(2);
+  my $value = $list->get(2);
 
   # Insert object value
   $list->insert(1, Int->new(3));
 
   # Remove object value
-  my $object_value = $list->remove(1);
+  my $value = $list->remove(1);
 
   # Convert List to object array.
   my $int_array = $list->to_array;
@@ -58,7 +58,7 @@ SPVM::List - Dynamic object array
 
 =head1 Description
 
-L<List|SPVM::List> is dynamic object array.
+L<List|SPVM::List> is the dynamic object array that has a specified object array type.
 
 =head1 Fields
 
@@ -78,22 +78,34 @@ The values.
 
 =head2 new
 
-    static method new : List ($objects : object[]...)
+  static method new : List ($objects : object[]...)
 
-Create a new L<List|SPVM::List> object with specific C<object> array.
+Create a new L<List|SPVM::List> object with the object array.
 
-Internally, new array is created, and each element of argument array is copied to internal array.
+Internally, a new array is created. The type of the created array is the same type as the array specified by the argument. Each element of the array specified by the arugment is copied to the element of the new array.
 
 If the array of the argument is C<undef>, 0-length internal array is created.
-
-  my $list = List->new;
+  
+  # object[]
   my $list = List->new([(object)Byte->new(1), Int->new(2), Long->new(3)]);
+  
+  # Int[]
+  my $list = List->new([Int->new(1), Int->new(2), Int->new(3)]);
 
 =head2 new_len
 
-    static method new_len : List ($proto_array : object[], $length : int)
+  static method new_len : List ($proto_array : object[], $length : int)
 
-Create a new L<List|SPVM::List> object with prototype array and array length. Prototype array is used to decide the array type of internal values.
+Create a new L<List|SPVM::List> object with the prototype array and the length of the created array.
+
+Internally, a new array is created. The type of the created array is the same type as the prototype array specified by the argument.
+
+The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+B<Examples:>
+
+  # Create a Int list with length
+  my $list = List->new_len(new Int[0], 3);
 
 =head1 Instance Methods
 
@@ -101,74 +113,102 @@ Create a new L<List|SPVM::List> object with prototype array and array length. Pr
 
   method get : object ($index : int)
 
-Get the value with index.
+Get the element of the position of the index.
+
+The index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+
+The index must be less than the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 insert
 
   method insert : void ($index : int, $value : object)
 
-Insert a element to the specific index.
+Insert a element to the position of the index.
+
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The index must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 pop
 
   method pop : object ()
 
-Pops and returns the last value of the list, shortening the array by one element
-If there are no elements in the list, exception occur.
+Remove the last element and return it.
+
+The length of the list must be greater than C<0>. Otherwise an excpetion will be thrown.
             
 =head2 push
   
   method push : void ($value : object)
 
-Appending the value to the end of list.
+Add a element after the end of the list.
 
 =head2 remove
 
   method remove : object ($index : int)
 
-Remove and return the element which is specified by the index.
-  
+Remove the element at the position of the index and return it.
+
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The index must be less than the length of the list. Otherwise an excpetion will be thrown.
+
 =head2 resize
 
   method resize : void ($new_length : int)
 
-Resize this list. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is same as the current length, there is nothing to do. If the new length is longer than the current length, the list grows to the new length, and the values of the added elements are set to undef.
+Resize the list.
 
-New length must be more than or equals to 0, otherwise a exception occur.
+The new length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+=head2 replace
+
+  method replace : void ($offset : int, $remove_length : int, $replace : object[])
+
+Replace the elements of the range specified by the offset and the lenght with the replacement array.
+
+The offset must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The removing length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The offset + the removing lenght must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 set
 
   method set : void ($index : int, $value : object)
 
-Set the value with index.
+Set the element at the position of the index.
+
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The index must be less than the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 set_array
 
   method set_array : void ($array : object[])
 
-Set a array. Each elements of the array is copied to the correspoinding index of the array this list has. Note that this copy is address copy.
+Set a array. Each element of the array is copied to the element of the list.
 
-Array must be defined, otherwise a exception occurs.
+The array must be defined. Otherwise an excpetion will be thrown.
 
-The length of argument array must be same as the length of current list array, otherwise a exception occures.
-
-=head2 to_array
-
-  method to_array : object[] ()
-
-Convert L<List|SPVM::List> to object array.
+The length of the array must be the same as the length of the list. Otherwise an excpetion will be thrown.
 
 =head2 shift
 
   method shift : object ()
 
-Shifts the first value of the list off and returns it, shortening
-the array by 1 and moving everything down.
-If there are no elements in the list, exception occur.
+Remove the first element and return it.
+
+The length of the list must be greater than C<0>. Otherwise an excpetion will be thrown.
+
+=head2 to_array
+
+  method to_array : object[] ()
+
+Convert the list to an array.
 
 =head2 unshift
 
   method unshift : void ($value : object)
 
-Appending the value to the top of list.
-
+Insert a element at the beginning of the list.
