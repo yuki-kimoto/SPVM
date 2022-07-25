@@ -7,7 +7,7 @@
 #include <stddef.h>
 #include <assert.h>
 
-static const char* FILE_NAME = "SPVM/Fn.c";
+static const char* FILE_NAME = "Fn.c";
 
 int32_t SPVM__Fn__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;

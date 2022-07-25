@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-static const char* FILE_NAME = "SPVM/Array.c";
+static const char* FILE_NAME = "Array.c";
 
 int32_t SPVM__Array__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   

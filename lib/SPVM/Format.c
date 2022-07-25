@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-static const char* FILE_NAME = "SPVM/Format.c";
+static const char* FILE_NAME = "Format.c";
 
 #define SPRINTF_MAX_RESULT_LEN 256
 

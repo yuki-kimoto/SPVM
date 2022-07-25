@@ -2,7 +2,7 @@
 
 #include <time.h>
 
-static const char* FILE_NAME = "SPVM/Time.c";
+static const char* FILE_NAME = "Time.c";
 
 int32_t SPVM__Time__time(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
