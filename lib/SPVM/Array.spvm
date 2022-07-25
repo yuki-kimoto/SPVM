@@ -1,11 +1,9 @@
 class Array {
-  use StringBuffer;
-  use StringList;
   use Stringer;
   use Cloner;
   use EqualityChecker;
-  use Format;
   use EqualityChecker::SameObject;
+  use Format;
   
   static method copy_byte : byte[] ($array : byte[]) {
     return copy $array;
@@ -890,7 +888,7 @@ class Array {
     my $source_length = @$source;
     
     if ($dest_offset + $length > $dest_length) {
-      die "The offset of the destination + the length specified by the argument must be greater than the length of the destination";
+      die "The offset of the destnation + the length specified by the argument must be greater than the length of the destination";
     }
     
     if ($source_offset + $length > $source_length) {
@@ -928,7 +926,7 @@ class Array {
     my $source_length = @$source;
     
     if ($dest_offset + $length > $dest_length) {
-      die "The offset of the destination + the length specified by the argument must be greater than the length of the destination";
+      die "The offset of the destnation + the length specified by the argument must be greater than the length of the destination";
     }
     
     if ($source_offset + $length > $source_length) {
