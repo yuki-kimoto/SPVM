@@ -1,17 +1,6 @@
 #include "spvm_native.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
 #include <string.h>
-#include <inttypes.h>
-#include <float.h>
-#include <complex.h>
-#include <memory.h>
-#include <ctype.h>
-#include <errno.h>
-#include <stddef.h>
-#include <assert.h>
 
 static const char* FILE_NAME = "SPVM/Array.c";
 
@@ -24,7 +13,7 @@ int32_t SPVM__Array__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (!sv_dest) {
-    return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destnation must be defined", FILE_NAME, __LINE__);
   }
   
   if (!sv_source) {
@@ -45,7 +34,7 @@ int32_t SPVM__Array__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_length = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_length) {
-    return env->die(env, stack, "The offset of the destination + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the destnation + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
   }
 
   if (source_offset + length > source_length) {
@@ -65,7 +54,7 @@ int32_t SPVM__Array__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
-  if (!sv_dest) { return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__); }
+  if (!sv_dest) { return env->die(env, stack, "The destnation must be defined", FILE_NAME, __LINE__); }
   
   if (!sv_source) { return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__); }
   
@@ -84,7 +73,7 @@ int32_t SPVM__Array__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_length = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_length) {
-    return env->die(env, stack, "The offset of the destination + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the destnation + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
   }
   
   if (source_offset + length > source_length) {
@@ -104,7 +93,7 @@ int32_t SPVM__Array__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
-  if (!sv_dest) { return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__); }
+  if (!sv_dest) { return env->die(env, stack, "The destnation must be defined", FILE_NAME, __LINE__); }
   
   if (!sv_source) { return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__); }
   
@@ -122,7 +111,7 @@ int32_t SPVM__Array__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_length = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_length) {
-    return env->die(env, stack, "The offset of the destination + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the destnation + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
   }
   
   if (source_offset + length > source_length) {
@@ -142,7 +131,7 @@ int32_t SPVM__Array__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
-  if (!sv_dest) { return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__); }
+  if (!sv_dest) { return env->die(env, stack, "The destnation must be defined", FILE_NAME, __LINE__); }
   
   if (!sv_source) { return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__); }
   
@@ -160,7 +149,7 @@ int32_t SPVM__Array__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_length = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_length) {
-    return env->die(env, stack, "The offset of the destination + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the destnation + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
   }
   
   if (source_offset + length > source_length) {
@@ -180,7 +169,7 @@ int32_t SPVM__Array__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
-  if (!sv_dest) { return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__); }
+  if (!sv_dest) { return env->die(env, stack, "The destnation must be defined", FILE_NAME, __LINE__); }
   
   if (!sv_source) { return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__); }
   
@@ -198,7 +187,7 @@ int32_t SPVM__Array__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_length = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_length) {
-    return env->die(env, stack, "The offset of the destination + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the destnation + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
   }
   
   if (source_offset + length > source_length) {
@@ -218,7 +207,7 @@ int32_t SPVM__Array__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
-  if (!sv_dest) { return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__); }
+  if (!sv_dest) { return env->die(env, stack, "The destnation must be defined", FILE_NAME, __LINE__); }
 
   if (!sv_source) { return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__); }
   
@@ -236,7 +225,7 @@ int32_t SPVM__Array__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_length = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_length) {
-    return env->die(env, stack, "The offset of the destination + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the destnation + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
   }
   
   if (source_offset + length > source_length) {
@@ -256,7 +245,7 @@ int32_t SPVM__Array__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
-  if (!sv_dest) { return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__); }
+  if (!sv_dest) { return env->die(env, stack, "The destnation must be defined", FILE_NAME, __LINE__); }
   
   if (!sv_source) { return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__); }
   
@@ -274,7 +263,7 @@ int32_t SPVM__Array__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_length = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_length) {
-    return env->die(env, stack, "The offset of the destination + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the destnation + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
   }
 
   if (source_offset + length > source_length) {
@@ -294,7 +283,7 @@ int32_t SPVM__Array__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
-  if (!sv_dest) { return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__); }
+  if (!sv_dest) { return env->die(env, stack, "The destnation must be defined", FILE_NAME, __LINE__); }
   
   if (!sv_source) { return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__); }
 
@@ -312,7 +301,7 @@ int32_t SPVM__Array__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_length = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_length) {
-    return env->die(env, stack, "The offset of the destination + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the destnation + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
   }
 
   if (source_offset + length > source_length) {
@@ -332,7 +321,7 @@ int32_t SPVM__Array__memmove_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
-  if (!sv_dest) { return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__); }
+  if (!sv_dest) { return env->die(env, stack, "The destnation must be defined", FILE_NAME, __LINE__); }
   
   if (!sv_source) { return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__); }
   
@@ -351,7 +340,7 @@ int32_t SPVM__Array__memmove_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_length = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_length) {
-    return env->die(env, stack, "The offset of the destination + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the destnation + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
   }
 
   if (source_offset + length > source_length) {
@@ -371,7 +360,7 @@ int32_t SPVM__Array__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
-  if (!sv_dest) { return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__); }
+  if (!sv_dest) { return env->die(env, stack, "The destnation must be defined", FILE_NAME, __LINE__); }
   
   if (!sv_source) { return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__); }
   
@@ -389,7 +378,7 @@ int32_t SPVM__Array__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_length = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_length) {
-    return env->die(env, stack, "The offset of the destination + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the destnation + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
   }
 
   if (source_offset + length > source_length) {
@@ -409,7 +398,7 @@ int32_t SPVM__Array__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
-  if (!sv_dest) { return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__); }
+  if (!sv_dest) { return env->die(env, stack, "The destnation must be defined", FILE_NAME, __LINE__); }
   
   if (!sv_source) { return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__); }
   
@@ -427,7 +416,7 @@ int32_t SPVM__Array__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_length = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_length) {
-    return env->die(env, stack, "The offset of the destination + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the destnation + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
   }
 
   if (source_offset + length > source_length) {
@@ -447,7 +436,7 @@ int32_t SPVM__Array__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
-  if (!sv_dest) { return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__); }
+  if (!sv_dest) { return env->die(env, stack, "The destnation must be defined", FILE_NAME, __LINE__); }
   
   if (!sv_source) { return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__); }
   
@@ -465,7 +454,7 @@ int32_t SPVM__Array__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_length = env->length(env, stack, sv_source);
   
   if (dest_offset + length > dest_length) {
-    return env->die(env, stack, "The offset of the destination + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the destnation + the length specified by the argument must be greater than the length of the destination", FILE_NAME, __LINE__);
   }
 
   if (source_offset + length > source_length) {
