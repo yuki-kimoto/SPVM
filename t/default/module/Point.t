@@ -17,7 +17,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Point
 {
-  # Fields
+  # Interfaces
   ok(SPVM::TestCase::Module::Point->interfaces);
   
   # Fields

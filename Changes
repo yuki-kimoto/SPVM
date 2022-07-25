@@ -1,8 +1,11 @@
 0.9629 2022-07-25
   [Document Fix]
     * Add the doc of clear method of Point class.
-  [Document]
+    * Add the doc of clear method of Point3D class.
+  [New Document]
     * Add Fields section to Point class
+    * Add Super Class section to Point3D class
+    * Add Fields section to Point3D class
   
 0.9628 2022-07-25
   [New Features]

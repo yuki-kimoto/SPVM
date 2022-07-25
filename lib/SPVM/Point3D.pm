@@ -19,7 +19,7 @@ SPVM::Point3D - Point 3D
   
   my $x = $point->x;
   my $y = $point->y;
-  my $y = $point->z;
+  my $z = $point->z;
   
   my $point_string = $point->to_string;
 
@@ -33,7 +33,17 @@ L<Point|SPVM::Point> is the super class of C<Point3D>.
 
 =head1 Interfaces
 
-C<Point3D> inherits the interfaces of L<Point|SPVM::Point>.
+C<Point3D> inherits the interfaces of L<Point|SPVM::Point/"Interfaces">.
+
+=head1 Fields
+
+C<Point3D> inherits the fields of L<Point|SPVM::Point/"Fields">.
+
+=head2 z
+
+  has z : rw int;
+
+C<z>.
 
 =head1 Class Methods
 
@@ -47,34 +57,29 @@ Create a new C<Point3D> object.
 
   method new_xyz : Point3D ($x : int, $y : int, $z : int)
 
-Create a new C<Point3D> object with x, y, and z.
+Create a new C<Point3D> object with L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, and L</"z">.
 
 =head1 Instance Methods
 
-C<Point3D> inherits the methods of L<Point|SPVM::Point>, and implements the following methods.
+C<Point3D> inherits the instance methods of L<Point|SPVM::Point/"Instance Methods">.
 
-=head2 z
+=head2 clear
 
-  method z : int ()
+  method clear : void ()
 
-Get C<z> field.
-
-=head2 set_z
-
-  void set_z : int ($z : int)
-
-Set C<x> field.
-
-=head2 to_string
-
-  method to_string : string ();
-
-Convert the C<Point3D> object to a string as the following.
-
-  (1,2,3)
+Set L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, and L</"z"> to C<0>.
 
 =head2 cloneable_clone
 
   method cloneable_clone : object ()
 
-Clone a C<Point3D> object by create a new C<Point3D> object and C<x>, C<y>, C<z> fields are copied to the new object.
+Create a new C<Point3D> object that clones myself.
+
+=head2 to_string
+
+  method to_string : string ();
+
+Stringify the C<Point3D> object as the following format.
+
+  (1,2,3)
+

@@ -1,10 +1,13 @@
 class Point {
+  # Interfaces
   interface Stringable;
   interface Cloneable;
   
+  # Fields
   has x : rw int;
   has y : rw int;
   
+  # Class methods
   static method new : Point () {
     return new Point;
   }
@@ -18,9 +21,16 @@ class Point {
     return $self;
   }
   
+  # Instance methods
   method clear : void () {
     $self->{x} = 0;
     $self->{y} = 0;
+  }
+  
+  method cloneable_clone : object () {
+    my $self_clone = Point->new_xy($self->x, $self->y);
+    
+    return $self_clone;
   }
   
   method to_string : string () {
@@ -30,11 +40,5 @@ class Point {
     my $string = "($x,$y)";
     
     return $string;
-  }
-  
-  method cloneable_clone : object () {
-    my $self_clone = Point->new_xy($self->x, $self->y);
-    
-    return $self_clone;
   }
 }

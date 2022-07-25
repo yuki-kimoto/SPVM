@@ -43,9 +43,13 @@ C<Point> class has the following interfaces.
 
   has x : rw int;
 
+C<x>.
+
 =head2 y
 
   has y : rw int;
+
+C<y>.
 
 =head1 Class Methods
 

@@ -1,11 +1,14 @@
 class Point3D extends Point {
   
+  # Fields
   has z : rw int;
-
+  
+  # Class method
   static method new : Point3D () {
     return new Point3D;
   }
   
+  # Class methods
   static method new_xyz : Point3D ($x : int, $y : int, $z : int) {
     my $self = Point3D->new;
     
@@ -15,10 +18,17 @@ class Point3D extends Point {
     
     return $self;
   }
-
+  
+  # Instance methods
   method clear : void () {
     $self->SUPER::clear;
     $self->{z} = 0;
+  }
+  
+  method cloneable_clone : object () {
+    my $self_clone = Point3D->new_xyz($self->x, $self->y, $self->z);
+    
+    return $self_clone;
   }
   
   method to_string : string () {
@@ -29,11 +39,5 @@ class Point3D extends Point {
     my $string = "($x,$y,$z)";
     
     return $string;
-  }
-  
-  method cloneable_clone : object () {
-    my $self_clone = Point3D->new_xyz($self->x, $self->y, $self->z);
-    
-    return $self_clone;
   }
 }
