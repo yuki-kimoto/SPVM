@@ -121,49 +121,59 @@ C<Array> provides array utilities.
 
   static method copy_byte : byte[] ($array : byte[])
 
-Copy a byte array.
+Copy a C<byte> array.
 
-If the array is undef, return undef.
+If the array is not defined, return C<undef>.
 
 =head2 copy_double
 
   static method copy_double : double[] ($array : double[])
 
-Copy a double array.
+Copy a C<double> array.
 
-If the array is undef, return undef.
+If the array is not defined, return C<undef>.
 
 =head2 copy_float
 
   static method copy_float : float[] ($array : float[])
 
-Copy a float array.
+Copy a C<float> array.
 
-If the array is undef, return undef.
+If the array is not defined, return C<undef>.
 
 =head2 copy_int
 
   static method copy_int : int[] ($array : int[])
 
-Copy a int array.
+Copy a C<int> array.
 
-If the array is undef, return undef.
+If the array is not defined, return C<undef>.
   
 =head2 copy_long
 
   static method copy_long : long[] ($array : long[])
 
-Copy a long array.
+Copy a C<long> array.
 
-If the array is undef, return undef.
+If the array is not defined, return C<undef>.
 
 =head2 copy_object
 
   static method copy_object : object[] ($array : object[], $cloner : Cloner)
 
-Copy a object array with a L<Cloner|SPVM::Cloner> callback implemetation.
+Copy a object array. Each element is cloned by the L<Cloner|SPVM::Cloner>.
 
-If the array is undef, return undef.
+If the array is not defined, return C<undef>.
+
+If the cloner is not defined, the address of each element is copied.
+
+=head2 copy_object_address
+
+  static method copy_object_address : object[] ($array : object[]);
+
+The alias for the following code using L</"copy_object">.
+
+  my $ret = &copy_object($array, undef);
 
 =head2 copy_range_byte
 
@@ -283,7 +293,7 @@ Offset + length must not be in the array range, othrewise an exception occurs.
 
 Copy a short array.
 
-If the array is undef, return undef.
+If the array is not defined, return C<undef>.
   
 =head2 copy_string
 
@@ -291,7 +301,7 @@ If the array is undef, return undef.
 
 Copy a string array.
 
-If the array is undef, return undef.
+If the array is not defined, return C<undef>.
 
 =head2 dump_byte
 
@@ -301,7 +311,7 @@ Convert the array in the byte array to string and join them with "," and surroun
 
 For readability spaces and line breaks are inserted.
 
-If byte array is undef, return undef.
+If byte array is not defined, return C<undef>.
 
 =head2 dump_double
 
@@ -311,7 +321,7 @@ Convert the array in the double array to string and join them with "," and surro
 
 For readability spaces and line breaks are inserted.
 
-If byte array is undef, return undef.
+If byte array is not defined, return C<undef>.
 
 =head2 dump_float
 
@@ -321,7 +331,7 @@ Convert the array in the float array to string and join them with "," and surrou
 
 For readability spaces and line breaks are inserted.
 
-If byte array is undef, return undef.
+If byte array is not defined, return C<undef>.
 
 =head2 dump_int
 
@@ -329,7 +339,7 @@ If byte array is undef, return undef.
   
 Convert the array in the int array to string and join them with "," and surround it with "[" and "]", and return it.
 
-If byte array is undef, return undef.
+If byte array is not defined, return C<undef>.
 
 =head2 dump_long
 
@@ -337,7 +347,7 @@ If byte array is undef, return undef.
   
 Convert the array in the long array to string and join them with "," and surround it with "[" and "]", and return it.
 
-If byte array is undef, return undef.
+If byte array is not defined, return C<undef>.
 
 =head2 dump_object
 
@@ -347,7 +357,7 @@ Convert the array in the object array to string by a C<SPVM::Stringer> callback 
 
 For readability spaces and line breaks are inserted.
 
-If string array is undef, return undef.
+If string array is not defined, return C<undef>.
 
 =head2 dump_short
 
@@ -357,7 +367,7 @@ Convert the array in the short array to string and join them with "," and surrou
 
 For readability spaces and line breaks are inserted.
 
-If byte array is undef, return undef.
+If byte array is not defined, return C<undef>.
 
 =head2 dump_string
 
@@ -367,7 +377,7 @@ Join the array in the array with "," and surround it with "[" and "]", and retur
 
 For readability spaces and line breaks are inserted.
 
-If string array is undef, return undef.
+If string array is not defined, return C<undef>.
 
 =head2 dump_unsigned_byte
 
@@ -375,7 +385,7 @@ If string array is undef, return undef.
   
 Convert the array in the byte array to string interpreting as an unsigned 8bit integer and join them with "," and surround it with "[" and "]", and return it.
 
-If byte array is undef, return undef.
+If byte array is not defined, return C<undef>.
 
 =head2 dump_unsigned_int
 
@@ -383,7 +393,7 @@ If byte array is undef, return undef.
   
 Convert the array in the int array to string interpreting as an unsigned 32bit integer and join them with "," and surround it with "[" and "]", and return it.
 
-If byte array is undef, return undef.
+If byte array is not defined, return C<undef>.
 
 =head2 dump_unsigned_long
 
@@ -393,7 +403,7 @@ Convert the array in the long array to string interpreting as an unsigned 64bit 
 
 For readability spaces and line breaks are inserted.
 
-If byte array is undef, return undef.
+If byte array is not defined, return C<undef>.
 
 =head2 dump_unsigned_short
 
@@ -403,7 +413,7 @@ Convert the array in the short array to string interpreting as an unsigned 16bit
 
 For readability spaces and line breaks are inserted.
 
-If byte array is undef, return undef.
+If byte array is not defined, return C<undef>.
 
 =head2 equals_byte
 
@@ -411,7 +421,7 @@ If byte array is undef, return undef.
 
 Check if two byte arrays equal.
 
-If at least one of the arrays is undef, a excetpion occurs.
+If at least one of the arrays is not defined, a excetpion occurs.
 
 =head2 equals_double
 
@@ -419,7 +429,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
 Check if two double arrays equal.
 
-If at least one of the arrays is undef, a excetpion occurs.
+If at least one of the arrays is not defined, a excetpion occurs.
 
 =head2 equals_float
 
@@ -427,7 +437,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
 Check if two float arrays equal.
 
-If at least one of the arrays is undef, a excetpion occurs.
+If at least one of the arrays is not defined, a excetpion occurs.
 
 =head2 equals_int
 
@@ -435,7 +445,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
 Check if two int arrays equal.
 
-If at least one of the arrays is undef, a excetpion occurs.
+If at least one of the arrays is not defined, a excetpion occurs.
 
 =head2 equals_long
 
@@ -443,7 +453,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
 Check if two long arrays equal.
 
-If at least one of the arrays is undef, a excetpion occurs.
+If at least one of the arrays is not defined, a excetpion occurs.
 
 =head2 equals_object
 
@@ -469,7 +479,7 @@ The alias for the following code using L</"equals_object">.
 
 Check if two short arrays equal.
 
-If at least one of the arrays is undef, a excetpion occurs.
+If at least one of the arrays is not defined, a excetpion occurs.
 
 =head2 equals_string
 
@@ -477,7 +487,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
 Check if two string arrays equal.
 
-If at least one of the arrays is undef, a excetpion occurs.
+If at least one of the arrays is not defined, a excetpion occurs.
 
 =head2 memcpy_byte
 

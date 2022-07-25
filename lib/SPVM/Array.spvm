@@ -8,39 +8,48 @@ class Array {
   static method copy_byte : byte[] ($array : byte[]) {
     return copy $array;
   }
-
+  
   static method copy_double : double[] ($array : double[]) {
     return copy $array;
   }
-
+  
   static method copy_float : float[] ($array : float[]) {
     return copy $array;
   }
-
+  
   static method copy_int : int[] ($array : int[]) {
     return copy $array;
   }
-
+  
   static method copy_long : long[] ($array : long[]) {
     return copy $array;
   }
-
+  
   precompile static method copy_object : object[] ($array : object[], $cloner : Cloner) {
     if ($array == undef) {
       return undef;
     }
     
     my $length = @$array;
-
+    
     my $new_array = new object[$length];
-
-    for (my $i = 0; $i < $length; $i++) {
-      $new_array->[$i] = $cloner->($array->[$i]);
+    
+    if ($cloner) {
+      for (my $i = 0; $i < $length; $i++) {
+        $new_array->[$i] = $cloner->($array->[$i]);
+      }
     }
-
+    else {
+      Fn->memcpy_object($new_array, 0, $array, 0, $length);
+    }
+    
     return $new_array;
   }
-
+  
+  static method copy_object_address : object[] ($array : object[]) {
+    return &copy_object($array, undef);
+  }
+  
   precompile static method copy_range_byte : byte[] ($array : byte[], $offset : int, $length : int) {
 
     if ($array == undef) {

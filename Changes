@@ -1,4 +1,6 @@
 0.9629 2022-07-25
+  [New Features]
+    * Add copy_object_address to Array class.
   [Document Fix]
     * Add the doc of clear method of Point class.
     * Add the doc of clear method of Point3D class.
