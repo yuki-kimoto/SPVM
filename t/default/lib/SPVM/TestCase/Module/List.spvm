@@ -152,7 +152,7 @@ class TestCase::Module::List {
       
       my $list = List->new([(object)$x1, $x2, $x3]);
       $list->insert(0 => $x4);
-      unless (Array->equals_object($list->to_array, [$x4, $x1, $x2, $x3], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object_address($list->to_array, [$x4, $x1, $x2, $x3])) {
         return 0;
       }
     }
@@ -166,7 +166,7 @@ class TestCase::Module::List {
       
       my $list = List->new([(object)$x1, $x2, $x3]);
       $list->insert(2 => $x4);
-      unless (Array->equals_object($list->to_array, [$x1, $x2, $x4, $x3], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object_address($list->to_array, [$x1, $x2, $x4, $x3])) {
         return 0;
       }
     }
@@ -180,7 +180,7 @@ class TestCase::Module::List {
       
       my $list = List->new([(object)$x1, $x2, $x3]);
       $list->insert(3 => $x4);
-      unless (Array->equals_object($list->to_array, [$x1, $x2, $x3, $x4], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object_address($list->to_array, [$x1, $x2, $x3, $x4])) {
         return 0;
       }
     }
@@ -288,7 +288,7 @@ class TestCase::Module::List {
       
       my $list = List->new([(object)$x1, $x2, $x3, $x4]);
       my $value = $list->remove(1);
-      unless (Array->equals_object($list->to_array, [$x1, $x3, $x4], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object_address($list->to_array, [$x1, $x3, $x4])) {
         return 0;
       }
       unless ($value == $x2) {
@@ -305,7 +305,7 @@ class TestCase::Module::List {
       
       my $list = List->new([(object)$x1, $x2, $x3]);
       $list->remove(2);
-      unless (Array->equals_object($list->to_array, [$x1, $x2], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object_address($list->to_array, [$x1, $x2])) {
         return 0;
       }
     }
@@ -319,7 +319,7 @@ class TestCase::Module::List {
       
       my $list = List->new([(object)$x1, $x2, $x3]);
       $list->remove(0);
-      unless (Array->equals_object($list->to_array, [$x2, $x3], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object_address($list->to_array, [$x2, $x3])) {
         return 0;
       }
     }

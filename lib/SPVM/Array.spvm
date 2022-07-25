@@ -5,6 +5,7 @@ class Array {
   use Cloner;
   use EqualityChecker;
   use Format;
+  use EqualityChecker::SameObject;
   
   static method copy_byte : byte[] ($nums : byte[]) {
     return copy $nums;
@@ -757,10 +758,14 @@ class Array {
     else {
       $is_equals = 0;
     }
-
+   
     return $is_equals;
   }
-
+  
+  static method equals_object_address : int ($objects1 : object[], $objects2 : object[]) {
+    return &equals_object($objects1, $objects2, EqualityChecker::SameObject->new);
+  }
+  
   precompile static method equals_short : int ($nums1 : short[], $nums2 : short[]) {
     if ($nums1 == undef && $nums2 == undef) {
       return 1;

@@ -455,6 +455,14 @@ $objs1 and $objs2 and $equality_checker must be defined, otherwise an exception 
 
 Return 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return C<0>.
 
+=head2 equals_object_address
+
+  static method equals_object_address : int ($objects1 : object[], $objects2 : object[])
+
+The alias for the following code using L</"equals_object">.
+
+  my $ret = &equals_object($objects1, $objects2, EqualityChecker::SameObject->new);
+
 =head2 equals_short
 
   static method equals_short : int ($nums1 : short[], $nums2 : short[])
