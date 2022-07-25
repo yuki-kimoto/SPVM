@@ -2,6 +2,7 @@
   [New Features]
     * Add copy_object_address to Array class.
     * Add copy_range_object_address to Array class.
+    * Add copy_range_string_address to Array class.
   [Document Fix]
     * Add the doc of clear method of Point class.
     * Add the doc of clear method of Point3D class.
@@ -20,6 +21,8 @@
       static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner);
       
       The original behaivior can be used by copy_range_object_address.
+    * copy_range_string copies the value of the string, not address. This is my simple implement mistake.
+      The original behaivior can be used by copy_range_string_address.
       
 0.9628 2022-07-25
   [New Features]

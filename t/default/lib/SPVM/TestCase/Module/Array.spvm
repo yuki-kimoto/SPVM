@@ -784,6 +784,59 @@ class TestCase::Module::Array {
     return 1;
   }
 
+  static method copy_range_string_address : int () {
+    {
+      my $array = ["a", "b", "c", "d", "e", "f", "g"];
+      my $range = Array->copy_range_string($array, 0, 7);
+      unless (Array->equals_string($range, ["a", "b", "c", "d", "e", "f", "g"])) {
+        return 0;
+      }
+    }
+    {
+      my $array = ["a", "b", "c", "d", "e", "f", "g"];
+      my $range = Array->copy_range_string($array, 1, 3);
+      unless (Array->equals_string($range, ["b", "c", "d"])) {
+        return 0;
+      }
+    }
+
+    # Exception - The argument array must be defined
+    {
+      eval { Array->copy_range_string(undef, 0, 7); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be in the array range
+    {
+      {
+        eval { Array->copy_range_string([(string)5, -7, 9], -1, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
+      {
+        eval { Array->copy_range_string([(string)5, -7, 9], 3, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    # Exception - Offset + length must be in the array range
+    {
+      {
+        eval { Array->copy_range_string([(string)5, -7, 9], 1, 3); };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    return 1;
+  }
+
   static method copy_short : int () {
     # Copy array
     {

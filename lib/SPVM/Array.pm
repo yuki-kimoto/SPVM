@@ -289,7 +289,21 @@ The offset + the length specified by the argument must be less than or equal to 
   
   static method copy_range_string : string[] ($array : string[], $offset : int, $length : int)
 
-Slice array in the string array with the start offset and the length.
+Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator from the offset to the offset + the length to the created array.
+
+Array must be defined. Otherwise an exception will occur.
+
+Offset must be in the array range. Otherwise an exception will occur.
+
+Length must be more than or equals to 0, othrewise an exception occurs.
+
+Offset + length must not be in the array range, othrewise an exception occurs.
+
+=head2 copy_range_string_address
+  
+  static method copy_range_string : string[] ($array : string[], $offset : int, $length : int)
+
+Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array from the offset to the offset + the length to the created array.
 
 Array must be defined. Otherwise an exception will occur.
 
