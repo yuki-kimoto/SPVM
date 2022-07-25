@@ -58,7 +58,7 @@ SPVM::List - Dynamic Object Array
 
 =head1 Description
 
-L<List|SPVM::List> is the dynamic object array that has a specified object array type.
+C<List> is the dynamic object array that has a specified object array type.
 
 =head1 Fields
 
@@ -72,7 +72,7 @@ The length.
 
   has values : ro object[];
 
-The values.
+The values. This is the internally used array, but it can be manipulated directly.
 
 =head1 Class Methods
 
@@ -80,7 +80,7 @@ The values.
 
   static method new : List ($objects : object[]...)
 
-Create a new L<List|SPVM::List> object with the object array.
+Create a new C<List> object with the object array.
 
 Internally, a new array is created. The type of the created array is the same type as the array specified by the argument. Each element of the array specified by the arugment is copied to the element of the new array.
 
@@ -96,7 +96,7 @@ If the array of the argument is C<undef>, 0-length internal array is created.
 
   static method new_len : List ($proto_array : object[], $length : int)
 
-Create a new L<List|SPVM::List> object with the prototype array and the length of the created array.
+Create a new C<List> object with the prototype array and the length of the created array.
 
 Internally, a new array is created. The type of the created array is the same type as the prototype array specified by the argument.
 
@@ -115,7 +115,7 @@ B<Examples:>
 
 Get the element of the position of the index.
 
-The index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 The index must be less than the length of the list. Otherwise an excpetion will be thrown.
 
