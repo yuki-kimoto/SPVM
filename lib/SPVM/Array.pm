@@ -247,9 +247,9 @@ Offset + length must not be in the array range, othrewise an exception occurs.
 
 =head2 copy_range_object
 
-  static method copy_range_object : object[] ($array : object[], $offset : int, $length : int)
+  static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner)
 
-Slice array in the object array with the start offset and the length.
+Slice array in the object array with the start offset and the length with L<Cloner|SPVM::Cloner>.
 
 Array must be defined. Otherwise an exception will occur.
 
@@ -258,6 +258,14 @@ Offset must be in the array range. Otherwise an exception will occur.
 Length must be more than or equals to 0, othrewise an exception occurs.
 
 Offset + length must not be in the array range, othrewise an exception occurs.
+
+=head2 copy_range_object
+
+  static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner)
+
+The alias for the following code using L</"copy_range_object">.
+
+  my $ret = &copy_range_object($array, $offset, $length, undef);
 
 =head2 copy_range_short
 

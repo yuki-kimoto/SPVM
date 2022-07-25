@@ -546,7 +546,7 @@ class TestCase::Module::Array {
       my $minimal4 = TestCase::Minimal->new;
 
       my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
-      my $range = (TestCase::Minimal[])Array->copy_range_object($array, 0, 4);
+      my $range = (TestCase::Minimal[])Array->copy_range_object($array, 0, 4, undef);
       unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::SameObject->new)) {
         return 0;
       }
@@ -558,7 +558,7 @@ class TestCase::Module::Array {
       my $minimal4 = TestCase::Minimal->new;
 
       my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
-      my $range = (TestCase::Minimal[])Array->copy_range_object($array, 1, 2);
+      my $range = (TestCase::Minimal[])Array->copy_range_object($array, 1, 2, undef);
       unless (Array->equals_object($range, [$minimal2, $minimal3], EqualityChecker::SameObject->new)) {
         return 0;
       }
@@ -566,7 +566,7 @@ class TestCase::Module::Array {
 
     # Exception - The argument array must be defined
     {
-      eval { Array->copy_range_object(undef, 0, 7); };
+      eval { Array->copy_range_object(undef, 0, 7, undef); };
       unless ($@) {
         return 0;
       }
@@ -578,13 +578,13 @@ class TestCase::Module::Array {
       my $minimal2 = TestCase::Minimal->new;
       my $minimal3 = TestCase::Minimal->new;
       {
-        eval { Array->copy_range_object([$minimal1, $minimal2, $minimal3], -1, 1); };
+        eval { Array->copy_range_object([$minimal1, $minimal2, $minimal3], -1, 1, undef); };
         unless ($@) {
           return 0;
         }
       }
       {
-        eval { Array->copy_range_object([$minimal1, $minimal2, $minimal3], 3, 1); };
+        eval { Array->copy_range_object([$minimal1, $minimal2, $minimal3], 3, 1, undef); };
         unless ($@) {
           return 0;
         }
@@ -598,7 +598,78 @@ class TestCase::Module::Array {
         my $minimal2 = TestCase::Minimal->new;
         my $minimal3 = TestCase::Minimal->new;
         
-        eval { Array->copy_range_object([$minimal1, $minimal2, $minimal3], 1, 3); };
+        eval { Array->copy_range_object([$minimal1, $minimal2, $minimal3], 1, 3, undef); };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    return 1;
+  }
+
+  static method copy_range_object_address : int () {
+
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])Array->copy_range_object_address($array, 0, 4);
+      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::SameObject->new)) {
+        return 0;
+      }
+    }
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])Array->copy_range_object_address($array, 1, 2);
+      unless (Array->equals_object($range, [$minimal2, $minimal3], EqualityChecker::SameObject->new)) {
+        return 0;
+      }
+    }
+
+    # Exception - The argument array must be defined
+    {
+      eval { Array->copy_range_object_address(undef, 0, 7); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be in the array range
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      {
+        eval { Array->copy_range_object_address([$minimal1, $minimal2, $minimal3], -1, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
+      {
+        eval { Array->copy_range_object_address([$minimal1, $minimal2, $minimal3], 3, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    # Exception - Offset + length must be in the array range
+    {
+      {
+        my $minimal1 = TestCase::Minimal->new;
+        my $minimal2 = TestCase::Minimal->new;
+        my $minimal3 = TestCase::Minimal->new;
+        
+        eval { Array->copy_range_object_address([$minimal1, $minimal2, $minimal3], 1, 3); };
         unless ($@) {
           return 0;
         }

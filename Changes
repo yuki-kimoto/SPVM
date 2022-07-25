@@ -1,6 +1,7 @@
-0.9629 2022-07-25
+0.9629 2022-07-26
   [New Features]
     * Add copy_object_address to Array class.
+    * Add copy_range_object_address to Array class.
   [Document Fix]
     * Add the doc of clear method of Point class.
     * Add the doc of clear method of Point3D class.
@@ -12,7 +13,14 @@
   [Changes]
     * Remove "SPVM/" from native file name.
   [Incompatible Changes]
-    *
+    * Change the following method definition of Array class. Sorry. This is my simple definition mistake.
+      [Before]
+      static method copy_range_object : object[] ($array : object[], $offset : int, $length : int) {
+      [After]
+      static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner);
+      
+      The original behaivior can be used by copy_range_object_address.
+      
 0.9628 2022-07-25
   [New Features]
     * Add replace method to ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, List.

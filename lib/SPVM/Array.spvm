@@ -185,8 +185,8 @@ class Array {
     return $new_array;
   }
   
-  precompile static method copy_range_object : object[] ($array : object[], $offset : int, $length : int) {
-
+  precompile static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner) {
+    
     unless ($array) {
       die "The array must be defined";
     }
@@ -207,13 +207,20 @@ class Array {
     
     my $new_array = &new_proto($array, $length);
     
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $new_array->[$pos] = $array->[$i];
-      $pos++;
+    if ($cloner) {
+      for (my $i = 0; $i < $length; $i++) {
+        $new_array->[$i] = $cloner->($array->[$offset + $i]);
+      }
+    }
+    else {
+      Array->memcpy_object($new_array, 0, $array, $offset, $length);
     }
     
     return $new_array;
+  }
+  
+  static method copy_range_object_address : object[] ($array : object[], $offset : int, $length : int) {
+    return &copy_range_object($array, $offset, $length, undef);
   }
   
   static method copy_range_short : short[] ($array : short[], $offset : int, $length : int) {
