@@ -47,7 +47,7 @@ The value. This is the internally used string, but it can be manipulated directl
 
   static method new : StringBuffer ()
 
-Create new L<StringBuffer|SPVM::StringBuffer> object.
+Create new C<StringBuffer> object.
 
 =head1 Instance Methods
 
@@ -69,9 +69,9 @@ Add a character after the end of the string in the string buffer.
 
 Replace the characters of the range specified by the offset and the lenght with the replacement string.
 
-The offset must be greater than or equal to 0. Otherwise an exception will be thrown.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the lenght must be less than or equal to the length of the string that the string buffer has. Otherwise an exception will be thrown.
+The offset + the removing lenght must be less than or equal to the length of the string buffer. Otherwise an exception will be thrown.
 
 =head2 to_string
 
