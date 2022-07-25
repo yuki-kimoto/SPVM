@@ -49,7 +49,7 @@ SPVM::LongList - Dynamic long Array
   
 =head1 Description
 
-L<LongList|SPVM::LongList> is a dynamic C<long> array.
+C<LongList> is a dynamic C<long> array.
 
 =head1 Fields
 
@@ -74,7 +74,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
   static method new : LongList ($array : long[]...)
 
-Create a new L<LongList|SPVM::LongList> object with a C<long> array.
+Create a new C<LongList> object with a C<long> array.
 
 Internally, a new array is created, and each element of the specified array is copied to the new array.
 
@@ -90,7 +90,7 @@ B<Examples:>
 
   static method new_len : LongList ($length : int)
 
-Create a new L<LongList|SPVM::LongList> object with the length.
+Create a new C<LongList> object with the length.
 
 The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 

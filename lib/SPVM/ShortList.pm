@@ -49,7 +49,7 @@ SPVM::ShortList - Dynamic short Array
   
 =head1 Description
 
-L<ShortList|SPVM::ShortList> is a dynamic C<short> array.
+C<ShortList> is a dynamic C<short> array.
 
 =head1 Fields
 
@@ -74,7 +74,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
   static method new : ShortList ($array : short[]...)
 
-Create a new L<ShortList|SPVM::ShortList> object with a C<short> array.
+Create a new C<ShortList> object with a C<short> array.
 
 Internally, a new array is created, and each element of the specified array is copied to the new array.
 
@@ -90,7 +90,7 @@ B<Examples:>
 
   static method new_len : ShortList ($length : int)
 
-Create a new L<ShortList|SPVM::ShortList> object with the length.
+Create a new C<ShortList> object with the length.
 
 The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 

@@ -49,7 +49,7 @@ SPVM::FloatList - Dynamic float Array
   
 =head1 Description
 
-L<FloatList|SPVM::FloatList> is a dynamic C<float> array.
+C<FloatList> is a dynamic C<float> array.
 
 =head1 Fields
 
@@ -74,7 +74,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
   static method new : FloatList ($array : float[]...)
 
-Create a new L<FloatList|SPVM::FloatList> object with a C<float> array.
+Create a new C<FloatList> object with a C<float> array.
 
 Internally, a new array is created, and each element of the specified array is copied to the new array.
 
@@ -90,7 +90,7 @@ B<Examples:>
 
   static method new_len : FloatList ($length : int)
 
-Create a new L<FloatList|SPVM::FloatList> object with the length.
+Create a new C<FloatList> object with the length.
 
 The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 

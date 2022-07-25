@@ -49,7 +49,7 @@ SPVM::ByteList - Dynamic byte Array
   
 =head1 Description
 
-L<ByteList|SPVM::ByteList> is a dynamic C<byte> array.
+C<ByteList> is a dynamic C<byte> array.
 
 =head1 Fields
 
@@ -74,7 +74,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
   static method new : ByteList ($array : byte[]...)
 
-Create a new L<ByteList|SPVM::ByteList> object with a C<byte> array.
+Create a new C<ByteList> object with a C<byte> array.
 
 Internally, a new array is created, and each element of the specified array is copied to the new array.
 
@@ -90,7 +90,7 @@ B<Examples:>
 
   static method new_len : ByteList ($length : int)
 
-Create a new L<ByteList|SPVM::ByteList> object with the length.
+Create a new C<ByteList> object with the length.
 
 The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 

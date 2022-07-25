@@ -49,7 +49,7 @@ SPVM::DoubleList - Dynamic double Array
   
 =head1 Description
 
-L<DoubleList|SPVM::DoubleList> is a dynamic C<double> array.
+C<DoubleList> is a dynamic C<double> array.
 
 =head1 Fields
 
@@ -74,7 +74,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
   static method new : DoubleList ($array : double[]...)
 
-Create a new L<DoubleList|SPVM::DoubleList> object with a C<double> array.
+Create a new C<DoubleList> object with a C<double> array.
 
 Internally, a new array is created, and each element of the specified array is copied to the new array.
 
@@ -90,7 +90,7 @@ B<Examples:>
 
   static method new_len : DoubleList ($length : int)
 
-Create a new L<DoubleList|SPVM::DoubleList> object with the length.
+Create a new C<DoubleList> object with the length.
 
 The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
