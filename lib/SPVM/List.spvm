@@ -13,12 +13,9 @@ class List {
   static method new : List ($objects : object[]...) {
     my $self = new List;
     
-    my $length : int;
+    my $length = 0;
     if ($objects) {
       $length = @$objects;
-    }
-    else {
-      $length = 0;
     }
     
     my $capacity = $length;
@@ -31,13 +28,15 @@ class List {
       $self->{values} = Array->new_proto(new object[0], $capacity);
     }
     
-    Array->memcpy_object($self->{values}, 0, $objects, 0, scalar @$objects);
-
-    $self->{length} = @$objects;
-
+    if ($objects) {
+      Array->memcpy_object($self->{values}, 0, $objects, 0, $length);
+    }
+    
+    $self->{length} = $length;
+    
     return $self;
   }
-
+  
   static method new_len : List ($proto_array : object[], $length : int) {
     unless ($proto_array) {
       die "The prototype array must be defined";
