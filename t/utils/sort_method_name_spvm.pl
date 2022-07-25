@@ -11,7 +11,7 @@ while (my $line = <>) {
     $is_sub = 0;
   }
   if ($is_sub) {
-    if ($line =~ /\bsub\s+(\w+)\b/) {
+    if ($line =~ /\bmethod\s+(\w+)\b/) {
       $cur_name = $1;
       $sub_defs_h->{$cur_name} = $line;
     }
@@ -20,7 +20,7 @@ while (my $line = <>) {
     }
   }
   else {
-    if ($line =~ /\bsub\s+(\w+)\b/) {
+    if ($line =~ /\bmethod\s+(\w+)\b/) {
       $is_sub = 1;
       $cur_name = $1;
       $sub_defs_h->{$cur_name} = $line;
