@@ -13,13 +13,20 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::StringBuffer
 {
+  # Fields
+  ok(SPVM::TestCase::Module::StringBuffer->fields);
+  
+  # Class methods
   ok(SPVM::TestCase::Module::StringBuffer->new);
-  ok(SPVM::TestCase::Module::StringBuffer->length);
+  
+  # Instance methods
   ok(SPVM::TestCase::Module::StringBuffer->push);
   ok(SPVM::TestCase::Module::StringBuffer->push_char);
+  ok(SPVM::TestCase::Module::StringBuffer->replace);
   ok(SPVM::TestCase::Module::StringBuffer->to_string);
-  ok(SPVM::TestCase::Module::StringBuffer->read_write_value);
-  ok(SPVM::TestCase::Module::StringBuffer->replace == 1);
+  
+  # Extra
+  ok(SPVM::TestCase::Module::StringBuffer->extra);
 }
 
 # All object is freed

@@ -36,7 +36,10 @@ The length.
 
   has value : ro mutable string;
 
-The value.
+The value. This is the internally used string, but it can be manipulated directly.
+
+  my $value = $buffer->value;
+  $valeu->[0] = 'a';
 
 =head1 Class Methods
 
@@ -48,29 +51,23 @@ Create new L<StringBuffer|SPVM::StringBuffer> object.
 
 =head1 Instance Methods
 
-=head2 value
-
-  method value : mutable string; ()
-
-Get the value of the string buffer.
-
 =head2 push
 
   method push  : void ($string : string)
 
-Push a string to the string buffer.
+Add a string after the end of the string in the string buffer.
 
 =head2 push_char
 
   method push_char : void ($char : byte)
 
-Push a character to the string buffer.
+Add a character after the end of the string in the string buffer.
 
 =head2 replace
 
   method replace : void ($offset : int, $length : int, $replace : string)
 
-Replace the range(from the offset to the offeset + the lenth) of the string buffer with the replacement string.
+Replace the characters of the range specified by the offset and the lenght with the replacement string.
 
 The offset must be greater than or equal to 0. Otherwise an exception will be thrown.
 

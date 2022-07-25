@@ -2,27 +2,39 @@ class TestCase::Module::StringBuffer {
   use StringBuffer;
   use Fn;
   use Array;
-
-  static method read_write_value : int () {
+  
+  # Fields
+  static method fields : int () {
+    # length
+    {
+      my $buffer = StringBuffer->new;
+      
+      $buffer->push("a");
+      $buffer->push("bc");
+      
+      # length
+      my $length = $buffer->length;
+      unless ($length == 3) {
+        return 0;
+      }
+    }
     
-    my $buffer = StringBuffer->new;
-    $buffer->push("abc");
-    
-    my $value = $buffer->value;
-    
-    my $length = $buffer->length;
-    
-    $value->[0] = 'f';
-    
-    my $substr = Fn->substr($value, 0, $length);
-    
-    unless ($substr eq "fbc") {
-      return 0;
+    # value
+    {
+      my $buffer = StringBuffer->new;
+      $buffer->push("abc");
+      
+      my $value = $buffer->value;
+      $value->[0] = 'd';
+      
+      unless ($buffer->to_string eq "dbc") {
+        return 0;
+      }
     }
     
     return 1;
   }
-
+  
   static method new : int () {
     
     my $buffer = StringBuffer->new;
@@ -37,21 +49,7 @@ class TestCase::Module::StringBuffer {
     
     return 1;
   }
-
-  static method length : int () {
-    unless (StringBuffer->new->length == 0) {
-      return 0;
-    }
-    
-    my $buffer2 = StringBuffer->new;
-    $buffer2->push("a");
-    unless ($buffer2->length == 1) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
+  
   static method push  : int () {
     my $buffer = StringBuffer->new;
     $buffer->push ("abc");
@@ -68,7 +66,7 @@ class TestCase::Module::StringBuffer {
     }
     return 1;
   }
-
+  
   static method push_char  : int () {
     my $buffer = StringBuffer->new;
     $buffer->push_char('a');
@@ -85,11 +83,11 @@ class TestCase::Module::StringBuffer {
     }
     return 1;
   }
-
+  
   static method append_copy_on_write : int () {
     return 0;
   }
-
+  
   static method to_string : int () {
     {
       my $minimal_buf = StringBuffer->new;
@@ -107,7 +105,7 @@ class TestCase::Module::StringBuffer {
     }
     return 1;
   }
-
+  
   static method replace : int () {
     {
       my $target = StringBuffer->new;
@@ -150,12 +148,12 @@ class TestCase::Module::StringBuffer {
         return 0;
       }
     }
-
+    
     {
       my $target = StringBuffer->new;
       $target->push("abcd");
       eval { $target->replace(2, 3, "xyz"); };
-      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the value of the string buffer")) {
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the string buffer")) {
         return 0;
       }
     }
@@ -167,35 +165,57 @@ class TestCase::Module::StringBuffer {
         return 0;
       }
     }
-
+    
     {
       my $target = StringBuffer->new;
       $target->push("a");
       eval { $target->replace(2, 0, "xy"); };
-      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the value of the string buffer")) {
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the string buffer")) {
         return 0;
       }
     }
-
+    
     {
       my $target = StringBuffer->new;
       $target->push("a");
       eval { $target->replace(1, 2, "xy"); };
-      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the value of the string buffer")) {
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the string buffer")) {
         return 0;
       }
     }
-
+    
     {
       my $target = StringBuffer->new;
       $target->push("a");
       eval { $target->replace(2, 2, "xy"); };
-      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the value of the string buffer")) {
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the string buffer")) {
         return 0;
       }
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+  
+  static method extra : int () {
+    
+    {
+      my $buffer = StringBuffer->new;
+      $buffer->push("abc");
+      
+      my $value = $buffer->value;
+      
+      my $length = $buffer->length;
+      
+      $value->[0] = 'f';
+      
+      my $substr = Fn->substr($value, 0, $length);
+      
+      unless ($substr eq "fbc") {
+        return 0;
+      }
+    }
     
     return 1;
   }

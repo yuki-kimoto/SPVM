@@ -59,6 +59,8 @@
     * Improve DoubleList exception messages.
     * Improve StringList exception messages.
     * Improve List exception messages.
+    * Improve StringBuffer exception messages.
+    * Improve List exception messages.
     * Improve the exception messages of Array class.
     * memmove_object gets to throw an exception when the arguments is invalid.
     * memcpy_object gets to throw an exception when the arguments is invalid.
@@ -67,6 +69,7 @@
     * Fix the StringList->remove bug.
   [Document]
     * Add Fields doc to Byte, Short, Int, Long, Float, Double, ByteList, ShortList, IntList, LongList, FloatList, DoubleList, List, StringBuffer class.
+    * Improve ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, List, StringBuffer, Array class doc.
   [NON BACKWORD COMPATIBLE CHANGES]
     * Remove undocumented and untested grep method from StringList
     
