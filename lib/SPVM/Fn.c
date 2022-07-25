@@ -23,7 +23,7 @@
 #include <stddef.h>
 #include <assert.h>
 
-static const char* MFILE = "SPVM/Fn.c";
+static const char* FILE_NAME = "SPVM/Fn.c";
 
 int32_t SPVM__Fn__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
@@ -224,24 +224,24 @@ int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
-    return env->die(env, stack, "String must be defined", MFILE, __LINE__);
+    return env->die(env, stack, "String must be defined", FILE_NAME, __LINE__);
   }
   const char* string = env->get_chars(env, stack, obj_string);
   
   int32_t digit = stack[1].ival;
   
   if (!(digit == 2 || digit == 8 || digit == 10 || digit == 16)) {
-    return env->die(env, stack, "Digit must be 2, 8, 10, 16", MFILE, __LINE__);
+    return env->die(env, stack, "Digit must be 2, 8, 10, 16", FILE_NAME, __LINE__);
   }
   
   char *end;
   errno = 0;
   long int num = strtol(string, &end, digit);
   if (*end != '\0') {
-    return env->die(env, stack, "Invalid number format", MFILE, __LINE__);
+    return env->die(env, stack, "Invalid number format", FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE || num < INT32_MIN || num > INT32_MAX) {
-    return env->die(env, stack, "Out of range", MFILE, __LINE__);
+    return env->die(env, stack, "Out of range", FILE_NAME, __LINE__);
   }
   
   stack[0].ival = (int32_t)num;
@@ -253,24 +253,24 @@ int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
-    return env->die(env, stack, "String must be defined", MFILE, __LINE__);
+    return env->die(env, stack, "String must be defined", FILE_NAME, __LINE__);
   }
   const char* string = env->get_chars(env, stack, obj_string);
   
   int32_t digit = stack[1].ival;
 
   if (!(digit == 2 || digit == 8 || digit == 10 || digit == 16)) {
-    return env->die(env, stack, "Digit must be 2, 8, 10, 16", MFILE, __LINE__);
+    return env->die(env, stack, "Digit must be 2, 8, 10, 16", FILE_NAME, __LINE__);
   }
   
   char *end;
   errno = 0;
   long long int num = strtoll(string, &end, digit);
   if (*end != '\0') {
-    return env->die(env, stack, "Invalid number format", MFILE, __LINE__);
+    return env->die(env, stack, "Invalid number format", FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE || num < INT64_MIN || num > INT64_MAX) {
-    return env->die(env, stack, "Out of range", MFILE, __LINE__);
+    return env->die(env, stack, "Out of range", FILE_NAME, __LINE__);
   }
   
   stack[0].lval = (int64_t)num;
@@ -282,7 +282,7 @@ int32_t SPVM__Fn__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
-    return env->die(env, stack, "String must be defined", MFILE, __LINE__);
+    return env->die(env, stack, "String must be defined", FILE_NAME, __LINE__);
   }
   const char* string = env->get_chars(env, stack, obj_string);
   
@@ -290,10 +290,10 @@ int32_t SPVM__Fn__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   errno = 0;
   float num = strtof(string, &end);
   if (*end != '\0') {
-    return env->die(env, stack, "Invalid number format", MFILE, __LINE__);
+    return env->die(env, stack, "Invalid number format", FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE) {
-    return env->die(env, stack, "[ERANGE]Out of range", MFILE, __LINE__);
+    return env->die(env, stack, "[ERANGE]Out of range", FILE_NAME, __LINE__);
   }
   
   stack[0].fval = num;
@@ -305,7 +305,7 @@ int32_t SPVM__Fn__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
-    return env->die(env, stack, "String must be defined", MFILE, __LINE__);
+    return env->die(env, stack, "String must be defined", FILE_NAME, __LINE__);
   }
   const char* string = env->get_chars(env, stack, obj_string);
   
@@ -313,10 +313,10 @@ int32_t SPVM__Fn__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   errno = 0;
   double num = strtod(string, &end);
   if (*end != '\0') {
-    return env->die(env, stack, "Invalid number format", MFILE, __LINE__);
+    return env->die(env, stack, "Invalid number format", FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE) {
-    return env->die(env, stack, "[ERANGE]Out of range", MFILE, __LINE__);
+    return env->die(env, stack, "[ERANGE]Out of range", FILE_NAME, __LINE__);
   }
   
   stack[0].dval = num;
@@ -333,30 +333,30 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t byte_length = stack[4].ival;
 
   if (!dest) {
-    return env->die(env, stack, "The destination must be defined", MFILE, __LINE__);
+    return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, dest) || env->is_numeric_array(env, stack, dest) || env->is_mulnum_array(env, stack, dest))) {
-    return env->die(env, stack, "The destination must be a string type, a numeric arrya type, or a multi numeric array", MFILE, __LINE__);
+    return env->die(env, stack, "The destination must be a string type, a numeric arrya type, or a multi numeric array", FILE_NAME, __LINE__);
   }
   
   if (!source) {
-    return env->die(env, stack, "Source must be defined", MFILE, __LINE__);
+    return env->die(env, stack, "Source must be defined", FILE_NAME, __LINE__);
   }
 
   if (!(env->is_string(env, stack, source) || env->is_numeric_array(env, stack, source) || env->is_mulnum_array(env, stack, source))) {
-    return env->die(env, stack, "Source must be a string type, a numeric arrya type, or a multi numeric array", MFILE, __LINE__);
+    return env->die(env, stack, "Source must be a string type, a numeric arrya type, or a multi numeric array", FILE_NAME, __LINE__);
   }
 
   if (env->is_read_only(env, stack, dest)) {
-    return env->die(env, stack, "The destination must not be a read-only string", MFILE, __LINE__);
+    return env->die(env, stack, "The destination must not be a read-only string", FILE_NAME, __LINE__);
   }
   
   if (byte_length == 0) {
     return 0;
   }
   else if (byte_length < 0) {
-    return env->die(env, stack, "The length must be more than or equals to 0", MFILE, __LINE__);
+    return env->die(env, stack, "The length must be more than or equals to 0", FILE_NAME, __LINE__);
   }
   
   char* dest_bytes = (char*)env->get_chars(env, stack, dest);
@@ -370,11 +370,11 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_byte_length = source_elem_byte_size * source_len;
   
   if (dest_byte_offset + byte_length > dest_byte_length) {
-    return env->die(env, stack, "The destination byte_offset + byte_length must be within the range of the destination array", MFILE, __LINE__);
+    return env->die(env, stack, "The destination byte_offset + byte_length must be within the range of the destination array", FILE_NAME, __LINE__);
   }
 
   if (source_byte_offset + byte_length > source_byte_length) {
-    return env->die(env, stack, "Source byte_offset + byte_length must be within the range of the source array", MFILE, __LINE__);
+    return env->die(env, stack, "Source byte_offset + byte_length must be within the range of the source array", FILE_NAME, __LINE__);
   }
   
   memcpy((char*)(dest_bytes + dest_byte_offset), (char*)(source_bytes + source_byte_offset), byte_length);
@@ -391,30 +391,30 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t byte_length = stack[4].ival;
 
   if (!dest) {
-    return env->die(env, stack, "The destination must be defined", MFILE, __LINE__);
+    return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, dest) || env->is_numeric_array(env, stack, dest) || env->is_mulnum_array(env, stack, dest))) {
-    return env->die(env, stack, "The destination must be a string type, a numeric arrya type, or a multi numeric array", MFILE, __LINE__);
+    return env->die(env, stack, "The destination must be a string type, a numeric arrya type, or a multi numeric array", FILE_NAME, __LINE__);
   }
   
   if (!source) {
-    return env->die(env, stack, "Source must be defined", MFILE, __LINE__);
+    return env->die(env, stack, "Source must be defined", FILE_NAME, __LINE__);
   }
 
   if (!(env->is_string(env, stack, source) || env->is_numeric_array(env, stack, source) || env->is_mulnum_array(env, stack, source))) {
-    return env->die(env, stack, "Source must be a string type, a numeric arrya type, or a multi numeric array", MFILE, __LINE__);
+    return env->die(env, stack, "Source must be a string type, a numeric arrya type, or a multi numeric array", FILE_NAME, __LINE__);
   }
 
   if (env->is_read_only(env, stack, dest)) {
-    return env->die(env, stack, "The destination must not be a read-only string", MFILE, __LINE__);
+    return env->die(env, stack, "The destination must not be a read-only string", FILE_NAME, __LINE__);
   }
   
   if (byte_length == 0) {
     return 0;
   }
   else if (byte_length < 0) {
-    return env->die(env, stack, "The length must be more than or equals to 0", MFILE, __LINE__);
+    return env->die(env, stack, "The length must be more than or equals to 0", FILE_NAME, __LINE__);
   }
   
   char* dest_bytes = (char*)env->get_chars(env, stack, dest);
@@ -428,11 +428,11 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_byte_length = source_elem_byte_size * source_len;
   
   if (dest_byte_offset + byte_length > dest_byte_length) {
-    return env->die(env, stack, "The destination byte_offset + byte_length must be within the range of the destination array", MFILE, __LINE__);
+    return env->die(env, stack, "The destination byte_offset + byte_length must be within the range of the destination array", FILE_NAME, __LINE__);
   }
 
   if (source_byte_offset + byte_length > source_byte_length) {
-    return env->die(env, stack, "Source byte_offset + byte_length must be within the range of the source array", MFILE, __LINE__);
+    return env->die(env, stack, "Source byte_offset + byte_length must be within the range of the source array", FILE_NAME, __LINE__);
   }
   
   memmove((char*)(dest_bytes + dest_byte_offset), (char*)(source_bytes + source_byte_offset), byte_length);
