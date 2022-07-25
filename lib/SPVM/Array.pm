@@ -567,11 +567,11 @@ Destnation offset + length must be within the range of the destnation array, oth
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
-=head2 memcpy_short
+=head2 memcpy_object
 
-  static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
+  static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
 
-Copy source short array to destination short array with the each offset and a length.
+Copy source object array to destination object array with the each offset and a length.
 
 If source data range and destination data overlap, the result is not guaranteed.
 
@@ -585,11 +585,11 @@ Destnation offset + length must be within the range of the destnation array, oth
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
-=head2 memcpy_object
+=head2 memcpy_short
 
-  static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
+  static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
 
-Copy source object array to destination object array with the each offset and a length.
+Copy source short array to destination short array with the each offset and a length.
 
 If source data range and destination data overlap, the result is not guaranteed.
 
@@ -717,13 +717,13 @@ Destnation offset + length must be within the range of the destnation array, oth
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
-=head2 memmove_short
+=head2 memmove_object
 
-  memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
+  static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
 
-Copy source short array to destination short array with the each offset and a length.
+Copy source object array to destination object array with the each offset and a length.
 
-Even if source data range and destination data overlap, the result is guaranteed.
+If source data range and destination data overlap, the result is guaranteed.
 
 Destnation must be defined, otherwise an exception occurs.
 
@@ -735,13 +735,13 @@ Destnation offset + length must be within the range of the destnation array, oth
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
-=head2 memmove_object
+=head2 memmove_short
 
-  static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
+  memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
 
-Copy source object array to destination object array with the each offset and a length.
+Copy source short array to destination short array with the each offset and a length.
 
-If source data range and destination data overlap, the result is guaranteed.
+Even if source data range and destination data overlap, the result is guaranteed.
 
 Destnation must be defined, otherwise an exception occurs.
 
@@ -783,17 +783,17 @@ Set each element of the C<int> array to the element with the offset and the leng
 
 Set each element of the C<long> array to the element with the offset and the length.
 
-=head2 memset_short
-
-  static method memset_short : void ($dest : short[], $dest_offset : int, $element : short, $length : int)
-
-Set each element of the C<short> array to the element with the offset and the length.
-
 =head2 memset_object
 
   static method memset_object : void ($dest : object[], $dest_offset : int : int, $element : object, $length)
 
 Set each element of the object array to the element with the offset and the length.
+
+=head2 memset_short
+
+  static method memset_short : void ($dest : short[], $dest_offset : int, $element : short, $length : int)
+
+Set each element of the C<short> array to the element with the offset and the length.
 
 =head2 new_proto
 
