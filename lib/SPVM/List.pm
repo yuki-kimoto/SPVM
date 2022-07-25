@@ -123,7 +123,7 @@ The index must be less than the length of the list. Otherwise an excpetion will 
 
   method insert : void ($index : int, $value : object)
 
-Insert a element to the position of the index.
+Insert an element to the position of the index.
 
 The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -141,7 +141,7 @@ The length of the list must be greater than C<0>. Otherwise an excpetion will be
   
   method push : void ($value : object)
 
-Add a element after the end of the list.
+Add an element after the end of the list.
 
 =head2 remove
 
@@ -211,4 +211,4 @@ Convert the list to an array.
 
   method unshift : void ($value : object)
 
-Insert a element at the beginning of the list.
+Insert an element at the beginning of the list.
