@@ -11,6 +11,8 @@
     * Add Fields section to Point3D class
   [Changes]
     * Remove "SPVM/" from native file name.
+  [Incompatible Changes]
+    *
 0.9628 2022-07-25
   [New Features]
     * Add replace method to ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, List.
