@@ -50,8 +50,8 @@ SPVM::Array - Array Utilities
   
   # Copy a string array
   {
-    my $strs = ["abc", "def", "ghi"]
-    my $strs_copy = Array->copy_string($strs);
+    my $array = ["abc", "def", "ghi"]
+    my $array_copy = Array->copy_string($array);
   }
   
   # Check if the two byte arrays equal
@@ -98,9 +98,9 @@ SPVM::Array - Array Utilities
 
   # Check if the two string arrays equal
   {
-    my $strs1 = ["abc", "def"];
-    my $strs2 = ["abc", "def"];
-    my $ret = Array->equals_string($strs1, $strs2);
+    my $array1 = ["abc", "def"];
+    my $array2 = ["abc", "def"];
+    my $ret = Array->equals_string($array1, $array2);
   }
   
   # Copy object array
@@ -473,178 +473,11 @@ If at least one of the arrays is undef, a excetpion occurs.
 
 =head2 equals_string
 
-  static method equals_string : int ($strs1 : double[], $strs2 : double[])
+  static method equals_string : int ($array1 : double[], $array2 : double[])
 
 Check if two string arrays equal.
 
 If at least one of the arrays is undef, a excetpion occurs.
-
-=head2 hex
-
-  static method hex : int ($hex_string : string)
-
-Convert hex string to int element.
-
-the hex string must be defined, otherwise an exception occurs.
-
-the hex string must be a valid expression which is represented by a regex "^([0-9a-fA-F]{1,8})$", otherwise an exception occurs.
-
-=head2 index
-
-  static method index : int ($string : string, $sub_string : string, $start_pos : int)
-
-Search for the substring in the string from the starting position
-and return the found position. If the substring is not found, return C<-1>.
-
-=head2 index_len
-
-  static method index_len : int ($string : string, $sub_string : string, $start_pos : int, $max_string_length : int)
-
-Same as the L<"index"> method except that the max length of the string can be specified.
-
-If the max string length of the argument is greater than the lenght of the string, the max string length become the length of string.
-
-=head2 is_alnum
-
-  static method is_alnum : int ($code_point : int)
-
-If character is alphanumeric('A'-'Z', 'a'-'z', '0'-'9'), return C<1>. Otherwise return C<0>.
-
-=head2 is_alpha
-
-  static method is_alpha : int ($code_point : int)
-
-If character is alphabetic('A'-'Z', 'a'-'z'), return C<1>. Otherwise return C<0>.
-
-=head2 is_blank
-
-  static method is_blank : int ($code_point : int)
-
-If character is blank(' ', '\t'), return C<1>. Otherwise return C<0>.
-
-=head2 is_cntrl
-
-  static method is_cntrl : int ($code_point : int)
-
-If character is a control character(0x00-0x1F, 0x7F), return C<1>. Otherwise return C<0>.
-
-=head2 is_digit
-
-  static method is_digit : int ($code_point : int)
-
-If character is decimal digit C<0-9>, return C<1>. Otherwise return C<0>.
-
-=head2 is_graph
-
-  static method is_graph : int ($code_point : int)
-
-If character has graphical representation(C<0x21-0x7E>), return C<1>. Otherwise return C<0>.
-
-=head2 is_hex_digit
-
-  static method is_hex_digit : int ($code_point : int)
-
-If the character is hexadecimal digit C<0-9a-fA-F>, return C<1>. Otherwise return C<0>.
-
-=head2 is_lower
-
-  static method is_lower : int ($code_point : int)
-
-If character is lowercase letter('a'-'z'), return C<1>. Otherwise return C<0>.
-
-=head2 is_perl_space
-
-  static method is_perl_space : int ($code_point : int)
-
-If character is Perl space character(' ', '\r', '\n', '\t', '\f'), return C<1>. Otherwise return C<0>.
-
-=head2 is_perl_word
-
-  static method is_perl_word : int ($code_point : int)
-
-If character is Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return C<1>. Otherwise return C<0>.
-
-=head2 is_print
-
-  static method is_print : int ($code_point : int)
-
-If character is printable(0x20-0x7E), return C<1>. Otherwise return C<0>.
-
-=head2 is_punct
-
-  static method is_punct : int ($code_point : int)
-
-If character is a punctuation character(0x21-0x2f, 0x3a-0x40, 0x5b-0x60, 0x7b-0x7e), return C<1>. Otherwise return C<0>.
-
-=head2 is_space
-
-  static method is_space : int ($code_point : int)
-
-If character is a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return C<1>. Otherwise return C<0>.
-
-=head2 is_upper
-
-  static method is_upper : int ($code_point : int)
-
-If character is uppercase letter('A'-'Z'), return C<1>. Otherwise return C<0>.
-
-=head2 is_xdigit
-
-  static method is_xdigit : int ($code_point : int)
-
-If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return C<1>. Otherwise return C<0>.
-
-=head2 is_mulnum_array
-
-  static method is_mulnum_array : int ($object : object)
-
-If the object is a multi numeric array, returns C<1>, otherwise returns C<0>.
-
-If the object is C<NULL>, returns C<0>.
-
-=head2 is_numeric_array
-
-  static method is_numeric_array : int ($object : object)
-
-If the object is a numeric array, returns C<1>, otherwise returns C<0>.
-
-If the object is C<NULL>, returns C<0>.
-
-=head2 is_object_array
-
-  static method is_object_array : int ($object : object)
-
-If the object is a object array, returns C<1>, otherwise returns C<0>.
-
-If the object is C<NULL>, returns C<0>.
-
-=head2 join
-
-  static method join : string ($sep : string, $array : string[])
-  
-Join a string array with separater and return it.
-
-If separater is undef, an exception occurs.
-
-If string array is undef, an exception occurs.
-
-=head2 labs
-
-  static method labs : long ($x : long)
-
-Return the absolute element.
-
-=head2 lc
-
-  static method lc : string ($string : string)
-
-Convert uppercase string to lowercase string.
-
-=head2 lcfirst
-
-  static method lcfirst : string ($string : string)
-
-Convert first chracter of string from uppercase to lowercase.
 
 =head2 memcpy_byte
 
@@ -920,12 +753,6 @@ Destnation offset + length must be within the range of the destnation array, oth
 
 Source offset + length must be within the range of the source array, otherwise an exception occurs.
 
-=head2 new_proto
-
-  static method new_proto : object[] ($proto_array : object[], $length : int)
-
-Create a new generic object array as the same type as the given array.
-
 =head2 memset_byte
 
   static method memset_byte : void ($dest : byte[], $dest_offset : int, $element : byte, $length : int)
@@ -967,4 +794,10 @@ Set each element of the C<short> array to the element with the offset and the le
   static method memset_object : void ($dest : object[], $dest_offset : int : int, $element : object, $length)
 
 Set each element of the object array to the element with the offset and the length.
+
+=head2 new_proto
+
+  static method new_proto : object[] ($proto_array : object[], $length : int)
+
+Create a new generic object array as the same type as the given array.
 

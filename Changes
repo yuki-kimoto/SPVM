@@ -2,6 +2,7 @@
   [Document Fix]
     * Add the doc of clear method of Point class.
     * Add the doc of clear method of Point3D class.
+    * Remove the doc of the methods of Fn class. These remains wrongly.
   [New Document]
     * Add Fields section to Point class
     * Add Super Class section to Point3D class
