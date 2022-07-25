@@ -49,7 +49,7 @@ SPVM::StringList - Dynamic string array
 
 =head1 Description
 
-L<StringList|SPVM::StringList> is a dynamic C<string> array.
+C<StringList> is a dynamic C<string> array.
 
 =head1 Fields
 
@@ -66,7 +66,7 @@ The length.
 The values. This is the internally used array, but it can be manipulated directly.
 
   my $values = $list->values;
-  $valeus->[0] = "5";
+  $valeus->[0] = "d";
 
 =head1 Class Methods
 
@@ -74,7 +74,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
   static method new : StringList ($array : string[]...)
 
-Create a new L<StringList|SPVM::StringList> object with a C<string> array.
+Create a new C<StringList> object with a C<string> array.
 
 Internally, a new array is created, and each element of the specified array is copied to the new array.
 
@@ -90,7 +90,7 @@ B<Examples:>
 
   static method new_len : StringList ($length : int)
 
-Create a new L<StringList|SPVM::StringList> object with the length.
+Create a new C<StringList> object with the length.
 
 The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
