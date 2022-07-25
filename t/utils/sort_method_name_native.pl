@@ -1,4 +1,4 @@
-# Sort the spvm sub by name asc order
+# Sort the native methods by name asc order
 
 my $is_sub;
 
