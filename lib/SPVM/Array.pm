@@ -161,7 +161,7 @@ If the array is not defined, return C<undef>.
 
   static method copy_object : object[] ($array : object[], $cloner : Cloner)
 
-Copy a object array. Each element is cloned by the L<Cloner|SPVM::Cloner>.
+Copy an object array. Each element is cloned by the L<Cloner|SPVM::Cloner>.
 
 If the array is not defined, return C<undef>.
 
@@ -179,85 +179,89 @@ The alias for the following code using L</"copy_object">.
 
   static method copy_range_byte : byte[] ($array : byte[], $offset : int, $length : int)
   
-Slice array in the byte array with the start offset and the length.
+Create a new C<byte> array with the length sepcified by the argument, and copy the elements of the C<byte> array from the offset to the offset + the length to the created array.
 
-Array must be defined. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will be thrown.
 
-Offset must be in the array range. Otherwise an exception will occur.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Length must be more than or equals to 0, othrewise an exception occurs.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Offset + length must not be in the array range, othrewise an exception occurs.
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_range_double
 
   static method copy_range_double : double[] ($array : double[], $offset : int, $length : int)
 
-Slice array in the double array with the start offset and the length.
+Create a new C<double> array with the length sepcified by the argument, and copy the elements of the C<double> array from the offset to the offset + the length to the created array.
 
-Array must be defined. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will be thrown.
 
-Offset must be in the array range. Otherwise an exception will occur.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Length must be more than or equals to 0, othrewise an exception occurs.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Offset + length must not be in the array range, othrewise an exception occurs.
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_range_float
 
   static method copy_range_float : float[] ($array : float[], $offset : int, $length : int)
 
-Slice array in the float array with the start offset and the length.
+Create a new C<float> array with the length sepcified by the argument, and copy the elements of the C<float> array from the offset to the offset + the length to the created array.
 
-Array must be defined. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will be thrown.
 
-Offset must be in the array range. Otherwise an exception will occur.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Length must be more than or equals to 0, othrewise an exception occurs.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Offset + length must not be in the array range, othrewise an exception occurs.
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_range_int
 
   static method copy_range_int : int[] ($array : int[], $offset : int, $length : int)
 
-Slice array in the int array with the start offset and the length.
+Create a new C<int> array with the length sepcified by the argument, and copy the elements of the C<int> array from the offset to the offset + the length to the created array.
 
-Array must be defined. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will be thrown.
 
-Offset must be in the array range. Otherwise an exception will occur.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Length must be more than or equals to 0, othrewise an exception occurs.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Offset + length must not be in the array range, othrewise an exception occurs.
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_range_long
 
   static method copy_range_long : long[] ($array : long[], $offset : int, $length : int)
 
-Slice array in the long array with the start offset and the length.
+Create a new C<long> array with the length sepcified by the argument, and copy the elements of the C<long> array from the offset to the offset + the length to the created array.
 
-Array must be defined. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will be thrown.
 
-Offset must be in the array range. Otherwise an exception will occur.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Length must be more than or equals to 0, othrewise an exception occurs.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Offset + length must not be in the array range, othrewise an exception occurs.
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_range_object
 
   static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner)
 
-Slice array in the object array with the start offset and the length with L<Cloner|SPVM::Cloner>.
+Create a new object array with the length sepcified by the argument, and clone the elements of the object array from the offset to the offset + the length to the created array.
 
-Array must be defined. Otherwise an exception will occur.
+Each element is cloned by the L<Cloner|SPVM::Cloner>.
 
-Offset must be in the array range. Otherwise an exception will occur.
+If the cloner is not defined, the address of each element is copied.
 
-Length must be more than or equals to 0, othrewise an exception occurs.
+The array must be defined. Otherwise an exception will be thrown.
 
-Offset + length must not be in the array range, othrewise an exception occurs.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_range_object
 
@@ -271,15 +275,15 @@ The alias for the following code using L</"copy_range_object">.
 
   static method copy_range_short : short[] ($array : short[], $offset : int, $length : int)
 
-Slice array in the short array with the start offset and the length.
+Create a new C<short> array with the length sepcified by the argument, and copy the elements of the C<short> array from the offset to the offset + the length to the created array.
 
-Array must be defined. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will be thrown.
 
-Offset must be in the array range. Otherwise an exception will occur.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Length must be more than or equals to 0, othrewise an exception occurs.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Offset + length must not be in the array range, othrewise an exception occurs.
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_range_string
   
@@ -299,7 +303,7 @@ Offset + length must not be in the array range, othrewise an exception occurs.
 
   static method copy_short : short[] ($array : short[])
 
-Copy a short array.
+Copy a C<short> array.
 
 If the array is not defined, return C<undef>.
   
@@ -307,7 +311,7 @@ If the array is not defined, return C<undef>.
 
   static method copy_string : string[] ($array : string[])
 
-Copy a string array.
+Copy a C<string> array.
 
 If the array is not defined, return C<undef>.
 
