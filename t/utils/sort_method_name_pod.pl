@@ -1,4 +1,4 @@
-# Sort the subs by name asc order
+# Sort methods by name asc order
 
 my $is_sub;
 
