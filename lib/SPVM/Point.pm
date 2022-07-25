@@ -37,6 +37,16 @@ C<Point> class has the following interfaces.
 
 =back
 
+=head1 Fields
+
+=head2 x
+
+  has x : rw int;
+
+=head2 y
+
+  has y : rw int;
+
 =head1 Class Methods
 
 =head2 new
@@ -49,44 +59,26 @@ Create a new C<Point> object.
 
   method new_xy : Point ($x : int, $y : int)
 
-Create a new C<Point> object with x and y.
+Create a new C<Point> object with L</"x"> and L</"y">.
 
 =head1 Instance Methods
 
-=head2 x
+=head2 clear
 
-  method x : int ()
+  method clear : void ()
 
-Get C<x> field.
-
-=head2 set_x
-
-  void set_x : int ($x : int)
-
-Set C<x> field.
-
-=head2 y
-
-  method y : int ();
-
-Get C<y> field.
-
-=head2 set_y
-
-  void set_y : int ($y : int)
-
-Set C<y> field.
-
-=head2 to_string
-
-  method to_string : string ();
-
-Convert the C<Point> object to a string as the following.
-
-  (1,2)
+Set L</"x"> and L</"y"> to C<0>.
 
 =head2 cloneable_clone
 
   method cloneable_clone : object ()
 
-Clone a C<Point> object by create a new C<Point> object and C<x> and C<y> fields are copied to the new object.
+Create a new C<Point> object that clones myself.
+
+=head2 to_string
+
+  method to_string : string ();
+
+Stringify the C<Point> object as the following format.
+
+  (1,2)

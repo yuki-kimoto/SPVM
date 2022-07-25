@@ -17,7 +17,19 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Point
 {
-  ok(SPVM::TestCase::Module::Point->basic);
+  # Fields
+  ok(SPVM::TestCase::Module::Point->interfaces);
+  
+  # Fields
+  ok(SPVM::TestCase::Module::Point->fields);
+  
+  # Class methods
+  ok(SPVM::TestCase::Module::Point->new);
+  ok(SPVM::TestCase::Module::Point->new_xy);
+  ok(SPVM::TestCase::Module::Point->clear);
+  ok(SPVM::TestCase::Module::Point->to_string);
+  
+  # Extra
   ok(SPVM::TestCase::Module::Point->extra);
 }
 

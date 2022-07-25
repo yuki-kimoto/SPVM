@@ -1,3 +1,7 @@
+0.9629 2022-07-25
+  [Document Fix]
+    * Add the doc of clear method of Point class.
+  
 0.9628 2022-07-25
   [New Features]
     * Add replace method to ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, List.
