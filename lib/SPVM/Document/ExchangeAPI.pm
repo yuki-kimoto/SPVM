@@ -562,7 +562,7 @@ If the SPVM argument type is numeric reference type, the given Perl reference is
 
 If the SPVM argument type is byte reference type, the given Perl reference is converted to SPVM byte reference type.
 
-The given value must be a scalar reference which referenced value is non-ref scalar, otherwise an exception occurs.
+The given value must be a scalar reference which referenced value is non-ref scalar. Otherwise an exception will occur.
 
 The given value is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl Scalar to SPVM byte"> and return value is converted to Perl scalar by L<the rule of SPVM byte to Perl Scalar|"SPVM byte to Perl scalar">
 
@@ -581,7 +581,7 @@ B<Example:>
 
 If the SPVM argument type is short reference type, the given Perl reference is converted to SPVM short reference type.
 
-The given value must be a scalar reference which referenced value is non-ref scalar, otherwise an exception occurs.
+The given value must be a scalar reference which referenced value is non-ref scalar. Otherwise an exception will occur.
 
 The given value is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl Scalar to SPVM short"> and return value is converted to Perl scalar by L<the rule of SPVM short to Perl Scalar|"SPVM short to Perl scalar">
 
@@ -600,7 +600,7 @@ B<Example:>
 
 If the SPVM argument type is int reference type, the given Perl reference is converted to SPVM int reference type.
 
-The given value must be a scalar reference which referenced value is non-ref scalar, otherwise an exception occurs.
+The given value must be a scalar reference which referenced value is non-ref scalar. Otherwise an exception will occur.
 
 The given value is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl Scalar to SPVM int"> and return value is converted to Perl scalar by L<the rule of SPVM int to Perl Scalar|"SPVM int to Perl scalar">
 
@@ -619,7 +619,7 @@ B<Example:>
 
 If the SPVM argument type is long reference type, the given Perl reference is converted to SPVM long reference type.
 
-The given value must be a scalar reference which referenced value is non-ref scalar, otherwise an exception occurs.
+The given value must be a scalar reference which referenced value is non-ref scalar. Otherwise an exception will occur.
 
 The given value is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl Scalar to SPVM long"> and return value is converted to Perl scalar by L<the rule of SPVM long to Perl Scalar|"SPVM long to Perl scalar">
 
@@ -638,7 +638,7 @@ B<Example:>
 
 If the SPVM argument type is float reference type, the given Perl reference is converted to SPVM float reference type.
 
-The given value must be a scalar reference which referenced value is non-ref scalar, otherwise an exception occurs.
+The given value must be a scalar reference which referenced value is non-ref scalar. Otherwise an exception will occur.
 
 The given value is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl Scalar to SPVM float"> and return value is converted to Perl scalar by L<the rule of SPVM float to Perl Scalar|"SPVM float to Perl scalar">
 
@@ -657,7 +657,7 @@ B<Example:>
 
 If the SPVM argument type is double reference type, the given Perl reference is converted to SPVM double reference type.
 
-The given value must be a scalar reference which referenced value is non-ref scalar, otherwise an exception occurs.
+The given value must be a scalar reference which referenced value is non-ref scalar. Otherwise an exception will occur.
 
 The given value is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl Scalar to SPVM double"> and return value is converted to Perl scalar by L<the rule of SPVM double to Perl Scalar|"SPVM double to Perl scalar">
 
@@ -680,7 +680,7 @@ If the SPVM argument type is multi-numeric reference type, the given Perl refere
 
 If the SPVM argument type is multi-numeric byte reference type, the given Perl reference is converted to SPVM multi-numeric byte reference type.
 
-The given reference must be a scalar reference of hash reference, otherwise an exception occurs.
+The given reference must be a scalar reference of hash reference. Otherwise an exception will occur.
 
 The each field of the hash of the given argument is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl Scalar to SPVM byte"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM byte to Perl Scalar|"SPVM byte to Perl scalar">
 
@@ -705,7 +705,7 @@ B<Example:>
 
 If the SPVM argument type is multi-numeric short reference type, the given Perl reference is converted to SPVM multi-numeric short reference type.
 
-The given reference must be a scalar reference of hash reference, otherwise an exception occurs.
+The given reference must be a scalar reference of hash reference. Otherwise an exception will occur.
 
 The each field of the hash of the given argument is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl Scalar to SPVM short"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM short to Perl Scalar|"SPVM short to Perl scalar">
 
@@ -730,7 +730,7 @@ B<Example:>
 
 If the SPVM argument type is multi-numeric int reference type, the given Perl reference is converted to SPVM multi-numeric int reference type.
 
-The given reference must be a scalar reference of hash reference, otherwise an exception occurs.
+The given reference must be a scalar reference of hash reference. Otherwise an exception will occur.
 
 The each field of the hash of the given argument is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl Scalar to SPVM int"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM int to Perl Scalar|"SPVM int to Perl scalar">
 
@@ -755,7 +755,7 @@ B<Example:>
 
 If the SPVM argument type is multi-numeric long reference type, the given Perl reference is converted to SPVM multi-numeric long reference type.
 
-The given reference must be a scalar reference of hash reference, otherwise an exception occurs.
+The given reference must be a scalar reference of hash reference. Otherwise an exception will occur.
 
 The each field of the hash of the given argument is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl Scalar to SPVM long"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM long to Perl Scalar|"SPVM long to Perl scalar">
 
@@ -780,7 +780,7 @@ B<Example:>
 
 If the SPVM argument type is multi-numeric float reference type, the given Perl reference is converted to SPVM multi-numeric float reference type.
 
-The given reference must be a scalar reference of hash reference, otherwise an exception occurs.
+The given reference must be a scalar reference of hash reference. Otherwise an exception will occur.
 
 The each field of the hash of the given argument is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl Scalar to SPVM float"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM float to Perl Scalar|"SPVM float to Perl scalar">
 
@@ -805,7 +805,7 @@ B<Example:>
 
 If the SPVM argument type is multi-numeric double reference type, the given Perl reference is converted to SPVM multi-numeric double reference type.
 
-The given reference must be a scalar reference of hash reference, otherwise an exception occurs.
+The given reference must be a scalar reference of hash reference. Otherwise an exception will occur.
 
 The each field of the hash of the given argument is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl Scalar to SPVM double"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM double to Perl Scalar|"SPVM double to Perl scalar">
 
@@ -914,7 +914,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 Create a new SPVM C<byte[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be more than or equals to zero, otherwise an exception occurs.
+The lenght must be more than or equals to zero. Otherwise an exception will occur.
 
 =head2 new_byte_array_from_bin
 
@@ -959,7 +959,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 Create a new  a SPVM C<short[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be more than or equals to zero, otherwise an exception occurs.
+The lenght must be more than or equals to zero. Otherwise an exception will occur.
 
 =head2 new_short_array_from_bin
 
@@ -986,7 +986,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 Create a new  a SPVM C<int[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be more than or equals to zero, otherwise an exception occurs.
+The lenght must be more than or equals to zero. Otherwise an exception will occur.
 
 =head2 new_int_array_from_bin
 
@@ -1013,7 +1013,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 Create a new  a SPVM C<long[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be more than or equals to zero, otherwise an exception occurs.
+The lenght must be more than or equals to zero. Otherwise an exception will occur.
 
 =head2 new_long_array_from_bin
 
@@ -1040,7 +1040,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 Create a new  a SPVM C<float[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be more than or equals to zero, otherwise an exception occurs.
+The lenght must be more than or equals to zero. Otherwise an exception will occur.
 
 =head2 new_float_array_from_bin
 
@@ -1067,7 +1067,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 Create a new  a SPVM C<double[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be more than or equals to zero, otherwise an exception occurs.
+The lenght must be more than or equals to zero. Otherwise an exception will occur.
 
 =head2 new_double_array_from_bin
 
@@ -1122,7 +1122,7 @@ Convert a Perl array reference to a SPVM object array. Return value is L<SPVM::B
 
 The first argument is a SPVM array type name. If the type is non-existent, an exception occurs.
 
-The second argument is a Perl array reference. Each element must be valid value or C<undef>, otherwise an exception occurs.
+The second argument is a Perl array reference. Each element must be valid value or C<undef>. Otherwise an exception will occur.
 
 Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
@@ -1145,7 +1145,7 @@ Convert a Perl array references to SPVM multi-numeric array.
 
 The first argument is a SPVM array type name. If the type is non-existent, an exception occurs.
 
-The second argument is a Perl array of hash references. Each hash reference must be contain all fields of the multi-numeric value, otherwise an exception occurs.
+The second argument is a Perl array of hash references. Each hash reference must be contain all fields of the multi-numeric value. Otherwise an exception will occur.
 
 Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
@@ -1273,7 +1273,7 @@ Get the exception of the SPVM runtime environment as L<SPVM::BlessedObject::Stri
 
 Set a SPVM exception of the SPVM runtime environment.
 
-The argument must be a L<SPVM::BlessedObject::String> object, a decoded string or C<undef>, otherwise an exception occurs.
+The argument must be a L<SPVM::BlessedObject::String> object, a decoded string or C<undef>. Otherwise an exception will occur.
 
   SPVM::set_exception(SPVM::new_string("abc"));
   SPVM::set_exception("abc");

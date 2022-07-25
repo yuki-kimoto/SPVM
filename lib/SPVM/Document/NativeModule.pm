@@ -24,7 +24,7 @@ A native config file is needed for the native module. The extension is C<config>
 
 If the native config file does not exist, an exception occurs.
 
-Native config files are writen by Perl. It must return L<Builder::Config|SPVM::Builder::Config> object, otherwise an exception occurs.
+Native config files are writen by Perl. It must return L<Builder::Config|SPVM::Builder::Config> object. Otherwise an exception will occur.
 
 I show some examples of native config files.
 
