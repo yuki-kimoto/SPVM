@@ -856,6 +856,10 @@ class Array {
 
     return $is_equals;
   }
+  
+  static method equals_string_address : int ($array1 : string[], $array2 : string[]) {
+    return &equals_object_address($array1, $array2);
+  }
 
   precompile static method memset_byte : void ($dest : byte[], $dest_offset : int, $element : byte, $length : int) {
     my $offset_plus_length = $dest_offset + $length;

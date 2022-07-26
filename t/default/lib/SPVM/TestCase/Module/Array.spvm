@@ -1760,6 +1760,56 @@ class TestCase::Module::Array {
 
     return 1;
   }
+
+  static method equals_string_address : int () {
+    my $array1 = ["abc", "def", "ghi"];
+    my $array2 = [$array1->[0], $array1->[1], $array1->[2]];
+    my $array3 = [$array1->[0], $array1->[1]];
+    my $array4 = [$array1->[0], $array1->[1], "xxx"];
+    
+    {
+      my $is_equals = Array->equals_string_address($array1, $array2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_string_address($array1, $array3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_string_address($array1, $array4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = Array->equals_string_address(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_string_address($array1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_string_address(undef, $array1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   static method memcpy_byte : int () {
     
     # Copy

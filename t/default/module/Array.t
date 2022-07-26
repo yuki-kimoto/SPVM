@@ -56,6 +56,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Array->equals_object_address);
   ok(SPVM::TestCase::Module::Array->equals_short);
   ok(SPVM::TestCase::Module::Array->equals_string);
+  ok(SPVM::TestCase::Module::Array->equals_string_address);
   ok(SPVM::TestCase::Module::Array->memcpy_byte);
   ok(SPVM::TestCase::Module::Array->memcpy_double);
   ok(SPVM::TestCase::Module::Array->memcpy_float);

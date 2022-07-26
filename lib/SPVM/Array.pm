@@ -525,6 +525,14 @@ Check if two string arrays equal.
 
 If at least one of the arrays is not defined, a excetpion occurs.
 
+=head2 equals_string_address
+
+  static method equals_string_address : int ($array1 : string[], $array2 : string[])
+
+The alias for the following code using L</"equals_object_address">.
+
+  my $ret = &equals_object_address($array1, $array2);
+
 =head2 memcpy_byte
 
   static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int)
