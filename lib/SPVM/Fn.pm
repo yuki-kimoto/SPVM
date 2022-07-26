@@ -12,130 +12,23 @@ SPVM::Fn - SPVM Starndard Functions
 
   use Fn;
   
+  # Cut a newline LF
+  my $line = (mutable string)copy "abc\n";
+  Fn->chomp($line);
+  
+  # Contains
+  my $found = Fn->contains("pppabcde", "bcd");
+  
+  # Split
+  my $string = "foo,bar,baz";
+  my $items = Fn->split(",", $string);
+  
+  # Constant values
   my $byte_max = Fn->BYTE_MAX();
   my $short_max = Fn->SHORT_MAX();
   my $int_max = Fn->INT_MAX();
   my $long_max = Fn->LONG_MAX();
   
-  # Cut a newline LF
-  {
-    my $ret = Fn->chompr("abc\n");
-  }
-  
-  # Copy a string
-  {
-    my $string = "abc";
-    my $string_copy = Fn->copy_string($string);
-  }
-
-  # Search substr
-  {
-    my $found_offset = Fn->index("pppabcde", "bcd", 2);
-  }
-
-  # split a string by the specific separator
-  my $string = "foo,bar,baz";
-  my $splited_strs = Fn->split(",", $string);
-
-  # Copy a byte array
-  {
-    my $nums = [(byte)1, 2, 3];
-    my $nums_copy = Fn->copy_array_byte($nums);
-  }
-
-  # Copy a short array
-  {
-    my $nums = [(short)1, 2, 3];
-    my $nums_copy = Fn->copy_array_short($nums);
-  }
-
-  # Copy a int array
-  {
-    my $nums = [1, 2, 3];
-    my $nums_copy = Fn->copy_array_int($nums);
-  }
-
-  # Copy a long array
-  {
-    my $nums = [(long)1, 2, 3];
-    my $nums_copy = Fn->copy_array_long($nums);
-  }
-
-  # Copy a float array
-  {
-    my $nums = [1.5f, 2.5f, 3.5f];
-    my $nums_copy = Fn->copy_array_float($nums);
-  }
-
-  # Copy a double array
-  {
-    my $nums = [1.5, 2.5, 3.5];
-    my $nums_copy = Fn->copy_array_double($nums);
-  }
-  
-  # Copy a string array
-  {
-    my $strs = ["abc", "def", "ghi"]
-    my $strs_copy = Fn->copy_array_string($strs);
-  }
-  
-  # Check if the two byte arrays equal
-  {
-    my $nums1 = [(byte)1, 2];
-    my $nums2 = [(byte)1, 2];
-    my $ret = Fn->equals_array_byte($nums1, $nums2);
-  }
-
-  # Check if the two short arrays equal
-  {
-    my $nums1 = [(short)1, 2];
-    my $nums2 = [(short)1, 2];
-    my $ret = Fn->equals_array_short($nums1, $nums2);
-  }
-
-  # Check if the two int arrays equal
-  {
-    my $nums1 = [(int)1, 2];
-    my $nums2 = [(int)1, 2];
-    my $ret = Fn->equals_array_int($nums1, $nums2);
-  }
-
-  # Check if the two long arrays equal
-  {
-    my $nums1 = [(long)1, 2];
-    my $nums2 = [(long)1, 2];
-    my $ret = Fn->equals_array_long($nums1, $nums2);
-  }
-
-  # Check if the two float arrays equal
-  {
-    my $nums1 = [(float)1, 2];
-    my $nums2 = [(float)1, 2];
-    my $ret = Fn->equals_array_float($nums1, $nums2);
-  }
-
-  # Check if the two double arrays equal
-  {
-    my $nums1 = [(double)1, 2];
-    my $nums2 = [(double)1, 2];
-    my $ret = Fn->equals_array_double($nums1, $nums2);
-  }
-
-  # Check if the two string arrays equal
-  {
-    my $strs1 = ["abc", "def"];
-    my $strs2 = ["abc", "def"];
-    my $ret = Fn->equals_array_string($strs1, $strs2);
-  }
-  
-  # Copy object array
-  my $objects = [(object)Int->new(1), Int->new(2), Int->new(3)];
-  my $objects_copy = Fn->copy_array_object($objects, method : object ($obj : object) {
-    my $int_obj = (Int)$obj;
-    my $new_int_obj = Int->new($int_obj->value);
-    return $new_int_obj;
-  });
-
 =head1 Description
 
 B<Fn> module provides SPVM Starndard Functions. B<Fn> contains number, string and array utilities.
