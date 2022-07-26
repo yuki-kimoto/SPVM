@@ -25,7 +25,7 @@ SPVM::Fn - SPVM Starndard Functions
   # Copy a string
   {
     my $string = "abc";
-    my $string_copy = Fn->copy_string ($string);
+    my $string_copy = Fn->copy_string($string);
   }
 
   # Search substr
@@ -142,7 +142,10 @@ B<Fn> module provides SPVM Starndard Functions. B<Fn> contains number, string an
 
 =head1 Class Methods
 
-Class method of B<Fn> module.
+
+  static method BYTE_MIN : byte ()
+
+Same as L</"INT8_MIN">.
 
 =head2 DBL_MAX
 
@@ -155,6 +158,30 @@ Return the value of C<DBL_MAX> macro defined in C<float.h> header of C language.
   static method DBL_MIN : double ()
 
 Return the value of C<DBL_MIN> macro defined in C<float.h> header of C language.
+
+=head2 DOUBLE_MAX
+
+  static method DOUBLE_MAX : double ()
+
+Same as L</"DBL_MAX">.
+
+=head2 DOUBLE_MIN
+
+  static method DOUBLE_MIN : double ()
+
+Same as L</"DBL_MIN">.
+
+=head2 FLOAT_MAX
+
+  static method FLOAT_MAX : float ()
+
+Same as L</"FLT_MAX">.
+
+=head2 FLOAT_MIN
+
+  static method FLOAT_MIN : float()
+
+Same as L</"FLT_MIN">.
 
 =head2 FLT_MAX
 
@@ -206,75 +233,15 @@ Return C<-9223372036854775808>. The minimal value of the signed 64bit integer.
 
 =head2 INT8_MAX
 
-  INT8_MAX : byte ()
+  static method INT8_MAX : byte ()
 
-Return C<127>. The maximum value of the signed 8bit integer.
+Same as L</"INT8_MAX">.
 
 =head2 INT8_MIN
 
   static method INT8_MIN : byte ()
 
 Return C<-128>. The minimal value of the signed 8bit integer.
-
-=head2 UINT16_MAX
-
-  static method UINT16_MAX : short ()
-
-Return C<-1>. This represents C<0xFFFF> in the unsigned 16bit integer in 2's complement.
-
-=head2 UINT32_MAX
-
-  static method UINT32_MAX : int ()
-
-Return C<-1>. This represents C<0xFFFFFFFF> in the unsigned 32bit integer in 2's complement.
-
-=head2 UINT64_MAX
-
-  static method UINT64_MAX : long ()
-
-Return C<-1>. This represents C<0xFFFFFFFFFFFFFFFF> in the unsigned 64bit integer in 2's complement.
-
-=head2 UINT8_MAX
-
-  static method UINT8_MAX : byte ()
-
-Return C<-1>. The same bit expression of 0xFF in the unsigned 8bit integer in 2's complement.
-
-=head2 DOUBLE_MAX
-
-  static method DOUBLE_MAX : double ()
-
-Same as L</"DBL_MAX">.
-
-=head2 DOUBLE_MIN
-
-  static method DOUBLE_MIN : double ()
-
-Same as L</"DBL_MIN">.
-
-=head2 FLOAT_MAX
-
-  static method FLOAT_MAX : float ()
-
-Same as L</"FLT_MAX">.
-
-=head2 FLOAT_MIN
-
-  static method FLOAT_MIN : float()
-
-Same as L</"FLT_MIN">.
-
-=head2 SHORT_MAX
-
-  static method SHORT_MAX : short ()
-
-Same as L</"INT16_MAX">.
-
-=head2 SHORT_MIN
-  
-  static method SHORT_MIN : short ()
-
-Same as L</"INT16_MIN">.
 
 =head2 INT_MAX
 
@@ -300,23 +267,47 @@ Same as L</"INT64_MAX">.
 
 Same as L</"INT64_MIN">.
 
-=head2 INT8_MAX
+=head2 SHORT_MAX
 
-  static method INT8_MAX : byte ()
+  static method SHORT_MAX : short ()
 
-Same as L</"INT8_MAX">.
+Same as L</"INT16_MAX">.
 
-=head2 BYTE_MIN
+=head2 SHORT_MIN
+  
+  static method SHORT_MIN : short ()
 
-  static method BYTE_MIN : byte ()
+Same as L</"INT16_MIN">.
 
-Same as L</"INT8_MIN">.
+=head2 UBYTE_MAX
 
-=head2 USHORT_MAX
+  static method UBYTE_MAX : byte ()
 
-  static method USHORT_MAX : short ()
+Same as L</"UINT8_MAX">.
 
-Same as L</"UINT16_MAX">.
+=head2 UINT16_MAX
+
+  static method UINT16_MAX : short ()
+
+Return C<-1>. This represents C<0xFFFF> in the unsigned 16bit integer in 2's complement.
+
+=head2 UINT32_MAX
+
+  static method UINT32_MAX : int ()
+
+Return C<-1>. This represents C<0xFFFFFFFF> in the unsigned 32bit integer in 2's complement.
+
+=head2 UINT64_MAX
+
+  static method UINT64_MAX : long ()
+
+Return C<-1>. This represents C<0xFFFFFFFFFFFFFFFF> in the unsigned 64bit integer in 2's complement.
+
+=head2 UINT8_MAX
+
+  static method UINT8_MAX : byte ()
+
+Return C<-1>. The same bit expression of 0xFF in the unsigned 8bit integer in 2's complement.
 
 =head2 UINT_MAX
 
@@ -330,11 +321,11 @@ Same as L</"UINT32_MAX">.
 
 Same as L</"UINT64_MAX">.
 
-=head2 UBYTE_MAX
+=head2 USHORT_MAX
 
-  static method UBYTE_MAX : byte ()
+  static method USHORT_MAX : short ()
 
-Same as L</"UINT8_MAX">.
+Same as L</"UINT16_MAX">.
 
 =head2 abs
 
@@ -480,6 +471,30 @@ If the character is hexadecimal digit C<0-9a-fA-F>, return C<1>. Otherwise retur
 
 If character is lowercase letter('a'-'z'), return C<1>. Otherwise return C<0>.
 
+=head2 is_mulnum_array
+
+  static method is_mulnum_array : int ($object : object)
+
+If the object is a multi numeric array, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
+
+=head2 is_numeric_array
+
+  static method is_numeric_array : int ($object : object)
+
+If the object is a numeric array, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
+
+=head2 is_object_array
+
+  static method is_object_array : int ($object : object)
+
+If the object is a object array, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
+
 =head2 is_perl_space
 
   static method is_perl_space : int ($code_point : int)
@@ -521,30 +536,6 @@ If character is uppercase letter('A'-'Z'), return C<1>. Otherwise return C<0>.
   static method is_xdigit : int ($code_point : int)
 
 If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return C<1>. Otherwise return C<0>.
-
-=head2 is_mulnum_array
-
-  static method is_mulnum_array : int ($object : object)
-
-If the object is a multi numeric array, returns C<1>, otherwise returns C<0>.
-
-If the object is C<NULL>, returns C<0>.
-
-=head2 is_numeric_array
-
-  static method is_numeric_array : int ($object : object)
-
-If the object is a numeric array, returns C<1>, otherwise returns C<0>.
-
-If the object is C<NULL>, returns C<0>.
-
-=head2 is_object_array
-
-  static method is_object_array : int ($object : object)
-
-If the object is a object array, returns C<1>, otherwise returns C<0>.
-
-If the object is C<NULL>, returns C<0>.
 
 =head2 join
 
@@ -918,5 +909,3 @@ If the string is undef, an exception occurs.
 Convert the first character of a string to a uppercase character.
 
 If the string is undef, an exception occurs.
-
-
