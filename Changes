@@ -52,7 +52,6 @@
       Array->dump_string Array->dump_object. Use the dump operator instead.
     * The output of Array->dump_unsigned_byte, Array->dump_unsigned_short, Array->dump_unsigned_int, Array->dump_unsigned_long
       is same as the dump operator except for the unsigned elements.
-    * the type is added to the result of Array->dump_unsigned_byte, Array->dump_unsigned_short, Array->dump_unsigned_int, Array->dump_unsigned_long.
   [Deprecation]
     * Array->memcpy_object is deprecated. Use memcpy_object_address instead. This method will be removed at 0.9630.
     * Array->memcpy_string is deprecated. Use memcpy_string_address instead. This method will be removed at 0.9630.

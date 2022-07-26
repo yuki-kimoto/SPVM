@@ -342,7 +342,7 @@ class Array {
   precompile static method dump_unsigned_byte : string ($array : byte[]) {
     
     unless ($array) {
-      return undef;
+      return "undef";
     }
     
     my $dump = "[\n";
@@ -366,7 +366,7 @@ class Array {
   precompile static method dump_unsigned_int : string ($array : int[]) {
     
     unless ($array) {
-      return undef;
+      return "undef";
     }
     
     my $dump = "[\n";
@@ -390,7 +390,7 @@ class Array {
   precompile static method dump_unsigned_long : string ($array : long[]) {
     
     unless ($array) {
-      return undef;
+      return "undef";
     }
     
     my $dump = "[\n";
@@ -413,7 +413,7 @@ class Array {
   precompile static method dump_unsigned_short : string ($array : short[]) {
     
     unless ($array) {
-      return undef;
+      return "undef";
     }
     
     my $dump = "[\n";
