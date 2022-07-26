@@ -119,7 +119,6 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Module::Fn->repeat);
   ok(SPVM::TestCase::Module::Fn->is_hex_digit);
   ok(SPVM::TestCase::Module::Fn->get_next_code_point);
-  ok(SPVM::TestCase::Module::Fn->get_next_code_point);
 }
 
 # All object is freed
