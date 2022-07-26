@@ -340,38 +340,34 @@ If the array is not defined, return C<undef>.
 =head2 dump_unsigned_byte
 
   static method dump_unsigned_byte : string ($array : byte[])
-  
-Convert the array in the byte array to string interpreting as an unsigned 8bit integer and join them with "," and surround it with "[" and "]", and return it.
 
-If byte array is not defined, return C<"undef">.
+Same as the following code using the L<dump operator|SPVM::Document::LanguageSpecification/"dump Operator"> operator, but the elements are displayed as unsigned 8-bit integer.
+
+  my $ret = dump $array;
 
 =head2 dump_unsigned_int
 
   static method dump_unsigned_int : string ($array : int[])
   
-Convert the array in the int array to string interpreting as an unsigned 32bit integer and join them with "," and surround it with "[" and "]", and return it.
+Same as the following code using the L<dump operator|SPVM::Document::LanguageSpecification/"dump Operator"> operator, but the elements are displayed as unsigned 32-bit integer.
 
-If byte array is not defined, return C<"undef">.
+  my $ret = dump $array;
 
 =head2 dump_unsigned_long
 
   static method dump_unsigned_long : string ($array : long[])
   
-Convert the array in the long array to string interpreting as an unsigned 64bit integer and join them with "," and surround it with "[" and "]", and return it.
+Same as the following code using the L<dump operator|SPVM::Document::LanguageSpecification/"dump Operator"> operator, but the elements are displayed as unsigned 64-bit integer.
 
-For readability spaces and line breaks are inserted.
-
-If byte array is not defined, return C<"undef">.
+  my $ret = dump $array;
 
 =head2 dump_unsigned_short
 
   static method dump_unsigned_short : string ($array : short[])
   
-Convert the array in the short array to string interpreting as an unsigned 16bit integer and join them with "," and surround it with "[" and "]".
+Same as the following code using the L<dump operator|SPVM::Document::LanguageSpecification/"dump Operator"> operator, but the elements are displayed as unsigned 16-bit integer.
 
-For readability spaces and line breaks are inserted.
-
-If byte array is not defined, return C<"undef">.
+  my $ret = dump $array;
 
 =head2 equals_byte
 

@@ -923,7 +923,7 @@ class TestCase::Module::Array {
       my $array = [(byte)1, 2, -1, Fn->UBYTE_MAX];
       
       my $dump = Array->dump_unsigned_byte($array);
-      unless (Fn->contains($dump, "[\n  1,\n  2,\n  255,\n  255\n] : byte[]")) {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  255,\n  255\n] : byte[](0x")) {
         return 0;
       }
     }
@@ -947,7 +947,7 @@ class TestCase::Module::Array {
       
       my $dump = Array->dump_unsigned_int($array);
       
-      unless (Fn->contains($dump, "[\n  1,\n  2,\n  4294967295,\n  4294967295\n] : int[]")) {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  4294967295,\n  4294967295\n] : int[](0x")) {
         return 0;
       }
     }
@@ -971,7 +971,7 @@ class TestCase::Module::Array {
       
       my $dump = Array->dump_unsigned_long($array);
       
-      unless (Fn->contains($dump, "[\n  1,\n  2,\n  18446744073709551615,\n  18446744073709551615\n] : long[]")) {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  18446744073709551615,\n  18446744073709551615\n] : long[](0x")) {
         return 0;
       }
     }
@@ -995,7 +995,7 @@ class TestCase::Module::Array {
       
       my $dump = Array->dump_unsigned_short($array);
       
-      unless (Fn->contains($dump, "[\n  1,\n  2,\n  65535,\n  65535\n] : short[]")) {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  65535,\n  65535\n] : short[](0x")) {
         return 0;
       }
     }

@@ -5,11 +5,11 @@ class Format {
   precompile static method sprintf : string ($format : string, $args : object[]...) {
     my $format_length = length $format;
     my $index = 0;
-
+    
     my $buffer = StringBuffer->new;
     my $arg_count = 0;
     my $constant_string_length = 0;
-
+    
     while ($index + $constant_string_length < $format_length) {
 
       if ($format->[$index + $constant_string_length] != '%') {
@@ -176,6 +176,10 @@ class Format {
             $specifier = "g";
             break;
           }
+          case 'p' : {
+            $specifier = "p";
+            break;
+          }
           case 'U' : {
             $specifier = "U";
             break;
@@ -254,7 +258,7 @@ class Format {
           my $formatted_value = &_native_snprintf_g($arg_value, $precision);
           &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
         }
-        elsif ($specifier eq "f") {
+        elsif ($specifier eq "p") {
           my $arg = $args->[$arg_count];
           my $formatted_value = &_native_snprintf_p($arg);
           &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);

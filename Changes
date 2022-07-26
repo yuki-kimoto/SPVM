@@ -44,8 +44,8 @@
     * Rename Remove Fn->memcpy_object, Fn->memmove_object. This remained wrongly.
     * Remove Array->dump_byte, Array->dump_short, Array->dump_int, Array->dump_long, Array->dump_float, Array->dump_double,
       Array->dump_string Array->dump_object. Use the dump operator instead.
-    * Remove Array->dump_unsigned_byte, Array->dump_unsigned_short, Array->dump_unsigned_int, Array->dump_unsigned_long,
-      Array->dump_object returns stringified "undef" instead of undef.
+    * The output of Array->dump_unsigned_byte, Array->dump_unsigned_short, Array->dump_unsigned_int, Array->dump_unsigned_long
+      is same as the dump operator except for the unsigned elements.
     * the type is added to the result of Array->dump_unsigned_byte, Array->dump_unsigned_short, Array->dump_unsigned_int, Array->dump_unsigned_long.
   [Deprecation]
     * Array->memcpy_object is deprecated. Use memcpy_object_address instead. This method will be removed at 0.9630.
