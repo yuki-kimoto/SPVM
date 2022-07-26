@@ -325,7 +325,15 @@ If the array is not defined, return C<undef>.
 
   static method copy_string : string[] ($array : string[])
 
-Copy a C<string> array.
+Copy a C<string> array using the C<copy> operator.
+
+If the array is not defined, return C<undef>.
+
+=head2 copy_string_address
+
+  static method copy_string_address : string[] ($array : string[])
+
+Copy the addresses of the elements of a C<string> array.
 
 If the array is not defined, return C<undef>.
 

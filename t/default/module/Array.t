@@ -34,6 +34,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Array->copy_range_string_address);
   ok(SPVM::TestCase::Module::Array->copy_short);
   ok(SPVM::TestCase::Module::Array->copy_string);
+  ok(SPVM::TestCase::Module::Array->copy_string_address);
   ok(SPVM::TestCase::Module::Array->dump_byte);
   ok(SPVM::TestCase::Module::Array->dump_double);
   ok(SPVM::TestCase::Module::Array->dump_float);

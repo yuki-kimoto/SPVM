@@ -326,6 +326,20 @@ class Array {
     return $new_array;
   }
   
+  static method copy_string_address : string[] ($array : string[]) {
+    unless ($array) {
+      return undef;
+    }
+    
+    my $length = @$array;
+    
+    my $new_array = new string[$length];
+    
+    Array->memcpy_string_address($new_array, 0, $array, 0, $length);
+    
+    return $new_array;
+  }
+  
   precompile static method dump_byte : string ($array : byte[]) {
     
     unless ($array) {

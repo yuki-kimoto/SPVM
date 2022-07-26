@@ -915,6 +915,38 @@ class TestCase::Module::Array {
     return 1;
   }
 
+  static method copy_string_address : int () {
+    # Copy array
+    {
+      my $array = ["abc", "def", "hij"];
+      my $array_out = Array->copy_string_address($array);
+
+      unless ($array->[0] == $array_out->[0]) {
+        return 0;
+      }
+      unless ($array->[1] == $array_out->[1]) {
+        return 0;
+      }
+      unless ($array->[2] == $array_out->[2]) {
+        return 0;
+      }
+
+      unless (@$array_out == 3) {
+        return 0;
+      }
+    }
+
+    # Array is undef
+    {
+      my $output = Array->copy_string_address(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  
   static method dump_byte : int () {
     # Dump array
     {
