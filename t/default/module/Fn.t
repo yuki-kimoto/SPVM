@@ -34,10 +34,7 @@ my $nan_re = qr/(nan|ind)/i;
 
 # Fn
 {
-  ok(SPVM::TestCase::Module::Fn->crand);
-  ok(SPVM::TestCase::Module::Fn->rand);
   ok(SPVM::TestCase::Module::Fn->RAND_MAX);
-  ok(SPVM::TestCase::Module::Fn->copy_str);
   is(SPVM::Fn->INT8_MAX, 127);
   is(SPVM::Fn->INT8_MIN, -128);
   is(SPVM::Fn->INT16_MAX, 32767);
@@ -68,6 +65,9 @@ my $nan_re = qr/(nan|ind)/i;
   is(SPVM::Fn->INT64_MIN, $LONG_MIN);
   like(SPVM::Fn->FLT_MAX(), qr/[0-9]/);
   like(SPVM::Fn->FLT_MIN(), qr/[0-9]/);
+  ok(SPVM::TestCase::Module::Fn->crand);
+  ok(SPVM::TestCase::Module::Fn->rand);
+  ok(SPVM::TestCase::Module::Fn->copy_str);
   ok(SPVM::TestCase::Module::Fn->hex);
   ok(SPVM::TestCase::Module::Fn->trim_ascii_space);
   ok(SPVM::TestCase::Module::Fn->split);
