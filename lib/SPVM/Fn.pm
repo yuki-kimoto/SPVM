@@ -20,8 +20,12 @@ SPVM::Fn - SPVM Starndard Functions
   my $found = Fn->contains("pppabcde", "bcd");
   
   # Split
-  my $string = "foo,bar,baz";
+  my $csv = "foo,bar,baz";
   my $items = Fn->split(",", $string);
+  
+  # Join
+  my $items = ["foo", "bar", "baz"];
+  my $csv = Fn->join(",", $items);
   
   # Constant values
   my $byte_max = Fn->BYTE_MAX();
