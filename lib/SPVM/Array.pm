@@ -511,8 +511,6 @@ The range of the elements of the destination array is from the offset of the des
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
 
-B<Exceptions:>
-
 The destination must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
@@ -538,8 +536,6 @@ The range of the elements of the source array is from the offset of the source t
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
-
-B<Exceptions:>
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -567,8 +563,6 @@ The range of the elements of the destination array is from the offset of the des
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
 
-B<Exceptions:>
-
 The destination must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
@@ -595,8 +589,6 @@ The range of the elements of the destination array is from the offset of the des
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
 
-B<Exceptions:>
-
 The destination must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
@@ -622,8 +614,6 @@ The range of the elements of the source array is from the offset of the source t
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
-
-B<Exceptions:>
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -652,8 +642,6 @@ The range of the elements of the source array is from the offset of the source t
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
-
-B<Exceptions:>
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -686,8 +674,6 @@ The range of the elements of the source array is from the offset of the source t
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
-
-B<Exceptions:>
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -727,8 +713,6 @@ The range of the elements of the destination array is from the offset of the des
 
 Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
 
-B<Exceptions:>
-
 The destination must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
@@ -754,8 +738,6 @@ The range of the elements of the source array is from the offset of the source t
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
 Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
-
-B<Exceptions:>
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -783,8 +765,6 @@ The range of the elements of the destination array is from the offset of the des
 
 Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
 
-B<Exceptions:>
-
 The destination must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
@@ -811,8 +791,6 @@ The range of the elements of the destination array is from the offset of the des
 
 Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
 
-B<Exceptions:>
-
 The destination must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
@@ -838,8 +816,6 @@ The range of the elements of the source array is from the offset of the source t
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
 Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
-
-B<Exceptions:>
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -868,8 +844,6 @@ The range of the elements of the source array is from the offset of the source t
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
 Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
-
-B<Exceptions:>
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -902,8 +876,6 @@ The range of the elements of the source array is from the offset of the source t
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
 Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
-
-B<Exceptions:>
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -939,41 +911,103 @@ Set the range of the elements of the destination C<byte> array to the element sp
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
+The destination must be defined. Otherwise an exception will occur.
+
+The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+
+The length must be greater than or equal to 0. Otherwise an exception will occur.
+
 =head2 memset_double
 
   static method memset_double : void ($dest : double[], $dest_offset : int, $element : double, $length : int)
 
-Set each element of the C<double> array to the element from the offset to the offset + the length.
+Set the range of the elements of the destination C<double> array to the element specified by the argument.
+
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+
+The destination must be defined. Otherwise an exception will occur.
+
+The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+
+The length must be greater than or equal to 0. Otherwise an exception will occur.
 
 =head2 memset_float
 
   static method memset_float : void ($dest : float[], $dest_offset : int, $element : float, $length : int)
 
-Set each element of the C<float> array to the element from the offset to the offset + the length.
+Set the range of the elements of the destination C<float> array to the element specified by the argument.
+
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+
+The destination must be defined. Otherwise an exception will occur.
+
+The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+
+The length must be greater than or equal to 0. Otherwise an exception will occur.
 
 =head2 memset_int
 
   static method memset_int : void ($dest : int[], $dest_offset : int, $element : int, $length : int)
 
-Set each element of the C<int> array to the element from the offset to the offset + the length.
+Set the range of the elements of the destination C<int> array to the element specified by the argument.
+
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+
+The destination must be defined. Otherwise an exception will occur.
+
+The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+
+The length must be greater than or equal to 0. Otherwise an exception will occur.
 
 =head2 memset_long
 
   static method memset_long : void ($dest : long[], $dest_offset : int, $element : long, $length : int)
 
-Set each element of the C<long> array to the element from the offset to the offset + the length.
+Set the range of the elements of the destination C<long> array to the element specified by the argument.
+
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+
+The destination must be defined. Otherwise an exception will occur.
+
+The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+
+The length must be greater than or equal to 0. Otherwise an exception will occur.
 
 =head2 memset_object
 
   static method memset_object : void ($dest : object[], $dest_offset : int : int, $element : object, $length)
 
-Set each element of the object array to the element from the offset to the offset + the length.
+Set the range of the elements of the destination object array to the element specified by the argument.
+
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+
+The destination must be defined. Otherwise an exception will occur.
+
+The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+
+The length must be greater than or equal to 0. Otherwise an exception will occur.
 
 =head2 memset_short
 
   static method memset_short : void ($dest : short[], $dest_offset : int, $element : short, $length : int)
 
-Set each element of the C<short> array to the element from the offset to the offset + the length.
+Set the range of the elements of the destination C<short> array to the element specified by the argument.
+
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+
+The destination must be defined. Otherwise an exception will occur.
+
+The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+
+The length must be greater than or equal to 0. Otherwise an exception will occur.
+
+=head2 memset_string
+
+  static method memset_string : void ($dest : string[], $dest_offset : int, $element : string, $length : int)
+
+The alias for the following code using L</"memset_object">.
+
+  &memset_object($dest, $dest_offset, $element, $length);
 
 =head2 new_proto
 

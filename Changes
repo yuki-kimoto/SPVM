@@ -34,6 +34,8 @@
   [Changes]
     * Remove "SPVM/" from native file name.
     * Array->equals_object can recieve undef equality checker, and check address equality.
+    * Add exception logic to memset_byte, memset_double, memset_float, memset_int, memset_long,
+      memset_object, memset_short, memset_string
   [Incompatible Changes]
     * Change the following method definition of Array class. Sorry. This is my simple definition mistake.
       [Before]

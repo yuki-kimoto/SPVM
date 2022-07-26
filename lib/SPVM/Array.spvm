@@ -668,52 +668,6 @@ class Array {
     return &equals_object_address($array1, $array2);
   }
 
-  precompile static method memset_byte : void ($dest : byte[], $dest_offset : int, $element : byte, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $element;
-    }
-  }
-  precompile static method memset_double : void ($dest : double[], $dest_offset : int, $element : double, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $element;
-    }
-  }
-  precompile static method memset_float : void ($dest : float[], $dest_offset : int, $element : float, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $element;
-    }
-  }
-  precompile static method memset_int : void ($dest : int[], $dest_offset : int, $element : int, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $element;
-    }
-  }
-  precompile static method memset_long : void ($dest : long[], $dest_offset : int, $element : long, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $element;
-    }
-  }
-  precompile static method memset_short : void ($dest : short[], $dest_offset : int, $element : short, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $element;
-    }
-  }
-  static method memset_string : void ($dest : object[], $dest_offset : int, $element : object, $length : int) {
-    &memset_object($dest, $dest_offset, $element, $length);
-  }
-  precompile static method memset_object : void ($dest : object[], $dest_offset : int, $element : object, $length : int) {
-    my $offset_plus_length = $dest_offset + $length;
-    for (my $i = $dest_offset; $i < $offset_plus_length; $i++) {
-      $dest->[$i] = $element;
-    }
-  }
-  
   native static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
   native static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
   native static method memcpy_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
@@ -813,6 +767,157 @@ class Array {
   static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     warn "Array->memmove_object is deprecated. Use memmove_object_address instead";
     &memmove_object_address($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  
+  precompile static method memset_byte : void ($dest : byte[], $dest_offset : int, $element : byte, $length : int) {
+    unless ($dest) {
+      die "The destination must be defined";
+    }
+    
+    unless ($dest_offset >= 0) {
+      die "The offset of the destination must be greater than or equal to 0";
+    }
+    
+    unless ($length >= 0) {
+      die "The length must be greater than or equal to 0";
+    }
+    
+    if ($length == 0) {
+      return;
+    }
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $dest->[$dest_offset + $i] = $element;
+    }
+  }
+  precompile static method memset_double : void ($dest : double[], $dest_offset : int, $element : double, $length : int) {
+    unless ($dest) {
+      die "The destination must be defined";
+    }
+    
+    unless ($dest_offset >= 0) {
+      die "The offset of the destination must be greater than or equal to 0";
+    }
+    
+    unless ($length >= 0) {
+      die "The length must be greater than or equal to 0";
+    }
+    
+    if ($length == 0) {
+      return;
+    }
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $dest->[$dest_offset + $i] = $element;
+    }
+  }
+  precompile static method memset_float : void ($dest : float[], $dest_offset : int, $element : float, $length : int) {
+    unless ($dest) {
+      die "The destination must be defined";
+    }
+    
+    unless ($dest_offset >= 0) {
+      die "The offset of the destination must be greater than or equal to 0";
+    }
+    
+    unless ($length >= 0) {
+      die "The length must be greater than or equal to 0";
+    }
+    
+    if ($length == 0) {
+      return;
+    }
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $dest->[$dest_offset + $i] = $element;
+    }
+  }
+  precompile static method memset_int : void ($dest : int[], $dest_offset : int, $element : int, $length : int) {
+    unless ($dest) {
+      die "The destination must be defined";
+    }
+    
+    unless ($dest_offset >= 0) {
+      die "The offset of the destination must be greater than or equal to 0";
+    }
+    
+    unless ($length >= 0) {
+      die "The length must be greater than or equal to 0";
+    }
+    
+    if ($length == 0) {
+      return;
+    }
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $dest->[$dest_offset + $i] = $element;
+    }
+  }
+  precompile static method memset_long : void ($dest : long[], $dest_offset : int, $element : long, $length : int) {
+    unless ($dest) {
+      die "The destination must be defined";
+    }
+    
+    unless ($dest_offset >= 0) {
+      die "The offset of the destination must be greater than or equal to 0";
+    }
+    
+    unless ($length >= 0) {
+      die "The length must be greater than or equal to 0";
+    }
+    
+    if ($length == 0) {
+      return;
+    }
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $dest->[$dest_offset + $i] = $element;
+    }
+  }
+  precompile static method memset_short : void ($dest : short[], $dest_offset : int, $element : short, $length : int) {
+    unless ($dest) {
+      die "The destination must be defined";
+    }
+    
+    unless ($dest_offset >= 0) {
+      die "The offset of the destination must be greater than or equal to 0";
+    }
+    
+    unless ($length >= 0) {
+      die "The length must be greater than or equal to 0";
+    }
+    
+    if ($length == 0) {
+      return;
+    }
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $dest->[$dest_offset + $i] = $element;
+    }
+  }
+  static method memset_string : void ($dest : string[], $dest_offset : int, $element : string, $length : int) {
+    &memset_object($dest, $dest_offset, $element, $length);
+  }
+  precompile static method memset_object : void ($dest : object[], $dest_offset : int, $element : object, $length : int) {
+    unless ($dest) {
+      die "The destination must be defined";
+    }
+    
+    unless ($dest_offset >= 0) {
+      die "The offset of the destination must be greater than or equal to 0";
+    }
+    
+    unless ($length >= 0) {
+      die "The length must be greater than or equal to 0";
+    }
+    
+    if ($length == 0) {
+      return;
+    }
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $dest->[$dest_offset + $i] = $element;
+    }
   }
   
   native static method new_proto : object[] ($proto_array : object[], $length : int);
