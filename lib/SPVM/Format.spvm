@@ -254,6 +254,11 @@ class Format {
           my $formatted_value = &_native_snprintf_g($arg_value, $precision);
           &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
         }
+        elsif ($specifier eq "f") {
+          my $arg = $args->[$arg_count];
+          my $formatted_value = &_native_snprintf_p($arg);
+          &_push_formatted_string_signed($buffer, $formatted_value, $width, $pad_char, $left_justified, $plus_sign);
+        }
         elsif ($specifier eq "x" || $specifier eq "X") {
           my $arg = (Int)$args->[$arg_count];
           my $formatted_value = &_native_snprintf_x($arg);
@@ -302,6 +307,7 @@ class Format {
   native static method _native_snprintf_lx : string ($value : long);
   native static method _native_snprintf_f : string ($value : double, $precision : int);
   native static method _native_snprintf_g : string ($value : double, $precision : int);
+  native static method _native_snprintf_p : string ($value : object);
   
   static method _push_formatted_string_unsigned : void($buffer : StringBuffer, $formatted_value : string, $width : int, $pad_char : byte, $left_justified : int) {
     

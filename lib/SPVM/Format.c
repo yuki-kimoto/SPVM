@@ -83,6 +83,24 @@ int32_t SPVM__Format___native_snprintf_g(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Format___native_snprintf_p(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  
+  void* value = stack[0].oval;
+  
+  // 0x8000000000000000
+  int32_t max_length = 32;
+  void* obj_formatted_string = env->new_string(env, stack, NULL, max_length);
+  
+  char* formatted_string = (char*)env->get_chars(env, stack, obj_formatted_string);
+  
+  int32_t length = snprintf(formatted_string, max_length + 1, "%p", value);
+  
+  stack[0].oval = env->new_string(env, stack, formatted_string, length);
+  
+  return 0;
+}
+
 int32_t SPVM__Format___native_snprintf_d(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
