@@ -246,7 +246,7 @@ Copy the string and remove "\n" of the end of the string and return it.
 
 =head2 chr
 
-  static method contains : int ($string : string, $sub_string : string)
+  static method contains : int ($string : string, $substring : string)
 
 Convert Unicode code point to a UTF-8 character. If the Unicode code point is not a Unicode scalar value, return C<undef>.
 
@@ -254,7 +254,7 @@ See also L<Unicode->is_unicode_scalar_value|SPVM::Unicode/"is_unicode_scalar_val
 
 =head2 contains
 
-  static method index : int ($string : string, $sub_string : string, $start_pos : int)
+  static method index : int ($string : string, $substring : string, $start_pos : int)
 
 Search for the substring in the string. If the substring is found, return C<1>. Otherwise return C<0>.
 
@@ -307,14 +307,14 @@ the hex string must be a valid expression which is represented by a regex "^([0-
 
 =head2 index
 
-  static method index : int ($string : string, $sub_string : string, $start_pos : int)
+  static method index : int ($string : string, $substring : string, $start_pos : int)
 
 Search for the substring in the string from the starting position
 and return the found position. If the substring is not found, return C<-1>.
 
 =head2 index_len
 
-  static method index_len : int ($string : string, $sub_string : string, $start_pos : int, $max_string_length : int)
+  static method index_len : int ($string : string, $substring : string, $start_pos : int, $max_string_length : int)
 
 Same as the L<"index"> method except that the max length of the string can be specified.
 
@@ -576,14 +576,14 @@ B<Examples:>
 
 =head2 rindex
 
-  static method rindex : int ($string : string, $sub_string : string, $start_pos : int)
+  static method rindex : int ($string : string, $substring : string, $start_pos : int)
 
 Search for the substring in the string from the starting position to the start of the string.
 and return the found position. If the substring is not found, return C<-1>.
 
 =head2 rindex_len
 
-  static method rindex_len : int ($string : string, $sub_string : string, $start_pos : int, $max_string_length : int)
+  static method rindex_len : int ($string : string, $substring : string, $start_pos : int, $max_string_length : int)
 
 Same as the L<"rindex"> method except that the max length of the string can be specified.
 

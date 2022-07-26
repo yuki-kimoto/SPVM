@@ -94,9 +94,10 @@ class Fn {
     
     return $utf8_char;
   }
-  static method contains : int ($string : string, $sub_string : string) {
+  
+  static method contains : int ($string : string, $substring : string) {
     my $contains = 0;
-    if (&index($string, $sub_string, 0) >= 0) {
+    if (&index($string, $substring, 0) >= 0) {
       $contains = 1;
     }
     return $contains;
@@ -148,12 +149,12 @@ class Fn {
     return $value;
   }
   
-  static method index : int ($string : string, $sub_string : string, $start_pos : int) {
-    return &index_len($string, $sub_string, $start_pos, length $string);
+  static method index : int ($string : string, $substring : string, $start_pos : int) {
+    return &index_len($string, $substring, $start_pos, length $string);
   }
   
-  precompile static method index_len : int ($string : string, $sub_string : string, $start_pos : int, $max_string_length : int) {
-    my $sub_string_length = length $sub_string;
+  precompile static method index_len : int ($string : string, $substring : string, $start_pos : int, $max_string_length : int) {
+    my $substring_length = length $substring;
     
     if ($max_string_length > length $string) {
       $max_string_length = length $string;
@@ -161,7 +162,7 @@ class Fn {
     
     if ($start_pos >= $max_string_length) {
       my $ret : int;
-      if ($sub_string_length == 0) {
+      if ($substring_length == 0) {
         $ret = $max_string_length;
       }
       else {
@@ -172,12 +173,12 @@ class Fn {
     if ($start_pos < 0) {
       $start_pos = 0;
     }
-    if ($sub_string_length == 0) {
+    if ($substring_length == 0) {
       return $start_pos;
     }
     
-    my $first : byte  = $sub_string->[0];
-    my $max : int = ($max_string_length - $sub_string_length);
+    my $first : byte  = $substring->[0];
+    my $max : int = ($max_string_length - $substring_length);
     
     for (my $i = $start_pos; $i <= $max; $i++) {
       if ($string->[$i] != $first) {
@@ -186,8 +187,8 @@ class Fn {
       
       if ($i <= $max) {
         my $j = $i + 1;
-        my $end = $j + $sub_string_length - 1;
-        for (my $k = 01; $j < $end && $string->[$j] == $sub_string->[$k]; ($j++, $k++)) {}
+        my $end = $j + $substring_length - 1;
+        for (my $k = 01; $j < $end && $string->[$j] == $substring->[$k]; ($j++, $k++)) {}
         
         if ($j == $end) {
           return $i;
@@ -521,25 +522,25 @@ class Fn {
     return $repeat_string;
   }
   
-  static method rindex : int ($string : string, $sub_string : string, $start_pos : int) {
-    return &rindex_len($string, $sub_string, $start_pos, length $string);
+  static method rindex : int ($string : string, $substring : string, $start_pos : int) {
+    return &rindex_len($string, $substring, $start_pos, length $string);
   }
   
-  precompile static method rindex_len : int ($string : string, $sub_string : string, $start_pos : int, $max_string_length : int) {
-    my $sub_string_length = length $sub_string;
+  precompile static method rindex_len : int ($string : string, $substring : string, $start_pos : int, $max_string_length : int) {
+    my $substring_length = length $substring;
     
     if ($max_string_length > length $string) {
       $max_string_length = length $string;
     }
     
-    my $sub_string_len = length $sub_string;
-    if ($start_pos > $max_string_length - $sub_string_length) {
-      $start_pos = $max_string_length - $sub_string_len;
+    my $substring_len = length $substring;
+    if ($start_pos > $max_string_length - $substring_length) {
+      $start_pos = $max_string_length - $substring_len;
     }
     for (my $i = $start_pos; $i >= 0; --$i) {
       my $match = 1;
-      for (my $j = 0; $j < $sub_string_len; ++$j) {
-        if ($string->[$i + $j] != $sub_string->[$j]) {
+      for (my $j = 0; $j < $substring_len; ++$j) {
+        if ($string->[$i + $j] != $substring->[$j]) {
           $match = 0;
           last;
         }
