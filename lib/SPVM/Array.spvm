@@ -798,6 +798,12 @@ class Array {
       die "The length must be greater than or equal to 0";
     }
     
+    my $dest_length = @$dest;
+    
+    unless ($dest_offset + $length <= $dest_length) {
+      die "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination";
+    }
+    
     if ($length == 0) {
       return;
     }
@@ -817,6 +823,12 @@ class Array {
     
     unless ($length >= 0) {
       die "The length must be greater than or equal to 0";
+    }
+    
+    my $dest_length = @$dest;
+    
+    unless ($dest_offset + $length <= $dest_length) {
+      die "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination";
     }
     
     if ($length == 0) {
@@ -840,6 +852,12 @@ class Array {
       die "The length must be greater than or equal to 0";
     }
     
+    my $dest_length = @$dest;
+    
+    unless ($dest_offset + $length <= $dest_length) {
+      die "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination";
+    }
+    
     if ($length == 0) {
       return;
     }
@@ -859,6 +877,12 @@ class Array {
     
     unless ($length >= 0) {
       die "The length must be greater than or equal to 0";
+    }
+    
+    my $dest_length = @$dest;
+    
+    unless ($dest_offset + $length <= $dest_length) {
+      die "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination";
     }
     
     if ($length == 0) {
@@ -882,6 +906,12 @@ class Array {
       die "The length must be greater than or equal to 0";
     }
     
+    my $dest_length = @$dest;
+    
+    unless ($dest_offset + $length <= $dest_length) {
+      die "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination";
+    }
+    
     if ($length == 0) {
       return;
     }
@@ -901,6 +931,12 @@ class Array {
     
     unless ($length >= 0) {
       die "The length must be greater than or equal to 0";
+    }
+    
+    my $dest_length = @$dest;
+    
+    unless ($dest_offset + $length <= $dest_length) {
+      die "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination";
     }
     
     if ($length == 0) {
@@ -925,6 +961,12 @@ class Array {
     
     unless ($length >= 0) {
       die "The length must be greater than or equal to 0";
+    }
+    
+    my $dest_length = @$dest;
+    
+    unless ($dest_offset + $length <= $dest_length) {
+      die "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination";
     }
     
     if ($length == 0) {

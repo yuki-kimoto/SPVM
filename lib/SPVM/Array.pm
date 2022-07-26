@@ -917,6 +917,8 @@ The offset of the destination must be greater than or equal to C<0>. Otherwise a
 
 The length must be greater than or equal to 0. Otherwise an exception will occur.
 
+The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+
 =head2 memset_double
 
   static method memset_double : void ($dest : double[], $dest_offset : int, $element : double, $length : int)
@@ -930,6 +932,8 @@ The destination must be defined. Otherwise an exception will occur.
 The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 The length must be greater than or equal to 0. Otherwise an exception will occur.
+
+The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
 
 =head2 memset_float
 
@@ -945,6 +949,8 @@ The offset of the destination must be greater than or equal to C<0>. Otherwise a
 
 The length must be greater than or equal to 0. Otherwise an exception will occur.
 
+The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+
 =head2 memset_int
 
   static method memset_int : void ($dest : int[], $dest_offset : int, $element : int, $length : int)
@@ -958,6 +964,8 @@ The destination must be defined. Otherwise an exception will occur.
 The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 The length must be greater than or equal to 0. Otherwise an exception will occur.
+
+The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
 
 =head2 memset_long
 
@@ -973,6 +981,8 @@ The offset of the destination must be greater than or equal to C<0>. Otherwise a
 
 The length must be greater than or equal to 0. Otherwise an exception will occur.
 
+The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+
 =head2 memset_object
 
   static method memset_object : void ($dest : object[], $dest_offset : int : int, $element : object, $length)
@@ -987,6 +997,8 @@ The offset of the destination must be greater than or equal to C<0>. Otherwise a
 
 The length must be greater than or equal to 0. Otherwise an exception will occur.
 
+The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+
 =head2 memset_short
 
   static method memset_short : void ($dest : short[], $dest_offset : int, $element : short, $length : int)
@@ -1000,6 +1012,8 @@ The destination must be defined. Otherwise an exception will occur.
 The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 The length must be greater than or equal to 0. Otherwise an exception will occur.
+
+The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
 
 =head2 memset_string
 
