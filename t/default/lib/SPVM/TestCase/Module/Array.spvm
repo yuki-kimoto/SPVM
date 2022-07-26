@@ -808,15 +808,15 @@ class TestCase::Module::Array {
       unless ($array->[0] == 1) {
         return 0;
       }
-
+      
       unless ($array->[1] == 2) {
         return 0;
       }
-
+      
       unless ($array->[2] == Fn->SHORT_MIN()) {
         return 0;
       }
-
+      
       unless (@$array_out == 3) {
         return 0;
       }
@@ -829,17 +829,17 @@ class TestCase::Module::Array {
         return 0;
       }
     }
-
+    
     return 1;
   }
-
+  
   static method copy_string : int () {
     # Copy array
     {
       my $value0 = "abc";
       my $array = [$value0, "def", "hij"];
       my $array_out = Array->copy_string($array);
-
+      
       unless ($value0 != $array_out->[0]) {
         return 0;
       }
@@ -852,24 +852,24 @@ class TestCase::Module::Array {
       unless ($array->[2] eq $array_out->[2]) {
         return 0;
       }
-
+      
       unless ($array->[0] != $array_out->[0]) {
         return 0;
       }
-
+      
       unless ($array->[1] != $array_out->[1]) {
         return 0;
       }
-
+      
       unless ($array->[2] != $array_out->[2]) {
         return 0;
       }
-
+      
       unless (@$array_out == 3) {
         return 0;
       }
     }
-
+    
     # Array is undef
     {
       my $output = Array->copy_string(undef);
@@ -877,17 +877,17 @@ class TestCase::Module::Array {
         return 0;
       }
     }
-
+    
     return 1;
   }
-
+  
   static method copy_string_address : int () {
     # Copy array
     {
       my $value0 = "abc";
       my $array = [$value0, "def", "hij"];
       my $array_out = Array->copy_string_address($array);
-
+      
       unless ($value0 == $array_out->[0]) {
         return 0;
       }
@@ -900,12 +900,12 @@ class TestCase::Module::Array {
       unless ($array->[2] == $array_out->[2]) {
         return 0;
       }
-
+      
       unless (@$array_out == 3) {
         return 0;
       }
     }
-
+    
     # Array is undef
     {
       my $output = Array->copy_string_address(undef);
@@ -913,7 +913,7 @@ class TestCase::Module::Array {
         return 0;
       }
     }
-
+    
     return 1;
   }
   
@@ -921,26 +921,26 @@ class TestCase::Module::Array {
     # Dump array
     {
       my $array = [(byte)1, 2, Fn->BYTE_MIN()];
-
+      
       my $dump = Array->dump_byte($array);
       
-      unless ($dump eq "[\n  1,\n  2,\n  -128\n]") {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  -128\n]")) {
         return 0;
       }
     }
-
+    
     # Dump undef
     {
       my $dump = Array->dump_byte(undef);
       
-      unless ($dump == undef) {
+      unless ($dump eq "undef") {
         return 0;
       }
     }
-
+    
     return 1;
   }
-
+  
   static method dump_double : int () {
     # Dump array
     {
@@ -948,7 +948,7 @@ class TestCase::Module::Array {
 
       my $dump = Array->dump_double($array);
 
-      unless ($dump eq "[\n  1,\n  2,\n  2.45\n]") {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  2.45\n]")) {
         return 0;
       }
     }
@@ -957,7 +957,7 @@ class TestCase::Module::Array {
     {
       my $dump = Array->dump_double(undef);
       
-      unless ($dump == undef) {
+      unless ($dump eq "undef") {
         return 0;
       }
     }
@@ -972,7 +972,7 @@ class TestCase::Module::Array {
 
       my $dump = Array->dump_float($array);
 
-      unless ($dump eq "[\n  1,\n  2,\n  2.45\n]") {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  2.45\n]")) {
         return 0;
       }
     }
@@ -981,7 +981,7 @@ class TestCase::Module::Array {
     {
       my $dump = Array->dump_float(undef);
       
-      unless ($dump == undef) {
+      unless ($dump eq "undef") {
         return 0;
       }
     }
@@ -996,7 +996,7 @@ class TestCase::Module::Array {
 
       my $dump = Array->dump_int($array);
 
-      unless ($dump eq "[\n  1,\n  2,\n  -2147483648\n]") {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  -2147483648\n]")) {
         return 0;
       }
     }
@@ -1005,11 +1005,10 @@ class TestCase::Module::Array {
     {
       my $dump = Array->dump_int(undef);
       
-      unless ($dump == undef) {
+      unless ($dump eq "undef") {
         return 0;
       }
     }
-
 
     return 1;
   }
@@ -1021,7 +1020,7 @@ class TestCase::Module::Array {
 
       my $dump = Array->dump_long($array);
 
-      unless ($dump eq "[\n  1,\n  2,\n  -9223372036854775808\n]") {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  -9223372036854775808\n]")) {
         return 0;
       }
     }
@@ -1030,7 +1029,7 @@ class TestCase::Module::Array {
     {
       my $dump = Array->dump_long(undef);
       
-      unless ($dump == undef) {
+      unless ($dump eq "undef") {
         return 0;
       }
     }
@@ -1080,7 +1079,7 @@ class TestCase::Module::Array {
 
       my $dump = Array->dump_short($array);
 
-      unless ($dump eq "[\n  1,\n  2,\n  -32768\n]") {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  -32768\n]")) {
         return 0;
       }
     }
@@ -1089,7 +1088,7 @@ class TestCase::Module::Array {
     {
       my $dump = Array->dump_short(undef);
       
-      unless ($dump == undef) {
+      unless ($dump eq "undef") {
         return 0;
       }
     }
@@ -1104,7 +1103,7 @@ class TestCase::Module::Array {
 
       my $dump = Array->dump_string($array);
 
-      unless ($dump eq "[\n  abc,\n  def,\n  ghi\n]") {
+      unless (Fn->contains($dump, "[\n  \"abc\",\n  \"def\",\n  \"ghi\"\n]")) {
         return 0;
       }
     }
@@ -1113,7 +1112,7 @@ class TestCase::Module::Array {
     {
       my $dump = Array->dump_string(undef);
       
-      unless ($dump == undef) {
+      unless ($dump eq "undef") {
         return 0;
       }
     }

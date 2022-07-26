@@ -42,6 +42,8 @@
       The original behaivior can be used by copy_range_string_address.
     * Remove Fn->memcpy_object, Fn->memmove_object. This remained wrongly.
     * Rename Remove Fn->memcpy_object, Fn->memmove_object. This remained wrongly.
+    * Array->dump_byte, Array->dump_short, Array->dump_int, Array->dump_long, Array->dump_float, Array->dump_double,
+      Array->dump_string become the alias for the dump operator.
   [Deprecation]
     * Array->memcpy_object is deprecated. Use memcpy_object_address instead. This method will be removed at 0.9630.
     * Array->memcpy_string is deprecated. Use memcpy_string_address instead. This method will be removed at 0.9630.

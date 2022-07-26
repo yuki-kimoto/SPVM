@@ -341,11 +341,11 @@ If the array is not defined, return C<undef>.
 
   static method dump_byte : string ($array : byte[])
   
-Convert the array in the byte array to string and join them with "," and surround it with "[" and "]", and return it.
+Convert the array in the C<byte> array to string and join them with "," and surround it with "[" and "]", and return it.
 
 For readability spaces and line breaks are inserted.
 
-If byte array is not defined, return C<undef>.
+If the C<byte> array is not defined, return C<undef>.
 
 =head2 dump_double
 

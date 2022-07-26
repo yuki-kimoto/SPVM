@@ -340,125 +340,25 @@ class Array {
   }
   
   precompile static method dump_byte : string ($array : byte[]) {
-    
-    unless ($array) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$array; $i++) {
-      my $string = (string)$array->[$i];
-      $dump .= "  $string";
-      if ($i != @$array - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+    return dump $array;
   }
-
+  
   precompile static method dump_double : string ($array : double[]) {
-    
-    unless ($array) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$array; $i++) {
-      my $string = (string)$array->[$i];
-      $dump .= "  $string";
-      if ($i != @$array - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+    return dump $array;
   }
-
+  
   precompile static method dump_float : string ($array : float[]) {
-    
-    unless ($array) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$array; $i++) {
-      my $string = (string)$array->[$i];
-      $dump .= "  $string";
-      if ($i != @$array - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+    return dump $array;
   }
-
+  
   precompile static method dump_int : string ($array : int[]) {
-    
-    unless ($array) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$array; $i++) {
-      my $string = (string)$array->[$i];
-      $dump .= "  $string";
-      if ($i != @$array - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+    return dump $array;
   }
-
+  
   precompile static method dump_long : string ($array : long[]) {
-    
-    unless ($array) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$array; $i++) {
-      my $string = (string)$array->[$i];
-      $dump .= "  $string";
-      if ($i != @$array - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+    return dump $array;
   }
-
+  
   precompile static method dump_object : string ($array : object[], $stringer : Stringer) {
     
     unless ($array) {
@@ -466,7 +366,7 @@ class Array {
     }
     
     my $dump = "[\n";
-
+    
     for (my $i = 0; $i < @$array; $i++) {
       my $string = $stringer->($array->[$i]);
       $dump .= "  $string";
@@ -479,56 +379,16 @@ class Array {
     }
     
     $dump .= "]";
-
+    
     return $dump;
   }
-
+  
   precompile static method dump_short : string ($array : short[]) {
-    
-    unless ($array) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$array; $i++) {
-      my $string = (string)$array->[$i];
-      $dump .= "  $string";
-      if ($i != @$array - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+    return dump $array;
   }
-
+  
   precompile static method dump_string : string ($array : string[]) {
-    
-    unless ($array) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-
-    for (my $i = 0; $i < @$array; $i++) {
-      my $string = $array->[$i];
-      $dump .= "  $string";
-      if ($i != @$array - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-
-    return $dump;
+    return dump $array;
   }
 
   precompile static method dump_unsigned_byte : string ($array : byte[]) {
