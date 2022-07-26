@@ -2,7 +2,6 @@ class Fn {
   use StringBuffer;
   use StringList;
   
-  # C-like max and minimal constants
   static method INT8_MAX : byte () { return 127; }
   static method INT8_MIN : byte () { return -128; }
   static method INT16_MAX : short () { return 32767; }
@@ -19,8 +18,7 @@ class Fn {
   native static method FLT_MIN : float();
   native static method DBL_MAX : double ();
   native static method DBL_MIN : double ();
-
-  # SPVM-like max and minimal constants
+  
   static method BYTE_MAX : byte () { return 127; }
   static method BYTE_MIN : byte () { return -128; }
   static method SHORT_MAX : short () { return 32767; }
@@ -37,9 +35,9 @@ class Fn {
   native static method FLOAT_MIN : float();
   native static method DOUBLE_MAX : double ();
   native static method DOUBLE_MIN : double ();
-
+  
   native static method RAND_MAX : int ();
-
+  
   static method abs : int ($x : int) {
     
     my $ret = 0;
@@ -51,13 +49,13 @@ class Fn {
     }
     return $ret;
   }
-
+  
   static method chomp : void ($string : mutable string) {
     
     unless ($string) {
       return;
     }
-
+    
     my $length = length $string;
     if ($length > 0) {
       if ($string->[$length - 1] == '\n') {
@@ -65,12 +63,12 @@ class Fn {
       }
     }
   }
-
+  
   static method chompr : string ($string : string) {
     unless ($string) {
       return undef;
     }
-
+    
     my $new_string : string;
     my $length = length $string;
     if ($length == 0) {
@@ -84,10 +82,10 @@ class Fn {
         $new_string = copy $string;
       }
     }
-
+    
     return $new_string;
   }
-
+  
   private static method is_unicode_scalar_value : int ($code_point: int) {
     my $is_unicode_scalar_value = 0;
     # The range of Unicde code points
@@ -100,7 +98,7 @@ class Fn {
     
     return $is_unicode_scalar_value;
   }
-
+  
   static method chr : string ($unicode_code_point : int) {
     
     my $is_unicode_scalar_value = &is_unicode_scalar_value($unicode_code_point);
@@ -108,11 +106,11 @@ class Fn {
     if ($is_unicode_scalar_value) {
       $utf8_char = &_chr_native($unicode_code_point);
     }
-
+    
     return $utf8_char;
   }
   native static method _chr_native : string ($uchar : int);
-
+  
   static method contains : int ($string : string, $sub_string : string) {
     my $contains = 0;
     if (&index($string, $sub_string, 0) >= 0) {
@@ -120,15 +118,15 @@ class Fn {
     }
     return $contains;
   }
-
+  
   native static method get_next_code_point : int ($str : string, $offset_ref : int*);
   
   static method copy_string : string ($string : string) {
     return copy $string;
   }
-
+  
   native static method crand : int ($seed : int*);
-
+  
   precompile static method hex : int ($hex_string : string) {
     
     unless ($hex_string) {
@@ -166,18 +164,18 @@ class Fn {
     
     return $value;
   }
-
+  
   static method index : int ($string : string, $sub_string : string, $start_pos : int) {
     return &index_len($string, $sub_string, $start_pos, length $string);
   }
-
+  
   precompile static method index_len : int ($string : string, $sub_string : string, $start_pos : int, $max_string_length : int) {
     my $sub_string_length = length $sub_string;
     
     if ($max_string_length > length $string) {
       $max_string_length = length $string;
     }
-
+    
     if ($start_pos >= $max_string_length) {
       my $ret : int;
       if ($sub_string_length == 0) {
@@ -194,20 +192,20 @@ class Fn {
     if ($sub_string_length == 0) {
       return $start_pos;
     }
-
+    
     my $first : byte  = $sub_string->[0];
     my $max : int = ($max_string_length - $sub_string_length);
-
+    
     for (my $i = $start_pos; $i <= $max; $i++) {
       if ($string->[$i] != $first) {
         while (++$i <= $max && $string->[$i] != $first) {}
       }
-
+      
       if ($i <= $max) {
         my $j = $i + 1;
         my $end = $j + $sub_string_length - 1;
         for (my $k = 01; $j < $end && $string->[$j] == $sub_string->[$k]; ($j++, $k++)) {}
-
+        
         if ($j == $end) {
           return $i;
         }
@@ -215,9 +213,9 @@ class Fn {
     }
     return -1;
   }
-
+  
   static method is_alnum : int ($code_point : int) {
-
+    
     if (($code_point >= 'A' && $code_point <= 'Z') || ($code_point >= 'a' && $code_point <= 'z') || ($code_point >= '0' && $code_point <= '9')) {
       return 1;
     }
@@ -225,9 +223,9 @@ class Fn {
       return 0;
     }
   }
-
+  
   static method is_alpha : int ($code_point : int) {
-
+    
     if (($code_point >= 'A' && $code_point <= 'Z') || ($code_point >= 'a' && $code_point <= 'z')) {
       return 1;
     }
@@ -235,11 +233,11 @@ class Fn {
       return 0;
     }
   }
-
+  
   native static method is_array : int ($object : object);
-
+  
   static method is_blank : int ($code_point : int) {
-
+    
     if ($code_point >= ' ' ||  $code_point <= '\t') {
       return 1;
     }
@@ -247,9 +245,9 @@ class Fn {
       return 0;
     }
   }
-
+  
   static method is_cntrl : int ($code_point : int) {
-
+    
     if (($code_point >= 0x00 && $code_point <= 0x1f) || $code_point == 0x7f) {
       return 1;
     }
@@ -257,9 +255,9 @@ class Fn {
       return 0;
     }
   }
-
+  
   static method is_digit : int ($code_point : int) {
-
+    
     if ($code_point >= '0' && $code_point <= '9') {
       return 1;
     }
@@ -267,9 +265,9 @@ class Fn {
       return 0;
     }
   }
-
+  
   static method is_graph : int ($code_point : int) {
-
+    
     if ($code_point >= 0x21 && $code_point <= 0x7e) {
       return 1;
     }
@@ -277,9 +275,9 @@ class Fn {
       return 0;
     }
   }
-
+  
   static method is_hex_digit : int ($code_point : int) {
-
+    
     if (($code_point >= '0' && $code_point <= '9') || ($code_point >= 'a' && $code_point <= 'f') || ($code_point >= 'A' && $code_point <= 'F')) {
       return 1;
     }
@@ -287,9 +285,9 @@ class Fn {
       return 0;
     }
   }
-
+  
   static method is_lower : int ($code_point : int) {
-
+    
     if ($code_point >= 'a' && $code_point <= 'z') {
       return 1;
     }
@@ -297,13 +295,13 @@ class Fn {
       return 0;
     }
   }
-
+  
   native static method is_mulnum_array : int ($object : object);
-
+  
   native static method is_numeric_array : int ($object : object);
-
+  
   native static method is_object_array : int ($object : object);
-
+  
   # This is same as Perl \s
   static method is_perl_space : int ($code_point : int) {
     my $ispspace = 0;
@@ -320,10 +318,10 @@ class Fn {
     }
     return $ispspace;
   }
-
+  
   static method is_perl_word : int ($code_point : int) {
     my $ispword = 0;
-
+    
     if ($code_point >= 'a' && $code_point <= 'z') {
       $ispword = 1;
     }
@@ -338,9 +336,9 @@ class Fn {
     }
     return $ispword;
   }
-
+  
   static method is_print : int ($code_point : int) {
-
+    
     if ($code_point >= 0x20 && $code_point <= 0x7e) {
       return 1;
     }
@@ -348,9 +346,9 @@ class Fn {
       return 0;
     }
   }
-
+  
   static method is_punct : int ($code_point : int) {
-
+    
     if (($code_point >= 0x21 && $code_point <= 0x2f) || ($code_point >= 0x3a && $code_point <= 0x40) || ($code_point >= 0x5b && $code_point <= 0x60) || ($code_point >= 0x7b && $code_point <= 0x7e)) {
       return 1;
     }
@@ -358,9 +356,9 @@ class Fn {
       return 0;
     }
   }
-
+  
   static method is_space : int ($code_point : int) {
-
+    
     if (($code_point >= 0x09 && $code_point <= 0x0d) || $code_point == 0x20) {
       return 1;
     }
@@ -368,9 +366,9 @@ class Fn {
       return 0;
     }
   }
-
+  
   static method is_upper : int ($code_point : int) {
-
+    
     if ($code_point >= 'A' && $code_point <= 'Z') {
       return 1;
     }
@@ -378,9 +376,9 @@ class Fn {
       return 0;
     }
   }
-
+  
   static method is_xdigit : int ($code_point : int) {
-
+    
     if (($code_point >= 'A' && $code_point <= 'F') || ($code_point >= 'a' && $code_point <= 'f') || ($code_point >= '0' && $code_point <= '9')) {
       return 1;
     }
@@ -388,10 +386,10 @@ class Fn {
       return 0;
     }
   }
-
+  
   precompile static method join : string ($sep : string, $strings : string[]) {
     my $join = "";
-
+    
     for (my $i = 0; $i < @$strings; $i++) {
       my $string = $strings->[$i];
       $join .= $string;
@@ -399,10 +397,10 @@ class Fn {
         $join .= $sep;
       }
     }
-
+    
     return $join;
   }
-
+  
   static method labs : long ($x : long) {
     
     my $ret = 0L;
@@ -414,11 +412,11 @@ class Fn {
     }
     return $ret;
   }
-
+  
   precompile static method lc : string ($string : string) {
-
+    
     unless ($string) { die "String must be defined"; }
-
+    
     my $length = length $string;
     my $new_string = (mutable string)new_string_len($length);
     for (my $i = 0; $i < $length; $i++) {
@@ -432,11 +430,11 @@ class Fn {
     }
     return (string)$new_string;
   }
-
+  
   precompile static method lcfirst : string ($string : string) {
-
+    
     unless ($string) { die "String must be defined"; }
-
+    
     my $length = length $string;
     my $new_string = (mutable string)new_string_len($length);
     if ($length > 0) {
@@ -453,23 +451,23 @@ class Fn {
     }
     return (string)$new_string;
   }
-
+  
   static method look_next_code_point : int ($string : string, $offset_ref : int*) {
     my $save_offset = $$offset_ref;
     my $code_point = &get_next_code_point($string, $offset_ref);
     $$offset_ref = $save_offset;
     return $code_point;
   }
-
+  
   native static method memcpy : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
   
   native static method memmove : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
-
+  
   static method ord : int ($utf8_character : string) {
     unless ($utf8_character) {
       return -1;
     }
-
+    
     if (length $utf8_character == 0) {
       return -1;
     }
@@ -479,7 +477,7 @@ class Fn {
     
     return $unicode_code_point;
   }
-
+  
   precompile static method powi : int ($x : int, $y : int) {
     my $p = 1;
     
@@ -489,7 +487,7 @@ class Fn {
     
     return $p;
   }
-
+  
   precompile static method powl : long ($x : long, $y : long) {
     my $p = 1L;
     
@@ -499,7 +497,7 @@ class Fn {
     
     return $p;
   }
-
+  
   static method rand : double ($seed : int*) {
     
     # 0 <= random_number < 1
@@ -507,7 +505,7 @@ class Fn {
     
     return $random_number;
   }
-
+  
   precompile static method repeat : string ($string : string, $count : int) {
     
     unless ($string) {
@@ -526,18 +524,18 @@ class Fn {
     
     return $repeat_string;
   }
-
+  
   static method rindex : int ($string : string, $sub_string : string, $start_pos : int) {
     return &rindex_len($string, $sub_string, $start_pos, length $string);
   }
-
+  
   precompile static method rindex_len : int ($string : string, $sub_string : string, $start_pos : int, $max_string_length : int) {
     my $sub_string_length = length $sub_string;
-
+    
     if ($max_string_length > length $string) {
       $max_string_length = length $string;
     }
-
+    
     my $sub_string_len = length $sub_string;
     if ($start_pos > $max_string_length - $sub_string_length) {
       $start_pos = $max_string_length - $sub_string_len;
@@ -556,27 +554,26 @@ class Fn {
     }
     return -1;
   }
-
+  
   native static method shorten : void ($string : mutable string, $length : int);
-
+  
   precompile static method split : string[] ($sep : string, $string : string) {
     my $string_length = length $string;
     my $sep_length = length $sep;
-
-
+    
     if ($sep_length == 0) {
       die "Separator must not be empty string";
     }
-
+    
     my $separated_strings_list = StringList->new_len(0);
-
+    
     my $match_start = 0;
     my $string_base = 0;
     for (my $string_index = 0; $string_index < $string_length; $string_index++) {
       if ($string->[$string_index] == $sep->[0]) {
         $match_start = 1;
       }
-
+      
       if ($match_start) {
         my $match = 1;
         for (my $sep_index = 0; $sep_index < $sep_length; $sep_index++) {
@@ -606,47 +603,47 @@ class Fn {
       my $separated_string = &substr($string, $string_base, $string_length - $string_base);
       $separated_strings_list->push($separated_string);
     }
-
+    
     my $separated_strings = $separated_strings_list->to_array;
-
+    
     return $separated_strings;
   }
   
   precompile static method substr : string ($string : string, $offset : int, $length : int) {
-
+    
     if ($string == undef) {
       die "String must be defined";
     }
-
+    
     my $string_length = length $string;
-
+    
     if ($offset < 0 || $offset > $string_length - 1) {
       die "Invalid offset $offset";
     }
-
+    
     if ($length < 0) {
       die "Length must be non-zero value";
     }
-
+    
     if ($offset + $length > $string_length) {
       die "Offset + length must not be over array length";
     }
-
+    
     my $slice = (mutable string)new_string_len($length);
-
+    
     my $pos = 0;
     for (my $i = $offset; $i < $offset + $length; $i++) {
       $slice->[$pos] = $string->[$i];
       $pos++;
     }
-
+    
     return $slice;
   }
-
+  
   native static method to_double : double ($string : string);
-
+  
   native static method to_float : float ($string : string);
-
+  
   static method to_int : int ($string : string) {
     return &to_int_with_base($string, 10);
   }
@@ -657,23 +654,23 @@ class Fn {
     return &to_long_with_base($string, 10);
   }
   native static method to_long_with_base : long ($string : string, $digit : int);
-
+  
   static method to_lower : int ($code_point : int) {
-
+    
     if ($code_point >= 'A' && $code_point <= 'Z') {
       $code_point = $code_point + 0x20;
     }
     return $code_point;
   }
-
+  
   static method to_upper : int ($code_point : int) {
-
+    
     if ($code_point >= 'a' && $code_point <= 'z') {
       $code_point = $code_point - 0x20;
     }
     return $code_point;
   }
-
+  
   precompile static method trim_ascii_space : string ($string : string) {
     
     unless ($string) {
@@ -695,7 +692,7 @@ class Fn {
         }
       }
     }
-
+    
     for (my $i = $length - 1; $i >= 0; $i--) {
       if ($end_string_index == -1) {
         if (&is_space($string->[$i])) {
@@ -724,12 +721,11 @@ class Fn {
     
     return $trimed_string;
   }
-
-
+  
   precompile static method uc : string ($string : string) {
-
+    
     unless ($string) { die "String must be defined"; }
-
+    
     my $length = length $string;
     my $new_string = (mutable string)new_string_len($length);
     for (my $i = 0; $i < $length; $i++) {
@@ -743,11 +739,11 @@ class Fn {
     }
     return $new_string;
   }
-
+  
   precompile static method ucfirst : string ($string : string) {
-
+    
     unless ($string) { die "String must be defined"; }
-
+    
     my $length = length $string;
     my $new_string = (mutable string)new_string_len($length);
     if ($length > 0) {
