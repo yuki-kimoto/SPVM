@@ -226,9 +226,9 @@ Same as L</"UINT16_MAX">.
 
 =head2 abs
 
-  static method abs : int ($x : int)
+  static method abs : int ($value : int)
 
-Return the absolute value.
+Return the absolute value of the input value.
 
 =head2 chomp
 

@@ -36,16 +36,16 @@ class Fn {
   static method ULONG_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
   static method USHORT_MAX : short () { return (short)0xFFFF; }
   
-  static method abs : int ($x : int) {
+  static method abs : int ($value : int) {
     
-    my $ret = 0;
-    if ($x > 0) {
-      $ret = $x;
+    my $abs = 0;
+    if ($value > 0) {
+      $abs = $value;
     }
     else {
-      $ret = -$x;
+      $abs = -$value;
     }
-    return $ret;
+    return $abs;
   }
   
   static method chomp : void ($string : mutable string) {
