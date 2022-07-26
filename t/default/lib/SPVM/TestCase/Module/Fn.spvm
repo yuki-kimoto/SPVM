@@ -4,8 +4,128 @@ class TestCase::Module::Fn {
   use Complex_2d;
   use Time;
   use Array;
+  
+  static method abs : int () {
+    
+    # Positive values
+    {
+      my $num = 3;
+      my $ret = Fn->abs($num);
+      unless ($ret isa int) {
+        return 0;
+      }
+      unless ($ret == 3) {
+        return 0;
+      }
+    }
+    
+    # Negative values
+    {
+      my $num = -3;
+      my $ret = Fn->abs($num);
+      unless ($ret == 3) {
+        return 0;
+      }
+      
+    }
+
+    # Zeros
+    {
+      my $num = 0;
+      my $ret = Fn->abs($num);
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method byte_constant : int () {
+    if ((int)Fn->INT8_MIN() == (int)(byte)-128) {
+      if ((int)Fn->INT8_MAX() == (int)(byte)127) {
+        return 1;
+      }
+    }
+
+    return 0;
+  }
+
+  static method chomp : int () {
+    
+    # Basic
+    {
+      my $line = copy "abc\n";
+      Fn->chomp((mutable string)$line);
+      
+      unless ($line eq "abc") {
+        return 0;
+      }
+    }
+    
+    # Non basic cases
+    {
+      # no new line
+      {
+        my $line = copy "abc";
+        Fn->chomp((mutable string)$line);
+      
+        unless ($line eq "abc") {
+          return 0;
+        }
+      }
+      
+      # undef
+      {
+        my $line = (string)undef;
+        Fn->chomp((mutable string)$line);
+      
+        unless ($line == undef) {
+          return 0;
+        }
+      }
+      
+      # The length is zero
+      {
+        my $line = copy "";
+        Fn->chomp((mutable string)$line);
+        
+        unless ($line eq "") {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
 
 
+  static method chompr : int () {
+    {
+      my $string = "abc\n";
+      my $ret = Fn->chompr($string);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = "abc";
+      my $ret = Fn->chompr($string);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = "";
+      my $ret = Fn->chompr($string);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  
   static method chr : int () {
     
     {
@@ -57,41 +177,29 @@ class TestCase::Module::Fn {
     return 1;
   }
 
-  static method ord : int () {
-    
-    unless (Fn->ord("a") == 97) {
-      return 0;
-    }
-    unless (Fn->ord("ab") == 97) {
-      return 0;
-    }
-    unless (Fn->ord("\x00") == 0) {
-      return 0;
-    }
-    
-    unless (Fn->ord("\x01") == 1) {
-      return 0;
-    }
+  static method contains : int () {
 
-    unless (Fn->ord("\x7F") == 127) {
-      return 0;
-    }
-
-    unless (Fn->ord("あ") == 12354) {
-      return 0;
-    }
-    
-    # Unicode max scalar value
-    unless (Fn->ord(Fn->chr(0x10FFFF)) == 0x10FFFF) {
-      return 0;
-    }
-    
-    # Error
     {
-      unless (Fn->ord("") < 0) {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->contains($target, $search);
+      unless ($pos == 1) {
         return 0;
       }
-      unless (Fn->ord(undef) < 0) {
+    }
+    {
+      my $target = "abcde";
+      my $search = "abcde";
+      my $pos = Fn->contains($target, $search);
+      unless ($pos == 1) {
+        return 0;
+      }
+    }
+    {
+      my $target = "abcde";
+      my $search = "p";
+      my $pos = Fn->contains($target, $search);
+      unless ($pos == 0) {
         return 0;
       }
     }
@@ -99,27 +207,64 @@ class TestCase::Module::Fn {
     return 1;
   }
 
-  static method repeat : int () {
-    
-    unless (Fn->repeat("abc", 3) eq "abcabcabc") {
+  static method copy_str : int () {
+    my $string = "abc";
+    my $string_out = Fn->copy_string($string);
+
+    unless ($string_out eq "abc") {
       return 0;
     }
 
-    # Exception
+    return 1;
+  }
+  
+  static method copy_string : int () {
+    # copy string
     {
-      eval { Fn->repeat(undef, 1); };
-      unless ($@) {
+      my $string = "abc";
+      my $string_out = Fn->copy_string($string);
+      
+      # Equals the value
+      unless ($string_out eq "abc") {
         return 0;
       }
       
-      eval { Fn->repeat("abc", 0); };
-      unless ($@) {
+      # Not equals address
+      if ($string == $string_out) {
         return 0;
       }
     }
     
-    $@ = undef;
+    # undef
+    {
+      my $string_out = Fn->copy_string(undef);
+      
+      # Equals the value
+      unless ($string_out == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+
+  static method crand : int () {
     
+    my $founds_plus = new int[10];
+    my $founds_minus = new int[10];
+    my $rand = 0;
+    my $seed = (int)Time->time;
+    for (my $i = 0; $i < 100000; $i++) {
+      $rand = Fn->crand(\$seed);
+      my $dig0 = $rand % 10;
+      $founds_plus->[$dig0] = 1;
+    }
+    
+    unless (Array->equals_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+      return 0;
+    }
+
     return 1;
   }
 
@@ -198,246 +343,6 @@ class TestCase::Module::Fn {
     return 1;
   }
 
-  static method look_next_code_point : int () {
-    
-    {
-      my $str = "あaい";
-      
-      my $pos = 0;
-      
-      # あ
-      {
-        my $uchar = Fn->look_next_code_point($str, \$pos);
-
-        unless ($uchar == 0x3042) {
-          return 0;
-        }
-        
-        unless ($pos == 0) {
-          return 0;
-        }
-      }
-    }
-    
-    return 1;
-  }
-
-  static method abs : int () {
-    
-    # Positive values
-    {
-      my $num = 3;
-      my $ret = Fn->abs($num);
-      unless ($ret isa int) {
-        return 0;
-      }
-      unless ($ret == 3) {
-        return 0;
-      }
-    }
-    
-    # Negative values
-    {
-      my $num = -3;
-      my $ret = Fn->abs($num);
-      unless ($ret == 3) {
-        return 0;
-      }
-      
-    }
-
-    # Zeros
-    {
-      my $num = 0;
-      my $ret = Fn->abs($num);
-      unless ($ret == 0) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-  static method labs : int () {
-    
-    # Positive values
-    {
-      my $num = 3L;
-      my $ret = Fn->labs($num);
-      unless ($ret isa long) {
-        return 0;
-      }
-      unless ($ret == 3) {
-        return 0;
-      }
-    }
-    
-    # Negative values
-    {
-      my $num = -3L;
-      my $ret = Fn->labs($num);
-      unless ($ret == 3) {
-        return 0;
-      }
-      
-    }
-
-    # Zeros
-    {
-      my $num = 0;
-      my $ret = Fn->labs($num);
-      unless ($ret == 0) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-  static method crand : int () {
-    
-    my $founds_plus = new int[10];
-    my $founds_minus = new int[10];
-    my $rand = 0;
-    my $seed = (int)Time->time;
-    for (my $i = 0; $i < 100000; $i++) {
-      $rand = Fn->crand(\$seed);
-      my $dig0 = $rand % 10;
-      $founds_plus->[$dig0] = 1;
-    }
-    
-    unless (Array->equals_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  static method rand : int () {
-    
-    # 0 <= random_number < 1
-    {
-      my $rand = 0.0;
-      my $invalid_range = 0;
-      my $seed = (int)Time->time;
-      for (my $i = 0; $i < 100000; $i++) {
-        $rand = Fn->rand(\$seed);
-        
-        unless ($rand >= 0 && $rand < 1) {
-          $invalid_range = 1;
-          last;
-        }
-      }
-      
-      if ($invalid_range) {
-        return 0;
-      }
-    }
-    
-    # Apper random numbers
-    {
-      my $founds_plus = new int[10];
-      my $founds_minus = new int[10];
-      my $rand = 0.0;
-      my $seed = (int)Time->time;
-      for (my $i = 0; $i < 100000; $i++) {
-        $rand = Fn->rand(\$seed);
-        
-        # 0-9
-        my $dig0 = (int)($rand * 10);
-        $founds_plus->[$dig0] = 1;
-      }
-      
-      unless (Array->equals_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  static method RAND_MAX : int () {
-    
-    unless (Fn->RAND_MAX > 0) {
-      return 1;
-    }
-
-    return 1;
-  }
-
-  static method byte_constant : int () {
-    if ((int)Fn->INT8_MIN() == (int)(byte)-128) {
-      if ((int)Fn->INT8_MAX() == (int)(byte)127) {
-        return 1;
-      }
-    }
-
-    return 0;
-  }
-
-  static method short_constant : int () {
-    if ((int)Fn->INT16_MIN() == (int)(short)-32768) {
-      if ((int)Fn->INT16_MAX() == (int)(short)32767) {
-        return 1;
-      }
-    }
-
-    return 0;
-  }
-
-  static method int_constant : int () {
-    if (Fn->INT32_MIN() == -2147483648) {
-      if (Fn->INT32_MAX() == 2147483647) {
-        return 1;
-      }
-    }
-
-    return 0;
-  }
-
-  static method long_constant : int () {
-    if (Fn->INT64_MIN() == -9223372036854775808L) {
-      if (Fn->INT64_MAX() == 9223372036854775807L) {
-        return 1;
-      }
-    }
-
-    return 0;
-  }
-  
-  static method spvm_like_constants : int () {
-    
-    unless (Fn->INT8_MAX == Fn->BYTE_MAX ) { return 0; }
-    unless (Fn->INT8_MIN == Fn->BYTE_MIN) { return 0; }
-    unless (Fn->INT16_MAX == Fn->SHORT_MAX ) { return 0; }
-    unless (Fn->INT16_MIN == Fn->SHORT_MIN ) { return 0; }
-    unless (Fn->INT32_MAX == Fn->INT_MAX ) { return 0; }
-    unless (Fn->INT32_MIN == Fn->INT_MIN ) { return 0; }
-    unless (Fn->INT64_MAX == Fn->LONG_MAX ) { return 0; }
-    unless (Fn->INT64_MIN == Fn->LONG_MIN ) { return 0; }
-    unless (Fn->UINT8_MAX == Fn->UBYTE_MAX ) { return 0; }
-    unless (Fn->UINT16_MAX == Fn->USHORT_MAX ) { return 0; }
-    unless (Fn->UINT32_MAX == Fn->UINT_MAX ) { return 0; }
-    unless (Fn->UINT64_MAX == Fn->ULONG_MAX ) { return 0; }
-    unless (Fn->FLT_MAX == Fn->FLOAT_MAX ) { return 0; }
-    unless (Fn->FLT_MIN == Fn->FLOAT_MIN ) { return 0; }
-    unless (Fn->DBL_MAX == Fn->DOUBLE_MAX ) { return 0; }
-    unless (Fn->DBL_MIN == Fn->DOUBLE_MIN ) { return 0; }
-    
-    return 1;
-  }
-
-  static method copy_str : int () {
-    my $string = "abc";
-    my $string_out = Fn->copy_string($string);
-
-    unless ($string_out eq "abc") {
-      return 0;
-    }
-
-    return 1;
-  }
-  
   static method hex : int () {
     # 0
     {
@@ -532,160 +437,125 @@ class TestCase::Module::Fn {
     return 1;
   }
   
-  static method trim_ascii_space : int () {
-    # undef
+  static method index : int () {
+
     {
-      my $string = (string)undef;
-      my $trimed_string = Fn->trim_ascii_space($string);
-      unless ($trimed_string == undef) {
-        return 0;
-      }
-    }
-    
-    # no left and right spaces
-    {
-      my $string = (string)"ab  c";
-      my $trimed_string = Fn->trim_ascii_space($string);
-      unless ($trimed_string eq "ab  c") {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index($target, $search, 0);
+      unless ($pos == 1) {
         return 0;
       }
     }
 
-    # left spaces
     {
-      my $string = (string)"  \t  \nab  c";
-      my $trimed_string = Fn->trim_ascii_space($string);
-      unless ($trimed_string eq "ab  c") {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index($target, $search, 1);
+      unless ($pos == 1) {
         return 0;
       }
     }
 
-    # right spaces
     {
-      my $string = (string)"ab  c  \t  \n";
-      my $trimed_string = Fn->trim_ascii_space($string);
-      unless ($trimed_string eq "ab  c") {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index($target, $search, 2);
+      unless ($pos == -1) {
         return 0;
       }
     }
 
-    # left and right spaces
     {
-      my $string = (string)"  \t  \nab  c  \t  \n";
-      my $trimed_string = Fn->trim_ascii_space($string);
-      unless ($trimed_string eq "ab  c") {
+      my $target = "abcde";
+      my $search = "pq";
+      my $pos = Fn->index($target, $search, 2);
+      unless ($pos == -1) {
         return 0;
       }
     }
     
     return 1;
   }
-  
-  static method split : int () {
+
+  static method index_len : int () {
+
     {
-      my $string = "foo,bar,baz";
-      my $split_strs = Fn->split(",", $string);
-      unless (Array->equals_string($split_strs, ["foo", "bar", "baz"])) {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index_len($target, $search, 0, length $target);
+      unless ($pos == 1) {
         return 0;
       }
     }
 
     {
-      my $string = "foo,bar,";
-      my $split_strs = Fn->split(",", $string);
-      unless (Array->equals_string($split_strs, ["foo", "bar", ""])) {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index_len($target, $search, 0, length $target + 1);
+      unless ($pos == 1) {
         return 0;
       }
     }
 
     {
-      my $string = ",foo,,bar,,";
-      my $split_strs = Fn->split(",", $string);
-      unless (Array->equals_string($split_strs, ["", "foo", "", "bar", "", ""])) {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index_len($target, $search, 0, 4);
+      unless ($pos == 1) {
         return 0;
       }
     }
 
     {
-      my $string = "foo : bar : baz";
-      my $split_strs = Fn->split(" : ", $string);
-      unless (Array->equals_string($split_strs, ["foo", "bar", "baz"])) {
-        return 0;
-      }
-    }
-    {
-      my $string = "foo : bar : ";
-      my $split_strs = Fn->split(" : ", $string);
-      unless (Array->equals_string($split_strs, ["foo", "bar", ""])) {
-        return 0;
-      }
-    }
-    {
-      my $string = " : foo :  : bar :  : ";
-      my $split_strs = Fn->split(" : ", $string);
-      unless (Array->equals_string($split_strs, ["", "foo", "", "bar", "", ""])) {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index_len($target, $search, 0, 3);
+      unless ($pos == -1) {
         return 0;
       }
     }
 
     {
-      my $string = "foo---bar---baz";
-      my $split_strs = Fn->split("---", $string);
-      unless (Array->equals_string($split_strs, ["foo", "bar", "baz"])) {
-        return 0;
-      }
-    }
-    {
-      my $string = "foo---bar---";
-      my $split_strs = Fn->split("---", $string);
-      unless (Array->equals_string($split_strs, ["foo", "bar", ""])) {
-        return 0;
-      }
-    }
-    {
-      my $string = "---foo------bar------";
-      my $split_strs = Fn->split("---", $string);
-      unless (Array->equals_string($split_strs, ["", "foo", "", "bar", "", ""])) {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index_len($target, $search, 1, length $target);
+      unless ($pos == 1) {
         return 0;
       }
     }
 
     {
-      my $string = "foo--!bar---baz";
-      my $split_strs = Fn->split("---", $string);
-      unless (Array->equals_string($split_strs, ["foo--!bar", "baz"])) {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = Fn->index_len($target, $search, 2, length $target);
+      unless ($pos == -1) {
         return 0;
       }
     }
+
+    {
+      my $target = "abcde";
+      my $search = "pq";
+      my $pos = Fn->index_len($target, $search, 2, length $target);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 
-  static method chompr : int () {
-    {
-      my $string = "abc\n";
-      my $ret = Fn->chompr($string);
-      unless ($ret eq "abc") {
-        return 0;
-      }
-    }
-    {
-      my $string = "abc";
-      my $ret = Fn->chompr($string);
-      unless ($ret eq "abc") {
-        return 0;
-      }
-    }
-    {
-      my $string = "";
-      my $ret = Fn->chompr($string);
-      unless ($ret eq "") {
-        return 0;
+  static method int_constant : int () {
+    if (Fn->INT32_MIN() == -2147483648) {
+      if (Fn->INT32_MAX() == 2147483647) {
+        return 1;
       }
     }
 
-    return 1;
+    return 0;
   }
-  
+
   static method is_alnum : int () {
 
     my $ok = 1;
@@ -735,6 +605,45 @@ class TestCase::Module::Fn {
 
     unless ($ok) {
       return 0;
+    }
+
+    return 1;
+  }
+
+  static method is_array : int () {
+    
+    # Array
+    {
+      my $array = new byte[3];
+      
+      unless (Fn->is_array($array)) {
+        return 0;
+      }
+    }
+    
+    # string
+    {
+      my $string = "abc";
+      
+      if (Fn->is_array($string)) {
+        return 0;
+      }
+    }
+    
+    # Object
+    {
+      my $minimal = TestCase::Minimal->new;
+      
+      if (Fn->is_array($minimal)) {
+        return 0;
+      }
+    }
+    
+    # undef
+    {
+      if (Fn->is_array(undef)) {
+        return 0;
+      }
     }
 
     return 1;
@@ -821,6 +730,33 @@ class TestCase::Module::Fn {
     return 1;
   }
 
+  static method is_graph : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 0x21 && $char <= 0x7e) {
+        my $ret = Fn->is_graph($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = Fn->is_graph($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
   static method is_hex_digit : int () {
 
     my $ok = 1;
@@ -860,33 +796,6 @@ class TestCase::Module::Fn {
     return 1;
   }
 
-  static method is_graph : int () {
-
-    my $ok = 1;
-    for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
-
-      if ($char >= 0x21 && $char <= 0x7e) {
-        my $ret = Fn->is_graph($char);
-        unless ($ret == 1) {
-          $ok = 0;
-        }
-      }
-      else {
-        my $ret = Fn->is_graph($char);
-        unless ($ret == 0) {
-          $ok = 0;
-        }
-      }
-    }
-
-    unless ($ok) {
-      return 0;
-    }
-
-    return 1;
-  }
-
   static method is_lower : int () {
 
     my $ok = 1;
@@ -901,6 +810,213 @@ class TestCase::Module::Fn {
       }
       else {
         my $ret = Fn->is_lower($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  static method is_mulnum_array : int () {
+
+    # Numeric Array
+    {
+      if (Fn->is_mulnum_array(new byte[3])) {
+        return 0;
+      }
+
+      if (Fn->is_mulnum_array(new double[3])) {
+        return 0;
+      }
+    }
+
+    # Multi Numeric Array
+    {
+      unless (Fn->is_mulnum_array(new Complex_2d[3])) {
+        return 0;
+      }
+    }
+    
+    # string
+    {
+      my $string = "abc";
+      
+      if (Fn->is_mulnum_array($string)) {
+        return 0;
+      }
+    }
+    
+    # Object
+    {
+      my $minimal = TestCase::Minimal->new;
+      
+      if (Fn->is_mulnum_array($minimal)) {
+        return 0;
+      }
+    }
+
+    # undef
+    {
+      if (Fn->is_mulnum_array(undef)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method is_numeric_array : int () {
+
+    # Numeric Array
+    {
+      unless (Fn->is_numeric_array(new byte[3])) {
+        return 0;
+      }
+
+      unless (Fn->is_numeric_array(new double[3])) {
+        return 0;
+      }
+    }
+
+    # Multi Numeric Array
+    {
+      if (Fn->is_numeric_array(new Complex_2d[3])) {
+        return 0;
+      }
+    }
+    
+    # string
+    {
+      my $string = "abc";
+      
+      if (Fn->is_numeric_array($string)) {
+        return 0;
+      }
+    }
+    
+    # Object
+    {
+      my $minimal = TestCase::Minimal->new;
+      
+      if (Fn->is_numeric_array($minimal)) {
+        return 0;
+      }
+    }
+
+    # undef
+    {
+      if (Fn->is_numeric_array(undef)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method is_object_array : int () {
+
+    # Numeric Array
+    {
+      if (Fn->is_object_array(new byte[3])) {
+        return 0;
+      }
+
+      if (Fn->is_object_array(new double[3])) {
+        return 0;
+      }
+    }
+
+    # Multi Numeric Array
+    {
+      if (Fn->is_object_array(new Complex_2d[3])) {
+        return 0;
+      }
+    }
+    
+    # string
+    {
+      my $string = "abc";
+      
+      if (Fn->is_object_array($string)) {
+        return 0;
+      }
+    }
+    
+    # Object
+    {
+      my $minimal = TestCase::Minimal->new;
+      
+      if (Fn->is_object_array($minimal)) {
+        return 0;
+      }
+    }
+
+    # Object array
+    {
+      my $minimals = new TestCase::Minimal[3];
+      
+      unless (Fn->is_object_array($minimals)) {
+        return 0;
+      }
+    }
+
+    # undef
+    {
+      if (Fn->is_object_array(undef)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method is_perl_space : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char == ' ' || $char == '\r' || $char == '\n' || $char == '\t' || $char == '\f') {
+        my $ret = Fn->is_perl_space($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = Fn->is_perl_space($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  static method is_perl_word : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 'a' && $char <= 'z' || $char >= 'A' && $char <= 'Z' || $char == '_' || $char >= '0' && $char <= '9') {
+        my $ret = Fn->is_perl_word($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = Fn->is_perl_word($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1049,469 +1165,51 @@ class TestCase::Module::Fn {
     return 1;
   }
 
-  static method to_lower : int () {
+  static method join : int () {
+    my $strings = ["abc", "def", "hij"];
 
-    my $ok = 1;
-    for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+    my $dump = Fn->join(",", $strings);
 
-      if ($char >= 'A' && $char <= 'Z') {
-        my $ret = Fn->to_lower($char);
-        unless ($ret == $char + 0x20) {
-          $ok = 0;
-        }
-      }
-      else {
-        my $ret = Fn->to_lower($char);
-        unless ($ret == $char) {
-          $ok = 0;
-        }
-      }
+    if ($dump eq "abc,def,hij") {
+      return 1;
     }
 
-    unless ($ok) {
-      return 0;
-    }
-
-    return 1;
+    return 0;
   }
 
-  static method to_upper : int () {
-
-    my $ok = 1;
-    for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
-
-    if ($char >= 'a' && $char <= 'z') {
-        my $ret = Fn->to_upper($char);
-        unless ($ret == $char - 0x20) {
-          $ok = 0;
-        }
-      }
-      else {
-        my $ret = Fn->to_upper($char);
-        unless ($ret == $char) {
-          $ok = 0;
-        }
-      }
-    }
-
-    unless ($ok) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  static method is_perl_space : int () {
-
-    my $ok = 1;
-    for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
-
-      if ($char == ' ' || $char == '\r' || $char == '\n' || $char == '\t' || $char == '\f') {
-        my $ret = Fn->is_perl_space($char);
-        unless ($ret == 1) {
-          $ok = 0;
-        }
-      }
-      else {
-        my $ret = Fn->is_perl_space($char);
-        unless ($ret == 0) {
-          $ok = 0;
-        }
-      }
-    }
-
-    unless ($ok) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  static method is_perl_word : int () {
-
-    my $ok = 1;
-    for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
-
-      if ($char >= 'a' && $char <= 'z' || $char >= 'A' && $char <= 'Z' || $char == '_' || $char >= '0' && $char <= '9') {
-        my $ret = Fn->is_perl_word($char);
-        unless ($ret == 1) {
-          $ok = 0;
-        }
-      }
-      else {
-        my $ret = Fn->is_perl_word($char);
-        unless ($ret == 0) {
-          $ok = 0;
-        }
-      }
-    }
-
-    unless ($ok) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  static method to_int : int () {
-    # 10 digit minimal and return type is int
+  static method labs : int () {
+    
+    # Positive values
     {
-      my $string = "-2147483648";
-      my $num = Fn->to_int($string);
-      unless ($num isa int) {
+      my $num = 3L;
+      my $ret = Fn->labs($num);
+      unless ($ret isa long) {
         return 0;
       }
-
-      unless ($num == -2147483648) {
+      unless ($ret == 3) {
         return 0;
       }
     }
     
-    return 1;
-  }
-
-  static method to_int_with_base : int () {
-    # 10 digit minimal and return type is int
+    # Negative values
     {
-      my $string = "-2147483648";
-      my $num = Fn->to_int_with_base($string, 10);
-      unless ($num isa int) {
+      my $num = -3L;
+      my $ret = Fn->labs($num);
+      unless ($ret == 3) {
         return 0;
       }
-
-      unless ($num == -2147483648) {
-        return 0;
-      }
+      
     }
 
-    # 10 digit max
+    # Zeros
     {
-      my $string = "2147483647";
-      my $num = Fn->to_int_with_base($string, 10);
-      unless ($num isa int) {
-        return 0;
-      }
-
-      unless ($num == 2147483647) {
-        return 0;
-      }
-    }
-
-    # 2 digit
-    {
-      my $string = "11";
-      my $num = Fn->to_int_with_base($string, 2);
-
-      unless ($num == 3) {
-        return 0;
-      }
-    }
-
-    # 8 digit
-    {
-      my $string = "11";
-      my $num = Fn->to_int_with_base($string, 8);
-
-      unless ($num == 9) {
-        return 0;
-      }
-    }
-
-    # 16 digit
-    {
-      my $string = "FF";
-      my $num = Fn->to_int_with_base($string, 16);
-
-      unless ($num == 255) {
-        return 0;
-      }
-    }
-
-    # Invalid string format
-    {
-      my $string = "10oppp";
-      eval {
-        Fn->to_int_with_base($string, 10);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-
-    # Invalid digit
-    {
-      my $string = "10";
-      eval {
-        Fn->to_int_with_base($string, 100);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-
-    # Out of range max + 1
-    {
-      my $string = "2147483648";
-      eval {
-        Fn->to_int_with_base($string, 10);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-
-    # Out of range min - 1
-    {
-      my $string = "-2147483649";
-      eval {
-        Fn->to_int_with_base($string, 10);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-
-    return 1;
-  }
-
-  static method to_long : int () {
-    # 10 digit minimal and return type is int
-    {
-      my $string = "-9223372036854775808";
-      my $num = Fn->to_long($string);
-      unless ($num isa long) {
-        return 0;
-      }
-
-      unless ($num == -9223372036854775808L) {
+      my $num = 0;
+      my $ret = Fn->labs($num);
+      unless ($ret == 0) {
         return 0;
       }
     }
     
-    return 1;
-  }
-  
-  static method to_long_with_base : int () {
-    # 10 digit minimal and return type is int
-    {
-      my $string = "-9223372036854775808";
-      my $num = Fn->to_long_with_base($string, 10);
-      unless ($num isa long) {
-        return 0;
-      }
-
-      unless ($num == -9223372036854775808L) {
-        return 0;
-      }
-    }
-
-    # 10 digit max
-    {
-      my $string = "9223372036854775807";
-      my $num = Fn->to_long_with_base($string, 10);
-
-      unless ($num == 9223372036854775807L) {
-        return 0;
-      }
-    }
-
-    # 2 digit
-    {
-      my $string = "11";
-      my $num = Fn->to_long_with_base($string, 2);
-
-      unless ($num == 3) {
-        return 0;
-      }
-    }
-
-    # 8 digit
-    {
-      my $string = "11";
-      my $num = Fn->to_long_with_base($string, 8);
-
-      unless ($num == 9) {
-        return 0;
-      }
-    }
-
-    # 16 digit
-    {
-      my $string = "FF";
-      my $num = Fn->to_long_with_base($string, 16);
-
-      unless ($num == 255) {
-        return 0;
-      }
-    }
-
-    # Invalid string format
-    {
-      my $string = "10oppp";
-      eval {
-        Fn->to_long_with_base($string, 10);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-
-    # Invalid digit
-    {
-      my $string = "10";
-      eval {
-        Fn->to_long_with_base($string, 100);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-
-    # Out of range max + 1
-    {
-      my $string = "9223372036854775808";
-      eval {
-        Fn->to_long_with_base($string, 10);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-
-    # Out of range min - 1
-    {
-      my $string = "-9223372036854775809";
-      eval {
-        Fn->to_long_with_base($string, 10);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-
-    return 1;
-  }
-
-  static method to_float : int () {
-    # 10 digit minimal and return type is int
-    {
-      my $string = "1.25";
-      my $num = Fn->to_float($string);
-      unless ($num isa float) {
-        return 0;
-      }
-
-      unless ($num == 1.25) {
-        return 0;
-      }
-    }
-
-    # Invalid string format
-    {
-      my $string = "10.5oppp";
-      eval {
-        Fn->to_float($string);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-
-    return 1;
-  }
-
-  static method to_double : int () {
-    # 10 digit minimal and return type is int
-    {
-      my $string = "1.25";
-      my $num = Fn->to_double($string);
-      unless ($num isa double) {
-        return 0;
-      }
-
-      unless ($num == 1.25) {
-        return 0;
-      }
-    }
-
-    # Invalid string format
-    {
-      my $string = "10.5oppp";
-      eval {
-        Fn->to_double($string);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-
-    return 1;
-  }
-
-  static method ucfirst : int () {
-    {
-      my $string = "@abc";
-      my $result_str = Fn->ucfirst($string);
-      unless ($result_str eq "@abc") {
-        return 0;
-      }
-    }
-    {
-      my $string = "[abc";
-      my $result_str = Fn->ucfirst($string);
-      unless ($result_str eq "[abc") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "aabc";
-      my $result_str = Fn->ucfirst($string);
-      unless ($result_str eq "Aabc") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "pabc";
-      my $result_str = Fn->ucfirst($string);
-      unless ($result_str eq "Pabc") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "zabc";
-      my $result_str = Fn->ucfirst($string);
-      unless ($result_str eq "Zabc") {
-        return 0;
-      }
-    }
-    return 1;
-  }
-
-  static method uc : int () {
-    {
-      my $string = "@[apz[";
-      my $result_str = Fn->uc($string);
-      unless ($result_str eq "@[APZ[") {
-        return 0;
-      }
-    }
     return 1;
   }
 
@@ -1568,556 +1266,32 @@ class TestCase::Module::Fn {
     return 1;
   }
 
-  static method index : int () {
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->index($target, $search, 0);
-      unless ($pos == 1) {
-        return 0;
+  static method long_constant : int () {
+    if (Fn->INT64_MIN() == -9223372036854775808L) {
+      if (Fn->INT64_MAX() == 9223372036854775807L) {
+        return 1;
       }
-    }
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->index($target, $search, 1);
-      unless ($pos == 1) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->index($target, $search, 2);
-      unless ($pos == -1) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abcde";
-      my $search = "pq";
-      my $pos = Fn->index($target, $search, 2);
-      unless ($pos == -1) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-  static method contains : int () {
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->contains($target, $search);
-      unless ($pos == 1) {
-        return 0;
-      }
-    }
-    {
-      my $target = "abcde";
-      my $search = "abcde";
-      my $pos = Fn->contains($target, $search);
-      unless ($pos == 1) {
-        return 0;
-      }
-    }
-    {
-      my $target = "abcde";
-      my $search = "p";
-      my $pos = Fn->contains($target, $search);
-      unless ($pos == 0) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-  static method index_len : int () {
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->index_len($target, $search, 0, length $target);
-      unless ($pos == 1) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->index_len($target, $search, 0, length $target + 1);
-      unless ($pos == 1) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->index_len($target, $search, 0, 4);
-      unless ($pos == 1) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->index_len($target, $search, 0, 3);
-      unless ($pos == -1) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->index_len($target, $search, 1, length $target);
-      unless ($pos == 1) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->index_len($target, $search, 2, length $target);
-      unless ($pos == -1) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abcde";
-      my $search = "pq";
-      my $pos = Fn->index_len($target, $search, 2, length $target);
-      unless ($pos == -1) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-  static method rindex : int () {
-
-    {
-      my $target = "abab";
-      my $search = "ab";
-      my $pos = Fn->rindex($target, $search, 3);
-      unless ($pos == 2) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abab";
-      my $search = "ab";
-      my $pos = Fn->rindex($target, $search, 2);
-      unless ($pos == 2) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abab";
-      my $search = "ab";
-      my $pos = Fn->rindex($target, $search, 1);
-      unless ($pos == 0) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abab";
-      my $search = "ab";
-      my $pos = Fn->rindex($target, $search, 0);
-      unless ($pos == 0) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abab";
-      my $search = "pq";
-      my $pos = Fn->rindex($target, $search, 2);
-      unless ($pos == -1) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  static method rindex_len : int () {
-
-    {
-      my $target = "abab";
-      my $search = "ab";
-      my $pos = Fn->rindex_len($target, $search, 3, length $target);
-      unless ($pos == 2) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abab";
-      my $search = "ab";
-      my $pos = Fn->rindex_len($target, $search, 3, length $target + 1);
-      unless ($pos == 2) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abab";
-      my $search = "ab";
-      my $pos = Fn->rindex_len($target, $search, 2, length $target);
-      unless ($pos == 2) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abab";
-      my $search = "ab";
-      my $pos = Fn->rindex_len($target, $search, 1, length $target);
-      unless ($pos == 0) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abab";
-      my $search = "ab";
-      my $pos = Fn->rindex_len($target, $search, 0, length $target);
-      unless ($pos == 0) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abab";
-      my $search = "pq";
-      my $pos = Fn->rindex_len($target, $search, 2, length $target);
-      unless ($pos == -1) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abcab";
-      my $search = "bca";
-      my $pos = Fn->rindex_len($target, $search, length $target - 1, length $target);
-      unless ($pos == 1) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abcab";
-      my $search = "bca";
-      my $pos = Fn->rindex_len($target, $search, 4 - 1, 4);
-      unless ($pos == 1) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abcab";
-      my $search = "bca";
-      my $pos = Fn->rindex_len($target, $search, 3 - 1, 3);
-      unless ($pos == -1) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  static method join : int () {
-    my $strings = ["abc", "def", "hij"];
-
-    my $dump = Fn->join(",", $strings);
-
-    if ($dump eq "abc,def,hij") {
-      return 1;
     }
 
     return 0;
   }
-
-  static method copy_string : int () {
-    # copy string
+  
+  static method look_next_code_point : int () {
+    
     {
-      my $string = "abc";
-      my $string_out = Fn->copy_string($string);
+      my $str = "あaい";
       
-      # Equals the value
-      unless ($string_out eq "abc") {
-        return 0;
-      }
+      my $pos = 0;
       
-      # Not equals address
-      if ($string == $string_out) {
-        return 0;
-      }
-    }
-    
-    # undef
-    {
-      my $string_out = Fn->copy_string(undef);
-      
-      # Equals the value
-      unless ($string_out == undef) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-
-  static method is_array : int () {
-    
-    # Array
-    {
-      my $array = new byte[3];
-      
-      unless (Fn->is_array($array)) {
-        return 0;
-      }
-    }
-    
-    # string
-    {
-      my $string = "abc";
-      
-      if (Fn->is_array($string)) {
-        return 0;
-      }
-    }
-    
-    # Object
-    {
-      my $minimal = TestCase::Minimal->new;
-      
-      if (Fn->is_array($minimal)) {
-        return 0;
-      }
-    }
-    
-    # undef
-    {
-      if (Fn->is_array(undef)) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  static method is_numeric_array : int () {
-
-    # Numeric Array
-    {
-      unless (Fn->is_numeric_array(new byte[3])) {
-        return 0;
-      }
-
-      unless (Fn->is_numeric_array(new double[3])) {
-        return 0;
-      }
-    }
-
-    # Multi Numeric Array
-    {
-      if (Fn->is_numeric_array(new Complex_2d[3])) {
-        return 0;
-      }
-    }
-    
-    # string
-    {
-      my $string = "abc";
-      
-      if (Fn->is_numeric_array($string)) {
-        return 0;
-      }
-    }
-    
-    # Object
-    {
-      my $minimal = TestCase::Minimal->new;
-      
-      if (Fn->is_numeric_array($minimal)) {
-        return 0;
-      }
-    }
-
-    # undef
-    {
-      if (Fn->is_numeric_array(undef)) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-  static method is_mulnum_array : int () {
-
-    # Numeric Array
-    {
-      if (Fn->is_mulnum_array(new byte[3])) {
-        return 0;
-      }
-
-      if (Fn->is_mulnum_array(new double[3])) {
-        return 0;
-      }
-    }
-
-    # Multi Numeric Array
-    {
-      unless (Fn->is_mulnum_array(new Complex_2d[3])) {
-        return 0;
-      }
-    }
-    
-    # string
-    {
-      my $string = "abc";
-      
-      if (Fn->is_mulnum_array($string)) {
-        return 0;
-      }
-    }
-    
-    # Object
-    {
-      my $minimal = TestCase::Minimal->new;
-      
-      if (Fn->is_mulnum_array($minimal)) {
-        return 0;
-      }
-    }
-
-    # undef
-    {
-      if (Fn->is_mulnum_array(undef)) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-  static method is_object_array : int () {
-
-    # Numeric Array
-    {
-      if (Fn->is_object_array(new byte[3])) {
-        return 0;
-      }
-
-      if (Fn->is_object_array(new double[3])) {
-        return 0;
-      }
-    }
-
-    # Multi Numeric Array
-    {
-      if (Fn->is_object_array(new Complex_2d[3])) {
-        return 0;
-      }
-    }
-    
-    # string
-    {
-      my $string = "abc";
-      
-      if (Fn->is_object_array($string)) {
-        return 0;
-      }
-    }
-    
-    # Object
-    {
-      my $minimal = TestCase::Minimal->new;
-      
-      if (Fn->is_object_array($minimal)) {
-        return 0;
-      }
-    }
-
-    # Object array
-    {
-      my $minimals = new TestCase::Minimal[3];
-      
-      unless (Fn->is_object_array($minimals)) {
-        return 0;
-      }
-    }
-
-    # undef
-    {
-      if (Fn->is_object_array(undef)) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-  static method chomp : int () {
-    
-    # Basic
-    {
-      my $line = copy "abc\n";
-      Fn->chomp((mutable string)$line);
-      
-      unless ($line eq "abc") {
-        return 0;
-      }
-    }
-    
-    # Non basic cases
-    {
-      # no new line
+      # あ
       {
-        my $line = copy "abc";
-        Fn->chomp((mutable string)$line);
-      
-        unless ($line eq "abc") {
+        my $uchar = Fn->look_next_code_point($str, \$pos);
+
+        unless ($uchar == 0x3042) {
           return 0;
         }
-      }
-      
-      # undef
-      {
-        my $line = (string)undef;
-        Fn->chomp((mutable string)$line);
-      
-        unless ($line == undef) {
-          return 0;
-        }
-      }
-      
-      # The length is zero
-      {
-        my $line = copy "";
-        Fn->chomp((mutable string)$line);
         
-        unless ($line eq "") {
+        unless ($pos == 0) {
           return 0;
         }
       }
@@ -2125,7 +1299,6 @@ class TestCase::Module::Fn {
     
     return 1;
   }
-
 
   static method memcpy : int () {
     
@@ -2440,6 +1613,831 @@ class TestCase::Module::Fn {
     $@ = undef;
 
     
+    return 1;
+  }
+  static method ord : int () {
+    
+    unless (Fn->ord("a") == 97) {
+      return 0;
+    }
+    unless (Fn->ord("ab") == 97) {
+      return 0;
+    }
+    unless (Fn->ord("\x00") == 0) {
+      return 0;
+    }
+    
+    unless (Fn->ord("\x01") == 1) {
+      return 0;
+    }
+
+    unless (Fn->ord("\x7F") == 127) {
+      return 0;
+    }
+
+    unless (Fn->ord("あ") == 12354) {
+      return 0;
+    }
+    
+    # Unicode max scalar value
+    unless (Fn->ord(Fn->chr(0x10FFFF)) == 0x10FFFF) {
+      return 0;
+    }
+    
+    # Error
+    {
+      unless (Fn->ord("") < 0) {
+        return 0;
+      }
+      unless (Fn->ord(undef) < 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method rand : int () {
+    
+    # 0 <= random_number < 1
+    {
+      my $rand = 0.0;
+      my $invalid_range = 0;
+      my $seed = (int)Time->time;
+      for (my $i = 0; $i < 100000; $i++) {
+        $rand = Fn->rand(\$seed);
+        
+        unless ($rand >= 0 && $rand < 1) {
+          $invalid_range = 1;
+          last;
+        }
+      }
+      
+      if ($invalid_range) {
+        return 0;
+      }
+    }
+    
+    # Apper random numbers
+    {
+      my $founds_plus = new int[10];
+      my $founds_minus = new int[10];
+      my $rand = 0.0;
+      my $seed = (int)Time->time;
+      for (my $i = 0; $i < 100000; $i++) {
+        $rand = Fn->rand(\$seed);
+        
+        # 0-9
+        my $dig0 = (int)($rand * 10);
+        $founds_plus->[$dig0] = 1;
+      }
+      
+      unless (Array->equals_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method RAND_MAX : int () {
+    
+    unless (Fn->RAND_MAX > 0) {
+      return 1;
+    }
+
+    return 1;
+  }
+
+  static method repeat : int () {
+    
+    unless (Fn->repeat("abc", 3) eq "abcabcabc") {
+      return 0;
+    }
+
+    # Exception
+    {
+      eval { Fn->repeat(undef, 1); };
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { Fn->repeat("abc", 0); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  static method rindex : int () {
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = Fn->rindex($target, $search, 3);
+      unless ($pos == 2) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = Fn->rindex($target, $search, 2);
+      unless ($pos == 2) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = Fn->rindex($target, $search, 1);
+      unless ($pos == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = Fn->rindex($target, $search, 0);
+      unless ($pos == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "pq";
+      my $pos = Fn->rindex($target, $search, 2);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method rindex_len : int () {
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = Fn->rindex_len($target, $search, 3, length $target);
+      unless ($pos == 2) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = Fn->rindex_len($target, $search, 3, length $target + 1);
+      unless ($pos == 2) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = Fn->rindex_len($target, $search, 2, length $target);
+      unless ($pos == 2) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = Fn->rindex_len($target, $search, 1, length $target);
+      unless ($pos == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = Fn->rindex_len($target, $search, 0, length $target);
+      unless ($pos == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "pq";
+      my $pos = Fn->rindex_len($target, $search, 2, length $target);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcab";
+      my $search = "bca";
+      my $pos = Fn->rindex_len($target, $search, length $target - 1, length $target);
+      unless ($pos == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcab";
+      my $search = "bca";
+      my $pos = Fn->rindex_len($target, $search, 4 - 1, 4);
+      unless ($pos == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcab";
+      my $search = "bca";
+      my $pos = Fn->rindex_len($target, $search, 3 - 1, 3);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method short_constant : int () {
+    if ((int)Fn->INT16_MIN() == (int)(short)-32768) {
+      if ((int)Fn->INT16_MAX() == (int)(short)32767) {
+        return 1;
+      }
+    }
+
+    return 0;
+  }
+
+  static method split : int () {
+    {
+      my $string = "foo,bar,baz";
+      my $split_strs = Fn->split(",", $string);
+      unless (Array->equals_string($split_strs, ["foo", "bar", "baz"])) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "foo,bar,";
+      my $split_strs = Fn->split(",", $string);
+      unless (Array->equals_string($split_strs, ["foo", "bar", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = ",foo,,bar,,";
+      my $split_strs = Fn->split(",", $string);
+      unless (Array->equals_string($split_strs, ["", "foo", "", "bar", "", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "foo : bar : baz";
+      my $split_strs = Fn->split(" : ", $string);
+      unless (Array->equals_string($split_strs, ["foo", "bar", "baz"])) {
+        return 0;
+      }
+    }
+    {
+      my $string = "foo : bar : ";
+      my $split_strs = Fn->split(" : ", $string);
+      unless (Array->equals_string($split_strs, ["foo", "bar", ""])) {
+        return 0;
+      }
+    }
+    {
+      my $string = " : foo :  : bar :  : ";
+      my $split_strs = Fn->split(" : ", $string);
+      unless (Array->equals_string($split_strs, ["", "foo", "", "bar", "", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "foo---bar---baz";
+      my $split_strs = Fn->split("---", $string);
+      unless (Array->equals_string($split_strs, ["foo", "bar", "baz"])) {
+        return 0;
+      }
+    }
+    {
+      my $string = "foo---bar---";
+      my $split_strs = Fn->split("---", $string);
+      unless (Array->equals_string($split_strs, ["foo", "bar", ""])) {
+        return 0;
+      }
+    }
+    {
+      my $string = "---foo------bar------";
+      my $split_strs = Fn->split("---", $string);
+      unless (Array->equals_string($split_strs, ["", "foo", "", "bar", "", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "foo--!bar---baz";
+      my $split_strs = Fn->split("---", $string);
+      unless (Array->equals_string($split_strs, ["foo--!bar", "baz"])) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  static method spvm_like_constants : int () {
+    
+    unless (Fn->INT8_MAX == Fn->BYTE_MAX ) { return 0; }
+    unless (Fn->INT8_MIN == Fn->BYTE_MIN) { return 0; }
+    unless (Fn->INT16_MAX == Fn->SHORT_MAX ) { return 0; }
+    unless (Fn->INT16_MIN == Fn->SHORT_MIN ) { return 0; }
+    unless (Fn->INT32_MAX == Fn->INT_MAX ) { return 0; }
+    unless (Fn->INT32_MIN == Fn->INT_MIN ) { return 0; }
+    unless (Fn->INT64_MAX == Fn->LONG_MAX ) { return 0; }
+    unless (Fn->INT64_MIN == Fn->LONG_MIN ) { return 0; }
+    unless (Fn->UINT8_MAX == Fn->UBYTE_MAX ) { return 0; }
+    unless (Fn->UINT16_MAX == Fn->USHORT_MAX ) { return 0; }
+    unless (Fn->UINT32_MAX == Fn->UINT_MAX ) { return 0; }
+    unless (Fn->UINT64_MAX == Fn->ULONG_MAX ) { return 0; }
+    unless (Fn->FLT_MAX == Fn->FLOAT_MAX ) { return 0; }
+    unless (Fn->FLT_MIN == Fn->FLOAT_MIN ) { return 0; }
+    unless (Fn->DBL_MAX == Fn->DOUBLE_MAX ) { return 0; }
+    unless (Fn->DBL_MIN == Fn->DOUBLE_MIN ) { return 0; }
+    
+    return 1;
+  }
+
+  static method to_double : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "1.25";
+      my $num = Fn->to_double($string);
+      unless ($num isa double) {
+        return 0;
+      }
+
+      unless ($num == 1.25) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10.5oppp";
+      eval {
+        Fn->to_double($string);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    return 1;
+  }
+
+  static method to_float : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "1.25";
+      my $num = Fn->to_float($string);
+      unless ($num isa float) {
+        return 0;
+      }
+
+      unless ($num == 1.25) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10.5oppp";
+      eval {
+        Fn->to_float($string);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    return 1;
+  }
+
+  static method to_int : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-2147483648";
+      my $num = Fn->to_int($string);
+      unless ($num isa int) {
+        return 0;
+      }
+
+      unless ($num == -2147483648) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method to_int_with_base : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-2147483648";
+      my $num = Fn->to_int_with_base($string, 10);
+      unless ($num isa int) {
+        return 0;
+      }
+
+      unless ($num == -2147483648) {
+        return 0;
+      }
+    }
+
+    # 10 digit max
+    {
+      my $string = "2147483647";
+      my $num = Fn->to_int_with_base($string, 10);
+      unless ($num isa int) {
+        return 0;
+      }
+
+      unless ($num == 2147483647) {
+        return 0;
+      }
+    }
+
+    # 2 digit
+    {
+      my $string = "11";
+      my $num = Fn->to_int_with_base($string, 2);
+
+      unless ($num == 3) {
+        return 0;
+      }
+    }
+
+    # 8 digit
+    {
+      my $string = "11";
+      my $num = Fn->to_int_with_base($string, 8);
+
+      unless ($num == 9) {
+        return 0;
+      }
+    }
+
+    # 16 digit
+    {
+      my $string = "FF";
+      my $num = Fn->to_int_with_base($string, 16);
+
+      unless ($num == 255) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10oppp";
+      eval {
+        Fn->to_int_with_base($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Invalid digit
+    {
+      my $string = "10";
+      eval {
+        Fn->to_int_with_base($string, 100);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range max + 1
+    {
+      my $string = "2147483648";
+      eval {
+        Fn->to_int_with_base($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range min - 1
+    {
+      my $string = "-2147483649";
+      eval {
+        Fn->to_int_with_base($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    return 1;
+  }
+
+  static method to_long : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-9223372036854775808";
+      my $num = Fn->to_long($string);
+      unless ($num isa long) {
+        return 0;
+      }
+
+      unless ($num == -9223372036854775808L) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method to_long_with_base : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-9223372036854775808";
+      my $num = Fn->to_long_with_base($string, 10);
+      unless ($num isa long) {
+        return 0;
+      }
+
+      unless ($num == -9223372036854775808L) {
+        return 0;
+      }
+    }
+
+    # 10 digit max
+    {
+      my $string = "9223372036854775807";
+      my $num = Fn->to_long_with_base($string, 10);
+
+      unless ($num == 9223372036854775807L) {
+        return 0;
+      }
+    }
+
+    # 2 digit
+    {
+      my $string = "11";
+      my $num = Fn->to_long_with_base($string, 2);
+
+      unless ($num == 3) {
+        return 0;
+      }
+    }
+
+    # 8 digit
+    {
+      my $string = "11";
+      my $num = Fn->to_long_with_base($string, 8);
+
+      unless ($num == 9) {
+        return 0;
+      }
+    }
+
+    # 16 digit
+    {
+      my $string = "FF";
+      my $num = Fn->to_long_with_base($string, 16);
+
+      unless ($num == 255) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10oppp";
+      eval {
+        Fn->to_long_with_base($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Invalid digit
+    {
+      my $string = "10";
+      eval {
+        Fn->to_long_with_base($string, 100);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range max + 1
+    {
+      my $string = "9223372036854775808";
+      eval {
+        Fn->to_long_with_base($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range min - 1
+    {
+      my $string = "-9223372036854775809";
+      eval {
+        Fn->to_long_with_base($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    return 1;
+  }
+
+  static method to_lower : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 'A' && $char <= 'Z') {
+        my $ret = Fn->to_lower($char);
+        unless ($ret == $char + 0x20) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = Fn->to_lower($char);
+        unless ($ret == $char) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  static method to_upper : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+    if ($char >= 'a' && $char <= 'z') {
+        my $ret = Fn->to_upper($char);
+        unless ($ret == $char - 0x20) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = Fn->to_upper($char);
+        unless ($ret == $char) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  static method trim_ascii_space : int () {
+    # undef
+    {
+      my $string = (string)undef;
+      my $trimed_string = Fn->trim_ascii_space($string);
+      unless ($trimed_string == undef) {
+        return 0;
+      }
+    }
+    
+    # no left and right spaces
+    {
+      my $string = (string)"ab  c";
+      my $trimed_string = Fn->trim_ascii_space($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+
+    # left spaces
+    {
+      my $string = (string)"  \t  \nab  c";
+      my $trimed_string = Fn->trim_ascii_space($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+
+    # right spaces
+    {
+      my $string = (string)"ab  c  \t  \n";
+      my $trimed_string = Fn->trim_ascii_space($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+
+    # left and right spaces
+    {
+      my $string = (string)"  \t  \nab  c  \t  \n";
+      my $trimed_string = Fn->trim_ascii_space($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method uc : int () {
+    {
+      my $string = "@[apz[";
+      my $result_str = Fn->uc($string);
+      unless ($result_str eq "@[APZ[") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  static method ucfirst : int () {
+    {
+      my $string = "@abc";
+      my $result_str = Fn->ucfirst($string);
+      unless ($result_str eq "@abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = "[abc";
+      my $result_str = Fn->ucfirst($string);
+      unless ($result_str eq "[abc") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "aabc";
+      my $result_str = Fn->ucfirst($string);
+      unless ($result_str eq "Aabc") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "pabc";
+      my $result_str = Fn->ucfirst($string);
+      unless ($result_str eq "Pabc") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "zabc";
+      my $result_str = Fn->ucfirst($string);
+      unless ($result_str eq "Zabc") {
+        return 0;
+      }
+    }
     return 1;
   }
 }
