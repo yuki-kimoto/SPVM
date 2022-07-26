@@ -291,13 +291,13 @@ The offset + the length specified by the argument must be less than or equal to 
 
 Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator from the offset to the offset + the length to the created array.
 
-Array must be defined. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will be thrown.
 
-Offset must be in the array range. Otherwise an exception will occur.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Length must be more than or equals to 0, othrewise an exception occurs.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Offset + length must not be in the array range, othrewise an exception occurs.
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_range_string_address
   
@@ -305,13 +305,13 @@ Offset + length must not be in the array range, othrewise an exception occurs.
 
 Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array from the offset to the offset + the length to the created array.
 
-Array must be defined. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will be thrown.
 
-Offset must be in the array range. Otherwise an exception will occur.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Length must be more than or equals to 0, othrewise an exception occurs.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-Offset + length must not be in the array range, othrewise an exception occurs.
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_short
 
