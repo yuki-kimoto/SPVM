@@ -495,6 +495,8 @@ If at least one of the arrays is not defined, a excetpion occurs.
 
 Check equality of two array. You must sepecify a L<EqualityChecker|SPVM::EqualityChecker> object to check the equality of each element.
 
+If the equality checkier is not defined, the address is checked to equal.
+
 $objs1 and $objs2 and $equality_checker must be defined. Otherwise an exception will occur.
 
 Return 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return C<0>.
@@ -505,7 +507,7 @@ Return 1 if the length of $objs1 and $objs2 is same and all element is same, oth
 
 The alias for the following code using L</"equals_object">.
 
-  my $ret = &equals_object($array1, $array2, EqualityChecker::SameObject->new);
+  my $ret = &equals_object($array1, $array2, undef);
 
 =head2 equals_short
 

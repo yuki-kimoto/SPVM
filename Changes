@@ -4,6 +4,7 @@
     * Add copy_range_object_address to Array class.
     * Add copy_range_string_address to Array class.
     * Add copy_string_address to Array class.
+    * Add equals_object_address to Array class.
   [Document Fix]
     * Add the doc of clear method of Point class.
     * Add the doc of clear method of Point3D class.
@@ -27,6 +28,7 @@
     * Add Fields section to Point3D class
   [Changes]
     * Remove "SPVM/" from native file name.
+    * Array->equals_object can recieve undef equality checker, and check address equality.
   [Incompatible Changes]
     * Change the following method definition of Array class. Sorry. This is my simple definition mistake.
       [Before]
@@ -38,12 +40,13 @@
     * copy_range_string copies the value of the string, not address. This is my simple implement mistake.
       The original behaivior can be used by copy_range_string_address.
     * Remove Fn->memcpy_object, Fn->memmove_object. This remained wrongly.
+    * Rename Remove Fn->memcpy_object, Fn->memmove_object. This remained wrongly.
   [Deprecation]
     * Array->memcpy_object is deprecated. Use memcpy_object_address instead. This method will be removed at 0.9630.
     * Array->memcpy_string is deprecated. Use memcpy_string_address instead. This method will be removed at 0.9630.
     * Array->memmove_object is deprecated. Use memmove_object_address instead. This method will be removed at 0.9630.
     * Array->memmove_string is deprecated. Use memmove_string_address instead. This method will be removed at 0.9630.
-    
+    * Rename EqualityChecker::SameObject class to EqualityChecker::Address
 0.9628 2022-07-25
   [New Features]
     * Add replace method to ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, List.

@@ -3,7 +3,7 @@ class TestCase::Module::Array {
   use TestCase::Minimal;
   use Point;
   use EqualityChecker;
-  use EqualityChecker::SameObject;
+  use EqualityChecker::Address;
   use Fn;
   use Array;
   
@@ -547,7 +547,7 @@ class TestCase::Module::Array {
 
       my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $range = (TestCase::Minimal[])Array->copy_range_object($array, 0, 4, undef);
-      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::Address->new)) {
         return 0;
       }
     }
@@ -559,7 +559,7 @@ class TestCase::Module::Array {
 
       my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $range = (TestCase::Minimal[])Array->copy_range_object($array, 1, 2, undef);
-      unless (Array->equals_object($range, [$minimal2, $minimal3], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object($range, [$minimal2, $minimal3], EqualityChecker::Address->new)) {
         return 0;
       }
     }
@@ -618,7 +618,7 @@ class TestCase::Module::Array {
 
       my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $range = (TestCase::Minimal[])Array->copy_range_object_address($array, 0, 4);
-      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::Address->new)) {
         return 0;
       }
     }
@@ -630,7 +630,7 @@ class TestCase::Module::Array {
 
       my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $range = (TestCase::Minimal[])Array->copy_range_object_address($array, 1, 2);
-      unless (Array->equals_object($range, [$minimal2, $minimal3], EqualityChecker::SameObject->new)) {
+      unless (Array->equals_object($range, [$minimal2, $minimal3], EqualityChecker::Address->new)) {
         return 0;
       }
     }
@@ -1492,53 +1492,172 @@ class TestCase::Module::Array {
   }
 
   static method equals_object : int () {
-    my $minimal1 = TestCase::Minimal->new;
-    my $minimal2 = TestCase::Minimal->new;
-    my $minimal3 = TestCase::Minimal->new;
-    my $minimal4 = TestCase::Minimal->new;
-    my $array1 = [$minimal1, $minimal2, $minimal3];
-    my $array2 = [$minimal1, $minimal2, $minimal3];
-    my $array3 = [$minimal1, $minimal2];
-    my $array4 = [$minimal1, $minimal2, $minimal4];
-    my $array5 = [(object)$minimal1, $minimal2, $minimal3];
-
-    my $equality_checker = method : int ($object1 : object, $object2 : object) {
-      my $minimal1 = (TestCase::Minimal)$object1;
-      my $minimal2 = (TestCase::Minimal)$object2;
-
-      if ($minimal1 == $minimal2) {
-        return 1;
-      }
-      else {
-        return 0;
-      }
-    };
-
     {
-      my $is_equals = Array->equals_object($array1, $array2, $equality_checker);
-      unless ($is_equals) {
-        return 0;
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+      my $array1 = [$minimal1, $minimal2, $minimal3];
+      my $array2 = [$minimal1, $minimal2, $minimal3];
+      my $array3 = [$minimal1, $minimal2];
+      my $array4 = [$minimal1, $minimal2, $minimal4];
+      my $array5 = [(object)$minimal1, $minimal2, $minimal3];
+
+      my $equality_checker = method : int ($object1 : object, $object2 : object) {
+        my $minimal1 = (TestCase::Minimal)$object1;
+        my $minimal2 = (TestCase::Minimal)$object2;
+
+        if ($minimal1 == $minimal2) {
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      };
+
+      {
+        my $is_equals = Array->equals_object($array1, $array2, $equality_checker);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array3, $equality_checker);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array4, $equality_checker);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array5, $equality_checker);
+        unless ($is_equals) {
+          return 0;
+        }
       }
     }
+    
+    # Equality checker is undef
     {
-      my $is_equals = Array->equals_object($array1, $array3, $equality_checker);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = Array->equals_object($array1, $array4, $equality_checker);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = Array->equals_object($array1, $array5, $equality_checker);
-      unless ($is_equals) {
-        return 0;
-      }
-    }
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+      my $array1 = [$minimal1, $minimal2, $minimal3];
+      my $array2 = [$minimal1, $minimal2, $minimal3];
+      my $array3 = [$minimal1, $minimal2];
+      my $array4 = [$minimal1, $minimal2, $minimal4];
+      my $array5 = [(object)$minimal1, $minimal2, $minimal3];
 
+      {
+        my $is_equals = Array->equals_object($array1, $array2, undef);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array3, undef);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array4, undef);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array5, undef);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+    }
+    
+    # Equality checker is EqualityChecker::Address
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+      my $array1 = [$minimal1, $minimal2, $minimal3];
+      my $array2 = [$minimal1, $minimal2, $minimal3];
+      my $array3 = [$minimal1, $minimal2];
+      my $array4 = [$minimal1, $minimal2, $minimal4];
+      my $array5 = [(object)$minimal1, $minimal2, $minimal3];
+
+      {
+        my $is_equals = Array->equals_object($array1, $array2, EqualityChecker::Address->new);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array3, EqualityChecker::Address->new);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array4, EqualityChecker::Address->new);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array5, EqualityChecker::Address->new);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method equals_object_address : int () {
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+      my $array1 = [$minimal1, $minimal2, $minimal3];
+      my $array2 = [$minimal1, $minimal2, $minimal3];
+      my $array3 = [$minimal1, $minimal2];
+      my $array4 = [$minimal1, $minimal2, $minimal4];
+      my $array5 = [(object)$minimal1, $minimal2, $minimal3];
+
+      {
+        my $is_equals = Array->equals_object_address($array1, $array2);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object_address($array1, $array3);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object_address($array1, $array4);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object_address($array1, $array5);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
 

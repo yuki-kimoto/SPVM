@@ -1,18 +1,6 @@
 class TestCase::Module::Fn {
-  use TestCase::Minimal;
   use Fn;
   use TestCase::Minimal;
-  use EqualityChecker;
-  use EqualityChecker::SameObject;
-  use Fn;
-  use TestCase::Minimal;
-  use TestCase::Minimal;
-  use EqualityChecker;
-  use EqualityChecker::SameObject;
-  use Fn;
-  use TestCase::Minimal;
-  use EqualityChecker;
-  use EqualityChecker::SameObject;
   use Complex_2d;
   use Time;
   use Array;

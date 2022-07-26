@@ -1,6 +1,6 @@
-class EqualityChecker::SameObject {
-  static method new : EqualityChecker::SameObject () {
-    return new EqualityChecker::SameObject;
+class EqualityChecker::Address {
+  static method new : EqualityChecker::Address () {
+    return new EqualityChecker::Address;
   }
   
   method : int ($object1 : object, $object2 : object) {

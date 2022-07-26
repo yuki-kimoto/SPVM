@@ -2,7 +2,6 @@ class Array {
   use Stringer;
   use Cloner;
   use EqualityChecker;
-  use EqualityChecker::SameObject;
   use Format;
   
   static method copy_byte : byte[] ($array : byte[]) {
@@ -776,10 +775,20 @@ class Array {
     
     my $is_equals = 1;
     if (@$array1 == @$array2) {
-      for (my $i = 0; $i < @$array1; $i++) {
-        if (!$equality_checker->($array1->[$i], $array2->[$i])) {
-          $is_equals = 0;
-          last;
+      if ($equality_checker) {
+        for (my $i = 0; $i < @$array1; $i++) {
+          unless ($equality_checker->($array1->[$i], $array2->[$i])) {
+            $is_equals = 0;
+            last;
+          }
+        }
+      }
+      else {
+        for (my $i = 0; $i < @$array1; $i++) {
+          unless ($array1->[$i] == $array2->[$i]) {
+            $is_equals = 0;
+            last;
+          }
         }
       }
     }
@@ -791,7 +800,7 @@ class Array {
   }
   
   static method equals_object_address : int ($array1 : object[], $array2 : object[]) {
-    return &equals_object($array1, $array2, EqualityChecker::SameObject->new);
+    return &equals_object($array1, $array2, undef);
   }
   
   precompile static method equals_short : int ($array1 : short[], $array2 : short[]) {

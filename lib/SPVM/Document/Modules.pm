@@ -46,7 +46,7 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =item * L<EqualityChecker|SPVM::EqualityChecker> - Interface Type for Object Equality Checking Callback
 
-=item * L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> - A Implementation of L<EqualityChecker|SPVM::EqualityChecker> to Check if the Memory Addresses of the Two Objects are Equal.
+=item * L<EqualityChecker::Address|SPVM::EqualityChecker::Address> - A Implementation of L<EqualityChecker|SPVM::EqualityChecker> to Check Addresses Equality.
 
 =item * L<Float|SPVM::Float> - float Object
 

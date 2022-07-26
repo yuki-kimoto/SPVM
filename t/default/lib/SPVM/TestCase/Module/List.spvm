@@ -3,7 +3,6 @@ class TestCase::Module::List {
   use List;
   use Fn;
   use Array;
-  use EqualityChecker::SameObject;
   
   # Fields
   static method fields : int () {
