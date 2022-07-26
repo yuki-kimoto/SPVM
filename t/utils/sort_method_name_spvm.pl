@@ -28,7 +28,7 @@ while (my $line = <>) {
   }
 }
 
-for my $sub_name (sort { lc $a cmp lc $b } keys %$sub_defs_h) {
+for my $sub_name (sort { $a cmp $b } keys %$sub_defs_h) {
   my $sub_def = $sub_defs_h->{$sub_name};
   print $sub_def;
 }
