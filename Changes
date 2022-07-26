@@ -6,6 +6,7 @@
     * Add copy_string_address to Array class.
     * Add equals_object_address to Array class.
     * Add equals_string_address to Array class.
+    * Add %p specifier to Format->sprintf method.
   [Document Fix]
     * Add the doc of clear method of Point class.
     * Add the doc of clear method of Point3D class.
