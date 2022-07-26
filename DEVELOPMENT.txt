@@ -77,7 +77,8 @@ DEVELOPERS NOTE
       #define _POSIX_C_SOURCE
     - Don't implement timegm compatible method because the tests of Windows/MinGW 32bit fail.
       undefined reference to _mkgmtime32
-    
+    - Recommend the size of a module file is less than 50KB because SPVM itself has no problem
+      but in the small memory environment, the precompile by gcc fails by memory errors.
   CODING GUIDE LINE
     - use int8_t, int16_t, int32_t, int64_t instead of byte, short, int, long, _Bool.
     - char is used for only character.
