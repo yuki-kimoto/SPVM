@@ -1028,3 +1028,7 @@ The alias for the following code using L</"memset_object">.
   static method new_proto : object[] ($proto_array : object[], $length : int)
 
 Create a new object array as the same type as the prototype array with the length.
+
+The prototype array must be defined. Otherwise an exception will occur.
+
+The length must be greater than or equal to 0. Otherwise an exception will occur.
