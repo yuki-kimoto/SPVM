@@ -114,21 +114,21 @@ class Fn {
   precompile static method hex : int ($hex_string : string) {
     
     unless ($hex_string) {
-      die "the hex string must be defined";
+      die "The hex string must be defined";
     }
     
     my $hex_value = 0;
     my $digit = 0;
     my $value = 0;
     my $length = length $hex_string;
-    if ($length < 1 || $length > 8) {
-      die "The length of hex string must be 1 to 8";
+    unless ($length >= 1 && $length <= 8) {
+      die "The length of the hex string must be 1 to 8";
     }
     for (my $i = $length - 1; $i >= 0; $i--) {
       my $ascii_code = $hex_string->[$i];
       
       unless (&is_hex_digit($ascii_code)) {
-        die "The hex string is invalid format";
+        die "The hex string must contain only hex characters";
       }
       
       my $digit_value = 0;
