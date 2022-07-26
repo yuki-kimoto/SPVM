@@ -2,41 +2,39 @@ class Fn {
   use StringBuffer;
   use StringList;
   
-  static method INT8_MAX : byte () { return 127; }
-  static method INT8_MIN : byte () { return -128; }
+  static method BYTE_MAX : byte () { return 127; }
+  static method BYTE_MIN : byte () { return -128; }
+  native static method DBL_MAX : double ();
+  native static method DBL_MIN : double ();
+  native static method DOUBLE_MAX : double ();
+  native static method DOUBLE_MIN : double ();
+  native static method FLOAT_MAX : float ();
+  native static method FLOAT_MIN : float();
+  native static method FLT_MAX : float ();
+  native static method FLT_MIN : float();
   static method INT16_MAX : short () { return 32767; }
   static method INT16_MIN : short () { return -32768; }
   static method INT32_MAX : int () { return 2147483647; }
   static method INT32_MIN : int () { return -2147483648; }
   static method INT64_MAX : long () { return 9223372036854775807L; }
   static method INT64_MIN : long () { return -9223372036854775808L; }
-  static method UINT8_MAX : byte () { return (byte)0xFF; }
-  static method UINT16_MAX : short () { return (short)0xFFFF; }
-  static method UINT32_MAX : int () { return 0xFFFFFFFF; }
-  static method UINT64_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
-  native static method FLT_MAX : float ();
-  native static method FLT_MIN : float();
-  native static method DBL_MAX : double ();
-  native static method DBL_MIN : double ();
-  
-  static method BYTE_MAX : byte () { return 127; }
-  static method BYTE_MIN : byte () { return -128; }
-  static method SHORT_MAX : short () { return 32767; }
-  static method SHORT_MIN : short () { return -32768; }
+  static method INT8_MAX : byte () { return 127; }
+  static method INT8_MIN : byte () { return -128; }
   static method INT_MAX : int () { return 2147483647; }
   static method INT_MIN : int () { return -2147483648; }
   static method LONG_MAX : long () { return 9223372036854775807L; }
   static method LONG_MIN : long () { return -9223372036854775808L; }
+  native static method RAND_MAX : int ();
+  static method SHORT_MAX : short () { return 32767; }
+  static method SHORT_MIN : short () { return -32768; }
   static method UBYTE_MAX : byte () { return (byte)0xFF; }
-  static method USHORT_MAX : short () { return (short)0xFFFF; }
+  static method UINT16_MAX : short () { return (short)0xFFFF; }
+  static method UINT32_MAX : int () { return 0xFFFFFFFF; }
+  static method UINT64_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
+  static method UINT8_MAX : byte () { return (byte)0xFF; }
   static method UINT_MAX : int () { return 0xFFFFFFFF; }
   static method ULONG_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
-  native static method FLOAT_MAX : float ();
-  native static method FLOAT_MIN : float();
-  native static method DOUBLE_MAX : double ();
-  native static method DOUBLE_MIN : double ();
-  
-  native static method RAND_MAX : int ();
+  static method USHORT_MAX : short () { return (short)0xFFFF; }
   
   static method abs : int ($x : int) {
     
@@ -86,19 +84,6 @@ class Fn {
     return $new_string;
   }
   
-  private static method is_unicode_scalar_value : int ($code_point: int) {
-    my $is_unicode_scalar_value = 0;
-    # The range of Unicde code points
-    if ($code_point >= 0 && $code_point <= 0x10FFFF) {
-      # Not surrogate code points
-      unless ($code_point >= 0xD800 && $code_point <= 0xDFFF) {
-        $is_unicode_scalar_value = 1;
-      }
-    }
-    
-    return $is_unicode_scalar_value;
-  }
-  
   static method chr : string ($unicode_code_point : int) {
     
     my $is_unicode_scalar_value = &is_unicode_scalar_value($unicode_code_point);
@@ -109,8 +94,6 @@ class Fn {
     
     return $utf8_char;
   }
-  native static method _chr_native : string ($uchar : int);
-  
   static method contains : int ($string : string, $sub_string : string) {
     my $contains = 0;
     if (&index($string, $sub_string, 0) >= 0) {
@@ -119,13 +102,13 @@ class Fn {
     return $contains;
   }
   
-  native static method get_next_code_point : int ($str : string, $offset_ref : int*);
-  
   static method copy_string : string ($string : string) {
     return copy $string;
   }
   
   native static method crand : int ($seed : int*);
+  
+  native static method get_next_code_point : int ($str : string, $offset_ref : int*);
   
   precompile static method hex : int ($hex_string : string) {
     
@@ -365,6 +348,19 @@ class Fn {
     else {
       return 0;
     }
+  }
+  
+  private static method is_unicode_scalar_value : int ($code_point: int) {
+    my $is_unicode_scalar_value = 0;
+    # The range of Unicde code points
+    if ($code_point >= 0 && $code_point <= 0x10FFFF) {
+      # Not surrogate code points
+      unless ($code_point >= 0xD800 && $code_point <= 0xDFFF) {
+        $is_unicode_scalar_value = 1;
+      }
+    }
+    
+    return $is_unicode_scalar_value;
   }
   
   static method is_upper : int ($code_point : int) {
@@ -760,5 +756,6 @@ class Fn {
     }
     return $new_string;
   }
+  
+  native static method _chr_native : string ($uchar : int);
 }
-
