@@ -24,6 +24,9 @@
       copy_array_double, copy_array_byte in Fn class. This remained wrongly.
     * Remove the doc of memmove, in Array class.
     * Add the doc of Array->memmove_string, Array->memcpy_string.
+    * Fix the document that equals_byte, equals_short, equals_int, equals_long, equals_float, equals_double, equals_object, equals_string
+      throw exception.
+    
   [New Document]
     * Add Fields section to Point class
     * Add Super Class section to Point3D class

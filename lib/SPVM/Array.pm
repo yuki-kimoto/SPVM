@@ -373,53 +373,87 @@ Same as the following code using the L<dump operator|SPVM::Document::LanguageSpe
 
   static method equals_byte : int ($array1 : byte[], $array2 : byte[])
 
-Check if two byte arrays equal.
+If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
-If at least one of the arrays is not defined, a excetpion occurs.
+If the array 1 is defined and the array 2 is not defined, return C<0>.
+
+If the array 1 is not defined, the array 2 is defined, return C<0>.
+
+If the array 1 is defined and the array 2 is defined and the all elements of array 1 are equal to all elements of array 2, return C<1>.
+
+Otherwise return C<0>.
 
 =head2 equals_double
 
   static method equals_double : int ($array1 : double[], $array2 : double[])
 
-Check if two double arrays equal.
+If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
-If at least one of the arrays is not defined, a excetpion occurs.
+If the array 1 is defined and the array 2 is not defined, return C<0>.
+
+If the array 1 is not defined, the array 2 is defined, return C<0>.
+
+If the array 1 is defined and the array 2 is defined and the all elements of array 1 are equal to all elements of array 2, return C<1>.
+
+Otherwise return C<0>.
 
 =head2 equals_float
 
   static method equals_float : int ($array1 : float[], $array2 : float[])
 
-Check if two float arrays equal.
+If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
-If at least one of the arrays is not defined, a excetpion occurs.
+If the array 1 is defined and the array 2 is not defined, return C<0>.
+
+If the array 1 is not defined, the array 2 is defined, return C<0>.
+
+If the array 1 is defined and the array 2 is defined and the all elements of array 1 are equal to all elements of array 2, return C<1>.
+
+Otherwise return C<0>.
 
 =head2 equals_int
 
   static method equals_int : int ($array1 : int[], $array2 : int[])
 
-Check if two int arrays equal.
+If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
-If at least one of the arrays is not defined, a excetpion occurs.
+If the array 1 is defined and the array 2 is not defined, return C<0>.
+
+If the array 1 is not defined, the array 2 is defined, return C<0>.
+
+If the array 1 is defined and the array 2 is defined and the all elements of array 1 are equal to all elements of array 2, return C<1>.
+
+Otherwise return C<0>.
 
 =head2 equals_long
 
   static method equals_long : int ($array1 : long[], $array2 : long[])
 
-Check if two long arrays equal.
+If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
-If at least one of the arrays is not defined, a excetpion occurs.
+If the array 1 is defined and the array 2 is not defined, return C<0>.
+
+If the array 1 is not defined, the array 2 is defined, return C<0>.
+
+If the array 1 is defined and the array 2 is defined and the all elements of array 1 are equal to all elements of array 2, return C<1>.
+
+Otherwise return C<0>.
 
 =head2 equals_object
 
   static method static method equals_object : int ($objs1 : object[], $objs2 : object[], $equality_checker : EqualityChecker)
 
-Check equality of two array. You must sepecify a L<EqualityChecker|SPVM::EqualityChecker> object to check the equality of each element.
+If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
-If the equality checkier is not defined, the address is checked to equal.
+If the array 1 is defined and the array 2 is not defined, return C<0>.
 
-$objs1 and $objs2 and $equality_checker must be defined. Otherwise an exception will occur.
+If the array 1 is not defined, the array 2 is defined, return C<0>.
 
-Return 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return C<0>.
+If the array 1 is defined and the array 2 is defined and the all elements of array 1 are equal to all elements of array 2 using the equality checker, return C<1>.
+
+The equality checker is not defined, the address is used to check the equality.
+
+Otherwise return C<0>.
 
 =head2 equals_object_address
 
@@ -433,17 +467,29 @@ The alias for the following code using L</"equals_object">.
 
   static method equals_short : int ($array1 : short[], $array2 : short[])
 
-Check if two short arrays equal.
+If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
-If at least one of the arrays is not defined, a excetpion occurs.
+If the array 1 is defined and the array 2 is not defined, return C<0>.
+
+If the array 1 is not defined, the array 2 is defined, return C<0>.
+
+If the array 1 is defined and the array 2 is defined and the all elements of array 1 are equal to all elements of array 2, return C<1>.
+
+Otherwise return C<0>.
 
 =head2 equals_string
 
-  static method equals_string : int ($array1 : double[], $array2 : double[])
+  static method equals_string : int ($array1 : string[], $array2 : string[])
 
-Check if two string arrays equal.
+If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
-If at least one of the arrays is not defined, a excetpion occurs.
+If the array 1 is defined and the array 2 is not defined, return C<0>.
+
+If the array 1 is not defined, the array 2 is defined, return C<0>.
+
+If the array 1 is defined and the array 2 is defined and the all elements of array 1 are equal to all elements of array 2 using the C<eq> operator, return C<1>.
+
+Otherwise return C<0>.
 
 =head2 equals_string_address
 
