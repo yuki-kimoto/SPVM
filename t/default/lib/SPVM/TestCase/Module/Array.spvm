@@ -917,217 +917,13 @@ class TestCase::Module::Array {
     return 1;
   }
   
-  static method dump_byte : int () {
-    # Dump array
-    {
-      my $array = [(byte)1, 2, Fn->BYTE_MIN()];
-      
-      my $dump = Array->dump_byte($array);
-      
-      unless (Fn->contains($dump, "[\n  1,\n  2,\n  -128\n]")) {
-        return 0;
-      }
-    }
-    
-    # Dump undef
-    {
-      my $dump = Array->dump_byte(undef);
-      
-      unless ($dump eq "undef") {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-  
-  static method dump_double : int () {
-    # Dump array
-    {
-      my $array = [(double)1, 2, 2.45];
-
-      my $dump = Array->dump_double($array);
-
-      unless (Fn->contains($dump, "[\n  1,\n  2,\n  2.45\n]")) {
-        return 0;
-      }
-    }
-
-    # Dump undef
-    {
-      my $dump = Array->dump_double(undef);
-      
-      unless ($dump eq "undef") {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  static method dump_float : int () {
-    # Dump array
-    {
-      my $array = [(float)1, 2, 2.45f];
-
-      my $dump = Array->dump_float($array);
-
-      unless (Fn->contains($dump, "[\n  1,\n  2,\n  2.45\n]")) {
-        return 0;
-      }
-    }
-
-    # Dump undef
-    {
-      my $dump = Array->dump_float(undef);
-      
-      unless ($dump eq "undef") {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  static method dump_int : int () {
-    # Dump array
-    {
-      my $array = [(int)1, 2, Fn->INT_MIN()];
-
-      my $dump = Array->dump_int($array);
-
-      unless (Fn->contains($dump, "[\n  1,\n  2,\n  -2147483648\n]")) {
-        return 0;
-      }
-    }
-
-    # Dump undef
-    {
-      my $dump = Array->dump_int(undef);
-      
-      unless ($dump eq "undef") {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  static method dump_long : int () {
-    # Dump array
-    {
-      my $array = [(long)1, 2, Fn->LONG_MIN()];
-
-      my $dump = Array->dump_long($array);
-
-      unless (Fn->contains($dump, "[\n  1,\n  2,\n  -9223372036854775808\n]")) {
-        return 0;
-      }
-    }
-
-    # Dump undef
-    {
-      my $dump = Array->dump_long(undef);
-      
-      unless ($dump eq "undef") {
-        return 0;
-      }
-    }
-
-
-    return 1;
-  }
-
-  static method dump_object : int () {
-    
-    {
-      my $minimals = [
-        TestCase::Minimal->new_xy(1, 2),
-        TestCase::Minimal->new_xy(3, 4),
-        TestCase::Minimal->new_xy(5, 6)
-      ];
-
-      my $dump = Array->dump_object($minimals, method : string ($obj : object) {
-        my $minimal = (TestCase::Minimal)$obj;
-        my $x = $minimal->x;
-        my $y = $minimal->y;
-        my $str = "($x,$y)";
-        return $str;
-      });
-
-      if ($dump eq "[\n  (1,2),\n  (3,4),\n  (5,6)\n]") {
-        return 1;
-      }
-    }
-
-    # Dump undef
-    {
-      my $dump = Array->dump_object(undef, undef);
-      
-      unless ($dump == undef) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  static method dump_short : int () {
-    # Dump array
-    {
-      my $array = [(short)1, 2, Fn->SHORT_MIN()];
-
-      my $dump = Array->dump_short($array);
-
-      unless (Fn->contains($dump, "[\n  1,\n  2,\n  -32768\n]")) {
-        return 0;
-      }
-    }
-    
-    # Dump undef
-    {
-      my $dump = Array->dump_short(undef);
-      
-      unless ($dump eq "undef") {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  static method dump_string : int () {
-    # Dump array
-    {
-      my $array = ["abc", "def", "ghi"];
-
-      my $dump = Array->dump_string($array);
-
-      unless (Fn->contains($dump, "[\n  \"abc\",\n  \"def\",\n  \"ghi\"\n]")) {
-        return 0;
-      }
-    }
-
-    # Dump undef
-    {
-      my $dump = Array->dump_string(undef);
-      
-      unless ($dump eq "undef") {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
   static method dump_unsigned_byte : int () {
     # Dump array
     {
       my $array = [(byte)1, 2, -1, Fn->UBYTE_MAX];
       
       my $dump = Array->dump_unsigned_byte($array);
-      
-      unless ($dump eq "[\n  1,\n  2,\n  255,\n  255\n]") {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  255,\n  255\n] : byte[]")) {
         return 0;
       }
     }
@@ -1151,7 +947,7 @@ class TestCase::Module::Array {
       
       my $dump = Array->dump_unsigned_int($array);
       
-      unless ($dump eq "[\n  1,\n  2,\n  4294967295,\n  4294967295\n]") {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  4294967295,\n  4294967295\n] : int[]")) {
         return 0;
       }
     }
@@ -1175,7 +971,7 @@ class TestCase::Module::Array {
       
       my $dump = Array->dump_unsigned_long($array);
       
-      unless ($dump eq "[\n  1,\n  2,\n  18446744073709551615,\n  18446744073709551615\n]") {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  18446744073709551615,\n  18446744073709551615\n] : long[]")) {
         return 0;
       }
     }
@@ -1199,7 +995,7 @@ class TestCase::Module::Array {
       
       my $dump = Array->dump_unsigned_short($array);
       
-      unless ($dump eq "[\n  1,\n  2,\n  65535,\n  65535\n]") {
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  65535,\n  65535\n] : short[]")) {
         return 0;
       }
     }

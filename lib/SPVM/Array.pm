@@ -337,89 +337,13 @@ Copy the addresses of the elements of a C<string> array.
 
 If the array is not defined, return C<undef>.
 
-=head2 dump_byte
-
-  static method dump_byte : string ($array : byte[])
-  
-Convert the array in the C<byte> array to string and join them with "," and surround it with "[" and "]", and return it.
-
-For readability spaces and line breaks are inserted.
-
-If the C<byte> array is not defined, return C<undef>.
-
-=head2 dump_double
-
-  static method dump_double : string ($array : double[])
-  
-Convert the array in the double array to string and join them with "," and surround it with "[" and "]", and return it.
-
-For readability spaces and line breaks are inserted.
-
-If byte array is not defined, return C<undef>.
-
-=head2 dump_float
-
-  static method dump_float : string ($array : float[])
-  
-Convert the array in the float array to string and join them with "," and surround it with "[" and "]", and return it.
-
-For readability spaces and line breaks are inserted.
-
-If byte array is not defined, return C<undef>.
-
-=head2 dump_int
-
-  static method dump_int : string ($array : int[])
-  
-Convert the array in the int array to string and join them with "," and surround it with "[" and "]", and return it.
-
-If byte array is not defined, return C<undef>.
-
-=head2 dump_long
-
-  static method dump_long : string ($array : long[])
-  
-Convert the array in the long array to string and join them with "," and surround it with "[" and "]", and return it.
-
-If byte array is not defined, return C<undef>.
-
-=head2 dump_object
-
-  static method dump_object : string ($array : object[], $stringer : Stringer)
-  
-Convert the array in the object array to string by a C<SPVM::Stringer> callback implementation and join them with "," and surround it with "[" and "]", and return it.
-
-For readability spaces and line breaks are inserted.
-
-If string array is not defined, return C<undef>.
-
-=head2 dump_short
-
-  static method dump_short : string ($array : short[])
-  
-Convert the array in the short array to string and join them with "," and surround it with "[" and "]".
-
-For readability spaces and line breaks are inserted.
-
-If byte array is not defined, return C<undef>.
-
-=head2 dump_string
-
-  static method dump_string : string ($array : string[])
-  
-Join the array in the array with "," and surround it with "[" and "]", and return it.
-
-For readability spaces and line breaks are inserted.
-
-If string array is not defined, return C<undef>.
-
 =head2 dump_unsigned_byte
 
   static method dump_unsigned_byte : string ($array : byte[])
   
 Convert the array in the byte array to string interpreting as an unsigned 8bit integer and join them with "," and surround it with "[" and "]", and return it.
 
-If byte array is not defined, return C<undef>.
+If byte array is not defined, return C<"undef">.
 
 =head2 dump_unsigned_int
 
@@ -427,7 +351,7 @@ If byte array is not defined, return C<undef>.
   
 Convert the array in the int array to string interpreting as an unsigned 32bit integer and join them with "," and surround it with "[" and "]", and return it.
 
-If byte array is not defined, return C<undef>.
+If byte array is not defined, return C<"undef">.
 
 =head2 dump_unsigned_long
 
@@ -437,7 +361,7 @@ Convert the array in the long array to string interpreting as an unsigned 64bit 
 
 For readability spaces and line breaks are inserted.
 
-If byte array is not defined, return C<undef>.
+If byte array is not defined, return C<"undef">.
 
 =head2 dump_unsigned_short
 
@@ -447,7 +371,7 @@ Convert the array in the short array to string interpreting as an unsigned 16bit
 
 For readability spaces and line breaks are inserted.
 
-If byte array is not defined, return C<undef>.
+If byte array is not defined, return C<"undef">.
 
 =head2 equals_byte
 

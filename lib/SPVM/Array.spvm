@@ -343,54 +343,6 @@ class Array {
     return dump $array;
   }
   
-  precompile static method dump_double : string ($array : double[]) {
-    return dump $array;
-  }
-  
-  precompile static method dump_float : string ($array : float[]) {
-    return dump $array;
-  }
-  
-  precompile static method dump_int : string ($array : int[]) {
-    return dump $array;
-  }
-  
-  precompile static method dump_long : string ($array : long[]) {
-    return dump $array;
-  }
-  
-  precompile static method dump_object : string ($array : object[], $stringer : Stringer) {
-    
-    unless ($array) {
-      return undef;
-    }
-    
-    my $dump = "[\n";
-    
-    for (my $i = 0; $i < @$array; $i++) {
-      my $string = $stringer->($array->[$i]);
-      $dump .= "  $string";
-      if ($i != @$array - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "]";
-    
-    return $dump;
-  }
-  
-  precompile static method dump_short : string ($array : short[]) {
-    return dump $array;
-  }
-  
-  precompile static method dump_string : string ($array : string[]) {
-    return dump $array;
-  }
-
   precompile static method dump_unsigned_byte : string ($array : byte[]) {
     
     unless ($array) {
@@ -410,7 +362,7 @@ class Array {
       }
     }
     
-    $dump .= "]";
+    $dump .= "] : " . ref $array;
 
     return $dump;
   }
@@ -434,7 +386,7 @@ class Array {
       }
     }
     
-    $dump .= "]";
+    $dump .= "] : " . ref $array;
 
     return $dump;
   }
@@ -458,7 +410,7 @@ class Array {
       }
     }
     
-    $dump .= "]";
+    $dump .= "] : " . ref $array;
 
     return $dump;
   }
@@ -482,7 +434,7 @@ class Array {
       }
     }
     
-    $dump .= "]";
+    $dump .= "] : " . ref $array;
 
     return $dump;
   }
