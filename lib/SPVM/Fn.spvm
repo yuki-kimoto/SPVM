@@ -96,6 +96,14 @@ class Fn {
   }
   
   static method contains : int ($string : string, $substring : string) {
+    unless ($string) {
+      die "The string must be defined";
+    }
+    
+    unless ($substring) {
+      die "The substring must be defined";
+    }
+    
     my $contains = 0;
     if (&index($string, $substring, 0) >= 0) {
       $contains = 1;
@@ -154,6 +162,11 @@ class Fn {
   }
   
   precompile static method index_len : int ($string : string, $substring : string, $offset : int, $max_length : int) {
+    
+    unless ($offset >= 0) {
+      die "The offset must be greater than or equal to 0";
+    }
+    
     my $substring_length = length $substring;
     
     if ($max_length > length $string) {
