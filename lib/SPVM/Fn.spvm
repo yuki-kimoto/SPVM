@@ -149,38 +149,38 @@ class Fn {
     return $value;
   }
   
-  static method index : int ($string : string, $substring : string, $start_pos : int) {
-    return &index_len($string, $substring, $start_pos, length $string);
+  static method index : int ($string : string, $substring : string, $offset : int) {
+    return &index_len($string, $substring, $offset, length $string);
   }
   
-  precompile static method index_len : int ($string : string, $substring : string, $start_pos : int, $max_string_length : int) {
+  precompile static method index_len : int ($string : string, $substring : string, $offset : int, $max_length : int) {
     my $substring_length = length $substring;
     
-    if ($max_string_length > length $string) {
-      $max_string_length = length $string;
+    if ($max_length > length $string) {
+      $max_length = length $string;
     }
     
-    if ($start_pos >= $max_string_length) {
+    if ($offset >= $max_length) {
       my $ret : int;
       if ($substring_length == 0) {
-        $ret = $max_string_length;
+        $ret = $max_length;
       }
       else {
         $ret = -1;
       }
       return $ret;
     }
-    if ($start_pos < 0) {
-      $start_pos = 0;
+    if ($offset < 0) {
+      $offset = 0;
     }
     if ($substring_length == 0) {
-      return $start_pos;
+      return $offset;
     }
     
     my $first : byte  = $substring->[0];
-    my $max : int = ($max_string_length - $substring_length);
+    my $max : int = ($max_length - $substring_length);
     
-    for (my $i = $start_pos; $i <= $max; $i++) {
+    for (my $i = $offset; $i <= $max; $i++) {
       if ($string->[$i] != $first) {
         while (++$i <= $max && $string->[$i] != $first) {}
       }
@@ -522,22 +522,22 @@ class Fn {
     return $repeat_string;
   }
   
-  static method rindex : int ($string : string, $substring : string, $start_pos : int) {
-    return &rindex_len($string, $substring, $start_pos, length $string);
+  static method rindex : int ($string : string, $substring : string, $offset : int) {
+    return &rindex_len($string, $substring, $offset, length $string);
   }
   
-  precompile static method rindex_len : int ($string : string, $substring : string, $start_pos : int, $max_string_length : int) {
+  precompile static method rindex_len : int ($string : string, $substring : string, $offset : int, $max_length : int) {
     my $substring_length = length $substring;
     
-    if ($max_string_length > length $string) {
-      $max_string_length = length $string;
+    if ($max_length > length $string) {
+      $max_length = length $string;
     }
     
     my $substring_len = length $substring;
-    if ($start_pos > $max_string_length - $substring_length) {
-      $start_pos = $max_string_length - $substring_len;
+    if ($offset > $max_length - $substring_length) {
+      $offset = $max_length - $substring_len;
     }
-    for (my $i = $start_pos; $i >= 0; --$i) {
+    for (my $i = $offset; $i >= 0; --$i) {
       my $match = 1;
       for (my $j = 0; $j < $substring_len; ++$j) {
         if ($string->[$i + $j] != $substring->[$j]) {
