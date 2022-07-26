@@ -463,26 +463,7 @@ class Fn {
 
   native static method memcpy : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
   
-  precompile static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
-    for (my $i = 0; $i < $length; $i++) {
-      my $dist_index = $dest_offset + $i;
-      my $source_index = $source_offset + $i;
-      $dest->[$dist_index] = $source->[$source_index];
-    }
-  }
-
   native static method memmove : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
-
-  static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
-    if ($dest == $source) {
-      my $source_length = @$source;
-      my $source_copy = new object[$source_length];
-      my $source_offset_plus_length = $source_offset + $length;
-      &memcpy_object($source_copy, $source_offset, $source, $source_offset, $length);
-      $source = $source_copy;
-    }
-    &memcpy_object($dest, $dest_offset, $source, $source_offset, $length);
-  }
 
   static method ord : int ($utf8_character : string) {
     unless ($utf8_character) {

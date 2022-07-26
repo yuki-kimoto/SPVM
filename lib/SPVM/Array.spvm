@@ -40,7 +40,7 @@ class Array {
       }
     }
     else {
-      Fn->memcpy_object($new_array, 0, $array, 0, $length);
+      Array->memcpy_object_address($new_array, 0, $array, 0, $length);
     }
     
     return $new_array;
@@ -213,7 +213,7 @@ class Array {
       }
     }
     else {
-      Array->memcpy_object($new_array, 0, $array, $offset, $length);
+      Array->memcpy_object_address($new_array, 0, $array, $offset, $length);
     }
     
     return $new_array;
@@ -301,7 +301,7 @@ class Array {
     
     my $new_array = new string[$length];
     
-    Array->memcpy_string($new_array, 0, $array, $offset, $length);
+    Array->memcpy_string_address($new_array, 0, $array, $offset, $length);
     
     return $new_array;
   }
@@ -886,10 +886,14 @@ class Array {
   native static method memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
   native static method memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
   native static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
-  static method memcpy_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
-    &memcpy_object($dest, $dest_offset, $source, $source_offset, $length);
+  static method memcpy_string_address : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
+    &memcpy_object_address($dest, $dest_offset, $source, $source_offset, $length);
   }
-  precompile static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
+  static method memcpy_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
+    warn "Array->memcpy_string is deprecated. Use memcpy_string_address instead";
+    &memcpy_string_address($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  precompile static method memcpy_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     unless ($dest) {
       die "The destination must be defined";
     }
@@ -917,6 +921,10 @@ class Array {
       $dest->[$dist_index] = $source->[$source_index];
     }
   }
+  static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
+    warn "Array->memcpy_object is deprecated. Use memcpy_object_address instead";
+    &memcpy_object_address($dest, $dest_offset, $source, $source_offset, $length);
+  }
   
   native static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
   native static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
@@ -924,10 +932,14 @@ class Array {
   native static method memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
   native static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
   native static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
-  static method memmove_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
+  static method memmove_string_address : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
     &memmove_object($dest, $dest_offset, $source, $source_offset, $length);
   }
-  static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
+  static method memmove_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
+    warn "Array->memmove_string is deprecated. Use memmove_string_address instead";
+    &memmove_string_address($dest, $dest_offset, $source, $source_offset, $length);
+  }
+  static method memmove_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     unless ($dest) {
       die "The destination must be defined";
     }
@@ -963,6 +975,10 @@ class Array {
         $dest->[$dist_index] = $source->[$source_index];
       }
     }
+  }
+  static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
+    warn "Array->memmove_object is deprecated. Use memmove_object_address instead";
+    &memmove_object_address($dest, $dest_offset, $source, $source_offset, $length);
   }
   
   native static method new_proto : object[] ($proto_array : object[], $length : int);

@@ -7,6 +7,19 @@
     * Add the doc of clear method of Point class.
     * Add the doc of clear method of Point3D class.
     * Remove the doc of the methods of Fn class. These remains wrongly.
+    * Remove the doc of memmove_byte, memmove_double, memmove_float, memmove_int, memmove_long, memmove_short, new_array_proto
+      memset_byte, memset_double, memset_float, memset_int, memset_long, memset_short, memset_object, memcpy_short, memcpy_long
+      memcpy_int, memcpy_float, memcpy_double, memcpy_byte, equals_array_string, equals_array_short, equals_array_object
+      equals_array_long, equals_array_int, equals_array_float, equals_array_double, equals_array_byte, 
+      dump_array_unsigned_short, dump_array_unsigned_int, dump_array_unsigned_byte, dump_array_string,
+      dump_array_short,  dump_array_object, dump_array_unsigned_short, dump_array_long, dump_array_int,
+      dump_array_float, dump_array_double, dump_array_byte, copy_array_string,
+      copy_array_short, copy_array_range_string, copy_array_range_short, copy_array_range_object,
+      copy_array_range_long, copy_array_range_int, copy_array_range_float, copy_array_range_double,
+      copy_array_range_byte, copy_array_object, copy_array_long, copy_array_int, copy_array_float,
+      copy_array_double, copy_array_byte in Fn class. This remained wrongly.
+    * Remove the doc of memmove, in Array class.
+    * Add the doc of Array->memmove_string, Array->memcpy_string.
   [New Document]
     * Add Fields section to Point class
     * Add Super Class section to Point3D class
@@ -23,7 +36,13 @@
       The original behaivior can be used by copy_range_object_address.
     * copy_range_string copies the value of the string, not address. This is my simple implement mistake.
       The original behaivior can be used by copy_range_string_address.
-      
+    * Remove Fn->memcpy_object, Fn->memmove_object. This remained wrongly.
+  [Deprecation]
+    * Array->memcpy_object is deprecated. Use memcpy_object_address instead. This method will be removed at 0.9630.
+    * Array->memcpy_string is deprecated. Use memcpy_string_address instead. This method will be removed at 0.9630.
+    * Array->memmove_object is deprecated. Use memmove_object_address instead. This method will be removed at 0.9630.
+    * Array->memmove_string is deprecated. Use memmove_string_address instead. This method will be removed at 0.9630.
+    
 0.9628 2022-07-25
   [New Features]
     * Add replace method to ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, List.

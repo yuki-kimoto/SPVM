@@ -29,7 +29,7 @@ class List {
     }
     
     if ($objects) {
-      Array->memcpy_object($self->{values}, 0, $objects, 0, $length);
+      Array->memcpy_object_address($self->{values}, 0, $objects, 0, $length);
     }
     
     $self->{length} = $length;
@@ -87,7 +87,7 @@ class List {
     
     my $values = $self->{values};
     if ($index != $length) {
-      Array->memmove_object($values, $index + 1, $values, $index, $length - $index);
+      Array->memmove_object_address($values, $index + 1, $values, $index, $length - $index);
     }
     $values->[$index] = $value;
     
@@ -139,7 +139,7 @@ class List {
     my $remove_value = $values->[$index];
     
     my $move_length = $length - $index - 1;
-    Array->memmove_object($values, $index, $values, $index + 1, $move_length);
+    Array->memmove_object_address($values, $index, $values, $index + 1, $move_length);
     $values->[$length - 1] = undef;
     
     $self->{length}--;
@@ -168,10 +168,10 @@ class List {
     $self->_maybe_extend($new_length);
     
     my $move_length = $self->{length} - $offset - $remove_length;
-    Array->memmove_object($self->{values}, $offset + $replace_length, $self->{values}, $offset + $remove_length, $move_length);
+    Array->memmove_object_address($self->{values}, $offset + $replace_length, $self->{values}, $offset + $remove_length, $move_length);
     
     if ($replace) {
-      Array->memcpy_object($self->{values}, $offset, $replace, 0, $replace_length);
+      Array->memcpy_object_address($self->{values}, $offset, $replace, 0, $replace_length);
     }
     
     $self->{length} = $new_length;
@@ -222,7 +222,7 @@ class List {
     }
     
     my $values = $self->{values};
-    Array->memcpy_object($values, 0, $array, 0, $cur_length);
+    Array->memcpy_object_address($values, 0, $array, 0, $cur_length);
   }
   
   method shift : object () {
@@ -237,7 +237,7 @@ class List {
     
     my $value = $values->[0];
     
-    Array->memmove_object($values, 0, $values, 1, $length - 1);
+    Array->memmove_object_address($values, 0, $values, 1, $length - 1);
     $values->[$length - 1] = undef;
     
     $self->{length}--;
@@ -248,7 +248,7 @@ class List {
   method to_array : object[] () {
     my $length = $self->{length};
     my $objects = Array->new_proto($self->{values}, $length);
-    Array->memcpy_object($objects, 0, $self->{values}, 0, $length);
+    Array->memcpy_object_address($objects, 0, $self->{values}, 0, $length);
     return $objects;
   }
   
@@ -261,7 +261,7 @@ class List {
     
     my $values = $self->{values};
     
-    Array->memmove_object($values, 1, $values, 0, $length);
+    Array->memmove_object_address($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
@@ -283,7 +283,7 @@ class List {
     
     my $length = $self->{length};
     my $values = $self->{values};
-    Array->memcpy_object($new_values, 0, $values, 0, $length);
+    Array->memcpy_object_address($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;

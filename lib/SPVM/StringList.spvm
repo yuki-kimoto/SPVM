@@ -28,7 +28,7 @@ class StringList {
     $self->{length} = $length;
     
     if ($array) {
-      Array->memcpy_string($values, 0, $array, 0, $length);
+      Array->memcpy_string_address($values, 0, $array, 0, $length);
     }
     
     $self->{values} = $values;
@@ -83,7 +83,7 @@ class StringList {
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
-      Array->memmove_string($values, $dist_index, $values, $index, $move_length);
+      Array->memmove_string_address($values, $dist_index, $values, $index, $move_length);
     }
     $values->[$index] = $value;
     
@@ -134,7 +134,7 @@ class StringList {
     my $dist_index = $index;
     my $src_index = $index + 1;
     my $move_length = $length - $index - 1;
-    Array->memmove_string($values, $dist_index, $values, $src_index, $move_length);
+    Array->memmove_string_address($values, $dist_index, $values, $src_index, $move_length);
     
     $self->{length}--;
     
@@ -162,10 +162,10 @@ class StringList {
     $self->_maybe_extend($new_length);
     
     my $move_length = $self->{length} - $offset - $remove_length;
-    Array->memmove_string($self->{values}, $offset + $replace_length, $self->{values}, $offset + $remove_length, $move_length);
+    Array->memmove_string_address($self->{values}, $offset + $replace_length, $self->{values}, $offset + $remove_length, $move_length);
     
     if ($replace) {
-      Array->memcpy_string($self->{values}, $offset, $replace, 0, $replace_length);
+      Array->memcpy_string_address($self->{values}, $offset, $replace, 0, $replace_length);
     }
     
     $self->{length} = $new_length;
@@ -216,7 +216,7 @@ class StringList {
       die "The length of the array must be the same as the length of the list";
     }
     
-    Array->memcpy_string($self->{values}, 0, $array, 0, $cur_length);
+    Array->memcpy_string_address($self->{values}, 0, $array, 0, $cur_length);
   }
   
   method shift : string () {
@@ -230,7 +230,7 @@ class StringList {
     
     my $value = $values->[0];
     
-    Array->memmove_string($values, 0, $values, 1, $length - 1);
+    Array->memmove_string_address($values, 0, $values, 1, $length - 1);
     
     $values->[$length - 1] = 0;
     
@@ -246,7 +246,7 @@ class StringList {
     
     my $values = $self->{values};
     
-    Array->memcpy_string($array, 0, $values, 0, $length);
+    Array->memcpy_string_address($array, 0, $values, 0, $length);
     
     return $array;
   }
@@ -260,7 +260,7 @@ class StringList {
     
     my $values = $self->{values};
     
-    Array->memmove_string($values, 1, $values, 0, $length);
+    Array->memmove_string_address($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length} = $new_length;
@@ -282,7 +282,7 @@ class StringList {
     
     my $length = $self->{length};
     my $values = $self->{values};
-    Array->memcpy_string($new_values, 0, $values, 0, $length);
+    Array->memcpy_string_address($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;

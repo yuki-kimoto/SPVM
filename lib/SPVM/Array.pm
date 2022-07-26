@@ -603,9 +603,9 @@ Destnation offset + length must be within the range of the destination array. Ot
 
 Source offset + length must be within the range of the source array. Otherwise an exception will occur.
 
-=head2 memcpy_object
+=head2 memcpy_object_address
 
-  static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
+  static method memcpy_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
 
 Copy source object array to destination object array with the each offset and a length.
 
@@ -620,6 +620,12 @@ Length must be more than or equals to 0. Otherwise an exception will occur.
 Destnation offset + length must be within the range of the destination array. Otherwise an exception will occur.
 
 Source offset + length must be within the range of the source array. Otherwise an exception will occur.
+
+=head2 memcpy_object
+
+  static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
+
+The alias for L</"memcpy_object_address">. This method is deprecated.
 
 =head2 memcpy_short
 
@@ -639,29 +645,17 @@ Destnation offset + length must be within the range of the destination array. Ot
 
 Source offset + length must be within the range of the source array. Otherwise an exception will occur.
 
-=head2 memmove
+=head2 memcpy_string_address
 
-  static method memmove : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
+  static method memcpy_string_address : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int);
 
-The destination must be a string type, a numeric type, or a multi numeric type, otherwise an exception is thrown.
+The alias for L</"memcpy_object_address">.
 
-If the destination is a read-only string, an exception is thrown.
+=head2 memcpy_string
 
-The source must be a string type, a numeric type, or a multi numeric type, otherwise an exception is thrown.
+  static method memcpy_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int);
 
-Copy the source to the destination with the given each offset and the given length by byte unit.
-
-If source data range and destination data overlap, the result is not guaranteed.
-
-The destination must be defined. Otherwise an exception will occur.
-
-The source must be defined. Otherwise an exception will occur.
-
-The length must be more than or equals to 0. Otherwise an exception will occur.
-
-The destination byte offset + byte length must be within the byte range of the destination. Otherwise an exception will occur.
-
-The source byte offset + byte length must be within the byte range of the source. Otherwise an exception will occur.
+The alias for L</"memcpy_string_address">. This method is deprecated.
 
 =head2 memmove_byte
 
@@ -757,6 +751,12 @@ Source offset + length must be within the range of the source array. Otherwise a
 
   static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
 
+The alias for L</"memmove_object_address>. This method is deprecated.
+
+=head2 memmove_object_address
+
+  static method memmove_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
+
 Copy source object array to destination object array with the each offset and a length.
 
 If source data range and destination data overlap, the result is guaranteed.
@@ -788,6 +788,18 @@ Length must be more than or equals to 0. Otherwise an exception will occur.
 Destnation offset + length must be within the range of the destination array. Otherwise an exception will occur.
 
 Source offset + length must be within the range of the source array. Otherwise an exception will occur.
+
+=head2 memmove_string_address
+
+  static method memmove_string_address : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int);
+
+The alias for L</"memmove_object_address">.
+
+=head2 memmove_string
+
+  static method memmove_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int);
+
+The alias for L</"memmove_string_address">. This method is deprecated.
 
 =head2 memset_byte
 
