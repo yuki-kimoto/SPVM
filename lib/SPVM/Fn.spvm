@@ -312,10 +312,10 @@ class Fn {
     my $is_perl_space = 0;
     switch ($code_point) {
       case 0x20: # ' '  SP
-      case 0x0d: # '\r' CR
-      case 0x0a: # '\n' LF
+      case 0x0D: # '\r' CR
+      case 0x0A: # '\n' LF
       case 0x09: # '\t' HT
-      case 0x0c: # '\f' FF
+      case 0x0C: # '\f' FF
       {
         $is_perl_space = 1;
         break;
@@ -365,7 +365,7 @@ class Fn {
   
   static method is_space : int ($code_point : int) {
     
-    if (($code_point >= 0x09 && $code_point <= 0x0d) || $code_point == 0x20) {
+    if (($code_point >= 0x09 && $code_point <= 0x0D) || $code_point == 0x20) {
       return 1;
     }
     else {

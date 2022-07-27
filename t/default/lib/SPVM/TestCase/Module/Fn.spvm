@@ -1464,7 +1464,7 @@ class TestCase::Module::Fn {
       for (my $i = 0; $i < 128; $i++) {
         my $char = $i;
         
-        if ($char == 0x20 || $char == 0x0d || $char == 0x0a || $char == 0x09 || $char == 0x0c) {
+        if ($char == 0x20 || $char == 0x0D || $char == 0x0A || $char == 0x09 || $char == 0x0C) {
           my $ret = Fn->is_perl_space($char);
           unless ($ret == 1) {
             $ok = 0;
@@ -1573,7 +1573,7 @@ class TestCase::Module::Fn {
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
-      if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
+      if (($char >= 0x09 && $char <= 0x0D) || $char == 0x20) {
         my $ret = Fn->is_space($char);
         unless ($ret == 1) {
           $ok = 0;
