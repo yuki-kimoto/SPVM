@@ -446,7 +446,7 @@ If string array is undef, an exception occurs.
 
 =head2 labs
 
-  static method labs : long ($x : long)
+  static method labs : long ($value : long)
 
 Return the absolute value.
 

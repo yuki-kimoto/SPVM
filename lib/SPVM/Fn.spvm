@@ -430,16 +430,16 @@ class Fn {
     return $join;
   }
   
-  static method labs : long ($x : long) {
+  static method labs : long ($value : long) {
     
-    my $ret = 0L;
-    if ($x > 0) {
-      $ret = $x;
+    my $labs = 0L;
+    if ($value > 0) {
+      $labs = $value;
     }
     else {
-      $ret = -$x;
+      $labs = -$value;
     }
-    return $ret;
+    return $labs;
   }
   
   precompile static method lc : string ($string : string) {
