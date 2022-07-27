@@ -6,6 +6,7 @@
     * If the element of the strings of the argument of Fn->join is undef, "" is joined.
     * Fn->ord throws exceptions when the input is undefined or the length is less than 0.
     * Fn->pow, Fn->powi throws exceptions when the arguments are invalid.
+    * Improve Fn->substr exception messages.
 0.9629 2022-07-26
   [New Features]
     * Add copy_object_address to Array class.

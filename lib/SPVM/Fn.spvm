@@ -627,11 +627,19 @@ class Fn {
   native static method shorten : void ($string : mutable string, $length : int);
   
   precompile static method split : string[] ($sep : string, $string : string) {
+    unless ($sep) {
+      die "The separator must be defined";
+    }
+    
+    unless ($string) {
+      die "The string must be defined";
+    }
+    
     my $string_length = length $string;
     my $sep_length = length $sep;
     
-    if ($sep_length == 0) {
-      die "Separator must not be empty string";
+    unless ($sep_length > 0) {
+      die "The length of the separator must be greater than 0";
     }
     
     my $separated_strings_list = StringList->new_len(0);
@@ -680,22 +688,22 @@ class Fn {
   
   precompile static method substr : string ($string : string, $offset : int, $length : int) {
     
-    if ($string == undef) {
+    unless ($string) {
       die "The string must be defined";
+    }
+    
+    unless ($offset >= 0) {
+      die "The offset must be greater than or equal to 0";
+    }
+    
+    unless ($length >= 0) {
+      die "The length must be greater than or equal to 0";
     }
     
     my $string_length = length $string;
     
-    if ($offset < 0 || $offset > $string_length - 1) {
-      die "Invalid offset $offset";
-    }
-    
-    if ($length < 0) {
-      die "Length must be non-zero value";
-    }
-    
-    if ($offset + $length > $string_length) {
-      die "Offset + length must not be over array length";
+    unless ($offset + $length <= $string_length) {
+      die "The offset + the length must be less than or equal to the length of the string";
     }
     
     my $slice = (mutable string)new_string_len($length);
