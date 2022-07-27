@@ -7,6 +7,10 @@ class TestCase::Module::Fn {
   
   static method BYTE_MAX : int () {
     
+    unless (Fn->BYTE_MAX isa byte) {
+      
+    }
+    
     unless (Fn->BYTE_MAX == Fn->INT8_MAX) {
       return 0;
     }
@@ -16,7 +20,34 @@ class TestCase::Module::Fn {
   
   static method BYTE_MIN : int () {
     
+    unless (Fn->BYTE_MAX isa byte) {
+      
+    }
+    
     unless (Fn->BYTE_MIN == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method INT8_MIN : int () {
+    unless (Fn->INT8_MIN  isa byte) {
+      return 0;
+    }
+    unless (Fn->INT8_MIN == -128) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method INT8_MAX : int () {
+    unless (Fn->INT8_MAX  isa byte) {
+      return 0;
+    }
+    
+    unless (Fn->INT8_MAX == 127) {
       return 0;
     }
     
@@ -58,17 +89,7 @@ class TestCase::Module::Fn {
     
     return 1;
   }
-
-  static method byte_constant : int () {
-    if ((int)Fn->INT8_MIN() == (int)(byte)-128) {
-      if ((int)Fn->INT8_MAX() == (int)(byte)127) {
-        return 1;
-      }
-    }
-
-    return 0;
-  }
-
+  
   static method chomp : int () {
     
     # Basic

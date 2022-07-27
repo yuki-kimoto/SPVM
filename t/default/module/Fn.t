@@ -36,7 +36,8 @@ my $nan_re = qr/(nan|ind)/i;
 {
   ok(SPVM::TestCase::Module::Fn->BYTE_MAX);
   ok(SPVM::TestCase::Module::Fn->BYTE_MIN);
-  ok(SPVM::TestCase::Module::Fn->byte_constant);
+  ok(SPVM::TestCase::Module::Fn->INT8_MAX);
+  ok(SPVM::TestCase::Module::Fn->INT8_MIN);
   ok(SPVM::TestCase::Module::Fn->short_constant);
   ok(SPVM::TestCase::Module::Fn->int_constant);
   ok(SPVM::TestCase::Module::Fn->spvm_like_constants);
