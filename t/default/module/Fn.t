@@ -16,17 +16,6 @@ use POSIX();
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-my $BYTE_MAX = 127;
-my $BYTE_MIN = -128;
-my $SHORT_MAX = 32767;
-my $SHORT_MIN = -32768;
-my $INT_MAX = 2147483647;
-my $INT_MIN = -2147483648;
-my $LONG_MAX = 9223372036854775807;
-my $LONG_MIN = -9223372036854775808;
-my $FLOAT_PRECICE = 16384.5;
-my $DOUBLE_PRECICE = 65536.5;
-
 # Note: Positive infinity(unix like system : inf, Windows : 1.#INF)
 my $POSITIVE_INFINITY = 9**9**9;
 my $NaN = 9**9**9 / 9**9**9;
@@ -131,26 +120,37 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Module::Fn->uc);
   
   # Extra
-  is(SPVM::Fn->INT16_MAX, $SHORT_MAX);
-  is(SPVM::Fn->INT16_MAX, 32767);
-  is(SPVM::Fn->INT16_MIN, $SHORT_MIN);
-  is(SPVM::Fn->INT16_MIN, -32768);
-  is(SPVM::Fn->INT32_MAX, $INT_MAX);
-  is(SPVM::Fn->INT32_MAX, 2147483647);
-  is(SPVM::Fn->INT32_MIN, $INT_MIN);
-  is(SPVM::Fn->INT32_MIN, -2147483648);
-  is(SPVM::Fn->INT64_MAX, $LONG_MAX);
-  is(SPVM::Fn->INT64_MAX, 9223372036854775807);
-  is(SPVM::Fn->INT64_MIN, $LONG_MIN);
-  is(SPVM::Fn->INT64_MIN, -9223372036854775808);
-  is(SPVM::Fn->INT8_MAX, $BYTE_MAX);
-  is(SPVM::Fn->INT8_MAX, 127);
-  is(SPVM::Fn->INT8_MIN, $BYTE_MIN);
-  is(SPVM::Fn->INT8_MIN, -128);
-  is(SPVM::Fn->UINT16_MAX, -1);
-  is(SPVM::Fn->UINT32_MAX, -1);
-  is(SPVM::Fn->UINT64_MAX, -1);
-  is(SPVM::Fn->UINT8_MAX, -1);
+  {
+    my $BYTE_MAX = 127;
+    my $BYTE_MIN = -128;
+    my $SHORT_MAX = 32767;
+    my $SHORT_MIN = -32768;
+    my $INT_MAX = 2147483647;
+    my $INT_MIN = -2147483648;
+    my $LONG_MAX = 9223372036854775807;
+    my $LONG_MIN = -9223372036854775808;
+    
+    is(SPVM::Fn->INT16_MAX, $SHORT_MAX);
+    is(SPVM::Fn->INT16_MAX, 32767);
+    is(SPVM::Fn->INT16_MIN, $SHORT_MIN);
+    is(SPVM::Fn->INT16_MIN, -32768);
+    is(SPVM::Fn->INT32_MAX, $INT_MAX);
+    is(SPVM::Fn->INT32_MAX, 2147483647);
+    is(SPVM::Fn->INT32_MIN, $INT_MIN);
+    is(SPVM::Fn->INT32_MIN, -2147483648);
+    is(SPVM::Fn->INT64_MAX, $LONG_MAX);
+    is(SPVM::Fn->INT64_MAX, 9223372036854775807);
+    is(SPVM::Fn->INT64_MIN, $LONG_MIN);
+    is(SPVM::Fn->INT64_MIN, -9223372036854775808);
+    is(SPVM::Fn->INT8_MAX, $BYTE_MAX);
+    is(SPVM::Fn->INT8_MAX, 127);
+    is(SPVM::Fn->INT8_MIN, $BYTE_MIN);
+    is(SPVM::Fn->INT8_MIN, -128);
+    is(SPVM::Fn->UINT16_MAX, -1);
+    is(SPVM::Fn->UINT32_MAX, -1);
+    is(SPVM::Fn->UINT64_MAX, -1);
+    is(SPVM::Fn->UINT8_MAX, -1);
+  }
 }
 
 # All object is freed
