@@ -410,6 +410,14 @@ class Fn {
   }
   
   precompile static method join : string ($sep : string, $strings : string[]) {
+    unless ($sep) {
+      die "The separator must be defined";
+    }
+    
+    unless ($strings) {
+      die "The strings must be defined";
+    }
+    
     my $join_buffer = StringBuffer->new;
     
     for (my $i = 0; $i < @$strings; $i++) {
