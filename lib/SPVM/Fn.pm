@@ -346,13 +346,13 @@ The hex string must contain only hex characters C<0-9a-zA-Z>. Otherwise an excep
 
 The alias for the following code using L</"index_len">.
 
-  my $ret = &index_len($string, $substring, $offset, length $string);
+  my $ret = &index_len($string, $substring, $offset, length $string - $offset);
 
 =head2 index_len
 
   static method index_len : int ($string : string, $substring : string, $offset : int, $max_length : int)
 
-Search for the substring in the string from the offset of the string to the offset + the max length.
+Search for the substring in the string from the offset to the offset + the length.
 
 If the substring is found, return the found offset. Otherwise return C<-1>.
 
