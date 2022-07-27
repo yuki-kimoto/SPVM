@@ -686,7 +686,7 @@ class Fn {
     return $separated_strings;
   }
   
-  precompile static method substr : string ($string : string, $offset : int, $length : int) {
+  static method substr : string ($string : string, $offset : int, $length : int) {
     
     unless ($string) {
       die "The string must be defined";
@@ -706,15 +706,11 @@ class Fn {
       die "The offset + the length must be less than or equal to the length of the string";
     }
     
-    my $slice = (mutable string)new_string_len($length);
+    my $substring = (mutable string)new_string_len($length);
     
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $slice->[$pos] = $string->[$i];
-      $pos++;
-    }
+    Fn->memcpy($substring, 0, $string, $offset, $length);
     
-    return $slice;
+    return $substring;
   }
   
   native static method to_double : double ($string : string);

@@ -1,6 +1,7 @@
 0.9630 2022-07-27
   [Performance fix]
     * Fn->join use StringBuffer internally.
+    * Improve substr performance.
   [Changes]
     * Fn->index, Fn->index_len, Fn->rindex, Fn->rindex_len throw an exception when the arguments are invalid.
     * If the element of the strings of the argument of Fn->join is undef, "" is joined.
