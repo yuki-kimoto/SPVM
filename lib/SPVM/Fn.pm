@@ -39,6 +39,13 @@ B<Fn> module provides SPVM Starndard Functions. B<Fn> contains number, string an
 
 =head1 Class Methods
 
+=head2 BYTE_MAX
+
+  static method BYTE_MAX : byte ()
+
+Same as L</"INT8_MAX">.
+
+=head2 BYTE_MIN
 
   static method BYTE_MIN : byte ()
 

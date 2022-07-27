@@ -5,6 +5,24 @@ class TestCase::Module::Fn {
   use Time;
   use Array;
   
+  static method BYTE_MAX : int () {
+    
+    unless (Fn->BYTE_MAX == Fn->INT8_MAX) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method BYTE_MIN : int () {
+    
+    unless (Fn->BYTE_MIN == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   static method abs : int () {
     
     # Positive values
