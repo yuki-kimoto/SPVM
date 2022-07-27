@@ -120,6 +120,108 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method spvm_like_constants : int () {
+    
+    unless (Fn->BYTE_MAX isa byte) {
+      return 0;
+    }
+    unless (Fn->BYTE_MAX == Fn->INT8_MAX) {
+      return 0;
+    }
+    unless (Fn->BYTE_MIN isa byte) {
+      return 0;
+    }
+    unless (Fn->BYTE_MIN == Fn->INT8_MIN) {
+      return 0;
+    }
+    unless (Fn->SHORT_MAX isa short) {
+      return 0;
+    }
+    unless (Fn->SHORT_MAX == Fn->INT16_MAX) {
+      return 0;
+    }
+    unless (Fn->SHORT_MAX isa short) {
+      return 0;
+    }
+    unless (Fn->SHORT_MIN == Fn->INT16_MIN) {
+      return 0;
+    }
+    unless (Fn->INT_MAX isa int) {
+      return 0;
+    }
+    unless (Fn->INT_MAX == Fn->INT32_MAX) {
+      return 0;
+    }
+    unless (Fn->INT_MIN isa int) {
+      return 0;
+    }
+    unless (Fn->INT_MIN == Fn->INT32_MIN) {
+      return 0;
+    }
+    unless (Fn->LONG_MAX isa long) {
+      return 0;
+    }
+    unless (Fn->LONG_MAX == Fn->INT64_MAX) {
+      return 0;
+    }
+    unless (Fn->LONG_MIN isa long) {
+      return 0;
+    }
+    unless (Fn->LONG_MIN == Fn->INT64_MIN) {
+      return 0;
+    }
+    unless (Fn->UBYTE_MAX isa byte) {
+      return 0;
+    }
+    unless (Fn->UBYTE_MAX == Fn->UINT8_MAX) {
+      return 0;
+    }
+    unless (Fn->USHORT_MAX isa short) {
+      return 0;
+    }
+    unless (Fn->USHORT_MAX == Fn->UINT16_MAX) {
+      return 0;
+    }
+    unless (Fn->UINT_MAX isa int) {
+      return 0;
+    }
+    unless (Fn->UINT_MAX == Fn->UINT32_MAX) {
+      return 0;
+    }
+    unless (Fn->ULONG_MAX isa long) {
+      return 0;
+    }
+    unless (Fn->ULONG_MAX == Fn->UINT64_MAX) {
+      return 0;
+    }
+    unless (Fn->FLOAT_MAX isa float) {
+      return 0;
+    }
+    unless (Fn->FLOAT_MAX == Fn->FLT_MAX) {
+      return 0;
+    }
+    unless (Fn->FLOAT_MIN isa float) {
+      return 0;
+    }
+    unless (Fn->FLOAT_MIN == Fn->FLT_MIN) {
+      return 0;
+    }
+    unless (Fn->DOUBLE_MAX isa double) {
+      return 0;
+    }
+    unless (Fn->DOUBLE_MAX == Fn->DBL_MAX) {
+      return 0;
+    }
+    unless (Fn->DOUBLE_MIN isa double) {
+      return 0;
+    }
+    unless (Fn->DOUBLE_MIN == Fn->DBL_MIN) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   static method abs : int () {
     
     # Positive values
@@ -2036,28 +2138,6 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-    return 1;
-  }
-
-  static method spvm_like_constants : int () {
-    
-    unless (Fn->INT8_MAX == Fn->BYTE_MAX ) { return 0; }
-    unless (Fn->INT8_MIN == Fn->BYTE_MIN) { return 0; }
-    unless (Fn->INT16_MAX == Fn->SHORT_MAX ) { return 0; }
-    unless (Fn->INT16_MIN == Fn->SHORT_MIN ) { return 0; }
-    unless (Fn->INT32_MAX == Fn->INT_MAX ) { return 0; }
-    unless (Fn->INT32_MIN == Fn->INT_MIN ) { return 0; }
-    unless (Fn->INT64_MAX == Fn->LONG_MAX ) { return 0; }
-    unless (Fn->INT64_MIN == Fn->LONG_MIN ) { return 0; }
-    unless (Fn->UINT8_MAX == Fn->UBYTE_MAX ) { return 0; }
-    unless (Fn->UINT16_MAX == Fn->USHORT_MAX ) { return 0; }
-    unless (Fn->UINT32_MAX == Fn->UINT_MAX ) { return 0; }
-    unless (Fn->UINT64_MAX == Fn->ULONG_MAX ) { return 0; }
-    unless (Fn->FLT_MAX == Fn->FLOAT_MAX ) { return 0; }
-    unless (Fn->FLT_MIN == Fn->FLOAT_MIN ) { return 0; }
-    unless (Fn->DBL_MAX == Fn->DOUBLE_MAX ) { return 0; }
-    unless (Fn->DBL_MIN == Fn->DOUBLE_MIN ) { return 0; }
-    
     return 1;
   }
 
