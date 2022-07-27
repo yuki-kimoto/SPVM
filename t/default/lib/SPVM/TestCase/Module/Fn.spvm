@@ -1646,13 +1646,19 @@ class TestCase::Module::Fn {
     
     # Error
     {
-      unless (Fn->ord("") < 0) {
-        return 0;
-      }
-      unless (Fn->ord(undef) < 0) {
+      eval { Fn->ord(""); };
+      unless ($@) {
         return 0;
       }
     }
+    {
+      eval { Fn->ord(undef); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
     
     return 1;
   }

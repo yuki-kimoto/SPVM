@@ -498,11 +498,12 @@ class Fn {
   
   static method ord : int ($utf8_char : string) {
     unless ($utf8_char) {
-      return -1;
+      die "The UTF-8 character must be defined";
     }
     
-    if (length $utf8_char == 0) {
-      return -1;
+    my $utf8_char_length = length $utf8_char;
+    unless ($utf8_char_length > 0) {
+      die "The length of the UTF-8 character must be greater than to 0";
     }
     
     my $offset = 0;
