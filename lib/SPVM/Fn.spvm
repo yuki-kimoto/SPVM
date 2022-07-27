@@ -512,24 +512,43 @@ class Fn {
     return $code_point;
   }
   
-  precompile static method powi : int ($x : int, $y : int) {
-    my $p = 1;
+  precompile static method powi : int ($base : int, $exponant : int) {
     
-    for (my $i = 0; $i < $y; $i++) {
-      $p = $p * $x;
+    unless ($exponant >= 0) {
+      die "The exponant value must be greater than or equal to 0";
     }
     
-    return $p;
+    if ($base == 0) {
+      unless ($exponant != 0) {
+        die "If the base value is 0, the exponant can't be 0";
+      }
+    }
+    
+    my $ret = 1;
+    for (my $i = 0; $i < $exponant; $i++) {
+      $ret = $ret * $base;
+    }
+    
+    return $ret;
   }
   
-  precompile static method powl : long ($x : long, $y : long) {
-    my $p = 1L;
-    
-    for (my $i = 0; $i < $y; $i++) {
-      $p = $p * $x;
+  precompile static method powl : long ($base : long, $exponant : long) {
+    unless ($exponant >= 0) {
+      die "The exponant value must be greater than or equal to 0";
     }
     
-    return $p;
+    if ($base == 0) {
+      unless ($exponant != 0) {
+        die "If the base value is 0, the exponant can't be 0";
+      }
+    }
+    
+    my $ret = 1L;
+    for (my $i = 0; $i < $exponant; $i++) {
+      $ret = $ret * $base;
+    }
+    
+    return $ret;
   }
   
   static method rand : double ($seed : int*) {

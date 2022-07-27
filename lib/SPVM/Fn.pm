@@ -532,13 +532,13 @@ If the specified C<UTF-8> character is invalid C<UTF-8> character, returns a neg
 
 =head2 powi
 
-  static method powi : int ($x : int, $y : int)
+  static method powi : int ($base : int, $exponant : int)
 
 Calculate the exponentiation.
 
 =head2 powl
 
-  static method powl : long ($x : long, $y : long)
+  static method powl : long ($base : long, $exponant : long)
 
 Calculate the exponentiation.
 
