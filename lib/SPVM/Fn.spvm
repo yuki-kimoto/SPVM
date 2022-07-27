@@ -2,6 +2,11 @@ class Fn {
   use StringBuffer;
   use StringList;
   
+  enum {
+    GET_CODE_POINT_ERROR_OVER_STRING_RANGE = -1,
+    GET_CODE_POINT_ERROR_INVALID_UTF8 = -2,
+  }
+  
   static method BYTE_MAX : byte () { return 127; }
   static method BYTE_MIN : byte () { return -128; }
   native static method DBL_MAX : double ();

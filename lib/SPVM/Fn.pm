@@ -37,6 +37,16 @@ SPVM::Fn - SPVM Starndard Functions
 
 B<Fn> module provides SPVM Starndard Functions. B<Fn> contains number, string and array utilities.
 
+=head1 Enumerations
+
+=head2 GET_CODE_POINT_ERROR_OVER_STRING_RANGE
+
+  -1
+
+=head2 GET_CODE_POINT_ERROR_INVALID_UTF8
+
+  -2
+
 =head1 Class Methods
 
 =head2 BYTE_MAX
@@ -310,11 +320,13 @@ Parse the C<UTF-8> character at the offset of the string and return its Unicode 
 
 The offset is updated to the position of the next C<UTF-8> character.
 
-If the offset is greater than the length of the string, return a negative value.
+If the offset is greater than the length of the string, return the value of L</"GET_CODE_POINT_ERROR_OVER_STRING_RANGE">.
 
-If the parsing fail, return a negative value.
+If the C<UTF-8> character is invalid, return the value of L</"GET_CODE_POINT_ERROR_INVALID_UTF8">.
 
-If the got Unicode code point is a Unicode scalar value, return a negative value.
+The string must be defined. Otherwise an exception will occur.
+
+The offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 =head2 hex
 

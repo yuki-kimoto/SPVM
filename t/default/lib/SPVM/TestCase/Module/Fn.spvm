@@ -5,6 +5,28 @@ class TestCase::Module::Fn {
   use Time;
   use Array;
   
+  static method GET_CODE_POINT_ERROR_OVER_STRING_RANGE : int () {
+    
+    unless (Fn->GET_CODE_POINT_ERROR_OVER_STRING_RANGE isa int) {
+      return 0;
+    }
+    unless (Fn->GET_CODE_POINT_ERROR_OVER_STRING_RANGE == -1) {
+      return 0;
+    }
+    return 1;
+  }
+  
+  static method GET_CODE_POINT_ERROR_INVALID_UTF8 : int () {
+    
+    unless (Fn->GET_CODE_POINT_ERROR_INVALID_UTF8 isa int) {
+      return 0;
+    }
+    unless (Fn->GET_CODE_POINT_ERROR_INVALID_UTF8 == -2) {
+      return 0;
+    }
+    return 1;
+  }
+  
   static method BYTE_MAX : int () {
     
     unless (Fn->BYTE_MAX isa byte) {

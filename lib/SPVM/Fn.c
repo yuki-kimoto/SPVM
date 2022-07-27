@@ -127,6 +127,37 @@ int32_t SPVM__Fn___chr_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+// https://code.woboq.org/userspace/glibc/stdlib/rand_r.c.html
+static int SPVM__Fn__static__rand_r (uint32_t *seed)
+{
+  uint32_t next = *seed;
+  int result;
+  next *= 1103515245;
+  next += 12345;
+  result = (uint32_t) (next / 65536) % 2048;
+  next *= 1103515245;
+  next += 12345;
+  result <<= 10;
+  result ^= (uint32_t) (next / 65536) % 1024;
+  next *= 1103515245;
+  next += 12345;
+  result <<= 10;
+  result ^= (uint32_t) (next / 65536) % 1024;
+  *seed = next;
+  return result;
+}
+
+int32_t SPVM__Fn__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t* seed_ref = stack[0].iref;
+  
+  int32_t random_value = SPVM__Fn__static__rand_r(seed_ref);
+  
+  stack[0].ival = random_value;
+  
+  return 0;
+}
+
 #define utf_cont(ch)  (((ch) & 0xc0) == 0x80)
 #define SPVM_UTF8PROC_ERROR_INVALIDUTF8 -3
 static ptrdiff_t spvm_utf8proc_iterate(const uint8_t *str, ptrdiff_t strlen, int32_t *dst) {
@@ -175,37 +206,6 @@ static ptrdiff_t spvm_utf8proc_iterate(const uint8_t *str, ptrdiff_t strlen, int
   return 4;
 }
 
-// https://code.woboq.org/userspace/glibc/stdlib/rand_r.c.html
-static int SPVM__Fn__static__rand_r (uint32_t *seed)
-{
-  uint32_t next = *seed;
-  int result;
-  next *= 1103515245;
-  next += 12345;
-  result = (uint32_t) (next / 65536) % 2048;
-  next *= 1103515245;
-  next += 12345;
-  result <<= 10;
-  result ^= (uint32_t) (next / 65536) % 1024;
-  next *= 1103515245;
-  next += 12345;
-  result <<= 10;
-  result ^= (uint32_t) (next / 65536) % 1024;
-  *seed = next;
-  return result;
-}
-
-int32_t SPVM__Fn__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t* seed_ref = stack[0].iref;
-  
-  int32_t random_value = SPVM__Fn__static__rand_r(seed_ref);
-  
-  stack[0].ival = random_value;
-  
-  return 0;
-}
-
 int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
@@ -224,6 +224,7 @@ int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t string_len = env->length(env, stack, obj_string);
   
   if (!(*offset_ref < string_len)) {
+    // GET_CODE_POINT_ERROR_OVER_STRING_RANGE
     stack[0].ival = -1;
     return 0;
   }
@@ -231,16 +232,19 @@ int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t dst;
   int32_t utf8_char_len = (int32_t)spvm_utf8proc_iterate((const uint8_t*)(string + *offset_ref), string_len, &dst);
   
+  assert(utf8_char_len != 0);
+  
   int32_t uchar;
   if (utf8_char_len > 0) {
     uchar = dst;
     *offset_ref += utf8_char_len;
   }
-  else if (utf8_char_len == 0) {
+  else if (utf8_char_len == SPVM_UTF8PROC_ERROR_INVALIDUTF8) {
+    // GET_CODE_POINT_ERROR_INVALID_UTF8
     uchar = -2;
   }
-  else if (utf8_char_len == SPVM_UTF8PROC_ERROR_INVALIDUTF8) {
-    uchar = -3;
+  else {
+    assert(0);
   }
   
   stack[0].ival = uchar;
