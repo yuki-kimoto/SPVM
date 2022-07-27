@@ -163,8 +163,20 @@ class Fn {
   
   precompile static method index_len : int ($string : string, $substring : string, $offset : int, $max_length : int) {
     
+    unless ($string) {
+      die "The string must be defined";
+    }
+    
+    unless ($substring) {
+      die "The substring must be defined";
+    }
+    
     unless ($offset >= 0) {
       die "The offset must be greater than or equal to 0";
+    }
+    
+    unless ($max_length >= 0) {
+      die "The max length must be greater than or equal to 0";
     }
     
     my $substring_length = length $substring;
@@ -540,6 +552,22 @@ class Fn {
   }
   
   precompile static method rindex_len : int ($string : string, $substring : string, $offset : int, $max_length : int) {
+    unless ($string) {
+      die "The string must be defined";
+    }
+    
+    unless ($substring) {
+      die "The substring must be defined";
+    }
+    
+    unless ($offset >= 0) {
+      die "The offset must be greater than or equal to 0";
+    }
+    
+    unless ($max_length >= 0) {
+      die "The max length must be greater than or equal to 0";
+    }
+    
     my $substring_length = length $substring;
     
     if ($max_length > length $string) {
