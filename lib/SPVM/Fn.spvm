@@ -117,7 +117,7 @@ class Fn {
   
   native static method crand : int ($seed : int*);
   
-  native static method get_next_code_point : int ($str : string, $offset_ref : int*);
+  native static method get_next_code_point : int ($string : string, $offset_ref : int*);
   
   precompile static method hex : int ($hex_string : string) {
     

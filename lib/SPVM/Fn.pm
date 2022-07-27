@@ -296,11 +296,11 @@ B<Examples:>
 
 =head2 get_next_code_point
 
-  static method get_next_code_point : int ($str : string, $offset_ref : int*)
+  static method get_next_code_point : int ($string : string, $offset_ref : int*)
 
-Get a Unicode codepoint from UTF-8 string with the reference of the offset of the string.
+Parse the C<UTF-8> character at the offset of the string and return its Unicode code point.
 
-The offset is updated to the position of the next UTF-8 character.
+The offset is updated to the position of the next C<UTF-8> character.
 
 If the offset is over the length of the string, return a negative value.
 
@@ -533,7 +533,7 @@ The source offset + length must be within the range of the source. Otherwise an 
 
   static method ord : int ($utf8_char : string)
 
-Gets the Unicode code point from the first character of the specified <UTF-8> string.
+Gets the Unicode code point from the first character of the specified <C<UTF-8>> string.
 
 If the specified C<UTF-8> character is C<undef>, returns a negative value.
 
