@@ -442,19 +442,19 @@ If he object is defined and the object is a object array, returns C<1>. Otherwis
 
   static method is_perl_space : int ($code_point : int)
 
-If the Unicode code point is an Perl space character (' ', '\r', '\n', '\t', '\f'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an Perl ASCII space character C<0x20(SP)>, C<0x0d(CR)>, C<0x0a(LF)>, C<0x09(HT)>, C<0x0c(FF)>, return C<1>. Otherwise return C<0>.
 
 =head2 is_perl_word
 
   static method is_perl_word : int ($code_point : int)
 
-If the Unicode code point is an ASCII Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an Perl ASCII word character C<a-zA-Z_0-9>, return C<1>. Otherwise return C<0>.
 
 =head2 is_print
 
   static method is_print : int ($code_point : int)
 
-If the Unicode code point is an ASCII printable(0x20-0x7E), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII printable C<0x20-0x7E>, return C<1>. Otherwise return C<0>.
 
 =head2 is_punct
 

@@ -1435,32 +1435,57 @@ class TestCase::Module::Fn {
   }
 
   static method is_perl_space : int () {
-
-    my $ok = 1;
-    for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
-
-      if ($char == ' ' || $char == '\r' || $char == '\n' || $char == '\t' || $char == '\f') {
-        my $ret = Fn->is_perl_space($char);
-        unless ($ret == 1) {
-          $ok = 0;
+    {
+      my $ok = 1;
+      for (my $i = 0; $i < 128; $i++) {
+        my $char = $i;
+        
+        if ($char == ' ' || $char == '\r' || $char == '\n' || $char == '\t' || $char == '\f') {
+          my $ret = Fn->is_perl_space($char);
+          unless ($ret == 1) {
+            $ok = 0;
+          }
+        }
+        else {
+          my $ret = Fn->is_perl_space($char);
+          unless ($ret == 0) {
+            $ok = 0;
+          }
         }
       }
-      else {
-        my $ret = Fn->is_perl_space($char);
-        unless ($ret == 0) {
-          $ok = 0;
-        }
+      
+      unless ($ok) {
+        return 0;
       }
     }
-
-    unless ($ok) {
-      return 0;
+    
+    {
+      my $ok = 1;
+      for (my $i = 0; $i < 128; $i++) {
+        my $char = $i;
+        
+        if ($char == 0x20 || $char == 0x0d || $char == 0x0a || $char == 0x09 || $char == 0x0c) {
+          my $ret = Fn->is_perl_space($char);
+          unless ($ret == 1) {
+            $ok = 0;
+          }
+        }
+        else {
+          my $ret = Fn->is_perl_space($char);
+          unless ($ret == 0) {
+            $ok = 0;
+          }
+        }
+      }
+      
+      unless ($ok) {
+        return 0;
+      }
     }
-
+    
     return 1;
   }
-
+  
   static method is_perl_word : int () {
 
     my $ok = 1;

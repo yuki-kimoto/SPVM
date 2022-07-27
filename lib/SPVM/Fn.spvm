@@ -307,21 +307,22 @@ class Fn {
   
   native static method is_object_array : int ($object : object);
   
-  # This is same as Perl \s
+  # This is same as Perl ASCII mode \s
   static method is_perl_space : int ($code_point : int) {
-    my $ispspace = 0;
+    my $is_perl_space = 0;
     switch ($code_point) {
-      case ' ':
-      case '\r':
-      case '\n':
-      case '\t':
-      case '\f':
+      case 0x20: # ' '  SP
+      case 0x0d: # '\r' CR
+      case 0x0a: # '\n' LF
+      case 0x09: # '\t' HT
+      case 0x0c: # '\f' FF
       {
-        $ispspace = 1;
+        $is_perl_space = 1;
         break;
       }
     }
-    return $ispspace;
+    
+    return $is_perl_space;
   }
   
   static method is_perl_word : int ($code_point : int) {
