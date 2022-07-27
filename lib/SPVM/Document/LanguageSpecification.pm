@@ -4194,38 +4194,27 @@ The array type is an L<object type|/"Object Type">.
 
 =head3 Numeric Array Type
 
-Numeric Array Type means a L<numeric type|/"Numeric Type"> with the element the L<array type|/"Array Type"> It is.
+The numeric array type is an L<array type|Array Type> for the array of the L<numeric type|/"Numeric Type">.
 
-B<Numeric Array Type list>
+The list of the numeric array.
 
-=begin html
+=over 2
 
-<ul>
-  <li>
-    byte[]
-  </li>
-  <li>
-    short[]
-  </li>
-  <li>
-    int[]
-  </li>
-  <li>
-    long[]
-  </li>
-  <li>
-    float[]
-  </li>
-  <li>
-    double[]
-  </li>
-</ul>
+=item * byte[]
 
-=end html
+=item * short[]
 
-Data represented by Numeric Array Type must have elements whose size is a L<numeric type|/"Numeric Type">, and must be continuous by the number of Array Length.
+=item * int[]
 
-All elements of Numeric Array Type are initialized by the L<initial value/"Initial Value"> when the L<creating array|/"Creating Array"> is performed.
+=item * long[]
+
+=item * float[]
+
+=item * double[]
+
+=back
+
+Each element are initialized by the L<initial value/"Initial Value"> when the L<creating array|/"Creating Array"> is performed.
 
 =head3 byte[] Type
 
