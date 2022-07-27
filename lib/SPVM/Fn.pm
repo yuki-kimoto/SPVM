@@ -520,7 +520,7 @@ The source byte offset + byte length must be within the byte range of the source
 
 =head2 ord
 
-  static method ord : int ($utf8_character : string)
+  static method ord : int ($utf8_char : string)
 
 Gets the Unicode code point from the first character of the specified <UTF-8> string.
 

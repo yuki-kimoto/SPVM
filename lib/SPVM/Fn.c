@@ -89,7 +89,7 @@ int32_t SPVM__Fn__RAND_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 
-static ptrdiff_t SPVM__Fn__static__convert_unicode_code_point_to_utf8_chracter(int32_t uc, uint8_t *dst) {
+static ptrdiff_t SPVM__Fn__static__convert_code_point_to_utf8_char(int32_t uc, uint8_t *dst) {
   if (uc < 0x00) {
     return 0;
   } else if (uc < 0x80) {
@@ -124,7 +124,7 @@ int32_t SPVM__Fn___chr_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   assert(code_point < 0x110000);
   
   uint8_t utf8_bytes[4];
-  int32_t utf8_bytes_length = (int32_t)SPVM__Fn__static__convert_unicode_code_point_to_utf8_chracter(code_point, utf8_bytes);
+  int32_t utf8_bytes_length = (int32_t)SPVM__Fn__static__convert_code_point_to_utf8_char(code_point, utf8_bytes);
   
   assert(utf8_bytes_length > 0);
   

@@ -84,12 +84,12 @@ class Fn {
     return $new_string;
   }
   
-  static method chr : string ($unicode_code_point : int) {
+  static method chr : string ($code_point : int) {
     
-    my $is_unicode_scalar_value = &is_unicode_scalar_value($unicode_code_point);
+    my $is_unicode_scalar_value = &is_unicode_scalar_value($code_point);
     my $utf8_char = (string)undef;
     if ($is_unicode_scalar_value) {
-      $utf8_char = &_chr_native($unicode_code_point);
+      $utf8_char = &_chr_native($code_point);
     }
     
     return $utf8_char;
@@ -485,19 +485,19 @@ class Fn {
   
   native static method memmove : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
   
-  static method ord : int ($utf8_character : string) {
-    unless ($utf8_character) {
+  static method ord : int ($utf8_char : string) {
+    unless ($utf8_char) {
       return -1;
     }
     
-    if (length $utf8_character == 0) {
+    if (length $utf8_char == 0) {
       return -1;
     }
     
     my $offset = 0;
-    my $unicode_code_point = &get_next_code_point($utf8_character, \$offset);
+    my $code_point = &get_next_code_point($utf8_char, \$offset);
     
-    return $unicode_code_point;
+    return $code_point;
   }
   
   precompile static method powi : int ($x : int, $y : int) {
