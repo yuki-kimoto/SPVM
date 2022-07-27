@@ -18,6 +18,7 @@
   [Document Fix]
     * Fix Fn->chr doc.
     * Fix Fn->contains doc.
+    * Add Fn->is_array doc.
   [Incompatible Changes]
     * Fn->index_len throw exception.
       The offset + the length specified by the argument must be less than or equal to the length of the string

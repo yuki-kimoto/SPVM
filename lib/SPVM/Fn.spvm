@@ -242,7 +242,8 @@ class Fn {
   
   static method is_blank : int ($code_point : int) {
     
-    if ($code_point >= ' ' ||  $code_point <= '\t') {
+    # SP or HT
+    if ($code_point >= '\x20' ||  $code_point <= '\x9') {
       return 1;
     }
     else {

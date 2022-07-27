@@ -370,37 +370,43 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method is_alnum : int ($code_point : int)
 
-If character is alphanumeric('A'-'Z', 'a'-'z', '0'-'9'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII alphanumeric C<A-Za-z0-9>, return C<1>. Otherwise return C<0>.
 
 =head2 is_alpha
 
   static method is_alpha : int ($code_point : int)
 
-If character is alphabetic('A'-'Z', 'a'-'z'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII alphabetic C<A-Za-z>, return C<1>. Otherwise return C<0>.
+
+=head2 is_array
+
+  static method is_array : int ($object : object)
+
+If the object is defined and the type of the object is the array type, return C<1>. Otherwise return C<0>.
 
 =head2 is_blank
 
   static method is_blank : int ($code_point : int)
 
-If character is blank(' ', '\t'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII blank C<0x20(SP)>, C<0x9(HT)>, return C<1>. Otherwise return C<0>.
 
 =head2 is_cntrl
 
   static method is_cntrl : int ($code_point : int)
 
-If character is a control character(0x00-0x1F, 0x7F), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII control character C<0x00-0x1F>, C<0x7F>, return C<1>. Otherwise return C<0>.
 
 =head2 is_digit
 
   static method is_digit : int ($code_point : int)
 
-If character is decimal digit C<0-9>, return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII decimal digit C<0-9>, return C<1>. Otherwise return C<0>.
 
 =head2 is_graph
 
   static method is_graph : int ($code_point : int)
 
-If character has graphical representation(C<0x21-0x7E>), return C<1>. Otherwise return C<0>.
+If character has graphical representation C<0x21-0x7E>, return C<1>. Otherwise return C<0>.
 
 =head2 is_hex_digit
 
@@ -412,73 +418,67 @@ If the character is hexadecimal digit C<0-9a-fA-F>, return C<1>. Otherwise retur
 
   static method is_lower : int ($code_point : int)
 
-If character is lowercase letter('a'-'z'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII lowercase letter C<a-z>, return C<1>. Otherwise return C<0>.
 
 =head2 is_mulnum_array
 
   static method is_mulnum_array : int ($object : object)
 
-If the object is a multi numeric array, returns C<1>, otherwise returns C<0>.
-
-If the object is C<NULL>, returns C<0>.
+If the object is defined and the type of the object is the multi-numeric array type, returns C<1>. Otherwise return C<0>.
 
 =head2 is_numeric_array
 
   static method is_numeric_array : int ($object : object)
 
-If the object is a numeric array, returns C<1>, otherwise returns C<0>.
-
-If the object is C<NULL>, returns C<0>.
+If the object is defined and the type of the object is the numeric array type, returns C<1>. Otherwise return C<0>.
 
 =head2 is_object_array
 
   static method is_object_array : int ($object : object)
 
-If the object is a object array, returns C<1>, otherwise returns C<0>.
-
-If the object is C<NULL>, returns C<0>.
+If he object is defined and the object is a object array, returns C<1>. Otherwise return C<0>.
 
 =head2 is_perl_space
 
   static method is_perl_space : int ($code_point : int)
 
-If character is Perl space character(' ', '\r', '\n', '\t', '\f'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an Perl space character (' ', '\r', '\n', '\t', '\f'), return C<1>. Otherwise return C<0>.
 
 =head2 is_perl_word
 
   static method is_perl_word : int ($code_point : int)
 
-If character is Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return C<1>. Otherwise return C<0>.
 
 =head2 is_print
 
   static method is_print : int ($code_point : int)
 
-If character is printable(0x20-0x7E), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII printable(0x20-0x7E), return C<1>. Otherwise return C<0>.
 
 =head2 is_punct
 
   static method is_punct : int ($code_point : int)
 
-If character is a punctuation character(0x21-0x2f, 0x3a-0x40, 0x5b-0x60, 0x7b-0x7e), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII a punctuation character(0x21-0x2f, 0x3a-0x40, 0x5b-0x60, 0x7b-0x7e), return C<1>. Otherwise return C<0>.
 
 =head2 is_space
 
   static method is_space : int ($code_point : int)
 
-If character is a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return C<1>. Otherwise return C<0>.
 
 =head2 is_upper
 
   static method is_upper : int ($code_point : int)
 
-If character is uppercase letter('A'-'Z'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII uppercase letter('A'-'Z'), return C<1>. Otherwise return C<0>.
 
 =head2 is_xdigit
 
   static method is_xdigit : int ($code_point : int)
 
-If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return C<1>. Otherwise return C<0>.
 
 =head2 join
 
