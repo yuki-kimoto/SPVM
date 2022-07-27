@@ -446,7 +446,7 @@ int32_t SPVM__Fn__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
-    return env->die(env, stack, "String must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string must be defined", FILE_NAME, __LINE__);
   }
   const char* string = env->get_chars(env, stack, obj_string);
   
@@ -469,7 +469,7 @@ int32_t SPVM__Fn__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
-    return env->die(env, stack, "String must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string must be defined", FILE_NAME, __LINE__);
   }
   const char* string = env->get_chars(env, stack, obj_string);
   
@@ -492,7 +492,7 @@ int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
-    return env->die(env, stack, "String must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string must be defined", FILE_NAME, __LINE__);
   }
   const char* string = env->get_chars(env, stack, obj_string);
   
@@ -521,7 +521,7 @@ int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
-    return env->die(env, stack, "String must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string must be defined", FILE_NAME, __LINE__);
   }
   const char* string = env->get_chars(env, stack, obj_string);
   
