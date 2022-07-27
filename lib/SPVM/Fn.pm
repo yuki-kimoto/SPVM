@@ -442,7 +442,7 @@ If he object is defined and the object is a object array, returns C<1>. Otherwis
 
   static method is_perl_space : int ($code_point : int)
 
-If the Unicode code point is an Perl ASCII space character C<0x20(SP, ' ')>, C<0x0d(CR, '\r')>, C<0x0a(LF, '\n')>, C<0x09(HT, '\t')>, C<0x0c(FF, '\f')>, return C<1>. Otherwise return C<0>.
+If the Unicode code point is an Perl ASCII space character C<0x09(HT, '\t')>, C<0x0a(LF, '\n')>, C<0x0c(FF, '\f')>, C<0x0d(CR, '\r')>, C<0x20(SP, ' ')>,  return C<1>. Otherwise return C<0>.
 
 Note that prior to Perl v5.18, C<\s> in ASCII mode did not match the vertical tab C<0x0b(VT)>. C<is_perl_space> is the same as this behavior.
 
@@ -470,19 +470,19 @@ If the Unicode code point is an ASCII a punctuation character C<0x21-0x2f>, C<0x
 
   static method is_space : int ($code_point : int)
 
-If the Unicode code point is an ASCII a white-space C<0x20(SP, ' ')>,  C<0x09(HT, '\t')>, C<0x0a(LF, '\n')>, C<0x0b(VT)>, C<0x0c(FF, '\f')>, C<0x0d(CR, '\r')>, return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII a white-space C<0x09(HT, '\t')>, C<0x0a(LF, '\n')>, C<0x0b(VT)>, C<0x0c(FF, '\f')>, C<0x0d(CR, '\r')>, C<0x20(SP, ' ')> return C<1>. Otherwise return C<0>.
 
 =head2 is_upper
 
   static method is_upper : int ($code_point : int)
 
-If the Unicode code point is an ASCII uppercase letter('A'-'Z'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII uppercase letter C<A-Z>, return C<1>. Otherwise return C<0>.
 
 =head2 is_xdigit
 
   static method is_xdigit : int ($code_point : int)
 
-If the Unicode code point is an ASCII hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII hexadecimal digit C<0-9A-Fa-f>, return C<1>. Otherwise return C<0>.
 
 =head2 join
 
