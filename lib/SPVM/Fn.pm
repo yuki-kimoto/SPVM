@@ -350,7 +350,7 @@ The alias for the following code using L</"index_len">.
 
 =head2 index_len
 
-  static method index_len : int ($string : string, $substring : string, $offset : int, $max_length : int)
+  static method index_len : int ($string : string, $substring : string, $offset : int, $length : int)
 
 Search for the substring in the string from the offset to the offset + the length.
 
@@ -637,7 +637,7 @@ and return the found position. If the substring is not found, return C<-1>.
 
 =head2 rindex_len
 
-  static method rindex_len : int ($string : string, $substring : string, $offset : int, $max_length : int)
+  static method rindex_len : int ($string : string, $substring : string, $offset : int, $length : int)
 
 Same as the L<"rindex"> method except that the max length of the string can be specified.
 

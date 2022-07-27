@@ -588,7 +588,7 @@ class Fn {
     return &rindex_len($string, $substring, $offset, length $string);
   }
   
-  precompile static method rindex_len : int ($string : string, $substring : string, $offset : int, $max_length : int) {
+  precompile static method rindex_len : int ($string : string, $substring : string, $offset : int, $length : int) {
     unless ($string) {
       die "The string must be defined";
     }
@@ -601,19 +601,19 @@ class Fn {
       die "The offset must be greater than or equal to 0";
     }
     
-    unless ($max_length >= 0) {
+    unless ($length >= 0) {
       die "The max length must be greater than or equal to 0";
     }
     
     my $substring_length = length $substring;
     
-    if ($max_length > length $string) {
-      $max_length = length $string;
+    if ($length > length $string) {
+      $length = length $string;
     }
     
     my $substring_len = length $substring;
-    if ($offset > $max_length - $substring_length) {
-      $offset = $max_length - $substring_len;
+    if ($offset > $length - $substring_length) {
+      $offset = $length - $substring_len;
     }
     for (my $i = $offset; $i >= 0; --$i) {
       my $match = 1;
