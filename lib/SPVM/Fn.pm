@@ -332,11 +332,13 @@ The offset must be greater than or equal to C<0>. Otherwise an exception will oc
 
   static method hex : int ($hex_string : string)
 
-Convert hex string to int value.
+Convert the hex string to the C<int> value and return it.
 
-the hex string must be defined. Otherwise an exception will occur.
+The hex string must be defined. Otherwise an exception will occur.
 
-the hex string must be a valid expression which is represented by a regex "^([0-9a-fA-F]{1,8})$". Otherwise an exception will occur.
+The length of the hex string must be C<1> to C<8>. Otherwise an exception will occur.
+
+The hex string must contain only hex characters C<0-9a-zA-Z>. Otherwise an exception will occur.
 
 =head2 index
 
