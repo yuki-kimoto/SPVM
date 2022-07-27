@@ -748,7 +748,7 @@ class Fn {
     return $code_point;
   }
   
-  precompile static method trim_ascii_space : string ($string : string) {
+  precompile static method trim : string ($string : string) {
     
     unless ($string) {
       return undef;
@@ -797,6 +797,11 @@ class Fn {
     }
     
     return $trimed_string;
+  }
+  
+  static method trim_ascii_space : string ($string : string) {
+    warn "Fn->trim_ascii_space is deprecated. Use Fn->trim isntead";
+    return &trim($string);
   }
   
   precompile static method uc : string ($string : string) {

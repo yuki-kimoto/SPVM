@@ -7,6 +7,9 @@
     * Fn->ord throws exceptions when the input is undefined or the length is less than 0.
     * Fn->pow, Fn->powi throws exceptions when the arguments are invalid.
     * Improve Fn->substr exception messages.
+  [Deprecation]
+    * Fn->trim_ascii_space is renamed to Fn->trim. Fn->trim_ascii_space is deprecated.
+  
 0.9629 2022-07-26
   [New Features]
     * Add copy_object_address to Array class.

@@ -791,6 +791,16 @@ Remove right and left spaces of the string. These spaces is ascii standard space
 
 If the argument string is undef, return undef.
 
+This method is deprecated. Use trim instead.
+
+=head2 trim
+
+  static method trim : string ($string : string)
+
+Remove right and left spaces of the string. These spaces is ascii standard spaces which can be checked by C<is_space> method.
+
+If the argument string is undef, return undef.
+
 =head2 uc
 
   static method uc : string ($string : string)
