@@ -26,6 +26,20 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method DBL_MAX : int () {
+    unless (Fn->DBL_MAX isa double) {
+      return 0;
+    }
+    return 1;
+  }
+  
+  static method DBL_MIN : int () {
+    unless (Fn->DBL_MIN isa double) {
+      return 0;
+    }
+    return 1;
+  }
+  
   static method DOUBLE_MAX : int () {
     unless (Fn->DOUBLE_MAX isa double) {
       return 0;

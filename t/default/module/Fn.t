@@ -36,6 +36,14 @@ my $nan_re = qr/(nan|ind)/i;
 {
   ok(SPVM::TestCase::Module::Fn->BYTE_MAX);
   ok(SPVM::TestCase::Module::Fn->BYTE_MIN);
+  {
+    ok(SPVM::TestCase::Module::Fn->DBL_MAX);
+    is(SPVM::Fn->DBL_MAX, POSIX::DBL_MAX);
+  }
+  {
+    ok(SPVM::TestCase::Module::Fn->DBL_MIN);
+    is(SPVM::Fn->DBL_MIN, POSIX::DBL_MIN);
+  }
   ok(SPVM::TestCase::Module::Fn->DOUBLE_MAX);
   ok(SPVM::TestCase::Module::Fn->DOUBLE_MIN);
   ok(SPVM::TestCase::Module::Fn->FLOAT_MAX);
@@ -56,33 +64,7 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Module::Fn->INT32_MIN);
   ok(SPVM::TestCase::Module::Fn->INT8_MAX);
   ok(SPVM::TestCase::Module::Fn->INT8_MIN);
-  is(SPVM::Fn->DBL_MAX, POSIX::DBL_MAX);
-  is(SPVM::Fn->DBL_MIN, POSIX::DBL_MIN);
-  is(SPVM::Fn->FLT_MAX, POSIX::FLT_MAX);
-  like(SPVM::Fn->FLT_MAX(), qr/[0-9]/);
-  is(SPVM::Fn->FLT_MIN, POSIX::FLT_MIN);
-  like(SPVM::Fn->FLT_MIN(), qr/[0-9]/);
-  is(SPVM::Fn->INT16_MAX, $SHORT_MAX);
-  is(SPVM::Fn->INT16_MAX, 32767);
-  is(SPVM::Fn->INT16_MIN, $SHORT_MIN);
-  is(SPVM::Fn->INT16_MIN, -32768);
-  is(SPVM::Fn->INT32_MAX, $INT_MAX);
-  is(SPVM::Fn->INT32_MAX, 2147483647);
-  is(SPVM::Fn->INT32_MIN, $INT_MIN);
-  is(SPVM::Fn->INT32_MIN, -2147483648);
-  is(SPVM::Fn->INT64_MAX, $LONG_MAX);
-  is(SPVM::Fn->INT64_MAX, 9223372036854775807);
-  is(SPVM::Fn->INT64_MIN, $LONG_MIN);
-  is(SPVM::Fn->INT64_MIN, -9223372036854775808);
-  is(SPVM::Fn->INT8_MAX, $BYTE_MAX);
-  is(SPVM::Fn->INT8_MAX, 127);
-  is(SPVM::Fn->INT8_MIN, $BYTE_MIN);
-  is(SPVM::Fn->INT8_MIN, -128);
   ok(SPVM::TestCase::Module::Fn->RAND_MAX);
-  is(SPVM::Fn->UINT16_MAX, -1);
-  is(SPVM::Fn->UINT32_MAX, -1);
-  is(SPVM::Fn->UINT64_MAX, -1);
-  is(SPVM::Fn->UINT8_MAX, -1);
   ok(SPVM::TestCase::Module::Fn->abs);
   ok(SPVM::TestCase::Module::Fn->chomp);
   ok(SPVM::TestCase::Module::Fn->chompr);
@@ -136,7 +118,34 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Module::Fn->to_lower);
   ok(SPVM::TestCase::Module::Fn->to_upper);
   ok(SPVM::TestCase::Module::Fn->trim_ascii_space);
-  ok(SPVM::TestCase::Module::Fn->uc);}
+  ok(SPVM::TestCase::Module::Fn->uc);
+  
+  # Extra
+  is(SPVM::Fn->FLT_MAX, POSIX::FLT_MAX);
+  like(SPVM::Fn->FLT_MAX(), qr/[0-9]/);
+  is(SPVM::Fn->FLT_MIN, POSIX::FLT_MIN);
+  like(SPVM::Fn->FLT_MIN(), qr/[0-9]/);
+  is(SPVM::Fn->INT16_MAX, $SHORT_MAX);
+  is(SPVM::Fn->INT16_MAX, 32767);
+  is(SPVM::Fn->INT16_MIN, $SHORT_MIN);
+  is(SPVM::Fn->INT16_MIN, -32768);
+  is(SPVM::Fn->INT32_MAX, $INT_MAX);
+  is(SPVM::Fn->INT32_MAX, 2147483647);
+  is(SPVM::Fn->INT32_MIN, $INT_MIN);
+  is(SPVM::Fn->INT32_MIN, -2147483648);
+  is(SPVM::Fn->INT64_MAX, $LONG_MAX);
+  is(SPVM::Fn->INT64_MAX, 9223372036854775807);
+  is(SPVM::Fn->INT64_MIN, $LONG_MIN);
+  is(SPVM::Fn->INT64_MIN, -9223372036854775808);
+  is(SPVM::Fn->INT8_MAX, $BYTE_MAX);
+  is(SPVM::Fn->INT8_MAX, 127);
+  is(SPVM::Fn->INT8_MIN, $BYTE_MIN);
+  is(SPVM::Fn->INT8_MIN, -128);
+  is(SPVM::Fn->UINT16_MAX, -1);
+  is(SPVM::Fn->UINT32_MAX, -1);
+  is(SPVM::Fn->UINT64_MAX, -1);
+  is(SPVM::Fn->UINT8_MAX, -1);
+}
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
