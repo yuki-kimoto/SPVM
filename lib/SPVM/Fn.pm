@@ -640,7 +640,7 @@ The alias for the following code using L</"rindex_len">.
 
   static method rindex_len : int ($string : string, $substring : string, $offset : int, $length : int)
 
-Search for the substring in the string from the offset to the offset + the length in the way from back to front.
+Search for the substring in the string from the offset to the offset + the length in the direction from back to front.
 
 If the substring is found, return the found offset. Otherwise return C<-1>.
 
