@@ -73,7 +73,6 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Module::Fn->chompr);
   ok(SPVM::TestCase::Module::Fn->chr);
   ok(SPVM::TestCase::Module::Fn->contains);
-  ok(SPVM::TestCase::Module::Fn->copy_str);
   ok(SPVM::TestCase::Module::Fn->copy_string);
   ok(SPVM::TestCase::Module::Fn->crand);
   ok(SPVM::TestCase::Module::Fn->get_next_code_point);
