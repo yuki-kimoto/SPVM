@@ -444,7 +444,9 @@ class Fn {
   
   precompile static method lc : string ($string : string) {
     
-    unless ($string) { die "String must be defined"; }
+    unless ($string) {
+      die "The string must be defined";
+    }
     
     my $length = length $string;
     my $new_string = (mutable string)new_string_len($length);
@@ -457,12 +459,14 @@ class Fn {
         $new_string->[$i] = $string->[$i];
       }
     }
-    return (string)$new_string;
+    return $new_string;
   }
   
   precompile static method lcfirst : string ($string : string) {
     
-    unless ($string) { die "String must be defined"; }
+    unless ($string) {
+      die "The string must be defined";
+    }
     
     my $length = length $string;
     my $new_string = (mutable string)new_string_len($length);
@@ -478,7 +482,7 @@ class Fn {
     for (my $i = 1; $i < $length; ++$i) {
       $new_string->[$i] = $string->[$i];
     }
-    return (string)$new_string;
+    return $new_string;
   }
   
   static method look_next_code_point : int ($string : string, $offset_ref : int*) {
@@ -657,7 +661,7 @@ class Fn {
   precompile static method substr : string ($string : string, $offset : int, $length : int) {
     
     if ($string == undef) {
-      die "String must be defined";
+      die "The string must be defined";
     }
     
     my $string_length = length $string;
@@ -769,7 +773,9 @@ class Fn {
   
   precompile static method uc : string ($string : string) {
     
-    unless ($string) { die "String must be defined"; }
+    unless ($string) {
+      die "The string must be defined";
+    }
     
     my $length = length $string;
     my $new_string = (mutable string)new_string_len($length);
@@ -787,7 +793,9 @@ class Fn {
   
   precompile static method ucfirst : string ($string : string) {
     
-    unless ($string) { die "String must be defined"; }
+    unless ($string) {
+      die "The string must be defined";
+    }
     
     my $length = length $string;
     my $new_string = (mutable string)new_string_len($length);
