@@ -418,7 +418,7 @@ If the character is hexadecimal digit C<0-9a-fA-F>, return C<1>. Otherwise retur
 
   static method is_lower : int ($code_point : int)
 
-If the Unicode code point is an ASCII lowercase letter C<a-z>, return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII lowercase character C<a-z>, return C<1>. Otherwise return C<0>.
 
 =head2 is_mulnum_array
 
@@ -476,7 +476,7 @@ If the Unicode code point is an ASCII a white-space C<0x09(HT, '\t')>, C<0x0a(LF
 
   static method is_upper : int ($code_point : int)
 
-If the Unicode code point is an ASCII uppercase letter C<A-Z>, return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII uppercase character C<A-Z>, return C<1>. Otherwise return C<0>.
 
 =head2 is_xdigit
 
@@ -844,13 +844,13 @@ If the convertion fails, an exception occuer.
 
   static method to_lower : int ($code_point : int)
 
-Convert uppercase letter('A'-'Z') to lowercase. If the character is not uppercase letter, return the character.
+Convert uppercase character('A'-'Z') to lowercase. If the character is not uppercase character, return the character.
 
 =head2 to_upper
 
   static method to_upper : int ($code_point : int)
 
-Convert lowercase letter('a'-'z') to lowercase. If the character is not uppercase letter, return the character.
+Convert lowercase character('a'-'z') to lowercase. If the character is not uppercase character, return the character.
 
 =head2 trim_ascii_space
 
