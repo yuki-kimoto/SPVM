@@ -94,26 +94,6 @@ class TestCase::Module::Fn {
     return 1;
   }
   
-  static method INT_MAX : int () {
-    unless (Fn->INT_MAX isa int) {
-      return 0;
-    }
-    unless (Fn->INT_MAX == Fn->INT32_MAX) {
-      return 0;
-    }
-    return 1;
-  }
-  
-  static method INT_MIN : int () {
-    unless (Fn->INT_MIN isa int) {
-      return 0;
-    }
-    unless (Fn->INT_MIN == Fn->INT32_MIN) {
-      return 0;
-    }
-    return 1;
-  }
-  
   static method INT16_MAX : int () {
     unless (Fn->INT16_MAX  isa short) {
       return 0;
@@ -200,6 +180,26 @@ class TestCase::Module::Fn {
       return 0;
     }
     
+    return 1;
+  }
+  
+  static method INT_MAX : int () {
+    unless (Fn->INT_MAX isa int) {
+      return 0;
+    }
+    unless (Fn->INT_MAX == Fn->INT32_MAX) {
+      return 0;
+    }
+    return 1;
+  }
+  
+  static method INT_MIN : int () {
+    unless (Fn->INT_MIN isa int) {
+      return 0;
+    }
+    unless (Fn->INT_MIN == Fn->INT32_MIN) {
+      return 0;
+    }
     return 1;
   }
   

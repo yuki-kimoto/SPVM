@@ -55,13 +55,13 @@ Same as L</"INT8_MIN">.
 
   static method DBL_MAX : double ()
 
-Return the value of C<DBL_MAX> macro defined in C<float.h> header of C language.
+Return the value of C<DBL_MAX> macro defined in C<float.h> header of C<C language>.
 
 =head2 DBL_MIN
 
   static method DBL_MIN : double ()
 
-Return the value of C<DBL_MIN> macro defined in C<float.h> header of C language.
+Return the value of C<DBL_MIN> macro defined in C<float.h> header of C<C language>.
 
 =head2 DOUBLE_MAX
 
@@ -91,13 +91,13 @@ Same as L</"FLT_MIN">.
 
   static method FLT_MAX : float ()
 
-Return the value of C<FLT_MAX> macro defined in C<float.h> header of C language.
+Return the value of C<FLT_MAX> macro defined in C<float.h> header of C<C language>.
 
 =head2 FLT_MIN
 
   static method FLT_MIN : float ()
 
-Return the value of C<FLT_MIN> macro defined in C<float.h> header of C language.
+Return the value of C<FLT_MIN> macro defined in C<float.h> header of C<C language>.
 
 =head2 INT16_MAX
 
