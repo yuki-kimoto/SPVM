@@ -306,6 +306,20 @@ If the offset is over the length of the string, return a negative value.
 
 If an invalid code point is got, return a negative value.
 
+This method is depracated. Use L</"get_code_point"> instead.
+
+=head2 get_code_point
+
+  static method get_code_point : int ($string : string, $offset_ref : int*)
+
+Parse the C<UTF-8> character at the offset of the string and return its Unicode code point.
+
+The offset is updated to the position of the next C<UTF-8> character.
+
+If the offset is over the length of the string, return a negative value.
+
+If an invalid code point is got, return a negative value.
+
 =head2 hex
 
   static method hex : int ($hex_string : string)
@@ -478,6 +492,14 @@ Convert first chracter of string from uppercase to lowercase.
   static method look_next_code_point : int ($string : string, $offset_ref : int*)
 
 Same as L</"get_next_code_point">, but the offset is not updated.
+
+This method is depracated. Use L</"look_code_point"> instead.
+
+=head2 look_code_point
+
+  static method look_code_point : int ($string : string, $offset_ref : int*)
+
+Same as L</"get_code_point">, but the offset is not updated.
 
 =head2 memcpy
 

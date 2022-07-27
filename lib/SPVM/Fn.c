@@ -206,7 +206,7 @@ int32_t SPVM__Fn__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Fn__get_next_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   void* obj_str = stack[0].oval;

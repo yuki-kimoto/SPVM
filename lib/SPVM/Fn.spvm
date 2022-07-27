@@ -117,7 +117,12 @@ class Fn {
   
   native static method crand : int ($seed : int*);
   
-  native static method get_next_code_point : int ($string : string, $offset_ref : int*);
+  native static method get_code_point : int ($string : string, $offset_ref : int*);
+  
+  static method get_next_code_point : int ($string : string, $offset_ref : int*) {
+    warn "Fn->get_next_code_point is renamed to Fn->get_code_point. Fn->get_next_code_point is deprecated";
+    return &get_code_point($string, $offset_ref);
+  }
   
   precompile static method hex : int ($hex_string : string) {
     
@@ -492,11 +497,15 @@ class Fn {
     return $new_string;
   }
   
-  static method look_next_code_point : int ($string : string, $offset_ref : int*) {
+  static method look_code_point : int ($string : string, $offset_ref : int*) {
     my $save_offset = $$offset_ref;
-    my $code_point = &get_next_code_point($string, $offset_ref);
+    my $code_point = &get_code_point($string, $offset_ref);
     $$offset_ref = $save_offset;
     return $code_point;
+  }
+  static method look_next_code_point : int ($string : string, $offset_ref : int*) {
+    warn "Fn->look_next_code_point is renamed to Fn->look_code_point. Fn->look_next_code_point is deprecated";
+    return &look_code_point($string, $offset_ref);
   }
   
   native static method memcpy : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
