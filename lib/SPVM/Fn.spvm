@@ -410,15 +410,22 @@ class Fn {
   }
   
   precompile static method join : string ($sep : string, $strings : string[]) {
-    my $join = "";
+    my $join_buffer = StringBuffer->new;
     
     for (my $i = 0; $i < @$strings; $i++) {
       my $string = $strings->[$i];
-      $join .= $string;
+      if ($string) {
+        $join_buffer->push($string);
+      }
+      else {
+        $join_buffer->push("");
+      }
       if ($i != @$strings - 1) {
-        $join .= $sep;
+        $join_buffer->push($sep);
       }
     }
+    
+    my $join = $join_buffer->to_string;
     
     return $join;
   }
