@@ -154,6 +154,54 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method UINT16_MAX : int () {
+    unless (Fn->UINT16_MAX isa short) {
+      return 0;
+    }
+    
+    unless (Fn->UINT16_MAX == -1) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method UINT32_MAX : int () {
+    unless (Fn->UINT32_MAX isa int) {
+      return 0;
+    }
+    
+    unless (Fn->UINT32_MAX == -1) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method UINT64_MAX : int () {
+    unless (Fn->UINT64_MAX isa long) {
+      return 0;
+    }
+    
+    unless (Fn->UINT64_MAX == -1) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method UINT8_MAX : int () {
+    unless (Fn->UINT8_MAX isa byte) {
+      return 0;
+    }
+    
+    unless (Fn->UINT8_MAX == -1) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   static method UBYTE_MAX : int () {
     unless (Fn->UBYTE_MAX isa byte) {
       return 0;
