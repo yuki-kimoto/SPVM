@@ -80,6 +80,20 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method FLT_MAX : int () {
+    unless (Fn->FLT_MAX isa float) {
+      return 0;
+    }
+    return 1;
+  }
+  
+  static method FLT_MIN : int () {
+    unless (Fn->FLT_MIN isa float) {
+      return 0;
+    }
+    return 1;
+  }
+  
   static method INT_MAX : int () {
     unless (Fn->INT_MAX isa int) {
       return 0;

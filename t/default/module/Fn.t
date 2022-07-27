@@ -48,6 +48,16 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Module::Fn->DOUBLE_MIN);
   ok(SPVM::TestCase::Module::Fn->FLOAT_MAX);
   ok(SPVM::TestCase::Module::Fn->FLOAT_MIN);
+  {
+    ok(SPVM::TestCase::Module::Fn->FLT_MAX);
+    is(SPVM::Fn->FLT_MAX, POSIX::FLT_MAX);
+    like(SPVM::Fn->FLT_MAX(), qr/[0-9]/);
+  }
+  {
+    ok(SPVM::TestCase::Module::Fn->FLT_MIN);
+    is(SPVM::Fn->FLT_MIN, POSIX::FLT_MIN);
+    like(SPVM::Fn->FLT_MIN(), qr/[0-9]/);
+  }
   ok(SPVM::TestCase::Module::Fn->INT_MAX);
   ok(SPVM::TestCase::Module::Fn->INT_MIN);
   ok(SPVM::TestCase::Module::Fn->LONG_MAX);
@@ -121,10 +131,6 @@ my $nan_re = qr/(nan|ind)/i;
   ok(SPVM::TestCase::Module::Fn->uc);
   
   # Extra
-  is(SPVM::Fn->FLT_MAX, POSIX::FLT_MAX);
-  like(SPVM::Fn->FLT_MAX(), qr/[0-9]/);
-  is(SPVM::Fn->FLT_MIN, POSIX::FLT_MIN);
-  like(SPVM::Fn->FLT_MIN(), qr/[0-9]/);
   is(SPVM::Fn->INT16_MAX, $SHORT_MAX);
   is(SPVM::Fn->INT16_MAX, 32767);
   is(SPVM::Fn->INT16_MIN, $SHORT_MIN);
