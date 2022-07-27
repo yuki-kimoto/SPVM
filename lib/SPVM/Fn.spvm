@@ -197,27 +197,6 @@ class Fn {
     
     my $substring_length = length $substring;
     
-    if ($length > $string_length - $offset) {
-      $length = $string_length - $offset;
-    }
-    
-    if ($offset >= $length) {
-      my $ret : int;
-      if ($substring_length == 0) {
-        $ret = $length;
-      }
-      else {
-        $ret = -1;
-      }
-      return $ret;
-    }
-    if ($offset < 0) {
-      $offset = 0;
-    }
-    if ($substring_length == 0) {
-      return $offset;
-    }
-    
     my $first : byte  = $substring->[0];
     my $max : int = ($length - $substring_length);
     
