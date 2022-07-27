@@ -344,16 +344,27 @@ The hex string must contain only hex characters C<0-9a-zA-Z>. Otherwise an excep
 
   static method index : int ($string : string, $substring : string, $offset : int)
 
-Search for the substring in the string from the starting position
-and return the found position. If the substring is not found, return C<-1>.
+The alias for the following code using L</"index_len">.
+
+  my $ret = &index_len($string, $substring, $offset, length $string);
 
 =head2 index_len
 
   static method index_len : int ($string : string, $substring : string, $offset : int, $max_length : int)
 
-Same as the L<"index"> method except that the max length of the string can be specified.
+Search for the substring in the string from the offset of the string to the offset + the max length.
 
-If the max string length of the argument is greater than the lenght of the string, the max string length become the length of string.
+If the substring is found, return the found offset. Otherwise return C<-1>.
+
+The string must be defined. Otherwise an exception will occur.
+
+The substring must be defined. Otherwise an exception will occur.
+
+The offset must be greater than or equal to 0. Otherwise an exception will occur.
+
+The max length must be greater than or equal to 0. Otherwise an exception will occur.
+
+The offset + the length specified by the argument must be less than or equal to the length of the string. Otherwise an exception will occur.
 
 =head2 is_alnum
 

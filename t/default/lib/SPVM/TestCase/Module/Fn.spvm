@@ -821,7 +821,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     # 1-9
     {
       unless (Fn->hex("1") == 1) { return 0; }
@@ -834,7 +834,7 @@ class TestCase::Module::Fn {
       unless (Fn->hex("8") == 8) { return 0; }
       unless (Fn->hex("9") == 9) { return 0; }
     }
-
+    
     # a-z
     {
       unless (Fn->hex("a") == 10) { return 0; }
@@ -844,7 +844,7 @@ class TestCase::Module::Fn {
       unless (Fn->hex("e") == 14) { return 0; }
       unless (Fn->hex("f") == 15) { return 0; }
     }
-
+    
     # A-Z
     {
       unless (Fn->hex("A") == 10) { return 0; }
@@ -854,13 +854,13 @@ class TestCase::Module::Fn {
       unless (Fn->hex("E") == 14) { return 0; }
       unless (Fn->hex("F") == 15) { return 0; }
     }
-
+    
     # 19afAF25
     {
       unless (Fn->hex("19afAF25") == 430944037) { return 0; }
       unless (Fn->hex("19afAF25") == 430944037) { return 0; }
     }
-
+    
     # FFFFFFFF
     {
       unless (Fn->hex("FFFFFFFF") == 0xFFFFFFFF) { return 0; }
@@ -873,7 +873,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     # Exception - Empty String
     {
       eval { Fn->hex(""); };
@@ -881,7 +881,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     # Exception - Invalid hex string
     {
       eval { Fn->hex("g"); };
@@ -889,7 +889,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     # Exception - Too long
     {
       eval { Fn->hex("111111111"); };
@@ -904,7 +904,7 @@ class TestCase::Module::Fn {
   }
   
   static method index : int () {
-
+    
     {
       my $target = "abcde";
       my $search = "bcd";
@@ -913,7 +913,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     {
       my $target = "abcde";
       my $search = "bcd";
@@ -922,7 +922,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     {
       my $target = "abcde";
       my $search = "bcd";
@@ -931,7 +931,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     {
       my $target = "abcde";
       my $search = "pq";
@@ -943,9 +943,9 @@ class TestCase::Module::Fn {
     
     return 1;
   }
-
+  
   static method index_len : int () {
-
+    
     {
       my $target = "abcde";
       my $search = "bcd";
@@ -954,16 +954,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->index_len($target, $search, 0, length $target + 1);
-      unless ($pos == 1) {
-        return 0;
-      }
-    }
-
+    
     {
       my $target = "abcde";
       my $search = "bcd";
@@ -972,7 +963,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     {
       my $target = "abcde";
       my $search = "bcd";
@@ -981,31 +972,42 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
+    # Exception
     {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->index_len($target, $search, 1, length $target);
-      unless ($pos == 1) {
-        return 0;
+      {
+        my $target = "abcde";
+        my $search = "bcd";
+        eval { Fn->index_len($target, $search, 0, length $target + 1); };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $pos = Fn->index_len($target, $search, 2, length $target);
-      unless ($pos == -1) {
-        return 0;
+      {
+        my $target = "abcde";
+        my $search = "bcd";
+        eval { Fn->index_len($target, $search, 1, length $target); };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-
-    {
-      my $target = "abcde";
-      my $search = "pq";
-      my $pos = Fn->index_len($target, $search, 2, length $target);
-      unless ($pos == -1) {
-        return 0;
+      
+      {
+        my $target = "abcde";
+        my $search = "bcd";
+        eval { Fn->index_len($target, $search, 2, length $target); };
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $target = "abcde";
+        my $search = "pq";
+        eval { Fn->index_len($target, $search, 2, length $target); };
+        unless ($@) {
+          return 0;
+        }
       }
     }
     
