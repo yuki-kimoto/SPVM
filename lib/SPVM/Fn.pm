@@ -253,11 +253,11 @@ Copy the string and remove C<\n> of the end of the copied string and return it.
 
 =head2 chr
 
-  static method contains : int ($string : string, $substring : string)
+  static method chr : string ($code_point : int)
 
-Convert Unicode code point to a UTF-8 character. If the Unicode code point is not a Unicode scalar value, return C<undef>.
+Convert C<Unicode> code point to a C<UTF-8> character and return it.
 
-See also L<Unicode->is_unicode_scalar_value|SPVM::Unicode/"is_unicode_scalar_value">.
+If the C<Unicode> code point is not a L<Unicode scalar value|/"is_unicode_scalar_value">, return C<undef>.
 
 =head2 contains
 
