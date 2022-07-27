@@ -760,6 +760,28 @@ class TestCase::Module::Fn {
       }
     }
     
+    # Exceptions
+    {
+      {
+        my $string = (string)undef;
+        my $offset = 0;
+        eval { Fn->get_next_code_point($string, \$offset); };
+        unless (Fn->contains($@, "The string must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $string = "あaい";
+        my $offset = -1;
+        eval { Fn->get_next_code_point($string, \$offset); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
     return 1;
   }
   
