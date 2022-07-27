@@ -470,7 +470,7 @@ Same as L</"get_next_code_point">, but the offset is not updated.
 
 =head2 memcpy
 
-  static method memcpy : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
+  static method memcpy : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
 
 The destination must be a string type, a numeric type, or a multi numeric type, otherwise an exception is thrown.
 
@@ -488,15 +488,15 @@ The source must be defined. Otherwise an exception will occur.
 
 The length must be more than or equals to 0. Otherwise an exception will occur.
 
-The destination byte offset + byte length must be within the byte range of the destination. Otherwise an exception will occur.
+The destination offset + length must be within the range of the destination. Otherwise an exception will occur.
 
-The source byte offset + byte length must be within the byte range of the source. Otherwise an exception will occur.
+The source offset + length must be within the range of the source. Otherwise an exception will occur.
 
 If source data range and destination data overlap, the result is not guaranteed.
 
 =head2 memmove
 
-  static method memmove : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
+  static method memmove : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
 
 The destination must be a string type, a numeric type, or a multi numeric type, otherwise an exception is thrown.
 
@@ -514,9 +514,9 @@ The source must be defined. Otherwise an exception will occur.
 
 The length must be more than or equals to 0. Otherwise an exception will occur.
 
-The destination byte offset + byte length must be within the byte range of the destination. Otherwise an exception will occur.
+The destination offset + length must be within the range of the destination. Otherwise an exception will occur.
 
-The source byte offset + byte length must be within the byte range of the source. Otherwise an exception will occur.
+The source offset + length must be within the range of the source. Otherwise an exception will occur.
 
 =head2 ord
 

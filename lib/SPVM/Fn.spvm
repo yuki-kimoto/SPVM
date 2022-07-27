@@ -492,9 +492,9 @@ class Fn {
     return $code_point;
   }
   
-  native static method memcpy : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
+  native static method memcpy : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
   
-  native static method memmove : void ($dest : object, $dest_byte_offset : int, $source : object, $source_byte_offset : int, $byte_length : int);
+  native static method memmove : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
   
   static method ord : int ($utf8_char : string) {
     unless ($utf8_char) {

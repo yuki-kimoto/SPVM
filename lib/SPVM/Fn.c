@@ -323,10 +323,10 @@ int32_t SPVM__Fn__is_object_array(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* dest = stack[0].oval;
-  int32_t dest_byte_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   void* source = stack[2].oval;
-  int32_t source_byte_offset = stack[3].ival;
-  int32_t byte_length = stack[4].ival;
+  int32_t source_offset = stack[3].ival;
+  int32_t length = stack[4].ival;
 
   if (!dest) {
     return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__);
@@ -337,43 +337,43 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (!source) {
-    return env->die(env, stack, "Source must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__);
   }
 
   if (!(env->is_string(env, stack, source) || env->is_numeric_array(env, stack, source) || env->is_mulnum_array(env, stack, source))) {
-    return env->die(env, stack, "Source must be a string type, a numeric arrya type, or a multi numeric array", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source must be a string type, a numeric arrya type, or a multi numeric array", FILE_NAME, __LINE__);
   }
 
   if (env->is_read_only(env, stack, dest)) {
     return env->die(env, stack, "The destination must not be a read-only string", FILE_NAME, __LINE__);
   }
   
-  if (byte_length == 0) {
+  if (length == 0) {
     return 0;
   }
-  else if (byte_length < 0) {
+  else if (length < 0) {
     return env->die(env, stack, "The length must be more than or equals to 0", FILE_NAME, __LINE__);
   }
   
   char* dest_bytes = (char*)env->get_chars(env, stack, dest);
   int32_t dest_len = env->length(env, stack, dest);
   int32_t dest_elem_byte_size = env->get_elem_byte_size(env, stack, dest);
-  int32_t dest_byte_length = dest_elem_byte_size * dest_len;
+  int32_t dest_length = dest_elem_byte_size * dest_len;
   
   const char* source_bytes = env->get_chars(env, stack, source);
   int32_t source_len = env->length(env, stack, source);
   int32_t source_elem_byte_size = env->get_elem_byte_size(env, stack, source);
-  int32_t source_byte_length = source_elem_byte_size * source_len;
+  int32_t source_length = source_elem_byte_size * source_len;
   
-  if (dest_byte_offset + byte_length > dest_byte_length) {
-    return env->die(env, stack, "The destination byte_offset + byte_length must be within the range of the destination array", FILE_NAME, __LINE__);
+  if (dest_offset + length > dest_length) {
+    return env->die(env, stack, "The destination offset + length must be within the range of the destination array", FILE_NAME, __LINE__);
   }
 
-  if (source_byte_offset + byte_length > source_byte_length) {
-    return env->die(env, stack, "Source byte_offset + byte_length must be within the range of the source array", FILE_NAME, __LINE__);
+  if (source_offset + length > source_length) {
+    return env->die(env, stack, "Source offset + length must be within the range of the source array", FILE_NAME, __LINE__);
   }
   
-  memcpy((char*)(dest_bytes + dest_byte_offset), (char*)(source_bytes + source_byte_offset), byte_length);
+  memcpy((char*)(dest_bytes + dest_offset), (char*)(source_bytes + source_offset), length);
   
   return 0;
 }
@@ -381,10 +381,10 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* dest = stack[0].oval;
-  int32_t dest_byte_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   void* source = stack[2].oval;
-  int32_t source_byte_offset = stack[3].ival;
-  int32_t byte_length = stack[4].ival;
+  int32_t source_offset = stack[3].ival;
+  int32_t length = stack[4].ival;
 
   if (!dest) {
     return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__);
@@ -395,43 +395,43 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (!source) {
-    return env->die(env, stack, "Source must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__);
   }
 
   if (!(env->is_string(env, stack, source) || env->is_numeric_array(env, stack, source) || env->is_mulnum_array(env, stack, source))) {
-    return env->die(env, stack, "Source must be a string type, a numeric arrya type, or a multi numeric array", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source must be a string type, a numeric arrya type, or a multi numeric array", FILE_NAME, __LINE__);
   }
 
   if (env->is_read_only(env, stack, dest)) {
     return env->die(env, stack, "The destination must not be a read-only string", FILE_NAME, __LINE__);
   }
   
-  if (byte_length == 0) {
+  if (length == 0) {
     return 0;
   }
-  else if (byte_length < 0) {
+  else if (length < 0) {
     return env->die(env, stack, "The length must be more than or equals to 0", FILE_NAME, __LINE__);
   }
   
   char* dest_bytes = (char*)env->get_chars(env, stack, dest);
   int32_t dest_len = env->length(env, stack, dest);
   int32_t dest_elem_byte_size = env->get_elem_byte_size(env, stack, dest);
-  int32_t dest_byte_length = dest_elem_byte_size * dest_len;
+  int32_t dest_length = dest_elem_byte_size * dest_len;
   
   const char* source_bytes = env->get_chars(env, stack, source);
   int32_t source_len = env->length(env, stack, source);
   int32_t source_elem_byte_size = env->get_elem_byte_size(env, stack, source);
-  int32_t source_byte_length = source_elem_byte_size * source_len;
+  int32_t source_length = source_elem_byte_size * source_len;
   
-  if (dest_byte_offset + byte_length > dest_byte_length) {
-    return env->die(env, stack, "The destination byte_offset + byte_length must be within the range of the destination array", FILE_NAME, __LINE__);
+  if (dest_offset + length > dest_length) {
+    return env->die(env, stack, "The destination offset + length must be within the range of the destination array", FILE_NAME, __LINE__);
   }
 
-  if (source_byte_offset + byte_length > source_byte_length) {
-    return env->die(env, stack, "Source byte_offset + byte_length must be within the range of the source array", FILE_NAME, __LINE__);
+  if (source_offset + length > source_length) {
+    return env->die(env, stack, "Source offset + length must be within the range of the source array", FILE_NAME, __LINE__);
   }
   
-  memmove((char*)(dest_bytes + dest_byte_offset), (char*)(source_bytes + source_byte_offset), byte_length);
+  memmove((char*)(dest_bytes + dest_offset), (char*)(source_bytes + source_offset), length);
   
   return 0;
 }
