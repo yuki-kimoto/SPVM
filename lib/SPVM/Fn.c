@@ -433,115 +433,121 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__shorten(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
-
+  
   void* string = stack[0].oval;
   int32_t new_length = stack[1].ival;
   
   env->shorten(env, stack, string, new_length);
-
+  
   return 0;
 }
 
 int32_t SPVM__Fn__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
+  
   if (!obj_string) {
     return env->die(env, stack, "The string must be defined", FILE_NAME, __LINE__);
   }
+  
   const char* string = env->get_chars(env, stack, obj_string);
   
   char *end;
   errno = 0;
   double num = strtod(string, &end);
   if (*end != '\0') {
-    return env->die(env, stack, "Invalid number format", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string must be the string that can be parsed as a double number", FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE) {
-    return env->die(env, stack, "[ERANGE]Out of range", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string must be a double number in the correct range", FILE_NAME, __LINE__);
   }
   
   stack[0].dval = num;
-
+  
   return 0;
 }
 
 int32_t SPVM__Fn__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
+  
   if (!obj_string) {
     return env->die(env, stack, "The string must be defined", FILE_NAME, __LINE__);
   }
+  
   const char* string = env->get_chars(env, stack, obj_string);
   
   char *end;
   errno = 0;
   float num = strtof(string, &end);
   if (*end != '\0') {
-    return env->die(env, stack, "Invalid number format", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string must be the string that can be parsed as a float number", FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE) {
-    return env->die(env, stack, "[ERANGE]Out of range", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string must be a float number in the correct range", FILE_NAME, __LINE__);
   }
   
   stack[0].fval = num;
-
+  
   return 0;
 }
 
 int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
+  int32_t digit = stack[1].ival;
+  
   if (!obj_string) {
     return env->die(env, stack, "The string must be defined", FILE_NAME, __LINE__);
   }
-  const char* string = env->get_chars(env, stack, obj_string);
-  
-  int32_t digit = stack[1].ival;
   
   if (!(digit == 2 || digit == 8 || digit == 10 || digit == 16)) {
-    return env->die(env, stack, "Digit must be 2, 8, 10, 16", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The digit must be one of 2, 8, 10, 16", FILE_NAME, __LINE__);
   }
+  
+  const char* string = env->get_chars(env, stack, obj_string);
   
   char *end;
   errno = 0;
   long int num = strtol(string, &end, digit);
   if (*end != '\0') {
-    return env->die(env, stack, "Invalid number format", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string must be the string that can be parsed as a 32-bit integer", FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE || num < INT32_MIN || num > INT32_MAX) {
-    return env->die(env, stack, "Out of range", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string must be a 32-bit integer in the correct range", FILE_NAME, __LINE__);
   }
   
   stack[0].ival = (int32_t)num;
-
+  
   return 0;
 }
 
 int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
+  int32_t digit = stack[1].ival;
+  
   if (!obj_string) {
     return env->die(env, stack, "The string must be defined", FILE_NAME, __LINE__);
   }
-  const char* string = env->get_chars(env, stack, obj_string);
   
-  int32_t digit = stack[1].ival;
-
   if (!(digit == 2 || digit == 8 || digit == 10 || digit == 16)) {
-    return env->die(env, stack, "Digit must be 2, 8, 10, 16", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The digit must be one of 2, 8, 10, 16", FILE_NAME, __LINE__);
   }
+  
+  const char* string = env->get_chars(env, stack, obj_string);
   
   char *end;
   errno = 0;
   long long int num = strtoll(string, &end, digit);
   if (*end != '\0') {
-    return env->die(env, stack, "Invalid number format", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string must be the string that can be parsed as a 64-bit integer", FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE || num < INT64_MIN || num > INT64_MAX) {
-    return env->die(env, stack, "Out of range", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string must be a 64-bit integer in the correct range", FILE_NAME, __LINE__);
   }
   
   stack[0].lval = (int64_t)num;
-
+  
   return 0;
 }
