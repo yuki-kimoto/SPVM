@@ -464,7 +464,7 @@ If the Unicode code point is an ASCII printable C<0x20-0x7E>, return C<1>. Other
 
   static method is_punct : int ($code_point : int)
 
-If the Unicode code point is an ASCII a punctuation character C<0x21-0x2f>, C<0x3a-0x40>, C<0x5b-0x60>, C<0x7b-0x7e>, return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII a punctuation character C<0x21-0x2F>, C<0x3A-0x40>, C<0x5B-0x60>, C<0x7B-0x7E>, return C<1>. Otherwise return C<0>.
 
 =head2 is_space
 

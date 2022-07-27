@@ -1194,7 +1194,7 @@ class TestCase::Module::Fn {
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
-      if ($char >= 0x21 && $char <= 0x7e) {
+      if ($char >= 0x21 && $char <= 0x7E) {
         my $ret = Fn->is_graph($char);
         unless ($ret == 1) {
           $ok = 0;
@@ -1519,7 +1519,7 @@ class TestCase::Module::Fn {
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
-      if ($char >= 0x20 && $char <= 0x7e) {
+      if ($char >= 0x20 && $char <= 0x7E) {
         my $ret = Fn->is_print($char);
         unless ($ret == 1) {
           $ok = 0;
@@ -1546,7 +1546,7 @@ class TestCase::Module::Fn {
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
-      if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
+      if (($char >= 0x21 && $char <= 0x2F) || ($char >= 0x3A && $char <= 0x40) || ($char >= 0x5B && $char <= 0x60) || ($char >= 0x7B && $char <= 0x7E)) {
         my $ret = Fn->is_punct($char);
         unless ($ret == 1) {
           $ok = 0;

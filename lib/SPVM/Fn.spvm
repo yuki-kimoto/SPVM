@@ -273,7 +273,7 @@ class Fn {
   
   static method is_graph : int ($code_point : int) {
     
-    if ($code_point >= 0x21 && $code_point <= 0x7e) {
+    if ($code_point >= 0x21 && $code_point <= 0x7E) {
       return 1;
     }
     else {
@@ -345,7 +345,7 @@ class Fn {
   
   static method is_print : int ($code_point : int) {
     
-    if ($code_point >= 0x20 && $code_point <= 0x7e) {
+    if ($code_point >= 0x20 && $code_point <= 0x7E) {
       return 1;
     }
     else {
@@ -355,7 +355,7 @@ class Fn {
   
   static method is_punct : int ($code_point : int) {
     
-    if (($code_point >= 0x21 && $code_point <= 0x2f) || ($code_point >= 0x3a && $code_point <= 0x40) || ($code_point >= 0x5b && $code_point <= 0x60) || ($code_point >= 0x7b && $code_point <= 0x7e)) {
+    if (($code_point >= 0x21 && $code_point <= 0x2F) || ($code_point >= 0x3A && $code_point <= 0x40) || ($code_point >= 0x5B && $code_point <= 0x60) || ($code_point >= 0x7B && $code_point <= 0x7E)) {
       return 1;
     }
     else {
