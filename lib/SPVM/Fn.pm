@@ -281,11 +281,11 @@ The alias for the following code using L<copy operator|SPVM::Document::LanguageS
 
   static method crand : int ($seed : int*);
 
-Get random number(0 <= rundom_number <= Fn->RAND_MAX) with a seed.
+Create a random number from C<0> to L</"RAND_MAX"> using the seed and return it.
 
 The seed is updated.
 
-This method is thread safe different from C<rand> function of C<C language>.
+This method is thread safe.
 
 B<Examples:>
   
