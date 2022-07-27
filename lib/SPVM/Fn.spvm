@@ -24,7 +24,7 @@ class Fn {
   static method INT_MIN : int () { return -2147483648; }
   static method LONG_MAX : long () { return 9223372036854775807L; }
   static method LONG_MIN : long () { return -9223372036854775808L; }
-  native static method RAND_MAX : int ();
+  static method RAND_MAX : int () { return 2147483647; }
   static method SHORT_MAX : short () { return 32767; }
   static method SHORT_MIN : short () { return -32768; }
   static method UBYTE_MAX : byte () { return (byte)0xFF; }
