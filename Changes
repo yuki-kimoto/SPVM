@@ -21,7 +21,9 @@
   [Incompatible Changes]
     * Fn->index_len throw exception.
       The offset + the length specified by the argument must be less than or equal to the length of the string
-      
+  [Bug Fix]
+    * Fix the bug that Fn->rindex_len, Fn->rindex don't work well.
+  
 0.9629 2022-07-26
   [New Features]
     * Add copy_object_address to Array class.
