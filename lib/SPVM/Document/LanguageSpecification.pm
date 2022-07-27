@@ -4167,31 +4167,30 @@ Another definition of basic types are the types that is not L<array types|"Array
 
 =head2 Array Type
 
-Array Type represents multiple continuous data areas. The L<basic type|/"Basic Type"> can be an Array.
+The array type is the L<type|Type> for the L<array|/"Array">. The array type is composed of the L<basic type|/"Basic Type"> and the dimension such as C<[]>, C<[][]>.
 
+  # Numeric array
   int[]
   double[]
-  Point[]
-  object[]
-  string []
-
-Array has dimensions and can express up to 255 dimensions.
-
-  # Two dimensions
-  int[] []
   
-  # Three-dimensional
-  int[] [] []
+  # String array
+  string []
+  
+  # Class array
+  Point[]
+  
+  # Any object array
+  object[]
+  
+  # 2 dimensional array
+  int[][]
+  
+  # 3 dimensional array
+  int[][][]
 
-Array Type is an L<object type|/"Object Type">.
+The maximam value of dimesions is C<255>. Otherwise an compilation error will occur.
 
-Use new Operator to create an Array. In the following example, the L<int type|/"int Type"> Array with 3 elements is created.
-
-my $nums = new int [3];
-
-You also use new Operator when creating a Multi-Dimensional Array.The following example creates an Array of int[] Type with 3 elements.
-
-my $nums = new int[] [3];
+The array type is an L<object type|/"Object Type">.
 
 =head3 Numeric Array Type
 
