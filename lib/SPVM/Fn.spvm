@@ -828,7 +828,7 @@ class Fn {
     return $new_string;
   }
   
-  precompile static method ucfirst : string ($string : string) {
+  static method ucfirst : string ($string : string) {
     
     unless ($string) {
       die "The string must be defined";
@@ -845,9 +845,8 @@ class Fn {
         $new_string->[0] = $char;
       }
     }
-    for (my $i = 1; $i < $length; ++$i) {
-      $new_string->[$i] = $string->[$i];
-    }
+    Fn->memcpy($new_string, 1, $string, 1, $length - 1);
+    
     return $new_string;
   }
   
