@@ -273,9 +273,9 @@ The substring must be defined. Otherwise an exception will be thrown.
 
   static method copy_string : string ($string : string)
 
-Copy the value of the string, and return a new string.
+The alias for the following code using L<copy operator|SPVM::Document::LanguageSpecification/"copy Operator">
 
-If the argument string is undef, return undef.
+  my $ret = copy $string;
 
 =head2 crand
 
