@@ -53,6 +53,28 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method INT32_MIN : int () {
+    unless (Fn->INT32_MIN  isa int) {
+      return 0;
+    }
+    unless (Fn->INT32_MIN == -2147483648) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method INT32_MAX : int () {
+    unless (Fn->INT32_MAX  isa int) {
+      return 0;
+    }
+    unless (Fn->INT32_MAX == 2147483647) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   static method INT8_MIN : int () {
     unless (Fn->INT8_MIN  isa byte) {
       return 0;
@@ -605,16 +627,6 @@ class TestCase::Module::Fn {
     }
     
     return 1;
-  }
-
-  static method int_constant : int () {
-    if (Fn->INT32_MIN() == -2147483648) {
-      if (Fn->INT32_MAX() == 2147483647) {
-        return 1;
-      }
-    }
-
-    return 0;
   }
 
   static method is_alnum : int () {
