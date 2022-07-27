@@ -209,31 +209,38 @@ int32_t SPVM__Fn__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
-  void* obj_str = stack[0].oval;
-  
-  const char* str = env->get_chars(env, stack, obj_str);
-  int32_t str_len = env->length(env, stack, obj_str);
-  
+  void* obj_string = stack[0].oval;
   int32_t* offset_ref = stack[1].iref;
+
+  if (!obj_string) {
+    return env->die(env, stack, "The string must be defined", FILE_NAME, __LINE__);
+  }
   
-  if (*offset_ref < 0 || *offset_ref > str_len - 1) {
+  if (!(*offset_ref >= 0)) {
+    return env->die(env, stack, "The offset must be greater than or equal to 0", FILE_NAME, __LINE__);
+  }
+  
+  const char* string = env->get_chars(env, stack, obj_string);
+  int32_t string_len = env->length(env, stack, obj_string);
+  
+  if (!(*offset_ref < string_len)) {
     stack[0].ival = -1;
     return 0;
   }
   
   int32_t dst;
-  int32_t uchar_len = (int32_t)spvm_utf8proc_iterate((const uint8_t*)(str + *offset_ref), str_len, &dst);
+  int32_t utf8_char_len = (int32_t)spvm_utf8proc_iterate((const uint8_t*)(string + *offset_ref), string_len, &dst);
   
   int32_t uchar;
-  if (uchar_len > 0) {
+  if (utf8_char_len > 0) {
     uchar = dst;
-    *offset_ref += uchar_len;
+    *offset_ref += utf8_char_len;
   }
-  else if (uchar_len == 0) {
-    uchar = -1;
+  else if (utf8_char_len == 0) {
+    uchar = -2;
   }
-  else if (uchar_len == SPVM_UTF8PROC_ERROR_INVALIDUTF8) {
-    uchar = -1;
+  else if (utf8_char_len == SPVM_UTF8PROC_ERROR_INVALIDUTF8) {
+    uchar = -3;
   }
   
   stack[0].ival = uchar;

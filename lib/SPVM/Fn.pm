@@ -298,13 +298,7 @@ B<Examples:>
 
   static method get_next_code_point : int ($string : string, $offset_ref : int*)
 
-Parse the C<UTF-8> character at the offset of the string and return its Unicode code point.
-
-The offset is updated to the position of the next C<UTF-8> character.
-
-If the offset is over the length of the string, return a negative value.
-
-If an invalid code point is got, return a negative value.
+Same as L</"get_code_point">.
 
 This method is depracated. Use L</"get_code_point"> instead.
 
@@ -316,9 +310,11 @@ Parse the C<UTF-8> character at the offset of the string and return its Unicode 
 
 The offset is updated to the position of the next C<UTF-8> character.
 
-If the offset is over the length of the string, return a negative value.
+If the offset is greater than the length of the string, return a negative value.
 
-If an invalid code point is got, return a negative value.
+If the parsing fail, return a negative value.
+
+If the got Unicode code point is a Unicode scalar value, return a negative value.
 
 =head2 hex
 
