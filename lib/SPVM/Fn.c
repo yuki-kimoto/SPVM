@@ -81,14 +81,6 @@ int32_t SPVM__Fn__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Fn__RAND_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  stack[0].ival = 2147483647;
-
-  return 0;
-}
-
-
 static ptrdiff_t SPVM__Fn__static__convert_code_point_to_utf8_char(int32_t uc, uint8_t *dst) {
   if (uc < 0x00) {
     return 0;
