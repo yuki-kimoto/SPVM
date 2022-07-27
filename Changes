@@ -13,6 +13,7 @@
     * Fn->trim_ascii_space is renamed to Fn->trim. Fn->trim_ascii_space is deprecated.
   [Document Fix]
     * Fix Fn->chr doc.
+    * Fix Fn->contains doc.
   
 0.9629 2022-07-26
   [New Features]

@@ -261,9 +261,13 @@ If the C<Unicode> code point is not a L<Unicode scalar value|/"is_unicode_scalar
 
 =head2 contains
 
-  static method index : int ($string : string, $substring : string, $offset : int)
+  static method contains : int ($string : string, $substring : string)
 
 Search for the substring in the string. If the substring is found, return C<1>. Otherwise return C<0>.
+
+The string must be defined. Otherwise an exception will be thrown.
+
+The substring must be defined. Otherwise an exception will be thrown.
 
 =head2 copy_string
 
