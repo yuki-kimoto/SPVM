@@ -91,45 +91,48 @@ class TestCase::Module::Sort {
       }
     }
     
-    # Exception - Offset must be greater than or equal to 0
+    # Exceptions
     {
-      my $nums = [(byte)5, 2, 3, 1, -10];
-      
-      eval {
-        Sort->sort_byte($nums, -1, 3, method : int ($a : byte, $b : byte) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset must be greater than or equal to 0
+      {
+        my $nums = [(byte)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_byte($nums, -1, 3, method : int ($a : byte, $b : byte) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Length must be greater than or equal to 0
-    {
-      my $nums = [(byte)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_byte($nums, 1, -1, method : int ($a : byte, $b : byte) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Length must be greater than or equal to 0
+      {
+        my $nums = [(byte)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_byte($nums, 1, -1, method : int ($a : byte, $b : byte) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset + Length must be in the array range
-    {
-      my $nums = [(byte)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_byte($nums, 3, 3, method : int ($a : byte, $b : byte) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset + Length must be in the array range
+      {
+        my $nums = [(byte)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_byte($nums, 3, 3, method : int ($a : byte, $b : byte) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
     }
     
@@ -244,59 +247,62 @@ class TestCase::Module::Sort {
       }
     }
     
-    # Exception - Array must be not undef
+    # Exceptions
     {
-      my $nums = [(double)2, 3, 1];
-      
-      eval {
-        Sort->sort_double(undef, 0, scalar @$nums, method : int ($a : double, $b : double) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Array must be not undef
+      {
+        my $nums = [(double)2, 3, 1];
+        
+        eval {
+          Sort->sort_double(undef, 0, scalar @$nums, method : int ($a : double, $b : double) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset must be greater than or equal to 0
-    {
-      my $nums = [(double)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_double($nums, -1, 3, method : int ($a : double, $b : double) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset must be greater than or equal to 0
+      {
+        my $nums = [(double)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_double($nums, -1, 3, method : int ($a : double, $b : double) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Length must be greater than or equal to 0
-    {
-      my $nums = [(double)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_double($nums, 1, -1, method : int ($a : double, $b : double) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Length must be greater than or equal to 0
+      {
+        my $nums = [(double)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_double($nums, 1, -1, method : int ($a : double, $b : double) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset + Length must be in the array range
-    {
-      my $nums = [(double)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_double($nums, 3, 3, method : int ($a : double, $b : double) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset + Length must be in the array range
+      {
+        my $nums = [(double)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_double($nums, 3, 3, method : int ($a : double, $b : double) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
     }
     
@@ -414,59 +420,62 @@ class TestCase::Module::Sort {
       }
     }
     
-    # Exception - Array must be not undef
+    # Exceptions
     {
-      my $nums = [(float)2, 3, 1];
-      
-      eval {
-        Sort->sort_float(undef, 0, scalar @$nums, method : int ($a : float, $b : float) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Array must be not undef
+      {
+        my $nums = [(float)2, 3, 1];
+        
+        eval {
+          Sort->sort_float(undef, 0, scalar @$nums, method : int ($a : float, $b : float) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset must be greater than or equal to 0
-    {
-      my $nums = [(float)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_float($nums, -1, 3, method : int ($a : float, $b : float) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset must be greater than or equal to 0
+      {
+        my $nums = [(float)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_float($nums, -1, 3, method : int ($a : float, $b : float) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Length must be greater than or equal to 0
-    {
-      my $nums = [(float)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_float($nums, 1, -1, method : int ($a : float, $b : float) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Length must be greater than or equal to 0
+      {
+        my $nums = [(float)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_float($nums, 1, -1, method : int ($a : float, $b : float) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset + Length must be in the array range
-    {
-      my $nums = [(float)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_float($nums, 3, 3, method : int ($a : float, $b : float) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset + Length must be in the array range
+      {
+        my $nums = [(float)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_float($nums, 3, 3, method : int ($a : float, $b : float) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
     }
     
@@ -581,59 +590,62 @@ class TestCase::Module::Sort {
       }
     }
     
-    # Exception - Array must be not undef
+    # Exceptions
     {
-      my $nums = [(int)2, 3, 1];
-      
-      eval {
-        Sort->sort_int(undef, 0, scalar @$nums, method : int ($a : int, $b : int) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Array must be not undef
+      {
+        my $nums = [(int)2, 3, 1];
+        
+        eval {
+          Sort->sort_int(undef, 0, scalar @$nums, method : int ($a : int, $b : int) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset must be greater than or equal to 0
-    {
-      my $nums = [(int)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_int($nums, -1, 3, method : int ($a : int, $b : int) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset must be greater than or equal to 0
+      {
+        my $nums = [(int)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_int($nums, -1, 3, method : int ($a : int, $b : int) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Length must be greater than or equal to 0
-    {
-      my $nums = [(int)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_int($nums, 1, -1, method : int ($a : int, $b : int) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Length must be greater than or equal to 0
+      {
+        my $nums = [(int)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_int($nums, 1, -1, method : int ($a : int, $b : int) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset + Length must be in the array range
-    {
-      my $nums = [(int)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_int($nums, 3, 3, method : int ($a : int, $b : int) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset + Length must be in the array range
+      {
+        my $nums = [(int)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_int($nums, 3, 3, method : int ($a : int, $b : int) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
     }
     
@@ -749,59 +761,62 @@ class TestCase::Module::Sort {
       }
     }
     
-    # Exception - Array must be not undef
+    # Exceptions
     {
-      my $nums = [(long)2, 3, 1];
-      
-      eval {
-        Sort->sort_long(undef, 0, scalar @$nums, method : int ($a : long, $b : long) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Array must be not undef
+      {
+        my $nums = [(long)2, 3, 1];
+        
+        eval {
+          Sort->sort_long(undef, 0, scalar @$nums, method : int ($a : long, $b : long) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset must be greater than or equal to 0
-    {
-      my $nums = [(long)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_long($nums, -1, 3, method : int ($a : long, $b : long) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset must be greater than or equal to 0
+      {
+        my $nums = [(long)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_long($nums, -1, 3, method : int ($a : long, $b : long) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Length must be greater than or equal to 0
-    {
-      my $nums = [(long)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_long($nums, 1, -1, method : int ($a : long, $b : long) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Length must be greater than or equal to 0
+      {
+        my $nums = [(long)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_long($nums, 1, -1, method : int ($a : long, $b : long) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset + Length must be in the array range
-    {
-      my $nums = [(long)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_long($nums, 3, 3, method : int ($a : long, $b : long) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset + Length must be in the array range
+      {
+        my $nums = [(long)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_long($nums, 3, 3, method : int ($a : long, $b : long) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
     }
     
@@ -927,59 +942,62 @@ class TestCase::Module::Sort {
       }
     }
     
-    # Exception - Array must be not undef
+    # Exceptions
     {
-      my $objs = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
-      
-      eval {
-        Sort->sort_object(undef, 0, scalar @$objs, method : int ($a : object, $b : object) {
-          return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Array must be not undef
+      {
+        my $objs = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
+        
+        eval {
+          Sort->sort_object(undef, 0, scalar @$objs, method : int ($a : object, $b : object) {
+            return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset must be greater than or equal to 0
-    {
-      my $objs = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
       
-      eval {
-        Sort->sort_object($objs, -1, 3, method : int ($a : object, $b : object) {
-          return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset must be greater than or equal to 0
+      {
+        my $objs = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
+        
+        eval {
+          Sort->sort_object($objs, -1, 3, method : int ($a : object, $b : object) {
+            return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Length must be greater than or equal to 0
-    {
-      my $objs = [&new_minimal(5, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0), &new_minimal(-10, 0)];
       
-      eval {
-        Sort->sort_object($objs, 1, -1, method : int ($a : object, $b : object) {
-          return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Length must be greater than or equal to 0
+      {
+        my $objs = [&new_minimal(5, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0), &new_minimal(-10, 0)];
+        
+        eval {
+          Sort->sort_object($objs, 1, -1, method : int ($a : object, $b : object) {
+            return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset + Length must be in the array range
-    {
-      my $objs = [&new_minimal(5, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0), &new_minimal(-10, 0)];
       
-      eval {
-        Sort->sort_object($objs, 3, 3, method : int ($a : object, $b : object) {
-          return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset + Length must be in the array range
+      {
+        my $objs = [&new_minimal(5, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0), &new_minimal(-10, 0)];
+        
+        eval {
+          Sort->sort_object($objs, 3, 3, method : int ($a : object, $b : object) {
+            return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
     }
     
@@ -1066,59 +1084,62 @@ class TestCase::Module::Sort {
       }
     }
     
-    # Exception - Array must be not undef
+    # Exceptions
     {
-      my $nums = [(short)2, 3, 1];
-      
-      eval {
-        Sort->sort_short(undef, 0, scalar @$nums, method : int ($a : short, $b : short) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Array must be not undef
+      {
+        my $nums = [(short)2, 3, 1];
+        
+        eval {
+          Sort->sort_short(undef, 0, scalar @$nums, method : int ($a : short, $b : short) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset must be greater than or equal to 0
-    {
-      my $nums = [(short)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_short($nums, -1, 3, method : int ($a : short, $b : short) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset must be greater than or equal to 0
+      {
+        my $nums = [(short)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_short($nums, -1, 3, method : int ($a : short, $b : short) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Length must be greater than or equal to 0
-    {
-      my $nums = [(short)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_short($nums, 1, -1, method : int ($a : short, $b : short) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Length must be greater than or equal to 0
+      {
+        my $nums = [(short)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_short($nums, 1, -1, method : int ($a : short, $b : short) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset + Length must be in the array range
-    {
-      my $nums = [(short)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_short($nums, 3, 3, method : int ($a : short, $b : short) {
-          return $a <=> $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset + Length must be in the array range
+      {
+        my $nums = [(short)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_short($nums, 3, 3, method : int ($a : short, $b : short) {
+            return $a <=> $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
     }
     
@@ -1247,59 +1268,62 @@ class TestCase::Module::Sort {
       }
     }
     
-    # Exception - Array must be not undef
+    # Exceptions
     {
-      my $strings = [(string)2, 3, 1];
-      
-      eval {
-        Sort->sort_string(undef, 0, scalar @$strings, method : int ($a : string, $b : string) {
-          return $a cmp $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Array must be not undef
+      {
+        my $strings = [(string)2, 3, 1];
+        
+        eval {
+          Sort->sort_string(undef, 0, scalar @$strings, method : int ($a : string, $b : string) {
+            return $a cmp $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset must be greater than or equal to 0
-    {
-      my $strings = [(string)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_string($strings, -1, 3, method : int ($a : string, $b : string) {
-          return $a cmp $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset must be greater than or equal to 0
+      {
+        my $strings = [(string)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_string($strings, -1, 3, method : int ($a : string, $b : string) {
+            return $a cmp $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Length must be greater than or equal to 0
-    {
-      my $strings = [(string)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_string($strings, 1, -1, method : int ($a : string, $b : string) {
-          return $a cmp $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Length must be greater than or equal to 0
+      {
+        my $strings = [(string)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_string($strings, 1, -1, method : int ($a : string, $b : string) {
+            return $a cmp $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    # Exception - Offset + Length must be in the array range
-    {
-      my $strings = [(string)5, 2, 3, 1, -10];
       
-      eval {
-        Sort->sort_string($strings, 3, 3, method : int ($a : string, $b : string) {
-          return $a cmp $b;
-        });
-      };
-      unless ($@) {
-        return 0;
+      # Exception - Offset + Length must be in the array range
+      {
+        my $strings = [(string)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_string($strings, 3, 3, method : int ($a : string, $b : string) {
+            return $a cmp $b;
+          });
+        };
+        unless ($@) {
+          return 0;
+        }
       }
     }
     
