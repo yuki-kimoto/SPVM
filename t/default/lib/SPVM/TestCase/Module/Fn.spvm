@@ -2882,14 +2882,6 @@ class TestCase::Module::Fn {
   }
 
   static method trim : int () {
-    # undef
-    {
-      my $string = (string)undef;
-      my $trimed_string = Fn->trim($string);
-      unless ($trimed_string == undef) {
-        return 0;
-      }
-    }
     
     # no left and right spaces
     {
@@ -2927,18 +2919,20 @@ class TestCase::Module::Fn {
       }
     }
     
+    # Exception
+    {
+      eval { Fn->trim(undef); };
+      unless (Fn->contains($@, "The string must be defined")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
   
   static method trim_ascii_space : int () {
-    # undef
-    {
-      my $string = (string)undef;
-      my $trimed_string = Fn->trim_ascii_space($string);
-      unless ($trimed_string == undef) {
-        return 0;
-      }
-    }
     
     # no left and right spaces
     {

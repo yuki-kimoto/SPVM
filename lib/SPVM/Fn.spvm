@@ -747,7 +747,7 @@ class Fn {
   precompile static method trim : string ($string : string) {
     
     unless ($string) {
-      return undef;
+      die "The string must be defined";
     }
     
     my $length = length $string;
