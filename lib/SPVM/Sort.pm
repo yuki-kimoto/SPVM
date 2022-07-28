@@ -78,9 +78,13 @@ C<Sort> provides sorting functions. The sorting algorithm is a stable merge sort
 
 =head2 sort_byte
 
-    static method sort_byte : void ($array : byte[], $offset : int, $length : int, $comparator : Comparator::Byte)
+  static method sort_byte : void ($array : byte[], $offset : int, $length : int, $comparator : Comparator::Byte)
 
-Sort the range of the elements of C<byte> array in-place with the offset, the length, and the L<Comparator::Byte|SPVM::Comparator::Byte> comparator.
+Sort the range of the elements of C<byte> array in-place.
+
+The sorted range is from the offset to the offset + the length - C<1>.
+
+The L<Comparator::Byte|SPVM::Comparator::Byte> comparator is used to compare each element.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -93,7 +97,7 @@ The comparator must be defined. Otherwise an exception will be thrown.
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
 =head2 sort_byte_asc
-    
+
   static method sort_byte_asc : void ($array : byte[], $offset : int, $length : int)
 
 The alias for the following code.
@@ -110,11 +114,13 @@ The alias for the following code.
 
 =head2 sort_double
 
-    static method sort_double : void ($array : double[], $offset : int, $length : int, $comparator : Comparator::Double)
+  static method sort_double : void ($array : double[], $offset : int, $length : int, $comparator : Comparator::Double)
 
-Sort the range of the elements of C<double> array in-place with the offset, the length, and the L<Comparator::Double|SPVM::Comparator::Double> comparator.
+Sort the range of the elements of C<double> array in-place.
 
-The array must be defined. Otherwise an exception will be thrown.
+The sorted range is from the offset to the offset + the length - C<1>.
+
+The L<Comparator::Double|SPVM::Comparator::Double> comparator is used to compare each element.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -125,7 +131,7 @@ The comparator must be defined. Otherwise an exception will be thrown.
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
 =head2 sort_double_asc
-    
+
   static method sort_double_asc : void ($array : double[], $offset : int, $length : int)
 
 The alias for the following code.
@@ -142,11 +148,13 @@ The alias for the following code.
 
 =head2 sort_float
 
-    static method static method sort_float : void ($array : float[], $offset : int, $length : int, $comparator : Comparator::Float)
+  static method static method sort_float : void ($array : float[], $offset : int, $length : int, $comparator : Comparator::Float)
 
-Sort the range of the elements of float array in-place with the offset, the length, and the L<Comparator::Float|SPVM::Comparator::Float> comparator.
+Sort the range of the elements of float array in-place.
 
-The array must be defined. Otherwise an exception will be thrown.
+The sorted range is from the offset to the offset + the length - C<1>.
+
+The L<Comparator::Float|SPVM::Comparator::Float> comparator is used to compare each element.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -157,7 +165,7 @@ The comparator must be defined. Otherwise an exception will be thrown.
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
 =head2 sort_float_asc
-    
+
   static method sort_float_asc : void ($array : float[], $offset : int, $length : int)
 
 The alias for the following code.
@@ -174,11 +182,13 @@ The alias for the following code.
 
 =head2 sort_int
 
-    static method sort_int : void ($array : int[], $offset : int, $length : int, $comparator : Comparator::Int)
+  static method sort_int : void ($array : int[], $offset : int, $length : int, $comparator : Comparator::Int)
 
-Sort the range of the elements of C<int> array in-place with the offset, the length, and the L<Comparator::Int|SPVM::Comparator::Int> comparator.
+Sort the range of the elements of C<int> array in-place.
 
-The array must be defined. Otherwise an exception will be thrown.
+The sorted range is from the offset to the offset + the length - C<1>.
+
+The L<Comparator::Int|SPVM::Comparator::Int> comparator is used to compare each element.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -189,7 +199,7 @@ The comparator must be defined. Otherwise an exception will be thrown.
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
 =head2 sort_int_asc
-    
+
   static method sort_int_asc : void ($array : int[], $offset : int, $length : int)
 
 The alias for the following code.
@@ -206,11 +216,13 @@ The alias for the following code.
 
 =head2 sort_long
 
-    static method sort_long : void ($array : long[], $offset : int, $length : int, $comparator : Comparator::Long)
+  static method sort_long : void ($array : long[], $offset : int, $length : int, $comparator : Comparator::Long)
 
-Sort the range of the elements of long array in-place with the offset, the length, and the L<Comparator::Long|SPVM::Comparator::Long> comparator.
+Sort the range of the elements of long array in-place.
 
-The array must be defined. Otherwise an exception will be thrown.
+The sorted range is from the offset to the offset + the length - C<1>.
+
+The L<Comparator::Long|SPVM::Comparator::Long> comparator is used to compare each element.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -221,7 +233,7 @@ The comparator must be defined. Otherwise an exception will be thrown.
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
 =head2 sort_long_asc
-    
+
   static method sort_long_asc : void ($array : long[], $offset : int, $length : int)
 
 The alias for the following code.
@@ -238,11 +250,13 @@ The alias for the following code.
 
 =head2 sort_object
 
-    static method sort_object : void ($objs : object[], $offset : int, $length : int, $comparator : Comparator)
+  static method sort_object : void ($objs : object[], $offset : int, $length : int, $comparator : Comparator)
 
-Sort the range of the elements of object array in-place with the offset, the length, and the L<Comparator|SPVM::Comparator> comparator.
+Sort the range of the elements of object array in-place.
 
-The array must be defined. Otherwise an exception will be thrown.
+The sorted range is from the offset to the offset + the length - C<1>.
+
+The L<Comparator|SPVM::Comparator> comparator is used to compare each element.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -254,11 +268,13 @@ The offset + length must be less than or equal to the length of the elements. Ot
 
 =head2 sort_short
 
-    static method sort_short : void ($array : short[], $offset : int, $length : int, $comparator : Comparator::Short)
+  static method sort_short : void ($array : short[], $offset : int, $length : int, $comparator : Comparator::Short)
 
-Sort the range of the elements of short array in-place with the offset, the length, and the L<Comparator::Short|SPVM::Comparator::Short> comparator.
+Sort the range of the elements of short array in-place.
 
-The array must be defined. Otherwise an exception will be thrown.
+The sorted range is from the offset to the offset + the length - C<1>.
+
+The L<Comparator::Short|SPVM::Comparator::Short> comparator is used to compare each element.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -269,7 +285,7 @@ The length must be greater than or equal to C<0>. Otherwise an exception will be
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
 =head2 sort_short_asc
-    
+
   static method sort_short_asc : void ($array : short[], $offset : int, $length : int)
 
 The alias for the following code.
@@ -286,11 +302,13 @@ The alias for the following code.
 
 =head2 sort_string
 
-    static method sort_string : void ($array : string[], $offset : int, $length : int, $comparator : Comparator::Double)
+  static method sort_string : void ($array : string[], $offset : int, $length : int, $comparator : Comparator::String)
 
-Sort the range of the elements of C<string> array in-place with the offset, the length, and the L<Comparator::String|SPVM::Comparator::String> comparator.
+Sort the range of the elements of C<string> array in-place.
 
-The array must be defined. Otherwise an exception will be thrown.
+The sorted range is from the offset to the offset + the length - C<1>.
+
+The L<Comparator::String|SPVM::Comparator::String> comparator is used to compare each element.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -301,7 +319,7 @@ The comparator must be defined. Otherwise an exception will be thrown.
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
 =head2 sort_string_asc
-    
+
   static method sort_string_asc : void ($array : string[], $offset : int, $length : int)
 
 The alias for the following code.
