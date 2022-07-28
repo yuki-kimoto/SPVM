@@ -2938,6 +2938,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
+    
     return 1;
   }
 
@@ -2983,7 +2984,7 @@ class TestCase::Module::Fn {
     
     # Exception
     {
-      eval { Fn->lcfirst(undef); };
+      eval { Fn->ucfirst(undef); };
       unless (Fn->contains($@, "The string must be defined")) {
         return 0;
       }
