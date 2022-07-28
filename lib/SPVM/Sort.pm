@@ -80,9 +80,9 @@ C<Sort> provides sorting functions. The sorting algorithm is a stable merge sort
 
     static method sort_byte : void ($array : byte[], $offset : int, $length : int, $comparator : Comparator::Byte)
 
-Sort the elements of C<byte> array in-place with the offset, the length, and the L<Comparator::Byte|SPVM::Comparator::Byte> comparator.
+Sort the range of the elements of C<byte> array in-place with the offset, the length, and the L<Comparator::Byte|SPVM::Comparator::Byte> comparator.
 
-The elements must be defined. Otherwise an exception will be thrown.
+The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -110,9 +110,9 @@ The alias for the following code.
 
     static method sort_double : void ($array : double[], $offset : int, $length : int, $comparator : Comparator::Double)
 
-Sort the elements of C<double> array in-place with the offset, the length, and the L<Comparator::Double|SPVM::Comparator::Double> comparator.
+Sort the range of the elements of C<double> array in-place with the offset, the length, and the L<Comparator::Double|SPVM::Comparator::Double> comparator.
 
-The elements must be defined. Otherwise an exception will be thrown.
+The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -140,9 +140,9 @@ The alias for the following code.
 
     static method static method sort_float : void ($array : float[], $offset : int, $length : int, $comparator : Comparator::Float)
 
-Sort the elements of float array in-place with the offset, the length, and the L<Comparator::Float|SPVM::Comparator::Float> comparator.
+Sort the range of the elements of float array in-place with the offset, the length, and the L<Comparator::Float|SPVM::Comparator::Float> comparator.
 
-The elements must be defined. Otherwise an exception will be thrown.
+The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -170,9 +170,9 @@ The alias for the following code.
 
     static method sort_int : void ($array : int[], $offset : int, $length : int, $comparator : Comparator::Int)
 
-Sort the elements of C<int> array in-place with the offset, the length, and the L<Comparator::Int|SPVM::Comparator::Int> comparator.
+Sort the range of the elements of C<int> array in-place with the offset, the length, and the L<Comparator::Int|SPVM::Comparator::Int> comparator.
 
-The elements must be defined. Otherwise an exception will be thrown.
+The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -200,9 +200,9 @@ The alias for the following code.
 
     static method sort_long : void ($array : long[], $offset : int, $length : int, $comparator : Comparator::Long)
 
-Sort the elements of long array in-place with the offset, the length, and the L<Comparator::Long|SPVM::Comparator::Long> comparator.
+Sort the range of the elements of long array in-place with the offset, the length, and the L<Comparator::Long|SPVM::Comparator::Long> comparator.
 
-The elements must be defined. Otherwise an exception will be thrown.
+The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -230,9 +230,9 @@ The alias for the following code.
 
     static method sort_object : void ($objs : object[], $offset : int, $length : int, $comparator : Comparator)
 
-Sort the elements of object array in-place with the offset, the length, and the L<Comparator|SPVM::Comparator> comparator.
+Sort the range of the elements of object array in-place with the offset, the length, and the L<Comparator|SPVM::Comparator> comparator.
 
-The elements must be defined. Otherwise an exception will be thrown.
+The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -244,9 +244,9 @@ The offset + length must be less than or equal to the length of the elements. Ot
 
     static method sort_short : void ($array : short[], $offset : int, $length : int, $comparator : Comparator::Short)
 
-Sort the elements of short array in-place with the offset, the length, and the L<Comparator::Short|SPVM::Comparator::Short> comparator.
+Sort the range of the elements of short array in-place with the offset, the length, and the L<Comparator::Short|SPVM::Comparator::Short> comparator.
 
-The elements must be defined. Otherwise an exception will be thrown.
+The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -274,9 +274,9 @@ The alias for the following code.
 
     static method sort_string : void ($array : string[], $offset : int, $length : int, $comparator : Comparator::Double)
 
-Sort the elements of C<string> array in-place with the offset, the length, and the L<Comparator::String|SPVM::Comparator::String> comparator.
+Sort the range of the elements of C<string> array in-place with the offset, the length, and the L<Comparator::String|SPVM::Comparator::String> comparator.
 
-The elements must be defined. Otherwise an exception will be thrown.
+The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 

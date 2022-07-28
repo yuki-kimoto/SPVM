@@ -48,7 +48,8 @@
       The string must be defined
     * Fn->chomp throws exceptions
     * Fn->chompr throws exceptions
-    
+    * Sort->sort_(byte|short|int|long|float|double|string|object) throw exceptions
+      The comparator must be defined
   [Bug Fix]
     * Fix the bug that Fn->rindex_len, Fn->rindex don't work well.
     * Fix the bug Arrya->memmove_string_address calls Arrya->memmove_object. The correct code call Arrya->memmove_object_address.
