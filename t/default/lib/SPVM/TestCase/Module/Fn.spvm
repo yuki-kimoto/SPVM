@@ -2980,6 +2980,17 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
+    
+    # Exception
+    {
+      eval { Fn->lcfirst(undef); };
+      unless (Fn->contains($@, "The string must be defined")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
 }
