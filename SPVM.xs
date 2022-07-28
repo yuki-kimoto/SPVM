@@ -3482,7 +3482,7 @@ _xs_new_object_array(...)
     if (!SvOK(sv_element)) {
       env->set_elem_object(env, stack, array, index, NULL);
     }
-    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject::Class")) {
+    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject")) {
       void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_element);
       
       if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {

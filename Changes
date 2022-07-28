@@ -3,6 +3,8 @@
     * Add SPVM::new_any_object_array function.
   [Changes]
     * Excnahge API shows the stack trace when exceptions are thrown
+  [Bug Fix]
+    * Fix the bug that SPVM::new_object_array can't receive non-class object.
 0.9629_01 2022-07-28
   [New Features]
     * Add GET_CODE_POINT_ERROR_OVER_STRING_RANGE, GET_CODE_POINT_ERROR_INVALID_UTF8 to Fn class.

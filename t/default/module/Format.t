@@ -284,6 +284,21 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is(sprintf("%+3g", 111.5), SPVM::Format->sprintf("%+3g", SPVM::new_any_object_array([SPVM::Float->new(111.5)])));
       is(sprintf("%-3g", 111.5), SPVM::Format->sprintf("%-3g", SPVM::new_any_object_array([SPVM::Float->new(111.5)])));
     }
+    
+    # %s
+    {
+      is(sprintf("%s", 1.5), SPVM::Format->sprintf("%s", SPVM::new_any_object_array([SPVM::new_string(1.5)])));
+      is(sprintf("%.100s", 1.5), SPVM::Format->sprintf("%.100s", SPVM::new_any_object_array([SPVM::new_string(1.5)])));
+      is(sprintf("%.3s", 1.5), SPVM::Format->sprintf("%.3s", SPVM::new_any_object_array([SPVM::new_string(1.5)])));
+      is(sprintf("%+3s", 1.5), SPVM::Format->sprintf("%+3s", SPVM::new_any_object_array([SPVM::new_string(1.5)])));
+      is(sprintf("%-3s", 1.5), SPVM::Format->sprintf("%-3s", SPVM::new_any_object_array([SPVM::new_string(1.5)])));
+      is(sprintf("%.3s", 1111.5), SPVM::Format->sprintf("%.3s", SPVM::new_any_object_array([SPVM::new_string(1111.5)])));
+      is(sprintf("%+3s", 1111.5), SPVM::Format->sprintf("%+3s", SPVM::new_any_object_array([SPVM::new_string(1111.5)])));
+      is(sprintf("%-3s", 1111.5), SPVM::Format->sprintf("%-3s", SPVM::new_any_object_array([SPVM::new_string(1111.5)])));
+      is(sprintf("%.3s", 111.5), SPVM::Format->sprintf("%.3s", SPVM::new_any_object_array([SPVM::new_string(111.5)])));
+      is(sprintf("%+3s", 111.5), SPVM::Format->sprintf("%+3s", SPVM::new_any_object_array([SPVM::new_string(111.5)])));
+      is(sprintf("%-3s", 111.5), SPVM::Format->sprintf("%-3s", SPVM::new_any_object_array([SPVM::new_string(111.5)])));
+    }
   }
 }
 
