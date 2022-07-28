@@ -1111,6 +1111,16 @@ or UTF-8 bytes.
   my $perl_binary = encode('UTF-8', "あいう");
   my $spvm_string = SPVM::new_string_from_bin($perl_binary);
 
+=head2 new_any_object_array
+
+  my $byte_array = SPVM::new_any_object_array(
+    [SPVM::Byte->new(1), SPVM::Byte>new(2), SPVM::Byte->new(3)]
+  );
+
+The alias for the following code using L</"new_object_array">.
+
+  my $spvm_array = SPVM::new_object_array('object[]', $perl_array_ref);
+
 =head2 new_object_array
 
   my $byte_array = SPVM::new_object_array(

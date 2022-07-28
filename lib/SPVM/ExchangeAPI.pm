@@ -17,6 +17,16 @@ sub new_byte_array_from_string {
   return $ret;
 }
 
+sub new_any_object_array {
+  my $builder = shift;
+  
+  my $type_name = 'object[]';
+  
+  my $array = &new_object_array($builder, $type_name, @_);
+  
+  return $array;
+}
+
 sub new_object_array {
   my ($builder, $type_name, $elems) = @_;
   

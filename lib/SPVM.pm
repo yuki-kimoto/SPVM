@@ -306,6 +306,11 @@ sub new_object_array {
   SPVM::ExchangeAPI::new_object_array($BUILDER, @_);
 }
 
+sub new_any_object_array {
+  SPVM::init() unless $SPVM_INITED;
+  SPVM::ExchangeAPI::new_any_object_array($BUILDER, @_);
+}
+
 sub new_mulnum_array {
   SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_mulnum_array($BUILDER, @_);
