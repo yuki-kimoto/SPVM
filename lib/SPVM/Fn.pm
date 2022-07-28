@@ -35,17 +35,17 @@ SPVM::Fn - SPVM Starndard Functions
   
 =head1 Description
 
-B<Fn> module provides SPVM Starndard Functions. B<Fn> contains number, string and array utilities.
+C<Fn> module provides SPVM Starndard Functions. C<Fn> contains number, string and array utilities.
 
 =head1 Enumerations
 
 =head2 GET_CODE_POINT_ERROR_OVER_STRING_RANGE
 
-  -1
+Return C<-1>. The return type is the C<int> type.
 
 =head2 GET_CODE_POINT_ERROR_INVALID_UTF8
 
-  -2
+Return C<-2>. The return type is the C<int> type.
 
 =head1 Class Methods
 
@@ -53,13 +53,13 @@ B<Fn> module provides SPVM Starndard Functions. B<Fn> contains number, string an
 
   static method BYTE_MAX : byte ()
 
-Same as L</"INT8_MAX">.
+The same as L</"INT8_MAX">.
 
 =head2 BYTE_MIN
 
   static method BYTE_MIN : byte ()
 
-Same as L</"INT8_MIN">.
+The same as L</"INT8_MIN">.
 
 =head2 DBL_MAX
 
@@ -77,25 +77,25 @@ Return the value of C<DBL_MIN> macro defined in C<float.h> header of C<C languag
 
   static method DOUBLE_MAX : double ()
 
-Same as L</"DBL_MAX">.
+The same as L</"DBL_MAX">.
 
 =head2 DOUBLE_MIN
 
   static method DOUBLE_MIN : double ()
 
-Same as L</"DBL_MIN">.
+The same as L</"DBL_MIN">.
 
 =head2 FLOAT_MAX
 
   static method FLOAT_MAX : float ()
 
-Same as L</"FLT_MAX">.
+The same as L</"FLT_MAX">.
 
 =head2 FLOAT_MIN
 
   static method FLOAT_MIN : float()
 
-Same as L</"FLT_MIN">.
+The same as L</"FLT_MIN">.
 
 =head2 FLT_MAX
 
@@ -149,7 +149,7 @@ Return C<-9223372036854775808>. The minimal value of the signed 64bit integer.
 
   static method INT8_MAX : byte ()
 
-Same as L</"INT8_MAX">.
+Return C<127>. The maximum value of the signed 8bit integer.
 
 =head2 INT8_MIN
 
@@ -161,43 +161,49 @@ Return C<-128>. The minimal value of the signed 8bit integer.
 
   static method INT_MAX : int ()
 
-Same as L</"INT32_MAX">.
+The same as L</"INT32_MAX">.
 
 =head2 INT_MIN
 
   static method INT_MIN : int ()
 
-Same as L</"INT32_MIN">.
+The same as L</"INT32_MIN">.
 
 =head2 LONG_MAX
 
   static method LONG_MAX : long ()
 
-Same as L</"INT64_MAX">.
+The same as L</"INT64_MAX">.
 
 =head2 LONG_MIN
 
   static method LONG_MIN : long ()
 
-Same as L</"INT64_MIN">.
+The same as L</"INT64_MIN">.
+
+=head2 RAND_MAX
+
+  static method RAND_MAX : int ()
+
+Return C<2147483647>.
 
 =head2 SHORT_MAX
 
   static method SHORT_MAX : short ()
 
-Same as L</"INT16_MAX">.
+The same as L</"INT16_MAX">.
 
 =head2 SHORT_MIN
   
   static method SHORT_MIN : short ()
 
-Same as L</"INT16_MIN">.
+The same as L</"INT16_MIN">.
 
 =head2 UBYTE_MAX
 
   static method UBYTE_MAX : byte ()
 
-Same as L</"UINT8_MAX">.
+The same as L</"UINT8_MAX">.
 
 =head2 UINT16_MAX
 
@@ -221,25 +227,25 @@ Return C<-1>. This represents C<0xFFFFFFFFFFFFFFFF> in the unsigned 64bit intege
 
   static method UINT8_MAX : byte ()
 
-Return C<-1>. The same bit expression of 0xFF in the unsigned 8bit integer in 2's complement.
+Return C<-1>. This represents C<0xFF> in the unsigned 8bit integer in 2's complement.
 
 =head2 UINT_MAX
 
   static method UINT_MAX : int ()
 
-Same as L</"UINT32_MAX">.
+The same as L</"UINT32_MAX">.
 
 =head2 ULONG_MAX
 
   static method ULONG_MAX : long
 
-Same as L</"UINT64_MAX">.
+The same as L</"UINT64_MAX">.
 
 =head2 USHORT_MAX
 
   static method USHORT_MAX : short ()
 
-Same as L</"UINT16_MAX">.
+The same as L</"UINT16_MAX">.
 
 =head2 abs
 
@@ -253,7 +259,7 @@ Return the absolute value of the input value.
 
 Remove C<\n> of the end of the string.
 
-If the string is C<undef> or the length is zero, nothing is performed.
+If the string is C<undef> or the length of the string is C<0>, nothing is performed.
 
 =head2 chompr
 
@@ -265,9 +271,9 @@ Copy the string and remove C<\n> of the end of the copied string and return it.
 
   static method chr : string ($code_point : int)
 
-Convert C<Unicode> code point to a C<UTF-8> character and return it.
+Convert the Unicode code point to the C<UTF-8> character and return it.
 
-If the C<Unicode> code point is not a L<Unicode scalar value|/"is_unicode_scalar_value">, return C<undef>.
+If the Unicode code point is not a Unicode scalar value, return C<undef>.
 
 =head2 contains
 
@@ -283,7 +289,7 @@ The substring must be defined. Otherwise an exception will be thrown.
 
   static method copy_string : string ($string : string)
 
-The alias for the following code using L<copy operator|SPVM::Document::LanguageSpecification/"copy Operator">
+The alias for the following code using the L<copy operator|SPVM::Document::LanguageSpecification/"copy Operator">
 
   my $ret = copy $string;
 
@@ -308,7 +314,7 @@ B<Examples:>
 
   static method get_next_code_point : int ($string : string, $offset_ref : int*)
 
-Same as L</"get_code_point">.
+The same as L</"get_code_point">.
 
 This method is depracated. Use L</"get_code_point"> instead.
 
@@ -382,13 +388,13 @@ If the Unicode code point is an ASCII alphabetic C<A-Za-z>, return C<1>. Otherwi
 
   static method is_array : int ($object : object)
 
-If the object is defined and the type of the object is the array type, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<array type|SPVM::Document::LanguageSpecification/"Array Type">, return C<1>. Otherwise return C<0>.
 
 =head2 is_blank
 
   static method is_blank : int ($code_point : int)
 
-If the Unicode code point is an ASCII blank C<0x20(SP)>, C<0x9(HT)>, return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII blank C<0x20(SP, ' ')>, C<0x09(HT, '\t')>, return C<1>. Otherwise return C<0>.
 
 =head2 is_cntrl
 
@@ -406,13 +412,13 @@ If the Unicode code point is an ASCII decimal digit C<0-9>, return C<1>. Otherwi
 
   static method is_graph : int ($code_point : int)
 
-If character has graphical representation C<0x21-0x7E>, return C<1>. Otherwise return C<0>.
+If the character is an ASCII graphical character C<0x21-0x7E>, return C<1>. Otherwise return C<0>.
 
 =head2 is_hex_digit
 
   static method is_hex_digit : int ($code_point : int)
 
-If the character is hexadecimal digit C<0-9a-fA-F>, return C<1>. Otherwise return C<0>.
+If the character is a hexadecimal digit C<0-9a-fA-F>, return C<1>. Otherwise return C<0>.
 
 =head2 is_lower
 
@@ -424,19 +430,19 @@ If the Unicode code point is an ASCII lowercase character C<a-z>, return C<1>. O
 
   static method is_mulnum_array : int ($object : object)
 
-If the object is defined and the type of the object is the multi-numeric array type, returns C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<multi-numeric array type|SPVM::Document::LanguageSpecification/"Multi-Numeric Array Type">, return C<1>. Otherwise return C<0>.
 
 =head2 is_numeric_array
 
   static method is_numeric_array : int ($object : object)
 
-If the object is defined and the type of the object is the numeric array type, returns C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<numeric array type|SPVM::Document::LanguageSpecification/"Numeric Array Type">, return C<1>. Otherwise return C<0>.
 
 =head2 is_object_array
 
   static method is_object_array : int ($object : object)
 
-If he object is defined and the object is a object array, returns C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is an L<object array type|SPVM::Document::LanguageSpecification/"Object Array Type">, return C<1>. Otherwise return C<0>.
 
 =head2 is_perl_space
 
@@ -452,13 +458,13 @@ Current Perl C<\s> in ASCII mode is the same as L</"is_space">.
 
   static method is_perl_word : int ($code_point : int)
 
-If the Unicode code point is an Perl ASCII word character C<a-zA-Z_0-9>, return C<1>. Otherwise return C<0>.
+If the Unicode code point is an Perl ASCII word character C<a-zA-Z0-9_>, return C<1>. Otherwise return C<0>.
 
 =head2 is_print
 
   static method is_print : int ($code_point : int)
 
-If the Unicode code point is an ASCII printable C<0x20-0x7E>, return C<1>. Otherwise return C<0>.
+If the Unicode code point is an ASCII printable character C<0x20-0x7E>, return C<1>. Otherwise return C<0>.
 
 =head2 is_punct
 
@@ -487,36 +493,36 @@ If the Unicode code point is an ASCII hexadecimal digit C<0-9A-Fa-f>, return C<1
 =head2 join
 
   static method join : string ($sep : string, $strings : string[])
-  
-Join a string array with separater and return it.
 
-If separater is undef, an exception occurs.
+Join the strings with the separater and return it.
 
-If string array is undef, an exception occurs.
+The strings must be defined. Otherwise an exception will occur.
+
+The separator must be defined. Otherwise an exception will occur.
 
 =head2 labs
 
   static method labs : long ($value : long)
 
-Return the absolute value.
+Return the absolute value of the input value.
 
 =head2 lc
 
   static method lc : string ($string : string)
 
-Convert uppercase string to lowercase string.
+Convert the string to the ASCII lowercase string.
 
 =head2 lcfirst
 
   static method lcfirst : string ($string : string)
 
-Convert first chracter of string from uppercase to lowercase.
+Convert the first chracter of the string to the ASCII lowercase character.
 
 =head2 look_next_code_point
 
   static method look_next_code_point : int ($string : string, $offset_ref : int*)
 
-Same as L</"get_next_code_point">, but the offset is not updated.
+The same as L</"get_next_code_point">, but the offset is not updated.
 
 This method is depracated. Use L</"look_code_point"> instead.
 
@@ -524,57 +530,43 @@ This method is depracated. Use L</"look_code_point"> instead.
 
   static method look_code_point : int ($string : string, $offset_ref : int*)
 
-Same as L</"get_code_point">, but the offset is not updated.
+The same as L</"get_code_point">, but the offset is not updated.
 
 =head2 memcpy
 
   static method memcpy : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
 
-The destination must be a string type, a numeric type, or a multi numeric type, otherwise an exception is thrown.
+Copy the range of the source to the the range of the destination.
 
-If the destination is a read-only string, an exception is thrown.
+The range of the destination is from the offset of the destination to the offset of the destination + the length.
 
-The source must be a string type, a numeric type, or a multi numeric type, otherwise an exception is thrown.
+The range of the source is from the offset of the source to the offset of the destination + the length.
 
-Copy the source to the destination with the given each offset and the given length by byte unit.
+The unit of the offset and the length is C<byte> size.
 
-If source data range and destination data overlap, the result is not guaranteed.
+If the range of the source and the range of the destination overlap, the result is B<not> guaranteed.
 
 The destination must be defined. Otherwise an exception will occur.
 
+The type of the destination must be the string type, the numeric arrya type, or the multi numeric array type. Otherwise an exception will occur.
+
 The source must be defined. Otherwise an exception will occur.
 
-The length must be more than or equals to 0. Otherwise an exception will occur.
+The type of the source must be the string type, the numeric arrya type, or the multi numeric array type. Otherwise an exception will occur.
 
-The destination offset + length must be within the range of the destination. Otherwise an exception will occur.
+The destination must not be a read-only string. Otherwise an exception will occur.
 
-The source offset + length must be within the range of the source. Otherwise an exception will occur.
+The length must be more than or equal to 0. Otherwise an exception will occur.
 
-If source data range and destination data overlap, the result is not guaranteed.
+The offset of the obj_destination + the length specified by the argument must be less than or equal to the length of the obj_destination. Otherwise an exception will occur.
+
+The offset of the obj_source + the length specified by the argument must be less than or equal to the length of the obj_source. Otherwise an exception will occur.
 
 =head2 memmove
 
   static method memmove : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
 
-The destination must be a string type, a numeric type, or a multi numeric type, otherwise an exception is thrown.
-
-If the destination is a read-only string, an exception is thrown.
-
-The source must be a string type, a numeric type, or a multi numeric type, otherwise an exception is thrown.
-
-Copy the source to the destination with the given each offset and the given length by byte unit.
-
-If source data range and destination data overlap, the result is not guaranteed.
-
-The destination must be defined. Otherwise an exception will occur.
-
-The source must be defined. Otherwise an exception will occur.
-
-The length must be more than or equals to 0. Otherwise an exception will occur.
-
-The destination offset + length must be within the range of the destination. Otherwise an exception will occur.
-
-The source offset + length must be within the range of the source. Otherwise an exception will occur.
+The same as L</"memcpy">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 ord
 
@@ -582,11 +574,11 @@ The source offset + length must be within the range of the source. Otherwise an 
 
 Gets the Unicode code point from the first character of the specified <C<UTF-8>> string.
 
-If the specified C<UTF-8> character is C<undef>, returns a negative value.
+If the specified C<UTF-8> character is C<undef>, return a negative value.
 
-If the length of the specified C<UTF-8> string is C<0>, returns a negative value.
+If the length of the specified C<UTF-8> string is C<0>, return a negative value.
 
-If the specified C<UTF-8> character is invalid C<UTF-8> character, returns a negative value.
+If the specified C<UTF-8> character is invalid C<UTF-8> character, return a negative value.
 
 =head2 powi
 
@@ -844,13 +836,13 @@ If the convertion fails, an exception occuer.
 
   static method to_lower : int ($code_point : int)
 
-Convert uppercase character('A'-'Z') to lowercase. If the character is not uppercase character, return the character.
+Convert uppercase character('A'-'Z') to lowercase. If the character is a non-uppercase character, return the character.
 
 =head2 to_upper
 
   static method to_upper : int ($code_point : int)
 
-Convert lowercase character('a'-'z') to lowercase. If the character is not uppercase character, return the character.
+Convert lowercase character('a'-'z') to lowercase. If the character is a non-uppercase character, return the character.
 
 =head2 trim_ascii_space
 
@@ -876,7 +868,7 @@ If the argument string is undef, return undef.
 
 Convert a lowercase string to a uppercase string.
 
-If the string is undef, an exception occurs.
+If the string is undef, an exception will occur.
 
 =head2 ucfirst
 
@@ -884,4 +876,4 @@ If the string is undef, an exception occurs.
 
 Convert the first character of a string to a uppercase character.
 
-If the string is undef, an exception occurs.
+If the string is undef, an exception will occur.

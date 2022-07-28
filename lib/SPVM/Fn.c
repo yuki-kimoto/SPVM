@@ -333,23 +333,23 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "The obj_destination must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, obj_dest) || env->is_numeric_array(env, stack, obj_dest) || env->is_mulnum_array(env, stack, obj_dest))) {
-    return env->die(env, stack, "The obj_destination must be a string type, a numeric arrya type, or a multi numeric array", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the destination must be the string type, the numeric arrya type, or the multi numeric array type", FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "The obj_source must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, obj_source) || env->is_numeric_array(env, stack, obj_source) || env->is_mulnum_array(env, stack, obj_source))) {
-    return env->die(env, stack, "The obj_source must be a string type, a numeric arrya type, or a multi numeric array", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the source must be the string type, the numeric arrya type, or the multi numeric array type", FILE_NAME, __LINE__);
   }
   
   if (env->is_read_only(env, stack, obj_dest)) {
-    return env->die(env, stack, "The obj_destination can't be be a read-only string", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destination can't be be a read-only string", FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
@@ -392,23 +392,23 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (!obj_dest) {
-    return env->die(env, stack, "The obj_destination must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, obj_dest) || env->is_numeric_array(env, stack, obj_dest) || env->is_mulnum_array(env, stack, obj_dest))) {
-    return env->die(env, stack, "The obj_destination must be a string type, a numeric arrya type, or a multi numeric array", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the destination must be the string type, the numeric arrya type, or the multi numeric array type", FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "The obj_source must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source must be defined", FILE_NAME, __LINE__);
   }
 
   if (!(env->is_string(env, stack, obj_source) || env->is_numeric_array(env, stack, obj_source) || env->is_mulnum_array(env, stack, obj_source))) {
-    return env->die(env, stack, "The obj_source must be a string type, a numeric arrya type, or a multi numeric array", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the source must be the string type, the numeric arrya type, or the multi numeric array type", FILE_NAME, __LINE__);
   }
 
   if (env->is_read_only(env, stack, obj_dest)) {
-    return env->die(env, stack, "The obj_destination must not be a read-only string", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destination must not be a read-only string", FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {

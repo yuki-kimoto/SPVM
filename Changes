@@ -15,6 +15,7 @@
     * Fn->trim_ascii_space is renamed to Fn->trim. Fn->trim_ascii_space is deprecated.
     * Fn->get_next_code_point is renamed to Fn->get_code_point. Fn->get_next_code_point is deprecated.
     * Fn->look_next_code_point is renamed to Fn->look_code_point. Fn->look_next_code_point is deprecated.
+    * Add Fn->RAND_MAX doc.
   [Document Fix]
     * Fix Fn->chr doc.
     * Fix Fn->contains doc.
