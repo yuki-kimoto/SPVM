@@ -246,6 +246,33 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is(sprintf("%+3f", 111.5), SPVM::Format->sprintf("%+3f", SPVM::new_object_array('object[]', [SPVM::Float->new(111.5)])));
       is(sprintf("%-3f", 111.5), SPVM::Format->sprintf("%-3f", SPVM::new_object_array('object[]', [SPVM::Float->new(111.5)])));
     }
+
+    # %f
+    {
+      is(sprintf("%g", 1.5), SPVM::Format->sprintf("%g", SPVM::new_object_array('object[]', [SPVM::Double->new(1.5)])));
+      is(sprintf("%.100g", 1.5), SPVM::Format->sprintf("%.100g", SPVM::new_object_array('object[]', [SPVM::Double->new(1.5)])));
+      is(sprintf("%.3g", 1.5), SPVM::Format->sprintf("%.3g", SPVM::new_object_array('object[]', [SPVM::Double->new(1.5)])));
+      is(sprintf("%+3g", 1.5), SPVM::Format->sprintf("%+3g", SPVM::new_object_array('object[]', [SPVM::Double->new(1.5)])));
+      is(sprintf("%-3g", 1.5), SPVM::Format->sprintf("%-3g", SPVM::new_object_array('object[]', [SPVM::Double->new(1.5)])));
+      is(sprintf("%.3g", 1111.5), SPVM::Format->sprintf("%.3g", SPVM::new_object_array('object[]', [SPVM::Double->new(1111.5)])));
+      is(sprintf("%+3g", 1111.5), SPVM::Format->sprintf("%+3g", SPVM::new_object_array('object[]', [SPVM::Double->new(1111.5)])));
+      is(sprintf("%-3g", 1111.5), SPVM::Format->sprintf("%-3g", SPVM::new_object_array('object[]', [SPVM::Double->new(1111.5)])));
+      is(sprintf("%.3g", 111.5), SPVM::Format->sprintf("%.3g", SPVM::new_object_array('object[]', [SPVM::Double->new(111.5)])));
+      is(sprintf("%+3g", 111.5), SPVM::Format->sprintf("%+3g", SPVM::new_object_array('object[]', [SPVM::Double->new(111.5)])));
+      is(sprintf("%-3g", 111.5), SPVM::Format->sprintf("%-3g", SPVM::new_object_array('object[]', [SPVM::Double->new(111.5)])));
+      
+      is(sprintf("%g", 1.5), SPVM::Format->sprintf("%g", SPVM::new_object_array('object[]', [SPVM::Float->new(1.5)])));
+      is(sprintf("%.100g", 1.5), SPVM::Format->sprintf("%.100g", SPVM::new_object_array('object[]', [SPVM::Float->new(1.5)])));
+      is(sprintf("%.3g", 1.5), SPVM::Format->sprintf("%.3g", SPVM::new_object_array('object[]', [SPVM::Float->new(1.5)])));
+      is(sprintf("%+3g", 1.5), SPVM::Format->sprintf("%+3g", SPVM::new_object_array('object[]', [SPVM::Float->new(1.5)])));
+      is(sprintf("%-3g", 1.5), SPVM::Format->sprintf("%-3g", SPVM::new_object_array('object[]', [SPVM::Float->new(1.5)])));
+      is(sprintf("%.3g", 1111.5), SPVM::Format->sprintf("%.3g", SPVM::new_object_array('object[]', [SPVM::Float->new(1111.5)])));
+      is(sprintf("%+3g", 1111.5), SPVM::Format->sprintf("%+3g", SPVM::new_object_array('object[]', [SPVM::Float->new(1111.5)])));
+      is(sprintf("%-3g", 1111.5), SPVM::Format->sprintf("%-3g", SPVM::new_object_array('object[]', [SPVM::Float->new(1111.5)])));
+      is(sprintf("%.3g", 111.5), SPVM::Format->sprintf("%.3g", SPVM::new_object_array('object[]', [SPVM::Float->new(111.5)])));
+      is(sprintf("%+3g", 111.5), SPVM::Format->sprintf("%+3g", SPVM::new_object_array('object[]', [SPVM::Float->new(111.5)])));
+      is(sprintf("%-3g", 111.5), SPVM::Format->sprintf("%-3g", SPVM::new_object_array('object[]', [SPVM::Float->new(111.5)])));
+    }
   }
 }
 
