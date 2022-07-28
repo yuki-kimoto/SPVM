@@ -1,3 +1,6 @@
+0.9630_01 2022-07-28
+  [Changes]
+    * Excnahge API shows the stack trace when exceptions are thrown
 0.9629_01 2022-07-28
   [New Features]
     * Add GET_CODE_POINT_ERROR_OVER_STRING_RANGE, GET_CODE_POINT_ERROR_INVALID_UTF8 to Fn class.

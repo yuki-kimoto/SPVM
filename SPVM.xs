@@ -165,7 +165,7 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
 MODULE = SPVM::ExchangeAPI		PACKAGE = SPVM::ExchangeAPI
 
 SV*
-call_spvm_method(...)
+xs_call_spvm_method(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1342,7 +1342,7 @@ call_spvm_method(...)
 }
 
 SV*
-array_to_elems(...)
+xs_array_to_elems(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1560,7 +1560,7 @@ array_to_elems(...)
 }
 
 SV*
-array_to_bin(...)
+xs_array_to_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1715,7 +1715,7 @@ array_to_bin(...)
 }
 
 SV*
-string_object_to_bin(...)
+xs_string_object_to_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1760,7 +1760,7 @@ string_object_to_bin(...)
 }
 
 SV*
-array_length(...)
+xs_array_length(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1805,7 +1805,7 @@ array_length(...)
 }
 
 SV*
-array_set(...)
+xs_array_set(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1934,7 +1934,7 @@ array_set(...)
 }
 
 SV*
-array_get(...)
+xs_array_get(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2060,7 +2060,7 @@ array_get(...)
 }
 
 SV*
-new_string_array(...)
+xs_new_string_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2127,7 +2127,7 @@ new_string_array(...)
 }
 
 SV*
-new_byte_array(...)
+xs_new_byte_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2184,7 +2184,7 @@ new_byte_array(...)
 }
 
 SV*
-new_byte_array_unsigned(...)
+xs_new_byte_array_unsigned(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2241,7 +2241,7 @@ new_byte_array_unsigned(...)
 }
 
 SV*
-new_byte_array_len(...)
+xs_new_byte_array_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2282,7 +2282,7 @@ new_byte_array_len(...)
 }
 
 SV*
-new_byte_array_from_bin(...)
+xs_new_byte_array_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2330,7 +2330,7 @@ new_byte_array_from_bin(...)
 }
 
 SV*
-new_string(...)
+xs_new_string(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2384,7 +2384,7 @@ new_string(...)
 }
 
 SV*
-new_string_from_bin(...)
+xs_new_string_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2437,7 +2437,7 @@ new_string_from_bin(...)
 }
 
 SV*
-new_short_array(...)
+xs_new_short_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2494,7 +2494,7 @@ new_short_array(...)
 }
 
 SV*
-new_short_array_unsigned(...)
+xs_new_short_array_unsigned(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2551,7 +2551,7 @@ new_short_array_unsigned(...)
 }
 
 SV*
-new_short_array_len(...)
+xs_new_short_array_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2592,7 +2592,7 @@ new_short_array_len(...)
 }
 
 SV*
-new_short_array_from_bin(...)
+xs_new_short_array_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2640,7 +2640,7 @@ new_short_array_from_bin(...)
 }
 
 SV*
-new_int_array(...)
+xs_new_int_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2696,7 +2696,7 @@ new_int_array(...)
 }
 
 SV*
-new_int_array_unsigned(...)
+xs_new_int_array_unsigned(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2752,7 +2752,7 @@ new_int_array_unsigned(...)
 }
 
 SV*
-new_int_array_len(...)
+xs_new_int_array_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2793,7 +2793,7 @@ new_int_array_len(...)
 }
 
 SV*
-new_int_array_from_bin(...)
+xs_new_int_array_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2841,7 +2841,7 @@ new_int_array_from_bin(...)
 }
 
 SV*
-new_long_array(...)
+xs_new_long_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2898,7 +2898,7 @@ new_long_array(...)
 }
 
 SV*
-new_long_array_unsigned(...)
+xs_new_long_array_unsigned(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2955,7 +2955,7 @@ new_long_array_unsigned(...)
 }
 
 SV*
-new_long_array_len(...)
+xs_new_long_array_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2996,7 +2996,7 @@ new_long_array_len(...)
 }
 
 SV*
-new_long_array_from_bin(...)
+xs_new_long_array_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3044,7 +3044,7 @@ new_long_array_from_bin(...)
 }
 
 SV*
-new_float_array(...)
+xs_new_float_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3100,7 +3100,7 @@ new_float_array(...)
 }
 
 SV*
-new_float_array_len(...)
+xs_new_float_array_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3141,7 +3141,7 @@ new_float_array_len(...)
 }
 
 SV*
-new_float_array_from_bin(...)
+xs_new_float_array_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3189,7 +3189,7 @@ new_float_array_from_bin(...)
 }
 
 SV*
-new_double_array(...)
+xs_new_double_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3244,7 +3244,7 @@ new_double_array(...)
 }
 
 SV*
-new_double_array_len(...)
+xs_new_double_array_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3285,7 +3285,7 @@ new_double_array_len(...)
 }
 
 SV*
-new_double_array_from_bin(...)
+xs_new_double_array_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3333,7 +3333,7 @@ new_double_array_from_bin(...)
 }
 
 SV*
-new_string_array_len(...)
+xs_new_string_array_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3379,7 +3379,7 @@ new_string_array_len(...)
 }
 
 SV*
-new_object_array_len(...)
+xs_new_object_array_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3427,7 +3427,7 @@ new_object_array_len(...)
 }
 
 SV*
-_new_object_array(...)
+_xs_new_object_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3508,7 +3508,7 @@ _new_object_array(...)
 }
 
 SV*
-_new_muldim_array(...)
+_xs_new_muldim_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3589,7 +3589,7 @@ _new_muldim_array(...)
 }
 
 SV*
-_new_mulnum_array(...)
+_xs_new_mulnum_array(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3630,7 +3630,7 @@ _new_mulnum_array(...)
 }
 
 SV*
-_new_mulnum_array_from_bin(...)
+_xs_new_mulnum_array_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3779,7 +3779,7 @@ _new_mulnum_array_from_bin(...)
 }
 
 SV*
-get_exception(...)
+xs_get_exception(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3818,7 +3818,7 @@ get_exception(...)
 }
 
 SV*
-_set_exception(...)
+_xs_set_exception(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3857,7 +3857,7 @@ _set_exception(...)
 }
 
 SV*
-get_memory_blocks_count(...)
+xs_get_memory_blocks_count(...)
   PPCODE:
 {
   (void)RETVAL;
