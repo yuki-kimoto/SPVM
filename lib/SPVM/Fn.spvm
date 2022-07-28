@@ -56,7 +56,7 @@ class Fn {
   static method chomp : void ($string : mutable string) {
     
     unless ($string) {
-      return;
+      die "The string must be defined";
     }
     
     my $length = length $string;
@@ -69,7 +69,7 @@ class Fn {
   
   static method chompr : string ($string : string) {
     unless ($string) {
-      return undef;
+      die "The string must be defined";
     }
     
     my $new_string : string;

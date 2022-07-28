@@ -422,22 +422,23 @@ class TestCase::Module::Fn {
         }
       }
       
-      # undef
-      {
-        my $line = (string)undef;
-        Fn->chomp((mutable string)$line);
-        
-        unless ($line == undef) {
-          return 0;
-        }
-      }
-      
       # The length is zero
       {
         my $line = copy "";
         Fn->chomp((mutable string)$line);
         
         unless ($line eq "") {
+          return 0;
+        }
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $line = (string)undef;
+        eval { Fn->chomp((mutable string)$line); };
+        unless (Fn->contains($@, "The string must be defined")) {
           return 0;
         }
       }
@@ -469,6 +470,16 @@ class TestCase::Module::Fn {
       }
     }
     
+    # Exception
+    {
+      {
+        my $line = (string)undef;
+        eval { Fn->chompr((mutable string)$line); };
+        unless (Fn->contains($@, "The string must be defined")) {
+          return 0;
+        }
+      }
+    }
     return 1;
   }
   

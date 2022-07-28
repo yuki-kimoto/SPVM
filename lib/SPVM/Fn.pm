@@ -257,15 +257,17 @@ Return the absolute value of the input value.
 
   static method chomp : void ($string : mutable string)
 
-Remove C<\n> of the end of the string.
+Remove C<\n> of the end of the string. Otherwise an exception will occur.
 
-If the string is C<undef> or the length of the string is C<0>, nothing is performed.
+The string must be defined
 
 =head2 chompr
 
   static method chompr : string ($string : string)
 
 Copy the string and remove C<\n> of the end of the copied string and return it.
+
+The string must be defined. Otherwise an exception will occur.
 
 =head2 chr
 

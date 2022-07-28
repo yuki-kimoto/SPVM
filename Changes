@@ -46,6 +46,9 @@
       The length must be greater than or equal to 0
     * Fn->trim throw exceptions
       The string must be defined
+    * Fn->chomp throws exceptions
+    * Fn->chompr throws exceptions
+    
   [Bug Fix]
     * Fix the bug that Fn->rindex_len, Fn->rindex don't work well.
     * Fix the bug Arrya->memmove_string_address calls Arrya->memmove_object. The correct code call Arrya->memmove_object_address.
