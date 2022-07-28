@@ -446,9 +446,17 @@ int32_t SPVM__Fn__shorten(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   void* string = stack[0].oval;
-  int32_t new_length = stack[1].ival;
+  int32_t length = stack[1].ival;
   
-  env->shorten(env, stack, string, new_length);
+  if (!string) {
+    return env->die(env, stack, "The string must be defined", FILE_NAME, __LINE__);
+  }
+  
+  if (!(length >= 0)) {
+    return env->die(env, stack, "The length must be greater than or equal to 0", FILE_NAME, __LINE__);
+  }
+  
+  env->shorten(env, stack, string, length);
   
   return 0;
 }

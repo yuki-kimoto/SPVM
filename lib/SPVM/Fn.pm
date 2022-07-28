@@ -388,7 +388,7 @@ If the Unicode code point is an ASCII alphabetic C<A-Za-z>, return C<1>. Otherwi
 
   static method is_array : int ($object : object)
 
-If the object is defined and the type of the object is the L<array type|SPVM::Document::LanguageSpecification/"Array Type">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<array type|SPVM::Document::LanguageSpecification/"Array Type"> using L<SPVM::NativeAPI|/"is_array">, return C<1>. Otherwise return C<0>.
 
 =head2 is_blank
 
@@ -430,13 +430,13 @@ If the Unicode code point is an ASCII lowercase character C<a-z>, return C<1>. O
 
   static method is_mulnum_array : int ($object : object)
 
-If the object is defined and the type of the object is the L<multi-numeric array type|SPVM::Document::LanguageSpecification/"Multi-Numeric Array Type">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<multi-numeric array type|SPVM::Document::LanguageSpecification/"Multi-Numeric Array Type"> using L<SPVM::NativeAPI|/"is_mulnum_array">, return C<1>. Otherwise return C<0>.
 
 =head2 is_numeric_array
 
   static method is_numeric_array : int ($object : object)
 
-If the object is defined and the type of the object is the L<numeric array type|SPVM::Document::LanguageSpecification/"Numeric Array Type">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<numeric array type|SPVM::Document::LanguageSpecification/"Numeric Array Type"> using L<SPVM::NativeAPI|/"is_numeric_array">, return C<1>. Otherwise return C<0>.
 
 =head2 is_object_array
 
@@ -663,21 +663,25 @@ The offset + the length specified by the argument must be less than or equal to 
 
     static method shorten : void ($string : mutable string, $length : int32_t)
 
-Shorten the string to the given length.
+Shorten the string to the length specified by the argument using L<SPVM::NativeAPI|/"shorten">.
 
-If the string is null, does nothing.
+If the length specified by the argument is greater than or equal to the length of the string, nothing is performed.
 
-If the given length is greater than the length of the string, does nothing.
+The string must be defined. Otherwise an exception will occur.
 
-If the given length is lower than C<0>, the given length become C<0>.
-
-In the level of native APIs, the charaters of the after the given length are filled with C<\0>.
+The length must be greater than or equal to 0. Otherwise an exception will occur.
 
 =head2 split
 
   static method split : string[] ($sep : string, $string : string)
 
-Split a string by the specific separator.
+Split a string by the specific separator and convert them to an string array and return it.
+
+The separator must be defined. Otherwise an exception will occur.
+
+The string must be defined. Otherwise an exception will occur.
+
+The length of the separator must be greater than 0. Otherwise an exception will occur.
 
 =head2 substr
 
@@ -689,71 +693,83 @@ Get the substring from the string. The extracting range of the string is from th
 
   static method to_double : double ($string : string);
 
-Convert the string to float value.
+Convert the string to the C<double> value using C<strtod> in C<C language>.
 
-Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][zero more than 0-9][.][zero more than 0-9][e or E[+ or -]zero more than 0-9]. Internal of [] is optional.
+The string must be defined. Otherwise an exception will occur.
 
-If the convertion fails, an exception occuer.
+The string must be the string that can be parsed as a double number. Otherwise an exception will occur.
+
+The string must be a double number in the correct range. Otherwise an exception will occur.
+
+B<Examples:>
 
   my $string = "1.25";
-  my $num = to_double($string);
+  my $num = Fn->to_double($string);
 
 =head2 to_float
 
   static method to_float : float ($string : string);
 
-Convert the string to float value.
+Convert the string to the C<double> value using C<strtof> in C<C language>.
 
-Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][zero more than 0-9][.][zero more than 0-9][e or E[+ or -]zero more than 0-9]. Internal of [] is optional.
+The string must be defined. Otherwise an exception will occur.
 
-If the convertion fails, an exception occuer.
+The string must be the string that can be parsed as a float number. Otherwise an exception will occur.
+
+The string must be a float number in the correct range. Otherwise an exception will occur.
+
+B<Examples:>
 
   my $string = "1.25";
-  my $num = to_float($string);
+  my $num = Fn->to_float($string);
 
 =head2 to_int
 
   static method to_int : int ($string : string, $digit : int);
 
-Convert the string to a int value. This method is same as to_int_with_base($string, 10).
+The alias for the following code using L</"to_int_with_base">.
 
-  my $string = "-2147483648";
-  my $num = to_int($string);
+  my $ret = &to_int_with_base($string, 10);
 
 =head2 to_int_with_base
 
-  static method to_int_with_base : int ($string : string, $digit : int);
+Convert the string to the C<int> value using C<strtol> in C<C language>.
 
-Convert the string to a int value with a digit(2, 8, 10, 16).
+The string must be defined. Otherwise an exception will occur.
 
-Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][0][x][one more than 0-9]. Internal of [] is optional.
+The string must be the string that can be parsed as a int number. Otherwise an exception will occur.
 
-If convertion fails, an exception occuer.
+The string must be a int number in the correct range. Otherwise an exception will occur.
+
+B<Examples:>
 
   my $string = "-2147483648";
-  my $num = to_int_with_base($string, 10);
+  my $num = Fn->to_int_with_base($string, 10);
 
 =head2 to_long
 
   static method to_long : long ($string : string);
 
-Convert the string to long value. This method is same as to_long($string, 10).
+The alias for the following code using L</"to_long_with_base">.
 
-  my $string = "-9223372036854775808";
-  my $num = to_long($string);
+  my $ret = &to_long_with_base($string, 10);
 
 =head2 to_long_with_base
 
   static method to_long_with_base : long ($string : string, $digit : int);
 
-Convert the string to long value with digit(2, 8, 10, 16).
+Convert the string to the C<long> value using C<strtoll> in C<C language>.
 
-Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][0][x][zero more than 0-9]. Internal of [] is optional.
+The string must be defined. Otherwise an exception will occur.
 
-If the convertion fails, an exception occuer.
+The string must be the string that can be parsed as a long number. Otherwise an exception will occur.
+
+The string must be a long number in the correct range. Otherwise an exception will occur.
+
+B<Examples:>
 
   my $string = "-9223372036854775808";
-  my $num = to_long_with_base($string, 10);
+  my $num = Fn->to_long_with_base($string, 10);
 
 =head2 to_lower
 
