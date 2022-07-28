@@ -392,7 +392,7 @@ If the Unicode code point is an ASCII alphabetic C<A-Za-z>, return C<1>. Otherwi
 
   static method is_array : int ($object : object)
 
-If the object is defined and the type of the object is the L<array type|SPVM::Document::LanguageSpecification/"Array Type">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<array type|SPVM::Document::LanguageSpecification/"The array Type">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_array"> is used to check the type.
 
@@ -570,7 +570,7 @@ The type of the source must be the string type, the numeric arrya type, or the m
 
 The destination must not be a read-only string. Otherwise an exception will occur.
 
-The length must be more than or equal to C<0>. Otherwise an exception will occur.
+The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
 

@@ -1371,7 +1371,7 @@ array_to_elems(...)
 
   // Array must be SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
-    croak("Array must be SPVM::BlessedObject::Array object at %s line %d\n", MFILE, __LINE__);
+    croak("The array must be SPVM::BlessedObject::Array object at %s line %d\n", MFILE, __LINE__);
   }
   
   // Get object
@@ -1789,7 +1789,7 @@ array_length(...)
 
   // Array must be SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
-    croak("Array must be SPVM::BlessedObject::Array object at %s line %d\n", MFILE, __LINE__);
+    croak("The array must be SPVM::BlessedObject::Array object at %s line %d\n", MFILE, __LINE__);
   }
   
   // Get object
@@ -2268,7 +2268,7 @@ new_byte_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+    croak("The length must be greater than or equal to 0 at %s line %d\n", MFILE, __LINE__);
   }
   
   // New array
@@ -2578,7 +2578,7 @@ new_short_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+    croak("The length must be greater than or equal to 0 at %s line %d\n", MFILE, __LINE__);
   }
   
   // New array
@@ -2779,7 +2779,7 @@ new_int_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+    croak("The length must be greater than or equal to 0 at %s line %d\n", MFILE, __LINE__);
   }
   
   // New array
@@ -2982,7 +2982,7 @@ new_long_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+    croak("The length must be greater than or equal to 0 at %s line %d\n", MFILE, __LINE__);
   }
   
   // New array
@@ -3127,7 +3127,7 @@ new_float_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+    croak("The length must be greater than or equal to 0 at %s line %d\n", MFILE, __LINE__);
   }
   
   // New array
@@ -3271,7 +3271,7 @@ new_double_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+    croak("The length must be greater than or equal to 0 at %s line %d\n", MFILE, __LINE__);
   }
   
   // New array
@@ -3360,7 +3360,7 @@ new_string_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+    croak("The length must be greater than or equal to 0 at %s line %d\n", MFILE, __LINE__);
   }
   
   // Element type id
@@ -3407,7 +3407,7 @@ new_object_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+    croak("The length must be greater than or equal to 0 at %s line %d\n", MFILE, __LINE__);
   }
   
   // Element type id

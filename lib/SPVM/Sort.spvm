@@ -22,11 +22,11 @@ class Sort {
     }
     
     unless ($offset >= 0) {
-      die "The offset must be more than or equal to 0";
+      die "The offset must be greater than or equal to 0";
     }
     
     unless ($length >= 0) {
-      die "The length must be more than or equal to 0";
+      die "The length must be greater than or equal to 0";
     }
     
     my $values_length = @$values;
@@ -55,11 +55,11 @@ class Sort {
     }
     
     unless ($offset >= 0) {
-      die "The offset must be more than or equal to 0";
+      die "The offset must be greater than or equal to 0";
     }
     
     unless ($length >= 0) {
-      die "The length must be more than or equal to 0";
+      die "The length must be greater than or equal to 0";
     }
     
     my $values_length = @$values;
@@ -88,11 +88,11 @@ class Sort {
     }
     
     unless ($offset >= 0) {
-      die "The offset must be more than or equal to 0";
+      die "The offset must be greater than or equal to 0";
     }
     
     unless ($length >= 0) {
-      die "The length must be more than or equal to 0";
+      die "The length must be greater than or equal to 0";
     }
     
     my $values_length = @$values;
@@ -123,11 +123,11 @@ class Sort {
     my $values_length = @$values;
     
     unless ($offset >= 0) {
-      die "The offset must be more than or equal to 0";
+      die "The offset must be greater than or equal to 0";
     }
     
     unless ($length >= 0) {
-      die "The length must be more than or equal to 0";
+      die "The length must be greater than or equal to 0";
     }
     
     unless ($offset + $length <= $values_length) {
@@ -154,11 +154,11 @@ class Sort {
     }
     
     unless ($offset >= 0) {
-      die "The offset must be more than or equal to 0";
+      die "The offset must be greater than or equal to 0";
     }
     
     unless ($length >= 0) {
-      die "The length must be more than or equal to 0";
+      die "The length must be greater than or equal to 0";
     }
     
     my $values_length = @$values;
@@ -181,11 +181,11 @@ class Sort {
     }
     
     unless ($offset >= 0) {
-      die "The offset must be more than or equal to 0";
+      die "The offset must be greater than or equal to 0";
     }
     
     unless ($length >= 0) {
-      die "The length must be more than or equal to 0";
+      die "The length must be greater than or equal to 0";
     }
     
     my $values_length = @$values;
@@ -215,11 +215,11 @@ class Sort {
     }
     
     unless ($offset >= 0) {
-      die "The offset must be more than or equal to 0";
+      die "The offset must be greater than or equal to 0";
     }
     
     unless ($length >= 0) {
-      die "The length must be more than or equal to 0";
+      die "The length must be greater than or equal to 0";
     }
     
     my $values_length = @$values;
@@ -248,11 +248,11 @@ class Sort {
     }
     
     unless ($offset >= 0) {
-      die "The offset must be more than or equal to 0";
+      die "The offset must be greater than or equal to 0";
     }
     
     unless ($length >= 0) {
-      die "The length must be more than or equal to 0";
+      die "The length must be greater than or equal to 0";
     }
     
     my $values_length = @$values;

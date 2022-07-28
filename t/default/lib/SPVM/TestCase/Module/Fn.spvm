@@ -2646,7 +2646,6 @@ class TestCase::Module::Fn {
     {
       my $string = "foo,bar,baz";
       my $splited_strings = Fn->split_limit(",", $string, 1);
-      warn dump $splited_strings;
       unless (Array->equals_string($splited_strings, ["foo,bar,baz"])) {
         return 0;
       }
@@ -2655,7 +2654,6 @@ class TestCase::Module::Fn {
     {
       my $string = "foo,bar,baz";
       my $splited_strings = Fn->split_limit(",", $string, 2);
-      warn dump $splited_strings;
       unless (Array->equals_string($splited_strings, ["foo", "bar,baz"])) {
         return 0;
       }
@@ -2664,7 +2662,6 @@ class TestCase::Module::Fn {
     {
       my $string = "foo,bar,baz";
       my $splited_strings = Fn->split_limit(",", $string, 3);
-      warn dump $splited_strings;
       unless (Array->equals_string($splited_strings, ["foo", "bar", "baz"])) {
         return 0;
       }
@@ -2673,7 +2670,6 @@ class TestCase::Module::Fn {
     {
       my $string = "foo,bar,baz";
       my $splited_strings = Fn->split_limit(",", $string, 4);
-      warn dump $splited_strings;
       unless (Array->equals_string($splited_strings, ["foo", "bar", "baz"])) {
         return 0;
       }

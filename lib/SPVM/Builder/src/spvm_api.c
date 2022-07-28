@@ -4931,7 +4931,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -4951,7 +4951,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -4971,7 +4971,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -4991,7 +4991,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5011,7 +5011,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5031,7 +5031,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5052,7 +5052,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t index = int_vars[opcode->operand2];
         
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5073,7 +5073,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5093,7 +5093,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5113,7 +5113,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5133,7 +5133,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5153,7 +5153,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5173,7 +5173,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5194,7 +5194,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5216,7 +5216,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5247,7 +5247,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5270,7 +5270,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5295,7 +5295,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5319,7 +5319,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5343,7 +5343,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5368,7 +5368,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5393,7 +5393,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5419,7 +5419,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5442,7 +5442,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5465,7 +5465,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5488,7 +5488,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5511,7 +5511,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5534,7 +5534,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5555,7 +5555,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5579,7 +5579,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5603,7 +5603,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5627,7 +5627,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5651,7 +5651,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5675,7 +5675,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5700,7 +5700,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5722,7 +5722,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5744,7 +5744,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5766,7 +5766,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5788,7 +5788,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -5810,7 +5810,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array must not be undef");
+          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -6174,7 +6174,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
       case SPVM_OPCODE_C_ID_SET_ERROR_CODE: {
         int32_t tmp_error_code = int_vars[opcode->operand1];
         if (tmp_error_code < 1) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The error code must be more than or equal to 1");
+          void* exception = env->new_string_nolen_raw(env, stack, "The error code must be greater than or equal to 1");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -6210,7 +6210,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -6234,7 +6234,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -6258,7 +6258,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -6280,7 +6280,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -6301,7 +6301,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -6322,7 +6322,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -6344,7 +6344,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -6367,7 +6367,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -6390,7 +6390,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7183,7 +7183,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of getting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7200,7 +7200,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* object = *(void**)&object_vars[opcode->operand1];
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of getting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7217,7 +7217,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of getting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7234,7 +7234,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of getting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7251,7 +7251,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of getting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7268,7 +7268,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of getting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7285,7 +7285,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of getting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7302,7 +7302,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of setting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7318,7 +7318,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of setting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7334,7 +7334,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of setting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7350,7 +7350,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of setting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7366,7 +7366,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of setting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7382,7 +7382,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of setting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7398,7 +7398,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of setting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7415,7 +7415,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_offset = field->offset;
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Invocants of setting fields must not be undefined values");
+          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7431,7 +7431,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand0];
         if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, "Object to weaken an object field must not be undefined.");
+          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, "Object to weaken an object field must be defined.");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7452,7 +7452,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand0];
         if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, "Object to unweaken an object field must not be undefined.");
+          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, "Object to unweaken an object field must be defined.");
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -7468,7 +7468,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, "Object to isweak an object field must not be undefined.");
+          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, "Object to isweak an object field must be defined.");
           env->set_exception(env, stack, exception);
           error = 1;
         }

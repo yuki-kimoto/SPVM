@@ -231,7 +231,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                 op_operand_element = SPVM_OP_sibling(compiler, op_operand_element);
                 if (op_operand_element->id == SPVM_OP_C_ID_UNDEF) {
-                  SPVM_COMPILER_error(compiler, "Array initialization first element must not be undef at %s line %d", file, line);
+                  SPVM_COMPILER_error(compiler, "The array initialization first element must be defined at %s line %d", file, line);
                   return;
                 }
                 SPVM_TYPE* type_operand_element = SPVM_OP_get_type(compiler, op_operand_element);
@@ -2881,7 +2881,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 !SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)
               )
               {
-                SPVM_COMPILER_error(compiler, "Array access invocant must be array or string at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The array access invocant must be array or string at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               

@@ -222,9 +222,9 @@ class TestCase::String {
         return 0;
       }
       
-      Fn->shorten((mutable string)$string, -1);
+      eval { Fn->shorten((mutable string)$string, -1); };
       
-      unless ($string eq "") {
+      unless ($@) {
         return 0;
       }
     }
@@ -233,12 +233,14 @@ class TestCase::String {
     {
       my $string = (string)undef;
       
-      Fn->shorten((mutable string)$string, 2);
+      eval { Fn->shorten((mutable string)$string, 2); };
       
-      unless ($string == undef) {
+      unless ($@) {
         return 0;
       }
     }
+    
+    $@ = undef;
     
     return 1;
   }

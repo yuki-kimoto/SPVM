@@ -84,9 +84,9 @@ Sort the elements of C<byte> array in-place with the offset, the length, and the
 
 The values must be defined. Otherwise an exception will be thrown.
 
-The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The length must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 The offset + length must be less than or equal to the length of the values. Otherwise an exception will be thrown.
 
@@ -114,9 +114,9 @@ Sort the elements of C<double> array in-place with the offset, the length, and t
 
 The values must be defined. Otherwise an exception will be thrown.
 
-The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The length must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 The offset + length must be less than or equal to the length of the values. Otherwise an exception will be thrown.
 
@@ -144,9 +144,9 @@ Sort the elements of float array in-place with the offset, the length, and the L
 
 The values must be defined. Otherwise an exception will be thrown.
 
-The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The length must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 The offset + length must be less than or equal to the length of the values. Otherwise an exception will be thrown.
 
@@ -174,9 +174,9 @@ Sort the elements of C<int> array in-place with the offset, the length, and the 
 
 The values must be defined. Otherwise an exception will be thrown.
 
-The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The length must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 The offset + length must be less than or equal to the length of the values. Otherwise an exception will be thrown.
 
@@ -204,9 +204,9 @@ Sort the elements of long array in-place with the offset, the length, and the L<
 
 The values must be defined. Otherwise an exception will be thrown.
 
-The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The length must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 The offset + length must be less than or equal to the length of the values. Otherwise an exception will be thrown.
 
@@ -234,9 +234,9 @@ Sort the elements of object array in-place with the offset, the length, and the 
 
 The values must be defined. Otherwise an exception will be thrown.
 
-The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The length must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 The offset + length must be less than or equal to the length of the values. Otherwise an exception will be thrown.
 
@@ -248,9 +248,9 @@ Sort the elements of short array in-place with the offset, the length, and the L
 
 The values must be defined. Otherwise an exception will be thrown.
 
-The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The length must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 The offset + length must be less than or equal to the length of the values. Otherwise an exception will be thrown.
 
@@ -278,9 +278,9 @@ Sort the elements of C<string> array in-place with the offset, the length, and t
 
 The values must be defined. Otherwise an exception will be thrown.
 
-The offset must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The length must be more than or equal to C<0>. Otherwise an exception will be thrown.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 The offset + length must be less than or equal to the length of the values. Otherwise an exception will be thrown.
 

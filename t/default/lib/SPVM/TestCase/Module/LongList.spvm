@@ -544,7 +544,7 @@ class TestCase::Module::LongList {
       }
     }
     
-    # Exception - New length must be more than or equals to 0
+    # Exception - New length must be greater than or equal to 0
     {
       my $list = LongList->new(new long[0]);
       $list->push($a);

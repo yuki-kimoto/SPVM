@@ -49,7 +49,7 @@ class Hash {
 
   method set : void ($key : string, $val : object) {
     unless ($key) {
-      die "key must not be undef";
+      die "key must be defined";
     }
     # Rehash
     if (((double)$self->{count} / $self->{bucket_count}) > Hash->_MAX_LOAD_FACTOR()) {

@@ -522,7 +522,7 @@ class TestCase::Module::List {
       }
     }
     
-    # Exception - New length must be more than or equals to 0
+    # Exception - New length must be greater than or equal to 0
     {
       my $list = List->new([]);
       $list->push($a);

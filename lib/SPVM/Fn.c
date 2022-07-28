@@ -353,7 +353,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "The length must be more than or equal to 0", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length must be greater than or equal to 0", FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -412,7 +412,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "The length must be more than or equal to 0", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length must be greater than or equal to 0", FILE_NAME, __LINE__);
   }
   
   if (length == 0) {

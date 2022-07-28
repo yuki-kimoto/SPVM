@@ -914,7 +914,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 Create a new SPVM C<byte[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be more than or equals to zero. Otherwise an exception will occur.
+The lenght must be greater than or equal to zero. Otherwise an exception will occur.
 
 =head2 new_byte_array_from_bin
 
@@ -959,7 +959,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 Create a new  a SPVM C<short[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be more than or equals to zero. Otherwise an exception will occur.
+The lenght must be greater than or equal to zero. Otherwise an exception will occur.
 
 =head2 new_short_array_from_bin
 
@@ -986,7 +986,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 Create a new  a SPVM C<int[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be more than or equals to zero. Otherwise an exception will occur.
+The lenght must be greater than or equal to zero. Otherwise an exception will occur.
 
 =head2 new_int_array_from_bin
 
@@ -1013,7 +1013,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 Create a new  a SPVM C<long[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be more than or equals to zero. Otherwise an exception will occur.
+The lenght must be greater than or equal to zero. Otherwise an exception will occur.
 
 =head2 new_long_array_from_bin
 
@@ -1040,7 +1040,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 Create a new  a SPVM C<float[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be more than or equals to zero. Otherwise an exception will occur.
+The lenght must be greater than or equal to zero. Otherwise an exception will occur.
 
 =head2 new_float_array_from_bin
 
@@ -1067,7 +1067,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 Create a new  a SPVM C<double[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be more than or equals to zero. Otherwise an exception will occur.
+The lenght must be greater than or equal to zero. Otherwise an exception will occur.
 
 =head2 new_double_array_from_bin
 

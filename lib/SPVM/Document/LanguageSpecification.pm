@@ -2873,7 +2873,7 @@ C<...> after the type of the argument indicates the argument is a variable lengt
   
   }
 
-The type of the variable length argument must be the L<array type|/"Array Type">.
+The type of the variable length argument must be the L<array type|/"The array Type">.
 
 A variable length argument can recieve multiple values.
 
@@ -2890,7 +2890,7 @@ A variable length argument can recieve an array.
   # Pass array to a variable lenght argument
   sprintf("Value  %d %f", [(object)1, 2.0]);
 
-If you want to treat the value as an individual element, cast it to type other than the L<array type|/"Array Type">..
+If you want to treat the value as an individual element, cast it to type other than the L<array type|/"The array Type">..
 
   sprintf("aaa %p", (object)[(object)1, 2.0]);
 
@@ -3372,7 +3372,7 @@ A simple block is a L<scope block|/"Scope Block">.
     1;
   }
 
-A simple block must have at least one statements. Otherwise it is intepreted as the L<array initialization|/"Array Initialization">.
+A simple block must have at least one statements. Otherwise it is intepreted as the L<array initialization|/"The array Initialization">.
 
 =head3 Method Block
 
@@ -4043,11 +4043,11 @@ A pointer type is a L<class type|/"Class Type">.
 
 =head2 Basic Object Type
 
-Basic object types are the L<class type|/"Class Type">, the L<array type|/"Array Type">, the L<string type|/"String Type">, and the L<any object type|/"Any Object Type">.
+Basic object types are the L<class type|/"Class Type">, the L<array type|/"The array Type">, the L<string type|/"String Type">, and the L<any object type|/"Any Object Type">.
 
 =head2 Object Type
 
-Object types are the L<basic object types|/"Basic Object Type"> and the L<array types|/"Array Type">.
+Object types are the L<basic object types|/"Basic Object Type"> and the L<array types|/"The array Type">.
 
 A object type can be assigned to a L<any object type|/"Any Object Type">.
 
@@ -4163,7 +4163,7 @@ B<void Type> is a special Type that can only be used in the return type of the L
 
 The basic types are L<numeric types|/"Numeric Type">, L<multi-numeric types|/"Multi-Numeric Type">, the L<class type|/"Class Type">, the L<any object type|/"Any Object Type">, and the L<string type|/"String Type">.
 
-Another definition of basic types are the types that is not L<array types|"Array Type"> and can become the element of L<array types|"Array Type">.
+Another definition of basic types are the types that is not L<array types|"The array Type"> and can become the element of L<array types|"The array Type">.
 
 =head2 Array Type
 
@@ -4218,13 +4218,13 @@ Each element are initialized by the L<initial value/"Initial Value"> when the L<
 
 =head3 byte[] Type
 
-The C<byte[]> type is an L<array type|/"Array Type"> that the element type is C<byte>.
+The C<byte[]> type is an L<array type|/"The array Type"> that the element type is C<byte>.
 
   byte[]
 
 =head3 Object Array Type
 
-Object array types are the L<array type|/"Array Type"> that the type of the element is an L<object type|/"Object Type">.
+Object array types are the L<array type|/"The array Type"> that the type of the element is an L<object type|/"Object Type">.
 
 B<Examples:>
 
@@ -4237,7 +4237,7 @@ B<Examples:>
 
 =head3 String Array Type
 
-String array types are the L<array type|/"Array Type"> that the type of the element is the L<string type|/"String Type">.
+String array types are the L<array type|/"The array Type"> that the type of the element is the L<string type|/"String Type">.
 
 B<Examples:>
 
@@ -4246,7 +4246,7 @@ B<Examples:>
 
 =head3 Class Array Type
 
-Class array types are the L<array type|/"Array Type"> that the type of the element is the L<class type|/"Class Type">.
+Class array types are the L<array type|/"The array Type"> that the type of the element is the L<class type|/"Class Type">.
 
 B<Examples:>
 
@@ -4255,7 +4255,7 @@ B<Examples:>
 
 =head3 Interface Array Type
 
-Interface array types are the L<array type|/"Array Type"> that the type of the element is the L<interface type|/"Interface Type">.
+Interface array types are the L<array type|/"The array Type"> that the type of the element is the L<interface type|/"Interface Type">.
 
 B<Examples:>
 
@@ -4264,7 +4264,7 @@ B<Examples:>
 
 =head3 Multi-Dimensional Array Type
 
-The multi-dimensional array type is the L<array type|/"Array Type"> that the type of the element is an L<array type|/"Array Type">.
+The multi-dimensional array type is the L<array type|/"The array Type"> that the type of the element is an L<array type|/"The array Type">.
 
 B<Examples:>
 
@@ -4273,7 +4273,7 @@ B<Examples:>
 
 =head3 Multi-Numeric Array Type
 
-A multi-numeric array type is an L<array type|/"Array Type"> that the basic type is a L<multi-numeric type|"Multi-Numeric Type">.
+A multi-numeric array type is an L<array type|/"The array Type"> that the basic type is a L<multi-numeric type|"Multi-Numeric Type">.
 
 =begin html
 
@@ -4307,9 +4307,9 @@ The any object array type C<object[]> is the type that any L<object array type|/
 
 If a invalid type is assigned, a compilation error will occur.
 
-Any Object Array Type is an L<array type|/"Array Type">.
+Any Object Array Type is an L<array type|/"The array Type">.
 
-You can get the array length using the L<array length operator|/"Array Length Operator">.
+You can get the array length using the L<array length operator|/"The array Length Operator">.
 
   my $array : object[] = new Int[3];
   
@@ -4358,7 +4358,7 @@ The multi-numeric type can be used as the return L<type|/"Type"> of the L<method
 
   static method add_double_complex : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d) { ... }
 
-The multi-numeric type can be used as a L<basic type|/"Basic Type"> of the L<array type|/"Array Type"> .
+The multi-numeric type can be used as a L<basic type|/"Basic Type"> of the L<array type|/"The array Type"> .
 
   my $points = new Complex_2d[5];
 
@@ -5740,7 +5740,7 @@ B<long to double:>
   int64_t from = VALUE;
   double to = (double)from;
 
-The numeric widening type conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"Array Access">, the length of the L<creating array|/"Creating Array">, the operand of the L<unary plus operator|/"Unary Plus Operator">, the operand of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
+The numeric widening type conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"The array Access">, the length of the L<creating array|/"Creating Array">, the operand of the L<unary plus operator|/"Unary Plus Operator">, the operand of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
 
 =head2 Numeric Narrowing Type Conversion
 
@@ -6639,7 +6639,7 @@ The unary operator is the operator that has an operand.
 
   UNARY_OPERATOR OPERAND
 
-Unary operators are the L<unary plus operator|/"Unary Plus Operator">, the L<unary minus operator|/"Unary Minus Operator">, the L<bit NOT operator|/"Bit NOT Operator">, the L<array length operator|/"Array Length Operator">, the L<string creating operator|/"String Creating Operator">, and the L<string length operator|/"String Length Operator">.
+Unary operators are the L<unary plus operator|/"Unary Plus Operator">, the L<unary minus operator|/"Unary Minus Operator">, the L<bit NOT operator|/"Bit NOT Operator">, the L<array length operator|/"The array Length Operator">, the L<string creating operator|/"String Creating Operator">, and the L<string length operator|/"String Length Operator">.
 
 =head2 Binary Operator
 
@@ -6872,7 +6872,7 @@ The pre-increment operator adds C<1> to the value of the operand and returns the
   # Pre-increment operator
   ++OPERAND
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
 
 The pre-increment operator performs the same operation as the following.
 
@@ -6906,7 +6906,7 @@ The post-increment operator adds C<1> to the value of the operand and returns th
   # Post-increment operator
   OPERAND++
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
 
 The post-increment operator performs the same operation as the following.
 
@@ -6944,7 +6944,7 @@ The pre-decrement operator subtracts C<1> to the value of the operand and return
   # Pre-decrement operator
   --OPERAND
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
 
 The pre-decrement operator performs the same operation as the following.
 
@@ -6978,7 +6978,7 @@ The post-decrement operator subtracts C<1> to the value of the operand and retur
   # Post-decrement operator
   OPERAND--
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"Array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
 
 The post-decrement operator performs the same operation as the following.
 
@@ -7600,7 +7600,7 @@ The array length operator is an L<unary operator|/"Unary Operator"> to get the l
 
   @OPERAND
 
-The operand must be an L<operator|/"Operator"> that type is an the L<array type|/"Array Type">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operator"> that type is an the L<array type|/"The array Type">, otherwise a compilation error will occur.
 
 The array length operator returns the L<int type|/"int Type"> value that is the length of the L<array|/"Array">.
 
@@ -7703,7 +7703,7 @@ The C<scalar> operator is an L<Operator|/"Operator"> that returns the value of t
 
   scalar OPERAND
 
-The operand must be an L</"Array Length Operator">, otherwise a compilation error will occur.
+The operand must be an L</"The array Length Operator">, otherwise a compilation error will occur.
 
 B<Examples:>
   
@@ -8004,7 +8004,7 @@ B<Getting Array Element operator> is an L<operator|/"Operator"> to get a Element
 
   ARRAY->[INDEX]
 
-Array operator must be the L<array type|/"Array Type">.
+Array operator must be the L<array type|/"The array Type">.
 
 the index must be the L<int type|/"int Type"> or the type that become the L<int type|/"int Type"> by L</"Numeric Widening Type Conversion">.
 
@@ -8031,7 +8031,7 @@ Setting Array Element operator is an L<operator|/"Operator"> to set a Element Va
 
   ARRAY->[INDEX] = RIGHT_OPERAND
 
-The array must be the L<array type|/"Array Type">.
+The array must be the L<array type|/"The array Type">.
 
 The index must be the L<int type|/"int Type"> or the type that become the L<int type|/"int Type"> by L</"Numeric Widening Type Conversion">.
 
@@ -8092,7 +8092,7 @@ If the length is less than C<0>, an exception is thrown.
 
 All elements of the array are initialized by the rule of L<initial value|/"Initial Value">.
 
-The type of created array is the L<array type|/"Array Type">.
+The type of created array is the L<array type|/"The array Type">.
 
 B<Examples:>
 
