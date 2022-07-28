@@ -22,9 +22,9 @@ class Sort {
     Sort->_sort_string_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
   
-  static method sort_byte : void ($values : byte[], $offset : int, $length : int, $comparator : Comparator::Byte) {
-    unless ($values) {
-      die "The values must be defined";
+  static method sort_byte : void ($elements : byte[], $offset : int, $length : int, $comparator : Comparator::Byte) {
+    unless ($elements) {
+      die "The elements must be defined";
     }
     
     unless ($offset >= 0) {
@@ -35,10 +35,10 @@ class Sort {
       die "The length must be greater than or equal to 0";
     }
     
-    my $values_length = @$values;
+    my $elements_length = @$elements;
     
-    unless ($offset + $length <= $values_length) {
-      die "The offset + length must be less than or equal to the length of the values";
+    unless ($offset + $length <= $elements_length) {
+      die "The offset + length must be less than or equal to the length of the elements";
     }
     
     if ($length == 0) {
@@ -46,18 +46,18 @@ class Sort {
     }
     
     my $b = new byte[$length];
-    Sort->_sort_byte_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_byte_merge_sort($elements, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_byte_asc : void ($values : byte[], $offset : int, $length : int) {
-    &sort_byte($values, $offset, $length, method : int ($a : byte, $b : byte) { return $a <=> $b; });
+  static method sort_byte_asc : void ($elements : byte[], $offset : int, $length : int) {
+    &sort_byte($elements, $offset, $length, method : int ($a : byte, $b : byte) { return $a <=> $b; });
   }
-  static method sort_byte_desc : void ($values : byte[], $offset : int, $length : int) {
-    &sort_byte($values, $offset, $length, method : int ($a : byte, $b : byte) { return $b <=> $a; });
+  static method sort_byte_desc : void ($elements : byte[], $offset : int, $length : int) {
+    &sort_byte($elements, $offset, $length, method : int ($a : byte, $b : byte) { return $b <=> $a; });
   }
-  static method sort_double : void ($values : double[], $offset : int, $length : int, $comparator : Comparator::Double) {
-    unless ($values) {
-      die "The values must be defined";
+  static method sort_double : void ($elements : double[], $offset : int, $length : int, $comparator : Comparator::Double) {
+    unless ($elements) {
+      die "The elements must be defined";
     }
     
     unless ($offset >= 0) {
@@ -68,10 +68,10 @@ class Sort {
       die "The length must be greater than or equal to 0";
     }
     
-    my $values_length = @$values;
+    my $elements_length = @$elements;
     
-    unless ($offset + $length <= $values_length) {
-      die "The offset + length must be less than or equal to the length of the values";
+    unless ($offset + $length <= $elements_length) {
+      die "The offset + length must be less than or equal to the length of the elements";
     }
     
     if ($length == 0) {
@@ -79,18 +79,18 @@ class Sort {
     }
     
     my $b = new double[$length];
-    Sort->_sort_double_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_double_merge_sort($elements, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_double_asc : void ($values : double[], $offset : int, $length : int) {
-    &sort_double($values, $offset, $length, method : int ($a : double, $b : double) { return $a <=> $b; });
+  static method sort_double_asc : void ($elements : double[], $offset : int, $length : int) {
+    &sort_double($elements, $offset, $length, method : int ($a : double, $b : double) { return $a <=> $b; });
   }
-  static method sort_double_desc : void ($values : double[], $offset : int, $length : int) {
-    &sort_double($values, $offset, $length, method : int ($a : double, $b : double) { return $b <=> $a; });
+  static method sort_double_desc : void ($elements : double[], $offset : int, $length : int) {
+    &sort_double($elements, $offset, $length, method : int ($a : double, $b : double) { return $b <=> $a; });
   }
-  static method sort_float : void ($values : float[], $offset : int, $length : int, $comparator : Comparator::Float) {
-    unless ($values) {
-      die "The values must be defined";
+  static method sort_float : void ($elements : float[], $offset : int, $length : int, $comparator : Comparator::Float) {
+    unless ($elements) {
+      die "The elements must be defined";
     }
     
     unless ($offset >= 0) {
@@ -101,10 +101,10 @@ class Sort {
       die "The length must be greater than or equal to 0";
     }
     
-    my $values_length = @$values;
+    my $elements_length = @$elements;
     
-    unless ($offset + $length <= $values_length) {
-      die "The offset + length must be less than or equal to the length of the values";
+    unless ($offset + $length <= $elements_length) {
+      die "The offset + length must be less than or equal to the length of the elements";
     }
     
     if ($length == 0) {
@@ -112,21 +112,21 @@ class Sort {
     }
     
     my $b = new float[$length];
-    Sort->_sort_float_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_float_merge_sort($elements, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_float_asc : void ($values : float[], $offset : int, $length : int) {
-    &sort_float($values, $offset, $length, method : int ($a : float, $b : float) { return $a <=> $b; });
+  static method sort_float_asc : void ($elements : float[], $offset : int, $length : int) {
+    &sort_float($elements, $offset, $length, method : int ($a : float, $b : float) { return $a <=> $b; });
   }
-  static method sort_float_desc : void ($values : float[], $offset : int, $length : int) {
-    &sort_float($values, $offset, $length, method : int ($a : float, $b : float) { return $b <=> $a; });
+  static method sort_float_desc : void ($elements : float[], $offset : int, $length : int) {
+    &sort_float($elements, $offset, $length, method : int ($a : float, $b : float) { return $b <=> $a; });
   }
-  static method sort_int : void ($values : int[], $offset : int, $length : int, $comparator : Comparator::Int) {
-    unless ($values) {
-      die "The values must be defined";
+  static method sort_int : void ($elements : int[], $offset : int, $length : int, $comparator : Comparator::Int) {
+    unless ($elements) {
+      die "The elements must be defined";
     }
     
-    my $values_length = @$values;
+    my $elements_length = @$elements;
     
     unless ($offset >= 0) {
       die "The offset must be greater than or equal to 0";
@@ -136,8 +136,8 @@ class Sort {
       die "The length must be greater than or equal to 0";
     }
     
-    unless ($offset + $length <= $values_length) {
-      die "The offset + length must be less than or equal to the length of the values";
+    unless ($offset + $length <= $elements_length) {
+      die "The offset + length must be less than or equal to the length of the elements";
     }
     
     if ($length == 0) {
@@ -145,18 +145,18 @@ class Sort {
     }
     
     my $b = new int[$length];
-    Sort->_sort_int_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_int_merge_sort($elements, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_int_asc : void ($values : int[], $offset : int, $length : int) {
-    &sort_int($values, $offset, $length, method : int ($a : int, $b : int) { return $a <=> $b; });
+  static method sort_int_asc : void ($elements : int[], $offset : int, $length : int) {
+    &sort_int($elements, $offset, $length, method : int ($a : int, $b : int) { return $a <=> $b; });
   }
-  static method sort_int_desc : void ($values : int[], $offset : int, $length : int) {
-    &sort_int($values, $offset, $length, method : int ($a : int, $b : int) { return $b <=> $a; });
+  static method sort_int_desc : void ($elements : int[], $offset : int, $length : int) {
+    &sort_int($elements, $offset, $length, method : int ($a : int, $b : int) { return $b <=> $a; });
   }
-  static method sort_long : void ($values : long[], $offset : int, $length : int, $comparator : Comparator::Long) {
-    unless ($values) {
-      die "The values must be defined";
+  static method sort_long : void ($elements : long[], $offset : int, $length : int, $comparator : Comparator::Long) {
+    unless ($elements) {
+      die "The elements must be defined";
     }
     
     unless ($offset >= 0) {
@@ -167,10 +167,10 @@ class Sort {
       die "The length must be greater than or equal to 0";
     }
     
-    my $values_length = @$values;
+    my $elements_length = @$elements;
     
-    unless ($offset + $length <= $values_length) {
-      die "The offset + length must be less than or equal to the length of the values";
+    unless ($offset + $length <= $elements_length) {
+      die "The offset + length must be less than or equal to the length of the elements";
     }
     
     if ($length == 0) {
@@ -178,18 +178,18 @@ class Sort {
     }
     
     my $b = new long[$length];
-    Sort->_sort_long_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_long_merge_sort($elements, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_long_asc : void ($values : long[], $offset : int, $length : int) {
-    &sort_long($values, $offset, $length, method : int ($a : long, $b : long) { return $a <=> $b; });
+  static method sort_long_asc : void ($elements : long[], $offset : int, $length : int) {
+    &sort_long($elements, $offset, $length, method : int ($a : long, $b : long) { return $a <=> $b; });
   }
-  static method sort_long_desc : void ($values : long[], $offset : int, $length : int) {
-    &sort_long($values, $offset, $length, method : int ($a : long, $b : long) { return $b <=> $a; });
+  static method sort_long_desc : void ($elements : long[], $offset : int, $length : int) {
+    &sort_long($elements, $offset, $length, method : int ($a : long, $b : long) { return $b <=> $a; });
   }
-  static method sort_object : void ($values : object[], $offset : int, $length : int, $comparator : Comparator) {
-    if ($values == undef) {
-      die "The values must be defined";
+  static method sort_object : void ($elements : object[], $offset : int, $length : int, $comparator : Comparator) {
+    if ($elements == undef) {
+      die "The elements must be defined";
     }
     
     unless ($offset >= 0) {
@@ -200,24 +200,24 @@ class Sort {
       die "The length must be greater than or equal to 0";
     }
     
-    my $values_length = @$values;
+    my $elements_length = @$elements;
     
-    unless ($offset + $length <= $values_length) {
-      die "The offset + length must be less than or equal to the length of the values";
+    unless ($offset + $length <= $elements_length) {
+      die "The offset + length must be less than or equal to the length of the elements";
     }
     
     if ($length == 0) {
       return;
     }
     
-    my $b = Array->new_proto($values, $length);
+    my $b = Array->new_proto($elements, $length);
     
-    Sort->_sort_object_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_object_merge_sort($elements, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_short : void ($values : short[], $offset : int, $length : int, $comparator : Comparator::Short) {
-    unless ($values) {
-      die "The values must be defined";
+  static method sort_short : void ($elements : short[], $offset : int, $length : int, $comparator : Comparator::Short) {
+    unless ($elements) {
+      die "The elements must be defined";
     }
     
     unless ($offset >= 0) {
@@ -228,10 +228,10 @@ class Sort {
       die "The length must be greater than or equal to 0";
     }
     
-    my $values_length = @$values;
+    my $elements_length = @$elements;
     
-    unless ($offset + $length <= $values_length) {
-      die "The offset + length must be less than or equal to the length of the values";
+    unless ($offset + $length <= $elements_length) {
+      die "The offset + length must be less than or equal to the length of the elements";
     }
     
     if ($length == 0) {
@@ -239,18 +239,18 @@ class Sort {
     }
     
     my $b = new short[$length];
-    Sort->_sort_short_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_short_merge_sort($elements, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_short_asc : void ($values : short[], $offset : int, $length : int) {
-    &sort_short($values, $offset, $length, method : int ($a : short, $b : short) { return $a <=> $b; });
+  static method sort_short_asc : void ($elements : short[], $offset : int, $length : int) {
+    &sort_short($elements, $offset, $length, method : int ($a : short, $b : short) { return $a <=> $b; });
   }
-  static method sort_short_desc : void ($values : short[], $offset : int, $length : int) {
-    &sort_short($values, $offset, $length, method : int ($a : short, $b : short) { return $b <=> $a; });
+  static method sort_short_desc : void ($elements : short[], $offset : int, $length : int) {
+    &sort_short($elements, $offset, $length, method : int ($a : short, $b : short) { return $b <=> $a; });
   }
-  static method sort_string : void ($values : string[], $offset : int, $length : int, $comparator : Comparator::String) {
-    if ($values == undef) {
-      die "The values must be defined";
+  static method sort_string : void ($elements : string[], $offset : int, $length : int, $comparator : Comparator::String) {
+    if ($elements == undef) {
+      die "The elements must be defined";
     }
     
     unless ($offset >= 0) {
@@ -261,10 +261,10 @@ class Sort {
       die "The length must be greater than or equal to 0";
     }
     
-    my $values_length = @$values;
+    my $elements_length = @$elements;
     
-    unless ($offset + $length <= $values_length) {
-      die "The offset + length must be less than or equal to the length of the values";
+    unless ($offset + $length <= $elements_length) {
+      die "The offset + length must be less than or equal to the length of the elements";
     }
     
     if ($length == 0) {
@@ -272,13 +272,13 @@ class Sort {
     }
     
     my $b = new string[$length];
-    Sort->_sort_string_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Sort->_sort_string_merge_sort($elements, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  static method sort_string_asc : void ($values : string[], $offset : int, $length : int) {
-    &sort_string($values, $offset, $length, method : int ($a : string, $b : string) { return $a cmp $b; });
+  static method sort_string_asc : void ($elements : string[], $offset : int, $length : int) {
+    &sort_string($elements, $offset, $length, method : int ($a : string, $b : string) { return $a cmp $b; });
   }
-  static method sort_string_desc : void ($values : string[], $offset : int, $length : int) {
-    &sort_string($values, $offset, $length, method : int ($a : string, $b : string) { return $b cmp $a; });
+  static method sort_string_desc : void ($elements : string[], $offset : int, $length : int) {
+    &sort_string($elements, $offset, $length, method : int ($a : string, $b : string) { return $b cmp $a; });
   }
 
   precompile private static method _sort_byte_merge : void($a : byte[], $b : byte[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Byte) {
