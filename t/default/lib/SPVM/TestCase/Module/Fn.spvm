@@ -2939,9 +2939,19 @@ class TestCase::Module::Fn {
       }
     }
     
+    # Exception
+    {
+      eval { Fn->uc(undef); };
+      unless (Fn->contains($@, "The string must be defined")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
-
+  
   static method ucfirst : int () {
     {
       my $string = "@abc";
@@ -2957,7 +2967,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     {
       my $string = "aabc";
       my $result_str = Fn->ucfirst($string);
@@ -2965,7 +2975,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     {
       my $string = "pabc";
       my $result_str = Fn->ucfirst($string);
@@ -2973,7 +2983,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     {
       my $string = "zabc";
       my $result_str = Fn->ucfirst($string);
