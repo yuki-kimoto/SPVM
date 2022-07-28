@@ -2563,27 +2563,49 @@ class TestCase::Module::Fn {
       unless ($num isa double) {
         return 0;
       }
-
+      
       unless ($num == 1.25) {
         return 0;
       }
     }
-
-    # Invalid string format
+   
+    # Exceptions
     {
-      my $string = "10.5oppp";
-      eval {
-        Fn->to_double($string);
-      };
-      unless ($@) {
-        return 0;
+      {
+        eval {
+          Fn->to_double(undef);
+        };
+        unless (Fn->contains($@, "The string must be defined")) {
+          return 0;
+        }
       }
-      $@ = undef;
+      
+      # Invalid string format
+      {
+        my $string = "10oppp";
+        eval {
+          Fn->to_double($string);
+        };
+        unless (Fn->contains($@, "The string must be the string that can be parsed as a double number")) {
+          return 0;
+        }
+      }
+      
+      # Invalid digit
+      {
+        my $string = "A";
+        eval {
+          Fn->to_double($string);
+        };
+        unless (Fn->contains($@, "The string must be the string that can be parsed as a double number")) {
+          return 0;
+        }
+      }
     }
-
+    
     return 1;
   }
-
+  
   static method to_float : int () {
     # 10 digit minimal and return type is int
     {
@@ -2592,27 +2614,50 @@ class TestCase::Module::Fn {
       unless ($num isa float) {
         return 0;
       }
-
+      
       unless ($num == 1.25) {
         return 0;
       }
     }
-
-    # Invalid string format
+    
+    # Exceptions
     {
-      my $string = "10.5oppp";
-      eval {
-        Fn->to_float($string);
-      };
-      unless ($@) {
-        return 0;
+      {
+        eval {
+          Fn->to_float(undef);
+        };
+        unless (Fn->contains($@, "The string must be defined")) {
+          return 0;
+        }
       }
-      $@ = undef;
+      
+      # Invalid string format
+      {
+        my $string = "10oppp";
+        eval {
+          Fn->to_float($string);
+        };
+        unless (Fn->contains($@, "The string must be the string that can be parsed as a float number")) {
+          return 0;
+        }
+      }
+      
+      # Invalid digit
+      {
+        my $string = "A";
+        eval {
+          Fn->to_float($string);
+        };
+        unless (Fn->contains($@, "The string must be the string that can be parsed as a float number")) {
+          return 0;
+        }
+      }
     }
-
+    
+    $@ = undef;
     return 1;
   }
-
+  
   static method to_int : int () {
     # 10 digit minimal and return type is int
     {
@@ -2621,7 +2666,7 @@ class TestCase::Module::Fn {
       unless ($num isa int) {
         return 0;
       }
-
+      
       unless ($num == -2147483648) {
         return 0;
       }
