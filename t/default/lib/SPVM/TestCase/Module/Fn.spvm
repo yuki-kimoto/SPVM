@@ -2629,7 +2629,7 @@ class TestCase::Module::Fn {
     
     return 1;
   }
-
+  
   static method to_int_with_base : int () {
     # 10 digit minimal and return type is int
     {
@@ -2638,12 +2638,12 @@ class TestCase::Module::Fn {
       unless ($num isa int) {
         return 0;
       }
-
+      
       unless ($num == -2147483648) {
         return 0;
       }
     }
-
+    
     # 10 digit max
     {
       my $string = "2147483647";
@@ -2651,93 +2651,113 @@ class TestCase::Module::Fn {
       unless ($num isa int) {
         return 0;
       }
-
+      
       unless ($num == 2147483647) {
         return 0;
       }
     }
-
+    
     # 2 digit
     {
       my $string = "11";
       my $num = Fn->to_int_with_base($string, 2);
-
+      
       unless ($num == 3) {
         return 0;
       }
     }
-
+    
     # 8 digit
     {
       my $string = "11";
       my $num = Fn->to_int_with_base($string, 8);
-
+      
       unless ($num == 9) {
         return 0;
       }
     }
-
+    
     # 16 digit
     {
       my $string = "FF";
       my $num = Fn->to_int_with_base($string, 16);
-
+      
       unless ($num == 255) {
         return 0;
       }
     }
-
-    # Invalid string format
+    
+    # Exceptions
     {
-      my $string = "10oppp";
-      eval {
-        Fn->to_int_with_base($string, 10);
-      };
-      unless ($@) {
-        return 0;
+      {
+        eval {
+          Fn->to_int_with_base(undef, 10);
+        };
+        unless (Fn->contains($@, "The string must be defined")) {
+          return 0;
+        }
       }
-      $@ = undef;
-    }
-
-    # Invalid digit
-    {
-      my $string = "10";
-      eval {
-        Fn->to_int_with_base($string, 100);
-      };
-      unless ($@) {
-        return 0;
+      
+      {
+        my $string = "10";
+        eval {
+          Fn->to_int_with_base($string, 9);
+        };
+        unless (Fn->contains($@, "The digit must be one of 2, 8, 10, or 16")) {
+          return 0;
+        }
       }
-      $@ = undef;
-    }
-
-    # Out of range max + 1
-    {
-      my $string = "2147483648";
-      eval {
-        Fn->to_int_with_base($string, 10);
-      };
-      unless ($@) {
-        return 0;
+      
+      # Invalid string format
+      {
+        my $string = "10oppp";
+        eval {
+          Fn->to_int_with_base($string, 10);
+        };
+        unless (Fn->contains($@, "The string must be the string that can be parsed as a 10-digit 32-bit integer")) {
+          return 0;
+        }
       }
-      $@ = undef;
-    }
-
-    # Out of range min - 1
-    {
-      my $string = "-2147483649";
-      eval {
-        Fn->to_int_with_base($string, 10);
-      };
-      unless ($@) {
-        return 0;
+      
+      # Invalid digit
+      {
+        my $string = "A";
+        eval {
+          Fn->to_int_with_base($string, 10);
+        };
+        unless (Fn->contains($@, "The string must be the string that can be parsed as a 10-digit 32-bit integer")) {
+          return 0;
+        }
       }
-      $@ = undef;
+      
+      # Out of range max + 1
+      {
+        my $string = "2147483648";
+        eval {
+          Fn->to_int_with_base($string, 10);
+        };
+        unless (Fn->contains($@, "The string must be a 32-bit integer in the correct range")) {
+          return 0;
+        }
+      }
+      
+      # Out of range min - 1
+      {
+        my $string = "-2147483649";
+        eval {
+          Fn->to_int_with_base($string, 10);
+        };
+        unless (Fn->contains($@, "The string must be a 32-bit integer in the correct range")) {
+          return 0;
+        }
+      }
     }
-
+    
+    $@ = undef;
+    
     return 1;
   }
-
+  
   static method to_long : int () {
     # 10 digit minimal and return type is int
     {
@@ -2746,7 +2766,7 @@ class TestCase::Module::Fn {
       unless ($num isa long) {
         return 0;
       }
-
+      
       unless ($num == -9223372036854775808L) {
         return 0;
       }
@@ -2763,47 +2783,47 @@ class TestCase::Module::Fn {
       unless ($num isa long) {
         return 0;
       }
-
+      
       unless ($num == -9223372036854775808L) {
         return 0;
       }
     }
-
+    
     # 10 digit max
     {
       my $string = "9223372036854775807";
       my $num = Fn->to_long_with_base($string, 10);
-
+      
       unless ($num == 9223372036854775807L) {
         return 0;
       }
     }
-
+    
     # 2 digit
     {
       my $string = "11";
       my $num = Fn->to_long_with_base($string, 2);
-
+      
       unless ($num == 3) {
         return 0;
       }
     }
-
+    
     # 8 digit
     {
       my $string = "11";
       my $num = Fn->to_long_with_base($string, 8);
-
+      
       unless ($num == 9) {
         return 0;
       }
     }
-
+    
     # 16 digit
     {
       my $string = "FF";
       my $num = Fn->to_long_with_base($string, 16);
-
+      
       unless ($num == 255) {
         return 0;
       }
@@ -2832,22 +2852,22 @@ class TestCase::Module::Fn {
       
       # Invalid string format
       {
-        my $string = "The string must be the string that can be parsed as a 64-bit integer";
+        my $string = "10oppp";
         eval {
           Fn->to_long_with_base($string, 10);
         };
-        unless (Fn->contains($@, "")) {
+        unless (Fn->contains($@, "The string must be the string that can be parsed as a 10-digit 64-bit integer")) {
           return 0;
         }
       }
       
       # Invalid digit
       {
-        my $string = "The string must be the string that can be parsed as a 64-bit integer";
+        my $string = "A";
         eval {
-          Fn->to_long_with_base($string, 100);
+          Fn->to_long_with_base($string, 10);
         };
-        unless (Fn->contains($@, "")) {
+        unless (Fn->contains($@, "The string must be the string that can be parsed as a 10-digit 64-bit integer")) {
           return 0;
         }
       }
