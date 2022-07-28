@@ -2881,6 +2881,55 @@ class TestCase::Module::Fn {
     return 1;
   }
 
+  static method trim : int () {
+    # undef
+    {
+      my $string = (string)undef;
+      my $trimed_string = Fn->trim($string);
+      unless ($trimed_string == undef) {
+        return 0;
+      }
+    }
+    
+    # no left and right spaces
+    {
+      my $string = (string)"ab  c";
+      my $trimed_string = Fn->trim($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+    
+    # left spaces
+    {
+      my $string = (string)"  \t  \nab  c";
+      my $trimed_string = Fn->trim($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+    
+    # right spaces
+    {
+      my $string = (string)"ab  c  \t  \n";
+      my $trimed_string = Fn->trim($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+    
+    # left and right spaces
+    {
+      my $string = (string)"  \t  \nab  c  \t  \n";
+      my $trimed_string = Fn->trim($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method trim_ascii_space : int () {
     # undef
     {
@@ -2899,7 +2948,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     # left spaces
     {
       my $string = (string)"  \t  \nab  c";
@@ -2908,7 +2957,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     # right spaces
     {
       my $string = (string)"ab  c  \t  \n";
@@ -2917,7 +2966,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     # left and right spaces
     {
       my $string = (string)"  \t  \nab  c  \t  \n";
