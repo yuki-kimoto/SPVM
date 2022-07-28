@@ -23,6 +23,7 @@
     * Fix Fn->contains doc.
     * Add Fn->is_array doc.
     * Fix the doc that the range of Array->memcpy_(byte|short|int|long|flaot|double) is wrong.
+    * Fix the doc that the range of Array->copy_range_(byte|short|int|long|flaot|double) is wrong.
   [Incompatible Changes]
     * Fn->index_len throw exception.
       The offset + the length specified by the argument must be less than or equal to the length of the string

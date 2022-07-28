@@ -179,7 +179,7 @@ The alias for the following code using L</"copy_object">.
 
   static method copy_range_byte : byte[] ($array : byte[], $offset : int, $length : int)
   
-Create a new C<byte> array with the length sepcified by the argument, and copy the elements of the C<byte> array from the offset to the offset + the length to the created array.
+Create a new C<byte> array with the length sepcified by the argument, and copy the elements of the C<byte> array from the offset to the offset + the length - C<1> to the created array.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -193,7 +193,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method copy_range_double : double[] ($array : double[], $offset : int, $length : int)
 
-Create a new C<double> array with the length sepcified by the argument, and copy the elements of the C<double> array from the offset to the offset + the length to the created array.
+Create a new C<double> array with the length sepcified by the argument, and copy the elements of the C<double> array from the offset to the offset + the length - C<1> to the created array.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -207,7 +207,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method copy_range_float : float[] ($array : float[], $offset : int, $length : int)
 
-Create a new C<float> array with the length sepcified by the argument, and copy the elements of the C<float> array from the offset to the offset + the length to the created array.
+Create a new C<float> array with the length sepcified by the argument, and copy the elements of the C<float> array from the offset to the offset + the length - C<1> to the created array.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -221,7 +221,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method copy_range_int : int[] ($array : int[], $offset : int, $length : int)
 
-Create a new C<int> array with the length sepcified by the argument, and copy the elements of the C<int> array from the offset to the offset + the length to the created array.
+Create a new C<int> array with the length sepcified by the argument, and copy the elements of the C<int> array from the offset to the offset + the length - C<1> to the created array.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -235,7 +235,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method copy_range_long : long[] ($array : long[], $offset : int, $length : int)
 
-Create a new C<long> array with the length sepcified by the argument, and copy the elements of the C<long> array from the offset to the offset + the length to the created array.
+Create a new C<long> array with the length sepcified by the argument, and copy the elements of the C<long> array from the offset to the offset + the length - C<1> to the created array.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -249,7 +249,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner)
 
-Create a new object array with the length sepcified by the argument, and clone the elements of the object array from the offset to the offset + the length to the created array.
+Create a new object array with the length sepcified by the argument, and clone the elements of the object array from the offset to the offset + the length - C<1> to the created array.
 
 Each element is cloned by the L<Cloner|SPVM::Cloner>.
 
@@ -275,7 +275,7 @@ The alias for the following code using L</"copy_range_object">.
 
   static method copy_range_short : short[] ($array : short[], $offset : int, $length : int)
 
-Create a new C<short> array with the length sepcified by the argument, and copy the elements of the C<short> array from the offset to the offset + the length to the created array.
+Create a new C<short> array with the length sepcified by the argument, and copy the elements of the C<short> array from the offset to the offset + the length - C<1> to the created array.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -289,7 +289,7 @@ The offset + the length specified by the argument must be less than or equal to 
   
   static method copy_range_string : string[] ($array : string[], $offset : int, $length : int)
 
-Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator from the offset to the offset + the length to the created array.
+Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator from the offset to the offset + the length - C<1> to the created array.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -303,7 +303,7 @@ The offset + the length specified by the argument must be less than or equal to 
   
   static method copy_range_string : string[] ($array : string[], $offset : int, $length : int)
 
-Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array from the offset to the offset + the length to the created array.
+Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array from the offset to the offset + the length - C<1> to the created array.
 
 The array must be defined. Otherwise an exception will be thrown.
 
