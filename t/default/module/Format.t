@@ -90,6 +90,32 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is(sprintf("%-3u", -111 & 0xFFFFFFFF), SPVM::Format->sprintf("%-3u", SPVM::new_object_array('object[]', [SPVM::Int->new(-111)])));
     }
 
+    # %lu
+    {
+      is(sprintf("%lu", 1), SPVM::Format->sprintf("%lu", SPVM::new_object_array('object[]', [SPVM::Long->new(1)])));
+      is(sprintf("%0100lu", 1), SPVM::Format->sprintf("%0100lu", SPVM::new_object_array('object[]', [SPVM::Long->new(1)])));
+      is(sprintf("%03lu", 1), SPVM::Format->sprintf("%03lu", SPVM::new_object_array('object[]', [SPVM::Long->new(1)])));
+      is(sprintf("%+3lu", 1), SPVM::Format->sprintf("%+3lu", SPVM::new_object_array('object[]', [SPVM::Long->new(1)])));
+      is(sprintf("%-3lu", 1), SPVM::Format->sprintf("%-3lu", SPVM::new_object_array('object[]', [SPVM::Long->new(1)])));
+      is(sprintf("%03lu", 1111), SPVM::Format->sprintf("%03lu", SPVM::new_object_array('object[]', [SPVM::Long->new(1111)])));
+      is(sprintf("%+3lu", 1111), SPVM::Format->sprintf("%+3lu", SPVM::new_object_array('object[]', [SPVM::Long->new(1111)])));
+      is(sprintf("%-3lu", 1111), SPVM::Format->sprintf("%-3lu", SPVM::new_object_array('object[]', [SPVM::Long->new(1111)])));
+      is(sprintf("%03lu", 111), SPVM::Format->sprintf("%03lu", SPVM::new_object_array('object[]', [SPVM::Long->new(111)])));
+      is(sprintf("%+3lu", 111), SPVM::Format->sprintf("%+3lu", SPVM::new_object_array('object[]', [SPVM::Long->new(111)])));
+      is(sprintf("%-3lu", 111), SPVM::Format->sprintf("%-3lu", SPVM::new_object_array('object[]', [SPVM::Long->new(111)])));
+      is(sprintf("%lu", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%lu", SPVM::new_object_array('object[]', [SPVM::Long->new(-1)])));
+      is(sprintf("%0100lu", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%0100lu", SPVM::new_object_array('object[]', [SPVM::Long->new(-1)])));
+      is(sprintf("%03lu", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%03lu", SPVM::new_object_array('object[]', [SPVM::Long->new(-1)])));
+      is(sprintf("%+3lu", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%+3lu", SPVM::new_object_array('object[]', [SPVM::Long->new(-1)])));
+      is(sprintf("%-3lu", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%-3lu", SPVM::new_object_array('object[]', [SPVM::Long->new(-1)])));
+      is(sprintf("%03lu", -1111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%03lu", SPVM::new_object_array('object[]', [SPVM::Long->new(-1111)])));
+      is(sprintf("%+3lu", -1111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%+3lu", SPVM::new_object_array('object[]', [SPVM::Long->new(-1111)])));
+      is(sprintf("%-3lu", -1111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%-3lu", SPVM::new_object_array('object[]', [SPVM::Long->new(-1111)])));
+      is(sprintf("%03lu", -111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%03lu", SPVM::new_object_array('object[]', [SPVM::Long->new(-111)])));
+      is(sprintf("%+3lu", -111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%+3lu", SPVM::new_object_array('object[]', [SPVM::Long->new(-111)])));
+      is(sprintf("%-3lu", -111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%-3lu", SPVM::new_object_array('object[]', [SPVM::Long->new(-111)])));
+    }
+
   }
 }
 
