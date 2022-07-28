@@ -88,6 +88,8 @@ The offset must be greater than or equal to C<0>. Otherwise an exception will be
 
 The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
+The comparator must be defined. Otherwise an exception will be thrown.
+
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
 =head2 sort_byte_asc
@@ -117,6 +119,8 @@ The array must be defined. Otherwise an exception will be thrown.
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The comparator must be defined. Otherwise an exception will be thrown.
 
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
@@ -148,6 +152,8 @@ The offset must be greater than or equal to C<0>. Otherwise an exception will be
 
 The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
+The comparator must be defined. Otherwise an exception will be thrown.
+
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
 =head2 sort_float_asc
@@ -177,6 +183,8 @@ The array must be defined. Otherwise an exception will be thrown.
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The comparator must be defined. Otherwise an exception will be thrown.
 
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
@@ -208,6 +216,8 @@ The offset must be greater than or equal to C<0>. Otherwise an exception will be
 
 The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
+The comparator must be defined. Otherwise an exception will be thrown.
+
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
 =head2 sort_long_asc
@@ -238,6 +248,8 @@ The offset must be greater than or equal to C<0>. Otherwise an exception will be
 
 The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
+The comparator must be defined. Otherwise an exception will be thrown.
+
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
 =head2 sort_short
@@ -249,6 +261,8 @@ Sort the range of the elements of short array in-place with the offset, the leng
 The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The comparator must be defined. Otherwise an exception will be thrown.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -281,6 +295,8 @@ The array must be defined. Otherwise an exception will be thrown.
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The comparator must be defined. Otherwise an exception will be thrown.
 
 The offset + length must be less than or equal to the length of the elements. Otherwise an exception will be thrown.
 
