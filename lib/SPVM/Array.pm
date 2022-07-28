@@ -705,159 +705,37 @@ The alias for L</"memcpy_string_address">. This method is deprecated.
 
   static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int)
 
-Copy the range of the elements of the source C<byte> array to the range of the elements of the destination C<byte> array.
-
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
-
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
-
-Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
-
-The destination must be defined. Otherwise an exception will occur.
-
-The source must be defined. Otherwise an exception will occur.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
-
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The same as L</"memcpy_byte">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_double
   
   static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int)
 
-Copy the range of the elements of the source C<double> array to the range of the elements of the destination C<double> array.
-
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
-
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
-
-Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
-
-The destination must be defined. Otherwise an exception will occur.
-
-The source must be defined. Otherwise an exception will occur.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
-
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The same as L</"memcpy_double">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_float
   
   static method memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int)
 
-Copy the range of the elements of the source C<float> array to the range of the elements of the destination C<float> array.
-
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
-
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
-
-Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
-
-The destination must be defined. Otherwise an exception will occur.
-
-The source must be defined. Otherwise an exception will occur.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
-
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The same as L</"memcpy_float">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_int
   
   static method memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int)
 
-Copy the range of the elements of the source C<int> array to the range of the elements of the destination C<int> array.
-
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
-
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
-
-Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
-
-The destination must be defined. Otherwise an exception will occur.
-
-The source must be defined. Otherwise an exception will occur.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
-
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The same as L</"memcpy_int">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_long
   
   static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int)
 
-Copy the range of the elements of the source C<long> array to the range of the elements of the destination C<long> array.
-
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
-
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
-
-Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
-
-The destination must be defined. Otherwise an exception will occur.
-
-The source must be defined. Otherwise an exception will occur.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
-
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The same as L</"memcpy_long">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_object_address
 
   static method memmove_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
 
-Copy the range of the elements of the source object array to the range of the elements of the destination object array.
-
-Each address is copied.
-
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
-
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
-
-Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
-
-The destination must be defined. Otherwise an exception will occur.
-
-The source must be defined. Otherwise an exception will occur.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
-
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The same as L</"memcpy_object_address">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_object
 
@@ -869,33 +747,15 @@ The alias for L</"memmove_object_address">. This method is deprecated.
 
   static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
 
-Copy the range of the elements of the source C<short> array to the range of the elements of the destination C<short> array.
-
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
-
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
-
-Even if the range of the elements of the source array and the range of the elements of the destination array overlap, the result is guaranteed.
-
-The destination must be defined. Otherwise an exception will occur.
-
-The source must be defined. Otherwise an exception will occur.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
-
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
-
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The same as L</"memcpy_short">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_string_address
 
   static method memmove_string_address : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int);
 
-The alias for L</"memmove_object_address">.
+The same as the following code using L</"memmove_object_address">.
+
+  &memmove_object_address($dest, $dest_offset, $source, $source_offset, $length);
 
 =head2 memmove_string
 

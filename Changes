@@ -16,6 +16,8 @@
     * Fn->get_next_code_point is renamed to Fn->get_code_point. Fn->get_next_code_point is deprecated.
     * Fn->look_next_code_point is renamed to Fn->look_code_point. Fn->look_next_code_point is deprecated.
     * Add Fn->RAND_MAX doc.
+  [Document]
+    * Improve Array class doc.
   [Document Fix]
     * Fix Fn->chr doc.
     * Fix Fn->contains doc.
@@ -25,7 +27,7 @@
       The offset + the length specified by the argument must be less than or equal to the length of the string
   [Bug Fix]
     * Fix the bug that Fn->rindex_len, Fn->rindex don't work well.
-  
+    * Fix the bug Arrya->memmove_string_address calls Arrya->memmove_object. The correct code call Arrya->memmove_object_address.
 0.9629 2022-07-26
   [New Features]
     * Add copy_object_address to Array class.

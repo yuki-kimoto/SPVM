@@ -729,7 +729,7 @@ class Array {
   native static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
   native static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
   static method memmove_string_address : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
-    &memmove_object($dest, $dest_offset, $source, $source_offset, $length);
+    &memmove_object_address($dest, $dest_offset, $source, $source_offset, $length);
   }
   static method memmove_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
     warn "Array->memmove_string is deprecated. Use memmove_string_address instead";
