@@ -11,44 +11,44 @@ SPVM::Sort - Sorting Functions
 =head1 Usage
 
   # Sort a byte array in-place by asc order
-  my $nums = [(byte)2, 3, 1];
-  Sort->sort_byte($nums, 0, scalar @$nums, method : int ($a : byte, $b : byte) {
+  my $array = [(byte)2, 3, 1];
+  Sort->sort_byte($array, 0, scalar @$array, method : int ($a : byte, $b : byte) {
     return $a <=> $b;
   });
 
   # Sort short array in-place by asc order
-  my $nums = [(short)2, 3, 1];
-  Sort->sort_short($nums, 0, scalar @$nums, method : int ($a : short, $b : short) {
+  my $array = [(short)2, 3, 1];
+  Sort->sort_short($array, 0, scalar @$array, method : int ($a : short, $b : short) {
     return $a <=> $b;
   });
 
   # Sort int array in-place by asc order
-  my $nums = [2, 3, 1];
-  Sort->sort_int($nums, 0, scalar @$nums, method : int ($a : int, $b : int) {
+  my $array = [2, 3, 1];
+  Sort->sort_int($array, 0, scalar @$array, method : int ($a : int, $b : int) {
     return $a <=> $b;
   });
 
   # Sort long array in-place by asc order
-  my $nums = [(long)2, 3, 1];
-  Sort->sort_long($nums, 0, scalar @$nums, method : int ($a : long, $b : long) {
+  my $array = [(long)2, 3, 1];
+  Sort->sort_long($array, 0, scalar @$array, method : int ($a : long, $b : long) {
     return $a <=> $b;
   });
 
   # Sort float array in-place by asc order
-  my $nums = [(float)2, 3, 1];
-  Sort->sort_float($nums, 0, scalar @$nums, method : int ($a : float, $b : float) {
+  my $array = [(float)2, 3, 1];
+  Sort->sort_float($array, 0, scalar @$array, method : int ($a : float, $b : float) {
     return $a <=> $b;
   });
 
   # Sort double array in-place by asc order
-  my $nums = [(double)2, 3, 1];
-  Sort->sort_double($nums, 0, scalar @$nums, method : int ($a : double, $b : double) {
+  my $array = [(double)2, 3, 1];
+  Sort->sort_double($array, 0, scalar @$array, method : int ($a : double, $b : double) {
     return $a <=> $b;
   });
 
   # Sort string array in-place by asc order
-  my $nums = ["11", "1", "2", undef, ""];
-  Sort->sort_string($nums, 0, scalar @$nums, method : int ($a : string, $b : string) {
+  my $array = ["11", "1", "2", undef, ""];
+  Sort->sort_string($array, 0, scalar @$array, method : int ($a : string, $b : string) {
     return $a cmp $b;
   });
 
