@@ -78,7 +78,7 @@ C<Sort> provides sorting functions. The sorting algorithm is a stable merge sort
 
 =head2 sort_byte
 
-    static method sort_byte : void ($elements : byte[], $offset : int, $length : int, $comparator : Comparator::Byte)
+    static method sort_byte : void ($array : byte[], $offset : int, $length : int, $comparator : Comparator::Byte)
 
 Sort the elements of C<byte> array in-place with the offset, the length, and the L<Comparator::Byte|SPVM::Comparator::Byte> comparator.
 
@@ -92,23 +92,23 @@ The offset + length must be less than or equal to the length of the elements. Ot
 
 =head2 sort_byte_asc
     
-  static method sort_byte_asc : void ($elements : byte[], $offset : int, $length : int)
+  static method sort_byte_asc : void ($array : byte[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_byte($elements, $offset, $length, method : int ($a : byte, $b : byte) { return $a <=> $b; });
+  Sort->sort_byte($array, $offset, $length, method : int ($a : byte, $b : byte) { return $a <=> $b; });
 
 =head2 sort_byte_desc
 
-  static method sort_byte_desc : void ($elements : byte[], $offset : int, $length : int)
+  static method sort_byte_desc : void ($array : byte[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_byte($elements, $offset, $length, method : int ($a : byte, $b : byte) { return $b <=> $a; });
+  Sort->sort_byte($array, $offset, $length, method : int ($a : byte, $b : byte) { return $b <=> $a; });
 
 =head2 sort_double
 
-    static method sort_double : void ($elements : double[], $offset : int, $length : int, $comparator : Comparator::Double)
+    static method sort_double : void ($array : double[], $offset : int, $length : int, $comparator : Comparator::Double)
 
 Sort the elements of C<double> array in-place with the offset, the length, and the L<Comparator::Double|SPVM::Comparator::Double> comparator.
 
@@ -122,23 +122,23 @@ The offset + length must be less than or equal to the length of the elements. Ot
 
 =head2 sort_double_asc
     
-  static method sort_double_asc : void ($elements : double[], $offset : int, $length : int)
+  static method sort_double_asc : void ($array : double[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_double($elements, $offset, $length, method : int ($a : double, $b : double) { return $a <=> $b; });
+  Sort->sort_double($array, $offset, $length, method : int ($a : double, $b : double) { return $a <=> $b; });
 
 =head2 sort_double_desc
 
-  static method sort_double_desc : void ($elements : double[], $offset : int, $length : int)
+  static method sort_double_desc : void ($array : double[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_double($elements, $offset, $length, method : int ($a : double, $b : double) { return $b <=> $a; });
+  Sort->sort_double($array, $offset, $length, method : int ($a : double, $b : double) { return $b <=> $a; });
 
 =head2 sort_float
 
-    static method static method sort_float : void ($elements : float[], $offset : int, $length : int, $comparator : Comparator::Float)
+    static method static method sort_float : void ($array : float[], $offset : int, $length : int, $comparator : Comparator::Float)
 
 Sort the elements of float array in-place with the offset, the length, and the L<Comparator::Float|SPVM::Comparator::Float> comparator.
 
@@ -152,23 +152,23 @@ The offset + length must be less than or equal to the length of the elements. Ot
 
 =head2 sort_float_asc
     
-  static method sort_float_asc : void ($elements : float[], $offset : int, $length : int)
+  static method sort_float_asc : void ($array : float[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_float($elements, $offset, $length, method : int ($a : float, $b : float) { return $a <=> $b; });
+  Sort->sort_float($array, $offset, $length, method : int ($a : float, $b : float) { return $a <=> $b; });
 
 =head2 sort_float_desc
 
-  static method sort_float_desc : void ($elements : float[], $offset : int, $length : int)
+  static method sort_float_desc : void ($array : float[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_float($elements, $offset, $length, method : int ($a : float, $b : float) { return $b <=> $a; });
+  Sort->sort_float($array, $offset, $length, method : int ($a : float, $b : float) { return $b <=> $a; });
 
 =head2 sort_int
 
-    static method sort_int : void ($elements : int[], $offset : int, $length : int, $comparator : Comparator::Int)
+    static method sort_int : void ($array : int[], $offset : int, $length : int, $comparator : Comparator::Int)
 
 Sort the elements of C<int> array in-place with the offset, the length, and the L<Comparator::Int|SPVM::Comparator::Int> comparator.
 
@@ -182,23 +182,23 @@ The offset + length must be less than or equal to the length of the elements. Ot
 
 =head2 sort_int_asc
     
-  static method sort_int_asc : void ($elements : int[], $offset : int, $length : int)
+  static method sort_int_asc : void ($array : int[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_int($elements, $offset, $length, method : int ($a : int, $b : int) { return $a <=> $b; });
+  Sort->sort_int($array, $offset, $length, method : int ($a : int, $b : int) { return $a <=> $b; });
 
 =head2 sort_int_desc
 
-  static method sort_int_desc : void ($elements : int[], $offset : int, $length : int)
+  static method sort_int_desc : void ($array : int[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_int($elements, $offset, $length, method : int ($a : int, $b : int) { return $b <=> $a; });
+  Sort->sort_int($array, $offset, $length, method : int ($a : int, $b : int) { return $b <=> $a; });
 
 =head2 sort_long
 
-    static method sort_long : void ($elements : long[], $offset : int, $length : int, $comparator : Comparator::Long)
+    static method sort_long : void ($array : long[], $offset : int, $length : int, $comparator : Comparator::Long)
 
 Sort the elements of long array in-place with the offset, the length, and the L<Comparator::Long|SPVM::Comparator::Long> comparator.
 
@@ -212,19 +212,19 @@ The offset + length must be less than or equal to the length of the elements. Ot
 
 =head2 sort_long_asc
     
-  static method sort_long_asc : void ($elements : long[], $offset : int, $length : int)
+  static method sort_long_asc : void ($array : long[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_long($elements, $offset, $length, method : int ($a : long, $b : long) { return $a <=> $b; });
+  Sort->sort_long($array, $offset, $length, method : int ($a : long, $b : long) { return $a <=> $b; });
 
 =head2 sort_long_desc
 
-  static method sort_long_desc : void ($elements : long[], $offset : int, $length : int)
+  static method sort_long_desc : void ($array : long[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_long($elements, $offset, $length, method : int ($a : long, $b : long) { return $b <=> $a; });
+  Sort->sort_long($array, $offset, $length, method : int ($a : long, $b : long) { return $b <=> $a; });
 
 =head2 sort_object
 
@@ -242,7 +242,7 @@ The offset + length must be less than or equal to the length of the elements. Ot
 
 =head2 sort_short
 
-    static method sort_short : void ($elements : short[], $offset : int, $length : int, $comparator : Comparator::Short)
+    static method sort_short : void ($array : short[], $offset : int, $length : int, $comparator : Comparator::Short)
 
 Sort the elements of short array in-place with the offset, the length, and the L<Comparator::Short|SPVM::Comparator::Short> comparator.
 
@@ -256,23 +256,23 @@ The offset + length must be less than or equal to the length of the elements. Ot
 
 =head2 sort_short_asc
     
-  static method sort_short_asc : void ($elements : short[], $offset : int, $length : int)
+  static method sort_short_asc : void ($array : short[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_short($elements, $offset, $length, method : int ($a : short, $b : short) { return $a <=> $b; });
+  Sort->sort_short($array, $offset, $length, method : int ($a : short, $b : short) { return $a <=> $b; });
 
 =head2 sort_short_desc
 
-  static method sort_short_desc : void ($elements : short[], $offset : int, $length : int)
+  static method sort_short_desc : void ($array : short[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_short($elements, $offset, $length, method : int ($a : short, $b : short) { return $b <=> $a; });
+  Sort->sort_short($array, $offset, $length, method : int ($a : short, $b : short) { return $b <=> $a; });
 
 =head2 sort_string
 
-    static method sort_string : void ($elements : string[], $offset : int, $length : int, $comparator : Comparator::Double)
+    static method sort_string : void ($array : string[], $offset : int, $length : int, $comparator : Comparator::Double)
 
 Sort the elements of C<string> array in-place with the offset, the length, and the L<Comparator::String|SPVM::Comparator::String> comparator.
 
@@ -286,16 +286,16 @@ The offset + length must be less than or equal to the length of the elements. Ot
 
 =head2 sort_string_asc
     
-  static method sort_string_asc : void ($elements : string[], $offset : int, $length : int)
+  static method sort_string_asc : void ($array : string[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_string($elements, $offset, $length, method : int ($a : string, $b : string) { return $a cmp $b; });
+  Sort->sort_string($array, $offset, $length, method : int ($a : string, $b : string) { return $a cmp $b; });
 
 =head2 sort_string_desc
 
-  static method sort_string_desc : void ($elements : string[], $offset : int, $length : int)
+  static method sort_string_desc : void ($array : string[], $offset : int, $length : int)
 
 The alias for the following code.
 
-  Sort->sort_string($elements, $offset, $length, method : int ($a : string, $b : string) { return $b cmp $a; });
+  Sort->sort_string($array, $offset, $length, method : int ($a : string, $b : string) { return $b cmp $a; });
