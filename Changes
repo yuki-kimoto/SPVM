@@ -1,4 +1,4 @@
-0.9630 2022-07-27
+0.9629_01 2022-07-28
   [New Features]
     * Add GET_CODE_POINT_ERROR_OVER_STRING_RANGE, GET_CODE_POINT_ERROR_INVALID_UTF8 to Fn class.
     * Add Fn->split_limit.
