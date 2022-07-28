@@ -504,18 +504,9 @@ class Fn {
   
   native static method memmove : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
   
-  static method ord : int ($utf8_char : string) {
-    unless ($utf8_char) {
-      die "The UTF-8 character must be defined";
-    }
-    
-    my $utf8_char_length = length $utf8_char;
-    unless ($utf8_char_length > 0) {
-      die "The length of the UTF-8 character must be greater than to 0";
-    }
-    
+  static method ord : int ($string : string) {
     my $offset = 0;
-    my $code_point = &get_next_code_point($utf8_char, \$offset);
+    my $code_point = &get_code_point($string, \$offset);
     
     return $code_point;
   }

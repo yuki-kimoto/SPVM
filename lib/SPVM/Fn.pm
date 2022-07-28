@@ -570,15 +570,12 @@ The same as L</"memcpy">, but even if the range of the source and the range of t
 
 =head2 ord
 
-  static method ord : int ($utf8_char : string)
+  static method ord : int ($string : string);
 
-Gets the Unicode code point from the first character of the specified <C<UTF-8>> string.
+The alias for the following code using L</"get_code_point">.
 
-If the specified C<UTF-8> character is C<undef>, return a negative value.
-
-If the length of the specified C<UTF-8> string is C<0>, return a negative value.
-
-If the specified C<UTF-8> character is invalid C<UTF-8> character, return a negative value.
+  my $offset = 0;
+  my $code_point = &get_code_point($string, \$offset);
 
 =head2 powi
 

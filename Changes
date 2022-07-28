@@ -28,6 +28,11 @@
   [Incompatible Changes]
     * Fn->index_len throw exception.
       The offset + the length specified by the argument must be less than or equal to the length of the string
+    * Fn->ord become the following alias
+      
+      my $offset = 0;
+      my $code_point = Fn->get_code_point($string, \$offset);
+      
   [Bug Fix]
     * Fix the bug that Fn->rindex_len, Fn->rindex don't work well.
     * Fix the bug Arrya->memmove_string_address calls Arrya->memmove_object. The correct code call Arrya->memmove_object_address.

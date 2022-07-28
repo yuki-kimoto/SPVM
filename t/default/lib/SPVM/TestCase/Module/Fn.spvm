@@ -2141,13 +2141,15 @@ class TestCase::Module::Fn {
       return 0;
     }
     
-    # Error
+    # End
     {
-      eval { Fn->ord(""); };
-      unless ($@) {
+      my $code_point = Fn->ord("");
+      unless ($code_point == Fn->GET_CODE_POINT_ERROR_OVER_STRING_RANGE) {
         return 0;
       }
     }
+    
+    # Error
     {
       eval { Fn->ord(undef); };
       unless ($@) {
