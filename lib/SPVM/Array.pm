@@ -769,7 +769,7 @@ The alias for L</"memmove_string_address">. This method is deprecated.
 
 Set the range of the elements of the destination C<byte> array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -785,7 +785,7 @@ The offset of the destination + the length specified by the argument must be les
 
 Set the range of the elements of the destination C<double> array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -801,7 +801,7 @@ The offset of the destination + the length specified by the argument must be les
 
 Set the range of the elements of the destination C<float> array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -817,7 +817,7 @@ The offset of the destination + the length specified by the argument must be les
 
 Set the range of the elements of the destination C<int> array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -833,7 +833,7 @@ The offset of the destination + the length specified by the argument must be les
 
 Set the range of the elements of the destination C<long> array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -849,7 +849,7 @@ The offset of the destination + the length specified by the argument must be les
 
 Set the range of the elements of the destination object array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -865,7 +865,7 @@ The offset of the destination + the length specified by the argument must be les
 
 Set the range of the elements of the destination C<short> array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
 
 The destination must be defined. Otherwise an exception will occur.
 
