@@ -10,12 +10,18 @@ class Sort {
   use Fn;
   use Array;
   
-  static method sort_byte_asc : void ($values : byte[], $offset : int, $length : int) {
-    &sort_byte($values, $offset, $length, method : int ($a : byte, $b : byte) { return $a <=> $b; });
+  private static method _sort_string_merge_sort : void($a : string[], $b : string[], $left : int, $right : int, $n : int, $comparator : Comparator::String){
+    if ($left >= $right) {
+      return;
+    }
+    
+    my $mid = ($left + $right) / 2;
+     
+    Sort->_sort_string_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Sort->_sort_string_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Sort->_sort_string_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
-  static method sort_byte_desc : void ($values : byte[], $offset : int, $length : int) {
-    &sort_byte($values, $offset, $length, method : int ($a : byte, $b : byte) { return $b <=> $a; });
-  }
+  
   static method sort_byte : void ($values : byte[], $offset : int, $length : int, $comparator : Comparator::Byte) {
     unless ($values) {
       die "The values must be defined";
@@ -42,12 +48,12 @@ class Sort {
     my $b = new byte[$length];
     Sort->_sort_byte_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-
-  static method sort_double_asc : void ($values : double[], $offset : int, $length : int) {
-    &sort_double($values, $offset, $length, method : int ($a : double, $b : double) { return $a <=> $b; });
+  
+  static method sort_byte_asc : void ($values : byte[], $offset : int, $length : int) {
+    &sort_byte($values, $offset, $length, method : int ($a : byte, $b : byte) { return $a <=> $b; });
   }
-  static method sort_double_desc : void ($values : double[], $offset : int, $length : int) {
-    &sort_double($values, $offset, $length, method : int ($a : double, $b : double) { return $b <=> $a; });
+  static method sort_byte_desc : void ($values : byte[], $offset : int, $length : int) {
+    &sort_byte($values, $offset, $length, method : int ($a : byte, $b : byte) { return $b <=> $a; });
   }
   static method sort_double : void ($values : double[], $offset : int, $length : int, $comparator : Comparator::Double) {
     unless ($values) {
@@ -75,12 +81,12 @@ class Sort {
     my $b = new double[$length];
     Sort->_sort_double_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-
-  static method sort_float_asc : void ($values : float[], $offset : int, $length : int) {
-    &sort_float($values, $offset, $length, method : int ($a : float, $b : float) { return $a <=> $b; });
+  
+  static method sort_double_asc : void ($values : double[], $offset : int, $length : int) {
+    &sort_double($values, $offset, $length, method : int ($a : double, $b : double) { return $a <=> $b; });
   }
-  static method sort_float_desc : void ($values : float[], $offset : int, $length : int) {
-    &sort_float($values, $offset, $length, method : int ($a : float, $b : float) { return $b <=> $a; });
+  static method sort_double_desc : void ($values : double[], $offset : int, $length : int) {
+    &sort_double($values, $offset, $length, method : int ($a : double, $b : double) { return $b <=> $a; });
   }
   static method sort_float : void ($values : float[], $offset : int, $length : int, $comparator : Comparator::Float) {
     unless ($values) {
@@ -109,11 +115,11 @@ class Sort {
     Sort->_sort_float_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_int_asc : void ($values : int[], $offset : int, $length : int) {
-    &sort_int($values, $offset, $length, method : int ($a : int, $b : int) { return $a <=> $b; });
+  static method sort_float_asc : void ($values : float[], $offset : int, $length : int) {
+    &sort_float($values, $offset, $length, method : int ($a : float, $b : float) { return $a <=> $b; });
   }
-  static method sort_int_desc : void ($values : int[], $offset : int, $length : int) {
-    &sort_int($values, $offset, $length, method : int ($a : int, $b : int) { return $b <=> $a; });
+  static method sort_float_desc : void ($values : float[], $offset : int, $length : int) {
+    &sort_float($values, $offset, $length, method : int ($a : float, $b : float) { return $b <=> $a; });
   }
   static method sort_int : void ($values : int[], $offset : int, $length : int, $comparator : Comparator::Int) {
     unless ($values) {
@@ -142,11 +148,11 @@ class Sort {
     Sort->_sort_int_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_long_asc : void ($values : long[], $offset : int, $length : int) {
-    &sort_long($values, $offset, $length, method : int ($a : long, $b : long) { return $a <=> $b; });
+  static method sort_int_asc : void ($values : int[], $offset : int, $length : int) {
+    &sort_int($values, $offset, $length, method : int ($a : int, $b : int) { return $a <=> $b; });
   }
-  static method sort_long_desc : void ($values : long[], $offset : int, $length : int) {
-    &sort_long($values, $offset, $length, method : int ($a : long, $b : long) { return $b <=> $a; });
+  static method sort_int_desc : void ($values : int[], $offset : int, $length : int) {
+    &sort_int($values, $offset, $length, method : int ($a : int, $b : int) { return $b <=> $a; });
   }
   static method sort_long : void ($values : long[], $offset : int, $length : int, $comparator : Comparator::Long) {
     unless ($values) {
@@ -175,6 +181,12 @@ class Sort {
     Sort->_sort_long_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
+  static method sort_long_asc : void ($values : long[], $offset : int, $length : int) {
+    &sort_long($values, $offset, $length, method : int ($a : long, $b : long) { return $a <=> $b; });
+  }
+  static method sort_long_desc : void ($values : long[], $offset : int, $length : int) {
+    &sort_long($values, $offset, $length, method : int ($a : long, $b : long) { return $b <=> $a; });
+  }
   static method sort_object : void ($values : object[], $offset : int, $length : int, $comparator : Comparator) {
     if ($values == undef) {
       die "The values must be defined";
@@ -202,13 +214,7 @@ class Sort {
     
     Sort->_sort_object_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-
-  static method sort_short_asc : void ($values : short[], $offset : int, $length : int) {
-    &sort_short($values, $offset, $length, method : int ($a : short, $b : short) { return $a <=> $b; });
-  }
-  static method sort_short_desc : void ($values : short[], $offset : int, $length : int) {
-    &sort_short($values, $offset, $length, method : int ($a : short, $b : short) { return $b <=> $a; });
-  }
+  
   static method sort_short : void ($values : short[], $offset : int, $length : int, $comparator : Comparator::Short) {
     unless ($values) {
       die "The values must be defined";
@@ -227,7 +233,7 @@ class Sort {
     unless ($offset + $length <= $values_length) {
       die "The offset + length must be less than or equal to the length of the values";
     }
-
+    
     if ($length == 0) {
       return;
     }
@@ -235,12 +241,12 @@ class Sort {
     my $b = new short[$length];
     Sort->_sort_short_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-
-  static method sort_string_asc : void ($values : string[], $offset : int, $length : int) {
-    &sort_string($values, $offset, $length, method : int ($a : string, $b : string) { return $a cmp $b; });
+  
+  static method sort_short_asc : void ($values : short[], $offset : int, $length : int) {
+    &sort_short($values, $offset, $length, method : int ($a : short, $b : short) { return $a <=> $b; });
   }
-  static method sort_string_desc : void ($values : string[], $offset : int, $length : int) {
-    &sort_string($values, $offset, $length, method : int ($a : string, $b : string) { return $b cmp $a; });
+  static method sort_short_desc : void ($values : short[], $offset : int, $length : int) {
+    &sort_short($values, $offset, $length, method : int ($a : short, $b : short) { return $b <=> $a; });
   }
   static method sort_string : void ($values : string[], $offset : int, $length : int, $comparator : Comparator::String) {
     if ($values == undef) {
@@ -260,7 +266,7 @@ class Sort {
     unless ($offset + $length <= $values_length) {
       die "The offset + length must be less than or equal to the length of the values";
     }
-
+    
     if ($length == 0) {
       return;
     }
@@ -268,6 +274,13 @@ class Sort {
     my $b = new string[$length];
     Sort->_sort_string_merge_sort($values, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
+  static method sort_string_asc : void ($values : string[], $offset : int, $length : int) {
+    &sort_string($values, $offset, $length, method : int ($a : string, $b : string) { return $a cmp $b; });
+  }
+  static method sort_string_desc : void ($values : string[], $offset : int, $length : int) {
+    &sort_string($values, $offset, $length, method : int ($a : string, $b : string) { return $b cmp $a; });
+  }
+
   precompile private static method _sort_byte_merge : void($a : byte[], $b : byte[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Byte) {
     my $i = $left;
     my $j = $mid + 1;
@@ -308,207 +321,14 @@ class Sort {
     if ($left >= $right) {
       return;
     }
-
+    
     my $mid = ($left + $right) / 2;
-
+    
     Sort->_sort_byte_merge_sort($a, $b, $left, $mid, $n, $comparator);
     Sort->_sort_byte_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
     Sort->_sort_byte_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
-
-  precompile private static method _sort_short_merge : void($a : short[], $b : short[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Short) {
-    my $i = $left;
-    my $j = $mid + 1;
-    my $k = 0;
-    while ($i <= $mid && $j <= $right) {
-      $i = $left;
-      $j = $mid + 1;
-      $k = 0;
-      while ($i <= $mid && $j <= $right) {
-        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
-          $b->[$k] = $a->[$i];
-          $i++;
-        } else {
-          $b->[$k] = $a->[$j];
-          $j++;
-        }
-        $k++;
-      }
-      if ($i == $mid + 1) {
-        while ($j <= $right) {
-          $b->[$k] = $a->[$j]; 
-          $j++;
-          $k++;
-        }
-      } else {
-        while($i <= $mid) {
-          $b->[$k] = $a->[$i];
-          $i++;
-          $k++;
-        }
-      }
-    }
-    for ($i = 0; $i < $k; $i++) {
-      $a->[$i + $left] = $b->[$i];
-    }
-  }
-  private static method _sort_short_merge_sort : void($a : short[], $b : short[], $left : int, $right : int, $n : int, $comparator : Comparator::Short){
-    if ($left >= $right) {
-      return;
-    }
-
-    my $mid = ($left + $right) / 2;
-
-    Sort->_sort_short_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    Sort->_sort_short_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    Sort->_sort_short_merge($a, $b, $left, $mid, $right, $n, $comparator);
-  }
-
-
- precompile  private static method _sort_int_merge : void($a : int[], $b : int[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Int) {
-    my $i = $left;
-    my $j = $mid + 1;
-    my $k = 0;
-    while ($i <= $mid && $j <= $right) {
-      $i = $left;
-      $j = $mid + 1;
-      $k = 0;
-      while ($i <= $mid && $j <= $right) {
-        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
-          $b->[$k] = $a->[$i];
-          $i++;
-        } else {
-          $b->[$k] = $a->[$j];
-          $j++;
-        }
-        $k++;
-      }
-      if ($i == $mid + 1) {
-        while ($j <= $right) {
-          $b->[$k] = $a->[$j]; 
-          $j++;
-          $k++;
-        }
-      } else {
-        while($i <= $mid) {
-          $b->[$k] = $a->[$i];
-          $i++;
-          $k++;
-        }
-      }
-    }
-    for ($i = 0; $i < $k; $i++) {
-      $a->[$i + $left] = $b->[$i];
-    }
-  }
-  private static method _sort_int_merge_sort : void($a : int[], $b : int[], $left : int, $right : int, $n : int, $comparator : Comparator::Int){
-    if ($left >= $right) {
-      return;
-    }
-
-    my $mid = ($left + $right) / 2;
-
-    Sort->_sort_int_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    Sort->_sort_int_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    Sort->_sort_int_merge($a, $b, $left, $mid, $right, $n, $comparator);
-  }
-
-  precompile private static method _sort_long_merge : void($a : long[], $b : long[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Long) {
-    my $i = $left;
-    my $j = $mid + 1;
-    my $k = 0;
-    while ($i <= $mid && $j <= $right) {
-      $i = $left;
-      $j = $mid + 1;
-      $k = 0;
-      while ($i <= $mid && $j <= $right) {
-        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
-          $b->[$k] = $a->[$i];
-          $i++;
-        } else {
-          $b->[$k] = $a->[$j];
-          $j++;
-        }
-        $k++;
-      }
-      if ($i == $mid + 1) {
-        while ($j <= $right) {
-          $b->[$k] = $a->[$j]; 
-          $j++;
-          $k++;
-        }
-      } else {
-        while($i <= $mid) {
-          $b->[$k] = $a->[$i];
-          $i++;
-          $k++;
-        }
-      }
-    }
-    for ($i = 0; $i < $k; $i++) {
-      $a->[$i + $left] = $b->[$i];
-    }
-  }
-  private static method _sort_long_merge_sort : void($a : long[], $b : long[], $left : int, $right : int, $n : int, $comparator : Comparator::Long){
-    if ($left >= $right) {
-      return;
-    }
-
-    my $mid = ($left + $right) / 2;
-
-    Sort->_sort_long_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    Sort->_sort_long_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    Sort->_sort_long_merge($a, $b, $left, $mid, $right, $n, $comparator);
-  }
-
-  precompile private static method _sort_float_merge : void($a : float[], $b : float[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Float) {
-    my $i = $left;
-    my $j = $mid + 1;
-    my $k = 0;
-    while ($i <= $mid && $j <= $right) {
-      $i = $left;
-      $j = $mid + 1;
-      $k = 0;
-      while ($i <= $mid && $j <= $right) {
-        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
-          $b->[$k] = $a->[$i];
-          $i++;
-        } else {
-          $b->[$k] = $a->[$j];
-          $j++;
-        }
-        $k++;
-      }
-      if ($i == $mid + 1) {
-        while ($j <= $right) {
-          $b->[$k] = $a->[$j]; 
-          $j++;
-          $k++;
-        }
-      } else {
-        while($i <= $mid) {
-          $b->[$k] = $a->[$i];
-          $i++;
-          $k++;
-        }
-      }
-    }
-    for ($i = 0; $i < $k; $i++) {
-      $a->[$i + $left] = $b->[$i];
-    }
-  }
-  private static method _sort_float_merge_sort : void($a : float[], $b : float[], $left : int, $right : int, $n : int, $comparator : Comparator::Float){
-    if ($left >= $right) {
-      return;
-    }
-
-    my $mid = ($left + $right) / 2;
-
-    Sort->_sort_float_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    Sort->_sort_float_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    Sort->_sort_float_merge($a, $b, $left, $mid, $right, $n, $comparator);
-  }
-
+  
   precompile private static method _sort_double_merge : void($a : double[], $b : double[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Double) {
     my $i = $left;
     my $j = $mid + 1;
@@ -549,15 +369,15 @@ class Sort {
     if ($left >= $right) {
       return;
     }
-
+    
     my $mid = ($left + $right) / 2;
-
+    
     Sort->_sort_double_merge_sort($a, $b, $left, $mid, $n, $comparator);
     Sort->_sort_double_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
     Sort->_sort_double_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
-
-  precompile private static method _sort_string_merge : void($a : string[], $b : string[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::String) {
+  
+  precompile private static method _sort_float_merge : void($a : float[], $b : float[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Float) {
     my $i = $left;
     my $j = $mid + 1;
     my $k = 0;
@@ -593,19 +413,114 @@ class Sort {
       $a->[$i + $left] = $b->[$i];
     }
   }
-
-  private static method _sort_string_merge_sort : void($a : string[], $b : string[], $left : int, $right : int, $n : int, $comparator : Comparator::String){
+  private static method _sort_float_merge_sort : void($a : float[], $b : float[], $left : int, $right : int, $n : int, $comparator : Comparator::Float){
     if ($left >= $right) {
       return;
     }
-
+    
     my $mid = ($left + $right) / 2;
-
-    Sort->_sort_string_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    Sort->_sort_string_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    Sort->_sort_string_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    
+    Sort->_sort_float_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Sort->_sort_float_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Sort->_sort_float_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
-
+  
+ precompile  private static method _sort_int_merge : void($a : int[], $b : int[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Int) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private static method _sort_int_merge_sort : void($a : int[], $b : int[], $left : int, $right : int, $n : int, $comparator : Comparator::Int){
+    if ($left >= $right) {
+      return;
+    }
+    
+    my $mid = ($left + $right) / 2;
+    
+    Sort->_sort_int_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Sort->_sort_int_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Sort->_sort_int_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
+  
+  precompile private static method _sort_long_merge : void($a : long[], $b : long[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Long) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private static method _sort_long_merge_sort : void($a : long[], $b : long[], $left : int, $right : int, $n : int, $comparator : Comparator::Long){
+    if ($left >= $right) {
+      return;
+    }
+    
+    my $mid = ($left + $right) / 2;
+    
+    Sort->_sort_long_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Sort->_sort_long_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Sort->_sort_long_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
+  
   precompile private static method _sort_object_merge : void($a : object[], $b : object[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator) {
       my $i = $left;
       my $j = $mid + 1;
@@ -642,17 +557,101 @@ class Sort {
         $a->[$i + $left] = $b->[$i];
       }
   }
-
+  
   private static method _sort_object_merge_sort : void($a : object[], $b : object[], $left : int, $right : int, $n : int, $comparator : Comparator){
     if ($left >= $right) {
       return;
     }
-
+    
     my $mid = ($left + $right) / 2;
-
+    
     Sort->_sort_object_merge_sort($a, $b, $left, $mid, $n, $comparator);
     Sort->_sort_object_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
     Sort->_sort_object_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
-
+  
+  precompile private static method _sort_short_merge : void($a : short[], $b : short[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Short) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private static method _sort_short_merge_sort : void($a : short[], $b : short[], $left : int, $right : int, $n : int, $comparator : Comparator::Short){
+    if ($left >= $right) {
+      return;
+    }
+    
+    my $mid = ($left + $right) / 2;
+    
+    Sort->_sort_short_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Sort->_sort_short_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Sort->_sort_short_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
+  
+  precompile private static method _sort_string_merge : void($a : string[], $b : string[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::String) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
 }
