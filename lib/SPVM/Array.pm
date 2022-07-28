@@ -505,7 +505,7 @@ The alias for the following code using L</"equals_object_address">.
 
 Copy the range of the elements of the source C<byte> array to the range of the elements of the destination C<byte> array.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -531,7 +531,7 @@ The offset of the source + the length specified by the argument must be less tha
 
 Copy the range of the elements of the source C<double> array to the range of the elements of the destination C<double> array.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -557,7 +557,7 @@ The offset of the source + the length specified by the argument must be less tha
 
 Copy the range of the elements of the source C<float> array to the range of the elements of the destination C<float> array.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -583,7 +583,7 @@ The offset of the source + the length specified by the argument must be less tha
 
 Copy the range of the elements of the source C<int> array to the range of the elements of the destination C<int> array.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -609,7 +609,7 @@ The offset of the source + the length specified by the argument must be less tha
 
 Copy the range of the elements of the source C<long> array to the range of the elements of the destination C<long> array.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -637,7 +637,7 @@ Copy the range of the elements of the source object array to the range of the el
 
 Each address is copied.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -669,7 +669,7 @@ The alias for L</"memcpy_object_address">. This method is deprecated.
 
 Copy the range of the elements of the source C<short> array to the range of the elements of the destination C<short> array.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
