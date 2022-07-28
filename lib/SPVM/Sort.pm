@@ -94,7 +94,7 @@ The offset + length must be less than or equal to the length of the values. Othe
     
   static method sort_byte_asc : void ($values : byte[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_byte($values, $offset, $length, method : int ($a : byte, $b : byte) { return $a <=> $b; });
 
@@ -102,7 +102,7 @@ Alias for the following code.
 
   static method sort_byte_desc : void ($values : byte[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_byte($values, $offset, $length, method : int ($a : byte, $b : byte) { return $b <=> $a; });
 
@@ -124,7 +124,7 @@ The offset + length must be less than or equal to the length of the values. Othe
     
   static method sort_double_asc : void ($values : double[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_double($values, $offset, $length, method : int ($a : double, $b : double) { return $a <=> $b; });
 
@@ -132,7 +132,7 @@ Alias for the following code.
 
   static method sort_double_desc : void ($values : double[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_double($values, $offset, $length, method : int ($a : double, $b : double) { return $b <=> $a; });
 
@@ -154,7 +154,7 @@ The offset + length must be less than or equal to the length of the values. Othe
     
   static method sort_float_asc : void ($values : float[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_float($values, $offset, $length, method : int ($a : float, $b : float) { return $a <=> $b; });
 
@@ -162,7 +162,7 @@ Alias for the following code.
 
   static method sort_float_desc : void ($values : float[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_float($values, $offset, $length, method : int ($a : float, $b : float) { return $b <=> $a; });
 
@@ -184,7 +184,7 @@ The offset + length must be less than or equal to the length of the values. Othe
     
   static method sort_int_asc : void ($values : int[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_int($values, $offset, $length, method : int ($a : int, $b : int) { return $a <=> $b; });
 
@@ -192,7 +192,7 @@ Alias for the following code.
 
   static method sort_int_desc : void ($values : int[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_int($values, $offset, $length, method : int ($a : int, $b : int) { return $b <=> $a; });
 
@@ -214,7 +214,7 @@ The offset + length must be less than or equal to the length of the values. Othe
     
   static method sort_long_asc : void ($values : long[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_long($values, $offset, $length, method : int ($a : long, $b : long) { return $a <=> $b; });
 
@@ -222,7 +222,7 @@ Alias for the following code.
 
   static method sort_long_desc : void ($values : long[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_long($values, $offset, $length, method : int ($a : long, $b : long) { return $b <=> $a; });
 
@@ -258,7 +258,7 @@ The offset + length must be less than or equal to the length of the values. Othe
     
   static method sort_short_asc : void ($values : short[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_short($values, $offset, $length, method : int ($a : short, $b : short) { return $a <=> $b; });
 
@@ -266,7 +266,7 @@ Alias for the following code.
 
   static method sort_short_desc : void ($values : short[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_short($values, $offset, $length, method : int ($a : short, $b : short) { return $b <=> $a; });
 
@@ -288,7 +288,7 @@ The offset + length must be less than or equal to the length of the values. Othe
     
   static method sort_string_asc : void ($values : string[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_string($values, $offset, $length, method : int ($a : string, $b : string) { return $a cmp $b; });
 
@@ -296,7 +296,6 @@ Alias for the following code.
 
   static method sort_string_desc : void ($values : string[], $offset : int, $length : int)
 
-Alias for the following code.
+The alias for the following code.
 
   Sort->sort_string($values, $offset, $length, method : int ($a : string, $b : string) { return $b cmp $a; });
-
