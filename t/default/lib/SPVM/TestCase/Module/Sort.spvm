@@ -26,17 +26,6 @@ class TestCase::Module::Sort {
       }
     }
     
-    # Sort array by asc order
-    {
-      my $nums = [(byte)2, 3, 1];
-      
-      Sort->sort_byte_asc($nums, 0, scalar @$nums);
-      
-      unless (Array->equals_byte($nums, [(byte)1, 2, 3])) {
-        return 0;
-      }
-    }
-    
     # Sort array by asc order more long
     {
       my $nums = [(byte)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
@@ -70,15 +59,6 @@ class TestCase::Module::Sort {
       Sort->sort_byte($nums, 0, scalar @$nums, method : int ($a : byte, $b : byte) {
         return $b <=> $a;
       });
-      
-      unless (Array->equals_byte($nums, [(byte)3, 2, 1])) {
-        return 0;
-      }
-    }
-    {
-      my $nums = [(byte)2, 3, 1];
-      
-      Sort->sort_byte_desc($nums, 0, scalar @$nums);
       
       unless (Array->equals_byte($nums, [(byte)3, 2, 1])) {
         return 0;
@@ -158,6 +138,35 @@ class TestCase::Module::Sort {
     return 1;
   }
   
+  static method sort_byte_asc : int () {
+    # Sort array by asc order
+    {
+      my $nums = [(byte)2, 3, 1];
+      
+      Sort->sort_byte_asc($nums, 0, scalar @$nums);
+      
+      unless (Array->equals_byte($nums, [(byte)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_byte_desc : int () {
+    {
+      my $nums = [(byte)2, 3, 1];
+      
+      Sort->sort_byte_desc($nums, 0, scalar @$nums);
+      
+      unless (Array->equals_byte($nums, [(byte)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method sort_double : int () {
     # Sort array by asc order
     {
@@ -171,17 +180,6 @@ class TestCase::Module::Sort {
         return 0;
       }
     }
-    # Sort array by asc order
-    {
-      my $nums = [(double)2, 3, 1];
-      
-      Sort->sort_double_asc($nums, 0, scalar @$nums);
-      
-      unless (Array->equals_double($nums, [(double)1, 2, 3])) {
-        return 0;
-      }
-    }
-    
     # Sort array by asc order more long
     {
       my $nums = [(double)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
@@ -220,16 +218,6 @@ class TestCase::Module::Sort {
         return 0;
       }
     }
-    {
-      my $nums = [(double)2, 3, 1];
-      
-      Sort->sort_double_desc($nums, 0, scalar @$nums);
-      
-      unless (Array->equals_double($nums, [(double)3, 2, 1])) {
-        return 0;
-      }
-    }
-    
     # If length is 0, There is nothing to do
     {
       my $nums = [(double)2, 3, 1];
@@ -317,6 +305,36 @@ class TestCase::Module::Sort {
     return 1;
   }
   
+  static method sort_double_asc : int () {
+    # Sort array by asc order
+    {
+      my $nums = [(double)2, 3, 1];
+      
+      Sort->sort_double_asc($nums, 0, scalar @$nums);
+      
+      unless (Array->equals_double($nums, [(double)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_double_desc : int () {
+    # Sort array by asc order
+    {
+      my $nums = [(double)2, 3, 1];
+      
+      Sort->sort_double_asc($nums, 0, scalar @$nums);
+      
+      unless (Array->equals_double($nums, [(double)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method sort_float : int () {
     # Sort array by asc order
     {
@@ -325,15 +343,6 @@ class TestCase::Module::Sort {
       Sort->sort_float($nums, 0, scalar @$nums, method : int ($a : float, $b : float) {
         return $a <=> $b;
       });
-      
-      unless (Array->equals_float($nums, [(float)1, 2, 3])) {
-        return 0;
-      }
-    }
-    {
-      my $nums = [(float)2, 3, 1];
-      
-      Sort->sort_float_asc($nums, 0, scalar @$nums);
       
       unless (Array->equals_float($nums, [(float)1, 2, 3])) {
         return 0;
@@ -373,15 +382,6 @@ class TestCase::Module::Sort {
       Sort->sort_float($nums, 0, scalar @$nums, method : int ($a : float, $b : float) {
         return $b <=> $a;
       });
-      
-      unless (Array->equals_float($nums, [(float)3, 2, 1])) {
-        return 0;
-      }
-    }
-    {
-      my $nums = [(float)2, 3, 1];
-      
-      Sort->sort_float_desc($nums, 0, scalar @$nums);
       
       unless (Array->equals_float($nums, [(float)3, 2, 1])) {
         return 0;
@@ -475,6 +475,34 @@ class TestCase::Module::Sort {
     return 1;
   }
   
+  static method sort_float_asc : int () {
+    {
+      my $nums = [(float)2, 3, 1];
+      
+      Sort->sort_float_asc($nums, 0, scalar @$nums);
+      
+      unless (Array->equals_float($nums, [(float)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_float_desc : int () {
+    {
+      my $nums = [(float)2, 3, 1];
+      
+      Sort->sort_float_desc($nums, 0, scalar @$nums);
+      
+      unless (Array->equals_float($nums, [(float)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method sort_int : int () {
     # Sort array by asc order
     {
@@ -488,16 +516,6 @@ class TestCase::Module::Sort {
         return 0;
       }
     }
-    {
-      my $nums = [(int)2, 3, 1];
-      
-      Sort->sort_int_asc($nums, 0, scalar @$nums);
-      
-      unless (Array->equals_int($nums, [(int)1, 2, 3])) {
-        return 0;
-      }
-    }
-    
     # Sort array by asc order more long
     {
       my $nums = [(int)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
@@ -531,15 +549,6 @@ class TestCase::Module::Sort {
       Sort->sort_int($nums, 0, scalar @$nums, method : int ($a : int, $b : int) {
         return $b <=> $a;
       });
-      
-      unless (Array->equals_int($nums, [(int)3, 2, 1])) {
-        return 0;
-      }
-    }
-    {
-      my $nums = [(int)2, 3, 1];
-      
-      Sort->sort_int_desc($nums, 0, scalar @$nums);
       
       unless (Array->equals_int($nums, [(int)3, 2, 1])) {
         return 0;
@@ -633,6 +642,34 @@ class TestCase::Module::Sort {
     return 1;
   }
   
+  static method sort_int_asc : int () {
+    {
+      my $nums = [(int)2, 3, 1];
+      
+      Sort->sort_int_asc($nums, 0, scalar @$nums);
+      
+      unless (Array->equals_int($nums, [(int)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_int_desc : int () {
+    {
+      my $nums = [(int)2, 3, 1];
+      
+      Sort->sort_int_desc($nums, 0, scalar @$nums);
+      
+      unless (Array->equals_int($nums, [(int)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method sort_long : int () {
     # Sort array by asc order
     {
@@ -641,15 +678,6 @@ class TestCase::Module::Sort {
       Sort->sort_long($nums, 0, scalar @$nums, method : int ($a : long, $b : long) {
         return $a <=> $b;
       });
-      
-      unless (Array->equals_long($nums, [(long)1, 2, 3])) {
-        return 0;
-      }
-    }
-    {
-      my $nums = [(long)2, 3, 1];
-      
-      Sort->sort_long_asc($nums, 0, scalar @$nums);
       
       unless (Array->equals_long($nums, [(long)1, 2, 3])) {
         return 0;
@@ -689,15 +717,6 @@ class TestCase::Module::Sort {
       Sort->sort_long($nums, 0, scalar @$nums, method : int ($a : long, $b : long) {
         return $b <=> $a;
       });
-      
-      unless (Array->equals_long($nums, [(long)3, 2, 1])) {
-        return 0;
-      }
-    }
-    {
-      my $nums = [(long)2, 3, 1];
-      
-      Sort->sort_long_desc($nums, 0, scalar @$nums);
       
       unless (Array->equals_long($nums, [(long)3, 2, 1])) {
         return 0;
@@ -787,6 +806,34 @@ class TestCase::Module::Sort {
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+  
+  static method sort_long_asc : int () {
+    {
+      my $nums = [(long)2, 3, 1];
+      
+      Sort->sort_long_asc($nums, 0, scalar @$nums);
+      
+      unless (Array->equals_long($nums, [(long)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_long_desc : int () {
+    {
+      my $nums = [(long)2, 3, 1];
+      
+      Sort->sort_long_desc($nums, 0, scalar @$nums);
+      
+      unless (Array->equals_long($nums, [(long)3, 2, 1])) {
+        return 0;
+      }
+    }
     
     return 1;
   }
@@ -953,15 +1000,6 @@ class TestCase::Module::Sort {
         return 0;
       }
     }
-    {
-      my $nums = [(short)2, 3, 1];
-      
-      Sort->sort_short_asc($nums, 0, scalar @$nums);
-      
-      unless (Array->equals_short($nums, [(short)1, 2, 3])) {
-        return 0;
-      }
-    }
     
     # Sort array by asc order more long
     {
@@ -996,15 +1034,6 @@ class TestCase::Module::Sort {
       Sort->sort_short($nums, 0, scalar @$nums, method : int ($a : short, $b : short) {
         return $b <=> $a;
       });
-      
-      unless (Array->equals_short($nums, [(short)3, 2, 1])) {
-        return 0;
-      }
-    }
-    {
-      my $nums = [(short)2, 3, 1];
-      
-      Sort->sort_short_desc($nums, 0, scalar @$nums);
       
       unless (Array->equals_short($nums, [(short)3, 2, 1])) {
         return 0;
@@ -1098,6 +1127,34 @@ class TestCase::Module::Sort {
     return 1;
   }
   
+  static method sort_short_asc : int () {
+    {
+      my $nums = [(short)2, 3, 1];
+      
+      Sort->sort_short_asc($nums, 0, scalar @$nums);
+      
+      unless (Array->equals_short($nums, [(short)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_short_desc : int () {
+    {
+      my $nums = [(short)2, 3, 1];
+      
+      Sort->sort_short_desc($nums, 0, scalar @$nums);
+      
+      unless (Array->equals_short($nums, [(short)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method sort_string : int () {
     # Sort array by asc order
     {
@@ -1106,15 +1163,6 @@ class TestCase::Module::Sort {
       Sort->sort_string($strings, 0, scalar @$strings, method : int ($a : string, $b : string) {
         return $a cmp $b;
       });
-      
-      unless (Array->equals_string($strings, [(string)1, 2, 3])) {
-        return 0;
-      }
-    }
-    {
-      my $strings = [(string)2, 3, 1];
-      
-      Sort->sort_string_asc($strings, 0, scalar @$strings);
       
       unless (Array->equals_string($strings, [(string)1, 2, 3])) {
         return 0;
@@ -1154,15 +1202,6 @@ class TestCase::Module::Sort {
       Sort->sort_string($strings, 0, scalar @$strings, method : int ($a : string, $b : string) {
         return $b cmp $a;
       });
-      
-      unless (Array->equals_string($strings, [(string)3, 2, 1])) {
-        return 0;
-      }
-    }
-    {
-      my $strings = [(string)2, 3, 1];
-      
-      Sort->sort_string_desc($strings, 0, scalar @$strings);
       
       unless (Array->equals_string($strings, [(string)3, 2, 1])) {
         return 0;
@@ -1265,6 +1304,34 @@ class TestCase::Module::Sort {
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+  
+  static method sort_string_asc : int () {
+    {
+      my $strings = [(string)2, 3, 1];
+      
+      Sort->sort_string_asc($strings, 0, scalar @$strings);
+      
+      unless (Array->equals_string($strings, [(string)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_string_desc : int () {
+    {
+      my $strings = [(string)2, 3, 1];
+      
+      Sort->sort_string_desc($strings, 0, scalar @$strings);
+      
+      unless (Array->equals_string($strings, [(string)3, 2, 1])) {
+        return 0;
+      }
+    }
     
     return 1;
   }
