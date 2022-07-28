@@ -581,23 +581,23 @@ The alias for the following code using L</"get_code_point">.
 
   static method powi : int ($base : int, $exponant : int)
 
-Calculate the exponentiation.
+Calculate the exponentiation for the base number and the exponant number.
 
 =head2 powl
 
   static method powl : long ($base : long, $exponant : long)
 
-Calculate the exponentiation.
+Calculate the exponentiation for the base number and the exponant number.
 
 =head2 rand
 
   static method rand : double ($seed : int*)
 
-Get random number(0 <= random_number < 1)with a seed.
+Get a 64bit floating point random number that is greater than or equal to C<0> and less than C<1> using the seed.
 
 The seed is updated.
 
-This method is thread safe different from C<rand> function of C<C language>.
+This method is thread safe.
 
 B<Examples:>
 
