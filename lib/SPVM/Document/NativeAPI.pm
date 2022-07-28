@@ -2179,6 +2179,7 @@ L<SPVM::Document::NativeAPI::Allocator>
   17 SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_CLASS
   18 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS
   19 SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS
+  20 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_SYSTEM_CLASS
 
 These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 
@@ -2316,6 +2317,7 @@ The basic type category for the any object type.
 =head2 Class IDs
 
   1  SPVM_NATIVE_C_CLASS_ID_ERROR
+  2  SPVM_NATIVE_C_CLASS_ID_ERROR
 
 These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 

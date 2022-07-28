@@ -221,7 +221,6 @@ lib/SPVM/EqualityChecker/Address.pm
 lib/SPVM/EqualityChecker/Address.spvm
 lib/SPVM/Error.pm
 lib/SPVM/Error/System.pm
-lib/SPVM/Error/System.spvm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/Float.pm
 lib/SPVM/FloatList.pm

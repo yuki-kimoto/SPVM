@@ -12,4 +12,4 @@ SPVM::Error - Error
 
 =head1 Description
 
-C<Error> is a error class that class id is C<1>.
+C<Error> is the error class for general errors. The class id is C<1>.

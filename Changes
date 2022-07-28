@@ -2,6 +2,12 @@
   [New Features]
     * Add GET_CODE_POINT_ERROR_OVER_STRING_RANGE, GET_CODE_POINT_ERROR_INVALID_UTF8 to Fn class.
     * Add Fn->split_limit.
+    * Error::System class becomes a default loaded module.
+    * The class id of Error::System become always 2.
+    * Add the constant values of the native API
+      SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_SYSTEM_CLASS
+      SPVM_NATIVE_C_CLASS_ID_ERROR_SYSTEM
+      
   [Performance fix]
     * Fn->join use StringBuffer internally.
     * Improve substr performance.

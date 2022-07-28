@@ -38,6 +38,14 @@ class TestCase::ClassId {
       }
     }
     
+    # Error::System
+    {
+      my $class_id_error_system = class_id Error::System;
+      unless ($class_id_error_system == 2) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 }
