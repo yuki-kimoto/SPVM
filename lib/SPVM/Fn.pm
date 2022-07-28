@@ -279,11 +279,9 @@ If the Unicode code point is not a Unicode scalar value, return C<undef>.
 
   static method contains : int ($string : string, $substring : string)
 
-Search for the substring in the string. If the substring is found, return C<1>. Otherwise return C<0>.
+The alias for the following code using L</"index>.
 
-The string must be defined. Otherwise an exception will be thrown.
-
-The substring must be defined. Otherwise an exception will be thrown.
+  my $ret = Fn->index($string, $substring, 0) >= 0;
 
 =head2 copy_string
 
@@ -352,7 +350,11 @@ The hex string must contain only hex characters C<0-9a-zA-Z>. Otherwise an excep
 
 The alias for the following code using L</"index_len">.
 
-  my $ret = &index_len($string, $substring, $offset, length $string - $offset);
+  my $string_length = 0;
+  if ($string) {
+    $string_length = length $string;
+  }
+  my $ret = Fn->index_len($string, $substring, $offset, $string_length - $offset);
 
 =head2 index_len
 
@@ -585,7 +587,7 @@ The same as L</"memcpy">, but even if the range of the source and the range of t
 The alias for the following code using L</"get_code_point">.
 
   my $offset = 0;
-  my $code_point = &get_code_point($string, \$offset);
+  my $code_point = Fn->get_code_point($string, \$offset);
 
 =head2 powi
 
@@ -645,7 +647,7 @@ B<Examples:>
 
 The alias for the following code using L</"rindex_len">.
 
-  my $ret = &rindex_len($string, $substring, $offset, length $string - $offset);
+  my $ret = Fn->rindex_len($string, $substring, $offset, length $string - $offset);
 
 =head2 rindex_len
 
@@ -735,7 +737,7 @@ B<Examples:>
 
 The alias for the following code using L</"to_int_with_base">.
 
-  my $ret = &to_int_with_base($string, 10);
+  my $ret = Fn->to_int_with_base($string, 10);
 
 =head2 to_int_with_base
 
@@ -758,7 +760,7 @@ B<Examples:>
 
 The alias for the following code using L</"to_long_with_base">.
 
-  my $ret = &to_long_with_base($string, 10);
+  my $ret = Fn->to_long_with_base($string, 10);
 
 =head2 to_long_with_base
 
@@ -767,6 +769,8 @@ The alias for the following code using L</"to_long_with_base">.
 Convert the string to the C<long> value using C<strtoll> in C<C language>.
 
 The string must be defined. Otherwise an exception will occur.
+
+The digit must be one of C<2>, C<8>, C<10>, or C<16>.
 
 The string must be the string that can be parsed as a long number. Otherwise an exception will occur.
 

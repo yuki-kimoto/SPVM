@@ -521,7 +521,7 @@ int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (!(digit == 2 || digit == 8 || digit == 10 || digit == 16)) {
-    return env->die(env, stack, "The digit must be one of 2, 8, 10, 16", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The digit must be one of 2, 8, 10, or 16", FILE_NAME, __LINE__);
   }
   
   const char* string = env->get_chars(env, stack, obj_string);
@@ -551,7 +551,7 @@ int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (!(digit == 2 || digit == 8 || digit == 10 || digit == 16)) {
-    return env->die(env, stack, "The digit must be one of 2, 8, 10, 16", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The digit must be one of 2, 8, 10, or 16", FILE_NAME, __LINE__);
   }
   
   const char* string = env->get_chars(env, stack, obj_string);

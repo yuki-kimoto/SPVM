@@ -524,7 +524,22 @@ class TestCase::Module::Fn {
   }
   
   static method contains : int () {
-    
+    {
+      my $string = "abcde";
+      my $substring = "";
+      my $found = Fn->contains($string, $substring);
+      unless ($found == 1) {
+        return 0;
+      }
+    }
+    {
+      my $string = "";
+      my $substring = "";
+      my $found = Fn->contains($string, $substring);
+      unless ($found == 1) {
+        return 0;
+      }
+    }
     {
       my $string = "abcde";
       my $substring = "bcd";
@@ -557,6 +572,7 @@ class TestCase::Module::Fn {
           my $string = (string)undef;
           my $substring = "p";
           eval { Fn->contains($string, $substring); };
+          
           unless (Fn->contains($@, "The string must be defined")) {
             return 0;
           }
@@ -904,6 +920,23 @@ class TestCase::Module::Fn {
   }
   
   static method index : int () {
+    
+    {
+      my $string = "abcde";
+      my $substring = "";
+      my $found_offset = Fn->index($string, $substring, 0);
+      unless ($found_offset == 0) {
+        return 0;
+      }
+    }
+    {
+      my $string = "";
+      my $substring = "";
+      my $found_offset = Fn->index($string, $substring, 0);
+      unless ($found_offset == 0) {
+        return 0;
+      }
+    }
     
     {
       my $string = "abcde";
@@ -2775,54 +2808,74 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
-    # Invalid string format
+    
+    # Exceptions
     {
-      my $string = "10oppp";
-      eval {
-        Fn->to_long_with_base($string, 10);
-      };
-      unless ($@) {
-        return 0;
+      {
+        eval {
+          Fn->to_long_with_base(undef, 10);
+        };
+        unless (Fn->contains($@, "The string must be defined")) {
+          return 0;
+        }
       }
-      $@ = undef;
-    }
-
-    # Invalid digit
-    {
-      my $string = "10";
-      eval {
-        Fn->to_long_with_base($string, 100);
-      };
-      unless ($@) {
-        return 0;
+      
+      {
+        my $string = "10";
+        eval {
+          Fn->to_long_with_base($string, 9);
+        };
+        unless (Fn->contains($@, "The digit must be one of 2, 8, 10, or 16")) {
+          return 0;
+        }
       }
-      $@ = undef;
-    }
-
-    # Out of range max + 1
-    {
-      my $string = "9223372036854775808";
-      eval {
-        Fn->to_long_with_base($string, 10);
-      };
-      unless ($@) {
-        return 0;
+      
+      # Invalid string format
+      {
+        my $string = "The string must be the string that can be parsed as a 64-bit integer";
+        eval {
+          Fn->to_long_with_base($string, 10);
+        };
+        unless (Fn->contains($@, "")) {
+          return 0;
+        }
       }
-      $@ = undef;
-    }
-
-    # Out of range min - 1
-    {
-      my $string = "-9223372036854775809";
-      eval {
-        Fn->to_long_with_base($string, 10);
-      };
-      unless ($@) {
-        return 0;
+      
+      # Invalid digit
+      {
+        my $string = "The string must be the string that can be parsed as a 64-bit integer";
+        eval {
+          Fn->to_long_with_base($string, 100);
+        };
+        unless (Fn->contains($@, "")) {
+          return 0;
+        }
       }
-      $@ = undef;
+      
+      # Out of range max + 1
+      {
+        my $string = "9223372036854775808";
+        eval {
+          Fn->to_long_with_base($string, 10);
+        };
+        unless (Fn->contains($@, "The string must be a 64-bit integer in the correct range")) {
+          return 0;
+        }
+      }
+      
+      # Out of range min - 1
+      {
+        my $string = "-9223372036854775809";
+        eval {
+          Fn->to_long_with_base($string, 10);
+        };
+        unless (Fn->contains($@, "The string must be a 64-bit integer in the correct range")) {
+          return 0;
+        }
+      }
     }
+    
+    $@ = undef;
     
     return 1;
   }

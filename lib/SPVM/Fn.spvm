@@ -101,19 +101,7 @@ class Fn {
   }
   
   static method contains : int ($string : string, $substring : string) {
-    unless ($string) {
-      die "The string must be defined";
-    }
-    
-    unless ($substring) {
-      die "The substring must be defined";
-    }
-    
-    my $contains = 0;
-    if (&index($string, $substring, 0) >= 0) {
-      $contains = 1;
-    }
-    return $contains;
+    return &index($string, $substring, 0) >= 0;
   }
   
   static method copy_string : string ($string : string) {
@@ -168,7 +156,11 @@ class Fn {
   }
   
   static method index : int ($string : string, $substring : string, $offset : int) {
-    return &index_len($string, $substring, $offset, length $string - $offset);
+    my $string_length = 0;
+    if ($string) {
+      $string_length = length $string;
+    }
+    return &index_len($string, $substring, $offset, $string_length - $offset);
   }
   
   precompile static method index_len : int ($string : string, $substring : string, $offset : int, $length : int) {
@@ -196,6 +188,10 @@ class Fn {
     }
     
     my $substring_length = length $substring;
+    
+    if ($substring_length == 0) {
+      return 0;
+    }
     
     my $first : byte  = $substring->[0];
     my $max : int = ($length - $substring_length);
