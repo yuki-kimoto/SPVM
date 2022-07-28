@@ -34,25 +34,28 @@ SPVM::Format - Format Utilities
   my $formatted_string = Format->sprintf("%c", Format->ord("あ"));
 
   # %s - "ABC"
-  my $formatted_string = Format->sprintf("%s", "ABC") eq "ABC");
+  my $formatted_string = Format->sprintf("%s", "ABC");
+  
+  # %.2s - "AB"
+  my $formatted_string = Format->sprintf("%.2s", "ABC");
   
   # %u - "4294967295"
-  my $formatted_string = Format->sprintf("%u", -1) eq "4294967295");
+  my $formatted_string = Format->sprintf("%u", -1);
   
   # %f - "3.141500"
-  my $formatted_string = Format->sprintf("%f", 3.1415) eq "3.141500");
+  my $formatted_string = Format->sprintf("%f", 3.1415);
   
   # %.2f - "3.14"
-  my $formatted_string = Format->sprintf("%.2f", 3.1415) eq "3.14");
+  my $formatted_string = Format->sprintf("%.2f", 3.1415);
   
   # %g - "3.14"
-  my $formatted_string = Format->sprintf("%g", 3.14) eq "3.14");
+  my $formatted_string = Format->sprintf("%g", 3.14);
   
   # %x - "ff"
-  my $formatted_string = Format->sprintf("%x", 255) eq "ff");
+  my $formatted_string = Format->sprintf("%x", 255);
     
   # %x - "ffffffff"
-  my $formatted_string = Format->sprintf("%x", -1) eq "ffffffff");
+  my $formatted_string = Format->sprintf("%x", -1);
 
 =head1 Description
 
@@ -101,52 +104,7 @@ Specifier options can be written between C<%> and the character of specifier suc
   <tr><td>0[DECIMAL_NUMBERS]</td><td>Zero padding</td></tr>
   <tr><td>+</td><td>Adding a plus sign</td></tr>
   <tr><td>-</td><td>Left justified</td></tr>
-  <tr><td>.[DECIMAL_NUMBERS]</td><td>Precision</td></tr>
+  <tr><td>.[DECIMAL_NUMBERS]</td><td>Precision(Maximam width in %s)</td></tr>
 </table>
 
 =end html
-
-B<Examples:>
-    
-  # %d - "123"
-  my $formatted_string = Format->sprintf("%d", 123);
-  
-  # %5d - "  123"
-  my $formatted_string = Format->sprintf("%5d", 123);
-
-  # %05d - "00123"
-  my $formatted_string = Format->sprintf("%05d", 123);
-  
-  # %+d - "+123"
-  my $formatted_string = Format->sprintf("%+d", 123);
-  
-  # %-5d - "123  "
-  my $formatted_string = Format->sprintf("%-5d", 123);
-  
-  # %d - "x"
-  my $formatted_string = Format->sprintf("%c", 'x');
-  
-  # %c - "あ"
-  my $formatted_string = Format->sprintf("%c", Format->ord("あ"));
-
-  # %s - "ABC"
-  my $formatted_string = Format->sprintf("%s", "ABC") eq "ABC");
-  
-  # %u - "4294967295"
-  my $formatted_string = Format->sprintf("%u", -1) eq "4294967295");
-  
-  # %f - "3.141500"
-  my $formatted_string = Format->sprintf("%f", 3.1415) eq "3.141500");
-  
-  # %.2f - "3.14"
-  my $formatted_string = Format->sprintf("%.2f", 3.1415) eq "3.14");
-  
-  # %g - "3.14"
-  my $formatted_string = Format->sprintf("%g", 3.14) eq "3.14");
-  
-  # %x - "ff"
-  my $formatted_string = Format->sprintf("%x", 255) eq "ff");
-    
-  # %x - "ffffffff"
-  my $formatted_string = Format->sprintf("%x", -1) eq "ffffffff");
-
