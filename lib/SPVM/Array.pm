@@ -178,7 +178,7 @@ The alias for the following code using L</"copy_object">.
 =head2 copy_range_byte
 
   static method copy_range_byte : byte[] ($array : byte[], $offset : int, $length : int)
-  
+
 Create a new C<byte> array with the length sepcified by the argument, and copy the elements of the C<byte> array from the offset to the offset + the length - C<1> to the created array.
 
 The array must be defined. Otherwise an exception will be thrown.
@@ -348,7 +348,7 @@ Same as the following code using the L<dump operator|SPVM::Document::LanguageSpe
 =head2 dump_unsigned_int
 
   static method dump_unsigned_int : string ($array : int[])
-  
+
 Same as the following code using the L<dump operator|SPVM::Document::LanguageSpecification/"dump Operator"> operator, but the elements are displayed as unsigned 32-bit integer.
 
   my $ret = dump $array;
@@ -356,7 +356,7 @@ Same as the following code using the L<dump operator|SPVM::Document::LanguageSpe
 =head2 dump_unsigned_long
 
   static method dump_unsigned_long : string ($array : long[])
-  
+
 Same as the following code using the L<dump operator|SPVM::Document::LanguageSpecification/"dump Operator"> operator, but the elements are displayed as unsigned 64-bit integer.
 
   my $ret = dump $array;
@@ -364,7 +364,7 @@ Same as the following code using the L<dump operator|SPVM::Document::LanguageSpe
 =head2 dump_unsigned_short
 
   static method dump_unsigned_short : string ($array : short[])
-  
+
 Same as the following code using the L<dump operator|SPVM::Document::LanguageSpecification/"dump Operator"> operator, but the elements are displayed as unsigned 16-bit integer.
 
   my $ret = dump $array;
@@ -505,7 +505,7 @@ The alias for the following code using L</"equals_object_address">.
 
 Copy the range of the elements of the source C<byte> array to the range of the elements of the destination C<byte> array.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument - C<1> .
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -531,7 +531,7 @@ The offset of the source + the length specified by the argument must be less tha
 
 Copy the range of the elements of the source C<double> array to the range of the elements of the destination C<double> array.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument - C<1> .
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -557,7 +557,7 @@ The offset of the source + the length specified by the argument must be less tha
 
 Copy the range of the elements of the source C<float> array to the range of the elements of the destination C<float> array.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument - C<1> .
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -583,7 +583,7 @@ The offset of the source + the length specified by the argument must be less tha
 
 Copy the range of the elements of the source C<int> array to the range of the elements of the destination C<int> array.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument - C<1> .
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -609,7 +609,7 @@ The offset of the source + the length specified by the argument must be less tha
 
 Copy the range of the elements of the source C<long> array to the range of the elements of the destination C<long> array.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument - C<1> .
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -637,7 +637,7 @@ Copy the range of the elements of the source object array to the range of the el
 
 Each address is copied.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument - C<1> .
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -669,7 +669,7 @@ The alias for L</"memcpy_object_address">. This method is deprecated.
 
 Copy the range of the elements of the source C<short> array to the range of the elements of the destination C<short> array.
 
-The range of the elements of the source array is from the offset of the source to the offset of the source + the length - C<1> specified by the argument.
+The range of the elements of the source array is from the offset of the source to the offset of the source + the length specified by the argument - C<1> .
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -769,7 +769,7 @@ The alias for L</"memmove_string_address">. This method is deprecated.
 
 Set the range of the elements of the destination C<byte> array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument - C<1> .
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -785,7 +785,7 @@ The offset of the destination + the length specified by the argument must be les
 
 Set the range of the elements of the destination C<double> array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument - C<1> .
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -801,7 +801,7 @@ The offset of the destination + the length specified by the argument must be les
 
 Set the range of the elements of the destination C<float> array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument - C<1> .
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -817,7 +817,7 @@ The offset of the destination + the length specified by the argument must be les
 
 Set the range of the elements of the destination C<int> array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument - C<1> .
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -833,7 +833,7 @@ The offset of the destination + the length specified by the argument must be les
 
 Set the range of the elements of the destination C<long> array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument - C<1> .
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -849,7 +849,7 @@ The offset of the destination + the length specified by the argument must be les
 
 Set the range of the elements of the destination object array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument - C<1> .
 
 The destination must be defined. Otherwise an exception will occur.
 
@@ -865,7 +865,7 @@ The offset of the destination + the length specified by the argument must be les
 
 Set the range of the elements of the destination C<short> array to the element specified by the argument.
 
-The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length - C<1> specified by the argument.
+The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument - C<1> .
 
 The destination must be defined. Otherwise an exception will occur.
 
