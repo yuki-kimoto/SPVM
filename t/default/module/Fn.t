@@ -167,6 +167,17 @@ my $nan_re = qr/(nan|ind)/i;
     is(SPVM::Fn->UINT32_MAX, -1);
     is(SPVM::Fn->UINT64_MAX, -1);
     is(SPVM::Fn->UINT8_MAX, -1);
+    # split
+    {
+      my $sep = ",";
+      my $string = "foo,bar,baz,,";
+      {
+        is_deeply([split $sep, $string, -1], SPVM::Fn->split($sep, $string)->to_elems);
+        is_deeply([split $sep, $string, 1], SPVM::Fn->split_limit($sep, $string, 1)->to_elems);
+        is_deeply([split $sep, $string, 2], SPVM::Fn->split_limit($sep, $string, 2)->to_elems);
+        is_deeply([split $sep, $string, 3], SPVM::Fn->split_limit($sep, $string, 3)->to_elems);
+      }
+    }
   }
 }
 
