@@ -117,7 +117,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
     
     # %X
-    {
+    eval 'sprintf("%X", 1)';
+    if ($@) {
+      warn "Skip %X"
+    }
+    else {
       is(sprintf("%X", 1), SPVM::Format->sprintf("%X", SPVM::new_object_array('object[]', [SPVM::Int->new(1)])));
       is(sprintf("%0100X", 1), SPVM::Format->sprintf("%0100X", SPVM::new_object_array('object[]', [SPVM::Int->new(1)])));
       is(sprintf("%03X", 1), SPVM::Format->sprintf("%03X", SPVM::new_object_array('object[]', [SPVM::Int->new(1)])));
@@ -195,7 +199,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
     
     # %lX
-    {
+    eval 'sprintf("%lX", 1)';
+    if ($@) {
+      warn "Skip: %lX"
+    }
+    else {
       is(sprintf("%lX", 1), SPVM::Format->sprintf("%lX", SPVM::new_object_array('object[]', [SPVM::Long->new(1)])));
       is(sprintf("%0100lX", 1), SPVM::Format->sprintf("%0100lX", SPVM::new_object_array('object[]', [SPVM::Long->new(1)])));
       is(sprintf("%03lX", 1), SPVM::Format->sprintf("%03lX", SPVM::new_object_array('object[]', [SPVM::Long->new(1)])));
@@ -247,7 +255,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is(sprintf("%-3f", 111.5), SPVM::Format->sprintf("%-3f", SPVM::new_object_array('object[]', [SPVM::Float->new(111.5)])));
     }
 
-    # %f
+    # %g
     {
       is(sprintf("%g", 1.5), SPVM::Format->sprintf("%g", SPVM::new_object_array('object[]', [SPVM::Double->new(1.5)])));
       is(sprintf("%.100g", 1.5), SPVM::Format->sprintf("%.100g", SPVM::new_object_array('object[]', [SPVM::Double->new(1.5)])));
