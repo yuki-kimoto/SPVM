@@ -159,17 +159,18 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is(sprintf("%03lu", 111), SPVM::Format->sprintf("%03lu", SPVM::new_any_object_array([SPVM::Long->new(111)])));
       is(sprintf("%+3lu", 111), SPVM::Format->sprintf("%+3lu", SPVM::new_any_object_array([SPVM::Long->new(111)])));
       is(sprintf("%-3lu", 111), SPVM::Format->sprintf("%-3lu", SPVM::new_any_object_array([SPVM::Long->new(111)])));
-      is(sprintf("%lu", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%lu", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%0100lu", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%0100lu", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%03lu", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%03lu", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%+3lu", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%+3lu", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%-3lu", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%-3lu", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%03lu", -1111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%03lu", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
-      is(sprintf("%+3lu", -1111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%+3lu", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
-      is(sprintf("%-3lu", -1111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%-3lu", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
-      is(sprintf("%03lu", -111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%03lu", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
-      is(sprintf("%+3lu", -111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%+3lu", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
-      is(sprintf("%-3lu", -111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%-3lu", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
+      # 18446744073709551615 means 0xFFFFFFFF_FFFFFFFF
+      is(sprintf("%lu", -1 & 18446744073709551615), SPVM::Format->sprintf("%lu", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%0100lu", -1 & 18446744073709551615), SPVM::Format->sprintf("%0100lu", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%03lu", -1 & 18446744073709551615), SPVM::Format->sprintf("%03lu", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%+3lu", -1 & 18446744073709551615), SPVM::Format->sprintf("%+3lu", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%-3lu", -1 & 18446744073709551615), SPVM::Format->sprintf("%-3lu", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%03lu", -1111 & 18446744073709551615), SPVM::Format->sprintf("%03lu", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
+      is(sprintf("%+3lu", -1111 & 18446744073709551615), SPVM::Format->sprintf("%+3lu", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
+      is(sprintf("%-3lu", -1111 & 18446744073709551615), SPVM::Format->sprintf("%-3lu", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
+      is(sprintf("%03lu", -111 & 18446744073709551615), SPVM::Format->sprintf("%03lu", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
+      is(sprintf("%+3lu", -111 & 18446744073709551615), SPVM::Format->sprintf("%+3lu", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
+      is(sprintf("%-3lu", -111 & 18446744073709551615), SPVM::Format->sprintf("%-3lu", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
     }
     
     # %lx
@@ -185,17 +186,18 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is(sprintf("%03lx", 111), SPVM::Format->sprintf("%03lx", SPVM::new_any_object_array([SPVM::Long->new(111)])));
       is(sprintf("%+3lx", 111), SPVM::Format->sprintf("%+3lx", SPVM::new_any_object_array([SPVM::Long->new(111)])));
       is(sprintf("%-3lx", 111), SPVM::Format->sprintf("%-3lx", SPVM::new_any_object_array([SPVM::Long->new(111)])));
-      is(sprintf("%lx", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%lx", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%0100lx", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%0100lx", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%03lx", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%03lx", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%+3lx", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%+3lx", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%-3lx", -1 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%-3lx", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%03lx", -1111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%03lx", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
-      is(sprintf("%+3lx", -1111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%+3lx", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
-      is(sprintf("%-3lx", -1111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%-3lx", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
-      is(sprintf("%03lx", -111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%03lx", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
-      is(sprintf("%+3lx", -111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%+3lx", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
-      is(sprintf("%-3lx", -111 & 0xFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%-3lx", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
+      # 18446744073709551615 means 0xFFFFFFFF_FFFFFFFF
+      is(sprintf("%lx", -1 & 18446744073709551615), SPVM::Format->sprintf("%lx", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%0100lx", -1 & 18446744073709551615), SPVM::Format->sprintf("%0100lx", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%03lx", -1 & 18446744073709551615), SPVM::Format->sprintf("%03lx", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%+3lx", -1 & 18446744073709551615), SPVM::Format->sprintf("%+3lx", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%-3lx", -1 & 18446744073709551615), SPVM::Format->sprintf("%-3lx", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%03lx", -1111 & 18446744073709551615), SPVM::Format->sprintf("%03lx", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
+      is(sprintf("%+3lx", -1111 & 18446744073709551615), SPVM::Format->sprintf("%+3lx", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
+      is(sprintf("%-3lx", -1111 & 18446744073709551615), SPVM::Format->sprintf("%-3lx", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
+      is(sprintf("%03lx", -111 & 18446744073709551615), SPVM::Format->sprintf("%03lx", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
+      is(sprintf("%+3lx", -111 & 18446744073709551615), SPVM::Format->sprintf("%+3lx", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
+      is(sprintf("%-3lx", -111 & 18446744073709551615), SPVM::Format->sprintf("%-3lx", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
     }
     
     # %lX
@@ -215,17 +217,18 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is(sprintf("%03lX", 111), SPVM::Format->sprintf("%03lX", SPVM::new_any_object_array([SPVM::Long->new(111)])));
       is(sprintf("%+3lX", 111), SPVM::Format->sprintf("%+3lX", SPVM::new_any_object_array([SPVM::Long->new(111)])));
       is(sprintf("%-3lX", 111), SPVM::Format->sprintf("%-3lX", SPVM::new_any_object_array([SPVM::Long->new(111)])));
-      is(sprintf("%lX", -1 & 0XFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%lX", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%0100lX", -1 & 0XFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%0100lX", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%03lX", -1 & 0XFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%03lX", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%+3lX", -1 & 0XFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%+3lX", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%-3lX", -1 & 0XFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%-3lX", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
-      is(sprintf("%03lX", -1111 & 0XFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%03lX", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
-      is(sprintf("%+3lX", -1111 & 0XFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%+3lX", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
-      is(sprintf("%-3lX", -1111 & 0XFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%-3lX", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
-      is(sprintf("%03lX", -111 & 0XFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%03lX", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
-      is(sprintf("%+3lX", -111 & 0XFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%+3lX", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
-      is(sprintf("%-3lX", -111 & 0XFFFFFFFF_FFFFFFFF), SPVM::Format->sprintf("%-3lX", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
+      # 18446744073709551615 means 0xFFFFFFFF_FFFFFFFF
+      is(sprintf("%lX", -1 & 18446744073709551615), SPVM::Format->sprintf("%lX", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%0100lX", -1 & 18446744073709551615), SPVM::Format->sprintf("%0100lX", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%03lX", -1 & 18446744073709551615), SPVM::Format->sprintf("%03lX", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%+3lX", -1 & 18446744073709551615), SPVM::Format->sprintf("%+3lX", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%-3lX", -1 & 18446744073709551615), SPVM::Format->sprintf("%-3lX", SPVM::new_any_object_array([SPVM::Long->new(-1)])));
+      is(sprintf("%03lX", -1111 & 18446744073709551615), SPVM::Format->sprintf("%03lX", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
+      is(sprintf("%+3lX", -1111 & 18446744073709551615), SPVM::Format->sprintf("%+3lX", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
+      is(sprintf("%-3lX", -1111 & 18446744073709551615), SPVM::Format->sprintf("%-3lX", SPVM::new_any_object_array([SPVM::Long->new(-1111)])));
+      is(sprintf("%03lX", -111 & 18446744073709551615), SPVM::Format->sprintf("%03lX", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
+      is(sprintf("%+3lX", -111 & 18446744073709551615), SPVM::Format->sprintf("%+3lX", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
+      is(sprintf("%-3lX", -111 & 18446744073709551615), SPVM::Format->sprintf("%-3lX", SPVM::new_any_object_array([SPVM::Long->new(-111)])));
     }
     
     # %f
