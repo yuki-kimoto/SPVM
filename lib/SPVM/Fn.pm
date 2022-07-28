@@ -743,9 +743,9 @@ Convert the string to the C<int> value using C<strtol> in C<C language>.
 
 The string must be defined. Otherwise an exception will occur.
 
-The string must be the string that can be parsed as a int number. Otherwise an exception will occur.
+The string must be the string that can be parsed as an int number. Otherwise an exception will occur.
 
-The string must be a int number in the correct range. Otherwise an exception will occur.
+The string must be an int number in the correct range. Otherwise an exception will occur.
 
 B<Examples:>
 
@@ -781,13 +781,17 @@ B<Examples:>
 
   static method to_lower : int ($code_point : int)
 
-Convert uppercase character('A'-'Z') to lowercase. If the character is a non-uppercase character, return the character.
+If the code point is the ASCII uppercase character C<A-Z>, it is converted to the corresponding ASCII lowercase character C<a-z>.
+
+If the code point is not an ASCII uppercase character, return the code point specified by the argument.
 
 =head2 to_upper
 
   static method to_upper : int ($code_point : int)
 
-Convert the Unicode code point to the corresponding ASCII uppser case character C<A-Z>. If the character is a non-uppercase character, return the character.
+If the code point is the ASCII lowercase character C<a-z>, it is converted to the corresponding ASCII uppercase character C<A-Z>.
+
+If the code point is not an ASCII lowercase character, return the code point specified by the argument.
 
 =head2 trim_ascii_space
 
