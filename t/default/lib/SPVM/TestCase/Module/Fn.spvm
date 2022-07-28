@@ -2667,6 +2667,57 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
+
+    # Exceptions
+    {
+      {
+        my $sep = (string)undef;
+        my $string = "foo,bar,baz";
+        my $limit = -1;
+        eval {
+          Fn->split_limit($sep, $string, $limit);
+        };
+        unless (Fn->contains($@, "The separator must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $sep = ",";
+        my $string = (string)undef;
+        my $limit = -1;
+        eval {
+          Fn->split_limit($sep, $string, $limit);
+        };
+        unless (Fn->contains($@, "The string must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $sep = "";
+        my $string = "foo,bar,baz";
+        my $limit = -1;
+        eval {
+          Fn->split_limit($sep, $string, $limit);
+        };
+        unless (Fn->contains($@, "The length of the separator must be greater than 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $sep = ",";
+        my $string = "foo,bar,baz";
+        my $limit = 0;
+        eval {
+          Fn->split_limit($sep, $string, $limit);
+        };
+        unless (Fn->contains($@, "The limit can't be 0")) {
+          return 0;
+        }
+      }
+    }
     
     return 1;
   }

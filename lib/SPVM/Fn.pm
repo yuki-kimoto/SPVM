@@ -699,9 +699,9 @@ The separator must be defined. Otherwise an exception will occur.
 
 The string must be defined. Otherwise an exception will occur.
 
-The length of the separator must be greater than 0. Otherwise an exception will occur.
+The length of the separator must be greater than C<0>. Otherwise an exception will occur.
 
-The limit can't be 0. Otherwise an exception will occur.
+The limit can't be C<0>. Otherwise an exception will occur.
 
 =head2 substr
 
