@@ -683,13 +683,25 @@ The length must be greater than or equal to C<0>. Otherwise an exception will oc
 
   static method split : string[] ($sep : string, $string : string)
 
-Split a string by the specific separator and convert them to an string array and return it.
+The alias for the following code using L<"/split_limit">.
+
+  my $ret = Fn->split_limit($sep, $string, -1);
+
+=head2 split_limit
+
+  static method split_limit : string[] ($sep : string, $string : string, $limit : int)
+
+If the limit is less than C<0>, split a string by the specific separator and convert them to an string array and return it.
+
+If the limit is greater than than C<0>, the limit becomes the length of the maximam separated elements.
 
 The separator must be defined. Otherwise an exception will occur.
 
 The string must be defined. Otherwise an exception will occur.
 
 The length of the separator must be greater than 0. Otherwise an exception will occur.
+
+The limit can't be 0. Otherwise an exception will occur.
 
 =head2 substr
 

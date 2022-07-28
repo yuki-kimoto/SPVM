@@ -1,6 +1,7 @@
 0.9630 2022-07-27
   [New Features]
     * Add GET_CODE_POINT_ERROR_OVER_STRING_RANGE, GET_CODE_POINT_ERROR_INVALID_UTF8 to Fn class.
+    * Add Fn->split_limit.
   [Performance fix]
     * Fn->join use StringBuffer internally.
     * Improve substr performance.
