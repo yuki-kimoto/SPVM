@@ -154,7 +154,7 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
       }
     }
     else {
-      *sv_error = sv_2mortal(newSVpvf("Element must be a hash reference at %s line %d\n", MFILE, __LINE__));
+      *sv_error = sv_2mortal(newSVpvf("The element must be a hash reference at %s line %d\n", MFILE, __LINE__));
       return NULL;
     }
   }
@@ -3496,7 +3496,7 @@ _new_object_array(...)
       }
     }
     else {
-      croak("Element must be SPVM::BlessedObject object at %s line %d\n", MFILE, __LINE__);
+      croak("The element must be SPVM::BlessedObject object at %s line %d\n", MFILE, __LINE__);
     }
   }
   
@@ -3577,7 +3577,7 @@ _new_muldim_array(...)
       }
     }
     else {
-      croak("Element must be inherit SPVM::BlessedObject object at %s line %d\n", MFILE, __LINE__);
+      croak("The element must be inherit SPVM::BlessedObject object at %s line %d\n", MFILE, __LINE__);
     }
   }
   
