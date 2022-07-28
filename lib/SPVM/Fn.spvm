@@ -514,12 +514,12 @@ class Fn {
   precompile static method powi : int ($base : int, $exponant : int) {
     
     unless ($exponant >= 0) {
-      die "The exponant value must be greater than or equal to 0";
+      die "The exponant number must be greater than or equal to 0";
     }
     
     if ($base == 0) {
       unless ($exponant != 0) {
-        die "If the base value is 0, the exponant can't be 0";
+        die "If the base number is 0, the exponant number can't be 0";
       }
     }
     
@@ -533,12 +533,12 @@ class Fn {
   
   precompile static method powl : long ($base : long, $exponant : long) {
     unless ($exponant >= 0) {
-      die "The exponant value must be greater than or equal to 0";
+      die "The exponant number must be greater than or equal to 0";
     }
     
     if ($base == 0) {
       unless ($exponant != 0) {
-        die "If the base value is 0, the exponant can't be 0";
+        die "If the base number is 0, the exponant number can't be 0";
       }
     }
     

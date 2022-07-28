@@ -494,7 +494,7 @@ If the Unicode code point is an ASCII hexadecimal digit C<0-9A-Fa-f>, return C<1
 
   static method join : string ($sep : string, $strings : string[])
 
-Join the strings with the separater and return it.
+Concatenate the strings with the separater and return it.
 
 The strings must be defined. Otherwise an exception will occur.
 
@@ -510,13 +510,17 @@ Return the absolute value of the input value.
 
   static method lc : string ($string : string)
 
-Convert the string to the ASCII lowercase string.
+Convert the ASCII uppercase characters C<A-Z> in the string to the corresponding ASCII lowercase characters C<a-z>. And return it.
+
+The string must be defined. Otherwise an exception will occur.
 
 =head2 lcfirst
 
   static method lcfirst : string ($string : string)
 
-Convert the first chracter of the string to the ASCII lowercase character.
+If the first character of the string is an ASCII uppercase character C<A-Z>, it is converted to the corresponding ASCII lowercase characters C<a-z>. And return the converted string.
+
+The string must be defined. Otherwise an exception will occur.
 
 =head2 look_next_code_point
 
@@ -583,11 +587,19 @@ The alias for the following code using L</"get_code_point">.
 
 Calculate the exponentiation for the base number and the exponant number.
 
+The exponant number must be greater than or equal to C<0>. Otherwise an exception will occur.
+
+If the base number is C<0>, the exponant number can't be C<0>. Otherwise an exception will occur.
+
 =head2 powl
 
   static method powl : long ($base : long, $exponant : long)
 
 Calculate the exponentiation for the base number and the exponant number.
+
+The exponant number must be greater than or equal to C<0>. Otherwise an exception will occur.
+
+If the base number is C<0>, the exponant number can't be C<0>. Otherwise an exception will occur.
 
 =head2 rand
 
@@ -610,7 +622,7 @@ B<Examples:>
 
   static method repeat : double ($string : string, $count : int)
 
-Get the repeat string.
+Concatenate the string the number of times specified in the count and return it.
 
 If the string is not defined, an exception will be thrown.
 
@@ -839,38 +851,36 @@ Convert uppercase character('A'-'Z') to lowercase. If the character is a non-upp
 
   static method to_upper : int ($code_point : int)
 
-Convert lowercase character('a'-'z') to lowercase. If the character is a non-uppercase character, return the character.
+Convert the Unicode code point to the corresponding ASCII uppser case character C<A-Z>. If the character is a non-uppercase character, return the character.
 
 =head2 trim_ascii_space
 
   static method trim_ascii_space : string ($string : string)
 
-Remove right and left spaces of the string. These spaces is ascii standard spaces which can be checked by C<is_space> method.
-
-If the argument string is undef, return undef.
-
-This method is deprecated. Use trim instead.
+The same as L</"trim">. This method is deprecated. Use L</"trim"> instead.
 
 =head2 trim
 
   static method trim : string ($string : string)
 
-Remove right and left spaces of the string. These spaces is ascii standard spaces which can be checked by C<is_space> method.
+Remove the right and left spaces of the string and return it.
 
-If the argument string is undef, return undef.
+The removed spaces is the same as the spaces L</"is_space"> method returns C<1>.
+
+The string must be defined. Otherwise an exception will occur.
 
 =head2 uc
 
   static method uc : string ($string : string)
 
-Convert a lowercase string to a uppercase string.
+Convert the ASCII lowercase characters C<a-z> in the string to the corresponding ASCII uppercase characters C<A-Z>. And return it.
 
-If the string is undef, an exception will occur.
+The string must be defined. Otherwise an exception will occur.
 
 =head2 ucfirst
 
   static method ucfirst : string ($string : string)
 
-Convert the first character of a string to a uppercase character.
+If the first character of the string is an ASCII lowercase characters C<a-z>, it is converted to the corresponding ASCII uppercase character C<A-Z>. And return the converted string.
 
-If the string is undef, an exception will occur.
+The string must be defined. Otherwise an exception will occur.
