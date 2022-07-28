@@ -211,6 +211,13 @@ class Format {
         }
         elsif ($specifier eq "s") {
           my $arg = (string)$args->[$arg_count];
+          if ($has_precision) {
+            my $arg_length = length $arg;
+            if ($precision < $arg_length) {
+              $arg = Fn->substr($arg, 0, $precision);
+              $width = $precision;
+            }
+          }
           my $formatted_value = $arg;
           &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
