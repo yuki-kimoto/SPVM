@@ -358,7 +358,7 @@ The alias for the following code using L</"index_len">.
 
   static method index_len : int ($string : string, $substring : string, $offset : int, $length : int)
 
-Search for the substring in the string from the offset to the offset + the length.
+Search for the substring in the range of the string from the offset to the offset + the length - C<1>.
 
 If the substring is found, return the found offset. Otherwise return C<-1>.
 
@@ -538,9 +538,9 @@ The same as L</"get_code_point">, but the offset is not updated.
 
 Copy the range of the source to the the range of the destination.
 
-The range of the destination is from the offset of the destination to the offset of the destination + the length.
+The range of the destination is from the offset of the destination to the offset of the destination + the length - C<1>.
 
-The range of the source is from the offset of the source to the offset of the destination + the length.
+The range of the source is from the offset of the source to the offset of the destination + the length - C<1>.
 
 The unit of the offset and the length is C<byte> size.
 
@@ -636,7 +636,7 @@ The alias for the following code using L</"rindex_len">.
 
   static method rindex_len : int ($string : string, $substring : string, $offset : int, $length : int)
 
-Search for the substring in the string from the offset to the offset + the length in the direction from back to front.
+Search for the substring in the range of the string from the offset to the offset + the length - C<1> in the direction from back to front.
 
 If the substring is found, return the found offset. Otherwise return C<-1>.
 
@@ -760,7 +760,7 @@ B<Examples:>
 
   static method substr : string ($string : string, $offset : int, $length : int)
 
-Get the substring of the string with the start offset and the length.
+Get the substring from the string. The extracting range of the string is from the offset to the offset + the length - C<1>.
 
 =head2 to_double
 
