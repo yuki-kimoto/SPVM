@@ -366,9 +366,9 @@ The string must be defined. Otherwise an exception will occur.
 
 The substring must be defined. Otherwise an exception will occur.
 
-The offset must be greater than or equal to 0. Otherwise an exception will occur.
+The offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The max length must be greater than or equal to 0. Otherwise an exception will occur.
+The max length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 The offset + the length specified by the argument must be less than or equal to the length of the string. Otherwise an exception will occur.
 
@@ -388,7 +388,9 @@ If the Unicode code point is an ASCII alphabetic C<A-Za-z>, return C<1>. Otherwi
 
   static method is_array : int ($object : object)
 
-If the object is defined and the type of the object is the L<array type|SPVM::Document::LanguageSpecification/"Array Type"> using L<SPVM::NativeAPI|/"is_array">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<array type|SPVM::Document::LanguageSpecification/"Array Type">, return C<1>. Otherwise return C<0>.
+
+L<SPVM::Document::NativeAPI/"is_array"> is used to check the type.
 
 =head2 is_blank
 
@@ -430,19 +432,25 @@ If the Unicode code point is an ASCII lowercase character C<a-z>, return C<1>. O
 
   static method is_mulnum_array : int ($object : object)
 
-If the object is defined and the type of the object is the L<multi-numeric array type|SPVM::Document::LanguageSpecification/"Multi-Numeric Array Type"> using L<SPVM::NativeAPI|/"is_mulnum_array">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<multi-numeric array type|SPVM::Document::LanguageSpecification/"Multi-Numeric Array Type">, return C<1>. Otherwise return C<0>.
+
+L<SPVM::Document::NativeAPI/"is_mulnum_array"> is used to check the type.
 
 =head2 is_numeric_array
 
   static method is_numeric_array : int ($object : object)
 
-If the object is defined and the type of the object is the L<numeric array type|SPVM::Document::LanguageSpecification/"Numeric Array Type"> using L<SPVM::NativeAPI|/"is_numeric_array">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<numeric array type|SPVM::Document::LanguageSpecification/"Numeric Array Type">, return C<1>. Otherwise return C<0>.
+
+L<SPVM::Document::NativeAPI/"is_numeric_array"> is used to check the type.
 
 =head2 is_object_array
 
   static method is_object_array : int ($object : object)
 
 If the object is defined and the type of the object is an L<object array type|SPVM::Document::LanguageSpecification/"Object Array Type">, return C<1>. Otherwise return C<0>.
+
+L<SPVM::Document::NativeAPI/"is_object_array"> is used to check the type.
 
 =head2 is_perl_space
 
@@ -526,9 +534,7 @@ The string must be defined. Otherwise an exception will occur.
 
   static method look_next_code_point : int ($string : string, $offset_ref : int*)
 
-The same as L</"get_next_code_point">, but the offset is not updated.
-
-This method is depracated. Use L</"look_code_point"> instead.
+The same as L</"look_code_point">, but this method is depracated. Use L</"look_code_point"> instead.
 
 =head2 look_code_point
 
@@ -560,11 +566,11 @@ The type of the source must be the string type, the numeric arrya type, or the m
 
 The destination must not be a read-only string. Otherwise an exception will occur.
 
-The length must be more than or equal to 0. Otherwise an exception will occur.
+The length must be more than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the obj_destination + the length specified by the argument must be less than or equal to the length of the obj_destination. Otherwise an exception will occur.
+The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
 
-The offset of the obj_source + the length specified by the argument must be less than or equal to the length of the obj_source. Otherwise an exception will occur.
+The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
 
 =head2 memmove
 
@@ -585,7 +591,7 @@ The alias for the following code using L</"get_code_point">.
 
   static method powi : int ($base : int, $exponant : int)
 
-Calculate the exponentiation for the base number and the exponant number.
+Calculate the exponentiation from the base number and the exponant number.
 
 The exponant number must be greater than or equal to C<0>. Otherwise an exception will occur.
 
@@ -595,7 +601,7 @@ If the base number is C<0>, the exponant number can't be C<0>. Otherwise an exce
 
   static method powl : long ($base : long, $exponant : long)
 
-Calculate the exponentiation for the base number and the exponant number.
+Calculate the exponentiation from the base number and the exponant number.
 
 The exponant number must be greater than or equal to C<0>. Otherwise an exception will occur.
 
@@ -624,9 +630,9 @@ B<Examples:>
 
 Concatenate the string the number of times specified in the count and return it.
 
-If the string is not defined, an exception will be thrown.
+The string must be defined. Otherwise an exception will occur.
 
-If the repeat is not more than C<0>, an exception will be thrown.
+The repeat count must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 B<Examples:>
   
@@ -653,9 +659,9 @@ The string must be defined. Otherwise an exception will occur.
 
 The substring must be defined. Otherwise an exception will occur.
 
-The offset must be greater than or equal to 0. Otherwise an exception will occur.
+The offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The max length must be greater than or equal to 0. Otherwise an exception will occur.
+The max length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 The offset + the length specified by the argument must be less than or equal to the length of the string. Otherwise an exception will occur.
 
@@ -663,13 +669,13 @@ The offset + the length specified by the argument must be less than or equal to 
 
     static method shorten : void ($string : mutable string, $length : int32_t)
 
-Shorten the string to the length specified by the argument using L<SPVM::NativeAPI|/"shorten">.
+Shorten the string to the length specified by the argument using L<SPVM::Document::NativeAPI/"shorten">.
 
 If the length specified by the argument is greater than or equal to the length of the string, nothing is performed.
 
 The string must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to 0. Otherwise an exception will occur.
+The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 =head2 split
 

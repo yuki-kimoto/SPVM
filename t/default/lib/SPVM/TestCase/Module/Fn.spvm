@@ -2211,14 +2211,16 @@ class TestCase::Module::Fn {
       return 0;
     }
     
+    {
+      my $ret = Fn->repeat("abc", 0);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+    
     # Exception
     {
       eval { Fn->repeat(undef, 1); };
-      unless ($@) {
-        return 0;
-      }
-      
-      eval { Fn->repeat("abc", 0); };
       unless ($@) {
         return 0;
       }

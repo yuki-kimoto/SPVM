@@ -11,6 +11,7 @@
     * Fn->pow, Fn->powi throws exceptions when the arguments are invalid.
     * Fn->join throws exceptions when the arguments are invalid.
     * Improve Fn->substr exception messages.
+    * Fn->repeat allows 0 count.
   [Deprecation]
     * Fn->trim_ascii_space is renamed to Fn->trim. Fn->trim_ascii_space is deprecated.
     * Fn->get_next_code_point is renamed to Fn->get_code_point. Fn->get_next_code_point is deprecated.

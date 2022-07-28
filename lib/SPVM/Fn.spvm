@@ -564,8 +564,8 @@ class Fn {
       die "The string must be defined";
     }
     
-    unless ($count > 0) {
-      die "The repeat count must be more than 0";
+    unless ($count >= 0) {
+      die "The repeat count must be greater than or equal to 0";
     }
     
     my $buffer = StringBuffer->new;
