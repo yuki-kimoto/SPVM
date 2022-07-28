@@ -10,18 +10,6 @@ class Sort {
   use Fn;
   use Array;
   
-  private static method _sort_string_merge_sort : void($a : string[], $b : string[], $left : int, $right : int, $n : int, $comparator : Comparator::String){
-    if ($left >= $right) {
-      return;
-    }
-    
-    my $mid = ($left + $right) / 2;
-     
-    Sort->_sort_string_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    Sort->_sort_string_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    Sort->_sort_string_merge($a, $b, $left, $mid, $right, $n, $comparator);
-  }
-  
   static method sort_byte : void ($array : byte[], $offset : int, $length : int, $comparator : Comparator::Byte) {
     unless ($array) {
       die "The array must be defined";
@@ -686,4 +674,17 @@ class Sort {
       $a->[$i + $left] = $b->[$i];
     }
   }
+  
+  private static method _sort_string_merge_sort : void($a : string[], $b : string[], $left : int, $right : int, $n : int, $comparator : Comparator::String){
+    if ($left >= $right) {
+      return;
+    }
+    
+    my $mid = ($left + $right) / 2;
+     
+    Sort->_sort_string_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Sort->_sort_string_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Sort->_sort_string_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
+  
 }
