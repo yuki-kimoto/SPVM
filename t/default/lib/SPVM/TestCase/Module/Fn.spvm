@@ -2823,16 +2823,16 @@ class TestCase::Module::Fn {
       }
       $@ = undef;
     }
-
+    
     return 1;
   }
-
+  
   static method to_lower : int () {
-
+    
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-
+      
       if ($char >= 'A' && $char <= 'Z') {
         my $ret = Fn->to_lower($char);
         unless ($ret == $char + 0x20) {
@@ -2846,21 +2846,21 @@ class TestCase::Module::Fn {
         }
       }
     }
-
+    
     unless ($ok) {
       return 0;
     }
-
+    
     return 1;
   }
-
+  
   static method to_upper : int () {
-
+   
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-
-    if ($char >= 'a' && $char <= 'z') {
+      
+      if ($char >= 'a' && $char <= 'z') {
         my $ret = Fn->to_upper($char);
         unless ($ret == $char - 0x20) {
           $ok = 0;
@@ -2873,14 +2873,14 @@ class TestCase::Module::Fn {
         }
       }
     }
-
+    
     unless ($ok) {
       return 0;
     }
-
+    
     return 1;
   }
-
+  
   static method trim : int () {
     
     # no left and right spaces
