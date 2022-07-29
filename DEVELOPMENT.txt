@@ -119,6 +119,10 @@ DEVELOPERS NOTE
     
       find lib | grep Builder | grep '\.pm' | perl -p -e 's|lib/||' | sort
 
+    Get the linkgs of SPVM modules for POD
+    
+      find lib | grep -P '\.spvm$' | sort | perl -p -e 'chomp;s|lib/SPVM/||;s/\.spvm$//; s|/|::|g; $_ = "=item * L<$_|SPVM::$_>\n\n";'
+
     Get SPVM source files
     
       find lib | grep Builder | grep -P '\.c$' | perl -p -e 's|lib/SPVM/Builder/src/||' | sort
