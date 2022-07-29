@@ -6,6 +6,21 @@
 
 static const char* FILE_NAME = "Format.c";
 
+int32_t SPVM__Format___native_snprintf_d(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  
+  int32_t value = stack[0].ival;
+  
+  // "-2147483648"
+  char formatted_string[12] = {0};
+  
+  int32_t length = snprintf(formatted_string, 12, "%"PRId32, value);
+  
+  stack[0].oval = env->new_string(env, stack, formatted_string, length);
+  
+  return 0;
+}
+
 int32_t SPVM__Format___native_snprintf_f(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
@@ -62,39 +77,6 @@ int32_t SPVM__Format___native_snprintf_g(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Format___native_snprintf_p(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  
-  void* value = stack[0].oval;
-  
-  // 0x8000000000000000
-  int32_t max_length = 32;
-  void* obj_formatted_string = env->new_string(env, stack, NULL, max_length);
-  
-  char* formatted_string = (char*)env->get_chars(env, stack, obj_formatted_string);
-  
-  int32_t length = snprintf(formatted_string, max_length + 1, "%p", value);
-  
-  stack[0].oval = env->new_string(env, stack, formatted_string, length);
-  
-  return 0;
-}
-
-int32_t SPVM__Format___native_snprintf_d(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  
-  int32_t value = stack[0].ival;
-  
-  // "-2147483648"
-  char formatted_string[12] = {0};
-  
-  int32_t length = snprintf(formatted_string, 12, "%"PRId32, value);
-  
-  stack[0].oval = env->new_string(env, stack, formatted_string, length);
-  
-  return 0;
-}
-
 int32_t SPVM__Format___native_snprintf_ld(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
@@ -104,21 +86,6 @@ int32_t SPVM__Format___native_snprintf_ld(SPVM_ENV* env, SPVM_VALUE* stack) {
   char formatted_string[21] = {0};
   
   int32_t length = snprintf(formatted_string, 21, "%"PRId64, value);
-  
-  stack[0].oval = env->new_string(env, stack, formatted_string, length);
-  
-  return 0;
-}
-
-int32_t SPVM__Format___native_snprintf_u(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  
-  uint32_t value = (uint32_t)stack[0].ival;
-  
-  // "4294967295"
-  char formatted_string[11] = {0};
-  
-  int32_t length = snprintf(formatted_string, 11, "%"PRIu32, value);
   
   stack[0].oval = env->new_string(env, stack, formatted_string, length);
   
@@ -140,21 +107,6 @@ int32_t SPVM__Format___native_snprintf_lu(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Format___native_snprintf_x(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  
-  uint32_t value = (uint32_t)stack[0].ival;
-  
-  // "ffffffff"
-  char formatted_string[9] = {0};
-  
-  int32_t length = snprintf(formatted_string, 9, "%"PRIx32, value);
-  
-  stack[0].oval = env->new_string(env, stack, formatted_string, length);
-  
-  return 0;
-}
-
 int32_t SPVM__Format___native_snprintf_lx(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
@@ -164,6 +116,53 @@ int32_t SPVM__Format___native_snprintf_lx(SPVM_ENV* env, SPVM_VALUE* stack) {
   char formatted_string[17] = {0};
   
   int32_t length = snprintf(formatted_string, 17, "%"PRIx64, value);
+  
+  stack[0].oval = env->new_string(env, stack, formatted_string, length);
+  
+  return 0;
+}
+int32_t SPVM__Format___native_snprintf_p(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  
+  void* value = stack[0].oval;
+  
+  // 0x8000000000000000
+  int32_t max_length = 32;
+  void* obj_formatted_string = env->new_string(env, stack, NULL, max_length);
+  
+  char* formatted_string = (char*)env->get_chars(env, stack, obj_formatted_string);
+  
+  int32_t length = snprintf(formatted_string, max_length + 1, "%p", value);
+  
+  stack[0].oval = env->new_string(env, stack, formatted_string, length);
+  
+  return 0;
+}
+
+int32_t SPVM__Format___native_snprintf_u(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  
+  uint32_t value = (uint32_t)stack[0].ival;
+  
+  // "4294967295"
+  char formatted_string[11] = {0};
+  
+  int32_t length = snprintf(formatted_string, 11, "%"PRIu32, value);
+  
+  stack[0].oval = env->new_string(env, stack, formatted_string, length);
+  
+  return 0;
+}
+
+int32_t SPVM__Format___native_snprintf_x(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  
+  uint32_t value = (uint32_t)stack[0].ival;
+  
+  // "ffffffff"
+  char formatted_string[9] = {0};
+  
+  int32_t length = snprintf(formatted_string, 9, "%"PRIx32, value);
   
   stack[0].oval = env->new_string(env, stack, formatted_string, length);
   
