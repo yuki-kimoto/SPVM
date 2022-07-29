@@ -1,14 +1,7 @@
-0.9629_02 2022-07-29
-  [New Features]
-    * Add SPVM::new_any_object_array function.
-  [Changes]
-    * Excnahge API shows the stack trace when exceptions are thrown
+0.9630 2022-07-30
   [Bug Fix]
     * Fix the bug that SPVM::new_object_array can't receive non-class object.
     * Fix the bug that Fn->sprintf %.3s work well.
-  [Document Fix]
-    * Remove %U specifier doc. This ramained wrongly.
-0.9629_01 2022-07-28
   [New Features]
     * Add GET_CODE_POINT_ERROR_OVER_STRING_RANGE, GET_CODE_POINT_ERROR_INVALID_UTF8 to Fn class.
     * Add Fn->split_limit.
@@ -17,6 +10,7 @@
     * Add the constant values of the native API
       SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_SYSTEM_CLASS
       SPVM_NATIVE_C_CLASS_ID_ERROR_SYSTEM
+    * Add SPVM::new_any_object_array function.
       
   [Performance fix]
     * Fn->join use StringBuffer internally.
@@ -34,7 +28,7 @@
     * Improve Fn->to_long_with_base exception message.
     * Fn->contains become the alias for the following code
       my $ret = Fn->index($string, $substring, 0) >= 0;
-      
+    * Excnahge API shows the stack trace when exceptions are thrown
   [Deprecation]
     * Fn->trim_ascii_space is renamed to Fn->trim. Fn->trim_ascii_space is deprecated.
     * Fn->get_next_code_point is renamed to Fn->get_code_point. Fn->get_next_code_point is deprecated.
@@ -50,6 +44,7 @@
     * Fix the doc that the range of Array->copy_range_(byte|short|int|long|flaot|double) is wrong.
     * Fix the doc that the range of Array->memset_(byte|short|int|long|flaot|double|object|string) is wrong.
     * Remove Fn->srpintf doc. This remained wrongly.
+    * Remove %U specifier doc. This ramained wrongly.
   [Incompatible Changes]
     * Fn->index_len throw exception.
       The offset + the length specified by the argument must be less than or equal to the length of the string
