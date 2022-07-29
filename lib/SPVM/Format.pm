@@ -79,15 +79,15 @@ Create a formatted string form the format and the values.
 <table>
   <tr><th>Specifiers</th><th>Descriptions</th><th>Acceptable Types</th></tr>
   <tr><td>%c</td><td>An <code>UTF-8</code> character</td><td><a href="https://metacpan.org/pod/SPVM::Byte">Byte</a>, <a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
-  <tr><td>%d</td><td>Signed 32bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
+  <tr><td>%d</td><td>Signed 32-bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
   <tr><td>%f</td><td>64bit floating point</td><td><a href="https://metacpan.org/pod/SPVM::Double">Double</a>, <a href="https://metacpan.org/pod/SPVM::Float">Float</a></td></tr>
   <tr><td>%g</td><td>64bit floating point</td><td><a href="https://metacpan.org/pod/SPVM::Double">Double</a>, <a href="https://metacpan.org/pod/SPVM::Float">Float</a></td></tr>
-  <tr><td>%x</td><td>Unsiged 32-bit integer to a hexadecimal string using <code>0-9a-z</code></td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
-  <tr><td>%X</td><td>Unsiged 32-bit integer to a hexadecimal string using <code>0-9A-Z</code></td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
-  <tr><td>%lX</td><td>Unsiged 64-bit integer to a hexadecimal string using <code>0-9A-Z</code></td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
+  <tr><td>%x</td><td>Unsiged 32-bit integer represented by hexadecima characters <code>0-9a-z</code></td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
+  <tr><td>%X</td><td>Unsiged 32-bit integer represented by hexadecima characters <code>0-9A-Z</code></td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
+  <tr><td>%lX</td><td>Unsiged 64-bit integer represented by hexadecima characters <code>0-9A-Z</code></td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
   <tr><td>%ld</td><td>Signed 64bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
   <tr><td>%lu</td><td>Unsigned 64bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
-  <tr><td>%lx</td><td>Unsiged 64-bit integer to a hexadecimal string using <code>0-9a-z</code></td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
+  <tr><td>%lx</td><td>Unsiged 64-bit integer represented by hexadecima characters <code>0-9a-z</code></td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
   <tr><td>%s</td><td>String</td><td>String Type</td></tr>
   <tr><td>%p</td><td>Address</td><td>Object Type</td></tr>
   <tr><td>%u</td><td>Unsigned 32-bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
