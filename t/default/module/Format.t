@@ -133,17 +133,17 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is(sprintf("%03X", 111), SPVM::Format->sprintf("%03X", SPVM::new_any_object_array([SPVM::Int->new(111)])));
       is(sprintf("%+3X", 111), SPVM::Format->sprintf("%+3X", SPVM::new_any_object_array([SPVM::Int->new(111)])));
       is(sprintf("%-3X", 111), SPVM::Format->sprintf("%-3X", SPVM::new_any_object_array([SPVM::Int->new(111)])));
-      is(sprintf("%X", -1 & 0XFFFFFFFF), SPVM::Format->sprintf("%X", SPVM::new_any_object_array([SPVM::Int->new(-1)])));
-      is(sprintf("%0100X", -1 & 0XFFFFFFFF), SPVM::Format->sprintf("%0100X", SPVM::new_any_object_array([SPVM::Int->new(-1)])));
-      is(sprintf("%03X", -1 & 0XFFFFFFFF), SPVM::Format->sprintf("%03X", SPVM::new_any_object_array([SPVM::Int->new(-1)])));
-      is(sprintf("%+3X", -1 & 0XFFFFFFFF), SPVM::Format->sprintf("%+3X", SPVM::new_any_object_array([SPVM::Int->new(-1)])));
-      is(sprintf("%-3X", -1 & 0XFFFFFFFF), SPVM::Format->sprintf("%-3X", SPVM::new_any_object_array([SPVM::Int->new(-1)])));
-      is(sprintf("%03X", -1111 & 0XFFFFFFFF), SPVM::Format->sprintf("%03X", SPVM::new_any_object_array([SPVM::Int->new(-1111)])));
-      is(sprintf("%+3X", -1111 & 0XFFFFFFFF), SPVM::Format->sprintf("%+3X", SPVM::new_any_object_array([SPVM::Int->new(-1111)])));
-      is(sprintf("%-3X", -1111 & 0XFFFFFFFF), SPVM::Format->sprintf("%-3X", SPVM::new_any_object_array([SPVM::Int->new(-1111)])));
-      is(sprintf("%03X", -111 & 0XFFFFFFFF), SPVM::Format->sprintf("%03X", SPVM::new_any_object_array([SPVM::Int->new(-111)])));
-      is(sprintf("%+3X", -111 & 0XFFFFFFFF), SPVM::Format->sprintf("%+3X", SPVM::new_any_object_array([SPVM::Int->new(-111)])));
-      is(sprintf("%-3X", -111 & 0XFFFFFFFF), SPVM::Format->sprintf("%-3X", SPVM::new_any_object_array([SPVM::Int->new(-111)])));
+      is(sprintf("%X", -1 & 0xFFFFFFFF), SPVM::Format->sprintf("%X", SPVM::new_any_object_array([SPVM::Int->new(-1)])));
+      is(sprintf("%0100X", -1 & 0xFFFFFFFF), SPVM::Format->sprintf("%0100X", SPVM::new_any_object_array([SPVM::Int->new(-1)])));
+      is(sprintf("%03X", -1 & 0xFFFFFFFF), SPVM::Format->sprintf("%03X", SPVM::new_any_object_array([SPVM::Int->new(-1)])));
+      is(sprintf("%+3X", -1 & 0xFFFFFFFF), SPVM::Format->sprintf("%+3X", SPVM::new_any_object_array([SPVM::Int->new(-1)])));
+      is(sprintf("%-3X", -1 & 0xFFFFFFFF), SPVM::Format->sprintf("%-3X", SPVM::new_any_object_array([SPVM::Int->new(-1)])));
+      is(sprintf("%03X", -1111 & 0xFFFFFFFF), SPVM::Format->sprintf("%03X", SPVM::new_any_object_array([SPVM::Int->new(-1111)])));
+      is(sprintf("%+3X", -1111 & 0xFFFFFFFF), SPVM::Format->sprintf("%+3X", SPVM::new_any_object_array([SPVM::Int->new(-1111)])));
+      is(sprintf("%-3X", -1111 & 0xFFFFFFFF), SPVM::Format->sprintf("%-3X", SPVM::new_any_object_array([SPVM::Int->new(-1111)])));
+      is(sprintf("%03X", -111 & 0xFFFFFFFF), SPVM::Format->sprintf("%03X", SPVM::new_any_object_array([SPVM::Int->new(-111)])));
+      is(sprintf("%+3X", -111 & 0xFFFFFFFF), SPVM::Format->sprintf("%+3X", SPVM::new_any_object_array([SPVM::Int->new(-111)])));
+      is(sprintf("%-3X", -111 & 0xFFFFFFFF), SPVM::Format->sprintf("%-3X", SPVM::new_any_object_array([SPVM::Int->new(-111)])));
     }
     
     # %lu
