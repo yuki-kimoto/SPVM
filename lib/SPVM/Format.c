@@ -6,27 +6,6 @@
 
 static const char* FILE_NAME = "Format.c";
 
-#define SPRINTF_MAX_RESULT_LEN 256
-
-int32_t SPVM__Format___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-
-  void* obj_format = stack[0].oval;
-  if (!obj_format) { return env->die(env, stack, "Format must be defined", FILE_NAME, __LINE__); }
-
-  const char* format = env->get_chars(env, stack, obj_format);
-  const double value = stack[1].dval;
-
-  char tmp_result[SPRINTF_MAX_RESULT_LEN] = {};
-
-  const int result_len = snprintf(tmp_result, SPRINTF_MAX_RESULT_LEN, format, value);
-  if (result_len < 0) { return env->die(env, stack, "snprintf fail", FILE_NAME, __LINE__); }
-
-  stack[0].oval = env->new_string(env, stack, tmp_result, result_len);
-
-  return 0;
-}
-
 int32_t SPVM__Format___native_snprintf_f(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
