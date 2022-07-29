@@ -12,64 +12,67 @@ SPVM::Format - Format Utilities
 
   use Format;
   
+  # Foo 123 abc 1.115 Bar
+  my $result = Format->sprintf("Foo %d %s %.3f Bar", 123, "abc", 1.115);
+  
   # %d - "123"
-  my $formatted_string = Format->sprintf("%d", 123);
+  my $result = Format->sprintf("%d", 123);
   
   # %5d - "  123"
-  my $formatted_string = Format->sprintf("%5d", 123);
+  my $result = Format->sprintf("%5d", 123);
 
   # %05d - "00123"
-  my $formatted_string = Format->sprintf("%05d", 123);
+  my $result = Format->sprintf("%05d", 123);
   
   # %+d - "+123"
-  my $formatted_string = Format->sprintf("%+d", 123);
+  my $result = Format->sprintf("%+d", 123);
   
   # %-5d - "123  "
-  my $formatted_string = Format->sprintf("%-5d", 123);
+  my $result = Format->sprintf("%-5d", 123);
   
   # %d - "x"
-  my $formatted_string = Format->sprintf("%c", 'x');
+  my $result = Format->sprintf("%c", 'x');
   
   # %c - "あ"
-  my $formatted_string = Format->sprintf("%c", Format->ord("あ"));
+  my $result = Format->sprintf("%c", Fn->ord("あ"));
 
   # %s - "ABC"
-  my $formatted_string = Format->sprintf("%s", "ABC");
+  my $result = Format->sprintf("%s", "ABC");
   
   # %.2s - "AB"
-  my $formatted_string = Format->sprintf("%.2s", "ABC");
+  my $result = Format->sprintf("%.2s", "ABC");
   
   # %u - "4294967295"
-  my $formatted_string = Format->sprintf("%u", -1);
+  my $result = Format->sprintf("%u", -1);
   
   # %f - "3.141500"
-  my $formatted_string = Format->sprintf("%f", 3.1415);
+  my $result = Format->sprintf("%f", 3.1415);
   
   # %.2f - "3.14"
-  my $formatted_string = Format->sprintf("%.2f", 3.1415);
+  my $result = Format->sprintf("%.2f", 3.1415);
   
   # %g - "3.14"
-  my $formatted_string = Format->sprintf("%g", 3.14);
+  my $result = Format->sprintf("%g", 3.14);
   
   # %x - "ff"
-  my $formatted_string = Format->sprintf("%x", 255);
+  my $result = Format->sprintf("%x", 255);
     
   # %x - "ffffffff"
-  my $formatted_string = Format->sprintf("%x", -1);
+  my $result = Format->sprintf("%x", -1);
 
 =head1 Description
 
-C<Format> is a formatting utilities such as C<sprintf> method.
+C<Format> is a formatting utilities for C<sprintf> method.
 
 =head1 Class Methods
-
-Class method of B<Format> module.
 
 =head2 sprintf
 
   static method sprintf : string ($format : string, $args : object[]...)
 
-Create a formatted string with the format and the values.
+Create a formatted string form the format and the values.
+
+=head3 Specifiers
 
 =begin html
 
@@ -77,30 +80,29 @@ Create a formatted string with the format and the values.
   <tr><th>Specifiers</th><th>Descriptions</th><th>Acceptable Types</th></tr>
   <tr><td>%c</td><td>An <code>UTF-8</code> character</td><td><a href="https://metacpan.org/pod/SPVM::Byte">Byte</a>, <a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
   <tr><td>%d</td><td>Signed 32bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
-  <tr><td>%u</td><td>Unsigned 32bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
-  <tr><td>%x</td><td>Unsiged 32 bit integer to a hexadecimal string using <code>0-9a-z</code></td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
-  <tr><td>%X</td><td>Unsiged 32 bit integer to a hexadecimal string using <code>0-9A-Z</code></td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
-  <tr><td>%ld</td><td>Signed 64bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
-  <tr><td>%lu</td><td>Unsigned 64bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
-  <tr><td>%lx</td><td>Unsiged 64 bit integer to a hexadecimal string using <code>0-9a-z</code></td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
-  <tr><td>%lX</td><td>Unsiged 64 bit integer to a hexadecimal string using <code>0-9A-Z</code></td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
   <tr><td>%f</td><td>64bit floating point</td><td><a href="https://metacpan.org/pod/SPVM::Double">Double</a>, <a href="https://metacpan.org/pod/SPVM::Float">Float</a></td></tr>
   <tr><td>%g</td><td>64bit floating point</td><td><a href="https://metacpan.org/pod/SPVM::Double">Double</a>, <a href="https://metacpan.org/pod/SPVM::Float">Float</a></td></tr>
-  <tr><td>%s</td><td>String</td><td>string</td></tr>
-  <tr><td>%U</td><td>Unicode Code Point to a UTF-8 character</td><td></td></tr>
-  <tr><td>%p</td><td>Address</td><td>object</td></tr>
+  <tr><td>%x</td><td>Unsiged 32-bit integer to a hexadecimal string using <code>0-9a-z</code></td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
+  <tr><td>%X</td><td>Unsiged 32-bit integer to a hexadecimal string using <code>0-9A-Z</code></td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
+  <tr><td>%lX</td><td>Unsiged 64-bit integer to a hexadecimal string using <code>0-9A-Z</code></td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
+  <tr><td>%ld</td><td>Signed 64bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
+  <tr><td>%lu</td><td>Unsigned 64bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
+  <tr><td>%lx</td><td>Unsiged 64-bit integer to a hexadecimal string using <code>0-9a-z</code></td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
+  <tr><td>%s</td><td>String</td><td>String Type</td></tr>
+  <tr><td>%p</td><td>Address</td><td>Object Type</td></tr>
+  <tr><td>%u</td><td>Unsigned 32-bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
 </table>
 
 =end html
 
-B<Specifier Options:>
+=head3 Specifier Options
 
 Specifier options can be written between C<%> and the character of specifier such as C<d>, C<f>.
 
 =begin html
 
 <table>
-  <tr><th>Specifier options</th><th>Descriptions</th></tr>
+  <tr><th>Specifier Options</th><th>Descriptions</th></tr>
   <tr><td>0[DECIMAL_NUMBERS]</td><td>Zero padding</td></tr>
   <tr><td>+</td><td>Adding a plus sign</td></tr>
   <tr><td>-</td><td>Left justified</td></tr>

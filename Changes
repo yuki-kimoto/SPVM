@@ -6,6 +6,8 @@
   [Bug Fix]
     * Fix the bug that SPVM::new_object_array can't receive non-class object.
     * Fix the bug that Fn->sprintf %.3s work well.
+  [Document Fix]
+    * Remove %U specifier doc. This ramained wrongly.
 0.9629_01 2022-07-28
   [New Features]
     * Add GET_CODE_POINT_ERROR_OVER_STRING_RANGE, GET_CODE_POINT_ERROR_INVALID_UTF8 to Fn class.

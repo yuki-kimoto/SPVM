@@ -60,70 +60,14 @@ class TestCase::Module::Format {
     return 1;
   }
   
-  static method sprintf_all : int () {
+  static method sprintf_basic : int () {
     {
-      # Invalid conversion (end of string)
-      eval {
-        Format->sprintf("%d%", 1);
-      };
-      unless ($@ && Fn->index($@, "Invalid conversion in sprintf: end of string", 0) > -1) {
-        warn("got error: $@");
-        return 0;
-      }
-      $@ = undef;
-    }
-    {
-      # Invalid conversion (unknown specifier)
-      eval {
-        Format->sprintf("%d%k", 1, 2);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-    {
-      # Invalid conversion (no type)
-      eval {
-        Format->sprintf("%012.3", 3.14);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-    {
-      # Missing argument
-      eval {
-        Format->sprintf("%d%d", 1);
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-    {
-      my $string = "abc\n";
-      my $ret = Fn->chompr($string);
-      unless ($ret eq "abc") {
+      my $result = Format->sprintf("Foo %d %s %.3f Bar", 123, "abc", 1.115);
+      unless ($result eq "Foo 123 abc 1.115 Bar") {
         return 0;
       }
     }
-    {
-      my $string = "abc";
-      my $ret = Fn->chompr($string);
-      unless ($ret eq "abc") {
-        return 0;
-      }
-    }
-    {
-      my $string = "";
-      my $ret = Fn->chompr($string);
-      unless ($ret eq "") {
-        return 0;
-      }
-    }
-
+    
     return 1;
   }
   
@@ -202,6 +146,73 @@ class TestCase::Module::Format {
         return 0;
       }
       $@ = undef;
+    }
+    
+    return 1;
+  }
+  
+  static method sprintf_exception : int () {
+    {
+      # Invalid conversion (end of string)
+      eval {
+        Format->sprintf("%d%", 1);
+      };
+      unless ($@ && Fn->index($@, "Invalid conversion in sprintf: end of string", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      # Invalid conversion (unknown specifier)
+      eval {
+        Format->sprintf("%d%k", 1, 2);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      # Invalid conversion (no type)
+      eval {
+        Format->sprintf("%012.3", 3.14);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      # Missing argument
+      eval {
+        Format->sprintf("%d%d", 1);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      my $string = "abc\n";
+      my $ret = Fn->chompr($string);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = "abc";
+      my $ret = Fn->chompr($string);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = "";
+      my $ret = Fn->chompr($string);
+      unless ($ret eq "") {
+        return 0;
+      }
     }
     
     return 1;

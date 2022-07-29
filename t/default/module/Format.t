@@ -16,9 +16,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # sprintf
 {
   ok(SPVM::TestCase::Module::Format->sprintf_X);
-  ok(SPVM::TestCase::Module::Format->sprintf_all);
+  ok(SPVM::TestCase::Module::Format->sprintf_basic);
   ok(SPVM::TestCase::Module::Format->sprintf_c);
   ok(SPVM::TestCase::Module::Format->sprintf_d);
+  ok(SPVM::TestCase::Module::Format->sprintf_exception);
   ok(SPVM::TestCase::Module::Format->sprintf_extra);
   ok(SPVM::TestCase::Module::Format->sprintf_f);
   ok(SPVM::TestCase::Module::Format->sprintf_g);
