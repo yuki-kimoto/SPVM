@@ -224,7 +224,7 @@ class TestCase::Module::Format {
     return 1;
   }
 
-  static method sprintf_percent : int () {
+  static method sprintf_extra : int () {
     unless (Format->sprintf("%d%%",    1) eq "1%") { return 0; }
     unless (Format->sprintf("%%%d",    1) eq "%1") { return 0; }
     unless (Format->sprintf("%d%%str", 1) eq "1%str") { return 0; }

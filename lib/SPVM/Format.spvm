@@ -180,10 +180,6 @@ class Format {
             $specifier = "p";
             break;
           }
-          case 'U' : {
-            $specifier = "U";
-            break;
-          }
           case 'x' : {
             $specifier = "x";
             break;
