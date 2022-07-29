@@ -10,7 +10,7 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =over 2
 
-=item * L<Fn|SPVM::Fn> - Standard Functions
+=item * L<Array|SPVM::Array> - Array Utilities
 
 =item * L<Byte|SPVM::Byte> - byte Object
 
@@ -51,6 +51,8 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 =item * L<Float|SPVM::Float> - float Object
 
 =item * L<FloatList|SPVM::FloatList> - Dynamic float Array
+
+=item * L<Fn|SPVM::Fn> - Standard Functions
 
 =item * L<Hash|SPVM::Hash> - Hash Data Structure
 
