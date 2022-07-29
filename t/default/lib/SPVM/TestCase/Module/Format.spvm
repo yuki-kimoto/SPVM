@@ -192,7 +192,9 @@ class TestCase::Module::Format {
       unless (Format->sprintf("%-5c", Fn->ord("あ")) eq "あ  ") { return 0; }
       unless (Format->sprintf("%+c", Fn->ord("あ")) eq "あ") { return 0; }
     }
-
+    
+    # Invalid UTF-8
+    unless (Format->sprintf("%c", 0xD800) eq "?") { return 0; }
     {
       eval {
         Format->sprintf("%c", "str");

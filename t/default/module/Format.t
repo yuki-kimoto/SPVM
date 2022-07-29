@@ -257,7 +257,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is(sprintf("%+3f", 111.5), SPVM::Format->sprintf("%+3f", SPVM::new_any_object_array([SPVM::Float->new(111.5)])));
       is(sprintf("%-3f", 111.5), SPVM::Format->sprintf("%-3f", SPVM::new_any_object_array([SPVM::Float->new(111.5)])));
     }
-
+    
     # %g
     {
       is(sprintf("%g", 1.5), SPVM::Format->sprintf("%g", SPVM::new_any_object_array([SPVM::Double->new(1.5)])));
@@ -277,6 +277,26 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is(sprintf("%.3s", 111.5), SPVM::Format->sprintf("%.3s", SPVM::new_any_object_array([SPVM::new_string(111.5)])));
       is(sprintf("%+3s", 111.5), SPVM::Format->sprintf("%+3s", SPVM::new_any_object_array([SPVM::new_string(111.5)])));
       is(sprintf("%-3s", 111.5), SPVM::Format->sprintf("%-3s", SPVM::new_any_object_array([SPVM::new_string(111.5)])));
+    }
+    
+    # %c
+    {
+      my $code_point_a = ord('a');
+      my $code_point_unicode_a = ord('あ');
+      
+      is(sprintf("%c", $code_point_a), SPVM::Format->sprintf("%c", SPVM::new_any_object_array([SPVM::Byte->new($code_point_a)])));
+      is(sprintf("%0100c", $code_point_a), SPVM::Format->sprintf("%0100c", SPVM::new_any_object_array([SPVM::Byte->new($code_point_a)])));
+      is(sprintf("%03c", $code_point_a), SPVM::Format->sprintf("%03c", SPVM::new_any_object_array([SPVM::Byte->new($code_point_a)])));
+      is(sprintf("%+3c", $code_point_a), SPVM::Format->sprintf("%+3c", SPVM::new_any_object_array([SPVM::Byte->new($code_point_a)])));
+      is(sprintf("%-3c", $code_point_a), SPVM::Format->sprintf("%-3c", SPVM::new_any_object_array([SPVM::Byte->new($code_point_a)])));
+      
+      is(sprintf("%c", $code_point_a), SPVM::Format->sprintf("%c", SPVM::new_any_object_array([SPVM::Int->new($code_point_a)])));
+      is(sprintf("%0100c", $code_point_a), SPVM::Format->sprintf("%0100c", SPVM::new_any_object_array([SPVM::Int->new($code_point_a)])));
+      is(sprintf("%03c", $code_point_a), SPVM::Format->sprintf("%03c", SPVM::new_any_object_array([SPVM::Int->new($code_point_a)])));
+      is(sprintf("%+3c", $code_point_a), SPVM::Format->sprintf("%+3c", SPVM::new_any_object_array([SPVM::Int->new($code_point_a)])));
+      is(sprintf("%-3c", $code_point_a), SPVM::Format->sprintf("%-3c", SPVM::new_any_object_array([SPVM::Int->new($code_point_a)])));
+      is(sprintf("%c", $code_point_unicode_a), SPVM::Format->sprintf("%c", SPVM::new_any_object_array([SPVM::Int->new($code_point_unicode_a)])));
+      is(sprintf("%c", $code_point_unicode_a), SPVM::Format->sprintf("%c", SPVM::new_any_object_array([SPVM::Int->new($code_point_unicode_a)])));
     }
   }
 }

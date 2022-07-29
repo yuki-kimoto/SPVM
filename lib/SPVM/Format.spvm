@@ -207,6 +207,9 @@ class Format {
             $arg_value = $arg->(Int)->value;
           }
           my $formatted_value = Fn->chr($arg_value);
+          if (!$formatted_value) {
+            $formatted_value = "?";
+          }
           &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
         elsif ($specifier eq "s") {
