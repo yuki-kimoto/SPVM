@@ -1,4 +1,4 @@
-0.9630_01 2022-07-28
+0.9629_02 2022-07-29
   [New Features]
     * Add SPVM::new_any_object_array function.
   [Changes]
