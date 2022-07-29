@@ -31,6 +31,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Format->sprintf_lx);
   ok(SPVM::TestCase::Module::Format->sprintf_lX);
   ok(SPVM::TestCase::Module::Format->sprintf_all);
+  like(SPVM::TestCase::Module::Format->sprintf_p_value, qr/^(0(x|X))?[0-9a-fA-F]+$/);
   
   # Extra
   {

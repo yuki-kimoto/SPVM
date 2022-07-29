@@ -472,4 +472,11 @@ class TestCase::Module::Format {
 
     return 1;
   }
+  static method sprintf_p_value : string () {
+    my $string = "abc";
+    
+    my $formatted_string = Format->sprintf("%p", $string);
+    
+    return $formatted_string;
+  }
 }
