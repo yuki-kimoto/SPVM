@@ -854,6 +854,16 @@ class TestCase::NativeAPI {
     return $success;
   }
   native static method native_get_field_object_by_name : int ($simple : TestCase::Simple);
+  static method get_field_object_by_name_v2 : int () {
+    my $simple = TestCase::Simple->new;
+    $simple->{object_value} = TestCase::Minimal->new;
+    $simple->{object_value}{x} = 5;
+    
+    my $success = TestCase::NativeAPI->native_get_field_object_by_name_v2($simple);
+    
+    return $success;
+  }
+  native static method native_get_field_object_by_name_v2 : int ($simple : TestCase::Simple);
 
   static method get_field_object_by_name_exception : int () {
     my $simple = TestCase::Simple->new;

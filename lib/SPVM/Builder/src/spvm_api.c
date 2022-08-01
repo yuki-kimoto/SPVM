@@ -113,10 +113,10 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_isa,
     SPVM_API_elem_isa,
     NULL, // runtime
-    NULL, // reserved16
-    NULL, // native_mortal_stack
-    NULL, // native_mortal_stack_top
-    NULL, // native_mortal_stack_capacity
+    SPVM_API_get_field_object_by_name_v2,
+    NULL, // reserved17
+    NULL, // reserved18
+    NULL, // reserved19
     SPVM_API_get_basic_type_id,
     SPVM_API_get_field_id,
     SPVM_API_get_field_offset,
@@ -934,6 +934,21 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "field not found, class name:%s, field name:%s, signature:%s", class_name, field_name, signature, file, line);
+    return NULL;
+  };
+  SPVM_OBJECT* value = env->get_field_object(env, stack, object, id);
+  return value;
+}
+
+SPVM_OBJECT* SPVM_API_get_field_object_by_name_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* error, const char* file, int32_t line) {
+  *error = 0;
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int32_t id = env->api->runtime->get_field_id_by_name(runtime, class_name, field_name);
+  if (id < 0) {
+    *error = 1;
+    env->die(env, stack, "field not found, class name:%s, field name:%s", class_name, field_name, file, line);
     return NULL;
   };
   SPVM_OBJECT* value = env->get_field_object(env, stack, object, id);

@@ -31,7 +31,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->isa != &env_array[13]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->elem_isa != &env_array[14]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->runtime != &env_array[15]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved16 != &env_array[16]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_object_by_name_v2 != &env_array[16]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved17 != &env_array[17]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved18 != &env_array[18]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved19 != &env_array[19]) { stack[0].ival = 0; return 0; }
@@ -1194,6 +1194,34 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_object_by_name(SPVM_ENV* env
   
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__native_get_field_object_by_name_v2(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  int32_t e;
+  
+  void* object_simple = stack[0].oval;
+  
+  void* object_minimal = env->get_field_object_by_name_v2(env, stack, object_simple, "TestCase::Simple", "object_value", &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  
+  int32_t field_id_minimal_x = env->api->runtime->get_field_id_by_name(env->runtime, "TestCase::Minimal", "x");
+  if (field_id_minimal_x < 0) {
+    return 1;
+  }
+  
+  int32_t x = env->get_field_int(env, stack, object_minimal, field_id_minimal_x);
+  
+  if (x == 5) {
+    stack[0].ival = 1;
+  }
+  else {
+    stack[0].ival = 0;
+  }
+  
+  return 0;
+}
+
 
 int32_t SPVM__TestCase__NativeAPI__native_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;

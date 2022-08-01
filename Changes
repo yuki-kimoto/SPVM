@@ -1,3 +1,6 @@
+0.9631 2022-08-01
+  [Internal Ineffective Changes]
+    * Add get_field_object_by_name_v2 native API.
 0.9630 2022-07-30
   [Bug Fix]
     * Fix the bug that SPVM::new_object_array can't receive non-class object.

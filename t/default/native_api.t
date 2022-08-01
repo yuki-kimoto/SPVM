@@ -118,6 +118,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::NativeAPI->get_field_double_by_name_exception());
   ok(SPVM::TestCase::NativeAPI->get_field_object_by_name());
   ok(SPVM::TestCase::NativeAPI->get_field_object_by_name_exception());
+  ok(SPVM::TestCase::NativeAPI->get_field_object_by_name_v2());
 
   ok(SPVM::TestCase::NativeAPI->set_field_byte_by_name());
   ok(SPVM::TestCase::NativeAPI->set_field_byte_by_name_exception());
