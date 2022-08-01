@@ -115,7 +115,7 @@ struct spvm_env {
   int32_t (*elem_isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
   void* runtime;
   void* (*get_field_object_by_name_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* class_name, const char* field_name, int32_t* error, const char* file, int32_t line);
-  void* reserved17;
+  void (*set_field_object_by_name_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* class_name, const char* field_name, void* value, int32_t* error, const char* file, int32_t line);
   void* reserved18;
   void* reserved19;
   int32_t (*get_basic_type_id)(SPVM_ENV* env, const char* basic_type_name);

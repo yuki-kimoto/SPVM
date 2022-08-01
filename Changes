@@ -1,3 +1,6 @@
+0.9632 2022-08-01
+  [Internal Ineffective Changes]
+    * Add set_field_object_by_name_v2 native API.
 0.9631 2022-08-01
   [Internal Ineffective Changes]
     * Add get_field_object_by_name_v2 native API.

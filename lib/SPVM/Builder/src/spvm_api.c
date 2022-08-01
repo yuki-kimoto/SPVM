@@ -114,7 +114,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_elem_isa,
     NULL, // runtime
     SPVM_API_get_field_object_by_name_v2,
-    NULL, // reserved17
+    SPVM_API_set_field_object_by_name_v2,
     NULL, // reserved18
     NULL, // reserved19
     SPVM_API_get_basic_type_id,
@@ -844,6 +844,18 @@ void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "field not found, class name:%s, field name:%s, signature:%s", class_name, field_name, signature, file, line);
+    return;
+  };
+  env->set_field_object(env, stack, object, id, value);
+}
+
+void SPVM_API_set_field_object_by_name_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* class_name, const char* field_name, SPVM_OBJECT* value, int32_t* error, const char* file, int32_t line) {
+  *error = 0;
+  
+  int32_t id = env->api->runtime->get_field_id_by_name(env->runtime, class_name, field_name);
+  if (id < 0) {
+    *error = 1;
+    env->die(env, stack, "field not found, class name:%s, field name:%s", class_name, field_name, file, line);
     return;
   };
   env->set_field_object(env, stack, object, id, value);

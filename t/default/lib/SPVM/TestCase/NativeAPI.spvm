@@ -686,6 +686,19 @@ class TestCase::NativeAPI {
   }
   native static method native_set_field_object_by_name : int ($simple : TestCase::Simple);
 
+  static method set_field_object_by_name_v2 : int () {
+    my $simple = TestCase::Simple->new;
+    
+    TestCase::NativeAPI->native_set_field_object_by_name_v2($simple);
+    
+    unless ($simple->{object_value}{x} == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native static method native_set_field_object_by_name_v2 : int ($simple : TestCase::Simple);
+  
   static method set_field_object_by_name_exception : int () {
     my $simple = TestCase::Simple->new;
     
