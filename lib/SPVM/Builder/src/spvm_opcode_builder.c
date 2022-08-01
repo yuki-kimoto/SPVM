@@ -194,10 +194,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_REF);
                     opcode.operand0 = arg->mem_id;
                     opcode.operand2 = stack_index;
-                    
-                    int32_t operand3 = type_width;
-                    assert(operand3 < 0xFFFF);
-                    opcode.operand3 = operand3;
                     stack_index++;
                     break;
                   }
@@ -307,9 +303,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
                     opcode.operand0 = arg->mem_id;
                     opcode.operand2 = stack_index;
-                    int32_t operand3 = type_width;
-                    assert(operand3 < 0xFFFF);
-                    opcode.operand3 = operand3;
                     stack_index++;
                     break;
                   }
@@ -331,9 +324,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
                   opcode.operand0 = arg->mem_id;
                   opcode.operand2 = stack_index;
-                  int32_t operand3 = type_width;
-                  assert(operand3 < 0xFFFF);
-                  opcode.operand3 = operand3;
                   stack_index++;
                   break;
                 }
@@ -346,9 +336,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
               opcode.operand0 = arg->mem_id;
               opcode.operand2 = stack_index;
-              int32_t operand3 = type_width;
-              assert(operand3 < 0xFFFF);
-              opcode.operand3 = operand3;
               stack_index++;
             }
             else {
