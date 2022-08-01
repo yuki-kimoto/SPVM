@@ -4043,42 +4043,42 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_BYTE: {
-        int32_t type_width = opcode->operand3;
+        int32_t type_width = opcode->operand3 >> 8;
         for (int32_t field_index = 0; field_index < type_width; field_index++) {
           byte_vars[opcode->operand0 + field_index] = *(int8_t*)&stack[opcode->operand2 + field_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_SHORT: {
-        int32_t type_width = opcode->operand3;
+        int32_t type_width = opcode->operand3 >> 8;
         for (int32_t field_index = 0; field_index < type_width; field_index++) {
           short_vars[opcode->operand0 + field_index] = *(int16_t*)&stack[opcode->operand2 + field_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_INT: {
-        int32_t type_width = opcode->operand3;
+        int32_t type_width = opcode->operand3 >> 8;
         for (int32_t field_index = 0; field_index < type_width; field_index++) {
           int_vars[opcode->operand0 + field_index] = *(int32_t*)&stack[opcode->operand2 + field_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_LONG: {
-        int32_t type_width = opcode->operand3;
+        int32_t type_width = opcode->operand3 >> 8;
         for (int32_t field_index = 0; field_index < type_width; field_index++) {
           long_vars[opcode->operand0 + field_index] = *(int64_t*)&stack[opcode->operand2 + field_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_FLOAT: {
-        int32_t type_width = opcode->operand3;
+        int32_t type_width = opcode->operand3 >> 8;
         for (int32_t field_index = 0; field_index < type_width; field_index++) {
           float_vars[opcode->operand0 + field_index] = *(float*)&stack[opcode->operand2 + field_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_DOUBLE: {
-        int32_t type_width = opcode->operand3;
+        int32_t type_width = opcode->operand3 >> 8;
         for (int32_t field_index = 0; field_index < type_width; field_index++) {
           double_vars[opcode->operand0 + field_index] = *(double*)&stack[opcode->operand2 + field_index];
         }

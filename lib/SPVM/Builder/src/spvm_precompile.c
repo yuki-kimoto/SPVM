@@ -428,7 +428,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t type_width = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    for (int32_t field_index = 0; field_index < type_width; field_index++) {\n"
                                               "      byte_vars[arg_mem_id + field_index] = *(int8_t*)&stack[stack_index + field_index];\n"
@@ -445,7 +445,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t type_width = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    for (int32_t field_index = 0; field_index < type_width; field_index++) {\n"
                                               "      short_vars[arg_mem_id + field_index] = *(int16_t*)&stack[stack_index + field_index];\n"
@@ -462,7 +462,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t type_width = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    for (int32_t field_index = 0; field_index < type_width; field_index++) {\n"
                                               "      int_vars[arg_mem_id + field_index] = *(int32_t*)&stack[stack_index + field_index];\n"
@@ -479,7 +479,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t type_width = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    for (int32_t field_index = 0; field_index < type_width; field_index++) {\n"
                                               "      long_vars[arg_mem_id + field_index] = *(int64_t*)&stack[stack_index + field_index];\n"
@@ -496,7 +496,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t type_width = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    for (int32_t field_index = 0; field_index < type_width; field_index++) {\n"
                                               "      float_vars[arg_mem_id + field_index] = *(float*)&stack[stack_index + field_index];\n"
@@ -513,7 +513,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t type_width = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    for (int32_t field_index = 0; field_index < type_width; field_index++) {\n"
                                               "      double_vars[arg_mem_id + field_index] = *(double*)&stack[stack_index + field_index];\n"

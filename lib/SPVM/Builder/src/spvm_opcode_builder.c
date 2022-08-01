@@ -291,7 +291,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.operand2 = stack_index;
                     int32_t operand3 = type_width;
                     assert(operand3 < 0xFFFF);
-                    opcode.operand3 = operand3;
+                    opcode.operand3 = operand3 << 8;
                     stack_index += type_width;
                     break;
                   }
