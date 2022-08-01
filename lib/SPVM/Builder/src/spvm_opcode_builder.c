@@ -193,7 +193,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   {
                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_REF);
                     opcode.operand0 = arg->mem_id;
-                    opcode.operand2 = stack_index;
+                    opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
                   }
@@ -209,42 +209,42 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_BYTE);
                         opcode.operand0 = arg->mem_id;
-                        opcode.operand2 = stack_index;
+                        opcode.operand3 = stack_index & 0xFF;
                         stack_index++;
                         break;
                       }
                       case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_SHORT);
                         opcode.operand0 = arg->mem_id;
-                        opcode.operand2 = stack_index;
+                        opcode.operand3 = stack_index & 0xFF;
                         stack_index++;
                         break;
                       }
                       case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_INT);
                         opcode.operand0 = arg->mem_id;
-                        opcode.operand2 = stack_index;
+                        opcode.operand3 = stack_index & 0xFF;
                         stack_index++;
                         break;
                       }
                       case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_LONG);
                         opcode.operand0 = arg->mem_id;
-                        opcode.operand2 = stack_index;
+                        opcode.operand3 = stack_index & 0xFF;
                         stack_index++;
                         break;
                       }
                       case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_FLOAT);
                         opcode.operand0 = arg->mem_id;
-                        opcode.operand2 = stack_index;
+                        opcode.operand3 = stack_index & 0xFF;
                         stack_index++;
                         break;
                       }
                       case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_DOUBLE);
                         opcode.operand0 = arg->mem_id;
-                        opcode.operand2 = stack_index;
+                        opcode.operand3 = stack_index & 0xFF;
                         stack_index++;
                         break;
                       }
@@ -288,10 +288,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     opcode.operand0 = arg->mem_id;
-                    opcode.operand2 = stack_index;
-                    int32_t operand3 = type_width;
-                    assert(operand3 < 0xFFFF);
-                    opcode.operand3 = operand3 << 8;
+                    assert(type_width < 0xFFFF);
+                    opcode.operand3 = type_width << 8 | stack_index & 0xFF;
                     stack_index += type_width;
                     break;
                   }
@@ -302,7 +300,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   {
                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
                     opcode.operand0 = arg->mem_id;
-                    opcode.operand2 = stack_index;
+                    opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
                   }
@@ -323,7 +321,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 {
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
                   opcode.operand0 = arg->mem_id;
-                  opcode.operand2 = stack_index;
+                  opcode.operand3 = stack_index & 0xFF;
                   stack_index++;
                   break;
                 }
@@ -335,7 +333,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             else if (arg_type_dimension == 2) {
               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ARG_OBJECT);
               opcode.operand0 = arg->mem_id;
-              opcode.operand2 = stack_index;
+              opcode.operand3 = stack_index & 0xFF;
               stack_index++;
             }
             else {

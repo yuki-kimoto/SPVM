@@ -325,7 +325,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    byte_vars[arg_mem_id] = *(int8_t*)&stack[stack_index];\n"
                                               "  }\n");
@@ -337,7 +337,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    short_vars[arg_mem_id] = *(int16_t*)&stack[stack_index];\n"
                                               "  }\n");
@@ -349,7 +349,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int_vars[arg_mem_id] = *(int32_t*)&stack[stack_index];\n"
                                               "  }\n");
@@ -361,7 +361,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    long_vars[arg_mem_id] = *(int64_t*)&stack[stack_index];\n"
                                               "  }\n");
@@ -373,7 +373,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    float_vars[arg_mem_id] = *(float*)&stack[stack_index];\n"
                                               "  }\n");
@@ -385,7 +385,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    double_vars[arg_mem_id] = *(double*)&stack[stack_index];\n"
                                               "  }\n");
@@ -397,7 +397,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    object_vars[arg_mem_id] = *(void**)&stack[stack_index];\n"
                                               "    void* object = *(void**)&object_vars[arg_mem_id];\n"
@@ -413,7 +413,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    ref_vars[arg_mem_id] = *(void**)&stack[stack_index];\n"
                                               "  }\n");
@@ -425,7 +425,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t type_width = ");
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
@@ -442,7 +442,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t type_width = ");
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
@@ -459,7 +459,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t type_width = ");
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
@@ -476,7 +476,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t type_width = ");
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
@@ -493,7 +493,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t type_width = ");
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
@@ -510,7 +510,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t stack_index = ");
-        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "    int32_t type_width = ");
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
