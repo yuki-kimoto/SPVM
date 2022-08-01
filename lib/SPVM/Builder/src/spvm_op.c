@@ -2889,13 +2889,13 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
   return op_enumeration;
 }
 
-SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_descriptors, SPVM_OP* op_default) {
+SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_descriptors, SPVM_OP* op_optional_arg_default) {
   
   SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl_eternal(compiler, op_var->file, op_var->line);
 
   op_var_decl->uv.var_decl->is_arg = 1;
   
-  op_var_decl->uv.var_decl->op_arg_default = op_default;
+  op_var_decl->uv.var_decl->op_optional_arg_default = op_optional_arg_default;
   
   op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, op_descriptors);
   

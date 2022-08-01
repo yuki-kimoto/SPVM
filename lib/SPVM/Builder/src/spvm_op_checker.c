@@ -4701,18 +4701,18 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         int32_t is_arg_type_is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_mulnum_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
-        // Default
-        int32_t found_default_arg = 0;
-        SPVM_OP* op_arg_default = arg_var_decl->op_arg_default;
-        if (op_arg_default) {
-          found_default_arg = 1;
+        // Optional argument
+        int32_t found_optional_arg = 0;
+        SPVM_OP* op_optional_arg_default = arg_var_decl->op_optional_arg_default;
+        if (op_optional_arg_default) {
+          found_optional_arg = 1;
           if (SPVM_TYPE_is_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
-            if (op_arg_default->id != SPVM_OP_C_ID_CONSTANT) {
-              SPVM_COMPILER_error(compiler, "The default value of the numeric type argument \"%s\" must be a constant value at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
+            if (op_optional_arg_default->id != SPVM_OP_C_ID_CONSTANT) {
+              SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be a constant value at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
               return;
             }
             else {
-              SPVM_TYPE* constant_type = SPVM_OP_get_type(compiler, op_arg_default);
+              SPVM_TYPE* constant_type = SPVM_OP_get_type(compiler, op_optional_arg_default);
               int32_t need_implicite_conversion = 0;
               int32_t narrowing_conversion_error = 0;
               int32_t mutable_invalid = 0;
@@ -4720,29 +4720,29 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
                 compiler,
                 arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
                 constant_type->basic_type->id, constant_type->dimension, constant_type->flag,
-                op_arg_default->uv.constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid
+                op_optional_arg_default->uv.constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid
               );
               
               if (!assignability) {
-                SPVM_COMPILER_error(compiler, "The default value can't be assigned to the numeric type argument \"%s\" at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
+                SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" is invalid. The default value must be assigned to the type of the argument at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
                 return;
               }
             }
           }
           else if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
-            if (op_arg_default->id != SPVM_OP_C_ID_UNDEF) {
-              SPVM_COMPILER_error(compiler, "The default value of the object type argument \"%s\" must be undef at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
+            if (op_optional_arg_default->id != SPVM_OP_C_ID_UNDEF) {
+              SPVM_COMPILER_error(compiler, "The default value of the optional argument that type is an object type \"%s\" must be undef at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
               return;
             }
           }
           else {
-            SPVM_COMPILER_error(compiler, "Invalid argument default value at %s line %d", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "Invalid default value of the optional argument at %s line %d", method->op_method->file, method->op_method->line);
             return;
           }
         }
         else {
-          if (found_default_arg) {
-            SPVM_COMPILER_error(compiler, "The argument after the argument specified the default value must have the default value at %s line %d", method->op_method->file, method->op_method->line);
+          if (found_optional_arg) {
+            SPVM_COMPILER_error(compiler, "The argument after the optional arguments must be an optional argument at %s line %d", method->op_method->file, method->op_method->line);
             return;
           }
         }
