@@ -45,7 +45,7 @@ static int32_t STACK_INDEX_MORTAL_STACK = 510;
 static int32_t STACK_INDEX_MORTAL_STACK_TOP = 509;
 static int32_t STACK_INDEX_MORTAL_STACK_CAPACITY = 508;
 static int32_t STACK_INDEX_MEMORY_BLOCKS_COUNT = 507;
-
+static int32_t STACK_INDEX_ARGS_LENGTH = 506;
 
 
 
@@ -6594,6 +6594,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
       {
         int32_t call_method_id = opcode->operand1;
+        int32_t call_method_args_length = opcode->operand2 >> 16;
+        
         stack_index = 0;
         error = env->call_spvm_method(env, stack, call_method_id);
         if (error == 0) {
