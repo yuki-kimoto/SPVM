@@ -212,6 +212,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   195 get_class_id_by_name
   196 strerror
   197 new_string_array
+  198 get_args_length
+  199 set_args_length
 
 =head2 class_vars_heap
 
@@ -2103,6 +2105,14 @@ Get class id by the class name.
 
 If the class is not found, C<error> is set to C<1>. Otherwise set to C<0>.
 
+=head2 strerror
+
+  const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
+
+Get the value of C<strerror> of C<C language> on thread-safely.
+
+If the length is C<0>, the length is set to C<64>.
+
 =head2 new_string_array
 
   void* (*new_string_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
@@ -2111,13 +2121,17 @@ Create a new string array. This is alias for the following code using L</"new_ob
 
   void* obj_string_array = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, length);
 
-=head2 strerror
+=head2 get_args_length
 
-  const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
+  int32_t (*get_args_length)(SPVM_ENV* env, SPVM_VALUE* stack);
 
-Get the value of C<strerror> of C<C language> on thread-safely.
+Get the length of the arguments specified by the caller.
 
-If the length is C<0>, the length is set to C<64>.
+=head2 set_args_length
+
+  void (*set_args_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
+
+Set the length of the arguments for a method call.
 
 =head1 Compiler Native API
 

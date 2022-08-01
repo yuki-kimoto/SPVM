@@ -207,12 +207,14 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_memory_blocks_count_env!= &env_array[189]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->new_memory_stack != &env_array[190]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->free_memory_stack != &env_array[191]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_memory_blocks_count_stack!= &env_array[192]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_command_info_program_name!= &env_array[193]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_command_info_argv!= &env_array[194]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_memory_blocks_count_stack != &env_array[192]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_command_info_program_name != &env_array[193]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_command_info_argv != &env_array[194]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_class_id_by_name!= &env_array[195]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->strerror!= &env_array[196]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->new_string_array!= &env_array[197]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->strerror != &env_array[196]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->new_string_array != &env_array[197]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_args_length != &env_array[198]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_args_length != &env_array[199]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 
@@ -2767,5 +2769,27 @@ int32_t SPVM__TestCase__NativeAPI__new_string_array_value(SPVM_ENV* env, SPVM_VA
   env->set_elem_object(env, stack, obj_string_array, 1, env->new_string_nolen(env, stack, "def"));
   
   stack[0].oval = obj_string_array;
+  return 0;
+}
+
+
+int32_t SPVM__TestCase__NativeAPI__get_args_length_0(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  stack[0].ival = env->get_args_length(env, stack);
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__get_args_length_1(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  stack[0].ival = env->get_args_length(env, stack);
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__get_args_length_2(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  stack[0].ival = env->get_args_length(env, stack);
+  
   return 0;
 }

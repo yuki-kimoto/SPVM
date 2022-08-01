@@ -3035,7 +3035,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                                 "      error = 1;\n"
                                                 "    }\n");
 
-          SPVM_STRING_BUFFER_add(string_buffer, "    if (!error) { error = env->call_spvm_method(env, stack, call_method_id); }\n");
+          SPVM_STRING_BUFFER_add(string_buffer,
+                                                "    if (!error) {\n"
+                                                "int32_t call_method_args_length = ");
+                                                SPVM_STRING_BUFFER_add_int(string_buffer, call_method_args_length);
+          SPVM_STRING_BUFFER_add(string_buffer,
+                                                ";\n"
+                                                "      env->set_args_length(env, stack, call_method_args_length);\n"
+                                                "      error = env->call_spvm_method(env, stack, call_method_id);\n"
+                                                "\n}\n");
         }
         
         // Call method

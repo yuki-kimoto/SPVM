@@ -1256,4 +1256,33 @@ class TestCase::NativeAPI {
   native static method new_object_array : int ();
   native static method new_string_array : int ();
   native static method new_string_array_value : string[] ();
+  
+  static method get_args_length : int () {
+    {
+      my $args_length = &get_args_length_0;
+      unless ($args_length == 0) {
+        return 0;
+      }
+    }
+    
+    
+    {
+      my $args_length = &get_args_length_1(0);
+      unless ($args_length == 1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $args_length = &get_args_length_2(0, 0);
+      unless ($args_length == 2) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  native static method get_args_length_0 : int ();
+  native static method get_args_length_1 : int ($args0 : int);
+  native static method get_args_length_2 : int ($args0 : int, $args1 : int);
 }
