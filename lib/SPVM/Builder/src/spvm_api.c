@@ -4084,38 +4084,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_BYTE: {
-        byte_vars[opcode->operand1] = *(int8_t*)&stack[opcode->operand2];
-        break;
-      }
-      case SPVM_OPCODE_C_ID_GET_ARG_SHORT: {
-        short_vars[opcode->operand1] = *(int16_t*)&stack[opcode->operand2];
-        break;
-      }
-      case SPVM_OPCODE_C_ID_GET_ARG_INT: {
-        int_vars[opcode->operand1] = *(int32_t*)&stack[opcode->operand2];
-        break;
-      }
-      case SPVM_OPCODE_C_ID_GET_ARG_LONG: {
-        long_vars[opcode->operand1] = *(int64_t*)&stack[opcode->operand2];
-        break;
-      }
-      case SPVM_OPCODE_C_ID_GET_ARG_FLOAT: {
-        float_vars[opcode->operand1] = *(float*)&stack[opcode->operand2];
-        break;
-      }
-      case SPVM_OPCODE_C_ID_GET_ARG_DOUBLE: {
-        double_vars[opcode->operand1] = *(double*)&stack[opcode->operand2];
-        break;
-      }
-      case SPVM_OPCODE_C_ID_GET_ARG_OBJECT: {
-        object_vars[opcode->operand1] = *(void**)&stack[opcode->operand2];
-        void* object = *(void**)&object_vars[opcode->operand1];
-        if (object != NULL) {
-          SPVM_API_INC_REF_COUNT_ONLY(env, stack, object);
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_INT: {
         int_vars[0] = int_vars[opcode->operand1];
         break;
