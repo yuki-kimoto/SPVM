@@ -104,36 +104,36 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Field
 {
-  ok(SPVM::TestCase::NativeAPI->get_field_byte_by_name());
-  ok(SPVM::TestCase::NativeAPI->get_field_byte_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->get_field_short_by_name());
-  ok(SPVM::TestCase::NativeAPI->get_field_short_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->get_field_int_by_name());
-  ok(SPVM::TestCase::NativeAPI->get_field_int_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->get_field_long_by_name());
-  ok(SPVM::TestCase::NativeAPI->get_field_long_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->get_field_float_by_name());
-  ok(SPVM::TestCase::NativeAPI->get_field_float_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->get_field_double_by_name());
-  ok(SPVM::TestCase::NativeAPI->get_field_double_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->get_field_object_by_name());
-  ok(SPVM::TestCase::NativeAPI->get_field_object_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->get_field_object_by_name_v2());
+  ok(SPVM::TestCase::NativeAPI->get_field_byte_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_field_byte_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_field_short_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_field_short_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_field_int_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_field_int_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_field_long_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_field_long_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_field_float_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_field_float_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_field_double_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_field_double_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_field_object_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_field_object_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_field_object_by_name_v2);
 
-  ok(SPVM::TestCase::NativeAPI->set_field_byte_by_name());
-  ok(SPVM::TestCase::NativeAPI->set_field_byte_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->set_field_short_by_name());
-  ok(SPVM::TestCase::NativeAPI->set_field_short_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->set_field_int_by_name());
-  ok(SPVM::TestCase::NativeAPI->set_field_int_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->set_field_long_by_name());
-  ok(SPVM::TestCase::NativeAPI->set_field_long_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->set_field_float_by_name());
-  ok(SPVM::TestCase::NativeAPI->set_field_float_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->set_field_double_by_name());
-  ok(SPVM::TestCase::NativeAPI->set_field_double_by_name_exception());
-  ok(SPVM::TestCase::NativeAPI->set_field_object_by_name());
-  ok(SPVM::TestCase::NativeAPI->set_field_object_by_name_exception());
+  ok(SPVM::TestCase::NativeAPI->set_field_byte_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_field_byte_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_field_short_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_field_short_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_field_int_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_field_int_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_field_long_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_field_long_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_field_float_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_field_float_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_field_double_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_field_double_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_field_object_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_field_object_by_name_exception);
 }
 
 # has_interface
@@ -191,23 +191,23 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Ref
 {
-  ok(SPVM::TestCase::NativeAPI->ref_byte());
-  ok(SPVM::TestCase::NativeAPI->ref_short());
-  ok(SPVM::TestCase::NativeAPI->ref_int());
-  ok(SPVM::TestCase::NativeAPI->ref_long());
-  ok(SPVM::TestCase::NativeAPI->ref_float());
-  ok(SPVM::TestCase::NativeAPI->ref_double());
+  ok(SPVM::TestCase::NativeAPI->ref_byte);
+  ok(SPVM::TestCase::NativeAPI->ref_short);
+  ok(SPVM::TestCase::NativeAPI->ref_int);
+  ok(SPVM::TestCase::NativeAPI->ref_long);
+  ok(SPVM::TestCase::NativeAPI->ref_float);
+  ok(SPVM::TestCase::NativeAPI->ref_double);
 }
 
 # Native Exception
 {
   is(SPVM::TestCase::NativeAPI2->mul(2, 3), 6);
-  ok(SPVM::TestCase::NativeAPI2->spvm_extension2());
+  ok(SPVM::TestCase::NativeAPI2->spvm_extension2);
 }
 
 # Pointer
 {
-  ok(SPVM::TestCase::Pointer->struct_test());
+  ok(SPVM::TestCase::Pointer->struct_test);
 }
 
 # src and include directory
