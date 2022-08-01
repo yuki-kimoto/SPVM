@@ -133,18 +133,18 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_class_var_id_by_index,
     SPVM_API_RUNTIME_get_class_var_id_by_name,
     SPVM_API_RUNTIME_get_class_var_name_id,
-    SPVM_API_RUNTIME_get_class_var_signature_id,
+    NULL, // reserved36
     SPVM_API_RUNTIME_get_class_var_class_id,
     SPVM_API_RUNTIME_get_field_id_by_index,
     SPVM_API_RUNTIME_get_field_id_by_name,
     SPVM_API_RUNTIME_get_field_name_id,
     SPVM_API_RUNTIME_get_field_type_id,
-    SPVM_API_RUNTIME_get_field_signature_id,
+    NULL, // reserved42
     SPVM_API_RUNTIME_get_field_class_id,
     SPVM_API_RUNTIME_get_method_id_by_index,
     SPVM_API_RUNTIME_get_method_id_by_name,
     SPVM_API_RUNTIME_get_method_name_id,
-    SPVM_API_RUNTIME_get_method_signature_id,
+    NULL, // reserved47
     SPVM_API_RUNTIME_get_method_return_type_id,
     SPVM_API_RUNTIME_get_method_class_id,
     SPVM_API_RUNTIME_get_method_is_class_method,
@@ -633,17 +633,6 @@ int32_t SPVM_API_RUNTIME_get_class_var_name_id(SPVM_RUNTIME* runtime, int32_t cl
   return name_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_class_var_signature_id(SPVM_RUNTIME* runtime, int32_t class_var_id) {
-  
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
-
-  assert(class_var);
-
-  int32_t signature_id = class_var->signature_id;
-  
-  return signature_id;
-}
-
 int32_t SPVM_API_RUNTIME_get_class_var_class_id(SPVM_RUNTIME* runtime, int32_t class_var_id) {
   
   SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
@@ -716,17 +705,6 @@ int32_t SPVM_API_RUNTIME_get_field_name_id(SPVM_RUNTIME* runtime, int32_t field_
   int32_t field_name_id = field->name_id;
   
   return field_name_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_field_signature_id(SPVM_RUNTIME* runtime, int32_t field_id) {
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
-
-  assert(field);
-
-  int32_t signature_id = field->signature_id;
-  
-  return signature_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char* class_name, const char* method_name) {
@@ -1005,18 +983,6 @@ int32_t SPVM_API_RUNTIME_get_method_is_precompile(SPVM_RUNTIME* runtime, int32_t
   return method->is_precompile;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_signature_id(SPVM_RUNTIME* runtime, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-
-  assert(method);
-
-  int32_t signature_id = method->signature_id;
-  
-  return signature_id;
-}
-
-
 int32_t SPVM_API_RUNTIME_get_method_args_length(SPVM_RUNTIME* runtime, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
@@ -1208,8 +1174,6 @@ void* SPVM_API_RUNTIME_get_precompile_method_address(SPVM_RUNTIME* runtime, int3
 
 int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t class_basic_type_id, int32_t interface_basic_type_id) {
 
-  int32_t has_interface;
-  
   SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, class_basic_type_id);
   SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, interface_basic_type_id);
   
@@ -1227,24 +1191,16 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t clas
   assert(interface->required_method_id >= 0);
   
   SPVM_RUNTIME_METHOD* method_interface = SPVM_API_RUNTIME_get_method(runtime, interface->required_method_id);
-
+  
   const char* method_interface_name =  SPVM_API_RUNTIME_get_constant_string_value(runtime, method_interface->name_id, NULL);
   
   SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_interface_name);
-  if (!found_method) {
-    return 0;
-  }
-  
-  const char* method_interface_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_interface->signature_id, NULL);
-  const char* found_method_signature = SPVM_API_RUNTIME_get_constant_string_value(runtime, found_method->signature_id, NULL);
-  if (strcmp(method_interface_signature, found_method_signature) == 0) {
+  if (found_method) {
     return 1;
   }
   else {
     return 0;
   }
-
-  return has_interface;
 }
 
 int32_t SPVM_API_RUNTIME_is_super_class_by_id(SPVM_RUNTIME* runtime, int32_t super_class_basic_type_id, int32_t child_class_basic_type_id) {

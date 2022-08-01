@@ -61,16 +61,6 @@ sub get_method_names {
   return $method_names;
 }
 
-sub get_method_signature {
-  my ($self, $class_name, $method_name) = @_;
-  
-  my $builder = $self->{builder};
-  
-  my $method_signature = $builder->get_method_signature($class_name, $method_name);
-  
-  return $method_signature;
-}
-
 sub build_dynamic_lib_dist_precompile {
   my ($self, $class_name) = @_;
   
@@ -121,12 +111,8 @@ SPVM::Builder::API - SPVM Builder Public APIs
   for my $class_name (@$class_names) {
     # Method names
     my $method_names = $api->get_method_names($class_name);
-    
     for my $method_name (@$method_names) {
-      # Method signature
-      my $method_signature = $api->get_method_signature($class_name, $method_name);
-      
-      print "$class_name->$method_name: $method_signature\n";
+      print "$class_name->$method_name\n";
     }
   }
   
@@ -188,15 +174,6 @@ Get class names as array reference.
   my $method_names = $api->get_method_names($class_name);
 
 Get method names as array reference.
-
-=head2 get_method_signature
-
-  # Method signature
-  my $method_signature = $api->get_method_signature($class_name, $method_name);
-
-Get the method signature. The first argument is a class name. The second argument is a method name.
-
-About method signatures, see L<SPVM::Document::LanguageSpecification>.
 
 =head2 build_dynamic_lib_dist_precompile
 

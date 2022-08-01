@@ -43,7 +43,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::NativeAPI->new_object_by_name_exception);
 }
 
-
 # new_pointer_by_name
 {
   ok(SPVM::TestCase::NativeAPI->new_pointer_by_name);

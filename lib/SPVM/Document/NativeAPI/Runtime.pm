@@ -57,18 +57,18 @@ Runtime native APIs have its IDs.
   33 get_class_var_id_by_index
   34 get_class_var_id_by_name
   35 get_class_var_name_id
-  36 get_class_var_signature_id
+  36 reserved36
   37 get_class_var_class_id
   38 get_field_id_by_index
   39 get_field_id_by_name
   40 get_field_name_id
   41 get_field_type_id
-  42 get_field_signature_id
+  42 reserved42
   43 get_field_class_id
   44 get_method_id_by_index
   45 get_method_id_by_name
   46 get_method_name_id
-  47 get_method_signature_id
+  47 reserved47
   48 get_method_return_type_id
   49 get_method_class_id
   50 get_method_is_class_method
@@ -251,9 +251,11 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_class_var_name_id)(void* runtime, int32_t class_var_id);
 
-=head2 get_class_var_signature_id
+=head2 reserved36
 
-  int32_t (*get_class_var_signature_id)(void* runtime, int32_t class_var_id);
+  void* reserved36;
+
+Reserved.
 
 =head2 get_class_var_class_id
 
@@ -275,9 +277,11 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_field_type_id)(void* runtime, int32_t field_id);
 
-=head2 get_field_signature_id
+=head2 reserved47
 
-  int32_t (*get_field_signature_id)(void* runtime, int32_t field_id);
+  void* reserved47;
+
+Reserved.
 
 =head2 get_field_class_id
 
@@ -295,9 +299,11 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_method_name_id)(void* runtime, int32_t method_id);
 
-=head2 get_method_signature_id
+=head2 reserved47
 
-  int32_t (*get_method_signature_id)(void* runtime, int32_t method_id);
+  void* reserved47;
+
+Reserved.
 
 =head2 get_method_return_type_id
 

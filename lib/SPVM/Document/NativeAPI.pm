@@ -364,15 +364,13 @@ B<Examples:>
 
 =head2 get_field_id
 
-  int32_t (*get_field_id)(SPVM_ENV* env, const char* class_name, const char* field_name, const char* signature);
+  int32_t (*get_field_id)(SPVM_ENV* env, const char* class_name, const char* field_name);
 
-Get the ID of the field given the class name, field name, and signature. If the field does not exist, a value less than 0 is returned.
-
-The signature is the same as the field type name.
+Get the ID of the field given the class name, field name. If the field does not exist, a value less than 0 is returned.
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x", "int");
+  int32_t field_id = env->get_field_id(env, "Foo", "x");
 
 =head2 get_field_offset
 
@@ -382,47 +380,37 @@ Gets the offset of the field given the field ID. The field ID must be a valid fi
 
 =head2 get_class_var_id
 
-  int32_t (*get_class_var_id)(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* signature);
+  int32_t (*get_class_var_id)(SPVM_ENV* env, const char* class_name, const char* class_var_name);
 
-Get the class variable ID given the class name, class variable name and signature. If the class variable does not exist, a value less than 0 is returned.
-
-The signature is the same as the class variable type name.
+Get the class variable ID given the class name, class variable name. If the class variable does not exist, a value less than 0 is returned.
 
 B<Examples:>
 
-  int32_t pkgvar_id = env->get_class_var_id(env, "Foo", "$VAR", "int");
+  int32_t pkgvar_id = env->get_class_var_id(env, "Foo", "$VAR");
 
 =head2 get_class_method_id
 
-  int32_t (*get_class_method_id)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
+  int32_t (*get_class_method_id)(SPVM_ENV* env, const char* class_name, const char* method_name);
 
-Get a class method ID by the class name, the method name, and the method signature. If the class method does not exists, a negative value is returned.
+Get a class method ID by the class name, the method name. If the class method does not exists, a negative value is returned.
 
 This ID is used by L<"call_class_method">.
 
-The method signature has the following format.
-
-  ReturnValueType(ArgumentType1,ArgumentType2,...)
-
 B<Examples:>
 
-  int32_t method_id = env->get_class_method_id(env, "Foo", "get", "int(long,string)");
+  int32_t method_id = env->get_class_method_id(env, "Foo", "get");
 
 =head2 get_instance_method_id
 
-  int32_t (*get_instance_method_id)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+  int32_t (*get_instance_method_id)(SPVM_ENV* env, void* object, const char* method_name);
 
-Get a instance method ID by the object, the method name, and the method signatre. If the instance method does not exist, a negative value is returned.
+Get a instance method ID by the object, the method name. If the instance method does not exist, a negative value is returned.
 
 This ID is used by L<"call_instance_method">.
 
-The method signature has the following format,
-
-  ReturnValueType(ArgumentType1,ArgumentType2,...)
-
 B<Examples:>
 
-  int32_t method_id = env->get_instance_method_id(env, object, "get", "int(long,string)");
+  int32_t method_id = env->get_instance_method_id(env, object, "get");
 
 =head2 new_object_raw
 
@@ -1442,7 +1430,7 @@ B<Examples:>
 =head2 set_field_object_by_name
 
   void (*set_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name, const char* signature, void* value,
+    const char* class_name, const char* field_name, void* value,
     int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_field_object> function, but you can specify class name and field name directry.
@@ -1554,7 +1542,7 @@ B<Examples:>
 =head2 get_field_object_by_name
 
   void* (*get_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name, const char* signature,
+    const char* class_name, const char* field_name,
     int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_field_object> function, but you can specify class name and field name directry.
@@ -1666,7 +1654,7 @@ B<Examples:>
 =head2 set_class_var_object_by_name
 
   void (*set_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name, const char* signature, void* value,
+    const char* class_name, const char* class_var_name, void* value,
     int32_t* error, const char* file, int32_t line);
 
 This is same as C<set_class_var_object> function, but you can specify the class name directry.
@@ -1778,7 +1766,7 @@ B<Examples:>
 =head2 get_class_var_object_by_name
 
   void* (*get_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name, const char* signature,
+    const char* class_name, const char* class_var_name,
     int32_t* error, const char* file, int32_t line);
 
 This is same as C<get_class_var_object> function, but you can specify the class name directry.
@@ -1794,7 +1782,7 @@ B<Examples:>
 =head2 call_class_method_by_name
 
   int32_t (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* method_name, const char* signature,
+    const char* class_name, const char* method_name,
     const char* file, int32_t line);
 
 This is same as C<call_spvm_method> function, but you can specify the class name and sub name directry.
@@ -1814,7 +1802,7 @@ B<Examples:>
 =head2 call_instance_method_by_name
 
   int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* method_name, const char* signature,
+    const char* method_name,
     const char* file, int32_t line);
 
 B<Examples:>
@@ -1855,19 +1843,15 @@ Alias for L<"call_spvm_method">
 
 =head2 get_instance_method_id_static
 
-  int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
+  int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* class_name, const char* method_name);
 
-Get a instance method ID by the class name, the method name, and the method signature. If the instance method does not exists, a negative value is returned.
+Get a instance method ID by the class name, the method name. If the instance method does not exists, a negative value is returned.
 
 This ID is used by L<"call_instance_method">.
 
-The method signature has the following format.
-
-  ReturnValueType(ArgumentType1,ArgumentType2,...)
-
 B<Examples:>
 
-  int32_t method_id = env->get_instance_method_id_static(env, "Foo", "get", "int(long,string)");
+  int32_t method_id = env->get_instance_method_id_static(env, "Foo", "get");
 
 =head2 get_bool_object_value
 
@@ -2035,7 +2019,7 @@ Call C<INIT> blocks.
 
 =head2 get_instance_method_id_super
 
-  int32_t (*get_instance_method_id_super)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+  int32_t (*get_instance_method_id_super)(SPVM_ENV* env, void* object, const char* method_name);
 
 =head2 new_memory_env
 

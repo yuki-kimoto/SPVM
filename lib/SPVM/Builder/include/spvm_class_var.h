@@ -5,7 +5,6 @@
 
 struct spvm_class_var {
   const char* name;
-  const char* signature;
   SPVM_TYPE* type;
   SPVM_CLASS* class;
   SPVM_OP* op_class_var;

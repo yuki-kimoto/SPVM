@@ -566,10 +566,10 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   const char* class_name = "$class_name";
   
   // Class
-  int32_t method_id = env->get_class_method_id(env, class_name, "main", "int(string,string[])");
+  int32_t method_id = env->get_class_method_id(env, class_name, "main");
   
   if (method_id < 0) {
-    fprintf(stderr, "Can't find %s->main method", class_name);
+    fprintf(stderr, "The class method %s->main is not defined\\n", class_name);
     return -1;
   }
   

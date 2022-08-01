@@ -11,7 +11,6 @@ struct spvm_runtime_method {
   int32_t opcodes_length;
   int32_t id;
   int32_t name_id;
-  int32_t signature_id;
   int32_t class_id;
   int32_t call_stack_byte_vars_length;
   int32_t call_stack_short_vars_length;

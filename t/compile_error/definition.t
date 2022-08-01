@@ -99,12 +99,11 @@ use Test::More;
     compile_not_ok_file('CompileError::Interface::NativeMethod', qr/interface.+native/i);
     compile_not_ok_file('CompileError::Interface::StaticMethod', qr/interface.+instance/i);
     compile_not_ok_file('CompileError::Interface::ArrayElementCantAssign', qr/List to Stringable/i);
-    compile_not_ok_file('CompileError::Interface::NotHaveInterfaceMethod', qr/CompileError::Interface::NotHaveInterfaceMethod.+to_string.*string\(self\).+interface.+Stringable/i);
+    compile_not_ok_file('CompileError::Interface::NotHaveInterfaceMethod', qr/CompileError::Interface::NotHaveInterfaceMethod.+to_string.+interface.+Stringable/i);
     compile_not_ok_file('CompileError::Interface::NoMethods', qr/one required method/i);
     compile_not_ok_file('CompileError::Interface::MultiRequiredMethods', qr/multiple required method/i);
     compile_not_ok_file('CompileError::Interface::HasImplNotFound', qr/interface.+TestCase::Pointable.+the method declaration.+not_found/i);
   }
-
   # Class variable difinition
   {
     # Access control

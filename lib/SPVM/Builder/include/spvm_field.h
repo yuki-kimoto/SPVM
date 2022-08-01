@@ -7,7 +7,6 @@ struct spvm_field {
   SPVM_OP* op_field;
   SPVM_OP* op_name;
   const char* name;
-  const char* signature;
   SPVM_TYPE* type;
   SPVM_CLASS* class;
   int32_t id;

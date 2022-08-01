@@ -3050,36 +3050,6 @@ Note that SPVM does not perform constant convolution optimization, so if a const
   # This is not Constant Method.  Inline Expansion is not performed
   static method foo : int () { return 5 + 3; }
 
-=head2 Signature
-
-A signature is a string that represents the return type and the types of the arguments of a L<method|/"Method">.
-
-  RETURN_TYPE(ARG_TYPE1,ARG_TYPE2,ARG_TYPEn)
-
-It the method is an L<instance method|/"Instance Method">, the type representation of the first argument is C<self>.
-
-B<Examples:>
-
-  # Method Definition
-  static method foo : int ($num1 : double, $num2 : long[])
-  
-  # The signature
-  int(double,long[])
-  
-  # Method Definition
-  static method foo : void ()
-  
-  # The signature
-  void()
-  
-  # Method Definition
-  method foo : int ($num1 : double, $num2 : long[])
-  
-  # Signature
-  int(self,double,long[])
-
-Signatures are used by L<native APIs|SPVM::Document::NativeAPI>.
-
 =head1 Enumeration
 
 The enumeration defines constant values.

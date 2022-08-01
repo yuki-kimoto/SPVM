@@ -4669,10 +4669,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "mulnum_t type can't become class variable at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
         return;
       }
-
-      // Create class var signature
-      const char* class_var_signature = SPVM_COMPILER_create_class_var_signature(compiler, class_var);
-      class_var->signature = class_var_signature;
     }
     
     // Check fields
@@ -4686,10 +4682,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "mulnum_t type can't become field at %s line %d", field->op_field->file, field->op_field->line);
         return;
       }
-      
-      // Create field signature
-      const char* field_signature = SPVM_COMPILER_create_field_signature(compiler, field);
-      field->signature = field_signature;
     }
     
     // Check methods
@@ -4781,10 +4773,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
 
-      // Create method signature
-      const char* method_signature = SPVM_COMPILER_create_method_signature(compiler, method);
-      method->signature = method_signature;
-
       // Copy has_precomile_descriptor from anon method defined class
       if (method->anon_method_defined_class_name) {
         SPVM_CLASS* anon_method_defined_class = SPVM_HASH_get(compiler->class_symtable, method->anon_method_defined_class_name, strlen(method->anon_method_defined_class_name));
@@ -4852,14 +4840,11 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       for (int32_t i = 0; i < class->methods->length; i++) {
         SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
         if (strcmp(method->name, required_method->name) == 0) {
-          if (strcmp(method->signature, required_method->signature) == 0) {
-            method_found = 1;
-            break;
-          }
+          method_found = 1;
         }
       }
       if (!method_found) {
-        SPVM_COMPILER_error(compiler, "The class \"%s\" must have the method \"%s\" with the signature \"%s\" defined in the interface \"%s\" at %s line %d", class->name, required_method->name, required_method->signature, interface->name, class->op_class->file, class->op_class->line);
+        SPVM_COMPILER_error(compiler, "The class \"%s\" must have the method \"%s\" defined in the interface \"%s\" at %s line %d", class->name, required_method->name, interface->name, class->op_class->file, class->op_class->line);
       }
     }
   }
@@ -4988,7 +4973,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         else {
           new_field = SPVM_FIELD_new(compiler);
           new_field->name = field->name;
-          new_field->signature = field->signature;
           new_field->class = cur_class;
           new_field->type = field->type;
           new_field->access_control_type = field->access_control_type;

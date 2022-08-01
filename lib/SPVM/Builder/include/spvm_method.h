@@ -6,7 +6,6 @@
 // Method information
 struct spvm_method {
   const char* name;
-  const char* signature;
   SPVM_OP* op_method;
   SPVM_OP* op_name;
   SPVM_OP* op_block;

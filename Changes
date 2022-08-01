@@ -1,3 +1,7 @@
+0.9632_01 2022-08-01
+  [Incompatible Changes]
+    * All the implementations, native APIs, documents about the concept of "signature" are removed.
+    * The precompiled methods don't use get_field_id_cache, get_class_var_id_cache, get_method_id_cache.
 0.9632 2022-08-01
   [Internal Ineffective Changes]
     * Add set_field_object_by_name_v2 native API.

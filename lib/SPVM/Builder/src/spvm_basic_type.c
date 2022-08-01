@@ -307,9 +307,7 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_bas
     
     SPVM_METHOD* method_class = SPVM_HASH_get(parent_class->method_symtable, method_interface->name, strlen(method_interface->name));
     if (method_class) {
-      if (strcmp(method_class->signature, method_interface->signature) == 0) {
-        return 1;
-      }
+      return 1;
     }
     
     const char* parent_class_name = parent_class->parent_class_name;
