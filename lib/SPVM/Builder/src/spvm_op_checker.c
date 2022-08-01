@@ -2499,7 +2499,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               
-              int32_t args_count = call_method->method->args_length;
+              int32_t args_length = call_method->method->args_length;
               int32_t method_is_vaarg = call_method->method->have_vaarg;
 
               // Variable length argument. Last argument is not array.
@@ -2508,7 +2508,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 int32_t arg_index = 0;
                 SPVM_OP* op_operand = op_list_args->first;
                 while ((op_operand = SPVM_OP_sibling(compiler, op_operand))) {
-                  if (arg_index == args_count - 1) {
+                  if (arg_index == args_length - 1) {
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_operand);
                     if (!SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                       vaarg_last_arg_is_not_array = 1;
@@ -2519,7 +2519,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 // Empty vaargs 
-                if (arg_index == args_count - 1) {
+                if (arg_index == args_length - 1) {
                   vaarg_last_arg_is_not_array = 1;
                 }
               }
@@ -2563,7 +2563,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                   op_operand_element->no_need_check = 1;
 
-                  if (arg_index < args_count - 1) {
+                  if (arg_index < args_length - 1) {
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand_element);
                     SPVM_OP_insert_child(compiler, op_list_args_new, op_list_args_new->last, op_operand_element);
                     op_operand_element = op_stab;
@@ -2615,23 +2615,23 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 op_list_args = op_list_args_new;
               }
               
-              int32_t call_method_args_count = 0;
+              int32_t call_method_args_length = 0;
               {
                 SPVM_OP* op_operand = op_list_args->first;
                 while ((op_operand = SPVM_OP_sibling(compiler, op_operand))) {
-                  call_method_args_count++;
-                  if (call_method_args_count > args_count) {
+                  call_method_args_length++;
+                  if (call_method_args_length > args_length) {
                     SPVM_COMPILER_error(compiler, "Too many arguments \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                     return;
                   }
                   
-                  SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(call_method->method->var_decls, call_method_args_count - 1);
+                  SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(call_method->method->var_decls, call_method_args_length - 1);
                   SPVM_TYPE* arg_var_decl_type = arg_var_decl->type;
                   
                   // Check if source can be assigned to dist
                   // If needed, numeric conversion op is added
                   char place[50];
-                  sprintf(place, "%dth argument", call_method_args_count);
+                  sprintf(place, "%dth argument", call_method_args_length);
                   
                   // Invocant is not checked.
                   op_operand = SPVM_OP_CHECKER_check_assign(compiler, arg_var_decl_type, op_operand, place, op_cur->file, op_cur->line);
@@ -2642,10 +2642,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               
-              if (call_method_args_count < args_count) {
-                SPVM_COMPILER_error(compiler, "Too few argument \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
+              if (call_method_args_length < args_length) {
+                SPVM_COMPILER_error(compiler, "Too few arguments \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                 return;
               }
+              
+              call_method->args_length = call_method_args_length;
               
               if (call_method->method->is_destructor) {
                 SPVM_COMPILER_error(compiler, "Can't call DESTROY in yourself at %s line %d", op_cur->file, op_cur->line);
