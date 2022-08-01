@@ -521,6 +521,182 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n");
         break;
       }
+      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_BYTE: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t arg_mem_id = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t stack_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_length = env->get_args_length(env, stack);\n"
+                                              "    if (args_index > args_length) {\n"
+                                              "      byte_vars[arg_mem_id] = ");
+        SPVM_STRING_BUFFER_add_byte(string_buffer, (int8_t)(uint8_t)opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      byte_vars[arg_mem_id] = *(int8_t*)&stack[stack_index];\n"
+                                              "    }\n"
+                                              "  }\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_SHORT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t arg_mem_id = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t stack_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_length = env->get_args_length(env, stack);\n"
+                                              "    if (args_index > args_length) {\n"
+                                              "      short_vars[arg_mem_id] = ");
+        SPVM_STRING_BUFFER_add_short(string_buffer, (int16_t)(uint16_t)opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      short_vars[arg_mem_id] = *(int16_t*)&stack[stack_index];\n"
+                                              "    }\n"
+                                              "  }\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_INT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t arg_mem_id = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t stack_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_length = env->get_args_length(env, stack);\n"
+                                              "    if (args_index > args_length) {\n"
+                                              "      int_vars[arg_mem_id] = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, (int32_t)opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      int_vars[arg_mem_id] = *(int32_t*)&stack[stack_index];\n"
+                                              "    }\n"
+                                              "  }\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_LONG: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t arg_mem_id = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t stack_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_length = env->get_args_length(env, stack);\n"
+                                              "    if (args_index > args_length) {\n"
+                                              "      long_vars[arg_mem_id] = ");
+        SPVM_STRING_BUFFER_add_long(string_buffer, *(int64_t*)&opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      long_vars[arg_mem_id] = *(int64_t*)&stack[stack_index];\n"
+                                              "    }\n"
+                                              "  }\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_FLOAT: {
+        SPVM_VALUE value;
+        value.ival = (int32_t)opcode->operand1;
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t arg_mem_id = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t stack_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_length = env->get_args_length(env, stack);\n"
+                                              "    if (args_index > args_length) {\n"
+                                              "      SPVM_VALUE tmp_constant;\n"
+                                              "      float_vars[arg_mem_id] = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = (tmp_constant.ival = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, value.ival);
+        SPVM_STRING_BUFFER_add(string_buffer, ", tmp_constant.fval);\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      float_vars[arg_mem_id] = *(float*)&stack[stack_index];\n"
+                                              "    }\n"
+                                              "  }\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_DOUBLE: {
+        double double_value = *(double*)&opcode->operand1;
+        SPVM_VALUE value;
+        value.dval = double_value;
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t arg_mem_id = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t stack_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_length = env->get_args_length(env, stack);\n"
+                                              "    if (args_index > args_length) {\n"
+                                              "      SPVM_VALUE tmp_constant;\n"
+                                              "      double_vars[arg_mem_id] = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = (tmp_constant.lval = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, value.ival);
+        SPVM_STRING_BUFFER_add(string_buffer, ", tmp_constant.dval);\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      double_vars[arg_mem_id] = *(double*)&stack[stack_index];\n"
+                                              "    }\n"
+                                              "  }\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_OBJECT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    int32_t arg_mem_id = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t stack_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_index = ");
+        SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t args_length = env->get_args_length(env, stack);\n"
+                                              "    if (args_index > args_length) {\n"
+                                              "      object_vars[arg_mem_id] = NULL;\n"
+                                              "    }\n"
+                                              "    else {\n"
+                                              "      object_vars[arg_mem_id] = *(void**)&stack[stack_index];\n"
+                                              "      void* object = *(void**)&object_vars[arg_mem_id];\n"
+                                              "      if (object != NULL) {\n"
+                                              "        SPVM_API_INC_REF_COUNT_ONLY(env, stack, object);\n"
+                                              "      }\n"
+                                              "    }\n"
+                                              "  }\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_INT: {
         SPVM_PRECOMPILE_add_bool(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         break;
@@ -1359,7 +1535,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_STRING_BUFFER_add_char(string_buffer, (int8_t)opcode->operand1);
+        SPVM_STRING_BUFFER_add_byte(string_buffer, (int8_t)opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
