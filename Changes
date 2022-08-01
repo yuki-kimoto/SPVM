@@ -1,7 +1,46 @@
 0.9632_01 2022-08-01
+  [Improve Exception Messages]
+    * Improve exception messages in native APIs.
   [Incompatible Changes]
-    * All the implementations, native APIs, documents about the concept of "signature" are removed.
+    * All the implementations, the fields, the arguments, native APIs, documents about the concept of "signature" are removed.
+    * The definitions of the following native APIs are changed.
+      [Before]
+      int32_t (*get_field_id)(SPVM_ENV* env, const char* class_name, const char* field_name, const char* signature);
+      int32_t (*get_class_var_id)(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* signature);
+      int32_t (*get_class_method_id)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
+      int32_t (*get_instance_method_id)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+      void (*set_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* class_name, const char* field_name, const char* signature, void* value, int32_t* error, const char* file, int32_t line);
+      void* (*get_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* class_name, const char* field_name, const char* signature, int32_t* error, const char* file, int32_t line);
+      void (*set_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, const char* signature, void* value, int32_t* error, const char* file, int32_t line);
+      void* (*get_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, const char* signature, int32_t* error, const char* file, int32_t line);
+      int32_t (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, const char* signature, const char* file, int32_t line);
+      int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name, const char* signature, const char* file, int32_t line);
+      int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
+      int32_t (*get_instance_method_id_super)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+      
+    [After]
+      int32_t (*get_field_id)(SPVM_ENV* env, const char* class_name, const char* field_name);
+      int32_t (*get_class_var_id)(SPVM_ENV* env, const char* class_name, const char* class_var_name);
+      int32_t (*get_class_method_id)(SPVM_ENV* env, const char* class_name, const char* method_name);
+      int32_t (*get_instance_method_id)(SPVM_ENV* env, void* object, const char* method_name);
+      void (*set_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* class_name, const char* field_name, void* value, int32_t* error, const char* file, int32_t line);
+      void* (*get_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* class_name, const char* field_name, int32_t* error, const char* file, int32_t line);
+      void (*set_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, void* value, int32_t* error, const char* file, int32_t line);
+      void* (*get_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, int32_t* error, const char* file, int32_t line);
+      int32_t (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, const char* file, int32_t line);
+      int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name, const char* file, int32_t line);
+      int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* class_name, const char* method_name);
+      int32_t (*get_instance_method_id_super)(SPVM_ENV* env, void* object, const char* method_name);
+      
+    * The definitions of the following runtime native APIs are removed.
+      int32_t (*get_class_var_signature_id)(void* runtime, int32_t class_var_id);
+      int32_t (*get_field_signature_id)(void* runtime, int32_t field_id);
+      int32_t (*get_method_signature_id)(void* runtime, int32_t method_id);
+      
     * The precompiled methods don't use get_field_id_cache, get_class_var_id_cache, get_method_id_cache.
+  [Internal Ineffective Changes]
+    * Rename the opcode SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE to SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_NAME.
+    * Remove signature_id fields in spvm_runtime_class_var, spvm_runtime_field, spvm_runtime_method, 
 0.9632 2022-08-01
   [Internal Ineffective Changes]
     * Add set_field_object_by_name_v2 native API.
