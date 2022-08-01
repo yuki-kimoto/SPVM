@@ -7,6 +7,7 @@ struct spvm_var_decl {
   SPVM_OP* op_var_decl;
   SPVM_TYPE* type;
   SPVM_VAR* var;
+  SPVM_OP* op_arg_default;
   int32_t id;
   int32_t mem_id;
   int32_t arg_id;
