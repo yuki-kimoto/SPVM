@@ -190,9 +190,9 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   173 copy
   174 shorten
   175 has_interface
-  176 get_method_id_cache
-  177 get_field_id_cache
-  178 get_class_var_id_cache
+  176 reserved176
+  177 reserved177
+  178 reserved178
   179 print
   180 print_stderr
   181 init_env,
@@ -1960,23 +1960,17 @@ The charaters of the after the given length are filled with C<\0>.
 
 Check the type of the object has the interface.
 
-=head2 get_method_id_cache
+=head2 reserved176
 
-  int32_t (*get_method_id_cache)(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
+  void* reserved176
 
-Get the method ID from the method cache name. The method ID is cacahed.
+=head2 reserved177
 
-=head2 get_field_id_cache
+  void* reserved177
 
-  int32_t (*get_field_id_cache)(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
+=head2 reserved178
 
-Get the method ID from the field cache name. The field ID is cacahed.
-
-=head2 get_class_var_id_cache
-
-  int32_t (*get_class_var_id_cache)(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
-
-Get the class variable ID from the class variable cache name. The class variable ID is cacahed.
+  void* reserved178
 
 =head2 print
 

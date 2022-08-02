@@ -4,6 +4,8 @@
     * Add the following native APIs. The length of the arguments can be got in the native module.
       int32_t (*get_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack);
       void (*set_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
+    * Add the following runtime native APIs.
+      int32_t (*get_method_required_args_length)(void* runtime, int32_t method_id);
   [Improve Exception Messages]
     * Improve exception messages in native APIs.
   [Incompatible Changes]
@@ -61,6 +63,10 @@
       int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name, int32_t args_stack_length, const char* file, int32_t line);
       int32_t (*call_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
       int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
+    * The definitions of the following native APIs are removed.
+      int32_t (*get_method_id_cache)(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
+      int32_t (*get_field_id_cache)(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
+      int32_t (*get_class_var_id_cache)(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
   [Internal Ineffective Changes]
     * Rename the opcode SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE to SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_NAME.
     * Remove signature_id fields in spvm_runtime_class_var, spvm_runtime_field, spvm_runtime_method.

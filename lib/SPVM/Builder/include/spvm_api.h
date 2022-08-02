@@ -8,12 +8,7 @@
   Runtime information APIs
 */
 
-int32_t SPVM_API_get_method_id_cache(SPVM_ENV* env, const char* method_cache_name, int32_t method_cache_name_length);
-int32_t SPVM_API_get_field_id_cache(SPVM_ENV* env, const char* field_cache_name, int32_t field_cache_name_length);
-int32_t SPVM_API_get_class_var_id_cache(SPVM_ENV* env, const char* class_var_cache_name, int32_t class_var_cache_name_length);
 int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name);
-
-// ID
 int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* name);
 int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, const char* method_name);
 int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name);
