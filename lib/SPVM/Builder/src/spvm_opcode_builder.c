@@ -1127,6 +1127,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                               // Term argment type
                               op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);
+                              if (!op_term_arg) {
+                                break;
+                              }
+                              
                               SPVM_TYPE* term_arg_type = SPVM_OP_get_type(compiler, op_term_arg);
                               
                               SPVM_OPCODE opcode = {0};

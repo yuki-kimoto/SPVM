@@ -2681,12 +2681,24 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
 
   // Add method arguments
   {
+    int32_t found_optional_arg = 0;
+    int32_t required_args_length = 0;
     int32_t args_length = 0;
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+      SPVM_VAR_DECL* arg_var_decl = op_arg->uv.var->var_decl;
+      if (!found_optional_arg) {
+        if (arg_var_decl->op_optional_arg_default) {
+          found_optional_arg = 1;
+        }
+        else {
+          required_args_length++;
+        }
+      }
       args_length++;
     }
     method->args_length = args_length;
+    method->required_args_length = required_args_length;
   }
 
   // Capture variables

@@ -2642,7 +2642,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               
-              if (call_method_args_length < args_length) {
+              if (call_method_args_length < call_method->method->required_args_length) {
                 SPVM_COMPILER_error(compiler, "Too few arguments \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                 return;
               }
