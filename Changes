@@ -1,9 +1,8 @@
 0.9632_01 2022-08-01
   [New Features]
     * Add the following native APIs. The length of the arguments can be got in the native module.
-      int32_t (*get_args_length)(SPVM_ENV* env, SPVM_VALUE* stack);
-      void (*set_args_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
-      
+      int32_t (*get_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack);
+      void (*set_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
   [Improve Exception Messages]
     * Improve exception messages in native APIs.
   [Incompatible Changes]

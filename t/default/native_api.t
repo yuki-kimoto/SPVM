@@ -278,7 +278,7 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
 
 # new_object_array
 {
-  ok(SPVM::TestCase::NativeAPI->get_args_length);
+  ok(SPVM::TestCase::NativeAPI->get_args_stack_length);
 }
 
 # new_string_array

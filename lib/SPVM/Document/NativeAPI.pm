@@ -212,8 +212,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   195 get_class_id_by_name
   196 strerror
   197 new_string_array
-  198 get_args_length
-  199 set_args_length
+  198 get_args_stack_length
+  199 set_args_stack_length
 
 =head2 class_vars_heap
 
@@ -2121,15 +2121,15 @@ Create a new string array. This is alias for the following code using L</"new_ob
 
   void* obj_string_array = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, length);
 
-=head2 get_args_length
+=head2 get_args_stack_length
 
-  int32_t (*get_args_length)(SPVM_ENV* env, SPVM_VALUE* stack);
+  int32_t (*get_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack);
 
 Get the length of the arguments specified by the caller.
 
-=head2 set_args_length
+=head2 set_args_stack_length
 
-  void (*set_args_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
+  void (*set_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
 
 Set the length of the arguments for a method call.
 

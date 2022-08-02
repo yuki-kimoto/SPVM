@@ -295,8 +295,8 @@ struct spvm_env {
   int32_t (*get_class_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* file, int32_t line);
   const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
   void* (*new_string_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
-  int32_t (*get_args_length)(SPVM_ENV* env, SPVM_VALUE* stack);
-  void (*set_args_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
+  int32_t (*get_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void (*set_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
 };
 
 
