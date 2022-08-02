@@ -3665,6 +3665,7 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
     if (class->has_init_block) {
       SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, "INIT");
       assert(init_method);
+      env->set_args_length(env, stack, 0);
       env->call_spvm_method(env, stack, init_method->id);
     }
   }
@@ -4086,81 +4087,83 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
       }
       case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_BYTE: {
         int32_t args_length = env->get_args_length(env, stack);
-        int32_t args_index = opcode->operand3 >> 8;
+        int32_t args_index = opcode->operand3 & 0xFF;
+        warn("FFFF %d", args_index);
         
         if (args_index >= args_length) {
           byte_vars[opcode->operand0] = (int8_t)(uint8_t)opcode->operand1;
         }
         else {
-          byte_vars[opcode->operand0] = *(int8_t*)&stack[opcode->operand3 & 0xFF];
+          byte_vars[opcode->operand0] = *(int8_t*)&stack[args_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_SHORT: {
         int32_t args_length = env->get_args_length(env, stack);
-        int32_t args_index = opcode->operand3 >> 8;
+        int32_t args_index = opcode->operand3 & 0xFF;
         if (args_index >= args_length) {
           short_vars[opcode->operand0] = (int16_t)(uint16_t)opcode->operand1;
         }
         else {
-          short_vars[opcode->operand0] = *(int16_t*)&stack[opcode->operand3 & 0xFF];
+          short_vars[opcode->operand0] = *(int16_t*)&stack[args_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_INT: {
         int32_t args_length = env->get_args_length(env, stack);
-        int32_t args_index = opcode->operand3 >> 8;
+        int32_t args_index = opcode->operand3 & 0xFF;
+        
         if (args_index >= args_length) {
           int_vars[opcode->operand0] = (int32_t)opcode->operand1;
         }
         else {
-          int_vars[opcode->operand0] = *(int8_t*)&stack[opcode->operand3 & 0xFF];
+          int_vars[opcode->operand0] = *(int32_t*)&stack[args_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_LONG: {
         int32_t args_length = env->get_args_length(env, stack);
-        int32_t args_index = opcode->operand3 >> 8;
+        int32_t args_index = opcode->operand3 & 0xFF;
         if (args_index >= args_length) {
           long_vars[opcode->operand0] = *(int64_t*)&opcode->operand1;
         }
         else {
-          long_vars[opcode->operand0] = *(int8_t*)&stack[opcode->operand3 & 0xFF];
+          long_vars[opcode->operand0] = *(int64_t*)&stack[args_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_FLOAT: {
         int32_t args_length = env->get_args_length(env, stack);
-        int32_t args_index = opcode->operand3 >> 8;
+        int32_t args_index = opcode->operand3 & 0xFF;
         if (args_index >= args_length) {
           SPVM_VALUE value;
           value.ival = (int32_t)opcode->operand1;
           float_vars[opcode->operand0] = value.fval;
         }
         else {
-          float_vars[opcode->operand0] = *(int8_t*)&stack[opcode->operand3 & 0xFF];
+          float_vars[opcode->operand0] = *(float*)&stack[args_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_DOUBLE: {
         int32_t args_length = env->get_args_length(env, stack);
-        int32_t args_index = opcode->operand3 >> 8;
+        int32_t args_index = opcode->operand3 & 0xFF;
         if (args_index >= args_length) {
           double_vars[opcode->operand0] = *(double*)&opcode->operand1;
         }
         else {
-          double_vars[opcode->operand0] = *(int8_t*)&stack[opcode->operand3 & 0xFF];
+          double_vars[opcode->operand0] = *(double*)&stack[args_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_OBJECT: {
         int32_t args_length = env->get_args_length(env, stack);
-        int32_t args_index = opcode->operand3 >> 8;
+        int32_t args_index = opcode->operand3 & 0xFF;
         if (args_index >= args_length) {
           object_vars[opcode->operand0] = NULL;
         }
         else {
-          object_vars[opcode->operand0] = *(void**)&stack[opcode->operand3 & 0xFF];
+          object_vars[opcode->operand0] = *(void**)&stack[args_index];
           void* object = *(void**)&object_vars[opcode->operand0];
           if (object != NULL) {
             SPVM_API_INC_REF_COUNT_ONLY(env, stack, object);
@@ -6850,6 +6853,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         }
         else {
           stack[STACK_INDEX_ARGS_LENGTH].ival = call_method_args_length;
+          env->set_args_length(env, stack, call_method_args_length);
           error = env->call_spvm_method(env, stack, call_method_id);
           if (error == 0) {
             SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_RUNTIME_get_method(runtime, call_method_id);

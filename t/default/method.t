@@ -213,6 +213,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
+# Optional arguments
+{
+  ok(SPVM::TestCase::Method->optional_args);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

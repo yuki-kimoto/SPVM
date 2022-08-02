@@ -941,12 +941,287 @@ class TestCase::Method {
           return 0;
         }
       }
+      {
+        my $value = &optional_args_byte0(127);
+        unless ($value == 127) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_byte_min;
+        unless ($value == 127) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_byte_max;
+        unless ($value == -128) {
+          return 0;
+        }
+      }
+    }
+    
+    
+    # short
+    {
+      {
+        my $value = &optional_args_short0;
+        unless ($value == 0) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_short0(32767);
+        unless ($value == 32767) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_short_min;
+        unless ($value == 32767) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_short_max;
+        unless ($value == -32768) {
+          return 0;
+        }
+      }
+    }
+
+    # int
+    {
+      {
+        my $value = &optional_args_int0;
+        unless ($value == 0) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_int0(2147483647);
+        unless ($value == 2147483647) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_int_min;
+        unless ($value == 2147483647) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_int_max;
+        unless ($value == -2147483648) {
+          return 0;
+        }
+      }
+    }
+    
+    # long
+    {
+      {
+        my $value = &optional_args_long0;
+        unless ($value == 0) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_long0(9223372036854775807L);
+        unless ($value == 9223372036854775807L) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_long_min;
+        unless ($value == 9223372036854775807L) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_long_max;
+        unless ($value == -9223372036854775808L) {
+          return 0;
+        }
+      }
+    }
+    
+    # float
+    {
+      {
+        my $value = &optional_args_float0;
+        unless ($value == 1.5f) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_float0(2.5f);
+        unless ($value == 2.5f) {
+          return 0;
+        }
+      }
+    }
+    
+    # double
+    {
+      {
+        my $value = &optional_args_double0;
+        unless ($value == 2147483647.5) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_double0(2147483647.55);
+        unless ($value == 2147483647.55) {
+          return 0;
+        }
+      }
+    }
+    
+    # object
+    {
+      {
+        my $value = &optional_args_object;
+        unless ($value == undef) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_object_dim1;
+        unless ($value == undef) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_string_dim2;
+        unless ($value == undef) {
+          return 0;
+        }
+      }
+      {
+        my $value = &optional_args_string;
+        unless ($value == undef) {
+          return 0;
+        }
+      }
+    }
+    
+    {
+      {
+        my $values = &optional_args_byte_three_optional;
+        unless ($values->[0]->(int) == 1) {
+          return 0;
+        }
+        unless ($values->[1]->(int) == 2) {
+          return 0;
+        }
+        unless ($values->[2]->(int) == 3) {
+          return 0;
+        }
+      }
+      {
+        my $values = &optional_args_byte_three_optional(5);
+        unless ($values->[0]->(int) == 5) {
+          return 0;
+        }
+        unless ($values->[1]->(int) == 2) {
+          return 0;
+        }
+        unless ($values->[2]->(int) == 3) {
+          return 0;
+        }
+      }
+      {
+        my $values = &optional_args_byte_three_optional(5, 6);
+        unless ($values->[0]->(int) == 5) {
+          return 0;
+        }
+        unless ($values->[1]->(int) == 6) {
+          return 0;
+        }
+        unless ($values->[2]->(int) == 3) {
+          return 0;
+        }
+      }
+      {
+        my $values = &optional_args_byte_three_optional(5, 6, 7);
+        unless ($values->[0]->(int) == 5) {
+          return 0;
+        }
+        unless ($values->[1]->(int) == 6) {
+          return 0;
+        }
+        unless ($values->[2]->(int) == 7) {
+          return 0;
+        }
+      }
     }
     
     return 1;
   }
   
-  static method optional_args_byte0 : byte ($value = 0 : byte) {
-    return $value;
+  static method optional_args_byte_three_optional : Int[]  ($args0 = 1 : int, $args1 = 2 : int, $args2 = 3 : int) {
+    return [(Int)$args0, $args1, $args2];
+  }
+  
+  static method optional_args_byte0 : byte ($arg = 0 : byte) {
+    return $arg;
+  }
+  static method optional_args_byte_min : byte ($arg = 127 : byte) {
+    return $arg;
+  }
+  static method optional_args_byte_max : byte ($arg = -128 : byte) {
+    return $arg;
+  }
+
+  static method optional_args_short0 : short ($arg = 0 : short) {
+    return $arg;
+  }
+  static method optional_args_short_min : short ($arg = 32767 : short) {
+    return $arg;
+  }
+  static method optional_args_short_max : short ($arg = -32768 : short) {
+    return $arg;
+  }
+
+  static method optional_args_int0 : int ($arg = 0 : int) {
+    return $arg;
+  }
+  static method optional_args_int_min : int ($arg = 2147483647 : int) {
+    return $arg;
+  }
+  static method optional_args_int_max : int ($arg = -2147483648 : int) {
+    return $arg;
+  }
+
+  static method optional_args_long0 : long ($arg = 0 : long) {
+    return $arg;
+  }
+  static method optional_args_long_min : long ($arg = 9223372036854775807L : long) {
+    return $arg;
+  }
+  static method optional_args_long_max : long ($arg = -9223372036854775808L : long) {
+    return $arg;
+  }
+  
+  static method optional_args_float0 : float ($arg = 1.5f : float) {
+    return $arg;
+  }
+  
+  static method optional_args_double0 : double ($arg = 2147483647.5 : double) {
+    return $arg;
+  }
+  
+  static method optional_args_object : object ($arg = undef : object) {
+    return $arg;
+  }
+  static method optional_args_object_dim1 : object ($arg = undef : object[]) {
+    return $arg;
+  }
+  static method optional_args_string_dim2 : object ($arg = undef : string[][]) {
+    return $arg;
+  }
+  static method optional_args_string : string ($arg = undef : string) {
+    return $arg;
   }
 }
