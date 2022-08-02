@@ -4088,8 +4088,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
       case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_BYTE: {
         int32_t args_length = env->get_args_length(env, stack);
         int32_t args_index = opcode->operand3 & 0xFF;
-        warn("FFFF %d", args_index);
-        
         if (args_index >= args_length) {
           byte_vars[opcode->operand0] = (int8_t)(uint8_t)opcode->operand1;
         }

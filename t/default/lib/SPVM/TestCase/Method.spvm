@@ -1157,10 +1157,53 @@ class TestCase::Method {
       }
     }
     
+    {
+      {
+        my $values = &optional_args_byte_one_required_tow_optional(5);
+        unless ($values->[0]->(int) == 5) {
+          return 0;
+        }
+        unless ($values->[1]->(int) == 2) {
+          return 0;
+        }
+        unless ($values->[2]->(int) == 3) {
+          return 0;
+        }
+      }
+      {
+        my $values = &optional_args_byte_one_required_tow_optional(5, 6);
+        unless ($values->[0]->(int) == 5) {
+          return 0;
+        }
+        unless ($values->[1]->(int) == 6) {
+          return 0;
+        }
+        unless ($values->[2]->(int) == 3) {
+          return 0;
+        }
+      }
+      {
+        my $values = &optional_args_byte_one_required_tow_optional(5, 6, 7);
+        unless ($values->[0]->(int) == 5) {
+          return 0;
+        }
+        unless ($values->[1]->(int) == 6) {
+          return 0;
+        }
+        unless ($values->[2]->(int) == 7) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   
   static method optional_args_byte_three_optional : Int[]  ($args0 = 1 : int, $args1 = 2 : int, $args2 = 3 : int) {
+    return [(Int)$args0, $args1, $args2];
+  }
+  
+  static method optional_args_byte_one_required_tow_optional : Int[]  ($args0 : int, $args1 = 2 : int, $args2 = 3 : int) {
     return [(Int)$args0, $args1, $args2];
   }
   
