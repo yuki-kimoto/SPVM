@@ -1034,8 +1034,8 @@ xs_call_spvm_method(...)
   int32_t method_return_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, method_return_basic_type_id);
   
   // Call method
-  env->set_args_stack_length(env, stack, stack_index);
-  int32_t excetpion_flag = excetpion_flag = env->call_spvm_method(env, stack, method_id);
+  int32_t args_stack_length = stack_index;
+  int32_t excetpion_flag = excetpion_flag = env->call_spvm_method(env, stack, method_id, args_stack_length);
   
   // Create Perl return value
   if (excetpion_flag) {

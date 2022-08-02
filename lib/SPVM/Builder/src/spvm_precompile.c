@@ -3098,7 +3098,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t var_id = opcode->operand0;
         int32_t decl_method_id = opcode->operand1;
         int32_t is_call_super = opcode->operand2 & 0xFFFF;
-        int32_t call_method_args_length = opcode->operand2 >> 16;
+        int32_t call_method_args_stack_length = opcode->operand2 >> 16;
         
         int32_t decl_method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, decl_method_id);
         const char* decl_method_name = SPVM_API_RUNTIME_get_name(runtime, decl_method_name_id);
@@ -3117,15 +3117,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\n"
                                               "  {\n"
-                                              "    int32_t call_method_args_length = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, call_method_args_length);
+                                              "    int32_t call_method_args_stack_length = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, call_method_args_stack_length);
         SPVM_STRING_BUFFER_add(string_buffer,
                                               ";\n"
-                                              "    env->set_args_stack_length(env, stack, call_method_args_length);\n");
+                                              "    env->set_args_stack_length(env, stack, call_method_args_stack_length);\n");
         
         // Method inline expantion in same class
         if (decl_method_class_id == class_id && decl_method_has_precompile_flag) {
-          
+          SPVM_STRING_BUFFER_add(string_buffer, "    env->set_args_stack_length(env, stack, call_method_args_stack_length);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    error = SPVMPRECOMPILE__");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
           SPVM_STRING_BUFFER_add(string_buffer, (char*)"__");
@@ -3195,7 +3195,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
 
           SPVM_STRING_BUFFER_add(string_buffer,
                                                 "    if (!error) {\n"
-                                                "      error = env->call_spvm_method(env, stack, call_method_id);\n"
+                                                "      error = env->call_spvm_method(env, stack, call_method_id, call_method_args_stack_length);\n"
                                                 "\n}\n");
         }
         

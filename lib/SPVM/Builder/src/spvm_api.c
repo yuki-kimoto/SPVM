@@ -699,14 +699,14 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* s
   }
 }
 
-int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, const char* file, int32_t line) {
+int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, int32_t args_stack_length, const char* file, int32_t line) {
   
   int32_t method_id = env->get_class_method_id(env, class_name, method_name);
   if (method_id < 0) {
     env->die(env, stack, "The class method %s->%s is not defined", class_name, method_name, file, line);
     return 1;
   }
-  int32_t e = env->call_class_method(env, stack, method_id);
+  int32_t e = env->call_class_method(env, stack, method_id, args_stack_length);
   if (e) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));
     env->die(env, stack, "%s", message, file, line);
@@ -716,7 +716,7 @@ int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
   return 0;
 }
 
-int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name, const char* file, int32_t line) {
+int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name, int32_t args_stack_length, const char* file, int32_t line) {
   
   if (object == NULL) {
     env->die(env, stack, "Object must not be NULL", file, line);
@@ -728,7 +728,7 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, 
     env->die(env, stack, "The instance method INVOCANT<%p>->%s is not defined", object, method_name, file, line);
     return 1;
   };
-  int32_t e = env->call_instance_method(env, stack, method_id);
+  int32_t e = env->call_instance_method(env, stack, method_id, args_stack_length);
   
   if (e) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));
@@ -1293,15 +1293,15 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   stack = NULL;
 }
 
-int32_t SPVM_API_call_class_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id) {
-  return SPVM_API_call_spvm_method(env, stack, method_id);
+int32_t SPVM_API_call_class_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
+  return SPVM_API_call_spvm_method(env, stack, method_id, args_stack_length);
 }
 
-int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id) {
-  return SPVM_API_call_spvm_method(env, stack, method_id);
+int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
+  return SPVM_API_call_spvm_method(env, stack, method_id, args_stack_length);
 }
 
-int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id) {
+int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
   (void)env;
   
   // Runtime
@@ -1311,6 +1311,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t meth
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
   
   int32_t error = 0;
+  stack[STACK_INDEX_ARGS_LENGTH].ival = args_stack_length;
   
   // Call native method
   if (method->is_native) {
@@ -1360,7 +1361,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t meth
     }
     // Call sub virtual machine
     else {
-      error = SPVM_API_call_spvm_method_vm(env, stack, method_id);
+      error = SPVM_API_call_spvm_method_vm(env, stack, method_id, args_stack_length);
     }
   }
   
@@ -2697,8 +2698,9 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         
         // Call destructor
         if (object->flag & SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR) {
+          int32_t args_stack_length = 1;
           stack[0].oval = object;
-          int32_t error = SPVM_API_call_spvm_method(env, stack, class->destructor_method_id);
+          int32_t error = SPVM_API_call_spvm_method(env, stack, class->destructor_method_id, args_stack_length);
           
           // Exception in destructor is changed to warning
           if (error) {
@@ -3665,8 +3667,8 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
     if (class->has_init_block) {
       SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, "INIT");
       assert(init_method);
-      env->set_args_stack_length(env, stack, 0);
-      env->call_spvm_method(env, stack, init_method->id);
+      int32_t args_stack_length = 0;
+      env->call_spvm_method(env, stack, init_method->id, args_stack_length);
     }
   }
 }
@@ -3852,7 +3854,7 @@ void SPVM_API_set_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t ar
   stack[STACK_INDEX_ARGS_LENGTH].ival = args_length;
 }
 
-int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id) {
+int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
   (void)env;
 
   // Opcode relative index
@@ -6695,11 +6697,10 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
       {
         int32_t call_method_id = opcode->operand1;
-        int32_t call_method_args_length = opcode->operand2 >> 16;
+        int32_t call_method_args_stack_length = opcode->operand2 >> 16;
         
         stack_index = 0;
-        env->set_args_stack_length(env, stack, call_method_args_length);
-        error = env->call_spvm_method(env, stack, call_method_id);
+        error = env->call_spvm_method(env, stack, call_method_id, call_method_args_stack_length);
         if (error == 0) {
           SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_RUNTIME_get_method(runtime, call_method_id);
           SPVM_RUNTIME_TYPE* call_spvm_method_return_type =SPVM_API_RUNTIME_get_type(runtime, call_spvm_method->return_type_id);
@@ -6830,7 +6831,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         void* object = stack[0].oval;
         const char* decl_method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, decl_method->name_id, NULL);
         int32_t is_call_super = opcode->operand2 & 0xFFFF;
-        int32_t call_method_args_length = opcode->operand2 >> 16;
+        int32_t call_method_args_stack_length = opcode->operand2 >> 16;
         
         int32_t call_method_id;
         if (is_call_super) {
@@ -6850,9 +6851,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
           error = 1;
         }
         else {
-          stack[STACK_INDEX_ARGS_LENGTH].ival = call_method_args_length;
-          env->set_args_stack_length(env, stack, call_method_args_length);
-          error = env->call_spvm_method(env, stack, call_method_id);
+          stack[STACK_INDEX_ARGS_LENGTH].ival = call_method_args_stack_length;
+          error = env->call_spvm_method(env, stack, call_method_id, call_method_args_stack_length);
           if (error == 0) {
             SPVM_RUNTIME_METHOD* call_spvm_method = SPVM_API_RUNTIME_get_method(runtime, call_method_id);
             SPVM_RUNTIME_TYPE* call_spvm_method_return_type =SPVM_API_RUNTIME_get_type(runtime, call_spvm_method->return_type_id);

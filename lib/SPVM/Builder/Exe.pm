@@ -589,6 +589,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     env->set_elem_object(env, stack, obj_argv, arg_index - 1, obj_arg);
   }
   
+  int32_t args_stack_length = 2;
   stack[0].oval = obj_program_name;
   stack[1].oval = obj_argv;
   
@@ -605,7 +606,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   }
   
   // Run
-  int32_t error = env->call_spvm_method(env, stack, method_id);
+  int32_t error = env->call_spvm_method(env, stack, method_id, args_stack_length);
   
   int32_t status;
   if (error) {
