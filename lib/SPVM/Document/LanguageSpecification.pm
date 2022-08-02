@@ -2836,12 +2836,12 @@ a.
 The C<method> keyword defines a class method or an instance method.
   
   # Static method
-  static method METHOD_NAME : RETURN_VALUE_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
+  static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
     
   }
 
   # Instance method
-  method METHOD_NAME : RETURN_VALUE_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
+  method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
     
   }
 
@@ -2861,7 +2861,7 @@ Defined methods can be called using L</"Method Call"> syntax.
 
 A method can have L<method descriptors|/"Method Descriptors">.
 
-  DESCRIPTORS static method METHOD_NAME : RETURN_VALUE_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
+  DESCRIPTORS static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
   
   }
 
@@ -2871,7 +2871,7 @@ A method has L</"Method Block"> except for the case that the method has the C<na
 
 C<...> after the type of the argument indicates the argument is a variable length argument. Only the last argument can become a variable length argument.
 
-  static method METHOD_NAME : RETURN_VALUE_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2...) {
+  static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2...) {
   
   }
 
@@ -2896,6 +2896,30 @@ If you want to treat the value as an individual element, cast it to type other t
 
   sprintf("aaa %p", (object)[(object)1, 2.0]);
 
+=head3 Optional Argument
+
+The optional argument is the syntax to specify optional arguments.
+
+  static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 = DEFAULT_VALUE : ARG_TYPE2) {
+  
+  }
+
+B<Examples:>
+
+  static method substr ($string : string, $offset : int, $length = -1 : int) {
+    # ...
+  }
+  
+  my $string = "abc";
+  my $offset = 1;
+  my $substr = &substr($string, $offset);
+  
+  # This is the same as the following code
+  my $string = "abc";
+  my $offset = 1;
+  my $length = -1;
+  my $substr = &substr($string, $offset, $length);
+  
 =head2 Class Method
 
 A class method is defined with the C<static> keyword.
