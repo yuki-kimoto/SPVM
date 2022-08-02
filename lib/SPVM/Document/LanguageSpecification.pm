@@ -2282,21 +2282,17 @@ B<Examples:>
   class Point3D extends Point {
     
     has z : rw int;
-
-    static method new : Point3D () {
-      return new Point3D;
-    }
     
-    static method new_xyz : Point3D ($x : int, $y : int, $z : int) {
-      my $self = Point3D->new;
+    static method new : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int) {
+      my $self = new Point3D;
       
-      $self->set_x($x);
-      $self->set_y($y);
-      $self->set_z($z);
+      $self->{x} = $x;
+      $self->{y} = $y;
+      $self->{z} = $z;
       
       return $self;
     }
-
+    
     method clear : void () {
       $self->SUPER::clear;
       $self->{z} = 0;
@@ -2313,7 +2309,7 @@ B<Examples:>
     }
     
     method cloneable_clone : object () {
-      my $self_clone = Point3D->new_xyz($self->x, $self->y, $self->z);
+      my $self_clone = Point3D->new($self->x, $self->y, $self->z);
       
       return $self_clone;
     }
