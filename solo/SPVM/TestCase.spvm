@@ -94,8 +94,20 @@ SPVM::Test - SPVM test module
   static method type_comment_method : int of int ($foo : int of int) {
     
   }
+  
+  static method optional_args_byte0 : byte ($value = 0 : byte) {
+    return $value;
+  }
 
   static method main : int ($start_file : string, $args : string[]) {
+    
+    # Optional arguments
+    {
+      {
+        my $value = &optional_args_byte0;
+        warn $value;
+      }
+    }
     
     {
       my $minimal_extend = TestCase::MinimalExtend->new;

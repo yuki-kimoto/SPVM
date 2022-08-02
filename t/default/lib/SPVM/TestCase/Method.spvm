@@ -930,4 +930,23 @@ class TestCase::Method {
   precompile static method precompile_sum : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }
+  
+  static method optional_args : int () {
+    
+    # byte
+    {
+      {
+        my $value = &optional_args_byte0;
+        unless ($value == 0) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method optional_args_byte0 : byte ($value = 0 : byte) {
+    return $value;
+  }
 }
