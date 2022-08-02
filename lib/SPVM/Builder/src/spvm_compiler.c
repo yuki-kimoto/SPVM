@@ -825,6 +825,7 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
     else {
       runtime_method->args_base_id = -1;
     }
+    runtime_method->required_args_length = method->required_args_length;
 
     method_32bit_ptr += sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t);
   }

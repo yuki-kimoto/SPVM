@@ -104,6 +104,7 @@ Runtime native APIs have its IDs.
   80 get_allocator
   81 build
   82 get_class_parent_class_id
+  83 get_method_required_args_length
 
 =head1 Runtime Native APIs
 
@@ -444,3 +445,7 @@ Reserved.
 =head2 get_class_parent_class_id
 
   int32_t (*get_class_parent_class_id)(void* runtime, int32_t class_id);
+
+=head2 get_method_required_args_length
+
+  int32_t (*get_method_required_args_length)(void* runtime, int32_t method_id);

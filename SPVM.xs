@@ -208,6 +208,7 @@ xs_call_spvm_method(...)
 
   int32_t method_is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method_id);
   int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, method_id);
+  int32_t method_required_args_length = env->api->runtime->get_method_required_args_length(env->runtime, method_id);
   int32_t method_args_base_id = env->api->runtime->get_method_args_base_id(env->runtime, method_id);
   int32_t method_return_type_id = env->api->runtime->get_method_return_type_id(env->runtime, method_id);
 
@@ -217,10 +218,11 @@ xs_call_spvm_method(...)
   }
   
   // Check argument count
-  if (items - spvm_args_base < method_args_length) {
+  int32_t call_method_args_length = items - spvm_args_base;
+  if (call_method_args_length < method_required_args_length) {
     croak("Too few arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
-  else if (items - spvm_args_base > method_args_length) {
+  else if (call_method_args_length > method_args_length) {
     croak("Too many arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
   
@@ -238,6 +240,10 @@ xs_call_spvm_method(...)
 
   // Arguments
   for (int32_t args_index = 0; args_index < method_args_length; args_index++) {
+    
+    if (args_index >= call_method_args_length) {
+      break;
+    }
     
     int32_t args_index_nth = args_index + 1;
     

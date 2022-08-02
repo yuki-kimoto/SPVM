@@ -1170,6 +1170,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($chars_8bit, $bytes);
 }
 
+# Optional argument
+{
+  my $value = SPVM::TestCase::ExchangeAPI->optional_args_int(3);
+  is($value, 8);
+}
+
 # Numeric type exception
 {
   is(SPVM::Byte->new(5)->value, 5);
