@@ -318,7 +318,7 @@ struct spvm_env_runtime {
   int32_t (*get_basic_type_category)(void* runtime, int32_t basic_type_id);
   int32_t (*get_type_basic_type_id)(void* runtime, int32_t type_id);
   int32_t (*get_type_dimension)(void* runtime, int32_t type_id);
-  int32_t (*get_type_width)(void* runtime, int32_t type_id);
+  int32_t (*get_type_stack_length)(void* runtime, int32_t type_id);
   int32_t (*get_type_is_object)(void* runtime, int32_t type_id);
   int32_t (*get_type_is_ref)(void* runtime, int32_t type_id);
   int32_t (*get_class_id_by_name)(void* runtime, const char* class_name);

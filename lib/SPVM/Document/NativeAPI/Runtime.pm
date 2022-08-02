@@ -38,7 +38,7 @@ Runtime native APIs have its IDs.
   14 get_basic_type_category
   15 get_type_basic_type_id
   16 get_type_dimension
-  17 get_type_width
+  17 get_type_stack_length
   18 get_type_is_object
   19 get_type_is_ref
   20 get_class_id_by_name
@@ -175,9 +175,9 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_type_dimension)(void* runtime, int32_t type_id);
 
-=head2 get_type_width
+=head2 get_type_stack_length
 
-  int32_t (*get_type_width)(void* runtime, int32_t type_id);
+  int32_t (*get_type_stack_length)(void* runtime, int32_t type_id);
 
 =head2 get_type_is_object
 

@@ -43,6 +43,11 @@
       int32_t (*get_method_signature_id)(void* runtime, int32_t method_id);
       
     * The precompiled methods don't use get_field_id_cache, get_class_var_id_cache, get_method_id_cache.
+    * The definitions of the following runtime native APIs are changed.
+      [Before]
+      int32_t (*get_type_width)(void* runtime, int32_t type_id);
+      [After]
+      int32_t (*get_type_stack_length)(void* runtime, int32_t type_id);
   [Internal Ineffective Changes]
     * Rename the opcode SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE to SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_NAME.
     * Remove signature_id fields in spvm_runtime_class_var, spvm_runtime_field, spvm_runtime_method.
