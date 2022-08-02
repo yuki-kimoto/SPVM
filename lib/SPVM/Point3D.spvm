@@ -4,19 +4,20 @@ class Point3D extends Point {
   has z : rw int;
   
   # Class method
-  static method new : Point3D () {
-    return new Point3D;
+  static method new : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int) {
+    my $self = new Point3D;
+    
+    $self->{x} = $x;
+    $self->{y} = $y;
+    $self->{z} = $z;
+    
+    return $self;
   }
   
   # Class methods
   static method new_xyz : Point3D ($x : int, $y : int, $z : int) {
-    my $self = Point3D->new;
-    
-    $self->set_x($x);
-    $self->set_y($y);
-    $self->set_z($z);
-    
-    return $self;
+    warn "Point3D->new_xyz($x, $y, $z) is deprecated. Use Point3D->new($x, $y, $z) instead. This method will be removed after 2022-09-03";
+    return &new($x, $y, $z);
   }
   
   # Instance methods
@@ -26,7 +27,7 @@ class Point3D extends Point {
   }
   
   method cloneable_clone : object () {
-    my $self_clone = Point3D->new_xyz($self->x, $self->y, $self->z);
+    my $self_clone = Point3D->new($self->x, $self->y, $self->z);
     
     return $self_clone;
   }

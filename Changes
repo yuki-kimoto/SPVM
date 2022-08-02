@@ -10,6 +10,11 @@
       static method new : Point ()
       [After]
       static method new : Point ($x = 0 : int, $y = 0 : int)
+    * Add optional arguments to the following methods of Point3D class.
+      [Before]
+      static method new : Point3D ()
+      [After]
+      static method new : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int)
       
   [Incompatible Changes]
     * The defintions of the following methods of ByteList class are changed.
@@ -51,7 +56,11 @@
     * The following methods of Point class are deprecated.
       # Point->new_xy($x, $y) is deprecated. Use Point->new($x, $y) instead. This method will be removed after 2022-09-03
       static method new_xy : Point ($x : int, $y : int)
-      
+    * The following methods of Point3D class are deprecated.
+      # Point3D->new_xyz($x, $y, $z) is deprecated. Use Point3D->new($x, $y, $z) instead. This method will be removed after 2022-09-03
+      static method new_xyz : Point3D ($x : int, $y : int, $z : int)
+  [Test Fix]
+    * Add Point3D tests. These tests are removed wrongly.
 0.9633 2022-08-03
   [New Features]
     * Add optional argument feature.

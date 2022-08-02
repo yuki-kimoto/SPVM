@@ -11,7 +11,7 @@ SPVM::Point3D - Point 3D
   use Point3D;
   
   my $point = Point3D->new;
-  my $point = Point3D->new_xyz(1, 2, 3);
+  my $point = Point3D->new(1, 2, 3);
 
   $point->set_x(1);
   $point->set_y(2);
@@ -49,15 +49,19 @@ C<z>.
 
 =head2 new
 
-  method new : Point3D ()
+  static method new : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int)
 
-Create a new C<Point3D> object.
+Create a new C<Point3D> object with L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, and L</"z">.
 
 =head2 new_xyz
 
   method new_xyz : Point3D ($x : int, $y : int, $z : int)
 
-Create a new C<Point3D> object with L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, and L</"z">.
+The alias for the following code using L</"new">
+
+  my $point = Point3D->new($x, $y, $z);
+
+This method is deprecated and will be removed after 2022-09-03.
 
 =head1 Instance Methods
 
