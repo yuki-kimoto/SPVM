@@ -2353,7 +2353,7 @@ The class that has L<interface Guarantees|/"Interface Guarantee"> must have the 
     }
   }
   
-  my $stringable = (Stringable)Point->new_xy(1, 2);
+  my $stringable = (Stringable)Point->new(1, 2);
   my $string = $stringable->to_string;
 
 A interface can't have L<filed definitions|/"Field Definition">.
@@ -4728,7 +4728,7 @@ Otherwise, the assignability is false.
 B<Examples:>
   
   # Point has Stringable interface
-  my $stringable : Stringable = Point->new_xy(1, 2);
+  my $stringable : Stringable = Point->new(1, 2);
   my $stringable : Stringable = undef;
 
 =head2 Assignability to Any Object
@@ -5300,10 +5300,10 @@ B<Examples:>
   my $cloneable : Cloneable;
   my $stringable = (Stringable)$cloneable;
   
-  my $stringable  = (Stringable)Point->new_xy(1, 2);
+  my $stringable  = (Stringable)Point->new(1, 2);
 
-  my $object : object  = Point->new_xy(1, 2);
-  my $stringable  = (Stringable)Point->new_xy(1, 2);
+  my $object : object  = Point->new(1, 2);
+  my $stringable  = (Stringable)Point->new(1, 2);
   
   my $stringable : Stringable = undef;
 
@@ -7758,7 +7758,7 @@ If the class or the interface has the method implementation, returns C<1>, other
 
 B<Examples:>
 
-  my $stringable = (Stringable)Point->new_xy(1, 2);
+  my $stringable = (Stringable)Point->new(1, 2);
   
   if (has_impl $stringable->to_string) {
     # ...

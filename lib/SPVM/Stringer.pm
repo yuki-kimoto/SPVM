@@ -19,7 +19,7 @@ SPVM::Stringer -  Interface Type for Stringing Callback
     return $string;
   };
   
-  my $point = Point->new_xy(1, 2);
+  my $point = Point->new(1, 2);
   my $string = $stringer->($point);
 
 =head1 Description

@@ -134,7 +134,7 @@ class TestCase::Callback {
       };
       my $stringers : Stringer[] = [$cb];
       
-      unless ($stringers->[0]->(Point->new_xy(1, 2)) eq "(1,2)") {
+      unless ($stringers->[0]->(Point->new(1, 2)) eq "(1,2)") {
         return 0;
       }
     }
@@ -146,7 +146,7 @@ class TestCase::Callback {
       };
       my $stringers : Stringer[] = [(Stringer)$cb];
       
-      unless ($stringers->[0]->(Point->new_xy(1, 2)) eq "(1,2)") {
+      unless ($stringers->[0]->(Point->new(1, 2)) eq "(1,2)") {
         return 0;
       }
     }
@@ -162,7 +162,7 @@ class TestCase::Callback {
         return $point->to_string;
       };
       my $stringers_2dim : Stringer[][] = [[$cb]];
-      unless ($stringers_2dim->[0][0]->(Point->new_xy(1, 2)) eq "(1,2)") {
+      unless ($stringers_2dim->[0][0]->(Point->new(1, 2)) eq "(1,2)") {
         return 0;
       }
     }

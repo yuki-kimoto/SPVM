@@ -14,12 +14,12 @@ SPVM::Cloner - Interface Type for the Callback to Clone a Object
   my $cloner = (Cloner)method : object ($object : object) {
     my $point = (Point)$object;
     
-    my $cloned_point = Point->new_xy($point->x, $point->y);
+    my $cloned_point = Point->new($point->x, $point->y);
     
     return $cloned_point;
   };
   
-  my $point = Point->new_xy(1, 2);
+  my $point = Point->new(1, 2);
   my $cloned_point = $cloner->($point);
 
 =head1 Description

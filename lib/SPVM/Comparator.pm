@@ -26,8 +26,8 @@ SPVM::Comparator - Interface Type for Object Comparation Callback
     }
   };
   
-  my $point1 = Point->new_xy(1, 2);
-  my $point2 = Point->new_xy(5, 6);
+  my $point1 = Point->new(1, 2);
+  my $point2 = Point->new(5, 6);
   my $result = $comparator->($point1, $point2);
 
 =head1 Description

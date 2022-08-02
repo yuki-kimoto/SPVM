@@ -23,8 +23,8 @@ SPVM::EqualityChecker - Interface Type for Object Equality Checking Callback
     }
   };
   
-  my $point1 = Point->new_xy(1, 2);
-  my $point2 = Point->new_xy(5, 6);
+  my $point1 = Point->new(1, 2);
+  my $point2 = Point->new(5, 6);
   
   my $is_equal = $equality_checker->($point1, $point2);
 
