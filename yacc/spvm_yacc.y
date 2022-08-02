@@ -389,11 +389,7 @@ arg
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, NULL);
     }
-  | var ASSIGN CONSTANT ':' qualified_type opt_type_comment
-    {
-      $$ = SPVM_OP_build_arg(compiler, $1, $5, NULL, $3);
-    }
-  | var ASSIGN UNDEF ':' qualified_type opt_type_comment
+  | var ASSIGN operator ':' qualified_type opt_type_comment
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $5, NULL, $3);
     }

@@ -4724,19 +4724,19 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
               );
               
               if (!assignability) {
-                SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" is invalid. The default value must be assigned to the type of the argument at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
+                SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be able to assigned to its argument at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
                 return;
               }
             }
           }
           else if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
             if (op_optional_arg_default->id != SPVM_OP_C_ID_UNDEF) {
-              SPVM_COMPILER_error(compiler, "The default value of the optional argument that type is an object type \"%s\" must be undef at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
+              SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be undef at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
               return;
             }
           }
           else {
-            SPVM_COMPILER_error(compiler, "Invalid default value of the optional argument at %s line %d", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "The types other than the numeric type and the object type can't be an optional argument at %s line %d", method->op_method->file, method->op_method->line);
             return;
           }
         }

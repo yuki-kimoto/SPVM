@@ -234,6 +234,30 @@ use Test::More;
         compile_not_ok($source, qr/\QThe destructor(the DESTROY method) can't have arguments/);
       }
     }
+
+    # Optional argument
+    {
+      {
+        my $source = 'class MyClass { static method foo : void ($args0 = Int->new(1) : int) { } }';
+        compile_not_ok($source, qr/The default value of the optional argument "\$args0" must be a constant value/);
+      }
+      {
+        my $source = 'class MyClass { static method foo : void ($args0 = 0.3 : float) { } }';
+        compile_not_ok($source, qr/The default value of the optional argument "\$args0" must be able to assigned to its argument/);
+      }
+      {
+        my $source = 'class MyClass { static method foo : void ($args0 = "abc" : object) { } }';
+        compile_not_ok($source, qr/The default value of the optional argument "\$args0" must be undef/);
+      }
+      {
+        my $source = 'class MyClass { static method foo : void ($args0 = undef : int*) { } }';
+        compile_not_ok($source, qr/The types other than the numeric type and the object type can't be an optional argument/);
+      }
+      {
+        my $source = 'class MyClass { use Complex_2d; static method foo : void ($args0 = 0 : Complex_2d) { } }';
+        compile_not_ok($source, qr/The types other than the numeric type and the object type can't be an optional argument/);
+      }
+    }
   }
 
   # Enumeration definition
