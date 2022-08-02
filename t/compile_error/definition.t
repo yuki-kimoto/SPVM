@@ -257,6 +257,10 @@ use Test::More;
         my $source = 'class MyClass { use Complex_2d; static method foo : void ($args0 = 0 : Complex_2d) { } }';
         compile_not_ok($source, qr/The types other than the numeric type and the object type can't be an optional argument/);
       }
+      {
+        my $source = 'class MyClass { static method foo : void ($args0 = 0 : int, $args1 : int) { } }';
+        compile_not_ok($source, qr/The argument after optional arguments must be an optional argument/);
+      }
     }
   }
 

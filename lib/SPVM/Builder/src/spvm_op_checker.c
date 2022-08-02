@@ -4693,6 +4693,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       // Argument limit check
       int32_t args_width = 0;
       SPVM_TYPE* last_arg_type = NULL;
+      int32_t found_optional_arg = 0;
       for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
         SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
 
@@ -4702,7 +4703,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_mulnum_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
         // Optional argument
-        int32_t found_optional_arg = 0;
         SPVM_OP* op_optional_arg_default = arg_var_decl->op_optional_arg_default;
         if (op_optional_arg_default) {
           found_optional_arg = 1;
@@ -4742,7 +4742,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
         else {
           if (found_optional_arg) {
-            SPVM_COMPILER_error(compiler, "The argument after the optional arguments must be an optional argument at %s line %d", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "The argument after optional arguments must be an optional argument at %s line %d", method->op_method->file, method->op_method->line);
             return;
           }
         }
