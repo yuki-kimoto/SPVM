@@ -1568,7 +1568,7 @@ int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
       assert(basic_type->class_id > -1);
       SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
       
-      int32_t width = class->fields_length;
+      int32_t fields_length = class->fields_length;
       
       SPVM_RUNTIME_FIELD* first_field = SPVM_API_RUNTIME_get_field(runtime, class->fields_base_id + 0);
       int32_t first_field_type_id = first_field->type_id;
@@ -1578,16 +1578,16 @@ int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
       int32_t field_basic_type_id = first_field_type->basic_type_id;
       
       if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
-        elem_byte_size = 1 * width;
+        elem_byte_size = 1 * fields_length;
       }
       else if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT) {
-        elem_byte_size = 2 * width;
+        elem_byte_size = 2 * fields_length;
       }
       else if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT || field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
-        elem_byte_size = 4 * width;
+        elem_byte_size = 4 * fields_length;
       }
       else if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG || field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
-        elem_byte_size = 8 * width;
+        elem_byte_size = 8 * fields_length;
       }
       else {
         assert(0);

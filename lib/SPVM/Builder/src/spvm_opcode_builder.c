@@ -183,7 +183,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             
             SPVM_OPCODE opcode = {0};
             
-            int32_t type_stack_length = arg_type->width;
+            int32_t type_stack_length = arg_type->stack_length;
 
             if (arg_type_dimension == 0) {
               if (arg_type_is_ref) {
@@ -1462,7 +1462,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           opcode.operand2 = call_method->args_length << 16 | call_method->call_super & 0xFFFF;
                           
-                          int32_t call_method_return_type_stack_length = SPVM_TYPE_get_width(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
+                          int32_t call_method_return_type_stack_length = SPVM_TYPE_get_stack_length(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
                           int32_t operand3 = call_method_return_type_stack_length;
                           assert(operand3 < 0xFFFF);
                           opcode.operand3 = operand3;
@@ -4447,7 +4447,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 assert(0);
                               }
                               
-                              int32_t method_return_type_stack_length = SPVM_TYPE_get_width(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag);
+                              int32_t method_return_type_stack_length = SPVM_TYPE_get_stack_length(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag);
 
                               opcode.operand0 = mem_id_in;
                               opcode.operand2 = method_return_type_stack_length;

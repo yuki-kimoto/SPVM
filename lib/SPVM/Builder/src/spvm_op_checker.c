@@ -51,13 +51,13 @@ void SPVM_OP_CHECKER_free_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, 
   
   SPVM_TYPE* my_type = var_decl->type;
   
-  int32_t width = SPVM_TYPE_get_width(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+  int32_t stack_length = SPVM_TYPE_get_stack_length(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
 
   for (int32_t mem_id = 0; mem_id < mem_stack->length; mem_id++) {
     int32_t my_id = (intptr_t)SPVM_LIST_get(mem_stack, mem_id);
     if (my_id == var_decl->id) {
-      assert(mem_id + width <= mem_stack->length);
-      for (int32_t i = 0; i < width; i++) {
+      assert(mem_id + stack_length <= mem_stack->length);
+      for (int32_t i = 0; i < stack_length; i++) {
         mem_stack->values[mem_id + i] = (void*)(intptr_t)-1;
       }
     }
@@ -70,14 +70,14 @@ int32_t SPVM_OP_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack
   
   SPVM_TYPE* my_type = var_decl->type;
 
-  int32_t width = SPVM_TYPE_get_width(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+  int32_t stack_length = SPVM_TYPE_get_stack_length(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
   
   // Search free memory
   int32_t found = 0;
   for (int32_t mem_id = 0; mem_id < mem_stack->length; mem_id++) {
-    if (mem_id + width <= mem_stack->length) {
+    if (mem_id + stack_length <= mem_stack->length) {
       int32_t is_used = 0;
-      for (int32_t i = 0; i < width; i++) {
+      for (int32_t i = 0; i < stack_length; i++) {
         int32_t my_id = (intptr_t)SPVM_LIST_get(mem_stack, mem_id + i);
         if (my_id >= 0) {
           is_used = 1;
@@ -87,7 +87,7 @@ int32_t SPVM_OP_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack
       if (!is_used) {
         found = 1;
         found_mem_id = mem_id;
-        for (int32_t i = 0; i < width; i++) {
+        for (int32_t i = 0; i < stack_length; i++) {
           mem_stack->values[mem_id + i] = (void*)(intptr_t)var_decl->id;
         }
         break;
@@ -102,7 +102,7 @@ int32_t SPVM_OP_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack
   // Add stack
   if (!found) {
     found_mem_id = mem_stack->length;
-    for (int32_t i = 0; i < width; i++) {
+    for (int32_t i = 0; i < stack_length; i++) {
       SPVM_LIST_push(mem_stack, (void*)(intptr_t)var_decl->id);
     }
   }
@@ -4293,7 +4293,7 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
   // Check type names
   for (int32_t i = 0; i < types->length; i++) {
     SPVM_TYPE* type = SPVM_LIST_get(types, i);
-    type->width = SPVM_TYPE_get_width(compiler, type->basic_type->id, type->dimension, type->flag);
+    type->stack_length = SPVM_TYPE_get_stack_length(compiler, type->basic_type->id, type->dimension, type->flag);
     
     if (type->basic_type->category == 0) {
       type->basic_type->category = SPVM_BASIC_TYPE_get_category(compiler, type->basic_type->id);
@@ -4691,7 +4691,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
       
       // Argument limit check
-      int32_t args_width = 0;
+      int32_t args_stack_length = 0;
       SPVM_TYPE* last_arg_type = NULL;
       int32_t found_optional_arg = 0;
       for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
@@ -4748,17 +4748,17 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
         
         if (is_arg_type_is_mulnum_type || is_arg_type_is_value_ref_type) {
-          args_width += arg_type->basic_type->class->fields->length;
+          args_stack_length += arg_type->basic_type->class->fields->length;
         }
         else {
-          args_width++;
+          args_stack_length++;
         }
         
         if (arg_index == method->args_length - 1) {
           last_arg_type = arg_type;
         }
       }
-      if (args_width > 255) {
+      if (args_stack_length > 255) {
         SPVM_COMPILER_error(compiler, "Too many arguments at %s line %d", method->op_method->file, method->op_method->line);
         return;
       }

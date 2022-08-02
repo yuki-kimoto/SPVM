@@ -52,6 +52,10 @@
     * Rename the opcode SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_SIGNATURE to SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_NAME.
     * Remove signature_id fields in spvm_runtime_class_var, spvm_runtime_field, spvm_runtime_method.
     * Add args_length field to spvm_call_method.h.
+    * Rename width of spvm_runtime_type to stack_length.
+    * Rename width of spvm_type to stack_length.
+    * Rename SPVM_TYPE_get_width to SPVM_TYPE_get_stack_length.
+    
 0.9632 2022-08-01
   [Internal Ineffective Changes]
     * Add set_field_object_by_name_v2 native API.

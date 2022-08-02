@@ -390,7 +390,7 @@ int32_t SPVM_API_RUNTIME_get_type_stack_length(SPVM_RUNTIME* runtime, int32_t ty
   
   assert(type);
   
-  int32_t type_stack_length = type->width;
+  int32_t type_stack_length = type->stack_length;
   
   return type_stack_length;
 }

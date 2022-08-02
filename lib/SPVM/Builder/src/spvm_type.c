@@ -916,11 +916,11 @@ int32_t SPVM_TYPE_is_mulnum_array_type(SPVM_COMPILER* compiler, int32_t basic_ty
   return is_mulnum_array_type;
 }
 
-int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+int32_t SPVM_TYPE_get_stack_length(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   int32_t is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, basic_type_id, dimension, flag);
   
-  int32_t width;
+  int32_t stack_length;
   if (is_mulnum_type) {
     
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
@@ -930,13 +930,13 @@ int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int3
     
     assert(class);
     
-    width = class->fields->length;
+    stack_length = class->fields->length;
   }
   else {
-    width = 1;
+    stack_length = 1;
   }
   
-  return width;
+  return stack_length;
 }
 
 int32_t SPVM_TYPE_get_mulnum_field_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
