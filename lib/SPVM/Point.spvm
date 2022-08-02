@@ -8,17 +8,18 @@ class Point {
   has y : rw int;
   
   # Class methods
-  static method new : Point () {
-    return new Point;
+  static method new : Point ($x = 0 : int, $y = 0 : int) {
+    my $self = new Point;
+    
+    $self->{x} = $x;
+    $self->{y} = $y;
+    
+    return $self;
   }
   
   static method new_xy : Point ($x : int, $y : int) {
-    my $self = Point->new;
-    
-    $self->set_x($x);
-    $self->set_y($y);
-    
-    return $self;
+    warn "Point->new_xy($x, $y) is deprecated. Use Point->new($x, $y) instead. This method will be removed after 2022-09-03";
+    return &new($x, $y);
   }
   
   # Instance methods
@@ -28,7 +29,7 @@ class Point {
   }
   
   method cloneable_clone : object () {
-    my $self_clone = Point->new_xy($self->x, $self->y);
+    my $self_clone = Point->new($self->x, $self->y);
     
     return $self_clone;
   }

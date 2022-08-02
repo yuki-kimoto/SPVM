@@ -1,10 +1,16 @@
 0.9634 2022-08-03
   [Changes]
     * Add an optional argument to the following methods of StringBuffer class.
-    [Before]
-    static method new : StringBuffer ()
-    [After]
-    static method new : StringBuffer ($string = undef : string)
+      [Before]
+      static method new : StringBuffer ()
+      [After]
+      static method new : StringBuffer ($string = undef : string)
+    * Add optional arguments to the following methods of Point class.
+      [Before]
+      static method new : Point ()
+      [After]
+      static method new : Point ($x = 0 : int, $y = 0 : int)
+      
   [Incompatible Changes]
     * The defintions of the following methods of ByteList class are changed.
       [Before]
@@ -41,7 +47,11 @@
       static method new : List ($array : object[]...)
       [After]
       static method new : List ($array = undef : object[])
-  
+  [Deprecation]
+    * The following methods of Point class are deprecated.
+      # Point->new_xy($x, $y) is deprecated. Use Point->new($x, $y) instead. This method will be removed after 2022-09-03
+      static method new_xy : Point ($x : int, $y : int)
+      
 0.9633 2022-08-03
   [New Features]
     * Add optional argument feature.

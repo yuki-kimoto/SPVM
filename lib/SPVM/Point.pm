@@ -11,7 +11,7 @@ SPVM::Point - Point
   use Point;
   
   my $point = Point->new;
-  my $point = Point->new_xy(1, 2);
+  my $point = Point->new(1, 2);
 
   $point->set_x(1);
   $point->set_y(2);
@@ -55,15 +55,19 @@ C<y>.
 
 =head2 new
 
-  method new : Point ()
+  static method new : Point ($x = 0 : int, $y = 0 : int)
 
-Create a new C<Point> object.
+Create a new C<Point> object with L</"x"> and L</"y">.
 
 =head2 new_xy
 
   method new_xy : Point ($x : int, $y : int)
 
-Create a new C<Point> object with L</"x"> and L</"y">.
+The alias for the following code using L</"new">
+
+  my $point = Point->new($x, $y);
+
+This method is deprecated and will be removed after 2022-09-03.
 
 =head1 Instance Methods
 
