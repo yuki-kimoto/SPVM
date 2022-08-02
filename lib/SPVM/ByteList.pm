@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-  static method new : ByteList ($array : byte[]...)
+  static method new : ByteList ($array = undef : byte[])
 
 Create a new C<ByteList> object with a C<byte> array.
 
@@ -84,7 +84,6 @@ B<Examples:>
 
   my $list = ByteList->new;
   my $list = ByteList->new([(byte)1, 2, 3]);
-  my $list = ByteList->new(undef);
 
 =head2 new_len
 

@@ -10,7 +10,7 @@ class ByteList {
   has capacity : int;
   
   # Class methods
-  static method new : ByteList ($array : byte[]...) {
+  static method new : ByteList ($array = undef : byte[]) {
     my $self = new ByteList;
     
     my $length : int;

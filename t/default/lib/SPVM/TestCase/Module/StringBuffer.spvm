@@ -37,14 +37,32 @@ class TestCase::Module::StringBuffer {
   
   static method new : int () {
     
-    my $buffer = StringBuffer->new;
-    
-    unless ($buffer isa StringBuffer) {
-      return 0;
+    {
+      my $buffer = StringBuffer->new;
+      
+      unless ($buffer isa StringBuffer) {
+        return 0;
+      }
+      
+      unless ($buffer->length == 0) {
+        return 0;
+      }
     }
     
-    unless ($buffer->length == 0) {
-      return 0;
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      unless ($buffer isa StringBuffer) {
+        return 0;
+      }
+      
+      unless ($buffer->length == 3) {
+        return 0;
+      }
+      
+      unless ($buffer->to_string eq "abc") {
+        return 0;
+      }
     }
     
     return 1;

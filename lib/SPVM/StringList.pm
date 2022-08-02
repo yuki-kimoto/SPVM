@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-  static method new : StringList ($array : string[]...)
+  static method new : StringList ($array = undef : string[])
 
 Create a new C<StringList> object with a C<string> array.
 
@@ -84,7 +84,6 @@ B<Examples:>
 
   my $list = StringList->new;
   my $list = StringList->new(["abc", "def", "ghi"]);
-  my $list = StringList->new(undef);
 
 =head2 new_len
 

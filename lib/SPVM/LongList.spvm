@@ -10,7 +10,7 @@ class LongList {
   has capacity : int;
   
   # Class methods
-  static method new : LongList ($array : long[]...) {
+  static method new : LongList ($array = undef : long[]) {
     my $self = new LongList;
     
     my $length : int;

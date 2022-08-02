@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-  static method new : DoubleList ($array : double[]...)
+  static method new : DoubleList ($array = undef : double[])
 
 Create a new C<DoubleList> object with a C<double> array.
 
@@ -84,7 +84,6 @@ B<Examples:>
 
   my $list = DoubleList->new;
   my $list = DoubleList->new([(double)1, 2, 3]);
-  my $list = DoubleList->new(undef);
 
 =head2 new_len
 

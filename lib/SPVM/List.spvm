@@ -10,26 +10,26 @@ class List {
   has capacity : int;
   
   # Class methods
-  static method new : List ($objects : object[]...) {
+  static method new : List ($array = undef : object[]) {
     my $self = new List;
     
     my $length = 0;
-    if ($objects) {
-      $length = @$objects;
+    if ($array) {
+      $length = @$array;
     }
     
     my $capacity = $length;
     $self->{capacity} = $capacity;
     
-    if ($objects) {
-      $self->{values} = Array->new_proto($objects, $capacity);
+    if ($array) {
+      $self->{values} = Array->new_proto($array, $capacity);
     }
     else {
       $self->{values} = Array->new_proto(new object[0], $capacity);
     }
     
-    if ($objects) {
-      Array->memcpy_object_address($self->{values}, 0, $objects, 0, $length);
+    if ($array) {
+      Array->memcpy_object_address($self->{values}, 0, $array, 0, $length);
     }
     
     $self->{length} = $length;
@@ -247,9 +247,9 @@ class List {
   
   method to_array : object[] () {
     my $length = $self->{length};
-    my $objects = Array->new_proto($self->{values}, $length);
-    Array->memcpy_object_address($objects, 0, $self->{values}, 0, $length);
-    return $objects;
+    my $array = Array->new_proto($self->{values}, $length);
+    Array->memcpy_object_address($array, 0, $self->{values}, 0, $length);
+    return $array;
   }
   
   method unshift : void ($value : object) {

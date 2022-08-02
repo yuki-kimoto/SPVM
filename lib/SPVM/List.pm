@@ -78,7 +78,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-  static method new : List ($objects : object[]...)
+  static method new : List ($array = undef : object[])
 
 Create a new C<List> object with the object array.
 

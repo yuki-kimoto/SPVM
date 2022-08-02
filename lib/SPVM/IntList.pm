@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-  static method new : IntList ($array : int[]...)
+  static method new : IntList ($array = undef : int[])
 
 Create a new C<IntList> object with a C<int> array.
 
@@ -84,7 +84,6 @@ B<Examples:>
 
   my $list = IntList->new;
   my $list = IntList->new([(int)1, 2, 3]);
-  my $list = IntList->new(undef);
 
 =head2 new_len
 

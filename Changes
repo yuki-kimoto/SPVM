@@ -1,3 +1,47 @@
+0.9634 2022-08-03
+  [Changes]
+    * Add an optional argument to the following methods of StringBuffer class.
+    [Before]
+    static method new : StringBuffer ()
+    [After]
+    static method new : StringBuffer ($string = undef : string)
+  [Incompatible Changes]
+    * The defintions of the following methods of ByteList class are changed.
+      [Before]
+      static method new : ByteList ($array : byte[]...)
+      [After]
+      static method new : ByteList ($array = undef : byte[])
+    * The defintions of the following methods of ShortList class are changed.
+      [Before]
+      static method new : ShortList ($array : short[]...)
+      [After]
+      static method new : ShortList ($array = undef : short[])
+    * The defintions of the following methods of IntList class are changed.
+      [Before]
+      static method new : IntList ($array : int[]...)
+      [After]
+      static method new : IntList ($array = undef : int[])
+    * The defintions of the following methods of LongList class are changed.
+      [Before]
+      static method new : LongList ($array : long[]...)
+      [After]
+      static method new : LongList ($array = undef : long[])
+    * The defintions of the following methods of FloatList class are changed.
+      [Before]
+      static method new : FloatList ($array : float[]...)
+      [After]
+      static method new : FloatList ($array = undef : float[])
+    * The defintions of the following methods of DoubleList class are changed.
+      [Before]
+      static method new : DoubleList ($array : double[]...)
+      [After]
+      static method new : DoubleList ($array = undef : double[])
+    * The defintions of the following methods of List class are changed.
+      [Before]
+      static method new : List ($array : object[]...)
+      [After]
+      static method new : List ($array = undef : object[])
+  
 0.9633 2022-08-03
   [New Features]
     * Add optional argument feature.

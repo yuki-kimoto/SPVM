@@ -10,11 +10,16 @@ class StringBuffer {
   has capacity : int;
   
   # Class methods
-  static method new : StringBuffer () {
+  static method new : StringBuffer ($string = undef : string) {
     my $self = new StringBuffer;
     $self->{value} = (mutable string)new_string_len(0);
     $self->{length} = 0;
     $self->{capacity} = 0;
+    
+    if ($string) {
+      $self->push($string);
+    }
+    
     return $self;
   }
   

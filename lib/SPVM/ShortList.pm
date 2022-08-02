@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-  static method new : ShortList ($array : short[]...)
+  static method new : ShortList ($array = undef : short[])
 
 Create a new C<ShortList> object with a C<short> array.
 
@@ -84,7 +84,6 @@ B<Examples:>
 
   my $list = ShortList->new;
   my $list = ShortList->new([(short)1, 2, 3]);
-  my $list = ShortList->new(undef);
 
 =head2 new_len
 

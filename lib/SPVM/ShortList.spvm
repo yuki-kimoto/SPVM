@@ -10,7 +10,7 @@ class ShortList {
   has capacity : int;
   
   # Class methods
-  static method new : ShortList ($array : short[]...) {
+  static method new : ShortList ($array = undef : short[]) {
     my $self = new ShortList;
     
     my $length : int;

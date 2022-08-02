@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-  static method new : LongList ($array : long[]...)
+  static method new : LongList ($array = undef : long[])
 
 Create a new C<LongList> object with a C<long> array.
 
@@ -84,7 +84,6 @@ B<Examples:>
 
   my $list = LongList->new;
   my $list = LongList->new([(long)1, 2, 3]);
-  my $list = LongList->new(undef);
 
 =head2 new_len
 

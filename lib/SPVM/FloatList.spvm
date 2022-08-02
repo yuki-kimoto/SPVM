@@ -10,7 +10,7 @@ class FloatList {
   has capacity : int;
   
   # Class methods
-  static method new : FloatList ($array : float[]...) {
+  static method new : FloatList ($array = undef : float[]) {
     my $self = new FloatList;
     
     my $length : int;

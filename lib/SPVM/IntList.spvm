@@ -10,7 +10,7 @@ class IntList {
   has capacity : int;
   
   # Class methods
-  static method new : IntList ($array : int[]...) {
+  static method new : IntList ($array = undef : int[]) {
     my $self = new IntList;
     
     my $length : int;

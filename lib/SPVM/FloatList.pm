@@ -72,7 +72,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-  static method new : FloatList ($array : float[]...)
+  static method new : FloatList ($array = undef : float[])
 
 Create a new C<FloatList> object with a C<float> array.
 
@@ -84,7 +84,6 @@ B<Examples:>
 
   my $list = FloatList->new;
   my $list = FloatList->new([(float)1, 2, 3]);
-  my $list = FloatList->new(undef);
 
 =head2 new_len
 

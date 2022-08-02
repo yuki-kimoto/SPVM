@@ -10,7 +10,7 @@ class StringList {
   has capacity : int;
   
   # Class methods
-  static method new : StringList ($array : string[]...) {
+  static method new : StringList ($array = undef : string[]) {
     my $self = new StringList;
     
     my $length : int;
