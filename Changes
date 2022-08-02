@@ -1,4 +1,4 @@
-0.9632_01 2022-08-01
+0.9632_01 2022-08-02
   [New Features]
     * Add optional argument feature.
     * Add the following native APIs. The length of the arguments can be got in the native module.
