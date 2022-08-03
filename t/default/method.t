@@ -213,6 +213,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
+# Deep recursion
+{
+  ok(SPVM::TestCase::Method->deep_recursion);
+}
+
 # Optional arguments
 {
   ok(SPVM::TestCase::Method->optional_args);

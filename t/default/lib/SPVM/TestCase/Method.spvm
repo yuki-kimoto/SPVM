@@ -1267,4 +1267,19 @@ class TestCase::Method {
   static method optional_args_string : string ($arg = undef : string) {
     return $arg;
   }
+  
+  static method deep_recursion : int () {
+    eval { &recursion; };
+    unless (Fn->contains($@, "Deep recursion occurs. The depth of a method call must be less than 10000")) {
+      return 0;
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method recursion : void () {
+    &recursion;
+  }
 }
