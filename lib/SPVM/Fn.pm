@@ -552,9 +552,9 @@ The same as L</"get_code_point">, but the offset is not updated.
 
 Copy the range of the source to the the range of the destination.
 
-The range of the destination is from the offset of the destination to the offset of the destination + the length - C<1>.
+The range of the destination is by the length from the offset of the destination.
 
-The range of the source is from the offset of the source to the offset of the destination + the length - C<1>.
+The range of the source is by the length from the offset of the source.
 
 The unit of the offset and the length is C<byte> size.
 
