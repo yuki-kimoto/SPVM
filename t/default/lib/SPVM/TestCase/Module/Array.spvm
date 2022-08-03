@@ -684,6 +684,17 @@ class TestCase::Module::Array {
       }
     }
     {
+      my $value0 = "a";
+      my $array = [$value0, "b", "c", "d", "e", "f", "g"];
+      my $range = Array->copy_range_string($array, 0, -1);
+      unless ($value0 != $range->[0]) {
+        return 0;
+      }
+      unless (Array->equals_string($range, [$value0, "b", "c", "d", "e", "f", "g"])) {
+        return 0;
+      }
+    }
+    {
       my $array = ["a", "b", "c", "d", "e", "f", "g"];
       my $range = Array->copy_range_string($array, 1, 3);
       unless (Array->equals_string($range, ["b", "c", "d"])) {
@@ -703,13 +714,6 @@ class TestCase::Module::Array {
       {
         eval { Array->copy_range_string([(string)5, -7, 9], -1, 1); };
         unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
-          return 0;
-        }
-      }
-      
-      {
-        eval { Array->copy_range_string([(string)5, -7, 9], 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -738,6 +742,17 @@ class TestCase::Module::Array {
       }
     }
     {
+      my $value0 = "a";
+      my $array = [$value0, "b", "c", "d", "e", "f", "g"];
+      my $range = Array->copy_range_string_address($array, 0, -1);
+      unless ($value0 == $range->[0]) {
+        return 0;
+      }
+      unless (Array->equals_string($range, [$value0, "b", "c", "d", "e", "f", "g"])) {
+        return 0;
+      }
+    }
+    {
       my $array = ["a", "b", "c", "d", "e", "f", "g"];
       my $range = Array->copy_range_string_address($array, 1, 3);
       unless (Array->equals_string($range, ["b", "c", "d"])) {
@@ -757,13 +772,6 @@ class TestCase::Module::Array {
       {
         eval { Array->copy_range_string_address([(string)5, -7, 9], -1, 1); };
         unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
-          return 0;
-        }
-      }
-      
-      {
-        eval { Array->copy_range_string_address([(string)5, -7, 9], 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -842,14 +850,6 @@ class TestCase::Module::Array {
       }
     }
     
-    # Array is undef
-    {
-      my $output = Array->copy_string(undef);
-      unless ($output == undef) {
-        return 0;
-      }
-    }
-    
     return 1;
   }
   
@@ -874,14 +874,6 @@ class TestCase::Module::Array {
       }
       
       unless (@$array_out == 3) {
-        return 0;
-      }
-    }
-    
-    # Array is undef
-    {
-      my $output = Array->copy_string_address(undef);
-      unless ($output == undef) {
         return 0;
       }
     }

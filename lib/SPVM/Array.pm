@@ -299,29 +299,21 @@ This method is depracated and will be removed after 2022-08-03.
   
   static method copy_range_string : string[] ($array : string[], $offset : int, $length : int)
 
-Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator by the length from the offset to the created array.
+The alias for the following code using L</"copy_string">
 
-The array must be defined. Otherwise an exception will be thrown.
+  my $ret = Array->copy_string($array, $offset, $length);
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+This method is depracated and will be removed after 2022-08-03.
 
 =head2 copy_range_string_address
   
   static method copy_range_string : string[] ($array : string[], $offset : int, $length : int)
 
-Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array by the length from the offset to the created array.
+The alias for the following code using L</"copy_string_address">
 
-The array must be defined. Otherwise an exception will be thrown.
+  my $ret = Array->copy_string_address($array, $offset, $length);
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+This method is depracated and will be removed after 2022-08-03.
 
 =head2 copy_short
 
@@ -339,19 +331,31 @@ The offset + the length specified by the argument must be less than or equal to 
 
 =head2 copy_string
 
-  static method copy_string : string[] ($array : string[])
+  static method copy_string : string[] ($array : string[], $offset = 0 : int, $length = -1 : int)
 
-Copy a C<string> array using the C<copy> operator.
+Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator by the length from the offset to the created array.
 
-If the array is not defined, return C<undef>.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+
+The array must be defined. Otherwise an exception will be thrown.
+
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_string_address
 
-  static method copy_string_address : string[] ($array : string[])
+  static method copy_string_address : string[] ($array : string[], $offset = 0 : int, $length = -1 : int)
 
-Copy the addresses of the elements of a C<string> array.
+Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array by the length from the offset to the created array.
 
-If the array is not defined, return C<undef>.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+
+The array must be defined. Otherwise an exception will be thrown.
+
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 dump_unsigned_byte
 

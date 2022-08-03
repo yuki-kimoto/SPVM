@@ -213,6 +213,51 @@
       The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
     * Array->copy_range_object calls Array->copy_object.
+    * The defintion and implementation of the following method of Array class is changed.
+      [Before]
+
+        static method copy_string : string[] ($array : string[])
+
+      Copy a C<string> array using the C<copy> operator.
+
+      If the array is not defined, return C<undef>.
+
+
+
+
+      [After]
+      
+        static method copy_string : string[] ($array : string[], $offset = 0 : int, $length = -1 : int)
+
+      Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator by the length from the offset to the created array.
+      If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+      The array must be defined. Otherwise an exception will be thrown.
+
+      The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+      The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+
+    * Array->copy_range_string calls Array->copy_string.
+    * The defintion and implementation of the following method of Array class is changed.
+      [Before]
+        static method copy_string_address : string[] ($array : string[])
+
+      Copy the addresses of the elements of a C<string> array.
+
+      If the array is not defined, return C<undef>.
+
+      [After]
+        static method copy_string_address : string[] ($array : string[], $offset = 0 : int, $length = -1 : int)
+
+      Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array by the length from the offset to the created array.
+      If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+
+      The array must be defined. Otherwise an exception will be thrown.
+
+      The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+      The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+    * Array->copy_range_string_address calls Array->copy_string_address.
     
   [Deprecation]
     * The following methods of Point class are deprecated.
@@ -253,6 +298,15 @@
       static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner) {
         warn "Array->copy_range_object(\$array, \$offset, \$length, \$cloner) is deprecated. Use Array->copy_object(\$array, \$cloner, \$offset, \$length) instead. This method will be removed after 2022-09-03";
         return &copy_object($array, $cloner, $offset, $length);
+      }
+      static method copy_range_string : string[] ($array : string[], $offset : int, $length : int) {
+        warn "Array->copy_range_string(\$array, \$offset, \$length) is deprecated. Use Array->copy_string(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+        return &copy_string($array, $offset, $length);
+      }
+
+      static method copy_range_string_address : string[] ($array : string[], $offset : int, $length : int) {
+        warn "Array->copy_range_string_address(\$array, \$offset, \$length) is deprecated. Use Array->copy_string_address(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+        return &copy_string_address($array, $offset, $length);
       }
       
   [Test Fix]
