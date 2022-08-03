@@ -59,7 +59,7 @@ class TestCase::Module::ByteList {
       unless ($length == 3) {
         return 0;
       }
-
+      
       # capacity
       unless ($list->capacity == 4) {
         return 0;
@@ -86,7 +86,7 @@ class TestCase::Module::ByteList {
       unless ($length == 3) {
         return 0;
       }
-
+      
       # capacity
       unless ($list->capacity == 10) {
         return 0;
@@ -167,7 +167,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     {
       my $list = ByteList->new_len(0);
       
@@ -208,15 +208,15 @@ class TestCase::Module::ByteList {
       unless ($list->get(0) == 3) {
         return 0;
       }
-
+      
       unless ($list->get(0) isa byte) {
         return 0;
       }
-
+      
       unless ($list->get(1) == 5) {
         return 0;
       }
-
+      
       unless ($list->get(2) == Fn->BYTE_MAX()) {
         return 0;
       }
@@ -396,7 +396,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     # Remove last
     {
       my $list = ByteList->new([(byte)1, 2, 3]);
@@ -405,7 +405,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     # Remove first
     {
       my $list = ByteList->new([(byte)1, 2, 3]);
@@ -414,7 +414,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     # Exception - remove to -1
     {
       my $list = ByteList->new([(byte)1, 2, 3]);
@@ -424,7 +424,7 @@ class TestCase::Module::ByteList {
       }
     }
     $@ = undef;
-
+    
     # Exception - remove to length
     {
       my $list = ByteList->new([(byte)1, 2, 3]);
@@ -454,7 +454,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     {
       my $list = ByteList->new([(byte)1, 2, 3, 4]);
       $list->replace(0, 2, [(byte)10, 20]);
@@ -462,7 +462,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     {
       my $list = ByteList->new([(byte)1, 2, 3, 4]);
       $list->replace(2, 2, [(byte)30, 40]);
@@ -470,7 +470,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     {
       my $list = ByteList->new([(byte)1, 2, 3, 4]);
       $list->replace(4, 0, [(byte)50, 60]);
@@ -478,7 +478,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     {
       my $list = ByteList->new([(byte)1, 2, 3, 4]);
       eval { $list->replace(-1, 3, [(byte)30, 40]); };
@@ -486,7 +486,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     {
       my $list = ByteList->new([(byte)1, 2, 3, 4]);
       eval { $list->replace(2, 3, [(byte)30, 40, 50]); };
@@ -494,7 +494,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     {
       my $list = ByteList->new([(byte)1]);
       $list->replace(1, 0, [(byte)2, 3]);
@@ -502,7 +502,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     {
       my $list = ByteList->new([(byte)1]);
       eval { $list->replace(2, 0, [(byte)1, 2]); };
@@ -517,7 +517,7 @@ class TestCase::Module::ByteList {
         return 0;
       }
     }
-
+    
     {
       my $list = ByteList->new([(byte)1]);
       eval { $list->replace(2, 2, [(byte)1, 2]); };
