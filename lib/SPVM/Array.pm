@@ -133,35 +133,61 @@ The offset + the length specified by the argument must be less than or equal to 
 
 =head2 copy_double
 
-  static method copy_double : double[] ($array : double[])
+  static method copy_double : double[] ($array : double[], $offset = 0 : int, $length = -1 : int)
 
-Copy a C<double> array.
+Create a new C<double> array with the length sepcified by the argument, and copy the elements by the length from the offset to the created array.
+
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+
+The array must be defined. Otherwise an exception will be thrown.
+
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 If the array is not defined, return C<undef>.
 
 =head2 copy_float
 
-  static method copy_float : float[] ($array : float[])
+  static method copy_float : float[] ($array : float[], $offset = 0 : int, $length = -1 : int)
 
-Copy a C<float> array.
+Create a new C<float> array with the length sepcified by the argument, and copy the elements by the length from the offset to the created array.
 
-If the array is not defined, return C<undef>.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+
+The array must be defined. Otherwise an exception will be thrown.
+
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_int
 
-  static method copy_int : int[] ($array : int[])
+  static method copy_int : int[] ($array : int[], $offset = 0 : int, $length = -1 : int)
 
-Copy a C<int> array.
+Create a new C<int> array with the length sepcified by the argument, and copy the elements by the length from the offset to the created array.
 
-If the array is not defined, return C<undef>.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+
+The array must be defined. Otherwise an exception will be thrown.
+
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
   
 =head2 copy_long
 
-  static method copy_long : long[] ($array : long[])
+  static method copy_long : long[] ($array : long[], $offset = 0 : int, $length = -1 : int)
 
-Copy a C<long> array.
+Create a new C<long> array with the length sepcified by the argument, and copy the elements by the length from the offset to the created array.
 
-If the array is not defined, return C<undef>.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+
+The array must be defined. Otherwise an exception will be thrown.
+
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_object
 
@@ -181,61 +207,55 @@ The alias for the following code using L</"copy_object">.
 
   my $ret = &copy_object($array, undef);
 
+=head2 copy_range_byte
+
+  static method copy_range_byte : byte[] ($array : byte[], $offset : int, $length : int)
+
+The alias for the following code using L</"copy_byte">
+
+  my $ret = Array->copy_byte($array, $offset, $length);
+
+This method is depracated and will be removed after 2022-08-03.
+
 =head2 copy_range_double
 
   static method copy_range_double : double[] ($array : double[], $offset : int, $length : int)
 
-Create a new C<double> array with the length sepcified by the argument, and copy the elements of the C<double> array from the offset to the offset + the length - C<1> to the created array.
+The alias for the following code using L</"copy_double">
 
-The array must be defined. Otherwise an exception will be thrown.
+  my $ret = Array->copy_double($array, $offset, $length);
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+This method is depracated and will be removed after 2022-08-03.
 
 =head2 copy_range_float
 
   static method copy_range_float : float[] ($array : float[], $offset : int, $length : int)
 
-Create a new C<float> array with the length sepcified by the argument, and copy the elements of the C<float> array from the offset to the offset + the length - C<1> to the created array.
+The alias for the following code using L</"copy_float">
 
-The array must be defined. Otherwise an exception will be thrown.
+  my $ret = Array->copy_float($array, $offset, $length);
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+This method is depracated and will be removed after 2022-08-03.
 
 =head2 copy_range_int
 
   static method copy_range_int : int[] ($array : int[], $offset : int, $length : int)
 
-Create a new C<int> array with the length sepcified by the argument, and copy the elements of the C<int> array from the offset to the offset + the length - C<1> to the created array.
+The alias for the following code using L</"copy_int">
 
-The array must be defined. Otherwise an exception will be thrown.
+  my $ret = Array->copy_int($array, $offset, $length);
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+This method is depracated and will be removed after 2022-08-03.
 
 =head2 copy_range_long
 
   static method copy_range_long : long[] ($array : long[], $offset : int, $length : int)
 
-Create a new C<long> array with the length sepcified by the argument, and copy the elements of the C<long> array from the offset to the offset + the length - C<1> to the created array.
+The alias for the following code using L</"copy_long">
 
-The array must be defined. Otherwise an exception will be thrown.
+  my $ret = Array->copy_long($array, $offset, $length);
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+This method is depracated and will be removed after 2022-08-03.
 
 =head2 copy_range_object
 
@@ -255,9 +275,9 @@ The length must be greater than or equal to C<0>. Otherwise an exception will be
 
 The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
-=head2 copy_range_object
+=head2 copy_range_object_address
 
-  static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner)
+  static method copy_range_object_address : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner)
 
 The alias for the following code using L</"copy_range_object">.
 
@@ -267,15 +287,11 @@ The alias for the following code using L</"copy_range_object">.
 
   static method copy_range_short : short[] ($array : short[], $offset : int, $length : int)
 
-Create a new C<short> array with the length sepcified by the argument, and copy the elements of the C<short> array from the offset to the offset + the length - C<1> to the created array.
+The alias for the following code using L</"copy_short">
 
-The array must be defined. Otherwise an exception will be thrown.
+  my $ret = Array->copy_short($array, $offset, $length);
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+This method is depracated and will be removed after 2022-08-03.
 
 =head2 copy_range_string
   
@@ -307,12 +323,18 @@ The offset + the length specified by the argument must be less than or equal to 
 
 =head2 copy_short
 
-  static method copy_short : short[] ($array : short[])
+  static method copy_short : short[] ($array : short[], $offset = 0 : int, $length = -1 : int)
 
-Copy a C<short> array.
+Create a new C<short> array with the length sepcified by the argument, and copy the elements by the length from the offset to the created array.
 
-If the array is not defined, return C<undef>.
-  
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+
+The array must be defined. Otherwise an exception will be thrown.
+
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+
 =head2 copy_string
 
   static method copy_string : string[] ($array : string[])

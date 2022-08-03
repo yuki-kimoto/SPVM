@@ -30,20 +30,108 @@ class Array {
     return $new_array;
   }
   
-  static method copy_double : double[] ($array : double[]) {
-    return copy $array;
+  static method copy_double : double[] ($array : double[], $offset = 0 : int, $length = -1 : int) {
+    
+    unless ($array) {
+      die "The array must be defined";
+    }
+    
+    unless ($offset >= 0) {
+      die "The offset must be greater than or equal to 0";
+    }
+    
+    my $array_length = @$array;
+    if ($length < 0) {
+      $length = $array_length - $offset;
+    }
+    
+    unless ($offset + $length <= $array_length) {
+      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+    }
+    
+    my $new_array = new double[$length];
+    
+    Array->memcpy_double($new_array, 0, $array, $offset, $length);
+    
+    return $new_array;
   }
   
-  static method copy_float : float[] ($array : float[]) {
-    return copy $array;
+  static method copy_float : float[] ($array : float[], $offset = 0 : int, $length = -1 : int) {
+    
+    unless ($array) {
+      die "The array must be defined";
+    }
+    
+    unless ($offset >= 0) {
+      die "The offset must be greater than or equal to 0";
+    }
+    
+    my $array_length = @$array;
+    if ($length < 0) {
+      $length = $array_length - $offset;
+    }
+    
+    unless ($offset + $length <= $array_length) {
+      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+    }
+    
+    my $new_array = new float[$length];
+    
+    Array->memcpy_float($new_array, 0, $array, $offset, $length);
+    
+    return $new_array;
   }
   
-  static method copy_int : int[] ($array : int[]) {
-    return copy $array;
+  static method copy_int : int[] ($array : int[], $offset = 0 : int, $length = -1 : int) {
+    
+    unless ($array) {
+      die "The array must be defined";
+    }
+    
+    unless ($offset >= 0) {
+      die "The offset must be greater than or equal to 0";
+    }
+    
+    my $array_length = @$array;
+    if ($length < 0) {
+      $length = $array_length - $offset;
+    }
+    
+    unless ($offset + $length <= $array_length) {
+      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+    }
+    
+    my $new_array = new int[$length];
+    
+    Array->memcpy_int($new_array, 0, $array, $offset, $length);
+    
+    return $new_array;
   }
   
-  static method copy_long : long[] ($array : long[]) {
-    return copy $array;
+  static method copy_long : long[] ($array : long[], $offset = 0 : int, $length = -1 : int) {
+    
+    unless ($array) {
+      die "The array must be defined";
+    }
+    
+    unless ($offset >= 0) {
+      die "The offset must be greater than or equal to 0";
+    }
+    
+    my $array_length = @$array;
+    if ($length < 0) {
+      $length = $array_length - $offset;
+    }
+    
+    unless ($offset + $length <= $array_length) {
+      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+    }
+    
+    my $new_array = new long[$length];
+    
+    Array->memcpy_long($new_array, 0, $array, $offset, $length);
+    
+    return $new_array;
   }
   
   precompile static method copy_object : object[] ($array : object[], $cloner : Cloner) {
@@ -77,111 +165,23 @@ class Array {
   }
   
   static method copy_range_double : double[] ($array : double[], $offset : int, $length : int) {
-    
-    unless ($array) {
-      die "The array must be defined";
-    }
-    
-    unless ($offset >= 0) {
-      die "The offset must be greater than or equal to 0";
-    }
-    
-    unless ($length >= 0) {
-      die "The length must be greater than or equal to 0";
-    }
-    
-    my $array_length = @$array;
-    
-    unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
-    }
-    
-    my $new_array = new double[$length];
-    
-    Array->memcpy_double($new_array, 0, $array, $offset, $length);
-    
-    return $new_array;
+    warn "Array->copy_range_double(\$array, \$offset, \$length) is deprecated. Use Array->copy(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+    return &copy_double($array, $offset, $length);
   }
   
   static method copy_range_float : float[] ($array : float[], $offset : int, $length : int) {
-    
-    unless ($array) {
-      die "The array must be defined";
-    }
-    
-    unless ($offset >= 0) {
-      die "The offset must be greater than or equal to 0";
-    }
-    
-    unless ($length >= 0) {
-      die "The length must be greater than or equal to 0";
-    }
-    
-    my $array_length = @$array;
-    
-    unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
-    }
-    
-    my $new_array = new float[$length];
-    
-    Array->memcpy_float($new_array, 0, $array, $offset, $length);
-    
-    return $new_array;
+    warn "Array->copy_range_float(\$array, \$offset, \$length) is deprecated. Use Array->copy(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+    return &copy_float($array, $offset, $length);
   }
   
   static method copy_range_int : int[] ($array : int[], $offset : int, $length : int) {
-    
-    unless ($array) {
-      die "The array must be defined";
-    }
-    
-    unless ($offset >= 0) {
-      die "The offset must be greater than or equal to 0";
-    }
-    
-    unless ($length >= 0) {
-      die "The length must be greater than or equal to 0";
-    }
-    
-    my $array_length = @$array;
-    
-    unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
-    }
-    
-    my $new_array = new int[$length];
-    
-    Array->memcpy_int($new_array, 0, $array, $offset, $length);
-    
-    return $new_array;
+    warn "Array->copy_range_int(\$array, \$offset, \$length) is deprecated. Use Array->copy(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+    return &copy_int($array, $offset, $length);
   }
   
   static method copy_range_long : long[] ($array : long[], $offset : int, $length : int) {
-    
-    unless ($array) {
-      die "The array must be defined";
-    }
-    
-    unless ($offset >= 0) {
-      die "The offset must be greater than or equal to 0";
-    }
-    
-    unless ($length >= 0) {
-      die "The length must be greater than or equal to 0";
-    }
-    
-    my $array_length = @$array;
-    
-    unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
-    }
-    
-    my $new_array = new long[$length];
-    
-    Array->memcpy_long($new_array, 0, $array, $offset, $length);
-    
-    return $new_array;
+    warn "Array->copy_range_long(\$array, \$offset, \$length) is deprecated. Use Array->copy(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+    return &copy_long($array, $offset, $length);
   }
   
   precompile static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner) {
@@ -223,30 +223,8 @@ class Array {
   }
   
   static method copy_range_short : short[] ($array : short[], $offset : int, $length : int) {
-    
-    unless ($array) {
-      die "The array must be defined";
-    }
-    
-    unless ($offset >= 0) {
-      die "The offset must be greater than or equal to 0";
-    }
-    
-    unless ($length >= 0) {
-      die "The length must be greater than or equal to 0";
-    }
-    
-    my $array_length = @$array;
-    
-    unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
-    }
-    
-    my $new_array = new short[$length];
-    
-    Array->memcpy_short($new_array, 0, $array, $offset, $length);
-    
-    return $new_array;
+    warn "Array->copy_range_short(\$array, \$offset, \$length) is deprecated. Use Array->copy(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+    return &copy_short($array, $offset, $length);
   }
   
   precompile static method copy_range_string : string[] ($array : string[], $offset : int, $length : int) {
@@ -305,8 +283,30 @@ class Array {
     return $new_array;
   }
   
-  static method copy_short : short[] ($array : short[]) {
-    return copy $array;
+  static method copy_short : short[] ($array : short[], $offset = 0 : int, $length = -1 : int) {
+    
+    unless ($array) {
+      die "The array must be defined";
+    }
+    
+    unless ($offset >= 0) {
+      die "The offset must be greater than or equal to 0";
+    }
+    
+    my $array_length = @$array;
+    if ($length < 0) {
+      $length = $array_length - $offset;
+    }
+    
+    unless ($offset + $length <= $array_length) {
+      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+    }
+    
+    my $new_array = new short[$length];
+    
+    Array->memcpy_short($new_array, 0, $array, $offset, $length);
+    
+    return $new_array;
   }
   
   precompile static method copy_string : string[] ($array : string[]) {
