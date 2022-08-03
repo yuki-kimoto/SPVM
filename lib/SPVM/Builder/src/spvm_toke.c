@@ -1219,6 +1219,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   string_literal_length++;
                   char_ptr++;
                 }
+                else if (*char_ptr == '$') {
+                  string_literal_tmp[string_literal_length] = 0x24;
+                  string_literal_length++;
+                  char_ptr++;
+                }
                 else if (*char_ptr == '\'') {
                   string_literal_tmp[string_literal_length] = 0x27;
                   string_literal_length++;
@@ -1226,11 +1231,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else if (*char_ptr == '\\') {
                   string_literal_tmp[string_literal_length] = 0x5c;
-                  string_literal_length++;
-                  char_ptr++;
-                }
-                else if (*char_ptr == '$') {
-                  string_literal_tmp[string_literal_length] = 0x44;
                   string_literal_length++;
                   char_ptr++;
                 }

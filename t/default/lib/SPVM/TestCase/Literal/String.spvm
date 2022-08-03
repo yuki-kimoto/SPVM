@@ -37,7 +37,7 @@ ef"
 
   static method escape_character : int () {
     
-    # Escape chracter
+    # String Literal Escape Chracter 
     
     # \0
     {
@@ -63,7 +63,6 @@ ef"
       }
     }
     
-    
     # \n
     {
       my $string = "\n";
@@ -72,7 +71,6 @@ ef"
       }
     }
     
-    
     # \f
     {
       my $string = "\f";
@@ -80,7 +78,6 @@ ef"
         return 0;
       }
     }
-    
     
     # \r
     {
@@ -99,6 +96,16 @@ ef"
       }
     }
     
+    # \$
+    {
+      my $string = "\$";
+      unless ($string->[0] == 0x24) {
+        return 0;
+      }
+      unless ($string->[0] == '$') {
+        return 0;
+      }
+    }
     
     # \'
     {
@@ -108,7 +115,6 @@ ef"
       }
     }
     
-    
     # \\
     {
       my $string = "\\";
@@ -116,7 +122,6 @@ ef"
         return 0;
       }
     }
-    
     
     return 1;
   }

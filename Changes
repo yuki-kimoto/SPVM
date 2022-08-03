@@ -1,3 +1,8 @@
+0.9635 2022-08-03
+  [Specification Bug Fix]
+    * The escape character of the string literal "\0" becomes 0x24 ($). This was wrongly 0x44 (D).
+  [Incompatible Changes]
+    * The escape character of the string literal "\0" becomes 0x24 ($). This was wrongly 0x44 (D).
 0.9634 2022-08-03
   [Changes]
     * Add an optional argument to the following methods of StringBuffer class.

@@ -745,7 +745,7 @@ The list of character literal escape characters.
       \n
     </td>
     <td>
-      <code>0x0a</code> LF
+      <code>0x0A</code> LF
     </td>
   </tr>
   <tr>
@@ -753,7 +753,7 @@ The list of character literal escape characters.
       \f
     </td>
     <td>
-      <code>0x0c</code> FF
+      <code>0x0C</code> FF
     </td>
   </tr>
   <tr>
@@ -761,7 +761,7 @@ The list of character literal escape characters.
       \r
     </td>
     <td>
-      <code>0x0d</code> CR
+      <code>0x0D</code> CR
     </td>
   </tr>
   <tr>
@@ -785,7 +785,7 @@ The list of character literal escape characters.
       \\
     </td>
     <td>
-      <code>0x5c</code> \
+      <code>0x5C</code> \
     </td>
   </tr>
   <tr>
@@ -898,7 +898,7 @@ B<Examples:>
       <b>\n</b>
     </td>
     <td>
-      ASCII <code>0x0a</code> LF
+      ASCII <code>0x0A</code> LF
     </td>
   </tr>
   <tr>
@@ -906,7 +906,7 @@ B<Examples:>
       <b>\f</b>
     </td>
     <td>
-      ASCII <code>0x0c</code> FF
+      ASCII <code>0x0C</code> FF
     </td>
   </tr>
   <tr>
@@ -914,7 +914,7 @@ B<Examples:>
       <b>\r</b>
     </td>
     <td>
-      ASCII <code>0x0d</code> CR
+      ASCII <code>0x0D</code> CR
     </td>
   </tr>
   <tr>
@@ -923,6 +923,14 @@ B<Examples:>
     </td>
     <td>
       ASCII <code>0x22</code> "
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\$</b>
+    </td>
+    <td>
+      ASCII <code>0x24</code> $
     </td>
   </tr>
   <tr>
@@ -938,15 +946,7 @@ B<Examples:>
       <b>\\</b>
     </td>
     <td>
-      ASCII <code>0x5c</code> \
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\$</b>
-    </td>
-    <td>
-      ASCII <code>0x44</code> $
+      ASCII <code>0x5C</code> \
     </td>
   </tr>
   <tr>
