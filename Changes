@@ -468,6 +468,58 @@
       static method new : Hash ($key_values : object[]...)
       [After]
       static method new : Hash ($key_values = undef : object[])
+    * The defintion and implementation of the following methods of Sort class is changed.
+      [Before]
+      static method sort_byte : void ($array : byte[], $offset : int, $length : int, $comparator : Comparator::Byte)
+      static method sort_byte_asc : void ($array : byte[], $offset : int, $length : int)
+      static method sort_byte_desc : void ($array : byte[], $offset : int, $length : int)
+      static method sort_short : void ($array : short[], $offset : int, $length : int, $comparator : Comparator::Short)
+      static method sort_short_asc : void ($array : short[], $offset : int, $length : int)
+      static method sort_short_desc : void ($array : short[], $offset : int, $length : int)
+      static method sort_int : void ($array : int[], $offset : int, $length : int, $comparator : Comparator::Int)
+      static method sort_int_asc : void ($array : int[], $offset : int, $length : int)
+      static method sort_int_desc : void ($array : int[], $offset : int, $length : int)
+      static method sort_long : void ($array : int[], $offset : int, $length : long, $comparator : Comparator::Long)
+      static method sort_long_asc : void ($array : long[], $offset : int, $length : int)
+      static method sort_long_desc : void ($array : long[], $offset : int, $length : int)
+      static method sort_float : void ($array : int[], $offset : int, $length : int, $comparator : Comparator::Float)
+      static method sort_float_asc : void ($array : float[], $offset : int, $length : int)
+      static method sort_float_desc : void ($array : float[], $offset : int, $length : int)
+      static method sort_double : void ($array : int[], $offset : int, $length : int, $comparator : Comparator::Double)
+      static method sort_double_asc : void ($array : double[], $offset : int, $length : int)
+      static method sort_double_desc : void ($array : double[], $offset : int, $length : int)
+      static method sort_string : void ($array : int[], $offset : int, $length : int, $comparator : Comparator::String)
+      static method sort_string_asc : void ($array : string[], $offset : int, $length : int)
+      static method sort_string_desc : void ($array : string[], $offset : int, $length : int)
+      static method sort_object : void ($array : int[], $offset : int, $length : int, $comparator : Comparator)
+
+      The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+      [After]
+      static method sort_byte : void ($array : byte[], $comparator : Comparator::Byte, $offset = 0 : int, $length = -1 : int)
+      static method sort_byte_asc : void ($array : byte[], $offset = 0 : int, $length = -1 : int)
+      static method sort_byte_desc : void ($array : byte[], $offset = 0 : int, $length = -1 : int)
+      static method sort_short : void ($array : short[], $comparator : Comparator::Short, $offset = 0 : int, $length = -1 : int)
+      static method sort_short_asc : void ($array : short[], $offset = 0 : int, $length = -1 : int)
+      static method sort_short_desc : void ($array : short[], $offset = 0 : int, $length = -1 : int)
+      static method sort_int : void ($array : int[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int)
+      static method sort_int_asc : void ($array : int[], $offset = 0 : int, $length = -1 : int)
+      static method sort_int_desc : void ($array : int[], $offset = 0 : int, $length = -1 : int)
+      static method sort_long : void ($array : int[], $comparator : Comparator::Long, $offset : int, $length : long)
+      static method sort_long_asc : void ($array : long[], $offset = 0 : int, $length = -1 : int)
+      static method sort_long_desc : void ($array : long[], $offset = 0 : int, $length = -1 : int)
+      static method sort_float : void ($array : int[], $comparator : Comparator::Float, $offset = 0 : int, $length = -1 : int)
+      static method sort_float_asc : void ($array : float[], $offset = 0 : int, $length = -1 : int)
+      static method sort_float_desc : void ($array : float[], $offset = 0 : int, $length = -1 : int)
+      static method sort_double : void ($array : int[], $comparator : Comparator::Double, $offset = 0 : int, $length = -1 : int)
+      static method sort_double_asc : void ($array : double[], $offset = 0 : int, $length = -1 : int)
+      static method sort_double_desc : void ($array : double[], $offset = 0 : int, $length = -1 : int)
+      static method sort_string : void ($array : int[], $comparator : Comparator::String, $offset = 0 : int, $length = -1 : int)
+      static method sort_string_asc : void ($array : string[], $offset = 0 : int, $length = -1 : int)
+      static method sort_string_desc : void ($array : string[], $offset = 0 : int, $length = -1 : int)
+      static method sort_object : void ($array : int[], $comparator : Comparator, $offset = 0 : int, $length = -1 : int)
+
+      If the length is less than C<0>, the length is calculated from the length of the array and the offset.
       
   [Deprecation]
     * The following methods of Point class are deprecated.
