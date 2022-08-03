@@ -279,11 +279,11 @@ If the Unicode code point is not a Unicode scalar value, return C<undef>.
 
 =head2 contains
 
-  static method contains : int ($string : string, $substring : string)
+  static method contains : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int)
 
 The alias for the following code using L</"index>.
 
-  my $ret = Fn->index($string, $substring, 0) >= 0;
+  my $ret = Fn->index($string, $substring, $offset, $length) >= 0;
 
 =head2 copy_string
 
@@ -348,23 +348,13 @@ The hex string must contain only hex characters C<0-9a-zA-Z>. Otherwise an excep
 
 =head2 index
 
-  static method index : int ($string : string, $substring : string, $offset : int)
+  static method index : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int)
 
-The alias for the following code using L</"index_len">.
-
-  my $string_length = 0;
-  if ($string) {
-    $string_length = length $string;
-  }
-  my $ret = Fn->index_len($string, $substring, $offset, $string_length - $offset);
-
-=head2 index_len
-
-  static method index_len : int ($string : string, $substring : string, $offset : int, $length : int)
-
-Search for the substring in the range of the string by the length from the offset.
+Search for the substring in the range of the string from the offset to the position proceeded by the length.
 
 If the substring is found, return the found offset. Otherwise return C<-1>.
+
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the string and the offset.
 
 The string must be defined. Otherwise an exception will occur.
 
@@ -372,9 +362,17 @@ The substring must be defined. Otherwise an exception will occur.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The max length must be greater than or equal to C<0>. Otherwise an exception will occur.
-
 The offset + the length specified by the argument must be less than or equal to the length of the string. Otherwise an exception will occur.
+
+=head2 index_len
+
+  static method index_len : int ($string : string, $substring : string, $offset : int, $length : int)
+
+The alias for the following code using L</"index">.
+
+  my $ret = Fn->index($string, $substring, $offset, $length);
+
+This method is deprecated and will be removed after 2022-09-03.
 
 =head2 is_alnum
 
@@ -552,9 +550,9 @@ The same as L</"get_code_point">, but the offset is not updated.
 
 Copy the range of the source to the the range of the destination.
 
-The range of the destination is by the length from the offset of the destination.
+The range of the destination is from the offset to the position proceeded by the length of the destination.
 
-The range of the source is by the length from the offset of the source.
+The range of the source is from the offset to the position proceeded by the length of the source.
 
 The unit of the offset and the length is C<byte> size.
 
@@ -645,19 +643,13 @@ B<Examples:>
 
 =head2 rindex
 
-  static method rindex : int ($string : string, $substring : string, $offset : int)
+  static method rindex : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int)
 
-The alias for the following code using L</"rindex_len">.
-
-  my $ret = Fn->rindex_len($string, $substring, $offset, length $string - $offset);
-
-=head2 rindex_len
-
-  static method rindex_len : int ($string : string, $substring : string, $offset : int, $length : int)
-
-Search for the substring in the range of the string by the length from the offset in the direction from back to front.
+Search for the substring in the range of the string from the offset to the position proceeded by the length in the direction from back to front.
 
 If the substring is found, return the found offset. Otherwise return C<-1>.
+
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the string and the offset.
 
 The string must be defined. Otherwise an exception will occur.
 
@@ -665,9 +657,17 @@ The substring must be defined. Otherwise an exception will occur.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The max length must be greater than or equal to C<0>. Otherwise an exception will occur.
-
 The offset + the length specified by the argument must be less than or equal to the length of the string. Otherwise an exception will occur.
+
+=head2 rindex_len
+
+  static method rindex_len : int ($string : string, $substring : string, $offset : int, $length : int)
+
+The alias for the following code using L</"rindex">.
+
+  my $ret = Fn->rindex($string, $substring, $offset, $length);
+
+This method is deprecated and will be removed after 2022-09-03.
 
 =head2 shorten
 
@@ -683,15 +683,7 @@ The length must be greater than or equal to C<0>. Otherwise an exception will oc
 
 =head2 split
 
-  static method split : string[] ($sep : string, $string : string)
-
-The alias for the following code using L<"/split_limit">.
-
-  my $ret = Fn->split_limit($sep, $string, -1);
-
-=head2 split_limit
-
-  static method split_limit : string[] ($sep : string, $string : string, $limit : int)
+  static method split : string[] ($sep : string, $string : string, $limit = -1 : int)
 
 If the limit is less than C<0>, split a string by the specific separator and convert them to an string array and return it.
 
@@ -701,15 +693,25 @@ The separator must be defined. Otherwise an exception will occur.
 
 The string must be defined. Otherwise an exception will occur.
 
-The length of the separator must be greater than C<0>. Otherwise an exception will occur.
-
 The limit can't be C<0>. Otherwise an exception will occur.
+
+=head2 split_limit
+
+  static method split_limit : string[] ($sep : string, $string : string, $limit : int)
+
+The alias for the following code using L</"split">.
+
+  my $ret = Fn->split($sep, $string, $limit);
+
+This method is deprecated and will be removed after 2022-09-03.
 
 =head2 substr
 
-  static method substr : string ($string : string, $offset : int, $length : int)
+  static method substr : string ($string : string, $offset : int, $length = -1 : int)
 
-Get the substring from the string. The extracting range of the string is by the length from the offset.
+Get the substring from the string. The extracting range of the string is from the offset to the position proceeded by the length.
+
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the string and the offset.
 
 =head2 to_double
 

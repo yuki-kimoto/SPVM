@@ -520,6 +520,24 @@
       static method sort_object : void ($array : int[], $comparator : Comparator, $offset = 0 : int, $length = -1 : int)
 
       If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+
+    * The defintion and implementation of the following methods of Fn class is changed.
+
+      [Before]
+        static method contains : int ($string : string, $substring : string)
+        static method index : int ($string : string, $substring : string, $offset : int)
+        static method rindex : int ($string : string, $substring : string, $offset : int)
+        static method substr : string ($string : string, $offset : int, $length : int)
+        
+        The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+      [After]
+        static method contains : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int)
+        static method index : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int)
+        static method rindex : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int)
+        static method substr : string ($string : string, $offset : int, $length = -1 : int)
+
+        If the length is less than C<0>, the length to the end of the string is calculated from the length of the string and the offset.
       
   [Deprecation]
     * The following methods of Point class are deprecated.
@@ -569,6 +587,20 @@
       static method copy_range_string_address : string[] ($array : string[], $offset : int, $length : int) {
         warn "Array->copy_range_string_address(\$array, \$offset, \$length) is deprecated. Use Array->copy_string_address(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
         return &copy_string_address($array, $offset, $length);
+      }
+
+    * The following methods of Fn class are deprecated.
+      static method index_len : int ($string : string, $substring : string, $offset : int, $length : int) {
+        warn "Fn->index_len(\$string, \$substring, \$offset, \$length) is deprecated. Use Fn->index(\$string, \$substring, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+        return &index($string, $substring, $offset, $length);
+      }
+      static method rindex_len : int ($string : string, $substring : string, $offset : int, $length : int) {
+        warn "Fn->rindex_len(\$string, \$substring, \$offset, \$length) is deprecated. Use Fn->rindex(\$string, \$substring, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+        return &rindex($string, $substring, $offset, $length);
+      }
+      static method split_limit : string[] ($sep : string, $string : string, $limit : int) {
+        warn "Fn->split_limit(\$string, \$substring, \$offset, \$length) is deprecated. Use Fn->split(\$string, \$substring, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+        return &split($sep, $string, $limit);
       }
       
   [Test Fix]
