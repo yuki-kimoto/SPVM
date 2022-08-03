@@ -420,9 +420,7 @@ class TestCase::Module::Hash {
       return 0;
     }
 
-    Sort->sort_object($keys, 0, scalar @$keys, method : int ($a : object, $b : object) {
-      return (string)$a cmp (string)$b;
-    });
+    Sort->sort_string_asc($keys);
 
     unless ($keys->[0] == $key0) {
       return 0;
@@ -463,9 +461,7 @@ class TestCase::Module::Hash {
     $int_values->[1] = (int)$values->[1];
     $int_values->[2] = (int)$values->[2];
 
-    Sort->sort_int($int_values, 0, scalar @$int_values, method : int ($a : int, $b : int) {
-      return $a <=> $b;
-    });
+    Sort->sort_int_asc($int_values);
 
     unless ($int_values->[0] == 1) {
       return 0;
