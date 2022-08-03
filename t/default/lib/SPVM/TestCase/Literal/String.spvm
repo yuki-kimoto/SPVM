@@ -38,52 +38,85 @@ ef"
   static method escape_character : int () {
     
     # Escape chracter
-    my $string = "a\0\a \t\n\f\r\"\'\\z";
     
     # \0
-    unless ($string->[1] == 0) {
-      return 0;
+    {
+      my $string = "\0";
+      unless ($string->[0] == 0) {
+        return 0;
+      }
     }
     
     # \a
-    unless ($string->[2] == 7) {
-      return 0;
+    {
+      my $string = "\a";
+      unless ($string->[0] == 7) {
+        return 0;
+      }
     }
     
     # \t
-    unless ($string->[4] == 9) {
-      return 0;
+    {
+      my $string = "\t";
+      unless ($string->[0] == 9) {
+        return 0;
+      }
     }
+    
     
     # \n
-    unless ($string->[5] == 10) {
-      return 0;
+    {
+      my $string = "\n";
+      unless ($string->[0] == 10) {
+        return 0;
+      }
     }
+    
     
     # \f
-    unless ($string->[6] == 12) {
-      return 0;
+    {
+      my $string = "\f";
+      unless ($string->[0] == 12) {
+        return 0;
+      }
     }
+    
     
     # \r
-    unless ($string->[7] == 13) {
-      return 0;
+    {
+      my $string = "\r";
+      unless ($string->[0] == 13) {
+        return 0;
+      }
     }
+    
     
     # \"
-    unless ($string->[8] == 34) {
-      return 0;
+    {
+      my $string = "\"";
+      unless ($string->[0] == 34) {
+        return 0;
+      }
     }
+    
     
     # \'
-    unless ($string->[9] == 39) {
-      return 0;
+    {
+      my $string = "\'";
+      unless ($string->[0] == 39) {
+        return 0;
+      }
     }
     
+    
     # \\
-    unless ($string->[10] == 92) {
-      return 0;
+    {
+      my $string = "\\";
+      unless ($string->[0] == 92) {
+        return 0;
+      }
     }
+    
     
     return 1;
   }
@@ -533,7 +566,57 @@ ef"
         return 0;
       }
     }
-
+    
+    {
+      # Escape chracter
+      my $string = "a\0\a \t\n\f\r\"\'\\z";
+      
+      # \0
+      unless ($string->[1] == 0) {
+        return 0;
+      }
+      
+      # \a
+      unless ($string->[2] == 7) {
+        return 0;
+      }
+      
+      # \t
+      unless ($string->[4] == 9) {
+        return 0;
+      }
+      
+      # \n
+      unless ($string->[5] == 10) {
+        return 0;
+      }
+      
+      # \f
+      unless ($string->[6] == 12) {
+        return 0;
+      }
+      
+      # \r
+      unless ($string->[7] == 13) {
+        return 0;
+      }
+      
+      # \"
+      unless ($string->[8] == 34) {
+        return 0;
+      }
+      
+      # \'
+      unless ($string->[9] == 39) {
+        return 0;
+      }
+      
+      # \\
+      unless ($string->[10] == 92) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 }
