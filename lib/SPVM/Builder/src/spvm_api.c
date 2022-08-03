@@ -46,7 +46,7 @@ static int32_t STACK_INDEX_MORTAL_STACK_TOP = 509;
 static int32_t STACK_INDEX_MORTAL_STACK_CAPACITY = 508;
 static int32_t STACK_INDEX_MEMORY_BLOCKS_COUNT = 507;
 static int32_t STACK_INDEX_ARGS_LENGTH = 506;
-
+static int32_t STACK_INDEX_CALL_DEPTH = 505;
 
 
 
@@ -1315,6 +1315,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t meth
   
   int32_t error = 0;
   stack[STACK_INDEX_ARGS_LENGTH].ival = args_stack_length;
+  stack[STACK_INDEX_CALL_DEPTH].ival++;
   
   // Call native method
   if (method->is_native) {
@@ -1367,6 +1368,8 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t meth
       error = SPVM_API_call_spvm_method_vm(env, stack, method_id, args_stack_length);
     }
   }
+
+  stack[STACK_INDEX_CALL_DEPTH].ival--;
   
   return error;
 }
