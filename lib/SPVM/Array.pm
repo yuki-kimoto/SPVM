@@ -121,7 +121,7 @@ C<Array> provides array utilities.
 
   static method copy_byte : byte[] ($array : byte[], $offset = 0 : int, $length = -1 : int)
 
-Create a new C<byte> array with the length sepcified by the argument, and copy the elements by the length from the offset to the created array.
+Create a new C<byte> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -135,7 +135,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method copy_double : double[] ($array : double[], $offset = 0 : int, $length = -1 : int)
 
-Create a new C<double> array with the length sepcified by the argument, and copy the elements by the length from the offset to the created array.
+Create a new C<double> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -151,7 +151,7 @@ If the array is not defined, return C<undef>.
 
   static method copy_float : float[] ($array : float[], $offset = 0 : int, $length = -1 : int)
 
-Create a new C<float> array with the length sepcified by the argument, and copy the elements by the length from the offset to the created array.
+Create a new C<float> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -165,7 +165,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method copy_int : int[] ($array : int[], $offset = 0 : int, $length = -1 : int)
 
-Create a new C<int> array with the length sepcified by the argument, and copy the elements by the length from the offset to the created array.
+Create a new C<int> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -179,7 +179,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method copy_long : long[] ($array : long[], $offset = 0 : int, $length = -1 : int)
 
-Create a new C<long> array with the length sepcified by the argument, and copy the elements by the length from the offset to the created array.
+Create a new C<long> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -193,7 +193,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method copy_object : object[] ($array : object[], $cloner = undef : Cloner, $offset = 0 : int, $legnth = -1 : int)
 
-Create a new object array with the length sepcified by the argument, and clone the elements of the object array by the length from the offset to the created array.
+Create a new object array with the length sepcified by the argument, and clone the elements of the object array from the offset to the position proceeded by the length to the created array.
 
 Each element is cloned by the L<Cloner|SPVM::Cloner>.
 
@@ -319,7 +319,7 @@ This method is depracated and will be removed after 2022-08-03.
 
   static method copy_short : short[] ($array : short[], $offset = 0 : int, $length = -1 : int)
 
-Create a new C<short> array with the length sepcified by the argument, and copy the elements by the length from the offset to the created array.
+Create a new C<short> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -333,7 +333,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method copy_string : string[] ($array : string[], $offset = 0 : int, $length = -1 : int)
 
-Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator by the length from the offset to the created array.
+Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator from the offset to the position proceeded by the length to the created array.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -347,7 +347,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method copy_string_address : string[] ($array : string[], $offset = 0 : int, $length = -1 : int)
 
-Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array by the length from the offset to the created array.
+Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array from the offset to the position proceeded by the length to the created array.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -525,7 +525,7 @@ The alias for the following code using L</"equals_object_address">.
 
 Copy the range of the elements of the source C<byte> array to the range of the elements of the destination C<byte> array.
 
-The range of the elements of the source array is by the length from the offset of the source.
+The range of the elements of the source array is from the offset to the position proceeded by the length of the source.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -551,7 +551,7 @@ The offset of the source + the length specified by the argument must be less tha
 
 Copy the range of the elements of the source C<double> array to the range of the elements of the destination C<double> array.
 
-The range of the elements of the source array is by the length from the offset of the source.
+The range of the elements of the source array is from the offset to the position proceeded by the length of the source.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -577,7 +577,7 @@ The offset of the source + the length specified by the argument must be less tha
 
 Copy the range of the elements of the source C<float> array to the range of the elements of the destination C<float> array.
 
-The range of the elements of the source array is by the length from the offset of the source.
+The range of the elements of the source array is from the offset to the position proceeded by the length of the source.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -603,7 +603,7 @@ The offset of the source + the length specified by the argument must be less tha
 
 Copy the range of the elements of the source C<int> array to the range of the elements of the destination C<int> array.
 
-The range of the elements of the source array is by the length from the offset of the source.
+The range of the elements of the source array is from the offset to the position proceeded by the length of the source.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -629,7 +629,7 @@ The offset of the source + the length specified by the argument must be less tha
 
 Copy the range of the elements of the source C<long> array to the range of the elements of the destination C<long> array.
 
-The range of the elements of the source array is by the length from the offset of the source.
+The range of the elements of the source array is from the offset to the position proceeded by the length of the source.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -657,7 +657,7 @@ Copy the range of the elements of the source object array to the range of the el
 
 Each address is copied.
 
-The range of the elements of the source array is by the length from the offset of the source.
+The range of the elements of the source array is from the offset to the position proceeded by the length of the source.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -689,7 +689,7 @@ The alias for L</"memcpy_object_address">. This method is deprecated.
 
 Copy the range of the elements of the source C<short> array to the range of the elements of the destination C<short> array.
 
-The range of the elements of the source array is by the length from the offset of the source.
+The range of the elements of the source array is from the offset to the position proceeded by the length of the source.
 
 The range of the elements of the destination array is from the offset of the destination to the offset of the destination + the length specified by the argument.
 
@@ -789,7 +789,7 @@ The alias for L</"memmove_string_address">. This method is deprecated.
 
 Set the range of the elements of the C<byte> array to the element specified by the argument.
 
-The range of the elements of the array is by the length from the offset.
+The range of the elements of the array is from the offset to the position proceeded by the length.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -805,7 +805,7 @@ The offset of the array + the length specified by the argument must be less than
 
 Set the range of the elements of the C<double> array to the element specified by the argument.
 
-The range of the elements of the array is by the length from the offset.
+The range of the elements of the array is from the offset to the position proceeded by the length.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -821,7 +821,7 @@ The offset of the array + the length specified by the argument must be less than
 
 Set the range of the elements of the C<float> array to the element specified by the argument.
 
-The range of the elements of the array is by the length from the offset.
+The range of the elements of the array is from the offset to the position proceeded by the length.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -837,7 +837,7 @@ The offset of the array + the length specified by the argument must be less than
 
 Set the range of the elements of the C<int> array to the element specified by the argument.
 
-The range of the elements of the array is by the length from the offset.
+The range of the elements of the array is from the offset to the position proceeded by the length.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -853,7 +853,7 @@ The offset of the array + the length specified by the argument must be less than
 
 Set the range of the elements of the C<long> array to the element specified by the argument.
 
-The range of the elements of the array is by the length from the offset.
+The range of the elements of the array is from the offset to the position proceeded by the length.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -869,7 +869,7 @@ The offset of the array + the length specified by the argument must be less than
 
 Set the range of the elements of the object array to the element specified by the argument.
 
-The range of the elements of the array is by the length from the offset.
+The range of the elements of the array is from the offset to the position proceeded by the length.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
@@ -885,7 +885,7 @@ The offset of the array + the length specified by the argument must be less than
 
 Set the range of the elements of the C<short> array to the element specified by the argument.
 
-The range of the elements of the array is by the length from the offset.
+The range of the elements of the array is from the offset to the position proceeded by the length.
 
 If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
