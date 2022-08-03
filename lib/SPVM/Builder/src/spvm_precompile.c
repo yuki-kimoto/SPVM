@@ -3120,8 +3120,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    int32_t call_method_args_stack_length = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, call_method_args_stack_length);
         SPVM_STRING_BUFFER_add(string_buffer,
-                                              ";\n"
-                                              "    env->set_args_stack_length(env, stack, call_method_args_stack_length);\n");
+                                              ";\n");
         
         // Call method
         switch (opcode_id) {
