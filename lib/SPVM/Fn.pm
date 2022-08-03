@@ -362,7 +362,7 @@ The alias for the following code using L</"index_len">.
 
   static method index_len : int ($string : string, $substring : string, $offset : int, $length : int)
 
-Search for the substring in the range of the string from the offset to the offset + the length - C<1>.
+Search for the substring in the range of the string by the length from the offset.
 
 If the substring is found, return the found offset. Otherwise return C<-1>.
 
@@ -655,7 +655,7 @@ The alias for the following code using L</"rindex_len">.
 
   static method rindex_len : int ($string : string, $substring : string, $offset : int, $length : int)
 
-Search for the substring in the range of the string from the offset to the offset + the length - C<1> in the direction from back to front.
+Search for the substring in the range of the string by the length from the offset in the direction from back to front.
 
 If the substring is found, return the found offset. Otherwise return C<-1>.
 
@@ -709,7 +709,7 @@ The limit can't be C<0>. Otherwise an exception will occur.
 
   static method substr : string ($string : string, $offset : int, $length : int)
 
-Get the substring from the string. The extracting range of the string is from the offset to the offset + the length - C<1>.
+Get the substring from the string. The extracting range of the string is by the length from the offset.
 
 =head2 to_double
 

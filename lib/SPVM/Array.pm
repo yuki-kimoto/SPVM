@@ -261,7 +261,7 @@ This method is depracated and will be removed after 2022-08-03.
 
   static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner)
 
-Create a new object array with the length sepcified by the argument, and clone the elements of the object array from the offset to the offset + the length - C<1> to the created array.
+Create a new object array with the length sepcified by the argument, and clone the elements of the object array by the length from the offset to the created array.
 
 Each element is cloned by the L<Cloner|SPVM::Cloner>.
 
@@ -297,7 +297,7 @@ This method is depracated and will be removed after 2022-08-03.
   
   static method copy_range_string : string[] ($array : string[], $offset : int, $length : int)
 
-Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator from the offset to the offset + the length - C<1> to the created array.
+Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator by the length from the offset to the created array.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -311,7 +311,7 @@ The offset + the length specified by the argument must be less than or equal to 
   
   static method copy_range_string : string[] ($array : string[], $offset : int, $length : int)
 
-Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array from the offset to the offset + the length - C<1> to the created array.
+Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array by the length from the offset to the created array.
 
 The array must be defined. Otherwise an exception will be thrown.
 
