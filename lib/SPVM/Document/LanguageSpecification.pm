@@ -6057,6 +6057,8 @@ If the type of distribution is an L<interface type|/"Interface Type">, an L<inte
 The type comment syntax is supported. The type comment can be written after C<of> keyword.
 
   TYPE of TYPE
+  TYPE of TYPE1|TYPE2
+  TYPE of TYPE1|TYPE2|TYPE3
 
 The type comment can be used the type of the L<field decralation|/"Field Definition">, the L<class variable definition|/"Class Variable Definition">, the L<local variable declaration|/"Local Variable Declaration">, and the return value and the types of arguments of the L<method definition|/"Method Definition">.
 
@@ -6065,9 +6067,11 @@ The type comment can be used the type of the L<field decralation|/"Field Definit
   our $POINTS : List of Point;
   
   my $points : List of Point;
-  
+
   static method foo : List of Point ($arg : List of Point) { ... }
 
+  my $replace : object of string|Regex::Replacer;
+  
 If the type specified as the type comment is not found, a compilation error will occur.
 
 Type comments have no meanings at runtime.

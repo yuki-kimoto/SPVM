@@ -1,6 +1,10 @@
 0.9635 2022-08-03
   [New Features]
     * If the depth of the method call is over 10000, an exception is thrown.
+    * Use union type in type comment.
+      
+      has union_type : object of string|Point;
+      
   [Specification Bug Fix]
     * The escape character of the string literal "\0" becomes 0x24 ($). This was wrongly 0x44 (D).
   [Incompatible Changes]

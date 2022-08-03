@@ -1,8 +1,13 @@
 class TestCase::TypeComment {
   use List;
   use TestCase::Minimal;
+  use Point;
+  use Point3D;
   
   has minimals : List of TestCase::Minimal;
+
+  has union_type : object of string|Point;
+  has union_type3 : object of string|Point|Point3D;
 
   our $MINIMALS : List of TestCase::Minimal;
   
