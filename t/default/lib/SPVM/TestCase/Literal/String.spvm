@@ -42,7 +42,7 @@ ef"
     # \0
     {
       my $string = "\0";
-      unless ($string->[0] == 0) {
+      unless ($string->[0] == 0x00) {
         return 0;
       }
     }
@@ -50,7 +50,7 @@ ef"
     # \a
     {
       my $string = "\a";
-      unless ($string->[0] == 7) {
+      unless ($string->[0] == 0x07) {
         return 0;
       }
     }
@@ -58,7 +58,7 @@ ef"
     # \t
     {
       my $string = "\t";
-      unless ($string->[0] == 9) {
+      unless ($string->[0] == 0x09) {
         return 0;
       }
     }
@@ -67,7 +67,7 @@ ef"
     # \n
     {
       my $string = "\n";
-      unless ($string->[0] == 10) {
+      unless ($string->[0] == 0x0A) {
         return 0;
       }
     }
@@ -76,7 +76,7 @@ ef"
     # \f
     {
       my $string = "\f";
-      unless ($string->[0] == 12) {
+      unless ($string->[0] == 0x0C) {
         return 0;
       }
     }
@@ -85,7 +85,7 @@ ef"
     # \r
     {
       my $string = "\r";
-      unless ($string->[0] == 13) {
+      unless ($string->[0] == 0x0D) {
         return 0;
       }
     }
@@ -94,7 +94,7 @@ ef"
     # \"
     {
       my $string = "\"";
-      unless ($string->[0] == 34) {
+      unless ($string->[0] == 0x22) {
         return 0;
       }
     }
@@ -103,7 +103,7 @@ ef"
     # \'
     {
       my $string = "\'";
-      unless ($string->[0] == 39) {
+      unless ($string->[0] == 0x27) {
         return 0;
       }
     }
@@ -112,7 +112,7 @@ ef"
     # \\
     {
       my $string = "\\";
-      unless ($string->[0] == 92) {
+      unless ($string->[0] == 0x5C) {
         return 0;
       }
     }
