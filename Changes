@@ -463,8 +463,12 @@
       The array must be defined. Otherwise an exception will occur.
       The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
       The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
-
-    
+    * The defintions of the following method of Hash class is changed.
+      [Before]
+      static method new : Hash ($key_values : object[]...)
+      [After]
+      static method new : Hash ($key_values = undef : object[])
+      
   [Deprecation]
     * The following methods of Point class are deprecated.
       # Point->new_xy($x, $y) is deprecated. Use Point->new($x, $y) instead. This method will be removed after 2022-09-03

@@ -12,7 +12,7 @@ class Hash {
   }
   private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
 
-  precompile static method new : Hash ($key_values : object[]...) {
+  precompile static method new : Hash ($key_values = undef : object[]) {
     my $self = new Hash;
     
     my $default_capacity = 32;
