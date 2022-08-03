@@ -189,7 +189,7 @@ class List {
       $self->_maybe_extend($new_length);
     }
     elsif ($new_length < $length) {
-      Array->memset_object($self->{values}, $new_length, undef, $length - $new_length);
+      Array->memset_object($self->{values}, undef, $new_length, $length - $new_length);
     }
     $self->{length} = $new_length;
   }

@@ -180,10 +180,10 @@ class StringList {
     
     if ($new_length > $length) {
       $self->_maybe_extend($new_length);
-      Array->memset_string($self->{values}, $length, undef, $new_length - $length);
+      Array->memset_string($self->{values}, undef, $length, $new_length - $length);
     }
     elsif ($new_length < $length) {
-      Array->memset_string($self->{values}, $new_length, undef, $length - $new_length);
+      Array->memset_string($self->{values}, undef, $new_length, $length - $new_length);
     }
     
     $self->{length} = $new_length;

@@ -199,11 +199,11 @@ Each element is cloned by the L<Cloner|SPVM::Cloner>.
 
 If the cloner is not defined, the address of each element is copied.
 
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+
 The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
@@ -785,123 +785,123 @@ The alias for L</"memmove_string_address">. This method is deprecated.
 
 =head2 memset_byte
 
-  static method memset_byte : void ($dest : byte[], $dest_offset : int, $element : byte, $length : int)
+  static method memset_byte : void ($array : byte[], $element : byte, $offset = 0 : int, $length = -1 : int)
 
-Set the range of the elements of the destination C<byte> array to the element specified by the argument.
+Set the range of the elements of the C<byte> array to the element specified by the argument.
 
-The range of the elements of the destination array is by the length from the offset of the destination to the offset of the destination.
+The range of the elements of the array is by the length from the offset.
 
-The destination must be defined. Otherwise an exception will occur.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to 0. Otherwise an exception will occur.
+The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_double
 
-  static method memset_double : void ($dest : double[], $dest_offset : int, $element : double, $length : int)
+  static method memset_double : void ($array : double[], $element : double, $offset = 0 : int, $length = -1 : int)
 
-Set the range of the elements of the destination C<double> array to the element specified by the argument.
+Set the range of the elements of the C<double> array to the element specified by the argument.
 
-The range of the elements of the destination array is by the length from the offset of the destination to the offset of the destination.
+The range of the elements of the array is by the length from the offset.
 
-The destination must be defined. Otherwise an exception will occur.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to 0. Otherwise an exception will occur.
+The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_float
 
-  static method memset_float : void ($dest : float[], $dest_offset : int, $element : float, $length : int)
+  static method memset_float : void ($array : float[], $element : float, $offset = 0 : int, $length = -1 : int)
 
-Set the range of the elements of the destination C<float> array to the element specified by the argument.
+Set the range of the elements of the C<float> array to the element specified by the argument.
 
-The range of the elements of the destination array is by the length from the offset of the destination to the offset of the destination.
+The range of the elements of the array is by the length from the offset.
 
-The destination must be defined. Otherwise an exception will occur.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to 0. Otherwise an exception will occur.
+The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_int
 
-  static method memset_int : void ($dest : int[], $dest_offset : int, $element : int, $length : int)
+  static method memset_int : void ($array : int[], $element : int, $offset = 0 : int, $length = -1 : int)
 
-Set the range of the elements of the destination C<int> array to the element specified by the argument.
+Set the range of the elements of the C<int> array to the element specified by the argument.
 
-The range of the elements of the destination array is by the length from the offset of the destination to the offset of the destination.
+The range of the elements of the array is by the length from the offset.
 
-The destination must be defined. Otherwise an exception will occur.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to 0. Otherwise an exception will occur.
+The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_long
 
-  static method memset_long : void ($dest : long[], $dest_offset : int, $element : long, $length : int)
+  static method memset_long : void ($array : long[], $element : long, $offset = 0 : int, $length = -1 : int)
 
-Set the range of the elements of the destination C<long> array to the element specified by the argument.
+Set the range of the elements of the C<long> array to the element specified by the argument.
 
-The range of the elements of the destination array is by the length from the offset of the destination to the offset of the destination.
+The range of the elements of the array is by the length from the offset.
 
-The destination must be defined. Otherwise an exception will occur.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to 0. Otherwise an exception will occur.
+The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_object
 
-  static method memset_object : void ($dest : object[], $dest_offset : int : int, $element : object, $length)
+  static method memset_object : void ($array : object[], $element : object, $offset = 0 : int, $length = -1 : int)
 
-Set the range of the elements of the destination object array to the element specified by the argument.
+Set the range of the elements of the object array to the element specified by the argument.
 
-The range of the elements of the destination array is by the length from the offset of the destination to the offset of the destination.
+The range of the elements of the array is by the length from the offset.
 
-The destination must be defined. Otherwise an exception will occur.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to 0. Otherwise an exception will occur.
+The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_short
 
-  static method memset_short : void ($dest : short[], $dest_offset : int, $element : short, $length : int)
+  static method memset_short : void ($array : short[], $element : short, $offset = 0 : int, $length = -1 : int)
 
-Set the range of the elements of the destination C<short> array to the element specified by the argument.
+Set the range of the elements of the C<short> array to the element specified by the argument.
 
-The range of the elements of the destination array is by the length from the offset of the destination to the offset of the destination.
+The range of the elements of the array is by the length from the offset.
 
-The destination must be defined. Otherwise an exception will occur.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The array must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to 0. Otherwise an exception will occur.
+The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_string
 
-  static method memset_string : void ($dest : string[], $dest_offset : int, $element : string, $length : int)
+  static method memset_string : void ($array : string[], $element : string, $offset = 0 : int, $length = -1 : int)
 
 The alias for the following code using L</"memset_object">.
 
-  &memset_object($dest, $dest_offset, $element, $length);
+  &memset_object($dest, $element, $dest_offset, $length);
 
 =head2 new_proto
 
