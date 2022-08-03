@@ -90,6 +90,17 @@ class TestCase::Module::Sort {
         return 0;
       }
     }
+    {
+      my $array = [(byte)5, 2, 3, 1];
+      
+      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+        return $a <=> $b;
+      }, 1);
+      
+      unless (Array->equals_byte($array, [(byte)5, 1, 2, 3])) {
+        return 0;
+      }
+    }
     
     # Exceptions
     {
@@ -249,6 +260,17 @@ class TestCase::Module::Sort {
       }, 1, 3);
       
       unless (Array->equals_double($array, [(double)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(double)5, 2, 3, 1];
+      
+      Sort->sort_double($array, method : int ($a : double, $b : double) {
+        return $a <=> $b;
+      }, 1);
+      
+      unless (Array->equals_double($array, [(double)5, 1, 2, 3])) {
         return 0;
       }
     }
@@ -417,6 +439,17 @@ class TestCase::Module::Sort {
         return 0;
       }
     }
+    {
+      my $array = [(float)5, 2, 3, 1];
+      
+      Sort->sort_float($array, method : int ($a : float, $b : float) {
+        return $a <=> $b;
+      }, 1);
+      
+      unless (Array->equals_float($array, [(float)5, 1, 2, 3])) {
+        return 0;
+      }
+    }
     
     # Exceptions
     {
@@ -579,6 +612,17 @@ class TestCase::Module::Sort {
         return 0;
       }
     }
+    {
+      my $array = [(int)5, 2, 3, 1];
+      
+      Sort->sort_int($array, method : int ($a : int, $b : int) {
+        return $a <=> $b;
+      }, 1);
+      
+      unless (Array->equals_int($array, [(int)5, 1, 2, 3])) {
+        return 0;
+      }
+    }
     
     # Exceptions
     {
@@ -732,13 +776,13 @@ class TestCase::Module::Sort {
     
     # Sort partially
     {
-      my $array = [(long)5, 2, 3, 1, -10];
+      my $array = [(long)5, 2, 3, 1];
       
       Sort->sort_long($array, method : int ($a : long, $b : long) {
         return $a <=> $b;
-      }, 1, 3);
+      }, 1);
       
-      unless (Array->equals_long($array, [(long)5, 1, 2, 3, -10])) {
+      unless (Array->equals_long($array, [(long)5, 1, 2, 3])) {
         return 0;
       }
     }
@@ -915,6 +959,24 @@ class TestCase::Module::Sort {
         return 0;
       }
     }
+    {
+      my $array = [&new_minimal(5, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
+      
+      Sort->sort_object($array, method : int ($a : object, $b : object) {
+        return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+      }, 1);
+      
+      my $is_equals = Array->equals_object(
+        $array,
+        [&new_minimal(5, 0), &new_minimal(1, 0), &new_minimal(2, 0), &new_minimal(3, 0)],
+        method : int ($a : object, $b : object) {
+          return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
+        }
+      );
+      unless ($is_equals) {
+        return 0;
+      }
+    }
     
     # Exceptions
     {
@@ -1052,6 +1114,17 @@ class TestCase::Module::Sort {
       }, 1, 3);
       
       unless (Array->equals_short($array, [(short)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(short)5, 2, 3, 1];
+      
+      Sort->sort_short($array, method : int ($a : short, $b : short) {
+        return $a <=> $b;
+      }, 1);
+      
+      unless (Array->equals_short($array, [(short)5, 1, 2, 3])) {
         return 0;
       }
     }
@@ -1215,6 +1288,17 @@ class TestCase::Module::Sort {
       }, 1, 3);
       
       unless (Array->equals_string($array, [(string)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(string)5, 2, 3, 1];
+      
+      Sort->sort_string($array, method : int ($a : string, $b : string) {
+        return $a cmp $b;
+      }, 1);
+      
+      unless (Array->equals_string($array, [(string)5, 1, 2, 3])) {
         return 0;
       }
     }
