@@ -16,7 +16,7 @@ class Point3D extends Point {
   
   # Class methods
   static method new_xyz : Point3D ($x : int, $y : int, $z : int) {
-    warn "Point3D->new_xyz($x, $y, $z) is deprecated. Use Point3D->new($x, $y, $z) instead. This method will be removed after 2022-09-03";
+    warn "Point3D->new_xyz(\$x, \$y, \$z) is deprecated. Use Point3D->new(\$x, \$y, \$z) instead. This method will be removed after 2022-09-03";
     return &new($x, $y, $z);
   }
   
