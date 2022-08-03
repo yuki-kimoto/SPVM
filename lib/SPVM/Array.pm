@@ -123,7 +123,7 @@ C<Array> provides array utilities.
 
 Create a new C<byte> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -137,7 +137,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
 Create a new C<double> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -153,7 +153,7 @@ If the array is not defined, return C<undef>.
 
 Create a new C<float> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -167,7 +167,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
 Create a new C<int> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -181,7 +181,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
 Create a new C<long> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -199,7 +199,7 @@ Each element is cloned by the L<Cloner|SPVM::Cloner>.
 
 If the cloner is not defined, the address of each element is copied.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -321,7 +321,7 @@ This method is depracated and will be removed after 2022-08-03.
 
 Create a new C<short> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -335,7 +335,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
 Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator from the offset to the position proceeded by the length to the created array.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -349,7 +349,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
 Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array from the offset to the position proceeded by the length to the created array.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -791,7 +791,7 @@ Set the range of the elements of the C<byte> array to the element specified by t
 
 The range of the elements of the array is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will occur.
 
@@ -807,7 +807,7 @@ Set the range of the elements of the C<double> array to the element specified by
 
 The range of the elements of the array is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will occur.
 
@@ -823,7 +823,7 @@ Set the range of the elements of the C<float> array to the element specified by 
 
 The range of the elements of the array is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will occur.
 
@@ -839,7 +839,7 @@ Set the range of the elements of the C<int> array to the element specified by th
 
 The range of the elements of the array is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will occur.
 
@@ -855,7 +855,7 @@ Set the range of the elements of the C<long> array to the element specified by t
 
 The range of the elements of the array is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will occur.
 
@@ -871,7 +871,7 @@ Set the range of the elements of the object array to the element specified by th
 
 The range of the elements of the array is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will occur.
 
@@ -887,7 +887,7 @@ Set the range of the elements of the C<short> array to the element specified by 
 
 The range of the elements of the array is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The array must be defined. Otherwise an exception will occur.
 

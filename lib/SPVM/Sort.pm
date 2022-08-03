@@ -84,7 +84,7 @@ Sort the range of the elements of C<byte> array in-place.
 
 The sorted range is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The L<Comparator::Byte|SPVM::Comparator::Byte> comparator is used to compare each element.
 
@@ -120,7 +120,7 @@ Sort the range of the elements of C<double> array in-place.
 
 The sorted range is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The L<Comparator::Double|SPVM::Comparator::Double> comparator is used to compare each element.
 
@@ -156,7 +156,7 @@ Sort the range of the elements of C<float> array in-place.
 
 The sorted range is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The L<Comparator::Float|SPVM::Comparator::Float> comparator is used to compare each element.
 
@@ -192,7 +192,7 @@ Sort the range of the elements of C<float> array in-place.
 
 The sorted range is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The L<Comparator::Float|SPVM::Comparator::Float> comparator is used to compare each element.
 
@@ -228,7 +228,7 @@ Sort the range of the elements of C<int> array in-place.
 
 The sorted range is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The L<Comparator::Int|SPVM::Comparator::Int> comparator is used to compare each element.
 
@@ -264,7 +264,7 @@ Sort the range of the elements of C<long> array in-place.
 
 The sorted range is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The L<Comparator::Long|SPVM::Comparator::Long> comparator is used to compare each element.
 
@@ -300,7 +300,7 @@ Sort the range of the elements of object array in-place.
 
 The sorted range is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The L<Comparator|SPVM::Comparator> comparator is used to compare each element.
 
@@ -318,7 +318,7 @@ Sort the range of the elements of C<short> array in-place.
 
 The sorted range is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The L<Comparator::Byte|SPVM::Comparator::Byte> comparator is used to compare each element.
 
@@ -354,7 +354,7 @@ Sort the range of the elements of C<string> array in-place.
 
 The sorted range is from the offset to the position proceeded by the length.
 
-If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
 The L<Comparator::Byte|SPVM::Comparator::Byte> comparator is used to compare each element.
 
