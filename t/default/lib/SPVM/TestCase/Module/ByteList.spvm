@@ -5,26 +5,33 @@ class TestCase::Module::ByteList {
   
   # Fields
   static method fields : int () {
-    my $nums = ByteList->new([(byte)1, 2, 3]);
-    
-    # length
-    my $length = $nums->length;
-    unless ($length == 3) {
-      return 0;
-    }
-    
-    # values
-    my $values = $nums->values;
-    $values->[2] = 4;
-    
-    unless ($nums->values->[0] == 1) {
-      return 0;
-    }
-    unless ($nums->values->[1] == 2) {
-      return 0;
-    }
-    unless ($nums->values->[2] == 4) {
-      return 0;
+    {
+      my $list = ByteList->new([(byte)1, 2, 3]);
+      
+      # length
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      # values
+      my $values = $list->values;
+      $values->[2] = 4;
+      
+      unless ($list->values->[0] == 1) {
+        return 0;
+      }
+      unless ($list->values->[1] == 2) {
+        return 0;
+      }
+      unless ($list->values->[2] == 4) {
+        return 0;
+      }
+      
+      # capacity
+      unless ($list->capacity == 4) {
+        return 0;
+      }
     }
     
     return 1;
@@ -50,6 +57,38 @@ class TestCase::Module::ByteList {
       
       my $length = $list->length;
       unless ($length == 3) {
+        return 0;
+      }
+
+      # capacity
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    
+    # capcity
+    {
+      my $list = ByteList->new([(byte)3, 5, Fn->BYTE_MAX()], 10);
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(1) == 5) {
+        return 0;
+      }
+      
+      unless ($list->get(2) == Fn->BYTE_MAX()) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+
+      # capacity
+      unless ($list->capacity == 10) {
         return 0;
       }
     }
@@ -113,12 +152,40 @@ class TestCase::Module::ByteList {
       unless ($list->length == 32) {
         return 0;
       }
+      unless ($list->capacity == 32) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = ByteList->new_len(32, 10);
+      
+      unless ($list->length == 32) {
+        return 0;
+      }
+      unless ($list->capacity == 32) {
+        return 0;
+      }
     }
 
     {
       my $list = ByteList->new_len(0);
       
       unless ($list->length == 0) {
+        return 0;
+      }
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = ByteList->new_len(0, 10);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      unless ($list->capacity == 10) {
         return 0;
       }
     }
@@ -460,6 +527,39 @@ class TestCase::Module::ByteList {
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+  
+  static method reserve : int () {
+    {
+      my $list = ByteList->new([(byte)1]);
+      $list->reserve(4);
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+      $list->reserve(0);
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    {
+      my $list = ByteList->new([(byte)1, 2, 3]);
+      my $values = $list->values;
+      my $array = $list->to_array;
+      $list->reserve(5);
+      unless ($list->capacity == 5) {
+        return 0;
+      }
+      
+      if ($list->values == $values) {
+        return 0;
+      }
+      
+      unless (Array->equals_byte($list->to_array, $array)) {
+        return 0;
+      }
+    }
     
     return 1;
   }

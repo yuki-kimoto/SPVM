@@ -4,7 +4,22 @@
     * Use union type in type comment.
       
       has union_type : object of string|Point;
-      
+    * Add DEFAULT_CAPACITY enumeration value to ByteList class.
+      enum {
+        DEFAULT_CAPACITY = 4,
+      }
+    * Add capacity field is added to ByteList class.
+    
+      has capacity : ro int;
+    
+    * Add optional capacity argument is added to new and new_len of ByteList class.
+      [Before]
+      static method new : ByteList ($array = undef : byte[])
+      static method new_len : ByteList ($length : int)
+      [After]
+      static method new : ByteList ($array = undef : byte[], $capacity = -1 : int)
+      static method new_len : ByteList ($length : int, $capacity = -1 : int)
+    * Add reserve method to ByteList class .
   [Specification Bug Fix]
     * The escape character of the string literal "\0" becomes 0x24 ($). This was wrongly 0x44 (D).
   [Incompatible Changes]
