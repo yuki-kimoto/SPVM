@@ -3,6 +3,8 @@
     * The escape character of the string literal "\0" becomes 0x24 ($). This was wrongly 0x44 (D).
   [Incompatible Changes]
     * The escape character of the string literal "\0" becomes 0x24 ($). This was wrongly 0x44 (D).
+  [Internal Changes]
+    * Remove inline expansion of precompile function in the same class. This maybe reduce the performance of the method call.
 0.9634 2022-08-03
   [Changes]
     * Add an optional argument to the following methods of StringBuffer class.

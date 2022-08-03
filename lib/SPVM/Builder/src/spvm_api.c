@@ -50,7 +50,6 @@ static int32_t STACK_INDEX_ARGS_LENGTH = 506;
 
 
 
-
 SPVM_ENV* SPVM_API_new_env_raw() {
 
   // Env Allocator
@@ -1299,6 +1298,10 @@ int32_t SPVM_API_call_class_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t met
 
 int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
   return SPVM_API_call_spvm_method(env, stack, method_id, args_stack_length);
+}
+
+int32_t SPVM_API_call_spvm_method_precompile_address(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
+  
 }
 
 int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
