@@ -191,21 +191,29 @@ The offset + the length specified by the argument must be less than or equal to 
 
 =head2 copy_object
 
-  static method copy_object : object[] ($array : object[], $cloner : Cloner)
+  static method copy_object : object[] ($array : object[], $cloner = undef : Cloner, $offset = 0 : int, $legnth = -1 : int)
 
-Copy an object array. Each element is cloned by the L<Cloner|SPVM::Cloner>.
+Create a new object array with the length sepcified by the argument, and clone the elements of the object array by the length from the offset to the created array.
 
-If the array is not defined, return C<undef>.
+Each element is cloned by the L<Cloner|SPVM::Cloner>.
 
 If the cloner is not defined, the address of each element is copied.
 
+The array must be defined. Otherwise an exception will be thrown.
+
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+
 =head2 copy_object_address
 
-  static method copy_object_address : object[] ($array : object[]);
+  static method copy_object_address : object[] ($array : object[], $offset = 0 : int, $legnth = -1 : int);
 
 The alias for the following code using L</"copy_object">.
 
-  my $ret = &copy_object($array, undef);
+  my $ret = &copy_object($array, undef, $offset, $length);
 
 =head2 copy_range_byte
 
@@ -261,19 +269,11 @@ This method is depracated and will be removed after 2022-08-03.
 
   static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner)
 
-Create a new object array with the length sepcified by the argument, and clone the elements of the object array by the length from the offset to the created array.
+The alias for the following code using L</"copy_object">
 
-Each element is cloned by the L<Cloner|SPVM::Cloner>.
+  my $ret = Array->copy_object($array, $cloner, $offset, $length);
 
-If the cloner is not defined, the address of each element is copied.
-
-The array must be defined. Otherwise an exception will be thrown.
-
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+This method is depracated and will be removed after 2022-08-03.
 
 =head2 copy_range_object_address
 
@@ -282,6 +282,8 @@ The offset + the length specified by the argument must be less than or equal to 
 The alias for the following code using L</"copy_range_object">.
 
   my $ret = &copy_range_object($array, $offset, $length, undef);
+
+This method is depracated and will be removed after 2022-08-03.
 
 =head2 copy_range_short
 

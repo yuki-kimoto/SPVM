@@ -134,57 +134,7 @@ class Array {
     return $new_array;
   }
   
-  precompile static method copy_object : object[] ($array : object[], $cloner : Cloner) {
-    unless ($array) {
-      return undef;
-    }
-    
-    my $length = @$array;
-    
-    my $new_array = new object[$length];
-    
-    if ($cloner) {
-      for (my $i = 0; $i < $length; $i++) {
-        $new_array->[$i] = $cloner->($array->[$i]);
-      }
-    }
-    else {
-      Array->memcpy_object_address($new_array, 0, $array, 0, $length);
-    }
-    
-    return $new_array;
-  }
-  
-  static method copy_object_address : object[] ($array : object[]) {
-    return &copy_object($array, undef);
-  }
-  
-  static method copy_range_byte : byte[] ($array : byte[], $offset : int, $length : int) {
-    warn "Array->copy_range_byte(\$array, \$offset, \$length) is deprecated. Use Array->copy(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_byte($array, $offset, $length);
-  }
-  
-  static method copy_range_double : double[] ($array : double[], $offset : int, $length : int) {
-    warn "Array->copy_range_double(\$array, \$offset, \$length) is deprecated. Use Array->copy(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_double($array, $offset, $length);
-  }
-  
-  static method copy_range_float : float[] ($array : float[], $offset : int, $length : int) {
-    warn "Array->copy_range_float(\$array, \$offset, \$length) is deprecated. Use Array->copy(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_float($array, $offset, $length);
-  }
-  
-  static method copy_range_int : int[] ($array : int[], $offset : int, $length : int) {
-    warn "Array->copy_range_int(\$array, \$offset, \$length) is deprecated. Use Array->copy(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_int($array, $offset, $length);
-  }
-  
-  static method copy_range_long : long[] ($array : long[], $offset : int, $length : int) {
-    warn "Array->copy_range_long(\$array, \$offset, \$length) is deprecated. Use Array->copy(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_long($array, $offset, $length);
-  }
-  
-  precompile static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner) {
+  precompile static method copy_object : object[] ($array : object[], $cloner = undef : Cloner, $offset = 0 : int, $length = -1 : int) {
     
     unless ($array) {
       die "The array must be defined";
@@ -194,11 +144,10 @@ class Array {
       die "The offset must be greater than or equal to 0";
     }
     
-    unless ($length >= 0) {
-      die "The length must be greater than or equal to 0";
-    }
-    
     my $array_length = @$array;
+    if ($length < 0) {
+      $length = $array_length - $offset;
+    }
     
     unless ($offset + $length <= $array_length) {
       die "The offset + the length specified by the argument must be less than or equal to the length of the array";
@@ -218,12 +167,47 @@ class Array {
     return $new_array;
   }
   
+  static method copy_object_address : object[] ($array : object[], $offset = 0 : int, $length = -1 : int) {
+    return &copy_object($array, undef, $offset, $length);
+  }
+  
+  static method copy_range_byte : byte[] ($array : byte[], $offset : int, $length : int) {
+    warn "Array->copy_range_byte(\$array, \$offset, \$length) is deprecated. Use Array->copy_byte(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+    return &copy_byte($array, $offset, $length);
+  }
+  
+  static method copy_range_double : double[] ($array : double[], $offset : int, $length : int) {
+    warn "Array->copy_range_double(\$array, \$offset, \$length) is deprecated. Use Array->copy_double(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+    return &copy_double($array, $offset, $length);
+  }
+  
+  static method copy_range_float : float[] ($array : float[], $offset : int, $length : int) {
+    warn "Array->copy_range_float(\$array, \$offset, \$length) is deprecated. Use Array->copy_float(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+    return &copy_float($array, $offset, $length);
+  }
+  
+  static method copy_range_int : int[] ($array : int[], $offset : int, $length : int) {
+    warn "Array->copy_range_int(\$array, \$offset, \$length) is deprecated. Use Array->copy_int(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+    return &copy_int($array, $offset, $length);
+  }
+  
+  static method copy_range_long : long[] ($array : long[], $offset : int, $length : int) {
+    warn "Array->copy_range_long(\$array, \$offset, \$length) is deprecated. Use Array->copy_long(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+    return &copy_long($array, $offset, $length);
+  }
+  
+  precompile static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner) {
+    warn "Array->copy_range_object(\$array, \$offset, \$length, \$cloner) is deprecated. Use Array->copy_object(\$array, \$cloner, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+    return &copy_object($array, $cloner, $offset, $length);
+  }
+  
   static method copy_range_object_address : object[] ($array : object[], $offset : int, $length : int) {
+    warn "Array->copy_range_object_address(\$array, \$offset, \$length) is deprecated. Use Array->copy_object_address(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
     return &copy_range_object($array, $offset, $length, undef);
   }
   
   static method copy_range_short : short[] ($array : short[], $offset : int, $length : int) {
-    warn "Array->copy_range_short(\$array, \$offset, \$length) is deprecated. Use Array->copy(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
+    warn "Array->copy_range_short(\$array, \$offset, \$length) is deprecated. Use Array->copy_short(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
     return &copy_short($array, $offset, $length);
   }
   

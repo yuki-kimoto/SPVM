@@ -508,11 +508,24 @@ class TestCase::Module::Array {
       my $minimal4 = TestCase::Minimal->new;
 
       my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])Array->copy_range_object($array, 0, -1, undef);
+      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::Address->new)) {
+        return 0;
+      }
+    }
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $range = (TestCase::Minimal[])Array->copy_range_object($array, 1, 2, undef);
       unless (Array->equals_object($range, [$minimal2, $minimal3], EqualityChecker::Address->new)) {
         return 0;
       }
     }
+
 
     # Exception
     {
@@ -526,13 +539,6 @@ class TestCase::Module::Array {
       {
         eval { Array->copy_range_object([(object)5, -7, 9], -1, 1, undef); };
         unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
-          return 0;
-        }
-      }
-      
-      {
-        eval { Array->copy_range_object([(object)5, -7, 9], 0, -1, undef); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -569,6 +575,18 @@ class TestCase::Module::Array {
       my $minimal4 = TestCase::Minimal->new;
 
       my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])Array->copy_range_object_address($array, 0, -1);
+      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::Address->new)) {
+        return 0;
+      }
+    }
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $range = (TestCase::Minimal[])Array->copy_range_object_address($array, 1, 2);
       unless (Array->equals_object($range, [$minimal2, $minimal3], EqualityChecker::Address->new)) {
         return 0;
@@ -587,13 +605,6 @@ class TestCase::Module::Array {
       {
         eval { Array->copy_range_object_address([(object)5, -7, 9], -1, 1); };
         unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
-          return 0;
-        }
-      }
-      
-      {
-        eval { Array->copy_range_object_address([(object)5, -7, 9], 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
           return 0;
         }
       }
