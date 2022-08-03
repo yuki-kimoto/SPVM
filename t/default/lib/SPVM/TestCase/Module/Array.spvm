@@ -31,14 +31,6 @@ class TestCase::Module::Array {
       }
     }
     
-    # Array is undef
-    {
-      my $output = Array->copy_byte(undef);
-      unless ($output == undef) {
-        return 0;
-      }
-    }
-    
     return 1;
   }
   
@@ -289,6 +281,13 @@ class TestCase::Module::Array {
       }
     }
     
+    {
+      my $range = Array->copy_range_byte([(byte)5, -7, 9], 1, -1);
+      unless (Array->equals_byte($range, [(byte)-7, 9])) {
+        return 0;
+      }
+    }
+    
     # Exception
     {
       {
@@ -301,13 +300,6 @@ class TestCase::Module::Array {
       {
         eval { Array->copy_range_byte([(byte)5, -7, 9], -1, 1); };
         unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
-          return 0;
-        }
-      }
-      
-      {
-        eval { Array->copy_range_byte([(byte)5, -7, 9], 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
           return 0;
         }
       }

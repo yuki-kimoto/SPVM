@@ -119,11 +119,17 @@ C<Array> provides array utilities.
 
 =head2 copy_byte
 
-  static method copy_byte : byte[] ($array : byte[])
+  static method copy_byte : byte[] ($array : byte[], $offset = 0 : int, $length = -1 : int)
 
-Copy a C<byte> array.
+Create a new C<byte> array with the length sepcified by the argument, and copy the elements by the length from the offset to the created array.
 
-If the array is not defined, return C<undef>.
+If the length is less than C<0>, the length is calculated from the length of the array and the offset.
+
+The array must be defined. Otherwise an exception will be thrown.
+
+The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+
+The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_double
 
@@ -174,20 +180,6 @@ If the cloner is not defined, the address of each element is copied.
 The alias for the following code using L</"copy_object">.
 
   my $ret = &copy_object($array, undef);
-
-=head2 copy_range_byte
-
-  static method copy_range_byte : byte[] ($array : byte[], $offset : int, $length : int)
-
-Create a new C<byte> array with the length sepcified by the argument, and copy the elements of the C<byte> array from the offset to the offset + the length - C<1> to the created array.
-
-The array must be defined. Otherwise an exception will be thrown.
-
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
-
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_range_double
 
