@@ -446,7 +446,6 @@ t/compile_error/lib/SPVM/CompileError/Use/ImportMethodNotFound.spvm
 t/compile_error/lib/SPVM/CompileError/Weaken/IsweakFieldNotObjectType.spvm
 t/compile_error/lib/SPVM/CompileError/Weaken/UnweakenFieldNotObjectType.spvm
 t/compile_error/lib/SPVM/CompileError/Weaken/WeakenFieldNotObjectType.spvm
-t/compile_error/literal.t
 t/compile_error/operator.t
 t/compile_error/perl_program.pl
 t/compile_error/statement.t
