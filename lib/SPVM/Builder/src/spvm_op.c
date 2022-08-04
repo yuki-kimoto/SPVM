@@ -1275,6 +1275,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
           SPVM_OP* op_dist_type = SPVM_OP_new_op_any_object_type(compiler, op_operand_element->file, op_operand_element->line);
           SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_operand_element, NULL);
           SPVM_OP_replace_op(compiler, op_stab, op_convert);
+          op_operand_element = op_convert;
         }
         element_index++;
       }
