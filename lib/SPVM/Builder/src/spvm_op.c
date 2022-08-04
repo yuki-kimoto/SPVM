@@ -1891,15 +1891,15 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid class descriptor %s at %s line %d", SPVM_DESCRIPTOR_get_name(compiler, descriptor->id), op_class->file, op_class->line);
+          SPVM_COMPILER_error(compiler, "Invalid class descriptor \"%s\" at %s line %d", SPVM_DESCRIPTOR_get_name(compiler, descriptor->id), op_class->file, op_class->line);
         }
       }
     }
     if (class_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "mulnum_t, pointer_t interface_t can be specified only one at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
+      SPVM_COMPILER_error(compiler, "Only one of class descriptors "mulnum_t", "pointer_t" or "interface_t" can be specified at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of \"private\" or \"public\" class descriptors can be specified at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
+      SPVM_COMPILER_error(compiler, "Only one of class descriptors \"private\" or \"public\" can be specified at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
     }
   }
   
