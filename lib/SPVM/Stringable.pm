@@ -23,7 +23,7 @@ SPVM::Stringable - A Interface Type to Stringify a Object
 
 =head1 Description
 
-L<Stringable|SPVM::Stringable> is a interface type to stringify a object.
+L<Stringable|SPVM::Stringable> is an interface type to stringify a object.
 
 =head1 Interface Methods
 

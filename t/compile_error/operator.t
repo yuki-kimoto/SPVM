@@ -17,7 +17,7 @@ use Test::More;
   compile_not_ok_file('CompileError::CallMethod::ClassNotFound', qr/The "NotFoundClass" class is not yet loaded/);
   {
     my $source = 'class Tmp { static method main : int () { my $num = 1; $num->foo; }  }';
-    compile_not_ok($source, qr/The invocant type of the "foo" method must be a class type or a interface type/);
+    compile_not_ok($source, qr/The invocant type of the "foo" method must be a class type or an interface type/);
   }
   {
     my $source = 'class Tmp { static method main : int () { &foo; } method foo : void () {} }';
