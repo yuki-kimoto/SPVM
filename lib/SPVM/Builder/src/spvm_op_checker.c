@@ -231,7 +231,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                 op_operand_element = SPVM_OP_sibling(compiler, op_operand_element);
                 if (op_operand_element->id == SPVM_OP_C_ID_UNDEF) {
-                  SPVM_COMPILER_error(compiler, "The array initialization first element must be defined at %s line %d", file, line);
+                  SPVM_COMPILER_error(compiler, "The first element in the array initialization must be defined at %s line %d", file, line);
                   return;
                 }
                 SPVM_TYPE* type_operand_element = SPVM_OP_get_type(compiler, op_operand_element);
@@ -303,21 +303,21 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             }
             case SPVM_OP_C_ID_NEXT: {
               if (check_ast_info->loop_block_stack_length == 0) {
-                SPVM_COMPILER_error(compiler, "next statement must be in loop block at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The next statement must be in a loop block at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;
             }
             case SPVM_OP_C_ID_LAST: {
               if (check_ast_info->loop_block_stack_length == 0) {
-                SPVM_COMPILER_error(compiler, "last statement must be in loop block at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The last statement must be in a loop block at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;
             }
             case SPVM_OP_C_ID_BREAK: {
               if (check_ast_info->op_switch_stack->length == 0) {
-                SPVM_COMPILER_error(compiler, "break statement must be in switch block at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The break statement must be in a switch block at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;
