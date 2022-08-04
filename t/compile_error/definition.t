@@ -82,7 +82,7 @@ use Test::More;
     compile_not_ok_file('CompileError::Interface::NotHaveInterfaceMethod', qr/CompileError::Interface::NotHaveInterfaceMethod.+to_string.+interface.+Stringable/i);
     compile_not_ok_file('CompileError::Interface::NoMethods', qr/The interface must have a required method/i);
     compile_not_ok_file('CompileError::Interface::MultiRequiredMethods', qr/multiple required method/i);
-    compile_not_ok_file('CompileError::Interface::HasImplNotFound', qr/interface.+TestCase::Pointable.+the method declaration.+not_found/i);
+    compile_not_ok_file('CompileError::Interface::HasImplNotFound', qr/The method "TestCase::Pointable->not_found" is not defined/i);
   }
   # Class variable difinition
   {
@@ -97,7 +97,7 @@ use Test::More;
       }
       {
         my $source = ['class MyClass extends PointerType {}', 'class PointerType : pointer_t {}'];
-        compile_not_ok($source, qr/The parant class must be a non-pointer type/);
+        compile_not_ok($source, qr/The parant class must be a non-pointer class type/);
       }
       {
         my $source = 'class MyClass extends MyClass {}';
@@ -109,7 +109,7 @@ use Test::More;
       }
       {
         my $source = ['class MyClass extends MyParentClass { has x : int; }', 'class MyParentClass { has x : int; }'];
-        compile_not_ok($source, qr/The field that name is the same as the field of the super class can't be defined/);
+        compile_not_ok($source, qr/The field that has the same name as the field of the super class can't be defined/);
       }
     }
   }
@@ -153,7 +153,7 @@ use Test::More;
   # Method definition
   {
     compile_not_ok_file('CompileError::Method::INIT', qr/"INIT" can't be used as a method name/);
-    compile_not_ok_file('CompileError::Method::TooManyArguments', qr/Too many arguments/i);
+    compile_not_ok_file('CompileError::Method::TooManyArguments', qr/The maximum length of arguments that can be defined is 255/i);
     compile_not_ok_file('CompileError::Method::TooManyArgumentsMulnum'. qr/Too many arguments/i);
     
     # Method name
@@ -169,7 +169,6 @@ use Test::More;
       my $source = 'class MyClass { static method main : void (); }';
       compile_not_ok($source, qr/The non-native method must have the block/);
     }
-
     # Destructor(DESTORY)
     {
       {
@@ -217,7 +216,7 @@ use Test::More;
 
   # Enumeration definition
   {
-    compile_not_ok_file('CompileError::Enum::PrivateAccess', qr/Can't call the private method "TestCase::Enum->PRIVATE_VALUE"/);
+    compile_not_ok_file('CompileError::Enum::PrivateAccess', qr/The private method "TestCase::Enum->PRIVATE_VALUE" can't be called/);
     {
       my $source = q|class MyClass { interface_t enum { ONE } }|;
       compile_not_ok($source, qr/Invalid enumeration descriptor "interface_t"/);

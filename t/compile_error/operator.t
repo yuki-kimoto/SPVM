@@ -13,19 +13,19 @@ use MyTest qw(compile_not_ok_file compile_not_ok);
 use Test::More;
 # Call method
 {
-  compile_not_ok_file('CompileError::CallMethod::NotFound', qr/The "CompileError::CallMethod::NotFound->NOT_FOUND_METHOD" class method is not defined/);
+  compile_not_ok_file('CompileError::CallMethod::NotFound', qr/The class method "CompileError::CallMethod::NotFound->NOT_FOUND_METHOD" is not defined/);
   compile_not_ok_file('CompileError::CallMethod::ClassNotFound', qr/The "NotFoundClass" class is not yet loaded/);
   {
     my $source = 'class Tmp { static method main : int () { my $num = 1; $num->foo; }  }';
-    compile_not_ok($source, qr/The invocant type of the "foo" method must be a class type or an interface type/);
+    compile_not_ok($source, qr/The invocant type of the method "foo" must be a class type or an interface type/);
   }
   {
     my $source = 'class Tmp { static method main : int () { &foo; } method foo : void () {} }';
-    compile_not_ok($source, qr/The "Tmp->foo" class method is not defined/);
+    compile_not_ok($source, qr/The class method "Tmp->foo" is not defined/);
   }
   {
     my $source = 'class Tmp { static method main : int () { my $object = new Tmp; $object->foo; } static method foo : void () {} }';
-    compile_not_ok($source, qr/The "Tmp->foo" instance method is not defined/);
+    compile_not_ok($source, qr/The instance method "Tmp->foo" is not defined/);
   }
 }
 

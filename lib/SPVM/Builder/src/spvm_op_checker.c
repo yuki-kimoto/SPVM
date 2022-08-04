@@ -3209,7 +3209,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               );
               
               if (!found_method) {
-                SPVM_COMPILER_error(compiler, "The method \"%s->%s\" is not defined \"%s\" at %s line %d", class_name, method_name, op_name_method->file, op_name_method->line);
+                SPVM_COMPILER_error(compiler, "The method \"%s->%s\" is not defined at %s line %d", class_name, method_name, op_name_method->file, op_name_method->line);
                 return;
               }
               
@@ -4358,7 +4358,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
   else {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_method->op_invocant);
     if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-      SPVM_COMPILER_error(compiler, "The invocant type of the \"%s\" method must be a class type or an interface type at %s line %d", method_name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "The invocant type of the method \"%s\" must be a class type or an interface type at %s line %d", method_name, op_call_method->file, op_call_method->line);
       return;
     }
     
@@ -4383,7 +4383,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
         int32_t class_name_static_length = (last_colon_pos - 1) - method_name;
         SPVM_CLASS* class_static = SPVM_HASH_get(compiler->class_symtable, method_name, class_name_static_length);
         if (!class_static) {
-          SPVM_COMPILER_error(compiler, "The \"%s->%s\" instance method is not defined at %s line %d", class->name, method_name, op_call_method->file, op_call_method->line);
+          SPVM_COMPILER_error(compiler, "The instance method \"%s->%s\" is not defined at %s line %d", class->name, method_name, op_call_method->file, op_call_method->line);
           return;
         }
         SPVM_METHOD* found_method = SPVM_HASH_get(
@@ -4395,7 +4395,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
           call_method->method = found_method;
         }
         else {
-          SPVM_COMPILER_error(compiler, "The \"%s->%s\" instance method is not defined at %s line %d", class->name, method_name, op_call_method->file, op_call_method->line);
+          SPVM_COMPILER_error(compiler, "The instance method \"%s->%s\" is not defined at %s line %d", class->name, method_name, op_call_method->file, op_call_method->line);
           return;
         }
       }
@@ -4439,7 +4439,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       call_method->method = found_method;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The \"%s->%s\" instance method is not defined at %s line %d", class->name, method_name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "The instance method \"%s->%s\" is not defined at %s line %d", class->name, method_name, op_call_method->file, op_call_method->line);
       return;
     }
   }
@@ -4600,13 +4600,13 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     const char* class_name = class->op_name->uv.name;
     
-    // mulnum_t class limitation
+    // Multi-numeric type limitation
     if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
       SPVM_LIST* fields = class->fields;
       SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
       SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);
       if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
-        SPVM_COMPILER_error(compiler, "mulnum_t class must have numeric field at %s line %d", first_field->op_field->file, first_field->op_field->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type must have obly fields that type is a numeric type at %s line %d", first_field->op_field->file, first_field->op_field->line);
         return;
       }
       else {
@@ -4615,7 +4615,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
           SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
           if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
-            SPVM_COMPILER_error(compiler, "field must have %s type at %s line %d", field_type->basic_type->name, field->op_field->file, field->op_field->line);
+            SPVM_COMPILER_error(compiler, "The field must be the %s type at %s line %d", field_type->basic_type->name, field->op_field->file, field->op_field->line);
             return;
           }
         }
@@ -4649,12 +4649,12 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         char* found_pos_ptr = strstr(class_name, tail_name);
         if (found_pos_ptr) {
           if (*(found_pos_ptr + tail_name_length) != '\0') {
-            SPVM_COMPILER_error(compiler, "class name must end with %s at %s line %d", tail_name, class->op_class->file, class->op_class->line);
+            SPVM_COMPILER_error(compiler, "The type name must end with \"%s\" at %s line %d", tail_name, class->op_class->file, class->op_class->line);
             return;
           }
         }
         else {
-          SPVM_COMPILER_error(compiler, "class name must end with %s at %s line %d", tail_name, class->op_class->file, class->op_class->line);
+          SPVM_COMPILER_error(compiler, "The type name must end with \"%s\" at %s line %d", tail_name, class->op_class->file, class->op_class->line);
           return;
         }
       }
@@ -4668,7 +4668,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       // valut_t can't become class variable
       if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "mulnum_t type can't become class variable at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type can't be a class variable at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
         return;
       }
     }
@@ -4681,7 +4681,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       // valut_t can't become field
       int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
       if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "mulnum_t type can't become field at %s line %d", field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type can't be a field at %s line %d", field->op_field->file, field->op_field->line);
         return;
       }
     }
@@ -4817,7 +4817,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       // Can't return refernece type
       if (SPVM_TYPE_is_ref_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
-        SPVM_COMPILER_error(compiler, "Can't return reference type at %s line %d", method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "The return type can't be a reference type at %s line %d", method->op_method->file, method->op_method->line);
         return;
       }
 
@@ -4838,7 +4838,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       if (parent_class->is_pointer) {
-        SPVM_COMPILER_error(compiler, "The parant class must be a non-pointer type at %s line %d", class->op_extends->file, class->op_extends->line);
+        SPVM_COMPILER_error(compiler, "The parant class must be a non-pointer class type at %s line %d", class->op_extends->file, class->op_extends->line);
         return;
       }
       if (strcmp(class->name, parent_class->name) == 0) {
@@ -5028,7 +5028,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_LIST_push(all_fields, new_field);
         SPVM_FIELD* found_field = SPVM_HASH_get(all_field_symtable, new_field->name, strlen(new_field->name));
         if (found_field) {
-          SPVM_COMPILER_error(compiler, "The field that name is the same as the field of the super class can't be defined at %s line %d", class->op_extends->file, class->op_extends->line);
+          SPVM_COMPILER_error(compiler, "The field that has the same name as the field of the super class can't be defined at %s line %d", class->op_extends->file, class->op_extends->line);
           compile_error = 1;
           break;
         }
